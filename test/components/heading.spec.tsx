@@ -20,11 +20,11 @@ describe('<Heading />', () => {
     });
 
     ['H1', 'H2', 'H3', 'H4', 'H5', 'H6'].forEach((headingType: any) => {
-        it(`outputs an <${headingType.toLowerCase()}> when provided with type="${headingType}"`, () => {
+        it(`outputs an <${headingType.toLowerCase()}> when provided with type="${headingType}"`, async () => {
             const { select, waitForDom } =
                 clientRenderer.render(<Heading data-automation-id="HEADING" type={headingType}>Test heading</Heading>);
 
-            return waitForDom(() => expect(select('HEADING')!.tagName).to.equal(headingType));
+            await waitForDom(() => expect(select('HEADING')!.tagName).to.equal(headingType));
         });
 
     });
