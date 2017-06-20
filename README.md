@@ -1,4 +1,5 @@
 # wix-react-components
+[![Build Status](https://travis-ci.org/wix/wix-react-components.svg?branch=master)](https://travis-ci.org/wix/wix-react-components)
 
 Common, fully-tested, strictly-typed, Wix-styled, React components library.
 
