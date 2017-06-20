@@ -9,12 +9,13 @@ describe('<TextInput />', () => {
     it('outputs an input element with type="text" by default', async () => {
         const { select, waitForDom } =
             clientRenderer.render(<TextInput data-automation-id="TEXT_INPUT" />);
-        await waitForDom(() => {
-            const link = select('TEXT_INPUT');
 
-            expect(link).to.be.present();
-            expect(link).to.be.instanceOf(HTMLInputElement);
-            expect(link).to.have.attribute('type', 'text');
+        await waitForDom(() => {
+            const textInput = select('TEXT_INPUT');
+
+            expect(textInput).to.be.present();
+            expect(textInput).to.be.instanceOf(HTMLInputElement);
+            expect(textInput).to.have.attribute('type', 'text');
         });
     });
 });
