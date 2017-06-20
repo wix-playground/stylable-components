@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { Link } from '../src';
-import './style.css';
+const style = require('./style.css');
 
 export class ComponentsDemo extends React.Component<{}, {}>{
     render() {
         return <div>
-            <Link href="">My link</Link>
+            <Link className={style.test} href="">My link</Link>
         </div>;
     }
 }

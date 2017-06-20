@@ -10,7 +10,7 @@
     "prepublish": "npm run build",
     "test": "npm run test:browser && npm run test:node",
     "test:browser": "karma start --single-run",
-    "test:node": "mocha --compilers ts:ts-node/register,tsx:ts-node/register \"./test/node/**/*.node-spec.ts?(x)\"",
+    "test:node": "mocha --compilers ts:ts-node/register,tsx:ts-node/register,css:css-modules-require-hook/preset \"./test/node/**/*.node-spec.ts?(x)\"",
     "start": "webpack-dev-server --progress"
   },
   "peerDependencies": {
@@ -18,6 +18,7 @@
   },
   "devDependencies": {
     "@types/mocha": "^2.2.41",
+    "@types/node": "^8.0.0",
     "@types/react": "^15.0.29",
     "@types/react-dom": "^15.5.0",
     "css-loader": "^0.28.4",

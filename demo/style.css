@@ -1,4 +1,8 @@
-body {
+:global body {
     margin: 0;
     padding: 15px;
+}
+
+.test {
+    background-color: red;
 }
