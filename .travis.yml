@@ -11,6 +11,10 @@ addons:
   apt:
     packages:
       - google-chrome-stable
+  sauce_connect:
+    username: "AviVahl"
+  jwt:
+    secure: "hs+iMZGdYxF3n1dTzV0GwNMY7NgpvqsmxfGFchV4ndEQLMLy7VpODKLlkC4+cwr53lKD3DdAkLBI1EQgD2/8TDUe86iHAFcqZzrPJyf90BRq+mbv7dCRs408ZFBPBF3EPGyjRAbkBvWNB+whHnx2LashDLPA4AjkUd7Tncyb4spKh3oDaVv3eaHYXwDL//CDd2EUwd2eUzwwy1Usmt3pJqqEx6mi9we46LiAg4jiFDCfCMkmoii4hPvFgZ2PGJD3v1IW+2YfDDLrU/XIoXrPoTNVEg2cFHOj2nZ8AqL/+Va6ID2gabw6bx7qcSM9SwM8+lN0tM4KMHQYTLdJR0+tmuOCaXj7UxNmCrQQEKSzZ5pmbhHqpxfrqjpkFd/YQGcJeASavwnDFll1JUCk+4Z1skKgDX0rCECs7UwwT2NJ5oy/RgDxcb0lsDWM8sJpLrkmrnIMt/vQXwDNybMAA+TnmZ8MRmB8/69SUAn9cUFGUVVUnNJXn0gH28kY50+Ri/Rs7sayWAV/r+zQTGlWtqehNrX6aoAZGZPkX+QccpbZIvo8w3DvRovLyCCR4mjuJuZmOmcUv0hpAo2U6ionI8K211Yc8mqGrQumSCl0F9zzy5A/1iYYCCcQxIUKvkJJ5vLwfDn4HES4CwjPydl4vES4m2jAhs2LNzY6Bo7a+/m9GFM="
 
 before_script:
   - export DISPLAY=:99.0

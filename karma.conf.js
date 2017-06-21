@@ -4,6 +4,32 @@
 const webpack = require('./webpack.config');
 const { testGlob } = require('./package.json');
 
+const sauceLabsLaunchers = { // Check out https://saucelabs.com/platforms for all browser/platform combos
+    sl_chrome: {
+        base: 'SauceLabs',
+        browserName: 'chrome',
+        platform: 'Windows 7',
+        version: '35'
+    },
+    sl_firefox: {
+        base: 'SauceLabs',
+        browserName: 'firefox',
+        version: '30'
+    },
+    sl_ios_safari: {
+        base: 'SauceLabs',
+        browserName: 'iphone',
+        platform: 'OS X 10.9',
+        version: '7.1'
+    },
+    sl_ie_11: {
+        base: 'SauceLabs',
+        browserName: 'internet explorer',
+        platform: 'Windows 8.1',
+        version: '11'
+    }
+}
+
 module.exports = function(config) {
   config.set({
     // this key is used by karma-webpack, see preprocessors below
@@ -13,6 +39,8 @@ module.exports = function(config) {
     mime: {
         "text/x-typescript": ["ts", "tsx"],
     },
+
+    customLaunchers: sauceLabsLaunchers,
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
     basePath: '',
@@ -44,7 +72,7 @@ module.exports = function(config) {
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress'],
+    reporters: process.env.TRAVIS ? ['progress', 'sourceLabs'] : ['progress'],
 
 
     // web server port
@@ -66,7 +94,7 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Chrome'],
+    browsers: process.env.TRAVIS ? Object.keys(sauceLabsLaunchers) : ['Chrome'],
 
 
     // Continuous Integration mode
