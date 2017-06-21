@@ -1,6 +1,8 @@
 # wix-react-components
 [![Build Status](https://travis-ci.org/wix/wix-react-components.svg?branch=master)](https://travis-ci.org/wix/wix-react-components)
-[![Sauce Test Status](https://saucelabs.com/browser-matrix/AviVahl.svg)](https://saucelabs.com/u/AviVahl)
+[![Sauce Test Status](https://saucelabs.com/buildstatus/WixReactComponents)](https://saucelabs.com/u/WixReactComponents)
+
+[![Sauce Test Status](https://saucelabs.com/browser-matrix/WixReactComponents.svg)](https://saucelabs.com/u/WixReactComponents)
 
 Common, fully-tested, strictly-typed, Wix-styled, React components library.
 
