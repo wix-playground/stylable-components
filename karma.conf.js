@@ -59,6 +59,7 @@ module.exports = function (config) {
             build: 'TRAVIS #' + process.env.TRAVIS_BUILD_NUMBER + ' (' + process.env.TRAVIS_BUILD_ID + ')',
             tunnelIdentifier: process.env.TRAVIS_JOB_NUMBER,
         },
+        captureTimeout: 120000,
 
         // base path that will be used to resolve all patterns (eg. files, exclude)
         basePath: '',
