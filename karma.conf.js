@@ -72,7 +72,7 @@ module.exports = function(config) {
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: process.env.TRAVIS ? ['progress', 'sourceLabs'] : ['progress'],
+    reporters: process.env.TRAVIS ? ['progress', 'saucelabs'] : ['progress'],
 
 
     // web server port
