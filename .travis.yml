@@ -2,7 +2,6 @@ dist: trusty
 language: node_js
 
 node_js:
-  - '8'
   - '6'
 
 sudo: false
@@ -11,6 +10,10 @@ addons:
   apt:
     packages:
       - google-chrome-stable
+  sauce_connect:
+    username: "WixReactComponents"
+  jwt:
+    secure: "khLMTqppvGyyZgnHOYfVAV5cjAvAS9CUtnIj6s2zpq6q1FnYJSWXIJSBhgSDpQOXDT6lCpKuJJkm/9sJ5lI3J/QDLYDSdoSk2fCj9Hy02tY+mf7kV+PWfvdjvHOXORvJCrzsCF/Y1cDXdx+HSm7psYBmRNnDlC64FDG02z6GJY5JMpDEIO2GHyxg1dQLDYEK+5jLutphea5I9rgqDvAnBrPaLyhwqE9JvK9sabJBCSy3rMnArAayMyQCnJaHY4MBcXEjnfBOvhWozKAHorFKr7EmFvfXZtBQN5hqmHZmXQGjGj8NRnY5O9Zn2neTmJuUGJB0kR3BfLAWVk3pO235AN/SjQhgLMdheeg6zdi7pivk0nMavf41co9xpRZJQl9CD3GWSsYp+bYKXomTu3kDlkCvW5oFqVwcAkMjScxh0C6goeG1iMhe7IPszMsT8jWd0hOHJQGL2MtCEHzzZPCoLHXzcdPVoc04x13bEYzKm1rag7KnrAXZ2bDquv8WY5qsGihUqkbk0wwmi9k4mHqQwlz1BypVGVX5JSODQo9PQ+DIci3LSbfn9ILlVHaxa9dTdDc+0gp67VUjmeFigIS+9JOwL/kVsZPsHbfntCNazxrPAM36NskU40bKtS8N/6XtMPGH0lr1U7Ayko4XfHn2mv8nDWfIEhsuSpRDKMOMATQ="
 
 before_script:
   - export DISPLAY=:99.0
