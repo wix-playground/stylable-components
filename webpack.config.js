@@ -7,7 +7,7 @@ module.exports = {
     devtool: 'eval',
     entry: {
         demos: './demo/index.tsx',
-        tests: testFiles.map(fileName => `mocha-loader!${fileName}`)
+        tests: ['core-js/shim', ...testFiles.map(fileName => `mocha-loader!${fileName}`)]
     },
     module: {
         rules: [

@@ -18,8 +18,8 @@
   },
   "devDependencies": {
     "@types/mocha": "^2.2.41",
-    "@types/node": "^8.0.0",
-    "@types/react": "^15.0.29",
+    "@types/node": "^8.0.1",
+    "@types/react": "^15.0.30",
     "@types/react-dom": "^15.5.0",
     "css-loader": "^0.28.4",
     "css-modules-require-hook": "^4.0.6",
@@ -35,9 +35,9 @@
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "style-loader": "^0.18.2",
-    "test-drive-react": "^0.1.92",
-    "ts-loader": "^2.1.0",
-    "ts-node": "^3.0.6",
+    "test-drive-react": "^0.1.94",
+    "ts-loader": "^2.2.0",
+    "ts-node": "^3.1.0",
     "typescript": "^2.3.4",
     "webpack": "^3.0.0",
     "webpack-dev-server": "^2.5.0"
