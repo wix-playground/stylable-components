@@ -60,6 +60,7 @@ module.exports = function (config) {
             tunnelIdentifier: process.env.TRAVIS_JOB_NUMBER,
         },
         captureTimeout: 120000,
+        browserNoActivityTimeout: 25000,
 
         // base path that will be used to resolve all patterns (eg. files, exclude)
         basePath: '',
