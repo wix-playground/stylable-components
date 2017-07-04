@@ -4,11 +4,35 @@
 
 [![Sauce Test Status](https://saucelabs.com/browser-matrix/WixReactComponents.svg)](https://saucelabs.com/u/WixReactComponents)
 
-Common, fully-tested, strictly-typed, Wix-styled, React components library.
+Common, fully-tested, strictly-typed, React components library.
 
-### Featured components:
-- &lt;Link /&gt;
-- more coming soon...
+### Components
+- Under construction...
+
+### Components to be created:
+- &lt;AutoComplete /&gt;
+- &lt;CheckBox /&gt;
+- &lt;Color Picker /&gt;
+- &lt;DataGrid /&gt;
+- &lt;Date Picker /&gt;
+- &lt;Dropdown /&gt;
+- &lt;Image /&gt;
+- &lt;Menu /&gt;
+- &lt;Modal /&gt;
+- &lt;MultiSelect /&gt;
+- &lt;NumberInput /&gt;
+- &lt;PopUp /&gt;
+- &lt;RadioGroup /&gt;
+- &lt;RichTextInput /&gt;
+- &lt;ScrollView /&gt;
+- &lt;Slider /&gt;
+- &lt;Time Picker /&gt;
+- &lt;Toggle /&gt;
+- &lt;Tooltip /&gt;
+- &lt;TopBar /&gt;
+- &lt;TreeList /&gt;
+- &lt;Upload /&gt;
+- &lt;Video /&gt;
 
 ## Library structure
 ```
