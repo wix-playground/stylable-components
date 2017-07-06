@@ -4,7 +4,7 @@ const { testGlob } = require('./package.json');
 const testFiles = glob.sync(testGlob);
 
 module.exports = {
-    devtool: 'eval',
+    devtool: 'source-map',
     entry: {
         demos: './demo/index.tsx',
         tests: ['core-js/shim', ...testFiles.map(fileName => `mocha-loader!${fileName}`)]
