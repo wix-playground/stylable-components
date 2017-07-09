@@ -37,15 +37,21 @@ can be generated into:
 
 the following view:
 
-* enter view here *
+![image](https://user-images.githubusercontent.com/2289769/27993856-32b4b8da-64ba-11e7-88a0-0c65b726a29b.png)
+
 
 the following editing view:
 
-* enter view here *
+![image](https://user-images.githubusercontent.com/2289769/27993859-3b25beba-64ba-11e7-8552-1ba0368a03ff.png)
+
+the following table view
+
+![image](https://user-images.githubusercontent.com/2289769/27993938-67e6fe68-64bb-11e7-8994-ce1b6cdba580.png)
+
 
 and the following list views:
 
-* enter view here *
+![image](https://user-images.githubusercontent.com/2289769/27993888-b9738144-64ba-11e7-9e36-d711fa03b2dc.png)
 
 
 ## syntax
@@ -164,10 +170,3 @@ the following meta-data fields have been added for better GUI generation:
 * list-form-generator
 * grid-view-generator
 * table-edit-generator
-
-
-
-
-
-
-
