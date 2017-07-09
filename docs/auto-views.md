@@ -14,8 +14,9 @@ the json schema
 
 ```json
 {
+  "id": "/person",
   "type":"object",
-  "title":"reposi",
+  "title":"User",
   "properties":{
     "fName":{
       "type":"string",
@@ -145,8 +146,9 @@ the following meta-data fields have been added for better GUI generation:
 ```tsx
 
 {
-  title:"MpImage"
-  description:"Wix media platform image"
+  id: "/MpImage",
+  title:"MpImage",
+  description:"Wix media platform image",
   views:{
     "view":{
       controller:"MpImageViewer",
@@ -161,9 +163,8 @@ the following meta-data fields have been added for better GUI generation:
 ```
 ![image](https://user-images.githubusercontent.com/2289769/27993957-dcbdfd90-64bb-11e7-9d46-01c76518d5f4.png)
 
-* layoutHints: an object defining layout hints for better layouting of the resuls available hints:
-  * break: boolean, defaults to false, after which field to add a lineBreak
-  * modal: boolean, show GUI of content in modal
+* semanticHints: an object defining semantic hints for better presentation of the results. available hints:
+  * role: string, properties with the same role will be grouped together, some view generators support specific roles ( and default to role content when not specified)
 
 ```tsx
 
