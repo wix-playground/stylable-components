@@ -79,6 +79,18 @@ in these cases it is usefull to have the view schemas extend on base schema that
 
 a schema can denote its acceptable type/types using the type keyword, available options: "string","number","boolean","null","array" or "object"
 
+##### example
+
+```JSON
+{
+  "id":"/product",
+  "title":"Product",
+  "type":"object"
+}
+
+```
+
+
 each type adds its own validation keywords:
 
 #### number validation keywords
@@ -101,13 +113,13 @@ each type adds its own validation keywords:
 * additionalProperties  : schema to match when property name does not match any defined property ( having only additionalProperties schema is describing a map)
 * required: array of required props
 
-```ts
+```json
 {
-  id:"product",
-  type:'object',
-  properties:{
-    lastName:{
-      type:'string'
+  "id":"person",
+  "type":"object",
+  "properties":{
+    "lastName":{
+      "type":"string"
     }
   }
 }
@@ -117,10 +129,10 @@ each type adds its own validation keywords:
 
 
 {
-  id:"stringToNumberMap",
-  type:'object',
-  additionalProperties:{
-      type:'number'
+  "id":"stringToNumberMap",
+  "type":"object",
+  "additionalProperties":{
+      "type":"number"
   }
 }
 
@@ -135,7 +147,84 @@ each type adds its own validation keywords:
 * items : schema of the child items
 * maxItems  : number
 * minItems  : number
-* uniqueItems: booelan
+* uniqueItems: booelan /* no duplicates allowed */
+
+
+### ref - referncing schemas
+
+a schema can reference another schema usinng the ref keyword
+
+
+```json
+{
+  "id":"person",
+  "type":"object",
+  "properties":{
+    "lastName":{
+      "type":"string"
+    }
+  }
+}
+
+
+{
+  "id":"task",
+  "type":"object",
+  "properties":{
+    "owner":{
+      "$ref":"person"
+    }
+  }
+}
+
+//the task schema refernces the person schema
+
+
+```
+
+### oneOf - union between complex types
+
+a schema can be defined as a union between other schemas
+
+
+```json
+{
+  "id":"image",
+  "type":"object",
+  "properties":{
+    "src":{
+      "type":"string"
+    }
+  }
+}
+
+{
+  "id":"video",
+  "type":"object",
+  "properties":{
+    "src":{
+      "type":"string"
+    }
+  }
+}
+
+
+
+{
+  "id":"post",
+  "type":"object",
+  "properties":{
+    "media":{
+      "$oneOf":[{"$ref":"image"},{"$ref":"video"}]
+    }
+  }
+}
+
+//the post schema refernces multiple schemas
+
+
+```
+
 
 
 ### GUI Hints
@@ -145,17 +234,17 @@ the following meta-data fields have been added for better GUI generation:
   * controller: unique id of component to show for this data
   * props: object containing extra props for said component
 
-```tsx
+```json
 
 {
-  id: "/MpImage",
-  title:"MpImage",
-  description:"Wix media platform image",
-  views:{
+  "id": "/MpImage",
+  "title":"MpImage",
+  "description":"Wix media platform image",
+  "views":{
     "view":{
-      controller:"MpImageViewer",
-      props:{
-        cropMode:"Center"
+      "controller":"MpImageViewer",
+      "props":{
+        "cropMode":"Center"
       }
 
     }
@@ -168,23 +257,26 @@ the following meta-data fields have been added for better GUI generation:
 * semanticHints: an object containing semantic hints for better GUI generation:
   * role: string, properties with the same role will be grouped together, some view generators support presentations for specific roles ( and default to role content when not specified)
 
-```tsx
+```json
 
 {
-  title:"User",
-  type:"object",
-  properties:{
+  "title":"User",
+  "type":"object",
+  "properties":{
     "fName":{
-      type:"string"
+      "semanticHints":{
+        "role":"name"
+      },
+      "type":"string"
     },
     "lName":{
-      type:"string",
-      layoutHints:{
-        break:true;
-      }
+      "semanticHints":{
+        "role":"name"
+      },
+      "type":"string"
     },
     "age":{
-      type:"number"
+      "type":"number"
     }
   }
 }
