@@ -10,7 +10,9 @@ export class ComponentsDemo extends React.Component<{}, {}>{
         return (
             <Provider>
                 <div>
+                    <h1>{'<Link />'} </h1>
                     <Link className={style.test} href="">My link</Link>
+                    <h1>{'<Image />'} </h1>
                     <Image src={sampleImage} />
                 </div>
             </Provider>
