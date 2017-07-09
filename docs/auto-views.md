@@ -101,13 +101,13 @@ each type adds its own validation keywords:
 * additionalProperties  : schema to match when property name does not match any defined property ( having only additionalProperties schema is describing a map)
 * required: array of required props
 
-```ts
+```json
 {
   id:"product",
-  type:'object',
+  type:"object",
   properties:{
     name:{
-      type:'string'
+      type:"string"
     }
   }
 }
@@ -118,9 +118,9 @@ each type adds its own validation keywords:
 
 {
   id:"stringToNumberMap",
-  type:'object',
+  type:"object",
   additionalProperties:{
-      type:'number'
+      type:"number"
   }
 }
 
@@ -135,17 +135,17 @@ each type adds its own validation keywords:
 * items : schema to match with items
 * maxItems  : number
 * minItems  : number
-* uniqueItems: booelan
+* uniqueItems: booelan /* no duplicates allowed */
 
 
 ### GUI Hints
 the following meta-data fields have been added for better GUI generation:
 
-* views: an object defining a view component for different views data belonging to the schema, each view can specifiy:
+* views (??): an object defining a view component for different views data belonging to the schema, each view can specifiy:
   * controller: unique id of component to show for this data
   * props: object containing extra props for said component
 
-```tsx
+```json
 
 {
   id: "/MpImage",
@@ -168,20 +168,23 @@ the following meta-data fields have been added for better GUI generation:
 * semanticHints: an object defining semantic hints for better presentation of the results. available hints:
   * role: string, properties with the same role will be grouped together, some view generators support specific roles ( and default to role content when not specified)
 
-```tsx
+```json
 
 {
   title:"User",
   type:"object",
   properties:{
     "fName":{
+      semanticHints:{
+        role:"name"
+      },
       type:"string"
     },
     "lName":{
-      type:"string",
-      layoutHints:{
-        break:true;
-      }
+      semanticHints:{
+        role:"name"
+      },
+      type:"string"
     },
     "age":{
       type:"number"
