@@ -45,7 +45,7 @@ myRepo.getDefinition(id:string):JSONSchema | null
 returns a view from a JSON schema if both exists
 
 ```ts
-myRepo.getView(schemaId:string,viewName:string):JSONSchema | null
+myRepo.getView(schemaId:string,viewName:string):AutoViewsViewSchema | null
 ```
 
 
@@ -54,6 +54,15 @@ myRepo.getView(schemaId:string,viewName:string):JSONSchema | null
 registers a controller to a unique name
 
 ```ts
-myRepo.registerController<D>(controller:React.ComponentClass,schemaId:string,viewName:string):JSONSchema | null
+myRepo.registerController<D>(controllerId:string,controller:React.ComponentClass):void
 ```
-returns a view definition from
+
+* getController:
+
+gets a controller according to a unique name, returns null if not found
+
+```ts
+myRepo.getController<D>(controllerId:string):React.ComponentClass | null
+```
+
+

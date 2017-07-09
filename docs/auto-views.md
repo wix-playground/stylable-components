@@ -4,7 +4,7 @@
 
 the auto-views component family includes components that genarate views from JSON schemas.
 
-the json schemas are a subset of the json schema syntax [JSONschema.org](http://json-schema.org).
+the json schemas are based on a subset of the json schema syntax [JSONschema.org](http://json-schema.org).
 
 by using a common schema and different view-Generators we can create many different views from the same schema
 
@@ -59,7 +59,7 @@ and the following list views:
 
 ## syntax
 
-the schemas are defined in JSON format with the minimal schema  ```{}``` representing "any type"
+the schemas are defined in JSON format with the minimal schema  ```{}``` representing "any" type.
 
 ### meta-data
 
@@ -69,15 +69,15 @@ the following meta-data fields are supported:
 * title: readable title
 * description: short description
 
-because the schemas are used to create GUI, it is sometimes usefull to define extra schemas for the same dataType, this should be used only for differnt views and not apply any different validation.
+because the schemas are used to create GUI, it is sometimes usefull to define extra schemas  for the same dataType (views), this should be used only for differnt views and not apply any different validation.
 
 in these cases it is usefull to have the view schemas extend on base schema that defines the validation
 
-* TBD: extend: unique id of base schema
+* TBD: viewOf: unique id of base schema
 
 ### validation/typings
 
-a schema can denote its acceptable type/types using the type keywork, available options: "string","number","boolean","null","array" or "object"
+a schema can denote its acceptable type/types using the type keyword, available options: "string","number","boolean","null","array" or "object"
 
 each type adds its own validation keywords:
 
@@ -92,12 +92,12 @@ each type adds its own validation keywords:
 * maxLength : number
 * minLength  : number
 * pattern: regExp to match against value
-* format : email / URI / date-time
-* enum: array of options to allow
+* format : "email" / "URI" / "date-time"
+* enum: array of string options to allow
 
 
 #### object validation keywords
-* properties : propertyName to schema obejct
+* properties : propertyName to schema object
 * additionalProperties  : schema to match when property name does not match any defined property ( having only additionalProperties schema is describing a map)
 * required: array of required props
 
@@ -106,13 +106,13 @@ each type adds its own validation keywords:
   id:"product",
   type:'object',
   properties:{
-    name:{
+    lastName:{
       type:'string'
     }
   }
 }
 
-//named property example
+// a named property called "lastName" with value of type string
 
 
 
@@ -132,7 +132,7 @@ each type adds its own validation keywords:
 
 
 #### array validation keywords
-* items : schema to match with items
+* items : schema of the child items
 * maxItems  : number
 * minItems  : number
 * uniqueItems: booelan
@@ -141,7 +141,7 @@ each type adds its own validation keywords:
 ### GUI Hints
 the following meta-data fields have been added for better GUI generation:
 
-* views: an object defining a view component for different views data belonging to the schema, each view can specifiy:
+* views: a map between view-names to visual components for the schema, each view can specifiy:
   * controller: unique id of component to show for this data
   * props: object containing extra props for said component
 
@@ -165,8 +165,8 @@ the following meta-data fields have been added for better GUI generation:
 ```
 ![image](https://user-images.githubusercontent.com/2289769/27993957-dcbdfd90-64bb-11e7-9d46-01c76518d5f4.png)
 
-* semanticHints: an object defining semantic hints for better presentation of the results. available hints:
-  * role: string, properties with the same role will be grouped together, some view generators support specific roles ( and default to role content when not specified)
+* semanticHints: an object containing semantic hints for better GUI generation:
+  * role: string, properties with the same role will be grouped together, some view generators support presentations for specific roles ( and default to role content when not specified)
 
 ```tsx
 
