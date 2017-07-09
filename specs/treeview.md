@@ -2,6 +2,10 @@
 
 A typed React TreeView component.
 
+## Internal
+
+
+
 ## Properties
 
 | Name | Type | Default | Required | Description |
@@ -60,7 +64,7 @@ A typed React TreeView component.
 
 ### Mouse/Touch Events
 
-Important to use preventDefault inside touch event handlers to verify
+Important to use preventDefault inside touch event handlers to verify that mouse and touch are not both triggered when functions are available for both.
 
 *
 
@@ -70,14 +74,31 @@ Important to use preventDefault inside touch event handlers to verify
 
 | Name | Type | Default | Required | Description |
 | -- | -- | -- | -- | -- |
-| expanded | boolean | false | Yes | Shows child nodes if true or hides them if false |
-| enabled | boolean | true | No | Enables or disables a node. A disabled node cannot be expanded/collapsed (directly, search can do it), traversed using keyboard and/or selected. |
+| expanded | boolean (not observable) | false | No | Shows child nodes if true or hides them if false |
+| selected | boolean (not observable) | false | No | Node is selected or not |
+| enabled | boolean | true | No | Enables or disables a node. A disabled node cannot be expanded/collapsed directly (search can do it) or traversed using keyboard, or selected. |
 | title | string | undefined | No | The label for the node to be shown in the tree, used by the default item renderer |
 | children | array of (TreeItem) objects | undefined | No | Child nodes under the current node. Note that if loadOnDemand is used then children should be set to null(??) |
+
+### Default ItemRenderer Component
+
+#### Properties
+
+| Name | Type | Default | Required | Description |
+| -- | -- | -- | -- | -- |
+| item | TreeItem (required) | Null | Yes | The root node to render |
+
+
+#### Style Classes
+
+| Name | Location | Description |
+| -- | -- | -- |
+| root | root node of the item renderer | The root class which is the best place to put default styles used in the node |
 
 ## Design patterns for examples
 
 * Render a sample tree showing how to connect
+* Create a directory view in a tree (load a directory, show files, ...)
 * Search for a TreeItem (by title)
 * Search for a TreeItem (by ref)
 * How to show a node in loading state when loadOnDemand is enabled?
