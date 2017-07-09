@@ -14,7 +14,7 @@ the json schema
 
 ```json
 {
-  "id": "/person",
+  "id": "/user",
   "type":"object",
   "title":"User",
   "properties":{
@@ -38,21 +38,23 @@ can be generated into:
 
 the following view:
 
-![image](https://user-images.githubusercontent.com/2289769/27993856-32b4b8da-64ba-11e7-88a0-0c65b726a29b.png)
+![image](https://user-images.githubusercontent.com/2289769/27994043-55fb639e-64be-11e7-906f-be9703cdc6c1.png)
+
 
 
 the following editing view:
 
-![image](https://user-images.githubusercontent.com/2289769/27993859-3b25beba-64ba-11e7-8552-1ba0368a03ff.png)
+![image](https://user-images.githubusercontent.com/2289769/27994053-88ffa818-64be-11e7-8301-b9387e721eab.png)
 
 the following table view
 
-![image](https://user-images.githubusercontent.com/2289769/27993938-67e6fe68-64bb-11e7-8994-ce1b6cdba580.png)
+![image](https://user-images.githubusercontent.com/2289769/27994097-306a5b8e-64bf-11e7-8611-b50dcb275314.png)
+
 
 
 and the following list views:
+![image](https://user-images.githubusercontent.com/2289769/27994085-ef35dd3c-64be-11e7-80b0-f4c91b1c1516.png)
 
-![image](https://user-images.githubusercontent.com/2289769/27993888-b9738144-64ba-11e7-9e36-d711fa03b2dc.png)
 
 
 ## syntax
@@ -189,7 +191,8 @@ the following meta-data fields have been added for better GUI generation:
 
 
 ```
-![image](https://user-images.githubusercontent.com/2289769/27993975-3ad8510a-64bc-11e7-9478-52e09d9c5cdf.png)
+![image](https://user-images.githubusercontent.com/2289769/27994104-48742f20-64bf-11e7-8b34-87380415571c.png)
+
 
 
 
