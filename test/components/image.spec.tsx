@@ -68,4 +68,22 @@ describe('<Image />', () => {
 
         return waitFor(() => expect(onLoad).to.have.been.calledWithMatch({ data: sampleImage }));
     });
+
+    const brokenSrc = 'data:image/png;base64,this-is-broken!';
+
+    it('calls onError when it cannot load a source, and falls back to default source', () => {
+        const onError = sinon.spy();
+        const {select} = clientRenderer.render(<Image src={brokenSrc} onError={onError} />);
+
+        return waitFor(() => expect(onError).to.have.been.calledWithMatch({ data: brokenSrc }))
+        .then(() => verifyElementSrc(select(nativeImage)!, onePixelTransparentSrc));
+    });
+
+    it('calls onError when it cannot load the given default image, and falls back to onePixelTransparentSrc', () => {
+        const onError = sinon.spy();
+        const {select} = clientRenderer.render(<Image defaultImage={brokenSrc} onError={onError} />);
+
+        return waitFor(() => expect(onError).to.have.been.calledWithMatch({ data: brokenSrc }))
+        .then(() => verifyElementSrc(select(nativeImage)!, onePixelTransparentSrc));
+    });
 });
