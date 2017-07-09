@@ -130,6 +130,8 @@ the following meta-data fields have been added for better GUI generation:
 }
 
 ```
+![image](https://user-images.githubusercontent.com/2289769/27993957-dcbdfd90-64bb-11e7-9d46-01c76518d5f4.png)
+
 * layoutHints: an object defining layout hints for better layouting of the resuls available hints:
   * break: boolean, defaults to false, after which field to add a lineBreak
   * modal: boolean, show GUI of content in modal
@@ -149,13 +151,15 @@ the following meta-data fields have been added for better GUI generation:
         break:true;
       }
     },
-    "address":{
-      type:"string"
+    "age":{
+      type:"number"
     }
   }
 }
 
+
 ```
+![image](https://user-images.githubusercontent.com/2289769/27993975-3ad8510a-64bc-11e7-9478-52e09d9c5cdf.png)
 
 
 
