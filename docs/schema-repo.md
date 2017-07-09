@@ -9,9 +9,9 @@ it can be used to create your own auto-view generators.
 
 ## API
 
-* constructor: 
+* constructor:
 ```ts
-SchemaRepo(parentRepo?:SchemaRepo); 
+SchemaRepo(parentRepo?:SchemaRepo);
 ```
 params:
 * parentRepo: schemaRepo to inherit definitions from
@@ -54,6 +54,6 @@ myRepo.getView(schemaId:string,viewName:string):JSONSchema | null
 registers a controller to a unique name
 
 ```ts
-myRepo.registerController<D>(controller:React.ComponentClass<,viewName:string):JSONSchema | null
+myRepo.registerController<D>(controller:React.ComponentClass,schemaId:string,viewName:string):JSONSchema | null
 ```
-returns a view definition from 
+returns a view definition from

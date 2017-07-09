@@ -64,7 +64,7 @@ because the schemas are used to create GUI, it is sometimes usefull to define ex
 
 in these cases it is usefull to have the view schemas extend on base schema that defines the validation
 
-* extend: unique id of base schema
+* TBD: extend: unique id of base schema
 
 ### validation/typings
 
@@ -91,6 +91,35 @@ each type adds its own validation keywords:
 * properties : propertyName to schema obejct
 * additionalProperties  : schema to match when property name does not match any defined property ( having only additionalProperties schema is describing a map)
 * required: array of required props
+
+```ts
+{
+  id:"product",
+  type:'object',
+  properties:{
+    name:{
+      type:'string'
+    }
+  }
+}
+
+//named property example
+
+
+
+{
+  id:"stringToNumberMap",
+  type:'object',
+  additionalProperties:{
+      type:'number'
+  }
+}
+
+//string to number map example
+
+
+
+```
 
 
 #### array validation keywords
