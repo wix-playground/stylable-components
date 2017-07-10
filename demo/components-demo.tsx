@@ -5,7 +5,6 @@ import { sampleImage } from '../test/fixtures/sample-image';
 import {AutoForm} from "../src";
 import {AutoFormSchema, SchemaRepository} from "../src";
 const style = require('./style.css');
-import {Provider} from 'mobx-react';
 
 export class ComponentsDemo extends React.Component<{}, {}>{
     schemaRepository: SchemaRepository;
@@ -29,16 +28,14 @@ export class ComponentsDemo extends React.Component<{}, {}>{
 
     render() {
         return (
-            <Provider>
-                <div>
-                    <h1>{'<Link />'}</h1>
-                    <Link className={style.test} href="">My link</Link>
-                    <h1>{'<Image />'}</h1>
-                    <Image src={sampleImage} />
-                    <h1>{'<AutoForm />'}</h1>
-                    <AutoForm repo={this.schemaRepository} schemaId="demo schema"/>
-                </div>
-            </Provider>
+            <div>
+                <h1>{'<Link />'}</h1>
+                <Link className={style.test} href="">My link</Link>
+                <h1>{'<Image />'}</h1>
+                <Image src={sampleImage} />
+                <h1>{'<AutoForm />'}</h1>
+                <AutoForm repo={this.schemaRepository} schemaId="demo schema"/>
+            </div>
         );
     }
 }
