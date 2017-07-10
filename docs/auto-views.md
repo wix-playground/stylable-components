@@ -14,7 +14,7 @@ the json schema
 
 ```json
 {
-  "id": "/user",
+  "$id": "http://example.com/user",
   "type":"object",
   "title":"User",
   "properties":{
@@ -53,6 +53,7 @@ the following table view
 
 
 and the following list views:
+
 ![image](https://user-images.githubusercontent.com/2289769/27994085-ef35dd3c-64be-11e7-80b0-f4c91b1c1516.png)
 
 
@@ -65,7 +66,7 @@ the schemas are defined in JSON format with the minimal schema  ```{}``` represe
 
 the following meta-data fields are supported:
 
-* id: unique id of the schema in URI format
+* $id: unique id of the schema in URI format
 * title: readable title
 * description: short description
 
@@ -73,7 +74,7 @@ because the schemas are used to create GUI, it is sometimes usefull to define ex
 
 in these cases it is usefull to have the view schemas extend on base schema that defines the validation
 
-* TBD: viewOf: unique id of base schema
+* TBD: $viewOf: unique id of base schema
 
 ### validation/typings
 
@@ -83,7 +84,7 @@ a schema can denote its acceptable type/types using the type keyword, available 
 
 ```JSON
 {
-  "id":"/product",
+  "$id":"http://example.com/product",
   "title":"Product",
   "type":"object"
 }
@@ -115,7 +116,7 @@ each type adds its own validation keywords:
 
 ```json
 {
-  "id":"person",
+  "$id":"http://example.com/person",
   "type":"object",
   "properties":{
     "lastName":{
@@ -129,7 +130,7 @@ each type adds its own validation keywords:
 
 
 {
-  "id":"stringToNumberMap",
+  "$id":"http://example.com/stringToNumberMap",
   "type":"object",
   "additionalProperties":{
       "type":"number"
@@ -157,7 +158,7 @@ a schema can reference another schema usinng the ref keyword
 
 ```json
 {
-  "id":"person",
+  "$id":"http://example.com/person",
   "type":"object",
   "properties":{
     "lastName":{
@@ -168,11 +169,11 @@ a schema can reference another schema usinng the ref keyword
 
 
 {
-  "id":"task",
+  "$id":"http://example.com/task",
   "type":"object",
   "properties":{
     "owner":{
-      "$ref":"person"
+      "$ref":"http://example.com/person"
     }
   }
 }
@@ -189,7 +190,7 @@ a schema can be defined as a union between other schemas
 
 ```json
 {
-  "id":"image",
+  "$id":"http://example.com/image",
   "type":"object",
   "properties":{
     "src":{
@@ -199,7 +200,7 @@ a schema can be defined as a union between other schemas
 }
 
 {
-  "id":"video",
+  "$id":"http://example.com/video",
   "type":"object",
   "properties":{
     "src":{
@@ -211,11 +212,11 @@ a schema can be defined as a union between other schemas
 
 
 {
-  "id":"post",
+  "$id":"http://example.com/post",
   "type":"object",
   "properties":{
     "media":{
-      "$oneOf":[{"$ref":"image"},{"$ref":"video"}]
+      "$oneOf":[{"$ref":"http://example.com/image"},{"$ref":"http://example.com/video"}]
     }
   }
 }
@@ -237,7 +238,7 @@ the following meta-data fields have been added for better GUI generation:
 ```json
 
 {
-  "id": "/MpImage",
+  "$id": "http://example.com/MpImage",
   "title":"MpImage",
   "description":"Wix media platform image",
   "views":{
@@ -260,6 +261,7 @@ the following meta-data fields have been added for better GUI generation:
 ```json
 
 {
+  "$id":"http://example.com/user",
   "title":"User",
   "type":"object",
   "properties":{
@@ -299,3 +301,57 @@ the following meta-data fields have been added for better GUI generation:
 * list-form-generator
 * grid-view-generator
 * table-edit-generator
+
+
+## auto-generation from typescript
+
+auto generating schemas is possible through third party projects - add link here
+
+using this method the following typescipt code sitting in src/components/bobs.ts:
+```ts
+/**
+ * @id bob
+ */
+interface bob{
+    age:number;
+}
+//unique id set by user
+
+interface bobsUncle{
+    cousin:bob;
+}
+
+//unique id is auto generated from project structure
+
+```
+
+
+
+
+will result in the 2 following generated schemas
+
+
+```json
+{
+    "$id":"http://npmJs/{project-name}/bob",
+    "properties":{
+        "age":{
+          "type":"number"
+        }
+    }
+}
+
+```
+
+
+
+```json
+{
+     "$id":"http://npmJs/{project-name}/dist/src/components/bobs.ts",
+    "properties":{
+        "cousin":{
+          "$ref":"http://npmJs/{project-name}/bob"
+        }
+    }
+}
+```
