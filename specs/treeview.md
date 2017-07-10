@@ -1,38 +1,93 @@
 # TreeView Component Specification
 
-A typed React TreeView component.
+A typed React TreeView component. The TreeView is a generic container in the sense that it can work with any kind of data and be styled according to a specific implementation.
 
-## Internal
+![Image of tree]()
 
+* [Internal Implementation](#internal-implementation)
+  * [TreeItem](#treeitem)
+  * [ItemRenderer](#default-itemrenderer)
+* [Properties](#properties)
+* [Methods](#methods)
+* [Events](#events)
+* [Input Handling](#input-handling)
+* [Examples](#examples)
 
+## Internal Implementation
+
+### TreeItem
+
+The TreeItem is used internally for representing nodes.
+
+#### Properties
+
+| Name | Type | Default | Required | Description |
+| -- | -- | -- | -- | -- |
+| expanded | enum (not observable): [true, false, pending] | false | No | Shows child nodes if true or collapses them if false. Pending states |
+| selected | boolean (not observable) | false | No | Node is selected or not |
+| enabled | boolean | true | No | Enables or disables a node. A disabled node cannot be expanded/collapsed directly (search can do it) or traversed using keyboard, or selected. |
+| data | Object | none | Yes | Reference to the data object for the item |
+
+### ItemRenderer
+
+The default ItemRenderer supplied with the tree. Draws an arrow icon (if relevant) with the title for each node.
+
+![Image of sample tree node]()
+
+The itemRenderer is responsible adding the 3 tree events to each node it renders.
+
+#### Properties
+
+| Name | Type | Default | Required | Description |
+| -- | -- | -- | -- | -- |
+| item | TreeItem | none | Yes | The root node to render |
+
+#### Style
+
+Supports the following style states for each node (note that some styles will appear in conjunction):
+* hover
+
+    ![Image of tree with hover]()
+* expanded true/false/pending
+
+    ![Image of tree with expanded states]()
+* selected
+
+    ![Image of tree with selected]()
+* enabled
+
+    ![Image of tree with enabled false]()
+
+The following static styles should be used:
+
+| Name | Description |
+| -- | -- |
+| root | The root class for the node |
+| icon | The style for the arrow icon which appears only if child nodes are available |
+| title | The style for the node title |
 
 ## Properties
 
 | Name | Type | Default | Required | Description |
 | -- | -- | -- | -- | -- |
-| dataSource | TreeItems[] | null | Yes | An array of TreeItems |
-| selectedItem | TreeItem | null | No | The selected TreeItem, by default none is selected |
-| itemRenderer | func | default function | No | Overrides the default function for rendering nodes |
-| dragAndDrop | boolean | false | No | When enabled user can drag and drop nodes in the tree. Nodes are moved with their children |
+| dataSource | Object[] | none | Yes | The data source of the TreeView which is used to render nodes |
+| mapChildren |  | none | Yes | An func or an object mapping the data fields |
+| itemRenderer | func: params - TreeItem | default function | No | Overrides the default function for rendering nodes |
+| selectedItem | Object reference | null | No | The selected object, by default none is selected |
 | keyboardNavigation | boolean | true | No | When enabled, user can traverse the tree using keyboard arrow keys |
-| loadOnDemand | boolean | false | No | Whether parent nodes are populated with children before they are expanded. If the children are null(??) then we know that there are no more children to load for a node. |
-| loadMethod | func | null | no | The method used to load the children of a node |
-| searchMethod | func | default function | No | The default function searches according to the node title with exact prefix matching.|
-
+| loadOnDemand | boolean | false | No | Whether parent nodes are populated with children before they are expanded. |
+| loadMethod | func (params: item of type TreeItem), returns promise or list of Objects | null | no | The method used to load the children of a node when loadOnDemand is true |
+| filter | func: (params: item of type Object) | default function | No | The default function searches according to the node title with exact prefix matching.|
 
 ## Methods
 
 | Name | Parameters | Description |
-| -- | -- | -- |
-| collapse | item: TreeItem (required) | Collapses item |
-| collapsePath | item: TreeItem (required) | Collapses all nodes under a provided node |
-| collapseTree | none | Collapses all the tree nodes |
-| expand | item: TreeItem (required) | Expands item |
-| expandPath | item: TreeItem (required) | Expands all nodes under a provided node |
-| expandTree | none | Expands all the tree nodes |
-| findItem | searchQuery: string or any | Executes the searchMethod with the searchQuery |
-| selectItem | item: TreeItem (required) | Selects an item in the three |
-
+| -- | -- | --
+| collapse | item: Object (required) | Collapses all nodes under a provided node |
+| collapseAll | none | Collapses all the tree nodes |
+| expand | item: TreeItem (required) | Expands all nodes under a provided node |
+| expandAll | boolean deep (default) or shallow | Expands all the tree nodes |
+| selectItem | item: Object (required) | Selects an item in the three |
 
 ## Events
 
@@ -41,10 +96,6 @@ A typed React TreeView component.
 | onSelect | Triggered when a selection has been changed |
 | onExpand | Triggered when a node is expanded |
 | onCollapse | Triggered when a node is collapsed |
-| onDragStart | Triggered before a dragging of a node starts |
-| onDrag | Triggered while a node is being dragged |
-| onDragEnd | Triggered after a node had been dragged |
-| onDrop | Triggered when a node is dropped |
 
 ## Input Handling
 
@@ -62,43 +113,47 @@ A typed React TreeView component.
   * expands item and highlights it
   * if item was already expanded then highlights the first child
 
-### Mouse/Touch Events
+## Stages of development
 
-Important to use preventDefault inside touch event handlers to verify that mouse and touch are not both triggered when functions are available for both.
+Where relevant show code examples to be used in the documentation later on.
 
-*
+* Render a tree (one icon, several nodes hierarchy) using the default renderer -> able to select nodes
+* Render a tree (like above) with ability to expand/collapse nodes
+* Render a tree (one icon, several nodes hierarchy) using the traverse children and a non-default item renderer that has a type for a parent node and different type for all children
+```
+const data = [
+    {
 
-## TreeItem Interface
+      "id": 1,
+      "name": "Felix",
+      "mood": "crazy",
+      "owner": { "id": 5, "name": "Pat Sullivan" }
+      "kittens": [
+          {
+            "name": "Son1",
+            "mood": "reasonable"
+          },
+          {
+            "name": "Daughter1",
+            "mood": "un-reasonable"
+          }
+      ]
 
-### Properties
-
-| Name | Type | Default | Required | Description |
-| -- | -- | -- | -- | -- |
-| expanded | boolean (not observable) | false | No | Shows child nodes if true or hides them if false |
-| selected | boolean (not observable) | false | No | Node is selected or not |
-| enabled | boolean | true | No | Enables or disables a node. A disabled node cannot be expanded/collapsed directly (search can do it) or traversed using keyboard, or selected. |
-| title | string | undefined | No | The label for the node to be shown in the tree, used by the default item renderer |
-| children | array of (TreeItem) objects | undefined | No | Child nodes under the current node. Note that if loadOnDemand is used then children should be set to null(??) |
-
-### Default ItemRenderer Component
-
-#### Properties
-
-| Name | Type | Default | Required | Description |
-| -- | -- | -- | -- | -- |
-| item | TreeItem (required) | Null | Yes | The root node to render |
+    },
+    {
+      "id": 2,
+      "name": "Gorbachev",
+      "mood": "awesome",
+      "owner": { "id": 6, "name": "Aaron Patterson" }
+    }
+  ];
+```
+* Render a tree which shows keyboard navigation working
+* Search for a TreeItem (using a string query - default search)
+* Search for a TreeItem (using a custom search function)
+* Lazy loading -> implement the loadMethod and pending state
 
 
-#### Style Classes
+* Create a directory view in a tree (load a directory, show files, ...) -> a demo project
 
-| Name | Location | Description |
-| -- | -- | -- |
-| root | root node of the item renderer | The root class which is the best place to put default styles used in the node |
 
-## Design patterns for examples
-
-* Render a sample tree showing how to connect
-* Create a directory view in a tree (load a directory, show files, ...)
-* Search for a TreeItem (by title)
-* Search for a TreeItem (by ref)
-* How to show a node in loading state when loadOnDemand is enabled?
