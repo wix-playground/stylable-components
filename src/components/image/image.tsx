@@ -2,7 +2,6 @@ import * as React from 'react';
 import {objectFitSupported} from '../../common/environment';
 import {observable, action} from 'mobx';
 import {observer} from 'mobx-react';
-import NativeUIEvent = require("react");
 import {SyntheticEvent} from "react";
 
 // Transparent 1x1 gif image
@@ -29,7 +28,6 @@ export class Image extends React.Component<Partial<ImageProps>, {}>{
 
     @action setSrcToFallback = () => {
         this.src = this.getFallbackSrcFor(this.src)!;
-        console.log(this.src);
     };
 
     onError: React.EventHandler<SyntheticEvent<HTMLImageElement>> = () => {
@@ -59,6 +57,7 @@ export class Image extends React.Component<Partial<ImageProps>, {}>{
     }
 
     render() {
+        // remove defaultImage from props that will be applied to image tag
         const { title, alt, defaultImage, ...rest } = this.props;
 
         return (
