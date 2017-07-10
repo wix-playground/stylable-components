@@ -66,14 +66,50 @@ describe('<AutoForm />', () => {
                     }
                 } as AutoFormSchema);
             await waitForDom(() => {
-                const input1 = select("input_1");
+                const input1 = select("input_text");
                 expect(input1, "input_1 should be present").to.be.present();
                 expect(input1).to.be.instanceOf(HTMLInputElement);
 
-                const label1 = select("label_1");
+                const label1 = select("label_text");
                 expect(label1, "label_1 should be present").to.be.present();
                 expect(label1).to.be.instanceOf(HTMLLabelElement);
                 expect(label1!.textContent).to.be.eq("a text field");
+            });
+        });
+
+        it('renders form with several text fields', async () => {
+            const { select, waitForDom } = renderAutoForm(
+                {
+                    type:"object",
+                    id:"1",
+                    properties:{
+                        text1:{
+                            type:"string",
+                            title:"text1"
+                        },
+                        text2:{
+                            type:"string",
+                            title:"text2"
+                        }
+                    }
+                } as AutoFormSchema);
+            await waitForDom(() => {
+                const input1 = select("input_text1");
+                expect(input1, "input_1 should be present").to.be.present();
+
+                const label1 = select("label_text1");
+                expect(label1, "label_1 should be present").to.be.present();
+                expect(label1).to.be.instanceOf(HTMLLabelElement);
+                expect(label1!.textContent).to.be.eq("text1");
+
+                const input2 = select("input_text2");
+                expect(input2, "input_2 should be present").to.be.present();
+
+                const label2 = select("label_text2");
+                expect(label2, "label_2 should be present").to.be.present();
+                expect(label2).to.be.instanceOf(HTMLLabelElement);
+                expect(label2!.textContent).to.be.eq("text2");
+
             });
         });
 

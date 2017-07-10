@@ -45,8 +45,8 @@ export class AutoForm extends React.Component<AutoFormProps, {}> {
             let schemaProperties = this.props.repo.getSchema(this.props.schemaId).properties;
             children = Object.keys(schemaProperties).map((property)=> {
                 return <div>
-                        <label data-automation-id="label_1">{schemaProperties[property].title}</label>
-                        <TextInput data-automation-id="input_1"></TextInput>
+                        <label data-automation-id={`label_${property}`}>{schemaProperties[property].title}</label>
+                        <TextInput data-automation-id={`input_${property}`}/>
                     </div>
             });
         }
