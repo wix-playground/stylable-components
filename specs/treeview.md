@@ -118,6 +118,22 @@ The following static styles should be used:
 Where relevant show code examples to be used in the documentation later on.
 
 * Render a tree (one icon, several nodes hierarchy) using the default renderer -> able to select nodes
+
+### Examples
+* Renders a tree view
+```
+<TreeView dataSource={data} />
+```
+* Renders a tree view with the ability to select an item
+```
+const parentState = {
+  selectedItem: Object;
+};
+
+<TreeView dataSource={data} selectedItem={this.state.selectedItem} />
+```
+
+
 * Render a tree (like above) with ability to expand/collapse nodes
 * Render a tree (one icon, several nodes hierarchy) using the traverse children and a non-default item renderer that has a type for a parent node and different type for all children
 ```
