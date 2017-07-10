@@ -40,23 +40,17 @@ the following view:
 
 ![image](https://user-images.githubusercontent.com/2289769/27994043-55fb639e-64be-11e7-906f-be9703cdc6c1.png)
 
-
-
 the following editing view:
 
 ![image](https://user-images.githubusercontent.com/2289769/27994053-88ffa818-64be-11e7-8301-b9387e721eab.png)
 
-the following table view
+the following table view:
 
 ![image](https://user-images.githubusercontent.com/2289769/27994097-306a5b8e-64bf-11e7-8611-b50dcb275314.png)
-
-
 
 and the following list views:
 
 ![image](https://user-images.githubusercontent.com/2289769/27994085-ef35dd3c-64be-11e7-80b0-f4c91b1c1516.png)
-
-
 
 ## syntax
 
@@ -70,11 +64,6 @@ the following meta-data fields are supported:
 * title: readable title
 * description: short description
 
-because the schemas are used to create GUI, it is sometimes usefull to define extra schemas  for the same dataType (views), this should be used only for differnt views and not apply any different validation.
-
-in these cases it is usefull to have the view schemas extend on base schema that defines the validation
-
-* TBD: $viewOf: unique id of base schema
 
 ### validation/typings
 
@@ -255,8 +244,7 @@ the following meta-data fields have been added for better GUI generation:
 ```
 ![image](https://user-images.githubusercontent.com/2289769/27993957-dcbdfd90-64bb-11e7-9d46-01c76518d5f4.png)
 
-* semanticHints: an object containing semantic hints for better GUI generation:
-  * role: string, properties with the same role will be grouped together, some view generators support presentations for specific roles ( and default to role content when not specified)
+* uiGroup string, properties with the same uiGroup will be grouped together, some view generators support presentations for specific uiGroup ( and default to uiGroup content when not specified)
 
 ```json
 
@@ -266,16 +254,13 @@ the following meta-data fields have been added for better GUI generation:
   "type":"object",
   "properties":{
     "fName":{
-      "semanticHints":{
-        "role":"name"
-      },
-      "type":"string"
+        "type":"string",
+        "uiGroup":"name"
+      }
     },
     "lName":{
-      "semanticHints":{
-        "role":"name"
-      },
-      "type":"string"
+      "type":"string",
+      "uiGroup":"name"
     },
     "age":{
       "type":"number"
@@ -288,8 +273,52 @@ the following meta-data fields have been added for better GUI generation:
 ![image](https://user-images.githubusercontent.com/2289769/27994104-48742f20-64bf-11e7-8b34-87380415571c.png)
 
 
+#### TBD: Extra views for type
+because the schemas are used to create GUI, it is sometimes usefull to define extra schemas  for the same dataType (views), this should be used only for differnt views and not apply any different validation.
 
+in these cases it is usefull to have the view schemas explicitly reference the base schema that defines the validation using the $viewOf keyword
 
+##### example
+
+base schema:
+
+```json
+
+{
+  "$id":"http://example.com/user",
+  "title":"User",
+  "type":"object",
+  "properties":{
+    "fName":{
+      "type":"string"
+    },
+    "lName":{
+      "type":"string"
+    },
+    "age":{
+      "type":"number"
+    }
+  }
+}
+
+```
+
+extra view:
+
+```json
+
+{
+  "$id":"http://example.com/user/partialView",
+  "$viewOf":"http://example.com/user",
+  "title":"User",
+  "type":"object",
+  "properties":{
+    "fName":{},
+    "lName":{}
+  }
+}
+
+```
 
 ## exports
 
