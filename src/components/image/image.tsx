@@ -8,11 +8,12 @@ import {SyntheticEvent} from "react";
 // Transparent 1x1 gif image
 export const onePixelTransparentSrc: string = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
 
-export interface ImageProps {
+export interface ImageProps extends React.HTMLAttributes<HTMLImageElement> {
     defaultImage: string;
     title: string;
     src: string;
     alt: string;
+
     onLoad: (data: object) => void;
     onError: (data: object) => void;
 }
@@ -58,13 +59,16 @@ export class Image extends React.Component<Partial<ImageProps>, {}>{
     }
 
     render() {
+        const { title, alt, ...rest } = this.props;
+
         return (
-            <img alt={this.props.alt}
-                 title={this.props.title}
+            <img {...rest}
+                 alt={alt}
+                 title={title}
                  data-automation-id="NATIVE_IMAGE"
                  src={this.getImageSrc()}
                  onError={this.onError}
-                 onLoad={this.onLoad} />
+                 onLoad={this.onLoad}/>
         );
     }
 }
