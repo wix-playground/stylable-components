@@ -6,9 +6,13 @@ export class RadioGroup extends React.Component<{}, {}> {
     }
 }
 
-export class RadioButton extends React.Component<{}, {}> {
+interface RadioButtonProps {
+    value: string;
+}
+
+export class RadioButton extends React.Component<RadioButtonProps, {}> {
     render() {
-        return (<input type="radio" data-automation-id="RADIO_BUTTON"/>)
+        return (<input type="radio" data-automation-id="RADIO_BUTTON" value={this.props.value}/>)
     }
 
 }

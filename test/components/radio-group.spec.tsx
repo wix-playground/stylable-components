@@ -12,10 +12,11 @@ describe('<RadioButton />', function () {
     });
 
     it('renders a radio button to the screen', function () {
-        const { select, waitForDom } = clientRenderer.render(<RadioButton />);
+        const { select, waitForDom } = clientRenderer.render(<RadioButton value="Shiva"/>);
 
         return waitForDom(() => {
             expect(select(radioButton)).to.be.present().and.to.have.attr('type', 'radio');
+            expect(select(radioButton)).to.have.attr('value', 'Shiva');
         });
-    })
+    });
 });
