@@ -15,5 +15,8 @@ interface RadioButtonProps {
 }
 
 export class RadioButton extends React.Component<RadioButtonProps, {}> {
+    render() {
+        return (<input type="radio" data-automation-id="RADIO_BUTTON"></input>)
+    }
 
 }
