@@ -71,7 +71,7 @@ The following static styles should be used:
 | Name | Type | Default | Required | Description |
 | -- | -- | -- | -- | -- |
 | dataSource | Object[] | none | Yes | The data source of the TreeView which is used to render nodes |
-| mapChildren |  | none | Yes | An func or an object mapping the data fields |
+| mapChildren | func | none | Yes | Maps children for the item renderer |
 | itemRenderer | func: params - TreeItem | default function | No | Overrides the default function for rendering nodes |
 | selectedItem | Object reference | null | No | The selected object, by default none is selected |
 | keyboardNavigation | boolean | true | No | When enabled, user can traverse the tree using keyboard arrow keys |
