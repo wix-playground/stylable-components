@@ -40,22 +40,14 @@ the following view:
 
 ![image](https://user-images.githubusercontent.com/2289769/27994043-55fb639e-64be-11e7-906f-be9703cdc6c1.png)
 
-
-
-the following editing view:
-
+the following editing view:  
 ![image](https://user-images.githubusercontent.com/2289769/27994053-88ffa818-64be-11e7-8301-b9387e721eab.png)
 
-the following table view
-
+the following table view:  
 ![image](https://user-images.githubusercontent.com/2289769/27994097-306a5b8e-64bf-11e7-8611-b50dcb275314.png)
 
-
-
-and the following list views:
+and the following list views:  
 ![image](https://user-images.githubusercontent.com/2289769/27994085-ef35dd3c-64be-11e7-80b0-f4c91b1c1516.png)
-
-
 
 ## syntax
 
