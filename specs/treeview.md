@@ -130,7 +130,11 @@ const parentState = {
   selectedItem: Object;
 };
 
-<TreeView dataSource={data} selectedItem={this.state.selectedItem} />
+function onSelectItem(selectedItem) {
+  this.state.selectedItem = selectedItem;
+}
+
+<TreeView dataSource={data} selectedItem={this.state.selectedItem} onSelectItem={this.onSelectItem.bind(this)} />
 ```
 
 
