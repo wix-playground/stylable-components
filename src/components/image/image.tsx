@@ -59,7 +59,7 @@ export class Image extends React.Component<Partial<ImageProps>, {}>{
     }
 
     render() {
-        const { title, alt, ...rest } = this.props;
+        const { title, alt, defaultImage, ...rest } = this.props;
 
         return (
             <img {...rest}
