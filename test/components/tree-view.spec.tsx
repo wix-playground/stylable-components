@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { expect, ClientRenderer, sinon, simulate, waitFor } from 'test-drive-react';
-import { TreeView, TreeItem, TreeItemRenderer } from '../../src';
+import { TreeView, TreeItem } from '../../src';
 import { TreeViewDemo, treeData } from '../../demo/tree-view-demo';
+import {TreeItemData} from "../../src/components/tree-view/tree-view";
 
 const treeView = 'TREE_VIEW';
 const treeItem = 'TREE_ITEM';
@@ -49,7 +50,7 @@ describe('<TreeView />', () => {
             const { select, waitForDom } = clientRenderer.render(<TreeView dataSource={treeData} />);
 
             return waitForDom(() =>
-                treeData.forEach((item: {label: string, itemRenderer: TreeItemRenderer}) =>
+                treeData.forEach((item: TreeItemData) =>
                     expect(select(treeView, getTreeItem(item.label))).to.be.present()));
         });
 
@@ -57,16 +58,15 @@ describe('<TreeView />', () => {
             const onSelectItem = sinon.spy();
             const { select } = clientRenderer.render(<TreeView dataSource={treeData} onSelectItem={onSelectItem}/>);
 
-            const firstNodeChildren = (treeData[0] as {children: Object[]}).children;
+            const firstNodeChildren = treeData[0].children;
 
-            const nodeLabelToClick = getTreeItem((firstNodeChildren[1] as {label: string}).label);
+            const nodeLabelToClick = getTreeItem(firstNodeChildren![1].label);
 
             simulate.click(select(nodeLabelToClick));
 
             return waitFor(() => {
                 expect(onSelectItem).to.have.been.calledOnce;
-                debugger;
-                expect(onSelectItem).to.have.been.calledWithMatch(firstNodeChildren[1]);
+                expect(onSelectItem).to.have.been.calledWithMatch(firstNodeChildren![1]);
             });
         });
 
@@ -76,28 +76,29 @@ describe('<TreeView />', () => {
 
             it('renders an item', () => {
                 const { select, waitForDom } =
-                    clientRenderer.render(<TreeItem label={item.label} itemRenderer={TreeItem} isSelected={noop}/>);
+                    clientRenderer.render(<TreeItem item={item} itemRenderer={TreeItem} isSelected={noop}/>);
 
                 return waitForDom(() => expect(select(getTreeItem(item.label))).to.be.present());
             });
 
             it('renders with provided label', () => {
                 const { select, waitForDom } =
-                    clientRenderer.render(<TreeItem label={item.label} itemRenderer={TreeItem} isSelected={noop}/>);
+                    clientRenderer.render(<TreeItem item={item} itemRenderer={TreeItem} isSelected={noop}/>);
 
                 return waitForDom(() => expect(select(getTreeItem(item.label) + '_LABEL')).to.have.text(item.label));
             });
 
             it('renders with an icon', () => {
                 const { select, waitForDom } =
-                    clientRenderer.render(<TreeItem label={item.label} itemRenderer={TreeItem} isSelected={noop}/>);
+                    clientRenderer.render(<TreeItem item={item} itemRenderer={TreeItem} isSelected={noop}/>);
 
                 return waitForDom(() => expect(select(getTreeItem(item.label) + '_ICON')).to.be.present());
             });
 
             it('invokes onClick when clicked', () => {
                 const onClick = sinon.spy();
-                const { select } = clientRenderer.render(<TreeItem label={item.label} itemRenderer={TreeItem} onClick={onClick} isSelected={noop}/>);
+                const { select } = clientRenderer.render(<TreeItem item={item} itemRenderer={TreeItem}
+                                                                   onItemClick={onClick} isSelected={noop}/>);
 
                 simulate.click(select(getTreeItem(item.label)));
 

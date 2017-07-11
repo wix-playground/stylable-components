@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { TreeView } from '../src';
+import { TreeItemData } from '../src/components/tree-view/tree-view';
 
 interface TreeViewDemoState {
     selectedItem: Object;
 }
 
-export const treeData: Object[] = [
+export const treeData: TreeItemData[] = [
     { label: 'main', children: [
         { label: 'label0' },
         { label: 'label1' },
