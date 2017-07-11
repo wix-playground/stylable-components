@@ -5,7 +5,6 @@ export interface TreeItemRenderer {
 }
 
 export interface TreeItemProps {
-    id: string;
     label: string;
     children?: Object[];
     itemRenderer: TreeItemRenderer;
@@ -23,9 +22,9 @@ const itemIdPrefix = 'TREE_ITEM';
 
 export function TreeItem(props: TreeItemProps): JSX.Element {
     return (
-        <div data-automation-id={`${itemIdPrefix}_${props.id}`} key={props.id} onClick={props.onClick}>
-            <span data-automation-id={`${itemIdPrefix}_${props.id}_ICON`}>&gt;</span>
-            <span data-automation-id={`${itemIdPrefix}_${props.id}_LABEL`}>{props.label}</span>
+        <div data-automation-id={`${itemIdPrefix}_${props.label}`} key={props.label} onClick={props.onClick}>
+            <span data-automation-id={`${itemIdPrefix}_${props.label}_ICON`}>&gt;</span>
+            <span data-automation-id={`${itemIdPrefix}_${props.label}_LABEL`}>{props.label}</span>
             {(props.children || []).map((item: TreeItemProps) =>
                 props.itemRenderer({...item, onClick: props.onClick, itemRenderer: props.itemRenderer}))}
         </div>
