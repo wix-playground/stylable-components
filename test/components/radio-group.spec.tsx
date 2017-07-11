@@ -5,6 +5,7 @@ import { RadioGroupDemo } from '../../demo/radio-group-demo';
 
 const radioGroup = 'RADIO_GROUP';
 const radioButton = 'RADIO_BUTTON';
+const emptyFunction = () => {};
 
 describe('<RadioGroup />', function () {
     const clientRenderer = new ClientRenderer();
@@ -19,7 +20,7 @@ describe('<RadioGroup />', function () {
 
             await waitForDom(() => { expect(select("RADIO_GROUP_DEMO", radioGroup, radioButton + '_0')).to.be.present() });
             simulate.click(select(radioGroup, radioButton + '_0'));
-            return await waitForDom(() => {
+            await waitForDom(() => {
                 expect(select('RADIO_GROUP_DEMO_VALUE')).to.have.text('Value: This way!');
             });
         });
@@ -27,7 +28,7 @@ describe('<RadioGroup />', function () {
 
     it('renders to the screen with radio buttons as children', function () {
         const {select, waitForDom} = clientRenderer.render(
-            <RadioGroup>
+            <RadioGroup onChange={emptyFunction}>
                 <RadioButton value="Ifrit"/>
                 <RadioButton value="Titan"/>
             </RadioGroup>
@@ -50,8 +51,8 @@ describe('<RadioGroup />', function () {
 
         await waitForDom(() => { expect(select(radioGroup, radioButton + '_1')).to.be.present() });
         simulate.click(select(radioGroup, radioButton + '_1'));
-        return await waitFor(() => {
-            expect(onChange).to.have.been.calledWithMatch({data: 'Quetzalcoatl'});
+        return waitFor(() => {
+            expect(onChange).to.have.been.calledWithMatch('Quetzalcoatl');
         })
     });
 
@@ -65,6 +66,17 @@ describe('<RadioGroup />', function () {
                 expect(select(radioButton + '_0')).to.have.attr('value', 'Shiva');
             });
         });
+
+        it('calls the onClick function when clicked', async function () {
+            const onClick = sinon.spy();
+            const { select, waitForDom } = clientRenderer.render(<RadioButton value="Shiva" onClick={onClick} automationId={radioButton + '_0'}/>);
+
+            await waitForDom(() => { expect(select(radioButton + '_0')).to.be.present() });
+            simulate.click(select(radioButton + '_0'));
+            return waitFor(() => {
+                expect(onClick).to.have.been.calledOnce;
+            })
+        })
     });
 
 
