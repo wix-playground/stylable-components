@@ -40,7 +40,7 @@ export function TreeItem({ item, itemRenderer, onItemClick, isSelected }: TreeIt
 }
 
 export class TreeView extends React.Component<TreeViewProps, {}>{
-    static defaultProps = { itemRenderer: TreeItem };
+    static defaultProps = { itemRenderer: TreeItem, onSelectItem: () => {} };
 
     isSelected(item: TreeItemData) {
         return this.props.selectedItem === item;
