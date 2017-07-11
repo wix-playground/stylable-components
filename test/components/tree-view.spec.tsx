@@ -65,7 +65,8 @@ describe('<TreeView />', () => {
 
             return waitFor(() => {
                 expect(onSelectItem).to.have.been.calledOnce;
-                expect(onSelectItem).to.have.been.calledWithMatch({data: firstNodeChildren[1]})
+                debugger;
+                expect(onSelectItem).to.have.been.calledWithMatch(firstNodeChildren[1]);
             });
         });
 

@@ -22,9 +22,10 @@ interface TreeViewProps {
 const itemIdPrefix = 'TREE_ITEM';
 
 export function TreeItem(props: TreeItemProps): JSX.Element {
+    debugger;
     return (
         <div data-automation-id={`${itemIdPrefix}_${props.label}`}
-             key={props.label} onClick={props.onClick} data-selected={props.isSelected(props)}>
+             key={props.label} onClick={() => props.onClick!(props)} data-selected={props.isSelected(props)}>
             <span data-automation-id={`${itemIdPrefix}_${props.label}_ICON`}>&gt;</span>
             <span data-automation-id={`${itemIdPrefix}_${props.label}_LABEL`}>{props.label}</span>
             {(props.children || []).map((item: TreeItemProps) =>
@@ -42,6 +43,7 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
     }
 
     render() {
+        debugger;
         return (
             <div data-automation-id='TREE_VIEW'>
                 {this.props.dataSource.map((item: TreeItemProps) =>
