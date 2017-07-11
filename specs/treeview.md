@@ -9,7 +9,6 @@ A typed React TreeView component. The TreeView is a generic container in the sen
   * [ItemRenderer](#default-itemrenderer)
 * [Properties](#properties)
 * [Methods](#methods)
-* [Events](#events)
 * [Input Handling](#input-handling)
 * [Examples](#examples)
 
@@ -78,6 +77,9 @@ The following static styles should be used:
 | loadOnDemand | boolean | false | No | Whether parent nodes are populated with children before they are expanded. |
 | loadMethod | func (params: item of type TreeItem), returns promise or list of Objects | null | no | The method used to load the children of a node when loadOnDemand is true |
 | filter | func: (params: item of type Object) | default function | No | The default function searches according to the node title with exact prefix matching.|
+| onSelect | func | null | no | Triggered when a selection has been changed |
+| onExpand | func | null | no | Triggered when a node is expanded |
+| onCollapse | func | null | no | Triggered when a node is collapsed |
 
 ## Methods
 
@@ -88,14 +90,6 @@ The following static styles should be used:
 | expand | item: TreeItem (required) | Expands all nodes under a provided node |
 | expandAll | boolean deep (default) or shallow | Expands all the tree nodes |
 | selectItem | item: Object (required) | Selects an item in the three |
-
-## Events
-
-| Name | Description |
-| -- | -- |
-| onSelect | Triggered when a selection has been changed |
-| onExpand | Triggered when a node is expanded |
-| onCollapse | Triggered when a node is collapsed |
 
 ## Input Handling
 
