@@ -27,10 +27,12 @@ const itemIdPrefix = 'TREE_ITEM';
 
 export function TreeItem({ item, itemRenderer, onItemClick, isSelected }: TreeItemProps): JSX.Element {
     return (
-        <div data-automation-id={`${itemIdPrefix}_${item.label}`}
-             key={item.label} onClick={() => onItemClick!(item)} data-selected={isSelected(item)}>
-            <span data-automation-id={`${itemIdPrefix}_${item.label}_ICON`}>&gt;</span>
-            <span data-automation-id={`${itemIdPrefix}_${item.label}_LABEL`}>{item.label}</span>
+        <div key={item.label}>
+            <div data-automation-id={`${itemIdPrefix}_${item.label}`}
+                 onClick={() => onItemClick!(item)} data-selected={isSelected(item)}>
+                <span data-automation-id={`${itemIdPrefix}_${item.label}_ICON`}>&gt;</span>
+                <span data-automation-id={`${itemIdPrefix}_${item.label}_LABEL`}>{item.label}</span>
+            </div>
             {(item.children || []).map((child: TreeItemData) =>
                 itemRenderer({item: child, onItemClick, itemRenderer, isSelected}))}
         </div>
