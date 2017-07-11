@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { expect, ClientRenderer } from 'test-drive-react';
-import {AutoForm, AutoFormSchema, newSchemaRepository} from "../../src/components/auto-form/auto-form";
+import {AutoForm, AutoFormSchema, DisplayMode, newSchemaRepository} from "../../src/components/auto-form/auto-form";
 import * as WixReactComponents from '../../src';
 
 describe('<AutoForm />', () => {
@@ -13,7 +13,7 @@ describe('<AutoForm />', () => {
 
         beforeEach(() => schemaRepo.clear());
 
-        function renderAutoForm(schema:AutoFormSchema) {
+        function renderAutoForm(schema:AutoFormSchema, mode:DisplayMode = DisplayMode.Edit) {
             schemaRepo.addSchema(schema);
 
             return clientRenderer.render(
@@ -21,7 +21,8 @@ describe('<AutoForm />', () => {
                     style={{height: "10px"}}
                     data-automation-id={AUTO_FORM_SELECTOR}
                     repo={schemaRepo}
-                    schemaId={schema.id}/>);
+                    schemaId={schema.id}
+                    displayMode={mode}/>);
         }
 
         it('renders missing props message when none provided', async () => {
@@ -110,6 +111,29 @@ describe('<AutoForm />', () => {
                 expect(label2).to.be.instanceOf(HTMLLabelElement);
                 expect(label2!.textContent).to.be.eq("text2");
 
+            });
+        });
+
+        it('renders form for editing', async () => {
+            const { select, waitForDom } = renderAutoForm(
+                {
+                    type:"object",
+                    id:"1",
+                    properties:{
+                        firstname:{
+                            type:"string",
+                            title:"first name"
+                        }
+                    }
+                } as AutoFormSchema, DisplayMode.View);
+            await waitForDom(() => {
+
+                const field = select("input_firstname");
+                expect(field).to.be.instanceOf(HTMLLabelElement);
+                const label = select("label_firstname");
+                expect(label, "label_firstname should be present").to.be.present();
+                expect(label).to.be.instanceOf(HTMLLabelElement);
+                expect(label!.textContent).to.be.eq("first name");
             });
         });
 
