@@ -93,6 +93,4 @@ describe('<Checkbox/>', function () {
             expect(onChange).to.have.been.calledWith(false);
         })
     });
-
-
 });
