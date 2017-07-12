@@ -28,7 +28,7 @@ export const CheckBox: React.SFC<CheckBoxProps> = (props) => (
 );
 
 function executeClickHandler(handler: (value: boolean) => any, value: boolean) {
-    handler && handler(value);
+    handler(value);
 }
 
 CheckBox.defaultProps = {
@@ -36,4 +36,5 @@ CheckBox.defaultProps = {
     value: false,
     boxIcon: '/src/components/checkbox/uncheckedCheckbox.svg',
     tickIcon: '/src/components/checkbox/tickMark.svg',
+    onChange: ((_:boolean) => {})
 };
