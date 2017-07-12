@@ -91,25 +91,30 @@ describe("<BirthDatePicker />", () => {
         });
     });
 
-    it("Validates the date", function() {
-        // Supports full range of dates
-        expect(dateFromYearMonthDay("1000", "01", "01")).to.be.instanceOf(Date);
-        expect(dateFromYearMonthDay("9999", "12", "31")).to.be.instanceOf(Date);
+    describe("Validates the date", function() {
+        it("Supports full range of dates", function() {
+            expect(dateFromYearMonthDay("1000", "01", "01")).to.be.instanceOf(Date);
+            expect(dateFromYearMonthDay("9999", "12", "31")).to.be.instanceOf(Date);
+        });
 
-        // Supports leap years
-        expect(dateFromYearMonthDay("1984", "02", "29")).to.be.instanceOf(Date);
+        it("Supports leap years", function() {
+            expect(dateFromYearMonthDay("1984", "02", "29")).to.be.instanceOf(Date);
+        });
 
-        // Allows to omit leading zeroes for month and day
-        expect(dateFromYearMonthDay("1987", "4", "6")).to.be.instanceOf(Date);
+        it("Allows to omit leading zeroes for month and day, but not for year", function() {
+            expect(dateFromYearMonthDay("1987", "4", "6")).to.be.instanceOf(Date);
+            expect(dateFromYearMonthDay("17", "04", "26")).to.be.undefined;
+        });
 
-        // Doesn't round up out-of-range dates to the next month
-        expect(dateFromYearMonthDay("1987", "02", "29")).to.be.undefined;
-        expect(dateFromYearMonthDay("1987", "04", "31")).to.be.undefined;
+        it("Doesn't round up out-of-range dates to the next month", function() {
+            expect(dateFromYearMonthDay("1987", "02", "29")).to.be.undefined;
+            expect(dateFromYearMonthDay("1987", "04", "31")).to.be.undefined;
+        });
 
-        // Doesn't attempt to correct invalid data
-        expect(dateFromYearMonthDay("1987", "4.5", "26")).to.be.undefined;
-        expect(dateFromYearMonthDay("1987", "-4", "26")).to.be.undefined;
-        expect(dateFromYearMonthDay("1987", "4x", "26")).to.be.undefined;
-        expect(dateFromYearMonthDay("17", "04", "26")).to.be.undefined;
+        it("Doesn't attempt to correct invalid data", function() {
+            expect(dateFromYearMonthDay("1987", "4.5", "26")).to.be.undefined;
+            expect(dateFromYearMonthDay("1987", "-4", "26")).to.be.undefined;
+            expect(dateFromYearMonthDay("1987", "4x", "26")).to.be.undefined;
+        });
     });
 });
