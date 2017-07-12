@@ -2,3 +2,7 @@
     background-color: red;
     display: inline;
 }
+
+.nested-tree {
+    margin-left: 15px;
+}

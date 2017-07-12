@@ -8,9 +8,21 @@ interface TreeViewDemoState {
 
 export const treeData: TreeItemData[] = [
     { label: 'main', children: [
-        { label: 'label0' },
-        { label: 'label1' },
-        { label: 'label2' }
+        { label: 'label0', children: [
+            { label: 'label3' },
+            { label: 'label4' },
+            { label: 'label5' }
+        ]},
+        { label: 'label1', children: [
+            { label: 'label6' },
+            { label: 'label7' }
+        ]},
+        { label: 'label2', children: [
+            { label: 'label8' },
+            { label: 'label9' },
+            { label: 'label10' },
+            { label: 'label11' }
+        ]}
     ]}
 ];
 

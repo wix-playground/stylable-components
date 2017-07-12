@@ -2,7 +2,7 @@ import * as React from 'react';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 
-require('./tree-view.css');
+const style = require('./tree-view.css');
 
 export interface TreeItemRenderer {
     (props: TreeItemProps): JSX.Element;
@@ -38,9 +38,11 @@ export function TreeItem({ item, itemRenderer, onItemClick, isSelected, stateMap
                 <span data-automation-id={`${itemIdPrefix}_${item.label}_ICON`}>&gt;</span>
                 <span data-automation-id={`${itemIdPrefix}_${item.label}_LABEL`}>{item.label}</span>
             </div>
-            {stateMap![item.label] && stateMap![item.label].isExpanded && (item.children || []).map((child: TreeItemData) =>
-                React.createElement(itemRenderer,
-                    {item: child, onItemClick, itemRenderer, isSelected, stateMap}))}
+            <div className={style['nested-tree']}>
+                {stateMap![item.label] && stateMap![item.label].isExpanded && (item.children || []).map((child: TreeItemData) =>
+                    React.createElement(itemRenderer,
+                        {item: child, onItemClick, itemRenderer, isSelected, stateMap}))}
+            </div>
         </div>
     )
 }
@@ -57,6 +59,10 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
         return this.props.selectedItem === item;
     }
 
+    isExpanded(item: TreeItemData) {
+        return this.stateMap[item.label] && this.stateMap[item.label].isExpanded;
+    }
+
     toggleItem = (label: string) => {
         if (!(label in this.stateMap)) {
             this.stateMap[label] = observable({isExpanded: true });
@@ -66,7 +72,9 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
     };
 
     onSelectItem = (item: TreeItemData) => {
-        this.toggleItem(item.label);
+        if (!this.isExpanded(item) || this.isSelected(item)) {
+            this.toggleItem(item.label);
+        }
         this.props.onSelectItem!(item);
     };
 

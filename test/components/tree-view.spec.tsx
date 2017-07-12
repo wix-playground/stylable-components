@@ -24,24 +24,28 @@ describe('<TreeView />', () => {
     it('renders a tree view with a few children, clicks ones of them to expand and close', async () => {
         const { select, waitForDom } = clientRenderer.render(<TreeViewDemo />);
 
-        await waitForDom(() => expect(select(treeView + '_DEMO')).to.be.present());
+        await waitForDom(() => expect(select(treeView + '_DEMO'), 'demo not present').to.be.present());
 
         const nodeChildren = treeData[0].children;
         await waitForDom(() => expect(select(getTreeItem(nodeChildren![1].label))).to.be.absent());
 
         simulate.click(select(treeView + '_DEMO', getTreeItem(treeData[0].label)));
+        nodeChildren!.forEach(item => simulate.click(select(treeView + '_DEMO', getTreeItem(item.label))));
 
         const allNodesLabels = treeData.map(getLabelsList).reduce((prev, next) => [...prev, ...next]);
+
         await waitForDom(() => allNodesLabels.forEach(item =>
-            expect(select(treeView + '_DEMO', getTreeItem(item))).to.be.present()));
+            expect(select(treeView + '_DEMO', getTreeItem(item)), `item did not appear: ${item}`).to.be.present()));
 
         const elementToSelect = select(treeView + '_DEMO', getTreeItem(allNodesLabels[2]));
 
         simulate.click(elementToSelect);
-
         await waitForDom(() => expect(elementToSelect).to.have.attr('data-selected', 'true'));
 
+        // this verifies the feature of not closing expanded item if its not selected
         simulate.click(select(treeView + '_DEMO', getTreeItem(treeData[0].label)));
+        simulate.click(select(treeView + '_DEMO', getTreeItem(treeData[0].label)));
+
         return waitForDom(() => expect(select(getTreeItem(nodeChildren![1].label))).to.be.absent());
     });
 
