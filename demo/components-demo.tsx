@@ -1,42 +1,19 @@
 import * as React from 'react';
-import { Link, Image, AutoForm } from '../src';
-import { sampleImage } from '../test/fixtures/sample-image';
-import {AutoFormSchema, SchemaRepository} from "../src";
+import { Link } from '../src';
 import {DatePickerDemo} from './date-picker-demo';
+
 const style = require('./style.css');
 
 export class ComponentsDemo extends React.Component<{}, {}>{
-    schemaRepository: SchemaRepository;
-
-
     constructor() {
         super();
-        this.schemaRepository = new SchemaRepository();
-        this.schemaRepository.addSchema(
-            {
-                id:"demo schema",
-                properties:{
-                    "text":{
-                        "type":"string",
-                        "title":"a text field"
-                    }
-                } as any
-            } as AutoFormSchema);
     }
 
-
     render() {
-        return (
-            <div>
-                <h1>{'<Link />'}</h1>
-                <Link className={style.test} href="">My link</Link>
-                <h1>{'<Image />'}</h1>
-                <Image src={sampleImage} />
-                <h1>{'<AutoForm />'}</h1>
-                <AutoForm repo={this.schemaRepository} schemaId="demo schema"/>
-                <h1>{'<DatePicker />'}</h1>
-                <DatePickerDemo />
-            </div>
-        );
+        return <div>
+            <Link className={style.test} href="">My link</Link>
+            <h1>{'<DatePicker />'}</h1>
+            <DatePickerDemo />
+        </div>;
     }
 }
