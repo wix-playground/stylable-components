@@ -7,7 +7,7 @@ function updateInput(input: HTMLInputElement, value: string) {
     input.focus();
     input.value = value;
     simulate.change(input);
-};
+}
 
 describe("<BirthDatePicker />", () => {
     const clientRenderer = new ClientRenderer();
@@ -85,9 +85,9 @@ describe("<BirthDatePicker />", () => {
 
         return waitFor(() => {
             expect(onChange).to.have.been.calledThrice;
-            expect(onChange.getCall(0).args[0].getTime()).equal(new Date("1987-03-26").getTime());
-            expect(onChange.getCall(1).args[0]).to.be.undefined;
-            expect(onChange.getCall(2).args[0].getTime()).equal(new Date("1987-05-27").getTime());
+            expect(onChange.getCall(0)).calledWith(new Date("1987-03-26"));
+            expect(onChange.getCall(1)).calledWith(undefined);
+            expect(onChange.getCall(2)).calledWith(new Date("1987-05-27"));
         });
     });
 });

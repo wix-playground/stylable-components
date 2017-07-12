@@ -23,6 +23,8 @@ function withinRange(n: number, min: number, max: number) {
 }
 
 // TODO: use MobX
+// TODO: filter input?
+// TODO: should we update the state when we receive a different value?
 export class BirthDatePicker extends React.Component<BirthDatePickerProps, BirthDatePickerState> {
     static defaultProps: BirthDatePickerProps;
 
@@ -42,9 +44,7 @@ export class BirthDatePicker extends React.Component<BirthDatePickerProps, Birth
         };
     }
 
-    componentWillReceiveProps(newProps: BirthDatePickerProps) {
-        // TODO: should we update the state when we receive a different value?
-    }
+    componentWillReceiveProps(newProps: BirthDatePickerProps) {}
 
     render() {
         return <span data-automation-id="BIRTH_DATE_PICKER">
