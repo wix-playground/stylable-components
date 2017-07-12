@@ -13,7 +13,7 @@ describe('<Link />', () => {
         await waitForDom(() => {
             const link = select('LINK');
             expect(link).to.be.present();
-            expect(link).to.be.instanceOf(HTMLAnchorElement);
+            expect(link).to.be.instanceOf(HTMLAnchorElement.prototype);
             expect(link).to.have.attribute('href', 'http://some-url.com/');
             expect(link).to.contain.text('Link content');
         });
