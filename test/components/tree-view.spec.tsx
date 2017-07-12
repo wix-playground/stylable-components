@@ -26,6 +26,8 @@ describe('<TreeView />', () => {
 
         await waitForDom(() => expect(select(treeView + '_DEMO')).to.be.present());
 
+        simulate.click(select(getTreeItem(treeData[0].label)));
+
         const allNodesLabels = treeData.map(getLabelsList).reduce((prev, next) => [...prev, ...next]);
         await waitForDom(() => allNodesLabels.forEach(item =>
             expect(select(treeView + '_DEMO', getTreeItem(item))).to.be.present()));
@@ -58,6 +60,10 @@ describe('<TreeView />', () => {
             const onSelectItem = sinon.spy();
             const { select } = clientRenderer.render(<TreeView dataSource={treeData} onSelectItem={onSelectItem}/>);
 
+            debugger;
+
+            simulate.click(select(getTreeItem(treeData[0].label)));
+
             const firstNodeChildren = treeData[0].children;
 
             const nodeLabelToClick = getTreeItem(firstNodeChildren![1].label);
@@ -68,6 +74,19 @@ describe('<TreeView />', () => {
                 expect(onSelectItem).to.have.been.calledOnce;
                 expect(onSelectItem).to.have.been.calledWithMatch(firstNodeChildren![1]);
             });
+        });
+
+        it('expands and collapses an item with children when clicked', async () => {
+            const { select, waitForDom } = clientRenderer.render(<TreeView dataSource={treeData} />);
+
+            const nodeChildren = treeData[0].children;
+            await waitForDom(() => expect(select(getTreeItem(nodeChildren![1].label))).to.be.absent());
+
+            simulate.click(select(getTreeItem(treeData[0].label)));
+            await waitForDom(() => expect(select(getTreeItem(nodeChildren![1].label))).to.be.present());
+
+            simulate.click(select(getTreeItem(treeData[0].label)));
+            return waitForDom(() => expect(select(getTreeItem(nodeChildren![1].label))).to.be.absent());
         });
 
         describe('<TreeItem />', () => {
