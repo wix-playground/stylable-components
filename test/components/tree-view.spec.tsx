@@ -21,12 +21,15 @@ describe('<TreeView />', () => {
         return `${treeItem}_${id}`;
     }
 
-    it('renders a tree view with a few children, clicks ones of then', async () => {
+    it('renders a tree view with a few children, clicks ones of them to expand and close', async () => {
         const { select, waitForDom } = clientRenderer.render(<TreeViewDemo />);
 
         await waitForDom(() => expect(select(treeView + '_DEMO')).to.be.present());
 
-        simulate.click(select(getTreeItem(treeData[0].label)));
+        const nodeChildren = treeData[0].children;
+        await waitForDom(() => expect(select(getTreeItem(nodeChildren![1].label))).to.be.absent());
+
+        simulate.click(select(treeView + '_DEMO', getTreeItem(treeData[0].label)));
 
         const allNodesLabels = treeData.map(getLabelsList).reduce((prev, next) => [...prev, ...next]);
         await waitForDom(() => allNodesLabels.forEach(item =>
@@ -36,8 +39,10 @@ describe('<TreeView />', () => {
 
         simulate.click(elementToSelect);
 
-        return waitForDom(() => expect(elementToSelect).to.have.attr('data-selected', 'true'));
+        await waitForDom(() => expect(elementToSelect).to.have.attr('data-selected', 'true'));
 
+        simulate.click(select(treeView + '_DEMO', getTreeItem(treeData[0].label)));
+        return waitForDom(() => expect(select(getTreeItem(nodeChildren![1].label))).to.be.absent());
     });
 
     describe('Using default renderer', () => {
@@ -60,36 +65,14 @@ describe('<TreeView />', () => {
             const onSelectItem = sinon.spy();
             const { select } = clientRenderer.render(<TreeView dataSource={treeData} onSelectItem={onSelectItem}/>);
 
-            simulate.click(select(getTreeItem(treeData[0].label)));
-
-            const firstNodeChildren = treeData[0].children;
-
-            const nodeLabelToClick = getTreeItem(firstNodeChildren![1].label);
+            const nodeLabelToClick = getTreeItem(treeData[0].label);
 
             simulate.click(select(nodeLabelToClick));
 
             return waitFor(() => {
                 expect(onSelectItem).to.have.been.calledOnce;
-                expect(onSelectItem).to.have.been.calledWithMatch(firstNodeChildren![1]);
+                expect(onSelectItem).to.have.been.calledWithMatch(treeData[0]);
             });
-        });
-
-        it('expands and collapses an item with children when clicked', async () => {
-            const { select, waitForDom } = clientRenderer.render(<TreeView dataSource={treeData} />);
-
-            debugger;
-
-            const nodeChildren = treeData[0].children;
-            await waitForDom(() => expect(select(getTreeItem(nodeChildren![1].label))).to.be.absent());
-
-            debugger;
-
-            simulate.click(select(getTreeItem(treeData[0].label)));
-            await waitForDom(() => expect(select(getTreeItem(nodeChildren![1].label))).to.be.present());
-
-            debugger;
-            simulate.click(select(getTreeItem(treeData[0].label)));
-            return waitForDom(() => expect(select(getTreeItem(nodeChildren![1].label))).to.be.absent());
         });
 
         describe('<TreeItem />', () => {

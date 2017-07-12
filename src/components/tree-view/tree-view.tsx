@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
-import DevTools from "mobx-react-devtools";
 
 require('./tree-view.css');
 
@@ -60,9 +59,10 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
 
     toggleItem = (label: string) => {
         if (!(label in this.stateMap)) {
-            this.stateMap[label] = observable({isExpanded: false});
+            this.stateMap[label] = observable({isExpanded: true });
+        } else {
+            this.stateMap[label].isExpanded = !this.stateMap[label].isExpanded;
         }
-        this.stateMap[label].isExpanded = !this.stateMap[label].isExpanded;
     };
 
     onSelectItem = (item: TreeItemData) => {
@@ -73,7 +73,6 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
     render() {
         return (
             <div data-automation-id='TREE_VIEW'>
-                <DevTools />
                 {this.props.dataSource.map((item: TreeItemData) =>
                     React.createElement(
                     this.props.itemRenderer!,
