@@ -14,9 +14,9 @@ export interface BirthDatePickerProps {
 
 export interface BirthDatePickerState {
     valid: boolean;
-    year?: string;
-    month?: string;
-    day?: string;
+    year: string;
+    month: string;
+    day: string;
 }
 
 function isDateValid(date: Date): boolean {
@@ -52,13 +52,11 @@ export class BirthDatePicker extends React.Component<BirthDatePickerProps, Birth
         const valid = value ? isDateValid(value) : false;
         this.state = {
             valid,
-            year:  valid ? String(value!.getUTCFullYear())  : undefined,
-            month: valid ? String(value!.getUTCMonth() + 1) : undefined,
-            day:   valid ? String(value!.getUTCDate())      : undefined
+            year:  valid ? String(value!.getUTCFullYear())  : '',
+            month: valid ? String(value!.getUTCMonth() + 1) : '',
+            day:   valid ? String(value!.getUTCDate())      : ''
         };
     }
-
-    componentWillReceiveProps(newProps: BirthDatePickerProps) {}
 
     render() {
         return <span data-automation-id="BIRTH_DATE_PICKER">
@@ -68,7 +66,7 @@ export class BirthDatePicker extends React.Component<BirthDatePickerProps, Birth
                 size={3}
                 pattern="\d*"
                 placeholder="DD"
-                value={this.state.day || ""}
+                value={this.state.day}
                 onChange={this.handleChange} />
             <input data-automation-id="BIRTH_DATE_PICKER_MONTH"
                 ref={(input) => { this.monthInput = input }}
@@ -76,7 +74,7 @@ export class BirthDatePicker extends React.Component<BirthDatePickerProps, Birth
                 size={3}
                 pattern="\d*"
                 placeholder="MM"
-                value={this.state.month || ""}
+                value={this.state.month}
                 onChange={this.handleChange} />
             <input data-automation-id="BIRTH_DATE_PICKER_YEAR"
                 ref={(input) => { this.yearInput = input }}
@@ -84,23 +82,28 @@ export class BirthDatePicker extends React.Component<BirthDatePickerProps, Birth
                 size={5}
                 pattern="\d*"
                 placeholder="YYYY"
-                value={this.state.year || ""}
+                value={this.state.year}
                 onChange={this.handleChange} />
         </span>;
     }
 
     handleChange = (event: React.FormEvent<HTMLInputElement>) => {
-        const year = this.yearInput!.value;
-        const month = this.monthInput!.value;
-        const day = this.dayInput!.value;
-        const date = dateFromYearMonthDay(year, month, day);
-        const valid = Boolean(date);
+        const newYear = this.yearInput!.value;
+        const newMonth = this.monthInput!.value;
+        const newDay = this.dayInput!.value;
+        const newDate = dateFromYearMonthDay(newYear, newMonth, newDay);
+        const newValid = Boolean(newDate);
 
-        if (valid || this.state.valid) {
-            this.props.onChange!(date);
+        if (newValid || this.state.valid) {
+            this.props.onChange!(newDate);
         }
 
-        this.setState({valid, year, month, day});
+        this.setState({
+            valid: newValid,
+            year: newYear,
+            month: newMonth,
+            day: newDay
+        });
     }
 }
 
