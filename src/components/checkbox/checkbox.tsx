@@ -19,7 +19,7 @@ export const CheckBox: React.SFC<CheckBoxProps> = (props) => (
              style={{
                  width: '1em',
                  height: '1em',
-                 visibility: props.value ? 'visible' : 'hidden',
+                 display: props.value ? '' : 'none',
                  position: 'relative',
                  marginLeft: '-1em'
              }}/>
@@ -36,5 +36,5 @@ CheckBox.defaultProps = {
     value: false,
     boxIcon: '/src/components/checkbox/uncheckedCheckbox.svg',
     tickIcon: '/src/components/checkbox/tickMark.svg',
-    onChange: ((_:boolean) => {})
+    onChange: (value: boolean) => {}
 };

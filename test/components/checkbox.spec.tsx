@@ -19,14 +19,14 @@ describe('<Checkbox/>', function () {
         await waitForDom(() => {
            expect(select('CHECKBOX_ROOT')).to.be.present();
            expect(select('CHECKBOX_BOX')).to.be.present();
-           expect((select('CHECKBOX_TICKMARK') as HTMLElement).style.visibility).to.equal('hidden');
+           expect(select('CHECKBOX_TICKMARK')).to.be.absent();
            expect(select('CHECKBOX_LABEL')).to.have.text(demoCheckBoxText)
         });
 
         simulate.click(select('CHECKBOX_ROOT'));
 
         return waitFor(() => {
-            expect((select('CHECKBOX_TICKMARK') as HTMLElement).style.visibility, 'tick mark hidden after click').to.equal('visible');
+            expect(select('CHECKBOX_TICKMARK')).to.be.present();
         });
     });
 
@@ -64,9 +64,8 @@ describe('<Checkbox/>', function () {
         );
 
         return waitForDom(() => {
-
             expect(select('CHECKBOX_BOX')).to.be.present();
-            expect((select('CHECKBOX_TICKMARK') as HTMLElement).style.visibility).to.equal('visible');
+            expect(select('CHECKBOX_TICKMARK')).to.be.present();
 
             expect(select('CHECKBOX_TICKMARK')).to.be.insideOf(select('CHECKBOX_BOX') as HTMLElement);
         })
