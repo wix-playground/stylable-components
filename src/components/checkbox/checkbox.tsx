@@ -1,6 +1,6 @@
 import React = require('react');
 
-interface CheckBoxProps {
+export interface CheckBoxProps {
     text?: string;
     value?: boolean;
     boxIcon?: string;
