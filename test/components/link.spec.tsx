@@ -15,7 +15,7 @@ describe('<Link />', () => {
 
             expect(link).to.be.present();
             // expect(link).to.be.instanceOf(HTMLAnchorElement);
-            expect(link.localName).to.equal('a');
+            expect(link.tagName).to.equal('A');
             expect(link).to.have.attribute('href', 'http://some-url.com/');
             expect(link).to.contain.text('Link content');
         });

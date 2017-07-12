@@ -15,7 +15,7 @@ describe('<NumberInput />', () => {
 
             expect(numberInput).to.be.present();
             // expect(numberInput).to.be.instanceOf(HTMLInputElement);
-            expect(numberInput.localName).to.equal('input')
+            expect(numberInput.tagName).to.equal('INPUT');
             expect(numberInput).to.have.attribute('type', 'number');
         });
     });

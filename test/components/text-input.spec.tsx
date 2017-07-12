@@ -15,7 +15,7 @@ describe('<TextInput />', () => {
 
             expect(textInput).to.be.present();
             // expect(textInput).to.be.instanceOf(HTMLInputElement);
-            expect(textInput.localName).to.equal('input')
+            expect(textInput.tagName).to.equal('INPUT')
             expect(textInput).to.have.attribute('type', 'text');
         });
     });
