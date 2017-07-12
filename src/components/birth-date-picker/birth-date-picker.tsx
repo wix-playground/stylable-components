@@ -1,3 +1,8 @@
+// TODO: use MobX.
+// TODO: filter input?
+// TODO: should we update the state when we receive a different value?
+// TODO: date validation belongs in a separate library.
+
 import React = require("react");
 
 interface BirthDatePickerProps {
@@ -14,17 +19,26 @@ interface BirthDatePickerState {
     day?: string;
 }
 
-function isValidDate(date: any): boolean {
-    return Boolean(date instanceof Date && date.getTime());
+function isDateValid(date: Date): boolean {
+    return !Number.isNaN(date.getTime());
 }
 
-function withinRange(n: number, min: number, max: number) {
-    return n >= min && n <= max;
+export function dateFromYearMonthDay(y: string, m: string, d: string): Date | undefined {
+    const looksPlausible = /^\d\d\d\d-\d\d?-\d\d?$/.test(`${y}-${m}-${d}`);
+    if (!looksPlausible) {
+        return undefined;
+    }
+
+    const date = new Date(`${y}-${m}-${d}Z`);
+    const valid = (
+        date.getUTCFullYear() === Number(y) &&
+        date.getUTCMonth()    === Number(m) - 1 &&
+        date.getUTCDate()     === Number(d)
+    );
+
+    return valid ? date : undefined;
 }
 
-// TODO: use MobX
-// TODO: filter input?
-// TODO: should we update the state when we receive a different value?
 export class BirthDatePicker extends React.Component<BirthDatePickerProps, BirthDatePickerState> {
     static defaultProps: BirthDatePickerProps;
 
@@ -35,7 +49,7 @@ export class BirthDatePicker extends React.Component<BirthDatePickerProps, Birth
     constructor(props: BirthDatePickerProps) {
         super(props);
         const {value} = this.props;
-        const valid = isValidDate(value);
+        const valid = value ? isDateValid(value) : false;
         this.state = {
             valid,
             year:  valid ? String(value!.getUTCFullYear())  : undefined,
@@ -79,16 +93,11 @@ export class BirthDatePicker extends React.Component<BirthDatePickerProps, Birth
         const year = this.yearInput!.value;
         const month = this.monthInput!.value;
         const day = this.dayInput!.value;
-        const value = new Date(`${year}-${month}-${day}Z`);
-        const valid = (
-            /^\d{4}$/.test(year)    && withinRange(Number(year), 1000, 9999) &&
-            /^\d{1,2}$/.test(month) && withinRange(Number(month),   1,   12) &&
-            /^\d{1,2}$/.test(day)   && withinRange(Number(day),     1,   31) &&
-            isValidDate(value)
-        );
+        const date = dateFromYearMonthDay(year, month, day);
+        const valid = Boolean(date);
 
         if (valid || this.state.valid) {
-            this.props.onChange!(valid ? value : undefined);
+            this.props.onChange!(date);
         }
 
         this.setState({valid, year, month, day});
