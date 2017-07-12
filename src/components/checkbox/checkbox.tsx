@@ -6,7 +6,6 @@ interface CheckBoxProps {
     boxIcon?: string;
     tickIcon?: string;
     onChange?: (value: boolean) => any;
-
 }
 
 export const CheckBox: React.SFC<CheckBoxProps> = (props) => (
@@ -37,5 +36,4 @@ CheckBox.defaultProps = {
     value: false,
     boxIcon: '/src/components/checkbox/uncheckedCheckbox.svg',
     tickIcon: '/src/components/checkbox/tickMark.svg',
-    onChange: ((_: boolean) => {})
 };
