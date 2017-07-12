@@ -1,0 +1,92 @@
+# Popup Component Specification
+
+The Popup enables positioning content next to an anchor element.
+
+![Image of popup]()
+
+* [Position and Collision](#position-and-collision)
+* [Properties](#properties)
+* [Methods](#methods)
+* [Events](#events)
+* [Examples](#examples)
+
+## Position and Collision
+
+* Position - The point and pivot for popup to anchor alignment
+  * Anchor Position - Horizontal:
+    * left - the left point of the anchor element
+    * center - the center point of the anchor element
+    * right - the right point of the anchor element
+  * Anchor Position - Vertical:
+    * top - the top point of the anchor element
+    * center - the center point of the anchor element
+    * bottom - the bottom point of the anchor element
+  * Popup Position - Horizontal:
+    * left - the left point of the popup element
+    * center - the center point of the popup element
+    * right - the right point of the popup element
+  * Popup Position - Vertical:
+    * top - the top point of the popup element
+    * center - the center point of the popup element
+    * bottom - the bottom point of the popup element
+
+* Collision - The behavior of the popup when viewport limitations collide with the the position property
+  * Horizontal Collision:
+    * flip - Checks if the opposite side of the anchor has more space and if so flips it.
+    * fit - Shifts the popup away from the edge of the viewport until it has enough space or reaches other side of viewport
+    * flipfit - Applies flip logic and then fit logic
+    * none - no collision detection
+  * Vertical Collision - same as horizontal
+
+## Properties
+
+| Name | Type | Default | Required | Description |
+| -- | -- | -- | -- | -- |
+| anchor | Element\| Node | none | Yes | The element to be used as an anchor for the popup (will open next to it). |
+| open | boolean | false | no | Whether to show or hide the Popup |
+| onOpen | Triggered when the popup is opened | null | no | Triggered when the popup is shown |
+| onClose | Triggered when popup is closed | null | no | Triggered when the popup is closed |
+
+* The following props should be placed in an IPopupProps interface since they will need to be passed from higher order components.
+
+| Name | Type | Default | Required | Description |
+| -- | -- | -- | -- | -- |
+| anchorPosition | Object | { vertical: 'bottom', horizontal: 'left'} | no | The point on the anchor element to which the popupPosition will attach to |
+| popupPosition | Object | { vertical: 'top', horizontal: 'left'} | no | The point from which the popupPosition will pivot |
+| collision | Object| {'vertical: 'none', horizontal: 'none'} | No | Specify the collision behavior of the component |
+
+
+## Examples
+
+* Primary use case
+
+  Given a popup is attached to an element, when rendered, then it should appear on the screen
+    ```
+    <div ref="anchor">Anchor</div>
+    <Popup anchor={this.refs.anchor}>
+        <label>Popup Header</label>
+        <div>Popup Body</div>
+    </Popup>
+    ```
+
+* Popup inside a React component
+
+    Given a component is created with an element, when rendered and the parent component receives focus, then it should appear on the screen
+
+* Popup opens according to anchor positioning
+
+    Given a popup is connected to an anchor element, when the anchor position is changed, then the popup will open on that specific position.
+
+* Popup opens according to popup positioning
+
+    Given a popup is connected to an anchor element, when the popup position is changed, the popup will pivot according to that position in relation to the location on the anchor to which it was set.
+
+* Collision rules are observed
+
+    Given a popup is connected to an anchor element, when the popup does not have enough space in the viewport, then it will realign according to the collision rules.
+
+* Open and close events
+
+    Given a popup, when it opens or closes, then registered open and close events are triggered.
+
+*
