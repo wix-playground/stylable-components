@@ -11,10 +11,11 @@ describe('<TextInput />', () => {
             clientRenderer.render(<TextInput data-automation-id="TEXT_INPUT" />);
 
         await waitForDom(() => {
-            const textInput = select('TEXT_INPUT');
+            const textInput = select('TEXT_INPUT') as HTMLInputElement;
 
             expect(textInput).to.be.present();
             // expect(textInput).to.be.instanceOf(HTMLInputElement);
+            expect(textInput.localName).to.equal('input')
             expect(textInput).to.have.attribute('type', 'text');
         });
     });

@@ -11,10 +11,11 @@ describe('<NumberInput />', () => {
             clientRenderer.render(<NumberInput data-automation-id="NUMBER_INPUT" />);
 
         await waitForDom(() => {
-            const numberInput = select('NUMBER_INPUT');
+            const numberInput = select('NUMBER_INPUT') as HTMLInputElement;
 
             expect(numberInput).to.be.present();
             // expect(numberInput).to.be.instanceOf(HTMLInputElement);
+            expect(numberInput.localName).to.equal('input')
             expect(numberInput).to.have.attribute('type', 'number');
         });
     });

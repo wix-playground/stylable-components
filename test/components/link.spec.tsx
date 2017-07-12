@@ -11,9 +11,11 @@ describe('<Link />', () => {
             clientRenderer.render(<Link href="http://some-url.com/" data-automation-id="LINK">Link content</Link>);
 
         await waitForDom(() => {
-            const link = select('LINK');
+            const link = select('LINK') as HTMLAnchorElement;
+
             expect(link).to.be.present();
             // expect(link).to.be.instanceOf(HTMLAnchorElement);
+            expect(link.localName).to.equal('a');
             expect(link).to.have.attribute('href', 'http://some-url.com/');
             expect(link).to.contain.text('Link content');
         });
