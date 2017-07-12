@@ -2,13 +2,10 @@
 
 The Popup enables positioning content next to an anchor element.
 
-![Image of popup]()
-
 * [Position and Collision](#position-and-collision)
 * [Properties](#properties)
 * [Methods](#methods)
-* [Events](#events)
-* [Examples](#examples)
+* [Examples](#examples) - Based on the stages of builds
 
 ## Position and Collision
 
@@ -29,6 +26,39 @@ The Popup enables positioning content next to an anchor element.
     * top - the top point of the popup element
     * center - the center point of the popup element
     * bottom - the bottom point of the popup element
+
+### Positioning
+
+* Points of reference
+
+    ![Image of anchor positioning](./assets/popup/points.png)
+
+* Anchor default { vertical: 'bottom', horizontal: 'left'}
+
+    ![Image of anchor positioning](./assets/popup/defaultanchor.png)
+
+* Anchor sample position { vertical: 'bottom', horizontal: 'right'}
+
+    ![Image of anchor positioning](./assets/popup/anchorright.png)
+
+* Anchor sample position { vertical: 'center', horizontal: 'center'}
+
+    ![Image of anchor positioning](./assets/popup/anchorcenter.png)
+
+* Popup sample position
+
+    ![Image of popup positioning](./assets/popup/popupbottom.png)
+
+  * Anchor { vertical: 'bottom', horizontal: 'left'}
+  * Popup { vertical: 'bottom', horizontal: 'left'}
+
+* Popup sample position
+
+    ![Image of popup positioning](./assets/popup/popupright.png)
+
+  * Anchor { vertical: 'bottom', horizontal: 'left'}
+  * Popup { vertical: 'top, horizontal: 'right}
+
 
 * Collision - The behavior of the popup when viewport limitations collide with the the position property
   * Horizontal Collision:
@@ -69,9 +99,9 @@ The Popup enables positioning content next to an anchor element.
     </Popup>
     ```
 
-* Popup inside a React component
+* Popup inside a React component parent
 
-    Given a component is created with an element, when rendered and the parent component receives focus, then it should appear on the screen
+    Given a component is created with a popup connected to an anchor element, when rendered and the parent component receives focus, then it should appear on the screen
 
 * Popup opens according to anchor positioning
 
@@ -89,4 +119,6 @@ The Popup enables positioning content next to an anchor element.
 
     Given a popup, when it opens or closes, then registered open and close events are triggered.
 
-*
+* Right-click menu
+
+    Given a popup, when the user right-clicks on a certain point on the screen, then a popup opens at that specific point (collision rules apply of course).
