@@ -13,8 +13,6 @@ interface BirthDatePickerProps {
     onChange?: (newValue: BirthDatePickerDate) => void;
 }
 
-// @TODO: Rename FuckIT
-// @TODO: use strings instead of dates?
 export class BirthDatePicker extends React.Component<BirthDatePickerProps, {}> {
     static defaultProps: BirthDatePickerProps;
     dayInput: any;

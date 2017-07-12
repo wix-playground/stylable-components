@@ -7,7 +7,7 @@ describe('<BirthDatePicker />', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup())
 
-    it('Receives the date and allows changing it', async function() {
+    it('Displays the provided date and allows changing it', async function() {
         const { select, waitForDom } = clientRenderer.render(<BirthDatePickerDemo />);
         const { year, month, day } = demoValue!;
 
@@ -30,7 +30,7 @@ describe('<BirthDatePicker />', () => {
         });
     });
 
-    it('Renders and is blank', function () {
+    it('Renders with default props', function () {
         const { select, waitForDom } = clientRenderer.render(<BirthDatePicker />);
 
         return waitForDom(() => {
@@ -41,7 +41,7 @@ describe('<BirthDatePicker />', () => {
         });
     });
 
-    it('Displays a provided value', function() {
+    it('Displays the provided date', function() {
         const year = 1984, month = 6, day = 18;
         const { select, waitForDom } = clientRenderer.render(<BirthDatePicker value={{year, month, day}} />);
 
@@ -52,7 +52,7 @@ describe('<BirthDatePicker />', () => {
         });
     });
 
-    it('Triggers onChange with updated value when one of the inputs is changed', async function() {
+    it('Emits onChange when one of the inputs is changed', async function() {
         const year = 1984, month = undefined, newMonth = 1, day = undefined;
         const onChange = sinon.spy();
         const { select, waitForDom } = clientRenderer.render(
