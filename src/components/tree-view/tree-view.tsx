@@ -1,5 +1,7 @@
 import * as React from 'react';
 
+require('./tree-view.css');
+
 export interface TreeItemRenderer {
     (props: TreeItemProps): JSX.Element;
 }
