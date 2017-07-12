@@ -5,14 +5,14 @@
 
 import React = require("react");
 
-interface BirthDatePickerProps {
+export interface BirthDatePickerProps {
     value?: Date;
     minDate?: Date;
     maxDate?: Date;
     onChange?: (newValue?: Date) => void;
 }
 
-interface BirthDatePickerState {
+export interface BirthDatePickerState {
     valid: boolean;
     year?: string;
     month?: string;
