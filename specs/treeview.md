@@ -114,6 +114,15 @@ Where relevant show code examples to be used in the documentation later on.
 * Render a tree (one icon, several nodes hierarchy) using the default renderer -> able to select nodes
 
 ### Examples
+```
+const treeData = [
+    { label: 'main', children: [
+        { label: 'label0' },
+        { label: 'label1' },
+        { label: 'label2' }
+    ]}
+];
+```
 * Renders a tree view
 ```
 <TreeView dataSource={data} />
