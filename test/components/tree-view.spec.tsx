@@ -60,8 +60,6 @@ describe('<TreeView />', () => {
             const onSelectItem = sinon.spy();
             const { select } = clientRenderer.render(<TreeView dataSource={treeData} onSelectItem={onSelectItem}/>);
 
-            debugger;
-
             simulate.click(select(getTreeItem(treeData[0].label)));
 
             const firstNodeChildren = treeData[0].children;
@@ -79,12 +77,17 @@ describe('<TreeView />', () => {
         it('expands and collapses an item with children when clicked', async () => {
             const { select, waitForDom } = clientRenderer.render(<TreeView dataSource={treeData} />);
 
+            debugger;
+
             const nodeChildren = treeData[0].children;
             await waitForDom(() => expect(select(getTreeItem(nodeChildren![1].label))).to.be.absent());
+
+            debugger;
 
             simulate.click(select(getTreeItem(treeData[0].label)));
             await waitForDom(() => expect(select(getTreeItem(nodeChildren![1].label))).to.be.present());
 
+            debugger;
             simulate.click(select(getTreeItem(treeData[0].label)));
             return waitForDom(() => expect(select(getTreeItem(nodeChildren![1].label))).to.be.absent());
         });
