@@ -1,10 +1,15 @@
 import * as React from 'react';
-import { expect, ClientRenderer, sinon, simulate } from 'test-drive-react';
+import { expect, ClientRenderer, sinon, simulate, waitFor } from 'test-drive-react';
 import { TextInput } from '../../src';
 
 describe('<TextInput />', () => {
     const clientRenderer = new ClientRenderer();
-    afterEach(() => clientRenderer.cleanup())
+    afterEach(() => clientRenderer.cleanup());
+
+    const simulateChange = (domElememt: Element, value: string) => {
+        (domElememt as HTMLInputElement).value = value;
+        simulate.change(domElememt);
+    };
 
     it('outputs an input element with type="text" by default', async () => {
         const { select, waitForDom } =

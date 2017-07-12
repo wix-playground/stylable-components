@@ -1,3 +1,2 @@
-/**
- * Created by kieranw on 10/07/2017.
- */
+export * from './date-picker';
+export * from './date-picker-helpers';

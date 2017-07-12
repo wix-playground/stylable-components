@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { Link } from '../src';
-import { Image } from '../src';
+import { Link, Image, AutoForm } from '../src';
 import { sampleImage } from '../test/fixtures/sample-image';
-import {AutoForm} from "../src";
 import {AutoFormSchema, SchemaRepository} from "../src";
+import {DatePickerDemo} from './date-picker-demo';
 const style = require('./style.css');
 
 export class ComponentsDemo extends React.Component<{}, {}>{
@@ -35,6 +34,8 @@ export class ComponentsDemo extends React.Component<{}, {}>{
                 <Image src={sampleImage} />
                 <h1>{'<AutoForm />'}</h1>
                 <AutoForm repo={this.schemaRepository} schemaId="demo schema"/>
+                <h1>{'<DatePicker />'}</h1>
+                <DatePickerDemo />
             </div>
         );
     }
