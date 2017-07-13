@@ -1,7 +1,7 @@
 import React = require('react');
 import {ReactElement} from "react";
 
-interface RadioGroupProps {
+export interface RadioGroupProps {
     children: JSX.Element[];
     onChange: any;
 }
@@ -32,7 +32,7 @@ export class RadioGroup extends React.Component<RadioGroupProps, {}> {
     }
 }
 
-interface RadioButtonProps {
+export interface RadioButtonProps {
     value: string;
     name?: string;
     onClick?: any;
