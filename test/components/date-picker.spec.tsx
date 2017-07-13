@@ -59,6 +59,12 @@ describe('The DatePicker component', function () {
     });
 
     describe('The Dropdown', function () {
+        it('displays the year', function () {
+            const {select, waitForDom} = clientRenderer.render(<DatePicker showDropdown={true} date={new Date(2017, 0, 1)} />);
+
+            return waitForDom(() => expect(select('YEAR')).to.have.text('2017'));
+        });
+
         it('displays the name of the month', function () {
             const {select, waitForDom} = clientRenderer.render(<DatePicker showDropdown={true} date={new Date(2017, 0, 1)} />);
 
@@ -76,14 +82,29 @@ describe('The DatePicker component', function () {
             });
         });
 
-        it('has a button which advances the month', function () {
-            const {select, waitForDom} = clientRenderer.render(<DatePicker showDropdown={true} date={new Date(2017, 0, 1)} />);
+        it('has a button which steps forward a month', function () {
+            const {select, waitForDom} = clientRenderer.render(<DatePicker showDropdown={true} date={new Date(2017, 11, 1)} />);
 
-            simulate.click(select('NEXT_MONTH_BUTTON'));
+            expect(select('YEAR')).to.have.text('2017');
+            expect(select('MONTH_NAME')).to.have.text('December');
+            simulate.mouseDown(select('NEXT_MONTH_BUTTON'));
 
             return waitForDom(() => {
-                expect(select('MONTH_NAME')).to.have.text('February');
-                expect(select('DAY_30')).to.be.absent();
+                expect(select('YEAR')).to.have.text('2018');
+                expect(select('MONTH_NAME')).to.have.text('January');
+            });
+        });
+
+        it('has a button which steps back a month', function () {
+            const {select, waitForDom} = clientRenderer.render(<DatePicker showDropdown={true} date={new Date(2017, 0, 1)} />);
+
+            expect(select('YEAR')).to.have.text('2017');
+            expect(select('MONTH_NAME')).to.have.text('January');
+            simulate.mouseDown(select('PREV_MONTH_BUTTON'));
+
+            return waitForDom(() => {
+                expect(select('YEAR')).to.have.text('2016');
+                expect(select('MONTH_NAME')).to.have.text('December');
             });
         });
     });
