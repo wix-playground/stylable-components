@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {observer} from "mobx-react";
 
 const style = require('./tree-view.css');
 
@@ -15,7 +16,7 @@ export interface TreeItemProps {
     item: TreeItemData;
     itemRenderer: TreeItemRenderer;
     onItemClick?: React.EventHandler<any>;
-    isSelected: (item: Object) => boolean;
+    selectedItem?: TreeItemData;
 }
 
 export interface TreeViewProps {
@@ -27,35 +28,36 @@ export interface TreeViewProps {
 
 const itemIdPrefix = 'TREE_ITEM';
 
-export function TreeItem({ item, itemRenderer, onItemClick, isSelected }: TreeItemProps): JSX.Element {
+export function TreeItem({ item, itemRenderer, onItemClick, selectedItem = { label: '' }}: TreeItemProps): JSX.Element {
     return (
         <div key={item.label}>
             <div data-automation-id={`${itemIdPrefix}_${item.label.replace(' ', '_')}`} className={style['tree-node']}
-                 onClick={() => onItemClick!(item)} data-selected={isSelected(item)}>
+                 onClick={() => onItemClick!(item)} data-selected={(selectedItem!.label === item.label)}>
                 <span data-automation-id={`${itemIdPrefix}_${item.label}_ICON`}>&gt; </span>
                 <span data-automation-id={`${itemIdPrefix}_${item.label}_LABEL`}>{item.label}</span>
             </div>
             <div className={style['nested-tree']}>
                 {(item.children || []).map((child: TreeItemData) =>
-                    itemRenderer({item: child, onItemClick, itemRenderer, isSelected}))}
+                    React.createElement(itemRenderer,
+                        {item: child, onItemClick, itemRenderer, selectedItem}))}
             </div>
         </div>
     )
 }
 
-export class TreeView extends React.Component<TreeViewProps, {}>{
-    static defaultProps = { itemRenderer: TreeItem, onSelectItem: () => {} };
+const TreeItemWrapper = observer(TreeItem);
 
-    isSelected = (item: TreeItemData) => {
-        return !!this.props.selectedItem && (this.props.selectedItem!.label === item.label);
-    };
+export class TreeView extends React.Component<TreeViewProps, {}>{
+    static defaultProps = { itemRenderer: TreeItemWrapper, onSelectItem: () => {} };
 
     render() {
         return (
             <div data-automation-id='TREE_VIEW' className={style['tree-view']}>
                 {(this.props.dataSource || []).map((item: TreeItemData) =>
-                    this.props.itemRenderer!({item, onItemClick: this.props.onSelectItem,
-                        itemRenderer: this.props.itemRenderer!, isSelected: this.isSelected}))}
+                    React.createElement(
+                        this.props.itemRenderer!,
+                        {item, onItemClick: this.props.onSelectItem,
+                            itemRenderer: this.props.itemRenderer!, selectedItem: this.props.selectedItem}))}
             </div>
         )
     }

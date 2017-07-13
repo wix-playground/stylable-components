@@ -76,27 +76,27 @@ describe('<TreeView />', () => {
 
             it('renders an item', () => {
                 const { select, waitForDom } =
-                    clientRenderer.render(<TreeItem item={item} itemRenderer={TreeItem} isSelected={noop}/>);
+                    clientRenderer.render(<TreeItem item={item} itemRenderer={TreeItem} />);
 
                 return waitForDom(() => expect(select(getTreeItem(item.label))).to.be.present());
             });
 
             it('renders with provided label', () => {
                 const { select, waitForDom } =
-                    clientRenderer.render(<TreeItem item={item} itemRenderer={TreeItem} isSelected={noop}/>);
+                    clientRenderer.render(<TreeItem item={item} itemRenderer={TreeItem} />);
 
                 return waitForDom(() => expect(select(getTreeItem(item.label) + '_LABEL')).to.have.text(item.label));
             });
 
             it('renders with an icon', () => {
                 const { select, waitForDom } =
-                    clientRenderer.render(<TreeItem item={item} itemRenderer={TreeItem} isSelected={noop}/>);
+                    clientRenderer.render(<TreeItem item={item} itemRenderer={TreeItem} />);
 
                 return waitForDom(() => expect(select(getTreeItem(item.label) + '_ICON')).to.be.present());
             });
 
             it('renders correct children', () => {
-                const { select, waitForDom } = clientRenderer.render(<TreeItem item={nestedItem} itemRenderer={TreeItem} isSelected={noop} />);
+                const { select, waitForDom } = clientRenderer.render(<TreeItem item={nestedItem} itemRenderer={TreeItem} />);
 
                 return waitForDom(() =>
                     nestedItem.children!.forEach((item: TreeItemData) =>
@@ -105,8 +105,7 @@ describe('<TreeView />', () => {
 
             it('invokes onClick when clicked', () => {
                 const onClick = sinon.spy();
-                const { select } = clientRenderer.render(<TreeItem item={item} itemRenderer={TreeItem}
-                                                                   onItemClick={onClick} isSelected={noop}/>);
+                const { select } = clientRenderer.render(<TreeItem item={item} itemRenderer={TreeItem} onItemClick={onClick} />);
 
                 simulate.click(select(getTreeItem(item.label)));
 

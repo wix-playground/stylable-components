@@ -3,6 +3,7 @@ import { TreeView } from '../../src';
 import { TreeItemData } from '../../src/components/tree-view/tree-view';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
+import DevTools from "mobx-react-devtools";
 
 export const treeData: TreeItemData[] = [
     { label: 'Food Menu', children: [
@@ -24,7 +25,6 @@ export const treeData: TreeItemData[] = [
     ]}
 ];
 
-
 function SelectedItem({selectedItem}: any) {
     return <div style={{'fontSize': '1.41em', 'textDecoration': 'underline'}}>{selectedItem.label ?
                   (!selectedItem.children ? `You chose ${selectedItem.label}. Bon appetit!` :
@@ -45,6 +45,7 @@ export class TreeViewDemo extends React.Component<{}, {}> {
     render() {
         return (
             <div>
+                <DevTools />
                 <h3>Default TreeView with data only</h3>
                 <TreeView dataSource={treeData} />
                 <br/>
