@@ -19,7 +19,7 @@ export class DatePickerDropdown extends React.Component<DatePickerDropdownProps,
     }
 
     @action setDayTo (day: string) {
-        const date = new Date(this.date.getUTCFullYear(), this.date.getUTCMonth(), parseInt(day));
+        const date = new Date(Date.UTC(this.date.getUTCFullYear(), this.date.getUTCMonth(), parseInt(day)));
         this.date = date;
         this.props.onChange(this.date);
     }
@@ -46,13 +46,13 @@ export class DatePickerDropdown extends React.Component<DatePickerDropdownProps,
 
     goToNextMonth: React.EventHandler<React.SyntheticEvent<HTMLSpanElement>> = (event: React.SyntheticEvent<HTMLSpanElement>) => {
         event.preventDefault();
-        const nextMonth: Date = getMonthFromOffset(new Date(this.date.getUTCFullYear(), this.date.getUTCMonth(), 1), 1);
+        const nextMonth: Date = getMonthFromOffset(new Date(Date.UTC(this.date.getUTCFullYear(), this.date.getUTCMonth(), 1)), 1);
         this.setDateTo(nextMonth);
     };
 
     goToPrevMonth: React.EventHandler<React.SyntheticEvent<HTMLSpanElement>> = (event: React.SyntheticEvent<HTMLSpanElement>) => {
         event.preventDefault();
-        const previousMonth: Date = getMonthFromOffset(new Date(this.date.getUTCFullYear(), this.date.getUTCMonth(), 1), -1);
+        const previousMonth: Date = getMonthFromOffset(new Date(Date.UTC(this.date.getUTCFullYear(), this.date.getUTCMonth(), 1)), -1);
         this.setDateTo(previousMonth);
     };
 
