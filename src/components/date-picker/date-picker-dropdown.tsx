@@ -37,10 +37,22 @@ export class DatePickerDropdown extends React.Component<DatePickerDropdownProps,
         this.props.onChange(date);
     }
 
+    goToNextMonth: React.EventHandler<React.SyntheticEvent<HTMLSpanElement>> = (event: React.SyntheticEvent<HTMLSpanElement>) => {
+        event.stopPropagation();
+        const date = this.props.date;
+    };
+
+    goToNextMonth (): void {
+        const nextMonth = getMonthFromOffset(new Date(this.state.displayedYear, this.state.displayedMonth, 1), 1);
+        this.state.displayedMonth = nextMonth.getMonth();
+        this.setFocusedIndex(this.getNumOfPreviousDays(nextMonth), getDaysInMonth(nextMonth));
+    }
+
     render() {
         return (
             <div data-automation-id="DATE_PICKER_DROPDOWN">
                 <p data-automation-id="MONTH_NAME">{getMonthNames()[this.props.date.getMonth()]}</p>
+                <span onMouseDown={this.goToNextMonth} data-automation-id="NEXT_MONTH_BUTTON">Next Month</span>
                 {getDayNames().map(name => <span data-automation-id={'DAY_NAME_' + name}>{name}</span>)}
                 {this.generateDayArray(this.props.date).map(day => <span onMouseDown={this.onClick} data-automation-id={'DAY_' + day}>{day}</span>)}
             </div>

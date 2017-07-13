@@ -75,5 +75,16 @@ describe('The DatePicker component', function () {
                }
             });
         });
+
+        it('has a button which advances the month', function () {
+            const {select, waitForDom} = clientRenderer.render(<DatePicker showDropdown={true} date={new Date(2017, 0, 1)} />);
+
+            simulate.click(select('NEXT_MONTH_BUTTON'));
+
+            return waitForDom(() => {
+                expect(select('MONTH_NAME')).to.have.text('February');
+                expect(select('DAY_30')).to.be.absent();
+            });
+        });
     });
 });
