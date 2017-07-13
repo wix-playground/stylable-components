@@ -6,7 +6,14 @@ interface RadioGroupProps {
     onChange: any;
 }
 
+let counter = 0;
+
 export class RadioGroup extends React.Component<RadioGroupProps, {}> {
+
+    constructor(props: RadioGroupProps) {
+        super(props);
+        counter++;
+    }
 
     childrenOnClick = (e: any) => {
         this.props.onChange(e.target.value);
@@ -17,7 +24,7 @@ export class RadioGroup extends React.Component<RadioGroupProps, {}> {
             <div data-automation-id="RADIO_GROUP">
                 {React.Children.map(this.props.children, (child, index) => {
                     if (React.isValidElement(child) && child.type === RadioButton) {
-                        const props = Object.assign({}, child.props, {automationId: 'RADIO_BUTTON_' + index, onClick: this.childrenOnClick, name: 'name'});
+                        const props = Object.assign({}, child.props, {automationId: 'RADIO_BUTTON_' + index, onClick: this.childrenOnClick, name: 'name' + counter});
                         return React.cloneElement(child as ReactElement<any>, props);
                     }
                 })}
