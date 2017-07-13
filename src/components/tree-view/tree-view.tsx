@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-require('./tree-view.css');
+const style = require('./tree-view.css');
 
 export interface TreeItemRenderer {
     (props: TreeItemProps): JSX.Element;
@@ -18,7 +18,7 @@ export interface TreeItemProps {
     isSelected: (item: Object) => boolean;
 }
 
-interface TreeViewProps {
+export interface TreeViewProps {
     dataSource: Object[];
     itemRenderer?: TreeItemRenderer;
     onSelectItem?: React.EventHandler<any>;
@@ -30,13 +30,15 @@ const itemIdPrefix = 'TREE_ITEM';
 export function TreeItem({ item, itemRenderer, onItemClick, isSelected }: TreeItemProps): JSX.Element {
     return (
         <div key={item.label}>
-            <div data-automation-id={`${itemIdPrefix}_${item.label}`}
+            <div data-automation-id={`${itemIdPrefix}_${item.label}`} className={style['tree-node']}
                  onClick={() => onItemClick!(item)} data-selected={isSelected(item)}>
-                <span data-automation-id={`${itemIdPrefix}_${item.label}_ICON`}>&gt;</span>
+                <span data-automation-id={`${itemIdPrefix}_${item.label}_ICON`}>&gt; </span>
                 <span data-automation-id={`${itemIdPrefix}_${item.label}_LABEL`}>{item.label}</span>
             </div>
-            {(item.children || []).map((child: TreeItemData) =>
-                itemRenderer({item: child, onItemClick, itemRenderer, isSelected}))}
+            <div className={style['nested-tree']}>
+                {(item.children || []).map((child: TreeItemData) =>
+                    itemRenderer({item: child, onItemClick, itemRenderer, isSelected}))}
+            </div>
         </div>
     )
 }
@@ -50,7 +52,7 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
 
     render() {
         return (
-            <div data-automation-id='TREE_VIEW'>
+            <div data-automation-id='TREE_VIEW' className={style['tree-view']}>
                 {this.props.dataSource.map((item: TreeItemData) =>
                     this.props.itemRenderer!({item, onItemClick: this.props.onSelectItem,
                         itemRenderer: this.props.itemRenderer!, isSelected: this.isSelected.bind(this)}))}

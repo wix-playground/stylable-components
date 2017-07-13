@@ -1,4 +1,17 @@
-[data-selected="true"] {
-    background-color: red;
-    display: inline;
+.tree-view {
+  font-size: 1.414em;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.tree-view [data-selected="true"] {
+  background-color: lightblue;
+}
+
+.tree-node {
+  cursor: pointer;
+  display: inline;
+}
+
+.nested-tree {
+  margin-left: 25px;
 }
