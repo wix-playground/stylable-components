@@ -18,4 +18,8 @@ describe('<TextInput />', () => {
             expect(textInput).to.have.attribute('type', 'text');
         });
     });
+
+    it('fails', function () {
+        expect(true).to.equal(false);
+    })
 });
