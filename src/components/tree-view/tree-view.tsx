@@ -30,7 +30,7 @@ const itemIdPrefix = 'TREE_ITEM';
 export function TreeItem({ item, itemRenderer, onItemClick, isSelected }: TreeItemProps): JSX.Element {
     return (
         <div key={item.label}>
-            <div data-automation-id={`${itemIdPrefix}_${item.label}`} className={style['tree-node']}
+            <div data-automation-id={`${itemIdPrefix}_${item.label.replace(' ', '_')}`} className={style['tree-node']}
                  onClick={() => onItemClick!(item)} data-selected={isSelected(item)}>
                 <span data-automation-id={`${itemIdPrefix}_${item.label}_ICON`}>&gt; </span>
                 <span data-automation-id={`${itemIdPrefix}_${item.label}_LABEL`}>{item.label}</span>
@@ -46,16 +46,16 @@ export function TreeItem({ item, itemRenderer, onItemClick, isSelected }: TreeIt
 export class TreeView extends React.Component<TreeViewProps, {}>{
     static defaultProps = { itemRenderer: TreeItem, onSelectItem: () => {} };
 
-    isSelected(item: TreeItemData) {
+    isSelected = (item: TreeItemData) => {
         return this.props.selectedItem === item;
-    }
+    };
 
     render() {
         return (
             <div data-automation-id='TREE_VIEW' className={style['tree-view']}>
                 {this.props.dataSource.map((item: TreeItemData) =>
                     this.props.itemRenderer!({item, onItemClick: this.props.onSelectItem,
-                        itemRenderer: this.props.itemRenderer!, isSelected: this.isSelected.bind(this)}))}
+                        itemRenderer: this.props.itemRenderer!, isSelected: this.isSelected}))}
             </div>
         )
     }

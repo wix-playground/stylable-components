@@ -10,7 +10,13 @@ const treeItem = 'TREE_ITEM';
 const noop = (item: Object) => false;
 
 function getLabelsList(data: {label: string, children?: Object[]}): string[] {
-    return [data.label].concat(...(data.children || []).map(getLabelsList));
+    return [data.label]
+               .concat(...(data.children || [])
+               .map(getLabelsList));
+}
+
+function getAllNodeLabels(treeData: Object[]) {
+    return treeData.map(getLabelsList).reduce((prev, next) => [...prev, ...next]);
 }
 
 describe('<TreeView />', () => {
@@ -18,7 +24,7 @@ describe('<TreeView />', () => {
     afterEach(() => clientRenderer.cleanup());
 
     function getTreeItem(id: string) {
-        return `${treeItem}_${id}`;
+        return `${treeItem}_${id.replace(' ', '_')}`;
     }
 
     it('renders a tree view with a few children, clicks ones of then', async () => {
@@ -26,9 +32,9 @@ describe('<TreeView />', () => {
 
         await waitForDom(() => expect(select(treeView + '_DEMO')).to.be.present());
 
-        const allNodesLabels = treeData.map(getLabelsList).reduce((prev, next) => [...prev, ...next]);
+        const allNodesLabels = getAllNodeLabels(treeData);
         await waitForDom(() => allNodesLabels.forEach(item =>
-            expect(select(treeView + '_DEMO', getTreeItem(item))).to.be.present()));
+            expect(select(treeView + '_DEMO', getTreeItem(item)), `${item} was not present`).to.be.present()));
 
         const elementToSelect = select(treeView + '_DEMO', getTreeItem(allNodesLabels[2]));
 
@@ -39,19 +45,12 @@ describe('<TreeView />', () => {
     });
 
     describe('Using default renderer', () => {
-
-        it('renders to the screen', () => {
-            const { select, waitForDom } = clientRenderer.render(<TreeView dataSource={treeData} />);
-
-            return waitForDom(() => expect(select(treeView)).to.be.present());
-        });
-
         it('renders correct children', () => {
             const { select, waitForDom } = clientRenderer.render(<TreeView dataSource={treeData} />);
 
             return waitForDom(() =>
                 treeData.forEach((item: TreeItemData) =>
-                    expect(select(treeView, getTreeItem(item.label))).to.be.present()));
+                    expect(select(treeView, getTreeItem(item.label)), `${item.label} was not present`).to.be.present()));
         });
 
         it('invokes the onSelectItem callback when an item is clicked', () => {
@@ -73,6 +72,7 @@ describe('<TreeView />', () => {
         describe('<TreeItem />', () => {
 
             const item = { label: 'label' };
+            const nestedItem = treeData[0].children![1];
 
             it('renders an item', () => {
                 const { select, waitForDom } =
@@ -93,6 +93,14 @@ describe('<TreeView />', () => {
                     clientRenderer.render(<TreeItem item={item} itemRenderer={TreeItem} isSelected={noop}/>);
 
                 return waitForDom(() => expect(select(getTreeItem(item.label) + '_ICON')).to.be.present());
+            });
+
+            it('renders correct children', () => {
+                const { select, waitForDom } = clientRenderer.render(<TreeItem item={nestedItem} itemRenderer={TreeItem} isSelected={noop} />);
+
+                return waitForDom(() =>
+                    nestedItem.children!.forEach((item: TreeItemData) =>
+                        expect(select(getTreeItem(item.label)), `${item.label} was not present`).to.be.present()));
             });
 
             it('invokes onClick when clicked', () => {

@@ -28,7 +28,7 @@ export const treeData: TreeItemData[] = [
 
 
 function SelectedItem({selectedItem}: any) {
-    return <div style={{'font-size': '1.41em', 'text-decoration': 'underline'}}>{selectedItem.label ?
+    return <div style={{'fontSize': '1.41em', 'textDecoration': 'underline'}}>{selectedItem.label ?
                   (!selectedItem.children ? `You chose ${selectedItem.label}. Bon appetit!` :
                   `You are looking at ${selectedItem.label}. Please choose a dish.`) :
                   'Please choose from the Menu!'}</div>
