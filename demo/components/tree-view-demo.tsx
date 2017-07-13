@@ -26,20 +26,22 @@ export const treeData: TreeItemData[] = [
 ];
 
 function SelectedItem({selectedItem}: any) {
-    return <div style={{'fontSize': '1.41em', 'textDecoration': 'underline'}}>{selectedItem.label ?
-                  (!selectedItem.children ? `You chose ${selectedItem.label}. Bon appetit!` :
-                  `You are looking at ${selectedItem.label}. Please choose a dish.`) :
+    return <div style={{'fontSize': '1.41em', 'textDecoration': 'underline'}}>{selectedItem.item.label ?
+                  (!selectedItem.item.children ? `You chose ${selectedItem.item.label}. Bon appetit!` :
+                  `You are looking at ${selectedItem.item.label}. Please choose a dish.`) :
                   'Please choose from the Menu!'}</div>
 }
 
-@observer
+const SelectedItemWrapper = observer(SelectedItem);
+
+// @observer
 export class TreeViewDemo extends React.Component<{}, {}> {
-    private selected: any = observable({
+    private selectedItem: any = observable({
         item: {}
     });
 
     onSelectItem = (item: Object) => {
-        this.selected.item = item;
+        this.selectedItem.item = item;
     };
 
     render() {
@@ -51,10 +53,10 @@ export class TreeViewDemo extends React.Component<{}, {}> {
                 <br/>
                 <h3>TreeView with ability to select a child</h3>
                 <section data-automation-id="TREE_VIEW_DEMO">
-                    <SelectedItem selectedItem={this.selected.item}/>
+                    <SelectedItemWrapper selectedItem={this.selectedItem}/>
                     <br/>
                     <TreeView dataSource={treeData} onSelectItem={this.onSelectItem}
-                              selectedItem={this.selected.item} />
+                              selectedItem={this.selectedItem} />
                 </section>
             </div>
         )

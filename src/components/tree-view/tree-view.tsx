@@ -16,23 +16,23 @@ export interface TreeItemProps {
     item: TreeItemData;
     itemRenderer: TreeItemRenderer;
     onItemClick?: React.EventHandler<any>;
-    selectedItem?: TreeItemData;
+    selectedItem?: {item: TreeItemData};
 }
 
 export interface TreeViewProps {
     dataSource: Object[];
     itemRenderer?: TreeItemRenderer;
     onSelectItem?: React.EventHandler<any>;
-    selectedItem?: TreeItemData;
+    selectedItem?: {item: TreeItemData};
 }
 
 const itemIdPrefix = 'TREE_ITEM';
 
-export function TreeItem({ item, itemRenderer, onItemClick, selectedItem = { label: '' }}: TreeItemProps): JSX.Element {
+export function TreeItem({ item, itemRenderer, onItemClick, selectedItem }: TreeItemProps): JSX.Element {
     return (
         <div key={item.label}>
             <div data-automation-id={`${itemIdPrefix}_${item.label.replace(' ', '_')}`} className={style['tree-node']}
-                 onClick={() => onItemClick!(item)} data-selected={(selectedItem!.label === item.label)}>
+                 onClick={() => onItemClick!(item)} data-selected={selectedItem!.item.label === item.label}>
                 <span data-automation-id={`${itemIdPrefix}_${item.label}_ICON`}>&gt; </span>
                 <span data-automation-id={`${itemIdPrefix}_${item.label}_LABEL`}>{item.label}</span>
             </div>
@@ -48,7 +48,7 @@ export function TreeItem({ item, itemRenderer, onItemClick, selectedItem = { lab
 const TreeItemWrapper = observer(TreeItem);
 
 export class TreeView extends React.Component<TreeViewProps, {}>{
-    static defaultProps = { itemRenderer: TreeItemWrapper, onSelectItem: () => {} };
+    static defaultProps = { itemRenderer: TreeItemWrapper, selectedItem: { item: {} }, onSelectItem: () => {} };
 
     render() {
         return (
@@ -57,7 +57,7 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
                     React.createElement(
                         this.props.itemRenderer!,
                         {item, onItemClick: this.props.onSelectItem,
-                            itemRenderer: this.props.itemRenderer!, selectedItem: this.props.selectedItem}))}
+                            itemRenderer: this.props.itemRenderer!, selectedItem: this.props.selectedItem!}))}
             </div>
         )
     }
