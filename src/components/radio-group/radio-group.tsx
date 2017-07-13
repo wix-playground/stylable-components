@@ -17,7 +17,7 @@ export class RadioGroup extends React.Component<RadioGroupProps, {}> {
             <div data-automation-id="RADIO_GROUP">
                 {React.Children.map(this.props.children, (child, index) => {
                     if (React.isValidElement(child) && child.type === RadioButton) {
-                        const props = Object.assign({}, child.props, {automationId: 'RADIO_BUTTON_' + index, onClick: this.childrenOnClick});
+                        const props = Object.assign({}, child.props, {automationId: 'RADIO_BUTTON_' + index, onClick: this.childrenOnClick, name: 'name'});
                         return React.cloneElement(child as ReactElement<any>, props);
                     }
                 })}
@@ -27,13 +27,14 @@ export class RadioGroup extends React.Component<RadioGroupProps, {}> {
 
 interface RadioButtonProps {
     value: string;
+    name?: string;
     onClick?: any;
     automationId?: string;
 }
 
 export class RadioButton extends React.Component<RadioButtonProps, {}> {
     render() {
-        return (<input type="radio" data-automation-id={this.props.automationId} onClick={this.props.onClick} value={this.props.value}/>)
+        return (<input type="radio" data-automation-id={this.props.automationId} onClick={this.props.onClick} value={this.props.value} name={this.props.name}/>)
     }
 
 }

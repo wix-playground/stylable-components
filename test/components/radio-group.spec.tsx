@@ -80,29 +80,29 @@ describe('<RadioGroup />', function () {
         })
     });
 
-    // it('changes the selected button when clicking on a different one', async function () {
-    //     const {select, waitForDom} = clientRenderer.render(
-    //         <RadioGroup onChange={emptyFunction}>
-    //             <RadioButton value="Diabolos"/>
-    //             <RadioButton value="Bahamut"/>
-    //         </RadioGroup>
-    //     );
-    //
-    //     await waitForDom(() => { expect(select(radioGroup, radioButton + '_0')).to.be.present() });
-    //     const button0 = select(radioGroup, radioButton + '_0') as HTMLInputElement;
-    //     button0.click();
-    //     await waitForDom(() => { expect(button0.checked).to.be.true; });
-    //     const button1 = select(radioGroup, radioButton + '_1') as HTMLInputElement;
-    //     button1.click();
-    //     return waitForDom(() => {
-    //         expect(button0.checked).to.be.false;
-    //         expect(button1.checked).to.be.true;
-    //     });
-    // });
+    it('changes the selected button when clicking on a different one', async function () {
+        const {select, waitForDom} = clientRenderer.render(
+            <RadioGroup onChange={emptyFunction}>
+                <RadioButton value="Diabolos"/>
+                <RadioButton value="Bahamut"/>
+            </RadioGroup>
+        );
+
+        await waitForDom(() => { expect(select(radioGroup, radioButton + '_0')).to.be.present() });
+        const button0 = select(radioGroup, radioButton + '_0') as HTMLInputElement;
+        button0.click();
+        await waitForDom(() => { expect(button0.checked).to.be.true; });
+        const button1 = select(radioGroup, radioButton + '_1') as HTMLInputElement;
+        button1.click();
+        return waitForDom(() => {
+            expect(button0.checked).to.be.false;
+            expect(button1.checked).to.be.true;
+        });
+    });
 
     describe('<RadioButton />', function () {
         it('renders a radio button to the screen', function () {
-            const { select, waitForDom } = clientRenderer.render(<RadioButton value="Shiva" automationId={radioButton + '_0'}/>);
+            const { select, waitForDom } = clientRenderer.render(<RadioButton value="Shiva" automationId={radioButton + '_0'} name=""/>);
 
             return waitForDom(() => {
                 expect(select(radioButton + '_0')).to.be.present().and.to.have.attr('type', 'radio');
@@ -110,9 +110,18 @@ describe('<RadioGroup />', function () {
             });
         });
 
+        it('set the radio buttons name to the given name', function () {
+            const { select, waitForDom } = clientRenderer.render(<RadioButton value="Moogle" automationId={radioButton + '_0'} name="name"/>);
+
+            return waitForDom(() => {
+                const button = select(radioButton + '_0') as HTMLInputElement;
+                expect(button.name).to.equal('name');
+            });
+        });
+
         it('calls the onClick function when clicked', async function () {
             const onClick = sinon.spy();
-            const { select, waitForDom } = clientRenderer.render(<RadioButton value="Shiva" onClick={onClick} automationId={radioButton + '_0'}/>);
+            const { select, waitForDom } = clientRenderer.render(<RadioButton value="Shiva" onClick={onClick} automationId={radioButton + '_0'} name=""/>);
 
             await waitForDom(() => { expect(select(radioButton + '_0')).to.be.present() });
             simulate.click(select(radioButton + '_0'));
