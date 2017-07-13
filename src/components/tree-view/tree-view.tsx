@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {observer} from "mobx-react";
+import {observable} from "mobx";
 
 const style = require('./tree-view.css');
 
@@ -28,11 +29,11 @@ export interface TreeViewProps {
 
 const itemIdPrefix = 'TREE_ITEM';
 
-export function TreeItem({ item, itemRenderer, onItemClick, selectedItem }: TreeItemProps): JSX.Element {
+export function TreeItem({ item, itemRenderer, onItemClick, selectedItem = {item: { label: ''} }}: TreeItemProps): JSX.Element {
     return (
         <div key={item.label}>
             <div data-automation-id={`${itemIdPrefix}_${item.label.replace(' ', '_')}`} className={style['tree-node']}
-                 onClick={() => onItemClick!(item)} data-selected={selectedItem!.item.label === item.label}>
+                 onClick={() => onItemClick!(item)} data-selected={ selectedItem.item.label === item.label }>
                 <span data-automation-id={`${itemIdPrefix}_${item.label}_ICON`}>&gt; </span>
                 <span data-automation-id={`${itemIdPrefix}_${item.label}_LABEL`}>{item.label}</span>
             </div>
@@ -48,7 +49,7 @@ export function TreeItem({ item, itemRenderer, onItemClick, selectedItem }: Tree
 const TreeItemWrapper = observer(TreeItem);
 
 export class TreeView extends React.Component<TreeViewProps, {}>{
-    static defaultProps = { itemRenderer: TreeItemWrapper, selectedItem: { item: {} }, onSelectItem: () => {} };
+    static defaultProps = { itemRenderer: TreeItemWrapper, selectedItem: observable({ item: {} }), onSelectItem: () => {} };
 
     render() {
         return (
@@ -57,7 +58,8 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
                     React.createElement(
                         this.props.itemRenderer!,
                         {item, onItemClick: this.props.onSelectItem,
-                            itemRenderer: this.props.itemRenderer!, selectedItem: this.props.selectedItem!}))}
+                            itemRenderer: this.props.itemRenderer!,
+                            selectedItem: this.props.selectedItem! }))}
             </div>
         )
     }
