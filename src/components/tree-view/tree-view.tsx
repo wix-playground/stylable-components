@@ -22,7 +22,7 @@ export interface TreeViewProps {
     dataSource: Object[];
     itemRenderer?: TreeItemRenderer;
     onSelectItem?: React.EventHandler<any>;
-    selectedItem?: Object;
+    selectedItem?: TreeItemData;
 }
 
 const itemIdPrefix = 'TREE_ITEM';
@@ -47,7 +47,7 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
     static defaultProps = { itemRenderer: TreeItem, onSelectItem: () => {} };
 
     isSelected = (item: TreeItemData) => {
-        return this.props.selectedItem === item;
+        return !!this.props.selectedItem && (this.props.selectedItem!.label === item.label);
     };
 
     render() {
