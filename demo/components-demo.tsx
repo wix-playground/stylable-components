@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Link } from '../src';
-import { TreeViewDemo } from './tree-view-demo';
+import { TreeViewDemo } from './components/tree-view-demo';
 const style = require('./style.css');
 
 export class ComponentsDemo extends React.Component<{}, {}>{

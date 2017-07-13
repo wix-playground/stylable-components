@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { expect, ClientRenderer, sinon, simulate, waitFor } from 'test-drive-react';
 import { TreeView, TreeItem } from '../../src';
-import { TreeViewDemo, treeData } from '../../demo/tree-view-demo';
+import { TreeViewDemo, treeData } from '../../demo/components/tree-view-demo';
 import { TreeItemData } from '../../src/components/tree-view/tree-view';
 
 const treeView = 'TREE_VIEW';

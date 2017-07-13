@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { TreeView } from '../src';
-import { TreeItemData } from '../src/components/tree-view/tree-view';
+import { TreeView } from '../../src';
+import { TreeItemData } from '../../src/components/tree-view/tree-view';
 
 interface TreeViewDemoState {
     selectedItem: Object;
