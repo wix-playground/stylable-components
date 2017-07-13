@@ -1,18 +1,16 @@
 import React = require('react');
 import {RadioGroup, RadioButton} from '../src/';
+import {observable, action} from 'mobx';
+import {observer} from 'mobx-react';
 
-interface DemoState {
-    myValue: string;
-}
 
-export class RadioGroupDemo extends React.Component<{}, DemoState> {
-    constructor() {
-        super();
-        this.setState({myValue: ''});
-    }
+@observer
+export class RadioGroupDemo extends React.Component<{}, {}> {
+    @observable myValue: string = '';
 
+    @action
     onChange = (value: string) => {
-        this.setState({myValue: value});
+        this.myValue = value;
     };
 
     render() {
