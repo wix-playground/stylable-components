@@ -53,7 +53,7 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
     render() {
         return (
             <div data-automation-id='TREE_VIEW' className={style['tree-view']}>
-                {this.props.dataSource.map((item: TreeItemData) =>
+                {(this.props.dataSource || []).map((item: TreeItemData) =>
                     this.props.itemRenderer!({item, onItemClick: this.props.onSelectItem,
                         itemRenderer: this.props.itemRenderer!, isSelected: this.isSelected}))}
             </div>
