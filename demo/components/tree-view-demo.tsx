@@ -16,7 +16,7 @@ export const treeData: TreeItemData[] = [
             { label: 'Sirloin Steak' }
         ]},
         { label: 'Desserts', children: [
-            { label: 'Pancake' },
+            { label: 'Pancakes' },
             { label: 'Muffin' },
             { label: 'Waffle' },
             { label: 'Cupcake' }
