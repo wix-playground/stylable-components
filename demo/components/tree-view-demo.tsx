@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { TreeView } frogm '../../src';
+import { TreeView } from '../../src';
 import { TreeItemData } from '../../src/components/tree-view/tree-view';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
