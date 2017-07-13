@@ -19,7 +19,8 @@ describe('<RadioGroup />', function () {
             const {select, waitForDom} = clientRenderer.render(<RadioGroupDemo/>);
 
             await waitForDom(() => { expect(select("RADIO_GROUP_DEMO", radioGroup, radioButton + '_0')).to.be.present() });
-            simulate.click(select(radioGroup, radioButton + '_0'));
+            const button0 = select(radioGroup, radioButton + '_0') as HTMLInputElement;
+            button0.click();
             await waitForDom(() => {
                 expect(select('RADIO_GROUP_DEMO_VALUE')).to.have.text('Value: This way!');
             });
@@ -73,10 +74,31 @@ describe('<RadioGroup />', function () {
         const button0 = select(radioGroup, radioButton + '_0') as HTMLInputElement;
         button0.click();
         return waitForDom(() => {
-            const button0 = select(radioGroup, radioButton + '_0') as HTMLInputElement;
+            const button1 = select(radioGroup, radioButton + '_1') as HTMLInputElement;
             expect(button0.checked).to.be.true;
+            expect(button1.checked).to.be.false;
         })
     });
+
+    // it('changes the selected button when clicking on a different one', async function () {
+    //     const {select, waitForDom} = clientRenderer.render(
+    //         <RadioGroup onChange={emptyFunction}>
+    //             <RadioButton value="Diabolos"/>
+    //             <RadioButton value="Bahamut"/>
+    //         </RadioGroup>
+    //     );
+    //
+    //     await waitForDom(() => { expect(select(radioGroup, radioButton + '_0')).to.be.present() });
+    //     const button0 = select(radioGroup, radioButton + '_0') as HTMLInputElement;
+    //     button0.click();
+    //     await waitForDom(() => { expect(button0.checked).to.be.true; });
+    //     const button1 = select(radioGroup, radioButton + '_1') as HTMLInputElement;
+    //     button1.click();
+    //     return waitForDom(() => {
+    //         expect(button0.checked).to.be.false;
+    //         expect(button1.checked).to.be.true;
+    //     });
+    // });
 
     describe('<RadioButton />', function () {
         it('renders a radio button to the screen', function () {
