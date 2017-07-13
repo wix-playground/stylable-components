@@ -1,13 +1,7 @@
 import * as React from "react";
-import { ClientRenderer, expect, simulate, sinon, waitFor } from "test-drive-react";
+import { ClientRenderer, expect, sinon, waitFor, change } from "test-drive-react";
 import { BirthDatePicker, dateFromYearMonthDay } from "../../src";
 import { BirthDatePickerDemo } from "../../demo/components/birth-date-picker-demo";
-
-function updateInput(input: HTMLInputElement, value: string) {
-    input.focus();
-    input.value = value;
-    simulate.change(input);
-}
 
 describe("<BirthDatePicker />", () => {
     const clientRenderer = new ClientRenderer();
@@ -28,9 +22,9 @@ describe("<BirthDatePicker />", () => {
         expect(monthInput).to.have.value("9");
         expect(dayInput).to.have.value("11");
 
-        updateInput(yearInput, "2002");
-        updateInput(monthInput, "10");
-        updateInput(dayInput, "12");
+        change(yearInput, "2002");
+        change(monthInput, "10");
+        change(dayInput, "12");
 
         return waitFor(() => {
             expect(yearInput).to.have.value("2002");
@@ -73,15 +67,15 @@ describe("<BirthDatePicker />", () => {
         });
 
         // Valid -> valid, onChange(Date)
-        updateInput(select("BIRTH_DATE_PICKER_MONTH") as HTMLInputElement, "03");
+        change(select("BIRTH_DATE_PICKER_MONTH") as HTMLInputElement, "03");
         // Valid -> invalid, onChange(undefined)
-        updateInput(select("BIRTH_DATE_PICKER_MONTH") as HTMLInputElement, "");
+        change(select("BIRTH_DATE_PICKER_MONTH") as HTMLInputElement, "");
         // Invalid -> invalid, no event
-        updateInput(select("BIRTH_DATE_PICKER_DAY") as HTMLInputElement, "");
+        change(select("BIRTH_DATE_PICKER_DAY") as HTMLInputElement, "");
         // Invalid -> invalid, no event
-        updateInput(select("BIRTH_DATE_PICKER_MONTH") as HTMLInputElement, "05");
+        change(select("BIRTH_DATE_PICKER_MONTH") as HTMLInputElement, "05");
         // Invalid -> valid, onChange(Date)
-        updateInput(select("BIRTH_DATE_PICKER_DAY") as HTMLInputElement, "27");
+        change(select("BIRTH_DATE_PICKER_DAY") as HTMLInputElement, "27");
 
         return waitFor(() => {
             expect(onChange).to.have.been.calledThrice;
