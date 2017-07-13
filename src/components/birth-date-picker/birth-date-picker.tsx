@@ -1,7 +1,6 @@
-// TODO: use MobX.
 // TODO: filter input?
-// TODO: should we update the state when we receive a different value?
-// TODO: date validation belongs in a separate library.
+// TODO: should we update the state when we receive new props?
+// TODO: use moment.js for date-related stuff?
 
 import React = require("react");
 
@@ -31,9 +30,9 @@ export function dateFromYearMonthDay(y: string, m: string, d: string): Date | un
 
     const date = new Date(`${y}-${m}-${d}Z`);
     const valid = (
-        date.getUTCFullYear() === Number(y) &&
-        date.getUTCMonth()    === Number(m) - 1 &&
-        date.getUTCDate()     === Number(d)
+        date.getUTCFullYear()  === Number(y) &&
+        date.getUTCMonth() + 1 === Number(m) &&
+        date.getUTCDate()      === Number(d)
     );
 
     return valid ? date : undefined;
