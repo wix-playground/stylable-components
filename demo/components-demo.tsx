@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Link } from '../src';
-import { BirthDatePickerDemo } from './birth-date-picker-demo';
+import { BirthDatePickerDemo } from './components/birth-date-picker-demo';
 
 const style = require('./style.css');
 

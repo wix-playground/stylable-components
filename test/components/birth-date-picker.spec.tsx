@@ -1,7 +1,7 @@
 import * as React from "react";
 import { ClientRenderer, expect, simulate, sinon, waitFor } from "test-drive-react";
 import { BirthDatePicker, dateFromYearMonthDay } from "../../src";
-import { BirthDatePickerDemo } from "../../demo/birth-date-picker-demo";
+import { BirthDatePickerDemo } from "../../demo/components/birth-date-picker-demo";
 
 function updateInput(input: HTMLInputElement, value: string) {
     input.focus();
