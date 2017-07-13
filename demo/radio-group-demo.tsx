@@ -1,12 +1,18 @@
 import React = require('react');
 import {RadioGroup, RadioButton} from '../src/';
 
-
-export class RadioGroupDemo extends React.Component<{}, {}> {
+interface DemoState {
     myValue: string;
+}
+
+export class RadioGroupDemo extends React.Component<{}, DemoState> {
+    constructor() {
+        super();
+        this.setState({myValue: ''});
+    }
 
     onChange = (value: string) => {
-        this.myValue = value;
+        this.setState({myValue: value});
     };
 
     render() {
