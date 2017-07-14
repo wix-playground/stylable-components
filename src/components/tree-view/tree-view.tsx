@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {observer} from "mobx-react";
-import {observable} from "mobx";
+import {autorun, observable} from "mobx";
 
 const style = require('./tree-view.css');
 
@@ -17,7 +17,7 @@ export interface TreeItemProps {
     item: TreeItemData;
     itemRenderer: TreeItemRenderer;
     onItemClick?: React.EventHandler<any>;
-    selectedItem?: {item: TreeItemData};
+    stateMap?: StateMap;
 }
 
 export interface TreeViewProps {
@@ -27,20 +27,24 @@ export interface TreeViewProps {
     selectedItem?: {item: TreeItemData};
 }
 
+interface StateMap {
+  selected: {label: string};
+}
+
 const itemIdPrefix = 'TREE_ITEM';
 
-export function TreeItem({ item, itemRenderer, onItemClick, selectedItem = {item: { label: ''} }}: TreeItemProps): JSX.Element {
+export function TreeItem({ item, itemRenderer, onItemClick, stateMap }: TreeItemProps): JSX.Element {
     return (
         <div key={item.label}>
             <div data-automation-id={`${itemIdPrefix}_${item.label.replace(' ', '_')}`} className={style['tree-node']}
-                 onClick={() => onItemClick!(item)} data-selected={ selectedItem.item.label === item.label }>
+                 onClick={() => onItemClick!(item)} data-selected={ stateMap!.selected.label === item.label }>
                 <span data-automation-id={`${itemIdPrefix}_${item.label}_ICON`}>&gt; </span>
                 <span data-automation-id={`${itemIdPrefix}_${item.label}_LABEL`}>{item.label}</span>
             </div>
             <div className={style['nested-tree']}>
                 {(item.children || []).map((child: TreeItemData) =>
                     React.createElement(itemRenderer,
-                        {item: child, onItemClick, itemRenderer, selectedItem}))}
+                        {item: child, onItemClick, itemRenderer, stateMap}))}
             </div>
         </div>
     )
@@ -49,7 +53,19 @@ export function TreeItem({ item, itemRenderer, onItemClick, selectedItem = {item
 const TreeItemWrapper = observer(TreeItem);
 
 export class TreeView extends React.Component<TreeViewProps, {}>{
-    static defaultProps = { itemRenderer: TreeItemWrapper, selectedItem: observable({ item: {} }), onSelectItem: () => {} };
+    static defaultProps = { itemRenderer: TreeItemWrapper, selectedItem: observable({ item: { label: 'Fillet' } }), onSelectItem: () => {} };
+
+    stateMap: StateMap;
+
+    componentDidMount() {
+        autorun(() => {
+            this.stateMap = {selected: observable({ label: this.props.selectedItem!.item.label }) }
+        })();
+    }
+
+    onSelectItem = (item: TreeItemData) => {
+        this.props.onSelectItem!(item);
+    };
 
     render() {
         return (
@@ -57,9 +73,8 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
                 {(this.props.dataSource || []).map((item: TreeItemData) =>
                     React.createElement(
                         this.props.itemRenderer!,
-                        {item, onItemClick: this.props.onSelectItem,
-                            itemRenderer: this.props.itemRenderer!,
-                            selectedItem: this.props.selectedItem! }))}
+                        {item, onItemClick: this.onSelectItem,
+                            itemRenderer: this.props.itemRenderer!, stateMap: this.stateMap }))}
             </div>
         )
     }
