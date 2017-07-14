@@ -10,7 +10,8 @@ export interface CheckBoxProps {
 
 export const CheckBox: React.SFC<CheckBoxProps> = (props) => (
     <div data-automation-id="CHECKBOX_ROOT"
-         onClick={(event) => executeClickHandler(props.onChange!, !props.value)}>
+         onClick={(event) => executeClickHandler(props.onChange!, !props.value)}
+         style={{display:'inline'}}>
         <img data-automation-id="CHECKBOX_BOX"
              src={props.boxIcon}
              style={{width: '1em', height: '1em'}}/>
@@ -23,7 +24,7 @@ export const CheckBox: React.SFC<CheckBoxProps> = (props) => (
                  position: 'relative',
                  marginLeft: '-1em'
              }}/>
-        <span data-automation-id="CHECKBOX_LABEL">{props.text || ''}</span>
+        <span data-automation-id="CHECKBOX_LABEL" style={{marginLeft: '5px', verticalAlign:'top'}}>{props.text || ''}</span>
     </div>
 );
 

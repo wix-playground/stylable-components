@@ -1,6 +1,6 @@
 import React = require('react');
 import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react';
-import {CheckBoxDemo, demoCheckBoxText} from "../../demo/checkbox-demo";
+import {CheckBoxDemo, demoCheckBoxText} from "../../demo/components/checkbox-demo";
 import {CheckBox} from "../../src/components/checkbox/checkbox";
 
 const tickSVG = '/test/assets/tickMark.svg';
