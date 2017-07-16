@@ -29,8 +29,7 @@ export class RadioGroup extends React.Component<RadioGroupProps, {}> {
                 this.checkedArray.push(observable({checked: false}))
             }
         }
-        this.name = this.props.name ? this.props.name : 'name_' + counter;
-        counter++;
+        this.name = this.props.name ? this.props.name : 'name_' + counter++;
     }
 
     childrenOnClick(index: number) {
