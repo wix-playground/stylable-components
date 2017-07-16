@@ -13,8 +13,8 @@ export interface BirthDatePickerState {
     day: string;
 }
 
-function isDateValid(date: Date): boolean {
-    return !Number.isNaN(date.getTime());
+function isValidDate(date: any): boolean {
+    return date instanceof Date && !Number.isNaN(date.getTime());
 }
 
 function sameDate(a: Date, b: Date) {
@@ -24,7 +24,7 @@ function sameDate(a: Date, b: Date) {
 }
 
 function yearMonthDayFromDate(date: Date | undefined) {
-    const valid = date && isDateValid(date);
+    const valid = isValidDate(date);
     return {
         year:  valid ? String(date!.getUTCFullYear())  : "",
         month: valid ? String(date!.getUTCMonth() + 1) : "",
@@ -32,20 +32,18 @@ function yearMonthDayFromDate(date: Date | undefined) {
     }
 }
 
-export function dateFromYearMonthDay(y: string, m: string, d: string): Date | undefined {
-    const looksPlausible = /^\d\d\d\d-\d\d?-\d\d?$/.test(`${y}-${m}-${d}`);
-    if (!looksPlausible) {
-        return undefined;
+export function dateFromYearMonthDay(y: string, m: string, d: string): Date | Error {
+    if (/^\d\d\d\d-\d\d?-\d\d?$/.test(`${y}-${m}-${d}`)) {
+        const date = new Date(`${y}-${m}-${d}Z`);
+        if (
+            date.getUTCFullYear()  === Number(y) &&
+            date.getUTCMonth() + 1 === Number(m) &&
+            date.getUTCDate()      === Number(d)
+        ) {
+            return date;
+        }
     }
-
-    const date = new Date(`${y}-${m}-${d}Z`);
-    const valid = (
-        date.getUTCFullYear()  === Number(y) &&
-        date.getUTCMonth() + 1 === Number(m) &&
-        date.getUTCDate()      === Number(d)
-    );
-
-    return valid ? date : undefined;
+    return new Error("Invalid date");
 }
 
 export class BirthDatePicker extends React.Component<BirthDatePickerProps, BirthDatePickerState> {
@@ -63,13 +61,13 @@ export class BirthDatePicker extends React.Component<BirthDatePickerProps, Birth
     constructor(props: BirthDatePickerProps) {
         super(props);
         const {value} = this.props;
-        this.lastValue = value && isDateValid(value) ? value : undefined;
+        this.lastValue = isValidDate(value) ? value : undefined;
         this.state = yearMonthDayFromDate(this.lastValue);
     }
 
     componentWillReceiveProps(nextProps: BirthDatePickerProps) {
         const {value} = nextProps;
-        if (value && isDateValid(value)) {
+        if (isValidDate(value)) {
             this.lastValue = value;
             this.setState(yearMonthDayFromDate(value));
         }
