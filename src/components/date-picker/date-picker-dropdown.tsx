@@ -68,6 +68,7 @@ export class DatePickerDropdown extends React.Component<DatePickerDropdownProps,
                 <span onMouseDown={this.goToPrevMonth} data-automation-id="PREV_MONTH_BUTTON">Prev</span>
                 <span data-automation-id="MONTH_NAME">{this.monthName}</span> <span data-automation-id="YEAR">{this.year}</span>
                 <span onMouseDown={this.goToNextMonth} data-automation-id="NEXT_MONTH_BUTTON">Next</span>
+
                 <p>{getDayNames().map(name => <span key={'DAY_NAME_' + name} data-automation-id={'DAY_NAME_' + name}>{name}</span>)}</p>
                 <p>{this.dayArray.map(day => <span onMouseDown={this.onClick} key={'DAY_' + day} data-automation-id={'DAY_' + day}>{day}</span>)}</p>
             </div>

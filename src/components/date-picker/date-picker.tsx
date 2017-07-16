@@ -8,23 +8,24 @@ import {KeyCodes} from '../../common/key-codes';
 export interface DatePickerProps {
     date: Date;
     onChange (value: Date): void;
-    showDropdown?: boolean;
+    showDropdown: boolean;
+    placeholder: string;
 }
 
 @observer
 export class DatePicker extends React.Component<Partial<DatePickerProps>, {}>{
-    static defaultProps: Partial<DatePickerProps> = {
-        date: new Date()
-    };
+    public get currentDate (): Date {
+        return this.date;
+    }
 
-    @observable date: Date = this.props.date!;
-    @observable inputValue: string;
+    @observable date: Date = this.props.date ? this.props.date : new Date();
+    @observable inputValue: string = this.props.date ? this.props.date.toDateString() : '';
     @observable showDropdown: boolean = this.props.showDropdown ? this.props.showDropdown : false;
 
     // Called with possibly invalid string from the input
     @action updateStateFromString = (input: string): void => {
-        if (this.isDateValid(input)) {
-            const updatedDate = new Date(input);
+        if (this.isDateValid(input) || input === '') {
+            const updatedDate = input ? new Date(input) : new Date();
             this.date = updatedDate;
             this.inputValue = updatedDate.toDateString();
 
@@ -83,7 +84,7 @@ export class DatePicker extends React.Component<Partial<DatePickerProps>, {}>{
     render() {
         return (
             <div data-automation-id="DATE_PICKER">
-                <input onKeyDown={this.onKeyDown} onMouseDown={this.onMouseDown} onBlur={this.onBlur} onFocus={this.onFocus} onChange={this.onInputChange} value={this.inputValue} type="text" data-automation-id="DATE_PICKER_INPUT" />
+                <input onKeyDown={this.onKeyDown} onMouseDown={this.onMouseDown} onBlur={this.onBlur} onFocus={this.onFocus} onChange={this.onInputChange} value={this.inputValue} placeholder={this.props.placeholder} type="text" data-automation-id="DATE_PICKER_INPUT" />
                 {this.showDropdown ?
                     <DatePickerDropdown onChange={this.updateStateFromDate} date={this.date!} data-automation-id="DATE_PICKER_DROPDOWN" />
                     :
