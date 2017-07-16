@@ -5,23 +5,6 @@ const webpack = require('./webpack.config');
 const { testGlob } = require('./package.json');
 
 const sauceLabsLaunchers = { // Check out https://saucelabs.com/platforms for all browser/platform combos
-    slSafari7: {
-        base: 'SauceLabs',
-        browserName: 'safari',
-        platform: 'OS X 10.9'
-    },
-    slIE10: {
-        base: 'SauceLabs',
-        browserName: 'internet explorer',
-        platform: 'Windows 7',
-        version: '10'
-    },
-    slIE11: {
-        base: 'SauceLabs',
-        browserName: 'internet explorer',
-        platform: 'Windows 7',
-        version: '11'
-    },
     slChrome: {
         base: 'SauceLabs',
         browserName: 'chrome'
@@ -30,14 +13,44 @@ const sauceLabsLaunchers = { // Check out https://saucelabs.com/platforms for al
         base: 'SauceLabs',
         browserName: 'firefox'
     },
+    slEdge15: {
+        base: 'SauceLabs',
+        platform: 'Windows 10',
+        browserName: 'MicrosoftEdge',
+        version: '15.15063'
+    },
+    slIE11: {
+        base: 'SauceLabs',
+        platform: 'Windows 10',
+        browserName: 'internet explorer',
+        version: '11.103'
+    },
+    slIE10: {
+        base: 'SauceLabs',
+        platform: 'Windows 7',
+        browserName: 'internet explorer',
+        version: '10.0'
+    },
+    slSafari10: {
+        base: 'SauceLabs',
+        platform: 'macOS 10.12',
+        browserName: 'safari',
+        version: '10.0'
+    },
+    slSafari9: {
+        base: 'SauceLabs',
+        platform: 'OS X 10.11',
+        browserName: 'safari',
+        version: '9.0'
+    },
     slAndroid5: {
         base: 'SauceLabs',
-        browserName: 'android',
+        browserName: 'Android',
         version: '5.1'
     },
     slAndroid4: {
         base: 'SauceLabs',
-        browserName: 'android',
+        browserName: 'Android',
         version: '4.4'
     }
 };
