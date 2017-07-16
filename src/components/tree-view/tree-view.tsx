@@ -40,7 +40,8 @@ function isItemSelected(stateMap: StateMap, item: TreeItemData): boolean {
     return !!stateMap.get(item) && stateMap.get(item)!.isSelected;
 }
 
-export function TreeItem({ item, itemRenderer, onItemClick, stateMap = new Map<TreeItemData, TreeItemState>() }: TreeItemProps): JSX.Element {
+export function TreeItem({ item, itemRenderer, onItemClick,
+                           stateMap = new Map<TreeItemData, TreeItemState>() }: TreeItemProps): JSX.Element {
     return (
         <div key={item.label}>
             <div data-automation-id={`${itemIdPrefix}_${item.label.replace(' ', '_')}`} className={style['tree-node']}
@@ -82,7 +83,7 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
 
     onSelectItem = (item: TreeItemData) => {
         debugger;
-        if (this.props.selectedItem!.item.label) {
+        if (this.props.selectedItem && this.props.selectedItem!.item.label) {
             this.stateMap.get(this.props.selectedItem!.item)!.isSelected = false;
         }
         this.props.onSelectItem!(item);
