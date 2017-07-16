@@ -1,7 +1,9 @@
 import * as React from 'react';
-import {getMonthNames, getDayNames, getMonthFromOffset, getDaysInMonth} from './date-picker-helpers';
+import {getMonthNames, getMonthFromOffset} from './date-picker-helpers';
 import {observable, action, computed} from 'mobx';
 import {observer} from 'mobx-react';
+import {DatePickerGrid} from './date-picker-grid';
+import {debug} from "util";
 
 export interface DatePickerDropdownProps {
     date: Date;
@@ -20,18 +22,7 @@ export class DatePickerDropdown extends React.Component<DatePickerDropdownProps,
 
     @action setDayTo (day: string) {
         const date = new Date(this.date.getFullYear(), this.date.getMonth(), parseInt(day));
-        this.date = date;
-        this.props.onChange(this.date);
-    }
-
-    @computed
-    get dayArray (): Array<number> {
-        const dayArray: Array<number> = [];
-        for (let i = 1; i <= getDaysInMonth(this.date); i++) {
-            dayArray.push(i);
-        }
-
-        return dayArray;
+        this.props.onChange(date);
     }
 
     @computed
@@ -52,25 +43,18 @@ export class DatePickerDropdown extends React.Component<DatePickerDropdownProps,
 
     goToPrevMonth: React.EventHandler<React.SyntheticEvent<HTMLSpanElement>> = (event: React.SyntheticEvent<HTMLSpanElement>) => {
         event.preventDefault();
+        event.stopPropagation();
         const previousMonth: Date = getMonthFromOffset(new Date(this.date.getFullYear(), this.date.getMonth(), 1), -1);
         this.setDateTo(previousMonth);
-    };
-
-    onClick: React.EventHandler<React.SyntheticEvent<HTMLSpanElement>> = (event: React.SyntheticEvent<HTMLSpanElement>) => {
-        event.preventDefault();
-        const eventTarget = event.target as HTMLElement;
-        this.setDayTo(eventTarget.textContent!)
     };
 
     render() {
         return (
             <div data-automation-id="DATE_PICKER_DROPDOWN">
                 <span onMouseDown={this.goToPrevMonth} data-automation-id="PREV_MONTH_BUTTON">Prev</span>
-                <span data-automation-id="MONTH_NAME">{this.monthName}</span> <span data-automation-id="YEAR">{this.year}</span>
+                <span data-automation-id="MONTH_NAME">{this.monthName}</span>&nbsp;<span data-automation-id="YEAR">{this.year}</span>
                 <span onMouseDown={this.goToNextMonth} data-automation-id="NEXT_MONTH_BUTTON">Next</span>
-
-                <p>{getDayNames().map(name => <span key={'DAY_NAME_' + name} data-automation-id={'DAY_NAME_' + name}>{name}</span>)}</p>
-                <p>{this.dayArray.map(day => <span onMouseDown={this.onClick} key={'DAY_' + day} data-automation-id={'DAY_' + day}>{day}</span>)}</p>
+                <DatePickerGrid date={this.date} onChange={this.setDayTo.bind(this)} />
             </div>
         );
     }
