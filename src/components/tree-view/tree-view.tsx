@@ -27,23 +27,24 @@ export interface TreeViewProps {
     selectedItem?: {item: TreeItemData};
 }
 
-export interface StateMap {
-    // [key: string]: { isSelected: boolean }
+export interface TreeItemState {
+    isSelected: boolean;
 }
 
+type StateMap = Map<TreeItemData, TreeItemState>;
 
 const itemIdPrefix = 'TREE_ITEM';
 
-function isItemSelected(item: { isSelected: boolean }): boolean {
+function isItemSelected(stateMap: StateMap, item: TreeItemData): boolean {
     debugger;
-    return item && item.isSelected;
+    return !!stateMap.get(item) && stateMap.get(item)!.isSelected;
 }
 
-export function TreeItem({ item, itemRenderer, onItemClick, stateMap = {} }: TreeItemProps): JSX.Element {
+export function TreeItem({ item, itemRenderer, onItemClick, stateMap = new Map<TreeItemData, TreeItemState>() }: TreeItemProps): JSX.Element {
     return (
         <div key={item.label}>
             <div data-automation-id={`${itemIdPrefix}_${item.label.replace(' ', '_')}`} className={style['tree-node']}
-                 onClick={() => onItemClick!(item)} data-selected={ isItemSelected(stateMap[item.label])}>
+                 onClick={() => onItemClick!(item)} data-selected={ isItemSelected(stateMap, item) }>
                 <span data-automation-id={`${itemIdPrefix}_${item.label}_ICON`}>&gt; </span>
                 <span data-automation-id={`${itemIdPrefix}_${item.label}_LABEL`}>{item.label}</span>
             </div>
@@ -59,22 +60,22 @@ export function TreeItem({ item, itemRenderer, onItemClick, stateMap = {} }: Tre
 const TreeItemWrapper = observer(TreeItem);
 
 export class TreeView extends React.Component<TreeViewProps, {}>{
-    static defaultProps = { itemRenderer: TreeItemWrapper, selectedItem: observable({ item: {label: ''} }), onSelectItem: () => {} };
+    static defaultProps = { itemRenderer: TreeItemWrapper, onSelectItem: () => {} };
 
-    stateMap: Map<TreeItemData, boolean> = new Map<TreeItemData, boolean>();
+    stateMap: StateMap = new Map<TreeItemData, TreeItemState>();
 
     componentDidMount() {
         autorun(() => {
-            const currLabel = this.props.selectedItem!.item.label;
+            const currItem = this.props.selectedItem;
 
-            if (!currLabel) return;
+            if (!currItem) return;
 
             debugger;
 
-            if (this.stateMap[currLabel]) {
-                this.stateMap[currLabel].isSelected = true;
+            if (this.stateMap.get(currItem.item)) {
+                this.stateMap.get(currItem.item)!.isSelected = true;
             } else {
-                this.stateMap[currLabel] = observable({ isSelected: true });
+                this.stateMap.set(currItem.item, observable({ isSelected: true }));
             }
         });
     }
@@ -82,7 +83,7 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
     onSelectItem = (item: TreeItemData) => {
         debugger;
         if (this.props.selectedItem!.item.label) {
-            this.stateMap[this.props.selectedItem!.item.label].isSelected = false;
+            this.stateMap.get(this.props.selectedItem!.item)!.isSelected = false;
         }
         this.props.onSelectItem!(item);
     };
