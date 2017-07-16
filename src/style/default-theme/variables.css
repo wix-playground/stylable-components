@@ -1,0 +1,23 @@
+/* Typography  */
+
+@value fontFamily: Arial;
+@value fontSize: 100%;
+@value fontWeight: normal;
+@value lineHeight: 1.5;
+
+/* Colors */
+@value colorText: #000000;
+@value colorTextPlaceholder: #d3d3d3;
+@value colorTextBackground: #ffffff;
+
+@value colorPrimary: #4990e2;
+@value colorSecondary: #5cb4ff;
+@value colorFocus: #257ade;
+@value colorDisabled: #c8c8c8;
+
+/* Borders */
+@value borderRadius: 0px;
+@value border-default: solid 1px #7e7e7e;
+@value border-hover: solid 1px #5cb4ff;
+@value border-focus: solid 1px #4990e2;
+@value border-disabled: solid 1px #d8d8d8;

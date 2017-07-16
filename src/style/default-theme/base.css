@@ -1,0 +1,63 @@
+@value asd: "./variables.css";
+@value fontFamily, fontSize, fontWeight, lineHeight, colorText, textPlaceholder, borderRadius from asd;
+@value colorPrimary, colorSecondary, colorTextBackground, colorFocus, colorDisabled from asd;
+
+:global img {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+:global textarea {
+    height: auto;
+    min-height: 50px;
+    border-radius: borderRadius;
+}
+
+:global a, :global a:visited {
+    text-decoration: underline;
+    user-select: none;
+}
+
+/* button */
+
+:global button,
+:global .button {
+    display: inline-block;
+    vertical-align: middle;
+    padding: 9px 30px;
+    margin: 0;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border: 1px solid transparent;
+    border-radius: borderRadius;
+    background: colorPrimary;
+    color: colorTextBackground;
+    font-family: fontFamily;
+    font-size: fontSize;
+    font-weight: fontWeight;
+    line-height: lineHeight;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    user-select: none;
+    outline: 0;
+}
+
+:global button:focus, :global .button:focus {
+    background-color: colorFocus;
+}
+
+:global button:hover, :global .button:hover {
+    background-color: colorSecondary;
+}
+
+:global button:active, :global .button:active {
+    background-color: colorPrimary;
+}
+
+:global button[disabled], :global .button[disabled],
+:global button.disabled, :global .button.disabled {
+    background-color: colorDisabled;
+    pointer-events: none;
+}
