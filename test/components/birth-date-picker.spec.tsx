@@ -50,6 +50,17 @@ describe("<BirthDatePicker />", () => {
         });
     });
 
+    it("Does not emit onChange for initial value", function() {
+        const onChange = sinon.spy();
+        const { select, waitForDom } = clientRenderer.render(
+            <BirthDatePicker value={new Date()} onChange={onChange} />
+        );
+
+        return waitForDom(() => {
+            expect(onChange).to.have.not.been.called;
+        });
+    });
+
     it("Emits onChange when going from valid to invalid state", function() {
         const onChange = sinon.spy();
         const { select, waitForDom } = clientRenderer.render(
