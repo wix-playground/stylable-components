@@ -34,7 +34,6 @@ function SelectedItem({selectedItem}: any) {
 
 const SelectedItemWrapper = observer(SelectedItem);
 
-// @observer
 export class TreeViewDemo extends React.Component<{}, {}> {
     private selectedItem: any = observable({
         item: {}

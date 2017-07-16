@@ -4,8 +4,6 @@ import { autorun, observable } from 'mobx';
 
 const style = require('./tree-view.css');
 
-const initialMap = { selected: {label: ''} };
-
 export interface TreeItemRenderer {
     (props: TreeItemProps): JSX.Element;
 }
@@ -30,16 +28,22 @@ export interface TreeViewProps {
 }
 
 export interface StateMap {
-  selected: {label: string};
+    // [key: string]: { isSelected: boolean }
 }
+
 
 const itemIdPrefix = 'TREE_ITEM';
 
-export function TreeItem({ item, itemRenderer, onItemClick, stateMap = initialMap }: TreeItemProps): JSX.Element {
+function isItemSelected(item: { isSelected: boolean }): boolean {
+    debugger;
+    return item && item.isSelected;
+}
+
+export function TreeItem({ item, itemRenderer, onItemClick, stateMap = {} }: TreeItemProps): JSX.Element {
     return (
         <div key={item.label}>
             <div data-automation-id={`${itemIdPrefix}_${item.label.replace(' ', '_')}`} className={style['tree-node']}
-                 onClick={() => onItemClick!(item)} data-selected={ stateMap.selected.label === item.label }>
+                 onClick={() => onItemClick!(item)} data-selected={ isItemSelected(stateMap[item.label])}>
                 <span data-automation-id={`${itemIdPrefix}_${item.label}_ICON`}>&gt; </span>
                 <span data-automation-id={`${itemIdPrefix}_${item.label}_LABEL`}>{item.label}</span>
             </div>
@@ -55,17 +59,31 @@ export function TreeItem({ item, itemRenderer, onItemClick, stateMap = initialMa
 const TreeItemWrapper = observer(TreeItem);
 
 export class TreeView extends React.Component<TreeViewProps, {}>{
-    static defaultProps = { itemRenderer: TreeItemWrapper, selectedItem: { item: { label: 'Fillet' } }, onSelectItem: () => {} };
+    static defaultProps = { itemRenderer: TreeItemWrapper, selectedItem: observable({ item: {label: ''} }), onSelectItem: () => {} };
 
-    stateMap: StateMap = initialMap;
+    stateMap: Map<TreeItemData, boolean> = new Map<TreeItemData, boolean>();
 
     componentDidMount() {
         autorun(() => {
-            this.stateMap = { selected: observable({ label: this.props.selectedItem!.item.label }) }
-        })();
+            const currLabel = this.props.selectedItem!.item.label;
+
+            if (!currLabel) return;
+
+            debugger;
+
+            if (this.stateMap[currLabel]) {
+                this.stateMap[currLabel].isSelected = true;
+            } else {
+                this.stateMap[currLabel] = observable({ isSelected: true });
+            }
+        });
     }
 
     onSelectItem = (item: TreeItemData) => {
+        debugger;
+        if (this.props.selectedItem!.item.label) {
+            this.stateMap[this.props.selectedItem!.item.label].isSelected = false;
+        }
         this.props.onSelectItem!(item);
     };
 
