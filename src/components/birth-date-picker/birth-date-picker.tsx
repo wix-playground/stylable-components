@@ -47,12 +47,13 @@ export class BirthDatePicker extends React.Component<BirthDatePickerProps, {}> {
     static defaultProps: BirthDatePickerProps = {
         minDate: new Date("1900-01-01Z"),
         maxDate: new Date(),
-        onChange: (newValue: Date) => {}
+        onChange: () => {}
     };
 
     @observable year: string = "";
     @observable month: string = "";
     @observable day: string = "";
+
     @computed get currentValue() {
         return dateFromYearMonthDay(this.year, this.month, this.day);
     }
