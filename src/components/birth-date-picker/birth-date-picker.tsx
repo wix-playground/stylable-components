@@ -1,7 +1,3 @@
-// TODO: filter input?
-// TODO: should we update the state when we receive new props?
-// TODO: use moment.js for date-related stuff?
-
 import React = require("react");
 
 export interface BirthDatePickerProps {
@@ -107,7 +103,6 @@ export class BirthDatePicker extends React.Component<BirthDatePickerProps, Birth
 }
 
 BirthDatePicker.defaultProps = {
-    value: undefined,
     minDate: new Date("1900-01-01Z"),
     maxDate: new Date(),
     onChange: (newValue?: Date) => {}
