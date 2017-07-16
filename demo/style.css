@@ -1,8 +1,28 @@
+:global html {
+  box-sizing: border-box;
+  font-size: 100%; }
+
+:global *,
+:global *::before,
+:global *::after {
+  box-sizing: inherit; }
+
 :global body {
-    margin: 0;
-    padding: 15px;
+  margin-left: 1em;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .test {
     background-color: red;
+}
+
+hr {
+    margin: 1em 0;
+    max-width: none;
+}
+
+th {
+    padding-right: 1em;
 }

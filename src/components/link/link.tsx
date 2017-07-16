@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-export interface LinkProps extends React.HTMLAttributes<HTMLAnchorElement> {
+export interface LinkProps extends React.HTMLProps<HTMLAnchorElement> {
     /** URL the link points to */
     href: string;
 
