@@ -24,7 +24,7 @@ describe("<BirthDatePicker />", () => {
 
         change(select("BIRTH_DATE_PICKER_DAY"), "");
         await waitFor(() => {
-            expect(select("BIRTH_DATE_PICKER_DEMO_RESULT")).to.contain.text("Date not selected");
+            expect(select("BIRTH_DATE_PICKER_DEMO_RESULT")).to.contain.text("Selected date: 2002-10-12");
         });
     });
 
@@ -40,11 +40,12 @@ describe("<BirthDatePicker />", () => {
     });
 
     it("Displays the provided date", function() {
-        const value = new Date("1987-04-26Z");
-        const { select, waitForDom } = clientRenderer.render(<BirthDatePicker value={value} />);
+        const { select, waitForDom } = clientRenderer.render(
+            <BirthDatePicker value={new Date("1986-04-26Z")} />
+        );
 
         return waitForDom(() => {
-            expect(select("BIRTH_DATE_PICKER_YEAR")).to.have.value("1987");
+            expect(select("BIRTH_DATE_PICKER_YEAR")).to.have.value("1986");
             expect(select("BIRTH_DATE_PICKER_MONTH")).to.have.value("4");
             expect(select("BIRTH_DATE_PICKER_DAY")).to.have.value("26");
         });
@@ -61,7 +62,19 @@ describe("<BirthDatePicker />", () => {
         });
     });
 
-    it("Emits onChange when going from valid to invalid state", function() {
+    it("Emits onChange when going from valid to valid state", function() {
+        const onChange = sinon.spy();
+        const { select, waitForDom } = clientRenderer.render(
+            <BirthDatePicker value={new Date("1986-04-26Z")} onChange={onChange} />
+        );
+
+        return waitForDom(() => {
+            change(select("BIRTH_DATE_PICKER_DAY"), "27");
+            expect(onChange).to.have.been.calledOnce.and.calledWith(new Date("1986-04-27Z"));
+        });
+    });
+
+    it("Does not emit onChange when going from valid to invalid state", function() {
         const onChange = sinon.spy();
         const { select, waitForDom } = clientRenderer.render(
             <BirthDatePicker value={new Date()} onChange={onChange} />
@@ -69,21 +82,7 @@ describe("<BirthDatePicker />", () => {
 
         return waitForDom(() => {
             change(select("BIRTH_DATE_PICKER_MONTH"), "");
-            expect(onChange).to.have.been.calledOnce.and.calledWith(undefined);
-        });
-    });
-
-    it("Emits onChange when going from invalid to valid state", function() {
-        const onChange = sinon.spy();
-        const { select, waitForDom } = clientRenderer.render(
-            <BirthDatePicker onChange={onChange} />
-        );
-
-        return waitForDom(() => {
-            change(select("BIRTH_DATE_PICKER_YEAR"), "1987");
-            change(select("BIRTH_DATE_PICKER_MONTH"), "04");
-            change(select("BIRTH_DATE_PICKER_DAY"), "26");
-            expect(onChange).to.have.been.calledOnce.and.calledWith(new Date("1987-04-26Z"));
+            expect(onChange).to.have.not.been.called;
         });
     });
 
@@ -96,6 +95,20 @@ describe("<BirthDatePicker />", () => {
         return waitForDom(() => {
             change(select("BIRTH_DATE_PICKER_MONTH"), "03");
             expect(onChange).to.have.not.been.called;
+        });
+    });
+
+    it("Emits onChange when going from invalid to valid state", function() {
+        const onChange = sinon.spy();
+        const { select, waitForDom } = clientRenderer.render(
+            <BirthDatePicker onChange={onChange} />
+        );
+
+        return waitForDom(() => {
+            change(select("BIRTH_DATE_PICKER_YEAR"), "1986");
+            change(select("BIRTH_DATE_PICKER_MONTH"), "04");
+            change(select("BIRTH_DATE_PICKER_DAY"), "26");
+            expect(onChange).to.have.been.calledOnce.and.calledWith(new Date("1986-04-26Z"));
         });
     });
 

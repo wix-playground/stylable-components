@@ -4,11 +4,10 @@ export interface BirthDatePickerProps {
     value?: Date;
     minDate?: Date;
     maxDate?: Date;
-    onChange?: (newValue?: Date) => void;
+    onChange?: (newValue: Date) => void;
 }
 
 export interface BirthDatePickerState {
-    valid: boolean;
     year: string;
     month: string;
     day: string;
@@ -16,6 +15,21 @@ export interface BirthDatePickerState {
 
 function isDateValid(date: Date): boolean {
     return !Number.isNaN(date.getTime());
+}
+
+function sameDate(a: Date, b: Date) {
+    return a.getUTCFullYear() === b.getUTCFullYear() &&
+           a.getUTCMonth() === b.getUTCMonth() &&
+           a.getUTCDate() === b.getUTCDate();
+}
+
+function yearMonthDayFromDate(date: Date | undefined) {
+    const valid = date && isDateValid(date);
+    return {
+        year:  valid ? String(date!.getUTCFullYear())  : "",
+        month: valid ? String(date!.getUTCMonth() + 1) : "",
+        day:   valid ? String(date!.getUTCDate())      : ""
+    }
 }
 
 export function dateFromYearMonthDay(y: string, m: string, d: string): Date | undefined {
@@ -35,8 +49,13 @@ export function dateFromYearMonthDay(y: string, m: string, d: string): Date | un
 }
 
 export class BirthDatePicker extends React.Component<BirthDatePickerProps, BirthDatePickerState> {
-    static defaultProps: BirthDatePickerProps;
+    static defaultProps: BirthDatePickerProps = {
+        minDate: new Date("1900-01-01Z"),
+        maxDate: new Date(),
+        onChange: (newValue: Date) => {}
+    };
 
+    lastValue: Date | undefined;
     yearInput: HTMLInputElement | null;
     monthInput: HTMLInputElement | null;
     dayInput: HTMLInputElement | null;
@@ -44,13 +63,16 @@ export class BirthDatePicker extends React.Component<BirthDatePickerProps, Birth
     constructor(props: BirthDatePickerProps) {
         super(props);
         const {value} = this.props;
-        const valid = value ? isDateValid(value) : false;
-        this.state = {
-            valid,
-            year:  valid ? String(value!.getUTCFullYear())  : '',
-            month: valid ? String(value!.getUTCMonth() + 1) : '',
-            day:   valid ? String(value!.getUTCDate())      : ''
-        };
+        this.lastValue = value && isDateValid(value) ? value : undefined;
+        this.state = yearMonthDayFromDate(this.lastValue);
+    }
+
+    componentWillReceiveProps(nextProps: BirthDatePickerProps) {
+        const {value} = nextProps;
+        if (value && isDateValid(value)) {
+            this.lastValue = value;
+            this.setState(yearMonthDayFromDate(value));
+        }
     }
 
     render() {
@@ -83,27 +105,15 @@ export class BirthDatePicker extends React.Component<BirthDatePickerProps, Birth
     }
 
     handleChange = (event: React.FormEvent<HTMLInputElement>) => {
-        const newYear = this.yearInput!.value;
-        const newMonth = this.monthInput!.value;
-        const newDay = this.dayInput!.value;
-        const newDate = dateFromYearMonthDay(newYear, newMonth, newDay);
-        const newValid = Boolean(newDate);
+        const year = this.yearInput!.value;
+        const month = this.monthInput!.value;
+        const day = this.dayInput!.value;
 
-        if (newValid || this.state.valid) {
-            this.props.onChange!(newDate);
+        const newValue = dateFromYearMonthDay(year, month, day);
+        if (newValue instanceof Date && (!this.lastValue || !sameDate(this.lastValue, newValue))) {
+            this.lastValue = newValue;
+            this.props.onChange!(newValue);
         }
-
-        this.setState({
-            valid: newValid,
-            year: newYear,
-            month: newMonth,
-            day: newDay
-        });
+        this.setState({year, month, day});
     }
 }
-
-BirthDatePicker.defaultProps = {
-    minDate: new Date("1900-01-01Z"),
-    maxDate: new Date(),
-    onChange: (newValue?: Date) => {}
-};
