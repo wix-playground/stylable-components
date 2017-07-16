@@ -16,6 +16,7 @@ interface RadioState {
 
 @observer
 export class RadioGroup extends React.Component<RadioGroupProps, {}> {
+    name: string;
     checkedArray: Array<RadioState>;
 
     constructor(props: RadioGroupProps) {
@@ -24,6 +25,7 @@ export class RadioGroup extends React.Component<RadioGroupProps, {}> {
         for (let i = 0; i < this.props.children.length; i++) {
             this.checkedArray.push(observable({checked:false}))
         }
+        this.name = 'name_' + counter;
         counter++;
     }
 
@@ -42,7 +44,7 @@ export class RadioGroup extends React.Component<RadioGroupProps, {}> {
             <div data-automation-id="RADIO_GROUP">
                 {React.Children.map(this.props.children, (child, index) => {
                     if (React.isValidElement(child) && child.type === RadioButton) {
-                        const props = Object.assign({}, child.props, {automationId: 'RADIO_BUTTON_' + index, checked: this.checkedArray[index].checked, onClick: this.childrenOnClick(index), name: 'name' + counter});
+                        const props = Object.assign({}, child.props, {automationId: 'RADIO_BUTTON_' + index, checked: this.checkedArray[index].checked, onClick: this.childrenOnClick(index), name: this.name});
                         return React.cloneElement(child as ReactElement<any>, props);
                     }
                 })}
