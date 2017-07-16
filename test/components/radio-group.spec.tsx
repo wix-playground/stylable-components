@@ -1,7 +1,7 @@
 import React = require('react');
 import {expect, ClientRenderer, simulate, waitFor, sinon} from 'test-drive-react';
 import { RadioButton, RadioGroup } from '../../src'
-import { RadioGroupDemo } from '../../demo/radio-group-demo';
+import { RadioGroupDemo } from '../../demo/components/radio-group-demo';
 
 const radioGroup = 'RADIO_GROUP';
 const radioButton = 'RADIO_BUTTON';
