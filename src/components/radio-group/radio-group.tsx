@@ -2,6 +2,7 @@ import React = require('react');
 import {EventHandler, ReactElement} from "react";
 import {observable, action} from 'mobx';
 import {observer} from 'mobx-react';
+const style = require('./radio-group.css');
 
 export interface RadioGroupProps {
     children: JSX.Element[];
@@ -83,7 +84,8 @@ export class RadioButton extends React.Component<RadioButtonProps, {}> {
         return (
             <div data-automation-id={this.props.automationId} onClick={this.onClick}>
                 {this.props.checked ? checkedRadioSvg() : emptyRadioSvg()}
-                <input type="radio" data-automation-id={'INPUT'} value={this.props.value} checked={this.props.checked} name={this.props.name}/>
+                <input type="radio" className={style.input} data-automation-id={'INPUT'} value={this.props.value} checked={this.props.checked} name={this.props.name} readOnly={true}/>
+                <span data-automation-id="LABEL">{this.props.value}</span>
             </div>
         )
     }
