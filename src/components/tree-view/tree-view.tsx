@@ -1,8 +1,10 @@
 import * as React from 'react';
-import {observer} from "mobx-react";
-import {autorun, observable} from "mobx";
+import { observer } from 'mobx-react';
+import { autorun, observable } from 'mobx';
 
 const style = require('./tree-view.css');
+
+const initialMap = { selected: {label: ''} };
 
 export interface TreeItemRenderer {
     (props: TreeItemProps): JSX.Element;
@@ -27,17 +29,17 @@ export interface TreeViewProps {
     selectedItem?: {item: TreeItemData};
 }
 
-interface StateMap {
+export interface StateMap {
   selected: {label: string};
 }
 
 const itemIdPrefix = 'TREE_ITEM';
 
-export function TreeItem({ item, itemRenderer, onItemClick, stateMap }: TreeItemProps): JSX.Element {
+export function TreeItem({ item, itemRenderer, onItemClick, stateMap = initialMap }: TreeItemProps): JSX.Element {
     return (
         <div key={item.label}>
             <div data-automation-id={`${itemIdPrefix}_${item.label.replace(' ', '_')}`} className={style['tree-node']}
-                 onClick={() => onItemClick!(item)} data-selected={ stateMap!.selected.label === item.label }>
+                 onClick={() => onItemClick!(item)} data-selected={ stateMap.selected.label === item.label }>
                 <span data-automation-id={`${itemIdPrefix}_${item.label}_ICON`}>&gt; </span>
                 <span data-automation-id={`${itemIdPrefix}_${item.label}_LABEL`}>{item.label}</span>
             </div>
@@ -53,13 +55,13 @@ export function TreeItem({ item, itemRenderer, onItemClick, stateMap }: TreeItem
 const TreeItemWrapper = observer(TreeItem);
 
 export class TreeView extends React.Component<TreeViewProps, {}>{
-    static defaultProps = { itemRenderer: TreeItemWrapper, selectedItem: observable({ item: { label: 'Fillet' } }), onSelectItem: () => {} };
+    static defaultProps = { itemRenderer: TreeItemWrapper, selectedItem: { item: { label: 'Fillet' } }, onSelectItem: () => {} };
 
-    stateMap: StateMap;
+    stateMap: StateMap = initialMap;
 
     componentDidMount() {
         autorun(() => {
-            this.stateMap = {selected: observable({ label: this.props.selectedItem!.item.label }) }
+            this.stateMap = { selected: observable({ label: this.props.selectedItem!.item.label }) }
         })();
     }
 
