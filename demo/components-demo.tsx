@@ -12,16 +12,13 @@ export class ComponentsDemo extends React.Component<{}, {}>{
 
     render() {
         return <div>
-<<<<<<< HEAD
-            <Link className={style.test} href="">My link</Link>
-            <h1>{'<DatePicker />'}</h1>
-            <DatePickerDemo />
-            <TreeViewDemo />
-=======
             <div>
                 <h2>TreeView</h2>
                 <TreeViewDemo />
             </div>
+            <hr />
+            <h1>{'<DatePicker />'}</h1>
+            <DatePickerDemo />
             <hr />
             <div>
                 <h2>Typography</h2>
@@ -103,7 +100,6 @@ export class ComponentsDemo extends React.Component<{}, {}>{
                 </table>
             </div>
 
->>>>>>> master
         </div>;
     }
 }
