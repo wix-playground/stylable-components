@@ -1,5 +1,5 @@
 import React = require("react");
-import { autorun, observable, computed } from "mobx";
+import { observable, computed, reaction } from "mobx";
 import { observer } from "mobx-react";
 
 export interface BirthDatePickerProps {
@@ -61,13 +61,11 @@ export class BirthDatePicker extends React.Component<BirthDatePickerProps, {}> {
         super(props);
         [this.year, this.month, this.day] = yearMonthDayFromDate(this.props.value);
 
-        let autorunningInConstructor = true;
-        autorun(() => {
-            if (this.currentValue instanceof Date && !autorunningInConstructor) {
-                this.props.onChange!(this.currentValue);
+        reaction(() => this.currentValue, value => {
+            if (value instanceof Date) {
+                this.props.onChange!(value);
             }
         });
-        autorunningInConstructor = false;
     }
 
     componentWillReceiveProps(nextProps: BirthDatePickerProps) {
