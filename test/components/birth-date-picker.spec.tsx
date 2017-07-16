@@ -7,29 +7,24 @@ describe("<BirthDatePicker />", () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
 
-    it("Displays the provided date and allows changing it", async function() {
+    it("Displays the date and allows changing it", async function() {
         const { select, waitForDom } = clientRenderer.render(<BirthDatePickerDemo />);
 
         await waitForDom(() => {
             expect(select("BIRTH_DATE_PICKER")).to.be.present();
         });
 
-        const yearInput = select("BIRTH_DATE_PICKER_YEAR");
-        const monthInput = select("BIRTH_DATE_PICKER_MONTH");
-        const dayInput = select("BIRTH_DATE_PICKER_DAY");
+        change(select("BIRTH_DATE_PICKER_YEAR"), "2002");
+        change(select("BIRTH_DATE_PICKER_MONTH"), "10");
+        change(select("BIRTH_DATE_PICKER_DAY"), "12");
 
-        expect(yearInput).to.have.value("2001");
-        expect(monthInput).to.have.value("9");
-        expect(dayInput).to.have.value("11");
+        await waitFor(() => {
+            expect(select("BIRTH_DATE_PICKER_DEMO_RESULT")).to.contain.text("Selected date: 2002-10-12");
+        });
 
-        change(yearInput, "2002");
-        change(monthInput, "10");
-        change(dayInput, "12");
-
-        return waitFor(() => {
-            expect(yearInput).to.have.value("2002");
-            expect(monthInput).to.have.value("10");
-            expect(dayInput).to.have.value("12");
+        change(select("BIRTH_DATE_PICKER_DAY"), "");
+        await waitFor(() => {
+            expect(select("BIRTH_DATE_PICKER_DEMO_RESULT")).to.contain.text("Date not selected");
         });
     });
 
@@ -54,7 +49,6 @@ describe("<BirthDatePicker />", () => {
             expect(select("BIRTH_DATE_PICKER_DAY")).to.have.value("26");
         });
     });
-
 
     it("Emits onChange when going from valid to invalid state", function() {
         const onChange = sinon.spy();

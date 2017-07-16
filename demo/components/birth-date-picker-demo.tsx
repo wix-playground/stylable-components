@@ -16,13 +16,21 @@ export class BirthDatePickerDemo extends React.Component<{}, {value: Date}> {
     };
 
     render() {
+        const date = this.state.value;
+        const formattedDate = date ? date.toISOString().substr(0, 10) : "";
+
         return (
-            <BirthDatePicker
-                value={this.state.value}
-                minDate={minDate}
-                maxDate={maxDate}
-                onChange={this.handleChange}
-            />
+            <section>
+                <BirthDatePicker
+                    value={date}
+                    minDate={minDate}
+                    maxDate={maxDate}
+                    onChange={this.handleChange}
+                />
+                <span data-automation-id="BIRTH_DATE_PICKER_DEMO_RESULT">
+                    {date ? "Selected date: " + formattedDate : "Date not selected"}
+                </span>
+            </section>
         );
     }
 }
