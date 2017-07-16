@@ -22,6 +22,7 @@
 
 :global button,
 :global .button {
+    box-sizing: inherit;
     display: inline-block;
     vertical-align: middle;
     padding: 9px 30px;
