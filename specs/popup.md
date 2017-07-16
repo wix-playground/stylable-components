@@ -31,19 +31,30 @@ The Popup enables positioning content next to an anchor element.
 
 * Points of reference
 
+    There are 9 points on the anchor and popup element to be used as reference to where the popup will open. The chosen anchor point will be the location on which the popup will pivot. The popup point will be the location on the popup element which will be anchored to the point on the anchor element.
+
     ![Image of anchor positioning](./assets/popup/points.png)
 
-* Anchor default { vertical: 'bottom', horizontal: 'left'}
+* Anchor default
 
     ![Image of anchor positioning](./assets/popup/defaultanchor.png)
 
-* Anchor sample position { vertical: 'bottom', horizontal: 'right'}
+  * Anchor { vertical: 'bottom', horizontal: 'left'}
+  * Popup { vertical: 'top', horizontal: 'left'}
+
+* Anchor sample position
 
     ![Image of anchor positioning](./assets/popup/anchorright.png)
 
-* Anchor sample position { vertical: 'center', horizontal: 'center'}
+  * Anchor { vertical: 'bottom', horizontal: 'right'}
+  * Popup { vertical: 'top', horizontal: 'left'}
+
+* Anchor sample position
 
     ![Image of anchor positioning](./assets/popup/anchorcenter.png)
+
+  * Anchor { vertical: 'center', horizontal: 'center'}
+  * Popup { vertical: 'top', horizontal: 'left'}
 
 * Popup sample position
 
