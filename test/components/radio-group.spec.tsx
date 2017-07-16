@@ -140,6 +140,15 @@ describe('<RadioGroup />', function () {
             });
         });
 
+        it('renders a checked button if the check value is passed', function () {
+            const { select, waitForDom } = clientRenderer.render(<RadioButton value="Shiva" checked={true} automationId={radioButton + '_0'} name=""/>);
+
+            return waitForDom(() => {
+                const button = select(radioButton + '_0') as HTMLInputElement;
+                expect(button.checked).to.be.true;
+            });
+        });
+
         it('set the radio buttons name to the given name', function () {
             const { select, waitForDom } = clientRenderer.render(<RadioButton value="Moogle" automationId={radioButton + '_0'} name="name"/>);
 
