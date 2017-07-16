@@ -26,36 +26,45 @@ export const treeData: TreeItemData[] = [
 ];
 
 function SelectedItem({selectedItem}: any) {
-    return <div style={{'fontSize': '1.41em', 'textDecoration': 'underline'}}>{selectedItem.item.label ?
-                  (!selectedItem.item.children ? `You chose ${selectedItem.item.label}. Bon appetit!` :
-                  `You are looking at ${selectedItem.item.label}. Please choose a dish.`) :
+    return <div style={{'fontSize': '1.41em', 'textDecoration': 'underline'}}>{selectedItem.label ?
+                  (!selectedItem.children ? `You chose ${selectedItem.label}. Bon appetit!` :
+                  `You are looking at ${selectedItem.label}. Please choose a dish.`) :
                   'Please choose from the Menu!'}</div>
 }
 
 const SelectedItemWrapper = observer(SelectedItem);
 
-export class TreeViewDemo extends React.Component<{}, {}> {
-    private selectedItem: any = observable({
-        item: {}
-    });
+export interface TreeViewDemoState {
+    selectedItem: {label: string};
+}
 
-    onSelectItem = (item: Object) => {
-        this.selectedItem.item = item;
+export class TreeViewDemo extends React.Component<{}, TreeViewDemoState> {
+
+    constructor(props: {}) {
+        super(props);
+
+        this.state = {
+            selectedItem: { label: '' }
+        };
+    }
+
+    onSelectItem = (item: TreeItemData) => {
+        this.setState({selectedItem: item});
     };
 
     render() {
         return (
             <div>
                 <DevTools />
-                <h3>Default TreeView with data only</h3>
-                <TreeView dataSource={treeData} />
-                <br/>
+                {/*<h3>Default TreeView with data only</h3>*/}
+                {/*<TreeView dataSource={treeData} />*/}
+                {/*<br/>*/}
                 <h3>TreeView with ability to select a child</h3>
                 <section data-automation-id="TREE_VIEW_DEMO">
-                    <SelectedItemWrapper selectedItem={this.selectedItem}/>
+                    {/*<SelectedItemWrapper selectedItem={this.selectedItem}/>*/}
                     <br/>
                     <TreeView dataSource={treeData} onSelectItem={this.onSelectItem}
-                              selectedItem={this.selectedItem} />
+                              selectedItem={this.state.selectedItem} />
                 </section>
             </div>
         )

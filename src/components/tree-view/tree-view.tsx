@@ -18,13 +18,14 @@ export interface TreeItemProps {
     itemRenderer: TreeItemRenderer;
     onItemClick?: React.EventHandler<any>;
     stateMap?: StateMap;
+    state?: TreeItemState;
 }
 
 export interface TreeViewProps {
     dataSource: Object[];
     itemRenderer?: TreeItemRenderer;
     onSelectItem?: React.EventHandler<any>;
-    selectedItem?: {item: TreeItemData};
+    selectedItem?: TreeItemData;
 }
 
 export interface TreeItemState {
@@ -35,24 +36,19 @@ type StateMap = Map<TreeItemData, TreeItemState>;
 
 const itemIdPrefix = 'TREE_ITEM';
 
-function isItemSelected(stateMap: StateMap, item: TreeItemData): boolean {
-    debugger;
-    return !!stateMap.get(item) && stateMap.get(item)!.isSelected;
-}
-
 export function TreeItem({ item, itemRenderer, onItemClick,
-                           stateMap = new Map<TreeItemData, TreeItemState>() }: TreeItemProps): JSX.Element {
+                           stateMap = new Map<TreeItemData, TreeItemState>(), state }: TreeItemProps): JSX.Element {
     return (
         <div key={item.label}>
             <div data-automation-id={`${itemIdPrefix}_${item.label.replace(' ', '_')}`} className={style['tree-node']}
-                 onClick={() => onItemClick!(item)} data-selected={ isItemSelected(stateMap, item) }>
+                 onClick={() => onItemClick!(item)} data-selected={ !!state && state!.isSelected }>
                 <span data-automation-id={`${itemIdPrefix}_${item.label}_ICON`}>&gt; </span>
                 <span data-automation-id={`${itemIdPrefix}_${item.label}_LABEL`}>{item.label}</span>
             </div>
             <div className={style['nested-tree']}>
                 {(item.children || []).map((child: TreeItemData) =>
                     React.createElement(itemRenderer,
-                        {item: child, onItemClick, itemRenderer, stateMap}))}
+                        {item: child, onItemClick, itemRenderer, stateMap, state: stateMap.get(child)}))}
             </div>
         </div>
     )
@@ -60,31 +56,48 @@ export function TreeItem({ item, itemRenderer, onItemClick,
 
 const TreeItemWrapper = observer(TreeItem);
 
+function getLabelsList(data: TreeItemData): TreeItemData[] {
+    return [data]
+        .concat(...(data.children || [])
+            .map(getLabelsList));
+}
+
+function getAllNodeLabels(treeData: Object[]) {
+    return treeData.map(getLabelsList).reduce((prev, next) => [...prev, ...next]);
+}
+
+@observer
 export class TreeView extends React.Component<TreeViewProps, {}>{
     static defaultProps = { itemRenderer: TreeItemWrapper, onSelectItem: () => {} };
 
     stateMap: StateMap = new Map<TreeItemData, TreeItemState>();
 
+    constructor(props: TreeViewProps) {
+        super(props);
+
+        getAllNodeLabels(props.dataSource).forEach(item => {
+           this.stateMap.set(item, observable({ isSelected: false }));
+        });
+    }
+
     componentDidMount() {
         autorun(() => {
             const currItem = this.props.selectedItem;
-
             if (!currItem) return;
 
-            debugger;
 
-            if (this.stateMap.get(currItem.item)) {
-                this.stateMap.get(currItem.item)!.isSelected = true;
+            if (this.stateMap.get(currItem)) {
+                this.stateMap.get(currItem)!.isSelected = true;
             } else {
-                this.stateMap.set(currItem.item, observable({ isSelected: true }));
+                this.stateMap.set(currItem, observable({ isSelected: true }));
             }
         });
     }
 
     onSelectItem = (item: TreeItemData) => {
-        debugger;
-        if (this.props.selectedItem && this.props.selectedItem!.item.label) {
-            this.stateMap.get(this.props.selectedItem!.item)!.isSelected = false;
+        const currItem = this.props.selectedItem;
+        if (!!currItem && currItem.label) {
+            this.stateMap.get(currItem)!.isSelected = false;
         }
         this.props.onSelectItem!(item);
     };
@@ -96,7 +109,7 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
                     React.createElement(
                         this.props.itemRenderer!,
                         {item, onItemClick: this.onSelectItem,
-                            itemRenderer: this.props.itemRenderer!, stateMap: this.stateMap }))}
+                            itemRenderer: this.props.itemRenderer!, stateMap: this.stateMap, state: this.stateMap.get(item) }))}
             </div>
         )
     }
