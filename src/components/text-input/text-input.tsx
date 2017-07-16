@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-export interface TextInputProps extends React.HTMLAttributes<HTMLInputElement> {
+export interface TextInputProps extends React.HTMLProps<HTMLInputElement> {
 }
 
 export class TextInput extends React.Component<TextInputProps, {}>{
