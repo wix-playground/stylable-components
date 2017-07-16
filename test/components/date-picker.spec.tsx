@@ -58,6 +58,25 @@ describe('The DatePicker component', function () {
         });
     });
 
+    it('should show and hide the dropdown when the input is clicked', async function () {
+        const {select, waitForDom} = clientRenderer.render(<DatePicker />);
+        const datePickerInput = select(datePickerInputId);
+
+        await waitForDom(() => expect(select(datePickerDropdownId)).to.be.absent());
+
+        simulate.mouseDown(datePickerInput);
+
+        await waitForDom(() => expect(select(datePickerDropdownId)).to.be.present());
+
+        simulate.mouseDown(datePickerInput);
+
+        return await waitForDom(() => expect(select(datePickerDropdownId)).to.be.absent());
+    });
+
+    describe('The Input', function () {
+
+    });
+
     describe('The Dropdown', function () {
         const dayNames: Array<string> = getDayNames();
         const days: Array<string> = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28'];
@@ -150,7 +169,7 @@ describe('The DatePicker component', function () {
         });
     });
 
-    describe('The helper functions', function () {
+    describe('The Helper Functions', function () {
         it('getMonthFromOffset should return the next month when the second argument is 1', function () {
             const currentDate = new Date('Mar 6 2017');
             const nextMonth = getMonthFromOffset(currentDate, 1);

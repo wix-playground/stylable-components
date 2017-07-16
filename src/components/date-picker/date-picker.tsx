@@ -4,7 +4,6 @@ import {observable, action} from 'mobx';
 import {observer} from 'mobx-react';
 import {SyntheticEvent} from "react";
 import {KeyCodes} from '../../common/key-codes';
-import HTML = Mocha.reporters.HTML;
 
 export interface DatePickerProps {
     date: Date;
@@ -24,12 +23,16 @@ export class DatePicker extends React.Component<Partial<DatePickerProps>, {}>{
 
     // Called with possibly invalid string from the input
     @action updateStateFromString = (input: string): void => {
-        const newDate: Date = this.validateDate(input);
-        this.date = newDate;
-        this.inputValue = newDate.toDateString();
+        if (this.isDateValid(input)) {
+            const updatedDate = new Date(input);
+            this.date = updatedDate;
+            this.inputValue = updatedDate.toDateString();
 
-        if (this.props.onChange) {
-            this.props.onChange(newDate);
+            if (this.props.onChange) {
+                this.props.onChange(updatedDate);
+            }
+        } else {
+            this.inputValue = 'Invalid Date';
         }
     };
 
@@ -53,6 +56,10 @@ export class DatePicker extends React.Component<Partial<DatePickerProps>, {}>{
         this.showDropdown = true;
     };
 
+    @action onMouseDown: React.EventHandler<SyntheticEvent<HTMLInputElement>> = (): void => {
+        this.showDropdown = !this.showDropdown;
+    };
+
     @action onBlur: React.EventHandler<SyntheticEvent<HTMLInputElement>> = (event: React.FocusEvent<HTMLInputElement>): void => {
         const eventTarget = event.target as HTMLInputElement;
         this.updateStateFromString(eventTarget.value);
@@ -63,19 +70,22 @@ export class DatePicker extends React.Component<Partial<DatePickerProps>, {}>{
         if (event.keyCode === KeyCodes.ENTER) {
             const eventTarget = event.target as HTMLInputElement;
             this.updateStateFromString(eventTarget.value);
+            this.showDropdown = !this.showDropdown;
         }
     };
 
-    validateDate = (stringToValidate: string): Date => {
-        return new Date(stringToValidate);
+    isDateValid = (stringToValidate: string): boolean => {
+        const dateFromString = new Date(stringToValidate);
+
+        return dateFromString.toDateString() !== 'Invalid Date';
     };
 
     render() {
         return (
             <div data-automation-id="DATE_PICKER">
-                <input onKeyDown={this.onKeyDown} onBlur={this.onBlur} onFocus={this.onFocus} onChange={this.onInputChange} value={this.inputValue} type="text" data-automation-id="DATE_PICKER_INPUT" />
+                <input onKeyDown={this.onKeyDown} onMouseDown={this.onMouseDown} onBlur={this.onBlur} onFocus={this.onFocus} onChange={this.onInputChange} value={this.inputValue} type="text" data-automation-id="DATE_PICKER_INPUT" />
                 {this.showDropdown ?
-                    <DatePickerDropdown onChange={this.updateStateFromDate} date={this.props.date!} data-automation-id="DATE_PICKER_DROPDOWN" />
+                    <DatePickerDropdown onChange={this.updateStateFromDate} date={this.date!} data-automation-id="DATE_PICKER_DROPDOWN" />
                     :
                     null
                 }
