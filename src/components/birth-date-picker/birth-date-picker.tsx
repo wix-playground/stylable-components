@@ -1,16 +1,12 @@
 import React = require("react");
+import { autorun, observable, computed } from "mobx";
+import { observer } from "mobx-react";
 
 export interface BirthDatePickerProps {
     value?: Date;
     minDate?: Date;
     maxDate?: Date;
     onChange?: (newValue: Date) => void;
-}
-
-export interface BirthDatePickerState {
-    year: string;
-    month: string;
-    day: string;
 }
 
 function isValidDate(date: any): boolean {
@@ -25,11 +21,11 @@ function sameDate(a: Date, b: Date) {
 
 function yearMonthDayFromDate(date: Date | undefined) {
     const valid = isValidDate(date);
-    return {
-        year:  valid ? String(date!.getUTCFullYear())  : "",
-        month: valid ? String(date!.getUTCMonth() + 1) : "",
-        day:   valid ? String(date!.getUTCDate())      : ""
-    }
+    return [
+        valid ? String(date!.getUTCFullYear())  : "",
+        valid ? String(date!.getUTCMonth() + 1) : "",
+        valid ? String(date!.getUTCDate())      : ""
+    ];
 }
 
 export function dateFromYearMonthDay(y: string, m: string, d: string): Date | Error {
@@ -46,72 +42,65 @@ export function dateFromYearMonthDay(y: string, m: string, d: string): Date | Er
     return new Error("Invalid date");
 }
 
-export class BirthDatePicker extends React.Component<BirthDatePickerProps, BirthDatePickerState> {
+@observer
+export class BirthDatePicker extends React.Component<BirthDatePickerProps, {}> {
     static defaultProps: BirthDatePickerProps = {
         minDate: new Date("1900-01-01Z"),
         maxDate: new Date(),
         onChange: (newValue: Date) => {}
     };
 
-    lastValue: Date | undefined;
-    yearInput: HTMLInputElement | null;
-    monthInput: HTMLInputElement | null;
-    dayInput: HTMLInputElement | null;
+    @observable year: string = "";
+    @observable month: string = "";
+    @observable day: string = "";
+    @computed get currentValue() {
+        return dateFromYearMonthDay(this.year, this.month, this.day);
+    }
 
     constructor(props: BirthDatePickerProps) {
         super(props);
-        const {value} = this.props;
-        this.lastValue = isValidDate(value) ? value : undefined;
-        this.state = yearMonthDayFromDate(this.lastValue);
+        [this.year, this.month, this.day] = yearMonthDayFromDate(this.props.value);
+
+        let autorunningInConstructor = true;
+        autorun(() => {
+            if (this.currentValue instanceof Date && !autorunningInConstructor) {
+                this.props.onChange!(this.currentValue);
+            }
+        });
+        autorunningInConstructor = false;
     }
 
     componentWillReceiveProps(nextProps: BirthDatePickerProps) {
-        const {value} = nextProps;
-        if (isValidDate(value)) {
-            this.lastValue = value;
-            this.setState(yearMonthDayFromDate(value));
-        }
+        [this.year, this.month, this.day] = yearMonthDayFromDate(nextProps.value);
     }
 
     render() {
         return <span data-automation-id="BIRTH_DATE_PICKER">
             <input data-automation-id="BIRTH_DATE_PICKER_DAY"
-                ref={(input) => { this.dayInput = input }}
                 type="text"
                 size={3}
                 pattern="\d*"
                 placeholder="DD"
-                value={this.state.day}
-                onChange={this.handleChange} />
+                value={this.day}
+                onChange={this.handleDayChange} />
             <input data-automation-id="BIRTH_DATE_PICKER_MONTH"
-                ref={(input) => { this.monthInput = input }}
                 type="text"
                 size={3}
                 pattern="\d*"
                 placeholder="MM"
-                value={this.state.month}
-                onChange={this.handleChange} />
+                value={this.month}
+                onChange={this.handleMonthChange} />
             <input data-automation-id="BIRTH_DATE_PICKER_YEAR"
-                ref={(input) => { this.yearInput = input }}
                 type="text"
                 size={5}
                 pattern="\d*"
                 placeholder="YYYY"
-                value={this.state.year}
-                onChange={this.handleChange} />
+                value={this.year}
+                onChange={this.handleYearChange} />
         </span>;
     }
 
-    handleChange = (event: React.FormEvent<HTMLInputElement>) => {
-        const year = this.yearInput!.value;
-        const month = this.monthInput!.value;
-        const day = this.dayInput!.value;
-
-        const newValue = dateFromYearMonthDay(year, month, day);
-        if (newValue instanceof Date && (!this.lastValue || !sameDate(this.lastValue, newValue))) {
-            this.lastValue = newValue;
-            this.props.onChange!(newValue);
-        }
-        this.setState({year, month, day});
-    }
+    handleYearChange  = (event: React.FormEvent<HTMLInputElement>) => this.year  = event.currentTarget.value;
+    handleMonthChange = (event: React.FormEvent<HTMLInputElement>) => this.month = event.currentTarget.value;
+    handleDayChange   = (event: React.FormEvent<HTMLInputElement>) => this.day   = event.currentTarget.value;
 }
