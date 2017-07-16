@@ -13,9 +13,43 @@ export class ComponentsDemo extends React.Component<{}, {}>{
 
     render() {
         return <div>
-            <Link className={style.test} href="">My link</Link>
-            <TreeViewDemo />
-            <hr/>
+            <div>
+                <h2>TreeView</h2>
+                <TreeViewDemo />
+            </div>
+            <hr />
+            <div>
+                <h2>Typography</h2>
+                <table>
+                    <tr>
+                        <th>
+                            <h1>H1</h1>
+                        </th>
+                        <th>
+                            <h2>H2</h2>
+                        </th>
+                        <th>
+                            <h3>H3</h3>
+                        </th>
+                        <th>
+                            <h4>H4</h4>
+                        </th>
+                        <th>
+                            <h5>H5</h5>
+                        </th>
+                        <th>
+                            <h6>H6</h6>
+                        </th>
+                        <th>
+                            <label>Label</label>
+                        </th>
+                        <th>
+                            <p>paragraph</p>
+                        </th>
+                    </tr>
+                </table>
+            </div>
+            <hr />
             <div>
                 <h2>button</h2>
                 <table>
@@ -45,6 +79,20 @@ export class ComponentsDemo extends React.Component<{}, {}>{
                         </th>
                         <th>
                             <a disabled href="http://www.wix.com" target="_blank">Disabled</a>
+                        </th>
+                    </tr>
+                </table>
+            </div>
+            <hr />
+            <div>
+                <h2>input</h2>
+                <table>
+                    <tr>
+                        <th>
+                            <input placeholder="Placeholder"/>
+                        </th>
+                        <th>
+                            <input placeholder="Disabled" disabled/>
                         </th>
                     </tr>
                 </table>
