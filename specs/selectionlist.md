@@ -2,14 +2,14 @@
 
 A component which allows the user to take action by choosing an item from a list. The SelectionList will usually be displayed inside a Popup component.
 
-Any children passed to the SelectionList or created by the
-
 * [Internal Implementation](#internal-implementation)
 * [Properties](#properties)
 * [Input Handling](#input-handling)
 * [Examples](#examples)
 
 ## Internal Implementation
+
+The SelectionList can accept data from the dataSource property or directly as children. When using children, the ItemRenderer is not used and in both cases the elements created should be of type SelectionItem.
 
 ### ItemRenderer
 
@@ -25,7 +25,7 @@ The default item renderer supports the following properties:
 | Name | Type | Default | Required | Description |
 | -- | -- | -- | -- | -- |
 | onSelect | func | null | no | Triggered when an item is selected in the list |
-| children | ListItem[] | null | no | Children to be rendered in the list |
+| children | SelectionItem[] | null | no | Children to be rendered in the list |
 
 * The following props should be placed in an ISelectionList interface since they will need to be passed from higher order components.
 
@@ -43,3 +43,6 @@ The datasource property accepts the following:
 
 Note that if children are passed to the component, the dataSource property is ignored.
 
+## Input Handling
+
+## Examples
