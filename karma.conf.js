@@ -135,8 +135,8 @@ module.exports = function (config) {
 
         // start these browsers
         // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-        // browsers: process.env.TRAVIS_BRANCH === 'master' && process.env.TRAVIS_PULL_REQUEST === 'false' ?
-        browsers: true ?
+        browsers: process.env.TRAVIS_BRANCH === 'master' && process.env.TRAVIS_PULL_REQUEST === 'false' ?
+        // browsers: true ?
             Object.keys(sauceLabsLaunchers) :
             ['Chrome'],
 
