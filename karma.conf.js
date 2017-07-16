@@ -55,10 +55,6 @@ const sauceLabsLaunchers = { // Check out https://saucelabs.com/platforms for al
     }
 };
 
-console.log('process.env.TRAVIS_PULL_REQUEST', process.env.TRAVIS_PULL_REQUEST);
-console.log('env')
-console.log(process.env)
-
 module.exports = function (config) {
     config.set({
         // this key is used by karma-webpack, see preprocessors below
