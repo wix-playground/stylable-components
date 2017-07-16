@@ -79,9 +79,9 @@ export class RadioButton extends React.Component<RadioButtonProps, {}> {
 
     render() {
         return (
-            <div>
+            <div data-automation-id={this.props.automationId} onClick={this.onClick}>
                 {this.props.checked ? checkedRadioSvg() : emptyRadioSvg()}
-                <input type="radio" data-automation-id={this.props.automationId} onClick={this.onClick} value={this.props.value} checked={this.props.checked} name={this.props.name}/>
+                <input type="radio" data-automation-id={'INPUT'} value={this.props.value} checked={this.props.checked} name={this.props.name}/>
             </div>
         )
     }

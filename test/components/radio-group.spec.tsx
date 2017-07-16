@@ -19,7 +19,7 @@ describe('<RadioGroup />', function () {
             const {select, waitForDom} = clientRenderer.render(<RadioGroupDemo/>);
 
             await waitForDom(() => { expect(select("RADIO_GROUP_DEMO", radioGroup, radioButton + '_0')).to.be.present() });
-            const button0 = select(radioGroup, radioButton + '_0') as HTMLInputElement;
+            const button0 = select(radioGroup, radioButton + '_0', 'INPUT') as HTMLInputElement;
             button0.click();
             await waitForDom(() => {
                 expect(select('RADIO_GROUP_DEMO_VALUE')).to.have.text('Value: This way!');
@@ -36,8 +36,8 @@ describe('<RadioGroup />', function () {
         );
 
         return waitForDom(() => {
-            const button0 = select(radioGroup, radioButton + '_0') as HTMLInputElement;
-            const button1 = select(radioGroup, radioButton + '_1') as HTMLInputElement;
+            const button0 = select(radioGroup, radioButton + '_0', 'INPUT') as HTMLInputElement;
+            const button1 = select(radioGroup, radioButton + '_1', 'INPUT') as HTMLInputElement;
 
             expect(button0).to.be.present();
             expect(button0.checked).to.be.false;
@@ -57,8 +57,8 @@ describe('<RadioGroup />', function () {
         );
 
         return waitForDom(() => {
-            const button0 = select(radioGroup, radioButton + '_0') as HTMLInputElement;
-            const button1 = select(radioGroup, radioButton + '_1') as HTMLInputElement;
+            const button0 = select(radioGroup, radioButton + '_0', 'INPUT') as HTMLInputElement;
+            const button1 = select(radioGroup, radioButton + '_1', 'INPUT') as HTMLInputElement;
 
             expect(button0.name).to.equal('kupo');
             expect(button1.name).to.equal('kupo');
@@ -75,7 +75,7 @@ describe('<RadioGroup />', function () {
         );
 
         await waitForDom(() => { expect(select(radioGroup, radioButton + '_1')).to.be.present() });
-        simulate.click(select(radioGroup, radioButton + '_1'));
+        simulate.click(select(radioGroup, radioButton + '_1', 'INPUT'));
         return waitFor(() => {
             expect(onChange).to.have.been.calledWithMatch('Quetzalcoatl');
         })
@@ -90,10 +90,10 @@ describe('<RadioGroup />', function () {
         );
 
         await waitForDom(() => { expect(select(radioGroup, radioButton + '_0')).to.be.present() });
-        const button0 = select(radioGroup, radioButton + '_0') as HTMLInputElement;
+        const button0 = select(radioGroup, radioButton + '_0', 'INPUT') as HTMLInputElement;
         button0.click();
         return waitForDom(() => {
-            const button1 = select(radioGroup, radioButton + '_1') as HTMLInputElement;
+            const button1 = select(radioGroup, radioButton + '_1', 'INPUT') as HTMLInputElement;
             expect(button0.checked).to.be.true;
             expect(button1.checked).to.be.false;
         })
@@ -107,11 +107,11 @@ describe('<RadioGroup />', function () {
             </RadioGroup>
         );
 
-        await waitForDom(() => { expect(select(radioGroup, radioButton + '_0')).to.be.present() });
-        const button0 = select(radioGroup, radioButton + '_0') as HTMLInputElement;
+        await waitForDom(() => { expect(select(radioGroup, radioButton + '_0', 'INPUT')).to.be.present() });
+        const button0 = select(radioGroup, radioButton + '_0', 'INPUT') as HTMLInputElement;
         button0.click();
         await waitForDom(() => { expect(button0.checked).to.be.true; });
-        const button1 = select(radioGroup, radioButton + '_1') as HTMLInputElement;
+        const button1 = select(radioGroup, radioButton + '_1', 'INPUT') as HTMLInputElement;
         button1.click();
         return waitForDom(() => {
             expect(button0.checked).to.be.false;
@@ -137,11 +137,11 @@ describe('<RadioGroup />', function () {
             </div>
         );
 
-        await waitForDom(() => { expect(select('DIV_0', radioGroup, radioButton + '_0')).to.be.present() });
-        const button0 = select('DIV_0', radioGroup, radioButton + '_0') as HTMLInputElement;
+        await waitForDom(() => { expect(select('DIV_0', radioGroup, radioButton + '_0', 'INPUT')).to.be.present() });
+        const button0 = select('DIV_0', radioGroup, radioButton + '_0', 'INPUT') as HTMLInputElement;
         button0.click();
         await waitForDom(() => { expect(button0.checked).to.be.true; });
-        const button1 = select('DIV_1', radioGroup, radioButton + '_1') as HTMLInputElement;
+        const button1 = select('DIV_1', radioGroup, radioButton + '_1', 'INPUT') as HTMLInputElement;
         button1.click();
         return waitForDom(() => {
             expect(button0.checked).to.be.true;
@@ -154,8 +154,8 @@ describe('<RadioGroup />', function () {
             const { select, waitForDom } = clientRenderer.render(<RadioButton value="Shiva" automationId={radioButton + '_0'} name=""/>);
 
             return waitForDom(() => {
-                expect(select(radioButton + '_0')).to.be.present().and.to.have.attr('type', 'radio');
-                expect(select(radioButton + '_0')).to.have.attr('value', 'Shiva');
+                expect(select(radioButton + '_0', 'INPUT')).to.be.present().and.to.have.attr('type', 'radio');
+                expect(select(radioButton + '_0', 'INPUT')).to.have.attr('value', 'Shiva');
             });
         });
 
@@ -163,7 +163,7 @@ describe('<RadioGroup />', function () {
             const { select, waitForDom } = clientRenderer.render(<RadioButton value="Shiva" checked={true} automationId={radioButton + '_0'} name=""/>);
 
             return waitForDom(() => {
-                const button = select(radioButton + '_0') as HTMLInputElement;
+                const button = select(radioButton + '_0', 'INPUT') as HTMLInputElement;
                 expect(button.checked).to.be.true;
             });
         });
@@ -172,7 +172,7 @@ describe('<RadioGroup />', function () {
             const { select, waitForDom } = clientRenderer.render(<RadioButton value="Moogle" automationId={radioButton + '_0'} name="name"/>);
 
             return waitForDom(() => {
-                const button = select(radioButton + '_0') as HTMLInputElement;
+                const button = select(radioButton + '_0', 'INPUT') as HTMLInputElement;
                 expect(button.name).to.equal('name');
             });
         });
@@ -181,7 +181,7 @@ describe('<RadioGroup />', function () {
             const onClick = sinon.spy();
             const { select, waitForDom } = clientRenderer.render(<RadioButton value="Tonberry" onClick={onClick} automationId={radioButton + '_0'} name=""/>);
 
-            await waitForDom(() => { expect(select(radioButton + '_0')).to.be.present() });
+            await waitForDom(() => { expect(select(radioButton + '_0', 'INPUT')).to.be.present() });
             simulate.click(select(radioButton + '_0'));
             return waitFor(() => {
                 expect(onClick).to.have.been.calledOnce;
