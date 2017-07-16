@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {expect, ClientRenderer, sinon, simulate, waitForDom, waitFor} from 'test-drive-react';
+import {expect, ClientRenderer, sinon, simulate, waitForDom, selectDom, waitFor} from 'test-drive-react';
 import {DatePicker, getDayNames, getMonthFromOffset, getDaysInMonth} from '../../src';
 import {DatePickerDemo} from '../../demo/date-picker-demo';
 import {KeyCodes} from '../../src/common/key-codes';
@@ -40,7 +40,7 @@ describe('The DatePicker component', function () {
         });
 
         it('clicks on the input, picks a date from the dropdown, and then expects the dropdown to close and the date to appear in the input', async function () {
-            const {select, waitForDom} = clientRenderer.render(<DatePicker date={new Date(Date.UTC(2017, 0, 1))} />);
+            const {select, waitForDom} = clientRenderer.render(<DatePicker date={new Date(2017, 0, 1)} />);
             const datePickerInput = select(datePickerInputId);
 
             await waitForDom(() => expect(select(datePickerDropdownId)).to.be.absent());
@@ -59,21 +59,48 @@ describe('The DatePicker component', function () {
     });
 
     describe('The Dropdown', function () {
+        const dayNames: Array<string> = getDayNames();
+        const days: Array<string> = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28'];
+
+        it('should display the days properly for a fixed month', async function () {
+            const {select, waitForDom} = clientRenderer.render(<DatePicker showDropdown={true} date={new Date(2017, 1, 1)} />);
+
+            await waitForDom(() => dayNames.forEach(name => expect(select(datePickerDropdownId)).to.contain.text(name)));
+            return await waitForDom(() => days.forEach(day => expect(select(datePickerDropdownId)).to.contain.text(day)));
+        });
+
+        it('should display the day names in horizontal sequence, and vertically aligned', function () {
+            const {select, waitForDom} = clientRenderer.render(<DatePicker showDropdown={true} date={new Date(2017, 0, 1)} />);
+
+            const dayNameIds = dayNames.map(name => 'DAY_NAME_' + name);
+
+            return waitForDom(() => {
+                const dayNameElements = dayNameIds.map((name, index) => {
+                    const element: Element = select(name)!;
+                    expect(element).to.have.text(dayNames[index]);
+                    return element;
+                });
+
+                expect(dayNameElements).to.be.inHorizontalSequence();
+                expect(dayNameElements).to.be.verticallyAligned('center', 1.5);
+            });
+        });
+
         it('displays the year', function () {
-            const {select, waitForDom} = clientRenderer.render(<DatePicker showDropdown={true} date={new Date(Date.UTC(2017, 0, 1))} />);
+            const {select, waitForDom} = clientRenderer.render(<DatePicker showDropdown={true} date={new Date(2017, 0, 1)} />);
 
             return waitForDom(() => expect(select('YEAR')).to.have.text('2017'));
         });
 
         it('displays the name of the month', function () {
-            const {select, waitForDom} = clientRenderer.render(<DatePicker showDropdown={true} date={new Date(Date.UTC(2017, 0, 1))} />);
+            const {select, waitForDom} = clientRenderer.render(<DatePicker showDropdown={true} date={new Date(2017, 0, 1)} />);
 
             return waitForDom(() => expect(select('MONTH_NAME')).to.have.text('January'));
         });
 
         it('displays the days of the week', function () {
             const dayNames = getDayNames();
-            const {select, waitForDom} = clientRenderer.render(<DatePicker showDropdown={true} date={new Date(Date.UTC(2017, 0, 1))} />);
+            const {select, waitForDom} = clientRenderer.render(<DatePicker showDropdown={true} date={new Date(2017, 0, 1)} />);
 
             return waitForDom(() => {
                for (let i = 0; i < dayNames.length; i++) {
@@ -83,7 +110,7 @@ describe('The DatePicker component', function () {
         });
 
         it('has a button which steps forward a month', function () {
-            const {select, waitForDom} = clientRenderer.render(<DatePicker showDropdown={true} date={new Date(Date.UTC(2017, 11, 1))} />);
+            const {select, waitForDom} = clientRenderer.render(<DatePicker showDropdown={true} date={new Date(2017, 11, 1)} />);
 
             expect(select('YEAR')).to.have.text('2017');
             expect(select('MONTH_NAME')).to.have.text('December');
@@ -96,7 +123,7 @@ describe('The DatePicker component', function () {
         });
 
         it('has a button which steps back a month', function () {
-            const {select, waitForDom} = clientRenderer.render(<DatePicker showDropdown={true} date={new Date(Date.UTC(2017, 0, 1))} />);
+            const {select, waitForDom} = clientRenderer.render(<DatePicker showDropdown={true} date={new Date(2017, 0, 1)} />);
 
             expect(select('YEAR')).to.have.text('2017');
             expect(select('MONTH_NAME')).to.have.text('January');

@@ -19,7 +19,7 @@ export class DatePickerDropdown extends React.Component<DatePickerDropdownProps,
     }
 
     @action setDayTo (day: string) {
-        const date = new Date(Date.UTC(this.date.getUTCFullYear(), this.date.getUTCMonth(), parseInt(day)));
+        const date = new Date(this.date.getFullYear(), this.date.getMonth(), parseInt(day));
         this.date = date;
         this.props.onChange(this.date);
     }
@@ -27,7 +27,7 @@ export class DatePickerDropdown extends React.Component<DatePickerDropdownProps,
     @computed
     get dayArray (): Array<number> {
         const dayArray: Array<number> = [];
-        for (let i = 1; i < getDaysInMonth(this.date); i++) {
+        for (let i = 1; i <= getDaysInMonth(this.date); i++) {
             dayArray.push(i);
         }
 
@@ -36,23 +36,23 @@ export class DatePickerDropdown extends React.Component<DatePickerDropdownProps,
 
     @computed
     get monthName (): string {
-        return monthNames[this.date.getUTCMonth()];
+        return monthNames[this.date.getMonth()];
     }
 
     @computed
     get year (): number {
-        return this.date.getUTCFullYear();
+        return this.date.getFullYear();
     }
 
     goToNextMonth: React.EventHandler<React.SyntheticEvent<HTMLSpanElement>> = (event: React.SyntheticEvent<HTMLSpanElement>) => {
         event.preventDefault();
-        const nextMonth: Date = getMonthFromOffset(new Date(Date.UTC(this.date.getUTCFullYear(), this.date.getUTCMonth(), 1)), 1);
+        const nextMonth: Date = getMonthFromOffset(new Date(this.date.getFullYear(), this.date.getMonth(), 1), 1);
         this.setDateTo(nextMonth);
     };
 
     goToPrevMonth: React.EventHandler<React.SyntheticEvent<HTMLSpanElement>> = (event: React.SyntheticEvent<HTMLSpanElement>) => {
         event.preventDefault();
-        const previousMonth: Date = getMonthFromOffset(new Date(Date.UTC(this.date.getUTCFullYear(), this.date.getUTCMonth(), 1)), -1);
+        const previousMonth: Date = getMonthFromOffset(new Date(this.date.getFullYear(), this.date.getMonth(), 1), -1);
         this.setDateTo(previousMonth);
     };
 
