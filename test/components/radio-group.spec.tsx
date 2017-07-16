@@ -41,8 +41,27 @@ describe('<RadioGroup />', function () {
 
             expect(button0).to.be.present();
             expect(button0.checked).to.be.false;
+            expect(button0.name).to.equal('name_0');
             expect(button1).to.be.present();
             expect(button1.checked).to.be.false;
+            expect(button1.name).to.equal('name_0');
+        });
+    });
+
+    it('renders the children with the given name value', function () {
+        const {select, waitForDom} = clientRenderer.render(
+            <RadioGroup onChange={emptyFunction} name="kupo">
+                <RadioButton value="Ultima"/>
+                <RadioButton value="Hades"/>
+            </RadioGroup>
+        );
+
+        return waitForDom(() => {
+            const button0 = select(radioGroup, radioButton + '_0') as HTMLInputElement;
+            const button1 = select(radioGroup, radioButton + '_1') as HTMLInputElement;
+
+            expect(button0.name).to.equal('kupo');
+            expect(button1.name).to.equal('kupo');
         });
     });
 

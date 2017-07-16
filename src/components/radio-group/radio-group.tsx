@@ -6,6 +6,7 @@ import {observer} from 'mobx-react';
 export interface RadioGroupProps {
     children: JSX.Element[];
     onChange: any;
+    name?: string;
 }
 
 let counter = 0;
@@ -25,7 +26,7 @@ export class RadioGroup extends React.Component<RadioGroupProps, {}> {
         for (let i = 0; i < this.props.children.length; i++) {
             this.checkedArray.push(observable({checked:false}))
         }
-        this.name = 'name_' + counter;
+        this.name = this.props.name ? this.props.name : 'name_' + counter;
         counter++;
     }
 
