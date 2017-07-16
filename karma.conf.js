@@ -21,9 +21,9 @@ const sauceLabsLaunchers = { // Check out https://saucelabs.com/platforms for al
     },
     slIE11: {
         base: 'SauceLabs',
-        platform: 'Windows 10',
+        platform: 'Windows 7',
         browserName: 'internet explorer',
-        version: '11.103'
+        version: '11.0'
     },
     slIE10: {
         base: 'SauceLabs',
