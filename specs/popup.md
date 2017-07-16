@@ -4,7 +4,6 @@ The Popup enables positioning content next to an anchor element.
 
 * [Position and Collision](#position-and-collision)
 * [Properties](#properties)
-* [Methods](#methods)
 * [Examples](#examples) - Based on the stages of builds
 
 ## Position and Collision
@@ -37,7 +36,7 @@ The Popup enables positioning content next to an anchor element.
 
 * Anchor default
 
-    ![Image of anchor positioning](./assets/popup/defaultanchor.png)
+    ![Image of anchor positioning](./assets/popup/anchordefault.png)
 
   * Anchor { vertical: 'bottom', horizontal: 'left'}
   * Popup { vertical: 'top', horizontal: 'left'}
