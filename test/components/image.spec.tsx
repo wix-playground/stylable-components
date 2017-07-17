@@ -23,7 +23,8 @@ describe('<Image />', () => {
     it('outputs an html image element to dom', () => {
         const {select, waitForDom} = clientRenderer.render(<Image />);
 
-        return waitForDom(() => expect(select(nativeImage)).to.be.an.instanceOf(HTMLImageElement));
+        return waitForDom(() =>
+            expect(select(nativeImage) instanceof HTMLImageElement, 'Expected the Image component to be instance of HTMLImageElement').to.equal(true));
     });
 
     it('uses one pixel transparent gif as default source', () => {
