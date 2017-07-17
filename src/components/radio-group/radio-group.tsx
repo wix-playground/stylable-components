@@ -60,6 +60,7 @@ export interface RadioButtonProps {
     checked?: boolean;
     name?: string;
     onClick?: any;
+    location?: "right" | "left";
     automationId?: string;
 }
 
@@ -71,6 +72,7 @@ export class RadioButton extends React.Component<RadioButtonProps, {}> {
         checked: false,
         name: '',
         onClick: () => {},
+        location: 'right',
         automationId: ''
     };
 
@@ -82,11 +84,12 @@ export class RadioButton extends React.Component<RadioButtonProps, {}> {
     render() {
         return (
             <div data-automation-id={this.props.automationId} className={style['radio-container']} onClick={this.onClick}>
-                <div>
+                {this.props.location === "left" ? <span data-automation-id="LABEL">{this.props.value}</span> : ''}
+                <div data-automation-id="INPUT_CONTAINER">
                     {this.props.checked ? checkedRadioSvg() : emptyRadioSvg()}
                     <input type="radio" className={style['radio-input']} data-automation-id={'INPUT'} value={this.props.value} checked={this.props.checked} name={this.props.name} readOnly={true}/>
                 </div>
-                <span data-automation-id="LABEL">{this.props.value}</span>
+                {this.props.location === "right" ? <span data-automation-id="LABEL">{this.props.value}</span> : ''}
             </div>
         )
     }

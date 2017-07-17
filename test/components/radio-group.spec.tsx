@@ -156,16 +156,39 @@ describe('<RadioGroup />', function () {
             return waitForDom(() => {
                 expect(select(radioButton + '_0', 'INPUT')).to.be.present().and.to.have.attr('type', 'radio');
                 expect(select(radioButton + '_0', 'INPUT')).to.have.attr('value', 'Shiva');
+
             });
         });
 
-        it('renders a checked button if the check value is passed', function () {
+        it('renders the label next to the radio button (right by default)', function () {
+            const { select, waitForDom } = clientRenderer.render(<RadioButton value="Omega" automationId={radioButton + '_0'} name=""/>);
+
+            return waitForDom(() => {
+                const label = select(radioButton + '_0', 'LABEL');
+                const button = select(radioButton + '_0', 'INPUT_CONTAINER');
+                expect(label).to.have.text('Omega');
+                expect([button, label]).to.be.horizontallyAligned;
+                expect([button, label]).to.be.inHorizontalSequence();
+            })
+        });
+
+        it('renders the label on the left side', function () {
+            const { select, waitForDom } = clientRenderer.render(<RadioButton value="Tiamat" location="left" automationId={radioButton + '_0'} name=""/>);
+
+            return waitForDom(() => {
+                const label = select(radioButton + '_0', 'LABEL');
+                const button = select(radioButton + '_0', 'INPUT_CONTAINER');
+                expect([label, button]).to.be.horizontallyAligned;
+                expect([label, button]).to.be.inHorizontalSequence();
+            })
+        });
+
+        it('renders a checked button if the checked value is passed', function () {
             const { select, waitForDom } = clientRenderer.render(<RadioButton value="Chocobo" checked={true} automationId={radioButton + '_0'} name=""/>);
 
             return waitForDom(() => {
                 const button = select(radioButton + '_0', 'INPUT') as HTMLInputElement;
 
-                expect(select(radioButton + '_0', 'LABEL')).to.have.text('Chocobo');
                 expect(button.checked).to.be.true;
             });
         });
@@ -183,7 +206,7 @@ describe('<RadioGroup />', function () {
             const onClick = sinon.spy();
             const { select, waitForDom } = clientRenderer.render(<RadioButton value="Tonberry" onClick={onClick} automationId={radioButton + '_0'} name=""/>);
 
-            await waitForDom(() => { expect(select(radioButton + '_0', 'INPUT')).to.be.present() });
+            await waitForDom(() => { expect(select(radioButton + '_0')).to.be.present() });
             simulate.click(select(radioButton + '_0'));
             return waitFor(() => {
                 expect(onClick).to.have.been.calledWithMatch('Tonberry');
