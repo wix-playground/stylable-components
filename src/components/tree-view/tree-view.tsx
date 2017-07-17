@@ -13,13 +13,12 @@ export interface TreeItemData {
     children?: TreeItemData[];
 }
 
-export interface TreeItemProps {
+export interface TreeItemProps extends React.Attributes {
     item: TreeItemData;
     itemRenderer: TreeItemRenderer;
     onItemClick?: React.EventHandler<any>;
     stateMap: StateMap;
     state: TreeItemState;
-    itemKey?: string;
 }
 
 export interface TreeViewProps {
@@ -37,10 +36,10 @@ export type StateMap = Map<TreeItemData, TreeItemState>;
 
 const itemIdPrefix = 'TREE_ITEM';
 
-export function TreeItem({ item, itemRenderer, onItemClick, stateMap, state, itemKey }: TreeItemProps): JSX.Element {
+export function TreeItem({ item, itemRenderer, onItemClick, stateMap, state }: TreeItemProps): JSX.Element {
     const itemLabel = item.label.replace(' ', '_');
     return (
-        <div key={itemKey}>
+        <div>
             <div data-automation-id={`${itemIdPrefix}_${itemLabel}`} className={style['tree-node']}
                  onClick={() => onItemClick!(item)} data-selected={ state!.isSelected }>
                 <span data-automation-id={`${itemIdPrefix}_${itemLabel}_ICON`}>&gt; </span>
@@ -49,7 +48,7 @@ export function TreeItem({ item, itemRenderer, onItemClick, stateMap, state, ite
             <div className={style['nested-tree']}>
                 {(item.children || []).map((child: TreeItemData, index: number) =>
                     React.createElement(itemRenderer,
-                        {item: child, onItemClick, itemRenderer, stateMap, state: stateMap.get(child)!, itemKey: `${index}`}))}
+                        {item: child, onItemClick, itemRenderer, stateMap, state: stateMap.get(child)!, key: `${index}`}))}
             </div>
         </div>
     )
@@ -95,7 +94,7 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
                     React.createElement(
                         this.props.itemRenderer!,
                         {item, onItemClick: this.onSelectItem, itemRenderer: this.props.itemRenderer!,
-                            stateMap: this.stateMap, state: this.stateMap.get(item)!, itemKey: `${index}` }))}
+                            stateMap: this.stateMap, state: this.stateMap.get(item)!, key: `${index}` }))}
             </div>
         )
     }
