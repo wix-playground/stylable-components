@@ -18,12 +18,13 @@ describe("<BirthDatePicker />", () => {
         change(select("BIRTH_DATE_PICKER_MONTH"), "10");
         change(select("BIRTH_DATE_PICKER_DAY"), "12");
 
-        await waitFor(() => {
+        await waitForDom(() => {
             expect(select("BIRTH_DATE_PICKER_DEMO_RESULT")).to.contain.text("Selected date: 2002-10-12");
         });
 
         change(select("BIRTH_DATE_PICKER_DAY"), "");
-        await waitFor(() => {
+
+        return waitForDom(() => {
             expect(select("BIRTH_DATE_PICKER_DEMO_RESULT")).to.contain.text("Selected date: 2002-10-12");
         });
     });
@@ -62,68 +63,84 @@ describe("<BirthDatePicker />", () => {
         });
     });
 
-    it("Emits onChange when going from valid to valid state", function() {
+    it("Emits onChange when going from valid to valid state", async function() {
         const onChange = sinon.spy();
         const { select, waitForDom } = clientRenderer.render(
             <BirthDatePicker value={new Date("1986-04-26Z")} onChange={onChange} />
         );
 
+        await waitForDom(() => {
+            expect(select("BIRTH_DATE_PICKER")).to.be.present();
+        });
+
+        change(select("BIRTH_DATE_PICKER_DAY"), "27");
+
         return waitForDom(() => {
-            change(select("BIRTH_DATE_PICKER_DAY"), "27");
             expect(onChange).to.have.been.calledOnce.and.calledWith(new Date("1986-04-27Z"));
         });
     });
 
-    it("Does not emit onChange when going from valid to invalid state", function() {
+    it("Does not emit onChange when going from valid to invalid state", async function() {
         const onChange = sinon.spy();
         const { select, waitForDom } = clientRenderer.render(
             <BirthDatePicker value={new Date()} onChange={onChange} />
         );
 
+        await waitForDom(() => {
+            expect(select("BIRTH_DATE_PICKER")).to.be.present();
+        });
+
+        change(select("BIRTH_DATE_PICKER_MONTH"), "");
+
         return waitForDom(() => {
-            change(select("BIRTH_DATE_PICKER_MONTH"), "");
             expect(onChange).to.have.not.been.called;
         });
     });
 
-    it("Does not emit onChange when going from invalid to invalid state", function() {
+    it("Does not emit onChange when going from invalid to invalid state", async function() {
         const onChange = sinon.spy();
         const { select, waitForDom } = clientRenderer.render(
             <BirthDatePicker onChange={onChange} />
         );
 
+        await waitForDom(() => {
+            expect(select("BIRTH_DATE_PICKER")).to.be.present();
+        });
+
+        change(select("BIRTH_DATE_PICKER_MONTH"), "3");
+
         return waitForDom(() => {
-            change(select("BIRTH_DATE_PICKER_MONTH"), "03");
             expect(onChange).to.have.not.been.called;
         });
     });
 
-    it("Emits onChange when going from invalid to valid state", function() {
+    it("Emits onChange when going from invalid to valid state", async function() {
         const onChange = sinon.spy();
         const { select, waitForDom } = clientRenderer.render(
             <BirthDatePicker onChange={onChange} />
         );
 
+        await waitForDom(() => {
+            expect(select("BIRTH_DATE_PICKER")).to.be.present();
+        });
+
+        change(select("BIRTH_DATE_PICKER_YEAR"), "1986");
+        change(select("BIRTH_DATE_PICKER_MONTH"), "4");
+        change(select("BIRTH_DATE_PICKER_DAY"), "26");
+
         return waitForDom(() => {
-            change(select("BIRTH_DATE_PICKER_YEAR"), "1986");
-            change(select("BIRTH_DATE_PICKER_MONTH"), "4");
-            change(select("BIRTH_DATE_PICKER_DAY"), "26");
             expect(onChange).to.have.been.calledOnce.and.calledWith(new Date("1986-04-26Z"));
         });
     });
 
     describe("Validates the date", function() {
         it("Supports full range of dates", function() {
-            expect(dateFromYearMonthDay("1000", "01", "01")).to.be.instanceOf(Date);
-            expect(dateFromYearMonthDay("9999", "12", "31")).to.be.instanceOf(Date);
-        });
-
-        it("Supports leap years", function() {
-            expect(dateFromYearMonthDay("1984", "02", "29")).to.be.instanceOf(Date);
+            expect(dateFromYearMonthDay("1000", "01", "01").toString()).equal(new Date("1000-01-01Z").toString());
+            expect(dateFromYearMonthDay("9999", "12", "31").toString()).equal(new Date("9999-12-31Z").toString());
         });
 
         it("Allows to omit leading zeroes for month and day, but not for year", function() {
-            expect(dateFromYearMonthDay("1987", "4", "6")).to.be.instanceOf(Date);
+            expect(dateFromYearMonthDay("1987", "4", "6").toString()).equal(new Date("1987-04-06Z").toString());
             expect(dateFromYearMonthDay("17", "04", "26")).to.be.instanceOf(Error);
         });
 

@@ -2,19 +2,6 @@ import React = require("react");
 import {autorun, computed, observable, reaction} from "mobx";
 import {observer} from "mobx-react";
 
-function isValidDate(date: any): boolean {
-    return date instanceof Date && !Number.isNaN(date.getTime());
-}
-
-function yearMonthDayFromDate(date: Date | undefined) {
-    const valid = isValidDate(date);
-    return [
-        valid ? String(date!.getUTCFullYear()) : "",
-        valid ? String(date!.getUTCMonth() + 1) : "",
-        valid ? String(date!.getUTCDate()) : ""
-    ];
-}
-
 function daysInMonth(date: Date) {
     return new Date(date.getUTCFullYear(), date.getUTCMonth() + 1, 0).getDate();
 }
@@ -118,9 +105,11 @@ export class BirthDatePicker extends React.Component<BirthDatePickerProps, {}> {
 
     componentWillMount() {
         autorun(() => {
-            [this.year, this.month, this.day] = yearMonthDayFromDate(
-                this.props.value
-            );
+            const date  = this.props.value;
+            const valid = date && !Number.isNaN(date.getTime());
+            this.year   = valid ? String(date!.getUTCFullYear())  : "";
+            this.month  = valid ? String(date!.getUTCMonth() + 1) : "";
+            this.day    = valid ? String(date!.getUTCDate())      : "";
         });
 
         reaction(
