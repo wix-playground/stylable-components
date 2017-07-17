@@ -3,8 +3,22 @@ import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react
 import {CheckBoxDemo, demoCheckBoxText} from "../../demo/components/checkbox-demo";
 import {CheckBox} from "../../src/components/checkbox/checkbox";
 
-const tickSVG = '/test/assets/tickMark.svg';
-const boxSVG = '/test/assets/uncheckedCheckbox.svg';
+const boxSVG: React.SFC<any> = (props) => {
+    return (
+        <svg height="1em" width="1em "viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" >
+            <path fill="none" stroke="#D1D1D1" d="M.5.5h15v15H.5z"/>
+        </svg>
+    )
+};
+
+const tickSVG: React.SFC = () => {
+    return (
+        <svg height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" >
+            <path stroke="#FFF" strokeLinecap="square" strokeWidth="1.5" d="M5 8.685l2.496 1.664M8 10.685L11.748 6"/>
+        </svg>
+    )
+};
+
 
 describe('<Checkbox/>', function () {
     const clientRenderer = new ClientRenderer();

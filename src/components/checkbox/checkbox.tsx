@@ -4,9 +4,14 @@ const style = require('./checkbox.css');
 export interface CheckBoxProps {
     text?: string;
     value?: boolean;
-    boxIcon?: string;
-    tickIcon?: string;
+    boxIcon?: React.SFC<CheckBoxIconProps>;
+    tickIcon?: React.SFC<CheckBoxIconProps>;
     onChange?: (value: boolean) => any;
+}
+
+export interface CheckBoxIconProps {
+    value?: boolean;
+    className?: string;
 }
 
 export const CheckBox: React.SFC<CheckBoxProps> = (props) => (
@@ -15,13 +20,11 @@ export const CheckBox: React.SFC<CheckBoxProps> = (props) => (
          style={{display:'inline'}}>
 
         {
-            props.boxIcon ||
-            <DefaultCheckBoxSVG className={ style.boxIconDefault + ' ' + (props.value && style.boxIconChecked) }/>
+            props.boxIcon!({value: props.value})
         }
 
         {
-            props.value &&
-            (props.tickIcon || DefaultTickMarkSVG({className: style.tickIcon}))
+            props.value && props.tickIcon!({value: props.value})
         }
 
         <span data-automation-id="CHECKBOX_LABEL" style={{marginLeft: '5px', verticalAlign:'top'}}>{props.text || ''}</span>
@@ -33,18 +36,11 @@ function executeClickHandler(handler: (value: boolean) => any, value: boolean) {
     handler(value);
 }
 
-CheckBox.defaultProps = {
-    text: '',
-    value: false,
-    boxIcon: '/src/components/checkbox/uncheckedCheckbox.svg',
-    tickIcon: '/src/components/checkbox/tickMark.svg',
-    onChange: (value: boolean) => {}
-};
-
-
-const DefaultCheckBoxSVG: React.SFC<any> = (props) => {
+const DefaultCheckBoxSVG: React.SFC<CheckBoxIconProps> = (props) => {
     return (
-        <svg className={props.className} viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" >
+        <svg className={props.className || (style.boxIconDefault + ' ' + (props.value && style.boxIconChecked)) }
+             viewBox="0 0 16 16"
+             xmlns="http://www.w3.org/2000/svg" >
             <path fill="none" stroke="#D1D1D1" d="M.5.5h15v15H.5z"/>
         </svg>
     )
@@ -52,8 +48,16 @@ const DefaultCheckBoxSVG: React.SFC<any> = (props) => {
 
 const DefaultTickMarkSVG: React.SFC<any> = (props) => {
     return (
-        <svg xmlns="http://www.w3.org/2000/svg" className={props.className}>
+        <svg xmlns="http://www.w3.org/2000/svg" className={props.className || style.tickIcon}>
             <path stroke="#FFF" strokeLinecap="square" strokeWidth="1.5" d="M5 8.685l2.496 1.664M8 10.685L11.748 6"/>
         </svg>
     )
+};
+
+CheckBox.defaultProps = {
+    text: '',
+    value: false,
+    boxIcon: DefaultCheckBoxSVG,
+    tickIcon: DefaultTickMarkSVG,
+    onChange: (value: boolean) => {}
 };
