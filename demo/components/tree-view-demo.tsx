@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { TreeView } from '../../src';
 import { TreeItemData } from '../../src/components/tree-view/tree-view';
+import { observable } from 'mobx';
+import { observer } from 'mobx-react';
 
 export const treeData: TreeItemData[] = [
     { label: 'Food Menu', children: [
@@ -29,22 +31,12 @@ function SelectedItem({selectedItem}: any) {
         'Please choose from the Menu!'}</div>
 }
 
-export interface TreeViewDemoState {
-    selectedItem: TreeItemData | undefined;
-}
-
-export class TreeViewDemo extends React.Component<{}, TreeViewDemoState> {
-
-    constructor(props: {}) {
-        super(props);
-
-        this.state = {
-            selectedItem: undefined
-        };
-    }
+@observer
+export class TreeViewDemo extends React.Component<{}, {}> {
+    @observable.shallow selectedItem: {item: TreeItemData | undefined} = {item: undefined};
 
     onSelectItem = (item: TreeItemData) => {
-        this.setState({selectedItem: item});
+        this.selectedItem.item = item;
     };
 
     render() {
@@ -52,10 +44,10 @@ export class TreeViewDemo extends React.Component<{}, TreeViewDemoState> {
             <div>
                 <h3>TreeView with ability to select a child</h3>
                 <section data-automation-id="TREE_VIEW_DEMO">
-                    <SelectedItem selectedItem={this.state.selectedItem}/>
+                    <SelectedItem selectedItem={this.selectedItem.item}/>
                     <br/>
                     <TreeView dataSource={treeData} onSelectItem={this.onSelectItem}
-                              selectedItem={this.state.selectedItem} />
+                              selectedItem={this.selectedItem.item} />
                 </section>
             </div>
         )

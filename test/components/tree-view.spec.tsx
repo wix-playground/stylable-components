@@ -2,7 +2,7 @@ import * as React from 'react';
 import { expect, ClientRenderer, sinon, simulate, waitFor } from 'test-drive-react';
 import { TreeView, TreeItem } from '../../src';
 import { TreeViewDemo, treeData } from '../../demo/components/tree-view-demo';
-import { TreeItemData } from '../../src/components/tree-view/tree-view';
+import { StateMap, TreeItemData, TreeItemState} from '../../src/components/tree-view/tree-view';
 
 const treeView = 'TREE_VIEW';
 const treeItem = 'TREE_ITEM';
@@ -17,6 +17,13 @@ function getAllNodeLabels(treeData: Object[]) {
     return treeData.map(getLabelsList).reduce((prev, next) => [...prev, ...next]);
 }
 
+function initStateMap(data: Object[] = [], stateMap: StateMap) {
+    data.forEach((item: TreeItemData) => {
+        stateMap.set(item, { isSelected: false, isExpanded: true });
+        initStateMap(item.children || [], stateMap);
+    });
+}
+
 describe('<TreeView />', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
@@ -24,6 +31,15 @@ describe('<TreeView />', () => {
     function getTreeItem(id: string) {
         return `${treeItem}_${id.replace(' ', '_')}`;
     }
+    const item = { label: 'label' };
+    const nestedItem: TreeItemData = treeData[0].children![1];
+
+    const state: TreeItemState = { isSelected: false, isExpanded: true };
+    const stateMap: StateMap = new Map<TreeItemData, TreeItemState>();
+
+    initStateMap(treeData, stateMap);
+
+    const allNodesLabels = getAllNodeLabels(treeData);
 
     it('renders a tree view with a few children, clicks ones of them to expand and close', async () => {
         const { select, waitForDom } = clientRenderer.render(<TreeViewDemo />);
@@ -38,7 +54,6 @@ describe('<TreeView />', () => {
         simulate.click(select(treeView + '_DEMO', rootNode));
         nodeChildren!.forEach(item => simulate.click(select(treeView + '_DEMO', getTreeItem(item.label))));
 
-        const allNodesLabels = getAllNodeLabels(treeData);
         await waitForDom(() => allNodesLabels.forEach(item =>
             expect(select(treeView + '_DEMO', getTreeItem(item)), `item did not appear: ${item}`).to.be.present()));
 
@@ -47,13 +62,30 @@ describe('<TreeView />', () => {
         simulate.click(elementToSelect);
         await waitForDom(() => expect(elementToSelect).to.have.attr('data-selected', 'true'));
 
-        debugger;
-
         // this verifies the feature of not closing expanded item if its not selected
         simulate.click(select(treeView + '_DEMO', rootNode));
         simulate.click(select(treeView + '_DEMO', rootNode));
 
         return waitForDom(() => expect(select(getTreeItem(nodeChildren![1].label))).to.be.absent());
+    });
+
+    it('ends up in expected state after multiple clicks on same tree node', async () => {
+        const { select, waitForDom } = clientRenderer.render(<TreeViewDemo />);
+
+        simulate.click(select(treeView + '_DEMO', getTreeItem(allNodesLabels[0])));
+
+        const elementToSelect = select(treeView + '_DEMO', getTreeItem(allNodesLabels[1]));
+
+        await waitForDom(() => expect(elementToSelect, 'initially was not false').to.have.attr('data-selected', 'false'));
+
+        simulate.click(elementToSelect);
+        await waitForDom(() => expect(elementToSelect, 'did not toggle to true').to.have.attr('data-selected', 'true'));
+
+        simulate.click(elementToSelect);
+        await waitForDom(() => expect(elementToSelect, 'did not toggle to false').to.have.attr('data-selected', 'false'));
+
+        simulate.click(elementToSelect);
+        return waitForDom(() => expect(elementToSelect, 'did not end up at true').to.have.attr('data-selected', 'true'));
     });
 
     describe('Using default renderer', () => {
@@ -81,33 +113,33 @@ describe('<TreeView />', () => {
 
         describe('<TreeItem />', () => {
 
-            const item = { label: 'label' };
-            const nestedItem = treeData[0].children![1];
-
             it('renders an item', () => {
                 const { select, waitForDom } =
-                    clientRenderer.render(<TreeItem item={item} itemRenderer={TreeItem} />);
+                    clientRenderer.render(<TreeItem item={item} itemRenderer={TreeItem}
+                                                    state={state} stateMap={stateMap} />);
 
                 return waitForDom(() => expect(select(getTreeItem(item.label))).to.be.present());
             });
 
             it('renders with provided label', () => {
                 const { select, waitForDom } =
-                    clientRenderer.render(<TreeItem item={item} itemRenderer={TreeItem} />);
+                    clientRenderer.render(<TreeItem item={item} itemRenderer={TreeItem}
+                                                    state={state} stateMap={stateMap} />);
 
                 return waitForDom(() => expect(select(getTreeItem(item.label) + '_LABEL')).to.have.text(item.label));
             });
 
             it('renders with an icon', () => {
                 const { select, waitForDom } =
-                    clientRenderer.render(<TreeItem item={item} itemRenderer={TreeItem} />);
+                    clientRenderer.render(<TreeItem item={item} itemRenderer={TreeItem}
+                                                    state={state} stateMap={stateMap} />);
 
                 return waitForDom(() => expect(select(getTreeItem(item.label) + '_ICON')).to.be.present());
             });
 
             it('renders correct children', () => {
                 const { select, waitForDom } = clientRenderer.render(<TreeItem item={nestedItem} itemRenderer={TreeItem}
-                                                                               state={{isExpanded: true, isSelected: false}}/>);
+                                                                               state={state} stateMap={stateMap} />);
 
                 return waitForDom(() =>
                     nestedItem.children!.forEach((item: TreeItemData) =>
@@ -116,7 +148,8 @@ describe('<TreeView />', () => {
 
             it('invokes onClick when clicked', () => {
                 const onClick = sinon.spy();
-                const { select } = clientRenderer.render(<TreeItem item={item} itemRenderer={TreeItem} onItemClick={onClick} />);
+                const { select } = clientRenderer.render(<TreeItem item={item} itemRenderer={TreeItem} onItemClick={onClick}
+                                                                   state={state} stateMap={stateMap} />);
 
                 simulate.click(select(getTreeItem(item.label)));
 
