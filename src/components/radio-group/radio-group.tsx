@@ -5,8 +5,9 @@ import {observer} from 'mobx-react';
 const style = require('./radio-group.css');
 
 export interface RadioGroupProps {
-    children: JSX.Element[];
+    data: string[];
     onChange: any;
+    location?: "right" | "left";
     name?: string;
 }
 
@@ -24,16 +25,14 @@ export class RadioGroup extends React.Component<RadioGroupProps, {}> {
     constructor(props: RadioGroupProps) {
         super(props);
         this.checkedArray = [];
-        if (this.props.children) {
-            for (let i = 0; i < this.props.children.length; i++) {
-                this.checkedArray.push(observable({checked: false}))
-            }
+        for (let i = 0; i < this.props.data.length; i++) {
+            this.checkedArray.push(observable({checked: false}))
         }
         this.name = this.props.name ? this.props.name : 'name_' + counter++;
     }
 
     childrenOnClick(index: number) {
-        return (e: any) => {
+        return (e: string) => {
             this.checkedArray.forEach((value) => {
                 value.checked = false;
             });
@@ -45,11 +44,10 @@ export class RadioGroup extends React.Component<RadioGroupProps, {}> {
     render() {
         return (
             <div data-automation-id="RADIO_GROUP">
-                {React.Children.map(this.props.children, (child, index) => {
-                    if (React.isValidElement(child) && child.type === RadioButton) {
-                        const props = Object.assign({}, child.props, {automationId: 'RADIO_BUTTON_' + index, checked: this.checkedArray[index].checked, onClick: this.childrenOnClick(index), name: this.name});
-                        return React.cloneElement(child as ReactElement<any>, props);
-                    }
+                {this.props.data.map((value: string, index: number) => {
+                    return (
+                        <RadioButton key={index} value={value} checked={this.checkedArray[index].checked} onClick={this.childrenOnClick(index)} name={this.name} location={this.props.location ? this.props.location : 'right'} automationId={'RADIO_BUTTON_' + index}/>
+                    );
                 })}
             </div>);
     }

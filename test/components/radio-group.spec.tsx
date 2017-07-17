@@ -28,12 +28,7 @@ describe('<RadioGroup />', function () {
     });
 
     it('renders to the screen with unselected radio buttons as children', function () {
-        const {select, waitForDom} = clientRenderer.render(
-            <RadioGroup onChange={emptyFunction}>
-                <RadioButton value="Ifrit"/>
-                <RadioButton value="Titan"/>
-            </RadioGroup>
-        );
+        const {select, waitForDom} = clientRenderer.render(<RadioGroup onChange={emptyFunction} data={['Ifrit','Titan']} />);
 
         return waitForDom(() => {
             const button0 = select(radioGroup, radioButton + '_0', 'INPUT') as HTMLInputElement;
@@ -50,10 +45,7 @@ describe('<RadioGroup />', function () {
 
     it('renders the children with the given name value', function () {
         const {select, waitForDom} = clientRenderer.render(
-            <RadioGroup onChange={emptyFunction} name="kupo">
-                <RadioButton value="Ultima"/>
-                <RadioButton value="Hades"/>
-            </RadioGroup>
+            <RadioGroup onChange={emptyFunction} data={['Ultima', 'Hades']} name="kupo" />
         );
 
         return waitForDom(() => {
@@ -68,10 +60,7 @@ describe('<RadioGroup />', function () {
     it('renders calls the given onChange function on change', async function () {
         const onChange = sinon.spy();
         const {select, waitForDom} = clientRenderer.render(
-            <RadioGroup onChange={onChange}>
-                <RadioButton value="Leviathan"/>
-                <RadioButton value="Quetzalcoatl"/>
-            </RadioGroup>
+            <RadioGroup onChange={onChange} data={['Leviathan', 'Quetzalcoatl']} />
         );
 
         await waitForDom(() => { expect(select(radioGroup, radioButton + '_1')).to.be.present() });
@@ -83,10 +72,7 @@ describe('<RadioGroup />', function () {
 
     it('sets the clicked radio button to be active on click', async function () {
         const {select, waitForDom} = clientRenderer.render(
-            <RadioGroup onChange={emptyFunction}>
-                <RadioButton value="Garuda"/>
-                <RadioButton value="Ramuh"/>
-            </RadioGroup>
+            <RadioGroup onChange={emptyFunction} data={['Garuda', 'Ramuh']} />
         );
 
         await waitForDom(() => { expect(select(radioGroup, radioButton + '_0')).to.be.present() });
@@ -101,10 +87,7 @@ describe('<RadioGroup />', function () {
 
     it('changes the selected button when clicking on a different one', async function () {
         const {select, waitForDom} = clientRenderer.render(
-            <RadioGroup onChange={emptyFunction}>
-                <RadioButton value="Diabolos"/>
-                <RadioButton value="Bahamut"/>
-            </RadioGroup>
+            <RadioGroup onChange={emptyFunction} data={['Diabolos', 'Bahamut']} />
         );
 
         await waitForDom(() => { expect(select(radioGroup, radioButton + '_0', 'INPUT')).to.be.present() });
@@ -123,16 +106,10 @@ describe('<RadioGroup />', function () {
         const {select, waitForDom} = clientRenderer.render(
             <div>
                 <div data-automation-id="DIV_0">
-                    <RadioGroup onChange={emptyFunction}>
-                        <RadioButton value="Siren"/>
-                        <RadioButton value="Cerberus"/>
-                    </RadioGroup>
+                    <RadioGroup onChange={emptyFunction} data={['Siren', 'Cerberus']} />
                 </div>
                 <div data-automation-id="DIV_1">
-                    <RadioGroup onChange={emptyFunction}>
-                        <RadioButton value="Alexander"/>
-                        <RadioButton value="Odin"/>
-                    </RadioGroup>
+                    <RadioGroup onChange={emptyFunction} data={['Alexander', 'Odin']} />
                 </div>
             </div>
         );
