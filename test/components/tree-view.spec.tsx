@@ -7,8 +7,6 @@ import { TreeItemData } from '../../src/components/tree-view/tree-view';
 const treeView = 'TREE_VIEW';
 const treeItem = 'TREE_ITEM';
 
-const noop = (item: Object) => false;
-
 function getLabelsList(data: {label: string, children?: Object[]}): string[] {
     return [data.label]
                .concat(...(data.children || [])
@@ -49,6 +47,8 @@ describe('<TreeView />', () => {
         simulate.click(elementToSelect);
         await waitForDom(() => expect(elementToSelect).to.have.attr('data-selected', 'true'));
 
+        debugger;
+
         // this verifies the feature of not closing expanded item if its not selected
         simulate.click(select(treeView + '_DEMO', rootNode));
         simulate.click(select(treeView + '_DEMO', rootNode));
@@ -86,27 +86,28 @@ describe('<TreeView />', () => {
 
             it('renders an item', () => {
                 const { select, waitForDom } =
-                    clientRenderer.render(<TreeItem item={item} itemRenderer={TreeItem} isSelected={noop}/>);
+                    clientRenderer.render(<TreeItem item={item} itemRenderer={TreeItem} />);
 
                 return waitForDom(() => expect(select(getTreeItem(item.label))).to.be.present());
             });
 
             it('renders with provided label', () => {
                 const { select, waitForDom } =
-                    clientRenderer.render(<TreeItem item={item} itemRenderer={TreeItem} isSelected={noop}/>);
+                    clientRenderer.render(<TreeItem item={item} itemRenderer={TreeItem} />);
 
                 return waitForDom(() => expect(select(getTreeItem(item.label) + '_LABEL')).to.have.text(item.label));
             });
 
             it('renders with an icon', () => {
                 const { select, waitForDom } =
-                    clientRenderer.render(<TreeItem item={item} itemRenderer={TreeItem} isSelected={noop}/>);
+                    clientRenderer.render(<TreeItem item={item} itemRenderer={TreeItem} />);
 
                 return waitForDom(() => expect(select(getTreeItem(item.label) + '_ICON')).to.be.present());
             });
 
             it('renders correct children', () => {
-                const { select, waitForDom } = clientRenderer.render(<TreeItem item={nestedItem} itemRenderer={TreeItem} isSelected={noop} />);
+                const { select, waitForDom } = clientRenderer.render(<TreeItem item={nestedItem} itemRenderer={TreeItem}
+                                                                               state={{isExpanded: true, isSelected: false}}/>);
 
                 return waitForDom(() =>
                     nestedItem.children!.forEach((item: TreeItemData) =>
@@ -115,8 +116,7 @@ describe('<TreeView />', () => {
 
             it('invokes onClick when clicked', () => {
                 const onClick = sinon.spy();
-                const { select } = clientRenderer.render(<TreeItem item={item} itemRenderer={TreeItem}
-                                                                   onItemClick={onClick} isSelected={noop}/>);
+                const { select } = clientRenderer.render(<TreeItem item={item} itemRenderer={TreeItem} onItemClick={onClick} />);
 
                 simulate.click(select(getTreeItem(item.label)));
 

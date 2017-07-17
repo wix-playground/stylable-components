@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { observable } from 'mobx';
 import { observer } from 'mobx-react';
+import { autorun, observable } from 'mobx';
 
 const style = require('./tree-view.css');
 
@@ -17,31 +17,39 @@ export interface TreeItemProps {
     item: TreeItemData;
     itemRenderer: TreeItemRenderer;
     onItemClick?: React.EventHandler<any>;
-    isSelected: (item: Object) => boolean;
-    stateMap?: { [key: string]: {isExpanded: boolean} };
+    stateMap?: StateMap;
+    state?: TreeItemState;
 }
 
 export interface TreeViewProps {
     dataSource: Object[];
     itemRenderer?: TreeItemRenderer;
     onSelectItem?: React.EventHandler<any>;
-    selectedItem?: Object;
+    selectedItem?: TreeItemData;
 }
+
+export interface TreeItemState {
+    isSelected: boolean;
+    isExpanded: boolean;
+}
+
+export type StateMap = Map<TreeItemData, TreeItemState>;
 
 const itemIdPrefix = 'TREE_ITEM';
 
-export function TreeItem({ item, itemRenderer, onItemClick, isSelected, stateMap = {} }: TreeItemProps): JSX.Element {
+export function TreeItem({ item, itemRenderer, onItemClick, stateMap, state }: TreeItemProps): JSX.Element {
+    const itemLabel = item.label.replace(' ', '_');
     return (
-        <div key={item.label}>
-            <div data-automation-id={`${itemIdPrefix}_${item.label.replace(' ', '_')}`} className={style['tree-node']}
-                 onClick={() => onItemClick!(item)} data-selected={isSelected(item)}>
-                <span data-automation-id={`${itemIdPrefix}_${item.label}_ICON`}>&gt; </span>
-                <span data-automation-id={`${itemIdPrefix}_${item.label}_LABEL`}>{item.label}</span>
+        <div key={itemLabel}>
+            <div data-automation-id={`${itemIdPrefix}_${itemLabel}`} className={style['tree-node']}
+                 onClick={() => onItemClick!(item)} data-selected={ !!state && state!.isSelected }>
+                <span data-automation-id={`${itemIdPrefix}_${itemLabel}_ICON`}>&gt; </span>
+                <span data-automation-id={`${itemIdPrefix}_${itemLabel}_LABEL`}>{item.label}</span>
             </div>
             <div className={style['nested-tree']}>
-                {stateMap![item.label] && stateMap![item.label].isExpanded && (item.children || []).map((child: TreeItemData) =>
+                {!!state && state!.isExpanded && (item.children || []).map((child: TreeItemData) =>
                     React.createElement(itemRenderer,
-                        {item: child, onItemClick, itemRenderer, isSelected, stateMap}))}
+                        {item: child, onItemClick, itemRenderer, stateMap, state: stateMap ? stateMap.get(child) : undefined}))}
             </div>
         </div>
     )
@@ -53,40 +61,45 @@ const TreeItemWrapper = observer(TreeItem);
 export class TreeView extends React.Component<TreeViewProps, {}>{
     static defaultProps = { itemRenderer: TreeItemWrapper, onSelectItem: () => {} };
 
-    stateMap: { [key: string]: {isExpanded: boolean} } = {};
+    stateMap: StateMap = new Map<TreeItemData, TreeItemState>();
 
-    isSelected = (item: TreeItemData) => {
-        return this.props.selectedItem === item;
-    };
-
-    isExpanded(item: TreeItemData) {
-        return this.stateMap[item.label] && this.stateMap[item.label].isExpanded;
+    constructor(props: TreeViewProps) {
+        super(props);
+        this.initStateMap(props.dataSource);
     }
 
-    toggleItem = (label: string) => {
-        if (!(label in this.stateMap)) {
-            this.stateMap[label] = observable({isExpanded: true });
-        } else {
-            this.stateMap[label].isExpanded = !this.stateMap[label].isExpanded;
-        }
-    };
+    initStateMap(data: Object[] = []) {
+        data.forEach((item: TreeItemData) => {
+            this.stateMap.set(item, observable({ isSelected: false, isExpanded: false }));
+            this.initStateMap(item.children || []);
+        });
+    }
+
+    componentDidMount() {
+        autorun(() => { if (this.props.selectedItem) this.stateMap.get(this.props.selectedItem)!.isSelected = true; });
+    }
+
+    toggleItem(item: TreeItemData) {
+        this.stateMap.get(item)!.isExpanded = !this.stateMap.get(item)!.isExpanded;
+    }
 
     onSelectItem = (item: TreeItemData) => {
-        if (!this.isExpanded(item) || this.isSelected(item)) {
-            this.toggleItem(item.label);
+        if (this.props.selectedItem && item !== this.props.selectedItem)  {
+            this.stateMap.get(this.props.selectedItem!)!.isSelected = false;
         }
+
+        this.toggleItem(item);
         this.props.onSelectItem!(item);
     };
 
     render() {
         return (
-            <div data-automation-id='TREE_VIEW'>
+            <div data-automation-id='TREE_VIEW' className={style['tree-view']}>
                 {(this.props.dataSource || []).map((item: TreeItemData) =>
                     React.createElement(
-                    this.props.itemRenderer!,
+                        this.props.itemRenderer!,
                         {item, onItemClick: this.onSelectItem,
-                         itemRenderer: this.props.itemRenderer!,
-                         isSelected: this.isSelected, stateMap: this.stateMap}))}
+                            itemRenderer: this.props.itemRenderer!, stateMap: this.stateMap, state: this.stateMap.get(item) }))}
             </div>
         )
     }

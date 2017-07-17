@@ -1,19 +1,15 @@
 .tree-view {
-  font-size: 1.414em;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 1.414em;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 .tree-view [data-selected="true"] {
-  background-color: lightblue;
+    background-color: lightblue;
 }
 
 .tree-node {
-  cursor: pointer;
-  display: inline;
-}
-
-.nested-tree {
-  margin-left: 25px;
+    cursor: pointer;
+    display: inline;
 }
 
 .nested-tree {
