@@ -1,4 +1,6 @@
 import React = require('react');
+import {observable} from 'mobx'
+import {observer} from 'mobx-react'
 import {CheckBox, CheckBoxIconProps} from "../../src/components/checkbox/checkbox";
 
 export const demoCheckBoxText: string = 'I agree to the terms above';
@@ -6,24 +8,22 @@ export const demoCheckBoxInitialValue: boolean = false;
 
 const style = require('./checkbox-demo.css');
 
+@observer
 export class CheckBoxDemo extends React.Component<{},{value: boolean}> {
 
-    constructor() {
-        super();
-        this.state = {value: demoCheckBoxInitialValue};
-    }
+    @observable value: boolean = demoCheckBoxInitialValue;
 
-    handleChange = (val: boolean) => {this.setState({value: val})};
+    handleChange = (val: boolean) => {this.value = val};
 
     render() {
         return (
             <div>
-                <CheckBox value={this.state.value}
+                <CheckBox value={this.value}
                           text={demoCheckBoxText}
                           boxIcon={CheckBoxSVG}
                           tickIcon={TickMarkSVG}
                           onChange={this.handleChange}/> <br/>
-                <button disabled={!this.state.value}>
+                <button disabled={!this.value}>
                     Submit
                 </button>
             </div>
