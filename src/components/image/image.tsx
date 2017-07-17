@@ -14,7 +14,16 @@ export interface ImageProps extends React.HTMLAttributes<HTMLImageElement> {
     alt: string;
 
     onLoad: (data: object) => void;
-    onError: (data: object) => void;
+    onLoadError: (error: ImageError) => void;
+}
+
+export class ImageError extends Error {
+    constructor(src: string) {
+        super('Image Error');
+        this.src = src;
+    }
+
+    src: string;
 }
 
 @observer
@@ -31,8 +40,8 @@ export class Image extends React.Component<Partial<ImageProps>, {}>{
     };
 
     onError: React.EventHandler<SyntheticEvent<HTMLImageElement>> = () => {
-        if (this.props.onError) {
-            this.props.onError({data: this.src});
+        if (this.props.onLoadError) {
+            this.props.onLoadError(new ImageError(this.src));
         }
 
         this.setSrcToFallback();
