@@ -38,7 +38,6 @@ const itemIdPrefix = 'TREE_ITEM';
 
 export function TreeItem({ item, itemRenderer, onItemClick, stateMap, state }: TreeItemProps): JSX.Element {
     const itemLabel = item.label.replace(' ', '_');
-    debugger;
     return (
         <div key={itemLabel}>
             <div data-automation-id={`${itemIdPrefix}_${itemLabel}`} className={style['tree-node']}

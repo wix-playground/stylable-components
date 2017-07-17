@@ -7,8 +7,6 @@ import { TreeItemData } from '../../src/components/tree-view/tree-view';
 const treeView = 'TREE_VIEW';
 const treeItem = 'TREE_ITEM';
 
-const noop = (item: Object) => false;
-
 function getLabelsList(data: {label: string, children?: Object[]}): string[] {
     return [data.label]
                .concat(...(data.children || [])
