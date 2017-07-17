@@ -30,9 +30,9 @@ export class CheckBoxDemo extends React.Component<{},{value: boolean}> {
                                 width: '72px',
                                 height: '22px',
                                 borderRadius:'20px',
-                                borderColor: this.state.value ? 'rgb(49, 130, 200)' : 'grey',
-                                backgroundColor: this.state.value ? 'rgb(49, 130, 200)' : 'white',
-                                color: this.state.value ? 'white' : 'grey',
+                                borderColor: this.state.value ? ' #4A90E2' : 'grey',
+                                backgroundColor: this.state.value ? ' #4A90E2' : '#FFF',
+                                color: this.state.value ? '#FFF' : 'grey',
                                 borderWidth:'1px'
                             }
                         }>
@@ -41,5 +41,4 @@ export class CheckBoxDemo extends React.Component<{},{value: boolean}> {
             </div>
         )
     }
-
 }
