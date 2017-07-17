@@ -2,7 +2,7 @@ import * as React from 'react';
 import {getDayNames, getDaysInMonth} from './date-picker-helpers';
 import {computed} from 'mobx';
 import {observer} from 'mobx-react';
-import styles = require('./date-picker.css');
+const styles = require('./date-picker.css');
 
 export interface DatePickerGridProps {
     date: Date;

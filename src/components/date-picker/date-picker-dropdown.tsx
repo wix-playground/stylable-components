@@ -3,7 +3,7 @@ import {getMonthNames, getMonthFromOffset} from './date-picker-helpers';
 import {observable, action, computed} from 'mobx';
 import {observer} from 'mobx-react';
 import {DatePickerGrid} from './date-picker-grid';
-import styles = require('./date-picker.css');
+const styles = require('./date-picker.css');
 
 export interface DatePickerDropdownProps {
     date: Date;
