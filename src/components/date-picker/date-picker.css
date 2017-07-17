@@ -1,0 +1,64 @@
+@value vars: "../../style/default-theme/variables.css";
+@value color_Default from vars;
+@value arrowThickness: 0.09em;
+
+.dropdown {
+    width: 330px;
+    height: 348px;
+    border: solid 1px color_Default;
+}
+
+.header {
+    width: 100%;
+    height: 60px;
+    background-color: color_Default;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0;
+}
+
+.headerDate {
+    display: inline;
+    width: 150px;
+    height: 24px;
+    font-family: ArialMT;
+    font-size: 16px;
+    line-height: 1.5;
+    text-align: center;
+    color: #ffffff;
+}
+
+.headerArrow {
+    border-bottom: arrowThickness solid #ffffff;
+    cursor: pointer;
+    width: 9px;
+    height: 9px;
+
+}
+
+.headerArrowNext {
+    transform: rotate(-45deg);
+    margin-right: 24px;
+    border-right: arrowThickness solid #ffffff;
+}
+
+.headerArrowPrev {
+    transform: rotate(45deg);
+    margin-left: 24px;
+    border-left: arrowThickness solid #ffffff;
+}
+
+.calendar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+.calendarItem {
+    cursor: pointer;
+    flex: 1 1 14.2857%;
+}

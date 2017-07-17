@@ -20,7 +20,8 @@ export class DatePicker extends React.Component<Partial<DatePickerProps>, {}>{
 
     @observable date: Date = this.props.date ? this.props.date : new Date();
     @observable inputValue: string = this.props.date ? this.props.date.toDateString() : '';
-    @observable showDropdown: boolean = this.props.showDropdown ? this.props.showDropdown : false;
+    // @observable showDropdown: boolean = this.props.showDropdown ? this.props.showDropdown : false;
+    @observable showDropdown: boolean = true;
 
     // Called with possibly invalid string from the input
     @action updateStateFromString = (input: string): void => {

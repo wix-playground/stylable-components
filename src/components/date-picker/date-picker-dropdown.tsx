@@ -3,7 +3,7 @@ import {getMonthNames, getMonthFromOffset} from './date-picker-helpers';
 import {observable, action, computed} from 'mobx';
 import {observer} from 'mobx-react';
 import {DatePickerGrid} from './date-picker-grid';
-import {debug} from "util";
+import styles = require('./date-picker.css');
 
 export interface DatePickerDropdownProps {
     date: Date;
@@ -50,10 +50,14 @@ export class DatePickerDropdown extends React.Component<DatePickerDropdownProps,
 
     render() {
         return (
-            <div data-automation-id="DATE_PICKER_DROPDOWN">
-                <span onMouseDown={this.goToPrevMonth} data-automation-id="PREV_MONTH_BUTTON">Prev</span>
-                <span data-automation-id="MONTH_NAME">{this.monthName}</span>&nbsp;<span data-automation-id="YEAR">{this.year}</span>
-                <span onMouseDown={this.goToNextMonth} data-automation-id="NEXT_MONTH_BUTTON">Next</span>
+            <div className={styles.dropdown} data-automation-id="DATE_PICKER_DROPDOWN">
+                <div className={styles.header}>
+                    <span className={[styles.headerArrow, styles.headerArrowPrev].join(' ')} onMouseDown={this.goToPrevMonth} data-automation-id="PREV_MONTH_BUTTON"></span>
+                    <div className={styles.headerDate}>
+                        <span data-automation-id="MONTH_NAME">{this.monthName}</span>&nbsp;<span data-automation-id="YEAR">{this.year}</span>
+                    </div>
+                    <span className={[styles.headerArrow, styles.headerArrowNext].join(' ')} onMouseDown={this.goToNextMonth} data-automation-id="NEXT_MONTH_BUTTON"></span>
+                </div>
                 <DatePickerGrid date={this.date} onChange={this.setDayTo.bind(this)} />
             </div>
         );

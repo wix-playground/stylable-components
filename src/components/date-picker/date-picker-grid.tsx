@@ -2,6 +2,7 @@ import * as React from 'react';
 import {getDayNames, getDaysInMonth} from './date-picker-helpers';
 import {computed} from 'mobx';
 import {observer} from 'mobx-react';
+import styles = require('./date-picker.css');
 
 export interface DatePickerGridProps {
     date: Date;
@@ -28,12 +29,12 @@ export class DatePickerGrid extends React.Component<DatePickerGridProps, {}> {
 
     render() {
         return (
-            <div data-automation-id="CALENDAR">
-                <p>{getDayNames().map(name => <span key={'DAY_NAME_' + name.toUpperCase()}
-                                                    data-automation-id={'DAY_NAME_' + name.toUpperCase()}>{name}</span>)}</p>
-                <p>{this.dayArray.map(day => <span onMouseDown={this.onMouseDown} key={'DAY_' + day}
-                                                   data-automation-id={'DAY_' + day}>{day}</span>)}</p>
-            </div>
+                <div className={styles.calendar} data-automation-id="CALENDAR">
+                    {getDayNames().map((name, index) => <span className={styles.calendarItem} key={'DAY_NAME_' + index}
+                                                        data-automation-id={'DAY_NAME_' + name.toUpperCase()}>{name}</span>)}
+                    {this.dayArray.map(day => <span className={styles.calendarItem} onMouseDown={this.onMouseDown} key={'DAY_' + day}
+                                                       data-automation-id={'DAY_' + day}>{day}</span>)}
+                </div>
         );
     }
 }
