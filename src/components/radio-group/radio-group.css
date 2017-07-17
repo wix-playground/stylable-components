@@ -1,6 +1,21 @@
-input {
-    opacity: 0;
+.radio-container {
+    display: flex;
     position: relative;
+}
+
+.radio-input {
+    cursor: pointer;
+    opacity: 0;
+    position: absolute;
     top: 0;
     left: 0;
+    margin: 0;
 }
+
+.radio-svg {
+    align-self: center;
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+}
+

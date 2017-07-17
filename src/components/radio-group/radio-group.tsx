@@ -38,7 +38,7 @@ export class RadioGroup extends React.Component<RadioGroupProps, {}> {
                 value.checked = false;
             });
             this.checkedArray[index].checked = true;
-            this.props.onChange(e.target.value);
+            this.props.onChange(e);
         };
     }
 
@@ -75,15 +75,17 @@ export class RadioButton extends React.Component<RadioButtonProps, {}> {
     };
 
     @action
-    onClick: EventHandler<any> = (e: MouseEvent) => {
-        this.props.onClick(e);
+    onClick: EventHandler<any> = () => {
+        this.props.onClick(this.props.value);
     };
 
     render() {
         return (
-            <div data-automation-id={this.props.automationId} onClick={this.onClick}>
-                {this.props.checked ? checkedRadioSvg() : emptyRadioSvg()}
-                <input type="radio" className={style.input} data-automation-id={'INPUT'} value={this.props.value} checked={this.props.checked} name={this.props.name} readOnly={true}/>
+            <div data-automation-id={this.props.automationId} className={style['radio-container']} onClick={this.onClick}>
+                <div>
+                    {this.props.checked ? checkedRadioSvg() : emptyRadioSvg()}
+                    <input type="radio" className={style['radio-input']} data-automation-id={'INPUT'} value={this.props.value} checked={this.props.checked} name={this.props.name} readOnly={true}/>
+                </div>
                 <span data-automation-id="LABEL">{this.props.value}</span>
             </div>
         )
@@ -92,7 +94,7 @@ export class RadioButton extends React.Component<RadioButtonProps, {}> {
 
 function emptyRadioSvg() {
     return (
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+        <svg xmlns="http://www.w3.org/2000/svg" className={style['radio-svg']} viewBox="0 0 16 16">
             <circle cx="8" cy="8" r="7.5" fill="none" fillRule="evenodd" stroke="#4A90E2"/>
         </svg>
     )
@@ -100,7 +102,7 @@ function emptyRadioSvg() {
 
 function checkedRadioSvg() {
     return (
-        <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="16" height="16" viewBox="0 0 16 16">
+        <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" className={style['radio-svg']} viewBox="0 0 16 16">
             <defs>
                 <circle id="a" cx="8" cy="8" r="8"/>
             </defs>

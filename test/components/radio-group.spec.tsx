@@ -19,7 +19,7 @@ describe('<RadioGroup />', function () {
             const {select, waitForDom} = clientRenderer.render(<RadioGroupDemo/>);
 
             await waitForDom(() => { expect(select("RADIO_GROUP_DEMO", radioGroup, radioButton + '_0')).to.be.present() });
-            const button0 = select(radioGroup, radioButton + '_0', 'INPUT') as HTMLInputElement;
+            const button0 = select(radioGroup, radioButton + '_0') as HTMLInputElement;
             button0.click();
             await waitForDom(() => {
                 expect(select('RADIO_GROUP_DEMO_VALUE')).to.have.text('Value: This way!');
@@ -186,7 +186,7 @@ describe('<RadioGroup />', function () {
             await waitForDom(() => { expect(select(radioButton + '_0', 'INPUT')).to.be.present() });
             simulate.click(select(radioButton + '_0'));
             return waitFor(() => {
-                expect(onClick).to.have.been.calledOnce;
+                expect(onClick).to.have.been.calledWithMatch('Tonberry');
             })
         })
     });
