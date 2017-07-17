@@ -19,6 +19,7 @@ export interface TreeItemProps {
     onItemClick?: React.EventHandler<any>;
     stateMap: StateMap;
     state: TreeItemState;
+    itemKey?: string;
 }
 
 export interface TreeViewProps {
@@ -36,19 +37,19 @@ export type StateMap = Map<TreeItemData, TreeItemState>;
 
 const itemIdPrefix = 'TREE_ITEM';
 
-export function TreeItem({ item, itemRenderer, onItemClick, stateMap, state }: TreeItemProps): JSX.Element {
+export function TreeItem({ item, itemRenderer, onItemClick, stateMap, state, itemKey }: TreeItemProps): JSX.Element {
     const itemLabel = item.label.replace(' ', '_');
     return (
-        <div key={itemLabel}>
+        <div key={itemKey}>
             <div data-automation-id={`${itemIdPrefix}_${itemLabel}`} className={style['tree-node']}
                  onClick={() => onItemClick!(item)} data-selected={ state!.isSelected }>
                 <span data-automation-id={`${itemIdPrefix}_${itemLabel}_ICON`}>&gt; </span>
                 <span data-automation-id={`${itemIdPrefix}_${itemLabel}_LABEL`}>{item.label}</span>
             </div>
             <div className={style['nested-tree']}>
-                {(item.children || []).map((child: TreeItemData) =>
+                {(item.children || []).map((child: TreeItemData, index: number) =>
                     React.createElement(itemRenderer,
-                        {item: child, onItemClick, itemRenderer, stateMap, state: stateMap.get(child)!}))}
+                        {item: child, onItemClick, itemRenderer, stateMap, state: stateMap.get(child)!, itemKey: `${index}`}))}
             </div>
         </div>
     )
@@ -90,11 +91,11 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
     render() {
         return (
             <div data-automation-id='TREE_VIEW' className={style['tree-view']}>
-                {(this.props.dataSource || []).map((item: TreeItemData) =>
+                {(this.props.dataSource || []).map((item: TreeItemData, index: number) =>
                     React.createElement(
                         this.props.itemRenderer!,
-                        {item, onItemClick: this.onSelectItem,
-                            itemRenderer: this.props.itemRenderer!, stateMap: this.stateMap, state: this.stateMap.get(item)! }))}
+                        {item, onItemClick: this.onSelectItem, itemRenderer: this.props.itemRenderer!,
+                            stateMap: this.stateMap, state: this.stateMap.get(item)!, itemKey: `${index}` }))}
             </div>
         )
     }
