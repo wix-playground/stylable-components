@@ -4,6 +4,7 @@ The Popup enables positioning content next to an anchor element.
 
 * [Position and Collision](#position-and-collision)
 * [Properties](#properties)
+* [Input Handling](#input-handling)
 * [Examples](#examples) - Based on the stages of builds
 
 ## Position and Collision
@@ -97,6 +98,12 @@ The Popup enables positioning content next to an anchor element.
 | syncWidth	| boolean |	true | no | If true, the width of the popup will be set to the width of the anchor. If false, it will be set to the width of the children |
 | maxHeight | number | 500 | no | The max height in pixels of the popup. If set to 0, the property will be ignored and receive height from its content |
 
+## Input Handling
+
+### Keyboard
+
+* Esc - closes the popup
+* Click outside - closes the popup
 
 ## Examples
 
