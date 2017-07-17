@@ -13,12 +13,6 @@ function isValidDate(date: any): boolean {
     return date instanceof Date && !Number.isNaN(date.getTime());
 }
 
-function sameDate(a: Date, b: Date) {
-    return a.getUTCFullYear() === b.getUTCFullYear() &&
-           a.getUTCMonth() === b.getUTCMonth() &&
-           a.getUTCDate() === b.getUTCDate();
-}
-
 function yearMonthDayFromDate(date: Date | undefined) {
     const valid = isValidDate(date);
     return [
