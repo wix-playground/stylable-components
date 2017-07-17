@@ -32,7 +32,7 @@ export interface TreeItemState {
     isSelected: boolean;
 }
 
-type StateMap = Map<TreeItemData, TreeItemState>;
+export type StateMap = Map<TreeItemData, TreeItemState>;
 
 const itemIdPrefix = 'TREE_ITEM';
 
