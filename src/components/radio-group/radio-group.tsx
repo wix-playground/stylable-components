@@ -22,6 +22,11 @@ export class RadioGroup extends React.Component<RadioGroupProps, {}> {
     name: string;
     checkedArray: Array<RadioState>;
 
+    static defaultProps = {
+        data: [],
+        location: 'right'
+    };
+
     constructor(props: RadioGroupProps) {
         super(props);
         this.checkedArray = [];
@@ -46,7 +51,7 @@ export class RadioGroup extends React.Component<RadioGroupProps, {}> {
             <div data-automation-id="RADIO_GROUP">
                 {this.props.data.map((value: string, index: number) => {
                     return (
-                        <RadioButton key={index} value={value} checked={this.checkedArray[index].checked} onClick={this.childrenOnClick(index)} name={this.name} location={this.props.location ? this.props.location : 'right'} automationId={'RADIO_BUTTON_' + index}/>
+                        <RadioButton key={index} value={value} checked={this.checkedArray[index].checked} onClick={this.childrenOnClick(index)} name={this.name} location={this.props.location} automationId={'RADIO_BUTTON_' + index}/>
                     );
                 })}
             </div>);

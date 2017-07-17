@@ -36,10 +36,9 @@ describe('<RadioGroup />', function () {
 
             expect(button0).to.be.present();
             expect(button0.checked).to.be.false;
-            expect(button0.name).to.equal('name_0');
+            expect(button0.name).to.equal(button1.name);
             expect(button1).to.be.present();
             expect(button1.checked).to.be.false;
-            expect(button1.name).to.equal('name_0');
         });
     });
 
