@@ -1,20 +1,20 @@
 import React = require('react');
 import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react';
 import {CheckBoxDemo, demoCheckBoxText} from "../../demo/components/checkbox-demo";
-import {CheckBox} from "../../src/components/checkbox/checkbox";
+import {CheckBox, CheckBoxIconProps} from "../../src/components/checkbox/checkbox";
 
-const boxSVG: React.SFC<any> = (props) => {
+const boxSVG: React.SFC<CheckBoxIconProps> = () => {
     return (
-        <svg height="1em" width="1em "viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" >
-            <path fill="none" stroke="#D1D1D1" d="M.5.5h15v15H.5z"/>
+        <svg data-automation-id="CHECKBOX_BOX"  height="1em" width="1em "viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" >
+            <path fill="none" stroke="black" d="M.5.5h15v15H.5z"/>
         </svg>
     )
 };
 
-const tickSVG: React.SFC = () => {
+const tickSVG: React.SFC<CheckBoxIconProps> = () => {
     return (
-        <svg height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" >
-            <path stroke="#FFF" strokeLinecap="square" strokeWidth="1.5" d="M5 8.685l2.496 1.664M8 10.685L11.748 6"/>
+        <svg data-automation-id="CHECKBOX_TICKMARK" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+            <path stroke="black" strokeLinecap="square" strokeWidth="1.5" d="M5 8.685l2.496 1.664M8 10.685L11.748 6"/>
         </svg>
     )
 };
@@ -41,14 +41,19 @@ describe('<Checkbox/>', function () {
 
         return waitFor(() => {
             expect(select('CHECKBOX_TICKMARK')).to.be.present();
+            expect(select('CHECKBOX_TICKMARK')).to.be.insideOf(select('CHECKBOX_BOX') as HTMLElement);
+
         });
     });
 
-    it('Renders', function () {
+    it('Renders with default values', function () {
         const {select, waitForDom} = clientRenderer.render(<CheckBox/>);
 
         return waitForDom(() => {
             expect(select('CHECKBOX_ROOT')).to.be.present();
+            expect(select('CHECKBOX_BOX')).to.be.present();
+            expect(select('CHECKBOX_TICKMARK')).to.be.absent();
+            expect(select('CHECKBOX_LABEL')).to.have.text('')
         })
     });
 
@@ -80,8 +85,6 @@ describe('<Checkbox/>', function () {
         return waitForDom(() => {
             expect(select('CHECKBOX_BOX')).to.be.present();
             expect(select('CHECKBOX_TICKMARK')).to.be.present();
-
-            expect(select('CHECKBOX_TICKMARK')).to.be.insideOf(select('CHECKBOX_BOX') as HTMLElement);
         })
     });
 

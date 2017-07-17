@@ -11,7 +11,6 @@ export interface CheckBoxProps {
 
 export interface CheckBoxIconProps {
     value?: boolean;
-    className?: string;
 }
 
 export const CheckBox: React.SFC<CheckBoxProps> = (props) => (
@@ -38,17 +37,20 @@ function executeClickHandler(handler: (value: boolean) => any, value: boolean) {
 
 const DefaultCheckBoxSVG: React.SFC<CheckBoxIconProps> = (props) => {
     return (
-        <svg className={props.className || (style.boxIconDefault + ' ' + (props.value && style.boxIconChecked)) }
+        <svg className={style.boxIconDefault + ' ' + (props.value && style.boxIconChecked)}
              viewBox="0 0 16 16"
-             xmlns="http://www.w3.org/2000/svg" >
+             data-automation-id="CHECKBOX_BOX"
+             xmlns="http://www.w3.org/2000/svg">
             <path fill="none" stroke="#D1D1D1" d="M.5.5h15v15H.5z"/>
         </svg>
     )
 };
 
-const DefaultTickMarkSVG: React.SFC<any> = (props) => {
+const DefaultTickMarkSVG: React.SFC<CheckBoxIconProps> = (props) => {
     return (
-        <svg xmlns="http://www.w3.org/2000/svg" className={props.className || style.tickIcon}>
+        <svg className={style.tickIcon}
+             data-automation-id="CHECKBOX_TICKMARK"
+             xmlns="http://www.w3.org/2000/svg">
             <path stroke="#FFF" strokeLinecap="square" strokeWidth="1.5" d="M5 8.685l2.496 1.664M8 10.685L11.748 6"/>
         </svg>
     )
