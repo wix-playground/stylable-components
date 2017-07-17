@@ -5,7 +5,7 @@ import {CheckBox, CheckBoxIconProps} from "../../src/components/checkbox/checkbo
 
 const boxSVG: React.SFC<CheckBoxIconProps> = () => {
     return (
-        <svg data-automation-id="CHECKBOX_BOX"  height="1em" width="1em "viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" >
+        <svg data-automation-id="CHECKBOX_BOX_TEST"  height="1em" width="1em "viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" >
             <path fill="none" stroke="black" d="M.5.5h15v15H.5z"/>
         </svg>
     )
@@ -13,7 +13,7 @@ const boxSVG: React.SFC<CheckBoxIconProps> = () => {
 
 const tickSVG: React.SFC<CheckBoxIconProps> = () => {
     return (
-        <svg data-automation-id="CHECKBOX_TICKMARK" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+        <svg data-automation-id="CHECKBOX_TICKMARK_TEST" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
             <path stroke="black" strokeLinecap="square" strokeWidth="1.5" d="M5 8.685l2.496 1.664M8 10.685L11.748 6"/>
         </svg>
     )
@@ -69,8 +69,8 @@ describe('<Checkbox/>', function () {
         const {select, waitForDom} = clientRenderer.render(<CheckBox boxIcon={boxSVG} text="yoyo"/>);
 
         return waitForDom(()=> {
-            expect(select('CHECKBOX_BOX')).to.be.present();
-            expect([select('CHECKBOX_BOX'), select('CHECKBOX_LABEL')]).to.be.verticallyAligned('bottom', 5);
+            expect(select('CHECKBOX_BOX_TEST')).to.be.present();
+            expect([select('CHECKBOX_BOX_TEST'), select('CHECKBOX_LABEL')]).to.be.verticallyAligned('bottom', 5);
         })
     });
 
@@ -83,8 +83,8 @@ describe('<Checkbox/>', function () {
         );
 
         return waitForDom(() => {
-            expect(select('CHECKBOX_BOX')).to.be.present();
-            expect(select('CHECKBOX_TICKMARK')).to.be.present();
+            expect(select('CHECKBOX_BOX_TEST')).to.be.present();
+            expect(select('CHECKBOX_TICKMARK_TEST')).to.be.present();
         })
     });
 

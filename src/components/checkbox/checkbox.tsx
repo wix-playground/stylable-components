@@ -18,13 +18,9 @@ export const CheckBox: React.SFC<CheckBoxProps> = (props) => (
          onClick={(event) => executeClickHandler(props.onChange!, !props.value)}
          style={{display:'inline'}}>
 
-        {
-            props.boxIcon!({value: props.value})
-        }
+        { props.boxIcon!({value: props.value}) }
 
-        {
-            props.value && props.tickIcon!({value: props.value})
-        }
+        { props.value && props.tickIcon!({value: props.value}) }
 
         <span data-automation-id="CHECKBOX_LABEL" style={{marginLeft: '5px', verticalAlign:'top'}}>{props.text || ''}</span>
         {/*<input type="checkbox"/>*/}
