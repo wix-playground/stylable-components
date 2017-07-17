@@ -3,6 +3,7 @@ import {expect, ClientRenderer, simulate, selectDom} from 'test-drive-react';
 import {DatePicker, getDayNames, getMonthFromOffset, getDaysInMonth} from '../../src';
 import {DatePickerDemo} from '../../demo/date-picker-demo';
 import {KeyCodes} from '../../src/common/key-codes';
+import {debug} from "util";
 
 const datePickerId = 'DATE_PICKER';
 const datePickerInputId = 'DATE_PICKER_INPUT';
@@ -114,7 +115,7 @@ describe('The DatePicker Component', function () {
             const {select, waitForDom} = clientRenderer.render(<DatePicker showDropdown={true} date={JANUARY_FIRST} />);
 
             return waitForDom(() => {
-               expect([select('PREV_MONTH_BUTTON'), select('MONTH_NAME'), select('YEAR'), select('NEXT_MONTH_BUTTON')]).to.be.inHorizontalSequence({tolerance: 5}).and.verticallyAligned('center');
+               expect([select('PREV_MONTH_BUTTON'), select('MONTH_NAME'), select('YEAR'), select('NEXT_MONTH_BUTTON')]).to.be.verticallyAligned('center', 1);
             });
         });
 
@@ -137,52 +138,37 @@ describe('The DatePicker Component', function () {
 
         function elementsInRow (row: number) {
             const rowElements = [];
-            for (let i = 1; i <= 7; i++) {
-                rowElements.push(selectDom(document.body, 'DAY_' + (((row - 1) * 7) + i - 1)));
+            const select = selectDom(document.body);
+
+            for (let i = 1; i < 7; i++) {
+                rowElements.push(select('DAY_' + (((row - 1) * 7) + i)));
             }
+
             return rowElements;
         }
 
         function elementsInColumn (column: number) {
             const columnElements = [];
+            const select = selectDom(document.body);
+
             for (let i = 1; i <= 5; i++) {
-                const elementSelector = 'DAY_' + ((7 * (i - 1)) + column - 1);
-                columnElements.push(selectDom(document.body, elementSelector));
+                columnElements.push(select('DAY_' + ((7 * (i - 1)) + column)));
             }
+
             return columnElements;
         }
 
-        // it('should display the days in a grid', function () {
-        //     clientRenderer.render(<DatePicker date={MARCH_FIRST} showDropdown={true}/>);
-        //
-        //     // Check that the days are displayed in 5 rows (checking that each row is in horizontal sequence
-        //     expect(elementsInRow(1)).to.be.inHorizontalSequence();
-        //     expect(elementsInRow(2)).to.be.inHorizontalSequence();
-        //     expect(elementsInRow(3)).to.be.inHorizontalSequence();
-        //     expect(elementsInRow(4)).to.be.inHorizontalSequence();
-        //     expect(elementsInRow(5)).to.be.inHorizontalSequence();
-        //     expect(elementsInRow(1)).to.be.verticallyAligned('center');
-        //     expect(elementsInRow(2)).to.be.verticallyAligned('center');
-        //     expect(elementsInRow(3)).to.be.verticallyAligned('center');
-        //     expect(elementsInRow(4)).to.be.verticallyAligned('center');
-        //     expect(elementsInRow(5)).to.be.verticallyAligned('center');
-        //
-        //     // Check that the days are displayed in 7 columns
-        //     expect(elementsInColumn(1)).to.be.inVerticalSequence();
-        //     expect(elementsInColumn(2)).to.be.inVerticalSequence();
-        //     expect(elementsInColumn(3)).to.be.inVerticalSequence();
-        //     expect(elementsInColumn(4)).to.be.inVerticalSequence();
-        //     expect(elementsInColumn(5)).to.be.inVerticalSequence();
-        //     expect(elementsInColumn(6)).to.be.inVerticalSequence();
-        //     expect(elementsInColumn(7)).to.be.inVerticalSequence();
-        //     expect(elementsInColumn(1)).to.be.horizontallyAligned('center');
-        //     expect(elementsInColumn(2)).to.be.horizontallyAligned('center');
-        //     expect(elementsInColumn(3)).to.be.horizontallyAligned('center');
-        //     expect(elementsInColumn(4)).to.be.horizontallyAligned('center');
-        //     expect(elementsInColumn(5)).to.be.horizontallyAligned('center');
-        //     expect(elementsInColumn(6)).to.be.horizontallyAligned('center');
-        //     expect(elementsInColumn(7)).to.be.horizontallyAligned('center');
-        // });
+        it('should display the days in a grid', function () {
+            clientRenderer.render(<DatePicker date={MARCH_FIRST} showDropdown={true}/>);
+
+            // Check that the days are displayed in rows (checking that each row is in horizontal sequence
+            expect(elementsInRow(1)).to.be.inHorizontalSequence();
+            expect(elementsInRow(1)).to.be.verticallyAligned('center');
+
+            // Check that the days are displayed in columns
+            expect(elementsInColumn(1)).to.be.inVerticalSequence();
+            expect(elementsInColumn(1)).to.be.horizontallyAligned('center');
+        });
 
         it('displays the year', function () {
             const {select, waitForDom} = clientRenderer.render(<DatePicker showDropdown={true} date={JANUARY_FIRST} />);

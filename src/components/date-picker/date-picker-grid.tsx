@@ -30,9 +30,9 @@ export class DatePickerGrid extends React.Component<DatePickerGridProps, {}> {
     render() {
         return (
                 <div className={styles.calendar} data-automation-id="CALENDAR">
-                    {getDayNames().map((name, index) => <span className={styles.calendarItem} key={'DAY_NAME_' + index}
+                    {getDayNames().map((name, index) => <span className={[styles.calendarItem, styles.dayName].join(' ')} key={'DAY_NAME_' + index}
                                                         data-automation-id={'DAY_NAME_' + name.toUpperCase()}>{name}</span>)}
-                    {this.dayArray.map(day => <span className={styles.calendarItem} onMouseDown={this.onMouseDown} key={'DAY_' + day}
+                    {this.dayArray.map(day => <span className={[styles.calendarItem, styles.day].join(' ')} onMouseDown={this.onMouseDown} key={'DAY_' + day}
                                                        data-automation-id={'DAY_' + day}>{day}</span>)}
                 </div>
         );

@@ -4,6 +4,7 @@ import {observable, action} from 'mobx';
 import {observer} from 'mobx-react';
 import {SyntheticEvent} from "react";
 import {KeyCodes} from '../../common/key-codes';
+import styles = require('./date-picker.css');
 
 export interface DatePickerProps {
     date: Date;
@@ -20,8 +21,7 @@ export class DatePicker extends React.Component<Partial<DatePickerProps>, {}>{
 
     @observable date: Date = this.props.date ? this.props.date : new Date();
     @observable inputValue: string = this.props.date ? this.props.date.toDateString() : '';
-    // @observable showDropdown: boolean = this.props.showDropdown ? this.props.showDropdown : false;
-    @observable showDropdown: boolean = true;
+    @observable showDropdown: boolean = this.props.showDropdown ? this.props.showDropdown : false;
 
     // Called with possibly invalid string from the input
     @action updateStateFromString = (input: string): void => {
@@ -85,7 +85,16 @@ export class DatePicker extends React.Component<Partial<DatePickerProps>, {}>{
     render() {
         return (
             <div data-automation-id="DATE_PICKER">
-                <input onKeyDown={this.onKeyDown} onMouseDown={this.onMouseDown} onBlur={this.onBlur} onFocus={this.onFocus} onChange={this.onInputChange} value={this.inputValue} placeholder={this.props.placeholder} type="text" data-automation-id="DATE_PICKER_INPUT" />
+                <input className={styles.input}
+                       onKeyDown={this.onKeyDown}
+                       onMouseDown={this.onMouseDown}
+                       onBlur={this.onBlur}
+                       onFocus={this.onFocus}
+                       onChange={this.onInputChange}
+                       value={this.inputValue}
+                       placeholder={this.props.placeholder}
+                       type="text"
+                       data-automation-id="DATE_PICKER_INPUT" />
                 {this.showDropdown ?
                     <DatePickerDropdown onChange={this.updateStateFromDate} date={this.date!} data-automation-id="DATE_PICKER_DROPDOWN" />
                     :

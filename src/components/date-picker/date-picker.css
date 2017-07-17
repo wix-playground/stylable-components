@@ -1,16 +1,40 @@
 @value vars: "../../style/default-theme/variables.css";
-@value color_Default from vars;
+@value color_Default, color_MainTextBackground, color_MainText from vars;
 @value arrowThickness: 0.09em;
+@value headerHeight: 60px;
+@value dropdownWidth: 330px;
+@value dropdownArrowWidth: 11px;
+@value dropdownArrowHeight: 12px;
+@value inputWidth: 192px;
+
+.input {
+    width: inputWidth;
+}
+
+.dropdownArrowWrapper {
+    width: inputWidth;
+}
+
+.dropdownArrow {
+    width: 0;
+    height: 0;
+    position: relative;
+    /* Center arrow */
+    left: calc(50% - dropdownArrowWidth);
+    border-left: dropdownArrowWidth solid transparent;
+    border-right: dropdownArrowWidth solid transparent;
+    border-bottom: dropdownArrowHeight solid color_Default;
+}
 
 .dropdown {
-    width: 330px;
+    width: dropdownWidth;
     height: 348px;
     border: solid 1px color_Default;
 }
 
 .header {
     width: 100%;
-    height: 60px;
+    height: headerHeight;
     background-color: color_Default;
     display: flex;
     justify-content: space-between;
@@ -26,11 +50,11 @@
     font-size: 16px;
     line-height: 1.5;
     text-align: center;
-    color: #ffffff;
+    color: color_MainTextBackground;
 }
 
 .headerArrow {
-    border-bottom: arrowThickness solid #ffffff;
+    border-bottom: arrowThickness solid color_MainTextBackground;
     cursor: pointer;
     width: 9px;
     height: 9px;
@@ -40,25 +64,51 @@
 .headerArrowNext {
     transform: rotate(-45deg);
     margin-right: 24px;
-    border-right: arrowThickness solid #ffffff;
+    border-right: arrowThickness solid color_MainTextBackground;
 }
 
 .headerArrowPrev {
     transform: rotate(45deg);
     margin-left: 24px;
-    border-left: arrowThickness solid #ffffff;
+    border-left: arrowThickness solid color_MainTextBackground;
 }
 
 .calendar {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    height: 100%;
-    width: 100%;
+    /*align-content: space-between;*/
+    height: calc(100% - headerHeight);
+    width: dropdownWidth;
+    padding: 30px;
 }
 
 .calendarItem {
+    flex: 0 0 14.2857%;
+}
+
+.dayName {
+    font-family: ArialMT;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 1.29;
+    text-align: center;
+    color: color_MainText;
+    width: 36px;
+    height: 36px;
+    cursor: default;
+}
+
+.day {
+    font-family: ArialMT;
+    font-size: 14px;
+    text-align: center;
+    color: color_MainText;
+    width: 36px;
+    line-height: 36px;
     cursor: pointer;
-    flex: 1 1 14.2857%;
+}
+
+.day:hover {
+    background-color: color_Default;
+    color: color_MainTextBackground;
 }

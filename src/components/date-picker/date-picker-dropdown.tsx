@@ -50,15 +50,18 @@ export class DatePickerDropdown extends React.Component<DatePickerDropdownProps,
 
     render() {
         return (
-            <div className={styles.dropdown} data-automation-id="DATE_PICKER_DROPDOWN">
-                <div className={styles.header}>
-                    <span className={[styles.headerArrow, styles.headerArrowPrev].join(' ')} onMouseDown={this.goToPrevMonth} data-automation-id="PREV_MONTH_BUTTON"></span>
-                    <div className={styles.headerDate}>
-                        <span data-automation-id="MONTH_NAME">{this.monthName}</span>&nbsp;<span data-automation-id="YEAR">{this.year}</span>
+            <div>
+                <div className={styles.dropdownArrowWrapper}><div className={styles.dropdownArrow} /></div>
+                <div className={styles.dropdown} data-automation-id="DATE_PICKER_DROPDOWN">
+                    <div className={styles.header}>
+                        <span className={[styles.headerArrow, styles.headerArrowPrev].join(' ')} onMouseDown={this.goToPrevMonth} data-automation-id="PREV_MONTH_BUTTON"></span>
+                        <div className={styles.headerDate}>
+                            <span data-automation-id="MONTH_NAME">{this.monthName}</span>&nbsp;<span data-automation-id="YEAR">{this.year}</span>
+                        </div>
+                        <span className={[styles.headerArrow, styles.headerArrowNext].join(' ')} onMouseDown={this.goToNextMonth} data-automation-id="NEXT_MONTH_BUTTON"></span>
                     </div>
-                    <span className={[styles.headerArrow, styles.headerArrowNext].join(' ')} onMouseDown={this.goToNextMonth} data-automation-id="NEXT_MONTH_BUTTON"></span>
+                    <DatePickerGrid date={this.date} onChange={this.setDayTo.bind(this)} />
                 </div>
-                <DatePickerGrid date={this.date} onChange={this.setDayTo.bind(this)} />
             </div>
         );
     }
