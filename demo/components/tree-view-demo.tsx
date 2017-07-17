@@ -33,10 +33,10 @@ function SelectedItem({selectedItem}: any) {
 
 @observer
 export class TreeViewDemo extends React.Component<{}, {}> {
-    @observable.shallow selectedItem: {item: TreeItemData | undefined} = {item: undefined};
+    @observable.ref selectedItem: TreeItemData | undefined = undefined;
 
     onSelectItem = (item: TreeItemData) => {
-        this.selectedItem.item = item;
+        this.selectedItem = item;
     };
 
     render() {
@@ -44,10 +44,10 @@ export class TreeViewDemo extends React.Component<{}, {}> {
             <div>
                 <h3>TreeView with ability to select a child</h3>
                 <section data-automation-id="TREE_VIEW_DEMO">
-                    <SelectedItem selectedItem={this.selectedItem.item}/>
+                    <SelectedItem selectedItem={this.selectedItem}/>
                     <br/>
                     <TreeView dataSource={treeData} onSelectItem={this.onSelectItem}
-                              selectedItem={this.selectedItem.item} />
+                              selectedItem={this.selectedItem} />
                 </section>
             </div>
         )
