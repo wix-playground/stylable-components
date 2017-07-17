@@ -12,7 +12,7 @@ export interface RadioGroupProps {
 
 let counter = 0;
 
-interface RadioState {
+export interface RadioState {
     checked: boolean;
 }
 
