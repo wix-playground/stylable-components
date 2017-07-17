@@ -106,7 +106,7 @@ describe("<BirthDatePicker />", () => {
 
         return waitForDom(() => {
             change(select("BIRTH_DATE_PICKER_YEAR"), "1986");
-            change(select("BIRTH_DATE_PICKER_MONTH"), "04");
+            change(select("BIRTH_DATE_PICKER_MONTH"), "4");
             change(select("BIRTH_DATE_PICKER_DAY"), "26");
             expect(onChange).to.have.been.calledOnce.and.calledWith(new Date("1986-04-26Z"));
         });

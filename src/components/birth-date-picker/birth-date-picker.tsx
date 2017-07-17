@@ -2,13 +2,6 @@ import React = require("react");
 import { autorun, computed, observable, reaction } from "mobx";
 import { observer } from "mobx-react";
 
-export interface BirthDatePickerProps {
-    value?: Date;
-    minDate?: Date;
-    maxDate?: Date;
-    onChange?: (newValue: Date) => void;
-}
-
 function isValidDate(date: any): boolean {
     return date instanceof Date && !Number.isNaN(date.getTime());
 }
@@ -22,9 +15,13 @@ function yearMonthDayFromDate(date: Date | undefined) {
     ];
 }
 
+function daysInMonth(date: Date) {
+    return new Date(date.getUTCFullYear(), date.getUTCMonth() + 1, 0).getDate();
+}
+
 export function dateFromYearMonthDay(y: string, m: string, d: string): Date | Error {
     if (/^\d\d\d\d-\d\d?-\d\d?$/.test(`${y}-${m}-${d}`)) {
-        const date = new Date(`${y}-${m}-${d}Z`);
+        const date = new Date(Date.UTC(Number(y), Number(m) - 1, Number(d)));
         if (
             date.getUTCFullYear()  === Number(y) &&
             date.getUTCMonth() + 1 === Number(m) &&
@@ -36,10 +33,52 @@ export function dateFromYearMonthDay(y: string, m: string, d: string): Date | Er
     return new Error("Invalid date");
 }
 
+function numberRangeForSelectBox(min: number, max: number): {value: string, label: string}[] {
+    const digits = String(max).length;
+    const options = [];
+    for (let i = min; i <= max; i++) {
+        options.push({value: String(i), label: `000${i}`.substr(-digits)});
+    }
+    return options;
+}
+
+function monthOptionsForSelectBox(locale: string) {
+    const options = [];
+    for (var i = 0; i < 12; i++) {
+        options.push({
+            value: String(i + 1),
+            label: new Date(2000, i).toLocaleString(locale, {month: "long"})
+        });
+    }
+    return options;
+}
+
+interface SelectProps {
+    value?: string;
+    placeholder?: string;
+    options: {label: string, value: string}[],
+    onChange: (event: React.FormEvent<HTMLSelectElement>) => void;
+    "data-automation-id"?: string;
+}
+
+function Select(props: SelectProps) {
+    return <select value={props.value} onChange={props.onChange} data-automation-id={props["data-automation-id"]}>
+        <option value="" label={props.placeholder} />
+        {props.options.map(({value, label}) =>
+            <option key={value} value={value} label={label} />)}
+    </select>;
+}
+
+export interface BirthDatePickerProps {
+    value?: Date;
+    minDate?: Date;
+    maxDate?: Date;
+    onChange?: (newValue: Date) => void;
+}
+
 @observer
 export class BirthDatePicker extends React.Component<BirthDatePickerProps, {}> {
     static defaultProps: BirthDatePickerProps = {
-        minDate: new Date("1900-01-01Z"),
         maxDate: new Date(),
         onChange: () => {}
     };
@@ -52,9 +91,18 @@ export class BirthDatePicker extends React.Component<BirthDatePickerProps, {}> {
         return dateFromYearMonthDay(this.year, this.month, this.day);
     }
 
+    dayOptions = numberRangeForSelectBox(1, 31);
+    monthOptions = monthOptionsForSelectBox("en-US");
+    @computed get yearOptions() {
+        const max = this.props.maxDate!.getUTCFullYear();
+        const min = this.props.minDate ? this.props.minDate.getUTCFullYear() : max - 120;
+        return numberRangeForSelectBox(min, max);
+    }
+
     componentWillMount() {
         autorun(() => {
-            [this.year, this.month, this.day] = yearMonthDayFromDate(this.props.value);
+            [this.year, this.month, this.day] =
+                yearMonthDayFromDate(this.props.value);
         });
 
         reaction(() => this.currentValue, value => {
@@ -65,32 +113,31 @@ export class BirthDatePicker extends React.Component<BirthDatePickerProps, {}> {
     }
 
     render() {
+        const months = numberRangeForSelectBox(1, 12);
+
         return <span data-automation-id="BIRTH_DATE_PICKER">
-            <input data-automation-id="BIRTH_DATE_PICKER_DAY"
-                type="text"
-                size={3}
-                pattern="\d*"
-                placeholder="DD"
+            <Select
+                data-automation-id="BIRTH_DATE_PICKER_DAY"
                 value={this.day}
+                placeholder="Day"
+                options={this.dayOptions}
                 onChange={this.handleDayChange} />
-            <input data-automation-id="BIRTH_DATE_PICKER_MONTH"
-                type="text"
-                size={3}
-                pattern="\d*"
-                placeholder="MM"
+            <Select
+                data-automation-id="BIRTH_DATE_PICKER_MONTH"
                 value={this.month}
+                placeholder="Month"
+                options={this.monthOptions}
                 onChange={this.handleMonthChange} />
-            <input data-automation-id="BIRTH_DATE_PICKER_YEAR"
-                type="text"
-                size={5}
-                pattern="\d*"
-                placeholder="YYYY"
+            <Select
+                data-automation-id="BIRTH_DATE_PICKER_YEAR"
                 value={this.year}
+                placeholder="Year"
+                options={this.yearOptions}
                 onChange={this.handleYearChange} />
         </span>;
     }
 
-    handleYearChange  = (event: React.FormEvent<HTMLInputElement>) => this.year  = event.currentTarget.value;
-    handleMonthChange = (event: React.FormEvent<HTMLInputElement>) => this.month = event.currentTarget.value;
-    handleDayChange   = (event: React.FormEvent<HTMLInputElement>) => this.day   = event.currentTarget.value;
+    handleYearChange  = (event: React.FormEvent<HTMLSelectElement>) => this.year  = event.currentTarget.value;
+    handleMonthChange = (event: React.FormEvent<HTMLSelectElement>) => this.month = event.currentTarget.value;
+    handleDayChange   = (event: React.FormEvent<HTMLSelectElement>) => this.day   = event.currentTarget.value;
 }
