@@ -4,6 +4,8 @@
     "noEmit": false
   },
   "include": [
-    "src"
+    "src",
+    "test",
+    "demo"
   ]
 }
