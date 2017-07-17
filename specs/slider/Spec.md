@@ -140,5 +140,5 @@ The orientation of the slider can be reversed and rotated using the axis prop.
 
 Tooltip display & customizations can be done via "tooltip" prop.  Link to README file. 
 
-![tooltipExample](/Users/maximc/Desktop/slider/assets/tooltipExample.png)
+![tooltipExample](./assets/tooltipExample.png)
 
