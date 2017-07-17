@@ -36,14 +36,16 @@ describe('<TreeView />', () => {
 
     const state: TreeItemState = { isSelected: false };
     const stateMap: StateMap = new Map<TreeItemData, TreeItemState>();
+
     initStateMap(treeData, stateMap);
+
+    const allNodesLabels = getAllNodeLabels(treeData);
 
     it('renders a tree view with a few children, clicks ones of then', async () => {
         const { select, waitForDom } = clientRenderer.render(<TreeViewDemo />);
 
         await waitForDom(() => expect(select(treeView + '_DEMO')).to.be.present());
 
-        const allNodesLabels = getAllNodeLabels(treeData);
         await waitForDom(() => allNodesLabels.forEach(item =>
             expect(select(treeView + '_DEMO', getTreeItem(item)), `${item} was not present`).to.be.present()));
 
@@ -52,7 +54,23 @@ describe('<TreeView />', () => {
         simulate.click(elementToSelect);
 
         return waitForDom(() => expect(elementToSelect).to.have.attr('data-selected', 'true'));
+    });
 
+    it('ends up in expected state after multiple clicks on same tree node', async () => {
+        const { select, waitForDom } = clientRenderer.render(<TreeViewDemo />);
+
+        const elementToSelect = select(treeView + '_DEMO', getTreeItem(allNodesLabels[2]));
+
+        await waitForDom(() => expect(elementToSelect, 'initially was not false').to.have.attr('data-selected', 'false'));
+
+        simulate.click(elementToSelect);
+        await waitForDom(() => expect(elementToSelect, 'did not toggle to true').to.have.attr('data-selected', 'true'));
+
+        simulate.click(elementToSelect);
+        await waitForDom(() => expect(elementToSelect, 'did not toggle to false').to.have.attr('data-selected', 'false'));
+
+        simulate.click(elementToSelect);
+        return waitForDom(() => expect(elementToSelect, 'did not end up at true').to.have.attr('data-selected', 'true'));
     });
 
     describe('Using default renderer', () => {

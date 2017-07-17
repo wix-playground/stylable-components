@@ -83,8 +83,12 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
     }
 
     onSelectItem = (item: TreeItemData) => {
-        if (this.props.selectedItem) this.stateMap.get(this.props.selectedItem)!.isSelected = false;
-        this.props.onSelectItem!(item);
+        if (this.props.selectedItem) {
+            this.stateMap.get(this.props.selectedItem)!.isSelected = false;
+            this.props.onSelectItem!(this.props.selectedItem !== item ? item : undefined);
+        } else {
+            this.props.onSelectItem!(item);
+        }
     };
 
     render() {
