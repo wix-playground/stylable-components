@@ -64,7 +64,7 @@ export class ComponentsDemo extends React.Component<{}, {}>{
                             <a className="button" href="http://www.wix.com" target="_blank">Link</a>
                         </th>
                         <th>
-                            <a disabled className="button" href="http://www.wix.com" target="_blank">Disabled link</a>
+                            <a className="button" href="http://www.wix.com" target="_blank">Disabled link</a>
                         </th>
                     </tr>
                 </table>
@@ -78,7 +78,7 @@ export class ComponentsDemo extends React.Component<{}, {}>{
                             <a href="http://www.wix.com" target="_blank">Normal</a>
                         </th>
                         <th>
-                            <a disabled href="http://www.wix.com" target="_blank">Disabled</a>
+                            <a href="http://www.wix.com" target="_blank">Disabled</a>
                         </th>
                     </tr>
                 </table>
