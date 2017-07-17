@@ -2,18 +2,18 @@ import React = require('react');
 const style = require('./checkbox.css');
 
 export interface CheckBoxProps {
-    text?: string;
-    value?: boolean;
-    boxIcon?: React.SFC<CheckBoxIconProps>;
-    tickIcon?: React.SFC<CheckBoxIconProps>;
-    onChange?: (value: boolean) => any;
+    text: string;
+    value: boolean;
+    boxIcon: React.SFC<CheckBoxIconProps>;
+    tickIcon: React.SFC<CheckBoxIconProps>;
+    onChange: (value: boolean) => any;
 }
 
 export interface CheckBoxIconProps {
     value?: boolean;
 }
 
-export const CheckBox: React.SFC<CheckBoxProps> = (props) => (
+export const CheckBox: React.SFC<Partial<CheckBoxProps>> = (props) => (
     <div data-automation-id="CHECKBOX_ROOT"
          onClick={(event) => executeClickHandler(props.onChange!, !props.value)}
          style={{display:'inline'}}>
