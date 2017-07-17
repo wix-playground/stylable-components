@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {expect, ClientRenderer, simulate, selectDom} from 'test-drive-react';
 import {DatePicker, getDayNames, getMonthFromOffset, getDaysInMonth} from '../../src';
-import {DatePickerDemo} from '../../demo/date-picker-demo';
+import {DatePickerDemo} from '../../demo/components/date-picker-demo';
 import {KeyCodes} from '../../src/common/key-codes';
 import {debug} from "util";
 

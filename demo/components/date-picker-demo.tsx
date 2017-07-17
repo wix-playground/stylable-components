@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { DatePicker } from '../src';
+import { DatePicker } from '../../src';
 import {observable, action} from 'mobx';
 import {observer} from 'mobx-react';
 
