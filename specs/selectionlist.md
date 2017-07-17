@@ -20,6 +20,8 @@ The default item renderer supports the following properties:
 | enabled | boolean | true | no | Whether an item is enabled for selection or not |
 | isOption | boolean | false | no | Whether an item is option title (optgroup). Option items are not selectable or traversable. |
 
+Apart from SelectionItems the default ItemRenderer will accept all children and just place them if not of type SelectionItem.
+
 ## Properties
 
 | Name | Type | Default | Required | Description |
@@ -38,11 +40,19 @@ The default item renderer supports the following properties:
 ### Datasource
 
 The datasource property accepts the following:
-* string[] - An array of strings. The ItemRenderer handles the creation of ListItems from this data type.
-* Object[] - An array of objects. When using an object array, the dataScheme property should be updated to according to the object. The  ItemRenderer handles the creation of ListItems from this data type.
+* string[] | Symbol - The ItemRenderer handles the creation of ListItems from this data type.
+* Object[] | Symbol - When using an object array, the dataScheme property should be updated to according to the object. The  ItemRenderer handles the creation of ListItems from this data type.
 
 Note that if children are passed to the component, the dataSource property is ignored.
 
 ## Input Handling
+
+### Keyboard Navigation
+
+* Home -> highlights ths first item in the SelectionList
+* End -> highlights the last item in the SelectionList
+* Enter -> Selects current highlighted item
+* Up arrow -> highlights previous item
+* Down arrow -> highlights next item
 
 ## Examples
