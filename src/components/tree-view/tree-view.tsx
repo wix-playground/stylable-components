@@ -79,8 +79,7 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
     }
 
     onSelectItem = (item: TreeItemData) => {
-        const currItem = this.props.selectedItem;
-        if (!!currItem && currItem.label) this.stateMap.get(currItem)!.isSelected = false;
+        if (this.props.selectedItem) this.stateMap.get(this.props.selectedItem)!.isSelected = false;
         this.props.onSelectItem!(item);
     };
 
