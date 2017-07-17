@@ -67,7 +67,7 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
         this.initStateMap(props.dataSource);
     }
 
-    initStateMap(data: Object[]) {
+    initStateMap(data: Object[] = []) {
         data.forEach((item: TreeItemData) => {
             this.stateMap.set(item, observable({ isSelected: false }));
             this.initStateMap(item.children || []);
