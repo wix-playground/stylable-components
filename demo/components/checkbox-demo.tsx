@@ -22,21 +22,8 @@ export class CheckBoxDemo extends React.Component<{},{value: boolean}> {
                           text={demoCheckBoxText}
                           boxIcon={CheckBoxSVG}
                           tickIcon={TickMarkSVG}
-                          onChange={this.handleChange}/>
-                <button disabled={!this.state.value}
-                        style={
-                            {
-                                marginLeft: '50px',
-                                verticalAlign: 'top',
-                                width: '72px',
-                                height: '22px',
-                                borderRadius:'20px',
-                                borderColor: this.state.value ? ' #4A90E2' : 'grey',
-                                backgroundColor: this.state.value ? ' #4A90E2' : '#FFF',
-                                color: this.state.value ? '#FFF' : 'grey',
-                                borderWidth:'1px'
-                            }
-                        }>
+                          onChange={this.handleChange}/> <br/>
+                <button disabled={!this.state.value}>
                     Submit
                 </button>
             </div>
