@@ -9,12 +9,6 @@
 Sliders are great for adjusting settings that reflect intensity levels (volume, brightness, color saturation) or for selecting particular range (years period, price range)
 
 
-* [Definition](#definition)
-* [Elements](#elements)
-* [Slider states](#sliderstates)
-* [Slider props](#slider props)
-* [UI customizations](#ui customizations)
-
 
 ## Elements
 
