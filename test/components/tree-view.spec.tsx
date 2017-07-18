@@ -3,6 +3,7 @@ import { expect, ClientRenderer, sinon, simulate, waitFor } from 'test-drive-rea
 import { TreeView, TreeItem } from '../../src';
 import { TreeViewDemo, treeData } from '../../demo/components/tree-view-demo';
 import { StateMap, TreeItemData, TreeItemState} from '../../src/components/tree-view/tree-view';
+import { KeyCodes } from '../../src/common/key-codes';
 
 const treeView = 'TREE_VIEW';
 const treeItem = 'TREE_ITEM';
@@ -108,6 +109,20 @@ describe('<TreeView />', () => {
             return waitFor(() => {
                 expect(onSelectItem).to.have.been.calledOnce;
                 expect(onSelectItem).to.have.been.calledWithMatch(treeData[0]);
+            });
+        });
+
+        describe('Keyboard Navigation', () => {
+            it('expands a focused treeItem when right arrow is clicked', async () => {
+                const { select, waitForDom } = clientRenderer.render(<TreeViewDemo />);
+                const rootNode = getTreeItem(treeData[0].label);
+
+                const nodeChildren = treeData[0].children;
+                await waitForDom(() => expect(select(getTreeItem(nodeChildren![1].label))).to.be.absent());
+
+                simulate.keyDown(select(rootNode), { keyCode: KeyCodes.RIGHT });
+
+                return waitForDom(() => expect(select(getTreeItem(nodeChildren![1].label))).to.be.present());
             });
         });
 

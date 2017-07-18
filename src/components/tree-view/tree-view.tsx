@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { observer } from 'mobx-react';
 import { autorun, observable } from 'mobx';
+import {EventHandler} from "react";
+import {KeyCodes} from "../../common/key-codes";
 
 const style = require('./tree-view.css');
 
@@ -98,9 +100,19 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
         this.toggleItem(item);
     };
 
+    onKeyDown = (e: any) => {
+        switch(e.keyCode) {
+            case KeyCodes.RIGHT:
+
+            default:
+                return;
+        }
+    };
+
     render() {
         return (
-            <div data-automation-id='TREE_VIEW' className={style['tree-view']}>
+            <div data-automation-id='TREE_VIEW' className={style['tree-view']}
+                onKeyDown={this.onKeyDown}>
                 {(this.props.dataSource || []).map((item: TreeItemData, index: number) =>
                     React.createElement(
                         this.props.itemRenderer!,
