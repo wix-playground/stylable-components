@@ -1,5 +1,24 @@
 [TOC]
 
+**Table of Contents**  *generated with [DocToc](http://doctoc.herokuapp.com/)*
+
+- [Definition](#)
+- [Elements](#)
+- [Slider States](#)
+- [Slider Props](#)
+- [UI Customizations](#)
+- [Behavior](#)
+	- [Keyboard](#)
+	- [Mouse](#)
+				- [links to ARIA compliant sliders (for reference):](#)
+- [Error handling](#)
+- [Accessibility](#)
+- [Examples](#)
+		- [Simple](#)
+		- [Stepped](#)
+		- [Horizontal / Vertical Axis](#)
+		- [Tooltip](#)
+
 ## Definition
 
 **Slider** is a component that allows users to input or select value from a range.
