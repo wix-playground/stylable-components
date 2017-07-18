@@ -11,7 +11,7 @@ Sliders are great for adjusting settings that reflect intensity levels (volume, 
 
 * [Definition](#definition)
 * [Elements](#elements)
-* [Slider states](#slider states)
+* [Slider states](#sliderstates)
 * [Slider props](#slider props)
 * [UI customizations](#ui customizations)
 
