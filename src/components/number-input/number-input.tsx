@@ -77,8 +77,7 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
         const {
             step = defaultProps.step,
             min = defaultProps.min,
-            max = defaultProps.max,
-            onChange = defaultProps.onChange
+            max = defaultProps.max
         } = this.props;
         const {value} = this.state;
         const disableIncrement = value + step > max;
