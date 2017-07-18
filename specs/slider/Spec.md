@@ -1,3 +1,5 @@
+[TOC]
+
 ## Definition
 
 **Slider** is a component that allows users to input or select value from a range.
@@ -18,19 +20,19 @@ Slider consists of a "bar" and a "handle". The "handle" is dragged across the "b
 
 ## Slider States
 
-| State    | Description                         |
-| -------- | ----------------------------------- |
-| Default  | Default component appearance        |
-| Hover    | User hovered over bar OR handle     |
-| Focus    | Browser is focused on the component |
-| Click    | User clicks on bar OR handle        |
-| Disabled | Component can not be changed        |
+| State    | Description                         | Link to design |
+| :------- | ----------------------------------- | -------------- |
+| Default  | Default component appearance        |                |
+| Hover    | User hovered over bar OR handle     |                |
+| Focus    | Browser is focused on the component |                |
+| Click    | User clicks on bar OR handle        |                |
+| Disabled | Component can not be changed        |                |
 
 
 
 ## Slider Props
 
-Link to README file
+See [README.md](./README.md) for more info.
 
 
 
@@ -104,7 +106,6 @@ The only accessibility issue that is not covered with slider is the absence of n
 reference links: 
 https://www.paciellogroup.com/blog/2008/05/aria-slider-part-1/
 https://www.paciellogroup.com/blog/2008/06/aria-slider-part-2/
-https://ux.stackexchange.com/questions/42522/sliders-and-accessibility-usability-of-sliders-for-users-with-disabilities
 
 
 
@@ -138,7 +139,7 @@ The orientation of the slider can be reversed and rotated using the axis prop.
 
 #### Tooltip
 
-Tooltip display & customizations can be done via "tooltip" prop.  Link to README file. 
+Tooltip display & customizations can be done via "tooltip" prop.  Link to [README.md](./README.md). 
 
 ![tooltipExample](./assets/tooltipExample.png)
 
