@@ -63,8 +63,10 @@ describe('<NumberInput />', () => {
                     const input = select('NATIVE_INPUT_NUMBER');
 
                     simulate.click(increment);
+                    simulate.click(increment);
+                    simulate.click(increment);
 
-                    expect(input).to.have.value(String(value + step));
+                    expect(input).to.have.value(String(value + 3*step));
                     expect(onChange).to.have.been.calledWith(value + step);
                 });
             });
@@ -102,8 +104,10 @@ describe('<NumberInput />', () => {
                     const input = select('NATIVE_INPUT_NUMBER');
 
                     simulate.click(decrement);
+                    simulate.click(decrement);
+                    simulate.click(decrement);
 
-                    expect(input).to.have.value(String(value - step));
+                    expect(input).to.have.value(String(value - 3*step));
                     expect(onChange).to.have.been.calledWith(value - step);
                 });
             });

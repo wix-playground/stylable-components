@@ -21,6 +21,11 @@ const defaultProps = {
     max: Infinity
 }
 
+type Direction = 'increase' | 'decrease'
+
+const INCREASE: Direction = 'increase';
+const DECREASE: Direction = 'decrease';
+
 export class NumberInput extends React.Component<NumberInputProps, NumberInputState>{
     static defaultProps = defaultProps;
 
@@ -32,8 +37,32 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
 
     private setValue(value: number) {
         const {onChange} = this.props;
+
         this.setState({value});
         onChange!(value);
+    }
+
+    private stepValue(direction: Direction) {
+        const {step} = this.props;
+        const {value} = this.state;
+        const next = direction == INCREASE ?
+            value + step! :
+            value - step!
+
+        this.setValue(next);
+    }
+
+    private handleIncrement: React.EventHandler<any> = () => {
+        this.stepValue(INCREASE);
+    }
+
+    private handleDecrement: React.EventHandler<any> = () => {
+        this.stepValue(DECREASE);
+    }
+
+    private handleChange: React.ChangeEventHandler<any> = e => {
+        const value = Number(e.target.value);
+        this.setValue(value);
     }
 
     componentWillReceiveProps({value}: NumberInputProps) {
@@ -53,13 +82,13 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
                 data-automation-id="NATIVE_INPUT_NUMBER"
                 type="number"
                 value={value}
-                onChange={e => this.setValue(Number(e.target.value))}
+                onChange={this.handleChange}
             />
             <Stepper
                 data-automation-id="NUMBER_INPUT_STEPPER"
                 className={styles['stepper']}
-                onIncrement={() => this.setValue(value + step!)}
-                onDecrement={() => this.setValue(value - step!)}
+                onIncrement={this.handleIncrement}
+                onDecrement={this.handleDecrement}
                 disableIncrement={disableIncrement}
                 disableDecrement={disableDecrement}
             />
