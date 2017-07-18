@@ -1,6 +1,7 @@
-# Slider Component
+# Slider Spec Template
 
 **Slider** is a component that allows users to input or select value in a range.
+
 
 
 
@@ -60,6 +61,7 @@ Comments to example 1
 
 Comments to example 2
 
+
 ### Style API
 
 #### Subcomponents (pseudo elements)
@@ -71,12 +73,14 @@ Comments to example 2
 
 *if a subcomponent is a COMPONENT, it might have subcomponents -> then we will link here to its documentation
 
+
 #### Custom CSS States (pseudo classes)
 
 | selector            | description                              |
 | ------------------- | ---------------------------------------- |
 | :disabled           | Allows you to style the slider when it's disabled |
 | :hover, :focus, etc | Standard CSS pseudo classes              |
+
 
 
 
