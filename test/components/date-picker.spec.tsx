@@ -159,7 +159,7 @@ describe('The DatePicker Component', function () {
         }
 
         it('should display the days in a grid', function () {
-            clientRenderer.render(<DatePicker date={MARCH_FIRST} showDropdown={true}/>);
+            clientRenderer.render(<DatePicker date={JANUARY_FIRST} showDropdown={true}/>);
 
             // Check that the days are displayed in rows (checking that each row is in horizontal sequence
             expect(elementsInRow(1)).to.be.inHorizontalSequence();
@@ -168,6 +168,12 @@ describe('The DatePicker Component', function () {
             // Check that the days are displayed in columns
             expect(elementsInColumn(1)).to.be.inVerticalSequence();
             expect(elementsInColumn(1)).to.be.horizontallyAligned('center');
+        });
+
+        it('should show the days starting on the correct day of the week', function () {
+            const {select} = clientRenderer.render(<DatePicker date={MARCH_FIRST} showDropdown={true}/>);
+
+            expect([select('DAY_1'), select('DAY_NAME_WED')]).to.be.horizontallyAligned('center');
         });
 
         it('displays the year', function () {

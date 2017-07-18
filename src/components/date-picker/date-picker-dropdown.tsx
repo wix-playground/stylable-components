@@ -60,7 +60,7 @@ export class DatePickerDropdown extends React.Component<DatePickerDropdownProps,
                         </div>
                         <span className={[styles.headerArrow, styles.headerArrowNext].join(' ')} onMouseDown={this.goToNextMonth} data-automation-id="NEXT_MONTH_BUTTON"></span>
                     </div>
-                    <DatePickerGrid date={this.date} onChange={this.setDayTo.bind(this)} startingDay={2} />
+                    <DatePickerGrid date={this.date} onChange={this.setDayTo.bind(this)} />
                 </div>
             </div>
         );
