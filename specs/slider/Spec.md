@@ -6,7 +6,7 @@
 - [Slider Props](#slider-props)
 - [UI Customizations](#ui-customizations)
 - [Behavior](#behavior)
-	- [Keyboard](#keyboardd)
+	- [Keyboard](#keyboard)
 	- [Mouse](#mouse)
 				- [links to ARIA compliant sliders (for reference):](#links-to-ARIA-compliant-sliders)
 - [Error handling](#error-handling)
