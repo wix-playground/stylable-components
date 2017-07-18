@@ -11,10 +11,10 @@
 - [Error handling](#error-handling)
 - [Accessibility](#accessibility)
 - [Examples](#examples)
-		- [Simple](#simple)
-		- [Stepped](#stepped)
-		- [Horizontal / Vertical Axis](#horizontal-/-vertical)
-		- [Tooltip](#tooltip)
+	- [Simple](#simple)
+	- [Stepped](#stepped)
+	- [Horizontal / Vertical Axis](#horizontal-/-vertical)
+	- [Tooltip](#tooltip)
 
 
 
