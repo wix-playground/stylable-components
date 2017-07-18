@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { Link } from '../src';
 import { TreeViewDemo } from './components/tree-view-demo';
+import { NumberInputDemo } from './components/number-input.demo';
 const style = require('./style.css');
 const resetStyle = require('../src/style/default-theme/base.css');
 
 export class ComponentsDemo extends React.Component<{}, {}>{
-
 
     constructor() {
         super();
@@ -97,7 +97,11 @@ export class ComponentsDemo extends React.Component<{}, {}>{
                     </tr>
                 </table>
             </div>
-
+            <hr />
+            <div>
+                <h2>NumberInput</h2>
+                <NumberInputDemo />
+            </div>
         </div>;
     }
 }

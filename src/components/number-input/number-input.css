@@ -1,0 +1,71 @@
+@value vars: "../../style/default-theme/variables.css";
+@value borderDefault, borderWidth, borderHover, color_MainTextBackground, color_MainText from vars;
+
+.number-input {
+    position: relative;
+    display: inline-block;
+}
+
+.stepper {
+    position: relative;
+
+    width: 36px;
+    height: 36px;
+}
+
+.stepper-control {
+    width: 100%;
+
+    display: flex;
+
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+
+    position: absolute;
+
+    margin: 0;
+    padding: 0;
+
+    background-color: color_MainTextBackground;
+    color: color_MainText;
+}
+
+.stepper-control-icon {
+    color: color_MainText;
+    width: 16px;
+    height: 16px;
+}
+
+.stepper-control:hover .stepper-control-icon,
+.stepper-control:focus .stepper-control-icon {
+    color: color_MainTextBackground;
+}
+
+.stepper-increment {
+    composes: stepper-control;
+
+    top: 0;
+    right: 0;
+    bottom: 50%;
+    left: 0;
+}
+
+.stepper-decrement {
+    composes: stepper-control;
+
+    top: 50%;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.number-input > .stepper {
+    position: absolute;
+
+    right: borderWidth;
+    top: borderWidth;
+    bottom: borderWidth;
+
+    height: initial;
+}
