@@ -20,7 +20,7 @@ function getAllNodeLabels(treeData: Object[]) {
 
 function initStateMap(data: Object[] = [], stateMap: StateMap) {
     data.forEach((item: TreeItemData) => {
-        stateMap.set(item, { isSelected: false, isExpanded: true });
+        stateMap.set(item, { isSelected: false, isExpanded: true, isFocused: false });
         initStateMap(item.children || [], stateMap);
     });
 }
@@ -35,7 +35,7 @@ describe('<TreeView />', () => {
     const item = { label: 'label' };
     const nestedItem: TreeItemData = treeData[0].children![1];
 
-    const state: TreeItemState = { isSelected: false, isExpanded: true };
+    const state: TreeItemState = { isSelected: false, isExpanded: true, isFocused: false };
     const stateMap: StateMap = new Map<TreeItemData, TreeItemState>();
 
     initStateMap(treeData, stateMap);

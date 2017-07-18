@@ -7,6 +7,10 @@
     background-color: lightblue;
 }
 
+.tree-view [focused="true"] {
+    color: mediumpurple;
+}
+
 .tree-node {
     cursor: pointer;
     display: inline;

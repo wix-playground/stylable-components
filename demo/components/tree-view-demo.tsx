@@ -34,9 +34,11 @@ function SelectedItem({selectedItem}: any) {
 @observer
 export class TreeViewDemo extends React.Component<{}, {}> {
     @observable.ref selectedItem: TreeItemData | undefined = undefined;
+    @observable.ref focusedItem: TreeItemData | undefined = undefined;
 
     onSelectItem = (item: TreeItemData) => {
         this.selectedItem = item;
+        if (item) this.focusedItem = item;
     };
 
     render() {
@@ -47,7 +49,7 @@ export class TreeViewDemo extends React.Component<{}, {}> {
                     <SelectedItem selectedItem={this.selectedItem}/>
                     <br/>
                     <TreeView dataSource={treeData} onSelectItem={this.onSelectItem}
-                              selectedItem={this.selectedItem} />
+                              selectedItem={this.selectedItem} focusedItem={this.focusedItem} />
                 </section>
             </div>
         )
