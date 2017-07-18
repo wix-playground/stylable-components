@@ -23,7 +23,8 @@ describe('<Image />', () => {
     it('outputs an html image element to dom', () => {
         const {select, waitForDom} = clientRenderer.render(<Image />);
 
-        return waitForDom(() => expect(select(nativeImage)).to.be.an.instanceOf(HTMLImageElement));
+        return waitForDom(() =>
+            expect(select(nativeImage) instanceof HTMLImageElement, 'Expected the Image component to be instance of HTMLImageElement').to.equal(true));
     });
 
     it('uses one pixel transparent gif as default source', () => {
@@ -73,17 +74,17 @@ describe('<Image />', () => {
 
     it('calls onError when it cannot load a source, and falls back to default source', () => {
         const onError = sinon.spy();
-        const {select} = clientRenderer.render(<Image src={brokenSrc} onError={onError} />);
+        const {select} = clientRenderer.render(<Image src={brokenSrc} onLoadError={onError} />);
 
-        return waitFor(() => expect(onError).to.have.been.calledWithMatch({ data: brokenSrc }))
+        return waitFor(() => expect(onError).to.have.been.calledWithMatch({ src: brokenSrc }))
         .then(() => verifyElementSrc(select(nativeImage)!, onePixelTransparentSrc));
     });
 
     it('calls onError when it cannot load the given default image, and falls back to onePixelTransparentSrc', () => {
         const onError = sinon.spy();
-        const {select} = clientRenderer.render(<Image defaultImage={brokenSrc} onError={onError} />);
+        const {select} = clientRenderer.render(<Image defaultImage={brokenSrc} onLoadError={onError} />);
 
-        return waitFor(() => expect(onError).to.have.been.calledWithMatch({ data: brokenSrc }))
+        return waitFor(() => expect(onError).to.have.been.calledWithMatch({ src: brokenSrc }))
         .then(() => verifyElementSrc(select(nativeImage)!, onePixelTransparentSrc));
     });
 });
