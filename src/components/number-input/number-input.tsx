@@ -22,19 +22,12 @@ const defaultProps = {
 }
 
 export class NumberInput extends React.Component<NumberInputProps, NumberInputState>{
+    static defaultProps = defaultProps;
 
     constructor(props: NumberInputProps) {
         super(props);
 
         this.state = {value: props.value}
-    }
-
-    private handleChange: React.ChangeEventHandler<any> = e => {
-        const {onChange = defaultProps.onChange} = this.props;
-        const value = Number(e.target.value);
-
-        this.setState({value});
-        onChange(value);
     }
 
     private setValue(value: number) {
@@ -60,7 +53,7 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
                 data-automation-id="NATIVE_INPUT_NUMBER"
                 type="number"
                 value={value}
-                onChange={this.handleChange}
+                onChange={e => this.setValue(Number(e.target.value))}
             />
             <Stepper
                 data-automation-id="NUMBER_INPUT_STEPPER"
