@@ -26,9 +26,9 @@
 
 
 
-#### Code Examples
+### Code Examples
 
-##### **Example 1:**
+#### **Example 1:**
 
 ```jsx
 //TODO: code guys - fix code example!
@@ -62,9 +62,9 @@ Comments to example 1
 Comments to example 2
 
 
-### Style API
+## Style API
 
-#### Subcomponents (pseudo elements)
+### Subcomponents (pseudo elements)
 
 | selector | description                              | type                                     |
 | -------- | ---------------------------------------- | ---------------------------------------- |
@@ -74,7 +74,7 @@ Comments to example 2
 *if a subcomponent is a COMPONENT, it might have subcomponents -> then we will link here to its documentation
 
 
-#### Custom CSS States (pseudo classes)
+### Custom CSS States (pseudo classes)
 
 | selector            | description                              |
 | ------------------- | ---------------------------------------- |
