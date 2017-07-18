@@ -16,7 +16,10 @@ export class RadioGroupDemo extends React.Component<{}, {}> {
     render() {
         return (
             <div data-automation-id="RADIO_GROUP_DEMO">
-                <RadioGroup onChange={this.onChange} data={["This way!", "No, that way!"]} />
+                <RadioGroup onChange={this.onChange}>
+                    <RadioButton value = "This way!" />
+                    <RadioButton value = "No, that way!"/>
+                </RadioGroup>
                 <span data-automation-id="RADIO_GROUP_DEMO_VALUE">Value: {this.myValue}</span>
             </div>
         );

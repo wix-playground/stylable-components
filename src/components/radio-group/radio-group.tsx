@@ -5,7 +5,7 @@ import {observer} from 'mobx-react';
 const style = require('./radio-group.css');
 
 export interface RadioGroupProps {
-    data: string[];
+    children: JSX.Element[];
     onChange: any;
     location?: "right" | "left";
     name?: string;
@@ -23,15 +23,16 @@ export class RadioGroup extends React.Component<RadioGroupProps, {}> {
     checkedArray: Array<RadioState>;
 
     static defaultProps = {
-        data: [],
         location: 'right'
     };
 
     constructor(props: RadioGroupProps) {
         super(props);
         this.checkedArray = [];
-        for (let i = 0; i < this.props.data.length; i++) {
-            this.checkedArray.push(observable({checked: false}))
+        if (this.props.children) {
+            for (let i = 0; i < this.props.children.length; i++) {
+                this.checkedArray.push(observable({checked: false}))
+            }
         }
         this.name = this.props.name ? this.props.name : 'name_' + counter++;
     }
@@ -49,10 +50,11 @@ export class RadioGroup extends React.Component<RadioGroupProps, {}> {
     render() {
         return (
             <div data-automation-id="RADIO_GROUP">
-                {this.props.data.map((value: string, index: number) => {
-                    return (
-                        <RadioButton key={index} value={value} checked={this.checkedArray[index].checked} onClick={this.childrenOnClick(index)} name={this.name} location={this.props.location} automationId={'RADIO_BUTTON_' + index}/>
-                    );
+                {React.Children.map(this.props.children, (child, index) => {
+                    if (React.isValidElement(child) && child.type === RadioButton) {
+                        const props = {automationId: 'RADIO_BUTTON_' + index, checked: this.checkedArray[index].checked, onClick: this.childrenOnClick(index), location: this.props.location, name: this.name};
+                        return React.cloneElement(child as ReactElement<any>, props);
+                    }
                 })}
             </div>);
     }
