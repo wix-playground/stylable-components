@@ -3,8 +3,16 @@
     position: relative;
 }
 
-.radio-input {
+.enabled {
     cursor: pointer;
+}
+
+.disabled {
+    cursor: default;
+}
+
+.radio-input {
+    cursor: inherit;
     opacity: 0;
     position: absolute;
     top: 0;
@@ -13,8 +21,8 @@
 }
 
 .radio-svg {
+    cursor: inherit;
     align-self: center;
-    cursor: pointer;
     width: 16px;
     height: 16px;
 

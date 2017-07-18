@@ -94,7 +94,7 @@ export class RadioButton extends React.Component<RadioButtonProps, {}> {
         return (
             <div data-automation-id={this.props.automationId} className={style['radio-container']} onClick={this.onClick}>
                 {this.props.location === "left" ? <span data-automation-id="LABEL">{this.props.value}</span> : ''}
-                <div data-automation-id="INPUT_CONTAINER">
+                <div data-automation-id="INPUT_CONTAINER" className={this.props.disabled ? style['disabled'] : style['enabled']}>
                     {this.props.checked ? checkedRadioSvg(this.props.disabled!) : emptyRadioSvg(this.props.disabled!)}
                     <input type="radio"
                            className={style['radio-input']}
