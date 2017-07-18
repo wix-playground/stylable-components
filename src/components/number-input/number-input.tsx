@@ -61,7 +61,7 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
     private handleChange: React.ChangeEventHandler<any> = e => {
         const {onChange = defaultProps.onChange} = this.props;
         const value = Number(e.target.value);
-        console.log('change', value);
+
         this.setState({value});
         onChange(value);
     }
