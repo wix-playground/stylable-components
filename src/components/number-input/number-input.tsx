@@ -22,40 +22,11 @@ const defaultProps = {
 }
 
 export class NumberInput extends React.Component<NumberInputProps, NumberInputState>{
-    static defaultProps: Partial<NumberInputProps> = defaultProps;
 
     constructor(props: NumberInputProps) {
         super(props);
 
-        this.state = {
-            value: props.value
-        }
-    }
-
-    componentWillReceiveProps(nextProps: NumberInputProps) {
-        if (this.state.value != nextProps.value) {
-            this.setState({value: nextProps.value});
-        }
-    }
-
-    render() {
-        const {onChange = noop} = this.props;
-        const {value} = this.state;
-
-        return <div className={styles['number-input']}>
-            <input
-                data-automation-id="NATIVE_INPUT_NUMBER"
-                type="number"
-                value={value}
-                onChange={this.handleChange}
-            />
-            <Stepper
-                data-automation-id="NUMBER_INPUT_STEPPER"
-                className={styles['stepper']}
-                onIncrement={this.handleIncrement}
-                onDecrement={this.handleDecrement}
-            />
-        </div>;
+        this.state = {value: props.value}
     }
 
     private handleChange: React.ChangeEventHandler<any> = e => {
@@ -66,7 +37,7 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
         onChange(value);
     }
 
-    private handleIncrement: React.MouseEventHandler<any> = e => {
+    private handleIncrement: React.EventHandler<any> = e => {
         const {
             max = defaultProps.max,
             step = defaultProps.step,
@@ -95,20 +66,64 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
             onChange(next);
         }
     }
+
+    componentWillReceiveProps({value}: NumberInputProps) {
+        if (this.state.value !== value) {
+            this.setState({value: value});
+        }
+    }
+
+    render() {
+        const {
+            step = defaultProps.step,
+            min = defaultProps.min,
+            max = defaultProps.max,
+            onChange = defaultProps.onChange
+        } = this.props;
+        const {value} = this.state;
+        const disableIncrement = value + step > max;
+        const disableDecrement = value - step < min;
+
+        return <div className={styles['number-input']}>
+            <input
+                data-automation-id="NATIVE_INPUT_NUMBER"
+                type="number"
+                value={value}
+                onChange={this.handleChange}
+            />
+            <Stepper
+                data-automation-id="NUMBER_INPUT_STEPPER"
+                className={styles['stepper']}
+                onIncrement={this.handleIncrement}
+                onDecrement={this.handleDecrement}
+                disableIncrement={disableIncrement}
+                disableDecrement={disableDecrement}
+            />
+        </div>;
+    }
 }
 
 interface StepperProps extends React.HTMLProps<HTMLElement> {
     onIncrement?: Function
     onDecrement?: Function
+    disableIncrement?: boolean
+    disableDecrement?: boolean
 }
 
 const Stepper: React.StatelessComponent<StepperProps> =
-    ({onIncrement = noop, onDecrement = noop, ...props}) => (
+    ({
+        onIncrement = noop,
+        onDecrement = noop,
+        disableIncrement = false,
+        disableDecrement = false,
+        ...props
+    }) => (
         <div {...props}>
             <button
                 data-automation-id="STEPPER_INCREMENT"
                 className={styles['stepper-increment']}
                 onClick={() => onIncrement()}
+                disabled={disableIncrement}
             >
                 <ChevronUpIcon className={styles['stepper-control-icon']} />
             </button>
@@ -116,6 +131,7 @@ const Stepper: React.StatelessComponent<StepperProps> =
                 data-automation-id="STEPPER_DECREMENT"
                 className={styles['stepper-decrement']}
                 onClick={() => onDecrement()}
+                disabled={disableDecrement}
             >
                 <ChevronDownIcon className={styles['stepper-control-icon']}/>
             </button>

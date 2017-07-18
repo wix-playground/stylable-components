@@ -69,10 +69,10 @@ describe('<NumberInput />', () => {
                 });
             });
 
-            it('should not increase the value by one step when value + step > max', async () => {
-                const value = 2;
-                const step = 3;
-                const max = 4;
+            it('should be disabled when value + step > max', async () => {
+                const value = 1;
+                const step = 1;
+                const max = 2;
                 const onChange = sinon.spy();
                 const {select, waitForDom} = clientRenderer.render(
                     <NumberInput value={value} step={step} max={max} onChange={onChange} />
@@ -80,12 +80,10 @@ describe('<NumberInput />', () => {
 
                 await waitForDom(() => {
                     const increment = select('STEPPER_INCREMENT');
-                    const input = select('NATIVE_INPUT_NUMBER');
 
                     simulate.click(increment);
 
-                    expect(input).to.have.value(String(value));
-                    expect(onChange).not.to.have.been.called;
+                    expect(increment).to.have.attribute('disabled');
                 });
             });
         });
@@ -110,9 +108,9 @@ describe('<NumberInput />', () => {
                 });
             });
 
-            it('should not decrease the value when value - step < min', async () => {
+            it('should be disabled when value - step < min', async () => {
                 const value = 1;
-                const step = 2;
+                const step = 1;
                 const min = 0;
                 const onChange = sinon.spy();
                 const {select, waitForDom} = clientRenderer.render(
@@ -120,13 +118,11 @@ describe('<NumberInput />', () => {
                 );
 
                 await waitForDom(() => {
-                    const increment = select('STEPPER_DECREMENT');
-                    const input = select('NATIVE_INPUT_NUMBER');
+                    const decrement = select('STEPPER_DECREMENT');
 
-                    simulate.click(increment);
+                    simulate.click(decrement);
 
-                    expect(input).to.have.value(String(value));
-                    expect(onChange).not.to.have.been.called;
+                    expect(decrement).to.have.attribute('disabled');
                 });
             });
         });
