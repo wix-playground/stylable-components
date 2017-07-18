@@ -43,10 +43,12 @@ export class ComponentsDemo extends React.Component<{}, {}>{
     }
 
     render() {
-        return <Slider 
+        return <div>
+            <Slider 
                  onChange={/* something */} 
                  tooltip="<div className='tooltip'>{this.state.sliderValue}</div>" 
-                 />;
+                 />
+             </div>;
     }
 }
 ```
