@@ -8,7 +8,7 @@ styleguide - [https://material.io/guidelines/components/sliders.html](https://ma
 
 
 
-###### PROS
+##### PROS
 
 **General:**
 
@@ -41,7 +41,7 @@ storybook - [https://wix.github.io/wix-style-react/?selectedKind=Core&selectedSt
 
 
 
-###### PROS
+##### PROS
 
 **General:**
 
@@ -55,7 +55,7 @@ storybook - [https://wix.github.io/wix-style-react/?selectedKind=Core&selectedSt
 
 
 
-###### CONS
+##### CONS
 
 1. Limited customization / styling capabilities
 2. Bad RTL support (rtl basically pust slider on the right side but does not change the actual direcion of a slider - user still slides from left to right to increase value)
@@ -70,7 +70,7 @@ sample - [http://react-component.github.io/slider/examples/slider.html](http://r
 
 
 
-###### PROS
+##### PROS
 
 **Properties:**
 
@@ -107,13 +107,13 @@ storybook - [https://mpowaga.github.io/react-slider/](https://mpowaga.github.io/
 
 
 
-###### PROS
+##### PROS
 
 **Properties:**
 
 ~ "minDistance" - the minimal distance between any pair of handles. Zero means they can sit on top of each other.
 
-###### CONS
+##### CONS
 
 **General**
 
@@ -128,8 +128,6 @@ git - [https://github.com/seiyria/bootstrap-slider](https://github.com/seiyria/b
 storybook -** **[http://seiyria.com/bootstrap-slider/](http://seiyria.com/bootstrap-slider/)
 
 
-
-###### PROS
 
 **General:**
 Pretty basic slider component. Nothing to specific to mention here.
