@@ -33,7 +33,6 @@
 ```jsx
 //TODO: code guys - fix code example!
 import * as React from 'react';
-import { Link } from '../src';
 import { Slider } from './components/slider';
 const style = require('./style.sb.css'); // link to Style file - see examples of style files below
 
