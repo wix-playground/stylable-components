@@ -39,32 +39,26 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
 
     private handleIncrement: React.EventHandler<any> = e => {
         const {
-            max = defaultProps.max,
             step = defaultProps.step,
             onChange = defaultProps.onChange
         } = this.props;
         const {value} = this.state;
         const next = value + step;
 
-        if (next <= max) {
-            this.setState({value: next});
-            onChange(next);
-        }
+        this.setState({value: next});
+        onChange(next);
     }
 
     private handleDecrement: React.EventHandler<any> = e => {
         const {
-            min = defaultProps.min,
             step = defaultProps.step,
             onChange = defaultProps.onChange
         } = this.props;
         const {value} = this.state;
         const next = value - step;
 
-        if (next >= min) {
-            this.setState({value: next});
-            onChange(next);
-        }
+        this.setState({value: next});
+        onChange(next);
     }
 
     componentWillReceiveProps({value}: NumberInputProps) {
