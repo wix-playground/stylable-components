@@ -8,7 +8,6 @@
 - [Behavior](#behavior)
 	- [Keyboard](#keyboard)
 	- [Mouse](#mouse)
-				- [links to ARIA compliant sliders (for reference):](#links-to-ARIA-compliant-sliders)
 - [Error handling](#error-handling)
 - [Accessibility](#accessibility)
 - [Examples](#examples)
