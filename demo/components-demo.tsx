@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Link } from '../src';
 import { TreeViewDemo } from './components/tree-view-demo';
 const style = require('./style.css');
 const resetStyle = require('../src/style/default-theme/base.css');
