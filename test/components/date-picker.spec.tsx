@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {expect, ClientRenderer, simulate, selectDom} from 'test-drive-react';
-import {DatePicker, getDayNames, getMonthFromOffset, getDaysInMonth} from '../../src';
+import {DatePicker, getDayNames, getMonthFromOffset, getDaysInMonth, getNumOfPreviousDays} from '../../src';
 import {DatePickerDemo} from '../../demo/components/date-picker-demo';
 import {KeyCodes} from '../../src/common/key-codes';
 import {debug} from "util";
@@ -273,6 +273,53 @@ describe('The DatePicker Component', function () {
             expect(dateOne).to.equal(28);
             expect(dateTwo).to.equal(30);
             expect(dateThree).to.equal(31);
+        });
+
+        it('getNumOfPreviousDays should return the number of days to display for the previous month', function () {
+            // Sunday is the default starting day
+            const dateOne = getNumOfPreviousDays(new Date('Feb 18 2017'));
+            const dateTwo = getNumOfPreviousDays(new Date('Jun 5 2017'));
+            const dateThree = getNumOfPreviousDays(new Date('July 5 2017'));
+            const dateFour = getNumOfPreviousDays(new Date('September 5 2019'));
+
+            expect(dateOne).to.equal(3);
+            expect(dateTwo).to.equal(4);
+            expect(dateThree).to.equal(6);
+            expect(dateFour).to.equal(0);
+        });
+
+        it('getNumOfPreviousDays should handle starting on different days of the week', function () {
+            const dateToTest = new Date('July 5 2017');
+            const secondDateToTest = new Date('September 5 2017');
+
+            const mondayStart = getNumOfPreviousDays(dateToTest, 1);
+            const tuesdayStart = getNumOfPreviousDays(dateToTest, 2);
+            const wednesdayStart = getNumOfPreviousDays(dateToTest, 3);
+            const thursdayStart = getNumOfPreviousDays(dateToTest, 4);
+            const fridayStart = getNumOfPreviousDays(dateToTest, 5);
+            const saturdayStart = getNumOfPreviousDays(dateToTest, 6);
+
+            const mondayStart2 = getNumOfPreviousDays(secondDateToTest, 1);
+            const tuesdayStart2 = getNumOfPreviousDays(secondDateToTest, 2);
+            const wednesdayStart2 = getNumOfPreviousDays(secondDateToTest, 3);
+            const thursdayStart2 = getNumOfPreviousDays(secondDateToTest, 4);
+            const fridayStart2 = getNumOfPreviousDays(secondDateToTest, 5);
+            const saturdayStart2 = getNumOfPreviousDays(secondDateToTest, 6);
+
+
+            expect(mondayStart).to.equal(5);
+            expect(tuesdayStart).to.equal(4);
+            expect(wednesdayStart).to.equal(3);
+            expect(thursdayStart).to.equal(2);
+            expect(fridayStart).to.equal(1);
+            expect(saturdayStart).to.equal(0);
+
+            expect(mondayStart2).to.equal(4);
+            expect(tuesdayStart2).to.equal(3);
+            expect(wednesdayStart2).to.equal(2);
+            expect(thursdayStart2).to.equal(1);
+            expect(fridayStart2).to.equal(0);
+            expect(saturdayStart2).to.equal(6);
         });
     });
 });
