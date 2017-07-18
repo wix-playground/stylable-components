@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { observer } from 'mobx-react';
 import { autorun, observable } from 'mobx';
-import {EventHandler} from "react";
-import {KeyCodes} from "../../common/key-codes";
+import { KeyCodes } from '../../common/key-codes';
 
 const style = require('./tree-view.css');
 
@@ -64,6 +63,7 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
     static defaultProps = { itemRenderer: TreeItemWrapper, onSelectItem: () => {} };
 
     stateMap: StateMap = new Map<TreeItemData, TreeItemState>();
+    focusedItem: TreeItemData | undefined = undefined;
 
     constructor(props: TreeViewProps) {
         super(props);
@@ -98,12 +98,38 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
             this.props.onSelectItem!(item);
         }
         this.toggleItem(item);
+        this.focusedItem = item;
+        debugger;
     };
 
+    getPreviousItem(item: TreeItemData) {
+        // traverse structure, find node, go to prev
+        return item;
+    }
+
+    getNextItem(item: TreeItemData) {
+        // traverse structure, find node, go to next
+        return item;
+    }
+
+    expandItem = (item: TreeItemData) => this.stateMap.get(item)!.isExpanded = true;
+    collapseItem = (item: TreeItemData) => this.stateMap.get(item)!.isExpanded = false;
+    focusPrev = (item: TreeItemData) => this.focusedItem = this.getPreviousItem(item);
+    focusNext = (item: TreeItemData) => this.focusedItem = this.getNextItem(item);
+
     onKeyDown = (e: any) => {
+        debugger;
+        if (!this.focusedItem) return;
+
         switch(e.keyCode) {
             case KeyCodes.RIGHT:
-
+                this.expandItem(this.focusedItem); return;
+            case KeyCodes.LEFT:
+                this.collapseItem(this.focusedItem); return;
+            case KeyCodes.UP:
+                this.focusPrev(this.focusedItem); return;
+            case KeyCodes.DOWN:
+                this.focusNext(this.focusedItem); return;
             default:
                 return;
         }
@@ -111,8 +137,7 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
 
     render() {
         return (
-            <div data-automation-id='TREE_VIEW' className={style['tree-view']}
-                onKeyDown={this.onKeyDown}>
+            <div data-automation-id='TREE_VIEW' className={style['tree-view']} onKeyDown={this.onKeyDown}>
                 {(this.props.dataSource || []).map((item: TreeItemData, index: number) =>
                     React.createElement(
                         this.props.itemRenderer!,

@@ -113,15 +113,45 @@ describe('<TreeView />', () => {
         });
 
         describe('Keyboard Navigation', () => {
-            it('expands a focused treeItem when right arrow is clicked', async () => {
+            it('expands and collapses focused treeItem when right and left arrows are clicked', async () => {
                 const { select, waitForDom } = clientRenderer.render(<TreeViewDemo />);
-                const rootNode = getTreeItem(treeData[0].label);
 
+                const rootNode = getTreeItem(treeData[0].label);
                 const nodeChildren = treeData[0].children;
+
+                // to expand root
+                simulate.click(select(rootNode));
+
+                await waitForDom(() => expect(select(getTreeItem(nodeChildren![1].label))).to.be.present());
+
+                simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), { keyCode: KeyCodes.LEFT });
                 await waitForDom(() => expect(select(getTreeItem(nodeChildren![1].label))).to.be.absent());
 
-                simulate.keyDown(select(rootNode), { keyCode: KeyCodes.RIGHT });
+                simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), { keyCode: KeyCodes.RIGHT });
 
+                return waitForDom(() => expect(select(getTreeItem(nodeChildren![1].label))).to.be.present());
+            });
+
+            it('selects next are previous when down and up arrows are clicked', async () => {
+                const { select, waitForDom } = clientRenderer.render(<TreeViewDemo />);
+
+                const rootNode = getTreeItem(treeData[0].label);
+                const nodeChildren = treeData[0].children;
+
+                // to select it and have it closed
+                simulate.click(select(rootNode));
+                simulate.click(select(rootNode));
+
+                // this should assert root is focused
+                await waitForDom(() => expect(select(getTreeItem(nodeChildren![1].label))).to.be.present());
+
+                simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), { keyCode: KeyCodes.DOWN });
+                // this should assert next after root is focused
+                await waitForDom(() => expect(select(getTreeItem(nodeChildren![1].label))).to.be.absent());
+
+                simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), { keyCode: KeyCodes.UP });
+
+                // this should assert root is focused
                 return waitForDom(() => expect(select(getTreeItem(nodeChildren![1].label))).to.be.present());
             });
         });
