@@ -62,22 +62,38 @@ export function TreeItem({ item, itemRenderer, onItemClick, stateMap, state }: T
 
 const TreeItemWrapper = observer(TreeItem);
 
+function flatten(arr: TreeItemData[]): TreeItemData[] {
+    return arr.reduce(function (flat: TreeItemData[], toFlatten: TreeItemData) {
+        return flat.concat(toFlatten).concat(toFlatten.children ? flatten(toFlatten.children) : []);
+    }, []);
+}
+
+function getAllNodes(data: TreeItemData[]): TreeItemData[] {
+    return flatten(data);
+}
+
 @observer
 export class TreeView extends React.Component<TreeViewProps, {}>{
     static defaultProps = { itemRenderer: TreeItemWrapper, onSelectItem: () => {} };
 
     stateMap: StateMap = new Map<TreeItemData, TreeItemState>();
+    allNodesList: Array<TreeItemData> = [];
+    rootNodesList: Array<TreeItemData> = [];
 
     constructor(props: TreeViewProps) {
         super(props);
-        this.initStateMap(props.dataSource);
+        this.initState(props.dataSource as TreeItemData[]);
     }
 
-    initStateMap(data: Object[] = []) {
+    initState(data: TreeItemData[] = []) {
         data.forEach((item: TreeItemData) => {
             this.stateMap.set(item, observable({ isSelected: false, isExpanded: false, isFocused: false }));
-            this.initStateMap(item.children || []);
+            this.initState(item.children || []);
         });
+        data.forEach((item: TreeItemData) => {
+            this.rootNodesList.push(item);
+        });
+        this.allNodesList = getAllNodes(data);
     }
 
     componentDidMount() {
@@ -108,9 +124,15 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
         return item;
     }
 
-    getNextItem(item: TreeItemData) {
+    getNextItem(currItem: TreeItemData) {
         // traverse structure, find node, go to next
-        return item;
+        // assumption - focused element has to be visible
+
+        this.props.dataSource.forEach((item: TreeItemData) => {
+
+        });
+
+        return currItem;
     }
 
     expandItem = (item: TreeItemData) => this.stateMap.get(item)!.isExpanded = true;
@@ -119,7 +141,6 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
     focusNext = (item: TreeItemData) => this.stateMap.get(this.getNextItem(item))!.isFocused = true;
 
     onKeyDown = (e: any) => {
-        debugger;
         if (!this.props.focusedItem) return;
 
         this.stateMap.get(this.props.focusedItem)!.isFocused = false;
