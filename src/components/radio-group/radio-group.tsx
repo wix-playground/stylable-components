@@ -1,5 +1,5 @@
 import React = require('react');
-import {EventHandler, ReactElement} from "react";
+import {EventHandler, ReactElement, SyntheticEvent} from "react";
 import {observable, action} from 'mobx';
 import {observer} from 'mobx-react';
 const style = require('./radio-group.css');
@@ -64,7 +64,8 @@ export interface RadioButtonProps {
     value: string;
     checked?: boolean;
     name?: string;
-    onClick?: any;
+    onClick?: (e: string) => void;
+    disabled?: boolean;
     location?: "right" | "left";
     automationId?: string;
 }
@@ -78,12 +79,15 @@ export class RadioButton extends React.Component<RadioButtonProps, {}> {
         name: '',
         onClick: () => {},
         location: 'right',
+        disabled: false,
         automationId: ''
     };
 
     @action
-    onClick: EventHandler<any> = () => {
-        this.props.onClick(this.props.value);
+    onClick: EventHandler<SyntheticEvent<HTMLDivElement>> = () => {
+        if (!this.props.disabled) {
+            this.props.onClick!(this.props.value);
+        }
     };
 
     render() {
@@ -91,8 +95,15 @@ export class RadioButton extends React.Component<RadioButtonProps, {}> {
             <div data-automation-id={this.props.automationId} className={style['radio-container']} onClick={this.onClick}>
                 {this.props.location === "left" ? <span data-automation-id="LABEL">{this.props.value}</span> : ''}
                 <div data-automation-id="INPUT_CONTAINER">
-                    {this.props.checked ? checkedRadioSvg() : emptyRadioSvg()}
-                    <input type="radio" className={style['radio-input']} data-automation-id={'INPUT'} value={this.props.value} checked={this.props.checked} name={this.props.name} readOnly={true}/>
+                    {this.props.checked ? checkedRadioSvg(this.props.disabled!) : emptyRadioSvg(this.props.disabled!)}
+                    <input type="radio"
+                           className={style['radio-input']}
+                           data-automation-id={'INPUT'}
+                           value={this.props.value}
+                           checked={this.props.checked}
+                           name={this.props.name}
+                           disabled={this.props.disabled}
+                           readOnly={true}/>
                 </div>
                 {this.props.location === "right" ? <span data-automation-id="LABEL">{this.props.value}</span> : ''}
             </div>
@@ -100,24 +111,26 @@ export class RadioButton extends React.Component<RadioButtonProps, {}> {
     }
 }
 
-function emptyRadioSvg() {
+function emptyRadioSvg(disabled: boolean) {
+    const svgColor = disabled ? "#d1d1d1" : "#4A90E2";
     return (
         <svg xmlns="http://www.w3.org/2000/svg" className={style['radio-svg']} viewBox="0 0 16 16">
-            <circle cx="8" cy="8" r="7.5" fill="none" fillRule="evenodd" stroke="#4A90E2"/>
+            <circle cx="8" cy="8" r="7.5" fill="none" fillRule="evenodd" stroke={svgColor} />
         </svg>
     )
 }
 
-function checkedRadioSvg() {
+function checkedRadioSvg(disabled: boolean) {
+    const svgColor = disabled ? "#d1d1d1" : "#4A90E2";
     return (
         <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" className={style['radio-svg']} viewBox="0 0 16 16">
             <defs>
                 <circle id="a" cx="8" cy="8" r="8"/>
             </defs>
             <g fill="none" fillRule="evenodd">
-                <use fill="#4A90E2" xlinkHref="#a"/>
+                <use fill={svgColor} xlinkHref="#a"/>
                 <circle cx="8" cy="8" r="6.75" stroke="#FFF" strokeWidth="2.5"/>
-                <circle cx="8" cy="8" r="7.5" stroke="#4A90E2"/>
+                <circle cx="8" cy="8" r="7.5" stroke={svgColor}/>
             </g>
         </svg>
 

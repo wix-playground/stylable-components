@@ -210,6 +210,15 @@ describe('<RadioGroup />', function () {
             return waitFor(() => {
                 expect(onClick).to.have.been.calledWithMatch('Tonberry');
             })
+        });
+
+        it('renders a disabled radio button', function () {
+            const { select, waitForDom } = clientRenderer.render(<RadioButton value="Tonberry" disabled={true} automationId={radioButton + '_0'} name=""/>);
+
+            return waitForDom(() => {
+                const button = select(radioButton + '_0', 'INPUT');
+                expect(button).to.have.attr('disabled');
+            });
         })
     });
 
