@@ -1,6 +1,4 @@
-[TOC]
-
-**Table of Contents**  *generated with [DocToc](http://doctoc.herokuapp.com/)*
+**Table of Contents**
 
 - [Definition](#)
 - [Elements](#)
@@ -18,6 +16,8 @@
 		- [Stepped](#)
 		- [Horizontal / Vertical Axis](#)
 		- [Tooltip](#)
+
+
 
 ## Definition
 
