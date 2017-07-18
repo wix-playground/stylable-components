@@ -37,28 +37,10 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
         onChange(value);
     }
 
-    private handleIncrement: React.EventHandler<any> = e => {
-        const {
-            step = defaultProps.step,
-            onChange = defaultProps.onChange
-        } = this.props;
-        const {value} = this.state;
-        const next = value + step;
-
-        this.setState({value: next});
-        onChange(next);
-    }
-
-    private handleDecrement: React.EventHandler<any> = e => {
-        const {
-            step = defaultProps.step,
-            onChange = defaultProps.onChange
-        } = this.props;
-        const {value} = this.state;
-        const next = value - step;
-
-        this.setState({value: next});
-        onChange(next);
+    private setValue(value: number) {
+        const {onChange} = this.props;
+        this.setState({value});
+        onChange!(value);
     }
 
     componentWillReceiveProps({value}: NumberInputProps) {
@@ -68,14 +50,10 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
     }
 
     render() {
-        const {
-            step = defaultProps.step,
-            min = defaultProps.min,
-            max = defaultProps.max
-        } = this.props;
+        const {step, min, max} = this.props;
         const {value} = this.state;
-        const disableIncrement = value + step > max;
-        const disableDecrement = value - step < min;
+        const disableIncrement = value + step! > max!;
+        const disableDecrement = value - step! < min!;
 
         return <div className={styles['number-input']}>
             <input
@@ -87,8 +65,8 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
             <Stepper
                 data-automation-id="NUMBER_INPUT_STEPPER"
                 className={styles['stepper']}
-                onIncrement={this.handleIncrement}
-                onDecrement={this.handleDecrement}
+                onIncrement={() => this.setValue(value + step!)}
+                onDecrement={() => this.setValue(value - step!)}
                 disableIncrement={disableIncrement}
                 disableDecrement={disableDecrement}
             />
