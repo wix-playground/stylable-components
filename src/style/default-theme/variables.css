@@ -33,6 +33,9 @@
 @value color_Focus: B4;
 @value color_Disabled: B5;
 
+/* Component Box */
+@value inputHeight: 36px;
+
 /* Borders */
 @value borderRadius: 0px;
 

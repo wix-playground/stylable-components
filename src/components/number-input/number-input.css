@@ -1,5 +1,7 @@
 @value vars: "../../style/default-theme/variables.css";
-@value borderDefault, borderWidth, borderHover, color_MainTextBackground, color_MainText from vars;
+@value borderDefault, borderWidth, borderHover from vars;
+@value color_MainTextBackground, color_MainText from vars;
+@value inputHeight from vars;
 
 .number-input {
     position: relative;
@@ -9,8 +11,8 @@
 .stepper {
     position: relative;
 
-    width: 36px;
-    height: 36px;
+    width: inputHeight;
+    height: inputHeight;
 }
 
 .stepper-control {
