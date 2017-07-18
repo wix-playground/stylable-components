@@ -35,7 +35,11 @@
 
 /* Borders */
 @value borderRadius: 0px;
-@value borderDefault: solid 1px B5;
-@value borderHover: solid 1px B2;
-@value borderFocus: solid 1px B3;
-@value borderDisabled: solid 1px B5;
+
+@value borderStyle: solid;
+@value borderWidth: 1px;
+
+@value borderDefault: borderStyle borderWidth B5;
+@value borderHover: borderStyle borderWidth B2;
+@value borderFocus: borderStyle borderWidth B3;
+@value borderDisabled: borderStyle borderWidth B5;

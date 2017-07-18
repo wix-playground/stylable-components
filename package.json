@@ -11,7 +11,8 @@
     "test": "npm run test:browser && npm run test:node",
     "test:browser": "karma start --single-run",
     "test:node": "mocha --compilers ts:ts-node/register,tsx:ts-node/register,css:css-modules-require-hook/preset \"./test/node/**/*.node-spec.ts?(x)\"",
-    "start": "webpack-dev-server --progress"
+    "start": "webpack-dev-server --progress",
+    "lint": "tslint --project . --type-check -t stylish src/**/*.tsx src/**/*.ts test/**/*.tsx"
   },
   "peerDependencies": {
     "react": ">15.5.0"
@@ -41,6 +42,9 @@
     "test-drive-react": "^0.5.0",
     "ts-loader": "^2.3.0",
     "ts-node": "^3.2.0",
+    "tslint": "^5.5.0",
+    "tslint-eslint-rules": "^4.1.1",
+    "tslint-react": "^3.0.0",
     "typescript": "^2.4.1",
     "webpack": "^3.3.0",
     "webpack-dev-server": "^2.5.1"
