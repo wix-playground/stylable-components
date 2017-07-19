@@ -6,21 +6,22 @@ The **NumberInput** component improves upon the native `<input type="number">` b
 
 #### Props
 
-| name        | type    | defaultValue | isRequired | description                              |
-| ----------- | ------- | ------------ | ---------- | ---------------------------------------- |
-| value       | number? |              | yes        | Used to set & change the value of the input |
-| placeholder | string  |              |            | Text to display if the value is null     |
-| min         | number  | 1            |            |                                          |
-| max         | number  | 100          |            |                                          |
-| step        | number  | 1            |            |                                          |
-| required    | bool    | FALSE        |            | Whether or not filling the value is required in a form. |
-| disabled    | bool    | FALSE        |            | If true, the component will not be interactable. |
-| label       | string  |              |            | Text to display in accessibility mode.   |
-| name        | string  |              |            | The name of the component. Behaves like the name attribute of an input element. |
-| onChange    | func    |              | yes        | Callback function that is fired when the component's value is changed. Signature:function(event: object, newValue: number) => voidevent: KeyDown event targeting the slider. newValue: The new value of the slider. |
-| prefix      | node    | null         |            | Allows to prepend HTML content or a React component |
-| suffix      | node    | null         |            | Allows to append HTML content or a React component |
-| rtl         | bool    | FALSE        |            | Makes the component RTL                  |
+| name        | type   | defaultValue | isRequired | description                              |
+| ----------- | ------ | ------------ | ---------- | ---------------------------------------- |
+| value       | number |              | yes        | Used to set & change the value of the input. You should bind this to the corresponding state in your parent component, and set the onChange handler, in order for the component to work |
+| placeholder | string |              |            | Text to display if the value is null     |
+| min         | number | 1            |            |                                          |
+| max         | number | 100          |            |                                          |
+| step        | number | 1            |            |                                          |
+| required    | bool   | FALSE        |            | Whether or not filling the value is required in a form. |
+| disabled    | bool   | FALSE        |            | If true, the component will not be interactable. |
+| label       | string |              |            | Text to display in accessibility mode.   |
+| name        | string |              |            | The name of the component. Behaves like the name attribute of an input element. |
+| onChange    | func   |              | yes        | Callback function that is fired when the component's value is changed. Signature: `function(event: object, newValue: number):void`. event: KeyDown event targeting the slider. newValue: The new value of the slider. |
+| prefix      | node   | null         |            | Allows to prepend HTML content or a React component |
+| suffix      | node   | null         |            | Allows to append HTML content or a React component |
+| error       | node   | null         |            | Allows to show an error message (if you pass text), or pass a custom component that will do it. **Note:** passing this prop will also set the `:error` CSS state on the component |
+| rtl         | bool   | FALSE        |            | Makes the component RTL                  |
 
 ### Code Examples
 
@@ -57,24 +58,28 @@ Comments to example 1
 
 Comments to example 2
 
+
+
 ## Style API
 
-### Subcomponents (pseudo elements)
+#### Subcomponents (pseudo elements)
 
 | selector  | description                            | type                                     |
 | --------- | -------------------------------------- | ---------------------------------------- |
 | ::stepper | Allows you to style the stepper arrows | Style the internal `<Stepper/>` component. This component exposes some internal styles. Consult the (Link to Documentation) to see which subcomponents and states are available |
+| ::error   | Style the error message node           | If text is passed, this will allow you to set its font & positioning. If a node / component is passed, this will be used to set its position & display. |
 
 *if a subcomponent is a COMPONENT, it might have subcomponents -> then we will link here to its documentation
 
-### Custom CSS States (pseudo classes)
+#### Custom CSS States (pseudo classes)
 
 | selector            | description                              |
 | ------------------- | ---------------------------------------- |
-| :disabled           | Allows you to style the slider when it's disabled |
+| :disabled           | Allows you to style the component when it's disabled |
+| :error              | Style the component on error, i.e. when the `error` prop is not empty |
 | :hover, :focus, etc | Standard CSS pseudo classes              |
 
-### Code Examples
+#### Style Code Examples
 
 **Example 1:**
 
