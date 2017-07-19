@@ -179,6 +179,23 @@ describe('<RadioGroup />', function () {
         });
     });
 
+    it('disabled all radio button children if the disabled prop is true', function () {
+        const {select, waitForDom} = clientRenderer.render(
+            <RadioGroup disabled={true} onChange={emptyFunction}>
+                <RadioButton value="Fafnir"/>
+                <RadioButton value="Sleipnir"/>
+            </RadioGroup>
+        );
+
+        return waitForDom(() => {
+            const button0 = select(radioGroup, radioButton + '_0', 'INPUT') as HTMLInputElement;
+            const button1 = select(radioGroup, radioButton + '_1', 'INPUT') as HTMLInputElement;
+
+            expect(button0.disabled).to.be.true;
+            expect(button1.disabled).to.be.true;
+        });
+    });
+
     describe('<RadioButton />', function () {
         it('renders a radio button to the screen', function () {
             const { select, waitForDom } = clientRenderer.render(<RadioButton value="Shiva" automationId={radioButton + '_0'} name=""/>);

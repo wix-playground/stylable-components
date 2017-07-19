@@ -7,6 +7,7 @@ const style = require('./radio-group.css');
 export interface RadioGroupProps {
     children: JSX.Element[];
     onChange: any;
+    disabled?: boolean;
     location?: "right" | "left";
     name?: string;
 }
@@ -23,7 +24,8 @@ export class RadioGroup extends React.Component<RadioGroupProps, {}> {
     checkedArray: Array<RadioState>;
 
     static defaultProps = {
-        location: 'right'
+        location: 'right',
+        disabled: false
     };
 
     constructor(props: RadioGroupProps) {
@@ -56,7 +58,13 @@ export class RadioGroup extends React.Component<RadioGroupProps, {}> {
             <div data-automation-id="RADIO_GROUP">
                 {React.Children.map(this.props.children, (child, index) => {
                     if (React.isValidElement(child) &&  child.type === RadioButton) {
-                        const props = {automationId: 'RADIO_BUTTON_' + index, checked: this.checkedArray[index].checked, onClick: this.childrenOnClick(index), location: this.props.location, name: this.name};
+                        const props = {automationId: 'RADIO_BUTTON_' + index,
+                            checked: this.checkedArray[index].checked,
+                            onClick: this.childrenOnClick(index),
+                            disabled: this.props.disabled ? true : (child.props as RadioButtonProps).disabled,
+                            location: this.props.location,
+                            name: this.name};
+
                         return React.cloneElement(child as ReactElement<any>, props);
                     } else {
                         return child;
