@@ -34,6 +34,7 @@ export interface TreeItemState {
     isSelected: boolean;
     isExpanded: boolean;
     isFocused: boolean;
+    parent: TreeItemData | undefined;
 }
 
 export type StateMap = Map<TreeItemData, TreeItemState>;
@@ -62,38 +63,22 @@ export function TreeItem({ item, itemRenderer, onItemClick, stateMap, state }: T
 
 const TreeItemWrapper = observer(TreeItem);
 
-function flatten(arr: TreeItemData[]): TreeItemData[] {
-    return arr.reduce(function (flat: TreeItemData[], toFlatten: TreeItemData) {
-        return flat.concat(toFlatten).concat(toFlatten.children ? flatten(toFlatten.children) : []);
-    }, []);
-}
-
-function getAllNodes(data: TreeItemData[]): TreeItemData[] {
-    return flatten(data);
-}
-
 @observer
 export class TreeView extends React.Component<TreeViewProps, {}>{
     static defaultProps = { itemRenderer: TreeItemWrapper, onSelectItem: () => {} };
 
     stateMap: StateMap = new Map<TreeItemData, TreeItemState>();
-    allNodesList: Array<TreeItemData> = [];
-    rootNodesList: Array<TreeItemData> = [];
 
     constructor(props: TreeViewProps) {
         super(props);
-        this.initState(props.dataSource as TreeItemData[]);
+        this.initState(props.dataSource as TreeItemData[], undefined);
     }
 
-    initState(data: TreeItemData[] = []) {
+    initState(data: TreeItemData[] = [], parent: TreeItemData | undefined) {
         data.forEach((item: TreeItemData) => {
-            this.stateMap.set(item, observable({ isSelected: false, isExpanded: false, isFocused: false }));
-            this.initState(item.children || []);
+            this.stateMap.set(item, observable({ isSelected: false, isExpanded: false, isFocused: false, parent }));
+            this.initState(item.children || [], item);
         });
-        data.forEach((item: TreeItemData) => {
-            this.rootNodesList.push(item);
-        });
-        this.allNodesList = getAllNodes(data);
     }
 
     componentDidMount() {
