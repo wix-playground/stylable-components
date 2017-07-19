@@ -1,6 +1,6 @@
 {
   "name": "wix-react-components",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Common, fully-tested, strictly-typed, Wix-styled, React components library",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
