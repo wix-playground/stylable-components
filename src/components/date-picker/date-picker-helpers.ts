@@ -29,8 +29,17 @@ export function getDaysInMonth (date: Date): number {
     return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
 }
 
+export function getLastDayOfMonth (date: Date): number {
+    return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDay();
+}
+
 export function getNumOfPreviousDays (date: Date, firstDay: number = 0): number {
     // Days start from Sunday (Sunday = 0, Monday = 1, etc.)
     const previousDays: number = new Date(date.getFullYear(), date.getMonth(), 1).getDay();
     return (previousDays - firstDay) < 0 ? 6 : previousDays - firstDay;
+}
+
+export function getNumOfFollowingDays (date: Date, firstDay: number = 0): number {
+    const followingDays = 6 - getLastDayOfMonth(date);
+    return (followingDays + firstDay) % 7 === 0 ? 0 : (followingDays + firstDay) > 7 ? (followingDays + firstDay) - 7: followingDays + firstDay;
 }

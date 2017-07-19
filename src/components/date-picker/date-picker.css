@@ -28,7 +28,6 @@
 
 .dropdown {
     width: dropdownWidth;
-    height: 348px;
     border: solid 1px color_Default;
 }
 
@@ -113,7 +112,7 @@
     color: color_MainTextBackground;
 }
 
-.previousDay {
+.greyDay {
     font-family: ArialMT;
     font-size: 14px;
     text-align: center;

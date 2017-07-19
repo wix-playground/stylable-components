@@ -1,5 +1,8 @@
 import * as React from 'react';
-import {getDayNames, getDaysInMonth, getNumOfPreviousDays, getMonthFromOffset} from './date-picker-helpers';
+import {
+    getDayNames, getDaysInMonth, getNumOfPreviousDays, getMonthFromOffset,
+    getNumOfFollowingDays
+} from './date-picker-helpers';
 import {computed} from 'mobx';
 import {observer} from 'mobx-react';
 const styles = require('./date-picker.css');
@@ -36,10 +39,23 @@ export class DatePickerGrid extends React.Component<DatePickerGridProps, {}> {
         const numberOfDaysToDisplay: number = getNumOfPreviousDays(this.props.date, this.props.startingDay);
 
         for (let i = lastDayOfPrevMonth - numberOfDaysToDisplay + 1; i <= lastDayOfPrevMonth; i++) {
-            previousDays.push(<span className={[styles.calendarItem, styles.previousDay].join(' ')} key={'PREV_DAY_' + i} data-automation-id={'PREV_DAY_' + i}>{i}</span>);
+            previousDays.push(<span className={[styles.calendarItem, styles.greyDay].join(' ')} key={'PREV_DAY_' + i} data-automation-id={'PREV_DAY_' + i}>{i}</span>);
         }
 
         return previousDays;
+    }
+
+    @computed
+    get followingDays (): Array<JSX.Element> {
+        const followingDays: Array<JSX.Element> = [];
+        const numberOfDaysToDisplay: number = getNumOfFollowingDays(this.props.date, this.props.startingDay);
+
+        for (let i = 1; i <= numberOfDaysToDisplay; i++) {
+            followingDays.push(<span className={[styles.calendarItem, styles.greyDay].join(' ')} key={'NEXT_DAY_' + i} data-automation-id={'NEXT_DAY_' + i}>{i}</span>);
+        }
+
+        return followingDays;
+
     }
 
     onMouseDown: React.EventHandler<React.SyntheticEvent<HTMLSpanElement>> = (event: React.SyntheticEvent<HTMLSpanElement>) => {
@@ -54,6 +70,7 @@ export class DatePickerGrid extends React.Component<DatePickerGridProps, {}> {
                     {this.dayNames}
                     {this.previousDays}
                     {this.dayArray}
+                    {this.followingDays}
                 </div>
         );
     }
