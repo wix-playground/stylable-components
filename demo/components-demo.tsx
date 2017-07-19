@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Link } from '../src';
 import { TreeViewDemo } from './components/tree-view-demo';
 import { RadioGroupDemo } from './components/radio-group-demo'
 

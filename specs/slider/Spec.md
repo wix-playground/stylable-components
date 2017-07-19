@@ -1,12 +1,30 @@
-[TOC]
+**Table of Contents**
+
+- [Definition](#definition)
+- [Elements](#elements)
+- [Slider States](#slider-states)
+- [Slider Props](#slider-props)
+- [UI Customizations](#ui-customizations)
+- [Behavior](#behavior)
+  - [Keyboard](#keyboard)
+  - [Mouse](#mouse)
+  - [Touch](#touch)
+- [Error handling](#error-handling)
+- [Accessibility](#accessibility)
+- [Examples](#examples)
+  - [Simple](#simple)
+  - [Stepped](#stepped)
+  - [Horizontal / Vertical Axis](#horizontal-/-vertical)
+  - [Tooltip](#tooltip)
+- [Design](#design)
+
+
 
 ## Definition
 
 **Slider** is a component that allows users to input or select value from a range.
 
-
-**Flows**
-Sliders are great for adjusting settings that reflect intensity levels (volume, brightness, color saturation) or for selecting particular range (years period, price range)
+Sliders are great for adjusting settings that reflect intensity levels (volume, brightness, color saturation).
 
 
 
@@ -14,20 +32,24 @@ Sliders are great for adjusting settings that reflect intensity levels (volume, 
 
 ![elements](./assets/elements.png)
 
-Slider consists of a "bar" and a "handle". The "handle" is dragged across the "bar" in order to give the slider a desired value.
+**Basic slider consists of:** "bar", "handle" and "progress". The "handle" is dragged across the "bar" in order to give the slider a desired value while "progress" marks range from min value to current value.
+
+**Complex slider consists of**: "bar", "handle", "progress" AND may include "tooltip", "prefix" and "suffix". 
+Tooltip is a separate component that can be embedded into slider to display "value". Prefix and suffix are DOM elements that add customization capabilities (you can display "min" and "max" values on the edges of the slider).
 
 
 
 ## Slider States
 
-| State    | Description                         | Link to design |
-| :------- | ----------------------------------- | -------------- |
-| Default  | Default component appearance        |                |
-| Hover    | User hovered over bar OR handle     |                |
-| Focus    | Browser is focused on the component |                |
-| Click    | User clicks on bar OR handle        |                |
-| Disabled | Component can not be changed        |                |
+| State    | Description                         |
+| :------- | ----------------------------------- |
+| Default  | Default component appearance        |
+| Hover    | User hovered over bar OR handle     |
+| Focus    | Browser is focused on the component |
+| Click    | User clicks on bar OR handle        |
+| Disabled | Component can not be changed        |
 
+Design [assets](https://zpl.io/2kRTvO)
 
 
 ## Slider Props
@@ -36,18 +58,11 @@ See [README.md](./README.md) for more info.
 
 
 
-need Leo's help with pref / suf stuff description 
-
-`prefix="<node>"`
-`suffix="<node>"`
-
-
-
 ## UI Customizations
 
-Slider can be customized using ::handle & ::bar subcomponents.
+Slider can be customized using ::handle, ::bar and ::progress subcomponents.
 
-Link to README file.
+See [README.md](./README.md) for more info.
 
 
 
@@ -85,7 +100,19 @@ Link to README file.
 
 
 
-###### links to ARIA compliant sliders (for reference): 
+### Touch
+
+| Event             | Action                                   | NOTE                                     |
+| ----------------- | ---------------------------------------- | ---------------------------------------- |
+| click (on handle) | highlights handle                        | we need the ability to expand clickable area for mobile devices |
+| click (on bar)    | moves handle to position where user clicked | -                                        |
+| drag              | moves handle one step forward / backwards |                                          |
+
+NOTE: 
+Later phases of touch handling are going to be implemented using mix in solution that Amir is working on (comment from Gilad).
+
+
+###### Links to ARIA compliant sliders (for reference): 
 
 http://files.paciellogroup.com/blogmisc/ARIA/slider/
 https://www.w3.org/TR/wai-aria-practices/examples/slider/slider-2.html
@@ -94,7 +121,10 @@ https://www.w3.org/TR/wai-aria-practices/examples/slider/slider-2.html
 
 ## Error handling
 
-tbd 
+| Error                                    | Handling                                 |
+| ---------------------------------------- | ---------------------------------------- |
+| value out of min/max range               | Show error in console                    |
+| value out of step (e.g. min=0 / max=10, step=5, value=7) | Show error in console, handle displays on 5. User can scroll right to increase value (in this case 7 will change to 10. Since "value" can not be > that "max") |
 
 
 
@@ -143,3 +173,13 @@ Tooltip display & customizations can be done via "tooltip" prop.  Link to [READM
 
 ![tooltipExample](./assets/tooltipExample.png)
 
+Questions to research / answer: 
+
+1. How do we define tooltip position (top, bottom, left, right)
+
+
+
+
+## Design
+
+Link to [assets](https://zpl.io/2kRTvO)
