@@ -3,11 +3,13 @@ import {getMonthNames, getMonthFromOffset} from './date-picker-helpers';
 import {observable, action, computed} from 'mobx';
 import {observer} from 'mobx-react';
 import {DatePickerGrid} from './date-picker-grid';
+import {DatePickerOptions} from './date-picker';
 const styles = require('./date-picker.css');
 
 export interface DatePickerDropdownProps {
     date: Date;
     onChange (date: Date): void;
+    options: DatePickerOptions;
 }
 
 const monthNames = getMonthNames();
@@ -60,7 +62,7 @@ export class DatePickerDropdown extends React.Component<DatePickerDropdownProps,
                         </div>
                         <span className={[styles.headerArrow, styles.headerArrowNext].join(' ')} onMouseDown={this.goToNextMonth} data-automation-id="NEXT_MONTH_BUTTON"></span>
                     </div>
-                    <DatePickerGrid date={this.date} onChange={this.setDayTo.bind(this)} />
+                    <DatePickerGrid date={this.date} onChange={this.setDayTo.bind(this)} options={this.props.options} />
                 </div>
             </div>
         );

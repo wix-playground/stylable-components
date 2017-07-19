@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {expect, ClientRenderer, simulate, selectDom} from 'test-drive-react';
-import {DatePicker, getDayNames, getMonthFromOffset, getDaysInMonth, getNumOfPreviousDays} from '../../src';
+import {DatePicker, DatePickerOptions, getDayNames, getMonthFromOffset, getDaysInMonth, getNumOfPreviousDays} from '../../src';
 import {DatePickerDemo} from '../../demo/components/date-picker-demo';
 import {KeyCodes} from '../../src/common/key-codes';
 import {debug} from "util";
@@ -18,6 +18,8 @@ describe('The DatePicker Component', function () {
     const FEBRUARY_FIRST = new Date(2017, 1, 1);
     const MARCH_FIRST  = new Date(2017, 2, 1);
     const DECEMBER_FIRST = new Date(2017, 11, 1);
+
+    const testingOptions = new DatePickerOptions({showDropdownOnInit: true});
 
     const simulateChange = (domElememt: Element, value: string) => {
         (domElememt as HTMLInputElement).value = value;

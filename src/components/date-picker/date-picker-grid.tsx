@@ -2,20 +2,17 @@ import * as React from 'react';
 import {getDayNames, getDaysInMonth, getNumOfPreviousDays} from './date-picker-helpers';
 import {computed} from 'mobx';
 import {observer} from 'mobx-react';
+import {DatePickerOptions} from './date-picker';
 const styles = require('./date-picker.css');
 
 export interface DatePickerGridProps {
     date: Date;
-    startingDay?: number;
     onChange (selectedDay: string): void;
+    options: DatePickerOptions;
 }
 
 @observer
 export class DatePickerGrid extends React.Component<DatePickerGridProps, {}> {
-    static defaultProps = {
-        startingDay: 0
-    };
-
     @computed
     get dayArray (): Array<JSX.Element> {
         const dayArray: Array<number> = [];
@@ -29,7 +26,7 @@ export class DatePickerGrid extends React.Component<DatePickerGridProps, {}> {
 
     @computed
     get dayNames (): Array<JSX.Element> {
-        return getDayNames(this.props.startingDay).map((name, index) => <span className={[styles.calendarItem, styles.dayName].join(' ')} key={'DAY_NAME_' + index}
+        return getDayNames(this.props.options.startingDay).map((name, index) => <span className={[styles.calendarItem, styles.dayName].join(' ')} key={'DAY_NAME_' + index}
                                                  data-automation-id={'DAY_NAME_' + name.toUpperCase()}>{name}</span>);
     }
 
@@ -37,7 +34,7 @@ export class DatePickerGrid extends React.Component<DatePickerGridProps, {}> {
     get previousDays (): Array<JSX.Element> {
         const previousDays: Array<JSX.Element> = [];
 
-        for (let i = 0; i < getNumOfPreviousDays(this.props.date, this.props.startingDay); i++) {
+        for (let i = 0; i < getNumOfPreviousDays(this.props.date, this.props.options.startingDay); i++) {
             previousDays.push(<span className={styles.calendarItem} key={'PREV_DAY_' + i} data-automation-id={'PREV_DAY_' + i}></span>);
         }
 

@@ -9,19 +9,29 @@ const styles = require('./date-picker.css');
 export interface DatePickerProps {
     date: Date;
     onChange (value: Date): void;
-    showDropdown: boolean;
+
     placeholder: string;
+    options: DatePickerOptions;
+}
+
+export class DatePickerOptions {
+    @observable startingDay: number = 0;
+    @observable showDropdownOnInit: boolean = false;
 }
 
 @observer
 export class DatePicker extends React.Component<Partial<DatePickerProps>, {}>{
+    static defaultProps = {
+        options: new DatePickerOptions()
+    };
+
     public get currentDate (): Date {
         return this.date;
     }
 
     @observable date: Date = this.props.date ? this.props.date : new Date();
     @observable inputValue: string = this.props.date ? this.props.date.toDateString() : '';
-    @observable showDropdown: boolean = this.props.showDropdown ? this.props.showDropdown : false;
+    @observable showDropdown: boolean = this.props.options!.showDropdownOnInit ? this.props.options!.showDropdownOnInit : false;
 
     // Called with possibly invalid string from the input
     @action updateStateFromString = (input: string): void => {
@@ -96,7 +106,7 @@ export class DatePicker extends React.Component<Partial<DatePickerProps>, {}>{
                        type="text"
                        data-automation-id="DATE_PICKER_INPUT" />
                 {this.showDropdown ?
-                    <DatePickerDropdown onChange={this.updateStateFromDate} date={this.date!} data-automation-id="DATE_PICKER_DROPDOWN" />
+                    <DatePickerDropdown onChange={this.updateStateFromDate} date={this.date!} data-automation-id="DATE_PICKER_DROPDOWN" options={this.props.options!} />
                     :
                     null
                 }
