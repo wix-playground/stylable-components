@@ -1,6 +1,6 @@
 import * as React from 'react';
-
-const style = require('./tree-view.css');
+import {SBComponent} from 'stylable/react';
+import styles from './tree-view.sb.css';
 
 export interface TreeItemRenderer {
     (props: TreeItemProps): JSX.Element;
@@ -30,21 +30,35 @@ const itemIdPrefix = 'TREE_ITEM';
 export function TreeItem({ item, itemRenderer, onItemClick, isSelected }: TreeItemProps): JSX.Element {
     return (
         <div key={item.label}>
-            <div data-automation-id={`${itemIdPrefix}_${item.label.replace(' ', '_')}`} className={style['tree-node']}
-                 onClick={() => onItemClick!(item)} data-selected={isSelected(item)}>
+            <div
+                data-automation-id={`${itemIdPrefix}_${item.label.replace(' ', '_')}`}
+                className={TreeView.stylesheet.get('tree-node')}
+                cssStates={{
+                    selected: isSelected(item)
+                }}
+                onClick={() => onItemClick!(item)}
+            >
                 <span data-automation-id={`${itemIdPrefix}_${item.label}_ICON`}>&gt; </span>
                 <span data-automation-id={`${itemIdPrefix}_${item.label}_LABEL`}>{item.label}</span>
             </div>
-            <div className={style['nested-tree']}>
+            <div className={TreeView.stylesheet.get('nested-tree')}>
                 {(item.children || []).map((child: TreeItemData) =>
-                    itemRenderer({item: child, onItemClick, itemRenderer, isSelected}))}
+                    itemRenderer({item: child, onItemClick, itemRenderer, isSelected})
+                )}
             </div>
         </div>
     )
 }
 
+@SBComponent(styles)
 export class TreeView extends React.Component<TreeViewProps, {}>{
-    static defaultProps = { itemRenderer: TreeItem, onSelectItem: () => {} };
+    static stylesheet: {
+        get: Function
+    };
+    static defaultProps = {
+        itemRenderer: TreeItem,
+        onSelectItem: () => {}
+    };
 
     isSelected = (item: TreeItemData) => {
         return !!this.props.selectedItem && (this.props.selectedItem!.label === item.label);
@@ -52,10 +66,15 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
 
     render() {
         return (
-            <div data-automation-id='TREE_VIEW' className={style['tree-view']}>
+            <div data-automation-id='TREE_VIEW'>
                 {(this.props.dataSource || []).map((item: TreeItemData) =>
-                    this.props.itemRenderer!({item, onItemClick: this.props.onSelectItem,
-                        itemRenderer: this.props.itemRenderer!, isSelected: this.isSelected}))}
+                    this.props.itemRenderer!({
+                        item,
+                        onItemClick: this.props.onSelectItem,
+                        itemRenderer: this.props.itemRenderer!,
+                        isSelected: this.isSelected
+                    })
+                )}
             </div>
         )
     }
