@@ -174,3 +174,9 @@ Questions to research / answer:
 
 1. How do we define tooltip position (top, bottom, left, right)
 
+
+
+
+## Design
+
+Link to assets - https://zpl.io/2kRTvO
