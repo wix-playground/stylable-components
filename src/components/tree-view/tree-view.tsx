@@ -13,7 +13,7 @@ export interface TreeItemData {
     children?: TreeItemData[];
 }
 
-export interface TreeItemProps extends React.Attributes {
+export interface TreeItemProps {
     item: TreeItemData;
     itemRenderer: TreeItemRenderer;
     onItemClick?: React.EventHandler<any>;
@@ -36,7 +36,7 @@ export type StateMap = Map<TreeItemData, TreeItemState>;
 
 const itemIdPrefix = 'TREE_ITEM';
 
-export function TreeItem({ item, itemRenderer, onItemClick, stateMap, state }: TreeItemProps): JSX.Element {
+export const TreeItem: React.SFC<TreeItemProps> = ({ item, itemRenderer, onItemClick, stateMap, state }) => {
     const itemLabel = item.label.replace(' ', '_');
     return (
         <div>
@@ -52,7 +52,7 @@ export function TreeItem({ item, itemRenderer, onItemClick, stateMap, state }: T
             </div>
         </div>
     )
-}
+};
 
 const TreeItemWrapper = observer(TreeItem);
 

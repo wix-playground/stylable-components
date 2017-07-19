@@ -41,7 +41,7 @@ describe('<TreeView />', () => {
 
     const allNodesLabels: string[] = getAllNodeLabels(treeData);
 
-    it('renders a tree view with a few children, clicks ones of then', async () => {
+    it('renders a tree view with a few children, clicks ones of them', async () => {
         const { select, waitForDom } = clientRenderer.render(<TreeViewDemo />);
 
         await waitForDom(() => expect(select(treeView + '_DEMO')).to.be.present());
