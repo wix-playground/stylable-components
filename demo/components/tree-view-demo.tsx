@@ -41,6 +41,11 @@ export class TreeViewDemo extends React.Component<{}, {}> {
         if (item) this.focusedItem = item;
     };
 
+    onFocusItem = (item: TreeItemData) => {
+        debugger;
+        if (item) this.focusedItem = item;
+    };
+
     render() {
         return (
             <div>
@@ -48,7 +53,7 @@ export class TreeViewDemo extends React.Component<{}, {}> {
                 <section data-automation-id="TREE_VIEW_DEMO">
                     <SelectedItem selectedItem={this.selectedItem}/>
                     <br/>
-                    <TreeView dataSource={treeData} onSelectItem={this.onSelectItem}
+                    <TreeView dataSource={treeData} onSelectItem={this.onSelectItem} onFocusItem={this.onFocusItem}
                               selectedItem={this.selectedItem} focusedItem={this.focusedItem} />
                 </section>
             </div>

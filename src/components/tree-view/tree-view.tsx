@@ -23,6 +23,7 @@ export interface TreeViewProps {
     itemRenderer?: React.ComponentClass<TreeItemProps> | React.StatelessComponent<TreeItemProps>;
     onSelectItem?: React.EventHandler<any>;
     selectedItem?: TreeItemData;
+    onFocusItem?: React.EventHandler<any>;
     focusedItem?: TreeItemData;
 }
 
@@ -30,10 +31,10 @@ export interface TreeItemState {
     isSelected: boolean;
     isExpanded: boolean;
     isFocused: boolean;
-    parent: TreeItemData | undefined;
 }
 
 export type StateMap = Map<TreeItemData, TreeItemState>;
+export type ParentsMap = Map<TreeItemData, TreeItemData | undefined>;
 
 const itemIdPrefix = 'TREE_ITEM';
 
@@ -55,15 +56,16 @@ export const TreeItem: React.SFC<TreeItemProps> = ({ item, itemRenderer, onItemC
             </div>
         </div>
     )
-}
+};
 
 const TreeItemWrapper = observer(TreeItem);
 
 @observer
 export class TreeView extends React.Component<TreeViewProps, {}>{
-    static defaultProps: Partial<TreeViewProps> = { itemRenderer: TreeItemWrapper, onSelectItem: () => {} };
+    static defaultProps: Partial<TreeViewProps> = { itemRenderer: TreeItemWrapper, onSelectItem: () => {}, onFocusItem: () => {} };
 
     stateMap: StateMap = new Map<TreeItemData, TreeItemState>();
+    parentsMap: ParentsMap = new Map<TreeItemData, TreeItemData | undefined>();
 
     constructor(props: TreeViewProps) {
         super(props);
@@ -72,7 +74,8 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
 
     initState(data: TreeItemData[] = [], parent: TreeItemData | undefined) {
         data.forEach((item: TreeItemData) => {
-            this.stateMap.set(item, observable({ isSelected: false, isExpanded: false, isFocused: false, parent }));
+            this.stateMap.set(item, observable({ isSelected: false, isExpanded: false, isFocused: false }));
+            this.parentsMap.set(item, parent);
             this.initState(item.children || [], item);
         });
     }
@@ -81,6 +84,9 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
         autorun(() => {
             if (this.props.selectedItem) {
                 this.stateMap.get(this.props.selectedItem)!.isSelected = true;
+            }
+            if (this.props.focusedItem) {
+                this.stateMap.get(this.props.focusedItem)!.isFocused = true;
             }
         });
     }
@@ -101,9 +107,7 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
     };
 
     getPreviousItem(item: TreeItemData) {
-        const itemState = this.stateMap.get(item)!;
-
-        const parent = itemState!.parent;
+        const parent = this.parentsMap.get(item);
 
         if (!parent) {
             const itemIdx = this.props.dataSource.indexOf(item);
@@ -119,7 +123,6 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
             }
         } else {
             const itemIdx = parent.children!.indexOf(item);
-
 
             if (itemIdx === 0) return parent;
 
@@ -138,9 +141,9 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
         const itemState = this.stateMap.get(item)!;
 
         if (itemState.isExpanded && item.children) {
-                return item.children![0];
+            return item.children![0];
         } else {
-            const parent = itemState!.parent;
+            const parent = this.parentsMap.get(item);
             const siblings = parent ? parent.children! : this.props.dataSource;
             const itemIdx = siblings.indexOf(item);
             return itemIdx !== siblings.length ? siblings[itemIdx + 1] : item;
@@ -149,16 +152,13 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
 
     expandItem = (item: TreeItemData) => this.stateMap.get(item)!.isExpanded = true;
     collapseItem = (item: TreeItemData) => this.stateMap.get(item)!.isExpanded = false;
-    focusPrev = (item: TreeItemData) => this.stateMap.get(this.getPreviousItem(item) as TreeItemData)!.isFocused = true;
-    focusNext = (item: TreeItemData) => this.stateMap.get(this.getNextItem(item) as TreeItemData)!.isFocused = true;
+    focusPrev = (item: TreeItemData) => this.props.onFocusItem!(this.getPreviousItem(item) as TreeItemData);
+    focusNext = (item: TreeItemData) => this.props.onFocusItem!(this.getNextItem(item) as TreeItemData);
 
     onKeyDown = (e: any) => {
         if (!this.props.focusedItem) return;
 
-        // const focusedItem = this.props.focusedItem;
-
         this.stateMap.get(this.props.focusedItem)!.isFocused = false;
-
 
         switch(e.keyCode) {
             case KeyCodes.RIGHT:
@@ -186,10 +186,3 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
         )
     }
 }
-
-
-
-let a: React.StatelessComponent | React.ComponentClass;
-a = () => <div/>
-a = class B extends React.Component {}
-React.createElement(a);

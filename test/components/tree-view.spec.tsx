@@ -20,7 +20,7 @@ function getAllNodeLabels(treeData: Object[]) {
 
 function initStateMap(data: Object[] = [], stateMap: StateMap) {
     data.forEach((item: TreeItemData) => {
-        stateMap.set(item, { isSelected: false, isExpanded: true, isFocused: false, parent: undefined });
+        stateMap.set(item, { isSelected: false, isExpanded: true, isFocused: false });
         initStateMap(item.children || [], stateMap);
     });
 }
@@ -35,7 +35,7 @@ describe('<TreeView />', () => {
     const item = { label: 'label' };
     const nestedItem: TreeItemData = treeData[0].children![1];
 
-    const state: TreeItemState = { isSelected: false, isExpanded: true, isFocused: false, parent: undefined };
+    const state: TreeItemState = { isSelected: false, isExpanded: true, isFocused: false };
     const stateMap: StateMap = new Map<TreeItemData, TreeItemState>();
 
     initStateMap(treeData, stateMap);
@@ -148,8 +148,6 @@ describe('<TreeView />', () => {
                 // this should assert first child of root is focused
                 await waitForDom(() =>
                     expect(select(getTreeItem(nodeChildren![0].label)), 'down didnt work').to.have.attr('data-focused', 'true'));
-
-                debugger;
 
                 simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), { keyCode: KeyCodes.UP });
 
