@@ -43,11 +43,11 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
     }
 
     private stepValue(direction: Direction) {
-        const {step} = this.props;
+        const {step, min, max} = this.props;
         const {value} = this.state;
         const next = direction == INCREASE ?
-            value + step! :
-            value - step!
+            Math.max(value + step!, min!) :
+            Math.min(value - step!, max!);
 
         this.setValue(next);
     }
@@ -82,6 +82,9 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
                 data-automation-id="NATIVE_INPUT_NUMBER"
                 type="number"
                 value={value}
+                min={min}
+                max={max}
+                step={step}
                 onChange={this.handleChange}
             />
             <Stepper
@@ -113,6 +116,7 @@ const Stepper: React.StatelessComponent<StepperProps> =
     }) => (
         <div {...props}>
             <button
+                tabIndex={-1}
                 data-automation-id="STEPPER_INCREMENT"
                 className={styles['stepper-increment']}
                 onClick={() => onIncrement()}
@@ -121,6 +125,7 @@ const Stepper: React.StatelessComponent<StepperProps> =
                 <ChevronUpIcon className={styles['stepper-control-icon']} />
             </button>
             <button
+                tabIndex={-1}
                 data-automation-id="STEPPER_DECREMENT"
                 className={styles['stepper-decrement']}
                 onClick={() => onDecrement()}

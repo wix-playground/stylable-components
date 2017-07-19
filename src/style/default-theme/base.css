@@ -2,7 +2,7 @@
 @value fontFamily, fontSize, fontWeight, lineHeight, color_MainText, color_MainPlaceholder, textPlaceholder, color_MainTextBackground, borderRadius from vars;
 @value color_Default, color_Hover, color_Active, color_Focus, color_Disabled from vars;
 @value borderDefault, borderHover, borderFocus, borderDisabled from vars;
-@value inputHeight from vars;
+@value inputHeight, inputWidth from vars;
 
 /* Typography */
 :global h1 {
@@ -148,6 +148,7 @@
     line-height: lineHeight;
     padding: 6px 12px;
     height: inputHeight;
+    width: inputWidth;
     outline: 0;
 }
 

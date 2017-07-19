@@ -35,7 +35,7 @@
 
 /* Component Box */
 @value inputHeight: 36px;
-
+@value inputWidth: 192px;
 /* Borders */
 @value borderRadius: 0px;
 

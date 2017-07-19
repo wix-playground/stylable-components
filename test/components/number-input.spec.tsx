@@ -88,6 +88,24 @@ describe('<NumberInput />', () => {
                     expect(increment).to.have.attribute('disabled');
                 });
             });
+
+            it('should set the value to min when value < min', async () => {
+                const value = -3;
+                const step = 1;
+                const min = 0;
+                const onChange = sinon.spy();
+                const {select, waitForDom} = clientRenderer.render(
+                    <NumberInput value={value} step={step} min={min} onChange={onChange} />
+                );
+
+                await waitForDom(() => {
+                    const increment = select('STEPPER_INCREMENT');
+
+                    simulate.click(increment);
+
+                    expect(onChange).to.have.been.calledWith(min);
+                });
+            });
         });
 
         describe('decrement', () => {
@@ -129,6 +147,25 @@ describe('<NumberInput />', () => {
                     expect(decrement).to.have.attribute('disabled');
                 });
             });
+
+            it('should set the value to max when value > max', async () => {
+                const value = 3;
+                const step = 1;
+                const max = 0;
+                const onChange = sinon.spy();
+                const {select, waitForDom} = clientRenderer.render(
+                    <NumberInput value={value} step={step} max={max} onChange={onChange} />
+                );
+
+                await waitForDom(() => {
+                    const decrement = select('STEPPER_DECREMENT');
+
+                    simulate.click(decrement);
+
+                    expect(onChange).to.have.been.calledWith(max);
+                });
+            });
+
         });
     });
 });
