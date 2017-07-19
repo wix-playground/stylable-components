@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Link } from '../src';
 import {CheckBoxDemo} from "./components/checkbox-demo";
 import { TreeViewDemo } from './components/tree-view-demo';
 const style = require('./style.css');
@@ -14,8 +13,10 @@ export class ComponentsDemo extends React.Component<{}, {}>{
 
     render() {
         return <div>
-            <Link className={style.test} href="">My link</Link><br/>
-            <CheckBoxDemo />
+            <div>
+                <h2>CheckBox</h2>
+                <CheckBoxDemo />
+            </div>
             <div>
                 <h2>TreeView</h2>
                 <TreeViewDemo />
@@ -100,6 +101,7 @@ export class ComponentsDemo extends React.Component<{}, {}>{
                     </tr>
                 </table>
             </div>
+
         </div>;
     }
 }
