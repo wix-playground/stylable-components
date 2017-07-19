@@ -12,10 +12,6 @@ export interface NumberInputProps {
     max?: number
 }
 
-export interface NumberInputState {
-    value: number
-}
-
 const defaultProps = {
     step: 1,
     onChange: noop,
@@ -28,29 +24,20 @@ type Direction = 'increase' | 'decrease'
 const INCREASE: Direction = 'increase';
 const DECREASE: Direction = 'decrease';
 
-export class NumberInput extends React.Component<NumberInputProps, NumberInputState>{
+export class NumberInput extends React.Component<NumberInputProps, {}>{
     static defaultProps = defaultProps;
 
-    constructor(props: NumberInputProps) {
-        super(props);
-
-        this.state = {value: props.value}
-    }
-
     private setValue(next: number) {
-        const {onChange, min, max} = this.props;
-        const {value} = this.state;
+        const {onChange, min, max, value} = this.props;
         const nextInRange = Math.min(max!, Math.max(min!, next));
 
         if(value !== nextInRange) {
-            this.setState({value: nextInRange});
             onChange!(nextInRange);
         }
     }
 
     private stepValue(direction: Direction) {
-        const {step, min, max} = this.props;
-        const {value} = this.state;
+        const {value, step, min, max} = this.props;
         const next = (direction == INCREASE ?
             value + step! :
             value - step!);
@@ -82,17 +69,10 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
         this.setValue(value);
     }
 
-    componentWillReceiveProps({value}: NumberInputProps) {
-        if (this.state.value !== value) {
-            this.setState({value: value});
-        }
-    }
-
     render() {
-        const {step, min, max} = this.props;
-        const {value} = this.state;
-        const disableIncrement = value + step! > max!;
-        const disableDecrement = value - step! < min!;
+        const {value, step, min, max} = this.props;
+        const disableIncrement = value >= max!;
+        const disableDecrement = value <= min!;
 
         return <div className={styles['number-input']}>
             <input
