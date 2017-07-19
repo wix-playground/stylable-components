@@ -41,14 +41,15 @@ Tooltip is a separate component that can be embedded into slider to display "val
 
 ## Slider States
 
-| State    | Description                         | Link to design |
-| :------- | ----------------------------------- | -------------- |
-| Default  | Default component appearance        |                |
-| Hover    | User hovered over bar OR handle     |                |
-| Focus    | Browser is focused on the component |                |
-| Click    | User clicks on bar OR handle        |                |
-| Disabled | Component can not be changed        |                |
+| State    | Description                         |
+| :------- | ----------------------------------- |
+| Default  | Default component appearance        |
+| Hover    | User hovered over bar OR handle     |
+| Focus    | Browser is focused on the component |
+| Click    | User clicks on bar OR handle        |
+| Disabled | Component can not be changed        |
 
+Design [assets](https://zpl.io/2kRTvO)
 
 
 ## Slider Props
@@ -181,4 +182,4 @@ Questions to research / answer:
 
 ## Design
 
-Link to assets - https://zpl.io/2kRTvO
+Link to [assets](https://zpl.io/2kRTvO)
