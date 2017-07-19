@@ -1,0 +1,42 @@
+/* Typography  */
+:vars {
+    fontFamily: Arial;
+    fontSize: 100%;
+    fontWeight: normal;
+    lineHeight: 1.5;
+
+    /* Colors */
+    B1: #4990e2;
+    B2: #5cb4ff;
+    B3: #4990e2;
+    B4: #257ade;
+    B5: #d1d1d1;
+
+    M1: #000000;
+    M2: #577083;
+    M3: #4A90E2;
+    M4: #EDF7FF;
+    M5: #D0021B;
+    M6: #c8c8c8;
+    M0: #ffffff;
+
+    color_MainText: M1; /* Base text color  */
+    color_MainPlaceholder: M2;
+    color_MainError: M5;
+    color_MainDisabled: M6;
+    color_MainTextBackground: M0;
+
+    /* Component Colors */
+    color_Default: B1;
+    color_Hover: B2;
+    color_Active: B3;
+    color_Focus: B4;
+    color_Disabled: B5;
+
+    /* Borders */
+    borderRadius: 0px;
+    borderDefault: solid 1px B5;
+    borderHover: solid 1px B2;
+    borderFocus: solid 1px B3;
+    borderDisabled: solid 1px B5;
+}
