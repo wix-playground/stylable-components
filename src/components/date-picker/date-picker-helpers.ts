@@ -35,11 +35,11 @@ export function getLastDayOfMonth (date: Date): number {
 
 export function getNumOfPreviousDays (date: Date, firstDay: number = 0): number {
     // Days start from Sunday (Sunday = 0, Monday = 1, etc.)
-    const previousDays: number = new Date(date.getFullYear(), date.getMonth(), 1).getDay();
-    return (previousDays - firstDay) < 0 ? 6 : previousDays - firstDay;
+    const previousDays: number = (new Date(date.getFullYear(), date.getMonth(), 1).getDay() - firstDay) + 7;
+    return previousDays > 6 ? previousDays - 7 : previousDays;
 }
 
 export function getNumOfFollowingDays (date: Date, firstDay: number = 0): number {
-    const followingDays = 6 - getLastDayOfMonth(date);
-    return (followingDays + firstDay) % 7 === 0 ? 0 : (followingDays + firstDay) > 7 ? (followingDays + firstDay) - 7: followingDays + firstDay;
+    const followingDays = (6 - getLastDayOfMonth(date)) + firstDay;
+    return followingDays > 6 ? followingDays - 7 : followingDays;
 }

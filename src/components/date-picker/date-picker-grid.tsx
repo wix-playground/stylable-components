@@ -3,7 +3,7 @@ import {
     getDayNames, getDaysInMonth, getNumOfPreviousDays, getMonthFromOffset,
     getNumOfFollowingDays
 } from './date-picker-helpers';
-import {computed} from 'mobx';
+import {computed, observable} from 'mobx';
 import {observer} from 'mobx-react';
 const styles = require('./date-picker.css');
 
@@ -15,7 +15,7 @@ export interface DatePickerGridProps {
 
 @observer
 export class DatePickerGrid extends React.Component<DatePickerGridProps, {}> {
-    @computed
+    // @computed
     get dayArray (): Array<JSX.Element> {
         const dayArray: Array<number> = [];
         for (let i = 1; i <= getDaysInMonth(this.props.date); i++) {
@@ -26,26 +26,26 @@ export class DatePickerGrid extends React.Component<DatePickerGridProps, {}> {
                                               data-automation-id={'DAY_' + day}>{day}</span>);
     }
 
-    @computed
+    // @computed
     get dayNames (): Array<JSX.Element> {
         return getDayNames(this.props.startingDay).map((name, index) => <span className={[styles.calendarItem, styles.dayName].join(' ')} key={'DAY_NAME_' + index}
                                                  data-automation-id={'DAY_NAME_' + name.toUpperCase()}>{name}</span>);
     }
 
-    @computed
+    // @computed
     get previousDays (): Array<JSX.Element> {
         const previousDays: Array<JSX.Element> = [];
         const lastDayOfPrevMonth: number = getDaysInMonth(getMonthFromOffset(this.props.date, -1));
         const numberOfDaysToDisplay: number = getNumOfPreviousDays(this.props.date, this.props.startingDay);
 
-        for (let i = lastDayOfPrevMonth - numberOfDaysToDisplay + 1; i <= lastDayOfPrevMonth; i++) {
+        for (let i = (lastDayOfPrevMonth - numberOfDaysToDisplay) + 1; i <= lastDayOfPrevMonth; i++) {
             previousDays.push(<span className={[styles.calendarItem, styles.greyDay].join(' ')} key={'PREV_DAY_' + i} data-automation-id={'PREV_DAY_' + i}>{i}</span>);
         }
 
         return previousDays;
     }
 
-    @computed
+    // @computed
     get followingDays (): Array<JSX.Element> {
         const followingDays: Array<JSX.Element> = [];
         const numberOfDaysToDisplay: number = getNumOfFollowingDays(this.props.date, this.props.startingDay);
