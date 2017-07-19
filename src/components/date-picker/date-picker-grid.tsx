@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {getDayNames, getDaysInMonth, getNumOfPreviousDays} from './date-picker-helpers';
+import {getDayNames, getDaysInMonth, getNumOfPreviousDays, getMonthFromOffset} from './date-picker-helpers';
 import {computed} from 'mobx';
 import {observer} from 'mobx-react';
 const styles = require('./date-picker.css');
@@ -32,9 +32,11 @@ export class DatePickerGrid extends React.Component<DatePickerGridProps, {}> {
     @computed
     get previousDays (): Array<JSX.Element> {
         const previousDays: Array<JSX.Element> = [];
+        const lastDayOfPrevMonth: number = getDaysInMonth(getMonthFromOffset(this.props.date, -1));
+        const numberOfDaysToDisplay: number = getNumOfPreviousDays(this.props.date, this.props.startingDay);
 
-        for (let i = 0; i < getNumOfPreviousDays(this.props.date, this.props.startingDay); i++) {
-            previousDays.push(<span className={styles.calendarItem} key={'PREV_DAY_' + i} data-automation-id={'PREV_DAY_' + i}></span>);
+        for (let i = lastDayOfPrevMonth - numberOfDaysToDisplay + 1; i <= lastDayOfPrevMonth; i++) {
+            previousDays.push(<span className={[styles.calendarItem, styles.previousDay].join(' ')} key={'PREV_DAY_' + i} data-automation-id={'PREV_DAY_' + i}>{i}</span>);
         }
 
         return previousDays;

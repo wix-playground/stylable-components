@@ -28,7 +28,7 @@ describe('The DatePicker Component', function () {
         it('writes into the date picker input field, presses enter, and expects the date picker input to have the proper value', () => {
             const {select, waitForDom} = clientRenderer.render(<DatePickerDemo />);
 
-            const datePickerInput = select(datePickerInputId);
+            const datePickerInput = select('BASIC_DATEPICKER', datePickerInputId);
             simulateChange(datePickerInput!, '2017-02-01');
             simulate.keyDown(datePickerInput, { keyCode: KeyCodes.ENTER });
 
@@ -38,7 +38,7 @@ describe('The DatePicker Component', function () {
         it('writes into the date picker input field, focuses elsewhere, and expects the date picker input to have the proper value', () => {
             const {select, waitForDom} = clientRenderer.render(<DatePickerDemo />);
 
-            const datePickerInput = select(datePickerInputId);
+            const datePickerInput = select('BASIC_DATEPICKER', datePickerInputId);
             simulateChange(datePickerInput!, '2017-02-01');
             simulate.blur(datePickerInput);
 
@@ -174,6 +174,14 @@ describe('The DatePicker Component', function () {
             const {select} = clientRenderer.render(<DatePicker date={MARCH_FIRST} showDropdownOnInit={true} />);
 
             expect([select('DAY_1'), select('DAY_NAME_WED')]).to.be.horizontallyAligned('center');
+        });
+
+        it('should show the trailing days from the last and next months', function () {
+            const {select} = clientRenderer.render(<DatePicker date={MARCH_FIRST} showDropdownOnInit={true} />);
+
+            expect([select('PREV_DAY_26'), select('PREV_DAY_27'), select('PREV_DAY_28')]).to.be.present();
+            expect(select('NEXT_DAY_1')).to.be.present();
+
         });
 
         it('displays the year', function () {

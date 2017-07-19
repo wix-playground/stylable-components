@@ -13,12 +13,14 @@ export interface DatePickerProps {
     placeholder: string;
     startingDay: number;
     showDropdownOnInit: boolean;
+    dataAutomationId: string;
 }
 
 @observer
 export class DatePicker extends React.Component<Partial<DatePickerProps>, {}>{
     static defaultProps = {
-        startingDay: 0
+        startingDay: 0,
+        dataAutomationId: 'DATE_PICKER'
     };
 
     public get currentDate (): Date {
@@ -90,7 +92,7 @@ export class DatePicker extends React.Component<Partial<DatePickerProps>, {}>{
 
     render() {
         return (
-            <div data-automation-id="DATE_PICKER">
+            <div data-automation-id={this.props.dataAutomationId}>
                 <input className={styles.input}
                        onKeyDown={this.onKeyDown}
                        onMouseDown={this.onMouseDown}

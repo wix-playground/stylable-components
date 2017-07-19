@@ -112,3 +112,13 @@
     background-color: color_Default;
     color: color_MainTextBackground;
 }
+
+.previousDay {
+    font-family: ArialMT;
+    font-size: 14px;
+    text-align: center;
+    color: #d8d8d8;
+    width: 36px;
+    line-height: 36px;
+    cursor: pointer;
+}

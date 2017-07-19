@@ -17,7 +17,7 @@ export class DatePickerDemo extends React.Component<{}, {}> {
         return (
             <div>
                 <h2>Standard DatePicker</h2>
-                <DatePicker placeholder="mm/dd/yyyy" />
+                <DatePicker placeholder="mm/dd/yyyy" dataAutomationId="BASIC_DATEPICKER" />
 
                 <h2>DatePicker with variable week (and showDropdown set to true)</h2>
                 <span>
