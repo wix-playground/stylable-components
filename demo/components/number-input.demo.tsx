@@ -7,12 +7,21 @@ export class NumberInputDemo extends React.Component<{}, {value: number}> {
         this.state = {value: 0};
     }
     render() {
-        return <NumberInput
-            value={this.state.value}
-            step={2}
-            min={-5}
-            max={5}
-            onChange={value => this.setState({value})}
-        />
+        return <table>
+            <tr>
+                <th>
+                    <NumberInput
+                        value={this.state.value}
+                        step={2}
+                        min={-5}
+                        max={5}
+                        onChangeValue={value => this.setState({value})}
+                    />
+                </th>
+                <th>
+                    <NumberInput disabled value={this.state.value} />
+                </th>
+            </tr>
+        </table>
     }
 }

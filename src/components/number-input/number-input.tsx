@@ -4,9 +4,9 @@ import {KeyCodes} from '../../common/key-codes';
 
 const styles = require('./number-input.css');
 
-export interface NumberInputProps {
+export interface NumberInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     value: number
-    onChange?: (value: number) => void
+    onChangeValue?: (value: number) => void
     step?: number
     min?: number
     max?: number
@@ -14,7 +14,7 @@ export interface NumberInputProps {
 
 const defaultProps = {
     step: 1,
-    onChange: noop,
+    onChangeValue: noop,
     min: -Infinity,
     max: Infinity
 }
@@ -28,11 +28,11 @@ export class NumberInput extends React.Component<NumberInputProps, {}>{
     static defaultProps = defaultProps;
 
     private setValue(next: number) {
-        const {onChange, min, max, value} = this.props;
+        const {onChangeValue, min, max, value} = this.props;
         const nextInRange = Math.min(max!, Math.max(min!, next));
 
         if(value !== nextInRange) {
-            onChange!(nextInRange);
+            onChangeValue!(nextInRange);
         }
     }
 
@@ -70,12 +70,13 @@ export class NumberInput extends React.Component<NumberInputProps, {}>{
     }
 
     render() {
-        const {value, step, min, max} = this.props;
-        const disableIncrement = value >= max!;
-        const disableDecrement = value <= min!;
+        const {value, step, min, max, ...props} = this.props;
+        const disableIncrement = props.disabled || value >= max!;
+        const disableDecrement = props.disabled || value <= min!;
 
         return <div className={styles['number-input']}>
             <input
+                {...props}
                 data-automation-id="NATIVE_INPUT_NUMBER"
                 type="number"
                 value={value}
