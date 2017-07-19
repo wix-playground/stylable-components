@@ -92,7 +92,7 @@ export class DatePicker extends React.Component<Partial<DatePickerProps>, {}>{
 
     render() {
         return (
-            <div data-automation-id={this.props.dataAutomationId}>
+            <div className={styles.root} data-automation-id={this.props.dataAutomationId}>
                 <input className={styles.input}
                        onKeyDown={this.onKeyDown}
                        onMouseDown={this.onMouseDown}
