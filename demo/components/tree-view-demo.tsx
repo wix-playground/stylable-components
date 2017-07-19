@@ -42,7 +42,6 @@ export class TreeViewDemo extends React.Component<{}, {}> {
     };
 
     onFocusItem = (item: TreeItemData) => {
-        debugger;
         if (item) this.focusedItem = item;
     };
 

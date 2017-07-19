@@ -163,7 +163,7 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
 
     render() {
         return (
-            <div data-automation-id='TREE_VIEW' className={style['tree-view']} onKeyDown={this.onKeyDown}>
+            <div data-automation-id='TREE_VIEW' className={style['tree-view']} tabIndex={0} onKeyDown={this.onKeyDown}>
                 {(this.props.dataSource || []).map((item: TreeItemData, index: number) =>
                     React.createElement(
                         this.props.itemRenderer as React.ComponentClass<TreeItemProps>,
