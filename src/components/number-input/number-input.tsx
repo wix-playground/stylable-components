@@ -45,13 +45,13 @@ export class NumberInput extends React.Component<NumberInputProps, {}>{
         this.setValue(next);
     }
 
-    private handleIncrement: React.EventHandler<any> =
+    private handleIncrement: React.MouseEventHandler<HTMLElement> =
         () => this.stepValue(INCREASE);
 
-    private handleDecrement: React.EventHandler<any> =
+    private handleDecrement: React.MouseEventHandler<HTMLElement> =
         () => this.stepValue(DECREASE);
 
-    private handleKeyDown: React.KeyboardEventHandler<any> = (e) => {
+    private handleKeyDown: React.KeyboardEventHandler<HTMLElement> = (e) => {
         switch (e.keyCode) {
             case KeyCodes.UP:
                 this.stepValue(INCREASE);
@@ -64,7 +64,7 @@ export class NumberInput extends React.Component<NumberInputProps, {}>{
         }
     }
 
-    private handleChange: React.ChangeEventHandler<any> = e => {
+    private handleChange: React.ChangeEventHandler<HTMLInputElement> = e => {
         const value = Number(e.target.value);
         this.setValue(value);
     }
