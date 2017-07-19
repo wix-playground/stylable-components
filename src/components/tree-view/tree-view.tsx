@@ -105,37 +105,49 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
     };
 
     getPreviousItem(item: TreeItemData) {
+        const itemState = this.stateMap.get(item)!;
 
-        return item;
+        const parent = itemState!.parent;
+
+        if (!parent) {
+            const itemIdx = this.props.dataSource.indexOf(item);
+            if (itemIdx === 0) return item;
+
+            const prevSibling = this.props.dataSource[itemIdx - 1] as TreeItemData;
+            const prevSiblingState = this.stateMap.get(prevSibling)!;
+
+            if (prevSiblingState.isExpanded && prevSibling.children!.length ) {
+                return prevSibling.children![prevSibling.children!.length - 1];
+            } else {
+                return prevSibling;
+            }
+        } else {
+            const itemIdx = parent.children!.indexOf(item);
+
+
+            if (itemIdx === 0) return parent;
+
+            const prevSibling = parent.children![itemIdx - 1] as TreeItemData;
+            const prevSiblingState = this.stateMap.get(prevSibling)!;
+
+            if (prevSiblingState.isExpanded && prevSibling.children!.length ) {
+                return prevSibling.children![prevSibling.children!.length - 1];
+            } else {
+                return prevSibling;
+            }
+        }
     }
 
     getNextItem(item: TreeItemData) {
         const itemState = this.stateMap.get(item)!;
-        const parent = itemState!.parent;
-        if (!parent) {
-            if (itemState.isExpanded) {
-                if (item.children) {
-                    return item.children![0];
-                } else {
-                    const itemIdx = this.props.dataSource.indexOf(item);
-                    return itemIdx !== this.props.dataSource.length ? this.props.dataSource[itemIdx + 1] : item;
-                }
-            } else {
-                const itemIdx = this.props.dataSource.indexOf(item);
-                return itemIdx !== this.props.dataSource.length ? this.props.dataSource[itemIdx + 1] : item;
-            }
+
+        if (itemState.isExpanded && item.children) {
+                return item.children![0];
         } else {
-            if (itemState.isExpanded) {
-                if (item.children) {
-                    return item.children![0];
-                } else {
-                    const itemIdx = parent.children!.indexOf(item);
-                    return itemIdx !== parent.children!.length ? parent.children![itemIdx + 1] : item;
-                }
-            } else {
-                const itemIdx = parent.children!.indexOf(item);
-                return itemIdx !== parent.children!.length ? parent.children![itemIdx + 1] : item;
-            }
+            const parent = itemState!.parent;
+            const siblings = parent ? parent.children! : this.props.dataSource;
+            const itemIdx = siblings.indexOf(item);
+            return itemIdx !== siblings.length ? siblings[itemIdx + 1] : item;
         }
     }
 
@@ -147,7 +159,10 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
     onKeyDown = (e: any) => {
         if (!this.props.focusedItem) return;
 
+        // const focusedItem = this.props.focusedItem;
+
         this.stateMap.get(this.props.focusedItem)!.isFocused = false;
+
 
         switch(e.keyCode) {
             case KeyCodes.RIGHT:

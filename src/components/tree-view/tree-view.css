@@ -7,7 +7,7 @@
     background-color: lightblue;
 }
 
-.tree-view [focused="true"] {
+.tree-view [data-focused="true"] {
     color: mediumpurple;
 }
 

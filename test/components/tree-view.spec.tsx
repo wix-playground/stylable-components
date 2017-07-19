@@ -149,6 +149,8 @@ describe('<TreeView />', () => {
                 await waitForDom(() =>
                     expect(select(getTreeItem(nodeChildren![0].label)), 'down didnt work').to.have.attr('data-focused', 'true'));
 
+                debugger;
+
                 simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), { keyCode: KeyCodes.UP });
 
                 // this should assert first child of root is not focused
