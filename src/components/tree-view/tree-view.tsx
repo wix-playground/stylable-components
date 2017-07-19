@@ -109,31 +109,18 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
     getPreviousItem(item: TreeItemData) {
         const parent = this.parentsMap.get(item);
 
-        if (!parent) {
-            const itemIdx = this.props.dataSource.indexOf(item);
-            if (itemIdx === 0) return item;
+        const siblings = parent ? parent.children! : this.props.dataSource;
 
-            const prevSibling = this.props.dataSource[itemIdx - 1] as TreeItemData;
-            const prevSiblingState = this.stateMap.get(prevSibling)!;
+        const itemIdx = siblings.indexOf(item);
+        if (itemIdx === 0) return item;
 
-            if (prevSiblingState.isExpanded && prevSibling.children!.length ) {
-                return prevSibling.children![prevSibling.children!.length - 1];
-            } else {
-                return prevSibling;
-            }
+        const prevSibling = siblings[itemIdx - 1] as TreeItemData;
+        const prevSiblingState = this.stateMap.get(prevSibling)!;
+
+        if (prevSiblingState.isExpanded && prevSibling.children!.length ) {
+            return prevSibling.children![prevSibling.children!.length - 1];
         } else {
-            const itemIdx = parent.children!.indexOf(item);
-
-            if (itemIdx === 0) return parent;
-
-            const prevSibling = parent.children![itemIdx - 1] as TreeItemData;
-            const prevSiblingState = this.stateMap.get(prevSibling)!;
-
-            if (prevSiblingState.isExpanded && prevSibling.children!.length ) {
-                return prevSibling.children![prevSibling.children!.length - 1];
-            } else {
-                return prevSibling;
-            }
+            return prevSibling;
         }
     }
 
