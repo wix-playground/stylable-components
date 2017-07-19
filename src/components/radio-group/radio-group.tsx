@@ -29,9 +29,13 @@ export class RadioGroup extends React.Component<RadioGroupProps, {}> {
     constructor(props: RadioGroupProps) {
         super(props);
         this.checkedArray = [];
+        let flag = true;
         if (this.props.children) {
             for (let i = 0; i < this.props.children.length; i++) {
-                this.checkedArray.push(observable({checked: this.props.children[i].props.checked}))
+                this.checkedArray.push(observable({checked: flag ? this.props.children[i].props.checked: false}));
+                if (this.props.children[i].props.checked) {
+                    flag = false;
+                }
             }
         }
         this.name = this.props.name ? this.props.name : 'name_' + counter++;
@@ -52,9 +56,10 @@ export class RadioGroup extends React.Component<RadioGroupProps, {}> {
             <div data-automation-id="RADIO_GROUP">
                 {React.Children.map(this.props.children, (child, index) => {
                     if (React.isValidElement(child) &&  child.type === RadioButton) {
-                        // const isChecked = child.props ? ((child.props as RadioButtonProps).checked || this.checkedArray[index].checked) : false;
                         const props = {automationId: 'RADIO_BUTTON_' + index, checked: this.checkedArray[index].checked, onClick: this.childrenOnClick(index), location: this.props.location, name: this.name};
                         return React.cloneElement(child as ReactElement<any>, props);
+                    } else {
+                        return child;
                     }
                 })}
             </div>);

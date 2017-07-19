@@ -47,6 +47,22 @@ describe('<RadioGroup />', function () {
         });
     });
 
+    it('renders other components as children', function () {
+        const {select, waitForDom} = clientRenderer.render(
+            <RadioGroup onChange={emptyFunction}>
+                <RadioButton value="1"/>
+                <span>Surprise!</span>
+                <RadioButton value="2"/>
+            </RadioGroup>
+        );
+
+        return waitForDom(() => {
+            const container = select(radioGroup) as HTMLDivElement;
+            expect(container.children[1].tagName).to.equal('SPAN');
+        });
+
+    });
+
     it('renders the children with the given name value', function () {
         const {select, waitForDom} = clientRenderer.render(
             <RadioGroup onChange={emptyFunction} name="kupo">
@@ -67,8 +83,8 @@ describe('<RadioGroup />', function () {
     it('renders a checked radio button if the checked prop is true', function () {
         const {select, waitForDom} = clientRenderer.render(
             <RadioGroup onChange={emptyFunction} name="kupo">
-                <RadioButton value="1"/>
-                <RadioButton checked={true} value="1"/>
+                <RadioButton value="Minerva"/>
+                <RadioButton checked={true} value="Kitsune"/>
             </RadioGroup>
         );
 
@@ -77,7 +93,6 @@ describe('<RadioGroup />', function () {
 
             expect(button1.checked).to.be.true;
         });
-
     });
 
     it('renders calls the given onChange function on change', async function () {
