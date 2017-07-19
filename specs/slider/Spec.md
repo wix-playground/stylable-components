@@ -6,15 +6,17 @@
 - [Slider Props](#slider-props)
 - [UI Customizations](#ui-customizations)
 - [Behavior](#behavior)
-- [Keyboard](#keyboard)
-- [Mouse](#mouse)
+  - [Keyboard](#keyboard)
+  - [Mouse](#mouse)
+  - [Touch](#touch)
 - [Error handling](#error-handling)
 - [Accessibility](#accessibility)
 - [Examples](#examples)
-- [Simple](#simple)
-- [Stepped](#stepped)
-- [Horizontal / Vertical Axis](#horizontal-/-vertical)
-- [Tooltip](#tooltip)
+  - [Simple](#simple)
+  - [Stepped](#stepped)
+  - [Horizontal / Vertical Axis](#horizontal-/-vertical)
+  - [Tooltip](#tooltip)
+- [Design](#design)
 
 
 
