@@ -7,7 +7,7 @@ describe('<NumberInput />', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
 
-    it('outputs an input element with type="number" by default', async () => {
+    it('should output an input element with type="number" by default', async () => {
         const { select, waitForDom } = clientRenderer.render(
             <NumberInput value={0} />
         );
@@ -21,7 +21,7 @@ describe('<NumberInput />', () => {
         });
     });
 
-    it('renders a stepper', async () => {
+    it('should render a stepper', async () => {
         const {select, waitForDom} = clientRenderer.render(
             <NumberInput value={0} />
         );
@@ -34,7 +34,7 @@ describe('<NumberInput />', () => {
     });
 
     describe('<Stepper />', () => {
-        it('renders increment and decrement controls', async () => {
+        it('should render increment and decrement controls', async () => {
             const {select, waitForDom} = clientRenderer.render(
                 <NumberInput value={0} />
             );
@@ -67,6 +67,7 @@ describe('<NumberInput />', () => {
                     simulate.click(increment);
 
                     expect(input).to.have.value(String(value + 3*step));
+                    expect(onChange).to.have.been.calledThrice;
                     expect(onChange).to.have.been.calledWith(value + step);
                 });
             });
@@ -126,6 +127,7 @@ describe('<NumberInput />', () => {
                     simulate.click(decrement);
 
                     expect(input).to.have.value(String(value - 3*step));
+                    expect(onChange).to.have.been.calledThrice;
                     expect(onChange).to.have.been.calledWith(value - step);
                 });
             });
@@ -163,6 +165,118 @@ describe('<NumberInput />', () => {
                     simulate.click(decrement);
 
                     expect(onChange).to.have.been.calledWith(max);
+                });
+            });
+
+        });
+    });
+
+    describe('keyboard interactions', () => {
+        describe('up key', () => {
+            it('should increase value by one step', async () => {
+                const value = 0;
+                const step = 2;
+                const onChange = sinon.spy();
+                const {select, waitForDom} = clientRenderer.render(
+                    <NumberInput value={value} step={step} onChange={onChange} />
+                );
+
+                await waitForDom(() => {
+                    const input = select('NATIVE_INPUT_NUMBER');
+
+                    simulate.keyDown(input, {keyCode: KeyCodes.UP});
+                    simulate.keyDown(input, {keyCode: KeyCodes.UP});
+                    simulate.keyDown(input, {keyCode: KeyCodes.UP});
+
+                    expect(onChange).to.have.been.calledThrice;
+
+                    expect(onChange).to.have.been.calledWith(value + step);
+                    expect(onChange).to.have.been.calledWith(value + 2*step);
+                    expect(onChange).to.have.been.calledWith(value + 3*step);
+
+                    expect(input).to.have.value(String(value + 3*step));
+                });
+            });
+
+            it('should set value to max when value + step > max', async () => {
+                const value = 0;
+                const step = 2;
+                const max = 5
+                const onChange = sinon.spy();
+                const {select, waitForDom} = clientRenderer.render(
+                    <NumberInput value={value} step={step} max={max} onChange={onChange} />
+                );
+
+                await waitForDom(() => {
+                    const input = select('NATIVE_INPUT_NUMBER');
+
+                    simulate.keyDown(input, {keyCode: KeyCodes.UP});
+                    simulate.keyDown(input, {keyCode: KeyCodes.UP});
+                    simulate.keyDown(input, {keyCode: KeyCodes.UP});
+                    simulate.keyDown(input, {keyCode: KeyCodes.UP});
+
+                    expect(onChange).to.have.been.calledThrice;
+
+                    expect(onChange).to.have.been.calledWith(value + step);
+                    expect(onChange).to.have.been.calledWith(value + 2*step);
+                    expect(onChange).to.have.been.calledWith(max);
+
+                    expect(input).to.have.value(String(max));
+                });
+            });
+
+        });
+
+        describe('down key', () => {
+            it('should decrease value by one step', async () => {
+                const value = 0;
+                const step = 2;
+                const onChange = sinon.spy();
+                const {select, waitForDom} = clientRenderer.render(
+                    <NumberInput value={value} step={step} onChange={onChange} />
+                );
+
+                await waitForDom(() => {
+                    const input = select('NATIVE_INPUT_NUMBER');
+
+                    simulate.keyDown(input, {keyCode: KeyCodes.DOWN});
+                    simulate.keyDown(input, {keyCode: KeyCodes.DOWN});
+                    simulate.keyDown(input, {keyCode: KeyCodes.DOWN});
+
+                    expect(onChange).to.have.been.calledThrice;
+
+                    expect(onChange).to.have.been.calledWith(value - step);
+                    expect(onChange).to.have.been.calledWith(value - 2*step);
+                    expect(onChange).to.have.been.calledWith(value - 3*step);
+
+                    expect(input).to.have.value(String(value - 3*step));
+                });
+            });
+
+            it('should set value to min when value - step < min', async () => {
+                const value = 0;
+                const step = 2;
+                const min = -5
+                const onChange = sinon.spy();
+                const {select, waitForDom} = clientRenderer.render(
+                    <NumberInput value={value} step={step} min={min} onChange={onChange} />
+                );
+
+                await waitForDom(() => {
+                    const input = select('NATIVE_INPUT_NUMBER');
+
+                    simulate.keyDown(input, {keyCode: KeyCodes.DOWN});
+                    simulate.keyDown(input, {keyCode: KeyCodes.DOWN});
+                    simulate.keyDown(input, {keyCode: KeyCodes.DOWN});
+                    simulate.keyDown(input, {keyCode: KeyCodes.DOWN});
+
+                    expect(onChange).to.have.been.calledThrice;
+
+                    expect(onChange).to.have.been.calledWith(value - step);
+                    expect(onChange).to.have.been.calledWith(value - 2*step);
+                    expect(onChange).to.have.been.calledWith(min);
+
+                    expect(input).to.have.value(String(min));
                 });
             });
 

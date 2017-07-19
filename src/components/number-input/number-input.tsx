@@ -1,5 +1,7 @@
 import * as React from 'react';
 import {ChevronDownIcon, ChevronUpIcon} from '../../icons';
+import {KeyCodes} from '../../common/key-codes';
+
 const styles = require('./number-input.css');
 
 export interface NumberInputProps {
@@ -35,29 +37,44 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
         this.state = {value: props.value}
     }
 
-    private setValue(value: number) {
-        const {onChange} = this.props;
+    private setValue(next: number) {
+        const {onChange, min, max} = this.props;
+        const {value} = this.state;
+        const nextInRange = Math.min(max!, Math.max(min!, next));
 
-        this.setState({value});
-        onChange!(value);
+        if(value !== nextInRange) {
+            this.setState({value: nextInRange});
+            onChange!(nextInRange);
+        }
     }
 
     private stepValue(direction: Direction) {
         const {step, min, max} = this.props;
         const {value} = this.state;
-        const next = direction == INCREASE ?
-            Math.max(value + step!, min!) :
-            Math.min(value - step!, max!);
+        const next = (direction == INCREASE ?
+            value + step! :
+            value - step!);
 
         this.setValue(next);
     }
 
-    private handleIncrement: React.EventHandler<any> = () => {
-        this.stepValue(INCREASE);
-    }
+    private handleIncrement: React.EventHandler<any> =
+        () => this.stepValue(INCREASE);
 
-    private handleDecrement: React.EventHandler<any> = () => {
-        this.stepValue(DECREASE);
+    private handleDecrement: React.EventHandler<any> =
+        () => this.stepValue(DECREASE);
+
+    private handleKeyDown: React.KeyboardEventHandler<any> = (e) => {
+        switch (e.keyCode) {
+            case KeyCodes.UP:
+                this.stepValue(INCREASE);
+                e.preventDefault();
+                break;
+            case KeyCodes.DOWN:
+                this.stepValue(DECREASE);
+                e.preventDefault();
+                break;
+        }
     }
 
     private handleChange: React.ChangeEventHandler<any> = e => {
@@ -86,6 +103,7 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
                 max={max}
                 step={step}
                 onChange={this.handleChange}
+                onKeyDown={this.handleKeyDown}
             />
             <Stepper
                 data-automation-id="NUMBER_INPUT_STEPPER"
