@@ -5,18 +5,14 @@ import { KeyCodes } from '../../common/key-codes';
 
 const style = require('./tree-view.css');
 
-export interface TreeItemRenderer {
-    (props: TreeItemProps): JSX.Element;
-}
-
 export interface TreeItemData {
     label: string;
     children?: TreeItemData[];
 }
 
-export interface TreeItemProps extends React.Attributes {
+export interface TreeItemProps {
     item: TreeItemData;
-    itemRenderer: TreeItemRenderer;
+    itemRenderer: React.ComponentClass<TreeItemProps> | React.StatelessComponent<TreeItemProps>;
     onItemClick?: React.EventHandler<any>;
     stateMap: StateMap;
     state: TreeItemState;
@@ -24,7 +20,7 @@ export interface TreeItemProps extends React.Attributes {
 
 export interface TreeViewProps {
     dataSource: Object[];
-    itemRenderer?: TreeItemRenderer;
+    itemRenderer?: React.ComponentClass<TreeItemProps> | React.StatelessComponent<TreeItemProps>;
     onSelectItem?: React.EventHandler<any>;
     selectedItem?: TreeItemData;
     focusedItem?: TreeItemData;
@@ -41,7 +37,7 @@ export type StateMap = Map<TreeItemData, TreeItemState>;
 
 const itemIdPrefix = 'TREE_ITEM';
 
-export function TreeItem({ item, itemRenderer, onItemClick, stateMap, state }: TreeItemProps): JSX.Element {
+export const TreeItem: React.SFC<TreeItemProps> = ({ item, itemRenderer, onItemClick, stateMap, state }) => {
     const itemLabel = item.label.replace(' ', '_');
     return (
         <div>
@@ -54,7 +50,7 @@ export function TreeItem({ item, itemRenderer, onItemClick, stateMap, state }: T
             </div>
             <div className={style['nested-tree']}>
                 {state!.isExpanded && (item.children || []).map((child: TreeItemData, index: number) =>
-                    React.createElement(itemRenderer,
+                    React.createElement(itemRenderer as React.ComponentClass<TreeItemProps>,
                         {item: child, onItemClick, itemRenderer, stateMap, state: stateMap.get(child)!, key: `${index}`}))}
             </div>
         </div>
@@ -65,7 +61,7 @@ const TreeItemWrapper = observer(TreeItem);
 
 @observer
 export class TreeView extends React.Component<TreeViewProps, {}>{
-    static defaultProps = { itemRenderer: TreeItemWrapper, onSelectItem: () => {} };
+    static defaultProps: Partial<TreeViewProps> = { itemRenderer: TreeItemWrapper, onSelectItem: () => {} };
 
     stateMap: StateMap = new Map<TreeItemData, TreeItemState>();
 
@@ -183,10 +179,17 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
             <div data-automation-id='TREE_VIEW' className={style['tree-view']} onKeyDown={this.onKeyDown}>
                 {(this.props.dataSource || []).map((item: TreeItemData, index: number) =>
                     React.createElement(
-                        this.props.itemRenderer!,
+                        this.props.itemRenderer as React.ComponentClass<TreeItemProps>,
                         {item, onItemClick: this.onSelectItem, itemRenderer: this.props.itemRenderer!,
                             stateMap: this.stateMap, state: this.stateMap.get(item)!, key: `${index}` }))}
             </div>
         )
     }
 }
+
+
+
+let a: React.StatelessComponent | React.ComponentClass;
+a = () => <div/>
+a = class B extends React.Component {}
+React.createElement(a);
