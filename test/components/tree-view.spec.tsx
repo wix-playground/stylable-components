@@ -13,7 +13,7 @@ function getLabelsList(data: {label: string, children?: Object[]}): string[] {
                .map(getLabelsList));
 }
 
-function getAllNodeLabels(treeData: Object[]) {
+function getAllNodeLabels(treeData: Object[]): string[] {
     return treeData.map(getLabelsList).reduce((prev, next) => [...prev, ...next]);
 }
 
@@ -39,7 +39,7 @@ describe('<TreeView />', () => {
 
     initStateMap(treeData, stateMap);
 
-    const allNodesLabels = getAllNodeLabels(treeData);
+    const allNodesLabels: string[] = getAllNodeLabels(treeData);
 
     it('renders a tree view with a few children, clicks ones of then', async () => {
         const { select, waitForDom } = clientRenderer.render(<TreeViewDemo />);
