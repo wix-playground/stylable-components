@@ -20,7 +20,7 @@ function getAllNodeLabels(treeData: Object[]) {
 
 function initStateMap(data: Object[] = [], stateMap: StateMap) {
     data.forEach((item: TreeItemData) => {
-        stateMap.set(item, { isSelected: false, isExpanded: true, isFocused: false });
+        stateMap.set(item, { isSelected: false, isExpanded: true, isFocused: false, parent: undefined });
         initStateMap(item.children || [], stateMap);
     });
 }
@@ -35,7 +35,7 @@ describe('<TreeView />', () => {
     const item = { label: 'label' };
     const nestedItem: TreeItemData = treeData[0].children![1];
 
-    const state: TreeItemState = { isSelected: false, isExpanded: true, isFocused: false };
+    const state: TreeItemState = { isSelected: false, isExpanded: true, isFocused: false, parent: undefined };
     const stateMap: StateMap = new Map<TreeItemData, TreeItemState>();
 
     initStateMap(treeData, stateMap);
@@ -140,19 +140,20 @@ describe('<TreeView />', () => {
 
                 // to select it and have it closed
                 simulate.click(select(rootNode));
-                simulate.click(select(rootNode));
 
-                // this should assert root is focused
-                await waitForDom(() => expect(select(getTreeItem(nodeChildren![1].label))).to.be.present());
+                // this should assert first child of root is not focused
+                await waitForDom(() => expect(select(getTreeItem(nodeChildren![0].label))).to.have.attr('data-focused', 'false'));
 
                 simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), { keyCode: KeyCodes.DOWN });
-                // this should assert next after root is focused
-                await waitForDom(() => expect(select(getTreeItem(nodeChildren![1].label))).to.be.absent());
+                // this should assert first child of root is focused
+                await waitForDom(() =>
+                    expect(select(getTreeItem(nodeChildren![0].label)), 'down didnt work').to.have.attr('data-focused', 'true'));
 
                 simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), { keyCode: KeyCodes.UP });
 
-                // this should assert root is focused
-                return waitForDom(() => expect(select(getTreeItem(nodeChildren![1].label))).to.be.present());
+                // this should assert first child of root is not focused
+                return waitForDom(() =>
+                    expect(select(getTreeItem(nodeChildren![0].label)), 'up didnt work').to.have.attr('data-focused', 'false'));
             });
         });
 

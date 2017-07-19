@@ -105,25 +105,44 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
     };
 
     getPreviousItem(item: TreeItemData) {
-        // traverse structure, find node, go to prev
+
         return item;
     }
 
-    getNextItem(currItem: TreeItemData) {
-        // traverse structure, find node, go to next
-        // assumption - focused element has to be visible
-
-        this.props.dataSource.forEach((item: TreeItemData) => {
-
-        });
-
-        return currItem;
+    getNextItem(item: TreeItemData) {
+        const itemState = this.stateMap.get(item)!;
+        const parent = itemState!.parent;
+        if (!parent) {
+            if (itemState.isExpanded) {
+                if (item.children) {
+                    return item.children![0];
+                } else {
+                    const itemIdx = this.props.dataSource.indexOf(item);
+                    return itemIdx !== this.props.dataSource.length ? this.props.dataSource[itemIdx + 1] : item;
+                }
+            } else {
+                const itemIdx = this.props.dataSource.indexOf(item);
+                return itemIdx !== this.props.dataSource.length ? this.props.dataSource[itemIdx + 1] : item;
+            }
+        } else {
+            if (itemState.isExpanded) {
+                if (item.children) {
+                    return item.children![0];
+                } else {
+                    const itemIdx = parent.children!.indexOf(item);
+                    return itemIdx !== parent.children!.length ? parent.children![itemIdx + 1] : item;
+                }
+            } else {
+                const itemIdx = parent.children!.indexOf(item);
+                return itemIdx !== parent.children!.length ? parent.children![itemIdx + 1] : item;
+            }
+        }
     }
 
     expandItem = (item: TreeItemData) => this.stateMap.get(item)!.isExpanded = true;
     collapseItem = (item: TreeItemData) => this.stateMap.get(item)!.isExpanded = false;
-    focusPrev = (item: TreeItemData) => this.stateMap.get(this.getPreviousItem(item))!.isFocused = true;
-    focusNext = (item: TreeItemData) => this.stateMap.get(this.getNextItem(item))!.isFocused = true;
+    focusPrev = (item: TreeItemData) => this.stateMap.get(this.getPreviousItem(item) as TreeItemData)!.isFocused = true;
+    focusNext = (item: TreeItemData) => this.stateMap.get(this.getNextItem(item) as TreeItemData)!.isFocused = true;
 
     onKeyDown = (e: any) => {
         if (!this.props.focusedItem) return;
