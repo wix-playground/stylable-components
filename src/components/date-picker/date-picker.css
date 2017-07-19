@@ -1,6 +1,6 @@
 @value vars: "../../style/default-theme/variables.css";
 @value color_Default, color_MainTextBackground, color_MainText from vars;
-@value arrowThickness: 0.09em;
+@value arrowThickness: 0.1em;
 @value headerHeight: 60px;
 @value dropdownWidth: 330px;
 @value dropdownArrowWidth: 11px;
@@ -52,24 +52,36 @@
     color: color_MainTextBackground;
 }
 
-.headerArrow {
-    border-bottom: arrowThickness solid color_MainTextBackground;
+.arrowWrapper {
+    height: 100%;
+    width: 20%;
+    line-height: 58px;
     cursor: pointer;
-    width: 9px;
-    height: 9px;
+}
 
+.arrowWrapperPrev {
+    text-align: left;
+}
+
+.arrowWrapperNext {
+    text-align: right;
+}
+
+.headerArrow {
+    border: solid color_MainTextBackground;
+    border-width: 0 arrowThickness arrowThickness 0;
+    display: inline-block;
+    padding: 0.26em;
 }
 
 .headerArrowNext {
     transform: rotate(-45deg);
     margin-right: 24px;
-    border-right: arrowThickness solid color_MainTextBackground;
 }
 
 .headerArrowPrev {
-    transform: rotate(45deg);
+    transform: rotate(135deg);
     margin-left: 24px;
-    border-left: arrowThickness solid color_MainTextBackground;
 }
 
 .calendar {
