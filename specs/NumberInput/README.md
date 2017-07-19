@@ -20,7 +20,7 @@ The **NumberInput** component improves upon the native `<input type="number">` b
 | onChange    | func   |              | yes        | Callback function that is fired when the component's value is changed. Signature: `function(event: object, newValue: number):void`. event: KeyDown event targeting the slider. newValue: The new value of the slider. |
 | prefix      | node   | null         |            | Allows to prepend HTML content or a React component |
 | suffix      | node   | null         |            | Allows to append HTML content or a React component |
-| error       | node   | null         |            | Allows to show an error message (if you pass text), or pass a custom component that will do it. **Note:** passing this prop will also set the `:error` CSS state on the component |
+| error       | node   | null         |            | Allows to show an error message (if you pass text), or pass a custom component that will do it. You can set the style of this node by touching the `::error` subcomponent. **Note:** passing this prop will also set the `:error` CSS state on the `<NumberInput/>` |
 | rtl         | bool   | FALSE        |            | Makes the component RTL                  |
 
 ### Code Examples
@@ -53,7 +53,7 @@ Comments to example 1
 **Example 2:**
 
 ```
-//...example 2: give something interesting
+// TODO: add examples for: suffix / prefix; passing error component / error state
 ```
 
 Comments to example 2
@@ -73,11 +73,10 @@ Comments to example 2
 
 #### Custom CSS States (pseudo classes)
 
-| selector            | description                              |
-| ------------------- | ---------------------------------------- |
-| :disabled           | Allows you to style the component when it's disabled |
-| :error              | Style the component on error, i.e. when the `error` prop is not empty |
-| :hover, :focus, etc | Standard CSS pseudo classes              |
+| selector                       | description                              |
+| ------------------------------ | ---------------------------------------- |
+| :error                         | Style the component on error, i.e. when the `error` prop is not empty |
+| :hover, :focus, :disabled, etc | Standard CSS pseudo classes              |
 
 #### Style Code Examples
 
@@ -96,11 +95,11 @@ NumberInput::stepper {
   background-color: transparent;
 }
 
-NumberInput::stepper::prev, NumberInput::stepper::next {
+NumberInput::stepper::down, NumberInput::stepper::up {
   color:blue;
 }
 
-NumberInput::stepper::prev:hover, NumberInput::stepper::next:hover {
+NumberInput::stepper::down:hover, NumberInput::stepper::up:hover {
   background-color:lightblue;
 }
 ```
