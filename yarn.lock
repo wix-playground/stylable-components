@@ -1138,6 +1138,10 @@ defined@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/defined/-/defined-1.0.0.tgz#c98d9bcef75674188e110969151199e39b1fa693"
 
+deindent@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/deindent/-/deindent-0.1.0.tgz#62e1dcdd1d849709e5c7403c890e47e3cebe399d"
+
 del@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/del/-/del-3.0.0.tgz#53ecf699ffcbcb39637691ab13baf160819766e5"
@@ -4116,16 +4120,17 @@ strip-json-comments@^2.0.0, strip-json-comments@~2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-2.0.1.tgz#3c531942e908c2697c0ec344858c286c7ca0a60a"
 
-stylable-loader@0.0.6:
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/stylable-loader/-/stylable-loader-0.0.6.tgz#89c4107b933c7cf2cf320653787c29b54d5038ed"
+stylable-loader@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/stylable-loader/-/stylable-loader-1.0.2.tgz#9bcb583fd05ddad1ed39f9b86a695a4d70396cee"
   dependencies:
+    deindent "^0.1.0"
     loader-utils "1.1.0"
     murmurhash "0.0.2"
 
-stylable@0.0.12:
-  version "0.0.12"
-  resolved "https://registry.yarnpkg.com/stylable/-/stylable-0.0.12.tgz#d6ef3f22b9c413522ee533f1860c20518623e3c2"
+stylable@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/stylable/-/stylable-1.0.2.tgz#eff2cd04f9abbffa8dc6a7bb52c2048473370fe2"
   dependencies:
     camelcase-css "^1.0.1"
     css-selector-tokenizer "^0.7.0"

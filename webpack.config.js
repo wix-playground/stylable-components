@@ -10,7 +10,7 @@ module.exports = {
         tests: ['core-js/shim', ...testFiles.map(fileName => `mocha-loader!${fileName}`)]
     },
     module: {
-        loaders: [
+        rules: [
             {
                 test: /\.tsx?$/,
                 use: {
