@@ -4023,9 +4023,9 @@ strip-json-comments@^2.0.0, strip-json-comments@~2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-2.0.1.tgz#3c531942e908c2697c0ec344858c286c7ca0a60a"
 
-stylable-integration@^2.0.6:
-  version "2.0.6"
-  resolved "https://registry.yarnpkg.com/stylable-integration/-/stylable-integration-2.0.6.tgz#8ca43846ccbcf8ff66477746e72a7e650f387ffa"
+stylable-integration@^2.0.7:
+  version "2.0.7"
+  resolved "https://registry.yarnpkg.com/stylable-integration/-/stylable-integration-2.0.7.tgz#05700ca436bcc26e1d3c832d530ec1ffb68b41a4"
   dependencies:
     deindent "^0.1.0"
     loader-utils "^1.1.0"
