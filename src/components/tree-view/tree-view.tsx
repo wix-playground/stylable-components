@@ -112,7 +112,8 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
         const siblings = parent ? parent.children! : this.props.dataSource;
 
         const itemIdx = siblings.indexOf(item);
-        if (itemIdx === 0) return item;
+        if (itemIdx === 0) return parent ? parent : item;
+
 
         const prevSibling = siblings[itemIdx - 1] as TreeItemData;
         const prevSiblingState = this.stateMap.get(prevSibling)!;
@@ -124,6 +125,17 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
         }
     }
 
+    getNextParentSibling(item: TreeItemData, parent: TreeItemData | undefined) {
+    if (!parent) {
+        return item;
+    } else {
+        const grandParent = this.parentsMap.get(parent);
+        const grandParentChildren = grandParent!.children!;
+        const parentIdx = grandParentChildren.indexOf(parent);
+        return parentIdx !== grandParentChildren.length - 1 ? grandParentChildren[parentIdx + 1] : parent;
+    }
+}
+
     getNextItem(item: TreeItemData) {
         const itemState = this.stateMap.get(item)!;
 
@@ -133,7 +145,7 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
             const parent = this.parentsMap.get(item);
             const siblings = parent ? parent.children! : this.props.dataSource;
             const itemIdx = siblings.indexOf(item);
-            return itemIdx !== siblings.length ? siblings[itemIdx + 1] : item;
+            return itemIdx !== siblings.length - 1 ? siblings[itemIdx + 1] : this.getNextParentSibling(item, parent);
         }
     }
 
@@ -145,17 +157,19 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
     onKeyDown = (e: any) => {
         if (!this.props.focusedItem) return;
 
-        this.stateMap.get(this.props.focusedItem)!.isFocused = false;
-
         switch(e.keyCode) {
             case KeyCodes.RIGHT:
                 this.expandItem(this.props.focusedItem); return;
             case KeyCodes.LEFT:
                 this.collapseItem(this.props.focusedItem); return;
             case KeyCodes.UP:
-                this.focusPrev(this.props.focusedItem); return;
+                this.stateMap.get(this.props.focusedItem)!.isFocused = false;
+                this.focusPrev(this.props.focusedItem);
+                return;
             case KeyCodes.DOWN:
-                this.focusNext(this.props.focusedItem); return;
+                this.stateMap.get(this.props.focusedItem)!.isFocused = false;
+                this.focusNext(this.props.focusedItem);
+                return;
             default:
                 return;
         }

@@ -138,13 +138,14 @@ describe('<TreeView />', () => {
                 const rootNode = getTreeItem(treeData[0].label);
                 const nodeChildren = treeData[0].children;
 
-                // to select it and have it closed
+                // to select it
                 simulate.click(select(rootNode));
 
                 // this should assert first child of root is not focused
                 await waitForDom(() => expect(select(getTreeItem(nodeChildren![0].label))).to.have.attr('data-focused', 'false'));
 
                 simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), { keyCode: KeyCodes.DOWN });
+
                 // this should assert first child of root is focused
                 await waitForDom(() =>
                     expect(select(getTreeItem(nodeChildren![0].label)), 'down didnt work').to.have.attr('data-focused', 'true'));
@@ -152,8 +153,40 @@ describe('<TreeView />', () => {
                 simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), { keyCode: KeyCodes.UP });
 
                 // this should assert first child of root is not focused
-                return waitForDom(() =>
-                    expect(select(getTreeItem(nodeChildren![0].label)), 'up didnt work').to.have.attr('data-focused', 'false'));
+                return waitForDom(() => {
+                    expect(select(getTreeItem(nodeChildren![0].label)), 'up didnt work').to.have.attr('data-focused', 'false');
+                    expect(select(rootNode), ).to.have.attr('data-focused', 'true');
+                });
+            });
+
+            it('select parent node\'s next sibling after exhausting current node sibling list', async () => {
+                const { select, waitForDom } = clientRenderer.render(<TreeViewDemo />);
+
+                const rootNode = getTreeItem(treeData[0].label);
+                const nodeChildren = treeData[0].children;
+
+                // to select it
+                simulate.click(select(rootNode));
+                simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), { keyCode: KeyCodes.DOWN });
+                simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), { keyCode: KeyCodes.RIGHT });
+
+                await waitForDom(() =>
+                    expect(select(getTreeItem(nodeChildren![0].label))).to.have.attr('data-focused', 'true'));
+
+                for (let i = 0; i < nodeChildren![0].children!.length; i++) {
+                    debugger;
+                    simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), { keyCode: KeyCodes.DOWN });
+                }
+
+                const firstSubtreeChildren = nodeChildren![0].children!;
+
+                await waitForDom(() =>
+                    expect(select(getTreeItem(firstSubtreeChildren[firstSubtreeChildren.length - 1].label)))
+                        .to.have.attr('data-focused', 'true'));
+
+                simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), { keyCode: KeyCodes.DOWN });
+
+                return waitForDom(() => expect(select(getTreeItem(nodeChildren![1].label))).to.have.attr('data-focused', 'true'));
             });
         });
 
