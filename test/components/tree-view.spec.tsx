@@ -133,6 +133,10 @@ describe('<TreeView />', () => {
                 return waitForDom(() => expect(select(getTreeItem(nodeChildren![1].label))).to.be.present());
             });
 
+            it('returns to parent if there is after collapsing the element if possible when left is clicked', () => {
+
+            });
+
             it('focuses next are previous when down and up arrows are clicked', async () => {
                 const { select, waitForDom } = clientRenderer.render(<TreeViewDemo />);
 
