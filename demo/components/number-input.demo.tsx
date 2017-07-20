@@ -1,10 +1,10 @@
 import * as React from 'react';
 import {NumberInput} from '../../src/components/number-input';
 
-export class NumberInputDemo extends React.Component<{}, {value: number}> {
+export class NumberInputDemo extends React.Component<{}, {value?: number}> {
     constructor() {
         super();
-        this.state = {value: 0};
+        this.state = {};
     }
     render() {
         return <table>
@@ -17,6 +17,7 @@ export class NumberInputDemo extends React.Component<{}, {value: number}> {
                             min={-5}
                             max={5}
                             onChangeValue={value => this.setState({value})}
+                            placeholder="How Many?"
                         />
                     </td>
                     <td>
