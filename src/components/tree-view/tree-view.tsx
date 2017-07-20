@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-const style = require('./tree-view.css');
+const style = require('./tree-view.st.css');
 
 export interface TreeItemRenderer {
     (props: TreeItemProps): JSX.Element;
