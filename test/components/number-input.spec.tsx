@@ -426,6 +426,27 @@ describe('<NumberInput />', () => {
                     });
                 });
             });
+
+            describe('focus', () => {
+                it('should commit on focusout', async () => {
+                    const onChangeValue = sinon.spy();
+                    const {select, waitForDom} = clientRenderer.render(
+                        <NumberInput onChangeValue={onChangeValue} />
+                    );
+
+                    await waitForDom(() => {
+                        const input = select('NATIVE_INPUT_NUMBER') as HTMLInputElement;
+
+                        simulateKeyInput(input, '1');
+                        simulateKeyInput(input, '2');
+                        simulateKeyInput(input, '3');
+
+                        simulate.blur(input, {keyCode: KeyCodes.ENTER});
+
+                        assertCommit(input, onChangeValue, 123);
+                    });
+                });
+            });
         });
     });
 });

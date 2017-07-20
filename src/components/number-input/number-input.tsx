@@ -91,31 +91,36 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
     private handleDecrement: React.MouseEventHandler<HTMLElement> =
         () => this.stepValue(DECREASE);
 
-    private handleKeyDown: React.KeyboardEventHandler<HTMLElement> = (e) => {
-        switch (e.keyCode) {
-            case KeyCodes.UP:
-                this.stepValue(INCREASE);
-                e.preventDefault();
-                break;
-            case KeyCodes.DOWN:
-                this.stepValue(DECREASE);
-                e.preventDefault();
-                break;
-            case KeyCodes.ENTER:
-                this.commit(this.state.value);
-                e.preventDefault();
-                break;
+    private handleKeyDown: React.KeyboardEventHandler<HTMLElement> =
+        e => {
+            switch (e.keyCode) {
+                case KeyCodes.UP:
+                    this.stepValue(INCREASE);
+                    e.preventDefault();
+                    break;
+                case KeyCodes.DOWN:
+                    this.stepValue(DECREASE);
+                    e.preventDefault();
+                    break;
+                case KeyCodes.ENTER:
+                    this.commit(this.state.value);
+                    e.preventDefault();
+                    break;
+            }
         }
-    }
 
-    private handleChange: React.ChangeEventHandler<HTMLInputElement> = e => {
-        const value = e.target.value;
-        const next = value !== '' ?
-            Number(e.target.value) :
-            undefined;
+    private handleBlur: React.FocusEventHandler<HTMLInputElement> =
+        e => this.commit(this.state.value);
 
-        this.updateValue(next);
-    }
+    private handleChange: React.ChangeEventHandler<HTMLInputElement> =
+        e => {
+            const value = e.target.value;
+            const next = value !== '' ?
+                Number(e.target.value) :
+                undefined;
+
+            this.updateValue(next);
+        }
 
     componentWillReceiveProps({value}: NumberInputProps) {
         if (value !== this.state.value) {
@@ -141,6 +146,7 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
                 step={step}
                 onChange={this.handleChange}
                 onKeyDown={this.handleKeyDown}
+                onBlur={this.handleBlur}
             />
             <Stepper
                 data-automation-id="NUMBER_INPUT_STEPPER"
