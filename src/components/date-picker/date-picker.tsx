@@ -30,6 +30,7 @@ export class DatePicker extends React.Component<Partial<DatePickerProps>, {}>{
     @observable date: Date = this.props.date ? this.props.date : new Date();
     @observable inputValue: string = this.props.date ? this.props.date.toDateString() : '';
     @observable showDropdown: boolean = this.props.showDropdownOnInit ? this.props.showDropdownOnInit : false;
+    @observable highlightSelectedDate: boolean = false;
 
     // Called with possibly invalid string from the input
     @action updateStateFromString = (input: string): void => {
@@ -50,6 +51,7 @@ export class DatePicker extends React.Component<Partial<DatePickerProps>, {}>{
     @action updateStateFromDate = (input: Date): void => {
         this.date = input;
         this.inputValue = input.toDateString();
+        this.highlightSelectedDate = true;
         this.showDropdown = false;
 
         if (this.props.onChange) {
@@ -104,7 +106,11 @@ export class DatePicker extends React.Component<Partial<DatePickerProps>, {}>{
                        type="text"
                        data-automation-id="DATE_PICKER_INPUT" />
                 {this.showDropdown ?
-                    <Dropdown onChange={this.updateStateFromDate} date={this.date!} data-automation-id="DATE_PICKER_DROPDOWN" startingDay={this.props.startingDay!} />
+                    <Dropdown onChange={this.updateStateFromDate}
+                              date={this.date!}
+                              data-automation-id="DATE_PICKER_DROPDOWN"
+                              startingDay={this.props.startingDay!}
+                              highlightSelectedDate={this.highlightSelectedDate} />
                     :
                     null
                 }

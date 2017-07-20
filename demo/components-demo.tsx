@@ -16,7 +16,7 @@ export class ComponentsDemo extends React.Component<{}, {}>{
                 <TreeViewDemo />
             </div>
             <hr />
-            <h1>{'<DatePicker />'}</h1>
+            <h1>DatePicker</h1>
             <DatePickerDemo />
             <hr />
             <div>

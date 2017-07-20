@@ -3,13 +3,14 @@ import {getMonthNames, getMonthFromOffset, getDayNames, getDaysInMonth, getNumOf
 import {observable, action, computed} from 'mobx';
 import {observer} from 'mobx-react';
 import {Day} from './day';
+import {debug} from "util";
 const styles = require('./date-picker.css');
 
 export interface DropdownProps {
     date: Date;
-    selectedDate: Date;
     onChange (date: Date): void;
     startingDay: number;
+    highlightSelectedDate: boolean;
 }
 
 const monthNames = getMonthNames();
@@ -17,19 +18,13 @@ const monthNames = getMonthNames();
 @observer
 export class Dropdown extends React.Component<DropdownProps, {}>{
     @observable date: Date = this.props.date;
-    @observable selectedDate: Date = this.props.selectedDate;
 
     @action setDateTo (date: Date) {
         this.date = date;
     }
 
-    @action selectDate = (date: Date) => {
-        this.selectedDate = date;
-    };
-
-    setDayTo = (day: number) => {
+    @action setDayTo = (day: number) => {
         const date = new Date(this.date.getFullYear(), this.date.getMonth(), day);
-        this.selectDate(date);
         this.props.onChange(date);
     };
 
@@ -91,8 +86,9 @@ export class Dropdown extends React.Component<DropdownProps, {}>{
     }
 
     isSelected (day: number): boolean {
-        if (this.selectedDate) {
-            return (this.selectedDate.getFullYear() === this.props.date.getFullYear() && this.selectedDate.getMonth() === this.props.date.getMonth() && this.selectedDate.getDate() === day);
+        // Don't highlight the current day as selected
+        if (this.props.highlightSelectedDate) {
+            return (this.date.getFullYear() === this.props.date.getFullYear() && this.date.getMonth() === this.props.date.getMonth() && this.props.date.getDate() === day);
         } else {
             return false;
         }

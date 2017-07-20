@@ -6,18 +6,21 @@
 /* Typography */
 :global h1 {
     color: color_MainText;
+    font-family: fontFamily;
     font-size: 32px;
     line-height: 48px;
 }
 
 :global h2 {
     color: color_MainText;
+    font-family: fontFamily;
     font-size: 24px;
     line-height: 36px;
 }
 
 :global h3 {
     color: color_MainText;
+    font-family: fontFamily;
     font-size: 19px;
     line-height: 28px;
 }
