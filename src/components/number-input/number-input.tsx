@@ -147,10 +147,10 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
             <Stepper
                 data-automation-id="NUMBER_INPUT_STEPPER"
                 className={styles['stepper']}
-                onIncrement={this.handleIncrement}
-                onDecrement={this.handleDecrement}
-                disableIncrement={disableIncrement}
-                disableDecrement={disableDecrement}
+                onUp={this.handleIncrement}
+                onDown={this.handleDecrement}
+                disableUp={disableIncrement}
+                disableDown={disableDecrement}
             />
         </div>;
     }

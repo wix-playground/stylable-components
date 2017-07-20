@@ -6,18 +6,18 @@ const styles = require('./number-input.css');
 function noop() {}
 
 export interface StepperProps extends React.HTMLProps<HTMLElement> {
-    onIncrement?: Function
-    onDecrement?: Function
-    disableIncrement?: boolean
-    disableDecrement?: boolean
+    onUp?: Function
+    onDown?: Function
+    disableUp?: boolean
+    disableDown?: boolean
 }
 
 export const Stepper: React.StatelessComponent<StepperProps> =
     ({
-        onIncrement = noop,
-        onDecrement = noop,
-        disableIncrement = false,
-        disableDecrement = false,
+        onUp = noop,
+        onDown = noop,
+        disableUp = false,
+        disableDown = false,
         ...props
     }) => (
         <div {...props}>
@@ -25,8 +25,8 @@ export const Stepper: React.StatelessComponent<StepperProps> =
                 tabIndex={-1}
                 data-automation-id="STEPPER_INCREMENT"
                 className={styles['stepper-increment']}
-                onClick={() => onIncrement()}
-                disabled={disableIncrement}
+                onClick={() => onUp()}
+                disabled={disableUp}
             >
                 <ChevronUpIcon className={styles['stepper-control-icon']} />
             </button>
@@ -34,8 +34,8 @@ export const Stepper: React.StatelessComponent<StepperProps> =
                 tabIndex={-1}
                 data-automation-id="STEPPER_DECREMENT"
                 className={styles['stepper-decrement']}
-                onClick={() => onDecrement()}
-                disabled={disableDecrement}
+                onClick={() => onDown()}
+                disabled={disableDown}
             >
                 <ChevronDownIcon className={styles['stepper-control-icon']}/>
             </button>
