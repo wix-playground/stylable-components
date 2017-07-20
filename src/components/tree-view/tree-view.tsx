@@ -1,6 +1,6 @@
 import * as React from 'react';
-import {SBComponent} from 'stylable/react';
-import * as styles from './tree-view.sb.css';
+import {SBComponent, SBStateless} from 'stylable-react-component';
+import styles from './tree-view.sb.css';
 
 export interface TreeItemRenderer {
     (props: TreeItemProps): JSX.Element;
@@ -28,13 +28,11 @@ export interface TreeViewProps {
 const itemIdPrefix = 'TREE_ITEM';
 
 export function TreeItem({ item, itemRenderer, onItemClick, isSelected }: TreeItemProps): JSX.Element {
-    // @see https://github.com/wixplosives/stylable/issues/22
-    const getClassName = (TreeView.prototype.render as any).stylesheet.get
     return (
         <div key={item.label}>
             <div
                 data-automation-id={`${itemIdPrefix}_${item.label.replace(' ', '_')}`}
-                className={getClassName('tree-node')}
+                className={styles.$stylesheet.get('tree-node')}
                 cssStates={{
                     selected: isSelected(item)
                 }}
@@ -43,7 +41,7 @@ export function TreeItem({ item, itemRenderer, onItemClick, isSelected }: TreeIt
                 <span data-automation-id={`${itemIdPrefix}_${item.label}_ICON`}>&gt; </span>
                 <span data-automation-id={`${itemIdPrefix}_${item.label}_LABEL`}>{item.label}</span>
             </div>
-            <div className={getClassName('nested-tree')}>
+            <div className={styles.$stylesheet.get('nested-tree')}>
                 {(item.children || []).map((child: TreeItemData) =>
                     itemRenderer({item: child, onItemClick, itemRenderer, isSelected})
                 )}

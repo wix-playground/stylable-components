@@ -1,4 +1,4 @@
 declare module '*.css' {
     const content: any
-    export = content
+    export default content
 }

@@ -24,7 +24,7 @@ module.exports = {
             },
             {
                 test: /\.sb\.css$/,
-                loader: 'stylable-loader'
+                loader: 'stylable-integration/webpack'
             },
             {
                 test: /((?!\.sb).{3}|^.{0,2})\.css$/,
