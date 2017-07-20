@@ -441,9 +441,32 @@ describe('<NumberInput />', () => {
                         simulateKeyInput(input, '2');
                         simulateKeyInput(input, '3');
 
-                        simulate.blur(input, {keyCode: KeyCodes.ENTER});
+                        simulate.blur(input);
 
                         assertCommit(input, onChangeValue, 123);
+                    });
+                });
+            });
+
+            describe('esc', () => {
+                it('should discard uncommitted changes', async () => {
+                    const initialValue = 3;
+                    const onChangeValue = sinon.spy();
+                    const {select, waitForDom} = clientRenderer.render(
+                        <NumberInput value={initialValue} onChangeValue={onChangeValue} />
+                    );
+
+                    await waitForDom(() => {
+                        const input = select('NATIVE_INPUT_NUMBER') as HTMLInputElement;
+
+                        simulateKeyInput(input, '1');
+                        simulateKeyInput(input, '2');
+                        simulateKeyInput(input, '3');
+
+                        simulate.keyDown(input, {keyCode: KeyCodes.ESCAPE});
+
+                        expect(onChangeValue).not.to.have.been.called;
+                        expect(input).to.have.value(String(initialValue));
                     });
                 });
             });

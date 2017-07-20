@@ -66,6 +66,12 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
         }
     }
 
+    private revert() {
+        const {value} = this.props;
+        this.updateValue(value);
+        this.committed = true;
+    }
+
     private updateValue(next?: number) {
         const {value} = this.state;
 
@@ -104,6 +110,10 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
                     break;
                 case KeyCodes.ENTER:
                     this.commit(this.state.value);
+                    e.preventDefault();
+                    break;
+                case KeyCodes.ESCAPE:
+                    this.revert();
                     e.preventDefault();
                     break;
             }
