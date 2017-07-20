@@ -70,7 +70,8 @@ describe('<TreeView />', () => {
         return waitForDom(() => expect(select(getTreeItem(nodeChildren![1].label))).to.be.absent());
     });
 
-    it('ends up in expected state after multiple clicks on same tree node', async () => {
+    // edit: this is not in the spec. ask Gilaad about it
+    xit('ends up in expected state after multiple clicks on same tree node', async () => {
         const { select, waitForDom } = clientRenderer.render(<TreeViewDemo />);
 
         simulate.click(select(treeView + '_DEMO', getTreeItem(allNodesLabels[0])));
@@ -259,6 +260,43 @@ describe('<TreeView />', () => {
 
                 return waitForDom(() =>
                     expect(select(getTreeItem(lastChildren[lastChildren.length - 1].label)))
+                        .to.have.attr('data-focused', 'true'));
+            });
+
+            it('cannot focus past first and last elements when clicking up and down respectively', async () => {
+                const { select, waitForDom } = clientRenderer.render(<TreeViewDemo />);
+
+                const rootNode = getTreeItem(treeData[0].label);
+                const nodeChildren = treeData[0].children!;
+
+                simulate.click(select(rootNode));
+
+                const lastRootNode = nodeChildren[2];
+                const lastChildren = lastRootNode.children!;
+
+                simulate.click(select(getTreeItem(lastRootNode.label)));
+
+                simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), { keyCode: KeyCodes.END });
+                await waitForDom(() =>
+                    expect(select(getTreeItem(lastChildren[lastChildren.length - 1].label)))
+                        .to.have.attr('data-focused', 'true'));
+
+                simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), { keyCode: KeyCodes.DOWN });
+
+                await waitForDom(() =>
+                    expect(select(getTreeItem(lastChildren[lastChildren.length - 1].label)))
+                        .to.have.attr('data-focused', 'true'));
+
+                simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), { keyCode: KeyCodes.HOME });
+
+                await waitForDom(() =>
+                    expect(select(rootNode))
+                        .to.have.attr('data-focused', 'true'));
+
+                simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), { keyCode: KeyCodes.UP });
+
+                return waitForDom(() =>
+                    expect(select(rootNode))
                         .to.have.attr('data-focused', 'true'));
             });
         });
