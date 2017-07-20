@@ -17,7 +17,7 @@ The **NumberInput** component improves upon the native `<input type="number">` b
 | disabled    | bool   | FALSE        |            | If true, the component will not be interactable. |
 | label       | string |              |            | Text to display in accessibility mode.   |
 | name        | string |              |            | The name of the component. Behaves like the name attribute of an input element. |
-| onChange    | func   |              | yes        | Callback function that is fired when the component's value is changed. Signature: `function(event: object, newValue: number):void`. event: KeyDown event targeting the slider. newValue: The new value of the slider. |
+| onValueChange    | func   |              | yes        | Callback function that is fired when the component's value is changed. Signature: `function(newValue: number):void`. newValue: The new value of the input. |
 | prefix      | node   | null         |            | Allows to prepend HTML content or a React component |
 | suffix      | node   | null         |            | Allows to append HTML content or a React component |
 | error       | bool   | false        |            | Sets the `:error` CSS state on the `<NumberInput/>` |
@@ -39,10 +39,10 @@ export class ComponentsDemo extends React.Component<{}, {}>{
     }
 
     render() {
-        return <NumberInput 
+        return <NumberInput
         		 value="{this.state.numberInputValue}"
-                 onChange={/* something */} 
-				 
+                 onChange={/* something */}
+
                  />;
     }
 }
@@ -83,7 +83,7 @@ Comments to example 2
 
 ```css
 @import * from './components/slider'; /* TODO: fix the correct syntax */
-/* style.sb.css 
+/* style.sb.css
 Adding rules here (which may be shared between different components) allows us to 	    override specific parts; or even change the whole theme
 */
 NumberInput {
