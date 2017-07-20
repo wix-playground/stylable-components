@@ -220,6 +220,23 @@ describe('<TreeView />', () => {
 
                 return waitForDom(() => expect(select(rootNode)).to.have.attr('data-focused', 'false'));
             });
+
+            it('focuses first item when HOME is clicked', async () => {
+                const { select, waitForDom } = clientRenderer.render(<TreeViewDemo />);
+
+                const rootNode = getTreeItem(treeData[0].label);
+
+                // to select it
+                simulate.click(select(rootNode));
+                simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), { keyCode: KeyCodes.DOWN });
+                simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), { keyCode: KeyCodes.DOWN });
+
+                await waitForDom(() => expect(select(rootNode)).to.have.attr('data-focused', 'false'));
+
+                simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), { keyCode: KeyCodes.HOME });
+
+                return waitForDom(() => expect(select(rootNode)).to.have.attr('data-focused', 'true'));
+            });
         });
 
         describe('<TreeItem />', () => {
