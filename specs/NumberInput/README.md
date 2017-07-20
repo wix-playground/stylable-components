@@ -20,7 +20,7 @@ The **NumberInput** component improves upon the native `<input type="number">` b
 | onChange    | func   |              | yes        | Callback function that is fired when the component's value is changed. Signature: `function(event: object, newValue: number):void`. event: KeyDown event targeting the slider. newValue: The new value of the slider. |
 | prefix      | node   | null         |            | Allows to prepend HTML content or a React component |
 | suffix      | node   | null         |            | Allows to append HTML content or a React component |
-| error       | node   | null         |            | Allows to show an error message (if you pass text), or pass a custom component that will do it. You can set the style of this node by touching the `::error` subcomponent. **Note:** passing this prop will also set the `:error` CSS state on the `<NumberInput/>` |
+| error       | bool   | false        |            | Sets the `:error` CSS state on the `<NumberInput/>` |
 | rtl         | bool   | FALSE        |            | Makes the component RTL                  |
 
 ### Code Examples
@@ -53,7 +53,7 @@ Comments to example 1
 **Example 2:**
 
 ```
-// TODO: add examples for: suffix / prefix; passing error component / error state
+// TODO: add examples for: suffix / prefix; passing error state
 ```
 
 Comments to example 2
@@ -67,7 +67,6 @@ Comments to example 2
 | selector  | description                            | type                                     |
 | --------- | -------------------------------------- | ---------------------------------------- |
 | ::stepper | Allows you to style the stepper arrows | Style the internal `<Stepper/>` component. This component exposes some internal styles. Consult the (Link to Documentation) to see which subcomponents and states are available |
-| ::error   | Style the error message node           | If text is passed, this will allow you to set its font & positioning. If a node / component is passed, this will be used to set its position & display. |
 
 *if a subcomponent is a COMPONENT, it might have subcomponents -> then we will link here to its documentation
 
@@ -75,7 +74,7 @@ Comments to example 2
 
 | selector                       | description                              |
 | ------------------------------ | ---------------------------------------- |
-| :error                         | Style the component on error, i.e. when the `error` prop is not empty |
+| :error                         | Style the component on error, i.e. when the `error` prop is true |
 | :hover, :focus, :disabled, etc | Standard CSS pseudo classes              |
 
 #### Style Code Examples

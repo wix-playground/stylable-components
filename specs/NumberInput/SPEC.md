@@ -30,7 +30,7 @@ The **NumberInput** component improves upon the native `<input type="number">` b
 
 ![elements](./elements.png)
 
-The NumberInput consists of a native input and a Stepper subcomponent, which provides customisable Up and Down buttons. Also, you can add elements into it in the prefix, suffix and error slots, by passing the approprtiate props (see component props).
+The NumberInput consists of a native input and a Stepper subcomponent, which provides customisable Up and Down buttons. Also, you can add elements into it in the prefix and suffix slots, by passing the approprtiate props (see component props).
 
 
 
@@ -41,7 +41,7 @@ The NumberInput consists of a native input and a Stepper subcomponent, which pro
 | Default  | Default component appearance           |
 | Hover    | User hovered any part of the component |
 | Focus    | Browser is focused on the component    |
-| Error    | The `error` property is not empty      |
+| Error    | The `error` property is true           |
 | Disabled | Component can not be changed           |
 
 https://wix.invisionapp.com/share/9YCNHDR68#/screens/244465917
@@ -57,9 +57,9 @@ See [README.md](./README.md) for more info.
 
 The NumberInput can be customized using:
 
-`::stepper` subcomponent, which has subcomponents of its own
+Tag Selector or class for the main element
 
-`::error` subcomponent
+`::stepper` subcomponent, which has subcomponents of its own
 
 See [README.md](./README.md) for more info.
 
@@ -129,7 +129,7 @@ The component follows the external control pattern (value displayed is defined b
 | value (given as prop) out of min/max range | Show error in console                    |
 | value (given as prop) out of step (e.g. min=0 / max=10, step=5, value=7) | value is shown as given (is NOT moved to the closest step) |
 | user sets value out of range             | set value within range (to max or min)   |
-| the `error` property is passed and not empty | This is used to give the user ability to manually indicate that there's an error in the input. Will render the content of the `error` property (node), and set the `:error` CSS state on the input itself |
+| the `error` property is true             | This is used to give the user ability to manually indicate that there's an error in the input. Will set the `:error` CSS state on the input itself |
 
 
 
