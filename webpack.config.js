@@ -23,20 +23,21 @@ module.exports = {
                 }
             },
             {
-                test: /\.css$/,
-                use: {
-                    loader: 'style-loader',
-                }
+                test: /\.sb\.css$/,
+                loader: 'stylable-integration/webpack'
             },
             {
-                test: /\.css$/,
-                use: {
-                    loader: 'css-loader',
-                    options: {
-                        modules: true,
-                        localIdentName: '[path][name]__[local]--[hash:base64:5]'
+                test: /((?!\.sb).{3}|^.{0,2})\.css$/,
+                loaders: [
+                    'style-loader',
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            modules: true,
+                            localIdentName: '[path][name]__[local]--[hash:base64:5]'
+                        }
                     }
-                }
+                ]
             }
         ]
     },
