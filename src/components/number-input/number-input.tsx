@@ -56,9 +56,12 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
 
     private commit(value?: number) {
         const {onChangeValue} = this.props;
+        const valueInRange = this.validate(value);
+
+        this.updateValue(valueInRange);
 
         if (!this.committed) {
-            onChangeValue!(value);
+            onChangeValue!(valueInRange);
             this.committed = true;
         }
     }
@@ -72,19 +75,14 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
         }
     }
 
-    private validateAndCommit(value: number) {
-        const valueInRange = this.validate(value);
-        this.updateValue(valueInRange);
-        this.commit(valueInRange);
-    }
-
     private stepValue(direction: Direction) {
-        const {value, step, min, max} = this.props;
+        const {value} = this.state;
+        const {step, min, max} = this.props;
         const next = (direction == INCREASE ?
             isNumber(value) ? value + step! : step! :
             isNumber(value) ? value - step! : -step!);
 
-        this.validateAndCommit(next);
+        this.commit(next);
     }
 
     private handleIncrement: React.MouseEventHandler<HTMLElement> =
