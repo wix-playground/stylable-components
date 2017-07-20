@@ -1,12 +1,12 @@
 import * as React from 'react';
-import {ChevronDownIcon, ChevronUpIcon} from '../../icons';
+import {Stepper} from './stepper';
 import {KeyCodes} from '../../common/key-codes';
 
 const styles = require('./number-input.css');
 
 function noop() {}
 
-function isNumber(value: number | undefined): value is number {
+function isNumber(value?: number): value is number {
     return typeof value == 'number';
 }
 
@@ -19,7 +19,7 @@ export interface NumberInputProps extends React.InputHTMLAttributes<HTMLInputEle
 }
 
 export interface NumberInputState {
-    value: number | undefined
+    value?: number
 }
 
 const defaultProps = {
@@ -47,7 +47,14 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
 
     private committed = true;
 
-    private commit(value: number | undefined) {
+    private validate(value?: number) {
+        const {min, max} = this.props;
+        return isNumber(value) ?
+          Math.min(max!, Math.max(min!, value))
+          : value;
+    }
+
+    private commit(value?: number) {
         const {onChangeValue} = this.props;
 
         if (!this.committed) {
@@ -56,24 +63,19 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
         }
     }
 
+    private updateValue(next?: number) {
+        const {value} = this.state;
 
-    private setValue(next: number | undefined) {
-        const {onChangeValue, min, max, value} = this.props;
-        const nextInRange = isNumber(next) ?
-            Math.min(max!, Math.max(min!, next))
-            : next;
-
-        if(value !== nextInRange) {
+        if(value !== next) {
             this.committed = false;
-            this.setState({value: nextInRange});
+            this.setState({value: next});
         }
-
-        return nextInRange;
     }
 
-    private setAndCommit(value: number | undefined) {
-        const nextInRange = this.setValue(value);
-        this.commit(nextInRange);
+    private validateAndCommit(value: number) {
+        const valueInRange = this.validate(value);
+        this.updateValue(valueInRange);
+        this.commit(valueInRange);
     }
 
     private stepValue(direction: Direction) {
@@ -82,7 +84,7 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
             isNumber(value) ? value + step! : step! :
             isNumber(value) ? value - step! : -step!);
 
-        this.setAndCommit(next);
+        this.validateAndCommit(next);
     }
 
     private handleIncrement: React.MouseEventHandler<HTMLElement> =
@@ -114,7 +116,7 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
             Number(e.target.value) :
             undefined;
 
-        this.setValue(next);
+        this.updateValue(next);
     }
 
     componentWillReceiveProps({value}: NumberInputProps) {
@@ -153,40 +155,3 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
         </div>;
     }
 }
-
-interface StepperProps extends React.HTMLProps<HTMLElement> {
-    onIncrement?: Function
-    onDecrement?: Function
-    disableIncrement?: boolean
-    disableDecrement?: boolean
-}
-
-const Stepper: React.StatelessComponent<StepperProps> =
-    ({
-        onIncrement = noop,
-        onDecrement = noop,
-        disableIncrement = false,
-        disableDecrement = false,
-        ...props
-    }) => (
-        <div {...props}>
-            <button
-                tabIndex={-1}
-                data-automation-id="STEPPER_INCREMENT"
-                className={styles['stepper-increment']}
-                onClick={() => onIncrement()}
-                disabled={disableIncrement}
-            >
-                <ChevronUpIcon className={styles['stepper-control-icon']} />
-            </button>
-            <button
-                tabIndex={-1}
-                data-automation-id="STEPPER_DECREMENT"
-                className={styles['stepper-decrement']}
-                onClick={() => onDecrement()}
-                disabled={disableDecrement}
-            >
-                <ChevronDownIcon className={styles['stepper-control-icon']}/>
-            </button>
-        </div>
-    );
