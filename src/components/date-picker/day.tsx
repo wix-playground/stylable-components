@@ -6,11 +6,11 @@ const styles = require('./date-picker.css');
 
 export interface DayProps {
     day: number;
-    // selected: boolean;
-    // currentDay: boolean;
+    selected?: boolean;
+    currentDay?: boolean;
     partOfPrevMonth?: boolean;
     partOfNextMonth?: boolean;
-    dataAutomationId: string;
+    dataAutomationId?: string;
     onSelect? (day: number): void;
 }
 
@@ -18,11 +18,11 @@ export interface DayProps {
 export class Day extends React.Component<DayProps, {}> {
     @computed
     get styles(): string {
-        // if (this.props.selected) {
-        //     return [styles.calendarItem, styles.day, styles.selectedDay].join(' ');
-        // } else if (this.props.currentDay) {
-        //     return [styles.calendarItem, styles.day, styles.currentDay].join(' ');
-        if (this.props.partOfNextMonth || this.props.partOfPrevMonth) {
+        if (this.props.selected) {
+            return [styles.calendarItem, styles.day, styles.selectedDay].join(' ');
+        } else if (this.props.currentDay) {
+            return [styles.calendarItem, styles.day, styles.currentDay].join(' ');
+        } else if (this.props.partOfNextMonth || this.props.partOfPrevMonth) {
             return [styles.calendarItem, styles.greyDay].join(' ');
         } else {
             return [styles.calendarItem, styles.day].join(' ');

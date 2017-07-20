@@ -7,6 +7,7 @@ const styles = require('./date-picker.css');
 
 export interface DropdownProps {
     date: Date;
+    selectedDate: Date;
     onChange (date: Date): void;
     startingDay: number;
 }
@@ -16,15 +17,21 @@ const monthNames = getMonthNames();
 @observer
 export class Dropdown extends React.Component<DropdownProps, {}>{
     @observable date: Date = this.props.date;
+    @observable selectedDate: Date = this.props.selectedDate;
 
     @action setDateTo (date: Date) {
         this.date = date;
     }
 
-    @action setDayTo = (day: number) => {
+    @action selectDate = (date: Date) => {
+        this.selectedDate = date;
+    };
+
+    setDayTo = (day: number) => {
         const date = new Date(this.date.getFullYear(), this.date.getMonth(), day);
+        this.selectDate(date);
         this.props.onChange(date);
-    }
+    };
 
     @computed
     get monthName (): string {
@@ -43,7 +50,7 @@ export class Dropdown extends React.Component<DropdownProps, {}>{
             dayArray.push(i);
         }
 
-        return dayArray.map(day => <Day day={day} onSelect={this.setDayTo} dataAutomationId={'DAY_' + day} key={'DAY_' + day} />);
+        return dayArray.map(day => <Day day={day} selected={this.isSelected(day)} currentDay={this.isCurrentDay(day)} onSelect={this.setDayTo} dataAutomationId={'DAY_' + day} key={'DAY_' + day} />);
 
     }
 
@@ -76,6 +83,19 @@ export class Dropdown extends React.Component<DropdownProps, {}>{
         }
 
         return followingDays;
+    }
+
+    isCurrentDay (day: number): boolean {
+        const currentDate = new Date();
+        return (this.date.getFullYear() === currentDate.getFullYear() && this.date.getMonth() === currentDate.getMonth() && currentDate.getDate() === day)
+    }
+
+    isSelected (day: number): boolean {
+        if (this.selectedDate) {
+            return (this.selectedDate.getFullYear() === this.props.date.getFullYear() && this.selectedDate.getMonth() === this.props.date.getMonth() && this.selectedDate.getDate() === day);
+        } else {
+            return false;
+        }
     }
 
     goToNextMonth: React.EventHandler<React.SyntheticEvent<HTMLDivElement>> = (event: React.SyntheticEvent<HTMLDivElement>) => {

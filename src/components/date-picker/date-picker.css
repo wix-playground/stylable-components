@@ -1,5 +1,5 @@
 @value vars: "../../style/default-theme/variables.css";
-@value color_Default, color_MainTextBackground, color_MainText from vars;
+@value color_Default, color_Hover, color_Active, color_MainTextBackground, color_MainText from vars;
 @value arrowThickness: 0.1em;
 @value headerHeight: 60px;
 @value dropdownWidth: 330px;
@@ -119,8 +119,17 @@
     cursor: pointer;
 }
 
+.currentDay {
+    color: color_Default;
+}
+
+.selectedDay {
+    color: color_MainTextBackground;
+    background-color: color_Active;
+}
+
 .day:hover {
-    background-color: color_Default;
+    background-color: color_Hover;
     color: color_MainTextBackground;
 }
 
