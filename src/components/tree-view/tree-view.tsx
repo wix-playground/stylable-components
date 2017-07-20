@@ -4,10 +4,6 @@ import { autorun, observable } from 'mobx';
 
 const style = require('./tree-view.css');
 
-export interface TreeItemRenderer {
-    (props: TreeItemProps): JSX.Element;
-}
-
 export interface TreeItemData {
     label: string;
     children?: TreeItemData[];
@@ -15,7 +11,7 @@ export interface TreeItemData {
 
 export interface TreeItemProps {
     item: TreeItemData;
-    itemRenderer: TreeItemRenderer;
+    itemRenderer: React.ComponentClass<TreeItemProps> | React.StatelessComponent<TreeItemProps>;
     onItemClick?: React.EventHandler<any>;
     stateMap: StateMap;
     state: TreeItemState;
@@ -23,7 +19,7 @@ export interface TreeItemProps {
 
 export interface TreeViewProps {
     dataSource: Object[];
-    itemRenderer?: TreeItemRenderer;
+    itemRenderer?: React.ComponentClass<TreeItemProps> | React.StatelessComponent<TreeItemProps>;
     onSelectItem?: React.EventHandler<any>;
     selectedItem?: TreeItemData;
 }
@@ -47,7 +43,7 @@ export const TreeItem: React.SFC<TreeItemProps> = ({ item, itemRenderer, onItemC
             </div>
             <div className={style['nested-tree']}>
                 {(item.children || []).map((child: TreeItemData, index: number) =>
-                    React.createElement(itemRenderer,
+                    React.createElement(itemRenderer as React.ComponentClass<TreeItemProps>,
                         {item: child, onItemClick, itemRenderer, stateMap, state: stateMap.get(child)!, key: `${index}`}))}
             </div>
         </div>
@@ -96,7 +92,7 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
             <div data-automation-id='TREE_VIEW' className={style['tree-view']}>
                 {(this.props.dataSource || []).map((item: TreeItemData, index: number) =>
                     React.createElement(
-                        this.props.itemRenderer!,
+                        this.props.itemRenderer! as React.ComponentClass<TreeItemProps>,
                         {item, onItemClick: this.onSelectItem, itemRenderer: this.props.itemRenderer!,
                             stateMap: this.stateMap, state: this.stateMap.get(item)!, key: `${index}` }))}
             </div>

@@ -1,11 +1,31 @@
 import * as React from 'react';
 import { expect, ClientRenderer, sinon, simulate, waitFor } from 'test-drive-react';
 import { TreeView, TreeItem } from '../../src';
-import { TreeViewDemo, treeData } from '../../demo/components/tree-view-demo';
+import { TreeViewDemo } from '../../demo/components/tree-view-demo';
 import { StateMap, TreeItemData, TreeItemState} from '../../src/components/tree-view/tree-view';
 
 const treeView = 'TREE_VIEW';
 const treeItem = 'TREE_ITEM';
+
+const treeData: TreeItemData[] = [
+    { label: 'Food Menu', children: [
+        { label: 'Salads', children: [
+            { label: 'Greek Salad' },
+            { label: 'Israeli Salad' },
+            { label: 'Caesar Salad' }
+        ]},
+        { label: 'Steaks', children: [
+            { label: 'Fillet Steak' },
+            { label: 'Sirloin Steak' }
+        ]},
+        { label: 'Desserts', children: [
+            { label: 'Pancakes' },
+            { label: 'Muffin' },
+            { label: 'Waffle' },
+            { label: 'Cupcake' }
+        ]}
+    ]}
+];
 
 function getLabelsList(data: {label: string, children?: Object[]}): string[] {
     return [data.label]
