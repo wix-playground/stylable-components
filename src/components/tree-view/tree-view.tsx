@@ -170,6 +170,13 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
                 this.stateMap.get(this.props.focusedItem)!.isFocused = false;
                 this.focusNext(this.props.focusedItem);
                 return;
+            case KeyCodes.ENTER:
+                this.onSelectItem(this.props.focusedItem);
+                return;
+            case KeyCodes.ESCAPE:
+                this.stateMap.get(this.props.focusedItem)!.isFocused = false;
+                this.props.onFocusItem!(undefined);
+                return;
             default:
                 return;
         }

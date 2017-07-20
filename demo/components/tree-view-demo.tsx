@@ -38,11 +38,11 @@ export class TreeViewDemo extends React.Component<{}, {}> {
 
     onSelectItem = (item: TreeItemData) => {
         this.selectedItem = item;
-        if (item) this.focusedItem = item;
+        this.focusedItem = item;
     };
 
     onFocusItem = (item: TreeItemData) => {
-        if (item) this.focusedItem = item;
+        this.focusedItem = item;
     };
 
     render() {
