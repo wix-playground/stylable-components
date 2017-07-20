@@ -237,6 +237,30 @@ describe('<TreeView />', () => {
 
                 return waitForDom(() => expect(select(rootNode)).to.have.attr('data-focused', 'true'));
             });
+
+            it('focuses last item available when END is clicked', async () => {
+                const { select, waitForDom } = clientRenderer.render(<TreeViewDemo />);
+
+                const rootNode = getTreeItem(treeData[0].label);
+                const nodeChildren = treeData[0].children!;
+
+                simulate.click(select(rootNode));
+
+                const lastRootNode = nodeChildren[2];
+                const lastChildren = lastRootNode.children!;
+
+                simulate.click(select(getTreeItem(lastRootNode.label)));
+
+                await waitForDom(() =>
+                    expect(select(getTreeItem(lastChildren[lastChildren.length - 1].label)))
+                        .to.have.attr('data-focused', 'false'));
+
+                simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), { keyCode: KeyCodes.END });
+
+                return waitForDom(() =>
+                    expect(select(getTreeItem(lastChildren[lastChildren.length - 1].label)))
+                        .to.have.attr('data-focused', 'true'));
+            });
         });
 
         describe('<TreeItem />', () => {
