@@ -40,7 +40,8 @@
 }
 
 .stepper-control:hover .stepper-control-icon,
-.stepper-control:focus .stepper-control-icon {
+.stepper-control:focus .stepper-control-icon,
+.stepper-control:disabled .stepper-control-icon {
     color: color_MainTextBackground;
 }
 

@@ -4,9 +4,15 @@ import {KeyCodes} from '../../common/key-codes';
 
 const styles = require('./number-input.css');
 
+function noop() {}
+
+function isNumber(value: number | undefined): value is number {
+    return typeof value == 'number';
+}
+
 export interface NumberInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-    value: number
-    onChangeValue?: (value: number) => void
+    value?: number
+    onChangeValue?: (value: number | undefined) => void
     step?: number
     min?: number
     max?: number
@@ -27,9 +33,11 @@ const DECREASE: Direction = 'decrease';
 export class NumberInput extends React.Component<NumberInputProps, {}>{
     static defaultProps = defaultProps;
 
-    private setValue(next: number) {
+    private setValue(next: number | undefined) {
         const {onChangeValue, min, max, value} = this.props;
-        const nextInRange = Math.min(max!, Math.max(min!, next));
+        const nextInRange = isNumber(next) ?
+            Math.min(max!, Math.max(min!, next))
+            : next;
 
         if(value !== nextInRange) {
             onChangeValue!(nextInRange);
@@ -39,8 +47,8 @@ export class NumberInput extends React.Component<NumberInputProps, {}>{
     private stepValue(direction: Direction) {
         const {value, step, min, max} = this.props;
         const next = (direction == INCREASE ?
-            value + step! :
-            value - step!);
+            isNumber(value) ? value + step! : step! :
+            isNumber(value) ? value - step! : -step!);
 
         this.setValue(next);
     }
@@ -65,20 +73,30 @@ export class NumberInput extends React.Component<NumberInputProps, {}>{
     }
 
     private handleChange: React.ChangeEventHandler<HTMLInputElement> = e => {
-        const value = Number(e.target.value);
-        this.setValue(value);
+        const value = e.target.value;
+        const next = value !== '' ?
+            Number(e.target.value) :
+            undefined;
+
+        this.setValue(next);
     }
 
     render() {
         const {value, step, min, max, onChangeValue, ...props} = this.props;
-        const disableIncrement = props.disabled || value >= max!;
-        const disableDecrement = props.disabled || value <= min!;
+        const disableIncrement = props.disabled || (isNumber(value) && value >= max!);
+        const disableDecrement = props.disabled || (isNumber(value) && value <= min!);
 
         return <div className={styles['number-input']}>
             <input
                 {...props}
                 data-automation-id="NATIVE_INPUT_NUMBER"
                 type="number"
+                // In case the value is undefined and the user
+                // changes it to a number React would trigger
+                // a warning (in DEV mode) that the input is changed from
+                // being uncontrolled to controlled state.
+                // This is necessary in order to be able
+                // to use native placeholders.
                 value={value}
                 min={min}
                 max={max}
@@ -134,5 +152,3 @@ const Stepper: React.StatelessComponent<StepperProps> =
             </button>
         </div>
     );
-
-function noop() {}
