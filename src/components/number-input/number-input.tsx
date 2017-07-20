@@ -18,6 +18,10 @@ export interface NumberInputProps extends React.InputHTMLAttributes<HTMLInputEle
     max?: number
 }
 
+export interface NumberInputState {
+    value: number | undefined
+}
+
 const defaultProps = {
     step: 1,
     onChangeValue: noop,
@@ -30,8 +34,28 @@ type Direction = 'increase' | 'decrease'
 const INCREASE: Direction = 'increase';
 const DECREASE: Direction = 'decrease';
 
-export class NumberInput extends React.Component<NumberInputProps, {}>{
+export class NumberInput extends React.Component<NumberInputProps, NumberInputState>{
     static defaultProps = defaultProps;
+
+    constructor(props: NumberInputProps) {
+        super(props);
+
+        this.state = {
+            value: props.value
+        }
+    }
+
+    private committed = true;
+
+    private commit(value: number | undefined) {
+        const {onChangeValue} = this.props;
+
+        if (!this.committed) {
+            onChangeValue!(value);
+            this.committed = true;
+        }
+    }
+
 
     private setValue(next: number | undefined) {
         const {onChangeValue, min, max, value} = this.props;
@@ -40,8 +64,16 @@ export class NumberInput extends React.Component<NumberInputProps, {}>{
             : next;
 
         if(value !== nextInRange) {
-            onChangeValue!(nextInRange);
+            this.committed = false;
+            this.setState({value: nextInRange});
         }
+
+        return nextInRange;
+    }
+
+    private setAndCommit(value: number | undefined) {
+        const nextInRange = this.setValue(value);
+        this.commit(nextInRange);
     }
 
     private stepValue(direction: Direction) {
@@ -50,7 +82,7 @@ export class NumberInput extends React.Component<NumberInputProps, {}>{
             isNumber(value) ? value + step! : step! :
             isNumber(value) ? value - step! : -step!);
 
-        this.setValue(next);
+        this.setAndCommit(next);
     }
 
     private handleIncrement: React.MouseEventHandler<HTMLElement> =
@@ -69,6 +101,10 @@ export class NumberInput extends React.Component<NumberInputProps, {}>{
                 this.stepValue(DECREASE);
                 e.preventDefault();
                 break;
+            case KeyCodes.ENTER:
+                this.commit(this.state.value);
+                e.preventDefault();
+                break;
         }
     }
 
@@ -81,8 +117,16 @@ export class NumberInput extends React.Component<NumberInputProps, {}>{
         this.setValue(next);
     }
 
+    componentWillReceiveProps({value}: NumberInputProps) {
+        if (value !== this.state.value) {
+            this.committed = true;
+            this.setState({value});
+        }
+    }
+
     render() {
-        const {value, step, min, max, onChangeValue, ...props} = this.props;
+        const {value} = this.state;
+        const {step, min, max, onChangeValue, ...props} = this.props;
         const disableIncrement = props.disabled || (isNumber(value) && value >= max!);
         const disableDecrement = props.disabled || (isNumber(value) && value <= min!);
 
@@ -91,13 +135,7 @@ export class NumberInput extends React.Component<NumberInputProps, {}>{
                 {...props}
                 data-automation-id="NATIVE_INPUT_NUMBER"
                 type="number"
-                // In case the value is undefined and the user
-                // changes it to a number React would trigger
-                // a warning (in DEV mode) that the input is changed from
-                // being uncontrolled to controlled state.
-                // This is necessary in order to be able
-                // to use native placeholders.
-                value={value}
+                value={isNumber(value) ? value : ''}
                 min={min}
                 max={max}
                 step={step}
