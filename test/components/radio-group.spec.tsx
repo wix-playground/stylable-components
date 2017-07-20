@@ -41,9 +41,11 @@ describe('<RadioGroup />', function () {
 
             expect(button0).to.be.present();
             expect(button0.checked).to.be.false;
+            expect(button0.value).to.equal('Ifrit');
             expect(button0.name).to.equal(button1.name);
             expect(button1).to.be.present();
             expect(button1.checked).to.be.false;
+            expect(button1.value).to.equal('Titan');
         });
     });
 
@@ -193,6 +195,20 @@ describe('<RadioGroup />', function () {
 
             expect(button0.disabled).to.be.true;
             expect(button1.disabled).to.be.true;
+        });
+    });
+
+    it('renders children from the data source prop if given', function () {
+        const { select, waitForDom } = clientRenderer.render(<RadioGroup dataSource={['Child0', 'Child1']} onChange={emptyFunction} />);
+
+        return waitForDom(() => {
+            const button0 = select(radioGroup, radioButton + '_0', 'INPUT') as HTMLInputElement;
+            const button1 = select(radioGroup, radioButton + '_1', 'INPUT') as HTMLInputElement;
+
+            expect(button0).to.be.present();
+            expect(button0.value).to.equal('Child0');
+            expect(button1).to.be.present();
+            expect(button1.value).to.equal('Child1');
         });
     });
 

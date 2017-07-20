@@ -99,7 +99,6 @@ export class ComponentsDemo extends React.Component<{}, {}>{
                 </table>
             </div>
 
-            <Link className={style.test} href="">My link</Link>
             <TreeViewDemo />
             <RadioGroupDemo/>
         </div>;

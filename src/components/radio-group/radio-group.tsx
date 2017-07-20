@@ -5,8 +5,9 @@ import {observer} from 'mobx-react';
 const style = require('./radio-group.css');
 
 export interface RadioGroupProps {
-    children: JSX.Element[];
-    onChange: any;
+    children?: any;
+    dataSource?: string[];
+    onChange: (e: string) => void;
     disabled?: boolean;
     location?: "right" | "left";
     name?: string;
@@ -39,6 +40,10 @@ export class RadioGroup extends React.Component<RadioGroupProps, {}> {
                     flag = false;
                 }
             }
+        } else if(this.props.dataSource) {
+            for (let i = 0; i < this.props.dataSource.length; i++) {
+                this.checkedArray.push(observable({checked: false}));
+            }
         }
         this.name = this.props.name ? this.props.name : 'name_' + counter++;
     }
@@ -54,22 +59,29 @@ export class RadioGroup extends React.Component<RadioGroupProps, {}> {
     }
 
     render() {
+        let childArray;
+        if (this.props.children) {
+            childArray = React.Children.map(this.props.children, (child, index) => {
+                if (React.isValidElement(child) &&  child.type === RadioButton) {
+                    const props = {automationId: 'RADIO_BUTTON_' + index,
+                        checked: this.checkedArray[index].checked,
+                        onClick: this.childrenOnClick(index),
+                        disabled: this.props.disabled ? true : (child.props as RadioButtonProps).disabled,
+                        location: this.props.location,
+                        name: this.name};
+                    return React.cloneElement(child as ReactElement<any>, props);
+                } else {
+                    return child;
+                }
+            })
+        } else if (this.props.dataSource) {
+            childArray = this.props.dataSource.map((item, index) => {
+                return <RadioButton key={index} value={item} onClick={this.childrenOnClick(index)} automationId={'RADIO_BUTTON_' + index} />
+            })
+        }
         return (
             <div data-automation-id="RADIO_GROUP">
-                {React.Children.map(this.props.children, (child, index) => {
-                    if (React.isValidElement(child) &&  child.type === RadioButton) {
-                        const props = {automationId: 'RADIO_BUTTON_' + index,
-                            checked: this.checkedArray[index].checked,
-                            onClick: this.childrenOnClick(index),
-                            disabled: this.props.disabled ? true : (child.props as RadioButtonProps).disabled,
-                            location: this.props.location,
-                            name: this.name};
-
-                        return React.cloneElement(child as ReactElement<any>, props);
-                    } else {
-                        return child;
-                    }
-                })}
+                {childArray}
             </div>);
     }
 }
