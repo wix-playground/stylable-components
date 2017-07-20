@@ -110,4 +110,18 @@ describe('<Checkbox/>', function () {
             expect(onChange).to.have.been.calledWith(false);
         })
     });
+
+    it('Renders a native input component of type "checkbox" for SEO purposes', function () {
+        const {select, waitForDom} = clientRenderer.render(
+            <CheckBox boxIcon={boxSVG}
+                      text="yoyo"
+                      tickIcon={tickSVG}
+                      value={true}/>
+        );
+        const nativeInput = select('NATIVE_CHECKBOX') as HTMLInputElement;
+
+        expect(nativeInput, 'native input not found in DOM').to.exist;
+        expect(nativeInput.tagName).to.equal('INPUT');
+        expect(nativeInput).to.have.attr('type', 'checkbox');
+    });
 });

@@ -4,7 +4,7 @@
     viewBox: 0 0 16 16;
 }
 
-.boxIconDefault path{
+.boxIconDefault path {
     fill: none;
     stroke: #D1D1D1;
 }
@@ -21,8 +21,27 @@
     margin-left: -1em;
 }
 
-.tickIcon path{
+.tickIcon path {
     stroke: #FFF;
-    strokeLinecap: square;
-    strokeWidth: 1.5;
+    stroke-linecap: square;
+    stroke-width: 1.5;
+}
+
+.root {
+    display: inline;
+    position: relative
+}
+
+.label {
+    margin-left: 5px;
+    vertical-align: top
+}
+
+.nativeCheckbox {
+    position: absolute;
+    opacity: 0;
+    left: 0;
+    top: 0;
+    width: 0;
+    height: 0
 }

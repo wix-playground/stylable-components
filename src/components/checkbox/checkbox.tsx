@@ -1,4 +1,5 @@
 import React = require('react');
+
 const style = require('./checkbox.css');
 
 export interface CheckBoxProps {
@@ -16,14 +17,17 @@ export interface CheckBoxIconProps {
 export const CheckBox: React.SFC<Partial<CheckBoxProps>> = (props) => (
     <div data-automation-id="CHECKBOX_ROOT"
          onClick={(event) => executeClickHandler(props.onChange!, !props.value)}
-         style={{display:'inline'}}>
+         className={style.root}>
 
-        { props.boxIcon!({value: props.value}) }
+        {props.boxIcon!({value: props.value})}
+        {props.value && props.tickIcon!({value: props.value})}
 
-        { props.value && props.tickIcon!({value: props.value}) }
+        <span data-automation-id="CHECKBOX_LABEL"
+              className={style.label}>{props.text || ''}</span>
 
-        <span data-automation-id="CHECKBOX_LABEL" style={{marginLeft: '5px', verticalAlign:'top'}}>{props.text || ''}</span>
-        {/*<input type="checkbox"/>*/}
+        <input data-automation-id="NATIVE_CHECKBOX"
+               type="checkbox"
+               className={style.nativeCheckbox}/>
     </div>
 );
 
@@ -57,5 +61,6 @@ CheckBox.defaultProps = {
     value: false,
     boxIcon: DefaultCheckBoxSVG,
     tickIcon: DefaultTickMarkSVG,
-    onChange: (value: boolean) => {}
+    onChange: (value: boolean) => {
+    }
 };
