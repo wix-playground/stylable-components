@@ -37,7 +37,7 @@ The **Slider** is a component that allows users to input or select value in a ra
 //TODO: code guys - fix code example!
 import * as React from 'react';
 import { Slider } from './components/slider';
-const style = require('./style.sb.css'); // link to Style file - see examples of style files below
+import style from './style.st.css'; // link to Style file - see examples of style files below
 
 type State = {
   sliderValue: number
@@ -102,7 +102,7 @@ Comments to example 2
 
 ```css
 @import * from './components/slider'; /* TODO: fix the correct syntax */
-/* style.sb.css 
+/* style.st.css 
 Adding rules here (which may be shared between different components) allows us to 	    override specific parts; or even change the whole theme
 */
 Slider {
