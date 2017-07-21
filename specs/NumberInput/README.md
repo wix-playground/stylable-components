@@ -31,7 +31,7 @@ The **NumberInput** component improves upon the native `<input type="number">` b
 //TODO: code guys - fix code example!
 import * as React from 'react';
 import { NumberInput } from './components/NumberInput';
-const style = require('./style.sb.css'); // link to Style file - see examples of style files below
+import style from './style.st.css'; // link to Style file - see examples of style files below
 
 export class ComponentsDemo extends React.Component<{}, {}>{
     constructor() {
@@ -83,7 +83,7 @@ Comments to example 2
 
 ```css
 @import * from './components/slider'; /* TODO: fix the correct syntax */
-/* style.sb.css
+/* style.st.css
 Adding rules here (which may be shared between different components) allows us to 	    override specific parts; or even change the whole theme
 */
 NumberInput {
