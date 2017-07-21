@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { expect, ClientRenderer, sinon, simulate, waitFor } from 'test-drive-react';
+import hasState from '../utils/has-state';
 import { TreeView, TreeItem } from '../../src';
 import { TreeViewDemo, treeData } from '../../demo/components/tree-view-demo';
 import { TreeItemData } from '../../src/components/tree-view/tree-view';
@@ -17,17 +18,6 @@ function getLabelsList(data: {label: string, children?: Object[]}): string[] {
 
 function getAllNodeLabels(treeData: Object[]) {
     return treeData.map(getLabelsList).reduce((prev, next) => [...prev, ...next]);
-}
-
-function hasState(elem: Element | null, name: string): void | never {
-    if (!elem) {
-        throw new Error(`Element does not exists"`)
-    }
-    const re = new RegExp(name + '$', 'i');
-    const stateExists = Object.keys((elem as HTMLElement).dataset).some(name => re.test(name))
-    if (!stateExists) {
-        throw new Error(`Element does not have state "${name}"`)
-    }
 }
 
 describe('<TreeView />', () => {
