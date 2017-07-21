@@ -11,10 +11,6 @@
 - [Error handling](#error-handling)
 - [Accessibility](#accessibility)
 - [Examples](#examples)
-- [Simple](#simple)
-- [Stepped](#stepped)
-- [Horizontal / Vertical Axis](#horizontal-/-vertical)
-- [Tooltip](#tooltip)
 
 
 
@@ -26,7 +22,7 @@ A toggle switch is used as an on/off control
 
 ## Elements
 
-![elements](/Users/maximc/Desktop/toggle/assets/elements.png)
+![elements](./assets/elements.png)
 
 **Toggle consists of:**  "switch", "icon" and "progress". The "switch" moves across the toggle "background"in order to turn on/off something. Icon, at the same time, represents if value is On or Off.
 
