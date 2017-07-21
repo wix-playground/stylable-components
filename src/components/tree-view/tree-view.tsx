@@ -1,6 +1,6 @@
 import * as React from 'react';
-import {SBComponent, SBStateless} from 'stylable-react-component';
-import styles from './tree-view.sb.css';
+import {SBComponent} from 'stylable-react-component';
+import styles from './tree-view.st.css';
 
 export interface TreeItemRenderer {
     (props: TreeItemProps): JSX.Element;

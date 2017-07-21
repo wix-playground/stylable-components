@@ -13,31 +13,17 @@ module.exports = {
         rules: [
             {
                 test: /\.tsx?$/,
-                use: {
-                    loader: 'ts-loader',
-                    options: {
-                        compilerOptions: {
-                            "noEmit": false
-                        }
+                loader: 'ts-loader',
+                options: {
+                    compilerOptions: {
+                        "noEmit": false
                     }
                 }
             },
             {
-                test: /\.sb\.css$/,
-                loader: 'stylable-integration/webpack'
-            },
-            {
-                test: /((?!\.sb).{3}|^.{0,2})\.css$/,
-                loaders: [
-                    'style-loader',
-                    {
-                        loader: 'css-loader',
-                        options: {
-                            modules: true,
-                            localIdentName: '[path][name]__[local]--[hash:base64:5]'
-                        }
-                    }
-                ]
+                test: /\.css$/,
+                loader: 'stylable-integration/webpack',
+                options: { standalone: true }
             }
         ]
     },

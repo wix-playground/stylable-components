@@ -30,26 +30,27 @@ Sliders are great for adjusting settings that reflect intensity levels (volume, 
 
 ![elements](./assets/elements.png)
 
-**Basic slider consists of:** "bar", "handle" and "progress". The "handle" is dragged across the "bar" in order to give the slider a desired value while "progress" marks range from min value to current value.
+**Slider consists of:** "bar", "handle" and "progress". The "handle" is dragged across the "bar" in order to give the slider a desired value while "progress" marks range from min value to current value. 
 
-**Complex slider consists of**: "bar", "handle", "progress" AND may include "tooltip", "prefix" and "suffix". 
-Tooltip is a separate component that can be embedded into slider to display "value". Prefix and suffix are DOM elements that add customization capabilities (you can display "min" and "max" values on the edges of the slider).
-
-
-
-## Slider States
-
-| State    | Description                         | Link to design |
-| :------- | ----------------------------------- | -------------- |
-| Default  | Default component appearance        |                |
-| Hover    | User hovered over bar OR handle     |                |
-| Focus    | Browser is focused on the component |                |
-| Click    | User clicks on bar OR handle        |                |
-| Disabled | Component can not be changed        |                |
+Also, you can add elements into it in the tooltip (e.g. to display value) and error slots, by passing the appropriate props (see component props).
 
 
 
-## Slider Props
+## Visual States
+
+| State    | Description                         |
+| :------- | ----------------------------------- |
+| Default  | Default component appearance        |
+| Hover    | User hovered over bar OR handle     |
+| Focus    | Browser is focused on the component |
+| Active   | User clicks on bar OR handle        |
+| Disabled | Component can not be changed        |
+
+Design [assets](https://zpl.io/2kRTvO)
+
+
+
+## Props
 
 See [README.md](./README.md) for more info.
 
@@ -65,24 +66,33 @@ See [README.md](./README.md) for more info.
 
 ## Behavior
 
+User can drag handle over slider bar or click on the slider (in desired location) to select the value from the range.
+
+Changing the value (keyboard) is performed **from current value**. E.g., if current value is 5.2, and step is 2, then UP will give us 7.2 (unless max is less than 7.2), and DOWN will give us 3.2.
+
+Value can not exceed the min/max limits. If value is > or < than min/max it is automatically set to corresponding min/max.
+
+The component follows the external control pattern (value & handle position is defined by the `value` property, and in order for the component to function, it should be bound to a state in the parent component, and the `onChange` handler should be set).
+
 ### Keyboard 
 
-| Keys            | Action                         |
-| --------------- | ------------------------------ |
-| key up / right  | increase value                 |
-| key left / down | decrease value                 |
-| fn right / left | set max / min value            |
-| fn up / down    | increase / decrease value by X |
-| tab             | moves to another component     |
-| enter           | -                              |
-| esk             | removes focus (if in focus)    |
+| Keys                     | Action                         |
+| ------------------------ | ------------------------------ |
+| up / right arrow key     | increase value                 |
+| left / down arrow key    | decrease value                 |
+| fn / ctrl + right / left | set max / min value            |
+| fn / ctrl + up / down    | increase / decrease value by X |
+| tab                      | moves to next element          |
+| shift + tab              | moves to previous element      |
+| enter                    | -                              |
+| esc                      | removes focus (if in focus)    |
 
 **RTL** orientation
 
-| Keys             | Action         |
-| ---------------- | -------------- |
-| key up / left    | increase value |
-| key down / right | decrease value |
+| Keys                   | Action         |
+| ---------------------- | -------------- |
+| up  / left arrow key   | increase value |
+| down / right arrow key | decrease value |
 
 
 
@@ -91,7 +101,7 @@ See [README.md](./README.md) for more info.
 | Event             | Action                                   | NOTE                                     |
 | ----------------- | ---------------------------------------- | ---------------------------------------- |
 | hover             | highlight slider (both bar & handle)     | Event triggers on both bar & handle hover |
-| drag              | moves handle one step forward / backwards | drag right/up -> increase value  \| drag down/left -> decrease value |
+| click & drag      | moves handle one step forward / backwards | drag right/up -> increase value  \| drag down/left -> decrease value |
 | click (on handle) | highlights handle                        | -                                        |
 | click (on bar)    | moves handle to position where user clicked | -                                        |
 
@@ -99,11 +109,11 @@ See [README.md](./README.md) for more info.
 
 ### Touch
 
-| Event             | Action                                   | NOTE                                     |
-| ----------------- | ---------------------------------------- | ---------------------------------------- |
-| click (on handle) | highlights handle                        | we need the ability to expand clickable area for mobile devices |
-| click (on bar)    | moves handle to position where user clicked | -                                        |
-| drag              | moves handle one step forward / backwards |                                          |
+| Event           | Action                                   | NOTE                                     |
+| --------------- | ---------------------------------------- | ---------------------------------------- |
+| tap (on handle) | highlights handle                        | we need the ability to expand clickable area for mobile devices |
+| tap (on bar)    | moves handle to position where user clicked | -                                        |
+| drag            | moves handle according to drag           | -                                        |
 
 NOTE: 
 Later phases of touch handling are going to be implemented using mix in solution that Amir is working on (comment from Gilad).
@@ -120,8 +130,8 @@ https://www.w3.org/TR/wai-aria-practices/examples/slider/slider-2.html
 
 | Error                                    | Handling                                 |
 | ---------------------------------------- | ---------------------------------------- |
-| value out of min/max range               | Show error in console                    |
-| value out of step (e.g. min=0 / max=10, step=5, value=7) | Show error in console, handle displays on 5. User can scroll right to increase value (in this case 7 will change to 10. Since "value" can not be > that "max") |
+| value out of min/max range               | Show error in console and set value to corresponding min/max |
+| value out of step (e.g. min=0 / max=20, step=5, value=7) | Show error in console, handle displays on 7. User can scroll right to increase value (in this case 7 will change to 12 . Once we reach slider end value will change from 17 to 20, since value can not be > max) |
 
 
 
@@ -174,3 +184,9 @@ Questions to research / answer:
 
 1. How do we define tooltip position (top, bottom, left, right)
 
+
+
+
+## Design
+
+Link to [assets](https://zpl.io/2kRTvO)
