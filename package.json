@@ -45,5 +45,8 @@
     "webpack-dev-server": "^2.5.1"
   },
   "testGlob": "./test/**/*.spec.ts?(x)",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "stylable-react-component": "^1.0.3"
+  }
 }

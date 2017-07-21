@@ -1,0 +1,66 @@
+:vars {
+	color-default: #daeffe;
+	color-default-hover: #c1e4fe;
+	color-checked: #3899ec;
+	color-hover: #4eb7f5;
+	color-disabled: #dadada;
+
+	width: 46px;
+	size: 24px;
+}
+.root {
+	-sb-states: checked, disabled;
+}
+.background {
+	width: value(width);
+	padding: 1px;
+	border-radius: 12px;
+	background-color: value(color-default);
+	color: value(color-default);
+	cursor: pointer;
+	user-select: none;
+	transition: background-color 200ms linear,
+}
+.input {
+	display: block;
+	opacity: 0;
+	padding: 0;
+	margin: 0;
+	border: 0;
+	width: 0;
+	height: 0;
+}
+
+.switch {
+	height: value(size);
+	width: value(size);
+	background-color: white;
+	border-radius: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	transition: all 100ms linear;
+}
+
+.root:checked::switch {
+	transform: translateX(calc(value(width) - 2px - 100%))
+}
+
+.root:checked::background {
+	background-color: value(color-checked);
+	color: value(color-checked);
+}
+
+.input:focus + .background,
+.root:hover::background {
+	background-color: value(color-hover);
+}
+
+.root:hover:not(:checked)::background {
+	color: value(color-default-hover);
+}
+.root:disabled::background {
+	background-color: value(color-disabled);
+	color: value(color-disabled);
+	cursor: default;
+}

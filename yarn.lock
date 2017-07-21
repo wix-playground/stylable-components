@@ -4019,6 +4019,10 @@ stylable-integration@^2.0.7:
     loader-utils "^1.1.0"
     murmurhash "^0.0.2"
 
+stylable-react-component@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/stylable-react-component/-/stylable-react-component-1.0.3.tgz#8dd58b352f3b57c0991487e6d00a9dde2109f317"
+
 stylable@^1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/stylable/-/stylable-1.0.4.tgz#a8515d6c8dc830ddfa74e94d5a5a21f3d5b1d1a6"
