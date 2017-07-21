@@ -12,7 +12,7 @@ A toggle switch is used as an on/off control
 | ------------- | ------ | ------------ | :--------- | ---------------------------------------- |
 | checked       | bool   | false        |            |                                          |
 | onChange      | func   |              |            | Callback function when user changes the value of the component |
-| disabled      | bool   | FALSE        |            | If `true`, the toggle will not be interactive |
+| disabled      | bool   | false        |            | If `true`, the toggle will not be interactive |
 | label         | string |              |            | Text to display in accessibility mode    |
 | displayIcon   | bool   | true         | yes        | If `true` display `iconUnchecked` & `iconChecked` |
 | iconUnchecked | node   | svg          |            | Displays unchecked icon. If node is empty  displays nothing. |
