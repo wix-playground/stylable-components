@@ -32,7 +32,7 @@ export function TreeItem({ item, itemRenderer, onItemClick, isSelected }: TreeIt
         <div key={item.label}>
             <div
                 data-automation-id={`${itemIdPrefix}_${item.label.replace(' ', '_')}`}
-                className={styles.$stylesheet.get('tree-node')}
+                className={styles['tree-node']}
                 cssStates={{
                     selected: isSelected(item)
                 }}
@@ -41,7 +41,7 @@ export function TreeItem({ item, itemRenderer, onItemClick, isSelected }: TreeIt
                 <span data-automation-id={`${itemIdPrefix}_${item.label}_ICON`}>&gt; </span>
                 <span data-automation-id={`${itemIdPrefix}_${item.label}_LABEL`}>{item.label}</span>
             </div>
-            <div className={styles.$stylesheet.get('nested-tree')}>
+            <div className={styles['nested-tree']}>
                 {(item.children || []).map((child: TreeItemData) =>
                     itemRenderer({item: child, onItemClick, itemRenderer, isSelected})
                 )}
