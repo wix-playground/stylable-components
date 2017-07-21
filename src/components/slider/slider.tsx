@@ -10,7 +10,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
   render() {
     return (
       <div className={style['slider']} data-automation-id='SLIDER'>
-        Slider
+        <input type="range" />
       </div>
     );
   }
