@@ -1,8 +1,9 @@
 import * as React from 'react';
 import {DatePickerDemo} from './components/date-picker-demo';
 import { TreeViewDemo } from './components/tree-view-demo';
-const style = require('./style.css');
-const resetStyle = require('../src/style/default-theme/base.css');
+import './style.st.css';
+import '../src/style/default-theme/base.st.css';
+
 
 export class ComponentsDemo extends React.Component<{}, {}>{
     constructor() {
