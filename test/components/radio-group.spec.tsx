@@ -226,6 +226,24 @@ describe('<RadioGroup />', function () {
                 expect(child).to.be.present();
                 expect(child.tagName).to.equal('SPAN');
             });
+        });
+
+        it('sets children as checked when being pressed and calls onChange with their value', async function () {
+            const onChange = sinon.spy();
+            const {select, waitForDom} = clientRenderer.render(
+                <RadioGroup onChange={emptyFunction}>
+                    <span>1</span>
+                    <input type="radio" value="Test" onChange={onChange} data-automation-id="CHILD_1" />
+                </RadioGroup>
+            );
+
+            await waitForDom(() => {expect(select(radioGroup, 'CHILD_1')).to.be.present()});
+            const input = select(radioGroup, 'CHILD_1') as HTMLInputElement;
+            input.click();
+            return waitForDom(() => {
+                expect(onChange).to.have.been.calledOnce;
+                expect(input.checked).to.be.true;
+            })
         })
     });
 

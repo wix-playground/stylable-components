@@ -59,7 +59,7 @@ export class RadioGroup extends React.Component<RadioGroupProps, {}> {
         };
     }
 
-    createChildren(dataArray: any, isRadio: boolean) {
+    createChildren(dataArray: any, isDataSource: boolean) {
         const childArray: React.ReactNode[] = [];
         for (let index = 0; index < dataArray.length; index++) {
             const data = dataArray[index];
@@ -73,15 +73,21 @@ export class RadioGroup extends React.Component<RadioGroupProps, {}> {
                 location: this.props.location,
                 name: this.name};
 
-            if (isRadio) {
-                if ((data.props as RadioButtonProps).disabled) {
-                    props.disabled = true;
-                }
-                props.value = (data.props as RadioButtonProps).value;
-                childArray.push(React.cloneElement(data as ReactElement<any>, props));
-            } else {
+            if (isDataSource) {
                 props.value = data;
                 childArray.push(React.createElement(RadioButton, props));
+            } else {
+                if (data.type === RadioButton) {
+                    if ((data.props as RadioButtonProps).disabled) {
+                        props.disabled = true;
+                    }
+                    props.value = (data.props as RadioButtonProps).value;
+                    childArray.push(React.cloneElement(data as ReactElement<any>, props));
+                } else {
+                    childArray.push(React.cloneElement(data as ReactElement<any>, {key: index,
+                        checked: this.checkedArray[index].checked,
+                        onClick: action(this.childrenOnClick(index))}));
+                }
             }
         }
         return childArray;
@@ -92,11 +98,11 @@ export class RadioGroup extends React.Component<RadioGroupProps, {}> {
         let childArray: React.ReactNode[] = [];
 
         if (this.props.dataSource!.length > 0) {
-            childArray = this.createChildren(this.props.dataSource, false);
+            childArray = this.createChildren(this.props.dataSource, true);
         } else if (React.isValidElement(dataArray)) {
             childArray.push(dataArray);
         } else {
-            childArray = this.createChildren(this.props.children, true);
+            childArray = this.createChildren(this.props.children, false);
         }
 
         return (
