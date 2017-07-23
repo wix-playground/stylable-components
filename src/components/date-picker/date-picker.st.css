@@ -58,24 +58,36 @@
     color: value(color_MainText_Background);
 }
 
-.headerArrow {
-    border-bottom: value(arrowThickness) solid value(color_MainText_Background);
+.arrowWrapper {
+    height: 100%;
+    width: 20%;
+    line-height: 58px;
     cursor: pointer;
-    width: 9px;
-    height: 9px;
+}
 
+.arrowWrapperPrev {
+    text-align: left;
+}
+
+.arrowWrapperNext {
+    text-align: right;
+}
+
+.headerArrow {
+    border: solid value(color_MainTextBackground);
+    border-width: 0 value(arrowThickness) value(arrowThickness) 0;
+    display: inline-block;
+    padding: 0.26em;
 }
 
 .headerArrowNext {
     transform: rotate(-45deg);
     margin-right: 24px;
-    border-right: value(arrowThickness) solid value(color_MainText_Background);
 }
 
 .headerArrowPrev {
-    transform: rotate(45deg);
+    transform: rotate(135deg);
     margin-left: 24px;
-    border-left: value(arrowThickness) solid value(color_MainText_Background);
 }
 
 .calendar {
@@ -113,17 +125,26 @@
     cursor: pointer;
 }
 
-.day:hover {
-    background-color: value(color_Default);
-    color: value(color_MainText_Background);
+.currentDay {
+    color: value(color_Default);
 }
 
-.previousDay {
+.selectedDay {
+    color: value(color_MainTextBackground);
+    background-color: value(color_Active);
+}
+
+.day:hover {
+    color: value(color_MainTextBackground);
+    background-color: value(color_Hover);
+}
+
+.greyDay {
     font-family: ArialMT;
     font-size: 14px;
     text-align: center;
     color: #d8d8d8;
     width: 36px;
     line-height: 36px;
-    cursor: pointer;
+    cursor: default;
 }
