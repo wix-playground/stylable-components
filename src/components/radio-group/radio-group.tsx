@@ -20,7 +20,7 @@ export interface RadioState {
 }
 
 @observer
-export class RadioGroup extends React.Component<RadioGroupProps, {}> {
+export class RadioGroup extends React.Component<Partial<RadioGroupProps>, {}> {
     name: string;
     checkedArray: Array<RadioState>;
 
@@ -55,7 +55,9 @@ export class RadioGroup extends React.Component<RadioGroupProps, {}> {
                 value.checked = false;
             });
             this.checkedArray[index].checked = true;
-            this.props.onChange(e);
+            if (this.props.onChange) {
+                this.props.onChange(e);
+            }
         };
     }
 
@@ -102,7 +104,9 @@ export class RadioGroup extends React.Component<RadioGroupProps, {}> {
         } else if (React.isValidElement(dataArray)) {
             childArray.push(dataArray);
         } else {
-            childArray = this.createChildren(this.props.children, false);
+            if (this.props.children) {
+                childArray = this.createChildren(this.props.children, false);
+            }
         }
 
         return (
