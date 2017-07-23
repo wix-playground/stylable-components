@@ -37,16 +37,16 @@ You can customize the following internal parts:
 
 * item - selector applying to items in the list
 
-### states:
+### States
   
 The following states apply to the top level:
  
-| Name | Type | Default |  Description |
-| -- | -- | -- | -- |
-| selected | boolean | false | Whether the ANY item is selected |
-| focused | boolean | false | no | Whether ANY item is focused by keyboard navigation |
-| hover | boolean | false | no | Whether the list is hovered by the mouse |
-| disabled | boolean | false | no | Whether the list is disabled for selection or not |
+| Name | Type | Description |
+| -- | -- | -- |
+| selected | boolean | Whether the any item is selected |
+| focused | boolean | Whether any item is focused by keyboard navigation |
+| hover | boolean | Whether the list is hovered by the mouse |
+| disabled | boolean | Whether the list is disabled for selection or not |
  
 The following states apply to the item selector:
  
