@@ -1,5 +1,5 @@
-# wix-react-components
-[![Build Status](https://travis-ci.org/wix/wix-react-components.svg?branch=master)](https://travis-ci.org/wix/wix-react-components)
+# stylable-components
+[![Build Status](https://travis-ci.org/wix/stylable-components.svg?branch=master)](https://travis-ci.org/wix/stylable-components)
 [![Sauce Test Status](https://saucelabs.com/buildstatus/WixReactComponents)](https://saucelabs.com/u/WixReactComponents)
 
 [![Sauce Test Status](https://saucelabs.com/browser-matrix/WixReactComponents.svg)](https://saucelabs.com/u/WixReactComponents)
@@ -36,7 +36,7 @@ Common, fully-tested, strictly-typed, React components library.
 
 ## Library structure
 ```
-wix-react-components
+stylable-components
 |
 |--src - source code.
 |
