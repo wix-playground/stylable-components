@@ -15,7 +15,7 @@ A component which allows the user to take action by choosing an item from a list
 | onSelect | func | null | no | Triggered when an item is selected in the list |
 | children | SelectionItem[] | null | no | Children to be rendered in the list |
 
-* The following props should be placed in an ISelectionList interface since they will need to be passed from higher order components.
+* The following props should be placed in an OptionList interface since they will need to be passed from higher order components.
 
 | Name | Type | Default | Required | Description |
 | -- | -- | -- | -- | -- |
@@ -23,23 +23,23 @@ A component which allows the user to take action by choosing an item from a list
 | dataScheme | object | { id: 'id', displayText: 'displayText' } | no | Maps the object properties to the relevant properties required by the ItemRenderer |
 | itemRenderer | func | default itemRenderer | no | Renders an item in the list |
 
+**Note** that if both datasource and children are present then the children are rendered first and then the dataSource items.
+
 ### Datasource
 
 The datasource property accepts the following:
-* string[] | Symbol - The ItemRenderer handles the creation of ListItems from this data type. A symbol should be used to identify a divider item.
-* Object[] | Symbol - When using an object array, the dataScheme property should be updated to according to the object.
-
-Note that if children are passed to the component, the dataSource property is ignored.
+* Array<string | Symbol> - The ItemRenderer handles the creation of ListItems from this data type. A symbol should be used to identify a divider item.
+* Array<object | Symbol> - When using an object array, the dataScheme property should be updated to according to the object.
 
 ## Styling
 
-you can customize the following internal parts:
+You can customize the following internal parts:
 
 * item - selector applying to items in the list
 
 ### states:
   
- the following states apply to the top level:
+The following states apply to the top level:
  
 | Name | Type | Default |  Description |
 | -- | -- | -- | -- |
@@ -48,8 +48,7 @@ you can customize the following internal parts:
 | hover | boolean | false | no | Whether the list is hovered by the mouse |
 | disabled | boolean | false | no | Whether the list is disabled for selection or not |
  
-
- the following states apply to the item selector:
+The following states apply to the item selector:
  
 | Name | Type | Default | Description |
 | -- | -- | -- | -- |
@@ -71,15 +70,12 @@ Keyboard and mouse navigation have different styling behaviors.
 * Up arrow -> highlights previous item
 * Down arrow -> highlights next item
 
-### Mouse Navigation
+### Mouse
 
 * Left-click -> selects an item
-* Mouse over -> Gives focus to an item
+* Mouse over -> Gives mouse hover to an item
 
 ## Internal Implementation
-
-The SelectionList can accept data from the dataSource property or directly as children. When using children and a datasource, the children will be rendered before the items from the datasource (for headers for example)
-In all cases only SelectionItems are part of the elements that react to the onSelect and traversal events.
 
 ### ItemRenderer
 
@@ -87,15 +83,17 @@ The default item renderer supports the following properties:
 
 | Name | Type | Default | Required | Description |
 | -- | -- | -- | -- | -- |
+| isOptGroup | boolean | false | no | Whether an item is option title (optgroup). Option items are not selectable or traversable. |
 
-| isOption | boolean | false | no | Whether an item is option title (optgroup). Option items are not selectable or traversable. |
-
-Apart from SelectionItems the default ItemRenderer will accept a symbol to be used as a divider. Note that enabled and isOption define a style for the item.
+Apart from SelectionItems the default ItemRenderer will accept a Divider symbol (divider) to be used as a divider.
+```
+const Divider = Symbol();
+```
 
 ## Examples
 
 * Create a SelectionList which receives children and renders them
 * Create a SelectionList which receives a string array and renders it using the default itemRenderer
 * Create a SelectionList which receives an object array and renders it with the dataScheme mapping
-* Create a SelectionList which supports onSelect event (via mouse)
+* Create a SelectionList which supports mouse input handling
 * Create a SelectionList which supports keyboard navigation
