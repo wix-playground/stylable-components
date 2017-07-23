@@ -90,6 +90,8 @@ Apart from SelectionItems the default ItemRenderer will accept a Divider symbol 
 const Divider = Symbol();
 ```
 
+For the default item renderer, just render a string for every item.
+
 ## Examples
 
 * Create a SelectionList which receives children and renders them
