@@ -59,10 +59,8 @@ export class RadioGroup extends React.Component<RadioGroupProps, {}> {
         };
     }
 
-    render() {
-        const dataArray = this.props.children ? this.props.children : this.props.dataSource;
+    createChildren(dataArray: any, isRadio: boolean) {
         const childArray: React.ReactNode[] = [];
-
         for (let index = 0; index < dataArray.length; index++) {
             const data = dataArray[index];
             const props: RadioButtonProps = {
@@ -75,22 +73,32 @@ export class RadioGroup extends React.Component<RadioGroupProps, {}> {
                 location: this.props.location,
                 name: this.name};
 
-            if (React.isValidElement(data)) {
-
-                if (data.type === RadioButton) {
-                    if ((data.props as RadioButtonProps).disabled) {
-                        props.disabled = true;
-                    }
-                    props.value = (data.props as RadioButtonProps).value;
-                    childArray.push(React.cloneElement(data as ReactElement<any>, props));
-                } else {
-                    childArray.push(data);
+            if (isRadio) {
+                if ((data.props as RadioButtonProps).disabled) {
+                    props.disabled = true;
                 }
-            } else if (typeof data === 'string') {
+                props.value = (data.props as RadioButtonProps).value;
+                childArray.push(React.cloneElement(data as ReactElement<any>, props));
+            } else {
                 props.value = data;
                 childArray.push(React.createElement(RadioButton, props));
             }
         }
+        return childArray;
+    }
+
+    render() {
+        const dataArray = this.props.children ? this.props.children : this.props.dataSource;
+        let childArray: React.ReactNode[] = [];
+
+        if (this.props.dataSource!.length > 0) {
+            childArray = this.createChildren(this.props.dataSource, false);
+        } else if (React.isValidElement(dataArray)) {
+            childArray.push(dataArray);
+        } else {
+            childArray = this.createChildren(this.props.children, true);
+        }
+
         return (
             <div data-automation-id="RADIO_GROUP">
                 {childArray}

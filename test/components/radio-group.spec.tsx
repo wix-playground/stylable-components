@@ -2,6 +2,7 @@ import React = require('react');
 import {expect, ClientRenderer, simulate, waitFor, sinon} from 'test-drive-react';
 import { RadioButton, RadioGroup } from '../../src'
 import { RadioGroupDemo } from '../../demo/components/radio-group-demo';
+import {changeDependenciesStateTo0} from "mobx/lib/core/derivation";
 
 const radioGroup = 'RADIO_GROUP';
 const radioButton = 'RADIO_BUTTON';
@@ -210,6 +211,22 @@ describe('<RadioGroup />', function () {
             expect(button1).to.be.present();
             expect(button1.value).to.equal('Child1');
         });
+    });
+
+    describe('Radio Group with children', function () {
+        it('renders a radio group with children', function () {
+            const {select, waitForDom} = clientRenderer.render(
+                <RadioGroup onChange={emptyFunction}>
+                    <span data-automation-id="CHILD_1">Child 1</span>
+                </RadioGroup>
+            );
+
+            return waitForDom(() => {
+                const child = select(radioGroup, 'CHILD_1') as HTMLElement;
+                expect(child).to.be.present();
+                expect(child.tagName).to.equal('SPAN');
+            });
+        })
     });
 
     describe('<RadioButton />', function () {
