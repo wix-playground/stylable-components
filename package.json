@@ -45,5 +45,10 @@
     "webpack-dev-server": "^2.5.1"
   },
   "testGlob": "./test/**/*.spec.ts?(x)",
-  "license": "MIT"
+  "license": "MIT",
+  "files": [
+    "lib",
+    "src",
+    "typings"
+  ]
 }
