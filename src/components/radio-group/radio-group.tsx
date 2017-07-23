@@ -65,7 +65,7 @@ export class RadioGroup extends React.Component<RadioGroupProps, {}> {
 
         for (let index = 0; index < dataArray.length; index++) {
             const data = dataArray[index];
-            const props = {
+            const props: RadioButtonProps = {
                 key: index,
                 value: '',
                 automationId: 'RADIO_BUTTON_' + index,
@@ -99,6 +99,7 @@ export class RadioGroup extends React.Component<RadioGroupProps, {}> {
 }
 
 export interface RadioButtonProps {
+    key?: number;
     value: string;
     checked?: boolean;
     name?: string;
@@ -144,6 +145,7 @@ export class RadioButton extends React.Component<RadioButtonProps, {}> {
                            readOnly={true}/>
                 </div>
                 {this.props.location === "right" ? <span data-automation-id="LABEL">{this.props.value}</span> : ''}
+                {this.props.children}
             </div>
         )
     }

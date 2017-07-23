@@ -283,6 +283,21 @@ describe('<RadioGroup />', function () {
                 const button = select(radioButton + '_0', 'INPUT');
                 expect(button).to.have.attr('disabled');
             });
+        });
+
+        it('renders any children given to the component', function () {
+            const { select, waitForDom } = clientRenderer.render(
+                <RadioButton value="" automationId={radioButton + '_0'}>
+                    <span data-automation-id="CHILD">Offspring</span>
+                </RadioButton>
+            );
+
+            return waitForDom(() => {
+                const child = select(radioButton + '_0','CHILD') as HTMLElement;
+                expect(child).to.be.present();
+                expect(child.tagName).to.equal('SPAN');
+            });
+
         })
     });
 
