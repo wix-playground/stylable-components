@@ -9,17 +9,9 @@ A component which allows the user to take action by choosing an item from a list
 
 ## Internal Implementation
 
-The SelectionList can accept data from the dataSource property or directly as children. When using children and a datasource, the children will be rendered before the items from the datasource (for headers for example). In all cases only SelectionItems are part of the elements that react to the onSelect and traversal events.
+The SelectionList can accept data from the dataSource property or directly as children. When using children and a datasource, the children will be rendered before the items from the datasource (for headers for example)
+In all cases only SelectionItems are part of the elements that react to the onSelect and traversal events.
 
-### SelectionListProps
-
-| Name | Type | Default | Required | Description |
-| -- | -- | -- | -- | -- |
-| selected | boolean | false | no | Whether the item is selected |
-| focused | boolean | false | no | Whether the item is focused by keyboard navigation |
-| hover | boolean | false | no | Whether the item is hovered by the mouse |
-| hidden | boolean | false | no | Whether ths item appears in the list |
-| disabled | boolean | false | no | Whether an item is enabled for selection or not |
 
 ### ItemRenderer
 
@@ -55,6 +47,36 @@ The datasource property accepts the following:
 
 Note that if children are passed to the component, the dataSource property is ignored.
 
+### Styling
+
+#### internal parts:
+
+you can customize the following internal parts:
+
+* item - selector applying to items in the list
+
+#### states:
+  
+ the following states apply to the top level:
+ 
+ | Name | Type | Default |  Description |
+| -- | -- | -- | -- |
+| selected | boolean | false | Whether the ANY item is selected |
+| focused | boolean | false | no | Whether ANY item is focused by keyboard navigation |
+| hover | boolean | false | no | Whether the list is hovered by the mouse |
+| disabled | boolean | false | no | Whether the list is disabled for selection or not |
+ 
+
+ the following states apply to the item selector:
+ 
+| Name | Type | Default | Description |
+| -- | -- | -- | -- |
+| selected | boolean | false | Whether the item is selected |
+| focused | boolean | false | Whether the item is focused by keyboard navigation |
+| hover | boolean | false | Whether the item is hovered by the mouse |
+| hidden | boolean | false | Whether ths item appears in the list |
+| disabled | boolean | false | Whether an item is enabled for selection or not |
+
 ## Input Handling
 
 Keyboard and mouse navigation have different styling behaviors.
@@ -71,6 +93,9 @@ Keyboard and mouse navigation have different styling behaviors.
 
 * Left-click -> selects an item
 * Mouse over -> Gives focus to an item
+
+
+
 
 ## Examples
 
