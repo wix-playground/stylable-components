@@ -1,0 +1,129 @@
+:vars {
+    arrowThickness: 0.09em;
+    headerHeight: 60px;
+    dropdownWidth: 330px;
+    dropdownArrowWidth: 11px;
+    dropdownArrowHeight: 12px;
+    inputWidth: 192px;
+}
+
+:import{
+    -sb-from: "../../style/default-theme/variables.st.css";
+    -sb-named: color_Default, color_MainText_Background, color_MainText;
+}
+
+.input {
+    width: value(inputWidth);
+}
+
+.dropdownArrowWrapper {
+    width: value(inputWidth);
+}
+
+.dropdownArrow {
+    width: 0;
+    height: 0;
+    position: relative;
+    /* Center arrow */
+    left: calc(50% - value(dropdownArrowWidth));
+    border-left: value(dropdownArrowWidth) solid transparent;
+    border-right: value(dropdownArrowWidth) solid transparent;
+    border-bottom: value(dropdownArrowHeight) solid value(color_Default);
+}
+
+.dropdown {
+    width: value(dropdownWidth);
+    height: 348px;
+    border: solid 1px value(color_Default);
+}
+
+.header {
+    width: 100%;
+    height: value(headerHeight);
+    background-color: value(color_Default);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0;
+}
+
+.headerDate {
+    display: inline;
+    width: 150px;
+    height: 24px;
+    font-family: ArialMT;
+    font-size: 16px;
+    line-height: 1.5;
+    text-align: center;
+    color: value(color_MainText_Background);
+}
+
+.headerArrow {
+    border-bottom: value(arrowThickness) solid value(color_MainText_Background);
+    cursor: pointer;
+    width: 9px;
+    height: 9px;
+
+}
+
+.headerArrowNext {
+    transform: rotate(-45deg);
+    margin-right: 24px;
+    border-right: value(arrowThickness) solid value(color_MainText_Background);
+}
+
+.headerArrowPrev {
+    transform: rotate(45deg);
+    margin-left: 24px;
+    border-left: value(arrowThickness) solid value(color_MainText_Background);
+}
+
+.calendar {
+    display: flex;
+    flex-wrap: wrap;
+    /*align-content: space-between;*/
+    height: calc(100% - value(headerHeight));
+    width: value(dropdownWidth);
+    padding: 30px;
+}
+
+.calendarItem {
+    flex: 0 0 14.2857%;
+}
+
+.dayName {
+    font-family: ArialMT;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 1.29;
+    text-align: center;
+    color: value(color_MainText);
+    width: 36px;
+    height: 36px;
+    cursor: default;
+}
+
+.day {
+    font-family: ArialMT;
+    font-size: 14px;
+    text-align: center;
+    color: value(color_MainText);
+    width: 36px;
+    line-height: 36px;
+    cursor: pointer;
+}
+
+.day:hover {
+    background-color: value(color_Default);
+    color: value(color_MainText_Background);
+}
+
+.previousDay {
+    font-family: ArialMT;
+    font-size: 14px;
+    text-align: center;
+    color: #d8d8d8;
+    width: 36px;
+    line-height: 36px;
+    cursor: pointer;
+}

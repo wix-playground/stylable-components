@@ -2,7 +2,7 @@ import * as React from 'react';
 import {computed} from 'mobx';
 import {observer} from 'mobx-react';
 
-const styles = require('./date-picker.css');
+const styles = require('./date-picker.st.css');
 
 export interface DayProps {
     day: number;
