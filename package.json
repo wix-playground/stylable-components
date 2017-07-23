@@ -50,5 +50,9 @@
     "lib",
     "src",
     "typings"
-  ]
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:wix/stylable-components.git"
+  }
 }
