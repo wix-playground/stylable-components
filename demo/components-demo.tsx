@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { TreeViewDemo } from './components/tree-view-demo';
+import './style.st.css';
+import '../src/style/default-theme/base.st.css';
 import { RadioGroupDemo } from './components/radio-group-demo'
-
-const style = require('./style.css');
-const resetStyle = require('../src/style/default-theme/base.css');
 
 export class ComponentsDemo extends React.Component<{}, {}>{
 
@@ -99,7 +98,6 @@ export class ComponentsDemo extends React.Component<{}, {}>{
                 </table>
             </div>
 
-            <TreeViewDemo />
             <RadioGroupDemo/>
         </div>;
     }

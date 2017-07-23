@@ -2,7 +2,7 @@ import React = require('react');
 import {EventHandler, ReactElement, SyntheticEvent} from "react";
 import {observable, action} from 'mobx';
 import {observer} from 'mobx-react';
-const style = require('./radio-group.css');
+const style = require('./radio-group.st.css').default;
 
 export interface RadioGroupProps {
     children?: any;
