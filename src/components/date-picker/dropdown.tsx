@@ -3,7 +3,6 @@ import {getMonthNames, getMonthFromOffset, getDayNames, getDaysInMonth, getNumOf
 import {observable, action, computed} from 'mobx';
 import {observer} from 'mobx-react';
 import {Day} from './day';
-import {debug} from "util";
 const styles = require('./date-picker.css');
 
 export interface DropdownProps {
@@ -109,7 +108,7 @@ export class Dropdown extends React.Component<DropdownProps, {}>{
 
     render() {
         return (
-            <div>
+            <div tabIndex={1} id="DATE_PICKER_DROPDOWN">
                 <div className={styles.dropdownArrowWrapper}><div className={styles.dropdownArrow} /></div>
                 <div className={styles.dropdown} data-automation-id="DATE_PICKER_DROPDOWN">
                     <div className={styles.header}>

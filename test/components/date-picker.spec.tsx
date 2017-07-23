@@ -46,7 +46,7 @@ describe('The DatePicker Component', function () {
         });
 
         it('clicks on the input, picks a date from the dropdown, and then expects the dropdown to close and the date to appear in the input', async function () {
-            const {select, waitForDom} = clientRenderer.render(<DatePicker date={JANUARY_FIRST} />);
+            const {select, waitForDom} = clientRenderer.render(<DatePicker date={JANUARY_FIRST} openOnFocus={true} />);
             const datePickerInput = select(datePickerInputId);
 
             await waitForDom(() => expect(select(datePickerDropdownId)).to.be.absent());
@@ -82,11 +82,11 @@ describe('The DatePicker Component', function () {
 
         await waitForDom(() => expect(select(datePickerDropdownId)).to.be.absent());
 
-        simulate.mouseDown(datePickerInput);
+        simulate.click(datePickerInput);
 
         await waitForDom(() => expect(select(datePickerDropdownId)).to.be.present());
 
-        simulate.mouseDown(datePickerInput);
+        simulate.click(datePickerInput);
 
         return await waitForDom(() => expect(select(datePickerDropdownId)).to.be.absent());
     });
@@ -245,6 +245,30 @@ describe('The DatePicker Component', function () {
             await waitForDom(() => expect(select(datePickerDropdownId)).to.be.present());
 
             simulate.mouseDown(select('NEXT_MONTH_BUTTON'));
+
+            return await waitForDom(() => expect(select(datePickerDropdownId)).to.be.present());
+        });
+
+        it('should appear when the Enter key is pressed and the openOnFocus property is set to false', async function () {
+            const {select, waitForDom} = clientRenderer.render(<DatePicker openOnFocus={false} />);
+
+            simulate.focus(select(datePickerInputId));
+
+            await waitForDom(() => expect(select(datePickerDropdownId)).to.be.absent());
+
+            simulate.keyDown(select(datePickerInputId), { keyCode: KeyCodes.ENTER });
+
+            return await waitForDom(() => expect(select(datePickerDropdownId)).to.be.present());
+        });
+
+        it('should appear when the Spacebar is pressed and the openOnFocus property is set to false', async function () {
+            const {select, waitForDom} = clientRenderer.render(<DatePicker openOnFocus={false} />);
+
+            simulate.focus(select(datePickerInputId));
+
+            await waitForDom(() => expect(select(datePickerDropdownId)).to.be.absent());
+
+            simulate.keyDown(select(datePickerInputId), { keyCode: KeyCodes.SPACE });
 
             return await waitForDom(() => expect(select(datePickerDropdownId)).to.be.present());
         });

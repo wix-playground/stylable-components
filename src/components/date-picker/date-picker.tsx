@@ -14,13 +14,21 @@ export interface DatePickerProps {
     startingDay: number;
     showDropdownOnInit: boolean;
     dataAutomationId: string;
+    openOnFocus: boolean;
+    disabled: boolean;
+    readOnly: boolean;
 }
 
 @observer
 export class DatePicker extends React.Component<Partial<DatePickerProps>, {}>{
     static defaultProps = {
+        placeholder: '',
         startingDay: 0,
-        dataAutomationId: 'DATE_PICKER'
+        dataAutomationId: 'DATE_PICKER',
+        openOnFocus: false,
+        disabled: false,
+        readOnly: false,
+        showDropdownOnInit: false
     };
 
     public get currentDate (): Date {
@@ -28,6 +36,7 @@ export class DatePicker extends React.Component<Partial<DatePickerProps>, {}>{
     }
 
     @observable date: Date = this.props.date ? this.props.date : new Date();
+    @observable dropdownDate: Date = this.date;
     @observable inputValue: string = this.props.date ? this.props.date.toDateString() : '';
     @observable showDropdown: boolean = this.props.showDropdownOnInit ? this.props.showDropdownOnInit : false;
     @observable highlightSelectedDate: boolean = false;
@@ -65,10 +74,11 @@ export class DatePicker extends React.Component<Partial<DatePickerProps>, {}>{
     };
 
     @action onFocus: React.EventHandler<SyntheticEvent<HTMLInputElement>> = (): void => {
-        this.showDropdown = true;
+        this.showDropdown = this.props.openOnFocus!;
     };
 
-    @action onMouseDown: React.EventHandler<SyntheticEvent<HTMLInputElement>> = (): void => {
+    @action onClick: React.EventHandler<SyntheticEvent<HTMLInputElement>> = (event: React.MouseEvent<HTMLInputElement>): void => {
+        event.preventDefault();
         this.showDropdown = !this.showDropdown;
     };
 
@@ -78,12 +88,64 @@ export class DatePicker extends React.Component<Partial<DatePickerProps>, {}>{
         this.showDropdown = false;
     };
 
+    @action shiftDate = (daysToShift: number): void => {
+        const shiftedDate: Date = new Date(this.dropdownDate.getFullYear(), this.dropdownDate.getMonth(), this.dropdownDate.getDate());
+        shiftedDate.setDate(this.dropdownDate.getDate() + daysToShift);
+        this.dropdownDate = shiftedDate;
+    };
+
     @action onKeyDown: React.EventHandler<SyntheticEvent<HTMLInputElement>> = (event: React.KeyboardEvent<HTMLInputElement>): void => {
-        if (event.keyCode === KeyCodes.ENTER) {
-            const eventTarget = event.target as HTMLInputElement;
-            this.updateStateFromString(eventTarget.value);
-            this.showDropdown = !this.showDropdown;
+        const eventTarget = event.target as HTMLInputElement;
+        const {keyCode} = event;
+
+        if (!this.props.disabled && !this.props.readOnly) {
+            switch (keyCode) {
+                case KeyCodes.ENTER:
+                    this.updateStateFromString(eventTarget.value);
+                    this.showDropdown = !this.showDropdown;
+                    event.preventDefault();
+                    break;
+
+                case KeyCodes.SPACE:
+                    this.showDropdown = !this.showDropdown;
+                    event.preventDefault();
+                    break;
+
+                case KeyCodes.RIGHT:
+                    if (this.showDropdown) {
+                        event.preventDefault();
+                        this.shiftDate(1);
+                    }
+                    break;
+
+                case KeyCodes.LEFT:
+                    if (this.showDropdown) {
+                        event.preventDefault();
+                        this.shiftDate(-1);
+                    }
+                    break;
+
+                case KeyCodes.UP:
+                    if (this.showDropdown) {
+                        event.preventDefault();
+                        this.shiftDate(-7);
+                    }
+                    break;
+
+                case KeyCodes.DOWN:
+                    if (this.props.openOnFocus === false && !this.showDropdown) {
+                        this.showDropdown = !this.showDropdown;
+                    } else if (!this.showDropdown) {
+                        this.showDropdown = !this.showDropdown;
+                    } else {
+                        this.shiftDate(7);
+                    }
+                    event.preventDefault();
+                    break;
+            }
         }
+
+
     };
 
     isDateValid = (stringToValidate: string): boolean => {
@@ -97,7 +159,7 @@ export class DatePicker extends React.Component<Partial<DatePickerProps>, {}>{
             <div className={styles.root} data-automation-id={this.props.dataAutomationId}>
                 <input className={styles.input}
                        onKeyDown={this.onKeyDown}
-                       onMouseDown={this.onMouseDown}
+                       onClick={this.onClick}
                        onBlur={this.onBlur}
                        onFocus={this.onFocus}
                        onChange={this.onInputChange}
@@ -107,8 +169,7 @@ export class DatePicker extends React.Component<Partial<DatePickerProps>, {}>{
                        data-automation-id="DATE_PICKER_INPUT" />
                 {this.showDropdown ?
                     <Dropdown onChange={this.updateStateFromDate}
-                              date={this.date!}
-                              data-automation-id="DATE_PICKER_DROPDOWN"
+                              date={this.dropdownDate!}
                               startingDay={this.props.startingDay!}
                               highlightSelectedDate={this.highlightSelectedDate} />
                     :
