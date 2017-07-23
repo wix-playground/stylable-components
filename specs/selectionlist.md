@@ -2,27 +2,11 @@
 
 A component which allows the user to take action by choosing an item from a list. The SelectionList will usually be displayed inside a Popup component.
 
-* [Internal Implementation](#internal-implementation)
 * [Properties](#properties)
+* [Styling](#styling)
 * [Input Handling](#input-handling)
+* [Internal Implementation](#internal-implementation)
 * [Examples](#examples)
-
-## Internal Implementation
-
-The SelectionList can accept data from the dataSource property or directly as children. When using children and a datasource, the children will be rendered before the items from the datasource (for headers for example)
-In all cases only SelectionItems are part of the elements that react to the onSelect and traversal events.
-
-
-### ItemRenderer
-
-The default item renderer supports the following properties:
-
-| Name | Type | Default | Required | Description |
-| -- | -- | -- | -- | -- |
-
-| isOption | boolean | false | no | Whether an item is option title (optgroup). Option items are not selectable or traversable. |
-
-Apart from SelectionItems the default ItemRenderer will accept a symbol to be used as a divider. Note that enabled and isOption define a style for the item.
 
 ## Properties
 
@@ -47,19 +31,17 @@ The datasource property accepts the following:
 
 Note that if children are passed to the component, the dataSource property is ignored.
 
-### Styling
-
-#### internal parts:
+## Styling
 
 you can customize the following internal parts:
 
 * item - selector applying to items in the list
 
-#### states:
+### states:
   
  the following states apply to the top level:
  
- | Name | Type | Default |  Description |
+| Name | Type | Default |  Description |
 | -- | -- | -- | -- |
 | selected | boolean | false | Whether the ANY item is selected |
 | focused | boolean | false | no | Whether ANY item is focused by keyboard navigation |
@@ -94,8 +76,21 @@ Keyboard and mouse navigation have different styling behaviors.
 * Left-click -> selects an item
 * Mouse over -> Gives focus to an item
 
+## Internal Implementation
 
+The SelectionList can accept data from the dataSource property or directly as children. When using children and a datasource, the children will be rendered before the items from the datasource (for headers for example)
+In all cases only SelectionItems are part of the elements that react to the onSelect and traversal events.
 
+### ItemRenderer
+
+The default item renderer supports the following properties:
+
+| Name | Type | Default | Required | Description |
+| -- | -- | -- | -- | -- |
+
+| isOption | boolean | false | no | Whether an item is option title (optgroup). Option items are not selectable or traversable. |
+
+Apart from SelectionItems the default ItemRenderer will accept a symbol to be used as a divider. Note that enabled and isOption define a style for the item.
 
 ## Examples
 
