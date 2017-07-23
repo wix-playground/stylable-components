@@ -9,7 +9,17 @@ A component which allows the user to take action by choosing an item from a list
 
 ## Internal Implementation
 
-The SelectionList can accept data from the dataSource property or directly as children. When using children, the ItemRenderer is not used and in both cases the elements should be of type SelectionItem.
+The SelectionList can accept data from the dataSource property or directly as children. When using children and a datasource, the children will be rendered before the items from the datasource (for headers for example). In all cases only SelectionItems are part of the elements that react to the onSelect and traversal events.
+
+### SelectionListProps
+
+| Name | Type | Default | Required | Description |
+| -- | -- | -- | -- | -- |
+| selected | boolean | false | no | Whether the item is selected |
+| focused | boolean | false | no | Whether the item is focused by keyboard navigation |
+| hover | boolean | false | no | Whether the item is hovered by the mouse |
+| hidden | boolean | false | no | Whether ths item appears in the list |
+| disabled | boolean | false | no | Whether an item is enabled for selection or not |
 
 ### ItemRenderer
 
@@ -17,7 +27,7 @@ The default item renderer supports the following properties:
 
 | Name | Type | Default | Required | Description |
 | -- | -- | -- | -- | -- |
-| enabled | boolean | true | no | Whether an item is enabled for selection or not |
+
 | isOption | boolean | false | no | Whether an item is option title (optgroup). Option items are not selectable or traversable. |
 
 Apart from SelectionItems the default ItemRenderer will accept a symbol to be used as a divider. Note that enabled and isOption define a style for the item.
