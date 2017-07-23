@@ -115,11 +115,23 @@ Where relevant show code examples to be used in the documentation later on.
 
 ### Examples
 ```
-const treeData = [
-    { label: 'main', children: [
-        { label: 'label0' },
-        { label: 'label1' },
-        { label: 'label2' }
+const treeData: TreeItemData[] = [
+    { label: 'Food Menu', children: [
+        { label: 'Salads', children: [
+            { label: 'Greek Salad' },
+            { label: 'Israeli Salad' },
+            { label: 'Caesar Salad' }
+        ]},
+        { label: 'Steaks', children: [
+            { label: 'Fillet Steak' },
+            { label: 'Sirloin Steak' }
+        ]},
+        { label: 'Desserts', children: [
+            { label: 'Pancakes' },
+            { label: 'Muffin' },
+            { label: 'Waffle' },
+            { label: 'Cupcake' }
+        ]}
     ]}
 ];
 ```

@@ -1,7 +1,7 @@
 {
-  "name": "wix-react-components",
+  "name": "stylable-components",
   "version": "0.0.1",
-  "description": "Common, fully-tested, strictly-typed, Wix-styled, React components library",
+  "description": "Common, fully-tested, strictly-typed, Stylable-styled, React components library.",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
   "scripts": {
@@ -10,7 +10,7 @@
     "prepublish": "npm run build",
     "test": "npm run test:browser && npm run test:node",
     "test:browser": "karma start --single-run",
-    "test:node": "mocha --compilers ts:ts-node/register,tsx:ts-node/register,css:css-modules-require-hook/preset \"./test/node/**/*.node-spec.ts?(x)\"",
+    "test:node": "mocha --compilers ts:ts-node/register,tsx:ts-node/register,css:stylable-integration/require \"./test/node/**/*.node-spec.ts?(x)\"",
     "start": "webpack-dev-server --progress"
   },
   "peerDependencies": {
@@ -18,11 +18,9 @@
   },
   "devDependencies": {
     "@types/mocha": "^2.2.41",
-    "@types/node": "^8.0.13",
+    "@types/node": "^8.0.14",
     "@types/react": "^15.0.38",
     "@types/react-dom": "^15.5.1",
-    "css-loader": "^0.28.4",
-    "css-modules-require-hook": "^4.0.6",
     "glob": "^7.1.2",
     "karma": "^1.7.0",
     "karma-chrome-launcher": "^2.2.0",
@@ -37,11 +35,12 @@
     "mocha-loader": "^1.1.1",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
-    "style-loader": "^0.18.2",
+    "stylable": "^1.0.4",
+    "stylable-integration": "^2.0.7",
     "test-drive-react": "^0.5.0",
-    "ts-loader": "^2.3.0",
-    "ts-node": "^3.2.0",
-    "typescript": "^2.4.1",
+    "ts-loader": "^2.3.1",
+    "ts-node": "^3.2.1",
+    "typescript": "^2.4.2",
     "webpack": "^3.3.0",
     "webpack-dev-server": "^2.5.1"
   },
