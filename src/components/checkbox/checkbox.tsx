@@ -1,6 +1,6 @@
 import React = require('react');
 
-const style = require('./checkbox.css');
+const style = require('./checkbox.st.css').default;
 
 export interface CheckBoxProps {
     text: string;
@@ -27,7 +27,8 @@ export const CheckBox: React.SFC<Partial<CheckBoxProps>> = (props) => (
 
         <input data-automation-id="NATIVE_CHECKBOX"
                type="checkbox"
-               className={style.nativeCheckbox}/>
+               className={style.nativeCheckbox}
+               checked={props.value}/>
     </div>
 );
 

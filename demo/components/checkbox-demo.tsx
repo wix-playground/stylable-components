@@ -6,7 +6,7 @@ import {CheckBox, CheckBoxIconProps} from "../../src/components/checkbox/checkbo
 export const demoCheckBoxText: string = 'I agree to the terms above';
 export const demoCheckBoxInitialValue: boolean = false;
 
-const style = require('./checkbox-demo.css');
+const style = require('./checkbox-demo.css').default;
 
 @observer
 export class CheckBoxDemo extends React.Component<{},{value: boolean}> {
