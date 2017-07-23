@@ -1,7 +1,7 @@
 {
-  "name": "wix-react-components",
+  "name": "stylable-components",
   "version": "0.0.1",
-  "description": "Common, fully-tested, strictly-typed, Wix-styled, React components library",
+  "description": "Common, fully-tested, strictly-typed, Stylable-styled, React components library.",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
   "scripts": {
