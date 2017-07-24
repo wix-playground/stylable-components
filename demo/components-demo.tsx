@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {CheckBoxDemo} from "./components/checkbox-demo";
 import { TreeViewDemo } from './components/tree-view-demo';
 import './style.st.css';
 import '../src/style/default-theme/base.st.css';
@@ -13,6 +14,10 @@ export class ComponentsDemo extends React.Component<{}, {}>{
 
     render() {
         return <div>
+            <div>
+                <h2>CheckBox</h2>
+                <CheckBoxDemo />
+            </div>
             <div>
                 <h2>TreeView</h2>
                 <TreeViewDemo />
