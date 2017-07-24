@@ -29,7 +29,7 @@ A component which allows the user to take action by choosing an item from a list
 
 The datasource property accepts the following:
 * Array<string | Symbol> - The ItemRenderer handles the creation of ListItems from this data type. A symbol should be used to identify a divider item.
-* Array<object | Symbol> - When using an object array, the dataScheme property should be updated to according to the object.
+* Array<object | Symbol> - When using an object array, the dataSchema property should be updated to according to the object.
 
 ## Styling
 
@@ -96,6 +96,6 @@ For the default item renderer, just render a string for every item.
 
 * Create a SelectionList which receives children and renders them
 * Create a SelectionList which receives a string array and renders it using the default itemRenderer
-* Create a SelectionList which receives an object array and renders it with the dataScheme mapping
+* Create a SelectionList which receives an object array and renders it with the dataSchema mapping
 * Create a SelectionList which supports mouse input handling
 * Create a SelectionList which supports keyboard navigation
