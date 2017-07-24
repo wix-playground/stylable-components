@@ -1,7 +1,7 @@
 import React = require('react');
 import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react';
 import {CheckBoxDemo, demoCheckBoxText} from "../../demo/components/checkbox-demo";
-import {CheckBox, CheckBoxIconProps} from "../../src/components/checkbox/checkbox";
+import {CheckBox, CheckBoxIconProps} from "../../src";
 
 const boxSVG: React.SFC<CheckBoxIconProps> = (props) => {
     return (
@@ -34,7 +34,8 @@ describe('<Checkbox/>', function () {
            expect(select('CHECKBOX_ROOT')).to.be.present();
            expect(select('CHECKBOX_BOX')).to.be.present();
            expect(select('CHECKBOX_TICKMARK')).to.be.absent();
-           expect(select('CHECKBOX_LABEL')).to.have.text(demoCheckBoxText)
+           expect(select('CHECKBOX_LABEL')).to.have.text(demoCheckBoxText);
+           expect(select('BUTTON_SUBMIT')).to.be.present().and.to.have.attr('disabled');
         });
 
         simulate.click(select('CHECKBOX_ROOT'));
@@ -42,7 +43,7 @@ describe('<Checkbox/>', function () {
         return waitFor(() => {
             expect(select('CHECKBOX_TICKMARK')).to.be.present();
             expect(select('CHECKBOX_TICKMARK')).to.be.insideOf(select('CHECKBOX_BOX') as HTMLElement);
-
+            expect(select('BUTTON_SUBMIT')).to.not.have.attr('disabled');
         });
     });
 
