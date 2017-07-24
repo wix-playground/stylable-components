@@ -4,7 +4,7 @@ import {observable, action} from 'mobx';
 import {observer} from 'mobx-react';
 import {SyntheticEvent} from "react";
 import {KeyCodes} from '../../common/key-codes';
-const styles = require('./date-picker.st.css');
+import styles from './date-picker.st.css';
 
 export interface DatePickerProps {
     date: Date;
