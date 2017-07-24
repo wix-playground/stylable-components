@@ -26,4 +26,8 @@ describe('<Popup />', function () {
             });
         });
     });
+
+    it('renders the pop up in the default location', function () {
+        
+    })
 });
