@@ -22,7 +22,7 @@ export class ToogleDemo extends React.Component<{}, {}> {
                         No icons
                         <Toogle
                             label='without icons'
-                            displayIcons={false}
+                            displayIcon={false}
                             checked={this.state.checked2}
                             onChange={checked2 => this.setState({checked2})}
                         />

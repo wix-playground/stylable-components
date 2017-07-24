@@ -4,7 +4,7 @@
 
 [![Sauce Test Status](https://saucelabs.com/browser-matrix/WixReactComponents.svg)](https://saucelabs.com/u/WixReactComponents)
 
-Common, fully-tested, strictly-typed, React components library.
+Fully-tested & strictly-typed component library based on React, using optional Wix styling.
 
 ### Components
 - Under construction...
