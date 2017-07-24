@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { TreeView } from '../../src';
 import { TreeItemData } from '../../src/components/tree-view/tree-view';
-import { observable, action } from 'mobx';
+import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 
 export const treeData: TreeItemData[] = [
@@ -38,7 +38,6 @@ export class TreeViewDemo extends React.Component<{}, {}> {
         item: {}
     });
 
-    @action
     onSelectItem = (item: Object) => {
         this.selected.item = item;
     };
