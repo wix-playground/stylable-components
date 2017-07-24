@@ -35,7 +35,6 @@
     "mocha-loader": "^1.1.1",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
-    "stylable": "^1.0.4",
     "stylable-integration": "^2.0.7",
     "test-drive-react": "^0.5.0",
     "ts-loader": "^2.3.1",
@@ -47,6 +46,7 @@
   "testGlob": "./test/**/*.spec.ts?(x)",
   "license": "MIT",
   "dependencies": {
+    "stylable": "^1.0.5",
     "stylable-react-component": "^1.0.3"
   }
 }
