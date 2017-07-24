@@ -1,18 +1,23 @@
-@value vars: "../../style/default-theme/variables.css";
-@value color_Default, color_MainTextBackground, color_MainText from vars;
-@value arrowThickness: 0.09em;
-@value headerHeight: 60px;
-@value dropdownWidth: 330px;
-@value dropdownArrowWidth: 11px;
-@value dropdownArrowHeight: 12px;
-@value inputWidth: 192px;
+:import{
+    -sb-from: "../../style/default-theme/variables.st.css";
+    -sb-named: color_Default, color_MainText_Background, color_MainText;
+}
+
+:vars {
+    arrowThickness: 0.09em;
+    headerHeight: 60px;
+    dropdownWidth: 330px;
+    dropdownArrowWidth: 11px;
+    dropdownArrowHeight: 12px;
+    inputWidth: 192px;
+}
 
 .input {
-    width: inputWidth;
+    width: value(inputWidth);
 }
 
 .dropdownArrowWrapper {
-    width: inputWidth;
+    width: value(inputWidth);
 }
 
 .dropdownArrow {
@@ -20,22 +25,22 @@
     height: 0;
     position: relative;
     /* Center arrow */
-    left: calc(50% - dropdownArrowWidth);
-    border-left: dropdownArrowWidth solid transparent;
-    border-right: dropdownArrowWidth solid transparent;
-    border-bottom: dropdownArrowHeight solid color_Default;
+    left: calc(50% - value(dropdownArrowWidth));
+    border-left: value(dropdownArrowWidth) solid transparent;
+    border-right: value(dropdownArrowWidth) solid transparent;
+    border-bottom: value(dropdownArrowHeight) solid value(color_Default);
 }
 
 .dropdown {
-    width: dropdownWidth;
+    width: value(dropdownWidth);
     height: 348px;
-    border: solid 1px color_Default;
+    border: solid 1px value(color_Default);
 }
 
 .header {
     width: 100%;
-    height: headerHeight;
-    background-color: color_Default;
+    height: value(headerHeight);
+    background-color: value(color_Default);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -50,35 +55,47 @@
     font-size: 16px;
     line-height: 1.5;
     text-align: center;
-    color: color_MainTextBackground;
+    color: value(color_MainText_Background);
+}
+
+.arrowWrapper {
+    height: 100%;
+    width: 20%;
+    line-height: 58px;
+    cursor: pointer;
+}
+
+.arrowWrapperPrev {
+    text-align: left;
+}
+
+.arrowWrapperNext {
+    text-align: right;
 }
 
 .headerArrow {
-    border-bottom: arrowThickness solid color_MainTextBackground;
-    cursor: pointer;
-    width: 9px;
-    height: 9px;
-
+    border: solid value(color_MainTextBackground);
+    border-width: 0 value(arrowThickness) value(arrowThickness) 0;
+    display: inline-block;
+    padding: 0.26em;
 }
 
 .headerArrowNext {
     transform: rotate(-45deg);
     margin-right: 24px;
-    border-right: arrowThickness solid color_MainTextBackground;
 }
 
 .headerArrowPrev {
-    transform: rotate(45deg);
+    transform: rotate(135deg);
     margin-left: 24px;
-    border-left: arrowThickness solid color_MainTextBackground;
 }
 
 .calendar {
     display: flex;
     flex-wrap: wrap;
     /*align-content: space-between;*/
-    height: calc(100% - headerHeight);
-    width: dropdownWidth;
+    height: calc(100% - value(headerHeight));
+    width: value(dropdownWidth);
     padding: 30px;
 }
 
@@ -92,7 +109,7 @@
     font-weight: bold;
     line-height: 1.29;
     text-align: center;
-    color: color_MainText;
+    color: value(color_MainText);
     width: 36px;
     height: 36px;
     cursor: default;
@@ -102,13 +119,32 @@
     font-family: ArialMT;
     font-size: 14px;
     text-align: center;
-    color: color_MainText;
+    color: value(color_MainText);
     width: 36px;
     line-height: 36px;
     cursor: pointer;
 }
 
+.currentDay {
+    color: value(color_Default);
+}
+
+.selectedDay {
+    color: value(color_MainTextBackground);
+    background-color: value(color_Active);
+}
+
 .day:hover {
-    background-color: color_Default;
-    color: color_MainTextBackground;
+    color: value(color_MainTextBackground);
+    background-color: value(color_Hover);
+}
+
+.greyDay {
+    font-family: ArialMT;
+    font-size: 14px;
+    text-align: center;
+    color: #d8d8d8;
+    width: 36px;
+    line-height: 36px;
+    cursor: default;
 }
