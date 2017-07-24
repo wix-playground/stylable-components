@@ -10,12 +10,20 @@ function isNumber(value?: number): value is number {
     return typeof value == 'number';
 }
 
-export interface NumberInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface NumberInputProps {
     value?: number
-    onChangeValue?: (value: number | undefined) => void
-    step?: number
+    placeholder?: string
     min?: number
     max?: number
+    step?: number
+    required?: boolean
+    disabled?: boolean
+    label?: string
+    name?: string
+    error?: boolean
+    prefix?: JSX.Element
+    suffix?: JSX.Element
+    onChange?(event: React.SyntheticEvent<HTMLElement>, value: number | undefined): void
 }
 
 export interface NumberInputState {
@@ -54,14 +62,14 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
           : value;
     }
 
-    private commit(value?: number) {
-        const {onChangeValue} = this.props;
+    private commit(e: React.SyntheticEvent<HTMLElement>, value?: number) {
+        const {onChange} = this.props;
         const valueInRange = this.validate(value);
 
         this.updateValue(valueInRange);
 
         if (!this.committed) {
-            onChangeValue!(valueInRange);
+            onChange!(e, valueInRange);
             this.committed = true;
         }
     }
@@ -81,35 +89,35 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
         }
     }
 
-    private stepValue(direction: Direction) {
+    private stepValue(e: React.SyntheticEvent<HTMLElement>, direction: Direction) {
         const {value} = this.state;
         const {step, min, max} = this.props;
         const next = (direction == INCREASE ?
             isNumber(value) ? value + step! : step! :
             isNumber(value) ? value - step! : -step!);
 
-        this.commit(next);
+        this.commit(e, next);
     }
 
     private handleIncrement: React.MouseEventHandler<HTMLElement> =
-        () => this.stepValue(INCREASE);
+        e => this.stepValue(e, INCREASE);
 
     private handleDecrement: React.MouseEventHandler<HTMLElement> =
-        () => this.stepValue(DECREASE);
+        e => this.stepValue(e, DECREASE);
 
     private handleKeyDown: React.KeyboardEventHandler<HTMLElement> =
         e => {
             switch (e.keyCode) {
                 case KeyCodes.UP:
-                    this.stepValue(INCREASE);
+                    this.stepValue(e, INCREASE);
                     e.preventDefault();
                     break;
                 case KeyCodes.DOWN:
-                    this.stepValue(DECREASE);
+                    this.stepValue(e, DECREASE);
                     e.preventDefault();
                     break;
                 case KeyCodes.ENTER:
-                    this.commit(this.state.value);
+                    this.commit(e, this.state.value);
                     e.preventDefault();
                     break;
                 case KeyCodes.ESCAPE:
@@ -120,7 +128,7 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
         }
 
     private handleBlur: React.FocusEventHandler<HTMLInputElement> =
-        e => this.commit(this.state.value);
+        e => this.commit(e, this.state.value);
 
     private handleChange: React.ChangeEventHandler<HTMLInputElement> =
         e => {
@@ -141,7 +149,7 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
 
     render() {
         const {value} = this.state;
-        const {step, min, max, onChangeValue, ...props} = this.props;
+        const {step, min, max, prefix, suffix, ...props} = this.props;
         const disableIncrement = props.disabled || (isNumber(value) && value >= max!);
         const disableDecrement = props.disabled || (isNumber(value) && value <= min!);
 
