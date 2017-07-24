@@ -3,6 +3,7 @@ import {DatePickerDemo} from './components/date-picker-demo';
 import {CheckBoxDemo} from "./components/checkbox-demo";
 import { TreeViewDemo } from './components/tree-view-demo';
 import { BirthdayPickerDemo } from './components/birthday-picker-demo';
+import { SelectionListDemo } from './components/selection-list-demo';
 import './style.st.css';
 import '../src/style/default-theme/base.st.css';
 import { RadioGroupDemo } from './components/radio-group-demo'
@@ -31,6 +32,11 @@ export class ComponentsDemo extends React.Component<{}, {}>{
             <div>
                 <h2>DatePicker</h2>
                 <DatePickerDemo />
+            </div>
+            <hr />
+            <div>
+                <h2>SelectionList</h2>
+                <SelectionListDemo />
             </div>
             <hr />
             <div>
