@@ -16,6 +16,8 @@
                borderDefault,
                borderHover,
                borderFocus,
+               inputHeight,
+               inputWidth,
                borderDisabled;
 }
 
@@ -162,7 +164,8 @@
     font-weight: value(fontWeight);
     line-height: value(lineHeight);
     padding: 6px 12px;
-    height: 36px;
+    height: value(inputHeight);
+    width: value(inputWidth);
     outline: 0;
 }
 

@@ -2,7 +2,7 @@ import * as React from 'react';
 import {Stepper} from './stepper';
 import {KeyCodes} from '../../common/key-codes';
 
-const styles = require('./number-input.css');
+const styles = require('./number-input.st.css').default;
 
 function noop() {}
 
@@ -34,7 +34,7 @@ type Direction = 'increase' | 'decrease'
 const INCREASE: Direction = 'increase';
 const DECREASE: Direction = 'decrease';
 
-export class NumberInput extends React.Component<NumberInputProps, NumberInputState>{
+export class NumberInput extends React.Component<NumberInputProps, NumberInputState> {
     static defaultProps = defaultProps;
 
     constructor(props: NumberInputProps) {

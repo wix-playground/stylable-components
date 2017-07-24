@@ -1,7 +1,10 @@
-@value vars: "../../style/default-theme/variables.css";
-@value borderDefault, borderWidth, borderHover from vars;
-@value color_MainTextBackground, color_MainText from vars;
-@value inputHeight from vars;
+:import {
+    -sb-from: "../../style/default-theme/variables.st.css";
+    -sb-named: color_MainText,
+               color_MainText_Background,
+               borderWidth,
+               inputHeight;
+}
 
 .number-input {
     position: relative;
@@ -11,8 +14,8 @@
 .stepper {
     position: relative;
 
-    width: inputHeight;
-    height: inputHeight;
+    width: value(inputHeight);
+    height: value(inputHeight);
 }
 
 .stepper-control {
@@ -29,12 +32,12 @@
     margin: 0;
     padding: 0;
 
-    background-color: color_MainTextBackground;
-    color: color_MainText;
+    background-color: value(color_MainText_Background);
+    color: value(color_MainText);
 }
 
 .stepper-control-icon {
-    color: color_MainText;
+    color: value(color_MainText);
     width: 16px;
     height: 16px;
 }
@@ -42,21 +45,17 @@
 .stepper-control:hover .stepper-control-icon,
 .stepper-control:focus .stepper-control-icon,
 .stepper-control:disabled .stepper-control-icon {
-    color: color_MainTextBackground;
+    color: value(color_MainText_Background);
 }
 
-.stepper-increment {
-    composes: stepper-control;
-
+.stepper-control.stepper-increment {
     top: 0;
     right: 0;
     bottom: 50%;
     left: 0;
 }
 
-.stepper-decrement {
-    composes: stepper-control;
-
+.stepper-control.stepper-decrement {
     top: 50%;
     right: 0;
     bottom: 0;
@@ -66,9 +65,9 @@
 .number-input > .stepper {
     position: absolute;
 
-    right: borderWidth;
-    top: borderWidth;
-    bottom: borderWidth;
+    right: value(borderWidth);
+    top: value(borderWidth);
+    bottom: value(borderWidth);
 
     height: initial;
 }

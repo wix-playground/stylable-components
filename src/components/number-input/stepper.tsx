@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {ChevronDownIcon, ChevronUpIcon} from '../../icons';
 
-const styles = require('./number-input.css');
+const styles = require('./number-input.st.css').default;
 
 function noop() {}
 
@@ -24,7 +24,7 @@ export const Stepper: React.StatelessComponent<StepperProps> =
             <button
                 tabIndex={-1}
                 data-automation-id="STEPPER_INCREMENT"
-                className={styles['stepper-increment']}
+                className={styles['stepper-control.stepper-increment']}
                 onClick={() => onUp()}
                 disabled={disableUp}
             >
@@ -33,7 +33,7 @@ export const Stepper: React.StatelessComponent<StepperProps> =
             <button
                 tabIndex={-1}
                 data-automation-id="STEPPER_DECREMENT"
-                className={styles['stepper-decrement']}
+                className={styles['stepper-control.stepper-decrement']}
                 onClick={() => onDown()}
                 disabled={disableDown}
             >
