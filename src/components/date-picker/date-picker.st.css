@@ -1,3 +1,8 @@
+:import{
+    -sb-from: "../../style/default-theme/variables.st.css";
+    -sb-named: color_Default, color_MainText_Background, color_MainText;
+}
+
 :vars {
     arrowThickness: 0.09em;
     headerHeight: 60px;
@@ -5,11 +10,6 @@
     dropdownArrowWidth: 11px;
     dropdownArrowHeight: 12px;
     inputWidth: 192px;
-}
-
-:import{
-    -sb-from: "../../style/default-theme/variables.st.css";
-    -sb-named: color_Default, color_MainText_Background, color_MainText;
 }
 
 .input {
