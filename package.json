@@ -35,8 +35,8 @@
     "mocha-loader": "^1.1.1",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
-    "stylable": "^1.0.4",
-    "stylable-integration": "^2.0.7",
+    "stylable": "^2.0.0",
+    "stylable-integration": "^3.0.0",
     "test-drive-react": "^0.5.0",
     "ts-loader": "^2.3.1",
     "ts-node": "^3.2.1",
@@ -54,9 +54,5 @@
   "repository": {
     "type": "git",
     "url": "git@github.com:wix/stylable-components.git"
-  },
-  "dependencies": {
-    "stylable": "^1.0.5",
-    "stylable-integration": "^2.0.8"
   }
 }
