@@ -38,17 +38,8 @@ You can customize the following internal parts:
 * item - selector applying to items in the list
 
 ### States
-  
-The following states apply to the top level:
  
-| Name | Type | Description |
-| -- | -- | -- |
-| selected | boolean | Whether the any item is selected |
-| focused | boolean | Whether any item is focused by keyboard navigation |
-| hover | boolean | Whether the list is hovered by the mouse |
-| disabled | boolean | Whether the list is disabled for selection or not |
- 
-The following states apply to the item selector:
+The following states apply to the items. The SelectionList adds these states to every rendered item. 
  
 | Name | Type | Default | Description |
 | -- | -- | -- | -- |
@@ -77,6 +68,10 @@ Keyboard and mouse navigation have different styling behaviors.
 
 ## Internal Implementation
 
+### Children
+
+A child in the SelectionList requires a data-value property which will be used for the selected value.
+
 ### ItemRenderer
 
 The default item renderer supports the following properties:
@@ -91,6 +86,11 @@ const Divider = Symbol();
 ```
 
 For the default item renderer, just render a string for every item.
+
+### SelectionItem
+
+The SelectionItem is the item type rendered by the itemrenderer.
+
 
 ## Examples
 
