@@ -1,0 +1,48 @@
+/* Typography  */
+:vars {
+    fontFamily: Arial;
+    fontSize: 100%;
+    fontWeight: normal;
+    lineHeight: 1.5;
+
+    /* Colors */
+    B1: #4990e2;
+    B2: #5cb4ff;
+    B3: #4990e2;
+    B4: #257ade;
+    B5: #d1d1d1;
+
+    M1: #000000;
+    M2: #577083;
+    M3: #4A90E2;
+    M4: #EDF7FF;
+    M5: #D0021B;
+    M6: #c8c8c8;
+    M0: #ffffff;
+
+    color_MainText: value(M1); /* Base text color  */
+    color_MainPlaceholder: value(M2);
+    color_MainError: value(M5);
+    color_MainDisabled: value(M6);
+    color_MainText_Background: value(M0);
+
+    /* Component Colors */
+    color_Default: value(B1);
+    color_Hover: value(B2);
+    color_Active: value(B3);
+    color_Focus: value(B4);
+    color_Disabled: value(B5);
+
+    /* Copmponent Sizes */
+    inputHeight: 36px;
+    inputWidth: 192px;
+
+    /* Borders */
+    borderRadius: 0px;
+    borderWidth: 1px;
+    borderStyle: solid;
+    borderDefault: value(borderStyle) value(borderWidth) value(B5);
+    borderHover: value(borderStyle) value(borderWidth) value(B2);
+    borderFocus: value(borderStyle) value(borderWidth) value(B3);
+    borderDisabled: value(borderStyle) value(borderWidth) value(B5);
+}
