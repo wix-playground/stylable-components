@@ -1,6 +1,7 @@
 import React = require('react');
 import { expect, ClientRenderer, simulate } from 'test-drive-react';
 import {PopupDemo} from '../../demo/components/popup-demo';
+import {Popup} from '../../src/components/'
 
 const popup = 'POPUP';
 const container = 'POPUP_DEMO_DIV';
@@ -27,7 +28,19 @@ describe('<Popup />', function () {
         });
     });
 
-    it('renders the pop up in the default location', function () {
-        
+    it('renders a hidden pop up', function () {
+        const {select, waitForDom} = clientRenderer.render(
+            <div>
+                <div ref="anchor">Anchor</div>
+                <Popup anchor={this.refs.anchor}>
+                    <span>Popup Body</span>
+                </Popup>
+            </div>
+        );
+
+        return waitForDom(() => {
+            expect(select(popup)).to.be.ok;
+            expect(select(popup)).to.be.absent()
+        })
     })
 });
