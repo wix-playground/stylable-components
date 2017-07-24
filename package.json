@@ -1,7 +1,7 @@
 {
-  "name": "wix-react-components",
-  "version": "0.0.1",
-  "description": "Common, fully-tested, strictly-typed, Wix-styled, React components library",
+  "name": "stylable-components",
+  "version": "0.0.2",
+  "description": "Common, fully-tested, strictly-typed, Stylable-styled, React components library.",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
   "scripts": {
@@ -39,15 +39,24 @@
     "style-loader": "^0.18.2",
     "test-drive-react": "^0.5.0",
     "ts-loader": "^2.3.1",
-    "ts-node": "^3.2.0",
+    "ts-node": "^3.2.1",
     "typescript": "^2.4.2",
     "webpack": "^3.3.0",
     "webpack-dev-server": "^2.5.1"
   },
-  "testGlob": "./test/**/*.spec.ts?(x)",
-  "license": "MIT",
   "dependencies": {
     "stylable": "^1.0.2",
     "stylable-react-component": "^1.0.3"
+  },
+  "testGlob": "./test/**/*.spec.ts?(x)",
+  "license": "MIT",
+  "files": [
+    "lib",
+    "src",
+    "typings"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:wix/stylable-components.git"
   }
 }
