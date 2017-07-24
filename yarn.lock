@@ -4058,9 +4058,9 @@ strip-json-comments@^2.0.0, strip-json-comments@~2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-2.0.1.tgz#3c531942e908c2697c0ec344858c286c7ca0a60a"
 
-stylable-integration@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/stylable-integration/-/stylable-integration-3.0.0.tgz#8f4be0814c4d53fa60cfa65d8bf93be5411de64d"
+stylable-integration@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/stylable-integration/-/stylable-integration-3.0.1.tgz#c6d85c22a5437295f30f392ba82615065a9c7767"
   dependencies:
     deindent "^0.1.0"
     loader-utils "^1.1.0"
@@ -4068,9 +4068,9 @@ stylable-integration@^3.0.0:
     murmurhash "^0.0.2"
     node-fs-extra "^0.8.2"
 
-stylable@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/stylable/-/stylable-2.0.0.tgz#80bd49eae0331da297915fa0dcc51c8905922fb5"
+stylable@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/stylable/-/stylable-2.0.1.tgz#60e0f5c1a4bffd029c0b04adbd5e363b7c261a78"
   dependencies:
     camelcase-css "^1.0.1"
     css-selector-tokenizer "^0.7.0"
