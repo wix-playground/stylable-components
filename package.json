@@ -54,5 +54,9 @@
   "repository": {
     "type": "git",
     "url": "git@github.com:wix/stylable-components.git"
+  },
+  "dependencies": {
+    "stylable": "^1.0.5",
+    "stylable-integration": "^2.0.8"
   }
 }
