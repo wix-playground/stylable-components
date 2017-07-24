@@ -20,7 +20,7 @@ A component which allows the user to take action by choosing an item from a list
 | Name | Type | Default | Required | Description |
 | -- | -- | -- | -- | -- |
 | dataSource | any | null | no | There are a few options accepted as a datasource (see below for explanation) |
-| dataScheme | object | { id: 'id', displayText: 'displayText' } | no | Maps the object properties to the relevant properties required by the ItemRenderer |
+| dataSchema | object | { id: 'id', displayText: 'displayText' } | no | Maps the object properties to the relevant properties required by the ItemRenderer |
 | itemRenderer | func | default itemRenderer | no | Renders an item in the list |
 
 **Note** that if both datasource and children are present then the children are rendered first and then the dataSource items.
