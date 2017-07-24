@@ -2,6 +2,7 @@ import * as React from 'react';
 import {DatePickerDemo} from './components/date-picker-demo';
 import {CheckBoxDemo} from "./components/checkbox-demo";
 import { TreeViewDemo } from './components/tree-view-demo';
+import { BirthDatePickerDemo } from './components/birth-date-picker-demo';
 import './style.st.css';
 import '../src/style/default-theme/base.st.css';
 
@@ -16,6 +17,11 @@ export class ComponentsDemo extends React.Component<{}, {}>{
             <div>
                 <h2>CheckBox</h2>
                 <CheckBoxDemo />
+            </div>
+            <hr />
+            <div>
+                <h2>Birth date picker</h2>
+                <BirthDatePickerDemo />
             </div>
             <div>
                 <h2>TreeView</h2>
