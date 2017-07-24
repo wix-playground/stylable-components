@@ -11,10 +11,6 @@ export const maxDate = new Date();
 export class BirthDatePickerDemo extends React.Component<{}, {}> {
     @observable value: Date = initialValue;
 
-    handleChange = (newValue: Date) => {
-        this.setState({value: newValue});
-    };
-
     render() {
         const date = this.value;
         const formattedDate = date ? date.toISOString().substr(0, 10) : "";
