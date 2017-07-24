@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {CheckBoxDemo} from "./components/checkbox-demo";
 import { TreeViewDemo } from './components/tree-view-demo';
+import { PopupDemo } from './components/popup-demo'
 import './style.st.css';
 import '../src/style/default-theme/base.st.css';
 
@@ -109,6 +110,10 @@ export class ComponentsDemo extends React.Component<{}, {}>{
                         </tr>
                     </tbody>
                 </table>
+            </div>
+            <div>
+                <h2>Popup</h2>
+                <PopupDemo/>
             </div>
         </div>;
     }

@@ -60,5 +60,22 @@ describe('<Popup />', function () {
             expect(select(popup)).to.be.present();
             expect(select(popup, 'SPAN')).to.be.present();
         })
+    });
+
+    it('renders the popup in the correct default position', function () {
+        let div: HTMLDivElement;
+        const {select, waitForDom} = clientRenderer.render(
+            <div>
+                <div ref={(elem: HTMLDivElement) => div = elem}>Anchor</div>
+                <Popup anchor={div!} open={true}>
+                    <span data-automation-id="SPAN">Popup Body</span>
+                </Popup>
+            </div>
+        );
+
+        return waitForDom(() => {
+            expect([select(popup), div]).to.be.horizontallyAligned('left');
+            expect([div, select(popup)]).to.be.inVerticalSequence();
+        })
     })
 });
