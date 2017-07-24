@@ -13,34 +13,52 @@ describe('<Popup />', function () {
         clientRenderer.cleanup();
     });
 
-    describe('The popup user', function () {
-        it('clicks on the parent and the popup opens', async function () {
-            const {select, waitForDom} = clientRenderer.render(<PopupDemo />);
-
-            await waitForDom(() => {
-                expect(select(container)).to.be.present();
-                expect(select(container, popup)).to.be.absent()
-            });
-            simulate.click(select(container));
-            return waitForDom(() => {
-                expect(select(container, popup)).to.be.present();
-            });
-        });
-    });
+    // describe('The popup user', function () {
+    //     it('clicks on the parent and the popup opens', async function () {
+    //         const {select, waitForDom} = clientRenderer.render(<PopupDemo />);
+    //
+    //         await waitForDom(() => {
+    //             expect(select(container)).to.be.present();
+    //             expect(select(container, popup)).to.be.absent()
+    //         });
+    //         simulate.click(select(container));
+    //         return waitForDom(() => {
+    //             expect(select(container, popup)).to.be.present();
+    //         });
+    //     });
+    // });
 
     it('renders a hidden pop up', function () {
+        let div;
         const {select, waitForDom} = clientRenderer.render(
             <div>
-                <div ref="anchor">Anchor</div>
-                <Popup anchor={this.refs.anchor}>
+                <div ref={(elem) => div = elem}>Anchor</div>
+                <Popup anchor={div}>
                     <span>Popup Body</span>
                 </Popup>
             </div>
         );
 
         return waitForDom(() => {
-            expect(select(popup)).to.be.ok;
+            expect(select(popup)).to.not.be.undefined;
             expect(select(popup)).to.be.absent()
+        })
+    });
+
+    it('displays the popup and renders its children if the open prop is given', function () {
+        let div;
+        const {select, waitForDom} = clientRenderer.render(
+            <div>
+                <div ref={(elem) => div = elem}>Anchor</div>
+                <Popup anchor={div} open={true}>
+                    <span data-automation-id="SPAN">Popup Body</span>
+                </Popup>
+            </div>
+        );
+
+        return waitForDom(() => {
+            expect(select(popup)).to.be.present();
+            expect(select(popup, 'SPAN')).to.be.present();
         })
     })
 });

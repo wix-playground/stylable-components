@@ -2,13 +2,15 @@ import React = require('react');
 const style = require('./popup.st.css').default;
 
 export interface PopupProps {
-    anchor: React.ReactInstance;
+    anchor: any;
+    open?: boolean;
 }
 
-export class Popup extends React.Component<PopupProps,{}> {
+export class Popup extends React.Component<Partial<PopupProps>,{}> {
+
     render() {
         return (
-            <div data-automation-id="POPUP" className={style.closed}>
+            <div data-automation-id="POPUP" className={!this.props.open ? style.closed : ''}>
                 {this.props.children}
             </div>
         );
