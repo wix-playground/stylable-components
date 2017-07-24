@@ -1,11 +1,10 @@
-export default function hasState(elem: Element | null, name: string): void | never {
+import {expect} from 'test-drive-react';
+export default function hasState(elem: Element | null, styles: any, name: string): void | never {
     if (!elem) {
         throw new Error(`Element does not exists"`)
     }
-    const re = new RegExp(name + '$', 'i');
-    const stateExists = Object.keys((elem as HTMLElement).dataset).some(name => re.test(name))
-    if (!stateExists) {
-        throw new Error(`Element does not have state "${name}"`)
-    }
+    const map = styles.$stylesheet.cssStates({[name]: true});
+    const stylableName = Object.keys(map)[0];
+    expect(elem).to.have.attr(stylableName, 'true')
 }
 
