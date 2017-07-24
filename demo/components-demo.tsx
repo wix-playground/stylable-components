@@ -19,6 +19,11 @@ export class ComponentsDemo extends React.Component<{}, {}>{
                 <h2>CheckBox</h2>
                 <CheckBoxDemo />
             </div>
+            <hr />
+            <div>
+                <h2>Birth date picker</h2>
+                <BirthDatePickerDemo />
+            </div>
             <div>
                 <h2>TreeView</h2>
                 <TreeViewDemo />
@@ -110,11 +115,6 @@ export class ComponentsDemo extends React.Component<{}, {}>{
                         </tr>
                     </tbody>
                 </table>
-            </div>
-            <hr />
-            <div>
-                <h2>Birth date picker</h2>
-                <BirthDatePickerDemo />
             </div>
         </div>;
     }
