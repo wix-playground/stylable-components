@@ -7,44 +7,47 @@ const styles = require('./date-picker.st.css').default;
 
 export interface DropdownProps {
     date: Date;
+    focusedDate: Date;
     onChange (date: Date): void;
+    updateDropdownDate (date: Date): void;
     startingDay: number;
     highlightSelectedDate: boolean;
+    highlightFocusedDate: boolean;
 }
 
 const monthNames = getMonthNames();
 
 @observer
 export class Dropdown extends React.Component<DropdownProps, {}>{
-    @observable date: Date = this.props.date;
+    // @observable date: Date = this.props.date;
 
-    @action setDateTo (date: Date) {
-        this.date = date;
+    setDateTo (date: Date) {
+        this.props.updateDropdownDate(date);
     }
 
     @action setDayTo = (day: number) => {
-        const date = new Date(this.date.getFullYear(), this.date.getMonth(), day);
+        const date = new Date(this.props.focusedDate.getFullYear(), this.props.focusedDate.getMonth(), day);
         this.props.onChange(date);
     };
 
     @computed
     get monthName (): string {
-        return monthNames[this.date.getMonth()];
+        return monthNames[this.props.focusedDate.getMonth()];
     }
 
     @computed
     get year (): number {
-        return this.date.getFullYear();
+        return this.props.focusedDate.getFullYear();
     }
 
     @computed
     get dayArray (): Array<JSX.Element> {
         const dayArray: Array<number> = [];
-        for (let i = 1; i <= getDaysInMonth(this.date); i++) {
+        for (let i = 1; i <= getDaysInMonth(this.props.focusedDate); i++) {
             dayArray.push(i);
         }
 
-        return dayArray.map(day => <Day day={day} selected={this.isSelected(day)} currentDay={this.isCurrentDay(day)} onSelect={this.setDayTo} dataAutomationId={'DAY_' + day} key={'DAY_' + day} />);
+        return dayArray.map(day => <Day day={day} selected={this.isSelected(day)} focused={this.isFocused(day)} currentDay={this.isCurrentDay(day)} onSelect={this.setDayTo} dataAutomationId={'DAY_' + day} key={'DAY_' + day} />);
 
     }
 
@@ -57,8 +60,8 @@ export class Dropdown extends React.Component<DropdownProps, {}>{
     @computed
     get previousDays (): Array<JSX.Element> {
         const previousDays: Array<JSX.Element> = [];
-        const lastDayOfPrevMonth: number = getDaysInMonth(getMonthFromOffset(this.date, -1));
-        const numberOfDaysToDisplay: number = getNumOfPreviousDays(this.date, this.props.startingDay);
+        const lastDayOfPrevMonth: number = getDaysInMonth(getMonthFromOffset(this.props.focusedDate, -1));
+        const numberOfDaysToDisplay: number = getNumOfPreviousDays(this.props.focusedDate, this.props.startingDay);
 
         for (let i = (lastDayOfPrevMonth - numberOfDaysToDisplay) + 1; i <= lastDayOfPrevMonth; i++) {
             previousDays.push(<Day day={i} dataAutomationId={'PREV_DAY_' + i} key={'PREV_DAY_' + i} partOfPrevMonth={true} />);
@@ -70,7 +73,7 @@ export class Dropdown extends React.Component<DropdownProps, {}>{
     @computed
     get followingDays (): Array<JSX.Element> {
         const followingDays: Array<JSX.Element> = [];
-        const numberOfDaysToDisplay: number = getNumOfFollowingDays(this.date, this.props.startingDay);
+        const numberOfDaysToDisplay: number = getNumOfFollowingDays(this.props.focusedDate, this.props.startingDay);
 
         for (let i = 1; i <= numberOfDaysToDisplay; i++) {
             followingDays.push(<Day day={i} dataAutomationId={'NEXT_DAY_' + i} key={'NEXT_DAY_' + i} partOfNextMonth={true} />);
@@ -81,13 +84,22 @@ export class Dropdown extends React.Component<DropdownProps, {}>{
 
     isCurrentDay (day: number): boolean {
         const currentDate = new Date();
-        return (this.date.getFullYear() === currentDate.getFullYear() && this.date.getMonth() === currentDate.getMonth() && currentDate.getDate() === day)
+        return (this.props.focusedDate.getFullYear() === currentDate.getFullYear() && this.props.focusedDate.getMonth() === currentDate.getMonth() && currentDate.getDate() === day)
     }
 
     isSelected (day: number): boolean {
         // Don't highlight the current day as selected
         if (this.props.highlightSelectedDate) {
-            return (this.date.getFullYear() === this.props.date.getFullYear() && this.date.getMonth() === this.props.date.getMonth() && this.props.date.getDate() === day);
+            return false;
+            // return (this.date.getFullYear() === this.props.date.getFullYear() && this.date.getMonth() === this.props.date.getMonth() && this.props.date.getDate() === day);
+        } else {
+            return false;
+        }
+    }
+
+    isFocused (day: number): boolean {
+        if (this.props.highlightFocusedDate) {
+            return (this.props.focusedDate.getDate() === day);
         } else {
             return false;
         }
@@ -95,14 +107,14 @@ export class Dropdown extends React.Component<DropdownProps, {}>{
 
     goToNextMonth: React.EventHandler<React.SyntheticEvent<HTMLDivElement>> = (event: React.SyntheticEvent<HTMLDivElement>) => {
         event.preventDefault();
-        const nextMonth: Date = getMonthFromOffset(new Date(this.date.getFullYear(), this.date.getMonth(), 1), 1);
+        const nextMonth: Date = getMonthFromOffset(new Date(this.props.focusedDate.getFullYear(), this.props.focusedDate.getMonth(), 1), 1);
         this.setDateTo(nextMonth);
     };
 
     goToPrevMonth: React.EventHandler<React.SyntheticEvent<HTMLDivElement>> = (event: React.SyntheticEvent<HTMLDivElement>) => {
         event.preventDefault();
         event.stopPropagation();
-        const previousMonth: Date = getMonthFromOffset(new Date(this.date.getFullYear(), this.date.getMonth(), 1), -1);
+        const previousMonth: Date = getMonthFromOffset(new Date(this.props.focusedDate.getFullYear(), this.props.focusedDate.getMonth(), 1), -1);
         this.setDateTo(previousMonth);
     };
 

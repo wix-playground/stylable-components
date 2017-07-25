@@ -36,10 +36,11 @@ export class DatePicker extends React.Component<Partial<DatePickerProps>, {}>{
     }
 
     @observable date: Date = this.props.date ? this.props.date : new Date();
-    @observable dropdownDate: Date = this.date;
+    @observable dropdownDate: Date = this.props.date ? this.props.date : new Date();
     @observable inputValue: string = this.props.date ? this.props.date.toDateString() : '';
     @observable showDropdown: boolean = this.props.showDropdownOnInit ? this.props.showDropdownOnInit : false;
     @observable highlightSelectedDate: boolean = false;
+    @observable highlightFocusedDate: boolean = false;
 
     // Called with possibly invalid string from the input
     @action updateStateFromString = (input: string): void => {
@@ -68,6 +69,11 @@ export class DatePicker extends React.Component<Partial<DatePickerProps>, {}>{
         }
     };
 
+    @action updateDropdownDate = (updatedDate: Date): void => {
+        this.highlightFocusedDate = true;
+        this.dropdownDate = updatedDate;
+    };
+
     @action onInputChange: React.EventHandler<SyntheticEvent<HTMLInputElement>> = (event: React.SyntheticEvent<HTMLInputElement>): void => {
         const eventTarget = event.target as HTMLInputElement;
         this.inputValue = eventTarget.value;
@@ -88,10 +94,10 @@ export class DatePicker extends React.Component<Partial<DatePickerProps>, {}>{
         this.showDropdown = false;
     };
 
-    @action shiftDate = (daysToShift: number): void => {
+    shiftDate = (daysToShift: number): void => {
         const shiftedDate: Date = new Date(this.dropdownDate.getFullYear(), this.dropdownDate.getMonth(), this.dropdownDate.getDate());
         shiftedDate.setDate(this.dropdownDate.getDate() + daysToShift);
-        this.dropdownDate = shiftedDate;
+        this.updateDropdownDate(shiftedDate);
     };
 
     @action onKeyDown: React.EventHandler<SyntheticEvent<HTMLInputElement>> = (event: React.KeyboardEvent<HTMLInputElement>): void => {
@@ -169,9 +175,12 @@ export class DatePicker extends React.Component<Partial<DatePickerProps>, {}>{
                        data-automation-id="DATE_PICKER_INPUT" />
                 {this.showDropdown ?
                     <Dropdown onChange={this.updateStateFromDate}
-                              date={this.dropdownDate!}
+                              updateDropdownDate={this.updateDropdownDate}
+                              date={this.date}
+                              focusedDate={this.dropdownDate}
                               startingDay={this.props.startingDay!}
-                              highlightSelectedDate={this.highlightSelectedDate} />
+                              highlightSelectedDate={this.highlightSelectedDate}
+                              highlightFocusedDate={this.highlightFocusedDate}  />
                     :
                     null
                 }

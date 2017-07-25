@@ -8,6 +8,7 @@ export interface DayProps {
     day: number;
     selected?: boolean;
     currentDay?: boolean;
+    focused?: boolean;
     partOfPrevMonth?: boolean;
     partOfNextMonth?: boolean;
     dataAutomationId?: string;
@@ -18,7 +19,9 @@ export interface DayProps {
 export class Day extends React.Component<DayProps, {}> {
     @computed
     get styles(): string {
-        if (this.props.selected) {
+        if (this.props.focused) {
+            return [styles.calendarItem, styles.day, styles.selectedDay].join(' ');
+        } else if (this.props.selected) {
             return [styles.calendarItem, styles.day, styles.selectedDay].join(' ');
         } else if (this.props.currentDay) {
             return [styles.calendarItem, styles.day, styles.currentDay].join(' ');

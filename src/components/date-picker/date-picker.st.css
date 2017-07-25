@@ -1,6 +1,6 @@
 :import{
     -sb-from: "../../style/default-theme/variables.st.css";
-    -sb-named: color_Default, color_MainText_Background, color_MainText;
+    -sb-named: color_Default, color_MainText_Background, color_MainText, color_Active, color_Hover;
 }
 
 :vars {
@@ -33,7 +33,6 @@
 
 .dropdown {
     width: value(dropdownWidth);
-    height: 348px;
     border: solid 1px value(color_Default);
 }
 
@@ -74,7 +73,7 @@
 }
 
 .headerArrow {
-    border: solid value(color_MainTextBackground);
+    border: solid value(color_MainText_Background);
     border-width: 0 value(arrowThickness) value(arrowThickness) 0;
     display: inline-block;
     padding: 0.26em;
@@ -130,12 +129,12 @@
 }
 
 .selectedDay {
-    color: value(color_MainTextBackground);
+    color: value(color_MainText_Background);
     background-color: value(color_Active);
 }
 
 .day:hover {
-    color: value(color_MainTextBackground);
+    color: value(color_MainText_Background);
     background-color: value(color_Hover);
 }
 
