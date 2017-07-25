@@ -5,7 +5,8 @@ import {CheckBox, CheckBoxIconProps} from "../../src";
 
 const boxSVG: React.SFC<CheckBoxIconProps> = (props) => {
     return (
-        <svg data-automation-id="CHECKBOX_BOX_TEST"  height="1em" width="1em "viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" >
+        <svg data-automation-id="CHECKBOX_BOX_TEST" height="1em" width="1em " viewBox="0 0 16 16"
+             xmlns="http://www.w3.org/2000/svg">
             <path fill="none" stroke="black" d="M.5.5h15v15H.5z"/>
         </svg>
     )
@@ -54,12 +55,15 @@ describe('<Checkbox/>', function () {
             expect(select('CHECKBOX_ROOT')).to.be.present();
             expect(select('CHECKBOX_BOX')).to.be.present();
             expect(select('CHECKBOX_TICKMARK')).to.be.absent();
-            expect(select('CHECKBOX_LABEL')).to.have.text('')
         })
     });
 
-    it('Displays label', function () {
-        const {select, waitForDom} = clientRenderer.render(<CheckBox text="covfefe"/>);
+    it('Displays children', function () {
+        const {select, waitForDom} = clientRenderer.render(
+            <CheckBox>
+                <span data-automation-id="CHECKBOX_LABEL">covfefe</span>
+            </CheckBox>
+        );
 
         return waitForDom(() => {
             expect(select('CHECKBOX_LABEL')).to.have.text('covfefe');
@@ -67,10 +71,15 @@ describe('<Checkbox/>', function () {
     });
 
     it('Displays a box icon', function () {
-        const {select, waitForDom} = clientRenderer.render(<CheckBox boxIcon={boxSVG} text="yoyo"/>);
+        const {select, waitForDom} = clientRenderer.render(
+            <CheckBox boxIcon={boxSVG}>
+                <span data-automation-id="CHECKBOX_LABEL">yoyo</span>
+            </CheckBox>
+        );
 
-        return waitForDom(()=> {
+        return waitForDom(() => {
             expect(select('CHECKBOX_BOX_TEST')).to.be.present();
+            expect(select('CHECKBOX_LABEL')).to.have.text('yoyo');
             expect([select('CHECKBOX_BOX_TEST'), select('CHECKBOX_LABEL')]).to.be.verticallyAligned('bottom', 5);
         })
     });
@@ -78,7 +87,6 @@ describe('<Checkbox/>', function () {
     it('Displays tick mark when value is true', function () {
         const {select, waitForDom} = clientRenderer.render(
             <CheckBox boxIcon={boxSVG}
-                      text="yoyo"
                       tickIcon={tickSVG}
                       value={true}/>
         );
@@ -90,11 +98,10 @@ describe('<Checkbox/>', function () {
     });
 
     it('Calls onChange when clicked', async function () {
-       const onChange = sinon.spy();
+        const onChange = sinon.spy();
 
         const {select, waitForDom} = clientRenderer.render(
             <CheckBox boxIcon={boxSVG}
-                      text="yoyo"
                       tickIcon={tickSVG}
                       value={true}
                       onChange={onChange}/>
@@ -115,7 +122,6 @@ describe('<Checkbox/>', function () {
     it('Renders a native input component of type "checkbox" for SEO purposes', function () {
         const {select, waitForDom} = clientRenderer.render(
             <CheckBox boxIcon={boxSVG}
-                      text="yoyo"
                       tickIcon={tickSVG}
                       value={true}/>
         );

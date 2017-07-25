@@ -26,3 +26,8 @@
     strokeLinecap: square;
     strokeWidth: 1.5;
 }
+
+.label {
+    margin-left: 5px;
+    vertical-align: top
+}

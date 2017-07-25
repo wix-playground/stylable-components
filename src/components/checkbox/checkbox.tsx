@@ -3,11 +3,11 @@ import React = require('react');
 const style = require('./checkbox.st.css').default;
 
 export interface CheckBoxProps {
-    text: string;
     value: boolean;
     boxIcon: React.SFC<CheckBoxIconProps>;
     tickIcon: React.SFC<CheckBoxIconProps>;
     onChange: (value: boolean) => any;
+    children: any;
 }
 
 export interface CheckBoxIconProps {
@@ -22,13 +22,11 @@ export const CheckBox: React.SFC<Partial<CheckBoxProps>> = (props) => (
         {props.boxIcon!({value: props.value})}
         {props.value && props.tickIcon!({value: props.value})}
 
-        <span data-automation-id="CHECKBOX_LABEL"
-              className={style.label}>{props.text || ''}</span>
+        {props.children}
 
         <input data-automation-id="NATIVE_CHECKBOX"
                type="checkbox"
                className={style.nativeCheckbox}
-               id={props.text}
                checked={props.value}/>
     </div>
 );
@@ -59,7 +57,6 @@ const DefaultTickMarkSVG: React.SFC<CheckBoxIconProps> = (props) => {
 };
 
 CheckBox.defaultProps = {
-    text: '',
     value: false,
     boxIcon: DefaultCheckBoxSVG,
     tickIcon: DefaultTickMarkSVG,

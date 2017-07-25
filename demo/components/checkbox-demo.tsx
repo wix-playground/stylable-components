@@ -19,10 +19,11 @@ export class CheckBoxDemo extends React.Component<{},{value: boolean}> {
         return (
             <div>
                 <CheckBox value={this.value}
-                          text={demoCheckBoxText}
                           boxIcon={CheckBoxSVG}
                           tickIcon={TickMarkSVG}
-                          onChange={this.handleChange}/> <br/>
+                          onChange={this.handleChange}>
+                    <span data-automation-id="CHECKBOX_LABEL" className={style.label}>{demoCheckBoxText}</span>
+                </CheckBox> <br/>
                 <button disabled={!this.value} data-automation-id="BUTTON_SUBMIT">
                     Submit
                 </button>
