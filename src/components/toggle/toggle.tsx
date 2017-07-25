@@ -15,7 +15,6 @@ function Toogle(props: Props) {
     const {
         checked = false,
         disabled = false,
-        displayIcon = true,
         iconChecked,
         iconUnchecked,
         label,
@@ -50,4 +49,4 @@ function Toogle(props: Props) {
     </div>
 }
 
-export default SBStateless(Toogle, style)
+export default SBStateless(Toogle, style) as any
