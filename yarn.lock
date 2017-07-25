@@ -4239,9 +4239,9 @@ strip-json-comments@^2.0.0, strip-json-comments@~2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-2.0.1.tgz#3c531942e908c2697c0ec344858c286c7ca0a60a"
 
-stylable-integration@^3.0.5:
-  version "3.0.5"
-  resolved "https://registry.yarnpkg.com/stylable-integration/-/stylable-integration-3.0.5.tgz#dbc858de7554609ac9902d3596c255b6195f9eb0"
+stylable-integration@^3.0.6:
+  version "3.0.6"
+  resolved "https://registry.yarnpkg.com/stylable-integration/-/stylable-integration-3.0.6.tgz#489e23ae1b63c5175e21baa9dd04ad8ebbc96097"
   dependencies:
     deindent "^0.1.0"
     fs-extra "^4.0.0"
