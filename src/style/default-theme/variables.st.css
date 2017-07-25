@@ -23,7 +23,9 @@
 
     /* Stylable components colors */
     STC0: #b6b6b6;
+    STC5: #adbbc6;
     STC10: #daeffe;
+    STC20: #7d8c98;
 
     /* Basic colors */
     color_MainText: value(M1); /* Base text color  */
@@ -41,11 +43,12 @@
     color_Disabled: value(B5);
 
     /* Specific component colors */
-    color_Slider_Track: value(B5);
-    color_Slider_Track_Hover: value(STC0);
+    color_Slider_Track: value(STC5);
+    color_Slider_Track_Hover: value(STC20);
     color_Slider_Handle: value(M0);
+    color_Slider_HandleBorder: value(STC20);
     color_Slider_Handle_Hover: value(STC10);
-    color_Slider_Handle_Active: value(B10);
+    color_Slider_Handle_Active: value(M3);
 
     /* Borders */
     borderRadius: 0px;

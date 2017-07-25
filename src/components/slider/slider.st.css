@@ -1,11 +1,21 @@
 :import {
-    -sb-from: "../../style/default-theme/variables.st.css";
-    -sb-named: color_Border,
-               color_Slider_Track,
-               color_Slider_Track_Hover,
-               color_Slider_Handle,
-               color_Slider_Handle_Hover,
-               color_Slider_Handle_Active;
+  -sb-from: "../../style/default-theme/variables.st.css";
+  -sb-named:
+    color_Border,
+    color_Slider_Track,
+    color_Slider_Track_Hover,
+    color_Slider_Handle,
+    color_Slider_Handle_Hover,
+    color_Slider_Handle_Active;
+}
+
+:vars {
+  trackHeight: 4px;
+  thumbMargin: -6px;
+  thumbWidth: 16px;
+  thumbHeight: 16px;
+  thumbRadius: 8px;
+  thumbBorder: 1px solid value(color_Border);
 }
 
 .slider {
@@ -26,36 +36,36 @@
 }
 .slider::-webkit-slider-runnable-track {
   width: 100%;
-  height: 6px;
+  height: value(trackHeight);
   background: value(color_Slider_Track);
-  border-radius: 3px;
+  border-radius: calc(value(trackHeight)/2);
 }
 .slider::-webkit-slider-thumb {
-  border: 1px solid value(color_Border);
-  height: 16px;
-  width: 16px;
-  border-radius: 8px;
+  border: value(thumbBorder);
+  height: value(thumbHeight);
+  width: value(thumbWidth);
+  border-radius: value(thumbRadius);
   background: value(color_Slider_Handle);
   -webkit-appearance: none;
-  margin-top: -5px;
+  margin-top: value(thumbMargin);
 }
 .slider::-moz-range-track {
   width: 100%;
-  height: 6px;
+  height: value(trackHeight);
   background: value(color_Slider_Track);
-  border-radius: 3px;
+  border-radius: calc(value(trackHeight)/2);
 }
 
 .slider::-moz-range-thumb {
-  border: 1px solid value(color_Border);
-  height: 16px;
-  width: 16px;
-  border-radius: 8px;
+  border: value(thumbBorder);
+  height: value(thumbHeight);
+  width: value(thumbWidth);
+  border-radius: value(thumbRadius);
   background: value(color_Slider_Handle);
 }
 .slider::-ms-track {
   width: 100%;
-  height: 6px;
+  height: value(trackHeight);
   background: transparent;
   border-color: transparent;
   color: transparent;
@@ -69,12 +79,12 @@
   border-radius: 6px;
 }
 .slider::-ms-thumb {
-  border: 1px solid value(color_Border);
-  height: 16px;
-  width: 16px;
-  border-radius: 8px;
+  border: value(thumbBorder);
+  height: value(thumbHeight);
+  width: value(thumbWidth);
+  border-radius: value(thumbRadius);
   background: value(color_Slider_Handle);
-  height: 6px;
+  height: value(trackHeight);
 }
 
 /* Track on focus */
