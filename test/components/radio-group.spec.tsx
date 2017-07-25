@@ -201,7 +201,7 @@ describe('<RadioGroup />', function () {
     });
 
     it('renders children from the data source prop if given', function () {
-        const { select, waitForDom } = clientRenderer.render(<RadioGroup dataSource={['Child0', 'Child1']} onChange={emptyFunction} />);
+        const { select, waitForDom } = clientRenderer.render(<RadioGroup dataSource={[{value: 'Child0'}, {value:'Child1'}]} onChange={emptyFunction} />);
 
         return waitForDom(() => {
             const button0 = select(radioGroup, radioButton + '_0', 'INPUT') as HTMLInputElement;

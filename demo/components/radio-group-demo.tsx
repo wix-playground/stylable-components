@@ -35,7 +35,7 @@ export class RadioGroupDemo extends React.Component<{}, {}> {
                 </div>
                 <div data-automation-id="GROUP_2">
                     <h3>Data source radio group</h3>
-                    <RadioGroup onChange={this.onChange2} location="left" name="name" dataSource={['One', 'Two', 'Three']} />
+                    <RadioGroup onChange={this.onChange2} location="left" name="name" dataSource={[{value:'Default'}, {value:'Checked', checked:true}, {value:'Disabled', disabled:true}]} />
                     <span data-automation-id="RADIO_GROUP_DEMO_VALUE">Value: {this.myValue2}</span>
                 </div>
             </div>

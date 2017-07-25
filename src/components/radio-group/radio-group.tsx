@@ -6,7 +6,7 @@ const style = require('./radio-group.st.css').default;
 
 export interface RadioGroupProps {
     children?: any;
-    dataSource?: string[];
+    dataSource?: RadioButtonProps[];
     onChange: (e: string) => void;
     disabled?: boolean;
     location?: "right" | "left";
@@ -33,63 +33,81 @@ export class RadioGroup extends React.Component<Partial<RadioGroupProps>, {}> {
     constructor(props: RadioGroupProps) {
         super(props);
         this.checkedArray = [];
-        let noCheckedRadioButton = true;
         if (this.props.children) {
-            for (let i = 0; i < this.props.children.length; i++) {
-                this.checkedArray.push(observable({checked: noCheckedRadioButton ? this.props.children[i].props.checked: false}));
-                if (this.props.children[i].props.checked) {
-                    noCheckedRadioButton = false;
-                }
-            }
+            this.initCheckedArray(this.props.children, true);
         } else if(this.props.dataSource) {
-            for (let i = 0; i < this.props.dataSource.length; i++) {
-                this.checkedArray.push(observable({checked: false}));
-            }
+            this.initCheckedArray(this.props.dataSource, false);
         }
         this.name = this.props.name ? this.props.name : 'radio_group_' + counter++;
     }
 
+    initCheckedArray(dataArray: any[], isChildren: boolean = false) {
+        let noCheckedRadioButton = true;
+        for(let i = 0; i < dataArray.length; i++) {
+            let button = dataArray[i];
+            if (isChildren) {
+                button = dataArray[i].props;
+            }
+            this.checkedArray.push(observable({checked: noCheckedRadioButton ? button.checked: false}));
+            if (button.checked) {
+                noCheckedRadioButton = false;
+            }
+        }
+    }
+
     childrenOnClick(index: number) {
-        return (e: string) => {
-            this.checkedArray.forEach((value) => {
-                value.checked = false;
+        return (value: string) => {
+            this.checkedArray.forEach((data) => {
+                data.checked = false;
             });
             this.checkedArray[index].checked = true;
             if (this.props.onChange) {
-                this.props.onChange(e);
+                this.props.onChange(value);
             }
         };
     }
 
-    createChildren(dataArray: any, isDataSource: boolean) {
+    createChildrenFromDataSource() {
+        const childArray: React.ReactNode[] = [];
+        if(Array.isArray(this.props.dataSource)) {
+            this.props.dataSource!.forEach((data, index) => {
+                const props: RadioButtonProps = {
+                    key: index,
+                    value: data.value,
+                    automationId: 'RADIO_BUTTON_' + index,
+                    checked: this.checkedArray[index].checked,
+                    onClick: this.childrenOnClick(index),
+                    disabled: this.props.disabled || data.disabled,
+                    location: this.props.location,
+                    name: this.name
+                };
+                childArray.push(React.createElement(RadioButton, props))
+            })
+        }
+        return childArray;
+    }
+
+    createChildren(dataArray: any) {
         const childArray: React.ReactNode[] = [];
         for (let index = 0; index < dataArray.length; index++) {
             const data = dataArray[index];
-            const props: RadioButtonProps = {
-                key: index,
-                value: '',
-                automationId: 'RADIO_BUTTON_' + index,
-                checked: this.checkedArray[index].checked,
-                onClick: this.childrenOnClick(index),
-                disabled: this.props.disabled,
-                location: this.props.location,
-                name: this.name};
 
-            if (isDataSource) {
-                props.value = data;
-                childArray.push(React.createElement(RadioButton, props));
+            if (data.type === RadioButton) {
+                const props: RadioButtonProps = {
+                    key: index,
+                    value: data.props.value,
+                    automationId: 'RADIO_BUTTON_' + index,
+                    checked: this.checkedArray[index].checked,
+                    onClick: this.childrenOnClick(index),
+                    disabled: this.props.disabled || data.props.disabled,
+                    location: this.props.location,
+                    name: this.name};
+
+                childArray.push(React.cloneElement(data as ReactElement<any>, props));
             } else {
-                if (data.type === RadioButton) {
-                    if ((data.props as RadioButtonProps).disabled) {
-                        props.disabled = true;
-                    }
-                    props.value = (data.props as RadioButtonProps).value;
-                    childArray.push(React.cloneElement(data as ReactElement<any>, props));
-                } else {
-                    childArray.push(React.cloneElement(data as ReactElement<any>, {key: index,
-                        checked: this.checkedArray[index].checked,
-                        onClick: action(this.childrenOnClick(index))}));
-                }
+                childArray.push(React.cloneElement(data as ReactElement<any>, {key: index,
+                    checked: this.checkedArray[index].checked,
+                    onClick: action(this.childrenOnClick(index))}));
             }
         }
         return childArray;
@@ -99,14 +117,16 @@ export class RadioGroup extends React.Component<Partial<RadioGroupProps>, {}> {
         const dataArray = this.props.children ? this.props.children : this.props.dataSource;
         let childArray: React.ReactNode[] = [];
 
-        if (this.props.dataSource!.length > 0) {
-            childArray = this.createChildren(this.props.dataSource, true);
-        } else if (React.isValidElement(dataArray)) {
-            childArray.push(dataArray);
-        } else {
-            if (this.props.children) {
-                childArray = this.createChildren(this.props.children, false);
+        if (this.props.children) {
+            if (React.isValidElement(dataArray)) {
+                childArray.push(dataArray);
+            } else {
+                if (this.props.children) {
+                    childArray = this.createChildren(this.props.children);
+                }
             }
+        } else if (this.props.dataSource!.length > 0) {
+            childArray = this.createChildrenFromDataSource();
         }
 
         return (
