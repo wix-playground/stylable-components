@@ -38,15 +38,13 @@
     "react-dom": "^15.6.1",
     "stylable": "^2.0.4",
     "stylable-integration": "^3.0.6",
+    "stylable-react-component": "^1.0.3",
     "test-drive-react": "^0.5.0",
     "ts-loader": "^2.3.1",
     "ts-node": "^3.3.0",
     "typescript": "^2.4.2",
     "webpack": "^3.3.0",
     "webpack-dev-server": "^2.6.1"
-  },
-  "dependencies": {
-    "stylable-react-component": "^1.0.3"
   },
   "testGlob": "./test/**/*.spec.ts?(x)",
   "license": "MIT",
