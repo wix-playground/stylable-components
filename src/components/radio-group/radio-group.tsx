@@ -33,12 +33,12 @@ export class RadioGroup extends React.Component<Partial<RadioGroupProps>, {}> {
     constructor(props: RadioGroupProps) {
         super(props);
         this.checkedArray = [];
-        let flag = true;
+        let noCheckedRadioButton = true;
         if (this.props.children) {
             for (let i = 0; i < this.props.children.length; i++) {
-                this.checkedArray.push(observable({checked: flag ? this.props.children[i].props.checked: false}));
+                this.checkedArray.push(observable({checked: noCheckedRadioButton ? this.props.children[i].props.checked: false}));
                 if (this.props.children[i].props.checked) {
-                    flag = false;
+                    noCheckedRadioButton = false;
                 }
             }
         } else if(this.props.dataSource) {
@@ -46,7 +46,7 @@ export class RadioGroup extends React.Component<Partial<RadioGroupProps>, {}> {
                 this.checkedArray.push(observable({checked: false}));
             }
         }
-        this.name = this.props.name ? this.props.name : 'name_' + counter++;
+        this.name = this.props.name ? this.props.name : 'radio_group_' + counter++;
     }
 
     childrenOnClick(index: number) {
@@ -150,7 +150,7 @@ export class RadioButton extends React.Component<RadioButtonProps, {}> {
     render() {
         return (
             <div data-automation-id={this.props.automationId} className={style['radio-container']} onClick={this.onClick}>
-                {this.props.location === "left" ? <span data-automation-id="LABEL">{this.props.value}</span> : ''}
+                {this.props.location === "left" ? <span className={style.leftLabel} data-automation-id="LABEL">{this.props.value}</span> : ''}
                 <div data-automation-id="INPUT_CONTAINER" className={this.props.disabled ? style['disabled'] : style['enabled']}>
                     {this.props.checked ? checkedRadioSvg(this.props.disabled!) : emptyRadioSvg(this.props.disabled!)}
                     <input type="radio"
@@ -162,7 +162,7 @@ export class RadioButton extends React.Component<RadioButtonProps, {}> {
                            disabled={this.props.disabled}
                            readOnly={true}/>
                 </div>
-                {this.props.location === "right" ? <span data-automation-id="LABEL">{this.props.value}</span> : ''}
+                {this.props.location === "right" ? <span className={style.rightLabel} data-automation-id="LABEL">{this.props.value}</span> : ''}
                 {this.props.children}
             </div>
         )

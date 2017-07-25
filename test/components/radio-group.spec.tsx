@@ -19,11 +19,11 @@ describe('<RadioGroup />', function () {
         it('clicks on a button and it is selected', async function () {
             const {select, waitForDom} = clientRenderer.render(<RadioGroupDemo/>);
 
-            await waitForDom(() => { expect(select("RADIO_GROUP_DEMO", radioGroup, radioButton + '_0')).to.be.present() });
-            const button0 = select(radioGroup, radioButton + '_0') as HTMLInputElement;
+            await waitForDom(() => { expect(select("RADIO_GROUP_DEMO", "GROUP_1", radioGroup, radioButton + '_0')).to.be.present() });
+            const button0 = select('GROUP_1', radioGroup, radioButton + '_0') as HTMLInputElement;
             button0.click();
             await waitForDom(() => {
-                expect(select('RADIO_GROUP_DEMO_VALUE')).to.have.text('Value: This way!');
+                expect(select('GROUP_1', 'RADIO_GROUP_DEMO_VALUE')).to.have.text('Value: This way!');
             });
         });
     });
@@ -267,7 +267,7 @@ describe('<RadioGroup />', function () {
                 const button = select(radioButton + '_0', 'INPUT_CONTAINER');
                 expect(label).to.have.text('Omega');
                 expect([button, label]).to.be.horizontallyAligned;
-                expect([button, label]).to.be.inHorizontalSequence();
+                expect([button, label]).to.be.inHorizontalSequence({distance: 10});
             })
         });
 
@@ -278,7 +278,7 @@ describe('<RadioGroup />', function () {
                 const label = select(radioButton + '_0', 'LABEL');
                 const button = select(radioButton + '_0', 'INPUT_CONTAINER');
                 expect([label, button]).to.be.horizontallyAligned;
-                expect([label, button]).to.be.inHorizontalSequence();
+                expect([label, button]).to.be.inHorizontalSequence({distance: 10});
             })
         });
 

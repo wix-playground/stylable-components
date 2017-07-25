@@ -25,5 +25,12 @@
     align-self: center;
     width: 16px;
     height: 16px;
+}
 
+.leftLabel {
+    margin-right: 10px;
+}
+
+.rightLabel {
+    margin-left: 10px;
 }
