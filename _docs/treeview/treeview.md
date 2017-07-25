@@ -6,7 +6,7 @@
 
 ![TreeView example](./assets/treeview.png)
 
-A TreeView is composed of nodes. Each node (referred to internally as a TreeItem) can have additional nodes as children. ~~This is often visualized by indentation in a list.~~ If a node has children, then the node also has an "expand" icon (typically an arrow) to expand and collapse that particular node.
+A TreeView is composed of nodes. Each node (referred to internally as a TreeItem) can have additional nodes as children. If a node has children, then the node also has an "expand" icon (typically an arrow) to expand and collapse that particular node.
 
 ## API
 
@@ -18,8 +18,8 @@ A TreeView is composed of nodes. Each node (referred to internally as a TreeItem
 | mapChildren | function | none | yes | Maps children for the item renderer. |
 | itemRenderer | function | default function | no | Overrides the default function for rendering nodes.<br>`function(item: TreeItem)` |
 | selectedItem | Object reference | null | no | The selected object, by default none, is selected. |
-| keyboardNavigation | Boolean | true | no | When enabled, user can traverse the tree using keyboard arrow keys. |
-| loadOnDemand | Boolean | false | no | Whether parent nodes are populated with children before they are expanded. |
+| keyboardNavigation | boolean | true | no | When enabled, user can traverse the tree using keyboard arrow keys. |
+| loadOnDemand | boolean | false | no | Whether parent nodes are populated with children before they are expanded. |
 | loadMethod | function | null | no | The method used to load the children of a node when loadOnDemand is true.<br>`function(item: TreeItem)`<br>returns a promise or a list of Objects |
 | filter | function | default function | no | The default function searches according to the node title with exact prefix matching.<br>`function(item: Object)`|
 | onSelect | function | null | no | Triggered when a selection has been changed. |
@@ -38,6 +38,8 @@ A TreeView is composed of nodes. Each node (referred to internally as a TreeItem
 
 
 ### Code Examples
+
+**Sample data for the examples.**
 
 ```
 const treeData: TreeItemData[] = [
@@ -61,13 +63,15 @@ const treeData: TreeItemData[] = [
 ];
 ```
 
-* Renders a tree view
+**Example views**
+
+* Renders a TreeView
 
 ```
 <TreeView dataSource={data} />
 ```
 
-* Renders a tree view with the ability to select an item
+* Renders a TreeView with the ability to select an item.
 
 ```
 const parentState = {
@@ -81,9 +85,7 @@ function onSelectItem(selectedItem) {
 <TreeView dataSource={data} selectedItem={this.state.selectedItem} onSelectItem={this.onSelectItem.bind(this)} />
 ```
 
-* Render a tree (like above) with ability to expand/collapse nodes
-
-* Render a tree (one icon, several nodes hierarchy) using the traverse children and a non-default item renderer that has a type for a parent node and different type for all children
+* Render a TreeView (one icon, several nodes hierarchy) using the traverse children and a non-default item renderer that has a type for a parent node and different type for all children.
 
 ```
 const data = [
@@ -114,12 +116,3 @@ const data = [
   ];
 ```
 
-* Render a tree which shows keyboard navigation working
-
-* Search for a TreeItem (using a string query - default search)
-
-* Search for a TreeItem (using a custom search function)
-
-* Lazy loading -> implement the loadMethod and pending state
-
-* Create a directory view in a tree (load a directory, show files, ...) -> a demo project
