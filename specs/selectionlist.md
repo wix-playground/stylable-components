@@ -20,7 +20,7 @@ A component which allows the user to take action by choosing an item from a list
 | Name | Type | Default | Required | Description |
 | -- | -- | -- | -- | -- |
 | dataSource | any | null | no | There are a few options accepted as a datasource (see below for explanation) |
-| dataScheme | object | { id: 'id', displayText: 'displayText' } | no | Maps the object properties to the relevant properties required by the ItemRenderer |
+| dataSchema | object | { id: 'id', displayText: 'displayText' } | no | Maps the object properties to the relevant properties required by the ItemRenderer |
 | itemRenderer | func | default itemRenderer | no | Renders an item in the list |
 
 **Note** that if both datasource and children are present then the children are rendered first and then the dataSource items.
@@ -29,7 +29,7 @@ A component which allows the user to take action by choosing an item from a list
 
 The datasource property accepts the following:
 * Array<string | Symbol> - The ItemRenderer handles the creation of ListItems from this data type. A symbol should be used to identify a divider item.
-* Array<object | Symbol> - When using an object array, the dataScheme property should be updated to according to the object.
+* Array<object | Symbol> - When using an object array, the dataSchema property should be updated to according to the object.
 
 ## Styling
 
@@ -38,17 +38,8 @@ You can customize the following internal parts:
 * item - selector applying to items in the list
 
 ### States
-  
-The following states apply to the top level:
  
-| Name | Type | Description |
-| -- | -- | -- |
-| selected | boolean | Whether the any item is selected |
-| focused | boolean | Whether any item is focused by keyboard navigation |
-| hover | boolean | Whether the list is hovered by the mouse |
-| disabled | boolean | Whether the list is disabled for selection or not |
- 
-The following states apply to the item selector:
+The following states apply to the items. The SelectionList adds these states to every rendered item. 
  
 | Name | Type | Default | Description |
 | -- | -- | -- | -- |
@@ -77,6 +68,10 @@ Keyboard and mouse navigation have different styling behaviors.
 
 ## Internal Implementation
 
+### Children
+
+A child in the SelectionList requires a data-value property which will be used for the selected value.
+
 ### ItemRenderer
 
 The default item renderer supports the following properties:
@@ -92,10 +87,15 @@ const Divider = Symbol();
 
 For the default item renderer, just render a string for every item.
 
+### SelectionItem
+
+The SelectionItem is the item type rendered by the itemrenderer.
+
+
 ## Examples
 
 * Create a SelectionList which receives children and renders them
 * Create a SelectionList which receives a string array and renders it using the default itemRenderer
-* Create a SelectionList which receives an object array and renders it with the dataScheme mapping
+* Create a SelectionList which receives an object array and renders it with the dataSchema mapping
 * Create a SelectionList which supports mouse input handling
 * Create a SelectionList which supports keyboard navigation
