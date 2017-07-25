@@ -1,7 +1,5 @@
 import * as React from 'react';
 import {objectFitSupported} from '../../common/environment';
-import {observable, action} from 'mobx';
-import {observer} from 'mobx-react';
 import {SyntheticEvent} from "react";
 
 // Transparent 1x1 gif image
@@ -17,6 +15,10 @@ export interface ImageProps extends React.HTMLAttributes<HTMLImageElement> {
     onLoadError?: (error: ImageError) => void;
 }
 
+export interface ImageState {
+    src: string;
+}
+
 export class ImageError extends Error {
     constructor(src: string) {
         super('Image Error');
@@ -26,22 +28,23 @@ export class ImageError extends Error {
     src: string;
 }
 
-@observer
-export class Image extends React.Component<ImageProps, {}>{
+export class Image extends React.Component<ImageProps, ImageState>{
     static defaultProps: Partial<ImageProps> = {
         defaultImage: onePixelTransparentSrc,
         title: ''
     };
 
-    @observable src: string = this.props.src ? this.props.src : this.props.defaultImage!;
+    componentWillMount () {
+        this.setState({ src: this.props.src ? this.props.src : this.props.defaultImage! });
+    }
 
-    @action setSrcToFallback = () => {
-        this.src = this.getFallbackSrcFor(this.src)!;
+    setSrcToFallback = () => {
+        this.setState({ src: this.getFallbackSrcFor(this.state.src)! });
     };
 
     onError: React.EventHandler<SyntheticEvent<HTMLImageElement>> = () => {
         if (this.props.onLoadError) {
-            this.props.onLoadError(new ImageError(this.src));
+            this.props.onLoadError(new ImageError(this.state.src));
         }
 
         this.setSrcToFallback();
@@ -50,14 +53,14 @@ export class Image extends React.Component<ImageProps, {}>{
     onLoad: React.EventHandler<SyntheticEvent<HTMLImageElement>> = () => {
         if (this.getImageSrc() !== onePixelTransparentSrc) {
             if (this.props.onLoad) {
-                this.props.onLoad({data: this.src});
+                this.props.onLoad({data: this.state.src});
             }
         }
     };
 
     getImageSrc () {
         // if object-fit isn't supported, we set the source on the background
-        return objectFitSupported ? this.src : onePixelTransparentSrc;
+        return objectFitSupported ? this.state.src : onePixelTransparentSrc;
     }
 
     getFallbackSrcFor (src: string) {
@@ -66,8 +69,8 @@ export class Image extends React.Component<ImageProps, {}>{
     }
 
     render() {
-        // remove defaultImage from props that will be applied to image tag
-        const { title, alt, defaultImage, ...rest } = this.props;
+        // remove certain props from the received props that shouldn't be applied to image tag
+        const { title, alt, defaultImage, onLoadError, ...rest } = this.props;
 
         return (
             <img {...rest}
