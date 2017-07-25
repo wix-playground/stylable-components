@@ -17,12 +17,6 @@ describe('<Toggle/>', () => {
         it('should have input', () => {
             expect(renderer.select('TOGGLE_INPUT')).to.not.null
         })
-        it('should render default unchecked icon', () => {
-            expect(renderer.select('TOGGLE_UNCHECKED_ICON')).to.not.null
-        })
-        it('should not render default checked icon', () => {
-            expect(renderer.select('TOGGLE_CHECKED_ICON')).to.be.null
-        })
     })
 
     describe('render with checked={true}', () => {
@@ -34,12 +28,6 @@ describe('<Toggle/>', () => {
         })
         it('should have input', () => {
             expect(renderer.select('TOGGLE_INPUT')).to.not.null
-        })
-        it('should not render default unchecked icon', () => {
-            expect(renderer.select('TOGGLE_UNCHECKED_ICON')).to.be.null
-        })
-        it('should render default checked icon', () => {
-            expect(renderer.select('TOGGLE_CHECKED_ICON')).to.not.null
         })
     })
 
@@ -109,16 +97,6 @@ describe('<Toggle/>', () => {
             )
             expect(renderer.select('TEST_ICON_CHECKED')).to.not.null;
             expect(renderer.select('TEST_ICON_UNCHECKED')).to.be.null;
-        })
-    })
-
-    describe('render with displayIcons={false}', () => {
-        const {select, waitForDom} = clientRenderer.render(<Toogle checked displayIcon={false}/>)
-        it('should not render default unchecked icon', () => {
-            return waitForDom(() => expect(select('TOGGLE_UNCHECKED_ICON')).to.be.null);
-        })
-        it('should not render default checked icon', () => {
-            return waitForDom(() => expect(select('TOGGLE_CHECKED_ICON')).to.be.null);
         })
     })
 

@@ -11,6 +11,8 @@
     B3: #4990e2;
     B4: #257ade;
     B5: #d1d1d1;
+    B6: #f1f1f1;
+    B7: #adbbc6;
 
     M1: #000000;
     M2: #577083;
@@ -18,6 +20,7 @@
     M4: #EDF7FF;
     M5: #D0021B;
     M6: #c8c8c8;
+    M7: #4a90e2;
     M0: #ffffff;
 
     color_MainText: value(M1); /* Base text color  */

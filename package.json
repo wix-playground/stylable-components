@@ -45,7 +45,8 @@
   },
   "dependencies": {
     "stylable": "^1.0.5",
-    "stylable-react-component": "^1.0.3"
+    "stylable-react-component": "^1.0.3",
+    "wix-style-variables": "^0.0.1"
   },
   "testGlob": "./test/**/*.spec.ts?(x)",
   "license": "MIT",

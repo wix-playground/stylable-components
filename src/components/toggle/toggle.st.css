@@ -1,22 +1,25 @@
+:import {
+    -sb-from: "../../style/default-theme/variables.st.css";
+    -sb-named:
+        B2,
+        B6,
+        B7,
+        M7,
+        color_MainText_Background;
+}
 :vars {
-	color-default: #daeffe;
-	color-default-hover: #c1e4fe;
-	color-checked: #3899ec;
-	color-hover: #4eb7f5;
-	color-disabled: #dadada;
-
 	width: 46px;
-	size: 24px;
+	switchSize: 20px;
 }
 .root {
 	-sb-states: checked, disabled;
 }
 .background {
 	width: value(width);
+	border: 1px solid value(B7);
 	padding: 1px;
-	border-radius: 12px;
-	background-color: value(color-default);
-	color: value(color-default);
+	border-radius: 100px;
+	background-color: value(color_MainText_Background);
 	cursor: pointer;
 	user-select: none;
 	transition: background-color 200ms linear,
@@ -32,9 +35,9 @@
 }
 
 .switch {
-	height: value(size);
-	width: value(size);
-	background-color: white;
+	height: value(switchSize);
+	width: value(switchSize);
+	background-color: value(B7);
 	border-radius: 100%;
 	display: flex;
 	justify-content: center;
@@ -43,24 +46,18 @@
 }
 
 .root:checked::switch {
-	transform: translateX(calc(value(width) - 2px - 100%))
+	transform: translateX(calc(value(width) - 4px - 100%))
 }
-
-.root:checked::background {
-	background-color: value(color-checked);
-	color: value(color-checked);
+.root:checked:not(:disabled)::switch {
+	background-color: value(M7);
 }
 
 .input:focus + .background,
-.root:hover::background {
-	background-color: value(color-hover);
+.root:not(:disabled):hover::background {
+	border-color: value(B2);
 }
 
-.root:hover:not(:checked)::background {
-	color: value(color-default-hover);
-}
 .root:disabled::background {
-	background-color: value(color-disabled);
-	color: value(color-disabled);
+	background-color: value(B6);
 	cursor: default;
 }

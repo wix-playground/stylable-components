@@ -4571,6 +4571,10 @@ window-size@0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/window-size/-/window-size-0.1.0.tgz#5438cd2ea93b202efa3a19fe8887aee7c94f9c9d"
 
+wix-style-variables@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/wix-style-variables/-/wix-style-variables-0.0.1.tgz#277ddb7d960a131626e786adab3cf3df6b6c0fc6"
+
 wordwrap@0.0.2:
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/wordwrap/-/wordwrap-0.0.2.tgz#b79669bb42ecb409f83d583cad52ca17eaa1643f"
