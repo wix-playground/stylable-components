@@ -9,8 +9,8 @@ export interface SliderState {};
 export class Slider extends React.Component<SliderProps, SliderState> {
   render() {
     return (
-      <div className={style['slider']} data-automation-id='SLIDER'>
-        <input type="range" />
+      <div className={style['slider-container']} data-automation-id='SLIDER'>
+        <input className={style['slider']} type="range" />
       </div>
     );
   }
