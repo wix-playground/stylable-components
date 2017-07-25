@@ -12,24 +12,19 @@ A component which allows the user to take action by choosing an item from a list
 
 | Name | Type | Default | Required | Description |
 | -- | -- | -- | -- | -- |
-| onSelect | func | null | no | Triggered when an item is selected in the list |
-| children | SelectionItem[] | null | no | Children to be rendered in the list |
+| selected | string | no | id of the selected item
+| onSelect | (id: string) => void | NOP | no | Triggered when an item is selected in the list |
+| children | any | null | no | Children to be rendered in the list |
 
 * The following props should be placed in an OptionList interface since they will need to be passed from higher order components.
 
 | Name | Type | Default | Required | Description |
 | -- | -- | -- | -- | -- |
-| dataSource | any | null | no | There are a few options accepted as a datasource (see below for explanation) |
+| dataSource | SelectionItem[] | [] | no | There are a few options accepted as a datasource (see below for explanation) |
 | dataSchema | object | { id: 'id', displayText: 'displayText' } | no | Maps the object properties to the relevant properties required by the ItemRenderer |
-| itemRenderer | func | default itemRenderer | no | Renders an item in the list |
+| itemRenderer | Component | default itemRenderer | no | Renders an item in the list |
 
 **Note** that if both datasource and children are present then the children are rendered first and then the dataSource items.
-
-### Datasource
-
-The datasource property accepts the following:
-* Array<string | Symbol> - The ItemRenderer handles the creation of ListItems from this data type. A symbol should be used to identify a divider item.
-* Array<object | Symbol> - When using an object array, the dataSchema property should be updated to according to the object.
 
 ## Styling
 
@@ -39,7 +34,7 @@ You can customize the following internal parts:
 
 ### States
  
-The following states apply to the items. The SelectionList adds these states to every rendered item. 
+The following states apply to the items. The SelectionList adds these states to every rendered item with the appropriate prefix (`data-`).
  
 | Name | Type | Default | Description |
 | -- | -- | -- | -- |
@@ -74,11 +69,12 @@ A child in the SelectionList requires a data-value property which will be used f
 
 ### ItemRenderer
 
-The default item renderer supports the following properties:
+ItemRenderer is a component with the following props:
 
-| Name | Type | Default | Required | Description |
-| -- | -- | -- | -- | -- |
-| isOptGroup | boolean | false | no | Whether an item is option title (optgroup). Option items are not selectable or traversable. |
+| Name | Type | Description |
+| -- | -- | -- |
+| item | SelectionItem | Item to be rendered by the ItemRenderer |
+| dataSchema | object | Data schema description
 
 Apart from SelectionItems the default ItemRenderer will accept a Divider symbol (divider) to be used as a divider.
 ```
@@ -89,7 +85,22 @@ For the default item renderer, just render a string for every item.
 
 ### SelectionItem
 
-The SelectionItem is the item type rendered by the itemrenderer.
+SelectionItem is a union type of the following
+
+| Type | Description |
+| -- | -- |
+| Divider | A Symbol representing non-selectable divider
+| string | Represents both item value and label
+| object | Item is represented as object with schema defined by `dataSchema`
+
+### dataSchema
+
+| Name | Type | Default | Required | Description |
+| -- | -- | -- | -- |
+| id | string | 'id' | Field containing unique identifier of the item's value
+| displayText | string | 'displayText' | Field containing text which is rendered as textual content of the item
+
+If the `'id'` field is missing in the item, it should be displayed but not selectable. (e.g. headings, etc.).
 
 
 ## Examples
