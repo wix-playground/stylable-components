@@ -28,7 +28,7 @@ export class ImageError extends Error {
     src: string;
 }
 
-export class Image extends React.Component<ImageProps, ImageState>{
+export class Image extends React.PureComponent<ImageProps, ImageState>{
     static defaultProps: Partial<ImageProps> = {
         defaultImage: onePixelTransparentSrc,
         title: ''
