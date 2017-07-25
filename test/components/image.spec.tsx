@@ -21,51 +21,51 @@ describe('<Image />', () => {
     }
 
     it('outputs an html image element to dom', () => {
-        const {select, waitForDom} = clientRenderer.render(<Image />);
+        const {select, waitForDom} = clientRenderer.render(<Image data-automation-id={nativeImage} />);
 
         return waitForDom(() =>
             expect(select(nativeImage) instanceof HTMLImageElement, 'Expected the Image component to be instance of HTMLImageElement').to.equal(true));
     });
 
     it('uses one pixel transparent gif as default source', () => {
-        const {select} = clientRenderer.render(<Image />);
+        const {select} = clientRenderer.render(<Image data-automation-id={nativeImage} />);
 
         return verifyElementSrc(select(nativeImage)!, onePixelTransparentSrc);
     });
 
     it('uses provided defaultImage as default source', () => {
-        const {select} = clientRenderer.render(<Image defaultImage="ABC-EZ-AS-123" />);
+        const {select} = clientRenderer.render(<Image defaultImage="ABC-EZ-AS-123" data-automation-id={nativeImage} />);
 
         return verifyElementSrc(select(nativeImage)!, 'ABC-EZ-AS-123');
     });
 
     it('sets the provided alt attribute', () => {
-        const {select, waitForDom} = clientRenderer.render(<Image alt="calvin cordozar broadus" />);
+        const {select, waitForDom} = clientRenderer.render(<Image alt="calvin cordozar broadus" data-automation-id={nativeImage} />);
 
         return waitForDom(() => expect(select(nativeImage)).to.have.attribute('alt', 'calvin cordozar broadus'));
     });
 
     it('sets the provided title attribute', () => {
-        const {select, waitForDom} = clientRenderer.render(<Image title="Daredevil" />);
+        const {select, waitForDom} = clientRenderer.render(<Image title="Daredevil" data-automation-id={nativeImage} />);
 
         return waitForDom(() => expect(select(nativeImage)).to.have.attribute('title', 'Daredevil'));
     });
 
     it('sets the provided src', () => {
-        const {select} = clientRenderer.render(<Image src="Wonderwoman" />);
+        const {select} = clientRenderer.render(<Image src="Wonderwoman" data-automation-id={nativeImage} />);
 
         return verifyElementSrc(select(nativeImage)!, 'Wonderwoman');
     });
 
     it('uses default source if provided src is an empty string', () => {
-        const {select, waitForDom} = clientRenderer.render(<Image src="" />);
+        const {select, waitForDom} = clientRenderer.render(<Image src="" data-automation-id={nativeImage} />);
 
         return waitForDom(() => expect(select(nativeImage)).to.have.attribute('src', onePixelTransparentSrc));
     });
 
     it('calls onLoad when image has loaded', () => {
         const onLoad = sinon.spy();
-        clientRenderer.render(<Image src={sampleImage} onLoad={onLoad} />);
+        clientRenderer.render(<Image src={sampleImage} onLoad={onLoad} data-automation-id={nativeImage} />);
 
         return waitFor(() => expect(onLoad).to.have.been.calledWithMatch({ data: sampleImage }));
     });
@@ -74,7 +74,7 @@ describe('<Image />', () => {
 
     it('calls onError when it cannot load a source, and falls back to default source', () => {
         const onError = sinon.spy();
-        const {select} = clientRenderer.render(<Image src={brokenSrc} onLoadError={onError} />);
+        const {select} = clientRenderer.render(<Image src={brokenSrc} onLoadError={onError} data-automation-id={nativeImage} />);
 
         return waitFor(() => expect(onError).to.have.been.calledWithMatch({ src: brokenSrc }))
         .then(() => verifyElementSrc(select(nativeImage)!, onePixelTransparentSrc));
@@ -82,7 +82,7 @@ describe('<Image />', () => {
 
     it('calls onError when it cannot load the given default image, and falls back to onePixelTransparentSrc', () => {
         const onError = sinon.spy();
-        const {select} = clientRenderer.render(<Image defaultImage={brokenSrc} onLoadError={onError} />);
+        const {select} = clientRenderer.render(<Image defaultImage={brokenSrc} onLoadError={onError} data-automation-id={nativeImage} />);
 
         return waitFor(() => expect(onError).to.have.been.calledWithMatch({ src: brokenSrc }))
         .then(() => verifyElementSrc(select(nativeImage)!, onePixelTransparentSrc));

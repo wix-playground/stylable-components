@@ -8,13 +8,13 @@ import {SyntheticEvent} from "react";
 export const onePixelTransparentSrc: string = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
 
 export interface ImageProps extends React.HTMLAttributes<HTMLImageElement> {
-    defaultImage: string;
-    title: string;
-    src: string;
-    alt: string;
+    defaultImage?: string;
+    title?: string;
+    src?: string;
+    alt?: string;
 
-    onLoad: (data: object) => void;
-    onLoadError: (error: ImageError) => void;
+    onLoad?: (data: object) => void;
+    onLoadError?: (error: ImageError) => void;
 }
 
 export class ImageError extends Error {
@@ -27,7 +27,7 @@ export class ImageError extends Error {
 }
 
 @observer
-export class Image extends React.Component<Partial<ImageProps>, {}>{
+export class Image extends React.Component<ImageProps, {}>{
     static defaultProps: Partial<ImageProps> = {
         defaultImage: onePixelTransparentSrc,
         title: ''
@@ -73,7 +73,6 @@ export class Image extends React.Component<Partial<ImageProps>, {}>{
             <img {...rest}
                  alt={alt}
                  title={title}
-                 data-automation-id="NATIVE_IMAGE"
                  src={this.getImageSrc()}
                  onError={this.onError}
                  onLoad={this.onLoad}/>
