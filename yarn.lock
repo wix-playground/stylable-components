@@ -1899,6 +1899,10 @@ hpack.js@^2.1.6:
     readable-stream "^2.0.1"
     wbuf "^1.1.0"
 
+htap@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/htap/-/htap-1.0.2.tgz#954e5fd064427a7356d432afc7a2d73875b7db39"
+
 html-comment-regex@^1.1.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/html-comment-regex/-/html-comment-regex-1.1.1.tgz#668b93776eaae55ebde8f3ad464b307a4963625e"
@@ -4235,12 +4239,13 @@ strip-json-comments@^2.0.0, strip-json-comments@~2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-2.0.1.tgz#3c531942e908c2697c0ec344858c286c7ca0a60a"
 
-stylable-integration@^3.0.4:
-  version "3.0.4"
-  resolved "https://registry.yarnpkg.com/stylable-integration/-/stylable-integration-3.0.4.tgz#883988854fde6a378dd4f5935c5b0c2ab2a9745f"
+stylable-integration@^3.0.5:
+  version "3.0.5"
+  resolved "https://registry.yarnpkg.com/stylable-integration/-/stylable-integration-3.0.5.tgz#dbc858de7554609ac9902d3596c255b6195f9eb0"
   dependencies:
     deindent "^0.1.0"
     fs-extra "^4.0.0"
+    htap "^1.0.2"
     loader-utils "^1.1.0"
     murmurhash "^0.0.2"
     node-fs-extra "^0.8.2"
