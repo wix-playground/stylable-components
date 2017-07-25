@@ -45,6 +45,12 @@ ItemRenderer is a component with the following props:
 ItemRenderer must put `data-value` attribute on the root node of any selectable item. Items without the `data-value`
 attribute will be displayed, but won't be selectable.
 
+`item` is an object created by remapping the original SelectionItem using `dataSchema`. Therefore, the
+`item` object has always consistent structure, regardless of the structure of the `dataSource.`
+
+If the original SelectionItemn was string, the resulting `item` object will put this value into 
+the `id` and `displayText` fields.
+
 ## DefaultItemRenderer
 
 If the item doesn't have the `id` field, it is rendered without the `data-value`.
