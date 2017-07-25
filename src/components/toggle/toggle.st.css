@@ -1,6 +1,6 @@
 :import {
-    -sb-from: "../../style/default-theme/variables.st.css";
-    -sb-named:
+    -st-from: "../../style/default-theme/variables.st.css";
+    -st-named:
         B2,
         B6,
         B7,
@@ -12,7 +12,7 @@
 	switchSize: 20px;
 }
 .root {
-	-sb-states: checked, disabled;
+	-st-states: checked, disabled;
 }
 .background {
 	width: value(width);
