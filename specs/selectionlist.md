@@ -12,9 +12,11 @@ A component which allows the user to take action by choosing an item from a list
 
 | Name | Type | Default | Required | Description |
 | -- | -- | -- | -- | -- |
-| selected | string | no | id of the selected item
+| selected | string | null | no | id of the selected item |
 | onSelect | (id: string) => void | NOP | no | Triggered when an item is selected in the list |
 | children | any | null | no | Children to be rendered in the list |
+| hidden | string[] | [] | no | List of ids of the items which should be "hidden" (see Style States) |
+| disabled | string[] | [] | no | List of ids of the items which should be "disabled" (see Style States) |
 
 * The following props should be placed in an OptionList interface since they will need to be passed from higher order components.
 
@@ -26,23 +28,49 @@ A component which allows the user to take action by choosing an item from a list
 
 **Note** that if both datasource and children are present then the children are rendered first and then the dataSource items.
 
-## Styling
+## ItemRenderer Contract
 
-You can customize the following internal parts:
+ItemRenderer is a component with the following props:
 
-* item - selector applying to items in the list
-
-### States
- 
-The following states apply to the items. The SelectionList adds these states to every rendered item with the appropriate prefix (`data-`).
- 
-| Name | Type | Default | Description |
+| Name | Type | Default value | Description |
 | -- | -- | -- | -- |
+| item | object or Divider | {} | Remapped SelectionItem to be rendered by the ItemRenderer |
+| dataSchema | object | {} | Data schema description
 | selected | boolean | false | Whether the item is selected |
 | focused | boolean | false | Whether the item is focused by keyboard navigation |
 | hover | boolean | false | Whether the item is hovered by the mouse |
 | hidden | boolean | false | Whether ths item appears in the list |
 | disabled | boolean | false | Whether an item is enabled for selection or not |
+
+ItemRenderer must put `data-value` attribute on the root node of any selectable item. Items without the `data-value`
+attribute will be displayed, but won't be selectable.
+
+## DefaultItemRenderer
+
+If the item doesn't have the `id` field, it is rendered without the `data-value`.
+
+If the item is the Divider symbol, it will be renderer as a divider. (!)
+
+### Styling
+
+You can customize the following internal parts:
+
+* item - selector applying to items in the list
+
+### Style States
+ 
+The following states apply to the items. They are passed as corresponding props of the ItemRenderer
+and added as an attribute with the appropriate prefix (`data-`).
+ 
+| Name | Type | Default | Description |
+| -- | -- | -- | -- |
+| selected | boolean | false | Whether the item is selected |
+| focused | boolean | false | Whether the item is focused by keyboard navigation |
+| hidden | boolean | false | Whether ths item appears in the list |
+| disabled | boolean | false | Whether an item is enabled for selection or not |
+
+The only exception is `hover` which doesn't correspond to an attribute. Rather, it should be staled with
+the `:hover` CSS pseudoselector.
 
 ## Input Handling
 
@@ -65,23 +93,15 @@ Keyboard and mouse navigation have different styling behaviors.
 
 ### Children
 
-A child in the SelectionList requires a data-value property which will be used for the selected value.
+All the children, whether passed as `props.children` or rendered from `dataSource` conform the same rules.
+For a child to be selectable, it must have `data-value` attribute with corresponding unique id for the item.
+The rest (style state handling, etc.) is item renderer-specific.
 
-### ItemRenderer
+### Event Handling
 
-ItemRenderer is a component with the following props:
+SelectionInput doesn't add mouse event handlers on every item. Rather, it listens to their common parent
+and distinguishes the items by their `data-value` attribute.
 
-| Name | Type | Description |
-| -- | -- | -- |
-| item | SelectionItem | Item to be rendered by the ItemRenderer |
-| dataSchema | object | Data schema description
-
-Apart from SelectionItems the default ItemRenderer will accept a Divider symbol (divider) to be used as a divider.
-```
-const Divider = Symbol();
-```
-
-For the default item renderer, just render a string for every item.
 
 ### SelectionItem
 
