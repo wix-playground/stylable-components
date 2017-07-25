@@ -67,7 +67,7 @@ export class RadioGroup extends React.Component<Partial<RadioGroupProps>, {}> {
         };
     }
 
-    createChildrenFromDataSource() {
+    createChildrenFromDataSource(): React.ReactNode[] {
         const childArray: React.ReactNode[] = [];
         if(Array.isArray(this.props.dataSource)) {
             this.props.dataSource!.forEach((data, index) => {
@@ -87,7 +87,7 @@ export class RadioGroup extends React.Component<Partial<RadioGroupProps>, {}> {
         return childArray;
     }
 
-    createChildren(dataArray: any) {
+    createChildren(dataArray: any): React.ReactNode[] {
         const childArray: React.ReactNode[] = [];
         for (let index = 0; index < dataArray.length; index++) {
             const data = dataArray[index];
@@ -114,16 +114,13 @@ export class RadioGroup extends React.Component<Partial<RadioGroupProps>, {}> {
     }
 
     render() {
-        const dataArray = this.props.children ? this.props.children : this.props.dataSource;
         let childArray: React.ReactNode[] = [];
 
         if (this.props.children) {
-            if (React.isValidElement(dataArray)) {
-                childArray.push(dataArray);
+            if (React.isValidElement(this.props.children)) {
+                childArray.push(this.props.children);
             } else {
-                if (this.props.children) {
-                    childArray = this.createChildren(this.props.children);
-                }
+                childArray = this.createChildren(this.props.children);
             }
         } else if (this.props.dataSource!.length > 0) {
             childArray = this.createChildrenFromDataSource();

@@ -2,7 +2,6 @@ import React = require('react');
 import {expect, ClientRenderer, simulate, waitFor, sinon} from 'test-drive-react';
 import { RadioButton, RadioGroup } from '../../src'
 import { RadioGroupDemo } from '../../demo/components/radio-group-demo';
-import {changeDependenciesStateTo0} from "mobx/lib/core/derivation";
 
 const radioGroup = 'RADIO_GROUP';
 const radioButton = 'RADIO_BUTTON';
