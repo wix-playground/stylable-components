@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {CheckBoxDemo} from "./components/checkbox-demo";
 import { TreeViewDemo } from './components/tree-view-demo';
+import { BirthDatePickerDemo } from './components/birth-date-picker-demo';
 import './style.st.css';
 import '../src/style/default-theme/base.st.css';
 import { RadioGroupDemo } from './components/radio-group-demo'
@@ -18,6 +19,11 @@ export class ComponentsDemo extends React.Component<{}, {}>{
                 <h2>CheckBox</h2>
                 <CheckBoxDemo />
             </div>
+            <hr />
+            <div>
+                <h2>Birth date picker</h2>
+                <BirthDatePickerDemo />
+            </div>
             <div>
                 <h2>TreeView</h2>
                 <TreeViewDemo />
@@ -26,6 +32,7 @@ export class ComponentsDemo extends React.Component<{}, {}>{
             <div>
                 <h2>Typography</h2>
                 <table>
+                    <tbody>
                     <tr>
                         <th>
                             <h1>H1</h1>
@@ -52,12 +59,14 @@ export class ComponentsDemo extends React.Component<{}, {}>{
                             <p>paragraph</p>
                         </th>
                     </tr>
+                    </tbody>
                 </table>
             </div>
             <hr />
             <div>
                 <h2>button</h2>
                 <table>
+                    <tbody>
                     <tr>
                         <th>
                             <button>Normal</button>
@@ -72,12 +81,14 @@ export class ComponentsDemo extends React.Component<{}, {}>{
                             <a className="button" href="http://www.wix.com" target="_blank">Disabled link</a>
                         </th>
                     </tr>
+                    </tbody>
                 </table>
             </div>
             <hr/>
             <div>
                 <h2>anchor</h2>
                 <table>
+                    <tbody>
                     <tr>
                         <th>
                             <a href="http://www.wix.com" target="_blank">Normal</a>
@@ -86,12 +97,14 @@ export class ComponentsDemo extends React.Component<{}, {}>{
                             <a href="http://www.wix.com" target="_blank">Disabled</a>
                         </th>
                     </tr>
+                    </tbody>
                 </table>
             </div>
             <hr />
             <div>
                 <h2>input</h2>
                 <table>
+                    <tbody>
                     <tr>
                         <th>
                             <input placeholder="Placeholder"/>
@@ -100,10 +113,14 @@ export class ComponentsDemo extends React.Component<{}, {}>{
                             <input placeholder="Disabled" disabled/>
                         </th>
                     </tr>
+                    </tbody>
                 </table>
             </div>
-
-            <RadioGroupDemo/>
+            <hr />
+            <div>
+                <h2>Radio Group</h2>
+                <RadioGroupDemo/>
+            </div>
         </div>;
     }
 }

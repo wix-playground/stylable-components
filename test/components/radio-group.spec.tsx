@@ -110,6 +110,7 @@ describe('<RadioGroup />', function () {
         await waitForDom(() => { expect(select(radioGroup, radioButton + '_1')).to.be.present() });
         simulate.click(select(radioGroup, radioButton + '_1', 'INPUT'));
         return waitFor(() => {
+            expect(onChange).to.have.been.calledOnce;
             expect(onChange).to.have.been.calledWithMatch('Quetzalcoatl');
         })
     });

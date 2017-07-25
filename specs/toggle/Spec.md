@@ -24,20 +24,20 @@ A toggle switch is used as an on/off control
 
 ![elements](./assets/elements.png)
 
-**Toggle consists of:**  "switch", "icon" and "progress". The "switch" moves across the toggle "background"in order to turn on/off something. Icon, at the same time, represents if value is On or Off.
+**Toggle consists of:**  "switch", "icon" and "background". The "switch" moves across the "background" in order to set the value to On / Off and "icon" indicates the state of the value.
 
 
 
 ## Visual States
 
-| State        | Description                         |
-| ------------ | ----------------------------------- |
-| On           | Toggle is on / checker              |
-| Off          | Toggle is off / unchecked           |
-| Hover on     | Toggle is on / checker & hovered    |
-| Hover off    | Toggle is off / unchecked & hovered |
-| Disabled on  | Toggle is on & disabled             |
-| Disabled off | Toggle is off & disabled            |
+| State          | Description                         |
+| -------------- | ----------------------------------- |
+| On             | Toggle is on / checker              |
+| Off            | Toggle is off / unchecked           |
+| On + hover     | Toggle is on / checker & hovered    |
+| Off + hover    | Toggle is off / unchecked & hovered |
+| On + disabled  | Toggle is on & disabled             |
+| Off + disabled | Toggle is off & disabled            |
 
 Design [assets](https://zpl.io/1PLfpV)
 
@@ -53,9 +53,9 @@ See [README.md](./README.md) for more info.
 
 ## Behavior
 
-User can hit toggle to switch value to on / off. 
+User can hit toggle to switch between on / off value. 
 
-Toggle can be rendered with & without icons (this is controlled by `displayIcon`, `iconChecked` & `iconUnchecked` properties).
+Toggle can be rendered with & without icons (this is controlled by `displayIcon`, `iconChecked` & `iconUnchecked` properties. For more info see [README.md](./README.md)).
 
 The component follows the external control pattern (value & handle position is defined by the `value` property, and in order for the component to function, it should be bound to a state in the parent component, and the `onChange` handler should be set).
 
@@ -96,15 +96,17 @@ The component follows the external control pattern (value & handle position is d
 
 TBD
 
-
-
 ## Accessibility
 
 For now accessibility for toggle is covered with keyboard behavior & label prop that shows text hint.
 
 ## Examples
 
+1. Put here the example of component with icons for On / Off states
+2. Put here the example of component with No icons 
+3. Put here the example of component with custom style
 
+Examples will be here once component is done. 
 
 ## Design
 
