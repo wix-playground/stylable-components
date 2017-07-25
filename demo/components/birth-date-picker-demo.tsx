@@ -3,8 +3,8 @@ import {observable} from "mobx";
 import {observer} from "mobx-react";
 import {BirthDatePicker} from "../../src";
 
-export const initialValue = new Date("2001-09-11Z");
-export const minDate = new Date("1900-06-06Z");
+export const initialValue = new Date("2001-09-11T00:00Z");
+export const minDate = new Date("1900-06-06T00:00Z");
 export const maxDate = new Date();
 
 @observer

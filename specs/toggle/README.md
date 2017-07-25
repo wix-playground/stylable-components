@@ -72,7 +72,7 @@ comments to example 2
 | selector     | description                              | type                                     |
 | ------------ | ---------------------------------------- | ---------------------------------------- |
 | ::switch     | Allows to style the switch of the toggle | HTML Element. This subcomponent has no subcomponents of its own* |
-| ::background | Allows to style toggle body              | HTML Element. This subcomponent has no subcomponents of its own* |
+| ::background | Allows to style the body of the toggle   | HTML Element. This subcomponent has no subcomponents of its own* |
 
 **if a subcomponent is a COMPONENT, it might have subcomponents -> then we will link here to its documentation*
 
@@ -83,7 +83,7 @@ comments to example 2
 | state                          | description                              |
 | ------------------------------ | ---------------------------------------- |
 | :checked                       | Style the toggle element in checked state |
-| :hover, :focus, :disabled, etc | standard CSS pseudo state                |
+| :hover, :focus, :disabled, etc | Standard CSS state                       |
 
 
 
@@ -97,19 +97,19 @@ comments to example 2
 Adding rules here (which may be shared between different components) allows us to 	    override specific parts; or even change the whole theme
 */
 Toggle {
-  background: grey; /* styles the toggle bg in unchecked state */
+  background-color: transparent;
 }
 
-Toggle:checked {
+Toggle::background {
+  background-color: grey; /* styles the toggle bg. Although the whole look comes from the 							theme, we override the background color of the slider bar */
+}
+
+Toggle::background:checked {
   background-color: blue; /* styles the toggle bg in checked state */
 }
 
-Toggle:hover {
-  background-color: darkgrey;
-}
-
-Toggle:checked:hover {
-  background-color: darkblue;
+Toggle::switch {
+  background-color: white; /* styles the switch bg */
 }
 ```
 
