@@ -5,7 +5,7 @@ import {CheckBox, CheckBoxIconProps} from "../../src";
 
 const boxSVG: React.SFC<CheckBoxIconProps> = (props) => {
     return (
-        <svg data-automation-id="CHECKBOX_BOX_TEST"  height="1em" width="1em "viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" >
+        <svg data-automation-id="CHECKBOX_BOX_TEST"  height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" >
             <path fill="none" stroke="black" d="M.5.5h15v15H.5z"/>
         </svg>
     )
