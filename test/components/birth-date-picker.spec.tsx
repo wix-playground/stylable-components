@@ -42,7 +42,7 @@ describe("<BirthDatePicker />", () => {
 
     it("Displays the provided date", function() {
         const { select, waitForDom } = clientRenderer.render(
-            <BirthDatePicker value={new Date("1986-04-26Z")} />
+            <BirthDatePicker value={new Date("1986-04-26T00:00Z")} />
         );
 
         return waitForDom(() => {
@@ -66,7 +66,7 @@ describe("<BirthDatePicker />", () => {
     it("Emits onChange when going from valid to valid state", async function() {
         const onChange = sinon.spy();
         const { select, waitForDom } = clientRenderer.render(
-            <BirthDatePicker value={new Date("1986-04-26Z")} onChange={onChange} />
+            <BirthDatePicker value={new Date("1986-04-26T00:00Z")} onChange={onChange} />
         );
 
         await waitForDom(() => {
@@ -76,7 +76,7 @@ describe("<BirthDatePicker />", () => {
         change(select("BIRTH_DATE_PICKER_DAY"), "27");
 
         return waitForDom(() => {
-            expect(onChange).to.have.been.calledOnce.and.calledWith(new Date("1986-04-27Z"));
+            expect(onChange).to.have.been.calledOnce.and.calledWith(new Date("1986-04-27T00:00Z"));
         });
     });
 
@@ -129,18 +129,18 @@ describe("<BirthDatePicker />", () => {
         change(select("BIRTH_DATE_PICKER_DAY"), "26");
 
         return waitForDom(() => {
-            expect(onChange).to.have.been.calledOnce.and.calledWith(new Date("1986-04-26Z"));
+            expect(onChange).to.have.been.calledOnce.and.calledWith(new Date("1986-04-26T00:00Z"));
         });
     });
 
     describe("Validates the date", function() {
         it("Supports full range of dates", function() {
-            expect(dateFromYearMonthDay("1000", "01", "01").toString()).equal(new Date("1000-01-01Z").toString());
-            expect(dateFromYearMonthDay("9999", "12", "31").toString()).equal(new Date("9999-12-31Z").toString());
+            expect(dateFromYearMonthDay("1000", "01", "01").toString()).equal(new Date("1000-01-01T00:00Z").toString());
+            expect(dateFromYearMonthDay("9999", "12", "31").toString()).equal(new Date("9999-12-31T00:00Z").toString());
         });
 
         it("Allows to omit leading zeroes for month and day, but not for year", function() {
-            expect(dateFromYearMonthDay("1987", "4", "6").toString()).equal(new Date("1987-04-06Z").toString());
+            expect(dateFromYearMonthDay("1987", "4", "6").toString()).equal(new Date("1987-04-06T00:00Z").toString());
             expect(dateFromYearMonthDay("17", "04", "26")).to.be.instanceOf(Error);
         });
 

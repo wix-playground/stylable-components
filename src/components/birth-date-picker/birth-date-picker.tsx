@@ -64,7 +64,7 @@ const Select: React.SFC<SelectProps> = (props) => (
         data-automation-id={props.automationId}>
         <option value="" label={props.placeholder} />
         {props.options.map(({value, label}) =>
-            <option key={value} value={value} label={label} />
+            <option key={value} value={value}>{label}</option>
         )}
     </select>
 );
