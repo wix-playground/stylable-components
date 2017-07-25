@@ -95,8 +95,10 @@ SelectionItem is a union type of the following
 
 ### dataSchema
 
+Data schema creates mapping, which bridges between data structure of `dataSource` and that assumed by the `itemRenderer`.
+
 | Name | Type | Default | Required | Description |
-| -- | -- | -- | -- |
+| -- | -- | -- | -- | -- |
 | id | string | 'id' | Field containing unique identifier of the item's value
 | displayText | string | 'displayText' | Field containing text which is rendered as textual content of the item
 
