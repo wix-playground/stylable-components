@@ -11,6 +11,7 @@
     B3: #4990e2;
     B4: #257ade;
     B5: #d1d1d1;
+    B10: #3899ec;
 
     M1: #000000;
     M2: #577083;
@@ -20,18 +21,31 @@
     M6: #c8c8c8;
     M0: #ffffff;
 
+    /* Stylable components colors */
+    STC0: #b6b6b6;
+    STC10: #daeffe;
+
+    /* Basic colors */
     color_MainText: value(M1); /* Base text color  */
     color_MainPlaceholder: value(M2);
     color_MainError: value(M5);
     color_MainDisabled: value(M6);
     color_MainText_Background: value(M0);
+    color_Border: value(B10);
 
-    /* Component Colors */
+    /* Component state colors */
     color_Default: value(B1);
     color_Hover: value(B2);
     color_Active: value(B3);
     color_Focus: value(B4);
     color_Disabled: value(B5);
+
+    /* Specific component colors */
+    color_Slider_Track: value(B5);
+    color_Slider_Track_Hover: value(STC0);
+    color_Slider_Handle: value(M0);
+    color_Slider_Handle_Hover: value(STC10);
+    color_Slider_Handle_Active: value(B10);
 
     /* Borders */
     borderRadius: 0px;

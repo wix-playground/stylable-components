@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-const style = require('./slider.css');
+const style = require('./slider.st.css').default;
 
 export interface SliderProps {};
 
