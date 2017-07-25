@@ -1,7 +1,7 @@
 import React = require('react');
 import {observable} from 'mobx'
 import {observer} from 'mobx-react'
-import {CheckBox, CheckBoxIconProps} from "../../src/components/checkbox/checkbox";
+import {CheckBox, CheckBoxIconProps} from "../../src";
 
 export const demoCheckBoxText: string = 'I agree to the terms above';
 export const demoCheckBoxInitialValue: boolean = false;
@@ -24,7 +24,7 @@ export class CheckBoxDemo extends React.Component<{},{value: boolean}> {
                           onChange={this.handleChange}>
                     <span data-automation-id="CHECKBOX_LABEL" className={style.label}>{demoCheckBoxText}</span>
                 </CheckBox> <br/>
-                <button disabled={!this.value}>
+                <button disabled={!this.value} data-automation-id="BUTTON_SUBMIT">
                     Submit
                 </button>
             </div>
