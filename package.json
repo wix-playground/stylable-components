@@ -6,7 +6,7 @@
   "types": "./lib/index.d.ts",
   "scripts": {
     "clean": "rimraf ./lib",
-    "build": "tsc -d --p tsconfig.publish.json",
+    "build": "tsc -d --p tsconfig.publish.json && stc --srcDir=src --outDir=lib",
     "prepublish": "npm run build",
     "test": "npm run test:browser && npm run test:node",
     "test:browser": "karma start --single-run",
@@ -14,12 +14,13 @@
     "start": "webpack-dev-server --progress"
   },
   "peerDependencies": {
-    "react": ">15.5.0"
+    "react": ">15.5.0",
+    "stylable": "^2.0.4"
   },
   "devDependencies": {
     "@types/mocha": "^2.2.41",
-    "@types/node": "^8.0.14",
-    "@types/react": "^15.0.38",
+    "@types/node": "^8.0.16",
+    "@types/react": "^15.0.39",
     "@types/react-dom": "^15.5.1",
     "glob": "^7.1.2",
     "karma": "^1.7.0",
@@ -35,14 +36,14 @@
     "mocha-loader": "^1.1.1",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
-    "stylable": "^1.0.4",
-    "stylable-integration": "^2.0.7",
+    "stylable": "^2.0.4",
+    "stylable-integration": "^3.0.6",
     "test-drive-react": "^0.5.0",
     "ts-loader": "^2.3.1",
-    "ts-node": "^3.2.1",
+    "ts-node": "^3.3.0",
     "typescript": "^2.4.2",
     "webpack": "^3.3.0",
-    "webpack-dev-server": "^2.5.1"
+    "webpack-dev-server": "^2.6.1"
   },
   "testGlob": "./test/**/*.spec.ts?(x)",
   "license": "MIT",
