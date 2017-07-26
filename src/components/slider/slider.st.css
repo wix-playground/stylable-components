@@ -5,6 +5,7 @@
     color_Slider_Track,
     color_Slider_Track_Hover,
     color_Slider_Handle,
+    color_Slider_HandleBorder,
     color_Slider_Handle_Hover,
     color_Slider_Handle_Active;
 }
@@ -15,7 +16,8 @@
   thumbWidth: 16px;
   thumbHeight: 16px;
   thumbRadius: 8px;
-  thumbBorder: 1px solid value(color_Border);
+  thumbBorder: 1px solid value(color_Slider_HandleBorder);
+  thumbBorderHover: 1px solid value(color_Slider_Handle_Active);
 }
 
 .slider {
@@ -117,33 +119,42 @@
 
 /* Thumb on focus */
 .slider:focus::-ms-thumb {
+  border: value(thumbBorderHover);
   background-color: value(color_Slider_Handle_Hover)
 }
 .slider:focus::-webkit-slider-thumb {
+  border: value(thumbBorderHover);
   background-color: value(color_Slider_Handle_Hover)
 }
 .slider:focus::-moz-range-thumb {
+  border: value(thumbBorderHover);
   background-color: value(color_Slider_Handle_Hover)
 }
 
 /* Thumb on hover */
 .slider:hover::-ms-thumb {
+  border: value(thumbBorderHover);
   background-color: value(color_Slider_Handle_Hover)
 }
 .slider:hover::-webkit-slider-thumb {
+  border: value(thumbBorderHover);
   background-color: value(color_Slider_Handle_Hover)
 }
 .slider:hover::-moz-range-thumb {
+  border: value(thumbBorderHover);
   background-color: value(color_Slider_Handle_Hover)
 }
 
 /* Thumb on active */
 .slider:active::-ms-thumb {
+  border: value(thumbBorderHover);
   background-color: value(color_Slider_Handle_Active)
 }
 .slider:active::-webkit-slider-thumb {
+  border: value(thumbBorderHover);
   background-color: value(color_Slider_Handle_Active)
 }
 .slider:active::-moz-range-thumb {
+  border: value(thumbBorderHover);
   background-color: value(color_Slider_Handle_Active)
 }

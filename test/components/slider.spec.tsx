@@ -16,4 +16,6 @@ describe('<Slider />', () => {
       expect(element).to.be.present();
     });
   });
+
+  // Here probably nothing to test as it's just stylable wrapper over native <input type="range"> for now.
 });
