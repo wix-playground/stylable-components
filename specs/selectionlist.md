@@ -96,6 +96,8 @@ Keyboard and mouse navigation have different styling behaviors.
 * Up arrow -> highlights previous item
 * Down arrow -> highlights next item
 
+Non-selectable items (items without `data-value` on the root element) are skipped during the keyboard traversal.
+
 ### Mouse
 
 * Left-click -> selects an item
