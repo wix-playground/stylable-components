@@ -4,7 +4,7 @@ A component which allows the user to take action by choosing an item from a list
 
 * [Properties](#properties)
 * [ItemRenderer Contract](#itemrenderer-contract)
-* [Default ItemRenderer](#default itemrenderer)
+* [Default ItemRenderer](#default-itemrenderer)
 * [Input Handling](#input-handling)
 * [Internal Implementation](#internal-implementation)
 * [Examples](#examples)
