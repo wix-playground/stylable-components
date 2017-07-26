@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { expect, ClientRenderer, sinon, simulate, waitForDom, waitFor } from 'test-drive-react';
-import { Image } from '../../src';
+import { expect, ClientRenderer, sinon, waitForDom, waitFor } from 'test-drive-react';
+import { Image, onePixelTransparentSrc } from '../../src';
 import { objectFitSupported } from '../../src/common/environment';
-import { onePixelTransparentSrc } from '../../src';
 import { sampleImage } from '../fixtures/sample-image';
 
 const nativeImage = 'NATIVE_IMAGE';
@@ -67,14 +66,14 @@ describe('<Image />', () => {
         const onLoad = sinon.spy();
         clientRenderer.render(<Image src={sampleImage} onLoad={onLoad} data-automation-id={nativeImage} />);
 
-        return waitFor(() => expect(onLoad).to.have.been.calledWithMatch({ data: sampleImage }));
+        return waitFor(() => expect(onLoad).to.have.been.calledWithMatch({ src: sampleImage }));
     });
 
     const brokenSrc = 'data:image/png;base64,this-is-broken!';
 
     it('calls onError when it cannot load a source, and falls back to default source', async () => {
         const onError = sinon.spy();
-        const {select} = clientRenderer.render(<Image src={brokenSrc} onLoadError={onError} data-automation-id={nativeImage} />);
+        const {select} = clientRenderer.render(<Image src={brokenSrc} onError={onError} data-automation-id={nativeImage} />);
 
         await waitFor(() => expect(onError).to.have.been.calledWithMatch({ src: brokenSrc }));
 
@@ -83,7 +82,7 @@ describe('<Image />', () => {
 
     it('calls onError when it cannot load the given default image, and falls back to onePixelTransparentSrc', async () => {
         const onError = sinon.spy();
-        const {select} = clientRenderer.render(<Image defaultImage={brokenSrc} onLoadError={onError} data-automation-id={nativeImage} />);
+        const {select} = clientRenderer.render(<Image defaultImage={brokenSrc} onError={onError} data-automation-id={nativeImage} />);
 
         await waitFor(() => expect(onError).to.have.been.calledWithMatch({ src: brokenSrc }));
 
