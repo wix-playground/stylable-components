@@ -1,27 +1,19 @@
 .boxIconDefault {
     height: 1em;
     width: 1em;
-    viewBox: 0 0 16 16;
-}
-
-.boxIconDefault path {
     fill: none;
     stroke: #D1D1D1;
 }
 
-.boxIconChecked path {
+.boxIconChecked {
     fill: #4A90E2;
 }
 
 .tickIcon {
     height: 1em;
     width: 1em;
-    viewBox: 0 0 16 16;
     position: relative;
     margin-left: -1em;
-}
-
-.tickIcon path {
     stroke: #FFF;
     stroke-linecap: square;
     stroke-width: 1.5;
