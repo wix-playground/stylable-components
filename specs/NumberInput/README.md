@@ -2,6 +2,8 @@
 
 The **NumberInput** component improves upon the native `<input type="number">` by providing ability to customize the stepper arrows design, a common React+Typescript API, and working out the kinks of native implementations.
 
+![elements](./elements.png)
+
 ### Component API
 
 #### Props
@@ -19,10 +21,19 @@ The **NumberInput** component improves upon the native `<input type="number">` b
 | name        | string |              |            | The name of the component. Behaves like the name attribute of an input element. |
 | onChange    | func   |              | yes        | Callback function that is fired when the component's value is changed and committed. Signature: `function(event: object, newValue: number):void`. event: KeyDown event targeting the slider. newValue: The new value of the slider. |
 | onInput     | func   |              |            | Callback function that is fired every time the user types a character into the input. |
-| prefix      | node   | null         |            | Allows to prepend HTML content or a React component |
-| suffix      | node   | null         |            | Allows to append HTML content or a React component |
 | error       | bool   | false        |            | Sets the `:error` CSS state on the `<NumberInput/>` |
 | rtl         | bool   | FALSE        |            | Makes the component RTL                  |
+
+
+
+#### Accepted Children
+
+This component accepts children with the following `data-slot` attribute, in order to be displayed in specific places in its layout
+
+| data-slot | description                              | example                                  |
+| --------- | ---------------------------------------- | ---------------------------------------- |
+| prefix    | Allows you to insert a component (or components) at the start of the input | `<div data-slot="prefix">hello world</div>` |
+| suffix    | Allows you to insert a component (or components) at the end of the input | `<div data-slot="suffix">hello world</div>` |
 
 ### Code Examples
 
@@ -51,10 +62,28 @@ export class ComponentsDemo extends React.Component<{}, {}>{
 
 Comments to example 1
 
-**Example 2:**
+**Example 2 (with children):**
 
-```
-// TODO: add examples for: suffix / prefix; passing error state
+```jsx
+//TODO: code guys - fix code example!
+import * as React from 'react';
+import { NumberInput } from './components/NumberInput';
+import style from './style.st.css'; // link to Style file - see examples of style files below
+
+export class ComponentsDemo extends React.Component<{}, {}>{
+    constructor() {
+        super();
+    }
+
+    render() {
+        return <NumberInput
+        		 value="{this.state.numberInputValue}"
+                 onChange={/* something */}>
+    				<span data-slot="prefix">$</span>
+        			<button data-slot="suffix">x</button>
+               </NumberInput>;
+    }
+}
 ```
 
 Comments to example 2

@@ -30,7 +30,7 @@ The **NumberInput** component improves upon the native `<input type="number">` b
 
 ![elements](./elements.png)
 
-The NumberInput consists of a native input and a Stepper subcomponent, which provides customisable Up and Down buttons. Also, you can add elements into it in the prefix and suffix slots, by passing the approprtiate props (see component props).
+The NumberInput consists of a native input and a Stepper subcomponent, which provides customisable Up and Down buttons. Also, you can add elements into it in the prefix and suffix slots, by passing the component children with the corresponding data-slot attribute.
 
 
 
@@ -89,7 +89,7 @@ The component follows the external control pattern (value displayed is defined b
 | fn / ctrl + up / down | increase / decrease value by step * 10 (& commit) |
 | tab                   | commits the value if needed, moves to next element (skips the stepper) |
 | Shift + tab           | commits the value if needed, moves to previous element |
-| enter                 | Commits the value (if value wasn't committed). If value already committed, tabs to next element |
+| enter                 | Commits the value (if value wasn't committed) |
 | esc                   | removes focus (if in focus), discards non-committed new value (if value typed) |
 
 **RTL** orientation
