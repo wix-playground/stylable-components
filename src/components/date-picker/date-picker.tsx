@@ -62,7 +62,6 @@ export class DatePicker extends React.Component<Partial<DatePickerProps>, {}>{
         this.date = input;
         this.inputValue = input.toDateString();
         this.highlightSelectedDate = true;
-        this.showDropdown = false;
 
         if (this.props.onChange) {
             this.props.onChange(input);
@@ -107,9 +106,15 @@ export class DatePicker extends React.Component<Partial<DatePickerProps>, {}>{
         if (!this.props.disabled && !this.props.readOnly) {
             switch (keyCode) {
                 case KeyCodes.ENTER:
-                    // this.keyboardSelect ? this.updateStateFromDate() : this.updateStateFromString(eventTarget.value);
-                    this.showDropdown = !this.showDropdown;
+                    this.highlightFocusedDate ? this.updateStateFromDate(this.dropdownDate) : this.updateStateFromString(eventTarget.value);
                     event.preventDefault();
+
+                    if (!this.props.openOnFocus) {
+                        this.showDropdown = !this.showDropdown;
+                    } else {
+                        this.showDropdown = false;
+                    }
+
                     break;
 
                 case KeyCodes.SPACE:

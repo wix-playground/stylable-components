@@ -67,17 +67,17 @@ describe('The DatePicker Component', function () {
             const {select, waitForDom} = clientRenderer.render(<DatePicker date={JANUARY_FIRST} openOnFocus={true} />);
             const datePickerInput = select(datePickerInputId);
 
-            await waitForDom(() => expect(select(datePickerDropdownId)).to.be.absent());
-
             simulate.focus(datePickerInput);
 
             await waitForDom(() => expect(select(datePickerDropdownId)).to.be.present());
 
-            simulate.mouseDown(select('DAY_4'));
+            // Advance one week
+            simulate.keyDown(datePickerInput, { keyCode: KeyCodes.DOWN });
+            simulate.keyDown(datePickerInput, { keyCode: KeyCodes.ENTER });
 
             return await waitForDom(() => {
                 expect(select(datePickerDropdownId)).to.be.absent();
-                expect(datePickerInput).to.have.value('Wed Jan 04 2017')
+                expect(datePickerInput).to.have.value('Sun Jan 08 2017')
             });
         });
     });
