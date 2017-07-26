@@ -30,21 +30,33 @@ describe.only('<Checkbox/>', function () {
     it('Component / Demo test', async function () {
         const {select, waitForDom} = clientRenderer.render(<CheckBoxDemo/>);
 
+        // Basic Checkbox demo
         await waitForDom(() => {
-           expect(select('BASIC_DEMO', 'CHECKBOX_ROOT')).to.be.present();
-           expect(select('BASIC_DEMO', 'CHECKBOX_BOX')).to.be.present();
-           expect(select('BASIC_DEMO', 'CHECKBOX_TICKMARK')).to.be.absent();
-           expect(select('BASIC_DEMO', 'BASIC_LABEL')).to.have.text(demoCheckBoxText);
-           expect(select('BUTTON_SUBMIT')).to.be.present().and.to.have.attr('disabled');
+           expect(select('BASIC_DEMO', 'CHECKBOX_ROOT'), 'basic root').to.be.present();
+           expect(select('BASIC_DEMO', 'CHECKBOX_BOX'), 'basic box').to.be.present();
+           expect(select('BASIC_DEMO', 'CHECKBOX_TICKMARK'), 'basic tickmark').to.be.absent();
+           expect(select('BASIC_DEMO', 'BASIC_LABEL'), 'basic label').to.have.text(demoCheckBoxText);
+           expect(select('BUTTON_SUBMIT'), 'basic submit').to.be.present().and.to.have.attr('disabled');
         });
 
         simulate.click(select('BASIC_DEMO', 'CHECKBOX_ROOT'));
 
-        return waitFor(() => {
-            expect(select('BASIC_DEMO', 'CHECKBOX_TICKMARK')).to.be.present();
+        await waitFor(() => {
+            expect(select('BASIC_DEMO', 'CHECKBOX_TICKMARK'), 'basic tickmark').to.be.present();
             expect(select('BASIC_DEMO', 'CHECKBOX_TICKMARK')).to.be.insideOf(select('BASIC_DEMO', 'CHECKBOX_BOX') as HTMLElement);
-            expect(select('BASIC_DEMO', 'BUTTON_SUBMIT')).to.not.have.attr('disabled');
+            expect(select('BASIC_DEMO', 'BUTTON_SUBMIT'), 'basic submit').to.not.have.attr('disabled');
         });
+
+        // Disabled Checkbox demo
+        expect(select('DISABLED_DEMO', 'CHECKBOX_ROOT'), 'disabled root').to.be.present();
+        expect(select('DISABLED_DEMO', 'CHECKBOX_BOX'), 'disabled box').to.be.present();
+
+        simulate.click(select('DISABLED_DEMO', 'CHECKBOX_ROOT'));
+        await waitFor(() => {
+            expect(select('DISABLED_DEMO', 'CHECKBOX_BOX'), 'disabled box').to.be.present();
+            expect(select('DISABLED_DEMO', 'CHECKBOX_TICKMARK'), 'disabled tickmark').to.be.absent();
+        });
+
     });
 
     it('Renders with default values', function () {
@@ -130,4 +142,57 @@ describe.only('<Checkbox/>', function () {
         expect(nativeInput.tagName).to.equal('INPUT');
         expect(nativeInput).to.have.attr('type', 'checkbox');
     });
+
+    describe('When disabled', function () {
+        it("doesn't call onChange when clicked", async function () {
+            const onChange = sinon.spy();
+            const {select, waitForDom} = clientRenderer.render(<CheckBox disabled={true} onChange={onChange}/>);
+
+            await waitForDom(() => {
+                expect(select('CHECKBOX_ROOT')).to.be.present();
+            });
+
+            simulate.click(select('CHECKBOX_ROOT'));
+
+            return waitFor(() => {
+                expect(onChange).to.not.have.been.called;
+            })
+        });
+
+        it("displays tickmark if value is true", async function () {
+            const {select, waitForDom} = clientRenderer.render(<CheckBox disabled={true} value={true}/>);
+
+            await waitForDom(() => {
+                expect(select('CHECKBOX_ROOT')).to.be.present();
+                expect(select('CHECKBOX_TICKMARK')).to.be.present();
+            });
+        });
+    });
+
+    describe('When readonly', function () {
+        it("doesn't call onChange when clicked", async function () {
+            const onChange = sinon.spy();
+            const {select, waitForDom} = clientRenderer.render(<CheckBox readonly={true} onChange={onChange}/>);
+
+            await waitForDom(() => {
+                expect(select('CHECKBOX_ROOT')).to.be.present();
+            });
+
+            simulate.click(select('CHECKBOX_ROOT'));
+
+            return waitFor(() => {
+                expect(onChange).to.not.have.been.called;
+            })
+        });
+
+        it("displays tickmark if value is true", async function () {
+            const {select, waitForDom} = clientRenderer.render(<CheckBox readonly={true} value={true}/>);
+
+            await waitForDom(() => {
+                expect(select('CHECKBOX_ROOT')).to.be.present();
+                expect(select('CHECKBOX_TICKMARK')).to.be.present();
+            });
+        });
+    });
+
 });

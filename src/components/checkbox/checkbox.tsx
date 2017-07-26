@@ -8,6 +8,8 @@ export interface CheckBoxProps {
     tickIcon: React.SFC<CheckBoxIconProps>;
     onChange: (value: boolean) => any;
     children: any;
+    disabled: boolean;
+    readonly: boolean;
 }
 
 export interface CheckBoxIconProps {
@@ -16,7 +18,7 @@ export interface CheckBoxIconProps {
 
 export const CheckBox: React.SFC<Partial<CheckBoxProps>> = (props) => (
     <div data-automation-id="CHECKBOX_ROOT"
-         onClick={(event) => executeClickHandler(props.onChange!, !props.value)}
+         onClick={(event) => executeClickHandler(props.onChange!, !props.value, props.disabled!, props.readonly!)}
          className={style.root}>
 
         {props.boxIcon!({value: props.value})}
@@ -32,8 +34,8 @@ export const CheckBox: React.SFC<Partial<CheckBoxProps>> = (props) => (
     </div>
 );
 
-function executeClickHandler(handler: (value: boolean) => any, value: boolean) {
-    handler(value);
+function executeClickHandler(handler: (value: boolean) => any, value: boolean, isDisabled: boolean, isReadOnly: boolean) {
+    !isDisabled && !isReadOnly && handler(value);
 }
 
 const DefaultCheckBoxSVG: React.SFC<CheckBoxIconProps> = (props) => {
@@ -60,6 +62,7 @@ CheckBox.defaultProps = {
     value: false,
     boxIcon: DefaultCheckBoxSVG,
     tickIcon: DefaultTickMarkSVG,
-    onChange: (value: boolean) => {
-    }
+    onChange: (value: boolean) => {},
+    disabled: false,
+    readonly: false
 };

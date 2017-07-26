@@ -37,13 +37,3 @@
     width: 0;
     height: 0
 }
-
-.boxIcon {
-    -st-states: checked;
-    height: 1em;
-    width: 1em;
-    fill: none;
-    stroke: #D1D1D1;
-}
-
-.boxIcon.checked

@@ -11,36 +11,41 @@ const style = require('./checkbox-demo.st.css').default;
 @observer
 export class CheckBoxDemo extends React.Component<{},{value: boolean}> {
 
-    @observable value: boolean = demoCheckBoxInitialValue;
+    @observable valueBasic: boolean = demoCheckBoxInitialValue;
+    @observable valueDisabled: boolean = demoCheckBoxInitialValue;
 
-    handleChange = (val: boolean) => {this.value = val};
+    handleChangeBasic = (val: boolean) => {this.valueBasic = val};
+    handleChangeDisabled = (val: boolean) => {this.valueDisabled = val};
 
     render() {
         return (
             <div>
                 <div data-automation-id="BASIC_DEMO">
                     <h3>Basic CheckBox</h3>
-                    <CheckBox value={this.value}
-                              onChange={this.handleChange}>
+                    <CheckBox value={this.valueBasic}
+                              onChange={this.handleChangeBasic}>
                         <span data-automation-id="BASIC_LABEL" className={style.label}>{demoCheckBoxText}</span>
                     </CheckBox> <br/>
-                    <button disabled={!this.value} data-automation-id="BUTTON_SUBMIT">
+                    <button disabled={!this.valueBasic} data-automation-id="BUTTON_SUBMIT">
                         Submit
                     </button>
                 </div>
 
-                <h3>Disabled</h3>
-                <CheckBox value={this.value}
-                          onChange={this.handleChange}
-                          data-automation-id="DISABLED_DEMO">
-                    <span data-automation-id="DISABLED_LABEL" className={style.label}>Disabled</span>
-                </CheckBox> <br/>
-
-                <h3>Custom Icons</h3>
-                <CheckBox value={this.value}
-                          onChange={this.handleChange}>
-                    <span data-automation-id="ICONS_LABEL" className={style.label}>Custom Icons</span>
-                </CheckBox> <br/>
+                <div>
+                    <h3>Disabled</h3>
+                    <span data-automation-id="DISABLED_DEMO">
+                        <CheckBox value={this.valueDisabled}
+                                  onChange={this.handleChangeDisabled}
+                                  disabled>
+                            <span data-automation-id="DISABLED_LABEL" className={style.label}>Unchecked</span>
+                        </CheckBox>
+                    </span>
+                    <span>
+                        <CheckBox value={true} disabled>
+                            <span className={style.label}>Checked</span>
+                        </CheckBox>
+                    </span>
+                </div>
             </div>
         )
     }
