@@ -18,6 +18,7 @@ export interface CheckBoxProps {
 export interface CheckBoxIconProps {
     value?: boolean;
     indeterminate?: boolean;
+    disabled?: boolean;
 }
 
 export const CheckBox: React.SFC<Partial<CheckBoxProps>> = (props) => (
@@ -25,10 +26,10 @@ export const CheckBox: React.SFC<Partial<CheckBoxProps>> = (props) => (
          onClick={(event) => executeClickHandler(props.onChange!, !props.value, props.disabled!, props.readonly!, props.indeterminate!)}
          className={style.root}>
 
-        { props.boxIcon!({value: props.value , indeterminate: props.indeterminate})}
+        { props.boxIcon!({value: props.value , indeterminate: props.indeterminate, disabled: props.disabled})}
         { props.indeterminate ?
             props.indeterminateIcon!({value: props.value }) :
-            props.value && props.tickIcon!({value: props.value})
+            props.value && props.tickIcon!({value: props.value, disabled: props.disabled})
         }
 
         {props.children}
@@ -37,7 +38,8 @@ export const CheckBox: React.SFC<Partial<CheckBoxProps>> = (props) => (
                type="checkbox"
                className={style.nativeCheckbox}
                checked={props.value}
-               onChange={()=>{}}/>
+               onChange={()=>{}}
+               disabled={props.disabled}/>
     </div>
 );
 
@@ -47,7 +49,10 @@ function executeClickHandler(handler: (value: boolean) => any, value: boolean, i
 
 const DefaultCheckBoxSVG: React.SFC<CheckBoxIconProps> = (props) => {
     return (
-        <svg className={style.boxIconDefault + ' ' + ((props.value || props.indeterminate) && style.boxIconChecked)}
+        <svg className={
+                style.boxIconDefault
+                + ' ' + (props.disabled ? style.boxIconDisabled : (props.value || props.indeterminate) && style.boxIconChecked)
+            }
              data-automation-id="CHECKBOX_BOX"
              xmlns="http://www.w3.org/2000/svg">
             <path d="M.5.5h15v15H.5z"/>
@@ -57,7 +62,7 @@ const DefaultCheckBoxSVG: React.SFC<CheckBoxIconProps> = (props) => {
 
 const DefaultTickMarkSVG: React.SFC<CheckBoxIconProps> = (props) => {
     return (
-        <svg className={style.tickIcon}
+        <svg className={style.tickIcon  + ' ' + (props.disabled && style.tickIconDisabled)}
              data-automation-id="CHECKBOX_TICKMARK"
              xmlns="http://www.w3.org/2000/svg">
             <path d="M5 8.685l2.496 1.664M8 10.685L11.748 6"/>

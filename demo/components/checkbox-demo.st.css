@@ -1,6 +1,6 @@
 .boxIconDefault {
-    height: 1em;
-    width: 1em;
+    height: 20px;
+    width: 20px;
     fill: none;
     stroke: #D1D1D1;
 }
@@ -10,13 +10,11 @@
 }
 
 .tickIcon {
-    height: 1em;
-    width: 1em;
+    height: 20px;
+    width: 20px;
     position: relative;
-    margin-left: -1em;
-    stroke: #FFF;
-    strokeLinecap: square;
-    strokeWidth: 1.5;
+    margin-left: -20px;
+    fill: red
 }
 
 .label {

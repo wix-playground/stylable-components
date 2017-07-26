@@ -9,6 +9,10 @@
     fill: #4A90E2;
 }
 
+.boxIconDisabled {
+    fill: #f1f1f1;
+}
+
 .tickIcon {
     height: 1em;
     width: 1em;
@@ -17,6 +21,10 @@
     stroke: #FFF;
     stroke-linecap: square;
     stroke-width: 1.5;
+}
+
+.tickIconDisabled {
+    stroke: #c8c8c8;
 }
 
 .indeterminateIcon {
