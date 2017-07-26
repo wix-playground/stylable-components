@@ -27,7 +27,6 @@ export const CheckBox: React.SFC<Partial<CheckBoxProps>> = (props) => (
         <input data-automation-id="NATIVE_CHECKBOX"
                type="checkbox"
                className={style.nativeCheckbox}
-               id={props.text}
                checked={props.value}
                onChange={()=>{}}/>
     </div>

@@ -18,15 +18,29 @@ export class CheckBoxDemo extends React.Component<{},{value: boolean}> {
     render() {
         return (
             <div>
+                <div data-automation-id="BASIC_DEMO">
+                    <h3>Basic CheckBox</h3>
+                    <CheckBox value={this.value}
+                              onChange={this.handleChange}>
+                        <span data-automation-id="BASIC_LABEL" className={style.label}>{demoCheckBoxText}</span>
+                    </CheckBox> <br/>
+                    <button disabled={!this.value} data-automation-id="BUTTON_SUBMIT">
+                        Submit
+                    </button>
+                </div>
+
+                <h3>Disabled</h3>
                 <CheckBox value={this.value}
-                          boxIcon={CheckBoxSVG}
-                          tickIcon={TickMarkSVG}
-                          onChange={this.handleChange}>
-                    <span data-automation-id="CHECKBOX_LABEL" className={style.label}>{demoCheckBoxText}</span>
+                          onChange={this.handleChange}
+                          data-automation-id="DISABLED_DEMO">
+                    <span data-automation-id="DISABLED_LABEL" className={style.label}>Disabled</span>
                 </CheckBox> <br/>
-                <button disabled={!this.value} data-automation-id="BUTTON_SUBMIT">
-                    Submit
-                </button>
+
+                <h3>Custom Icons</h3>
+                <CheckBox value={this.value}
+                          onChange={this.handleChange}>
+                    <span data-automation-id="ICONS_LABEL" className={style.label}>Custom Icons</span>
+                </CheckBox> <br/>
             </div>
         )
     }

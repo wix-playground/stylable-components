@@ -20,30 +20,30 @@ const tickSVG: React.SFC<CheckBoxIconProps> = (props) => {
 };
 
 
-describe('<Checkbox/>', function () {
+describe.only('<Checkbox/>', function () {
     const clientRenderer = new ClientRenderer();
 
     afterEach(() => {
         clientRenderer.cleanup();
     });
 
-    it('Renders and allows selection', async function () {
+    it('Component / Demo test', async function () {
         const {select, waitForDom} = clientRenderer.render(<CheckBoxDemo/>);
 
         await waitForDom(() => {
-           expect(select('CHECKBOX_ROOT')).to.be.present();
-           expect(select('CHECKBOX_BOX')).to.be.present();
-           expect(select('CHECKBOX_TICKMARK')).to.be.absent();
-           expect(select('CHECKBOX_LABEL')).to.have.text(demoCheckBoxText);
+           expect(select('BASIC_DEMO', 'CHECKBOX_ROOT')).to.be.present();
+           expect(select('BASIC_DEMO', 'CHECKBOX_BOX')).to.be.present();
+           expect(select('BASIC_DEMO', 'CHECKBOX_TICKMARK')).to.be.absent();
+           expect(select('BASIC_DEMO', 'BASIC_LABEL')).to.have.text(demoCheckBoxText);
            expect(select('BUTTON_SUBMIT')).to.be.present().and.to.have.attr('disabled');
         });
 
-        simulate.click(select('CHECKBOX_ROOT'));
+        simulate.click(select('BASIC_DEMO', 'CHECKBOX_ROOT'));
 
         return waitFor(() => {
-            expect(select('CHECKBOX_TICKMARK')).to.be.present();
-            expect(select('CHECKBOX_TICKMARK')).to.be.insideOf(select('CHECKBOX_BOX') as HTMLElement);
-            expect(select('BUTTON_SUBMIT')).to.not.have.attr('disabled');
+            expect(select('BASIC_DEMO', 'CHECKBOX_TICKMARK')).to.be.present();
+            expect(select('BASIC_DEMO', 'CHECKBOX_TICKMARK')).to.be.insideOf(select('BASIC_DEMO', 'CHECKBOX_BOX') as HTMLElement);
+            expect(select('BASIC_DEMO', 'BUTTON_SUBMIT')).to.not.have.attr('disabled');
         });
     });
 
