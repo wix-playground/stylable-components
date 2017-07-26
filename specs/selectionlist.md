@@ -34,7 +34,6 @@ ItemRenderer is a component with the following props:
 | Name | Type | Default value | Description |
 | -- | -- | -- | -- |
 | item | object or Divider | {} | Remapped SelectionItem to be rendered by the ItemRenderer |
-| dataSchema | object | {} | Data schema description
 
 ItemRenderer must put `data-value` attribute on the root node of any selectable item. Items without the `data-value`
 attribute will be displayed, but won't be selectable.
@@ -45,13 +44,13 @@ attribute will be displayed, but won't be selectable.
 If the original SelectionItemn was string, the resulting `item` object will put this value into 
 the `id` and `displayText` fields.
 
-## DefaultItemRenderer
+## Default ItemRenderer
 
 If the item doesn't have the `id` field, it is rendered without the `data-value`.
 
 If the item is the Divider symbol, it will be renderer as a divider. (!)
 
-In the DefaultItemRenderer, the (remapped) item object has following structure:
+In the default ItemRenderer, the (remapped) item object has following structure:
 
 | Name | Type | Default value | Required | Description |
 | -- | -- | -- | -- |
@@ -107,7 +106,7 @@ Non-selectable items (items without `data-value` on the root element) are skippe
 
 ### Children
 
-All the children, whether passed as `props.children` or rendered from `dataSource` conform the same rules.
+All the children, whether passed as `props.children` or rendered from `dataSource` conform to the same rules.
 For a child to be selectable, it must have `data-value` attribute with corresponding unique id for the item.
 The rest (style state handling, etc.) is item renderer-specific.
 
@@ -115,7 +114,6 @@ The rest (style state handling, etc.) is item renderer-specific.
 
 SelectionInput doesn't add mouse event handlers on every item. Rather, it listens to their common parent
 and distinguishes the items by their `data-value` attribute.
-
 
 ### SelectionItem
 
