@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { expect, ClientRenderer, sinon, simulate, waitFor } from 'test-drive-react';
-import hasState from '../utils/has-state';
+import hasCssState from '../utils/has-css-state';
 import { TreeView, TreeItem } from '../../src';
 import treeViewStyles from '../../src/components/tree-view/tree-view.st.css';
 import { TreeViewDemo, treeData } from '../../demo/components/tree-view-demo';
@@ -41,7 +41,7 @@ describe('<TreeView />', () => {
         const elementToSelect = select(treeView + '_DEMO', getTreeItem(allNodesLabels[2]));
 
         simulate.click(elementToSelect);
-        return waitForDom(() => hasState(elementToSelect, treeViewStyles, 'selected'));
+        return waitForDom(() => hasCssState(elementToSelect, treeViewStyles, 'selected'));
 
     });
 
