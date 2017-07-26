@@ -16,8 +16,6 @@ A component which allows the user to take action by choosing an item from a list
 | selected | string | null | no | id of the selected item |
 | onSelect | (id: string) => void | NOP | no | Triggered when an item is selected in the list |
 | children | any | null | no | Children to be rendered in the list |
-| hidden | string[] | [] | no | List of ids of the items which should be "hidden" (see Style States) |
-| disabled | string[] | [] | no | List of ids of the items which should be "disabled" (see Style States) |
 
 * The following props should be placed in an OptionList interface since they will need to be passed from higher order components.
 
@@ -37,11 +35,6 @@ ItemRenderer is a component with the following props:
 | -- | -- | -- | -- |
 | item | object or Divider | {} | Remapped SelectionItem to be rendered by the ItemRenderer |
 | dataSchema | object | {} | Data schema description
-| selected | boolean | false | Whether the item is selected |
-| focused | boolean | false | Whether the item is focused by keyboard navigation |
-| hover | boolean | false | Whether the item is hovered by the mouse |
-| hidden | boolean | false | Whether ths item appears in the list |
-| disabled | boolean | false | Whether an item is enabled for selection or not |
 
 ItemRenderer must put `data-value` attribute on the root node of any selectable item. Items without the `data-value`
 attribute will be displayed, but won't be selectable.
@@ -57,6 +50,18 @@ the `id` and `displayText` fields.
 If the item doesn't have the `id` field, it is rendered without the `data-value`.
 
 If the item is the Divider symbol, it will be renderer as a divider. (!)
+
+In the DefaultItemRenderer, the (remapped) item object has following structure:
+
+| Name | Type | Default value | Required | Description |
+| -- | -- | -- | -- |
+| id | string | null | no | The unique value id (for selectable items)
+| displayText | string | '' | no | Text content of the item
+| selected | boolean | false | no | Whether the item is selected |
+| focused | boolean | false | no | Whether the item is focused by keyboard navigation |
+| hidden | boolean | false | no | Whether ths item appears in the list |
+| disabled | boolean | false | no | Whether an item is enabled for selection or not |
+
 
 ### Styling
 
@@ -123,6 +128,7 @@ SelectionItem is a union type of the following
 ### dataSchema
 
 Data schema creates mapping, which bridges between data structure of `dataSource` and that assumed by the `itemRenderer`.
+(i.e. it is itemRenderer and dataSource specific)
 
 | Name | Type | Default | Required | Description |
 | -- | -- | -- | -- | -- |
