@@ -72,19 +72,21 @@ describe('<Image />', () => {
 
     const brokenSrc = 'data:image/png;base64,this-is-broken!';
 
-    it('calls onError when it cannot load a source, and falls back to default source', () => {
+    it('calls onError when it cannot load a source, and falls back to default source', async () => {
         const onError = sinon.spy();
         const {select} = clientRenderer.render(<Image src={brokenSrc} onLoadError={onError} data-automation-id={nativeImage} />);
 
-        return waitFor(() => expect(onError).to.have.been.calledWithMatch({ src: brokenSrc }))
-        .then(() => verifyElementSrc(select(nativeImage)!, onePixelTransparentSrc));
+        await waitFor(() => expect(onError).to.have.been.calledWithMatch({ src: brokenSrc }));
+
+        return verifyElementSrc(select(nativeImage)!, onePixelTransparentSrc);
     });
 
-    it('calls onError when it cannot load the given default image, and falls back to onePixelTransparentSrc', () => {
+    it('calls onError when it cannot load the given default image, and falls back to onePixelTransparentSrc', async () => {
         const onError = sinon.spy();
         const {select} = clientRenderer.render(<Image defaultImage={brokenSrc} onLoadError={onError} data-automation-id={nativeImage} />);
 
-        return waitFor(() => expect(onError).to.have.been.calledWithMatch({ src: brokenSrc }))
-        .then(() => verifyElementSrc(select(nativeImage)!, onePixelTransparentSrc));
+        await waitFor(() => expect(onError).to.have.been.calledWithMatch({ src: brokenSrc }));
+
+        verifyElementSrc(select(nativeImage)!, onePixelTransparentSrc);
     });
 });

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {objectFitSupported} from '../../common/environment';
+import {nullFunction} from '../../common/null-function';
 import {SyntheticEvent} from "react";
 
 // Transparent 1x1 gif image
@@ -11,50 +12,42 @@ export interface ImageProps extends React.HTMLAttributes<HTMLImageElement> {
     src?: string;
     alt?: string;
 
-    onLoad?: (data: object) => void;
-    onLoadError?: (error: ImageError) => void;
+    onLoad?: (event: ImageEvent) => void;
+    onError?: (event: ImageError) => void;
 }
 
 export interface ImageState {
     src: string;
 }
 
-export class ImageError extends Error {
-    constructor(src: string) {
-        super('Image Error');
-        this.src = src;
-    }
+export interface ImageEvent extends React.SyntheticEvent<HTMLImageElement> {
+    src: string;
+}
 
+export interface ImageError extends React.SyntheticEvent<HTMLImageElement> {
     src: string;
 }
 
 export class Image extends React.PureComponent<ImageProps, ImageState>{
     static defaultProps: Partial<ImageProps> = {
         defaultImage: onePixelTransparentSrc,
-        title: ''
+        onLoad: nullFunction,
+        onError: nullFunction
     };
 
     componentWillMount () {
-        this.setState({ src: this.props.src ? this.props.src : this.props.defaultImage! });
+        this.setState({ src: this.props.src || this.props.defaultImage! });
     }
 
-    setSrcToFallback = () => {
+    onError: React.EventHandler<SyntheticEvent<HTMLImageElement>> = (e) => {
+        this.props.onError!({...e, src: this.state.src});
+
         this.setState({ src: this.getFallbackSrcFor(this.state.src)! });
     };
 
-    onError: React.EventHandler<SyntheticEvent<HTMLImageElement>> = () => {
-        if (this.props.onLoadError) {
-            this.props.onLoadError(new ImageError(this.state.src));
-        }
-
-        this.setSrcToFallback();
-    };
-
-    onLoad: React.EventHandler<SyntheticEvent<HTMLImageElement>> = () => {
+    onLoad: React.EventHandler<SyntheticEvent<HTMLImageElement>> = (e) => {
         if (this.getImageSrc() !== onePixelTransparentSrc) {
-            if (this.props.onLoad) {
-                this.props.onLoad({data: this.state.src});
-            }
+            this.props.onLoad!({...e, src: this.state.src});
         }
     };
 
@@ -65,17 +58,15 @@ export class Image extends React.PureComponent<ImageProps, ImageState>{
 
     getFallbackSrcFor (src: string) {
         // first, fallback to defaultImage, and later to one transparent pixel
-        return (src !== this.props.defaultImage) ? this.props.defaultImage : onePixelTransparentSrc;
+        return (src === this.props.defaultImage) ? onePixelTransparentSrc : this.props.defaultImage;
     }
 
     render() {
         // remove certain props from the received props that shouldn't be applied to image tag
-        const { title, alt, defaultImage, onLoadError, ...rest } = this.props;
+        const { defaultImage, ...rest } = this.props;
 
         return (
             <img {...rest}
-                 alt={alt}
-                 title={title}
                  src={this.getImageSrc()}
                  onError={this.onError}
                  onLoad={this.onLoad}/>
