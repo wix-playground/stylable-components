@@ -1,5 +1,6 @@
 .radio-container {
     display: flex;
+    display: -ms-flexbox;
     position: relative;
 }
 
