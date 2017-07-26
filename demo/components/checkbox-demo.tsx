@@ -46,7 +46,33 @@ export class CheckBoxDemo extends React.Component<{},{value: boolean}> {
                         </CheckBox>
                     </span>
                 </div>
+                <div data-automation-id="INDETERMINATE_DEMO">
+                    <h3>Indeterminate</h3>
+                    <IndeterminateDemo/>
+                </div>
             </div>
+        )
+    }
+}
+
+@observer
+class IndeterminateDemo extends React.Component<{},{}> {
+    @observable values: {option1: boolean, option2: boolean} = {option1: false, option2: false};
+
+    onChanger(field: 'option1'|'option2'){ return (value: boolean) => this.values[field] = value }
+
+    render() {
+        return  (
+                <li>
+                    <CheckBox value={this.values.option1 && this.values.option2}
+                              onChange={(val: boolean) => {this.onChanger('option1')(val); this.onChanger('option2')(val)}}
+                              indeterminate={this.values.option1 !== this.values.option2}
+
+                              /> All Options
+                    <ul><CheckBox value={this.values.option1} onChange={this.onChanger('option1')}/>Option1</ul>
+                    <ul><CheckBox value={this.values.option2} onChange={this.onChanger('option2')}/>Option2</ul>
+                </li>
+
         )
     }
 }

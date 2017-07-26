@@ -19,6 +19,16 @@
     stroke-width: 1.5;
 }
 
+.indeterminateIcon {
+    height: 1em;
+    width: 1em;
+    position: relative;
+    margin-left: -1em;
+    stroke: #FFF;
+    stroke-linecap: square;
+    stroke-width: 1.5;
+}
+
 .root {
     display: inline;
     position: relative

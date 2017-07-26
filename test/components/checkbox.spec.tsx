@@ -20,6 +20,15 @@ const tickSVG: React.SFC<CheckBoxIconProps> = (props) => {
 };
 
 
+const IndeterminateSVG: React.SFC<CheckBoxIconProps> = (props) => {
+    return (
+        <svg data-automation-id="CHECKBOX_INDETERMINATE_TEST" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5 0h8v2H0z"/>
+        </svg>
+    )
+};
+
+
 describe.only('<Checkbox/>', function () {
     const clientRenderer = new ClientRenderer();
 
@@ -193,6 +202,53 @@ describe.only('<Checkbox/>', function () {
                 expect(select('CHECKBOX_TICKMARK')).to.be.present();
             });
         });
+    });
+
+    describe('When indeterminate', function () {
+        it('renders indeterminate icon when value is true', function () {
+            const {select, waitForDom} =  clientRenderer.render(<CheckBox value={true} indeterminate/>)
+
+            return waitForDom(() => {
+                expect(select('CHECKBOX_BOX')).to.be.present();
+                expect(select('CHECKBOX_INDETERMINATE')).to.be.present();
+                expect(select('CHECKBOX_TICKMARK')).to.be.absent();
+            });
+        });
+
+        it('renders indeterminate icon when value is false', function () {
+            const {select, waitForDom} =  clientRenderer.render(<CheckBox value={false} indeterminate/>)
+
+            return waitForDom(() => {
+                expect(select('CHECKBOX_BOX')).to.be.present();
+                expect(select('CHECKBOX_INDETERMINATE')).to.be.present();
+            });
+        });
+
+        it('click calls onChange with value true', async function () {
+            const onChange = sinon.spy();
+            const {select, waitForDom} = clientRenderer.render(<CheckBox value={true} onChange={onChange} indeterminate/>);
+
+            await waitForDom(() => {
+                expect(select('CHECKBOX_ROOT')).to.be.present();
+            });
+
+            simulate.click(select('CHECKBOX_ROOT'));
+
+            return waitFor(() => {
+                expect(onChange).to.have.been.calledOnce;
+                expect(onChange).to.have.been.calledWith(true);
+            })
+
+        });
+
+        it('renders custom indeterminate icon', function () {
+            const {select, waitForDom} = clientRenderer.render(<CheckBox indeterminateIcon={IndeterminateSVG} indeterminate/>);
+
+            return waitForDom(() => {
+                expect(select('CHECKBOX_INDETERMINATE_TEST')).to.be.present();
+            })
+        });
+
     });
 
 });
