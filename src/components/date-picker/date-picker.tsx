@@ -107,7 +107,7 @@ export class DatePicker extends React.Component<Partial<DatePickerProps>, {}>{
         if (!this.props.disabled && !this.props.readOnly) {
             switch (keyCode) {
                 case KeyCodes.ENTER:
-                    this.updateStateFromString(eventTarget.value);
+                    // this.keyboardSelect ? this.updateStateFromDate() : this.updateStateFromString(eventTarget.value);
                     this.showDropdown = !this.showDropdown;
                     event.preventDefault();
                     break;

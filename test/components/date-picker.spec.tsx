@@ -62,6 +62,24 @@ describe('The DatePicker Component', function () {
                 expect(datePickerInput).to.have.value('Wed Jan 04 2017')
             });
         });
+
+        it('clicks on the input, navigates to a date using the arrow keys, and then expects the dropdown to close and the date to appear in the input', async function () {
+            const {select, waitForDom} = clientRenderer.render(<DatePicker date={JANUARY_FIRST} openOnFocus={true} />);
+            const datePickerInput = select(datePickerInputId);
+
+            await waitForDom(() => expect(select(datePickerDropdownId)).to.be.absent());
+
+            simulate.focus(datePickerInput);
+
+            await waitForDom(() => expect(select(datePickerDropdownId)).to.be.present());
+
+            simulate.mouseDown(select('DAY_4'));
+
+            return await waitForDom(() => {
+                expect(select(datePickerDropdownId)).to.be.absent();
+                expect(datePickerInput).to.have.value('Wed Jan 04 2017')
+            });
+        });
     });
 
     it('should use a provided value', function () {
