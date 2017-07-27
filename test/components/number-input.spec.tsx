@@ -24,7 +24,7 @@ function assertCommit(
     expectedValue: number | undefined
 ): void {
     expect(onChange).to.have.been.calledOnce;
-    expect(onChange.lastCall.args[1]).to.equal(expectedValue);
+    expect(onChange.lastCall.args[0]).to.equal(expectedValue);
     expect(input).to.have.value(String(expectedValue));
 }
 

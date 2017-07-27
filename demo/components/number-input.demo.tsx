@@ -16,7 +16,7 @@ export class NumberInputDemo extends React.Component<{}, {value?: number}> {
                             step={2}
                             min={-5}
                             max={5}
-                            onChange={(e, value) => this.setState({value})}
+                            onChange={(value) => this.setState({value})}
                             placeholder="How Many?"
                         />
                     </td>

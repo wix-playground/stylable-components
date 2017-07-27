@@ -23,7 +23,7 @@ export interface NumberInputProps {
     error?: boolean
     prefix?: JSX.Element
     suffix?: JSX.Element
-    onChange?(event: React.SyntheticEvent<HTMLElement>, value: number | undefined): void
+    onChange?(value: number | undefined): void
     onInput?(value: string | undefined): void
 }
 
@@ -64,14 +64,14 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
           : value;
     }
 
-    private commit(e: React.SyntheticEvent<HTMLElement>, value?: number) {
+    private commit(value?: number) {
         const {onChange} = this.props;
         const valueInRange = this.validate(value);
 
         this.updateValue(valueInRange);
 
         if (!this.committed) {
-            onChange!(e, valueInRange);
+            onChange!(valueInRange);
             this.committed = true;
         }
     }
@@ -98,7 +98,7 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
             isNumber(value) ? value + step! : step! :
             isNumber(value) ? value - step! : -step!);
 
-        this.commit(e, next);
+        this.commit(next);
     }
 
     private handleIncrement: React.MouseEventHandler<HTMLElement> =
@@ -119,7 +119,7 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
                     e.preventDefault();
                     break;
                 case KeyCodes.ENTER:
-                    this.commit(e, this.state.value);
+                    this.commit(this.state.value);
                     e.preventDefault();
                     break;
                 case KeyCodes.ESCAPE:
@@ -130,7 +130,7 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
         }
 
     private handleBlur: React.FocusEventHandler<HTMLInputElement> =
-        e => this.commit(e, this.state.value);
+        e => this.commit(this.state.value);
 
     private handleChange: React.ChangeEventHandler<HTMLInputElement> =
         e => {
