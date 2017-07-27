@@ -4,20 +4,11 @@ import {observer} from 'mobx-react'
 import {CheckBox, CheckBoxIconProps} from "../../src";
 
 export const demoCheckBoxText: string = "Yes, I'm over 18 years old";
-export const demoCheckBoxInitialValue: boolean = false;
 
 const style = require('./checkbox-demo.st.css').default;
 
 @observer
-export class CheckBoxDemo extends React.Component<{}, { value: boolean }> {
-
-    @observable valueDisabled: boolean = demoCheckBoxInitialValue;
-
-
-    handleChangeDisabled = (val: boolean) => {
-        this.valueDisabled = val
-    };
-
+export class CheckBoxDemo extends React.Component<{},{}> {
     render() {
         return (
             <div>
