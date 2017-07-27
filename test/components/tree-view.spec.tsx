@@ -41,7 +41,7 @@ describe('<TreeView />', () => {
         const elementToSelect = select(treeView + '_DEMO', getTreeItem(allNodesLabels[2]));
 
         simulate.click(elementToSelect);
-        return waitForDom(() => hasCssState(elementToSelect, treeViewStyles, 'selected'));
+        return waitForDom(() => hasCssState(elementToSelect, treeViewStyles, {selected: true}));
 
     });
 

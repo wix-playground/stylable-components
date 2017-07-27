@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {SBComponent} from 'stylable-react-component';
+import { SBComponent, SBStateless } from 'stylable-react-component';
 import style from './tree-view.st.css';
 
 export interface TreeItemRenderer {
@@ -32,7 +32,7 @@ export function TreeItem({ item, itemRenderer, onItemClick, isSelected }: TreeIt
         <div key={item.label}>
             <div
                 data-automation-id={`${itemIdPrefix}_${item.label.replace(' ', '_')}`}
-                className={style['tree-node']}
+                className="tree-node"
                 cssStates={{
                     selected: isSelected(item)
                 }}
@@ -41,9 +41,9 @@ export function TreeItem({ item, itemRenderer, onItemClick, isSelected }: TreeIt
                 <span data-automation-id={`${itemIdPrefix}_${item.label}_ICON`}>&gt; </span>
                 <span data-automation-id={`${itemIdPrefix}_${item.label}_LABEL`}>{item.label}</span>
             </div>
-            <div className={style['nested-tree']}>
+            <div className="nested-tree">
                 {(item.children || []).map((child: TreeItemData) =>
-                    itemRenderer({item: child, onItemClick, itemRenderer, isSelected})
+                    itemRenderer({ item: child, onItemClick, itemRenderer, isSelected })
                 )}
             </div>
         </div>
@@ -54,7 +54,7 @@ export function TreeItem({ item, itemRenderer, onItemClick, isSelected }: TreeIt
 export class TreeView extends React.Component<TreeViewProps, {}>{
     static defaultProps = {
         itemRenderer: TreeItem,
-        onSelectItem: () => {}
+        onSelectItem: () => { }
     };
 
     isSelected = (item: TreeItemData) => {

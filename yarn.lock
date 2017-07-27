@@ -4247,6 +4247,10 @@ stylable-integration@^3.0.8:
     node-fs-extra "^0.8.2"
     yargs "^8.0.2"
 
+stylable-react-component@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/stylable-react-component/-/stylable-react-component-1.0.3.tgz#8dd58b352f3b57c0991487e6d00a9dde2109f317"
+
 stylable@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/stylable/-/stylable-3.0.0.tgz#e409d7df9595f73d17d9b94ace70ea321a393a64"
