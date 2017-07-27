@@ -12,7 +12,6 @@ export interface CheckBoxProps {
     disabled: boolean;
     readonly: boolean;
     indeterminate: boolean;
-
 }
 
 export interface CheckBoxIconProps {

@@ -38,7 +38,8 @@
 
 .root {
     display: inline;
-    position: relative
+    position: relative;
+    cursor: pointer;
 }
 
 .label {

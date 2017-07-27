@@ -19,7 +19,6 @@ const tickSVG: React.SFC<CheckBoxIconProps> = (props) => {
     )
 };
 
-
 const IndeterminateSVG: React.SFC<CheckBoxIconProps> = (props) => {
     return (
         <svg data-automation-id="CHECKBOX_INDETERMINATE_TEST" xmlns="http://www.w3.org/2000/svg">
@@ -27,7 +26,6 @@ const IndeterminateSVG: React.SFC<CheckBoxIconProps> = (props) => {
         </svg>
     )
 };
-
 
 describe('<Checkbox/>', function () {
     const clientRenderer = new ClientRenderer();
@@ -250,7 +248,6 @@ describe('<Checkbox/>', function () {
                 expect(onChange).to.have.been.calledOnce;
                 expect(onChange).to.have.been.calledWith(true);
             })
-
         });
 
         it('renders custom indeterminate icon', function () {
@@ -260,7 +257,5 @@ describe('<Checkbox/>', function () {
                 expect(select('CHECKBOX_INDETERMINATE_TEST')).to.be.present();
             })
         });
-
     });
-
 });
