@@ -29,7 +29,7 @@ const IndeterminateSVG: React.SFC<CheckBoxIconProps> = (props) => {
 };
 
 
-describe.only('<Checkbox/>', function () {
+describe('<Checkbox/>', function () {
     const clientRenderer = new ClientRenderer();
 
     afterEach(() => {
