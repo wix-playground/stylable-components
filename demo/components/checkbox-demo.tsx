@@ -102,26 +102,28 @@ class IndeterminateDemo extends React.Component<{}, {}> {
 
     render() {
         return (
-            <li data-automation-id="INDETERMINATE_DEMO">
-                <CheckBox value={this.values.option1 && this.values.option2}
-                          onChange={(val: boolean) => {
-                              this.onChanger('option1')(val);
-                              this.onChanger('option2')(val)
-                          }}
-                          indeterminate={this.values.option1 !== this.values.option2}>
-                    <span data-automation-id="DISABLED_LABEL" className={style.label}>All Options</span>
-                </CheckBox>
-                <ul>
+            <ul data-automation-id="INDETERMINATE_DEMO">
+                <span data-automation-id="INDETERMINATE_DEMO_TOP_LEVEL">
+                    <CheckBox value={this.values.option1 && this.values.option2}
+                              onChange={(val: boolean) => {
+                                  this.onChanger('option1')(val);
+                                  this.onChanger('option2')(val);
+                              }}
+                              indeterminate={this.values.option1 !== this.values.option2}>
+                        <span data-automation-id="DISABLED_LABEL" className={style.label}>All Options</span>
+                    </CheckBox>
+                </span>
+                <li  style={{listStyle:'none', marginLeft:'1em'}} data-automation-id="INDETERMINATE_DEMO_OPTION1">
                     <CheckBox value={this.values.option1} onChange={this.onChanger('option1')}>
                         <span className={style.label}>Option1</span>
                     </CheckBox>
-                </ul>
-                <ul>
-                    <CheckBox value={this.values.option2} onChange={this.onChanger('option2')}>
+                </li>
+                <li  style={{listStyle:'none', marginLeft:'1em'}} data-automation-id="INDETERMINATE_DEMO_OPTION2">
+                    <CheckBox value={this.values.option2} onChange={this.onChanger('option2')} data-automation-id="INDETERMINATE_DEMO_OPTION2">
                         <span className={style.label}>Option2</span>
                     </CheckBox>
-                </ul>
-            </li>
+                </li>
+            </ul>
 
         )
     }

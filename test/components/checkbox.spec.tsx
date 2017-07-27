@@ -66,6 +66,18 @@ describe.only('<Checkbox/>', function () {
             expect(select('DISABLED_DEMO', 'CHECKBOX_TICKMARK'), 'disabled tickmark').to.be.absent();
         });
 
+        // Intermediate demo
+        expect(select('INDETERMINATE_DEMO_OPTION1', 'CHECKBOX_TICKMARK')).to.be.present();
+        expect(select('INDETERMINATE_DEMO_OPTION2', 'CHECKBOX_TICKMARK')).to.be.absent();
+        expect(select('INDETERMINATE_DEMO_TOP_LEVEL', 'CHECKBOX_INDETERMINATE')).to.be.present();
+
+        simulate.click(select('INDETERMINATE_DEMO_TOP_LEVEL', 'CHECKBOX_ROOT'));
+
+        return waitFor(() => {
+            expect(select('INDETERMINATE_DEMO_OPTION1', 'CHECKBOX_TICKMARK')).to.be.present();
+            expect(select('INDETERMINATE_DEMO_OPTION2', 'CHECKBOX_TICKMARK')).to.be.present();
+        })
+
     });
 
     it('Renders with default values', function () {
