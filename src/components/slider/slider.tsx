@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+const theme = require('../../style/default-theme/variables.st.css').default;
 const style = require('./slider.st.css').default;
 
 const DEFAULT_MIN = 0;
@@ -28,7 +29,6 @@ export interface SliderProps {
 
 export interface SliderState {
   relativeValue: number;
-  trackBackgroudStyle: string;
 };
 
 export class Slider extends React.Component<SliderProps, SliderState> {
@@ -36,7 +36,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
   constructor(props: SliderProps, context?: any) {
     super(props, context);
 
-    this.updateTrackBackgroundGradient(this.props.value || DEFAULT_VALUE);
+    this.updateTrackBackgroundGradient(this.props.value || DEFAULT_VALUE, true);
   }
 
   private onChange: React.ChangeEventHandler<HTMLInputElement> = event => {
@@ -46,7 +46,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
   private onInput: React.ChangeEventHandler<HTMLInputElement> = event => {
     this.props.onInput && this.props.onInput(event, Number(event.target.value));
 
-    this.updateTrackBackgroundGradient(Number(event.target.value));
+    this.updateTrackBackgroundGradient(Number(event.target.value), false);
   }
 
   private onFocus: React.FocusEventHandler<HTMLInputElement> = event => {
@@ -57,12 +57,18 @@ export class Slider extends React.Component<SliderProps, SliderState> {
     this.props.onBlur && this.props.onBlur(event);
   }
 
-  private updateTrackBackgroundGradient(value: number) {
+  private updateTrackBackgroundGradient(value: number, isNew: boolean) {
     const relativeValue = this.getRelativeValue(value);
 
-    this.setState({
-      trackBackgroudStyle: this.getTrackBackgroundGradient(relativeValue, '#aaa', '#fff')
-    });
+    const state = {
+      relativeValue,
+    };
+
+    if(isNew) {
+      this.state = state;
+    } else {
+      this.setState(state);
+    }
   }
 
   private getRelativeValue(value: number): number {
@@ -83,8 +89,24 @@ export class Slider extends React.Component<SliderProps, SliderState> {
   }
 
   render() {
+    const { relativeValue } = this.state;
+    const styleContent = `
+      .${style['slider']}::-webkit-slider-runnable-track {
+        ${this.getTrackBackgroundGradient(relativeValue, theme.M3, theme.STC5)}
+      }
+      .${style['slider']}:focus::-webkit-slider-runnable-track {
+        ${this.getTrackBackgroundGradient(relativeValue, theme.M3, theme.STC20)}
+      }
+      .${style['slider']}:hover::-webkit-slider-runnable-track {
+        ${this.getTrackBackgroundGradient(relativeValue, theme.M3, theme.STC20)}
+      }
+    `;
+
     return (
       <div className={style['slider-container']} data-automation-id='SLIDER'>
+        <style type='text/css'>
+          {styleContent}
+        </style>
         <input
           value={this.props.value}
           min={this.props.min}
