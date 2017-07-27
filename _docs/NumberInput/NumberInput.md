@@ -1,6 +1,6 @@
 # NumberInput Component
 
-**NumberInput** is a form-element component that enables inputting values of the type number. The values can be confined to a specific range, and the "step" (or increment) between the values can be .
+**NumberInput** is a form-element component that enables inputting values of the type number. The values can be confined to a specific range, and the "step" (or increment) between the values can be defined.
 
 ![NumberInput examples](./assets/numberInput.png)
 
@@ -12,7 +12,7 @@
 
 | name        | type                                  | defaultValue | isRequired | description                              |
 | ----------- | ------------------------------------- | ------------ | ---------- | ---------------------------------------- |
-| value       | number? |              | yes        | Used to set and change the value of the input |
+| value       | number |              | yes        | Used to set and change the value of the input |
 | placeholder | string  |              |            | Text to display if the value is null.     |
 | min         | number  | 1            |            |                                          |
 | max         | number  | 100          |            |                                          |
