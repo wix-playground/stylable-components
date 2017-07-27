@@ -74,8 +74,8 @@ const DefaultIndeterminateSVG: React.SFC<CheckBoxIconProps> = (props) => {
     return (
         <svg className={style.indeterminateIcon}
              data-automation-id="CHECKBOX_INDETERMINATE"
-             xmlns="http://www.w3.org/2000/svg">
-            <path d="M5 0h8v2H0z"/>
+             xmlns="http://www.w3.org/2000/svg" width="15" height="15">
+            <line x1="4" y1="8"  x2="12" y2="8" />
         </svg>
     )
 };

@@ -136,51 +136,30 @@ class CustomIconsDemo extends React.Component<{},{}> {
     render() {
         return (
             <div>
-                <CheckBox value={this.value} onChange={this.handleChange} boxIcon={CheckBoxSVG} tickIcon={TickMarkSVG}/>
+                <CheckBox value={this.value} onChange={this.handleChange} boxIcon={CheckBoxSVG} tickIcon={TickMarkSVG}>
+                    <span className={style.label}>I choose triangle</span>
+                </CheckBox>
             </div>
         );
     }
 }
 
-// const CheckBoxSVG: React.SFC<CheckBoxIconProps> = (props) => {
-//     return (
-//         <svg className={style.boxIconDefault + (props.value ? ' ' + style.boxIconChecked : '')}
-//              data-automation-id="CHECKBOX_BOX"
-//              xmlns="http://www.w3.org/2000/svg">
-//             <path d="M.5.5h15v15H.5z"/>
-//         </svg>
-//     )
-// };
-//
-// const TickMarkSVG: React.SFC<CheckBoxIconProps> = (props) => {
-//     return (
-//         <svg className={style.tickIcon}
-//              data-automation-id="CHECKBOX_TICKMARK"
-//              xmlns="http://www.w3.org/2000/svg">
-//             <path d="M5 8.685l2.496 1.664M8 10.685L11.748 6"/>
-//         </svg>
-//     )
-// };
-
-
+const TickMarkSVG: React.SFC<CheckBoxIconProps> = (props) => {
+    return (
+        <svg className={style.tickIcon}
+             data-automation-id="CHECKBOX_TICKMARK"
+             xmlns="http://www.w3.org/2000/svg" height="16" width="16">
+            <circle cx="10" cy="14" r="4"/>
+        </svg>
+    )
+};
 
 const CheckBoxSVG: React.SFC<CheckBoxIconProps> = (props) => {
     return (
-        <svg className={style.boxIconDefault + (props.value ? ' ' + style.boxIconChecked : '')}
+        <svg className={style.boxIcon + (props.value ? ' ' + style.boxIconChecked : '')}
              data-automation-id="CHECKBOX_BOX"
              xmlns="http://www.w3.org/2000/svg">
             <path d="M 10,1 20,20 1,20 z"/>
         </svg>
     )
 };
-
-const TickMarkSVG: React.SFC<CheckBoxIconProps> = (props) => {
-    return (
-        <svg className={style.tickIcon}
-             data-automation-id="CHECKBOX_TICKMARK"
-             xmlns="http://www.w3.org/2000/svg">
-            <circle cx="10" cy="10" r="3"/>
-        </svg>
-    )
-};
-

@@ -1,4 +1,4 @@
-.boxIconDefault {
+.boxIcon {
     height: 20px;
     width: 20px;
     fill: none;
@@ -14,7 +14,7 @@
     width: 20px;
     position: relative;
     margin-left: -20px;
-    fill: red
+    fill: #f1f1f1;
 }
 
 .label {
