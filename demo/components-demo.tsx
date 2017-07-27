@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as PropTypes from 'prop-types'
 import {CheckBoxDemo} from "./components/checkbox-demo";
 import { TreeViewDemo } from './components/tree-view-demo';
 import { BirthDatePickerDemo } from './components/birth-date-picker-demo';
@@ -8,13 +9,32 @@ import { RadioGroupDemo } from './components/radio-group-demo'
 
 export class ComponentsDemo extends React.Component<{}, {}>{
 
+    static childContextTypes = {
+        rtl: PropTypes.bool
+    }
 
-    constructor() {
-        super();
+    state = {
+        rtl: false
+    }
+
+    getChildContext() {
+        return {rtl: this.state.rtl};
     }
 
     render() {
+        const {rtl} = this.state;
         return <div>
+            <div>
+                <h1>RTL</h1>
+                <label>
+                    <input
+                        type='checkbox'
+                        checked={rtl}
+                        onChange={() => this.setState({rtl: !rtl})}
+                    />
+                    <span>Toogle this to enable/disable RTL on this page</span>
+                </label>
+            </div>
             <div>
                 <h2>CheckBox</h2>
                 <CheckBoxDemo />
