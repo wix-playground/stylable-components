@@ -369,6 +369,25 @@ describe('<NumberInput />', () => {
 
         describe('value being typed', () => {
 
+            it('should call onInput on every keystroke', async () => {
+                const onInput = sinon.spy();
+                const {select, waitForDom} = clientRenderer.render(
+                    <NumberInput value={0} onInput={onInput} />
+                );
+
+                await waitForDom(() => {
+                    const input = select('NATIVE_INPUT_NUMBER') as HTMLInputElement;
+
+                    simulateKeyInput(input, '1');
+                    simulateKeyInput(input, '2');
+                    simulateKeyInput(input, '3');
+
+                    expect(onInput).to.have.been.calledThrice;
+                    expect(onInput).to.have.been.calledWith('123');
+                    expect(input).to.have.value('123');
+                });
+            });
+
             it('should not commit and validate the value', async () => {
                 const onChange = sinon.spy();
                 const {select, waitForDom} = clientRenderer.render(
@@ -388,7 +407,7 @@ describe('<NumberInput />', () => {
             });
 
             describe('enter', () => {
-                it('should commit entered the value', async () => {
+                it('should commit the entered value', async () => {
                     const onChange = sinon.spy();
                     const {select, waitForDom} = clientRenderer.render(
                         <NumberInput onChange={onChange} />
@@ -428,7 +447,7 @@ describe('<NumberInput />', () => {
             });
 
             describe('focus', () => {
-                it('should commit on focusout', async () => {
+                it('should commit on blur', async () => {
                     const onChange = sinon.spy();
                     const {select, waitForDom} = clientRenderer.render(
                         <NumberInput onChange={onChange} />

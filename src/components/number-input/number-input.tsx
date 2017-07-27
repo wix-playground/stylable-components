@@ -24,6 +24,7 @@ export interface NumberInputProps {
     prefix?: JSX.Element
     suffix?: JSX.Element
     onChange?(event: React.SyntheticEvent<HTMLElement>, value: number | undefined): void
+    onInput?(value: string | undefined): void
 }
 
 export interface NumberInputState {
@@ -32,9 +33,10 @@ export interface NumberInputState {
 
 const defaultProps = {
     step: 1,
-    onChangeValue: noop,
     min: -Infinity,
-    max: Infinity
+    max: Infinity,
+    onChange: noop,
+    onInput: noop
 }
 
 type Direction = 'increase' | 'decrease'
@@ -132,12 +134,14 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
 
     private handleChange: React.ChangeEventHandler<HTMLInputElement> =
         e => {
+            const {onInput} = this.props;
             const value = e.target.value;
             const next = value !== '' ?
                 Number(e.target.value) :
                 undefined;
 
             this.updateValue(next);
+            onInput!(value);
         }
 
     componentWillReceiveProps({value}: NumberInputProps) {
@@ -149,13 +153,13 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
 
     render() {
         const {value} = this.state;
-        const {step, min, max, prefix, suffix, ...props} = this.props;
-        const disableIncrement = props.disabled || (isNumber(value) && value >= max!);
-        const disableDecrement = props.disabled || (isNumber(value) && value <= min!);
+        const {step, min, max, prefix, suffix, onInput, ...inputProps} = this.props;
+        const disableIncrement = inputProps.disabled || (isNumber(value) && value >= max!);
+        const disableDecrement = inputProps.disabled || (isNumber(value) && value <= min!);
 
         return <div className={styles['number-input']}>
             <input
-                {...props}
+                {...inputProps}
                 data-automation-id="NATIVE_INPUT_NUMBER"
                 type="number"
                 value={isNumber(value) ? value : ''}
