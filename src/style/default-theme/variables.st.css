@@ -5,7 +5,21 @@
     fontWeight: normal;
     lineHeight: 1.5;
 
-    /* Colors */
+    /* Colors from styleguide */
+    BK1: #000000;
+    BK3: #adbbc6;
+    DS2: #f1f1f1;
+    PR1: #257ade;
+    PR2: #4a90e2;
+    WT1: #ffffff;
+    DS1: #c8c8c8;
+    PR3: #5cb4ff;
+    PR4: #edf7ff;
+    ER1: #d0011b;
+    BK2: #7d8c98;
+
+    /* Other colors */
+    /* TODO: we should not use any of them */
     B1: #4990e2;
     B2: #5cb4ff;
     B3: #4990e2;

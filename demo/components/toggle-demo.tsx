@@ -2,16 +2,12 @@ import * as React from 'react';
 import {Toogle} from '../../src';
 
 export interface State {
-    checked1: boolean,
-    checked2: boolean,
-    checked3: boolean
+    checked: boolean,
 }
 
 export class ToogleDemo extends React.Component<{}, State> {
     state = {
-        checked1: false,
-        checked2: false,
-        checked3: false
+        checked: false,
     }
     render () {
         return <table>
@@ -21,27 +17,17 @@ export class ToogleDemo extends React.Component<{}, State> {
                         Controled
                         <Toogle
                             label='with icons'
-                            checked={this.state.checked1}
-                            onChange={(checked1: boolean) => this.setState({checked1})}
+                            checked={this.state.checked}
+                            onChange={(checked: boolean) => this.setState({checked})}
                         />
                     </th>
                     <th>
-                        Custom Icons
-                        <Toogle
-                            label='without icons'
-                            iconChecked={<span children='+'/>}
-                            iconUnchecked={<span children='-'/>}
-                            checked={this.state.checked2}
-                            onChange={(checked2: boolean) => this.setState({checked2})}
-                        />
-                    </th>
-                    <th>
-                        No icons
+                        Controled RTL
                         <Toogle
                             label='with icons'
-                            checked={this.state.checked3}
-                            onChange={(checked3: boolean) => this.setState({checked3})}
-                            displayIcons={false}
+                            rtl
+                            checked={this.state.checked}
+                            onChange={(checked: boolean) => this.setState({checked})}
                         />
                     </th>
                     <th>
@@ -59,6 +45,14 @@ export class ToogleDemo extends React.Component<{}, State> {
                     <th>
                         Disabled on
                         <Toogle disabled checked/>
+                    </th>
+                    <th>
+                        Errored off
+                        <Toogle errored/>
+                    </th>
+                    <th>
+                        Errored on
+                        <Toogle errored checked/>
                     </th>
                 </tr>
             </tbody>

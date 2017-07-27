@@ -83,33 +83,4 @@ describe('<Toggle/>', () => {
         })
     })
 
-    describe('render with custom icons', () => {
-        it('unchecked should have custom iconUnchecked', () => {
-            const onChange = sinon.spy();
-            const renderer = clientRenderer.render(
-                <Toogle
-                    onChange={onChange}
-                    iconChecked={<div data-automation-id='TEST_ICON_CHECKED'/>}
-                    iconUnchecked={<div data-automation-id='TEST_ICON_UNCHECKED'/>}
-                />
-            )
-            expect(renderer.select('TEST_ICON_UNCHECKED')).to.not.null;
-            expect(renderer.select('TEST_ICON_CHECKED')).to.be.null;
-        })
-
-        it('unchecked should have custom iconChecked', () => {
-            const onChange = sinon.spy();
-            const renderer = clientRenderer.render(
-                <Toogle
-                    checked
-                    onChange={onChange}
-                    iconChecked={<div data-automation-id='TEST_ICON_CHECKED'/>}
-                    iconUnchecked={<div data-automation-id='TEST_ICON_UNCHECKED'/>}
-                />
-            )
-            expect(renderer.select('TEST_ICON_CHECKED')).to.not.null;
-            expect(renderer.select('TEST_ICON_UNCHECKED')).to.be.null;
-        })
-    })
-
 });
