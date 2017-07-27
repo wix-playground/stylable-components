@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { expect, ClientRenderer, sinon, simulate, waitFor } from 'test-drive-react';
-import hasCssState from '../utils/has-css-state';
+import { hasCssState } from '../utils/has-css-state';
 import { TreeView, TreeItem } from '../../src';
 import treeViewStyles from '../../src/components/tree-view/tree-view.st.css';
 import { TreeViewDemo, treeData } from '../../demo/components/tree-view-demo';

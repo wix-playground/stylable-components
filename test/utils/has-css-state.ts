@@ -2,7 +2,7 @@ import { expect } from 'test-drive-react';
 
 import { Stylesheet } from 'stylable';
 
-export default function hasCssState(elem: Element | null, stylesheet: { $stylesheet: Stylesheet }, stateMap: { [key: string]: boolean }): void | never {
+export function hasCssState(elem: Element | null, stylesheet: { $stylesheet: Stylesheet }, stateMap: { [key: string]: boolean }): void | never {
     
     if (!elem) {
         throw new Error(`hasCssState: Element does not exists"`);
