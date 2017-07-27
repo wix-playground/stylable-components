@@ -21,10 +21,13 @@ export default class Toggle extends React.Component<Props, State> {
     state = {
         focus: false
     }
-    toggle = () => {
+    toggle = (e: React.SyntheticEvent<HTMLDivElement>) => {
         const input = findDOMNode(this.refs.input) as HTMLElement
         if (input) {
-            input.focus();
+            input.focus()
+        }
+        if (e.target !== input) {
+            this.setState({focus: false})
         }
         if (!this.props.disabled && this.props.onChange) {
             this.props.onChange(!this.props.checked)
