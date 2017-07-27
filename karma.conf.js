@@ -77,7 +77,7 @@ module.exports = function (config) {
         sauceLabs: {
             startConnect: false,
             build: 'TRAVIS #' + process.env.TRAVIS_BUILD_NUMBER + ' (' + process.env.TRAVIS_BUILD_ID + ')',
-            tag: [process.env.TRAVIS_BRANCH],
+            tags: [process.env.TRAVIS_BRANCH,"taggable"],
             tunnelIdentifier: process.env.TRAVIS_JOB_NUMBER,
         },
         captureTimeout: 120000,
