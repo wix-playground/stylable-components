@@ -26,7 +26,7 @@ export default class Toggle extends React.Component<Props, State> {
         if (input) {
             input.focus();
         }
-        if (this.props.onChange) {
+        if (!this.props.disabled && this.props.onChange) {
             this.props.onChange(!this.props.checked)
         }
     }

@@ -17,12 +17,6 @@ describe('<Toggle/>', () => {
         it('should have input', () => {
             expect(renderer.select('TOGGLE_INPUT')).to.not.null
         })
-        it('should have default unchecked icon', () => {
-            expect(renderer.select('TOGGLE_UNCHECKED_ICON')).to.not.null
-        })
-        it('should not have default checked icon', () => {
-            expect(renderer.select('TOGGLE_CHECKED_ICON')).to.be.null
-        })
     })
 
     describe('render with checked={true}', () => {
@@ -34,12 +28,6 @@ describe('<Toggle/>', () => {
         })
         it('should have input', () => {
             expect(renderer.select('TOGGLE_INPUT')).to.not.null
-        })
-        it('should have default checked icon', () => {
-            expect(renderer.select('TOGGLE_CHECKED_ICON')).to.not.null
-        })
-        it('should not have default unchecked icon', () => {
-            expect(renderer.select('TOGGLE_UNCHECKED_ICON')).to.be.null
         })
     })
 
