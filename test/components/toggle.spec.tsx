@@ -39,16 +39,10 @@ describe('<Toggle/>', () => {
             renderer = clientRenderer.render(<Toogle onChange={onChange}/>)
         })
 
-        it('click should trigger onChange', () => {
-            simulate.click(renderer.select('TOGGLE'))
-            expect(onChange).to.have.been.calledOnce;
-            expect(onChange).to.have.been.calledWithExactly(true);
-        })
-
         it('pressing space on focused input should trigger onChange', () => {
             const input = renderer.select('TOGGLE_INPUT');
             simulate.focus(input)
-            simulate.click(input)
+            simulate.change(input)
             expect(onChange).to.have.been.calledOnce;
             expect(onChange).to.have.been.calledWithExactly(true);
         })

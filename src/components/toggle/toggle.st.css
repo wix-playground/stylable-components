@@ -15,7 +15,8 @@
     switchSize: 20px;
 }
 .root {
-    -st-states: checked, disabled, focus, errored, rtl;
+    -st-states: checked, disabled, focus, error, rtl;
+    display: block;
     position: relative;
     width: value(width);
     border: 1px solid value(BK3);
@@ -70,7 +71,7 @@
     outline: 2px solid value(PR3);
 }
 
-.root:errored::switch {
+.root:error::switch {
     background-color: value(ER1);
 }
 

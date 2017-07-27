@@ -1,11 +1,11 @@
 import * as React from 'react';
 import {findDOMNode} from 'react-dom';
-import {SBComponent, SBStateless} from 'stylable-react-component';
+import {SBComponent} from 'stylable-react-component';
 import style from './toggle.st.css';
 
 export interface Props {
     checked?: boolean,
-    errored?: boolean,
+    error?: boolean,
     disabled?: boolean,
     onChange?: (selected: boolean) => void,
     label?: string,
@@ -13,42 +13,56 @@ export interface Props {
     rtl?: boolean
 }
 export interface State {
-    focus: boolean
+    focus: boolean,
+    click: boolean
 }
 
 @SBComponent(style)
 export default class Toggle extends React.Component<Props, State> {
-    state = {
-        focus: false
+    static defaultProps = {
+        checked: false,
+        disabled: false,
+        error: false,
+        rtl: false
     }
-    toggle = (e: React.SyntheticEvent<HTMLDivElement>) => {
-        const input = findDOMNode(this.refs.input) as HTMLElement
-        if (input) {
-            input.focus()
-        }
-        if (e.target !== input) {
-            this.setState({focus: false})
-        }
+    state = {
+        focus: false,
+        click: false
+    }
+    toggle = (e: React.SyntheticEvent<HTMLInputElement>) => {
         if (!this.props.disabled && this.props.onChange) {
             this.props.onChange(!this.props.checked)
+        }
+        // reseting focus when user click toggle
+        if (this.state.click) {
+            this.setState({
+                click: false,
+                focus: false
+            })
         }
     }
     render() {
         const {
-            checked = false,
-            disabled = false,
-            errored = false,
-            rtl = false,
+            checked,
+            disabled,
+            error,
+            rtl,
             label,
             tabIndex,
             onChange
         } = this.props;
         const {focus} = this.state;
 
-        return <div
+        return <label
             data-automation-id='TOGGLE'
-            onClick={this.toggle}
-            cssStates={{checked, disabled, focus, errored, rtl}}
+            onMouseDown={() => this.setState({click: true})}
+            cssStates={{
+                checked: checked!,
+                disabled: disabled!,
+                focus: focus!,
+                error: error!,
+                rtl: rtl!
+            }}
         >
             {!disabled &&
                 <input
@@ -57,13 +71,14 @@ export default class Toggle extends React.Component<Props, State> {
                     className='input'
                     type='checkbox'
                     aria-label={label}
-                    defaultChecked={checked}
+                    checked={checked}
+                    onChange={this.toggle}
                     tabIndex={tabIndex}
                     onFocus={() => this.setState({focus: true})}
                     onBlur={() => this.setState({focus: false})}
                 />
             }
             <div className='switch'/>
-        </div>
+        </label>
     }
 }

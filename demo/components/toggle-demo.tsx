@@ -47,12 +47,12 @@ export class ToogleDemo extends React.Component<{}, State> {
                         <Toogle disabled checked/>
                     </th>
                     <th>
-                        Errored off
-                        <Toogle errored/>
+                        Error off
+                        <Toogle error/>
                     </th>
                     <th>
-                        Errored on
-                        <Toogle errored checked/>
+                        Error on
+                        <Toogle error checked/>
                     </th>
                 </tr>
             </tbody>
