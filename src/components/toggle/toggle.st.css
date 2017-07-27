@@ -13,14 +13,16 @@
 :vars {
     width: 46px;
     switchSize: 20px;
+    borderWidth: 1px;
+    padding: 1px;
 }
 .root {
     -st-states: checked, disabled, focus, error, rtl;
     display: block;
     position: relative;
     width: value(width);
-    border: 1px solid value(BK3);
-    padding: 1px;
+    border: value(borderWidth) solid value(BK3);
+    padding: value(padding);
     border-radius: 100px;
     background-color: value(WT1);
     cursor: pointer;
@@ -53,7 +55,7 @@
 }
 
 .root:checked::switch {
-    transform: translateX(calc(value(width) - 4px - 100%))
+    transform: translateX(calc(value(width) - value(padding) * 2 - value(borderWidth) * 2 - 100%));
     background-color: value(PR2);
     background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjYiIHZpZXdCb3g9IjAgMCA4IDYiPiAgICA8cGF0aCBmaWxsPSIjRkZGIiBmaWxsLXJ1bGU9Im5vbnplcm8iIGQ9Ik0xLjY5NiAyLjQ2NEExIDEgMCAxIDAgLjMwNCAzLjlsMS44NzUgMS44MThhMSAxIDAgMCAwIDEuMzkyIDBsNC4xMjUtNEExIDEgMCAxIDAgNi4zMDQuMjgyTDIuODc1IDMuNjA3IDEuNjk2IDIuNDY0eiIvPjwvc3ZnPg==);
 }
@@ -85,7 +87,7 @@
 }
 
 .root:rtl::switch {
-    transform: translateX(calc(value(width) - 4px - 100%));
+    transform: translateX(calc(value(width) - value(padding) * 2 - value(borderWidth) * 2 - 100%));
 }
 .root:rtl:checked::switch {
     transform: translateX(0);
