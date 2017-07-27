@@ -43,7 +43,9 @@ export const CheckBox: React.SFC<Partial<CheckBoxProps>> = (props) => (
 );
 
 function executeClickHandler(handler: (value: boolean) => any, value: boolean, isDisabled: boolean, isReadOnly: boolean, isIndeterminate: boolean): void {
-    !isDisabled && !isReadOnly && ( isIndeterminate ? handler(true) : handler(value) );
+    if ( !isDisabled && !isReadOnly ) {
+        isIndeterminate ? handler(true) : handler(value)
+    } 
 }
 
 const DefaultCheckBoxSVG: React.SFC<CheckBoxIconProps> = (props) => {

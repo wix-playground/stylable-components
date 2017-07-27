@@ -37,7 +37,7 @@ export class CheckBoxDemo extends React.Component<{},{}> {
 }
 
 @observer
-class BasicDemo extends React.Component<{}, {}> {
+export class BasicDemo extends React.Component<{}, {}> {
     @observable value: boolean = false;
 
     handleChange = (val: boolean) => { this.value = val };
@@ -58,7 +58,7 @@ class BasicDemo extends React.Component<{}, {}> {
 }
 
 @observer
-class DisabledDemo extends React.Component<{}, {}> {
+export class DisabledDemo extends React.Component<{}, {}> {
     @observable value: boolean = false;
 
     handleChange = (val: boolean) => { this.value = val };
@@ -89,7 +89,7 @@ class DisabledDemo extends React.Component<{}, {}> {
 }
 
 @observer
-class IndeterminateDemo extends React.Component<{}, {}> {
+export class IndeterminateDemo extends React.Component<{}, {}> {
     @observable value1: boolean = true;
     @observable value2: boolean = false;
 

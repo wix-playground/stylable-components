@@ -1,6 +1,6 @@
 import React = require('react');
 import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react';
-import {CheckBoxDemo, demoCheckBoxText} from "../../demo/components/checkbox-demo";
+import {demoCheckBoxText, BasicDemo, DisabledDemo, IndeterminateDemo} from "../../demo/components/checkbox-demo";
 import {CheckBox, CheckBoxIconProps} from "../../src";
 
 const boxSVG: React.SFC<CheckBoxIconProps> = (props) => {
@@ -34,48 +34,59 @@ describe('<Checkbox/>', function () {
         clientRenderer.cleanup();
     });
 
-    it('Component / Demo test', async function () {
-        const {select, waitForDom} = clientRenderer.render(<CheckBoxDemo/>);
+    describe('Component / Demo test', function () {
+        it('Basic demo', async function () {
+            const {select, waitForDom} = clientRenderer.render(<BasicDemo/>);
 
-        // Basic Checkbox demo
-        await waitForDom(() => {
-           expect(select('BASIC_DEMO', 'CHECKBOX_ROOT'), 'basic root').to.be.present();
-           expect(select('BASIC_DEMO', 'CHECKBOX_BOX'), 'basic box').to.be.present();
-           expect(select('BASIC_DEMO', 'CHECKBOX_TICKMARK'), 'basic tickmark').to.be.absent();
-           expect(select('BASIC_DEMO', 'BASIC_LABEL'), 'basic label').to.have.text(demoCheckBoxText);
-           expect(select('BUTTON_SUBMIT'), 'basic submit').to.be.present().and.to.have.attr('disabled');
+            await waitForDom(() => {
+                expect(select('BASIC_DEMO', 'CHECKBOX_ROOT'), 'basic root').to.be.present();
+                expect(select('BASIC_DEMO', 'CHECKBOX_BOX'), 'basic box').to.be.present();
+                expect(select('BASIC_DEMO', 'CHECKBOX_TICKMARK'), 'basic tickmark').to.be.absent();
+                expect(select('BASIC_DEMO', 'BASIC_LABEL'), 'basic label').to.have.text(demoCheckBoxText);
+                expect(select('BUTTON_SUBMIT'), 'basic submit').to.be.present().and.to.have.attr('disabled');
+            });
+
+            simulate.click(select('BASIC_DEMO', 'CHECKBOX_ROOT'));
+
+            return waitFor(() => {
+                expect(select('BASIC_DEMO', 'CHECKBOX_TICKMARK'), 'basic tickmark').to.be.present();
+                expect(select('BASIC_DEMO', 'CHECKBOX_TICKMARK')).to.be.insideOf(select('BASIC_DEMO', 'CHECKBOX_BOX') as HTMLElement);
+                expect(select('BASIC_DEMO', 'BUTTON_SUBMIT'), 'basic submit').to.not.have.attr('disabled');
+            });
         });
 
-        simulate.click(select('BASIC_DEMO', 'CHECKBOX_ROOT'));
+        it('Disabled Demo', async function () {
+            const {select, waitForDom} = clientRenderer.render(<DisabledDemo/>);
 
-        await waitFor(() => {
-            expect(select('BASIC_DEMO', 'CHECKBOX_TICKMARK'), 'basic tickmark').to.be.present();
-            expect(select('BASIC_DEMO', 'CHECKBOX_TICKMARK')).to.be.insideOf(select('BASIC_DEMO', 'CHECKBOX_BOX') as HTMLElement);
-            expect(select('BASIC_DEMO', 'BUTTON_SUBMIT'), 'basic submit').to.not.have.attr('disabled');
+            await waitForDom(() => {
+                expect(select('DISABLED_DEMO', 'CHECKBOX_ROOT'), 'disabled root').to.be.present();
+                expect(select('DISABLED_DEMO', 'CHECKBOX_BOX'), 'disabled box').to.be.present();
+            });
+
+            simulate.click(select('DISABLED_DEMO', 'CHECKBOX_ROOT'));
+
+            return waitFor(() => {
+                expect(select('DISABLED_DEMO', 'CHECKBOX_BOX'), 'disabled box').to.be.present();
+                expect(select('DISABLED_DEMO', 'CHECKBOX_TICKMARK'), 'disabled tickmark').to.be.absent();
+            });
         });
 
-        // Disabled Checkbox demo
-        expect(select('DISABLED_DEMO', 'CHECKBOX_ROOT'), 'disabled root').to.be.present();
-        expect(select('DISABLED_DEMO', 'CHECKBOX_BOX'), 'disabled box').to.be.present();
+        it('Indeterminate Demo', async function () {
+            const {select, waitForDom} = clientRenderer.render(<IndeterminateDemo/>);
 
-        simulate.click(select('DISABLED_DEMO', 'CHECKBOX_ROOT'));
-        await waitFor(() => {
-            expect(select('DISABLED_DEMO', 'CHECKBOX_BOX'), 'disabled box').to.be.present();
-            expect(select('DISABLED_DEMO', 'CHECKBOX_TICKMARK'), 'disabled tickmark').to.be.absent();
+            await waitForDom(() => {
+                expect(select('INDETERMINATE_DEMO_OPTION1', 'CHECKBOX_TICKMARK')).to.be.present();
+                expect(select('INDETERMINATE_DEMO_OPTION2', 'CHECKBOX_TICKMARK')).to.be.absent();
+                expect(select('INDETERMINATE_DEMO_TOP_LEVEL', 'CHECKBOX_INDETERMINATE')).to.be.present();
+            });
+
+            simulate.click(select('INDETERMINATE_DEMO_TOP_LEVEL', 'CHECKBOX_ROOT'));
+
+            return waitFor(() => {
+                expect(select('INDETERMINATE_DEMO_OPTION1', 'CHECKBOX_TICKMARK')).to.be.present();
+                expect(select('INDETERMINATE_DEMO_OPTION2', 'CHECKBOX_TICKMARK')).to.be.present();
+            });
         });
-
-        // Intermediate demo
-        expect(select('INDETERMINATE_DEMO_OPTION1', 'CHECKBOX_TICKMARK')).to.be.present();
-        expect(select('INDETERMINATE_DEMO_OPTION2', 'CHECKBOX_TICKMARK')).to.be.absent();
-        expect(select('INDETERMINATE_DEMO_TOP_LEVEL', 'CHECKBOX_INDETERMINATE')).to.be.present();
-
-        simulate.click(select('INDETERMINATE_DEMO_TOP_LEVEL', 'CHECKBOX_ROOT'));
-
-        return waitFor(() => {
-            expect(select('INDETERMINATE_DEMO_OPTION1', 'CHECKBOX_TICKMARK')).to.be.present();
-            expect(select('INDETERMINATE_DEMO_OPTION2', 'CHECKBOX_TICKMARK')).to.be.present();
-        })
-
     });
 
     it('Renders with default values', function () {
@@ -173,6 +184,8 @@ describe('<Checkbox/>', function () {
 
             simulate.click(select('CHECKBOX_ROOT'));
 
+            await new Promise((resolve) => setTimeout(resolve, 500));
+
             return waitFor(() => {
                 expect(onChange).to.not.have.been.called;
             })
@@ -207,6 +220,8 @@ describe('<Checkbox/>', function () {
             });
 
             simulate.click(select('CHECKBOX_ROOT'));
+
+            await new Promise((resolve) => setTimeout(resolve, 500));
 
             return waitFor(() => {
                 expect(onChange).to.not.have.been.called;
@@ -276,6 +291,8 @@ describe('<Checkbox/>', function () {
             });
 
             simulate.click(select('CHECKBOX_ROOT'));
+
+            await new Promise((resolve) => setTimeout(resolve, 500));
 
             return waitFor(() => {
                 expect(onChange).to.not.have.been.called;
