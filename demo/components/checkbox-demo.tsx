@@ -2,12 +2,12 @@ import React = require('react');
 import {observable} from 'mobx'
 import {observer} from 'mobx-react'
 import {CheckBox, CheckBoxIconProps} from "../../src";
+import style from './checkbox-demo.st.css';
+import {SBComponent} from "stylable-react-component";
 
 export const demoCheckBoxText: string = "Yes, I'm over 18 years old";
 
-const style = require('./checkbox-demo.st.css').default;
-
-@observer
+@observer @SBComponent(style)
 export class CheckBoxDemo extends React.Component<{},{}> {
     render() {
         return (

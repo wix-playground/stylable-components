@@ -1,6 +1,6 @@
 import React = require('react');
-
-const style = require('./checkbox.st.css').default;
+import style from './checkbox.st.css';
+import { SBComponent } from 'stylable-react-component';
 
 export interface CheckBoxProps {
     value: boolean;
@@ -8,7 +8,7 @@ export interface CheckBoxProps {
     tickIcon: React.SFC<CheckBoxIconProps>;
     indeterminateIcon: React.SFC<CheckBoxIconProps>;
     onChange: (value: boolean) => any;
-    children: any;
+    children?: any;
     disabled: boolean;
     readonly: boolean;
     indeterminate: boolean;
@@ -20,40 +20,10 @@ export interface CheckBoxIconProps {
     disabled?: boolean;
 }
 
-export const CheckBox: React.SFC<Partial<CheckBoxProps>> = (props) => (
-    <div data-automation-id="CHECKBOX_ROOT"
-         onClick={(event) => executeClickHandler(props.onChange!, !props.value, props.disabled!, props.readonly!, props.indeterminate!)}
-         className={style.root}>
-
-        { props.boxIcon!({value: props.value , indeterminate: props.indeterminate, disabled: props.disabled})}
-        { props.indeterminate ?
-            props.indeterminateIcon!({value: props.value, disabled: props.disabled }) :
-            props.value && props.tickIcon!({value: props.value, disabled: props.disabled})
-        }
-
-        {props.children}
-
-        <input data-automation-id="NATIVE_CHECKBOX"
-               type="checkbox"
-               className={style.nativeCheckbox}
-               checked={props.value}
-               onChange={()=>{}}
-               disabled={props.disabled}/>
-    </div>
-);
-
-function executeClickHandler(handler: (value: boolean) => any, value: boolean, isDisabled: boolean, isReadOnly: boolean, isIndeterminate: boolean): void {
-    if ( !isDisabled && !isReadOnly ) {
-        isIndeterminate ? handler(true) : handler(value)
-    } 
-}
 
 const DefaultCheckBoxSVG: React.SFC<CheckBoxIconProps> = (props) => {
     return (
-        <svg className={
-                style.boxIconDefault
-                + ' ' + (props.disabled ? style.boxIconDisabled : (props.value || props.indeterminate) && style.boxIconChecked)
-            }
+        <svg className='boxIconDefault'
              data-automation-id="CHECKBOX_BOX"
              xmlns="http://www.w3.org/2000/svg">
             <path d="M.5.5h15v15H.5z"/>
@@ -63,7 +33,7 @@ const DefaultCheckBoxSVG: React.SFC<CheckBoxIconProps> = (props) => {
 
 const DefaultTickMarkSVG: React.SFC<CheckBoxIconProps> = (props) => {
     return (
-        <svg className={style.tickIcon  + ' ' + (props.disabled && style.tickIconDisabled)}
+        <svg className="tickIcon"
              data-automation-id="CHECKBOX_TICKMARK"
              xmlns="http://www.w3.org/2000/svg">
             <path d="M5 8.685l2.496 1.664M8 10.685L11.748 6"/>
@@ -73,7 +43,7 @@ const DefaultTickMarkSVG: React.SFC<CheckBoxIconProps> = (props) => {
 
 const DefaultIndeterminateSVG: React.SFC<CheckBoxIconProps> = (props) => {
     return (
-        <svg className={style.indeterminateIcon + ' ' + (props.disabled && style.indeterminateIconDisabled)}
+        <svg className="indeterminateIcon"
              data-automation-id="CHECKBOX_INDETERMINATE"
              xmlns="http://www.w3.org/2000/svg" width="15" height="15">
             <line x1="4" y1="8"  x2="12" y2="8" />
@@ -81,13 +51,51 @@ const DefaultIndeterminateSVG: React.SFC<CheckBoxIconProps> = (props) => {
     )
 };
 
-CheckBox.defaultProps = {
-    value: false,
-    boxIcon: DefaultCheckBoxSVG,
-    tickIcon: DefaultTickMarkSVG,
-    indeterminateIcon: DefaultIndeterminateSVG,
-    onChange: (value: boolean) => {},
-    disabled: false,
-    readonly: false,
-    indeterminate: false
-};
+@SBComponent(style)
+export class CheckBox extends React.Component<Partial<CheckBoxProps>, {}> {
+    static defaultProps: CheckBoxProps = {
+        value: false,
+        boxIcon: DefaultCheckBoxSVG,
+        tickIcon: DefaultTickMarkSVG,
+        indeterminateIcon: DefaultIndeterminateSVG,
+        onChange: (value: boolean) => {},
+        disabled: false,
+        readonly: false,
+        indeterminate: false
+    }
+
+    render() {
+        return (
+            <div data-automation-id="CHECKBOX_ROOT"
+                 cssStates={{
+                     checked: this.props.value!,
+                     disabled: this.props.disabled!,
+                     readonly: this.props.readonly!,
+                     indeterminate: this.props.indeterminate!
+                 }}
+                 onClick={(event) => executeClickHandler(this.props.onChange!, !this.props.value, this.props.disabled!, this.props.readonly!, this.props.indeterminate!)}>
+
+                { this.props.boxIcon!({value: this.props.value , indeterminate: this.props.indeterminate, disabled: this.props.disabled})}
+                { this.props.indeterminate ?
+                    this.props.indeterminateIcon!({value: this.props.value, disabled: this.props.disabled }) :
+                    this.props.value && this.props.tickIcon!({value: this.props.value, disabled: this.props.disabled})
+                }
+
+                {this.props.children}
+
+                <input data-automation-id="NATIVE_CHECKBOX"
+                       type="checkbox"
+                       className="nativeCheckbox"
+                       checked={this.props.value}
+                       onChange={()=>{}}
+                       disabled={this.props.disabled}/>
+            </div>
+        )
+    }
+}
+
+function executeClickHandler(handler: (value: boolean) => any, value: boolean, isDisabled: boolean, isReadOnly: boolean, isIndeterminate: boolean): void {
+    if ( !isDisabled && !isReadOnly ) {
+        isIndeterminate ? handler(true) : handler(value)
+    }
+}
