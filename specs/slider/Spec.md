@@ -32,19 +32,18 @@ Sliders are great for adjusting settings that reflect intensity levels (volume, 
 
 **Slider consists of:** "bar", "handle" and "progress". The "handle" is dragged across the "bar" in order to give the slider a desired value while "progress" marks range from min value to current value. 
 
-Also, you can add elements into it in the tooltip (e.g. to display value) and error slots, by passing the appropriate props (see component props).
-
-
+Also, you can display tooltip (e.g. to display value) by adding child dom element with relevant data-slot (data-slot="tooltip")
 
 ## Visual States
 
-| State    | Description                         |
-| :------- | ----------------------------------- |
-| Default  | Default component appearance        |
-| Hover    | User hovered over bar OR handle     |
-| Focus    | Browser is focused on the component |
-| Active   | User clicks on bar OR handle        |
-| Disabled | Component can not be changed        |
+| State    | Description                              |
+| :------- | ---------------------------------------- |
+| Default  | Default component appearance             |
+| Hover    | User hovered over bar OR handle          |
+| Focus    | Browser is focused on the component      |
+| Active   | User clicks on bar OR handle             |
+| Disabled | Component can not be changed             |
+| Error    | Error state for the component (can be set with ::error pseudo-element) |
 
 Design [assets](https://zpl.io/2kRTvO)
 

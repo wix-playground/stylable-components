@@ -8,24 +8,25 @@ A toggle switch is used as an on/off control
 
 #### Props
 
-| name          | type   | defaultValue | isRequired | description                              |
-| ------------- | ------ | ------------ | :--------- | ---------------------------------------- |
-| checked       | bool   | false        |            |                                          |
-| onChange      | func   |              |            | Callback function when user changes the value of the component |
-| disabled      | bool   | false        |            | If `true`, the toggle will not be interactive |
-| label         | string |              |            | Text to display in accessibility mode    |
-| displayIcon   | bool   | true         | yes        | If `true` display `iconUnchecked` & `iconChecked` |
-| iconUnchecked | node   | svg          |            | Displays unchecked icon. If node is empty  displays nothing. |
-| iconChecked   | node   | svg          |            | Displays checked icon. If node is empty  displays nothing. |
-| RTL           | bool   | FALSE        |            | NEED TO RESEARCH                         |
+| name     | type   | defaultValue | isRequired | description                              |
+| -------- | ------ | ------------ | :--------- | ---------------------------------------- |
+| checked  | bool   | FALSE        |            |                                          |
+| onChange | func   |              |            | Callback function when user changes the value of the component |
+| required | bool   | FALSE        |            | Whether or not filling the value is required in a form. |
+| disabled | bool   | FALSE        |            | If `true`, the toggle will not be interactive |
+| label    | string |              |            | Text to display in accessibility mode    |
+| error    | bool   | FALSE        |            | Sets the `:error` CSS state on the `<toggle/>` |
+| rtl      | bool   | FALSE        |            | Makes the component RTL                  |
 
+#### Accepted Children
 
+This component has no accepted children.
 
 ### Code examples
 
 #### Example 1:
 
-```
+```jsx
 //TODO: code guys - fix code example!
 import * as React from 'react';
 import { Toggle } from './components/toggle';
@@ -41,14 +42,12 @@ export class ComponentsDemo extends React.Component<{}, State>{
     constructor() {
         super();
     },
-
-    render() {
-        return <div>
-            <Toggle 
-                 onChange={newValue => this.setState({toggleValue: newValue})} // this should conform to the onChange API, please change 
-              	 value="{this.state.toggleValue}"
-                 />
-          </div>;
+          
+     render() {
+        return <toggle
+        		 value="{this.state.toggleValue}"
+                 onChange={newValue => this.setState({toggleValue: newValue})}
+               />;
     }
 }
 ```
@@ -69,10 +68,9 @@ comments to example 2
 
 ### Subcomponents (pseudo-elements)
 
-| selector     | description                              | type                                     |
-| ------------ | ---------------------------------------- | ---------------------------------------- |
-| ::switch     | Allows to style the switch of the toggle | HTML Element. This subcomponent has no subcomponents of its own* |
-| ::background | Allows to style the body of the toggle   | HTML Element. This subcomponent has no subcomponents of its own* |
+| selector | description                              | type                                     |
+| -------- | ---------------------------------------- | ---------------------------------------- |
+| ::switch | Allows to style the switch of the toggle | HTML Element. This subcomponent has no subcomponents of its own* |
 
 **if a subcomponent is a COMPONENT, it might have subcomponents -> then we will link here to its documentation*
 
@@ -82,6 +80,7 @@ comments to example 2
 
 | state                          | description                              |
 | ------------------------------ | ---------------------------------------- |
+| :error                         | Style the component on error, i.e. when the `error` prop is true |
 | :checked                       | Style the toggle element in checked state |
 | :hover, :focus, :disabled, etc | Standard CSS state                       |
 
@@ -91,26 +90,24 @@ comments to example 2
 
 **Example 1:**
 
-```
+```css
 @import * from './components/toggle'; /* TODO: fix the correct syntax */
 /* style.st.css 
 Adding rules here (which may be shared between different components) allows us to 	    override specific parts; or even change the whole theme
 */
 Toggle {
-  background-color: transparent;
+  background-color: grey; /* styles the toggle in unchecked state */
 }
 
-Toggle::background {
-  background-color: grey; /* styles the toggle bg. Although the whole look comes from the 							theme, we override the background color of the slider bar */
-}
-
-Toggle::background:checked {
-  background-color: blue; /* styles the toggle bg in checked state */
+Toggle:checked {
+  background-color: blue; /* styles the togle in checked state */
 }
 
 Toggle::switch {
   background-color: white; /* styles the switch bg */
 }
+
+
 ```
 
 
