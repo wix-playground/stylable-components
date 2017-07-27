@@ -3,6 +3,7 @@ import { expect, ClientRenderer, simulate } from 'test-drive-react';
 import {selectDom} from 'test-drive';
 import {PopupDemo} from '../../demo/components/popup-demo';
 import {Popup} from '../../src/components/'
+import {CSSProperties} from "react";
 
 const popup = 'POPUP';
 const container = 'POPUP_DEMO_DIV';
@@ -65,29 +66,30 @@ describe('<Popup />', function () {
         })
     });
 
-    it('renders the popup in the correct default position', async function () {
-        let div: HTMLDivElement;
-        const { waitForDom} = clientRenderer.render(<div ref={(elem: HTMLDivElement) => div = elem}>Anchor</div>);
-
-        await waitForDom(() => {
-            expect(div).to.be.present();
-        });
-
-        clientRenderer.render(<Popup anchor={div!} open={true}>
-            <span data-automation-id="SPAN">Popup Body</span>
-        </Popup>);
-
-        return waitForDom(() => {
-            expect([bodySelect(popup), div]).to.be.horizontallyAligned('left');
-            expect([div, bodySelect(popup)]).to.be.inVerticalSequence();
-        })
-    });
-
     describe('Layout tests', function () {
+        const divDim: CSSProperties = {width: '100px', height: '100px'};
+
+        it('(Default) Anchor - vertical: bottom, horizontal: left', async function () {
+            let div: HTMLDivElement;
+            const { waitForDom} = clientRenderer.render(<div style={divDim} ref={(elem: HTMLDivElement) => div = elem}>Anchor</div>);
+
+            await waitForDom(() => {
+                expect(div).to.be.present();
+            });
+
+            clientRenderer.render(<Popup anchor={div!} open={true}>
+                <span data-automation-id="SPAN">Popup Body</span>
+            </Popup>);
+
+            return waitForDom(() => {
+                expect([bodySelect(popup), div]).to.be.horizontallyAligned('left');
+                expect([div, bodySelect(popup)]).to.be.inVerticalSequence();
+            })
+        });
 
         it('Anchor - vertical: bottom, horizontal: right', async function () {
             let div: HTMLDivElement;
-            const { waitForDom} = clientRenderer.render(<div ref={(elem: HTMLDivElement) => div = elem}>Anchor</div>);
+            const { waitForDom} = clientRenderer.render(<div style={divDim} ref={(elem: HTMLDivElement) => div = elem}>Anchor</div>);
 
             await waitForDom(() => {expect(div).to.be.present();});
             clientRenderer.render(<Popup anchor={div!} anchorPosition={{vertical: 'bottom', horizontal: 'right'}} open={true}>
@@ -102,8 +104,8 @@ describe('<Popup />', function () {
 
         it('Anchor - vertical: top, horizontal: left', async function () {
             let div: HTMLDivElement;
-            const { waitForDom} = clientRenderer.render(<div ref={(elem: HTMLDivElement) => div = elem}>Anchor</div>);
-            
+            const { waitForDom} = clientRenderer.render(<div style={divDim} ref={(elem: HTMLDivElement) => div = elem}>Anchor</div>);
+
             await waitForDom(() => {expect(div).to.be.present();});
             clientRenderer.render(<Popup anchor={div!} anchorPosition={{vertical: 'top', horizontal: 'left'}} open={true}>
                 <span data-automation-id="SPAN">Popup Body</span>
@@ -113,7 +115,23 @@ describe('<Popup />', function () {
             return waitForDom(() => {
                 expect([bodySelect(popup), div]).to.be.horizontallyAligned('left');
                 expect([bodySelect(popup), div]).to.be.verticallyAligned('top');
-            })
+            });
+        });
+
+        it('Anchor - vertical: top, horizontal: right', async function () {
+            let div: HTMLDivElement;
+            const { waitForDom} = clientRenderer.render(<div style={divDim} ref={(elem: HTMLDivElement) => div = elem}>Anchor</div>);
+
+            await waitForDom(() => {expect(div).to.be.present();});
+            clientRenderer.render(<Popup anchor={div!} anchorPosition={{vertical: 'top', horizontal: 'right'}} open={true}>
+                <span data-automation-id="SPAN">Popup Body</span>
+                <div>some more stuff</div>
+            </Popup>);
+
+            return waitForDom(() => {
+                expect([bodySelect(popup), div]).to.be.verticallyAligned('top');
+                expect([div, bodySelect(popup)]).to.be.inHorizontalSequence();
+            });
         });
     });
 });
