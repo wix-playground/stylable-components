@@ -27,7 +27,7 @@ export const CheckBox: React.SFC<Partial<CheckBoxProps>> = (props) => (
 
         { props.boxIcon!({value: props.value , indeterminate: props.indeterminate, disabled: props.disabled})}
         { props.indeterminate ?
-            props.indeterminateIcon!({value: props.value }) :
+            props.indeterminateIcon!({value: props.value, disabled: props.disabled }) :
             props.value && props.tickIcon!({value: props.value, disabled: props.disabled})
         }
 
@@ -43,7 +43,7 @@ export const CheckBox: React.SFC<Partial<CheckBoxProps>> = (props) => (
 );
 
 function executeClickHandler(handler: (value: boolean) => any, value: boolean, isDisabled: boolean, isReadOnly: boolean, isIndeterminate: boolean): void {
-    isIndeterminate ? handler(true) : !isDisabled && !isReadOnly && handler(value);
+    !isDisabled && !isReadOnly && ( isIndeterminate ? handler(true) : handler(value) );
 }
 
 const DefaultCheckBoxSVG: React.SFC<CheckBoxIconProps> = (props) => {
@@ -71,7 +71,7 @@ const DefaultTickMarkSVG: React.SFC<CheckBoxIconProps> = (props) => {
 
 const DefaultIndeterminateSVG: React.SFC<CheckBoxIconProps> = (props) => {
     return (
-        <svg className={style.indeterminateIcon}
+        <svg className={style.indeterminateIcon + ' ' + (props.disabled && style.indeterminateIconDisabled)}
              data-automation-id="CHECKBOX_INDETERMINATE"
              xmlns="http://www.w3.org/2000/svg" width="15" height="15">
             <line x1="4" y1="8"  x2="12" y2="8" />

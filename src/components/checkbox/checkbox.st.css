@@ -36,6 +36,10 @@
     stroke-width: 1.5;
 }
 
+.indeterminateIconDisabled {
+    stroke: #c8c8c8;
+}
+
 .root {
     display: inline;
     position: relative;

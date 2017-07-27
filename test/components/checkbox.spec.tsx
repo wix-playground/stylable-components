@@ -186,6 +186,15 @@ describe('<Checkbox/>', function () {
                 expect(select('CHECKBOX_TICKMARK')).to.be.present();
             });
         });
+
+        it("displays indeterminate icon", async function () {
+            const {select, waitForDom} = clientRenderer.render(<CheckBox disabled={true} value={true} indeterminate/>);
+
+            await waitForDom(() => {
+                expect(select('CHECKBOX_ROOT')).to.be.present();
+                expect(select('CHECKBOX_INDETERMINATE')).to.be.present();
+            });
+        });
     });
 
     describe('When readonly', function () {
@@ -255,6 +264,21 @@ describe('<Checkbox/>', function () {
 
             return waitForDom(() => {
                 expect(select('CHECKBOX_INDETERMINATE_TEST')).to.be.present();
+            })
+        });
+
+        it('does not call onChange when disabled', async function () {
+            const onChange = sinon.spy();
+            const {select, waitForDom} = clientRenderer.render(<CheckBox disabled onChange={onChange} indeterminate/>);
+
+            await waitForDom(() => {
+                expect(select('CHECKBOX_ROOT')).to.be.present();
+            });
+
+            simulate.click(select('CHECKBOX_ROOT'));
+
+            return waitFor(() => {
+                expect(onChange).to.not.have.been.called;
             })
         });
     });

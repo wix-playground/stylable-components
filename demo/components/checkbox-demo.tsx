@@ -78,6 +78,11 @@ class DisabledDemo extends React.Component<{}, {}> {
                         <span className={style.label}>Checked</span>
                     </CheckBox>
                 </span>
+                <span>
+                    <CheckBox value={true} disabled indeterminate>
+                        <span className={style.label}>Indeterminate</span>
+                    </CheckBox>
+                </span>
             </div>
         )
     }
@@ -85,37 +90,30 @@ class DisabledDemo extends React.Component<{}, {}> {
 
 @observer
 class IndeterminateDemo extends React.Component<{}, {}> {
-    @observable values: { option1: boolean, option2: boolean } = {option1: true, option2: false};
-
-    onChanger(field: 'option1' | 'option2') {
-        return (value: boolean) => this.values[field] = value
-    }
+    @observable value1: boolean = true;
+    @observable value2: boolean = false;
 
     render() {
         return (
             <ul data-automation-id="INDETERMINATE_DEMO">
                 <span data-automation-id="INDETERMINATE_DEMO_TOP_LEVEL">
-                    <CheckBox value={this.values.option1 && this.values.option2}
-                              onChange={(val: boolean) => {
-                                  this.onChanger('option1')(val);
-                                  this.onChanger('option2')(val);
-                              }}
-                              indeterminate={this.values.option1 !== this.values.option2}>
+                    <CheckBox value={this.value1 && this.value2}
+                              onChange={(val: boolean) => { this.value1 = this.value2 = val}}
+                              indeterminate={this.value1 !== this.value2}>
                         <span data-automation-id="DISABLED_LABEL" className={style.label}>All Options</span>
                     </CheckBox>
                 </span>
                 <li  style={{listStyle:'none', marginLeft:'1em'}} data-automation-id="INDETERMINATE_DEMO_OPTION1">
-                    <CheckBox value={this.values.option1} onChange={this.onChanger('option1')}>
+                    <CheckBox value={this.value1} onChange={(val: boolean) => this.value1 = val}>
                         <span className={style.label}>Option1</span>
                     </CheckBox>
                 </li>
                 <li  style={{listStyle:'none', marginLeft:'1em'}} data-automation-id="INDETERMINATE_DEMO_OPTION2">
-                    <CheckBox value={this.values.option2} onChange={this.onChanger('option2')} data-automation-id="INDETERMINATE_DEMO_OPTION2">
+                    <CheckBox value={this.value2} onChange={(val: boolean) => this.value2 = val} data-automation-id="INDETERMINATE_DEMO_OPTION2">
                         <span className={style.label}>Option2</span>
                     </CheckBox>
                 </li>
             </ul>
-
         )
     }
 }
