@@ -4,11 +4,7 @@ import {KeyCodes} from '../../common/key-codes';
 
 const styles = require('./number-input.st.css').default;
 
-function noop() {}
-
-function isNumber(value?: number): value is number {
-    return typeof value == 'number';
-}
+export type WithChildren<T> = T & {children: React.ReactNode};
 
 export interface NumberInputProps {
     value?: number
@@ -36,14 +32,6 @@ export interface NumberInputState {
     value?: number
 }
 
-const defaultProps = {
-    step: 1,
-    min: -Infinity,
-    max: Infinity,
-    onChange: noop,
-    onInput: noop
-}
-
 enum Slot {
     Prefix = 'prefix',
     Suffix = 'suffix'
@@ -54,7 +42,11 @@ enum Direction {
     Decrease = 'decrease'
 }
 
-export type WithChildren<T> = T & {children: React.ReactNode};
+function noop() {}
+
+function isNumber(value?: number): value is number {
+    return typeof value == 'number';
+}
 
 function getAffix(children: React.ReactNode): Affix {
     return React.Children
@@ -82,7 +74,13 @@ function getAffix(children: React.ReactNode): Affix {
 }
 
 export class NumberInput extends React.Component<NumberInputProps, NumberInputState> {
-    static defaultProps = defaultProps;
+    static defaultProps = {
+        step: 1,
+        min: -Infinity,
+        max: Infinity,
+        onChange: noop,
+        onInput: noop
+    };
 
     constructor(props: WithChildren<NumberInputProps>) {
         super(props);
