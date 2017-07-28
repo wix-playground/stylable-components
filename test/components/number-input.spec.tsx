@@ -491,4 +491,23 @@ describe('<NumberInput />', () => {
             });
         });
     });
+
+    describe('children', () => {
+        it('should render an elements with data-slot="prefix" and data-slot="suffix" attribute', async () => {
+            const {select, waitForDom} = clientRenderer.render(
+                <NumberInput>
+                    <span data-slot="prefix" data-automation-id="PREFIX">prefix</span>
+                    <span data-slot="suffix" data-automation-id="SUFFIX">suffix</span>
+                </NumberInput>
+            );
+
+            await waitForDom(() => {
+                const prefix = select('PREFIX');
+                const suffix = select('SUFFIX');
+
+                expect(prefix).to.be.present();
+                expect(suffix).to.be.present();
+            });
+        });
+    });
 });

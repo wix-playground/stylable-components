@@ -21,10 +21,15 @@ export interface NumberInputProps {
     label?: string
     name?: string
     error?: boolean
-    prefix?: JSX.Element
-    suffix?: JSX.Element
     onChange?(value: number | undefined): void
     onInput?(value: string | undefined): void
+}
+
+export type SlotElement = React.ReactElement<{'data-slot': string}>;
+
+export interface Affix {
+    prefix: SlotElement[]
+    suffix: SlotElement[]
 }
 
 export interface NumberInputState {
@@ -39,15 +44,47 @@ const defaultProps = {
     onInput: noop
 }
 
-type Direction = 'increase' | 'decrease'
+enum Slot {
+    Prefix = 'prefix',
+    Suffix = 'suffix'
+}
 
-const INCREASE: Direction = 'increase';
-const DECREASE: Direction = 'decrease';
+enum Direction {
+    Increase = 'increase',
+    Decrease = 'decrease'
+}
+
+export type WithChildren<T> = T & {children: React.ReactNode};
+
+function getAffix(children: React.ReactNode): Affix {
+    return React.Children
+        .toArray(children)
+        .reduce((affix, child) => {
+            if (typeof child == 'object') {
+                child as React.ReactElement<{}>;
+
+                switch (child.props['data-slot']) {
+                    case Slot.Prefix:
+                        affix.prefix.push(child);
+                        break;
+                    case Slot.Suffix:
+                        affix.suffix.push(child);
+                        break;
+                }
+            }
+
+            return affix;
+        },
+        {
+            prefix: [],
+            suffix: []
+        } as Affix);
+}
 
 export class NumberInput extends React.Component<NumberInputProps, NumberInputState> {
     static defaultProps = defaultProps;
 
-    constructor(props: NumberInputProps) {
+    constructor(props: WithChildren<NumberInputProps>) {
         super(props);
 
         this.state = {
@@ -94,7 +131,7 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
     private stepValue(e: React.SyntheticEvent<HTMLElement>, direction: Direction) {
         const {value} = this.state;
         const {step, min, max} = this.props;
-        const next = (direction == INCREASE ?
+        const next = (direction == Direction.Increase ?
             isNumber(value) ? value + step! : step! :
             isNumber(value) ? value - step! : -step!);
 
@@ -102,20 +139,20 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
     }
 
     private handleIncrement: React.MouseEventHandler<HTMLElement> =
-        e => this.stepValue(e, INCREASE);
+        e => this.stepValue(e, Direction.Increase);
 
     private handleDecrement: React.MouseEventHandler<HTMLElement> =
-        e => this.stepValue(e, DECREASE);
+        e => this.stepValue(e, Direction.Decrease);
 
     private handleKeyDown: React.KeyboardEventHandler<HTMLElement> =
         e => {
             switch (e.keyCode) {
                 case KeyCodes.UP:
-                    this.stepValue(e, INCREASE);
+                    this.stepValue(e, Direction.Increase);
                     e.preventDefault();
                     break;
                 case KeyCodes.DOWN:
-                    this.stepValue(e, DECREASE);
+                    this.stepValue(e, Direction.Decrease);
                     e.preventDefault();
                     break;
                 case KeyCodes.ENTER:
@@ -144,20 +181,32 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
             onInput!(value);
         }
 
-    componentWillReceiveProps({value}: NumberInputProps) {
+    componentWillReceiveProps({value, children}: WithChildren<NumberInputProps>) {
+        const changes: Partial<NumberInputState> = {};
+
         if (value !== this.state.value) {
             this.committed = true;
-            this.setState({value});
+            changes.value = value;
+        }
+
+        if (Object.keys(changes).length > 0) {
+            this.setState(changes as NumberInputState);
         }
     }
 
     render() {
         const {value} = this.state;
-        const {step, min, max, prefix, suffix, onInput, ...inputProps} = this.props;
+        const {step, min, max, onInput, children, ...inputProps} = this.props;
         const disableIncrement = inputProps.disabled || (isNumber(value) && value >= max!);
         const disableDecrement = inputProps.disabled || (isNumber(value) && value <= min!);
+        const {prefix, suffix} = getAffix(children);
 
         return <div className={styles['number-input']}>
+            {prefix.length > 0 ?
+                <div className={styles['number-input-prefix']}>
+                    {prefix}
+                </div> : null
+            }
             <input
                 {...inputProps}
                 data-automation-id="NATIVE_INPUT_NUMBER"
@@ -170,6 +219,11 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
                 onKeyDown={this.handleKeyDown}
                 onBlur={this.handleBlur}
             />
+            {suffix.length > 0 ?
+                <div className={styles['number-input-prefix']}>
+                    {suffix}
+                </div> : null
+            }
             <Stepper
                 data-automation-id="NUMBER_INPUT_STEPPER"
                 className={styles['stepper']}

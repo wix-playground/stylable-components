@@ -8,10 +8,16 @@
 
 .number-input {
     position: relative;
-    display: inline-block;
+    display: inline-flex;
 }
 
+.number-input-prefix {}
+
+.number-input-suffix {}
+
 .stepper {
+    display: inline-block;
+
     position: relative;
 
     width: value(inputHeight);
@@ -60,14 +66,4 @@
     right: 0;
     bottom: 0;
     left: 0;
-}
-
-.number-input > .stepper {
-    position: absolute;
-
-    right: value(borderWidth);
-    top: value(borderWidth);
-    bottom: value(borderWidth);
-
-    height: initial;
 }
