@@ -1,39 +1,46 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types'
 import {CheckBoxDemo} from "./components/checkbox-demo";
+import {CheckBox} from "../src/components";
 import { TreeViewDemo } from './components/tree-view-demo';
 import { BirthDatePickerDemo } from './components/birth-date-picker-demo';
 import './style.st.css';
 import '../src/style/default-theme/base.st.css';
 import { RadioGroupDemo } from './components/radio-group-demo'
 
-export class ComponentsDemo extends React.Component<{}, {}>{
+export interface Props {}
+export interface State {
+    rtl: boolean
+}
+export class ComponentsDemo extends React.Component<Props, State>{
 
     static childContextTypes = {
-        rtl: PropTypes.bool
+        rtl: PropTypes.bool.isRequired
     }
 
-    state = {
-        rtl: false
+    constructor() {
+        super();
+        const rtl = window.location.search.indexOf('rtl=1') !== -1;
+        this.state = {rtl};
     }
 
     getChildContext() {
         return {rtl: this.state.rtl};
     }
+    onRTLChange = (rtl: boolean) => {
+        window.location.search = '?rtl=' + Number(rtl)
+    }
 
     render() {
         const {rtl} = this.state;
-        return <div>
+        return <div dir={rtl ? 'rtl' : 'ltr'}>
             <div>
                 <h1>RTL</h1>
-                <label>
-                    <input
-                        type='checkbox'
-                        checked={rtl}
-                        onChange={() => this.setState({rtl: !rtl})}
-                    />
-                    <span>Toogle this to enable/disable RTL on this page</span>
-                </label>
+                <CheckBox
+                    value={rtl}
+                    text='Toggle this to enable/disable RTL on this page'
+                    onChange={this.onRTLChange}
+                />
             </div>
             <div>
                 <h2>CheckBox</h2>

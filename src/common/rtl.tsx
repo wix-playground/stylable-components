@@ -3,17 +3,18 @@ import * as PropTypes from 'prop-types'
 
 export default function rtl<T extends React.ComponentClass<any>>(Base: T): T {
     class Component extends React.Component {
+        static displayName = Base.displayName
         static contextTypes = {
-            rtl: PropTypes.bool
+            rtl: PropTypes.bool.isRequired
         }
-        constructor(props) {
-            super(props)
+        static childContextTypes = {
+            rtl: PropTypes.bool.isRequired
         }
         render() {
-            return <Base
-                rtl={this.context.rtl}
-                {...this.props}
-            />
+            return React.createElement(Base, {
+                rtl: this.context.rtl || false,
+                ...this.props
+            });
         }
     }
     return Component as T
