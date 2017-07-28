@@ -20,24 +20,24 @@ export const Stepper: React.StatelessComponent<StepperProps> =
         disableDown = false,
         ...props
     }) => (
-        <div className={styles['stepper']} {...props}>
+        <div className={styles['root']} {...props}>
             <button
                 tabIndex={-1}
                 data-automation-id="STEPPER_INCREMENT"
-                className={`${styles['stepper-control']} ${styles['stepper-increment']}`}
+                className={`${styles['control']} ${styles['increment']}`}
                 onClick={() => onUp()}
                 disabled={disableUp}
             >
-                <ChevronUpIcon className={styles['stepper-control-icon']} />
+                <ChevronUpIcon className={styles['control-icon']} />
             </button>
             <button
                 tabIndex={-1}
                 data-automation-id="STEPPER_DECREMENT"
-                className={`${styles['stepper-control']} ${styles['stepper-decrement']}`}
+                className={`${styles['control']} ${styles['decrement']}`}
                 onClick={() => onDown()}
                 disabled={disableDown}
             >
-                <ChevronDownIcon className={styles['stepper-control-icon']}/>
+                <ChevronDownIcon className={styles['control-icon']}/>
             </button>
         </div>
     );

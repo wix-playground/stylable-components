@@ -6,7 +6,7 @@
                inputHeight;
 }
 
-.stepper {
+.root {
     display: inline-block;
 
     position: relative;
@@ -15,7 +15,7 @@
     height: value(inputHeight);
 }
 
-.stepper-control {
+.control {
     width: 100%;
 
     display: flex;
@@ -33,26 +33,26 @@
     color: value(color_MainText);
 }
 
-.stepper-control-icon {
+.control-icon {
     color: value(color_MainText);
     width: 16px;
     height: 16px;
 }
 
-.stepper-control:hover .stepper-control-icon,
-.stepper-control:focus .stepper-control-icon,
-.stepper-control:disabled .stepper-control-icon {
+.control:hover .control-icon,
+.control:focus .control-icon,
+.control:disabled .control-icon {
     color: value(color_MainText_Background);
 }
 
-.stepper-increment {
+.increment {
     top: 0;
     right: 0;
     bottom: 50%;
     left: 0;
 }
 
-.stepper-decrement {
+.decrement {
     top: 50%;
     right: 0;
     bottom: 0;

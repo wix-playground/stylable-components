@@ -1,8 +1,8 @@
-.number-input {
+.root {
     position: relative;
     display: inline-flex;
 }
 
-.number-input-prefix {}
+.prefix {}
 
-.number-input-suffix {}
+.suffix {}

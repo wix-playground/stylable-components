@@ -201,9 +201,9 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
         const disableDecrement = inputProps.disabled || (isNumber(value) && value <= min!);
         const {prefix, suffix} = getAffix(children);
 
-        return <div className={styles['number-input']}>
+        return <div className={styles['root']}>
             {prefix.length > 0 ?
-                <div className={styles['number-input-prefix']}>
+                <div className={styles['prefix']}>
                     {prefix}
                 </div> : null
             }
@@ -220,7 +220,7 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
                 onBlur={this.handleBlur}
             />
             {suffix.length > 0 ?
-                <div className={styles['number-input-prefix']}>
+                <div className={styles['suffix']}>
                     {suffix}
                 </div> : null
             }
