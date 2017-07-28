@@ -6,8 +6,9 @@
 - [Slider Props](#slider-props)
 - [UI Customizations](#ui-customizations)
 - [Behavior](#behavior)
-- [Keyboard](#keyboard)
-- [Mouse](#mouse)
+  - [Keyboard](#keyboard)
+  - [Mouse](#mouse)
+  - [Touch](#touch)
 - [Error handling](#error-handling)
 - [Accessibility](#accessibility)
 - [Examples](#examples)
@@ -112,18 +113,19 @@ Toggle should have a focus state. Focus state looks like a square border around 
 
 1. Put here the example of component with icons for On / Off states
 
-    .root::switch {.root::switch {
-        background-image: url('unckecked-icon.svg');
+    ```.root::switch {
+    .root::switch {    
+    	background-image: url('unckecked-icon.svg');
     }
     .root:checked::switch {
         background-image: url('ckecked-icon.svg');
     }
-    background-image: url('unckecked-icon.svg');
+    ```
 
+2. Put here the example of component with No icons 
 
-Put here the example of component with No icons 
+3. Put here the example of component with custom style
 
-1. Put here the example of component with custom style
 
 Examples will be here once component is done. 
 

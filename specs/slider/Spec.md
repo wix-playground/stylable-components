@@ -6,15 +6,17 @@
 - [Slider Props](#slider-props)
 - [UI Customizations](#ui-customizations)
 - [Behavior](#behavior)
-- [Keyboard](#keyboard)
-- [Mouse](#mouse)
+  - [Keyboard](#keyboard)
+  - [Mouse](#mouse)
+  - [Touch](#touch)
 - [Error handling](#error-handling)
 - [Accessibility](#accessibility)
 - [Examples](#examples)
-- [Simple](#simple)
-- [Stepped](#stepped)
-- [Horizontal / Vertical Axis](#horizontal-/-vertical)
-- [Tooltip](#tooltip)
+  - [Simple](#simple)
+  - [Stepped](#stepped)
+  - [Horizontal / Vertical Axis](#horizontal-/-vertical)
+  - [Tooltip](#tooltip)
+- [Design](#design)
 
 
 
@@ -32,7 +34,7 @@ Sliders are great for adjusting settings that reflect intensity levels (volume, 
 
 **Slider consists of:** "bar", "handle" and "progress". The "handle" is dragged across the "bar" in order to give the slider a desired value while "progress" marks range from min value to current value. 
 
-Also, you can display tooltip (e.g. to display value) by adding child dom element with relevant data-slot (data-slot="tooltip")
+Also, you can display tooltip (e.g. to display current value) by adding child DOM element with relevant data-slot (data-slot="tooltip")
 
 ## Visual States
 
@@ -169,7 +171,7 @@ By default, the slider is continuous. The step property causes the slider to mov
 
 ![steppedExample](./assets/steppedExample.png)
 
-<!--see Fan slider for reference - https://www.w3.org/TR/wai-aria-practices/examples/slider/slider-2.html-->
+See W3 org slider for reference - https://www.w3.org/TR/wai-aria-practices/examples/slider/slider-2.html
 
 
 

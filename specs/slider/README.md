@@ -30,7 +30,7 @@ The **Slider** is a component that allows users to input or select value in a ra
 
 #### Accepted Children
 
-This component accepts children with the following `data-slot` attribute, in order to be displayed in specific places in its layout
+This component accepts children with the following `data-slot` attribute, in order to be displayed in specific places in its layout ( in this case child position is connected to ::handle)
 
 | data-slot | description                              | example                                  |
 | --------- | ---------------------------------------- | ---------------------------------------- |
@@ -61,7 +61,7 @@ export class ComponentsDemo extends React.Component<{}, State>{
 
     render() {
         return <Slider 
-                 value="{this.state.numberInputValue}"
+                 value="{this.state.sliderValue}"
                  onChange={/* something */}
           		/>;
     }
@@ -91,7 +91,7 @@ export class ComponentsDemo extends React.Component<{}, State>{
 
     render() {
         return <Slider 
-                 value="{this.state.numberInputValue}"
+                 value="{this.state.sliderValue}"
                  onChange={/* something */}>
                  	<span data-slot="tooltip"></span>
           	   </Slider>;
