@@ -15,7 +15,7 @@ The **Slider** is a component that allows users to input or select value in a ra
 | value       | number                                | max          |            | Displays default OR actual value of the slider |
 | min         | number                                | 0            |            | The absolute minimum of the slider's range |
 | max         | number                                | 1            |            | The absolute maximum of the slider's range |
-| step        | number                                | 1            |            | The slider's step                        |
+| step        | number OR string "any"                | 1            |            | Set the slider's step. If step = number it causes slider to move in discrete increments. If step = "any"  sliders moves along a subjective range. |
 | required    | bool                                  | FALSE        |            | Whether or not the slider is required in a form. |
 | disabled    | bool                                  | FALSE        |            | If true, the slider will not be interactive |
 | label       | string                                |              |            | Text to display in accessibility mode    |
@@ -25,6 +25,8 @@ The **Slider** is a component that allows users to input or select value in a ra
 | onDragStop  | func                                  |              |            | Callback function that is fired when the slide has stopped moving.Signature `function(event: object) : void` event: MouseEnd or TouchEnd event targeting the slider. |
 | error       | bool                                  | FALSE        |            | Sets the `:error` CSS state on the `<slider>` |
 | rtl         | bool                                  | FALSE        |            | Makes the component RTL                  |
+
+
 
 #### Accepted Children
 

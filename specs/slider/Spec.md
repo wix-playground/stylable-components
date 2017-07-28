@@ -43,7 +43,7 @@ Also, you can display tooltip (e.g. to display value) by adding child dom elemen
 | Focus    | Browser is focused on the component      |
 | Active   | User clicks on bar OR handle             |
 | Disabled | Component can not be changed             |
-| Error    | Error state for the component (can be set with ::error pseudo-element) |
+| Error    | Error state for the component (can be set with :error pseudo-class) |
 
 Design [assets](https://zpl.io/2kRTvO)
 
@@ -67,8 +67,8 @@ See [README.md](./README.md) for more info.
 
 User can drag handle over slider bar or click on the slider (in desired location) to select the value from the range.
 
-Changing the value (keyboard) is performed **from current value**. E.g., if current value is 5.2, and step is 2, then UP will give us 7.2 (unless max is less than 7.2), and DOWN will give us 3.2.
-
+Changing the value (keyboard) is performed **from current value** to the next expected value. 
+E.g. if min=0, max=10, step=2, value=3.5, then UP arrow key will give us 4 and Down arrow key will give us 2
 Value can not exceed the min/max limits. If value is > or < than min/max it is automatically set to corresponding min/max.
 
 The component follows the external control pattern (value & handle position is defined by the `value` property, and in order for the component to function, it should be bound to a state in the parent component, and the `onChange` handler should be set).
@@ -130,14 +130,20 @@ https://www.w3.org/TR/wai-aria-practices/examples/slider/slider-2.html
 | Error                                    | Handling                                 |
 | ---------------------------------------- | ---------------------------------------- |
 | value out of min/max range               | Show error in console and set value to corresponding min/max |
-| value out of step (e.g. min=0 / max=20, step=5, value=7) | Show error in console, handle displays on 7. User can scroll right to increase value (in this case 7 will change to 12 . Once we reach slider end value will change from 17 to 20, since value can not be > max) |
+| value out of step (e.g. min=0 / max=20, step=5, value=7) | Show error in console, handle displays on 7. User can increase value (in this case 7 will change to 10) OR decrease value (7 will change to 5)  and after that step will work as expected. |
 
 
 
 ## Accessibility
 
-According to ARIA documentation, accessibility for slider is mostly covered with keyboard behavior.
-The only accessibility issue that is not covered with slider is the absence of number input that it connected to this slider. But this is not a part of the spec (can be fixed by adding number input to slider).
+##### Keyboard
+
+Accessibility for slider is mostly covered with keyboard behavior (according to ARIA docs).
+
+##### Focus
+
+Slider should have a focus state. Focus state looks like a square border around handle. We place focus around handle because in range slider there is no other options and we need to keep consistency in all components. 
+![sliderFocus](./assets/sliderFocus.png)
 
 reference links: 
 https://www.paciellogroup.com/blog/2008/05/aria-slider-part-1/
