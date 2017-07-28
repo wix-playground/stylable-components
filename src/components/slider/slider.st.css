@@ -17,7 +17,7 @@
   thumbHeight: 16px;
   thumbRadius: 8px;
   thumbBorder: 1px solid value(color_Slider_HandleBorder);
-  thumbBorderHover: 1px solid value(color_Slider_Handle_Active);
+  thumbBorderHover: 1px solid value(color_Slider_Handle_Active);;
 }
 
 .slider {
@@ -32,9 +32,6 @@
 .slider:hover
 {
   border: none;
-}
-.slider:focus {
-  outline: none;
 }
 .slider::-webkit-slider-runnable-track {
   width: 100%;
@@ -120,41 +117,45 @@
 /* Thumb on focus */
 .slider:focus::-ms-thumb {
   border: value(thumbBorderHover);
-  background-color: value(color_Slider_Handle_Hover)
+  background-color: value(color_Slider_Handle_Hover);
+  box-shadow: 0 0 0 2px #5cb4ff;
 }
 .slider:focus::-webkit-slider-thumb {
   border: value(thumbBorderHover);
-  background-color: value(color_Slider_Handle_Hover)
+  background-color: value(color_Slider_Handle_Hover);
+  -webkit-box-shadow: 0 0 0 2px #5cb4ff;
+  box-shadow: 0 0 0 2px #5cb4ff;
 }
 .slider:focus::-moz-range-thumb {
   border: value(thumbBorderHover);
-  background-color: value(color_Slider_Handle_Hover)
+  background-color: value(color_Slider_Handle_Hover);
+  box-shadow: 0 0 0 2px #5cb4ff;
 }
 
 /* Thumb on hover */
 .slider:hover::-ms-thumb {
   border: value(thumbBorderHover);
-  background-color: value(color_Slider_Handle_Hover)
+  background-color: value(color_Slider_Handle_Hover);
 }
 .slider:hover::-webkit-slider-thumb {
   border: value(thumbBorderHover);
-  background-color: value(color_Slider_Handle_Hover)
+  background-color: value(color_Slider_Handle_Hover);
 }
 .slider:hover::-moz-range-thumb {
   border: value(thumbBorderHover);
-  background-color: value(color_Slider_Handle_Hover)
+  background-color: value(color_Slider_Handle_Hover);
 }
 
 /* Thumb on active */
 .slider:active::-ms-thumb {
   border: value(thumbBorderHover);
-  background-color: value(color_Slider_Handle_Active)
+  background-color: value(color_Slider_Handle_Active);
 }
 .slider:active::-webkit-slider-thumb {
   border: value(thumbBorderHover);
-  background-color: value(color_Slider_Handle_Active)
+  background-color: value(color_Slider_Handle_Active);
 }
 .slider:active::-moz-range-thumb {
   border: value(thumbBorderHover);
-  background-color: value(color_Slider_Handle_Active)
+  background-color: value(color_Slider_Handle_Active);
 }

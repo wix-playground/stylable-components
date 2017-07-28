@@ -17,8 +17,8 @@ export interface SliderProps {
   disabled?: boolean;
   required?: boolean;
 
-  onChange?(event: React.SyntheticEvent<HTMLInputElement>, value: number | undefined): void;
-  onInput?(event: React.SyntheticEvent<HTMLInputElement>, value: number | undefined): void;
+  onChange?(event: React.SyntheticEvent<HTMLInputElement>, value: number): void;
+  onInput?(event: React.SyntheticEvent<HTMLInputElement>, value: number): void;
 
   onFocus?(event: React.SyntheticEvent<HTMLInputElement>): void;
   onBlur?(event: React.SyntheticEvent<HTMLInputElement>): void;
@@ -81,16 +81,9 @@ export class Slider extends React.Component<SliderProps, SliderState> {
     return (normilizedValue * 100) / normilizedMax;
   }
 
-  private getTrackBackgroundGradient(thumbPosition: number, progressColor: string, trackColor: string): string {
-    return `background: ${trackColor};
-      background: -moz-linear-gradient(left, ${progressColor} 0%, ${progressColor} ${thumbPosition - 0.1}%, ${trackColor} ${thumbPosition + 0.1}%, ${trackColor} 100%);
-      background: -webkit-linear-gradient(left, ${progressColor} 0%, ${progressColor} ${thumbPosition - 0.1}%, ${trackColor} ${thumbPosition + 0.1}%, ${trackColor} 100%);
-      background: linear-gradient(to right, ${progressColor} 0%, ${progressColor} ${thumbPosition - 0.1}%, ${trackColor} ${thumbPosition + 0.1}%, ${trackColor} 100%);`;
-  }
-
-  render() {
+  private getTrackStyle() {
     const { relativeValue } = this.state;
-    const styleContent = `
+    return `
       .${style['slider']}::-webkit-slider-runnable-track {
         ${this.getTrackBackgroundGradient(relativeValue, theme.M3, theme.STC5)}
       }
@@ -101,11 +94,20 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         ${this.getTrackBackgroundGradient(relativeValue, theme.M3, theme.STC20)}
       }
     `;
+  }
 
+  private getTrackBackgroundGradient(thumbPosition: number, progressColor: string, trackColor: string): string {
+    return `background: ${trackColor};
+      background: -moz-linear-gradient(left, ${progressColor} 0%, ${progressColor} ${thumbPosition - 0.1}%, ${trackColor} ${thumbPosition + 0.1}%, ${trackColor} 100%);
+      background: -webkit-linear-gradient(left, ${progressColor} 0%, ${progressColor} ${thumbPosition - 0.1}%, ${trackColor} ${thumbPosition + 0.1}%, ${trackColor} 100%);
+      background: linear-gradient(to right, ${progressColor} 0%, ${progressColor} ${thumbPosition - 0.1}%, ${trackColor} ${thumbPosition + 0.1}%, ${trackColor} 100%);`;
+  }
+
+  render() {
     return (
       <div className={style['slider-container']} data-automation-id='SLIDER'>
         <style type='text/css'>
-          {styleContent}
+          {this.getTrackStyle()}
         </style>
         <input
           value={this.props.value}
