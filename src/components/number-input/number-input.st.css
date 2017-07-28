@@ -48,14 +48,14 @@
     color: value(color_MainText_Background);
 }
 
-.stepper-control.stepper-increment {
+.stepper-increment {
     top: 0;
     right: 0;
     bottom: 50%;
     left: 0;
 }
 
-.stepper-control.stepper-decrement {
+.stepper-decrement {
     top: 50%;
     right: 0;
     bottom: 0;

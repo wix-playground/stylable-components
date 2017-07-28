@@ -24,7 +24,7 @@ export const Stepper: React.StatelessComponent<StepperProps> =
             <button
                 tabIndex={-1}
                 data-automation-id="STEPPER_INCREMENT"
-                className={styles['stepper-control.stepper-increment']}
+                className={`${styles['stepper-control']} ${styles['stepper-increment']}`}
                 onClick={() => onUp()}
                 disabled={disableUp}
             >
@@ -33,7 +33,7 @@ export const Stepper: React.StatelessComponent<StepperProps> =
             <button
                 tabIndex={-1}
                 data-automation-id="STEPPER_DECREMENT"
-                className={styles['stepper-control.stepper-decrement']}
+                className={`${styles['stepper-control']} ${styles['stepper-decrement']}`}
                 onClick={() => onDown()}
                 disabled={disableDown}
             >
