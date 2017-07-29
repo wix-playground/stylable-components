@@ -1,0 +1,37 @@
+.radio-container {
+    display: flex;
+    display: -ms-flexbox;
+    position: relative;
+}
+
+.enabled {
+    cursor: pointer;
+}
+
+.disabled {
+    cursor: default;
+}
+
+.radio-input {
+    cursor: inherit;
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 0;
+}
+
+.radio-svg {
+    cursor: inherit;
+    align-self: center;
+    width: 16px;
+    height: 16px;
+}
+
+.leftLabel {
+    margin-right: 10px;
+}
+
+.rightLabel {
+    margin-left: 10px;
+}

@@ -1,35 +1,48 @@
+@namespace "CheckBox";
+
+.root {
+    -st-states: checked, disabled, indeterminate, readonly;
+    display: inline;
+    position: relative;
+    cursor: pointer;
+}
+
 .boxIconDefault {
     height: 1em;
     width: 1em;
-    viewBox: 0 0 16 16;
-}
-
-.boxIconDefault path {
     fill: none;
     stroke: #D1D1D1;
 }
 
-.boxIconChecked path {
+.root:checked .boxIconDefault, .root:indeterminate .boxIconDefault{
     fill: #4A90E2;
+}
+
+.root:disabled .boxIconDefault {
+    fill: #f1f1f1;
 }
 
 .tickIcon {
     height: 1em;
     width: 1em;
-    viewBox: 0 0 16 16;
     position: relative;
     margin-left: -1em;
-}
-
-.tickIcon path {
     stroke: #FFF;
     stroke-linecap: square;
     stroke-width: 1.5;
 }
 
-.root {
-    display: inline;
-    position: relative
+.root:disabled .tickIcon, .root:disabled .indeterminateIcon {
+    stroke: #c8c8c8;
+}
+
+.indeterminateIcon {
+    height: 1em;
+    width: 1em;
+    position: relative;
+    margin-left: -1em;
+    stroke: #FFF;
+    stroke-width: 1.5;
 }
 
 .label {
