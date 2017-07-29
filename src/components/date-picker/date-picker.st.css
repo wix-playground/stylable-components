@@ -1,6 +1,6 @@
 :import{
-    -sb-from: "../../style/default-theme/variables.st.css";
-    -sb-named: color_Default, color_MainText_Background, color_MainText, color_Hover, color_Active;
+    -st-from: "../../style/default-theme/variables.st.css";
+    -st-named: color_Default, color_MainText_Background, color_MainText, color_Hover, color_Active;
 }
 
 :vars {
