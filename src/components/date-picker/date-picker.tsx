@@ -7,27 +7,25 @@ import {KeyCodes} from '../../common/key-codes';
 import styles from './date-picker.st.css';
 
 export interface DatePickerProps {
-    date: Date;
+    value: Date;
     onChange (value: Date): void;
-    showDropdown: boolean;
-    placeholder: string;
+    showDropdown?: boolean;
+    placeholder?: string;
 }
 
 @observer
-export class DatePicker extends React.Component<Partial<DatePickerProps>, {}>{
-    public get currentDate (): Date {
-        return this.date;
+export class DatePicker extends React.Component<DatePickerProps, {}>{
+    public get currentDate (): Date | undefined {
+        return this.props.value;
     }
 
-    @observable date: Date = this.props.date ? this.props.date : new Date();
-    @observable inputValue: string = this.props.date ? this.props.date.toDateString() : '';
+    @observable inputValue: string = this.props.value ? this.props.value.toDateString() : '';
     @observable showDropdown: boolean = this.props.showDropdown ? this.props.showDropdown : false;
 
     // Called with possibly invalid string from the input
     @action updateStateFromString = (input: string): void => {
         if (this.isDateValid(input) || input === '') {
             const updatedDate = input ? new Date(input) : new Date();
-            this.date = updatedDate;
             this.inputValue = updatedDate.toDateString();
 
             if (this.props.onChange) {
@@ -40,7 +38,6 @@ export class DatePicker extends React.Component<Partial<DatePickerProps>, {}>{
 
     // Should only be called with valid date from the dropdown
     @action updateStateFromDate = (input: Date): void => {
-        this.date = input;
         this.inputValue = input.toDateString();
         this.showDropdown = false;
 
@@ -96,7 +93,7 @@ export class DatePicker extends React.Component<Partial<DatePickerProps>, {}>{
                        type="text"
                        data-automation-id="DATE_PICKER_INPUT" />
                 {this.showDropdown ?
-                    <DatePickerDropdown onChange={this.updateStateFromDate} date={this.date!} data-automation-id="DATE_PICKER_DROPDOWN" />
+                    <DatePickerDropdown onChange={this.updateStateFromDate} date={this.props.value!} data-automation-id="DATE_PICKER_DROPDOWN" />
                     :
                     null
                 }
