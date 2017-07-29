@@ -139,7 +139,7 @@ module.exports = function (config) {
         browsers: process.env.TRAVIS_BRANCH === 'master' && process.env.TRAVIS_PULL_REQUEST === 'false' ?
         // browsers: true ?
             Object.keys(sauceLabsLaunchers) :
-            ['Chrome'],
+            ['ChromeHeadless'],
 
 
         // Continuous Integration mode
