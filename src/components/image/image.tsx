@@ -2,6 +2,7 @@ import * as React from 'react';
 import {objectFitSupported} from '../../common/environment';
 import {nullFunction} from '../../common/null-function';
 import {SyntheticEvent} from "react";
+import { ImageSizing } from './image-sizing';
 
 // Transparent 1x1 gif image
 export const onePixelTransparentSrc: string = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
@@ -11,9 +12,10 @@ export interface ImageProps extends React.HTMLAttributes<HTMLImageElement> {
     title?: string;
     src?: string;
     alt?: string;
+    sizing?: ImageSizing;
 
     onLoad?: (event: ImageEvent) => void;
-    onError?: (event: ImageError) => void;
+    onError?: (event: ImageEvent) => void;
 }
 
 export interface ImageState {
@@ -24,13 +26,10 @@ export interface ImageEvent extends React.SyntheticEvent<HTMLImageElement> {
     src: string;
 }
 
-export interface ImageError extends React.SyntheticEvent<HTMLImageElement> {
-    src: string;
-}
-
 export class Image extends React.PureComponent<ImageProps, ImageState>{
     static defaultProps: Partial<ImageProps> = {
         defaultImage: onePixelTransparentSrc,
+        sizing: ImageSizing.CONTAIN,
         onLoad: nullFunction,
         onError: nullFunction
     };
@@ -61,6 +60,35 @@ export class Image extends React.PureComponent<ImageProps, ImageState>{
         return (src === this.props.defaultImage) ? onePixelTransparentSrc : this.props.defaultImage;
     }
 
+    getObjectFitValue(): string {
+        switch (this.props.sizing) {
+            case ImageSizing.COVER:
+                return 'cover';
+            case ImageSizing.CONTAIN:
+                return 'contain';
+            case ImageSizing.FILL:
+            default:
+                return 'fill'
+        }
+    }
+
+    getImageStyle() {
+        const style: React.CSSProperties = {};
+
+        const objectFitValue = this.getObjectFitValue();
+
+        if (objectFitSupported) {
+            style['objectFit'] = objectFitValue;
+        } else {
+            style['backgroundSize'] = objectFitValue.replace('fill', '100% 100%');
+            style.backgroundImage = `url("${this.state.src}")`;
+            style.backgroundRepeat = 'no-repeat';
+            style.backgroundPosition = 'center';
+        }
+
+        return style;
+    }
+
     render() {
         // remove certain props from the received props that shouldn't be applied to image tag
         const { defaultImage, ...rest } = this.props;
@@ -68,6 +96,7 @@ export class Image extends React.PureComponent<ImageProps, ImageState>{
         return (
             <img {...rest}
                  src={this.getImageSrc()}
+                 style={this.getImageStyle()}
                  onError={this.onError}
                  onLoad={this.onLoad}/>
         );
