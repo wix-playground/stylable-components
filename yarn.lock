@@ -32,9 +32,9 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*", "@types/react@^15.0.39":
-  version "15.0.39"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-15.0.39.tgz#5a820c75cabf4cbfa177a3ab5a9a0634c46b14d1"
+"@types/react@*", "@types/react@^15.6.0":
+  version "15.6.0"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-15.6.0.tgz#3b3e92a60b65045e4df48fda324de84d83addbc4"
 
 "@types/sinon-chai@^2.7.28":
   version "2.7.28"
@@ -43,7 +43,7 @@
     "@types/chai" "*"
     "@types/sinon" "*"
 
-"@types/sinon@*", "@types/sinon@^2.3.2":
+"@types/sinon@*", "@types/sinon@^2.3.3":
   version "2.3.3"
   resolved "https://registry.yarnpkg.com/@types/sinon/-/sinon-2.3.3.tgz#1f20b96f954b4997a09c1c0a20264aaba6b00147"
 
@@ -146,11 +146,11 @@ ansi-styles@^3.1.0:
     color-convert "^1.9.0"
 
 anymatch@^1.3.0:
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/anymatch/-/anymatch-1.3.0.tgz#a3e52fa39168c825ff57b0248126ce5a8ff95507"
+  version "1.3.2"
+  resolved "https://registry.yarnpkg.com/anymatch/-/anymatch-1.3.2.tgz#553dcb8f91e3c889845dfdba34c77721b90b9d7a"
   dependencies:
-    arrify "^1.0.0"
     micromatch "^2.1.5"
+    normalize-path "^2.0.0"
 
 aproba@^1.0.3:
   version "1.1.2"
@@ -802,10 +802,10 @@ compress-commons@^1.2.0:
     readable-stream "^2.0.0"
 
 compressible@~2.0.10:
-  version "2.0.10"
-  resolved "https://registry.yarnpkg.com/compressible/-/compressible-2.0.10.tgz#feda1c7f7617912732b29bf8cf26252a20b9eecd"
+  version "2.0.11"
+  resolved "https://registry.yarnpkg.com/compressible/-/compressible-2.0.11.tgz#16718a75de283ed8e604041625a2064586797d8a"
   dependencies:
-    mime-db ">= 1.27.0 < 2"
+    mime-db ">= 1.29.0 < 2"
 
 compression@^1.5.2:
   version "1.7.0"
@@ -1137,9 +1137,13 @@ delegates@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/delegates/-/delegates-1.0.0.tgz#84c6e159b81904fdca59a0ef44cd870d31250f9a"
 
-depd@1.1.0, depd@~1.1.0:
+depd@1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/depd/-/depd-1.1.0.tgz#e1bd82c6aab6ced965b97b88b17ed3e528ca18c3"
+
+depd@~1.1.0:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/depd/-/depd-1.1.1.tgz#5783b4e1c459f06fa5ca27f991f3d06e7a310359"
 
 des.js@^1.0.0:
   version "1.0.0"
@@ -2660,7 +2664,7 @@ miller-rabin@^4.0.0:
     bn.js "^4.0.0"
     brorand "^1.0.1"
 
-"mime-db@>= 1.27.0 < 2", mime-db@~1.29.0:
+"mime-db@>= 1.29.0 < 2", mime-db@~1.29.0:
   version "1.29.0"
   resolved "https://registry.yarnpkg.com/mime-db/-/mime-db-1.29.0.tgz#48d26d235589651704ac5916ca06001914266878"
 
@@ -3971,11 +3975,11 @@ signal-exit@^3.0.0:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.2.tgz#b5fdc08f1287ea1178628e415e25132b73646c6d"
 
-sinon-chai@^2.11.0:
+sinon-chai@^2.12.0:
   version "2.12.0"
   resolved "https://registry.yarnpkg.com/sinon-chai/-/sinon-chai-2.12.0.tgz#da71e9642ef7b893ba3cf2af806396a00aa45927"
 
-sinon@^2.3.8:
+sinon@^2.4.1:
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/sinon/-/sinon-2.4.1.tgz#021fd64b54cb77d9d2fb0d43cdedfae7629c3a36"
   dependencies:
@@ -4342,27 +4346,27 @@ tar@^2.2.1:
     fstream "^1.0.2"
     inherits "2"
 
-test-drive-react@^0.5.0:
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/test-drive-react/-/test-drive-react-0.5.0.tgz#da59b2afc748d5633b1dc1121ba703ad62f4d8b9"
+test-drive-react@^0.5.1:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/test-drive-react/-/test-drive-react-0.5.1.tgz#a01372610f6c031b10a33564679ccee0fe814cb0"
   dependencies:
-    test-drive "^0.5.1"
+    test-drive "^0.5.3"
 
-test-drive@^0.5.1:
-  version "0.5.2"
-  resolved "https://registry.yarnpkg.com/test-drive/-/test-drive-0.5.2.tgz#3a87849f3fd45ccec1facb8e38c674ce32baa418"
+test-drive@^0.5.3:
+  version "0.5.3"
+  resolved "https://registry.yarnpkg.com/test-drive/-/test-drive-0.5.3.tgz#a1d5b2b82152f404013537e37d7e17fa22bf4688"
   dependencies:
     "@types/chai" "^4.0.1"
     "@types/chai-as-promised" "^0.0.31"
     "@types/chai-dom" "^0.0.5"
-    "@types/sinon" "^2.3.2"
+    "@types/sinon" "^2.3.3"
     "@types/sinon-chai" "^2.7.28"
     chai "^4.1.0"
     chai-as-promised-compat "^7.0.3"
     chai-dom "^1.5.0"
     dom-matches "^2.0.0"
-    sinon "^2.3.8"
-    sinon-chai "^2.11.0"
+    sinon "^2.4.1"
+    sinon-chai "^2.12.0"
 
 text-encoding@0.6.4:
   version "0.6.4"
