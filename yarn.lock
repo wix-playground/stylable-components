@@ -2528,7 +2528,7 @@ lodash@4.16.2:
   version "4.16.2"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.16.2.tgz#3e626db827048a699281a8a125226326cfc0e652"
 
-lodash@^4.14.0, lodash@^4.17.2, lodash@^4.5.0, lodash@^4.8.0:
+lodash@^4.14.0, lodash@^4.17.2, lodash@^4.17.4, lodash@^4.5.0, lodash@^4.8.0:
   version "4.17.4"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.4.tgz#78203a4d1c328ae1d86dca6460e369b57f4055ae"
 
@@ -4778,12 +4778,13 @@ window-size@0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/window-size/-/window-size-0.1.0.tgz#5438cd2ea93b202efa3a19fe8887aee7c94f9c9d"
 
-wix-react-tools@^0.5.2:
-  version "0.5.2"
-  resolved "https://registry.yarnpkg.com/wix-react-tools/-/wix-react-tools-0.5.2.tgz#9c6bdcfd5c53412d68c7ff5fd0304ada2c66e840"
+wix-react-tools@^0.5.3:
+  version "0.5.3"
+  resolved "https://registry.yarnpkg.com/wix-react-tools/-/wix-react-tools-0.5.3.tgz#6e0b0faf53fa30083bab830da0310077f7a5f593"
   dependencies:
     fp-ts "^0.4.3"
     ifndef "^0.0.31"
+    lodash "^4.17.4"
     memoize-weak "^1.0.1"
     tslib "^1.7.1"
     typelevel-ts "^0.1.3"
