@@ -1,13 +1,13 @@
 # Dropdown Components Specification
 
-* [Definition]
-* [Elements]
-* [Properties]
-* [Styles]
-* [Accessibility]
-* [Behavior]
-* [Examples]
-* [Design]
+* [Definition](#definition)
+* [Elements](#elements)
+* [Properties](#properties)
+* [Styles](#styles)
+* [Accessibility](#accessibility)
+* [Behavior](#behavior)
+* [Examples](#examples)
+* [Design](#design)
 
 ## Definition
 
