@@ -8,8 +8,8 @@ const styles = require('./date-picker.st.css').default;
 export interface DropdownProps {
     date: Date;
     focusedDate: Date;
-    onChange (date: Date): void;
-    updateDropdownDate (date: Date): void;
+    onChange(date: Date): void;
+    updateDropdownDate(date: Date): void;
     startingDay: number;
     highlightSelectedDate: boolean;
     highlightFocusedDate: boolean;
@@ -22,7 +22,7 @@ export class Dropdown extends React.Component<DropdownProps, {}>{
     // @observable date: Date = this.props.date;
 
     setDateTo (date: Date) {
-        this.props.updateDropdownDate(date);
+        // this.props.updateDropdownDate(date);
     }
 
     @action setDayTo = (day: number) => {
