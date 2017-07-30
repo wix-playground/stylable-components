@@ -15,7 +15,7 @@ describe('<Image />', () => {
         if (objectFitSupported) {
             return waitForDom(element, () => expect(element).to.have.attribute('src', src));
         } else {
-            return waitForDom(element, () => expect(element).to.have.deep.property('style.backgroundImage', `url("${src}")`));
+            return waitForDom(element, () => expect(element).to.have.nested.property('style.backgroundImage', `url("${src}")`));
         }
     }
 
