@@ -1,6 +1,7 @@
 import React = require('react');
 import style from './checkbox.st.css';
 import { SBComponent } from 'stylable-react-component';
+import { root } from 'wix-react-tools'
 
 export interface CheckBoxProps {
     value: boolean;
@@ -72,15 +73,16 @@ export class CheckBox extends React.Component<Partial<CheckBoxProps>, {}> {
         return (
             <div data-automation-id="CHECKBOX_ROOT"
                  cssStates={{
-                     checked: this.props.value!,
-                     disabled: this.props.disabled!,
-                     readonly: this.props.readonly!,
-                     indeterminate: this.props.indeterminate!
+                    checked: this.props.value!,
+                    disabled: this.props.disabled!,
+                    readonly: this.props.readonly!,
+                    indeterminate: this.props.indeterminate!
                  }}
-                 onClick={(event) => executeClickHandler(this.props.onChange!, !this.props.value, this.props.disabled!, this.props.readonly!, this.props.indeterminate!)}>
+                 onClick={(event) => executeClickHandler(this.props.onChange!, !this.props.value, this.props.disabled!, this.props.readonly!, this.props.indeterminate!)}
+            >
 
-                {/*{ this.props.boxIcon!({value: this.props.value , indeterminate: this.props.indeterminate, disabled: this.props.disabled})}*/}
                 <BoxIcon value={this.props.value} indeterminate={this.props.indeterminate} disabled={this.props.disabled}/>
+
                 { this.props.indeterminate ?
                     <IndeterminateIcon value={this.props.value} indeterminate={this.props.indeterminate} disabled={this.props.disabled}/> :
                     this.props.value && <TickIcon value={this.props.value} indeterminate={this.props.indeterminate} disabled={this.props.disabled}/>

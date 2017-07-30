@@ -1620,6 +1620,10 @@ forwarded@~0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/forwarded/-/forwarded-0.1.0.tgz#19ef9874c4ae1c297bcf078fde63a09b66a84363"
 
+fp-ts@^0.4.3:
+  version "0.4.3"
+  resolved "https://registry.yarnpkg.com/fp-ts/-/fp-ts-0.4.3.tgz#03877fb7e5aa3c04d0694e9371543e9dbfe3ef6f"
+
 fresh@0.5.0:
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/fresh/-/fresh-0.5.0.tgz#f474ca5e6a9246d6fd8e0953cfa9b9c805afa78e"
@@ -4462,6 +4466,10 @@ type-is@~1.6.15:
     media-typer "0.3.0"
     mime-types "~2.1.15"
 
+typelevel-ts@^0.1.3:
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/typelevel-ts/-/typelevel-ts-0.1.3.tgz#74369335683574fb70f81f8416a9b13eeea8cf79"
+
 typescript@^2.4.2:
   version "2.4.2"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.4.2.tgz#f8395f85d459276067c988aa41837a8f82870844"
@@ -4766,12 +4774,14 @@ window-size@0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/window-size/-/window-size-0.1.0.tgz#5438cd2ea93b202efa3a19fe8887aee7c94f9c9d"
 
-wix-react-tools@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/wix-react-tools/-/wix-react-tools-0.3.0.tgz#63f854a0f1716b1e11b9ed48872aca184dbfb473"
+wix-react-tools@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/wix-react-tools/-/wix-react-tools-0.5.0.tgz#55c36950bb12ca48e526c1b4fa745cbb431d90ea"
   dependencies:
+    fp-ts "^0.4.3"
     ifndef "^0.0.31"
     memoize-weak "^1.0.1"
+    typelevel-ts "^0.1.3"
 
 wordwrap@0.0.2:
   version "0.0.2"
