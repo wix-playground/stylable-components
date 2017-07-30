@@ -15,13 +15,14 @@ Interacting with the modal can consist of:
 
 ## Basic Implementatoin
 
-### Modal Traits
+### Modal Attributes
 
 The **Modal** component allows the user to control the following configutations:  
 * `isOpen` indicates that the modal is open and shown on the screen
 * `backdropClosesModal` indicates whether clicking the backdrop of this modal should close it
 * `onRequestClose` is an optional function that runs when closing the modal is requested
-* [Position](#modal-position) & [sizing](#modal-sizing)
+* [Position](#modal-position) 
+* [Sizing](#modal-sizing)
 
 ```html
 <Modal
@@ -33,32 +34,45 @@ The **Modal** component allows the user to control the following configutations:
 
 ### Modal Building Blocks
 
-#### Modal.Header
+![Modal](./assets/modal-basic.png)
 
+#### Modal Header
 
+The modal header includes a title, and a close button. It is exposed as a child of the component `.Modal::Header` for Stylable and has separate [properties](#modal-header-props), that allow it to accept a `title`, children, and determine if it contains a close button.
 
-#### Modal.Body
+#### Modal Body
 
+The modal body usually includes content in the form of a `string` or as children.
 
+#### Modal Footer
 
-#### Modal.Footer
+The modal footer usually includes its action buttons as well as a close/cancel button.
 
+##### Close Buttons
 
+The modal may contain one or more buttons that close the modal and bring the main app back into focus.
+
+##### Action Buttons
+
+The modal may contain one or more buttons that activate other parts of the app. They are referred to as action buttons.
+
+#### Backdrop
+
+The backdrop of the modal is everything outside of the modal and in viewport. This area is usually partially hidden.
 
 ### Modal Position
 
 Usually, the modal opens in relation to the screen and not its parent component. Because it breaks the flow of the entire page, it needs to be prominent on the entire view-port. 
 
-Its positions are top, **middle**, bottom and left, **center**, right (defaults bolded).
+Its main positions are top, **middle**, bottom and left, **center**, right (defaults bolded).
 
 It can have an offset from each of its non-default positions (top, bottom, right, left). The offset direction is opposite to its starting position (leftOffset pushes left to right, rightOffset pushes right to left).
 
 ```html
 <Modal
-  position='left'
-  isOpen={true}
+  position={left}
   topOffset={10}
-  leftOffset={10}
+  leftOffset={10}>
   <div>
     content
   </div>
@@ -67,14 +81,11 @@ It can have an offset from each of its non-default positions (top, bottom, right
 
 #### Contained modals
 
-There are special cases where a modal is relevant only to a certain part of an application, and 
+There are special cases where a modal is relevant only to a certain part of an application, and will only block its flow.
 
 ```html
 <Modal
-  position='left'
-  isOpen={true}
-  topOffset={10}
-  leftOffset={10}
+  ...
   container={this}>
   <div>
     content
@@ -84,23 +95,14 @@ There are special cases where a modal is relevant only to a certain part of an a
 
 ### Modal Sizing
 
-The modal size 
+The modal size has 2 presets (small and large), and can accept custom width and height using the `width` and `height` attributes. If `height` is declared, overflow can be declared or will default to `overflow:visible`.
 
 
 ```html
-<Modal ... width="small">...</Modal>
-<Modal ... width="large">...</Modal>
-<Modal ... width={768}>...</Modal>
+<Modal width={width.small}></Modal>
+<Modal width={width.large}></Modal>
+<Modal width={768}></Modal>
 ```
-
-
-
-## Advanced Implementation
-
-### Dynamic Sizing
-
-
-
 
 ## Modal Props
 
@@ -130,6 +132,7 @@ Use the property aria to pass any additional aria attributes. It accepts an obje
 
 Example:
 
+```jsx
 <Modal
   isOpen={modalIsOpen}
   aria={{
@@ -141,7 +144,7 @@ Example:
     <p>Description goes here.</p>
   </div>
 </Modal>
-
+```
 
 The app element allows you to specify the portion of your app that should be hidden (via aria-hidden) to prevent assistive technologies such as screenreaders from reading content outside of the content of your modal.
 
