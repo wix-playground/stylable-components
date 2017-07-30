@@ -19,54 +19,54 @@ describe('<Image />', () => {
         }
     }
 
-    it('outputs an html image element to dom', () => {
+    it('outputs an html image element to dom', async () => {
         const {select, waitForDom} = clientRenderer.render(<Image data-automation-id={nativeImage} />);
 
-        return waitForDom(() =>
+        await waitForDom(() =>
             expect(select(nativeImage) instanceof HTMLImageElement, 'Expected the Image component to be instance of HTMLImageElement').to.equal(true));
     });
 
-    it('uses one pixel transparent gif as default source', () => {
+    it('uses one pixel transparent gif as default source', async () => {
         const {select} = clientRenderer.render(<Image data-automation-id={nativeImage} />);
 
-        return verifyElementSrc(select(nativeImage)!, onePixelTransparentSrc);
+        await verifyElementSrc(select(nativeImage)!, onePixelTransparentSrc);
     });
 
-    it('uses provided defaultImage as default source', () => {
+    it('uses provided defaultImage as default source', async () => {
         const {select} = clientRenderer.render(<Image defaultImage="ABC-EZ-AS-123" data-automation-id={nativeImage} />);
 
-        return verifyElementSrc(select(nativeImage)!, 'ABC-EZ-AS-123');
+        await verifyElementSrc(select(nativeImage)!, 'ABC-EZ-AS-123');
     });
 
-    it('sets the provided alt attribute', () => {
+    it('sets the provided alt attribute', async () => {
         const {select, waitForDom} = clientRenderer.render(<Image alt="calvin cordozar broadus" data-automation-id={nativeImage} />);
 
-        return waitForDom(() => expect(select(nativeImage)).to.have.attribute('alt', 'calvin cordozar broadus'));
+        await waitForDom(() => expect(select(nativeImage)).to.have.attribute('alt', 'calvin cordozar broadus'));
     });
 
-    it('sets the provided title attribute', () => {
+    it('sets the provided title attribute', async () => {
         const {select, waitForDom} = clientRenderer.render(<Image title="Daredevil" data-automation-id={nativeImage} />);
 
-        return waitForDom(() => expect(select(nativeImage)).to.have.attribute('title', 'Daredevil'));
+        await waitForDom(() => expect(select(nativeImage)).to.have.attribute('title', 'Daredevil'));
     });
 
-    it('sets the provided src', () => {
+    it('sets the provided src', async () => {
         const {select} = clientRenderer.render(<Image src="Wonderwoman" data-automation-id={nativeImage} />);
 
-        return verifyElementSrc(select(nativeImage)!, 'Wonderwoman');
+        await verifyElementSrc(select(nativeImage)!, 'Wonderwoman');
     });
 
-    it('uses default source if provided src is an empty string', () => {
+    it('uses default source if provided src is an empty string', async () => {
         const {select, waitForDom} = clientRenderer.render(<Image src="" data-automation-id={nativeImage} />);
 
-        return waitForDom(() => expect(select(nativeImage)).to.have.attribute('src', onePixelTransparentSrc));
+        await waitForDom(() => expect(select(nativeImage)).to.have.attribute('src', onePixelTransparentSrc));
     });
 
-    it('calls onLoad when image has loaded', () => {
+    it('calls onLoad when image has loaded', async () => {
         const onLoad = sinon.spy();
         clientRenderer.render(<Image src={sampleImage} onLoad={onLoad} data-automation-id={nativeImage} />);
 
-        return waitFor(() => expect(onLoad).to.have.been.calledWithMatch({ src: sampleImage }));
+        await waitFor(() => expect(onLoad).to.have.been.calledWithMatch({ src: sampleImage }));
     });
 
     const brokenSrc = 'data:image/png;base64,this-is-broken!';
@@ -77,7 +77,7 @@ describe('<Image />', () => {
 
         await waitFor(() => expect(onError).to.have.been.calledWithMatch({ src: brokenSrc }));
 
-        return verifyElementSrc(select(nativeImage)!, onePixelTransparentSrc);
+        await verifyElementSrc(select(nativeImage)!, onePixelTransparentSrc);
     });
 
     it('calls onError when it cannot load the given default image, and falls back to onePixelTransparentSrc', async () => {
@@ -86,6 +86,6 @@ describe('<Image />', () => {
 
         await waitFor(() => expect(onError).to.have.been.calledWithMatch({ src: brokenSrc }));
 
-        verifyElementSrc(select(nativeImage)!, onePixelTransparentSrc);
+        await verifyElementSrc(select(nativeImage)!, onePixelTransparentSrc);
     });
 });
