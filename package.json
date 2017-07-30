@@ -23,7 +23,7 @@
   "devDependencies": {
     "@types/mocha": "^2.2.41",
     "@types/node": "^8.0.17",
-    "@types/react": "^15.0.39",
+    "@types/react": "^15.6.0",
     "@types/react-dom": "^15.5.1",
     "glob": "^7.1.2",
     "karma": "^1.7.0",
@@ -41,7 +41,7 @@
     "react-dom": "^15.6.1",
     "stylable": "^3.0.0",
     "stylable-integration": "^3.0.8",
-    "test-drive-react": "^0.5.0",
+    "test-drive-react": "^0.5.1",
     "ts-loader": "^2.3.2",
     "ts-node": "^3.3.0",
     "typescript": "^2.4.2",
