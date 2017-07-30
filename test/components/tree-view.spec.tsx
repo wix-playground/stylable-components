@@ -1,19 +1,41 @@
 import * as React from 'react';
 import { expect, ClientRenderer, sinon, simulate, waitFor } from 'test-drive-react';
 import { TreeView, TreeItem } from '../../src';
-import { TreeViewDemo, treeData } from '../../demo/components/tree-view-demo';
+import { TreeViewDemo } from '../../demo/components/tree-view-demo';
+import { hasCssState } from '../utils/has-css-state';
+import treeViewStyles from '../../src/components/tree-view/tree-view.st.css';
 import { StateMap, TreeItemData, TreeItemState} from '../../src/components/tree-view/tree-view';
 
 const treeView = 'TREE_VIEW';
 const treeItem = 'TREE_ITEM';
 
+const treeData: TreeItemData[] = [
+    { label: 'Food Menu', children: [
+        { label: 'Salads', children: [
+            { label: 'Greek Salad' },
+            { label: 'Israeli Salad' },
+            { label: 'Caesar Salad' }
+        ]},
+        { label: 'Steaks', children: [
+            { label: 'Fillet Steak' },
+            { label: 'Sirloin Steak' }
+        ]},
+        { label: 'Desserts', children: [
+            { label: 'Pancakes' },
+            { label: 'Muffin' },
+            { label: 'Waffle' },
+            { label: 'Cupcake' }
+        ]}
+    ]}
+];
+
 function getLabelsList(data: {label: string, children?: Object[]}): string[] {
     return [data.label]
-               .concat(...(data.children || [])
-               .map(getLabelsList));
+        .concat(...(data.children || [])
+            .map(getLabelsList));
 }
 
-function getAllNodeLabels(treeData: Object[]) {
+function getAllNodeLabels(treeData: Object[]): string[] {
     return treeData.map(getLabelsList).reduce((prev, next) => [...prev, ...next]);
 }
 
@@ -39,7 +61,7 @@ describe('<TreeView />', () => {
 
     initStateMap(treeData, stateMap);
 
-    const allNodesLabels = getAllNodeLabels(treeData);
+    const allNodesLabels: string[] = getAllNodeLabels(treeData);
 
     it('renders a tree view with a few children, clicks ones of them to expand and close', async () => {
         const { select, waitForDom } = clientRenderer.render(<TreeViewDemo />);
