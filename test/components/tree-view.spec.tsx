@@ -1,15 +1,33 @@
 import * as React from 'react';
 import { expect, ClientRenderer, sinon, simulate, waitFor } from 'test-drive-react';
-import { hasCssState } from '../utils/has-css-state';
 import { TreeView, TreeItem } from '../../src';
+import { TreeViewDemo } from '../../demo/components/tree-view-demo';
+import { hasCssState } from '../utils/has-css-state';
 import treeViewStyles from '../../src/components/tree-view/tree-view.st.css';
-import { TreeViewDemo, treeData } from '../../demo/components/tree-view-demo';
-import { TreeItemData } from '../../src/components/tree-view/tree-view';
+import { StateMap, TreeItemData, TreeItemState} from '../../src/components/tree-view/tree-view';
 
 const treeView = 'TREE_VIEW';
 const treeItem = 'TREE_ITEM';
 
-const noop = (item: Object) => false;
+const treeData: TreeItemData[] = [
+    { label: 'Food Menu', children: [
+        { label: 'Salads', children: [
+            { label: 'Greek Salad' },
+            { label: 'Israeli Salad' },
+            { label: 'Caesar Salad' }
+        ]},
+        { label: 'Steaks', children: [
+            { label: 'Fillet Steak' },
+            { label: 'Sirloin Steak' }
+        ]},
+        { label: 'Desserts', children: [
+            { label: 'Pancakes' },
+            { label: 'Muffin' },
+            { label: 'Waffle' },
+            { label: 'Cupcake' }
+        ]}
+    ]}
+];
 
 function getLabelsList(data: {label: string, children?: Object[]}): string[] {
     return [data.label]
@@ -17,8 +35,15 @@ function getLabelsList(data: {label: string, children?: Object[]}): string[] {
                .map(getLabelsList));
 }
 
-function getAllNodeLabels(treeData: Object[]) {
+function getAllNodeLabels(treeData: Object[]): string[] {
     return treeData.map(getLabelsList).reduce((prev, next) => [...prev, ...next]);
+}
+
+function initStateMap(data: Object[] = [], stateMap: StateMap) {
+    data.forEach((item: TreeItemData) => {
+        stateMap.set(item, { isSelected: false });
+        initStateMap(item.children || [], stateMap);
+    });
 }
 
 describe('<TreeView />', () => {
@@ -28,13 +53,21 @@ describe('<TreeView />', () => {
     function getTreeItem(id: string) {
         return `${treeItem}_${id.replace(' ', '_')}`;
     }
+    const item = { label: 'label' };
+    const nestedItem: TreeItemData = treeData[0].children![1];
 
-    it('renders a tree view with a few children, clicks ones of then', async () => {
+    const state: TreeItemState = { isSelected: false };
+    const stateMap: StateMap = new Map<TreeItemData, TreeItemState>();
+
+    initStateMap(treeData, stateMap);
+
+    const allNodesLabels: string[] = getAllNodeLabels(treeData);
+
+    it('renders a tree view with a few children, clicks ones of them', async () => {
         const { select, waitForDom } = clientRenderer.render(<TreeViewDemo />);
 
         await waitForDom(() => expect(select(treeView + '_DEMO')).to.be.present());
 
-        const allNodesLabels = getAllNodeLabels(treeData);
         await waitForDom(() => allNodesLabels.forEach(item =>
             expect(select(treeView + '_DEMO', getTreeItem(item)), `${item} was not present`).to.be.present()));
 
@@ -42,7 +75,23 @@ describe('<TreeView />', () => {
 
         simulate.click(elementToSelect);
         return waitForDom(() => hasCssState(elementToSelect, treeViewStyles, {selected: true}));
+    });
 
+    it('ends up in expected state after multiple clicks on same tree node', async () => {
+        const { select, waitForDom } = clientRenderer.render(<TreeViewDemo />);
+
+        const elementToSelect = select(treeView + '_DEMO', getTreeItem(allNodesLabels[2]));
+
+        await waitForDom(() => expect(elementToSelect, 'initially was not false').to.have.attr('data-selected', 'false'));
+
+        simulate.click(elementToSelect);
+        await waitForDom(() => expect(elementToSelect, 'did not toggle to true').to.have.attr('data-selected', 'true'));
+
+        simulate.click(elementToSelect);
+        await waitForDom(() => expect(elementToSelect, 'did not toggle to false').to.have.attr('data-selected', 'false'));
+
+        simulate.click(elementToSelect);
+        return waitForDom(() => expect(elementToSelect, 'did not end up at true').to.have.attr('data-selected', 'true'));
     });
 
     describe('Using default renderer', () => {
@@ -72,32 +121,33 @@ describe('<TreeView />', () => {
 
         describe('<TreeItem />', () => {
 
-            const item = { label: 'label' };
-            const nestedItem = treeData[0].children![1];
-
             it('renders an item', () => {
                 const { select, waitForDom } =
-                    clientRenderer.render(<TreeItem item={item} itemRenderer={TreeItem} isSelected={noop}/>);
+                    clientRenderer.render(<TreeItem item={item} itemRenderer={TreeItem}
+                                                    state={state} stateMap={stateMap} />);
 
                 return waitForDom(() => expect(select(getTreeItem(item.label))).to.be.present());
             });
 
             it('renders with provided label', () => {
                 const { select, waitForDom } =
-                    clientRenderer.render(<TreeItem item={item} itemRenderer={TreeItem} isSelected={noop}/>);
+                    clientRenderer.render(<TreeItem item={item} itemRenderer={TreeItem}
+                                                    state={state} stateMap={stateMap} />);
 
                 return waitForDom(() => expect(select(getTreeItem(item.label) + '_LABEL')).to.have.text(item.label));
             });
 
             it('renders with an icon', () => {
                 const { select, waitForDom } =
-                    clientRenderer.render(<TreeItem item={item} itemRenderer={TreeItem} isSelected={noop}/>);
+                    clientRenderer.render(<TreeItem item={item} itemRenderer={TreeItem}
+                                                    state={state} stateMap={stateMap} />);
 
                 return waitForDom(() => expect(select(getTreeItem(item.label) + '_ICON')).to.be.present());
             });
 
             it('renders correct children', () => {
-                const { select, waitForDom } = clientRenderer.render(<TreeItem item={nestedItem} itemRenderer={TreeItem} isSelected={noop} />);
+                const { select, waitForDom } = clientRenderer.render(<TreeItem item={nestedItem} itemRenderer={TreeItem}
+                                                                               state={state} stateMap={stateMap} />);
 
                 return waitForDom(() =>
                     nestedItem.children!.forEach((item: TreeItemData) =>
@@ -106,8 +156,8 @@ describe('<TreeView />', () => {
 
             it('invokes onClick when clicked', () => {
                 const onClick = sinon.spy();
-                const { select } = clientRenderer.render(<TreeItem item={item} itemRenderer={TreeItem}
-                                                                   onItemClick={onClick} isSelected={noop}/>);
+                const { select } = clientRenderer.render(<TreeItem item={item} itemRenderer={TreeItem} onItemClick={onClick}
+                                                                   state={state} stateMap={stateMap} />);
 
                 simulate.click(select(getTreeItem(item.label)));
 
