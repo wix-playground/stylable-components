@@ -3,7 +3,7 @@
 The **Modal** component is a window that opens subordinate to an application's main window. It breaks the application flow. In practice, it usually leaves the main app visible in the background (usually faded out). Users must interact with the modal in order to return to the application flow.
 
 Interacting with the modal can consist of:  
-- clicking its action button(s)
+- clicking its primary button(s)
 - clicking its backdrop
 - clicking its close/cancel button(s)
 
@@ -32,39 +32,11 @@ The **Modal** component allows the user to control the following configutations:
 />
 ```
 
-### Modal Building Blocks
-
-![Modal](./assets/modal-basic.png)
-
-#### Modal Header
-
-The modal header includes a title, and a close button. It is exposed as a child of the component `.Modal::Header` for Stylable and has separate [properties](#modal-header-props), that allow it to accept a `title`, children, and determine if it contains a close button.
-
-#### Modal Body
-
-The modal body usually includes content in the form of a `string` or as children.
-
-#### Modal Footer
-
-The modal footer usually includes its action buttons as well as a close/cancel button.
-
-##### Close Buttons
-
-The modal may contain one or more buttons that close the modal and bring the main app back into focus.
-
-##### Action Buttons
-
-The modal may contain one or more buttons that activate other parts of the app. They are referred to as action buttons.
-
-#### Backdrop
-
-The backdrop of the modal is everything outside of the modal and in viewport. This area is usually partially hidden.
-
 ### Modal Position
 
 Usually, the modal opens in relation to the screen and not its parent component. Because it breaks the flow of the entire page, it needs to be prominent on the entire view-port. 
 
-Its main positions are top, **middle**, bottom and left, **center**, right (defaults bolded).
+Its possible positions are top, **middle**, bottom and left, **center**, right (defaults bolded).
 
 It can have an offset from each of its non-default positions (top, bottom, right, left). The offset direction is opposite to its starting position (leftOffset pushes left to right, rightOffset pushes right to left).
 
@@ -73,9 +45,6 @@ It can have an offset from each of its non-default positions (top, bottom, right
   position={left}
   topOffset={10}
   leftOffset={10}>
-  <div>
-    content
-  </div>
 </Modal>
 ```
 
@@ -86,7 +55,7 @@ There are special cases where a modal is relevant only to a certain part of an a
 ```html
 <Modal
   ...
-  container={this}>
+  container={this.container}>
   <div>
     content
   </div>
@@ -95,7 +64,7 @@ There are special cases where a modal is relevant only to a certain part of an a
 
 ### Modal Sizing
 
-The modal size has 2 presets (small and large), and can accept custom width and height using the `width` and `height` attributes. If `height` is declared, overflow can be declared or will default to `overflow:visible`.
+The modal size has 3 presets (small, medium and large), and can accept custom width and height using the `width` and `height` attributes. If `height` is declared, overflow can be declared or will default to `overflow:visible`.
 
 
 ```html
@@ -110,80 +79,41 @@ The modal size has 2 presets (small and large), and can accept custom width and 
 | --- | --- | --- | --- |
 |backdropClosesModal | bool | false | Pass through to make the backdrop available as a target to dismiss the modal|
 | isOpen | bool | false | Managed by state; this is how to control the visibility of the modal|
+| onAfterOpen | func | undefined | |
 | onRequestClose | func | undefined | The function used to handle cancel events on the modal; typically sets the open state to false|
 | width | number/enum | 'medium' | Explicitly set a numeric width or provide one of three sizes; 'small', 'medium', 'large' - 320px, 640px, 960px respectively|
-| height ||||
+| height | number/enum | 'auto' | Explicitly set a numeric height of the modal|
 
+## Stylable API
 
-### Modal Header Props
+### Modal Building Blocks
 
-| Prop | Type | Default | Description |
-| --- | --- | --- | --- |
-|children | node | undefined | Alternative to using the text attribute, for when you need more control over the content|
-|showCloseButton | bool | true | Allow users to dismiss the modal|
-|onClose | func | undefined | What to do when the user clicks the close button|
-|title | string | '' | Creates a title for the modal. We use "text" because title is reserved|
+![Modal](./assets/modal-basic.png)
+
+| element | stylable class |
+|---|---|
+| modal header | `.Modal::modal-header` |
+| modal header title | `.Modal::modal-header > .title` |
+| modal header close button |`.Modal::modal-header > .close-button`|
+| modal body | `.Modal::modal-body` |
+| modal footer | `.Modal::modal-footer` |
+| modal footer close button | `.Modal::modal-footer .close-button` |
+| modal footer primary button | `.Modal::modal-footer  .primary-button` |
+| backdrop | `.Modal::backdrop` |
 
 ## Accessibility
 
-Be sure to add role="dialog" and aria-labelledby="...", referencing the modal title, to .modal, and role="document" to the .modal-dialog itself. Additionally, you may give a description of your modal dialog with aria-describedby on .modal.
+The Modal component is by default given `aria-role="dialog"`, and an empty string for `aria-labelledby=""`. 
 
-Use the property aria to pass any additional aria attributes. It accepts an object where the keys are the names of the attributes without the prefix aria-.
-
-Example:
+You may pass the Modal a prop `aria` to fill any aria related attributes. It accepts an object where the keys are the names of the attributes without the prefix `aria-`.
 
 ```jsx
-<Modal
-  isOpen={modalIsOpen}
-  aria={{
-    labelledby: "heading",
-    describedby: "full_description"
-  }}>
-  <h1 id="heading">H1</h1>
-  <div id="full_description">
-    <p>Description goes here.</p>
-  </div>
+<Modal aria={{role: 'dialog', labelledby: ''}}>
 </Modal>
+coming soon...
 ```
+You may optionally give a description of your modal  with `aria-describedby`.
 
-The app element allows you to specify the portion of your app that should be hidden (via aria-hidden) to prevent assistive technologies such as screenreaders from reading content outside of the content of your modal.
-
-It's optional and if not specified it will try to use document.body as your app element.
-
-If you are doing server-side rendering, you should use this property.
-
-It can be specified in the following ways:
-
-DOMElement
-Modal.setAppElement(appElement);
-query selector - uses the first element found if you pass in a class.
-Modal.setAppElement('#your-app-element');
-
-
-The Modal object has two required props:
-
-isOpen to render its children.
-contentLabel to improve accessibility, since v1.6.0.
-Example:
+/TODO: aria-hidden/
 
 ## Examples
-
-        <Modal
-          isOpen={this.state.modalIsOpen}
-          onAfterOpen={this.afterOpenModal}
-          onRequestClose={this.closeModal}
-          style={customStyles}
-          contentLabel="Example Modal"
-        >
-
-          <h2 ref={subtitle => this.subtitle = subtitle}>Hello</h2>
-          <button onClick={this.closeModal}>close</button>
-          <div>I am a modal</div>
-          <form>
-            <input />
-            <button>tab navigation</button>
-            <button>stays</button>
-            <button>inside</button>
-            <button>the modal</button>
-          </form>
-        </Modal>
