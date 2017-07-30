@@ -53,9 +53,9 @@ If the item is the Divider symbol, it will be renderer as a divider. (!)
 In the default ItemRenderer, the (remapped) item object has following structure:
 
 | Name | Type | Default value | Required | Description |
-| -- | -- | -- | -- |
-| id | string | null | no | The unique value id (for selectable items)
-| displayText | string | '' | no | Text content of the item
+| -- | -- | -- | -- | -- |
+| id | string | null | no | The unique value id (for selectable items) |
+| displayText | string | '' | no | Text content of the item |
 | selected | boolean | false | no | Whether the item is selected |
 | focused | boolean | false | no | Whether the item is focused by keyboard navigation |
 | hidden | boolean | false | no | Whether ths item appears in the list |
