@@ -12,7 +12,7 @@ export interface TreeItemData {
 
 export interface TreeItemProps {
     item: TreeItemData;
-    itemRenderer: React.ComponentClass<TreeItemProps> | React.StatelessComponent<TreeItemProps>;
+    itemRenderer: React.ComponentType<TreeItemProps>;
     onItemClick?: React.EventHandler<any>;
     stateMap: StateMap;
     state: TreeItemState;
@@ -20,13 +20,14 @@ export interface TreeItemProps {
 
 export interface TreeViewProps {
     dataSource: Object[];
-    itemRenderer?: React.ComponentClass<TreeItemProps> | React.StatelessComponent<TreeItemProps>;
+    itemRenderer?: React.ComponentType<TreeItemProps>;
     onSelectItem?: React.EventHandler<any>;
     selectedItem?: TreeItemData;
 }
 
 export interface TreeItemState {
     isSelected: boolean;
+    isExpanded: boolean;
 }
 
 export type StateMap = Map<TreeItemData, TreeItemState>;
@@ -45,7 +46,7 @@ export const TreeItem: React.SFC<TreeItemProps> = SBStateless(({ item, itemRende
                 <span data-automation-id={`${itemIdPrefix}_${itemLabel}_LABEL`}>{item.label}</span>
             </div>
             <div className="nested-tree">
-                {(item.children || []).map((child: TreeItemData, index: number) =>
+                {state!.isExpanded && (item.children || []).map((child: TreeItemData, index: number) =>
                     <TreeNode item={child} onItemClick={onItemClick} itemRenderer={itemRenderer}
                               stateMap={stateMap} state={stateMap.get(child)!} key={`${index}`} />
                 )}
@@ -69,7 +70,7 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
 
     initStateMap(data: Object[] = []) {
         data.forEach((item: TreeItemData) => {
-            this.stateMap.set(item, observable({ isSelected: false }));
+            this.stateMap.set(item, observable({ isSelected: false, isExpanded: false }));
             this.initStateMap(item.children || []);
         });
     }
@@ -82,6 +83,12 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
         });
     }
 
+    toggleItem(item: TreeItemData) {
+        if (!this.stateMap.get(item)!.isExpanded || this.props.selectedItem === item) {
+            this.stateMap.get(item)!.isExpanded = !this.stateMap.get(item)!.isExpanded;
+        }
+    }
+
     onSelectItem = (item: TreeItemData) => {
         if (this.props.selectedItem) {
             this.stateMap.get(this.props.selectedItem)!.isSelected = false;
@@ -89,6 +96,7 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
         } else {
             this.props.onSelectItem!(item);
         }
+        this.toggleItem(item);
     };
 
     render() {
@@ -103,3 +111,4 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
         )
     }
 }
+
