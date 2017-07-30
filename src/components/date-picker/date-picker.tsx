@@ -90,11 +90,10 @@ export class DatePicker extends React.Component<DatePickerProps, {}>{
                        placeholder={this.props.placeholder}
                        type="text"
                        data-automation-id="DATE_PICKER_INPUT" />
-                {this.isDropdownVisible ?
-                    <Dropdown onChange={this.updateStateFromDate}
+                {this.isDropdownVisible
+                    ? <Dropdown onChange={this.updateStateFromDate}
                               value={this.props.value!} />
-                    :
-                    null
+                    : null
                 }
             </div>
         );

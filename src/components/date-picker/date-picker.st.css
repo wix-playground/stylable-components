@@ -92,7 +92,6 @@
 .calendar {
     display: flex;
     flex-wrap: wrap;
-    /*align-content: space-between;*/
     height: calc(100% - value(headerHeight));
     width: value(dropdownWidth);
     padding: 30px;

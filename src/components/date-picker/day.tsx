@@ -12,6 +12,7 @@ export interface DayProps {
     partOfPrevMonth?: boolean;
     partOfNextMonth?: boolean;
     dataAutomationId?: string;
+
     onSelect? (day: number | string): void;
 }
 
@@ -34,12 +35,15 @@ export class Day extends React.Component<DayProps, {}> {
 
     onMouseDown: React.EventHandler<React.SyntheticEvent<HTMLSpanElement>> = (event: React.SyntheticEvent<HTMLSpanElement>) => {
         event.preventDefault();
+
         if (this.props.onSelect) {
             this.props.onSelect(this.props.day);
         }
     };
 
     render() {
-        return <span className={this.styles} onMouseDown={this.onMouseDown} data-automation-id={this.props.dataAutomationId}>{this.props.day}</span>
+        return <span className={this.styles}
+                     onMouseDown={this.onMouseDown}
+                     data-automation-id={this.props.dataAutomationId}>{this.props.day}</span>
     }
 }
