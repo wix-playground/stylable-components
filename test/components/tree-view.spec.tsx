@@ -31,8 +31,8 @@ const treeData: TreeItemData[] = [
 
 function getLabelsList(data: {label: string, children?: Object[]}): string[] {
     return [data.label]
-               .concat(...(data.children || [])
-               .map(getLabelsList));
+        .concat(...(data.children || [])
+            .map(getLabelsList));
 }
 
 function getAllNodeLabels(treeData: Object[]): string[] {
@@ -41,7 +41,7 @@ function getAllNodeLabels(treeData: Object[]): string[] {
 
 function initStateMap(data: Object[] = [], stateMap: StateMap) {
     data.forEach((item: TreeItemData) => {
-        stateMap.set(item, { isSelected: false });
+        stateMap.set(item, { isSelected: false, isExpanded: true });
         initStateMap(item.children || [], stateMap);
     });
 }
@@ -56,31 +56,47 @@ describe('<TreeView />', () => {
     const item = { label: 'label' };
     const nestedItem: TreeItemData = treeData[0].children![1];
 
-    const state: TreeItemState = { isSelected: false };
+    const state: TreeItemState = { isSelected: false, isExpanded: true };
     const stateMap: StateMap = new Map<TreeItemData, TreeItemState>();
 
     initStateMap(treeData, stateMap);
 
     const allNodesLabels: string[] = getAllNodeLabels(treeData);
 
-    it('renders a tree view with a few children, clicks ones of them', async () => {
+    it('renders a tree view with a few children, clicks ones of them to expand and close', async () => {
         const { select, waitForDom } = clientRenderer.render(<TreeViewDemo />);
 
-        await waitForDom(() => expect(select(treeView + '_DEMO')).to.be.present());
+        await waitForDom(() => expect(select(treeView + '_DEMO'), 'demo not present').to.be.present());
+
+        const rootNode = getTreeItem(treeData[0].label);
+
+        const nodeChildren = treeData[0].children;
+        await waitForDom(() => expect(select(getTreeItem(nodeChildren![1].label))).to.be.absent());
+
+        simulate.click(select(treeView + '_DEMO', rootNode));
+        nodeChildren!.forEach(item => simulate.click(select(treeView + '_DEMO', getTreeItem(item.label))));
 
         await waitForDom(() => allNodesLabels.forEach(item =>
-            expect(select(treeView + '_DEMO', getTreeItem(item)), `${item} was not present`).to.be.present()));
+            expect(select(treeView + '_DEMO', getTreeItem(item)), `item did not appear: ${item}`).to.be.present()));
 
         const elementToSelect = select(treeView + '_DEMO', getTreeItem(allNodesLabels[2]));
 
         simulate.click(elementToSelect);
-        return waitForDom(() => hasCssState(elementToSelect, treeViewStyles, {selected: true}));
+        await waitForDom(() => expect(elementToSelect).to.have.attr('data-selected', 'true'));
+
+        // this verifies the feature of not closing expanded item if its not selected
+        simulate.click(select(treeView + '_DEMO', rootNode));
+        simulate.click(select(treeView + '_DEMO', rootNode));
+
+        return waitForDom(() => expect(select(getTreeItem(nodeChildren![1].label))).to.be.absent());
     });
 
     it('ends up in expected state after multiple clicks on same tree node', async () => {
         const { select, waitForDom } = clientRenderer.render(<TreeViewDemo />);
 
-        const elementToSelect = select(treeView + '_DEMO', getTreeItem(allNodesLabels[2]));
+        simulate.click(select(treeView + '_DEMO', getTreeItem(allNodesLabels[0])));
+
+        const elementToSelect = select(treeView + '_DEMO', getTreeItem(allNodesLabels[1]));
 
         await waitForDom(() => expect(elementToSelect, 'initially was not false').to.have.attr('data-selected', 'false'));
 
@@ -107,15 +123,13 @@ describe('<TreeView />', () => {
             const onSelectItem = sinon.spy();
             const { select } = clientRenderer.render(<TreeView dataSource={treeData} onSelectItem={onSelectItem}/>);
 
-            const firstNodeChildren = treeData[0].children;
-
-            const nodeLabelToClick = getTreeItem(firstNodeChildren![1].label);
+            const nodeLabelToClick = getTreeItem(treeData[0].label);
 
             simulate.click(select(nodeLabelToClick));
 
             return waitFor(() => {
                 expect(onSelectItem).to.have.been.calledOnce;
-                expect(onSelectItem).to.have.been.calledWithMatch(firstNodeChildren![1]);
+                expect(onSelectItem).to.have.been.calledWithMatch(treeData[0]);
             });
         });
 
