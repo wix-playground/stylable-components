@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { objectFitSupported } from '../../common/environment';
 import { nullFunction } from '../../common/null-function';
-import { ImageSizing } from './image-sizing';
 
 // Transparent 1x1 gif image
 export const onePixelTransparentSrc: string = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
@@ -11,7 +10,7 @@ export interface ImageProps extends React.HTMLAttributes<HTMLImageElement> {
     title?: string;
     src?: string;
     alt?: string;
-    sizing?: ImageSizing;
+    sizing?: 'fill' | 'cover' | 'contain';
 
     onLoad?: (event: ImageEvent) => void;
     onError?: (event: ImageEvent) => void;
@@ -28,7 +27,7 @@ export interface ImageEvent extends React.SyntheticEvent<HTMLImageElement> {
 export class Image extends React.PureComponent<ImageProps, ImageState>{
     static defaultProps: Partial<ImageProps> = {
         defaultImage: onePixelTransparentSrc,
-        sizing: ImageSizing.CONTAIN,
+        sizing: 'contain',
         onLoad: nullFunction,
         onError: nullFunction
     };
@@ -39,65 +38,52 @@ export class Image extends React.PureComponent<ImageProps, ImageState>{
 
     onError: React.EventHandler<React.SyntheticEvent<HTMLImageElement>> = (e) => {
         this.props.onError!({ ...e, src: this.state.src });
-
         this.setState({ src: this.getFallbackSrcFor(this.state.src) });
     };
 
     onLoad: React.EventHandler<React.SyntheticEvent<HTMLImageElement>> = (e) => {
-        if (this.getImageSrc() !== onePixelTransparentSrc) {
+        if (this.state.src !== this.props.defaultImage && this.state.src !== onePixelTransparentSrc) {
             this.props.onLoad!({ ...e, src: this.state.src });
         }
     };
-
-    getImageSrc(): string {
-        // if object-fit isn't supported, we set the source on the background
-        return objectFitSupported ? this.state.src : onePixelTransparentSrc;
-    }
 
     getFallbackSrcFor(src: string): string {
         // first, fallback to defaultImage, and later to one transparent pixel
         return (src === this.props.defaultImage) ? onePixelTransparentSrc : this.props.defaultImage!;
     }
 
-    getObjectFitValue(): string {
-        switch (this.props.sizing) {
-            case ImageSizing.COVER:
-                return 'cover';
-            case ImageSizing.CONTAIN:
-                return 'contain';
-            case ImageSizing.FILL:
-            default:
-                return 'fill'
-        }
-    }
-
-    getImageStyle() {
-        const style: React.CSSProperties = {};
-
-        const objectFitValue = this.getObjectFitValue();
-
-        if (objectFitSupported) {
-            style.objectFit = objectFitValue;
-        } else {
-            style.backgroundSize = objectFitValue.replace('fill', '100% 100%');
-            style.backgroundImage = `url("${this.state.src}")`;
-            style.backgroundRepeat = 'no-repeat';
-            style.backgroundPosition = 'center';
-        }
-
-        return style;
-    }
-
-    render() {
-        // remove certain props from the received props that shouldn't be applied to image tag
-        const { defaultImage, sizing, ...rest } = this.props;
+    renderPolyfilledObjectFit() {
+        const { defaultImage, sizing, style, ...rest } = this.props;
+        const objectFitValue = this.props.sizing;
 
         return (
             <img {...rest}
-                src={this.getImageSrc()}
-                style={this.getImageStyle()}
+                src={onePixelTransparentSrc}
+                style={{
+                    ...style,
+                    backgroundPosition: 'center',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundSize: sizing!.replace('fill', '100% 100%'),
+                    backgroundImage: `url("${this.state.src}")`
+                }}
                 onError={this.onError}
                 onLoad={this.onLoad} />
         );
+    }
+
+    renderNativeObjectFit() {
+        const { defaultImage, sizing, style, ...rest } = this.props;
+
+        return (
+            <img {...rest}
+                src={this.state.src}
+                style={{ objectFit: sizing, ...style }}
+                onError={this.onError}
+                onLoad={this.onLoad} />
+        );
+    }
+
+    render() {
+        return objectFitSupported ? this.renderNativeObjectFit() : this.renderPolyfilledObjectFit();
     }
 }
