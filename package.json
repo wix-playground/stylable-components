@@ -46,7 +46,8 @@
     "ts-node": "^3.3.0",
     "typescript": "^2.4.2",
     "webpack": "^3.4.1",
-    "webpack-dev-server": "^2.6.1"
+    "webpack-dev-server": "^2.6.1",
+    "wix-react-tools": "^0.5.0"
   },
   "testGlob": "./test/**/*.spec.ts?(x)",
   "license": "MIT",

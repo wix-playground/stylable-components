@@ -5,6 +5,7 @@ import {observer} from 'mobx-react';
 import {SyntheticEvent} from "react";
 import {KeyCodes} from '../../common/key-codes';
 import styles from './date-picker.st.css';
+import { root } from "wix-react-tools";
 
 export interface DatePickerProps {
     value: Date;
@@ -81,7 +82,7 @@ export class DatePicker extends React.Component<DatePickerProps, {}>{
 
     render() {
         return (
-            <div data-automation-id="DATE_PICKER">
+            <div data-automation-id="DATE_PICKER" {...root(this.props, {className:"root" })}>
                 <input className={styles.input}
                        onKeyDown={this.onKeyDown}
                        onMouseDown={this.onMouseDown}

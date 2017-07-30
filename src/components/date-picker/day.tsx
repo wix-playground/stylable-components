@@ -12,7 +12,7 @@ export interface DayProps {
     partOfPrevMonth?: boolean;
     partOfNextMonth?: boolean;
     dataAutomationId?: string;
-    onSelect? (day: number): void;
+    onSelect? (day: number | string): void;
 }
 
 @observer
