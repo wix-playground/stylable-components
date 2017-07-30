@@ -33,7 +33,7 @@ export type StateMap = Map<TreeItemData, TreeItemState>;
 
 const itemIdPrefix = 'TREE_ITEM';
 
-export const TreeItem: React.SFC<TreeItemProps> = ({ item, itemRenderer, onItemClick, stateMap, state }) => {
+export const TreeItem: React.SFC<TreeItemProps> = SBStateless(({ item, itemRenderer, onItemClick, stateMap, state }) => {
     const itemLabel = item.label.replace(' ', '_');
     return (
         <div>
@@ -50,9 +50,9 @@ export const TreeItem: React.SFC<TreeItemProps> = ({ item, itemRenderer, onItemC
             </div>
         </div>
     )
-};
+}, style);
 
-const TreeItemWrapper = observer(SBStateless(TreeItem, style));
+const TreeItemWrapper = observer(TreeItem);
 
 @SBComponent(style) @observer
 export class TreeView extends React.Component<TreeViewProps, {}>{
@@ -91,7 +91,7 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
 
     render() {
         return (
-            <div data-automation-id='TREE_VIEW' className={style['tree-view']}>
+            <div data-automation-id='TREE_VIEW' className="tree-view">
                 {(this.props.dataSource || []).map((item: TreeItemData, index: number) =>
                     React.createElement(
                         this.props.itemRenderer! as React.ComponentClass<TreeItemProps>,
