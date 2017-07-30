@@ -1,7 +1,6 @@
 import * as React from 'react';
-import {objectFitSupported} from '../../common/environment';
-import {nullFunction} from '../../common/null-function';
-import {SyntheticEvent} from "react";
+import { objectFitSupported } from '../../common/environment';
+import { nullFunction } from '../../common/null-function';
 import { ImageSizing } from './image-sizing';
 
 // Transparent 1x1 gif image
@@ -34,30 +33,30 @@ export class Image extends React.PureComponent<ImageProps, ImageState>{
         onError: nullFunction
     };
 
-    componentWillMount () {
+    componentWillMount() {
         this.setState({ src: this.props.src || this.props.defaultImage! });
     }
 
-    onError: React.EventHandler<SyntheticEvent<HTMLImageElement>> = (e) => {
-        this.props.onError!({...e, src: this.state.src});
+    onError: React.EventHandler<React.SyntheticEvent<HTMLImageElement>> = (e) => {
+        this.props.onError!({ ...e, src: this.state.src });
 
-        this.setState({ src: this.getFallbackSrcFor(this.state.src)! });
+        this.setState({ src: this.getFallbackSrcFor(this.state.src) });
     };
 
-    onLoad: React.EventHandler<SyntheticEvent<HTMLImageElement>> = (e) => {
+    onLoad: React.EventHandler<React.SyntheticEvent<HTMLImageElement>> = (e) => {
         if (this.getImageSrc() !== onePixelTransparentSrc) {
-            this.props.onLoad!({...e, src: this.state.src});
+            this.props.onLoad!({ ...e, src: this.state.src });
         }
     };
 
-    getImageSrc () {
+    getImageSrc(): string {
         // if object-fit isn't supported, we set the source on the background
         return objectFitSupported ? this.state.src : onePixelTransparentSrc;
     }
 
-    getFallbackSrcFor (src: string) {
+    getFallbackSrcFor(src: string): string {
         // first, fallback to defaultImage, and later to one transparent pixel
-        return (src === this.props.defaultImage) ? onePixelTransparentSrc : this.props.defaultImage;
+        return (src === this.props.defaultImage) ? onePixelTransparentSrc : this.props.defaultImage!;
     }
 
     getObjectFitValue(): string {
@@ -95,10 +94,10 @@ export class Image extends React.PureComponent<ImageProps, ImageState>{
 
         return (
             <img {...rest}
-                 src={this.getImageSrc()}
-                 style={this.getImageStyle()}
-                 onError={this.onError}
-                 onLoad={this.onLoad}/>
+                src={this.getImageSrc()}
+                style={this.getImageStyle()}
+                onError={this.onError}
+                onLoad={this.onLoad} />
         );
     }
 }
