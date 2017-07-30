@@ -105,14 +105,14 @@ export class Dropdown extends React.Component<DropdownProps, {}>{
                 <div className={styles.dropdownArrowWrapper}><div className={styles.dropdownArrow} /></div>
                 <div className={styles.dropdown} data-automation-id="DATE_PICKER_DROPDOWN">
                     <div className={styles.header}>
-                        <button className={[styles.arrowWrapper, styles.arrowWrapperPrev].join(' ')}
+                        <span className={[styles.arrowWrapper, styles.arrowWrapperPrev].join(' ')}
                                 onMouseDown={this.goToPrevMonth}
                                 data-automation-id="PREV_MONTH_BUTTON">
                             <i className={[styles.headerArrow, styles.headerArrowPrev].join(' ')}></i>
-                        </button>
-                        <button className={styles.headerDate}>
+                        </span>
+                        <span className={styles.headerDate}>
                             <span data-automation-id="MONTH_NAME">{this.monthName}</span>&nbsp;<span data-automation-id="YEAR">{this.year}</span>
-                        </button>
+                        </span>
                         <div className={[styles.arrowWrapper, styles.arrowWrapperNext].join(' ')}
                              onMouseDown={this.goToNextMonth}
                              data-automation-id="NEXT_MONTH_BUTTON">
