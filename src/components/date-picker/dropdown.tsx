@@ -16,8 +16,9 @@ const monthNames = getMonthNames();
 export class Dropdown extends React.Component<DropdownProps, {}>{
     @observable date: Date = this.props.value;
 
+    @action
     setDateTo (date: Date) {
-        // this.props.updateDropdownDate(date);
+        this.date = date;
     }
 
     @action setDayTo = (day: number) => {
