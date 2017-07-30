@@ -39,19 +39,19 @@ describe('<Checkbox/>', function () {
             const {select, waitForDom} = clientRenderer.render(<BasicDemo/>);
 
             await waitForDom(() => {
-                expect(select('BASIC_DEMO', 'CHECKBOX_ROOT'), 'basic root').to.be.present();
-                expect(select('BASIC_DEMO', 'CHECKBOX_BOX'), 'basic box').to.be.present();
-                expect(select('BASIC_DEMO', 'CHECKBOX_TICKMARK'), 'basic tickmark').to.be.absent();
-                expect(select('BASIC_DEMO', 'BASIC_LABEL'), 'basic label').to.have.text(demoCheckBoxText);
+                expect(select( 'CHECKBOX_ROOT'), 'basic root').to.be.present();
+                expect(select( 'CHECKBOX_BOX'), 'basic box').to.be.present();
+                expect(select( 'CHECKBOX_TICKMARK'), 'basic tickmark').to.be.absent();
+                expect(select( 'BASIC_LABEL'), 'basic label').to.have.text(demoCheckBoxText);
                 expect(select('BUTTON_SUBMIT'), 'basic submit').to.be.present().and.to.have.attr('disabled');
             });
 
-            simulate.click(select('BASIC_DEMO', 'CHECKBOX_ROOT'));
+            simulate.click(select( 'CHECKBOX_ROOT'));
 
             return waitFor(() => {
-                expect(select('BASIC_DEMO', 'CHECKBOX_TICKMARK'), 'basic tickmark').to.be.present();
-                expect(select('BASIC_DEMO', 'CHECKBOX_TICKMARK')).to.be.insideOf(select('BASIC_DEMO', 'CHECKBOX_BOX') as HTMLElement);
-                expect(select('BASIC_DEMO', 'BUTTON_SUBMIT'), 'basic submit').to.not.have.attr('disabled');
+                expect(select( 'CHECKBOX_TICKMARK'), 'basic tickmark').to.be.present();
+                expect(select( 'CHECKBOX_TICKMARK')).to.be.insideOf(select( 'CHECKBOX_BOX') as HTMLElement);
+                expect(select( 'BUTTON_SUBMIT'), 'basic submit').to.not.have.attr('disabled');
             });
         });
 
