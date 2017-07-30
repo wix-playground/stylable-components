@@ -99,6 +99,7 @@
 }
 
 .calendarItem {
+    /* 100/7 = 14.2857... show 7 items per row */
     flex: 0 0 14.2857%;
 }
 

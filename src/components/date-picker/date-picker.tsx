@@ -6,25 +6,23 @@ import {SyntheticEvent} from "react";
 import {KeyCodes} from '../../common/key-codes';
 import styles from './date-picker.st.css';
 
+const invalidDate: string = 'Invalid Date';
+
 export interface DatePickerProps {
     value: Date;
     onChange (value: Date): void;
-    showDropdown?: boolean;
+    isDropdownVisible?: boolean;
     placeholder?: string;
 }
 
 @observer
 export class DatePicker extends React.Component<DatePickerProps, {}>{
-    public get currentDate (): Date | undefined {
-        return this.props.value;
-    }
-
     @observable inputValue: string = this.props.value ? this.props.value.toDateString() : '';
-    @observable showDropdown: boolean = this.props.showDropdown ? this.props.showDropdown : false;
+    @observable isDropdownVisible: boolean = this.props.isDropdownVisible ? this.props.isDropdownVisible : false;
 
     // Called with possibly invalid string from the input
     @action updateStateFromString = (input: string): void => {
-        if (this.isDateValid(input) || input === '') {
+        if (this.isDateValid(input)) {
             const updatedDate = input ? new Date(input) : new Date();
             this.inputValue = updatedDate.toDateString();
 
@@ -32,51 +30,51 @@ export class DatePicker extends React.Component<DatePickerProps, {}>{
                 this.props.onChange(updatedDate);
             }
         } else {
-            this.inputValue = 'Invalid Date';
+            this.inputValue = invalidDate;
         }
     };
 
     // Should only be called with valid date from the dropdown
     @action updateStateFromDate = (input: Date): void => {
         this.inputValue = input.toDateString();
-        this.showDropdown = false;
+        this.isDropdownVisible = false;
 
         if (this.props.onChange) {
             this.props.onChange(input);
         }
     };
 
-    @action onInputChange: React.EventHandler<SyntheticEvent<HTMLInputElement>> = (event: React.SyntheticEvent<HTMLInputElement>): void => {
+    @action onInputChange: React.EventHandler<SyntheticEvent<HTMLInputElement>> = (event): void => {
         const eventTarget = event.target as HTMLInputElement;
         this.inputValue = eventTarget.value;
     };
 
     @action onFocus: React.EventHandler<SyntheticEvent<HTMLInputElement>> = (): void => {
-        this.showDropdown = true;
+        this.isDropdownVisible = true;
     };
 
     @action onMouseDown: React.EventHandler<SyntheticEvent<HTMLInputElement>> = (): void => {
-        this.showDropdown = !this.showDropdown;
+        this.isDropdownVisible = !this.isDropdownVisible;
     };
 
-    @action onBlur: React.EventHandler<SyntheticEvent<HTMLInputElement>> = (event: React.FocusEvent<HTMLInputElement>): void => {
+    @action onBlur: React.EventHandler<SyntheticEvent<HTMLInputElement>> = (event): void => {
         const eventTarget = event.target as HTMLInputElement;
         this.updateStateFromString(eventTarget.value);
-        this.showDropdown = false;
+        this.isDropdownVisible = false;
     };
 
     @action onKeyDown: React.EventHandler<SyntheticEvent<HTMLInputElement>> = (event: React.KeyboardEvent<HTMLInputElement>): void => {
         if (event.keyCode === KeyCodes.ENTER) {
             const eventTarget = event.target as HTMLInputElement;
             this.updateStateFromString(eventTarget.value);
-            this.showDropdown = !this.showDropdown;
+            this.isDropdownVisible = !this.isDropdownVisible;
         }
     };
 
     isDateValid = (stringToValidate: string): boolean => {
         const dateFromString = new Date(stringToValidate);
 
-        return dateFromString.toDateString() !== 'Invalid Date';
+        return dateFromString.toDateString() !== invalidDate;
     };
 
     render() {
@@ -92,7 +90,7 @@ export class DatePicker extends React.Component<DatePickerProps, {}>{
                        placeholder={this.props.placeholder}
                        type="text"
                        data-automation-id="DATE_PICKER_INPUT" />
-                {this.showDropdown ?
+                {this.isDropdownVisible ?
                     <Dropdown onChange={this.updateStateFromDate}
                               value={this.props.value!} />
                     :
