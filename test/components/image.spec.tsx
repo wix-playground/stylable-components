@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { expect, ClientRenderer, sinon, waitForDom, waitFor } from 'test-drive-react';
+import { expect, ClientRenderer, sinon, waitFor } from 'test-drive-react';
 import { Image, onePixelTransparentSrc } from '../../src';
 import { objectFitSupported } from '../../src/common/environment';
 import { sampleImage } from '../fixtures/sample-image';
@@ -8,16 +8,7 @@ const nativeImage = 'NATIVE_IMAGE';
 
 describe('<Image />', () => {
     const clientRenderer = new ClientRenderer();
-
     afterEach(() => clientRenderer.cleanup());
-
-    function verifyElementSrc(element: Element, src: string) {
-        if (objectFitSupported) {
-            return waitForDom(element, () => expect(element).to.have.attribute('src', src));
-        } else {
-            return waitForDom(element, () => expect(element).to.have.nested.property('style.backgroundImage', `url("${src}")`));
-        }
-    }
 
     it('outputs an html image element to dom', async () => {
         const {select, waitForDom} = clientRenderer.render(<Image data-automation-id={nativeImage} />);
@@ -27,15 +18,15 @@ describe('<Image />', () => {
     });
 
     it('uses one pixel transparent gif as default source', async () => {
-        const {select} = clientRenderer.render(<Image data-automation-id={nativeImage} />);
+        const {select, waitForDom} = clientRenderer.render(<Image data-automation-id={nativeImage} />);
 
-        await verifyElementSrc(select(nativeImage)!, onePixelTransparentSrc);
+        await waitForDom(() => expect(select(nativeImage)).to.have.attribute('src', onePixelTransparentSrc));
     });
 
     it('uses provided defaultImage as default source', async () => {
-        const {select} = clientRenderer.render(<Image defaultImage="ABC-EZ-AS-123" data-automation-id={nativeImage} />);
+        const {select, waitForDom} = clientRenderer.render(<Image defaultImage="ABC-EZ-AS-123" data-automation-id={nativeImage} />);
 
-        await verifyElementSrc(select(nativeImage)!, 'ABC-EZ-AS-123');
+        await waitForDom(() => expect(select(nativeImage)).to.have.attribute('src', 'ABC-EZ-AS-123'));
     });
 
     it('sets the provided alt attribute', async () => {
@@ -51,9 +42,9 @@ describe('<Image />', () => {
     });
 
     it('sets the provided src', async () => {
-        const {select} = clientRenderer.render(<Image src="Wonderwoman" data-automation-id={nativeImage} />);
+        const {select, waitForDom} = clientRenderer.render(<Image src="Wonderwoman" data-automation-id={nativeImage} />);
 
-        await verifyElementSrc(select(nativeImage)!, 'Wonderwoman');
+        await waitForDom(() => expect(select(nativeImage)).to.have.attribute('src', 'Wonderwoman'));
     });
 
     it('uses default source if provided src is an empty string', async () => {
@@ -73,19 +64,20 @@ describe('<Image />', () => {
 
     it('calls onError when it cannot load a source, and falls back to default source', async () => {
         const onError = sinon.spy();
-        const {select} = clientRenderer.render(<Image src={brokenSrc} onError={onError} data-automation-id={nativeImage} />);
+        const {select, waitForDom} = clientRenderer.render(<Image src={brokenSrc} onError={onError} data-automation-id={nativeImage} />);
 
         await waitFor(() => expect(onError).to.have.been.calledWithMatch({ src: brokenSrc }));
-
-        await verifyElementSrc(select(nativeImage)!, onePixelTransparentSrc);
+        await waitForDom(() => expect(select(nativeImage)).to.have.attribute('src', onePixelTransparentSrc));
     });
 
     it('calls onError when it cannot load the given default image, and falls back to onePixelTransparentSrc', async () => {
         const onError = sinon.spy();
-        const {select} = clientRenderer.render(<Image defaultImage={brokenSrc} onError={onError} data-automation-id={nativeImage} />);
+        const {select, waitForDom} = clientRenderer.render(<Image defaultImage={brokenSrc} onError={onError} data-automation-id={nativeImage} />);
 
         await waitFor(() => expect(onError).to.have.been.calledWithMatch({ src: brokenSrc }));
+        await waitForDom(() => expect(select(nativeImage)).to.have.attribute('src', onePixelTransparentSrc));
+    });
 
-        await verifyElementSrc(select(nativeImage)!, onePixelTransparentSrc);
+    describe('sizing', () => {
     });
 });
