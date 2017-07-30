@@ -53,6 +53,20 @@ export class Dropdown extends React.Component<DropdownProps, {}>{
                                                                               data-automation-id={'DAY_NAME_' + name.toUpperCase()}>{name}</span>);
     }
 
+    @computed
+    get previousDays (): Array<JSX.Element> {
+        const previousDays: Array<JSX.Element> = [];
+        const lastDayOfPrevMonth: number = getDaysInMonth(getMonthFromOffset(this.date, -1));
+        const numberOfDaysToDisplay: number = getNumOfPreviousDays(this.date);
+
+        for (let i = (lastDayOfPrevMonth - numberOfDaysToDisplay) + 1; i <= lastDayOfPrevMonth; i++) {
+            previousDays.push(<Day day={''} dataAutomationId={'PREV_DAY_' + i} key={'PREV_DAY_' + i} partOfPrevMonth={true} />);
+        }
+
+        return previousDays;
+    }
+
+
     goToNextMonth: React.EventHandler<React.SyntheticEvent<HTMLDivElement>> = (event: React.SyntheticEvent<HTMLDivElement>) => {
         event.preventDefault();
         const nextMonth: Date = getMonthFromOffset(new Date(this.date.getFullYear(), this.date.getMonth(), 1), 1);
@@ -84,6 +98,7 @@ export class Dropdown extends React.Component<DropdownProps, {}>{
                     </div>
                     <div className={styles.calendar} data-automation-id="DAY_GRID">
                         {this.dayNames}
+                        {this.previousDays}
                         {this.dayArray}
                     </div>
                 </div>

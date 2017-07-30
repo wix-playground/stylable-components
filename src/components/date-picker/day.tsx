@@ -5,7 +5,7 @@ import {observer} from 'mobx-react';
 const styles = require('./date-picker.st.css').default;
 
 export interface DayProps {
-    day: number;
+    day: number | string;
     selected?: boolean;
     currentDay?: boolean;
     focused?: boolean;
