@@ -91,7 +91,7 @@ export class Image extends React.PureComponent<ImageProps, ImageState>{
 
     render() {
         // remove certain props from the received props that shouldn't be applied to image tag
-        const { defaultImage, ...rest } = this.props;
+        const { defaultImage, sizing, ...rest } = this.props;
 
         return (
             <img {...rest}
