@@ -12,7 +12,7 @@ export interface TreeItemData {
 
 export interface TreeItemProps {
     item: TreeItemData;
-    itemRenderer: React.ComponentClass<TreeItemProps> | React.StatelessComponent<TreeItemProps>;
+    itemRenderer: React.ComponentType<TreeItemProps>;
     onItemClick?: React.EventHandler<any>;
     stateMap: StateMap;
     state: TreeItemState;
@@ -20,7 +20,7 @@ export interface TreeItemProps {
 
 export interface TreeViewProps {
     dataSource: Object[];
-    itemRenderer?: React.ComponentClass<TreeItemProps> | React.StatelessComponent<TreeItemProps>;
+    itemRenderer?: React.ComponentType<TreeItemProps>;
     onSelectItem?: React.EventHandler<any>;
     selectedItem?: TreeItemData;
 }
