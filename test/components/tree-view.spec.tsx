@@ -2,6 +2,8 @@ import * as React from 'react';
 import { expect, ClientRenderer, sinon, simulate, waitFor } from 'test-drive-react';
 import { TreeView, TreeItem } from '../../src';
 import { TreeViewDemo } from '../../demo/components/tree-view-demo';
+import { hasCssState } from '../utils/has-css-state';
+import treeViewStyles from '../../src/components/tree-view/tree-view.st.css';
 import { StateMap, TreeItemData, TreeItemState} from '../../src/components/tree-view/tree-view';
 
 const treeView = 'TREE_VIEW';
@@ -72,8 +74,7 @@ describe('<TreeView />', () => {
         const elementToSelect = select(treeView + '_DEMO', getTreeItem(allNodesLabels[2]));
 
         simulate.click(elementToSelect);
-
-        return waitForDom(() => expect(elementToSelect).to.have.attr('data-selected', 'true'));
+        return waitForDom(() => hasCssState(elementToSelect, treeViewStyles, {selected: true}));
     });
 
     it('ends up in expected state after multiple clicks on same tree node', async () => {

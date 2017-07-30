@@ -2,7 +2,8 @@ import * as React from 'react';
 import { observer } from 'mobx-react';
 import { autorun, observable } from 'mobx';
 
-const style = require('./tree-view.css');
+import { SBComponent, SBStateless } from 'stylable-react-component';
+import style from './tree-view.st.css';
 
 export interface TreeItemData {
     label: string;
@@ -36,12 +37,13 @@ export const TreeItem: React.SFC<TreeItemProps> = ({ item, itemRenderer, onItemC
     const itemLabel = item.label.replace(' ', '_');
     return (
         <div>
-            <div data-automation-id={`${itemIdPrefix}_${itemLabel}`} className={style['tree-node']}
+            <div data-automation-id={`${itemIdPrefix}_${itemLabel}`} className="tree-node"
+                 cssStates={{selected: state!.isSelected}}
                  onClick={() => onItemClick!(item)} data-selected={ state!.isSelected }>
                 <span data-automation-id={`${itemIdPrefix}_${itemLabel}_ICON`}>&gt; </span>
                 <span data-automation-id={`${itemIdPrefix}_${itemLabel}_LABEL`}>{item.label}</span>
             </div>
-            <div className={style['nested-tree']}>
+            <div className="nested-tree">
                 {(item.children || []).map((child: TreeItemData, index: number) =>
                     React.createElement(itemRenderer as React.ComponentClass<TreeItemProps>,
                         {item: child, onItemClick, itemRenderer, stateMap, state: stateMap.get(child)!, key: `${index}`}))}
@@ -50,9 +52,9 @@ export const TreeItem: React.SFC<TreeItemProps> = ({ item, itemRenderer, onItemC
     )
 };
 
-const TreeItemWrapper = observer(TreeItem);
+const TreeItemWrapper = observer(SBStateless(TreeItem, style));
 
-@observer
+@SBComponent(style) @observer
 export class TreeView extends React.Component<TreeViewProps, {}>{
     static defaultProps = { itemRenderer: TreeItemWrapper, onSelectItem: () => {} };
 
