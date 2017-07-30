@@ -44,6 +44,7 @@ Common Props (all dropdowns)
 | open | boolean | false | no | Whether the Popup is shown |
 | openOnFocus | boolean | false | no | Whether the Popup opens automatically when focus is gained |
 | onSelect | (id: string) => void | NOP | no | Triggered when an item is selected in the list |
+| hideSelected | boolean | false | no | Hides selected values so that they do not appear in the selection list |
 | children | any | null | no | Children to be rendered in the list, see SelectionList for further details |
 
 * Dropdown Props
@@ -75,24 +76,81 @@ Supports AutoComplete props as well as the native text input props.
 | selected | Array<String> | empty | no | list of selected ids |
 | maxSelected | number | 0 (unlimited) | no | number of selections allowed |
 
-
-div with icon for dropdown (up/down)
-onChange
-clearbutton
-
-
-## Properties
-
 ## Styles
+
+See SelectionList for further styles. The following are relevant for all DropDown and AutoComplete:
 
 | Name | Description |
 | -- | -- |
-|
+| input | The dropdown input container |
+| toggle | The toggle used in the input container |
+
+Styles for MultiSelect:
+
+| Name | Description |
+| -- | -- |
+| input | The dropdown input container |
+| clear | The 'x' that clears tha input container |
+| tag | The tag box inside the input container |
+| tagDelete | The 'x' that deletes a specific tag |
+
 
 ### States
 
-| active
-| focus
-| disabled
-| readonly
-| hover
+| Name | Description |
+| -- | -- |
+| active | self explanatory |
+| focus | self explanatory |
+| disabled | self explanatory |
+| readonly | Relevant for AutoComplete and MultiSelect
+| hover | self explanatory |
+
+## Accessibility
+
+TBD
+
+## Behavior
+
+### Keyboard Handling
+
+* 'Space' key -> opens/closes dropdown
+* 'Enter' key -> Selects element when focus in SelectionList. Otherwise does nothing.
+* 'Esc' key -> Closes dropdown if opened
+* 'Down' key -> Opens popup if currently closed
+* 'Up' key -> When on first element of popup, closes popup
+
+Additional in AutoComplete:
+
+* number/string input -> Causes the dropdown to open if results are found or if the showNoSuggestions flag is used.
+
+Additional in MultiSelect:
+
+* 'Backspace' key -> Deletes tag when cursor is after it.
+
+### Mouse Handling
+
+* Click outside - closes dropdown
+* Click on element - sets selection
+
+Additional in MultiSelect:
+
+* Click on clear icon on tag -> removes value from selection
+* Click on clear icon for component -> removes all selected items
+
+### Touch Handling
+
+* Tap outside - closes dropdown
+* Tap on element - sets selection
+
+Additional in MultiSelect:
+
+* Tap on clear icon on tag -> removes value from selection
+* Tap on clear icon for component -> removes all selected items
+
+## Examples
+
+TBD
+
+## Design
+
+See in [zeplin](https://app.zeplin.io/project/590ed391cb8bde641789e1cb/screen/5964cdbfd24b9b50926c8ed0).
