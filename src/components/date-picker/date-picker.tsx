@@ -93,7 +93,8 @@ export class DatePicker extends React.Component<DatePickerProps, {}>{
                        type="text"
                        data-automation-id="DATE_PICKER_INPUT" />
                 {this.showDropdown ?
-                    <Dropdown onChange={this.updateStateFromDate} date={this.props.value!} focusedDate={this.props.value!} data-automation-id="DATE_PICKER_DROPDOWN" />
+                    <Dropdown onChange={this.updateStateFromDate}
+                              value={this.props.value!} />
                     :
                     null
                 }
