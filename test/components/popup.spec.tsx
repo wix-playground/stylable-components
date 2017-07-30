@@ -73,9 +73,7 @@ describe('<Popup />', function () {
             let div: HTMLDivElement;
             const { waitForDom} = clientRenderer.render(<div style={divDim} ref={(elem: HTMLDivElement) => div = elem}>Anchor</div>);
 
-            await waitForDom(() => {
-                expect(div).to.be.present();
-            });
+            await waitForDom(() => {expect(div).to.be.present()});
 
             clientRenderer.render(<Popup anchor={div!} open={true}>
                 <span data-automation-id="SPAN">Popup Body</span>
@@ -134,4 +132,92 @@ describe('<Popup />', function () {
             });
         });
     });
+
+    describe.only('Test', function () {
+        const verticalArray = ['top', 'bottom'];
+        const horizontalArray = ['left', 'right'];
+        const divDim: CSSProperties = { position:'absolute', top:'50px', left:'50px', width: '100px', height: '100px'};
+
+        // Level one: popup position, level two: anchor position
+        const topResults = {
+            top: {
+                top: (anchor: HTMLElement, popup: HTMLElement) => {return popup.getBoundingClientRect().top === anchor.getBoundingClientRect().top},
+                center: (anchor: HTMLElement, popup: HTMLElement) => {
+                    const anchorRect = anchor.getBoundingClientRect();
+                    return popup.getBoundingClientRect().top === anchorRect.top + (anchorRect.height / 2)},
+                bottom: (anchor: HTMLElement, popup: HTMLElement) => {return popup.getBoundingClientRect().top === anchor.getBoundingClientRect().bottom}
+            },
+            center: {
+                top: (anchor: HTMLElement, popup: HTMLElement) => {
+                    const popupRect = popup.getBoundingClientRect();
+                    return popupRect.top === anchor.getBoundingClientRect().top - (popupRect.height / 2)},
+                center: (anchor: HTMLElement, popup: HTMLElement) => {
+                    const popupRect = popup.getBoundingClientRect();
+                    const anchorRect = anchor.getBoundingClientRect();
+                    return popupRect.top ===  anchorRect.top + (anchorRect.height / 2) - (popupRect.height / 2)
+                },
+                bottom: (anchor: HTMLElement, popup: HTMLElement) => {
+                    const popupRect = popup.getBoundingClientRect();
+                    return popupRect.bottom === anchor.getBoundingClientRect().bottom + (popupRect.height / 2)}
+            },
+            bottom: {
+                top: (anchor: HTMLElement, popup: HTMLElement) => {return popup.getBoundingClientRect().bottom === anchor.getBoundingClientRect().top},
+                center: (anchor: HTMLElement, popup: HTMLElement) => {
+                    const anchorRect = anchor.getBoundingClientRect();
+                    return popup.getBoundingClientRect().bottom === anchorRect.top + (anchorRect.height / 2)},
+                bottom: (anchor: HTMLElement, popup: HTMLElement) => {return popup.getBoundingClientRect().bottom === anchor.getBoundingClientRect().bottom}
+            }
+        };
+
+        const leftResults = {
+            left: {
+                left: (anchor: HTMLElement, popup: HTMLElement) => {return popup.getBoundingClientRect().left === anchor.getBoundingClientRect().left},
+                center: (anchor: HTMLElement, popup: HTMLElement) => {
+                    const anchorRect = anchor.getBoundingClientRect();
+                    return popup.getBoundingClientRect().left === anchorRect.left + (anchorRect.width / 2)},
+                right: (anchor: HTMLElement, popup: HTMLElement) => {return popup.getBoundingClientRect().right === anchor.getBoundingClientRect().right}
+            },
+            center: {
+                left: (anchor: HTMLElement, popup: HTMLElement) => {
+                    const popupRect = popup.getBoundingClientRect();
+                    return popupRect.left === anchor.getBoundingClientRect().left - (popupRect.width / 2)},
+                center: (anchor: HTMLElement, popup: HTMLElement) => {
+                    const popupRect = popup.getBoundingClientRect();
+                    const anchorRect = anchor.getBoundingClientRect();
+                    return popupRect.left ===  anchorRect.left + (anchorRect.width / 2) - (popupRect.width / 2)
+                },
+                right: (anchor: HTMLElement, popup: HTMLElement) => {
+                    const popupRect = popup.getBoundingClientRect();
+                    return popupRect.right === anchor.getBoundingClientRect().right + (popupRect.width / 2)}
+            },
+            right: {
+                left: (anchor: HTMLElement, popup: HTMLElement) => {return popup.getBoundingClientRect().right === anchor.getBoundingClientRect().left},
+                center: (anchor: HTMLElement, popup: HTMLElement) => {
+                    const anchorRect = anchor.getBoundingClientRect();
+                    return popup.getBoundingClientRect().right === anchorRect.left + (anchorRect.width / 2)},
+                right: (anchor: HTMLElement, popup: HTMLElement) => {return popup.getBoundingClientRect().right === anchor.getBoundingClientRect().right}
+            }
+        };
+
+        verticalArray.forEach((vertical: 'top' | 'bottom') => {
+            horizontalArray.forEach((horizontal: 'left' | 'right') => {
+                it(`Anchor position: vertical ${vertical} horizontal: ${horizontal}`, async function () {
+                    let div: HTMLDivElement;
+                    const {waitForDom} = clientRenderer.render(<div style={divDim} ref={(elem: HTMLDivElement) => div = elem}>Anchor</div>);
+
+                    await waitForDom(() => {expect(div).to.be.present();});
+                    clientRenderer.render(<Popup anchor={div!} anchorPosition={{vertical: vertical, horizontal: horizontal}} open={true}>
+                        <span data-automation-id="SPAN">Popup Body</span>
+                        <div>some more stuff</div>
+                    </Popup>);
+
+                    return waitForDom(() => {
+                        expect(topResults.top[vertical](div, bodySelect(popup) as HTMLElement), 'vertical test failed', ).to.be.true;
+                        debugger;
+                        expect(leftResults.left[horizontal](div, bodySelect(popup) as HTMLElement), 'horizontal test failed', ).to.be.true;
+                    });
+                })
+            })
+        })
+    })
 });

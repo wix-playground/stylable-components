@@ -26,7 +26,12 @@ export class Popup extends React.Component<Partial<PopupProps>,{}> {
         }
 
         const rect = (this.props.anchor as HTMLElement).getBoundingClientRect();
-        const layout: CSSProperties = {position: 'absolute', top: rect[this.props.anchorPosition!.vertical], left:rect[this.props.anchorPosition!.horizontal]};
+        const layout: CSSProperties = {position: 'absolute', top: rect[this.props.anchorPosition!.vertical]};
+        if (this.props.anchorPosition!.horizontal === 'left') {
+            layout.left = rect.left;
+        } else {
+            layout.right = rect.left;
+        }
 
         return (
             <div data-automation-id="POPUP" style={layout} className={!this.props.open ? style.closed : ''}>
@@ -35,3 +40,4 @@ export class Popup extends React.Component<Partial<PopupProps>,{}> {
         );
     }
 }
+
