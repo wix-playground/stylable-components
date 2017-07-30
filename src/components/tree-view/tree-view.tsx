@@ -35,6 +35,7 @@ const itemIdPrefix = 'TREE_ITEM';
 
 export const TreeItem: React.SFC<TreeItemProps> = SBStateless(({ item, itemRenderer, onItemClick, stateMap, state }) => {
     const itemLabel = item.label.replace(' ', '_');
+    const TreeNode = itemRenderer;
     return (
         <div>
             <div data-automation-id={`${itemIdPrefix}_${itemLabel}`} className="tree-node"
@@ -45,8 +46,9 @@ export const TreeItem: React.SFC<TreeItemProps> = SBStateless(({ item, itemRende
             </div>
             <div className="nested-tree">
                 {(item.children || []).map((child: TreeItemData, index: number) =>
-                    React.createElement(itemRenderer as React.ComponentClass<TreeItemProps>,
-                        {item: child, onItemClick, itemRenderer, stateMap, state: stateMap.get(child)!, key: `${index}`}))}
+                    <TreeNode item={child} onItemClick={onItemClick} itemRenderer={itemRenderer}
+                              stateMap={stateMap} state={stateMap.get(child)!} key={`${index}`} />
+                )}
             </div>
         </div>
     )
@@ -90,13 +92,13 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
     };
 
     render() {
+        const TreeNode = this.props.itemRenderer!;
         return (
             <div data-automation-id='TREE_VIEW' className="tree-view">
                 {(this.props.dataSource || []).map((item: TreeItemData, index: number) =>
-                    React.createElement(
-                        this.props.itemRenderer! as React.ComponentClass<TreeItemProps>,
-                        {item, onItemClick: this.onSelectItem, itemRenderer: this.props.itemRenderer!,
-                            stateMap: this.stateMap, state: this.stateMap.get(item)!, key: `${index}` }))}
+                    <TreeNode item={item} onItemClick={this.onSelectItem} itemRenderer={this.props.itemRenderer!}
+                              stateMap={this.stateMap} state={this.stateMap.get(item)!} key={`${index}`} />
+                )}
             </div>
         )
     }
