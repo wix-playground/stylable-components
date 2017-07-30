@@ -78,9 +78,9 @@ export class Image extends React.PureComponent<ImageProps, ImageState>{
         const objectFitValue = this.getObjectFitValue();
 
         if (objectFitSupported) {
-            style['objectFit'] = objectFitValue;
+            style.objectFit = objectFitValue;
         } else {
-            style['backgroundSize'] = objectFitValue.replace('fill', '100% 100%');
+            style.backgroundSize = objectFitValue.replace('fill', '100% 100%');
             style.backgroundImage = `url("${this.state.src}")`;
             style.backgroundRepeat = 'no-repeat';
             style.backgroundPosition = 'center';
