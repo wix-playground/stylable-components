@@ -84,8 +84,9 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
     }
 
     toggleItem(item: TreeItemData) {
-        if (this.stateMap.get(item)!.isExpanded && this.props.selectedItem !== item) return;
-        this.stateMap.get(item)!.isExpanded = !this.stateMap.get(item)!.isExpanded;
+        if (!this.stateMap.get(item)!.isExpanded || this.props.selectedItem === item) {
+            this.stateMap.get(item)!.isExpanded = !this.stateMap.get(item)!.isExpanded;
+        }
     }
 
     onSelectItem = (item: TreeItemData) => {
