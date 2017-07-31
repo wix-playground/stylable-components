@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {ToogleDemo} from './components/toggle-demo';
+import {ToggleDemo} from './components/toggle-demo';
 import {CheckBoxDemo} from "./components/checkbox-demo";
 import { TreeViewDemo } from './components/tree-view-demo';
 import { BirthDatePickerDemo } from './components/birth-date-picker-demo';
@@ -32,7 +32,7 @@ export class ComponentsDemo extends React.Component<{}, {}>{
             <hr/>
             <div>
                 <h2>Toggle</h2>
-                <ToogleDemo/>
+                <ToggleDemo/>
             </div>
             <hr/>
             <div>

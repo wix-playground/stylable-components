@@ -1,11 +1,11 @@
 import * as React from 'react';
-import {Toogle} from '../../src';
+import {Toggle} from '../../src';
 
 export interface State {
     checked: boolean,
 }
 
-export class ToogleDemo extends React.Component<{}, State> {
+export class ToggleDemo extends React.Component<{}, State> {
     state = {
         checked: false,
     }
@@ -15,7 +15,7 @@ export class ToogleDemo extends React.Component<{}, State> {
                 <tr>
                     <th>
                         Controled
-                        <Toogle
+                        <Toggle
                             label='with icons'
                             checked={this.state.checked}
                             onChange={(checked: boolean) => this.setState({checked})}
@@ -23,7 +23,7 @@ export class ToogleDemo extends React.Component<{}, State> {
                     </th>
                     <th>
                         Controled RTL
-                        <Toogle
+                        <Toggle
                             label='with icons'
                             rtl
                             checked={this.state.checked}
@@ -32,27 +32,27 @@ export class ToogleDemo extends React.Component<{}, State> {
                     </th>
                     <th>
                         Off
-                        <Toogle/>
+                        <Toggle/>
                     </th>
                     <th>
                         On
-                        <Toogle checked/>
+                        <Toggle checked/>
                     </th>
                     <th>
                         Disabled off
-                        <Toogle disabled/>
+                        <Toggle disabled/>
                     </th>
                     <th>
                         Disabled on
-                        <Toogle disabled checked/>
+                        <Toggle disabled checked/>
                     </th>
                     <th>
                         Error off
-                        <Toogle error/>
+                        <Toggle error/>
                     </th>
                     <th>
                         Error on
-                        <Toogle error checked/>
+                        <Toggle error checked/>
                     </th>
                 </tr>
             </tbody>

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {expect, ClientRenderer, sinon, simulate, waitFor} from 'test-drive-react';
 
-import {Toogle} from '../../src';
+import {Toggle} from '../../src';
 
 describe('<Toggle/>', () => {
     const clientRenderer = new ClientRenderer();
@@ -12,7 +12,7 @@ describe('<Toggle/>', () => {
         let renderer: any
         beforeEach(() => {
             onChange = sinon.spy();
-            renderer = clientRenderer.render(<Toogle onChange={onChange}/>)
+            renderer = clientRenderer.render(<Toggle onChange={onChange}/>)
         })
         it('should have input', () => {
             expect(renderer.select('TOGGLE_INPUT')).to.not.null
@@ -24,7 +24,7 @@ describe('<Toggle/>', () => {
         let renderer: any
         beforeEach(() => {
             onChange = sinon.spy();
-            renderer = clientRenderer.render(<Toogle onChange={onChange} checked/>)
+            renderer = clientRenderer.render(<Toggle onChange={onChange} checked/>)
         })
         it('should have input', () => {
             expect(renderer.select('TOGGLE_INPUT')).to.not.null
@@ -36,7 +36,7 @@ describe('<Toggle/>', () => {
         let renderer: any
         beforeEach(() => {
             onChange = sinon.spy();
-            renderer = clientRenderer.render(<Toogle onChange={onChange}/>)
+            renderer = clientRenderer.render(<Toggle onChange={onChange}/>)
         })
 
         it('pressing space on focused input should trigger onChange', () => {
@@ -53,7 +53,7 @@ describe('<Toggle/>', () => {
         let renderer: any
         beforeEach(() => {
             onChange = sinon.spy();
-            renderer = clientRenderer.render(<Toogle onChange={onChange} disabled/>)
+            renderer = clientRenderer.render(<Toggle onChange={onChange} disabled/>)
         })
         it('should not have input underhood', () => {
             expect(renderer.select('TOGGLE_INPUT')).to.be.null;
