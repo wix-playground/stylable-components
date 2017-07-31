@@ -5,6 +5,7 @@ import { NumberInputDemo } from './components/number-input.demo';
 import { BirthDatePickerDemo } from './components/birth-date-picker-demo';
 import './style.st.css';
 import '../src/style/default-theme/base.st.css';
+import input from '../src/style/forms/input.st.css';
 import { RadioGroupDemo } from './components/radio-group-demo'
 
 export class ComponentsDemo extends React.Component<{}, {}>{
@@ -107,10 +108,10 @@ export class ComponentsDemo extends React.Component<{}, {}>{
                     <tbody>
                     <tr>
                         <th>
-                            <input placeholder="Placeholder"/>
+                            <input className={input.root} placeholder="Placeholder"/>
                         </th>
                         <th>
-                            <input placeholder="Disabled" disabled/>
+                            <input className={input.root} placeholder="Disabled" disabled/>
                         </th>
                     </tr>
                     </tbody>

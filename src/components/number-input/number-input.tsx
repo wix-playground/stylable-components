@@ -1,5 +1,6 @@
 import * as React from 'react';
 import styles from './number-input.st.css';
+import inputStyles from '../../style/forms/input.st.css';
 import {SBComponent} from 'stylable-react-component';
 import {Stepper} from './stepper';
 import {KeyCodes} from '../../common/key-codes';
@@ -30,6 +31,7 @@ export interface Affix {
 
 export interface NumberInputState {
     value?: number
+    focused: boolean
 }
 
 enum Slot {
@@ -87,7 +89,8 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
         super(props);
 
         this.state = {
-            value: props.value
+            value: props.value,
+            focused: false
         }
     }
 
@@ -165,8 +168,11 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
             }
         }
 
+    private handleFocus: React.FocusEventHandler<HTMLInputElement> =
+        e => this.setState({focused: true});
+
     private handleBlur: React.FocusEventHandler<HTMLInputElement> =
-        e => this.commit(this.state.value);
+        e => (this.commit(this.state.value), this.setState({focused: false}));
 
     private handleChange: React.ChangeEventHandler<HTMLInputElement> =
         e => {
@@ -194,20 +200,24 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
     }
 
     render() {
-        const {value} = this.state;
+        const {value, focused} = this.state;
         const {step, min, max, onInput, children, ...inputProps} = this.props;
         const disableIncrement = inputProps.disabled || (isNumber(value) && value >= max!);
         const disableDecrement = inputProps.disabled || (isNumber(value) && value <= min!);
         const {prefix, suffix} = getAffix(children);
 
-        return <div>
+        return <div cssStates={{
+            disabled: Boolean(this.props.disabled),
+            focus: focused
+        }}>
             {prefix.length > 0 ?
-                <div className='prefix'>
+                <div className="prefix">
                     {prefix}
                 </div> : null
             }
             <input
                 {...inputProps}
+                className={`${inputStyles.root} native-input`}
                 data-automation-id="NATIVE_INPUT_NUMBER"
                 type="number"
                 value={isNumber(value) ? value : ''}
@@ -216,14 +226,16 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
                 step={step}
                 onChange={this.handleChange}
                 onKeyDown={this.handleKeyDown}
+                onFocus={this.handleFocus}
                 onBlur={this.handleBlur}
             />
             {suffix.length > 0 ?
-                <div className='suffix'>
+                <div className="suffix">
                     {suffix}
                 </div> : null
             }
             <Stepper
+                className="stepper"
                 data-automation-id="NUMBER_INPUT_STEPPER"
                 onUp={this.handleIncrement}
                 onDown={this.handleDecrement}

@@ -3,13 +3,66 @@
     -st-default: input;
 }
 
-.root {
-    -st-extends: input;
+:import {
+    -st-from: "../../style/default-theme/variables.st.css";
+    -st-named: color_MainText,
+               color_MainPlaceholder,
+               color_MainText_Background,
+               borderRadius,
+               color_Disabled,
+               borderDefault,
+               borderHover,
+               borderFocus,
+               inputHeight,
+               borderDisabled;
+}
 
+:import {
+    -st-from: "./stepper.st.css";
+    -st-default: stepper;
+}
+
+.root {
+    -st-states: hover, focus, disabled;
+    box-sizing: inherit;
     position: relative;
-    display: inline-flex;
+    display: flex;
+
+    border: value(borderDefault);
+    border-radius: value(borderRadius);
+    background-color: value(color_MainText_Background);
+    color: value(color_MainText);
+
+    height: value(inputHeight);
+}
+
+.root:hover {
+    border: value(borderHover);
+}
+
+.root:focus {
+    border: value(borderFocus);
+}
+
+.root:disabled {
+    background-color: value(color_Disabled);
+    color: value(color_MainPlaceholder);
+    border: value(borderDisabled);
 }
 
 .prefix {}
 
+.native-input {
+    -st-extends: input;
+    flex-grow: 1;
+
+    border: none;
+    height: auto;
+}
+
 .suffix {}
+
+.stepper {
+    -st-extends: stepper;
+    height: auto;
+}
