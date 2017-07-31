@@ -83,6 +83,41 @@ describe('<Popup />', function () {
         })
     });
 
+    it('sets the default maxHeight', async function () {
+        let div: HTMLDivElement;
+        const { waitForDom} = clientRenderer.render(<div ref={(elem: HTMLDivElement) => div = elem}>Anchor</div>);
+
+        await waitForDom(() => {
+            expect(div).to.be.present();
+        });
+
+        clientRenderer.render(<Popup anchor={div!} open={true}>
+            <span data-automation-id="SPAN">Popup Body</span>
+        </Popup>);
+
+        return waitForDom(() => {
+            expect((bodySelect(popup)! as HTMLElement).style.maxHeight).to.equal('500px');
+        })
+    });
+
+    it('sets and enforces the maxHeight', async function () {
+        let div: HTMLDivElement;
+        const { waitForDom} = clientRenderer.render(<div ref={(elem: HTMLDivElement) => div = elem}>Anchor</div>);
+
+        await waitForDom(() => {
+            expect(div).to.be.present();
+        });
+
+        clientRenderer.render(<Popup anchor={div!} maxHeight={5} open={true}>
+            <span data-automation-id="SPAN">Popup Body</span>
+        </Popup>);
+
+        return waitForDom(() => {
+            expect((bodySelect(popup)! as HTMLElement).style.maxHeight).to.equal('5px');
+            expect((bodySelect(popup)! as HTMLElement).getBoundingClientRect().height).to.equal(5);
+        })
+    });
+
     describe('Layout tests', function () {
         const verticalArray = ['top', 'center', 'bottom'];
         const horizontalArray = ['left', 'center', 'right'];

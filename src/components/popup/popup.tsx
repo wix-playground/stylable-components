@@ -17,10 +17,11 @@ export interface PopupProps {
     anchorPosition?: PositionPoint;
     popupPosition?: PositionPoint;
     syncWidth?: boolean;
+    maxHeight?: number
 }
 
 export interface PopupState {
-    layout: CSSProperties;
+    style: CSSProperties;
 }
 
 export class Popup extends React.Component<Partial<PopupProps>,PopupState> {
@@ -29,29 +30,32 @@ export class Popup extends React.Component<Partial<PopupProps>,PopupState> {
         open: false,
         anchorPosition: {vertical: 'bottom', horizontal: 'left'},
         popupPosition: {vertical: 'top', horizontal: 'left'},
-        syncWidth: true
+        syncWidth: true,
+        maxHeight: 500
     };
 
     constructor() {
         super();
-        this.state = { layout: {position: 'absolute'}};
+        this.state = { style: {position: 'absolute'}};
     }
 
     componentDidMount() {
         if (this.popup) {
-            const newLayout = this.state.layout;
+            const newStyle = this.state.style;
             let popupWidth = this.popup.getBoundingClientRect().width;
+
+            newStyle.maxHeight = this.props.maxHeight;
             if (this.props.syncWidth) {
-                newLayout.width = (this.props.anchor as HTMLElement).getBoundingClientRect().width;
-                popupWidth = newLayout.width;
+                newStyle.width = (this.props.anchor as HTMLElement).getBoundingClientRect().width;
+                popupWidth = newStyle.width;
             }
 
-            setTop(newLayout, (this.props.anchor as HTMLElement).getBoundingClientRect(), this.props.anchorPosition!.vertical, this.popup.getBoundingClientRect().height, this.props.popupPosition!.vertical);
-            setLeft(newLayout, (this.props.anchor as HTMLElement).getBoundingClientRect(), this.props.anchorPosition!.horizontal, popupWidth, this.props.popupPosition!.horizontal);
+            setTop(newStyle, (this.props.anchor as HTMLElement).getBoundingClientRect(), this.props.anchorPosition!.vertical, this.popup.getBoundingClientRect().height, this.props.popupPosition!.vertical);
+            setLeft(newStyle, (this.props.anchor as HTMLElement).getBoundingClientRect(), this.props.anchorPosition!.horizontal, popupWidth, this.props.popupPosition!.horizontal);
             if (this.props.syncWidth) {
-                newLayout.width = (this.props.anchor as HTMLElement).getBoundingClientRect().width;
+                newStyle.width = (this.props.anchor as HTMLElement).getBoundingClientRect().width;
             }
-            this.setState({layout: newLayout})
+            this.setState({style: newStyle})
         }
     }
 
@@ -61,37 +65,37 @@ export class Popup extends React.Component<Partial<PopupProps>,PopupState> {
         }
 
         return (
-            <div data-automation-id="POPUP" ref={(popup) => {this.popup = popup}} style={this.state.layout} className={!this.props.open ? style.closed : ''}>
+            <div data-automation-id="POPUP" ref={(popup) => {this.popup = popup}} style={this.state.style} className={!this.props.open ? style.closed : ''}>
                 {this.props.children}
             </div>
         );
     }
 }
 
-function setTop(layout: CSSProperties, anchorRect: ClientRect, anchorPosition: VerticalPosition, popupHeight: number, popupPoistion: VerticalPosition) {
+function setTop(style: CSSProperties, anchorRect: ClientRect, anchorPosition: VerticalPosition, popupHeight: number, popupPoistion: VerticalPosition) {
     switch (popupPoistion) {
         case 'top':
-            layout.top = getVerticalReference(anchorRect, anchorPosition);
+            style.top = getVerticalReference(anchorRect, anchorPosition);
             break;
         case 'center':
-            layout.top = getVerticalReference(anchorRect, anchorPosition) - (popupHeight / 2);
+            style.top = getVerticalReference(anchorRect, anchorPosition) - (popupHeight / 2);
             break;
         case 'bottom':
-            layout.bottom = `calc(100% - ${getVerticalReference(anchorRect, anchorPosition)}px`;
+            style.bottom = `calc(100% - ${getVerticalReference(anchorRect, anchorPosition)}px`;
             break;
     }
 }
 
-function setLeft(layout: CSSProperties, anchorRect: ClientRect, anchorPosition: HorizontalPosition, popupWidth: number, popupPoistion: HorizontalPosition) {
+function setLeft(style: CSSProperties, anchorRect: ClientRect, anchorPosition: HorizontalPosition, popupWidth: number, popupPoistion: HorizontalPosition) {
     switch (popupPoistion) {
         case 'left':
-            layout.left = getHorizontalReference(anchorRect, anchorPosition);
+            style.left = getHorizontalReference(anchorRect, anchorPosition);
             break;
         case 'center':
-            layout.left = getHorizontalReference(anchorRect, anchorPosition) - (popupWidth / 2);
+            style.left = getHorizontalReference(anchorRect, anchorPosition) - (popupWidth / 2);
             break;
         case 'right':
-            layout.right = `calc(100% - ${getHorizontalReference(anchorRect, anchorPosition)}px`;
+            style.right = `calc(100% - ${getHorizontalReference(anchorRect, anchorPosition)}px`;
             break;
     }
 }
