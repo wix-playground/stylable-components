@@ -31,7 +31,8 @@ export interface Affix {
 
 export interface NumberInputState {
     value?: number
-    focused: boolean
+    focus: boolean
+    error: boolean
 }
 
 enum Slot {
@@ -90,7 +91,8 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
 
         this.state = {
             value: props.value,
-            focused: false
+            focus: false,
+            error: Boolean(props.error)
         }
     }
 
@@ -169,10 +171,10 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
         }
 
     private handleFocus: React.FocusEventHandler<HTMLInputElement> =
-        e => this.setState({focused: true});
+        e => this.setState({focus: true});
 
     private handleBlur: React.FocusEventHandler<HTMLInputElement> =
-        e => (this.commit(this.state.value), this.setState({focused: false}));
+        e => (this.commit(this.state.value), this.setState({focus: false}));
 
     private handleChange: React.ChangeEventHandler<HTMLInputElement> =
         e => {
@@ -200,7 +202,7 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
     }
 
     render() {
-        const {value, focused} = this.state;
+        const {value, focus, error} = this.state;
         const {step, min, max, onInput, children, ...inputProps} = this.props;
         const disableIncrement = inputProps.disabled || (isNumber(value) && value >= max!);
         const disableDecrement = inputProps.disabled || (isNumber(value) && value <= min!);
@@ -208,7 +210,7 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
 
         return <div cssStates={{
             disabled: Boolean(this.props.disabled),
-            focus: focused
+            focus, error
         }}>
             {prefix.length > 0 ?
                 <div className="prefix">
