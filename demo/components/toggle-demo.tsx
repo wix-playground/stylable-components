@@ -14,7 +14,7 @@ export class ToggleDemo extends React.Component<{}, State> {
             <tbody>
                 <tr>
                     <th>
-                        Controled
+                        Controlled
                         <Toggle
                             label='with icons'
                             checked={this.state.checked}
@@ -22,7 +22,7 @@ export class ToggleDemo extends React.Component<{}, State> {
                         />
                     </th>
                     <th>
-                        Controled RTL
+                        Controlled RTL
                         <Toggle
                             label='with icons'
                             rtl
@@ -39,19 +39,19 @@ export class ToggleDemo extends React.Component<{}, State> {
                         <Toggle checked/>
                     </th>
                     <th>
-                        Disabled off
+                        Disabled and off
                         <Toggle disabled/>
                     </th>
                     <th>
-                        Disabled on
+                        Disabled and on
                         <Toggle disabled checked/>
                     </th>
                     <th>
-                        Error off
+                        Error and off
                         <Toggle error/>
                     </th>
                     <th>
-                        Error on
+                        Error and on
                         <Toggle error checked/>
                     </th>
                 </tr>

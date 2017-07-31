@@ -29,17 +29,18 @@ export default class Toggle extends React.Component<Props, State> {
         focus: false,
         click: false
     }
+    shouldResetFocus: boolean = false
     toggle = (e: React.SyntheticEvent<HTMLInputElement>) => {
         if (!this.props.disabled && this.props.onChange) {
             this.props.onChange(!this.props.checked)
         }
-        // reseting focus when user click toggle
-        if (this.state.click) {
-            this.setState({
-                click: false,
-                focus: false
-            })
+        if (this.shouldResetFocus) {
+            this.setState({focus: false});
+            this.shouldResetFocus = false;
         }
+    }
+    onMouseDown = () => {
+        this.shouldResetFocus = true;
     }
     render() {
         const {
@@ -55,7 +56,7 @@ export default class Toggle extends React.Component<Props, State> {
 
         return <label
             data-automation-id='TOGGLE'
-            onMouseDown={() => this.setState({click: true})}
+            onMouseDown={this.onMouseDown}
             cssStates={{
                 checked: checked!,
                 disabled: disabled!,
