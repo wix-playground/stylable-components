@@ -27,7 +27,7 @@ export class ComponentsDemo extends React.Component<{}, {}>{
             </div>
             <div>
                 <h2>TreeView</h2>
-                <TreeViewDemo/>
+                <TreeViewDemo />
             </div>
             <hr/>
             <div>
