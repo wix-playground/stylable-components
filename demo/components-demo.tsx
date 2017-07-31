@@ -4,22 +4,24 @@ import { Image } from '../src';
 import { sampleImage } from '../test/fixtures/sample-image';
 import { TreeViewDemo } from './components/tree-view-demo';
 import { BirthDatePickerDemo } from './components/birth-date-picker-demo';
-import './style.st.css';
+import style from './style.st.css';
 import '../src/style/default-theme/base.st.css';
 import { RadioGroupDemo } from './components/radio-group-demo'
 
-export class ComponentsDemo extends React.Component<{}, {}>{
-
-
-    constructor() {
-        super();
-    }
-
+export class ComponentsDemo extends React.Component {
     render() {
         return <div>
             <div>
-                <h1>{'<Image />'}</h1>
-                <Image src={sampleImage} />
+                <h2>{'<Image sizing="contain" />'}</h2>
+                <Image sizing="contain" src="http://d26gg7w375vuv5.cloudfront.net/Design+Assets/black+Wix+Logo+Assets/Black+Wix+logo+Assets.png" className={style.image} />
+            </div>
+            <div>
+                <h2>{'<Image sizing="cover" />'}</h2>
+                <Image sizing="cover" src="http://d26gg7w375vuv5.cloudfront.net/Design+Assets/black+Wix+Logo+Assets/Black+Wix+logo+Assets.png" className={style.image} />
+            </div>
+            <div>
+                <h2>{'<Image sizing="fill" />'}</h2>
+                <Image sizing="fill" src="http://d26gg7w375vuv5.cloudfront.net/Design+Assets/black+Wix+Logo+Assets/Black+Wix+logo+Assets.png" className={style.image} />
             </div>
             <div>
                 <h2>CheckBox</h2>
@@ -41,7 +43,7 @@ export class ComponentsDemo extends React.Component<{}, {}>{
                     <tbody>
                     <tr>
                         <th>
-                            <h1>H1</h1>
+                            <h2>H1</h2>
                         </th>
                         <th>
                             <h2>H2</h2>
