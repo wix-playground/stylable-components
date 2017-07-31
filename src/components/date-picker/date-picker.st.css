@@ -1,6 +1,6 @@
 :import{
     -st-from: "../../style/default-theme/variables.st.css";
-    -st-named: color_Default, color_MainText_Background, color_MainText, color_Active, color_Hover;
+    -st-named: color_Default, color_MainText_Background, color_MainText, color_Active, color_Hover, color_Keyboard_Focused;
 }
 
 :vars {
@@ -126,6 +126,10 @@
 
 .currentDay {
     color: value(color_Default);
+}
+
+.focusedDay {
+    background-color: value(color_Keyboard_Focused);
 }
 
 .selectedDay {

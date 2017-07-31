@@ -4,6 +4,7 @@ import {observable, action} from 'mobx';
 import {observer} from 'mobx-react';
 import {SyntheticEvent} from "react";
 import {KeyCodes} from '../../common/key-codes';
+import {debug} from "util";
 const styles = require('./date-picker.st.css').default;
 
 const invalidDate: string = 'Invalid Date';
@@ -33,9 +34,9 @@ export class DatePicker extends React.Component<Partial<DatePickerProps>, {}>{
         showDropdownOnInit: false
     };
 
-    @observable value: Date = this.props.value ? this.props.value : new Date();
+    // @observable selectedDate: Date | undefined = this.props.value;
     @observable dropdownDate: Date = this.props.value ? this.props.value : new Date();
-    @observable inputValue: string = this.props.value ? this.props.value.toDateString() : '';
+    @observable inputValue: string | undefined = this.props.value ? this.props.value.toDateString() : undefined;
     @observable isDropdownVisible: boolean = this.props.showDropdownOnInit ? this.props.showDropdownOnInit : false;
     @observable highlightSelectedDate: boolean = false;
     @observable highlightFocusedDate: boolean = false;
@@ -59,6 +60,8 @@ export class DatePicker extends React.Component<Partial<DatePickerProps>, {}>{
         this.inputValue = input.toDateString();
         this.isDropdownVisible = false;
         this.highlightSelectedDate = true;
+        this.highlightFocusedDate = false;
+        this.dropdownDate = input;
 
         if (this.props.onChange) {
             this.props.onChange(input);
@@ -66,7 +69,7 @@ export class DatePicker extends React.Component<Partial<DatePickerProps>, {}>{
     };
 
     @action updateDropdownDate = (updatedDate: Date): void => {
-        this.highlightFocusedDate = true;
+        this.highlightFocusedDate = false;
         this.dropdownDate = updatedDate;
     };
 
@@ -90,10 +93,12 @@ export class DatePicker extends React.Component<Partial<DatePickerProps>, {}>{
         this.isDropdownVisible = false;
     };
 
+    @action
     shiftDate = (daysToShift: number): void => {
         const shiftedDate: Date = new Date(this.dropdownDate.getFullYear(), this.dropdownDate.getMonth(), this.dropdownDate.getDate());
         shiftedDate.setDate(this.dropdownDate.getDate() + daysToShift);
-        this.updateDropdownDate(shiftedDate);
+        this.highlightFocusedDate = true;
+        this.dropdownDate = shiftedDate;
     };
 
     @action onKeyDown: React.EventHandler<SyntheticEvent<HTMLInputElement>> = (event: React.KeyboardEvent<HTMLInputElement>): void => {
@@ -176,8 +181,8 @@ export class DatePicker extends React.Component<Partial<DatePickerProps>, {}>{
                 {this.isDropdownVisible
                     ? <Dropdown onChange={this.updateStateFromDate}
                                 updateDropdownDate={this.updateDropdownDate}
-                                value={this.value}
-                                focusedDate={this.dropdownDate}
+                                value={this.dropdownDate}
+                                selectedDate={this.props.value}
                                 startingDay={this.props.startingDay!}
                                 highlightSelectedDate={this.highlightSelectedDate}
                                 highlightFocusedDate={this.highlightFocusedDate}  />

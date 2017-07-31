@@ -1,7 +1,5 @@
 import * as React from 'react';
 import { DatePicker, DatePickerProps } from '../../src';
-import {observable, action} from "mobx";
-import {observer} from "mobx-react";
 
 export interface DatePickerDemoProps extends Partial<DatePickerProps> {}
 
@@ -26,7 +24,6 @@ export class DatePickerDemo extends React.Component<DatePickerDemoProps, {}> {
     }
 }
 
-@observer
 export class DatePickerDemoStartingDay extends React.Component<DatePickerDemoProps, Partial<DatePickerDemoState>> {
     componentWillMount () {
         this.setState({
