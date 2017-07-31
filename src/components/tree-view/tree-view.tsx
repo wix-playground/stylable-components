@@ -3,7 +3,8 @@ import { observer } from 'mobx-react';
 import { autorun, observable } from 'mobx';
 import { KeyCodes } from '../../common/key-codes';
 
-const style = require('./tree-view.css');
+import { SBComponent, SBStateless } from 'stylable-react-component';
+import style from './tree-view.st.css';
 
 export interface TreeItemData {
     label: string;
@@ -12,7 +13,7 @@ export interface TreeItemData {
 
 export interface TreeItemProps {
     item: TreeItemData;
-    itemRenderer: React.ComponentClass<TreeItemProps> | React.StatelessComponent<TreeItemProps>;
+    itemRenderer: React.ComponentType<TreeItemProps>;
     onItemClick?: React.EventHandler<any>;
     stateMap: StateMap;
     state: TreeItemState;
@@ -20,7 +21,7 @@ export interface TreeItemProps {
 
 export interface TreeViewProps {
     dataSource: Object[];
-    itemRenderer?: React.ComponentClass<TreeItemProps> | React.StatelessComponent<TreeItemProps>;
+    itemRenderer?: React.ComponentType<TreeItemProps>;
     onSelectItem?: React.EventHandler<any>;
     selectedItem?: TreeItemData;
     onFocusItem?: React.EventHandler<any>;
@@ -38,29 +39,30 @@ export type ParentsMap = Map<TreeItemData, TreeItemData | undefined>;
 
 const itemIdPrefix = 'TREE_ITEM';
 
-export const TreeItem: React.SFC<TreeItemProps> = ({ item, itemRenderer, onItemClick, stateMap, state }) => {
+export const TreeItem: React.SFC<TreeItemProps> = SBStateless(({ item, itemRenderer, onItemClick, stateMap, state }) => {
     const itemLabel = item.label.replace(' ', '_');
+    const TreeNode = itemRenderer;
     return (
         <div>
-            <div data-automation-id={`${itemIdPrefix}_${itemLabel}`} className={style['tree-node']}
-                 onClick={() => onItemClick!(item)}
-                 data-selected={ state!.isSelected }
-                 data-focused={ state!.isFocused }>
+            <div data-automation-id={`${itemIdPrefix}_${itemLabel}`} className="tree-node"
+                 cssStates={{selected: state!.isSelected, focused: state!.isFocused}}
+                 onClick={() => onItemClick!(item)} data-selected={ state!.isSelected } data-focused={ state!.isFocused }>
                 <span data-automation-id={`${itemIdPrefix}_${itemLabel}_ICON`}>&gt; </span>
                 <span data-automation-id={`${itemIdPrefix}_${itemLabel}_LABEL`}>{item.label}</span>
             </div>
-            <div className={style['nested-tree']}>
+            <div className="nested-tree">
                 {state!.isExpanded && (item.children || []).map((child: TreeItemData, index: number) =>
-                    React.createElement(itemRenderer as React.ComponentClass<TreeItemProps>,
-                        {item: child, onItemClick, itemRenderer, stateMap, state: stateMap.get(child)!, key: `${index}`}))}
+                    <TreeNode item={child} onItemClick={onItemClick} itemRenderer={itemRenderer}
+                              stateMap={stateMap} state={stateMap.get(child)!} key={`${index}`} />
+                )}
             </div>
         </div>
     )
-};
+}, style);
 
 const TreeItemWrapper = observer(TreeItem);
 
-@observer
+@SBComponent(style) @observer
 export class TreeView extends React.Component<TreeViewProps, {}>{
     static defaultProps: Partial<TreeViewProps> = { itemRenderer: TreeItemWrapper, onSelectItem: () => {}, onFocusItem: () => {} };
 
@@ -181,6 +183,7 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
         this.props.onFocusItem!(this.getLastAvailableItem(this.props.dataSource[this.props.dataSource.length - 1] as TreeItemData));
 
     onKeyDown = (e: any) => {
+        debugger;
         if (!this.props.focusedItem) return;
 
         switch(e.keyCode) {
@@ -215,13 +218,13 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
     };
 
     render() {
+        const TreeNode = this.props.itemRenderer!;
         return (
-            <div data-automation-id='TREE_VIEW' className={style['tree-view']} tabIndex={0} onKeyDown={this.onKeyDown}>
+            <div data-automation-id='TREE_VIEW' className="tree-view" tabIndex={0} onKeyDown={this.onKeyDown}>
                 {(this.props.dataSource || []).map((item: TreeItemData, index: number) =>
-                    React.createElement(
-                        this.props.itemRenderer as React.ComponentClass<TreeItemProps>,
-                        {item, onItemClick: this.onSelectItem, itemRenderer: this.props.itemRenderer!,
-                            stateMap: this.stateMap, state: this.stateMap.get(item)!, key: `${index}` }))}
+                    <TreeNode item={item} onItemClick={this.onSelectItem} itemRenderer={this.props.itemRenderer!}
+                              stateMap={this.stateMap} state={this.stateMap.get(item)!} key={`${index}`} />
+                )}
             </div>
         )
     }

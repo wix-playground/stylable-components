@@ -1,0 +1,23 @@
+.root {
+    font-size: 18px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.tree-node {
+    -st-states: selected, focused;
+    cursor: pointer;
+    display: inline;
+    padding: 2px 5px;
+}
+
+.tree-node:selected {
+    background-color: lightblue;
+}
+
+.tree-node:focused {
+    color: mediumpurple;
+}
+
+.nested-tree {
+    margin-left: 25px;
+}
