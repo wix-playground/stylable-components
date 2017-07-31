@@ -1,10 +1,10 @@
 import * as React from 'react';
+import styles from './number-input.st.css';
+import {SBComponent} from 'stylable-react-component';
 import {Stepper} from './stepper';
 import {KeyCodes} from '../../common/key-codes';
 
-const styles = require('./number-input.st.css').default;
-
-export type WithChildren<T> = T & {children: React.ReactNode};
+export type WithReactChildren<T> = T & {children: React.ReactNode};
 
 export interface NumberInputProps {
     value?: number
@@ -73,6 +73,7 @@ function getAffix(children: React.ReactNode): Affix {
         } as Affix);
 }
 
+@SBComponent(styles)
 export class NumberInput extends React.Component<NumberInputProps, NumberInputState> {
     static defaultProps = {
         step: 1,
@@ -82,7 +83,7 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
         onInput: noop
     };
 
-    constructor(props: WithChildren<NumberInputProps>) {
+    constructor(props: WithReactChildren<NumberInputProps>) {
         super(props);
 
         this.state = {
@@ -179,7 +180,7 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
             onInput!(value);
         }
 
-    componentWillReceiveProps({value, children}: WithChildren<NumberInputProps>) {
+    componentWillReceiveProps({value, children}: WithReactChildren<NumberInputProps>) {
         const changes: Partial<NumberInputState> = {};
 
         if (value !== this.state.value) {
@@ -199,9 +200,9 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
         const disableDecrement = inputProps.disabled || (isNumber(value) && value <= min!);
         const {prefix, suffix} = getAffix(children);
 
-        return <div className={styles['root']}>
+        return <div>
             {prefix.length > 0 ?
-                <div className={styles['prefix']}>
+                <div className='prefix'>
                     {prefix}
                 </div> : null
             }
@@ -218,7 +219,7 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
                 onBlur={this.handleBlur}
             />
             {suffix.length > 0 ?
-                <div className={styles['suffix']}>
+                <div className='suffix'>
                     {suffix}
                 </div> : null
             }

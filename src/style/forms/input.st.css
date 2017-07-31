@@ -1,6 +1,6 @@
 :import {
-    -sb-from: "../default-theme/variables.st.css";
-    -sb-named: fontFamily,
+    -st-from: "../default-theme/variables.st.css";
+    -st-named: fontFamily,
                fontSize,
                fontWeight,
                lineHeight,

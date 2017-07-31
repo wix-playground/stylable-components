@@ -1,4 +1,11 @@
+:import {
+    -st-from: "../../style/forms/input.st.css";
+    -st-default: input;
+}
+
 .root {
+    -st-extends: input;
+
     position: relative;
     display: inline-flex;
 }
