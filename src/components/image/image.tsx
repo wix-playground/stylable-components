@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { objectFitSupported, isBrowser } from '../../common/environment';
 import { nullFunction } from '../../common/null-function';
 
 // Transparent 1x1 gif image
@@ -22,7 +21,19 @@ export interface ImageProps extends React.HTMLAttributes<HTMLImageElement> {
 
 export interface ImageState {
     src: string;
-    useBackgroundSizing: boolean;
+}
+
+const hiddenImageStyle = {
+    display: 'block',
+    maxWidth: '100%',
+    height: '100%',
+    visibility: 'hidden'
+};
+
+const backgroundSizingStyle = {
+    display: 'inline-block',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
 }
 
 export class Image extends React.PureComponent<ImageProps, ImageState>{
@@ -34,13 +45,6 @@ export class Image extends React.PureComponent<ImageProps, ImageState>{
 
     componentWillMount() {
         this.setState({ src: this.props.src || this.props.defaultImage! });
-    }
-
-    componentDidMount() {
-        if (isBrowser && !objectFitSupported) {
-            // Switch to polyfill after first render to allow SSR bootstrapping (server assumes objectFit support)
-            this.setState({ useBackgroundSizing: true });
-        }
     }
 
     onError: React.EventHandler<React.SyntheticEvent<HTMLImageElement>> = (e) => {
@@ -60,31 +64,34 @@ export class Image extends React.PureComponent<ImageProps, ImageState>{
     }
 
     render() {
-        const { defaultImage, sizing, style, ...rest } = this.props;
+        const {
+            // these two are always set on the root
+            style,
+            className,
 
-        const propsOverride: React.ImgHTMLAttributes<HTMLImageElement> = {};
-        if (sizing) {
-            if (this.state.useBackgroundSizing) {
-                propsOverride.style = {
-                    backgroundImage: `url("${this.state.src}")`,
-                    backgroundSize: sizing!.replace('fill', '100% 100%'),
-                    backgroundPosition: 'center',
-                    backgroundRepeat: 'no-repeat',
-                    ...style
-                };
-                propsOverride.src = onePixelTransparentSrc;
-            } else {
-                propsOverride.style = { objectFit: sizing, ...style };
-            }
+            // shouldn't be printed to DOM
+            defaultImage,
+            sizing,
+
+            ...rest
+        } = this.props;
+
+        // 'fill' is the default image behavior, so no need to put it on background
+        if (sizing === 'contain' || sizing === 'cover') {
+            return (
+                <div style={{ ...backgroundSizingStyle, backgroundImage: `url("${this.state.src}")`, backgroundSize: sizing, ...style }} className={className}>
+                    <img style={hiddenImageStyle} {...rest} src={this.state.src} onLoad={this.onLoad} onError={this.onError} />
+                </div>
+            );
         }
 
         return (
             <img {...rest}
-                src={this.state.src}
                 style={style}
-                onError={this.onError}
+                className={className}
+                src={this.state.src}
                 onLoad={this.onLoad}
-                {...propsOverride} />
+                onError={this.onError} />
         );
     }
 }

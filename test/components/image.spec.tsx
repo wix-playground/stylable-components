@@ -11,44 +11,44 @@ describe('<Image />', () => {
     afterEach(() => clientRenderer.cleanup());
 
     it('outputs an html image element to dom', async () => {
-        const {select, waitForDom} = clientRenderer.render(<Image data-automation-id={nativeImage} />);
+        const { select, waitForDom } = clientRenderer.render(<Image data-automation-id={nativeImage} />);
 
         await waitForDom(() =>
             expect(select(nativeImage) instanceof HTMLImageElement, 'Expected the Image component to be instance of HTMLImageElement').to.equal(true));
     });
 
     it('uses one pixel transparent gif as default source', async () => {
-        const {select, waitForDom} = clientRenderer.render(<Image data-automation-id={nativeImage} />);
+        const { select, waitForDom } = clientRenderer.render(<Image data-automation-id={nativeImage} />);
 
         await waitForDom(() => expect(select(nativeImage)).to.have.attribute('src', onePixelTransparentSrc));
     });
 
     it('uses provided defaultImage as default source', async () => {
-        const {select, waitForDom} = clientRenderer.render(<Image defaultImage="ABC-EZ-AS-123" data-automation-id={nativeImage} />);
+        const { select, waitForDom } = clientRenderer.render(<Image defaultImage="ABC-EZ-AS-123" data-automation-id={nativeImage} />);
 
         await waitForDom(() => expect(select(nativeImage)).to.have.attribute('src', 'ABC-EZ-AS-123'));
     });
 
     it('sets the provided alt attribute', async () => {
-        const {select, waitForDom} = clientRenderer.render(<Image alt="calvin cordozar broadus" data-automation-id={nativeImage} />);
+        const { select, waitForDom } = clientRenderer.render(<Image alt="calvin cordozar broadus" data-automation-id={nativeImage} />);
 
         await waitForDom(() => expect(select(nativeImage)).to.have.attribute('alt', 'calvin cordozar broadus'));
     });
 
     it('sets the provided title attribute', async () => {
-        const {select, waitForDom} = clientRenderer.render(<Image title="Daredevil" data-automation-id={nativeImage} />);
+        const { select, waitForDom } = clientRenderer.render(<Image title="Daredevil" data-automation-id={nativeImage} />);
 
         await waitForDom(() => expect(select(nativeImage)).to.have.attribute('title', 'Daredevil'));
     });
 
     it('sets the provided src', async () => {
-        const {select, waitForDom} = clientRenderer.render(<Image src="Wonderwoman" data-automation-id={nativeImage} />);
+        const { select, waitForDom } = clientRenderer.render(<Image src="Wonderwoman" data-automation-id={nativeImage} />);
 
         await waitForDom(() => expect(select(nativeImage)).to.have.attribute('src', 'Wonderwoman'));
     });
 
     it('uses default source if provided src is an empty string', async () => {
-        const {select, waitForDom} = clientRenderer.render(<Image src="" data-automation-id={nativeImage} />);
+        const { select, waitForDom } = clientRenderer.render(<Image src="" data-automation-id={nativeImage} />);
 
         await waitForDom(() => expect(select(nativeImage)).to.have.attribute('src', onePixelTransparentSrc));
     });
@@ -64,7 +64,7 @@ describe('<Image />', () => {
 
     it('calls onError when it cannot load a source, and falls back to default source', async () => {
         const onError = sinon.spy();
-        const {select, waitForDom} = clientRenderer.render(<Image src={brokenSrc} onError={onError} data-automation-id={nativeImage} />);
+        const { select, waitForDom } = clientRenderer.render(<Image src={brokenSrc} onError={onError} data-automation-id={nativeImage} />);
 
         await waitFor(() => expect(onError).to.have.been.calledWithMatch({ src: brokenSrc }));
         await waitForDom(() => expect(select(nativeImage)).to.have.attribute('src', onePixelTransparentSrc));
@@ -72,12 +72,9 @@ describe('<Image />', () => {
 
     it('calls onError when it cannot load the given default image, and falls back to onePixelTransparentSrc', async () => {
         const onError = sinon.spy();
-        const {select, waitForDom} = clientRenderer.render(<Image defaultImage={brokenSrc} onError={onError} data-automation-id={nativeImage} />);
+        const { select, waitForDom } = clientRenderer.render(<Image defaultImage={brokenSrc} onError={onError} data-automation-id={nativeImage} />);
 
         await waitFor(() => expect(onError).to.have.been.calledWithMatch({ src: brokenSrc }));
         await waitForDom(() => expect(select(nativeImage)).to.have.attribute('src', onePixelTransparentSrc));
-    });
-
-    describe('sizing', () => {
     });
 });
