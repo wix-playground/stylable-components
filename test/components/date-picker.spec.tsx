@@ -9,7 +9,7 @@ const datePickerId = 'DATE_PICKER';
 const datePickerInputId = 'DATE_PICKER_INPUT';
 const datePickerDropdownId = 'DATE_PICKER_DROPDOWN';
 
-describe('The DatePicker Component', function () {
+describe('The DatePicker Component', () => {
     const clientRenderer = new ClientRenderer();
 
     afterEach(() => clientRenderer.cleanup());
@@ -24,28 +24,28 @@ describe('The DatePicker Component', function () {
         simulate.change(domElememt);
     };
 
-    describe('A Typical User', function () {
-        it('writes into the date picker input field, presses enter, and expects the date picker input to have the proper value', () => {
+    describe('A Typical User', () => {
+        it('writes into the date picker input field, presses enter, and expects the date picker input to have the proper value', async () => {
             const {select, waitForDom} = clientRenderer.render(<DatePickerDemo />);
 
             const datePickerInput = select(datePickerInputId);
             simulateChange(datePickerInput!, '2017-02-01');
             simulate.keyDown(datePickerInput, { keyCode: KeyCodes.ENTER });
 
-            return waitForDom(() => expect(datePickerInput).to.have.value('Wed Feb 01 2017'));
+            await waitForDom(() => expect(datePickerInput).to.have.value('Wed Feb 01 2017'));
         });
 
-        it('writes into the date picker input field, focuses elsewhere, and expects the date picker input to have the proper value', () => {
+        it('writes into the date picker input field, focuses elsewhere, and expects the date picker input to have the proper value', async () => {
             const {select, waitForDom} = clientRenderer.render(<DatePickerDemo />);
 
             const datePickerInput = select(datePickerInputId);
             simulateChange(datePickerInput!, '2017-02-01');
             simulate.blur(datePickerInput);
 
-            return waitForDom(() => expect(datePickerInput).to.have.value('Wed Feb 01 2017'));
+            await waitForDom(() => expect(datePickerInput).to.have.value('Wed Feb 01 2017'));
         });
 
-        it('clicks on the input, picks a date from the dropdown, and then expects the dropdown to close and the date to appear in the input', async function () {
+        it('clicks on the input, picks a date from the dropdown, and then expects the dropdown to close and the date to appear in the input', async () => {
             const {select, waitForDom} = clientRenderer.render(<DatePickerDemo value={JANUARY_FIRST} />);
             const datePickerInput = select(datePickerInputId);
 
@@ -57,26 +57,26 @@ describe('The DatePicker Component', function () {
 
             simulate.mouseDown(select('DAY_4'));
 
-            return await waitForDom(() => {
+            await waitForDom(() => {
                 expect(select(datePickerDropdownId)).to.be.absent();
                 expect(datePickerInput).to.have.value('Wed Jan 04 2017')
             });
         });
     });
 
-    it('should use a provided value', function () {
+    it('should use a provided value', async () => {
         const {select, waitForDom} = clientRenderer.render(<DatePickerDemo value={JANUARY_FIRST} />);
 
-        return waitForDom(() => expect(select(datePickerInputId)).to.have.value(JANUARY_FIRST.toDateString()));
+        await waitForDom(() => expect(select(datePickerInputId)).to.have.value(JANUARY_FIRST.toDateString()));
     });
 
-    it('should use a provided placeholder', function () {
+    it('should use a provided placeholder', async () => {
         const {select, waitForDom} = clientRenderer.render(<DatePickerDemo placeholder="mm/dd/yyyy" />);
 
-        return waitForDom(() => expect(select(datePickerInputId)).to.have.attribute('placeholder', 'mm/dd/yyyy'));
+        await waitForDom(() => expect(select(datePickerInputId)).to.have.attribute('placeholder', 'mm/dd/yyyy'));
     });
 
-    it('should show and hide the dropdown when the input is clicked', async function () {
+    it('should show and hide the dropdown when the input is clicked', async () => {
         const {select, waitForDom} = clientRenderer.render(<DatePickerDemo />);
         const datePickerInput = select(datePickerInputId);
 
@@ -88,34 +88,32 @@ describe('The DatePicker Component', function () {
 
         simulate.mouseDown(datePickerInput);
 
-        return await waitForDom(() => expect(select(datePickerDropdownId)).to.be.absent());
+        await waitForDom(() => expect(select(datePickerDropdownId)).to.be.absent());
     });
 
-    describe('The Dropdown', function () {
+    describe('The Dropdown', () => {
         const dayNames: Array<string> = getDayNames();
         const days: Array<string> = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28'];
 
-        it('should display the days for a fixed month', async function () {
+        it('should display the days for a fixed month', async () => {
             const {select, waitForDom} = clientRenderer.render(<DatePickerDemo isDropdownVisible={true} value={FEBRUARY_FIRST} />);
 
             await waitForDom(() => dayNames.forEach(name => expect(select(datePickerDropdownId)).to.contain.text(name)));
-            return await waitForDom(() => days.forEach(day => expect(select(datePickerDropdownId)).to.contain.text(day)));
+            await waitForDom(() => days.forEach(day => expect(select(datePickerDropdownId)).to.contain.text(day)));
         });
 
-        it('should show the next and previous month buttons horizontally aligned with the month and year', function () {
+        it('should show the next and previous month buttons horizontally aligned with the month and year', async () => {
             const {select, waitForDom} = clientRenderer.render(<DatePickerDemo isDropdownVisible={true} value={JANUARY_FIRST} />);
 
-            return waitForDom(() => {
-               expect([select('PREV_MONTH_BUTTON'), select('MONTH_NAME'), select('YEAR'), select('NEXT_MONTH_BUTTON')]).to.be.verticallyAligned('center', 1);
-            });
+            await waitForDom(() => expect([select('PREV_MONTH_BUTTON'), select('MONTH_NAME'), select('YEAR'), select('NEXT_MONTH_BUTTON')]).to.be.verticallyAligned('center', 1));
         });
 
-        it('should display the day names in horizontal sequence, and vertically aligned', function () {
+        it('should display the day names in horizontal sequence, and vertically aligned', async () => {
             const {select, waitForDom} = clientRenderer.render(<DatePickerDemo isDropdownVisible={true} value={JANUARY_FIRST} />);
 
             const dayNameIds = dayNames.map(name => 'DAY_NAME_' + name.toUpperCase());
 
-            return waitForDom(() => {
+            await waitForDom(() => {
                 const dayNameElements = dayNameIds.map((name, index) => {
                     const element: Element = select(name)!;
                     expect(element).to.have.text(dayNames[index]);
@@ -149,74 +147,77 @@ describe('The DatePicker Component', function () {
             return columnElements;
         }
 
-        it('should display the days in a grid', function () {
-            clientRenderer.render(<DatePickerDemo value={JANUARY_FIRST} isDropdownVisible={true}/>);
+        it('should display the days in a grid', async () => {
+            const {waitForDom} = clientRenderer.render(<DatePickerDemo value={JANUARY_FIRST} isDropdownVisible={true}/>);
 
-            // Check that the days are displayed in rows (checking that each row is in horizontal sequence
-            expect(elementsInRow(1)).to.be.inHorizontalSequence();
-            expect(elementsInRow(1)).to.be.verticallyAligned('center');
 
-            // Check that the days are displayed in columns
-            expect(elementsInColumn(1)).to.be.inVerticalSequence();
-            expect(elementsInColumn(1)).to.be.horizontallyAligned('center');
+            await waitForDom(() => {
+                // Check that the days are displayed in rows (checking that each row is in horizontal sequence
+                expect(elementsInRow(1)).to.be.inHorizontalSequence();
+                expect(elementsInRow(1)).to.be.verticallyAligned('center');
+
+                // Check that the days are displayed in columns
+                expect(elementsInColumn(1)).to.be.inVerticalSequence();
+                expect(elementsInColumn(1)).to.be.horizontallyAligned('center');
+            });
         });
 
-        it('should show the days starting on the correct day of the week', function () {
-            const {select} = clientRenderer.render(<DatePickerDemo value={MARCH_FIRST} isDropdownVisible={true} />);
+        it('should show the days starting on the correct day of the week', async () => {
+            const {select, waitForDom} = clientRenderer.render(<DatePickerDemo value={MARCH_FIRST} isDropdownVisible={true} />);
 
-            expect([select('DAY_1'), select('DAY_NAME_WED')]).to.be.horizontallyAligned('center');
+            await waitForDom(() => expect([select('DAY_1'), select('DAY_NAME_WED')]).to.be.horizontallyAligned('center'));
         });
 
-        it('displays the year', function () {
+        it('displays the year', async () => {
             const {select, waitForDom} = clientRenderer.render(<DatePickerDemo isDropdownVisible={true} value={JANUARY_FIRST} />);
 
-            return waitForDom(() => expect(select('YEAR')).to.have.text('2017'));
+            await waitForDom(() => expect(select('YEAR')).to.have.text('2017'));
         });
 
-        it('displays the name of the month', function () {
+        it('displays the name of the month', async () => {
             const {select, waitForDom} = clientRenderer.render(<DatePickerDemo isDropdownVisible={true} value={JANUARY_FIRST} />);
 
-            return waitForDom(() => expect(select('MONTH_NAME')).to.have.text('January'));
+            await waitForDom(() => expect(select('MONTH_NAME')).to.have.text('January'));
         });
 
-        it('displays the days of the week', function () {
+        it('displays the days of the week', async () => {
             const dayNames = getDayNames();
             const {select, waitForDom} = clientRenderer.render(<DatePickerDemo isDropdownVisible={true} value={JANUARY_FIRST} />);
 
-            return waitForDom(() => {
+            await waitForDom(() => {
                for (let i = 0; i < dayNames.length; i++) {
                    expect(select('DAY_NAME_' + dayNames[i].toUpperCase())).to.have.text(dayNames[i]);
                }
             });
         });
 
-        it('has a button which steps forward a month', function () {
+        it('has a button which steps forward a month', async () => {
             const {select, waitForDom} = clientRenderer.render(<DatePickerDemo isDropdownVisible={true} value={DECEMBER_FIRST} />);
 
             expect(select('YEAR')).to.have.text('2017');
             expect(select('MONTH_NAME')).to.have.text('December');
             simulate.mouseDown(select('NEXT_MONTH_BUTTON'));
 
-            return waitForDom(() => {
+            await waitForDom(() => {
                 expect(select('YEAR')).to.have.text('2018');
                 expect(select('MONTH_NAME')).to.have.text('January');
             });
         });
 
-        it('has a button which steps back a month', function () {
+        it('has a button which steps back a month', async () => {
             const {select, waitForDom} = clientRenderer.render(<DatePickerDemo isDropdownVisible={true} value={JANUARY_FIRST} />);
 
             expect(select('YEAR')).to.have.text('2017');
             expect(select('MONTH_NAME')).to.have.text('January');
             simulate.mouseDown(select('PREV_MONTH_BUTTON'));
 
-            return waitForDom(() => {
+            await waitForDom(() => {
                 expect(select('YEAR')).to.have.text('2016');
                 expect(select('MONTH_NAME')).to.have.text('December');
             });
         });
 
-        it('should stay open when the next or previous month buttons are clicked', async function () {
+        it('should stay open when the next or previous month buttons are clicked', async () => {
             const {select, waitForDom} = clientRenderer.render(<DatePickerDemo isDropdownVisible={true} />);
 
             await waitForDom(() => expect(select(datePickerDropdownId)).to.be.present());
@@ -227,26 +228,26 @@ describe('The DatePicker Component', function () {
 
             simulate.mouseDown(select('NEXT_MONTH_BUTTON'));
 
-            return await waitForDom(() => expect(select(datePickerDropdownId)).to.be.present());
+            await waitForDom(() => expect(select(datePickerDropdownId)).to.be.present());
         });
     });
 
-    describe('The Helper Functions', function () {
-        it('getMonthFromOffset should return the next month when the second argument is 1', function () {
+    describe('The Helper Functions', () => {
+        it('getMonthFromOffset should return the next month when the second argument is 1', () => {
             const currentDate = new Date('Mar 6 2017');
             const nextMonth = getMonthFromOffset(currentDate, 1);
 
             expect(nextMonth.getMonth()).to.equal(currentDate.getMonth() + 1);
         });
 
-        it('getMonthFromOffset should return the previous month when the second argument is -1', function () {
+        it('getMonthFromOffset should return the previous month when the second argument is -1', () => {
             const currentDate = new Date('Mar 6 2017');
             const nextMonth = getMonthFromOffset(currentDate, -1);
 
             expect(nextMonth.getMonth()).to.equal(currentDate.getMonth() - 1);
         });
 
-        it('getMonthFromOffset should handle the year changing when moving forward a month', function () {
+        it('getMonthFromOffset should handle the year changing when moving forward a month', () => {
             const currentDate = new Date('Dec 6 2016');
             const nextMonth = getMonthFromOffset(currentDate, 1);
 
@@ -254,7 +255,7 @@ describe('The DatePicker Component', function () {
             expect(nextMonth.getMonth()).to.equal(0);
         });
 
-        it('getMonthFromOffset should handle the year changing when moving back a month', function () {
+        it('getMonthFromOffset should handle the year changing when moving back a month', () => {
             const currentDate = new Date('Jan 6 2018');
             const nextMonth = getMonthFromOffset(currentDate, -1);
 
@@ -262,7 +263,7 @@ describe('The DatePicker Component', function () {
             expect(nextMonth.getMonth()).to.equal(11);
         });
 
-        it('getDaysInMonth should return the number of days in a given month', function () {
+        it('getDaysInMonth should return the number of days in a given month', () => {
             const dateOne = getDaysInMonth(new Date('Feb 18 2017'));
             const dateTwo = getDaysInMonth(new Date('Jun 5 2016'));
             const dateThree = getDaysInMonth(new Date('Jan 28, 2017'));
@@ -272,7 +273,7 @@ describe('The DatePicker Component', function () {
             expect(dateThree).to.equal(31);
         });
 
-        it('getNumOfPreviousDays should return the number of days to display for the previous month', function () {
+        it('getNumOfPreviousDays should return the number of days to display for the previous month', () => {
             // Sunday is the default starting day
             const dateOne = getNumOfPreviousDays(new Date('Feb 18 2017'));
             const dateTwo = getNumOfPreviousDays(new Date('Jun 5 2017'));
@@ -285,7 +286,7 @@ describe('The DatePicker Component', function () {
             expect(dateFour).to.equal(0);
         });
 
-        it('getNumOfPreviousDays should handle starting on different days of the week', function () {
+        it('getNumOfPreviousDays should handle starting on different days of the week', () => {
             const dateToTest = new Date('July 5 2017');
             const secondDateToTest = new Date('September 5 2017');
             const thirdDateToTest = new Date('October 5 2017');
@@ -349,7 +350,7 @@ describe('The DatePicker Component', function () {
             expect(saturdayStart4).to.equal(5);
         });
 
-        it('getNumOfFollowingDays should return the number of days to display for the next month', function () {
+        it('getNumOfFollowingDays should return the number of days to display for the next month', () => {
             // Sunday is the default starting day
             const dateOne = getNumOfFollowingDays(new Date('Feb 18 2017'));
             const dateTwo = getNumOfFollowingDays(new Date('Jun 5 2017'));
@@ -362,7 +363,7 @@ describe('The DatePicker Component', function () {
             expect(dateFour).to.equal(5);
         });
 
-        it('getNumOfFollowingDays should handle starting on different days of the week', function () {
+        it('getNumOfFollowingDays should handle starting on different days of the week', () => {
             const dateToTest = new Date('July 5 2017');
             const secondDateToTest = new Date('September 5 2017');
             const thirdDateToTest = new Date('October 5 2017');
