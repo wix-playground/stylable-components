@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types'
 
 const contextTypes = {
-    rtl: PropTypes.bool.isRequired
+    rtl: PropTypes.bool
 };
 
 export function rtl<T extends React.ComponentClass<any>>(Base: T): T
@@ -25,10 +25,10 @@ export default function rtl(Base: any): any {
     let warnShown = false
 
     const SLComponent: React.SFC = (props: any, context: any) => {
-        if (context) {
+        if (!context) {
             context = {}
             if (!warnShown) {
-                console.error(`Warning: Stateless component \`${Base.name}\` being used as function, which make \`context\` unreachable`)
+                console.error(`Warning: Stateless component wrapped in @rtl being used as function, which make \`context\` unreachable`)
                 warnShown = true
             }
         }
