@@ -65,8 +65,8 @@ describe('<Popup />', function () {
             expect(bodySelect(popup, 'SPAN')).to.be.present();
         })
     });
-    
-    describe.only('Layout tests', function () {
+
+    describe('Layout tests', function () {
         const verticalArray = ['top', 'center', 'bottom'];
         const horizontalArray = ['left', 'center', 'right'];
         const divDim: CSSProperties = { position:'absolute', top:'150px', left:'150px', width: '100px', height: '100px'};
