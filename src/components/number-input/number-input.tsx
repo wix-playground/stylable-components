@@ -133,7 +133,7 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
 
     private stepValue(e: React.SyntheticEvent<HTMLElement>, direction: Direction) {
         const {value} = this.state;
-        const {step, min, max} = this.props;
+        const {step} = this.props;
         const next = (direction == Direction.Increase ?
             isNumber(value) ? value + step! : step! :
             isNumber(value) ? value - step! : -step!);
@@ -188,15 +188,14 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
         }
 
     componentWillReceiveProps({value}: NumberInputProps) {
-        const changes: Partial<NumberInputState> = {};
+        const {min, max} = this.props;
 
         if (value !== this.state.value) {
             this.committed = true;
-            changes.value = value;
-        }
-
-        if (Object.keys(changes).length > 0) {
-            this.setState(changes as NumberInputState);
+            this.setState({value});
+            if (isNumber(value) && (value as number < min! || value > max!)) {
+                console.error('value is out of range');
+            }
         }
     }
 
