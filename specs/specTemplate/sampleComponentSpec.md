@@ -1,24 +1,16 @@
 **Table of Contents**
 
 - [Definition](#definition)
-
 - [Elements](#elements)
-
 - [Props](#props)
-
 - [Style](#style)
-
 - [Accessibility](#accessibility)
-
 - [Behavior](#behavior)
-
-  - [Edge case handling](edge_case_handling)
+  - [Edge case handling](edge-case-handling)
   - [Keyboard](#keyboard)
   - [Mouse](#mouse)
   - [Touch](#touch)
-
 - [Examples](#examples)
-
 - [Design](#design)
 
   ​
