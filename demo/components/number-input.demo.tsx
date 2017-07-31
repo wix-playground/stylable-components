@@ -21,7 +21,10 @@ export class NumberInputDemo extends React.Component<{}, {value?: number}> {
                     <span data-slot="suffix">suffix</span>
                 </NumberInput>
             </td><td>
-                <NumberInput disabled value={this.state.value} />
+                <NumberInput disabled value={this.state.value}>
+                    <span data-slot="prefix">prefix</span>
+                    <span data-slot="suffix">suffix</span>
+                </NumberInput>
             </td></tr>
         </tbody></table>
     }
