@@ -2,7 +2,7 @@ import React = require('react');
 import { expect, ClientRenderer, simulate } from 'test-drive-react';
 import {selectDom} from 'test-drive';
 import {PopupDemo} from '../../demo/components/popup-demo';
-import {Popup} from '../../src/components/'
+import {Popup, VerticalPosition, HorizontalPosition} from '../../src/components/'
 import {CSSProperties} from "react";
 
 const popup = 'POPUP';
@@ -134,8 +134,8 @@ describe('<Popup />', function () {
     });
 
     describe.only('Test', function () {
-        const verticalArray = ['top', 'bottom'];
-        const horizontalArray = ['left', 'right'];
+        const verticalArray = ['top', 'center', 'bottom'];
+        const horizontalArray = ['left', 'center', 'right'];
         const divDim: CSSProperties = { position:'absolute', top:'50px', left:'50px', width: '100px', height: '100px'};
 
         // Level one: popup position, level two: anchor position
@@ -199,8 +199,8 @@ describe('<Popup />', function () {
             }
         };
 
-        verticalArray.forEach((vertical: 'top' | 'bottom') => {
-            horizontalArray.forEach((horizontal: 'left' | 'right') => {
+        verticalArray.forEach((vertical: VerticalPosition) => {
+            horizontalArray.forEach((horizontal: HorizontalPosition) => {
                 it(`Anchor position: vertical ${vertical} horizontal: ${horizontal}`, async function () {
                     let div: HTMLDivElement;
                     const {waitForDom} = clientRenderer.render(<div style={divDim} ref={(elem: HTMLDivElement) => div = elem}>Anchor</div>);
@@ -213,7 +213,6 @@ describe('<Popup />', function () {
 
                     return waitForDom(() => {
                         expect(topResults.top[vertical](div, bodySelect(popup) as HTMLElement), 'vertical test failed', ).to.be.true;
-                        debugger;
                         expect(leftResults.left[horizontal](div, bodySelect(popup) as HTMLElement), 'horizontal test failed', ).to.be.true;
                     });
                 })
