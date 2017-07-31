@@ -183,6 +183,8 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
         this.props.onFocusItem!(this.getLastAvailableItem(this.props.dataSource[this.props.dataSource.length - 1] as TreeItemData));
 
     onKeyDown = (e: any) => {
+        e.preventDefault();
+
         if (!this.props.focusedItem) return;
 
         switch(e.keyCode) {
