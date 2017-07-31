@@ -22,6 +22,11 @@ export const treeData: TreeItemData[] = [
     ]}
 ];
 
+const newItem = {
+    label: 'Empty Category',
+    children: []
+};
+
 function SelectedItem({selectedItem}: any) {
     return <div style={{'fontSize': '1.41em', 'textDecoration': 'underline'}}>{selectedItem ?
         (!selectedItem.children ? `You chose ${selectedItem.label}. Bon appetit!` :
@@ -48,6 +53,10 @@ export class TreeViewDemo extends React.Component<{}, TreeViewDemoState> {
         });
     };
 
+    addItemToTree = () => {
+        treeData[0].children!.push(newItem);
+    };
+
     render() {
         return (
             <div>
@@ -55,6 +64,8 @@ export class TreeViewDemo extends React.Component<{}, TreeViewDemoState> {
                 <section data-automation-id="TREE_VIEW_DEMO">
                     <SelectedItem selectedItem={this.state.selectedItem}/>
                     <br/>
+                    <button data-automation-id="BTN_ADD" onClick={this.addItemToTree}>Add an item</button>
+                    <br />
                     <TreeView dataSource={treeData} onSelectItem={this.onSelectItem}
                               selectedItem={this.state.selectedItem} />
                 </section>

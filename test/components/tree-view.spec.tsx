@@ -2,8 +2,6 @@ import * as React from 'react';
 import { expect, ClientRenderer, sinon, simulate, waitFor } from 'test-drive-react';
 import { TreeView, TreeItem } from '../../src';
 import { TreeViewDemo } from '../../demo/components/tree-view-demo';
-import { hasCssState } from '../utils/has-css-state';
-import treeViewStyles from '../../src/components/tree-view/tree-view.st.css';
 import { StateMap, TreeItemData, TreeItemState} from '../../src/components/tree-view/tree-view';
 
 const treeView = 'TREE_VIEW';
@@ -28,6 +26,11 @@ const treeData: TreeItemData[] = [
         ]}
     ]}
 ];
+
+const newItem = {
+    label: 'Empty Category',
+    children: []
+};
 
 function getLabelsList(data: {label: string, children?: Object[]}): string[] {
     return [data.label]
@@ -108,6 +111,26 @@ describe('<TreeView />', () => {
 
         simulate.click(elementToSelect);
         return waitForDom(() => expect(elementToSelect, 'did not end up at true').to.have.attr('data-selected', 'true'));
+    });
+
+    it('re-renders the component when the data source changes', async () => {
+        const { select, waitForDom } = clientRenderer.render(<TreeViewDemo />);
+
+        const rootNode = getTreeItem(treeData[0].label);
+        simulate.click(select(treeView + '_DEMO', rootNode));
+
+        await waitForDom(() => expect(select(getTreeItem(newItem.label))).to.be.absent());
+
+        // close the root
+        simulate.click(select(treeView + '_DEMO', rootNode));
+
+        // add item
+        simulate.click(select(treeView + '_DEMO', 'BTN_ADD'));
+
+        // re-expand root to cause render of children
+        simulate.click(select(treeView + '_DEMO', rootNode));
+
+        return waitForDom(() => expect(select(getTreeItem(newItem.label))).to.be.present());
     });
 
     describe('Using default renderer', () => {
