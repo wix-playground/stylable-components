@@ -6,8 +6,9 @@
 - [Slider Props](#slider-props)
 - [UI Customizations](#ui-customizations)
 - [Behavior](#behavior)
-- [Keyboard](#keyboard)
-- [Mouse](#mouse)
+  - [Keyboard](#keyboard)
+  - [Mouse](#mouse)
+  - [Touch](#touch)
 - [Error handling](#error-handling)
 - [Accessibility](#accessibility)
 - [Examples](#examples)
@@ -24,7 +25,7 @@ A toggle switch is used as an on/off control
 
 ![elements](./assets/elements.png)
 
-**Toggle consists of:**  "switch", "icon" and "background". The "switch" moves across the "background" in order to set the value to On / Off and "icon" indicates the state of the value.
+**Toggle consists of:**  "switch" and "icon". The "switch" moves across the toggle in order to set the value to On / Off and "icon" indicates the state of the value.
 
 
 
@@ -47,7 +48,7 @@ See [README.md](./README.md) for more info.
 
 ## UI Customizations
 
-Toggle can be customized using ::switch and ::background subcomponents.
+Toggle can be customized using ::switch subcomponent.
 
 See [README.md](./README.md) for more info.
 
@@ -55,7 +56,7 @@ See [README.md](./README.md) for more info.
 
 User can hit toggle to switch between on / off value. 
 
-Toggle can be rendered with & without icons (this is controlled by `displayIcon`, `iconChecked` & `iconUnchecked` properties. For more info see [README.md](./README.md)).
+Toggle can be rendered with & without icons (this is controlled by `Toggle::switch` and `Toggle:checked::switch` selectors. For more info see [README.md](./README.md)).
 
 The component follows the external control pattern (value & handle position is defined by the `value` property, and in order for the component to function, it should be bound to a state in the parent component, and the `onChange` handler should be set).
 
@@ -98,13 +99,33 @@ TBD
 
 ## Accessibility
 
+##### Keyboard
+
 For now accessibility for toggle is covered with keyboard behavior & label prop that shows text hint.
+
+##### Focus
+
+Toggle should have a focus state. Focus state looks like a square border around the entire component.
+
+![toggleFocus](./assets/toggleFocus.png)
 
 ## Examples
 
 1. Put here the example of component with icons for On / Off states
+
+    ```.root::switch {
+    .root::switch {    
+    	background-image: url('unckecked-icon.svg');
+    }
+    .root:checked::switch {
+        background-image: url('ckecked-icon.svg');
+    }
+    ```
+
 2. Put here the example of component with No icons 
+
 3. Put here the example of component with custom style
+
 
 Examples will be here once component is done. 
 

@@ -1,15 +1,17 @@
-.tree-view {
-  font-size: 1.414em;
+.root {
+  font-size: 18px;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
-.tree-node[data-selected="true"] {
-  background-color: lightblue;
-}
-
 .tree-node {
+  -st-states: selected;
   cursor: pointer;
   display: inline;
+  padding: 2px 5px;
+}
+
+.tree-node:selected {
+  background-color: lightblue;
 }
 
 .nested-tree {
