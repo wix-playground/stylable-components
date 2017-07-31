@@ -198,25 +198,37 @@ describe('<Popup />', function () {
                 right: (anchor: HTMLElement, popup: HTMLElement) => {return popup.getBoundingClientRect().right === anchor.getBoundingClientRect().right}
             }
         };
+        verticalArray.forEach((popupVertical: VerticalPosition) => {
+            horizontalArray.forEach((popupHorizontal: HorizontalPosition) => {
+                verticalArray.forEach((anchorVertical: VerticalPosition) => {
+                    horizontalArray.forEach((anchorHorizontal: HorizontalPosition) => {
+                        it(`Popup position: vertical ${popupVertical} horizontal ${popupHorizontal}; Anchor position: vertical ${anchorVertical} horizontal: ${anchorHorizontal}`, async function () {
+                            let div: HTMLDivElement;
+                            const {waitForDom} = clientRenderer.render(<div style={divDim}
+                                                                            ref={(elem: HTMLDivElement) => div = elem}>
+                                Anchor</div>);
 
-        verticalArray.forEach((vertical: VerticalPosition) => {
-            horizontalArray.forEach((horizontal: HorizontalPosition) => {
-                it(`Anchor position: vertical ${vertical} horizontal: ${horizontal}`, async function () {
-                    let div: HTMLDivElement;
-                    const {waitForDom} = clientRenderer.render(<div style={divDim} ref={(elem: HTMLDivElement) => div = elem}>Anchor</div>);
+                            await waitForDom(() => {
+                                expect(div).to.be.present();
+                            });
+                            clientRenderer.render(<Popup anchor={div!} anchorPosition={{
+                                vertical: anchorVertical,
+                                horizontal: anchorHorizontal
+                            }} popupPosition={{vertical: popupVertical, horizontal: popupHorizontal}} open={true}>
+                                <span data-automation-id="SPAN">Popup Body</span>
+                                <div>some more stuff</div>
+                            </Popup>);
 
-                    await waitForDom(() => {expect(div).to.be.present();});
-                    clientRenderer.render(<Popup anchor={div!} anchorPosition={{vertical: vertical, horizontal: horizontal}} open={true}>
-                        <span data-automation-id="SPAN">Popup Body</span>
-                        <div>some more stuff</div>
-                    </Popup>);
-
-                    return waitForDom(() => {
-                        expect(topResults.top[vertical](div, bodySelect(popup) as HTMLElement), 'vertical test failed', ).to.be.true;
-                        expect(leftResults.left[horizontal](div, bodySelect(popup) as HTMLElement), 'horizontal test failed', ).to.be.true;
+                            return waitForDom(() => {
+                                expect(topResults[popupVertical][anchorVertical](div, bodySelect(popup) as HTMLElement), 'vertical test failed',).to.be.true;
+                                expect(leftResults[popupHorizontal][anchorHorizontal](div, bodySelect(popup) as HTMLElement), 'horizontal test failed',).to.be.true;
+                            });
+                        });
                     });
-                })
-            })
-        })
+                });
+            });
+        });
+
+
     })
 });
