@@ -23,7 +23,7 @@ An example branch name might be:
 
 #### Issue
 
-**issue#42**<br>
+**issue**: #42<br>
 **Title**: Build Our Own Theme Park<br>
 **Description**: We need to build own theme park, because at the current park we don't have Blackjack.
 
