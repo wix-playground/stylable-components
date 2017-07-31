@@ -13,8 +13,8 @@ A component which allows the user to take action by choosing an item from a list
 
 | Name | Type | Default | Required | Description |
 | -- | -- | -- | -- | -- |
-| selected | string | null | no | id of the selected item |
-| onSelect | (id: string) => void | NOP | no | Triggered when an item is selected in the list |
+| value | string | null | no | id of the selected item |
+| onChange | (value: string) => void | NOP | no | Triggered when an item is selected in the list |
 | children | any | null | no | Children to be rendered in the list |
 
 * The following props should be placed in an OptionList interface since they will need to be passed from higher order components.
@@ -34,6 +34,9 @@ ItemRenderer is a component with the following props:
 | Name | Type | Default value | Description |
 | -- | -- | -- | -- |
 | item | object or Divider | {} | Remapped SelectionItem to be rendered by the ItemRenderer |
+| selected | boolean | false | Whether the item is selected |
+| focused | boolean | false  | Whether the item is focused by keyboard navigation |
+
 
 ItemRenderer must put `data-value` attribute on the root node of any selectable item. Items without the `data-value`
 attribute will be displayed, but won't be selectable.
@@ -56,8 +59,6 @@ In the default ItemRenderer, the (remapped) item object has following structure:
 | -- | -- | -- | -- | -- |
 | id | string | null | no | The unique value id (for selectable items) |
 | displayText | string | '' | no | Text content of the item |
-| selected | boolean | false | no | Whether the item is selected |
-| focused | boolean | false | no | Whether the item is focused by keyboard navigation |
 | hidden | boolean | false | no | Whether ths item appears in the list |
 | disabled | boolean | false | no | Whether an item is enabled for selection or not |
 
