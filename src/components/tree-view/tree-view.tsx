@@ -1,9 +1,9 @@
 import * as React from 'react';
-import style from './tree-view.st.css';
+import { observer } from 'mobx-react';
+import { autorun, observable } from 'mobx';
 
-export interface TreeItemRenderer {
-    (props: TreeItemProps): JSX.Element;
-}
+import { SBComponent, SBStateless } from 'stylable-react-component';
+import style from './tree-view.st.css';
 
 export interface TreeItemData {
     label: string;
@@ -12,50 +12,103 @@ export interface TreeItemData {
 
 export interface TreeItemProps {
     item: TreeItemData;
-    itemRenderer: TreeItemRenderer;
+    itemRenderer: React.ComponentType<TreeItemProps>;
     onItemClick?: React.EventHandler<any>;
-    isSelected: (item: Object) => boolean;
+    stateMap: StateMap;
+    state: TreeItemState;
 }
 
 export interface TreeViewProps {
     dataSource: Object[];
-    itemRenderer?: TreeItemRenderer;
+    itemRenderer?: React.ComponentType<TreeItemProps>;
     onSelectItem?: React.EventHandler<any>;
     selectedItem?: TreeItemData;
 }
 
+export interface TreeItemState {
+    isSelected: boolean;
+    isExpanded: boolean;
+}
+
+export type StateMap = Map<TreeItemData, TreeItemState>;
+
 const itemIdPrefix = 'TREE_ITEM';
 
-export function TreeItem({ item, itemRenderer, onItemClick, isSelected }: TreeItemProps): JSX.Element {
+export const TreeItem: React.SFC<TreeItemProps> = SBStateless(({ item, itemRenderer, onItemClick, stateMap, state }) => {
+    const itemLabel = item.label.replace(' ', '_');
+    const TreeNode = itemRenderer;
     return (
-        <div key={item.label}>
-            <div data-automation-id={`${itemIdPrefix}_${item.label.replace(' ', '_')}`} className={style['tree-node']}
-                 onClick={() => onItemClick!(item)} data-selected={isSelected(item)}>
-                <span data-automation-id={`${itemIdPrefix}_${item.label}_ICON`}>&gt; </span>
-                <span data-automation-id={`${itemIdPrefix}_${item.label}_LABEL`}>{item.label}</span>
+        <div>
+            <div data-automation-id={`${itemIdPrefix}_${itemLabel}`} className="tree-node"
+                 cssStates={{selected: state!.isSelected}}
+                 onClick={() => onItemClick!(item)} data-selected={ state!.isSelected }>
+                <span data-automation-id={`${itemIdPrefix}_${itemLabel}_ICON`}>&gt; </span>
+                <span data-automation-id={`${itemIdPrefix}_${itemLabel}_LABEL`}>{item.label}</span>
             </div>
-            <div className={style['nested-tree']}>
-                {(item.children || []).map((child: TreeItemData) =>
-                    itemRenderer({item: child, onItemClick, itemRenderer, isSelected}))}
+            <div className="nested-tree">
+                {state!.isExpanded && (item.children || []).map((child: TreeItemData, index: number) =>
+                    <TreeNode item={child} onItemClick={onItemClick} itemRenderer={itemRenderer}
+                              stateMap={stateMap} state={stateMap.get(child)!} key={`${index}`} />
+                )}
             </div>
         </div>
     )
-}
+}, style);
 
+const TreeItemWrapper = observer(TreeItem);
+
+@SBComponent(style) @observer
 export class TreeView extends React.Component<TreeViewProps, {}>{
-    static defaultProps = { itemRenderer: TreeItem, onSelectItem: () => {} };
+    static defaultProps = { itemRenderer: TreeItemWrapper, onSelectItem: () => {} };
 
-    isSelected = (item: TreeItemData) => {
-        return !!this.props.selectedItem && (this.props.selectedItem!.label === item.label);
+    stateMap: StateMap = new Map<TreeItemData, TreeItemState>();
+
+    constructor(props: TreeViewProps) {
+        super(props);
+        this.initStateMap(props.dataSource);
+    }
+
+    initStateMap(data: Object[] = []) {
+        data.forEach((item: TreeItemData) => {
+            this.stateMap.set(item, observable({ isSelected: false, isExpanded: false }));
+            this.initStateMap(item.children || []);
+        });
+    }
+
+    componentDidMount() {
+        autorun(() => {
+            if (this.props.selectedItem) {
+                this.stateMap.get(this.props.selectedItem)!.isSelected = true;
+            }
+        });
+    }
+
+    toggleItem(item: TreeItemData) {
+        if (!this.stateMap.get(item)!.isExpanded || this.props.selectedItem === item) {
+            this.stateMap.get(item)!.isExpanded = !this.stateMap.get(item)!.isExpanded;
+        }
+    }
+
+    onSelectItem = (item: TreeItemData) => {
+        if (this.props.selectedItem) {
+            this.stateMap.get(this.props.selectedItem)!.isSelected = false;
+            this.props.onSelectItem!(this.props.selectedItem !== item ? item : undefined);
+        } else {
+            this.props.onSelectItem!(item);
+        }
+        this.toggleItem(item);
     };
 
     render() {
+        const TreeNode = this.props.itemRenderer!;
         return (
-            <div data-automation-id='TREE_VIEW' className={style['tree-view']}>
-                {(this.props.dataSource || []).map((item: TreeItemData) =>
-                    this.props.itemRenderer!({item, onItemClick: this.props.onSelectItem,
-                        itemRenderer: this.props.itemRenderer!, isSelected: this.isSelected}))}
+            <div data-automation-id='TREE_VIEW' className="tree-view">
+                {(this.props.dataSource || []).map((item: TreeItemData, index: number) =>
+                    <TreeNode item={item} onItemClick={this.onSelectItem} itemRenderer={this.props.itemRenderer!}
+                              stateMap={this.stateMap} state={this.stateMap.get(item)!} key={`${index}`} />
+                )}
             </div>
         )
     }
 }
+

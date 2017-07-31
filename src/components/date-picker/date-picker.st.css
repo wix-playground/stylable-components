@@ -92,13 +92,13 @@
 .calendar {
     display: flex;
     flex-wrap: wrap;
-    /*align-content: space-between;*/
     height: calc(100% - value(headerHeight));
     width: value(dropdownWidth);
     padding: 30px;
 }
 
 .calendarItem {
+    /* 100/7 = 14.2857... show 7 items per row */
     flex: 0 0 14.2857%;
 }
 
