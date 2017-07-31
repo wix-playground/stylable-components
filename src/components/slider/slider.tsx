@@ -6,6 +6,103 @@ const style = require('./slider.st.css').default;
 const DEFAULT_MIN = 0;
 const DEFAULT_MAX = 100;
 const DEFAULT_VALUE = 50;
+
+const crossAxisProperty = {
+  x: 'height',
+  'x-reverse': 'height',
+  y: 'width',
+  'y-reverse': 'width',
+};
+
+const crossAxisOffsetProperty = {
+  x: 'top',
+  'x-reverse': 'top',
+  y: 'left',
+  'y-reverse': 'left',
+};
+
+const mainAxisProperty = {
+  x: 'width',
+  'x-reverse': 'width',
+  y: 'height',
+  'y-reverse': 'height',
+};
+
+const mainAxisMarginFromEnd = {
+  x: 'marginRight',
+  'x-reverse': 'marginLeft',
+  y: 'marginTop',
+  'y-reverse': 'marginBottom',
+};
+
+const mainAxisMarginFromStart = {
+  x: 'marginLeft',
+  'x-reverse': 'marginRight',
+  y: 'marginBottom',
+  'y-reverse': 'marginTop',
+};
+
+const mainAxisOffsetProperty = {
+  x: 'left',
+  'x-reverse': 'right',
+  y: 'bottom',
+  'y-reverse': 'top',
+};
+
+const mainAxisClientProperty = {
+  x: 'clientWidth',
+  'x-reverse': 'clientWidth',
+  y: 'clientHeight',
+  'y-reverse': 'clientHeight',
+};
+
+const mainAxisClientOffsetProperty = {
+  x: 'clientX',
+  'x-reverse': 'clientX',
+  y: 'clientY',
+  'y-reverse': 'clientY',
+};
+
+const reverseMainAxisOffsetProperty = {
+  x: 'right',
+  'x-reverse': 'left',
+  y: 'top',
+  'y-reverse': 'bottom',
+};
+
+const isMouseControlInverted = (axis: string) => axis === 'x-reverse' || axis === 'y';
+
+const calculateAxis = (axis: string, isRtl: boolean) => {
+  if (isRtl) {
+    switch (axis) {
+      case 'x':
+        return 'x-reverse';
+      case 'x-reverse':
+        return 'x';
+    }
+  }
+  return axis;
+};
+
+function getPercent(value: number, min: number, max: number): number {
+  let percent = (value - min) / (max - min);
+  if (isNaN(percent)) {
+    percent = 0;
+  }
+
+  return percent;
+}
+
+function handleDisabledBehavour(this: any, target: any, propertyKey: string, descriptor: PropertyDescriptor): PropertyDecorator {
+  const method = descriptor.value;
+  return function(this: any) {
+    if (this.props.disabled) {
+      return ;
+    }
+    return method.apply(this, arguments);
+  }
+}
+
 export interface SliderProps {
   value?: number;
   min?: number;
@@ -39,7 +136,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
 
   private onChange: React.ChangeEventHandler<HTMLInputElement> = event => {
     this.props.onChange && this.props.onChange(event, Number(event.target.value));
-  }
+}
 
   private onInput: React.ChangeEventHandler<HTMLInputElement> = event => {
     this.props.onInput && this.props.onInput(event, Number(event.target.value));
@@ -75,7 +172,6 @@ export class Slider extends React.Component<SliderProps, SliderState> {
 
           name={this.props.name}
 
-          disabled={this.props.disabled}
           required={this.props.required}
 
           className={style['slider']}

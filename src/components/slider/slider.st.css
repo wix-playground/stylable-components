@@ -20,6 +20,10 @@
   thumbBorderHover: 1px solid value(color_Slider_Handle_Active);;
 }
 
+.slider-container{
+  position: relative;
+  display: inline-block
+}
 .slider {
   width: 100%;
   padding: 5px 0;

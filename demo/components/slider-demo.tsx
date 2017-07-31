@@ -16,12 +16,21 @@ export class SliderDemo extends React.Component<SliderDemoProps, SliderDemoState
   }
   render() {
     return (
-      <Slider
-        min={0}
-        max={10}
-        value={this.state.value}
-        onChange={(event, value) => this.setState({value})}
-      />
+      <div>
+        <Slider
+          min={0}
+          max={10}
+          value={this.state.value}
+          onChange={(event, value) => this.setState({value})}
+        />
+        <Slider
+          min={0}
+          max={10}
+          value={this.state.value}
+          disabled={true}
+          onChange={(event, value) => this.setState({value})}
+        />
+      </div>
     );
   }
 }
