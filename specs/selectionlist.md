@@ -13,8 +13,8 @@ A component which allows the user to take action by choosing an item from a list
 
 | Name | Type | Default | Required | Description |
 | -- | -- | -- | -- | -- |
-| selected | string | null | no | id of the selected item |
-| onSelect | (id: string) => void | NOP | no | Triggered when an item is selected in the list |
+| value | string | null | no | id of the selected item |
+| onChange | (value: string) => void | NOP | no | Triggered when an item is selected in the list |
 | children | any | null | no | Children to be rendered in the list |
 
 * The following props should be placed in an OptionList interface since they will need to be passed from higher order components.
@@ -34,6 +34,9 @@ ItemRenderer is a component with the following props:
 | Name | Type | Default value | Description |
 | -- | -- | -- | -- |
 | item | object or Divider | {} | Remapped SelectionItem to be rendered by the ItemRenderer |
+| selected | boolean | false | Whether the item is selected |
+| focused | boolean | false  | Whether the item is focused by keyboard navigation |
+
 
 ItemRenderer must put `data-value` attribute on the root node of any selectable item. Items without the `data-value`
 attribute will be displayed, but won't be selectable.
@@ -42,22 +45,20 @@ attribute will be displayed, but won't be selectable.
 `item` object has always consistent structure, regardless of the structure of the `dataSource.`
 
 If the original SelectionItemn was string, the resulting `item` object will put this value into 
-the `id` and `displayText` fields.
+the `value` and `displayText` fields.
 
 ## Default ItemRenderer
 
-If the item doesn't have the `id` field, it is rendered without the `data-value`.
+If the item doesn't have the `value` field, it is rendered without the `data-value`.
 
 If the item is the Divider symbol, it will be renderer as a divider. (!)
 
 In the default ItemRenderer, the (remapped) item object has following structure:
 
 | Name | Type | Default value | Required | Description |
-| -- | -- | -- | -- |
-| id | string | null | no | The unique value id (for selectable items)
-| displayText | string | '' | no | Text content of the item
-| selected | boolean | false | no | Whether the item is selected |
-| focused | boolean | false | no | Whether the item is focused by keyboard navigation |
+| -- | -- | -- | -- | -- |
+| value | string | null | no | The unique value id (for selectable items) |
+| displayText | string | '' | no | Text content of the item |
 | hidden | boolean | false | no | Whether ths item appears in the list |
 | disabled | boolean | false | no | Whether an item is enabled for selection or not |
 
@@ -132,7 +133,7 @@ Data schema creates mapping, which bridges between data structure of `dataSource
 
 | Name | Type | Default | Required | Description |
 | -- | -- | -- | -- | -- |
-| id | string | 'id' | Field containing unique identifier of the item's value
+| value | string | 'id' | Field containing unique identifier of the item's value
 | displayText | string | 'displayText' | Field containing text which is rendered as textual content of the item
 
 If the `'id'` field is missing in the item, it should be displayed but not selectable. (e.g. headings, etc.).
