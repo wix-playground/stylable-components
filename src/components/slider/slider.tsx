@@ -35,8 +35,6 @@ export class Slider extends React.Component<SliderProps, SliderState> {
 
   constructor(props: SliderProps, context?: any) {
     super(props, context);
-
-    this.updateTrackBackgroundGradient(this.props.value || DEFAULT_VALUE, true);
   }
 
   private onChange: React.ChangeEventHandler<HTMLInputElement> = event => {
@@ -45,8 +43,6 @@ export class Slider extends React.Component<SliderProps, SliderState> {
 
   private onInput: React.ChangeEventHandler<HTMLInputElement> = event => {
     this.props.onInput && this.props.onInput(event, Number(event.target.value));
-
-    this.updateTrackBackgroundGradient(Number(event.target.value), false);
   }
 
   private onFocus: React.FocusEventHandler<HTMLInputElement> = event => {
@@ -55,20 +51,6 @@ export class Slider extends React.Component<SliderProps, SliderState> {
 
   private onBlur: React.FocusEventHandler<HTMLInputElement> = event => {
     this.props.onBlur && this.props.onBlur(event);
-  }
-
-  private updateTrackBackgroundGradient(value: number, isNew: boolean) {
-    const relativeValue = this.getRelativeValue(value);
-
-    const state = {
-      relativeValue,
-    };
-
-    if(isNew) {
-      this.state = state;
-    } else {
-      this.setState(state);
-    }
   }
 
   private getRelativeValue(value: number): number {
@@ -81,34 +63,10 @@ export class Slider extends React.Component<SliderProps, SliderState> {
     return (normilizedValue * 100) / normilizedMax;
   }
 
-  private getTrackStyle() {
-    const { relativeValue } = this.state;
-    return `
-      .${style['slider']}::-webkit-slider-runnable-track {
-        ${this.getTrackBackgroundGradient(relativeValue, theme.M3, theme.STC5)}
-      }
-      .${style['slider']}:focus::-webkit-slider-runnable-track {
-        ${this.getTrackBackgroundGradient(relativeValue, theme.M3, theme.STC20)}
-      }
-      .${style['slider']}:hover::-webkit-slider-runnable-track {
-        ${this.getTrackBackgroundGradient(relativeValue, theme.M3, theme.STC20)}
-      }
-    `;
-  }
-
-  private getTrackBackgroundGradient(thumbPosition: number, progressColor: string, trackColor: string): string {
-    return `background: ${trackColor};
-      background: -moz-linear-gradient(left, ${progressColor} 0%, ${progressColor} ${thumbPosition - 0.1}%, ${trackColor} ${thumbPosition + 0.1}%, ${trackColor} 100%);
-      background: -webkit-linear-gradient(left, ${progressColor} 0%, ${progressColor} ${thumbPosition - 0.1}%, ${trackColor} ${thumbPosition + 0.1}%, ${trackColor} 100%);
-      background: linear-gradient(to right, ${progressColor} 0%, ${progressColor} ${thumbPosition - 0.1}%, ${trackColor} ${thumbPosition + 0.1}%, ${trackColor} 100%);`;
-  }
-
   render() {
     return (
       <div className={style['slider-container']} data-automation-id='SLIDER'>
-        <style type='text/css'>
-          {this.getTrackStyle()}
-        </style>
+        
         <input
           value={this.props.value}
           min={this.props.min}
