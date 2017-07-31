@@ -45,11 +45,11 @@ attribute will be displayed, but won't be selectable.
 `item` object has always consistent structure, regardless of the structure of the `dataSource.`
 
 If the original SelectionItemn was string, the resulting `item` object will put this value into 
-the `id` and `displayText` fields.
+the `value` and `displayText` fields.
 
 ## Default ItemRenderer
 
-If the item doesn't have the `id` field, it is rendered without the `data-value`.
+If the item doesn't have the `value` field, it is rendered without the `data-value`.
 
 If the item is the Divider symbol, it will be renderer as a divider. (!)
 
@@ -57,7 +57,7 @@ In the default ItemRenderer, the (remapped) item object has following structure:
 
 | Name | Type | Default value | Required | Description |
 | -- | -- | -- | -- | -- |
-| id | string | null | no | The unique value id (for selectable items) |
+| value | string | null | no | The unique value id (for selectable items) |
 | displayText | string | '' | no | Text content of the item |
 | hidden | boolean | false | no | Whether ths item appears in the list |
 | disabled | boolean | false | no | Whether an item is enabled for selection or not |
@@ -133,7 +133,7 @@ Data schema creates mapping, which bridges between data structure of `dataSource
 
 | Name | Type | Default | Required | Description |
 | -- | -- | -- | -- | -- |
-| id | string | 'id' | Field containing unique identifier of the item's value
+| value | string | 'id' | Field containing unique identifier of the item's value
 | displayText | string | 'displayText' | Field containing text which is rendered as textual content of the item
 
 If the `'id'` field is missing in the item, it should be displayed but not selectable. (e.g. headings, etc.).
