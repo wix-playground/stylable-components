@@ -66,71 +66,32 @@ describe('<Popup />', function () {
         })
     });
 
+    it('syncs the popup width', async function () {
+        let div: HTMLDivElement;
+        const { waitForDom} = clientRenderer.render(<div ref={(elem: HTMLDivElement) => div = elem}>Anchor</div>);
+
+        await waitForDom(() => {
+            expect(div).to.be.present();
+        });
+
+        clientRenderer.render(<Popup anchor={div!} syncWidth open={true}>
+            <span data-automation-id="SPAN">Popup Body</span>
+        </Popup>);
+
+        return waitForDom(() => {
+            expect(bodySelect(popup)!.getBoundingClientRect().width).to.equal(div.getBoundingClientRect().width);
+        })
+    });
+
     describe('Layout tests', function () {
         const verticalArray = ['top', 'center', 'bottom'];
         const horizontalArray = ['left', 'center', 'right'];
-        const divDim: CSSProperties = { position:'absolute', top:'150px', left:'150px', width: '100px', height: '100px'};
+        const divDim: CSSProperties = { position:'absolute', top:'150px', left:'150px', width: '150px', height: '150px'};
 
         // Level one: popup position, level two: anchor position
-        const topResults = {
-            top: {
-                top: (anchor: HTMLElement, popup: HTMLElement) => {return popup.getBoundingClientRect().top === anchor.getBoundingClientRect().top},
-                center: (anchor: HTMLElement, popup: HTMLElement) => {
-                    const anchorRect = anchor.getBoundingClientRect();
-                    return popup.getBoundingClientRect().top === anchorRect.top + (anchorRect.height / 2)},
-                bottom: (anchor: HTMLElement, popup: HTMLElement) => {return popup.getBoundingClientRect().top === anchor.getBoundingClientRect().bottom}
-            },
-            center: {
-                top: (anchor: HTMLElement, popup: HTMLElement) => {
-                    const popupRect = popup.getBoundingClientRect();
-                    return popupRect.top === anchor.getBoundingClientRect().top - (popupRect.height / 2)},
-                center: (anchor: HTMLElement, popup: HTMLElement) => {
-                    const popupRect = popup.getBoundingClientRect();
-                    const anchorRect = anchor.getBoundingClientRect();
-                    return popupRect.top ===  anchorRect.top + (anchorRect.height / 2) - (popupRect.height / 2)
-                },
-                bottom: (anchor: HTMLElement, popup: HTMLElement) => {
-                    const popupRect = popup.getBoundingClientRect();
-                    return popupRect.bottom === anchor.getBoundingClientRect().bottom + (popupRect.height / 2)}
-            },
-            bottom: {
-                top: (anchor: HTMLElement, popup: HTMLElement) => {return popup.getBoundingClientRect().bottom === anchor.getBoundingClientRect().top},
-                center: (anchor: HTMLElement, popup: HTMLElement) => {
-                    const anchorRect = anchor.getBoundingClientRect();
-                    return popup.getBoundingClientRect().bottom === anchorRect.top + (anchorRect.height / 2)},
-                bottom: (anchor: HTMLElement, popup: HTMLElement) => {return popup.getBoundingClientRect().bottom === anchor.getBoundingClientRect().bottom}
-            }
-        };
+        const topResults = getLayoutTest('vertical');
+        const leftResults = getLayoutTest('horizontal');
 
-        const leftResults = {
-            left: {
-                left: (anchor: HTMLElement, popup: HTMLElement) => {return popup.getBoundingClientRect().left === anchor.getBoundingClientRect().left},
-                center: (anchor: HTMLElement, popup: HTMLElement) => {
-                    const anchorRect = anchor.getBoundingClientRect();
-                    return popup.getBoundingClientRect().left === anchorRect.left + (anchorRect.width / 2)},
-                right: (anchor: HTMLElement, popup: HTMLElement) => {return popup.getBoundingClientRect().left === anchor.getBoundingClientRect().right}
-            },
-            center: {
-                left: (anchor: HTMLElement, popup: HTMLElement) => {
-                    const popupRect = popup.getBoundingClientRect();
-                    return popupRect.left === anchor.getBoundingClientRect().left - (popupRect.width / 2)},
-                center: (anchor: HTMLElement, popup: HTMLElement) => {
-                    const popupRect = popup.getBoundingClientRect();
-                    const anchorRect = anchor.getBoundingClientRect();
-                    return popupRect.left ===  anchorRect.left + (anchorRect.width / 2) - (popupRect.width / 2)
-                },
-                right: (anchor: HTMLElement, popup: HTMLElement) => {
-                    const popupRect = popup.getBoundingClientRect();
-                    return popupRect.right === anchor.getBoundingClientRect().right + (popupRect.width / 2)}
-            },
-            right: {
-                left: (anchor: HTMLElement, popup: HTMLElement) => {return popup.getBoundingClientRect().right === anchor.getBoundingClientRect().left},
-                center: (anchor: HTMLElement, popup: HTMLElement) => {
-                    const anchorRect = anchor.getBoundingClientRect();
-                    return popup.getBoundingClientRect().right === anchorRect.left + (anchorRect.width / 2)},
-                right: (anchor: HTMLElement, popup: HTMLElement) => {return popup.getBoundingClientRect().right === anchor.getBoundingClientRect().right}
-            }
-        };
         verticalArray.forEach((popupVertical: VerticalPosition) => {
             horizontalArray.forEach((popupHorizontal: HorizontalPosition) => {
                 verticalArray.forEach((anchorVertical: VerticalPosition) => {
@@ -161,7 +122,46 @@ describe('<Popup />', function () {
                 });
             });
         });
-
-
     })
 });
+
+
+function getLayoutTest(axis: 'vertical' | 'horizontal') {
+    let start: 'left' | 'top' = 'top', end: 'bottom' | 'right' = 'bottom', length: 'height' | 'width' = 'height';
+
+    if (axis === 'horizontal') {
+        start = 'left';
+        end = 'right';
+        length = 'width'
+    }
+
+    return {
+        [start]: {
+            [start]: (anchor: HTMLElement, popup: HTMLElement) => {return popup.getBoundingClientRect()[start] === anchor.getBoundingClientRect()[start]},
+            center: (anchor: HTMLElement, popup: HTMLElement) => {
+                const anchorRect = anchor.getBoundingClientRect();
+                return popup.getBoundingClientRect()[start] === anchorRect[start] + (anchorRect[length] / 2)},
+            [end]: (anchor: HTMLElement, popup: HTMLElement) => {return popup.getBoundingClientRect()[start] === anchor.getBoundingClientRect()[end]}
+        },
+        center: {
+            [start]: (anchor: HTMLElement, popup: HTMLElement) => {
+                const popupRect = popup.getBoundingClientRect();
+                return popupRect[start] === anchor.getBoundingClientRect()[start] - (popupRect[length] / 2)},
+            center: (anchor: HTMLElement, popup: HTMLElement) => {
+                const popupRect = popup.getBoundingClientRect();
+                const anchorRect = anchor.getBoundingClientRect();
+                return popupRect[start] ===  anchorRect[start] + (anchorRect[length] / 2) - (popupRect[length] / 2)
+            },
+            [end]: (anchor: HTMLElement, popup: HTMLElement) => {
+                const popupRect = popup.getBoundingClientRect();
+                return popupRect[end] === anchor.getBoundingClientRect()[end] + (popupRect[length] / 2)}
+        },
+        [end]: {
+            [start]: (anchor: HTMLElement, popup: HTMLElement) => {return popup.getBoundingClientRect()[end] === anchor.getBoundingClientRect()[start]},
+            center: (anchor: HTMLElement, popup: HTMLElement) => {
+                const anchorRect = anchor.getBoundingClientRect();
+                return popup.getBoundingClientRect()[end] === anchorRect[start] + (anchorRect[length] / 2)},
+            [end]: (anchor: HTMLElement, popup: HTMLElement) => {return popup.getBoundingClientRect()[end] === anchor.getBoundingClientRect()[end]}
+        }
+    };
+}
