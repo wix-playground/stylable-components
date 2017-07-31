@@ -24,7 +24,7 @@
 }
 
 .root {
-    -st-states: hover, focus, disabled, error;
+    -st-states: focus, disabled, error;
 
     box-sizing: inherit;
     position: relative;

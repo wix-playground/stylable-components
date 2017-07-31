@@ -1,0 +1,14 @@
+:import {
+    -st-from: '../../src/components/number-input/number-input.st.css';
+    -st-default: number-input;
+}
+
+.number-input {
+    -st-extends: number-input;
+}
+
+.number-input::prefix,
+.number-input::suffix {
+    display: flex;
+    align-items: center;
+}

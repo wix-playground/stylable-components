@@ -5,9 +5,8 @@ import {SBComponent} from 'stylable-react-component';
 import {Stepper} from './stepper';
 import {KeyCodes} from '../../common/key-codes';
 
-export type WithReactChildren<T> = T & {children: React.ReactNode};
-
 export interface NumberInputProps {
+    className?: string
     value?: number
     placeholder?: string
     min?: number
@@ -86,7 +85,7 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
         onInput: noop
     };
 
-    constructor(props: WithReactChildren<NumberInputProps>) {
+    constructor(props: NumberInputProps) {
         super(props);
 
         this.state = {
@@ -188,7 +187,7 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
             onInput!(value);
         }
 
-    componentWillReceiveProps({value, children}: WithReactChildren<NumberInputProps>) {
+    componentWillReceiveProps({value}: NumberInputProps) {
         const changes: Partial<NumberInputState> = {};
 
         if (value !== this.state.value) {
