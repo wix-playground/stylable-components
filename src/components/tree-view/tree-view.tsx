@@ -183,9 +183,9 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
         this.props.onFocusItem!(this.getLastAvailableItem(this.props.dataSource[this.props.dataSource.length - 1] as TreeItemData));
 
     onKeyDown = (e: any) => {
-        e.preventDefault();
-
         if (!this.props.focusedItem) return;
+
+        e.preventDefault();
 
         switch(e.keyCode) {
             case KeyCodes.RIGHT:
@@ -200,10 +200,6 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
                 return;
             case KeyCodes.ENTER:
                 this.selectItem(this.props.focusedItem);
-                return;
-            case KeyCodes.ESCAPE:
-                this.stateMap.get(this.props.focusedItem)!.isFocused = false;
-                this.props.onFocusItem!(undefined);
                 return;
             case KeyCodes.HOME:
                 this.stateMap.get(this.props.focusedItem)!.isFocused = false;

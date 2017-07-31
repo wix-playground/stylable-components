@@ -232,20 +232,6 @@ describe('<TreeView />', () => {
                     expect(select(getTreeItem(nodeChildren![0].label))).to.have.attr('data-selected', 'true'));
             });
 
-            it('unfocuses the currently focused node when ESC is clicked', async () => {
-                const { select, waitForDom } = clientRenderer.render(<TreeViewDemo />);
-
-                const rootNode = getTreeItem(treeData[0].label);
-
-                simulate.click(select(rootNode));
-
-                await waitForDom(() => expect(select(rootNode)).to.have.attr('data-focused', 'true'));
-
-                simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), { keyCode: KeyCodes.ESCAPE });
-
-                return waitForDom(() => expect(select(rootNode)).to.have.attr('data-focused', 'false'));
-            });
-
             it('focuses first item when HOME is clicked', async () => {
                 const { select, waitForDom } = clientRenderer.render(<TreeViewDemo />);
 
