@@ -58,6 +58,14 @@
 
     border: none;
     height: auto;
+
+    -moz-appearance: textfield;
+}
+
+.native-input::-webkit-outer-spin-button,
+.native-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 .suffix {}
