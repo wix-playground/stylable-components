@@ -2,10 +2,6 @@
 
 ## Branch naming
 
-We use scheme in branch naming.
-It should contain branch author user name at first and branch name divided by `/`, and optional number of the issue. All words in branch name are separated by underscore: `_`
-`username/own_theme_park/42`
-
 We use a branch naming scheme with the following form:
 
 `user_name/branch_name/optional_issue_number`
