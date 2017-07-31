@@ -90,6 +90,26 @@ describe('<TreeView />', () => {
         return waitForDom(() => expect(select(getTreeItem(nodeChildren![1].label))).to.be.absent());
     });
 
+    it('ends up in expected state after multiple clicks on same tree node', async () => {
+        const { select, waitForDom } = clientRenderer.render(<TreeViewDemo />);
+
+        simulate.click(select(treeView + '_DEMO', getTreeItem(allNodesLabels[0])));
+
+        const elementToSelect = select(treeView + '_DEMO', getTreeItem(allNodesLabels[1]));
+        let elementToAssert = select(treeView + '_DEMO', getTreeItem(allNodesLabels[2]));
+
+        await waitForDom(() => expect(elementToSelect).to.be.present());
+        await waitForDom(() => expect(elementToAssert).to.be.absent());
+
+        simulate.click(elementToSelect);
+        elementToAssert = select(treeView + '_DEMO', getTreeItem(allNodesLabels[2]));
+        await waitForDom(() => expect(elementToAssert).to.be.present());
+
+        simulate.click(elementToSelect);
+
+        return waitForDom(() => expect(elementToAssert).to.be.absent());
+    });
+
     describe('Using default renderer', () => {
         it('renders correct children', () => {
             const { select, waitForDom } = clientRenderer.render(<TreeView dataSource={treeData} />);
