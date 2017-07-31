@@ -45,7 +45,7 @@ export class Popup extends React.Component<Partial<PopupProps>,{}> {
         } else if (this.props.anchorPosition!.horizontal === 'center') {
             layout.left = rect.left + (rect.width / 2);
         } else {
-            layout.right = `calc(100% - ${rect.right}px`;
+            layout.left = rect.right;
         }
 
         return (

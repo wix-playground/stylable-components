@@ -175,7 +175,7 @@ describe('<Popup />', function () {
                 center: (anchor: HTMLElement, popup: HTMLElement) => {
                     const anchorRect = anchor.getBoundingClientRect();
                     return popup.getBoundingClientRect().left === anchorRect.left + (anchorRect.width / 2)},
-                right: (anchor: HTMLElement, popup: HTMLElement) => {return popup.getBoundingClientRect().right === anchor.getBoundingClientRect().right}
+                right: (anchor: HTMLElement, popup: HTMLElement) => {return popup.getBoundingClientRect().left === anchor.getBoundingClientRect().right}
             },
             center: {
                 left: (anchor: HTMLElement, popup: HTMLElement) => {
