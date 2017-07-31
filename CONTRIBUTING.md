@@ -30,7 +30,7 @@ An example branch name might be:
 #### Pull Request
 
 **Title**: Our own Theme park<br>
-**Description**: This PR contains our own theme park implementation, which contains a **Blackjack module** and closes issue #42
+**Description**: This PR contains our own theme park implementation, which contains a **Blackjack module** and closes #42
 
 ## Merging PRs
 
