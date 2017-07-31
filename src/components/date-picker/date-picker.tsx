@@ -93,8 +93,7 @@ export class DatePicker extends React.Component<Partial<DatePickerProps>, {}>{
         this.isDropdownVisible = false;
     };
 
-    @action
-    shiftDate = (daysToShift: number): void => {
+    @action shiftDate = (daysToShift: number): void => {
         const shiftedDate: Date = new Date(this.dropdownDate.getFullYear(), this.dropdownDate.getMonth(), this.dropdownDate.getDate());
         shiftedDate.setDate(this.dropdownDate.getDate() + daysToShift);
         this.highlightFocusedDate = true;
@@ -160,9 +159,7 @@ export class DatePicker extends React.Component<Partial<DatePickerProps>, {}>{
     };
 
     isDateValid = (stringToValidate: string): boolean => {
-        const dateFromString = new Date(stringToValidate);
-
-        return dateFromString.toDateString() !== invalidDate;
+        return new Date(stringToValidate).toDateString() !== invalidDate;
     };
 
     render() {
