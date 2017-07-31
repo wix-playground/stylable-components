@@ -65,78 +65,11 @@ describe('<Popup />', function () {
             expect(bodySelect(popup, 'SPAN')).to.be.present();
         })
     });
-
-    describe('Layout tests', function () {
-        const divDim: CSSProperties = {width: '100px', height: '100px'};
-
-        it('(Default) Anchor - vertical: bottom, horizontal: left', async function () {
-            let div: HTMLDivElement;
-            const { waitForDom} = clientRenderer.render(<div style={divDim} ref={(elem: HTMLDivElement) => div = elem}>Anchor</div>);
-
-            await waitForDom(() => {expect(div).to.be.present()});
-
-            clientRenderer.render(<Popup anchor={div!} open={true}>
-                <span data-automation-id="SPAN">Popup Body</span>
-            </Popup>);
-
-            return waitForDom(() => {
-                expect([bodySelect(popup), div]).to.be.horizontallyAligned('left');
-                expect([div, bodySelect(popup)]).to.be.inVerticalSequence();
-            })
-        });
-
-        it('Anchor - vertical: bottom, horizontal: right', async function () {
-            let div: HTMLDivElement;
-            const { waitForDom} = clientRenderer.render(<div style={divDim} ref={(elem: HTMLDivElement) => div = elem}>Anchor</div>);
-
-            await waitForDom(() => {expect(div).to.be.present();});
-            clientRenderer.render(<Popup anchor={div!} anchorPosition={{vertical: 'bottom', horizontal: 'right'}} open={true}>
-                <span data-automation-id="SPAN">Popup Body</span>
-            </Popup>);
-
-            return waitForDom(() => {
-                expect([div, bodySelect(popup)]).to.be.inVerticalSequence();
-                expect([div, bodySelect(popup)]).to.be.inHorizontalSequence();
-            })
-        });
-
-        it('Anchor - vertical: top, horizontal: left', async function () {
-            let div: HTMLDivElement;
-            const { waitForDom} = clientRenderer.render(<div style={divDim} ref={(elem: HTMLDivElement) => div = elem}>Anchor</div>);
-
-            await waitForDom(() => {expect(div).to.be.present();});
-            clientRenderer.render(<Popup anchor={div!} anchorPosition={{vertical: 'top', horizontal: 'left'}} open={true}>
-                <span data-automation-id="SPAN">Popup Body</span>
-                <div>some more stuff</div>
-            </Popup>);
-
-            return waitForDom(() => {
-                expect([bodySelect(popup), div]).to.be.horizontallyAligned('left');
-                expect([bodySelect(popup), div]).to.be.verticallyAligned('top');
-            });
-        });
-
-        it('Anchor - vertical: top, horizontal: right', async function () {
-            let div: HTMLDivElement;
-            const { waitForDom} = clientRenderer.render(<div style={divDim} ref={(elem: HTMLDivElement) => div = elem}>Anchor</div>);
-
-            await waitForDom(() => {expect(div).to.be.present();});
-            clientRenderer.render(<Popup anchor={div!} anchorPosition={{vertical: 'top', horizontal: 'right'}} open={true}>
-                <span data-automation-id="SPAN">Popup Body</span>
-                <div>some more stuff</div>
-            </Popup>);
-
-            return waitForDom(() => {
-                expect([bodySelect(popup), div]).to.be.verticallyAligned('top');
-                expect([div, bodySelect(popup)]).to.be.inHorizontalSequence();
-            });
-        });
-    });
-
-    describe.only('Test', function () {
+    
+    describe.only('Layout tests', function () {
         const verticalArray = ['top', 'center', 'bottom'];
         const horizontalArray = ['left', 'center', 'right'];
-        const divDim: CSSProperties = { position:'absolute', top:'50px', left:'50px', width: '100px', height: '100px'};
+        const divDim: CSSProperties = { position:'absolute', top:'150px', left:'150px', width: '100px', height: '100px'};
 
         // Level one: popup position, level two: anchor position
         const topResults = {
