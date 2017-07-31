@@ -77,6 +77,7 @@ module.exports = function (config) {
         sauceLabs: {
             startConnect: false,
             build: 'TRAVIS #' + process.env.TRAVIS_BUILD_NUMBER + ' (' + process.env.TRAVIS_BUILD_ID + ')',
+            tags: [process.env.TRAVIS_BRANCH,"taggable"],
             tunnelIdentifier: process.env.TRAVIS_JOB_NUMBER,
         },
         captureTimeout: 120000,
@@ -138,7 +139,7 @@ module.exports = function (config) {
         browsers: process.env.TRAVIS_BRANCH === 'master' && process.env.TRAVIS_PULL_REQUEST === 'false' ?
         // browsers: true ?
             Object.keys(sauceLabsLaunchers) :
-            ['Chrome'],
+            ['ChromeHeadless'],
 
 
         // Continuous Integration mode

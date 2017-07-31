@@ -1,0 +1,52 @@
+:import {
+    -sb-from: "../default-theme/variables.st.css";
+    -sb-named: fontFamily,
+               fontSize,
+               fontWeight,
+               lineHeight,
+               color_MainText,
+               color_MainPlaceholder,
+               color_MainText_Background,
+               borderRadius,
+               color_Disabled,
+               borderDefault,
+               borderHover,
+               borderFocus,
+               inputHeight,
+               inputWidth,
+               borderDisabled;
+}
+
+.root {
+    box-sizing: inherit;
+    border: value(borderDefault);
+    border-radius: value(borderRadius);
+    background-color: value(color_MainText_Background);
+    color: value(color_MainText);
+    font-family: value(fontFamily);
+    font-size: value(fontSize);
+    font-weight: value(fontWeight);
+    line-height: value(lineHeight);
+    padding: 6px 12px;
+    height: value(inputHeight);
+    width: value(inputWidth);
+    outline: 0;
+}
+
+.root:placeholder {
+    color: value(color_MainPlaceholder);
+}
+
+.root:hover {
+    border: value(borderHover);
+}
+
+.root:focus {
+    border: value(borderFocus);
+}
+
+.root.disabled, .root[disabled] {
+    background-color: value(color_Disabled);
+    color: value(color_MainPlaceholder);
+    border: value(borderDisabled);
+}
