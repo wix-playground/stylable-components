@@ -3,7 +3,7 @@
 ## Branch naming
 We use scheme in branch naming.
 It should contain branch author user name at first and branch name divided by `/`, and optional number of the issue. All words in branch name are separated by underscore: `_`
-`username/own_theme_park_42`
+`username/own_theme_park/42`
 
 ## Pull requests and issues
  * Each pull request should be linked with an issue or have the meaningful description. Better is to have both.
