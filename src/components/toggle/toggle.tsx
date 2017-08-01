@@ -13,8 +13,7 @@ export interface Props {
     rtl?: boolean
 }
 export interface State {
-    focus: boolean,
-    click: boolean
+    focus: boolean
 }
 
 @SBComponent(style)
@@ -26,8 +25,7 @@ export default class Toggle extends React.Component<Props, State> {
         rtl: false
     }
     state = {
-        focus: false,
-        click: false
+        focus: false
     }
     shouldResetFocus: boolean = false
     toggle = (e: React.SyntheticEvent<HTMLInputElement>) => {
