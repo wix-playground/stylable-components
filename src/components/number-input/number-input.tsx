@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styles from './number-input.st.css';
-import inputStyles from '../../style/forms/input.st.css';
+import inputStyles from '../../style/default-theme/controls/input.st.css';
 import {SBComponent} from 'stylable-react-component';
 import {Stepper} from '../stepper';
 import {KeyCodes} from '../../common/key-codes';

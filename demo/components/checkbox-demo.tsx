@@ -3,6 +3,7 @@ import {observable} from 'mobx'
 import {observer} from 'mobx-react'
 import {CheckBox, CheckBoxIconProps} from "../../src";
 import style from './checkbox-demo.st.css';
+import buttonStyle from '../../src/style/default-theme/controls/button.st.css';
 import {SBComponent} from "stylable-react-component";
 
 export const demoCheckBoxText: string = "Yes, I'm over 18 years old";
@@ -49,7 +50,7 @@ export class BasicDemo extends React.Component<{}, {}> {
                           onChange={this.handleChange}>
                     <span data-automation-id="BASIC_LABEL" className={style.label}>{demoCheckBoxText}</span>
                 </CheckBox> <br/>
-                <button disabled={!this.value} data-automation-id="BUTTON_SUBMIT">
+                <button className={buttonStyle.root} disabled={!this.value} data-automation-id="BUTTON_SUBMIT">
                     Proceed
                 </button>
             </div>

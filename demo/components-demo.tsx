@@ -5,7 +5,8 @@ import { NumberInputDemo } from './components/number-input.demo';
 import { BirthDatePickerDemo } from './components/birth-date-picker-demo';
 import './style.st.css';
 import '../src/style/default-theme/base.st.css';
-import input from '../src/style/forms/input.st.css';
+import inputStyle from '../src/style/default-theme/controls/input.st.css';
+import buttonStyle from '../src/style/default-theme/controls/button.st.css';
 import { RadioGroupDemo } from './components/radio-group-demo'
 
 export class ComponentsDemo extends React.Component<{}, {}>{
@@ -70,16 +71,16 @@ export class ComponentsDemo extends React.Component<{}, {}>{
                     <tbody>
                     <tr>
                         <th>
-                            <button>Normal</button>
+                            <button className={buttonStyle.root}>Normal</button>
                         </th>
                         <th>
-                            <button disabled >Disabled</button>
+                            <button className={buttonStyle.root} disabled>Disabled</button>
                         </th>
                         <th>
-                            <a className="button" href="http://www.wix.com" target="_blank">Link</a>
+                            <a className={buttonStyle.root} href="http://www.wix.com" target="_blank">Link</a>
                         </th>
                         <th>
-                            <a className="button" href="http://www.wix.com" target="_blank">Disabled link</a>
+                            <a className={buttonStyle.root} href="http://www.wix.com" target="_blank">Disabled link</a>
                         </th>
                     </tr>
                     </tbody>
@@ -108,10 +109,10 @@ export class ComponentsDemo extends React.Component<{}, {}>{
                     <tbody>
                     <tr>
                         <th>
-                            <input className={input.root} placeholder="Placeholder"/>
+                            <input className={inputStyle.root} placeholder="Placeholder"/>
                         </th>
                         <th>
-                            <input className={input.root} placeholder="Disabled" disabled/>
+                            <input className={inputStyle.root} placeholder="Disabled" disabled/>
                         </th>
                     </tr>
                     </tbody>

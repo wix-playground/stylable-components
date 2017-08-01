@@ -1,5 +1,5 @@
 :import {
-    -st-from: "../../style/forms/input.st.css";
+    -st-from: "../../style/default-theme/controls/input.st.css";
     -st-default: input;
 }
 

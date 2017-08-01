@@ -6,6 +6,10 @@
                inputHeight;
 }
 
+:import {
+    -st-from: "../../style/default-theme/controls/button.st.css";
+}
+
 .root {
     display: inline-block;
 
