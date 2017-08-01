@@ -8,18 +8,20 @@ export interface DatePickerDemoState {
     startingDay: number;
 }
 
-export class DatePickerDemo extends React.Component<DatePickerDemoProps, {}> {
-    value: Date = this.props.value ? this.props.value : new Date();
+export class DatePickerDemo extends React.Component<DatePickerDemoProps, DatePickerDemoState> {
+    componentWillMount () {
+        this.setState({ value: this.props.value ? this.props.value : new Date() });
+    }
 
     onChange = (updatedDate: Date): void => {
-        this.value = updatedDate;
+        this.setState({value: updatedDate });
     };
 
     render () {
         return (
             <div>
                 <h2>Standard DatePicker</h2>
-                <DatePicker placeholder="mm/dd/yyyy" value={this.value} onChange={this.onChange} {...this.props} />
+                <DatePicker dataAutomationId="BASIC_DATEPICKER" placeholder="mm/dd/yyyy" value={this.state.value} onChange={this.onChange} {...this.props} />
             </div>);
     }
 }
