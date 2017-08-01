@@ -2,7 +2,7 @@ import * as React from 'react';
 import { expect, ClientRenderer, sinon, simulate, waitFor } from 'test-drive-react';
 import { TreeView, TreeItem } from '../../src';
 import { TreeViewDemo } from '../../demo/components/tree-view-demo';
-import { hasCssState } from '../utils/has-css-state';
+import { hasCssState } from '../test-utils/has-css-state';
 import treeViewStyles from '../../src/components/tree-view/tree-view.st.css';
 import { StateMap, TreeItemData, TreeItemState} from '../../src/components/tree-view/tree-view';
 

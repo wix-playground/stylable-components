@@ -151,7 +151,7 @@
     pointer-events: none;
 }
 
-:global(input) {
+:global(input[type=text]) {
     box-sizing: inherit;
     border: value(borderDefault);
     border-radius: value(borderRadius);
