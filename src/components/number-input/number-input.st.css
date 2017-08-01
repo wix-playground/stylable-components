@@ -29,7 +29,7 @@
 
     box-sizing: inherit;
     position: relative;
-    display: flex;
+    display: inline-flex;
 
     border: value(borderDefault);
     border-radius: value(borderRadius);
