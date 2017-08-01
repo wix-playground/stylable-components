@@ -49,14 +49,14 @@
     color: value(color_MainText_Background);
 }
 
-.increment {
+.up {
     top: 0;
     right: 0;
     bottom: 50%;
     left: 0;
 }
 
-.decrement {
+.down {
     top: 50%;
     right: 0;
     bottom: 0;

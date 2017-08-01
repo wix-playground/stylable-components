@@ -25,16 +25,16 @@ export const Stepper: React.StatelessComponent<StepperProps> = SBStateless(
             <button
                 tabIndex={-1}
                 data-automation-id="STEPPER_INCREMENT"
-                className={`${buttonStyles.root} control increment`}
+                className={`${buttonStyles.root} control up`}
                 onClick={() => onUp()}
                 disabled={disableUp}
             >
-                <ChevronUpIcon className={styles['control-icon']} />
+                <ChevronUpIcon className="control-icon" />
             </button>
             <button
                 tabIndex={-1}
                 data-automation-id="STEPPER_DECREMENT"
-                className={`${buttonStyles.root} control decrement`}
+                className={`${buttonStyles.root} control down`}
                 onClick={() => onDown()}
                 disabled={disableDown}
             >
