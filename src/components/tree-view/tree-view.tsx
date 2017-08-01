@@ -200,30 +200,23 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
     onKeyDown = (e: any) => {
         if (!this.props.focusedItem) return;
 
-        e.preventDefault();
-
         switch(e.keyCode) {
             case KeyCodes.RIGHT:
-                this.expandItem(this.props.focusedItem); return;
+                e.preventDefault(); this.expandItem(this.props.focusedItem); return;
             case KeyCodes.LEFT:
-                this.collapseItem(this.props.focusedItem); return;
+                e.preventDefault(); this.collapseItem(this.props.focusedItem); return;
             case KeyCodes.UP:
-                this.focusPrev(this.props.focusedItem);
-                return;
+                e.preventDefault(); this.focusPrev(this.props.focusedItem); return;
             case KeyCodes.DOWN:
-                this.focusNext(this.props.focusedItem);
-                return;
+                e.preventDefault(); this.focusNext(this.props.focusedItem); return;
             case KeyCodes.ENTER:
-                this.selectItem(this.props.focusedItem);
-                return;
+                e.preventDefault(); this.selectItem(this.props.focusedItem); return;
             case KeyCodes.HOME:
                 this.stateMap.getItemState(this.props.focusedItem).isFocused = false;
-                this.focusFirst();
-                return;
+                e.preventDefault(); this.focusFirst(); return;
             case KeyCodes.END:
                 this.stateMap.getItemState(this.props.focusedItem).isFocused = false;
-                this.focusLast();
-                return;
+                e.preventDefault(); this.focusLast(); return;
             default:
                 return;
         }

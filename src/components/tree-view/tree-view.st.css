@@ -1,6 +1,9 @@
 .root {
-    font-size: 18px;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    text-align: left;
+    color: #000000;
     outline: 0 solid transparent;
 }
 
@@ -9,14 +12,17 @@
     cursor: pointer;
     display: inline;
     padding: 2px 5px;
-}
-
-.tree-node:selected {
-    background-color: lightblue;
+    width: 228px;
+    height: 24px;
 }
 
 .tree-node:focused {
-    color: mediumpurple;
+    background-color: #edf7ff;
+}
+
+.tree-node:selected {
+    background-color: #4990e2;
+    color: white;
 }
 
 .nested-tree {
