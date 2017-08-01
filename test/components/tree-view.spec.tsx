@@ -72,7 +72,7 @@ describe('<TreeView />', () => {
         const nodeChildren = treeData[0].children;
         await waitForDom(() => expect(select(getTreeItem(nodeChildren![1].label))).to.be.absent());
 
-        simulate.click(select(treeView + '_DEMO', rootNode));
+        simulate.click(select(treeView + '_DEMO', rootNode + '_ICON'));
         nodeChildren!.forEach(item => simulate.click(select(treeView + '_DEMO', getTreeItem(item.label))));
 
         await waitForDom(() => allNodesLabels.forEach(item =>

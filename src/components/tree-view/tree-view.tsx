@@ -15,6 +15,7 @@ export interface TreeItemProps {
     item: TreeItemData;
     itemRenderer: React.ComponentType<TreeItemProps>;
     onItemClick?: React.EventHandler<any>;
+    onIconClick?: React.EventHandler<any>;
     stateMap: TreeStateMap;
     state: TreeItemState;
 }
@@ -39,20 +40,20 @@ export type ParentsMap = Map<TreeItemData, TreeItemData | undefined>;
 
 const itemIdPrefix = 'TREE_ITEM';
 
-export const TreeItem: React.SFC<TreeItemProps> = SBStateless(({ item, itemRenderer, onItemClick, stateMap, state }) => {
+export const TreeItem: React.SFC<TreeItemProps> = SBStateless(({ item, itemRenderer, onItemClick, onIconClick, stateMap, state }) => {
     const itemLabel = item.label.replace(' ', '_');
     const TreeNode = itemRenderer;
     return (
         <div>
             <div data-automation-id={`${itemIdPrefix}_${itemLabel}`} className="tree-node"
                  cssStates={{selected: state!.isSelected, focused: state!.isFocused}}
-                 onClick={() => onItemClick!(item)} data-selected={ state!.isSelected } data-focused={ state!.isFocused }>
-                <span data-automation-id={`${itemIdPrefix}_${itemLabel}_ICON`}>&gt; </span>
-                <span data-automation-id={`${itemIdPrefix}_${itemLabel}_LABEL`}>{item.label}</span>
+                 data-selected={ state!.isSelected } data-focused={ state!.isFocused }>
+                <span data-automation-id={`${itemIdPrefix}_${itemLabel}_ICON`} onClick={() => onIconClick!(item)}>&gt; </span>
+                <span data-automation-id={`${itemIdPrefix}_${itemLabel}_LABEL`} onClick={() => onItemClick!(item)}>{item.label}</span>
             </div>
             <div className="nested-tree">
                 {state!.isExpanded && (item.children || []).map((child: TreeItemData, index: number) =>
-                    <TreeNode item={child} onItemClick={onItemClick} itemRenderer={itemRenderer}
+                    <TreeNode item={child} onItemClick={onItemClick} itemRenderer={itemRenderer} onIconClick={onIconClick}
                               stateMap={stateMap} state={stateMap.getItemState(child)} key={`${index}`} />
                 )}
             </div>
@@ -126,7 +127,11 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
     onSelectItem = (item: TreeItemData) => {
         this.selectItem(item);
         if (this.props.focusedItem) this.stateMap.getItemState(this.props.focusedItem).isFocused = false;
+    };
+
+    onToggleItem = (item: TreeItemData) => {
         this.toggleItem(item);
+        this.props.onFocusItem!(item);
     };
 
     getPreviousItem(item: TreeItemData) {
@@ -242,7 +247,7 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
         return (
             <div data-automation-id='TREE_VIEW' className="tree-view" tabIndex={0} onKeyDown={this.onKeyDown}>
                 {(this.props.dataSource || []).map((item: TreeItemData, index: number) =>
-                    <TreeNode item={item} onItemClick={this.onSelectItem} itemRenderer={this.props.itemRenderer!}
+                    <TreeNode item={item} onItemClick={this.onSelectItem} itemRenderer={this.props.itemRenderer!} onIconClick={this.onToggleItem}
                               stateMap={this.stateMap} state={this.stateMap.getItemState(item)} key={`${index}`} />
                 )}
             </div>
