@@ -5,7 +5,7 @@ import {DatePickerDemo} from '../../demo/components/date-picker-demo';
 import {KeyCodes} from '../../src/common/key-codes';
 import {debug} from "util";
 
-const datePickerId = 'DATE_PICKER';
+const currentDate = 'CURRENT_DATE';
 const datePickerInputId = 'DATE_PICKER_INPUT';
 const datePickerDropdownId = 'DATE_PICKER_DROPDOWN';
 
@@ -19,9 +19,8 @@ describe('The DatePicker Component', () => {
     const MARCH_FIRST  = new Date(2017, 2, 1);
     const DECEMBER_FIRST = new Date(2017, 11, 1);
 
-    const simulateChange = (domElememt: Element, value: string) => {
-        (domElememt as HTMLInputElement).value = value;
-        simulate.change(domElememt);
+    const triggerChange = (domElememt: Element, value: string) => {
+        trigger.change(domElememt, value);
     };
 
     describe('A Typical User', () => {
@@ -29,20 +28,20 @@ describe('The DatePicker Component', () => {
             const {select, waitForDom} = clientRenderer.render(<DatePickerDemo />);
 
             const datePickerInput = select(datePickerInputId);
-            simulateChange(datePickerInput!, '2017-02-01');
+            triggerChange(datePickerInput!, '2017-02-01');
             simulate.keyDown(datePickerInput, { keyCode: KeyCodes.ENTER });
 
-            await waitForDom(() => expect(datePickerInput).to.have.value('Wed Feb 01 2017'));
+            await waitForDom(() => expect(select(currentDate)).to.have.text('Wed Feb 01 2017'));
         });
 
         it('writes into the date picker input field, focuses elsewhere, and expects the date picker input to have the proper value', async () => {
             const {select, waitForDom} = clientRenderer.render(<DatePickerDemo />);
 
             const datePickerInput = select(datePickerInputId);
-            simulateChange(datePickerInput!, '2017-02-01');
+            triggerChange(datePickerInput!, '2017-02-01');
             simulate.blur(datePickerInput);
 
-            await waitForDom(() => expect(datePickerInput).to.have.value('Wed Feb 01 2017'));
+            await waitForDom(() => expect(select(currentDate)).to.have.text('Wed Feb 01 2017'));
         });
 
         it('clicks on the input, picks a date from the dropdown, and then expects the dropdown to close and the date to appear in the input', async () => {
@@ -59,7 +58,7 @@ describe('The DatePicker Component', () => {
 
             await waitForDom(() => {
                 expect(select(datePickerDropdownId)).to.be.absent();
-                expect(datePickerInput).to.have.value('Wed Jan 04 2017')
+                expect(select(currentDate)).to.have.text('Wed Jan 04 2017')
             });
         });
     });
