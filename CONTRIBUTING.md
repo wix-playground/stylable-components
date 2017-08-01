@@ -2,7 +2,7 @@
 
 ## Branch naming
 
-We use a branch naming scheme with the following form:
+We use the following branch naming scheme:
 
 `user_name/branch_name/optional_issue_number`
 
@@ -25,16 +25,16 @@ An example branch name might be:
 
 **issue**: #42<br>
 **Title**: Build Our Own Theme Park<br>
-**Description**: We need to build own theme park, because at the current park we don't have Blackjack.
+**Description**: We need to build own theme park because the current park doesn't have Blackjack.
 
 #### Pull Request
 
-**Title**: Our own Theme park<br>
+**Title**: Our Own Theme Park<br>
 **Description**: This PR contains our own theme park implementation, which contains a **Blackjack module** and closes #42
 
 ## Merging PRs
 
-We love to squash and merge PR's, but only when we have **meaningful** merge commit messages. Avoid including a commit history, since most likely it will be like this:
+We love to squash and merge PRs, but only when we have **meaningful** merge commit messages. Avoid including a commit history, since most likely it will look like this:
 
 #### Bad example
 
@@ -52,12 +52,14 @@ username/own_theme_park (#43)  …
 * tests
 ```
 
-That is ugly and quite useless. Write meaningful text when you're merging PRs, such as:
+That is ugly and quite useless.
+
+Write meaningful text when you're merging PRs. So it looks more like this:
 
 #### Good example
 
 ```md
-Our own Theme park  …
+Our Own Theme Park  …
 Made the Theme Park Implementation, added Blackjack module as discussed in issue/42.
 Docs are in `docs/own-park.md`, unit and integration tests are available.
 ```
