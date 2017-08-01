@@ -34,16 +34,6 @@ describe('The DatePicker Component', () => {
             await waitForDom(() => expect(select(currentDate)).to.have.text('Wed Feb 01 2017'));
         });
 
-        it('writes into the date picker input field, focuses elsewhere, and expects the date picker input to have the proper value', async () => {
-            const {select, waitForDom} = clientRenderer.render(<DatePickerDemo />);
-
-            const datePickerInput = select(datePickerInputId);
-            triggerChange(datePickerInput!, '2017-02-01');
-            simulate.blur(datePickerInput);
-
-            await waitForDom(() => expect(select(currentDate)).to.have.text('Wed Feb 01 2017'));
-        });
-
         it('clicks on the input, picks a date from the dropdown, and then expects the dropdown to close and the date to appear in the input', async () => {
             const {select, waitForDom} = clientRenderer.render(<DatePickerDemo value={JANUARY_FIRST} />);
             const datePickerInput = select(datePickerInputId);
@@ -67,6 +57,16 @@ describe('The DatePicker Component', () => {
         const {select, waitForDom} = clientRenderer.render(<DatePickerDemo value={JANUARY_FIRST} />);
 
         await waitForDom(() => expect(select(datePickerInputId)).to.have.value(JANUARY_FIRST.toDateString()));
+    });
+
+    it('should use the current input value when blurred', async () => {
+        const {select, waitForDom} = clientRenderer.render(<DatePickerDemo />);
+
+        const datePickerInput = select(datePickerInputId);
+        triggerChange(datePickerInput!, '2017-02-01');
+        simulate.blur(datePickerInput);
+
+        await waitForDom(() => expect(select(currentDate)).to.have.text('Wed Feb 01 2017'));
     });
 
     it('should use a provided placeholder', async () => {
