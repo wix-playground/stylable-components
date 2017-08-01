@@ -27,13 +27,13 @@ export class Day extends React.Component<DayProps, {}> {
         } else if (this.props.currentDay) {
             return [styles.calendarItem, styles.day, styles.currentDay].join(' ');
         } else if (this.props.partOfNextMonth || this.props.partOfPrevMonth) {
-            return [styles.calendarItem, styles.greyDay].join(' ');
+            return [styles.calendarItem].join(' ');
         } else {
             return [styles.calendarItem, styles.day].join(' ');
         }
     }
 
-    onMouseDown: React.EventHandler<React.SyntheticEvent<HTMLSpanElement>> = (event: React.SyntheticEvent<HTMLSpanElement>) => {
+    onMouseDown: React.EventHandler<React.SyntheticEvent<Element>> = (event) => {
         event.preventDefault();
 
         if (this.props.onSelect) {

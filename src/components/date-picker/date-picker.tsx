@@ -15,29 +15,46 @@ export interface DatePickerProps {
     placeholder?: string;
 }
 
-@observer
-export class DatePicker extends React.Component<DatePickerProps, {}>{
-    @observable inputValue: string = this.props.value ? this.props.value.toDateString() : '';
-    @observable isDropdownVisible: boolean = this.props.isDropdownVisible ? this.props.isDropdownVisible : false;
+export interface DatePickerState {
+    inputValue: string;
+    isDropdownVisible: boolean;
+}
+
+export class DatePicker extends React.Component<DatePickerProps, DatePickerState>{
+    componentWillMount () {
+        this.setState({
+            inputValue: this.props.value ? this.props.value.toDateString() : '',
+            isDropdownVisible: this.props.isDropdownVisible ? this.props.isDropdownVisible : false
+        });
+    }
+
+    componentWillRecieveProps (props: DatePickerProps) {
+        this.setState({
+            inputValue: props.value ? props.value.toDateString() : '',
+            isDropdownVisible: props.isDropdownVisible ? props.isDropdownVisible : false
+        });
+    }
 
     // Called with possibly invalid string from the input
-    @action updateStateFromString = (input: string): void => {
+    updateStateFromString = (input: string): void => {
         if (this.isDateValid(input)) {
             const updatedDate = input ? new Date(input) : new Date();
-            this.inputValue = updatedDate.toDateString();
+            this.setState({ inputValue: updatedDate.toDateString() });
 
             if (this.props.onChange) {
                 this.props.onChange(updatedDate);
             }
         } else {
-            this.inputValue = invalidDate;
+            this.setState({ inputValue: invalidDate });
         }
     };
 
     // Should only be called with valid date from the dropdown
-    @action updateStateFromDate = (input: Date): void => {
-        this.inputValue = input.toDateString();
-        this.isDropdownVisible = false;
+    updateStateFromDate = (input: Date): void => {
+        this.setState({
+            inputValue: input.toDateString() ,
+            isDropdownVisible: false
+        });
 
         if (this.props.onChange) {
             this.props.onChange(input);
@@ -46,28 +63,28 @@ export class DatePicker extends React.Component<DatePickerProps, {}>{
 
     @action onInputChange: React.EventHandler<SyntheticEvent<HTMLInputElement>> = (event): void => {
         const eventTarget = event.target as HTMLInputElement;
-        this.inputValue = eventTarget.value;
+        this.setState({ inputValue: eventTarget.value });
     };
 
     @action onFocus: React.EventHandler<SyntheticEvent<HTMLInputElement>> = (): void => {
-        this.isDropdownVisible = true;
+        this.setState({ isDropdownVisible: true })
     };
 
     @action onMouseDown: React.EventHandler<SyntheticEvent<HTMLInputElement>> = (): void => {
-        this.isDropdownVisible = !this.isDropdownVisible;
+        this.setState({ isDropdownVisible: !this.state.isDropdownVisible });
     };
 
     @action onBlur: React.EventHandler<SyntheticEvent<HTMLInputElement>> = (event): void => {
         const eventTarget = event.target as HTMLInputElement;
         this.updateStateFromString(eventTarget.value);
-        this.isDropdownVisible = false;
+        this.setState({ isDropdownVisible: false })
     };
 
     @action onKeyDown: React.EventHandler<SyntheticEvent<HTMLInputElement>> = (event: React.KeyboardEvent<HTMLInputElement>): void => {
         if (event.keyCode === KeyCodes.ENTER) {
             const eventTarget = event.target as HTMLInputElement;
             this.updateStateFromString(eventTarget.value);
-            this.isDropdownVisible = !this.isDropdownVisible;
+            this.setState({ isDropdownVisible: !this.state.isDropdownVisible });
         }
     };
 
@@ -86,11 +103,11 @@ export class DatePicker extends React.Component<DatePickerProps, {}>{
                        onBlur={this.onBlur}
                        onFocus={this.onFocus}
                        onChange={this.onInputChange}
-                       value={this.inputValue}
+                       value={this.state.inputValue}
                        placeholder={this.props.placeholder}
                        type="text"
                        data-automation-id="DATE_PICKER_INPUT" />
-                {this.isDropdownVisible
+                {this.state.isDropdownVisible
                     ? <Dropdown onChange={this.updateStateFromDate}
                               value={this.props.value!} />
                     : null

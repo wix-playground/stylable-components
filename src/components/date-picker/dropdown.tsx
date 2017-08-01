@@ -16,16 +16,15 @@ const monthNames = getMonthNames();
 export class Dropdown extends React.Component<DropdownProps, {}>{
     @observable date: Date = this.props.value;
 
+    onChange = (day: number) => {
+        const date = new Date(this.date.getFullYear(), this.date.getMonth(), day);
+        this.props.onChange(date);
+    };
+
     @action
     setDate (date: Date) {
         this.date = date;
     }
-
-    @action
-    setDay = (day: number) => {
-        const date = new Date(this.date.getFullYear(), this.date.getMonth(), day);
-        this.props.onChange(date);
-    };
 
     @computed
     get monthName (): string {
@@ -39,21 +38,18 @@ export class Dropdown extends React.Component<DropdownProps, {}>{
 
     @computed
     get days (): Array<JSX.Element> {
-        const dayArray: Array<number> = [];
+        const dayArray: Array<JSX.Element> = [];
         const daysInMonth = getDaysInMonth(this.date);
 
         for (let i = 1; i <= daysInMonth; i++) {
-            dayArray.push(i);
+            dayArray.push(<Day day={i}
+                               onSelect={this.onChange}
+                               dataAutomationId={'DAY_' + i}
+                               key={'DAY_' + i} />
+            );
         }
 
-        return dayArray.map((day: number) => {
-            return (
-                <Day day={day}
-                     onSelect={this.setDay}
-                     dataAutomationId={'DAY_' + day}
-                     key={'DAY_' + day} />
-            );
-        });
+        return dayArray;
     }
 
     @computed
@@ -72,9 +68,9 @@ export class Dropdown extends React.Component<DropdownProps, {}>{
     get previousDays (): Array<JSX.Element> {
         const previousDays: Array<JSX.Element> = [];
         const lastDayOfPrevMonth: number = getDaysInMonth(getMonthFromOffset(this.date, -1));
-        const numberOfDaysToDisplay: number = getNumOfPreviousDays(this.date);
+        const numberOfDaysToDisplay: number = lastDayOfPrevMonth - getNumOfPreviousDays(this.date);
 
-        for (let i = (lastDayOfPrevMonth - numberOfDaysToDisplay) + 1; i <= lastDayOfPrevMonth; i++) {
+        for (let i = numberOfDaysToDisplay + 1; i <= lastDayOfPrevMonth; i++) {
             previousDays.push((
                 <Day day={''}
                      dataAutomationId={'PREV_DAY_' + i}

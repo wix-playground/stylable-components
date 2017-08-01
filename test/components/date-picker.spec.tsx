@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {expect, ClientRenderer, simulate, selectDom} from 'test-drive-react';
+import {expect, ClientRenderer, simulate, selectDom, trigger} from 'test-drive-react';
 import {getDayNames, getMonthFromOffset, getDaysInMonth, getNumOfPreviousDays, getNumOfFollowingDays} from '../../src/common/date-helpers';
 import {DatePickerDemo} from '../../demo/components/date-picker-demo';
 import {KeyCodes} from '../../src/common/key-codes';
@@ -98,8 +98,10 @@ describe('The DatePicker Component', () => {
         it('should display the days for a fixed month', async () => {
             const {select, waitForDom} = clientRenderer.render(<DatePickerDemo isDropdownVisible={true} value={FEBRUARY_FIRST} />);
 
-            await waitForDom(() => dayNames.forEach(name => expect(select(datePickerDropdownId)).to.contain.text(name)));
-            await waitForDom(() => days.forEach(day => expect(select(datePickerDropdownId)).to.contain.text(day)));
+            await waitForDom(() => {
+                dayNames.forEach(name => expect(select(datePickerDropdownId)).to.contain.text(name));
+                days.forEach(day => expect(select(datePickerDropdownId)).to.contain.text(day));
+            });
         });
 
         it('should show the next and previous month buttons horizontally aligned with the month and year', async () => {
