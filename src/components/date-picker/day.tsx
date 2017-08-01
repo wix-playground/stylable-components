@@ -12,7 +12,6 @@ export interface DayProps {
     partOfPrevMonth?: boolean;
     partOfNextMonth?: boolean;
     dataAutomationId?: string;
-
     onSelect? (day: number | string): void;
 }
 
