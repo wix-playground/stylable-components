@@ -115,7 +115,78 @@ describe('<Popup />', function () {
         return waitForDom(() => {
             expect((bodySelect(popup)! as HTMLElement).style.maxHeight).to.equal('5px');
             expect((bodySelect(popup)! as HTMLElement).getBoundingClientRect().height).to.equal(5);
-        })
+        });
+    });
+
+    it('renders the popup according to the default collision settings', async function () {
+        let div: HTMLDivElement;
+        const { waitForDom} = clientRenderer.render(<div ref={(elem: HTMLDivElement) => div = elem}>Anchor</div>);
+
+        await waitForDom(() => {
+            expect(div).to.be.present();
+        });
+
+        clientRenderer.render(<Popup anchor={div!} popupPosition={{vertical: 'bottom', horizontal:'right'}} anchorPosition={{vertical:'top', horizontal:'left'}} open={true}>
+            <span data-automation-id="SPAN">Popup Body</span>
+        </Popup>);
+
+        return waitForDom(() => {
+            const popupRect = (bodySelect(popup)! as HTMLElement).getBoundingClientRect();
+            expect(popupRect.top).to.equal(div.getBoundingClientRect().top - popupRect.height);
+            expect(popupRect.left).to.equal(div.getBoundingClientRect().left - popupRect.width);
+        });
+    });
+
+    it('flips the popup position horizontally according to the given collision settings', async function () {
+        let div: HTMLDivElement;
+        const divDim: CSSProperties = { position:'absolute', top:'150px', left:'10px', width: '50px', height: '50px'};
+        const { waitForDom} = clientRenderer.render(<div ref={(elem: HTMLDivElement) => div = elem} style={divDim} >Anchor</div>);
+
+        await waitForDom(() => {
+            expect(div).to.be.present();
+        });
+
+        clientRenderer.render(<Popup anchor={div!}
+                                     collision={{horizontal: 'flip', vertical: 'none'}}
+                                     popupPosition={{vertical: 'bottom', horizontal:'right'}}
+                                     anchorPosition={{vertical:'top', horizontal:'left'}}
+                                     syncWidth={false}
+                                     open={true}>
+            <span data-automation-id="SPAN">Popup Body</span>
+        </Popup>);
+
+        return waitForDom(() => {
+            const popupRect = (bodySelect(popup)! as HTMLElement).getBoundingClientRect();
+            const anchorRect = div.getBoundingClientRect();
+            expect(popupRect.top).to.equal(anchorRect.top - popupRect.height);
+            expect([bodySelect(popup), div]).to.be.horizontallyAligned('right');
+        });
+    });
+
+    it('flips the popup position vertically according to the given collision settings', async function () {
+        let div: HTMLDivElement;
+        const divDim: CSSProperties = { position:'absolute', top:'10px', left:'150px', width: '50px', height: '50px'};
+        const { waitForDom} = clientRenderer.render(<div ref={(elem: HTMLDivElement) => div = elem} style={divDim} >Anchor</div>);
+
+        await waitForDom(() => {
+            expect(div).to.be.present();
+        });
+
+        clientRenderer.render(<Popup anchor={div!}
+                                     collision={{horizontal: 'none', vertical: 'flip'}}
+                                     popupPosition={{vertical: 'bottom', horizontal:'left'}}
+                                     anchorPosition={{vertical:'top', horizontal:'left'}}
+                                     syncWidth={false}
+                                     open={true}>
+            <span data-automation-id="SPAN">Popup Body</span>
+        </Popup>);
+
+        return waitForDom(() => {
+            const popupRect = (bodySelect(popup)! as HTMLElement).getBoundingClientRect();
+            const anchorRect = div.getBoundingClientRect();
+            expect(popupRect.left).to.equal(anchorRect.left);
+            expect([bodySelect(popup), div]).to.be.verticallyAligned('bottom');
+        });
     });
 
     describe('Layout tests', function () {
@@ -157,7 +228,7 @@ describe('<Popup />', function () {
                 });
             });
         });
-    })
+    });
 });
 
 
