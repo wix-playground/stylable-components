@@ -58,7 +58,10 @@
     border: value(borderError);
 }
 
-.prefix {}
+.prefix {
+    display: flex;
+    align-items: center;
+}
 
 .native-input {
     -st-extends: input;
@@ -76,7 +79,10 @@
     margin: 0;
 }
 
-.suffix {}
+.suffix {
+    display: flex;
+    align-items: center;
+}
 
 .stepper {
     -st-extends: stepper;

@@ -1,9 +1,6 @@
 import * as React from 'react';
-import styles from './number-input.demo.st.css';
-import {SBComponent} from 'stylable-react-component';
 import {NumberInput} from '../../src/components/number-input';
 
-@SBComponent(styles)
 export class NumberInputDemo extends React.Component<{}, {value?: number}> {
     constructor() {
         super();
@@ -14,7 +11,6 @@ export class NumberInputDemo extends React.Component<{}, {value?: number}> {
             <tr>
                 <td>
                     <NumberInput
-                        className="number-input"
                         value={this.state.value}
                         step={2}
                         min={-5}
@@ -29,7 +25,6 @@ export class NumberInputDemo extends React.Component<{}, {value?: number}> {
             </tr><tr>
                 <td>
                     <NumberInput
-                        className="number-input"
                         disabled
                         value={this.state.value}
                         placeholder="Always Disabled!">
@@ -40,7 +35,6 @@ export class NumberInputDemo extends React.Component<{}, {value?: number}> {
             </tr><tr>
                 <td>
                     <NumberInput
-                        className="number-input"
                         error
                         value={this.state.value}
                         placeholder="Always wrong!">
