@@ -15,7 +15,7 @@ export interface TreeItemProps {
     item: TreeItemData;
     itemRenderer: React.ComponentType<TreeItemProps>;
     onItemClick?: React.EventHandler<any>;
-    stateMap: StateMap;
+    stateMap: TreeStateMap;
     state: TreeItemState;
 }
 
@@ -53,7 +53,7 @@ export const TreeItem: React.SFC<TreeItemProps> = SBStateless(({ item, itemRende
             <div className="nested-tree">
                 {state!.isExpanded && (item.children || []).map((child: TreeItemData, index: number) =>
                     <TreeNode item={child} onItemClick={onItemClick} itemRenderer={itemRenderer}
-                              stateMap={stateMap} state={stateMap.get(child)!} key={`${index}`} />
+                              stateMap={stateMap} state={stateMap.getItemState(child)} key={`${index}`} />
                 )}
             </div>
         </div>
@@ -62,46 +62,60 @@ export const TreeItem: React.SFC<TreeItemProps> = SBStateless(({ item, itemRende
 
 const TreeItemWrapper = observer(TreeItem);
 
+export class TreeStateMap {
+    stateMap: StateMap = new Map<TreeItemData, TreeItemState>();
+
+    getItemState(item: TreeItemData) {
+        const state = this.stateMap.get(item);
+        if (state) {
+            return state;
+        } else {
+            const newState = observable({ isSelected: false, isExpanded: false, isFocused: false });
+            this.stateMap.set(item, newState);
+            return newState;
+        }
+    }
+}
+
 @SBComponent(style) @observer
 export class TreeView extends React.Component<TreeViewProps, {}>{
     static defaultProps: Partial<TreeViewProps> = { itemRenderer: TreeItemWrapper, onSelectItem: () => {}, onFocusItem: () => {} };
 
-    stateMap: StateMap = new Map<TreeItemData, TreeItemState>();
+    stateMap: TreeStateMap = new TreeStateMap();
     parentsMap: ParentsMap = new Map<TreeItemData, TreeItemData | undefined>();
 
     constructor(props: TreeViewProps) {
         super(props);
-        this.initState(props.dataSource as TreeItemData[], undefined);
+        this.initParentsMap(props.dataSource as TreeItemData[], undefined);
     }
 
-    initState(data: TreeItemData[] = [], parent: TreeItemData | undefined) {
+    initParentsMap(data: TreeItemData[] = [], parent: TreeItemData | undefined) {
         data.forEach((item: TreeItemData) => {
-            this.stateMap.set(item, observable({ isSelected: false, isExpanded: false, isFocused: false }));
             this.parentsMap.set(item, parent);
-            this.initState(item.children || [], item);
+            this.initParentsMap(item.children || [], item);
         });
     }
 
     componentDidMount() {
         autorun(() => {
             if (this.props.selectedItem) {
-                this.stateMap.get(this.props.selectedItem)!.isSelected = true;
+                this.stateMap.getItemState(this.props.selectedItem).isSelected = true;
             }
             if (this.props.focusedItem) {
-                this.stateMap.get(this.props.focusedItem)!.isFocused = true;
+                this.stateMap.getItemState(this.props.focusedItem).isFocused = true;
             }
         });
     }
 
     toggleItem(item: TreeItemData) {
-        if (this.stateMap.get(item)!.isExpanded && this.props.selectedItem !== item) return;
-        this.stateMap.get(item)!.isExpanded = !this.stateMap.get(item)!.isExpanded;
+        if (this.stateMap.getItemState(item).isExpanded && this.props.selectedItem !== item) return;
+        this.stateMap.getItemState(item).isExpanded = !this.stateMap.getItemState(item).isExpanded;
     }
 
     selectItem(item: TreeItemData) {
         if (this.props.selectedItem) {
             if (this.props.selectedItem !== item ) {
-                this.stateMap.get(this.props.selectedItem)!.isSelected = false;
+                this.stateMap.getItemState(this.props.selectedItem).isSelected = false;
                 this.props.onSelectItem!(this.props.selectedItem !== item ? item : undefined);
             }
         } else {
@@ -111,7 +125,7 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
 
     onSelectItem = (item: TreeItemData) => {
         this.selectItem(item);
-        if (this.props.focusedItem) this.stateMap.get(this.props.focusedItem)!.isFocused = false;
+        if (this.props.focusedItem) this.stateMap.getItemState(this.props.focusedItem).isFocused = false;
         this.toggleItem(item);
     };
 
@@ -125,7 +139,7 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
 
 
         const prevSibling = siblings[itemIdx - 1] as TreeItemData;
-        const prevSiblingState = this.stateMap.get(prevSibling)!;
+        const prevSiblingState = this.stateMap.getItemState(prevSibling);
 
         if (prevSiblingState.isExpanded && prevSibling.children!.length ) {
             return prevSibling.children![prevSibling.children!.length - 1];
@@ -147,7 +161,7 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
     }
 
     getNextItem(item: TreeItemData) {
-        const itemState = this.stateMap.get(item)!;
+        const itemState = this.stateMap.getItemState(item);
 
         if (itemState.isExpanded && item.children) {
             return item.children![0];
@@ -160,7 +174,7 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
     }
 
     getLastAvailableItem(lastChild: TreeItemData): TreeItemData {
-        if (this.stateMap.get(lastChild)!.isExpanded && lastChild.children) {
+        if (this.stateMap.getItemState(lastChild).isExpanded && lastChild.children) {
             return this.getLastAvailableItem(lastChild.children[lastChild.children.length - 1]);
         } else {
             return lastChild;
@@ -170,13 +184,13 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
 
     onFocusItem(item: TreeItemData) {
         if (this.props.focusedItem !== item) {
-            if (this.props.focusedItem) this.stateMap.get(this.props.focusedItem)!.isFocused = false;
+            if (this.props.focusedItem) this.stateMap.getItemState(this.props.focusedItem).isFocused = false;
             this.props.onFocusItem!(item);
         }
     }
 
-    expandItem = (item: TreeItemData) => { if (item.children) this.stateMap.get(item)!.isExpanded = true; };
-    collapseItem = (item: TreeItemData) => { if (item.children) this.stateMap.get(item)!.isExpanded = false; };
+    expandItem = (item: TreeItemData) => { if (item.children) this.stateMap.getItemState(item).isExpanded = true; };
+    collapseItem = (item: TreeItemData) => { if (item.children) this.stateMap.getItemState(item).isExpanded = false; };
     focusPrev = (item: TreeItemData) => this.onFocusItem!(this.getPreviousItem(item) as TreeItemData);
     focusNext = (item: TreeItemData) => this.onFocusItem!(this.getNextItem(item) as TreeItemData);
     focusFirst = () => this.props.onFocusItem!(this.props.dataSource[0]);
@@ -203,11 +217,11 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
                 this.selectItem(this.props.focusedItem);
                 return;
             case KeyCodes.HOME:
-                this.stateMap.get(this.props.focusedItem)!.isFocused = false;
+                this.stateMap.getItemState(this.props.focusedItem).isFocused = false;
                 this.focusFirst();
                 return;
             case KeyCodes.END:
-                this.stateMap.get(this.props.focusedItem)!.isFocused = false;
+                this.stateMap.getItemState(this.props.focusedItem).isFocused = false;
                 this.focusLast();
                 return;
             default:
@@ -221,7 +235,7 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
             <div data-automation-id='TREE_VIEW' className="tree-view" tabIndex={0} onKeyDown={this.onKeyDown}>
                 {(this.props.dataSource || []).map((item: TreeItemData, index: number) =>
                     <TreeNode item={item} onItemClick={this.onSelectItem} itemRenderer={this.props.itemRenderer!}
-                              stateMap={this.stateMap} state={this.stateMap.get(item)!} key={`${index}`} />
+                              stateMap={this.stateMap} state={this.stateMap.getItemState(item)} key={`${index}`} />
                 )}
             </div>
         )

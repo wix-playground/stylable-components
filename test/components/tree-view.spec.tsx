@@ -2,7 +2,7 @@ import * as React from 'react';
 import { expect, ClientRenderer, sinon, simulate, waitFor } from 'test-drive-react';
 import { TreeView, TreeItem } from '../../src';
 import { TreeViewDemo } from '../../demo/components/tree-view-demo';
-import { StateMap, TreeItemData, TreeItemState} from '../../src/components/tree-view/tree-view';
+import {StateMap, TreeItemData, TreeItemState, TreeStateMap} from '../../src/components/tree-view/tree-view';
 import { KeyCodes } from '../../src/common/key-codes';
 
 const treeView = 'TREE_VIEW';
@@ -312,6 +312,8 @@ describe('<TreeView />', () => {
         });
 
         describe('<TreeItem />', () => {
+
+            const stateMap = new TreeStateMap();
 
             it('renders an item', () => {
                 const { select, waitForDom } =
