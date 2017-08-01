@@ -3,14 +3,20 @@ import { DatePicker, DatePickerProps } from '../../src';
 
 export interface DatePickerDemoProps extends Partial<DatePickerProps> {}
 
-export class DatePickerDemo extends React.Component<DatePickerDemoProps, {}> {
-    date: Date = this.props.value ? this.props.value : new Date();
+export interface DatePickerDemoState {
+    value: Date;
+}
+
+export class DatePickerDemo extends React.Component<DatePickerDemoProps, DatePickerDemoState> {
+    componentWillMount () {
+        this.setState({ value: this.props.value ? this.props.value : new Date() });
+    }
 
     onChange = (updatedDate: Date): void => {
-        this.date = updatedDate;
+        this.setState({value: updatedDate });
     };
 
     render () {
-        return <DatePicker placeholder="mm/dd/yyyy" value={this.date} onChange={this.onChange} {...this.props} />;
+        return <DatePicker placeholder="mm/dd/yyyy" value={this.state.value} onChange={this.onChange} {...this.props} />;
     }
 }
