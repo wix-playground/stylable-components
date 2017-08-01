@@ -174,8 +174,8 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
         }
     }
 
-    expandItem = (item: TreeItemData) => this.stateMap.get(item)!.isExpanded = true;
-    collapseItem = (item: TreeItemData) => this.stateMap.get(item)!.isExpanded = false;
+    expandItem = (item: TreeItemData) => { if (item.children) this.stateMap.get(item)!.isExpanded = true; };
+    collapseItem = (item: TreeItemData) => { if (item.children) this.stateMap.get(item)!.isExpanded = false; };
     focusPrev = (item: TreeItemData) => this.onFocusItem!(this.getPreviousItem(item) as TreeItemData);
     focusNext = (item: TreeItemData) => this.onFocusItem!(this.getNextItem(item) as TreeItemData);
     focusFirst = () => this.props.onFocusItem!(this.props.dataSource[0]);
