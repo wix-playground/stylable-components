@@ -141,13 +141,19 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
         this.commit(next);
     }
 
+    private handleFocus: React.FocusEventHandler<HTMLElement> =
+        e => this.setState({focus: true});
+
+    private handleBlur: React.FocusEventHandler<HTMLElement> =
+        e => this.setState({focus: false});
+
     private handleIncrement: React.MouseEventHandler<HTMLElement> =
         e => this.stepValue(e, Direction.Increase);
 
     private handleDecrement: React.MouseEventHandler<HTMLElement> =
         e => this.stepValue(e, Direction.Decrease);
 
-    private handleKeyDown: React.KeyboardEventHandler<HTMLElement> =
+    private handleInputKeyDown: React.KeyboardEventHandler<HTMLElement> =
         e => {
             switch (e.keyCode) {
                 case KeyCodes.UP:
@@ -169,13 +175,10 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
             }
         }
 
-    private handleFocus: React.FocusEventHandler<HTMLInputElement> =
-        e => this.setState({focus: true});
+    private handleInputBlur: React.FocusEventHandler<HTMLInputElement> =
+        e => this.commit(this.state.value);
 
-    private handleBlur: React.FocusEventHandler<HTMLInputElement> =
-        e => (this.commit(this.state.value), this.setState({focus: false}));
-
-    private handleChange: React.ChangeEventHandler<HTMLInputElement> =
+    private handleInputChange: React.ChangeEventHandler<HTMLInputElement> =
         e => {
             const {onInput} = this.props;
             const value = e.target.value;
@@ -206,10 +209,14 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
         const disableDecrement = inputProps.disabled || (isNumber(value) && value <= min!);
         const {prefix, suffix} = getAffix(children);
 
-        return <div cssStates={{
-            disabled: Boolean(this.props.disabled),
-            focus, error
-        }}>
+        return <div
+            cssStates={{
+                disabled: Boolean(this.props.disabled),
+                focus, error
+            }}
+            onFocus={this.handleFocus}
+            onBlur={this.handleBlur}
+        >
             {prefix.length > 0 ?
                 <div className="prefix">
                     {prefix}
@@ -224,10 +231,9 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
                 min={min}
                 max={max}
                 step={step}
-                onChange={this.handleChange}
-                onKeyDown={this.handleKeyDown}
-                onFocus={this.handleFocus}
-                onBlur={this.handleBlur}
+                onChange={this.handleInputChange}
+                onKeyDown={this.handleInputKeyDown}
+                onBlur={this.handleInputBlur}
             />
             {suffix.length > 0 ?
                 <div className="suffix">
