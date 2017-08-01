@@ -4,6 +4,8 @@
     color_Border,
     color_Slider_Track,
     color_Slider_Track_Hover,
+    color_Slider_Progress,
+    color_Slider_Progress_Hover,
     color_Slider_Handle,
     color_Slider_HandleBorder,
     color_Slider_Handle_Hover,
@@ -12,20 +14,74 @@
 
 :vars {
   trackHeight: 4px;
-  thumbMargin: -6px;
-  thumbWidth: 16px;
-  thumbHeight: 16px;
-  thumbRadius: 8px;
-  thumbBorder: 1px solid value(color_Slider_HandleBorder);
-  thumbBorderHover: 1px solid value(color_Slider_Handle_Active);;
+  handleMargin: -6px;
+  handleWidth: 16px;
+  handleHeight: 16px;
+  handleRadius: 8px;
+  handleBorder: 1px solid value(color_Slider_HandleBorder);
+  handleBorderHover: 1px solid value(color_Slider_Handle_Active);;
 }
 
 .slider-container{
+  width: 100%;
   position: relative;
-  display: inline-block
+  display: inline-block;
 }
+
 .slider {
   width: 100%;
-  padding: 5px 0;
+  padding: 15px 0;
   cursor: pointer;
+  outline: none;
+}
+
+.slider-native-input{
+  position: absolute;
+  visibility: hidden;
+}
+
+.slider-track{
+  position: relative;
+  height: 4px;
+  border-radius: 2px;
+  background-color: #adbbc6; 
+}
+
+.slider-progress{
+  position: absolute;
+  width: 50%;
+  height: inherit;
+  background-color: #4a90e2;
+  border-radius: 2px;
+}
+
+.slider-handle{
+  position: absolute;
+  left: 50%;
+  width: 16px;
+  height: 16px;
+  border-radius: 8px;
+  margin: -6px 0 0 -6px;
+  background-color: #ffffff;
+  border: solid 1px #7d8c98;
+}
+
+.slider-scale-container{
+  height: inherit;
+}
+
+/* Hover state */
+.slider:hover .slider-track{
+  background-color: #7d8c98; 
+}
+
+.slider:hover .slider-handle{
+  background-color: #edf7ff;
+  border: solid 1px #4a90e2;
+}
+
+/* Focus state */
+.slider:focus .slider-handle{
+  -webkit-box-shadow: 0 0 0 4px rgba(92, 180, 255, 0.5);
+  box-shadow: 0 0 0 4px rgba(92, 180, 255, 0.5);
 }

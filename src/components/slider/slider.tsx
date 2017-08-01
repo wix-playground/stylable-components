@@ -3,95 +3,10 @@ import * as React from 'react';
 const theme = require('../../style/default-theme/variables.st.css').default;
 const style = require('./slider.st.css').default;
 
+const DEFAULT_STEP = 1;
 const DEFAULT_MIN = 0;
 const DEFAULT_MAX = 100;
 const DEFAULT_VALUE = 50;
-
-const crossAxisProperty = {
-  x: 'height',
-  'x-reverse': 'height',
-  y: 'width',
-  'y-reverse': 'width',
-};
-
-const crossAxisOffsetProperty = {
-  x: 'top',
-  'x-reverse': 'top',
-  y: 'left',
-  'y-reverse': 'left',
-};
-
-const mainAxisProperty = {
-  x: 'width',
-  'x-reverse': 'width',
-  y: 'height',
-  'y-reverse': 'height',
-};
-
-const mainAxisMarginFromEnd = {
-  x: 'marginRight',
-  'x-reverse': 'marginLeft',
-  y: 'marginTop',
-  'y-reverse': 'marginBottom',
-};
-
-const mainAxisMarginFromStart = {
-  x: 'marginLeft',
-  'x-reverse': 'marginRight',
-  y: 'marginBottom',
-  'y-reverse': 'marginTop',
-};
-
-const mainAxisOffsetProperty = {
-  x: 'left',
-  'x-reverse': 'right',
-  y: 'bottom',
-  'y-reverse': 'top',
-};
-
-const mainAxisClientProperty = {
-  x: 'clientWidth',
-  'x-reverse': 'clientWidth',
-  y: 'clientHeight',
-  'y-reverse': 'clientHeight',
-};
-
-const mainAxisClientOffsetProperty = {
-  x: 'clientX',
-  'x-reverse': 'clientX',
-  y: 'clientY',
-  'y-reverse': 'clientY',
-};
-
-const reverseMainAxisOffsetProperty = {
-  x: 'right',
-  'x-reverse': 'left',
-  y: 'top',
-  'y-reverse': 'bottom',
-};
-
-const isMouseControlInverted = (axis: string) => axis === 'x-reverse' || axis === 'y';
-
-const calculateAxis = (axis: string, isRtl: boolean) => {
-  if (isRtl) {
-    switch (axis) {
-      case 'x':
-        return 'x-reverse';
-      case 'x-reverse':
-        return 'x';
-    }
-  }
-  return axis;
-};
-
-function getPercent(value: number, min: number, max: number): number {
-  let percent = (value - min) / (max - min);
-  if (isNaN(percent)) {
-    percent = 0;
-  }
-
-  return percent;
-}
 
 function handleDisabledBehavour(this: any, target: any, propertyKey: string, descriptor: PropertyDescriptor): PropertyDecorator {
   const method = descriptor.value;
@@ -101,6 +16,15 @@ function handleDisabledBehavour(this: any, target: any, propertyKey: string, des
     }
     return method.apply(this, arguments);
   }
+}
+
+function getPercent(value: number, min: number, max: number): number {
+  let percent = (value - min) / (max - min);
+  if (isNaN(percent)) {
+    percent = 0;
+  }
+
+  return percent;
 }
 
 export interface SliderProps {
@@ -162,28 +86,45 @@ export class Slider extends React.Component<SliderProps, SliderState> {
 
   render() {
     return (
-      <div className={style['slider-container']} data-automation-id='SLIDER'>
-        
+      <div className={style['slider-container']} data-automation-id='SLIDER-CONTAINER'>
         <input
           value={this.props.value}
-          min={this.props.min}
-          max={this.props.max}
-          step={this.props.step}
-
+          type="number"
+          className={style['slider-native-input']}
           name={this.props.name}
-
           required={this.props.required}
-
-          className={style['slider']}
-          type="range"
-
-          onChange={this.onChange}
-          onInput={this.onInput}
-
-          onFocus={this.onFocus}
-          onBlur={this.onBlur}
+          tabIndex={-1}
+          readOnly={true}
         />
+        <div className={style['slider']} data-automation-id='SLIDER' tabIndex={0}>
+          <div className={style['slider-track']} data-automation-id='SLIDER-TRACK'>
+            <div className={style['slider-progress']} data-automation-id='SLIDER-PROGRESS'></div>
+            <a className={style['slider-handle']} data-automation-id='SLIDER-HANDLE'></a>
+          </div>
+        </div>
+        <div className={style['slider-scale-container']} data-automation-id='SLIDER-SCALE-CONTAINER'></div>
+
       </div>
     );
   }
 }
+
+/* <input
+  value={this.props.value}
+  min={this.props.min}
+  max={this.props.max}
+  step={this.props.step}
+
+  name={this.props.name}
+
+  required={this.props.required}
+
+  className={style['slider']}
+  type="range"
+
+  onChange={this.onChange}
+  onInput={this.onInput}
+
+  onFocus={this.onFocus}
+  onBlur={this.onBlur}
+/> */

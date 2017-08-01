@@ -23,6 +23,7 @@ export class SliderDemo extends React.Component<SliderDemoProps, SliderDemoState
           value={this.state.value}
           onChange={(event, value) => this.setState({value})}
         />
+        <hr></hr>
         <Slider
           min={0}
           max={10}
