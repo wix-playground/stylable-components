@@ -19,7 +19,7 @@
 }
 
 :import {
-    -st-from: "./stepper.st.css";
+    -st-from: "../stepper/stepper.st.css";
     -st-default: stepper;
 }
 
