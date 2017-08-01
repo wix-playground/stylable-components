@@ -139,6 +139,7 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
             return item;
         } else {
             const grandParent = this.parentsMap.get(parent);
+            if (!grandParent) return item;
             const grandParentChildren = grandParent!.children!;
             const parentIdx = grandParentChildren.indexOf(parent);
             return parentIdx !== grandParentChildren.length - 1 ? grandParentChildren[parentIdx + 1] : item;
