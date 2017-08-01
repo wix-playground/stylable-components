@@ -56,6 +56,12 @@ export class Slider extends React.Component<SliderProps, SliderState> {
 
   constructor(props: SliderProps, context?: any) {
     super(props, context);
+
+    this.onSliderAreaMouseDown = this.onSliderAreaMouseDown.bind(this);
+
+    this.state = {
+      relativeValue: this.props.value || DEFAULT_VALUE
+    }
   }
 
   private onChange: React.ChangeEventHandler<HTMLInputElement> = event => {
@@ -84,6 +90,18 @@ export class Slider extends React.Component<SliderProps, SliderState> {
     return (normilizedValue * 100) / normilizedMax;
   }
 
+  private onSliderAreaMouseDown(event: React.MouseEvent<HTMLElement>) {
+    const sliderBounds = event.currentTarget.getBoundingClientRect();
+    const sliderOffset = sliderBounds.left;
+    const sliderSize = sliderBounds.width;
+    const pointerPosition = event.clientX;
+    const value = (pointerPosition - sliderOffset) * 100 / sliderSize;
+    console.log(value);
+    this.setState({
+      relativeValue: value
+    });
+  }
+
   render() {
     return (
       <div className={style['slider-container']} data-automation-id='SLIDER-CONTAINER'>
@@ -96,10 +114,27 @@ export class Slider extends React.Component<SliderProps, SliderState> {
           tabIndex={-1}
           readOnly={true}
         />
-        <div className={style['slider']} data-automation-id='SLIDER' tabIndex={0}>
+        <div
+          className={style['slider']}
+          data-automation-id='SLIDER'
+          tabIndex={0}
+          onMouseDown={this.onSliderAreaMouseDown}
+        >
           <div className={style['slider-track']} data-automation-id='SLIDER-TRACK'>
-            <div className={style['slider-progress']} data-automation-id='SLIDER-PROGRESS'></div>
-            <a className={style['slider-handle']} data-automation-id='SLIDER-HANDLE'></a>
+            <div
+              className={style['slider-progress']}
+              data-automation-id='SLIDER-PROGRESS'
+              style={{
+                width: `${this.state.relativeValue}%`
+              }}
+            ></div>
+            <a
+              className={style['slider-handle']}
+              data-automation-id='SLIDER-HANDLE'
+              style={{
+                left: `${this.state.relativeValue}%`
+              }}
+            ></a>
           </div>
         </div>
         <div className={style['slider-scale-container']} data-automation-id='SLIDER-SCALE-CONTAINER'></div>
