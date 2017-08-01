@@ -1,7 +1,5 @@
 import * as React from 'react';
 import {Dropdown} from './dropdown';
-import {observable, action} from 'mobx';
-import {observer} from 'mobx-react';
 import {SyntheticEvent} from "react";
 import {KeyCodes} from '../../common/key-codes';
 import styles from './date-picker.st.css';
@@ -25,13 +23,6 @@ export class DatePicker extends React.Component<DatePickerProps, DatePickerState
         this.setState({
             inputValue: this.props.value ? this.props.value.toDateString() : '',
             isDropdownVisible: this.props.isDropdownVisible ? this.props.isDropdownVisible : false
-        });
-    }
-
-    componentWillRecieveProps (props: DatePickerProps) {
-        this.setState({
-            inputValue: props.value ? props.value.toDateString() : '',
-            isDropdownVisible: props.isDropdownVisible ? props.isDropdownVisible : false
         });
     }
 
@@ -61,26 +52,26 @@ export class DatePicker extends React.Component<DatePickerProps, DatePickerState
         }
     };
 
-    @action onInputChange: React.EventHandler<SyntheticEvent<HTMLInputElement>> = (event): void => {
+    onInputChange: React.EventHandler<SyntheticEvent<HTMLInputElement>> = (event): void => {
         const eventTarget = event.target as HTMLInputElement;
         this.setState({ inputValue: eventTarget.value });
     };
 
-    @action onFocus: React.EventHandler<SyntheticEvent<HTMLInputElement>> = (): void => {
+    onFocus: React.EventHandler<SyntheticEvent<HTMLInputElement>> = (): void => {
         this.setState({ isDropdownVisible: true })
     };
 
-    @action onMouseDown: React.EventHandler<SyntheticEvent<HTMLInputElement>> = (): void => {
+    onMouseDown: React.EventHandler<SyntheticEvent<HTMLInputElement>> = (): void => {
         this.setState({ isDropdownVisible: !this.state.isDropdownVisible });
     };
 
-    @action onBlur: React.EventHandler<SyntheticEvent<HTMLInputElement>> = (event): void => {
+    onBlur: React.EventHandler<SyntheticEvent<HTMLInputElement>> = (event): void => {
         const eventTarget = event.target as HTMLInputElement;
         this.updateStateFromString(eventTarget.value);
         this.setState({ isDropdownVisible: false })
     };
 
-    @action onKeyDown: React.EventHandler<SyntheticEvent<HTMLInputElement>> = (event: React.KeyboardEvent<HTMLInputElement>): void => {
+    onKeyDown: React.EventHandler<SyntheticEvent<HTMLInputElement>> = (event: React.KeyboardEvent<HTMLInputElement>): void => {
         if (event.keyCode === KeyCodes.ENTER) {
             const eventTarget = event.target as HTMLInputElement;
             this.updateStateFromString(eventTarget.value);
