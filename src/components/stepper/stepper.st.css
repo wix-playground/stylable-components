@@ -2,6 +2,7 @@
     -st-from: "../../style/default-theme/variables.st.css";
     -st-named: color_MainText,
                color_MainText_Background,
+               color_Disabled,
                borderWidth,
                inputHeight;
 }

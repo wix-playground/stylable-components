@@ -15,7 +15,8 @@
                borderFocus,
                inputHeight,
                inputWidth,
-               borderDisabled;
+               borderDisabled,
+               borderError;
 }
 
 :import {
@@ -54,6 +55,7 @@
 }
 
 .root:error {
+    border: value(borderError);
 }
 
 .prefix {}

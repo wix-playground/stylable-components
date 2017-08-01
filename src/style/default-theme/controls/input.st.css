@@ -14,7 +14,8 @@
                borderFocus,
                inputHeight,
                inputWidth,
-               borderDisabled;
+               borderDisabled,
+               borderError;
 }
 
 .root {
@@ -49,4 +50,8 @@
     background-color: value(color_Disabled);
     color: value(color_MainPlaceholder);
     border: value(borderDisabled);
+}
+
+.root:error {
+    border: value(borderError);
 }

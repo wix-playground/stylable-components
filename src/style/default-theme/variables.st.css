@@ -20,6 +20,8 @@
     M6: #c8c8c8;
     M0: #ffffff;
 
+    R1: #d0011b;
+
     color_MainText: value(M1); /* Base text color  */
     color_MainPlaceholder: value(M2);
     color_MainError: value(M5);
@@ -45,4 +47,5 @@
     borderHover: value(borderStyle) value(borderWidth) value(B2);
     borderFocus: value(borderStyle) value(borderWidth) value(B3);
     borderDisabled: value(borderStyle) value(borderWidth) value(B5);
+    borderError: value(borderStyle) value(borderWidth) value(R1);
 }
