@@ -36,12 +36,11 @@ export class CheckBoxDemo extends React.Component<{},{}> {
 
 export class BasicDemo extends React.Component<{}, {value: boolean}> {
 
-    constructor() {
-        super();
-        this.state = {value: false}
-    }
+    state = {
+        value: false
+    };
 
-    handleChange = (val: boolean) => { this.setState({value: val} ) };
+    handleChange = (val: boolean) => { this.setState({value: val}) };
 
     render() {
         return (
@@ -60,10 +59,9 @@ export class BasicDemo extends React.Component<{}, {value: boolean}> {
 
 export class DisabledDemo extends React.Component<{}, {value: boolean}> {
 
-    constructor() {
-        super();
-        this.state = {value: false}
-    }
+    state = {
+        value: false
+    };
 
     handleChange = (val: boolean) => { this.setState({value: val} ) };
 
@@ -94,10 +92,10 @@ export class DisabledDemo extends React.Component<{}, {value: boolean}> {
 
 export class IndeterminateDemo extends React.Component<{}, {value1: boolean, value2: boolean}> {
 
-    constructor() {
-        super();
-        this.state = {value1: true, value2: false}
-    }
+    state = {
+        value1: true,
+        value2: false
+    };
 
     render() {
         return (
@@ -129,10 +127,9 @@ export class IndeterminateDemo extends React.Component<{}, {value1: boolean, val
 
 class CustomIconsDemo extends React.Component<{},{value: boolean}> {
 
-    constructor() {
-        super();
-        this.state = {value: false}
-    }
+    state = {
+        value: false
+    };
 
     handleChange = (val: boolean) => { this.setState({value: val} ) };
 
