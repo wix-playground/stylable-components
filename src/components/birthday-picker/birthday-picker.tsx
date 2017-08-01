@@ -64,12 +64,12 @@ const Select: React.SFC<SelectProps> = (props) => (
         data-automation-id={props.automationId}>
         <option value="" label={props.placeholder} />
         {props.options.map(({value, label}) =>
-            <option key={value} value={value} label={label} />
+            <option key={value} value={value}>{label}</option>
         )}
     </select>
 );
 
-export interface BirthDatePickerProps {
+export interface BirthdayPickerProps {
     value?: Date;
     minDate?: Date;
     maxDate?: Date;
@@ -77,8 +77,8 @@ export interface BirthDatePickerProps {
 }
 
 @observer
-export class BirthDatePicker extends React.Component<BirthDatePickerProps, {}> {
-    static defaultProps: BirthDatePickerProps = {
+export class BirthdayPicker extends React.Component<BirthdayPickerProps, {}> {
+    static defaultProps: BirthdayPickerProps = {
         maxDate: new Date(),
         onChange: () => {}
     };
@@ -124,23 +124,23 @@ export class BirthDatePicker extends React.Component<BirthDatePickerProps, {}> {
         const months = numberRangeForSelectBox(1, 12);
 
         return (
-            <span data-automation-id="BIRTH_DATE_PICKER">
+            <span data-automation-id="BIRTHDAY_PICKER">
                 <Select
-                    automationId="BIRTH_DATE_PICKER_DAY"
+                    automationId="BIRTHDAY_PICKER_DAY"
                     value={this.day}
                     placeholder="Day"
                     options={this.dayOptions}
                     onChange={this.handleDayChange}
                 />
                 <Select
-                    automationId="BIRTH_DATE_PICKER_MONTH"
+                    automationId="BIRTHDAY_PICKER_MONTH"
                     value={this.month}
                     placeholder="Month"
                     options={this.monthOptions}
                     onChange={this.handleMonthChange}
                 />
                 <Select
-                    automationId="BIRTH_DATE_PICKER_YEAR"
+                    automationId="BIRTHDAY_PICKER_YEAR"
                     value={this.year}
                     placeholder="Year"
                     options={this.yearOptions}

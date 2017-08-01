@@ -1,28 +1,26 @@
-.boxIconDefault {
-    height: 1em;
-    width: 1em;
-    viewBox: 0 0 16 16;
-}
+@namespace "CheckBoxDemo";
 
-.boxIconDefault path{
+.boxIcon {
+    height: 20px;
+    width: 20px;
     fill: none;
     stroke: #D1D1D1;
 }
 
-.boxIconChecked path {
+.boxIconChecked {
     fill: #4A90E2;
 }
 
 .tickIcon {
-    height: 1em;
-    width: 1em;
-    viewBox: 0 0 16 16;
+    height: 20px;
+    width: 20px;
     position: relative;
-    margin-left: -1em;
+    margin-left: -20px;
+    fill: #f1f1f1;
 }
 
-.tickIcon path{
-    stroke: #FFF;
-    strokeLinecap: square;
-    strokeWidth: 1.5;
+.label {
+    margin-left: 5px;
+    margin-right: 20px;
+    vertical-align: top
 }
