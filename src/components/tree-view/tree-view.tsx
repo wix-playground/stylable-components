@@ -41,7 +41,7 @@ const itemIdPrefix = 'TREE_ITEM';
 
 export const TreeItem: React.SFC<TreeItemProps> = SBStateless(({ item, itemRenderer, onItemClick, stateMap, state }) => {
     const itemLabel = item.label.replace(' ', '_');
-    const TreeNode = itemRenderer;
+    const TreeNode = observer(itemRenderer);
     return (
         <div>
             <div data-automation-id={`${itemIdPrefix}_${itemLabel}`} className="tree-node"
@@ -60,11 +60,11 @@ export const TreeItem: React.SFC<TreeItemProps> = SBStateless(({ item, itemRende
     )
 }, style);
 
-const TreeItemWrapper = observer(TreeItem);
+// const TreeItemWrapper = observer(TreeItem);
 
 @SBComponent(style) @observer
 export class TreeView extends React.Component<TreeViewProps, {}>{
-    static defaultProps: Partial<TreeViewProps> = { itemRenderer: TreeItemWrapper, onSelectItem: () => {}, onFocusItem: () => {} };
+    static defaultProps: Partial<TreeViewProps> = { itemRenderer: TreeItem, onSelectItem: () => {}, onFocusItem: () => {} };
 
     stateMap: StateMap = new Map<TreeItemData, TreeItemState>();
     parentsMap: ParentsMap = new Map<TreeItemData, TreeItemData | undefined>();
@@ -215,7 +215,7 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
     };
 
     render() {
-        const TreeNode = this.props.itemRenderer!;
+        const TreeNode = observer(this.props.itemRenderer!);
         return (
             <div data-automation-id='TREE_VIEW' className="tree-view" tabIndex={0} onKeyDown={this.onKeyDown}>
                 {(this.props.dataSource || []).map((item: TreeItemData, index: number) =>

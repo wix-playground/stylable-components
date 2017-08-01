@@ -2,7 +2,7 @@ import * as React from 'react';
 import { expect, ClientRenderer, sinon, simulate, waitFor } from 'test-drive-react';
 import { TreeView, TreeItem } from '../../src';
 import { TreeViewDemo } from '../../demo/components/tree-view-demo';
-import { StateMap, TreeItemData, TreeItemState} from '../../src/components/tree-view/tree-view';
+import {StateMap, TreeItemData, TreeItemProps, TreeItemState} from '../../src/components/tree-view/tree-view';
 import { KeyCodes } from '../../src/common/key-codes';
 
 const treeView = 'TREE_VIEW';
@@ -108,6 +108,21 @@ describe('<TreeView />', () => {
         simulate.click(elementToSelect);
 
         return waitForDom(() => expect(elementToAssert).to.be.absent());
+    });
+
+    describe('Using custom renderer', () => {
+       it('renders', () => {
+           const itemRenderer: React.ComponentType<TreeItemProps> = (props: TreeItemProps) => {
+               return <div>label is: {props.item.label}</div>
+           };
+
+           const { select, waitForDom } = clientRenderer.render(<TreeView dataSource={treeData} itemRenderer={itemRenderer}/>);
+           const rootNode = getTreeItem(treeData[0].label);
+
+           debugger;
+
+           return waitForDom(() => expect(select(rootNode)).to.be.present());
+       });
     });
 
     describe('Using default renderer', () => {
