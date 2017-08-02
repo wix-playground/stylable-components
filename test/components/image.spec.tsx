@@ -89,13 +89,55 @@ describe('<Image />', () => {
                 expect(domImgElement).to.be.present();
                 expect(domImgElement).to.have.attribute('src', sampleImage);
                 expect(domImgElement).to.have.nested.property('style.visibility', 'hidden');
+                expect(domImgElement).to.have.nested.property('style.display', 'block');
+                expect(domImgElement).to.have.nested.property('style.maxWidth', '100%');
+                expect(domImgElement).to.have.nested.property('style.height', '100%');
 
 
                 const { parentElement: sizingWrapper } = domImgElement!;
                 expect(sizingWrapper, 'verify image is wrapped for sizing').to.not.equal(container);
-                expect(sizingWrapper).to.have.nested.property('style.backgroundSize', 'contain');
                 expect(sizingWrapper).to.have.nested.property('style.backgroundImage', `url("${sampleImage}")`);
+                expect(sizingWrapper).to.have.nested.property('style.backgroundSize', 'contain');
                 expect(sizingWrapper).to.have.nested.property('style.backgroundRepeat', 'no-repeat');
+
+                // problematic: ie11 sets 'center', while chrome 60 sets 'center center'
+                // expect(sizingWrapper).to.have.nested.property('style.backgroundPosition', 'center');
+            });
+        });
+
+        it('sets image as background with size: cover, when resizeMode="cover"', async () => {
+            const { select, waitForDom, container } = clientRenderer.render(<Image resizeMode="cover" src={sampleImage} data-automation-id={nativeImage} />);
+
+            await waitForDom(() => {
+                const domImgElement = select(nativeImage)
+                expect(domImgElement).to.be.present();
+                expect(domImgElement).to.have.attribute('src', sampleImage);
+                expect(domImgElement).to.have.nested.property('style.visibility', 'hidden');
+                expect(domImgElement).to.have.nested.property('style.display', 'block');
+                expect(domImgElement).to.have.nested.property('style.maxWidth', '100%');
+                expect(domImgElement).to.have.nested.property('style.height', '100%');
+
+
+                const { parentElement: sizingWrapper } = domImgElement!;
+                expect(sizingWrapper, 'verify image is wrapped for sizing').to.not.equal(container);
+                expect(sizingWrapper).to.have.nested.property('style.backgroundImage', `url("${sampleImage}")`);
+                expect(sizingWrapper).to.have.nested.property('style.backgroundSize', 'cover');
+                expect(sizingWrapper).to.have.nested.property('style.backgroundRepeat', 'no-repeat');
+
+                // problematic: ie11 sets 'center', while chrome 60 sets 'center center'
+                // expect(sizingWrapper).to.have.nested.property('style.backgroundPosition', 'center');
+            });
+        });
+
+        it('leaves image as-is when resizeMode="fill"', async () => {
+            const { select, waitForDom, container } = clientRenderer.render(<Image resizeMode="fill" src={sampleImage} data-automation-id={nativeImage} />);
+
+            await waitForDom(() => {
+                const domImgElement = select(nativeImage)
+                expect(domImgElement).to.be.present();
+                expect(domImgElement).to.have.attribute('src', sampleImage);
+                expect(domImgElement).to.not.have.nested.property('style.visibility', 'hidden');
+                expect(domImgElement!.parentElement, 'verify image is not wrapped').to.equal(container);
             });
         });
     });
