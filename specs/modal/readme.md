@@ -31,11 +31,8 @@ Interacting with the modal can consist of:
 | onAfterOpen | func | undefined |  |  |
 | onRequestClose(source) | func | undefined |  | The function used to handle cancel events on the modal; typically sets the open state to false. It is passed a source, as one of a number of possible closing options |
 | children | any |  |  | children nodes of the modal |
-| width | number/enum | 'medium' |  | Explicitly set a numeric width or provide one of three sizes; 'small', 'medium', 'large' - 320px, 640px, 960px respectively|
-| height | number/enum | 'auto' |  | Explicitly set a numeric height of the modal|
-| container | any | null |  |  |
-| aria-* | - | - |  |  |
-| aria-role | - | 'dialog' |  |  |
+| aria-* | - | - | - | ARIA attributes. Used for accessibility purposes, to describe the screen to a screen-reader |
+| aria-role | - | 'dialog' |  | Default ARIA attribute of the modal window, defines its role as a `dialog` |
 
 #### Modal Roles
 
@@ -57,19 +54,15 @@ Children with a role may also accept different props, such as a `title` for the 
 
 | Source | Description |
 | --- | --- |
-| backdropClick | request to close the modal because the backdrop of the modal was clicked |
 | escKeyPress | request to close the modal because the `ESC` button was pressed |
+| backdropClick | request to close the modal because the backdrop of the modal was clicked |
 | headerCloseClick | request to close the modal came from a child in the role `header-close-button` |
 | footerCloseClick | request to close the modal came from a child in the role `footer-close-button` |
 | footerPrimaryClick | request to close the modal came from a child in the role `footer-primary-button`  |
-
-### Modal Header Props
-
-| Prop | Type | Default | Description |
-| --- | --- | --- | --- |
-| children | node | undefined | Alternative to using the text attribute, for when you need more control over the content|
-| onClose | func | undefined | What to do when the user clicks the close button|
-| title | string | '' | Creates a title for the modal |
+| backdropTap | request to close the modal because the backdrop of the modal was tapped |
+| headerCloseTap | request to close the modal came from a child in the role `header-close-button` |
+| footerCloseTap | request to close the modal came from a child in the role `footer-close-button` |
+| footerPrimaryTap | request to close the modal came from a child in the role `footer-primary-button`  |
 
 ### Code Example
 
@@ -77,18 +70,18 @@ Children with a role may also accept different props, such as a `title` for the 
 
 ```jsx
 <Modal
-    isOpen={this.state.open}
-    onRequestClose={this.whenModalCloses}>
-    <div role={header}>
-        <span role={title}>Terms of service</span>
-        <button role={header-close-button} />
+    isOpen="this.state.open"
+    onRequestClose="this.whenModalCloses">
+    <div role="header">
+        <span role="title">Terms of service</span>
+        <button role="header-close-button" />
     </div>
-    <div role={body}>
+    <div role="body">
         <span>content</span>
     </div>
-    <div role={footer}>
-        <button role={footer-primary-button}>Yep</button>
-        <button role={footer-close-button}>Nope</button>
+    <div role="footer">
+        <button role="footer-primary-button">Yep</button>
+        <button role="footer-close-button">Nope</button>
     </div>
 </Modal>
 ```
@@ -96,43 +89,6 @@ Children with a role may also accept different props, such as a `title` for the 
 ## Style API
 
 Normally, the modal opens in relation to the screen and not its parent component. Because it breaks the flow of the entire page, it needs to be prominent on the entire view-port. 
-
-Its possible positions are top, **middle**, bottom and left, **center**, right (defaults bolded).
-
-It can have an offset from each of its non-default positions (top, bottom, right, left). The offset direction is opposite to its starting position (leftOffset pushes left to right, rightOffset pushes right to left).
-
-```jsx
-<Modal
-  position={left}
-  topOffset={10}
-  leftOffset={10}>
-</Modal>
-```
-
-#### Contained modals
-
-There are special cases where a modal is relevant only to a certain part of an application, and will only block its flow.
-
-```jsx
-<Modal
-  ...
-  container={this.container}>
-  <div>
-    content
-  </div>
-</Modal>
-```
-
-### Modal Sizing
-
-The modal size has 3 presets (small, medium and large), and can accept custom width and height using the `width` and `height` attributes. If `height` is declared, overflow can be declared or will default to `overflow:visible`.
-
-
-```html
-<Modal width={width.small}></Modal>
-<Modal width={width.large}></Modal>
-<Modal width={768}></Modal>
-```
 
 ### Subcomponents (pseudo-elements)
 
@@ -154,11 +110,6 @@ The modal size has 3 presets (small, medium and large), and can accept custom wi
 | :loading | the loading state of the modal if it takes time to open |
 | :error | modal displaying an error related to its loading |
 
+## Design
 
-### Style Code Example
-
-```css
-/* Code example goes here
-~ Example of styling with Subcomponents
-~ Example of styling with CSS State */
-```
+https://app.zeplin.io/project/5864e02695b5754a69f56150/screen/588f14b1bfaae69a22be1620

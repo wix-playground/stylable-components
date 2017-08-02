@@ -34,8 +34,6 @@ Interacting with the modal can consist of:
 
 See [README.md](./README.md) for more info. 
 
-
-
 ## Style
 
 Brief description of pseudo-classes and custom CSS states that can be applied to the component.
@@ -57,22 +55,23 @@ You may give the Modal any aria attributes, such as labelledby, describedby, hid
 
 | Keys | Action |
 | -- | -- |
-| esc | moves to next element |
-| tab | moves to previous element   |
+| esc | closes the modal (source=escKeyPress) |
+| tab | moves to next element of the modal |
+| shift+tab | moves to the previous element of the modal |
 
 ### Mouse
 
 | Event | Action | NOTE |
 | -- | -- | -- |
 | click | on modal | should be inactive, unless clicking a button |
-| click | on backdrop | often used to close the modal |
+| click | on backdrop | will close the modal (source=backdropClick) |
 
 ### Touch
 
 | Event | Action | NOTE |
 | -- | -- | -- |
 | tap | on modal | should be inactive, unless tappign a button |
-| tap | on backdrop | often used to close the modal |
+| tap | on backdrop | will close the modal (source=backdropTap) |
 
 ## Design
 
