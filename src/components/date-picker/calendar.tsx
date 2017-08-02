@@ -1,11 +1,11 @@
 import * as React from 'react';
-import {getMonthNames, getMonthFromOffset, getDayNames, getDaysInMonth, getNumOfPreviousDays, getNumOfFollowingDays} from '../../common/date-helpers';
+import {getMonthNames, getMonthFromOffset, getDayNames, getDaysInMonth, getNumOfPreviousDays} from '../../common/date-helpers';
 import {observable, action, computed} from 'mobx';
 import {observer} from 'mobx-react';
 import {Day} from './day';
 const styles = require('./date-picker.st.css').default;
 
-export interface DropdownProps {
+export interface CalendarProps {
     value: Date;
     onChange(date: Date): void;
 }
@@ -13,7 +13,7 @@ export interface DropdownProps {
 const monthNames = getMonthNames();
 
 @observer
-export class Dropdown extends React.Component<DropdownProps, {}>{
+export class Calendar extends React.Component<CalendarProps, {}>{
     @observable date: Date = this.props.value;
 
     onChange = (day: number) => {

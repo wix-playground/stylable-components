@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Dropdown} from './dropdown';
+import {Calendar} from './calendar';
 import {SyntheticEvent} from "react";
 import {KeyCodes} from '../../common/key-codes';
 import styles from './date-picker.st.css';
@@ -99,8 +99,8 @@ export class DatePicker extends React.Component<DatePickerProps, DatePickerState
                        type="text"
                        data-automation-id="DATE_PICKER_INPUT" />
                 {this.state.isDropdownVisible
-                    ? <Dropdown onChange={this.updateStateFromDate}
-                              value={this.props.value!} />
+                    ? <Calendar onChange={this.updateStateFromDate}
+                                value={this.props.value!} />
                     : null
                 }
             </div>
