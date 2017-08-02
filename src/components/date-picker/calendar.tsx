@@ -5,7 +5,7 @@ import {observer} from 'mobx-react';
 import {Day} from './day';
 const styles = require('./date-picker.st.css').default;
 
-export interface DropdownProps {
+export interface CalendarProps {
     value: Date;
     selectedDate: Date | undefined;
     focusedDate?: Date;
@@ -19,7 +19,7 @@ export interface DropdownProps {
 const monthNames = getMonthNames();
 
 @observer
-export class Dropdown extends React.Component<DropdownProps, {}>{
+export class Calendar extends React.Component<CalendarProps, {}>{
     setDate (date: Date) {
         this.props.updateDropdownDate(date);
     }

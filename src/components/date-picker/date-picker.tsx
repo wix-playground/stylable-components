@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Dropdown} from './dropdown';
+import {Calendar} from './calendar';
 import {observable, action} from 'mobx';
 import {observer} from 'mobx-react';
 import {SyntheticEvent} from "react";
@@ -176,7 +176,7 @@ export class DatePicker extends React.Component<Partial<DatePickerProps>, {}>{
                        type="text"
                        data-automation-id="DATE_PICKER_INPUT" />
                 {this.isDropdownVisible
-                    ? <Dropdown onChange={this.updateStateFromDate}
+                    ? <Calendar onChange={this.updateStateFromDate}
                                 updateDropdownDate={this.updateDropdownDate}
                                 value={this.dropdownDate}
                                 selectedDate={this.props.value}
