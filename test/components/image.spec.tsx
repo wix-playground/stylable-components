@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { expect, ClientRenderer, sinon, waitFor } from 'test-drive-react';
 import { Image, onePixelTransparentSrc } from '../../src';
-import { objectFitSupported } from '../../src/common/environment';
 import { sampleImage } from '../fixtures/sample-image';
 
 const nativeImage = 'NATIVE_IMAGE';
@@ -76,5 +75,25 @@ describe('<Image />', () => {
 
         await waitFor(() => expect(onError).to.have.been.calledWithMatch({ src: brokenSrc }));
         await waitForDom(() => expect(select(nativeImage)).to.have.attribute('src', onePixelTransparentSrc));
+    });
+
+    describe('resize mode', () => {
+        it('sets image as background with size: contain, when resizeMode="contain"', async () => {
+            const { select, waitForDom, container } = clientRenderer.render(<Image resizeMode="contain" src={sampleImage} data-automation-id={nativeImage} />);
+
+            await waitForDom(() => {
+                const domImgElement = select(nativeImage)
+                expect(domImgElement).to.be.present();
+                expect(domImgElement).to.have.attribute('src', sampleImage);
+                expect(domImgElement).to.have.nested.property('style.visibility', 'hidden');
+
+
+                const { parentElement: sizingWrapper } = domImgElement!;
+                expect(sizingWrapper, 'verify image is wrapped for sizing').to.not.equal(container);
+                expect(sizingWrapper).to.have.nested.property('style.backgroundSize', 'contain');
+                expect(sizingWrapper).to.have.nested.property('style.backgroundImage', `url("${sampleImage}")`);
+                expect(sizingWrapper).to.have.nested.property('style.backgroundRepeat', 'no-repeat');
+            });
+        });
     });
 });
