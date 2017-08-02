@@ -5,7 +5,7 @@ import {CheckBox, CheckBoxIconProps} from "../../src";
 
 const boxSVG: React.SFC<CheckBoxIconProps> = (props) => {
     return (
-        <svg data-automation-id="CHECKBOX_BOX_TEST"  height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" >
+        <svg data-automation-id="CHECKBOX_BOX_TEST" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
             <path fill="none" stroke="black" d="M.5.5h15v15H.5z"/>
         </svg>
     )
@@ -39,19 +39,19 @@ describe('<Checkbox/>', function () {
             const {select, waitForDom} = clientRenderer.render(<BasicDemo/>);
 
             await waitForDom(() => {
-                expect(select('BASIC_DEMO', 'CHECKBOX_ROOT'), 'basic root').to.be.present();
-                expect(select('BASIC_DEMO', 'CHECKBOX_BOX'), 'basic box').to.be.present();
-                expect(select('BASIC_DEMO', 'CHECKBOX_TICKMARK'), 'basic tickmark').to.be.absent();
-                expect(select('BASIC_DEMO', 'BASIC_LABEL'), 'basic label').to.have.text(demoCheckBoxText);
+                expect(select('CHECKBOX_ROOT'), 'basic root').to.be.present();
+                expect(select('CHECKBOX_BOX'), 'basic box').to.be.present();
+                expect(select('CHECKBOX_TICKMARK'), 'basic tickmark').to.be.absent();
+                expect(select('BASIC_LABEL'), 'basic label').to.have.text(demoCheckBoxText);
                 expect(select('BUTTON_SUBMIT'), 'basic submit').to.be.present().and.to.have.attr('disabled');
             });
 
-            simulate.click(select('BASIC_DEMO', 'CHECKBOX_ROOT'));
+            simulate.click(select('CHECKBOX_ROOT'));
 
             return waitFor(() => {
-                expect(select('BASIC_DEMO', 'CHECKBOX_TICKMARK'), 'basic tickmark').to.be.present();
-                expect(select('BASIC_DEMO', 'CHECKBOX_TICKMARK')).to.be.insideOf(select('BASIC_DEMO', 'CHECKBOX_BOX') as HTMLElement);
-                expect(select('BASIC_DEMO', 'BUTTON_SUBMIT'), 'basic submit').to.not.have.attr('disabled');
+                expect(select('CHECKBOX_TICKMARK'), 'basic tickmark').to.be.present();
+                expect(select('CHECKBOX_TICKMARK')).to.be.insideOf(select('CHECKBOX_BOX') as HTMLElement);
+                expect(select('BUTTON_SUBMIT'), 'basic submit').to.not.have.attr('disabled');
             });
         });
 
@@ -240,7 +240,7 @@ describe('<Checkbox/>', function () {
 
     describe('When indeterminate', function () {
         it('renders indeterminate icon when value is true', function () {
-            const {select, waitForDom} =  clientRenderer.render(<CheckBox value={true} indeterminate/>)
+            const {select, waitForDom} = clientRenderer.render(<CheckBox value={true} indeterminate/>)
 
             return waitForDom(() => {
                 expect(select('CHECKBOX_BOX')).to.be.present();
@@ -250,7 +250,7 @@ describe('<Checkbox/>', function () {
         });
 
         it('renders indeterminate icon when value is false', function () {
-            const {select, waitForDom} =  clientRenderer.render(<CheckBox value={false} indeterminate/>)
+            const {select, waitForDom} = clientRenderer.render(<CheckBox value={false} indeterminate/>)
 
             return waitForDom(() => {
                 expect(select('CHECKBOX_BOX')).to.be.present();
