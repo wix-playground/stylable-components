@@ -165,7 +165,6 @@ describe('The DatePicker Component', () => {
         it('should display the days in a grid', async () => {
             const {waitForDom} = clientRenderer.render(<DatePicker value={JANUARY_FIRST} showDropdownOnInit={true}/>);
 
-
             await waitForDom(() => {
                 // Check that the days are displayed in rows (checking that each row is in horizontal sequence
                 expect(elementsInRow(1)).to.be.inHorizontalSequence();

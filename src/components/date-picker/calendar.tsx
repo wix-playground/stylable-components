@@ -53,7 +53,7 @@ export class Calendar extends React.Component<CalendarProps, {}>{
                  dataAutomationId={'DAY_' + day}
                  key={'DAY_' + day} />
             );
-        };
+        }
 
         return dayArray;
     }

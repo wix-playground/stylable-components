@@ -27,11 +27,15 @@ export interface DatePickerState {
 }
 
 export class DatePicker extends React.Component<Partial<DatePickerProps>, DatePickerState>{
+    static defaultProps: Partial<DatePickerProps> = {
+        openOnFocus: true
+    };
+
     componentWillMount () {
         this.setState({
             inputValue: this.props.value ? this.props.value.toDateString() : '',
             isDropdownVisible: this.props.showDropdownOnInit || false,
-            dropdownDate: this.props.value || new Date(),
+            dropdownDate: this.props.value || new Date()
         });
     }
 
@@ -77,7 +81,9 @@ export class DatePicker extends React.Component<Partial<DatePickerProps>, DatePi
     };
 
     onFocus: React.EventHandler<SyntheticEvent<HTMLInputElement>> = (): void => {
-        this.setState({ isDropdownVisible: true })
+        if (this.props.openOnFocus) {
+            this.setState({ isDropdownVisible: true });
+        }
     };
 
     onMouseDown: React.EventHandler<SyntheticEvent<HTMLInputElement>> = (): void => {
@@ -107,14 +113,8 @@ export class DatePicker extends React.Component<Partial<DatePickerProps>, DatePi
             switch (keyCode) {
                 case KeyCodes.ENTER:
                     this.state.highlightFocusedDate ? this.updateStateFromDate(this.state.dropdownDate) : this.updateStateFromString(eventTarget.value);
+                    this.setState({ isDropdownVisible: !this.state.isDropdownVisible });
                     event.preventDefault();
-
-                    if (!this.props.openOnFocus) {
-                        this.setState({ isDropdownVisible: !this.state.isDropdownVisible });
-                    } else {
-                        this.setState({ isDropdownVisible: false });
-                    }
-
                     break;
 
                 case KeyCodes.SPACE:

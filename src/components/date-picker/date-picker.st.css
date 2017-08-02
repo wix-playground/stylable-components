@@ -137,6 +137,9 @@
     background-color: value(color_Active);
 }
 
+.focusedAndSelected {
+}
+
 .day:hover {
     color: value(color_MainText_Background);
     background-color: value(color_Hover);
