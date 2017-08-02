@@ -48,21 +48,19 @@ Modal children can have a `role` attribute that allows them to declare which par
 | footer-close-button | .footer-close-button | the close or cancel button found in the footer |
 | footer-primary-button | .footer-primary-button | the primary button of the modal |
 
-Children with a role may also accept different props, such as a `title` for the child marked as header.
-
 ### `onRequestClose` Sources
 
 | Source | Description |
 | --- | --- |
 | escKeyPress | request to close the modal because the `ESC` button was pressed |
 | backdropClick | request to close the modal because the backdrop of the modal was clicked |
-| headerCloseClick | request to close the modal came from a child in the role `header-close-button` |
-| footerCloseClick | request to close the modal came from a child in the role `footer-close-button` |
-| footerPrimaryClick | request to close the modal came from a child in the role `footer-primary-button`  |
+| headerCloseClick | request to close the modal came from a click on the child in the role `header-close-button` |
+| footerCloseClick | request to close the modal came from a click on the child in the role `footer-close-button` |
+| footerPrimaryClick | request to close the modal came from a click on the child in the role `footer-primary-button`  |
 | backdropTap | request to close the modal because the backdrop of the modal was tapped |
-| headerCloseTap | request to close the modal came from a child in the role `header-close-button` |
-| footerCloseTap | request to close the modal came from a child in the role `footer-close-button` |
-| footerPrimaryTap | request to close the modal came from a child in the role `footer-primary-button`  |
+| headerCloseTap | request to close the modal came from a tap on the child in the role `header-close-button` |
+| footerCloseTap | request to close the modal came from a tap on the child in the role `footer-close-button` |
+| footerPrimaryTap | request to close the modal came from a tap on the child in the role `footer-primary-button`  |
 
 ### Code Example
 

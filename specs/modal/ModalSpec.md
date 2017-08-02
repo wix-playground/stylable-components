@@ -75,4 +75,4 @@ You may give the Modal any aria attributes, such as labelledby, describedby, hid
 
 ## Design
 
-Link to [assets](link goes here)
+Link to [assets](https://app.zeplin.io/project/5864e02695b5754a69f56150/screen/588f14b1bfaae69a22be1620)
