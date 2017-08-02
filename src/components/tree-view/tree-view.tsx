@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { observer } from 'mobx-react';
-import { autorun, observable } from 'mobx';
+import { action, autorun, observable } from 'mobx';
 import { KeyCodes } from '../../common/key-codes';
 
 import { SBComponent, SBStateless } from 'stylable-react-component';
@@ -100,10 +100,10 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
     componentDidMount() {
         autorun(() => {
             if (this.props.selectedItem) {
-                this.stateMap.getItemState(this.props.selectedItem).isSelected = true;
+                action(() => this.stateMap.getItemState(this.props.selectedItem!).isSelected = true)();
             }
             if (this.props.focusedItem) {
-                this.stateMap.getItemState(this.props.focusedItem).isFocused = true;
+                action(() => this.stateMap.getItemState(this.props.focusedItem!).isFocused = true)();
             }
         });
     }
@@ -123,11 +123,13 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
         }
     }
 
+    @action
     onSelectItem = (item: TreeItemData) => {
         this.selectItem(item);
         if (this.props.focusedItem) this.stateMap.getItemState(this.props.focusedItem).isFocused = false;
     };
 
+    @action
     onToggleItem = (item: TreeItemData) => {
         if (this.props.focusedItem) this.stateMap.getItemState(this.props.focusedItem).isFocused = false;
         this.toggleItem(item);
@@ -187,6 +189,7 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
 
     }
 
+    @action
     onFocusItem(item: TreeItemData) {
         if (this.props.focusedItem !== item) {
             if (this.props.focusedItem) this.stateMap.getItemState(this.props.focusedItem).isFocused = false;
@@ -217,6 +220,7 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
     focusLast = () =>
         this.props.onFocusItem!(this.getLastAvailableItem(this.props.dataSource[this.props.dataSource.length - 1] as TreeItemData));
 
+    @action
     onKeyDown = (e: any) => {
         if (!this.props.focusedItem) return;
 
