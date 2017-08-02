@@ -65,9 +65,6 @@ describe('<TreeView />', () => {
     const nestedItem: TreeItemData = treeData[0].children![1];
 
     const state: TreeItemState = { isSelected: false, isExpanded: true, isFocused: false };
-    const stateMap: StateMap = new Map<TreeItemData, TreeItemState>();
-
-    initStateMap(treeData, stateMap);
 
     const allNodesLabels: string[] = getAllNodeLabels(treeData);
 
@@ -127,10 +124,7 @@ describe('<TreeView />', () => {
 
             selectItemWithLabel(select, treeData[0].label);
 
-            return waitFor(() => {
-                expect(onSelectItem).to.have.been.calledOnce;
-                expect(onSelectItem).to.have.been.calledWithMatch(treeData[0]);
-            });
+            return waitFor(() => expect(onSelectItem).to.have.been.calledWithMatch(treeData[0]));
         });
 
         describe('Keyboard Navigation', () => {
@@ -139,9 +133,8 @@ describe('<TreeView />', () => {
 
                 const nodeChildren = treeData[0].children;
 
-                // to expand root
-                simulate.click(select(getTreeItemLabel(treeData[0].label)));
-                simulate.click(select(getTreeItemIcon(treeData[0].label)));
+                selectItemWithLabel(select, treeData[0].label);
+                expandItemWithLabel(select, treeData[0].label);
 
                 await waitForDom(() => expect(select(getTreeItem(nodeChildren![1].label))).to.be.present());
 
@@ -158,12 +151,11 @@ describe('<TreeView />', () => {
 
                 const nodeChildren = treeData[0].children;
 
-                // to expand root
-                simulate.click(select(getTreeItemIcon(treeData[0].label)));
+                expandItemWithLabel(select, treeData[0].label);
 
                 await waitForDom(() => expect(select(getTreeItem(nodeChildren![1].label))).to.be.present());
 
-                simulate.click(select(getTreeItemLabel(nodeChildren![1].label)));
+                selectItemWithLabel(select, nodeChildren![1].label);
 
                 await waitForDom(() => expect(select(getTreeItem(nodeChildren![1].label))).to.have.attr('data-focused', 'true'));
 
@@ -177,8 +169,7 @@ describe('<TreeView />', () => {
 
                 const nodeChildren = treeData[0].children;
 
-                // to expand root
-                simulate.click(select(getTreeItemIcon(treeData[0].label)));
+                expandItemWithLabel(select, treeData[0].label);
 
                 await waitForDom(() => expect(select(getTreeItem(nodeChildren![0].label))).to.be.present());
 
@@ -195,9 +186,8 @@ describe('<TreeView />', () => {
                 const rootNode = getTreeItem(treeData[0].label);
                 const nodeChildren = treeData[0].children;
 
-                // to select it
-                simulate.click(select(getTreeItemLabel(treeData[0].label)));
-                simulate.click(select(getTreeItemIcon(treeData[0].label)));
+                selectItemWithLabel(select, treeData[0].label);
+                expandItemWithLabel(select, treeData[0].label);
 
                 // this should assert first child of root is not focused
                 await waitForDom(() => expect(select(getTreeItem(nodeChildren![0].label))).to.have.attr('data-focused', 'false'));
@@ -220,12 +210,11 @@ describe('<TreeView />', () => {
             it('focuses parent node\'s next sibling after exhausting current node sibling list', async () => {
                 const { select, waitForDom } = clientRenderer.render(<TreeViewDemo />);
 
-                const rootNode = getTreeItem(treeData[0].label);
                 const nodeChildren = treeData[0].children;
 
-                // to select it
-                simulate.click(select(getTreeItemLabel(treeData[0].label)));
-                simulate.click(select(getTreeItemIcon(treeData[0].label)));
+                selectItemWithLabel(select, treeData[0].label);
+                expandItemWithLabel(select, treeData[0].label);
+
                 simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), { keyCode: KeyCodes.DOWN });
                 simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), { keyCode: KeyCodes.RIGHT });
 
@@ -252,9 +241,9 @@ describe('<TreeView />', () => {
 
                 const nodeChildren = treeData[0].children;
 
-                // to select it
-                simulate.click(select(getTreeItemLabel(treeData[0].label)));
-                simulate.click(select(getTreeItemIcon(treeData[0].label)));
+                selectItemWithLabel(select, treeData[0].label);
+                expandItemWithLabel(select, treeData[0].label);
+
                 simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), { keyCode: KeyCodes.DOWN });
 
                 await waitForDom(() =>
@@ -271,9 +260,8 @@ describe('<TreeView />', () => {
 
                 const rootNode = getTreeItem(treeData[0].label);
 
-                // to select it
-                simulate.click(select(getTreeItemIcon(treeData[0].label)));
-                simulate.click(select(getTreeItemLabel(treeData[0].label)));
+                selectItemWithLabel(select, treeData[0].label);
+                expandItemWithLabel(select, treeData[0].label);
 
                 simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), { keyCode: KeyCodes.DOWN });
                 simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), { keyCode: KeyCodes.DOWN });
@@ -288,18 +276,15 @@ describe('<TreeView />', () => {
             it('focuses last item available when END is clicked', async () => {
                 const { select, waitForDom } = clientRenderer.render(<TreeViewDemo />);
 
-                const rootNode = getTreeItemIcon(treeData[0].label);
                 const nodeChildren = treeData[0].children!;
 
-                // to focus
-                simulate.click(select(rootNode));
-
-                simulate.click(select(getTreeItemLabel(treeData[0].label)));
+                selectItemWithLabel(select, treeData[0].label);
+                expandItemWithLabel(select, treeData[0].label);
 
                 const lastRootNode = nodeChildren[2];
                 const lastChildren = lastRootNode.children!;
 
-                simulate.click(select(getTreeItemIcon(lastRootNode.label)));
+                expandItemWithLabel(select, lastRootNode.label);
 
                 await waitForDom(() =>
                     expect(select(getTreeItem(lastChildren[lastChildren.length - 1].label)))
@@ -318,14 +303,12 @@ describe('<TreeView />', () => {
                 const rootNode = getTreeItem(treeData[0].label);
                 const nodeChildren = treeData[0].children!;
 
-                const rootNodeIcon = getTreeItemIcon(treeData[0].label);
-
-                simulate.click(select(rootNodeIcon));
+                expandItemWithLabel(select, treeData[0].label);
 
                 const lastRootNode = nodeChildren[2];
                 const lastChildren = lastRootNode.children!;
 
-                simulate.click(select(getTreeItemIcon(lastRootNode.label)));
+                expandItemWithLabel(select, lastRootNode.label);
 
                 simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), { keyCode: KeyCodes.END });
                 await waitForDom(() =>
