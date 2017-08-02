@@ -196,9 +196,6 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
         if (value !== this.state.value) {
             this.committed = true;
             this.setState({value});
-            if (isNumber(value) && (value as number < min! || value > max!)) {
-                console.error('value is out of range');
-            }
         }
     }
 
