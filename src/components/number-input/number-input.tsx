@@ -17,8 +17,8 @@ export interface NumberInputProps {
     label?: string
     name?: string
     error?: boolean
-    onChange?(value: number | undefined): void
-    onInput?(value: string | undefined): void
+    onChange?(value?: number): void
+    onInput?(value: string): void
 }
 
 export type SlotElement = React.ReactElement<{'data-slot': string}>;
@@ -100,8 +100,8 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
     private validate(value?: number) {
         const {min, max} = this.props;
         return isNumber(value) ?
-          Math.min(max!, Math.max(min!, value))
-          : value;
+            Math.min(max!, Math.max(min!, value))
+            : value;
     }
 
     private commit(value?: number) {
