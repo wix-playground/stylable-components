@@ -13,7 +13,7 @@ export class ToggleDemo extends React.Component<{}, State> {
         return <table>
             <tbody>
                 <tr>
-                    <th>
+                    <th data-automation-id='TOGGLE_DEMO_CONTROLLED'>
                         Controlled
                         <Toggle
                             label='with icons'
@@ -30,7 +30,7 @@ export class ToggleDemo extends React.Component<{}, State> {
                             onChange={(checked: boolean) => this.setState({checked})}
                         />
                     </th>
-                    <th>
+                    <th data-automation-id='TOGGLE_DEMO_UNCONTROLLED'>
                         Off
                         <Toggle/>
                     </th>
