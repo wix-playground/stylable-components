@@ -1,13 +1,11 @@
 import React = require('react');
-import {observable} from 'mobx'
-import {observer} from 'mobx-react'
 import {CheckBox, CheckBoxIconProps} from "../../src";
 import style from './checkbox-demo.st.css';
 import {SBComponent} from "stylable-react-component";
 
 export const demoCheckBoxText: string = "Yes, I'm over 18 years old";
 
-@observer @SBComponent(style)
+@SBComponent(style)
 export class CheckBoxDemo extends React.Component<{},{}> {
     render() {
         return (
@@ -36,20 +34,22 @@ export class CheckBoxDemo extends React.Component<{},{}> {
     }
 }
 
-@observer
-export class BasicDemo extends React.Component<{}, {}> {
-    @observable value: boolean = false;
+export class BasicDemo extends React.Component<{}, {value: boolean}> {
 
-    handleChange = (val: boolean) => { this.value = val };
+    state = {
+        value: false
+    };
+
+    handleChange = (val: boolean) => { this.setState({value: val}) };
 
     render() {
         return (
             <div data-automation-id="BASIC_DEMO">
-                <CheckBox value={this.value}
+                <CheckBox value={this.state.value}
                           onChange={this.handleChange}>
                     <span data-automation-id="BASIC_LABEL" className={style.label}>{demoCheckBoxText}</span>
                 </CheckBox> <br/>
-                <button disabled={!this.value} data-automation-id="BUTTON_SUBMIT">
+                <button disabled={!this.state.value} data-automation-id="BUTTON_SUBMIT">
                     Proceed
                 </button>
             </div>
@@ -57,17 +57,19 @@ export class BasicDemo extends React.Component<{}, {}> {
     }
 }
 
-@observer
-export class DisabledDemo extends React.Component<{}, {}> {
-    @observable value: boolean = false;
+export class DisabledDemo extends React.Component<{}, {value: boolean}> {
 
-    handleChange = (val: boolean) => { this.value = val };
+    state = {
+        value: false
+    };
+
+    handleChange = (val: boolean) => { this.setState({value: val} ) };
 
     render() {
         return (
             <div>
                 <span data-automation-id="DISABLED_DEMO">
-                    <CheckBox value={this.value}
+                    <CheckBox value={this.state.value}
                               onChange={this.handleChange}
                               disabled>
                         <span data-automation-id="DISABLED_LABEL" className={style.label}>Unchecked</span>
@@ -88,28 +90,33 @@ export class DisabledDemo extends React.Component<{}, {}> {
     }
 }
 
-@observer
-export class IndeterminateDemo extends React.Component<{}, {}> {
-    @observable value1: boolean = true;
-    @observable value2: boolean = false;
+export class IndeterminateDemo extends React.Component<{}, {value1: boolean, value2: boolean}> {
+
+    state = {
+        value1: true,
+        value2: false
+    };
 
     render() {
         return (
             <ul data-automation-id="INDETERMINATE_DEMO">
-                <span data-automation-id="INDETERMINATE_DEMO_TOP_LEVEL">
-                    <CheckBox value={this.value1 && this.value2}
-                              onChange={(val: boolean) => { this.value1 = this.value2 = val}}
-                              indeterminate={this.value1 !== this.value2}>
-                        <span data-automation-id="DISABLED_LABEL" className={style.label}>All Options</span>
-                    </CheckBox>
-                </span>
-                <li  style={{listStyle:'none', marginLeft:'1em'}} data-automation-id="INDETERMINATE_DEMO_OPTION1">
-                    <CheckBox value={this.value1} onChange={(val: boolean) => this.value1 = val}>
+                <CheckBox value={this.state.value1 && this.state.value2}
+                          onChange={(val: boolean) => { this.setState({value1: val, value2: val})}}
+                          indeterminate={this.state.value1 !== this.state.value2}
+                          data-automation-id="INDETERMINATE_DEMO_TOP_LEVEL">
+                    <span data-automation-id="DISABLED_LABEL" className={style.label}>All Options</span>
+                </CheckBox>
+                <li  style={{listStyle:'none', marginLeft:'1em'}}>
+                    <CheckBox value={this.state.value1}
+                              onChange={(val: boolean) => this.setState({value1: val})}
+                              data-automation-id="INDETERMINATE_DEMO_OPTION1">
                         <span className={style.label}>Option1</span>
                     </CheckBox>
                 </li>
-                <li  style={{listStyle:'none', marginLeft:'1em'}} data-automation-id="INDETERMINATE_DEMO_OPTION2">
-                    <CheckBox value={this.value2} onChange={(val: boolean) => this.value2 = val} data-automation-id="INDETERMINATE_DEMO_OPTION2">
+                <li  style={{listStyle:'none', marginLeft:'1em'}}>
+                    <CheckBox value={this.state.value2}
+                              onChange={(val: boolean) => this.setState({value2: val})}
+                              data-automation-id="INDETERMINATE_DEMO_OPTION2">
                         <span className={style.label}>Option2</span>
                     </CheckBox>
                 </li>
@@ -118,16 +125,18 @@ export class IndeterminateDemo extends React.Component<{}, {}> {
     }
 }
 
-@observer
-class CustomIconsDemo extends React.Component<{},{}> {
-    @observable value: boolean = false;
+class CustomIconsDemo extends React.Component<{},{value: boolean}> {
 
-    handleChange = (val: boolean) => { this.value = val };
+    state = {
+        value: false
+    };
+
+    handleChange = (val: boolean) => { this.setState({value: val} ) };
 
     render() {
         return (
             <div>
-                <CheckBox value={this.value} onChange={this.handleChange} boxIcon={CheckBoxSVG} tickIcon={TickMarkSVG}>
+                <CheckBox value={this.state.value} onChange={this.handleChange} boxIcon={CheckBoxSVG} tickIcon={TickMarkSVG}>
                     <span className={style.label}>I choose triangle</span>
                 </CheckBox>
             </div>
