@@ -21,7 +21,7 @@ export class SliderDemo extends React.Component<SliderDemoProps, SliderDemoState
           min={0}
           max={10}
           value={this.state.value}
-          onChange={(event, value) => this.setState({value})}
+          onChange={value => this.setState({value})}
         />
         <hr></hr>
         <Slider
@@ -29,7 +29,7 @@ export class SliderDemo extends React.Component<SliderDemoProps, SliderDemoState
           max={10}
           value={this.state.value}
           disabled={true}
-          onChange={(event, value) => this.setState({value})}
+          onChange={value => this.setState({value})}
         />
       </div>
     );

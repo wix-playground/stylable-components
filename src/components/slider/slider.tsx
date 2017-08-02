@@ -1,5 +1,7 @@
 import * as React from 'react';
 
+export type PointerEvent = MouseEvent | TouchEvent;
+
 const theme = require('../../style/default-theme/variables.st.css').default;
 const style = require('./slider.st.css').default;
 
@@ -8,15 +10,7 @@ const DEFAULT_MIN = 0;
 const DEFAULT_MAX = 100;
 const DEFAULT_VALUE = 50;
 
-function handleDisabledBehavour(this: any, target: any, propertyKey: string, descriptor: PropertyDescriptor): PropertyDecorator {
-  const method = descriptor.value;
-  return function(this: any) {
-    if (this.props.disabled) {
-      return ;
-    }
-    return method.apply(this, arguments);
-  }
-}
+function noop() {}
 
 function getPercent(value: number, min: number, max: number): number {
   let percent = (value - min) / (max - min);
@@ -38,14 +32,15 @@ export interface SliderProps {
   disabled?: boolean;
   required?: boolean;
 
-  onChange?(event: React.SyntheticEvent<HTMLInputElement>, value: number): void;
-  onInput?(event: React.SyntheticEvent<HTMLInputElement>, value: number): void;
+  onChange?(value: number): void;
+  onInput?(value: string): void;
 
   onFocus?(event: React.SyntheticEvent<HTMLInputElement>): void;
   onBlur?(event: React.SyntheticEvent<HTMLInputElement>): void;
 
-  onDragStart?(event: React.SyntheticEvent<HTMLInputElement>): void;
-  onDragStop?(event: React.SyntheticEvent<HTMLInputElement>): void;
+  onDragStart?(event: PointerEvent): void;
+  onDrag?(event: PointerEvent): void;
+  onDragStop?(event: PointerEvent): void;
 };
 
 export interface SliderState {
@@ -53,53 +48,131 @@ export interface SliderState {
 };
 
 export class Slider extends React.Component<SliderProps, SliderState> {
+  static defaultProps = {
+    min: DEFAULT_MIN,
+    max: DEFAULT_MAX,
+    step: DEFAULT_STEP,
+    value: DEFAULT_VALUE,
+    onChange: noop,
+    onInput: noop,
+
+    onFocus: noop,
+    onBlur: noop,
+
+    onDragStart: noop,
+    onDrag: noop,
+    onDragStop: noop
+  };
+
+  private sliderArea: HTMLElement;
 
   constructor(props: SliderProps, context?: any) {
     super(props, context);
 
     this.onSliderAreaMouseDown = this.onSliderAreaMouseDown.bind(this);
+    this.onSliderAreaMouseMove = this.onSliderAreaMouseMove.bind(this);
+    this.onSliderAreaMouseUp = this.onSliderAreaMouseUp.bind(this);
 
     this.state = {
-      relativeValue: this.props.value || DEFAULT_VALUE
+      relativeValue: this.getRelativeValue(this.props.value!, this.props.min!, this.props.max!)
     }
   }
 
   private onChange: React.ChangeEventHandler<HTMLInputElement> = event => {
-    this.props.onChange && this.props.onChange(event, Number(event.target.value));
+    this.props.onChange!(Number(event.target.value));
 }
 
   private onInput: React.ChangeEventHandler<HTMLInputElement> = event => {
-    this.props.onInput && this.props.onInput(event, Number(event.target.value));
+    this.props.onInput!(String(event.target.value));
   }
 
   private onFocus: React.FocusEventHandler<HTMLInputElement> = event => {
-    this.props.onFocus && this.props.onFocus(event);
+    this.props.onFocus!(event);
   }
 
   private onBlur: React.FocusEventHandler<HTMLInputElement> = event => {
-    this.props.onBlur && this.props.onBlur(event);
+    this.props.onBlur!(event);
   }
 
-  private getRelativeValue(value: number): number {
-    const min = this.props.min || DEFAULT_MIN;
-    const max = this.props.max || DEFAULT_MAX;
+  private getValueInRange(value: number, min: number, max: number): number {
+    return value < min ? min : (value > max ? max : value);
+  }
 
+  private getRelativeValue(value: number, min: number, max: number): number {
     const normilizedMax = max - min;
     const normilizedValue = value - min;
 
-    return (normilizedValue * 100) / normilizedMax;
+    const relativeValue = (normilizedValue * 100) / normilizedMax;
+
+    return this.getValueInRange(relativeValue, 0, 100);;
+  }
+
+  private getAbsoluteValue(relativeValue: number) {
+    const range = this.props.max! - this.props.min!;
+    const absoluteValue = range * 100 / relativeValue + this.props.min!
+    return this.getValueInRange(absoluteValue, this.props.min!, this.props.max!);
+  }
+
+  private getValueFromElementAndPointer(element: HTMLElement, pointerPosition: number): number {
+    const sliderBounds = element.getBoundingClientRect();
+    const sliderOffset = sliderBounds.left;
+    const sliderSize = sliderBounds.width;
+
+    return this.getRelativeValue(pointerPosition - sliderOffset, 0, sliderSize);
   }
 
   private onSliderAreaMouseDown(event: React.MouseEvent<HTMLElement>) {
-    const sliderBounds = event.currentTarget.getBoundingClientRect();
-    const sliderOffset = sliderBounds.left;
-    const sliderSize = sliderBounds.width;
-    const pointerPosition = event.clientX;
-    const value = (pointerPosition - sliderOffset) * 100 / sliderSize;
-    console.log(value);
+    const sliderArea = event.currentTarget;
+    this.sliderArea = sliderArea;
+
     this.setState({
-      relativeValue: value
+      relativeValue: this.getValueFromElementAndPointer(event.currentTarget, event.clientX)
     });
+
+    document.addEventListener('mousemove', this.onSliderAreaMouseMove);
+    document.addEventListener('mouseup', this.onSliderAreaMouseUp);
+
+    event.preventDefault();
+    sliderArea.focus();
+
+    this.onDragStart(event.nativeEvent);
+  }
+
+  private onSliderAreaMouseMove(event: MouseEvent) {
+    const relativeValue = this.getValueFromElementAndPointer(this.sliderArea, event.clientX);
+
+    requestAnimationFrame(() => {
+      this.setState({
+        relativeValue
+      });
+    });
+
+    this.onDrag(event);
+  }
+
+  private onSliderAreaMouseUp(event: MouseEvent) {
+    const relativeValue = this.getValueFromElementAndPointer(this.sliderArea, event.clientX);
+    this.setState({
+      relativeValue
+    });
+
+    document.removeEventListener('mousemove', this.onSliderAreaMouseMove);
+    document.removeEventListener('mouseup', this.onSliderAreaMouseUp);
+    
+    this.onDragStop(event);
+    this.props.onChange!(this.getAbsoluteValue(relativeValue));
+  }
+
+  private onDragStart(event: PointerEvent) {
+    this.props.onDragStart!(event);
+  }
+
+  private onDrag(event: PointerEvent) {
+    this.props.onDrag!(event);
+  }
+
+  private onDragStop(event: PointerEvent) {
+    this.props.onDragStop!(event);
   }
 
   render() {
