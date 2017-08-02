@@ -12,7 +12,7 @@ export interface ImageProps extends React.HTMLAttributes<HTMLImageElement> {
     src?: string;
     alt?: string;
     title?: string;
-    sizing?: 'fill' | 'cover' | 'contain';
+    resizeMode?: 'fill' | 'cover' | 'contain';
 
     onLoad?: (event: ImageEvent) => void;
     onError?: (event: ImageEvent) => void;
@@ -71,15 +71,15 @@ export class Image extends React.PureComponent<ImageProps, ImageState>{
 
             // shouldn't be printed to DOM
             defaultImage,
-            sizing,
+            resizeMode,
 
             ...rest
         } = this.props;
 
         // 'fill' is the default image behavior, so no need to put it on background
-        if (sizing === 'contain' || sizing === 'cover') {
+        if (resizeMode === 'contain' || resizeMode === 'cover') {
             return (
-                <div style={{ ...backgroundSizingStyle, backgroundImage: `url("${this.state.src}")`, backgroundSize: sizing, ...style }} className={className}>
+                <div style={{ ...backgroundSizingStyle, backgroundImage: `url("${this.state.src}")`, backgroundSize: resizeMode, ...style }} className={className}>
                     <img style={hiddenImageStyle} {...rest} src={this.state.src} onLoad={this.onLoad} onError={this.onError} />
                 </div>
             );
@@ -87,7 +87,7 @@ export class Image extends React.PureComponent<ImageProps, ImageState>{
 
         return (
             <img {...rest}
-                style={style}
+                style={{display: 'inline-block', ...style}}
                 className={className}
                 src={this.state.src}
                 onLoad={this.onLoad}

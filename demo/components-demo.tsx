@@ -13,15 +13,15 @@ export class ComponentsDemo extends React.Component {
         return <div>
             <div>
                 <h2>{'<Image sizing="contain" />'}</h2>
-                <Image sizing="contain" src="http://d26gg7w375vuv5.cloudfront.net/Design+Assets/black+Wix+Logo+Assets/Black+Wix+logo+Assets.png" className={style.image} />
+                <Image resizeMode="contain" src="http://d26gg7w375vuv5.cloudfront.net/Design+Assets/black+Wix+Logo+Assets/Black+Wix+logo+Assets.png" className={style.image} />
             </div>
             <div>
                 <h2>{'<Image sizing="cover" />'}</h2>
-                <Image sizing="cover" src="http://d26gg7w375vuv5.cloudfront.net/Design+Assets/black+Wix+Logo+Assets/Black+Wix+logo+Assets.png" className={style.image} />
+                <Image resizeMode="cover" src="http://d26gg7w375vuv5.cloudfront.net/Design+Assets/black+Wix+Logo+Assets/Black+Wix+logo+Assets.png" className={style.image} />
             </div>
             <div>
                 <h2>{'<Image sizing="fill" />'}</h2>
-                <Image sizing="fill" src="http://d26gg7w375vuv5.cloudfront.net/Design+Assets/black+Wix+Logo+Assets/Black+Wix+logo+Assets.png" className={style.image} />
+                <Image resizeMode="fill" src="http://d26gg7w375vuv5.cloudfront.net/Design+Assets/black+Wix+Logo+Assets/Black+Wix+logo+Assets.png" className={style.image} />
             </div>
             <div>
                 <h2>CheckBox</h2>
