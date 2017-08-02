@@ -109,10 +109,42 @@ describe('<TreeView />', () => {
         return waitForDom(() => expect(elementToAssert).to.be.absent());
     });
 
-    it('filters tree items correctly', () => {
+    it('filters tree items correctly', async () => {
+        function simulateFilterChange(query: string) {
+            (select(treeView, 'FILTER_INPUT') as HTMLInputElement).value = query;
+            simulate.change(select(treeView, 'FILTER_INPUT'));
+        }
+
         const { select, waitForDom } = clientRenderer.render(<TreeViewDemo />);
 
+        const rootChildren = treeData[0].children!;
 
+        expandItemWithLabel(select, treeData[0].label);
+        expandItemWithLabel(select, rootChildren[0].label);
+        expandItemWithLabel(select, rootChildren[2].label);
+
+        await waitForDom(() => {
+            expect(select(getTreeItem('Steaks'))).to.be.present();
+            expect(select(getTreeItem('Israeli Salad'))).to.be.present();
+            expect(select(getTreeItem('Caesar Salad'))).to.be.present();
+            expect(select(getTreeItem('Cupcake'))).to.be.present();
+        });
+
+        simulateFilterChange('C');
+
+        await waitForDom(() => {
+            expect(select(getTreeItem('Steaks'))).to.be.absent();
+            expect(select(getTreeItem('Israeli Salad'))).to.be.absent();
+            expect(select(getTreeItem('Caesar Salad'))).to.be.present();
+            expect(select(getTreeItem('Cupcake'))).to.be.present();
+        });
+
+        simulateFilterChange('Cu');
+
+        return waitForDom(() => {
+            expect(select(getTreeItem('Caesar Salad'))).to.be.absent();
+            expect(select(getTreeItem('Cupcake'))).to.be.present();
+        });
     });
 
     describe('Using default renderer', () => {
