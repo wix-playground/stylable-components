@@ -109,7 +109,6 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
     }
 
     toggleItem(item: TreeItemData) {
-        if (this.stateMap.getItemState(item).isExpanded && this.props.selectedItem !== item) return;
         this.stateMap.getItemState(item).isExpanded = !this.stateMap.getItemState(item).isExpanded;
     }
 
@@ -130,6 +129,7 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
     };
 
     onToggleItem = (item: TreeItemData) => {
+        if (this.props.focusedItem) this.stateMap.getItemState(this.props.focusedItem).isFocused = false;
         this.toggleItem(item);
         this.props.onFocusItem!(item);
     };
