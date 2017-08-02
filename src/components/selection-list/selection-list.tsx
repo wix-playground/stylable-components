@@ -14,9 +14,9 @@ function renameKeys(data: any, schema: any) {
     return result;
 }
 
-function closestElementMatching(match: (element: HTMLElement) => boolean, startAt: HTMLElement) {
+function closestElementMatching(predicate: (element: HTMLElement) => boolean, startAt: HTMLElement) {
     let current: HTMLElement | null = startAt;
-    while (current && !match(current)) {
+    while (current && !predicate(current)) {
         current = current.parentElement;
     }
     return current;
