@@ -23,6 +23,7 @@ export interface TreeViewProps {
     itemRenderer?: React.ComponentType<TreeItemProps>;
     onSelectItem?: React.EventHandler<any>;
     selectedItem?: TreeItemData;
+    className?: string;
 }
 
 export interface TreeItemState {
@@ -102,7 +103,7 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
     render() {
         const TreeNode = this.props.itemRenderer!;
         return (
-            <div data-automation-id='TREE_VIEW' className="tree-view">
+            <div data-automation-id='TREE_VIEW' className={'tree-view' + this.props.className ? ` ${this.props.className}` : ''}>
                 {(this.props.dataSource || []).map((item: TreeItemData, index: number) =>
                     <TreeNode item={item} onItemClick={this.onSelectItem} itemRenderer={this.props.itemRenderer!}
                               stateMap={this.stateMap} state={this.stateMap.get(item)!} key={`${index}`} />

@@ -1,19 +1,30 @@
 .root {
-  font-size: 18px;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    text-align: left;
+    color: #000000;
+    outline: 0 solid transparent;
 }
 
 .tree-node {
-  -st-states: selected;
-  cursor: pointer;
-  display: inline;
-  padding: 2px 5px;
+    -st-states: selected, focused;
+    cursor: pointer;
+    display: inline;
+    padding: 2px 5px;
+    width: 228px;
+    height: 24px;
+}
+
+.tree-node:focused {
+    background-color: #edf7ff;
 }
 
 .tree-node:selected {
-  background-color: lightblue;
+    background-color: #4990e2;
+    color: white;
 }
 
 .nested-tree {
-  margin-left: 25px;
+    margin-left: 25px;
 }
