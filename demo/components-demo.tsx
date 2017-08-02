@@ -2,7 +2,7 @@ import * as React from 'react';
 import {ToggleDemo} from './components/toggle-demo';
 import {CheckBoxDemo} from "./components/checkbox-demo";
 import { TreeViewDemo } from './components/tree-view-demo';
-import { BirthDatePickerDemo } from './components/birth-date-picker-demo';
+import { BirthdayPickerDemo } from './components/birthday-picker-demo';
 import './style.st.css';
 import '../src/style/default-theme/base.st.css';
 import { RadioGroupDemo } from './components/radio-group-demo'
@@ -22,8 +22,8 @@ export class ComponentsDemo extends React.Component<{}, {}>{
             </div>
             <hr />
             <div>
-                <h2>Birth date picker</h2>
-                <BirthDatePickerDemo />
+                <h2>Birthday picker</h2>
+                <BirthdayPickerDemo />
             </div>
             <div>
                 <h2>TreeView</h2>

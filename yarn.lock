@@ -1624,6 +1624,10 @@ forwarded@~0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/forwarded/-/forwarded-0.1.0.tgz#19ef9874c4ae1c297bcf078fde63a09b66a84363"
 
+fp-ts@^0.4.3:
+  version "0.4.3"
+  resolved "https://registry.yarnpkg.com/fp-ts/-/fp-ts-0.4.3.tgz#03877fb7e5aa3c04d0694e9371543e9dbfe3ef6f"
+
 fresh@0.5.0:
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/fresh/-/fresh-0.5.0.tgz#f474ca5e6a9246d6fd8e0953cfa9b9c805afa78e"
@@ -1967,6 +1971,10 @@ icss-replace-symbols@^1.1.0:
 ieee754@^1.1.4:
   version "1.1.8"
   resolved "https://registry.yarnpkg.com/ieee754/-/ieee754-1.1.8.tgz#be33d40ac10ef1926701f6f08a2d86fbfd1ad3e4"
+
+ifndef@^0.0.31:
+  version "0.0.31"
+  resolved "https://registry.yarnpkg.com/ifndef/-/ifndef-0.0.31.tgz#e64addd5e159467590d928c0462705b88bdb5dad"
 
 indent-string@^2.1.0:
   version "2.1.0"
@@ -2524,7 +2532,7 @@ lodash@4.16.2:
   version "4.16.2"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.16.2.tgz#3e626db827048a699281a8a125226326cfc0e652"
 
-lodash@^4.14.0, lodash@^4.17.2, lodash@^4.5.0, lodash@^4.8.0:
+lodash@^4.14.0, lodash@^4.17.2, lodash@^4.17.4, lodash@^4.5.0, lodash@^4.8.0:
   version "4.17.4"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.4.tgz#78203a4d1c328ae1d86dca6460e369b57f4055ae"
 
@@ -2596,6 +2604,10 @@ mem@^1.1.0:
   resolved "https://registry.yarnpkg.com/mem/-/mem-1.1.0.tgz#5edd52b485ca1d900fe64895505399a0dfa45f76"
   dependencies:
     mimic-fn "^1.0.0"
+
+memoize-weak@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/memoize-weak/-/memoize-weak-1.0.1.tgz#52372c4ca65a39f993ad7194781ff1240280510d"
 
 memory-fs@^0.4.0, memory-fs@~0.4.1:
   version "0.4.1"
@@ -4425,6 +4437,10 @@ tsconfig@^6.0.0:
     strip-bom "^3.0.0"
     strip-json-comments "^2.0.0"
 
+tslib@^1.7.1:
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.7.1.tgz#bc8004164691923a79fe8378bbeb3da2017538ec"
+
 tty-browserify@0.0.0:
   version "0.0.0"
   resolved "https://registry.yarnpkg.com/tty-browserify/-/tty-browserify-0.0.0.tgz#a157ba402da24e9bf957f9aa69d524eed42901a6"
@@ -4457,6 +4473,10 @@ type-is@~1.6.15:
   dependencies:
     media-typer "0.3.0"
     mime-types "~2.1.15"
+
+typelevel-ts@^0.1.3:
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/typelevel-ts/-/typelevel-ts-0.1.3.tgz#74369335683574fb70f81f8416a9b13eeea8cf79"
 
 typescript@^2.4.2:
   version "2.4.2"
@@ -4761,6 +4781,17 @@ wide-align@^1.1.0:
 window-size@0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/window-size/-/window-size-0.1.0.tgz#5438cd2ea93b202efa3a19fe8887aee7c94f9c9d"
+
+wix-react-tools@^0.5.3:
+  version "0.5.3"
+  resolved "https://registry.yarnpkg.com/wix-react-tools/-/wix-react-tools-0.5.3.tgz#6e0b0faf53fa30083bab830da0310077f7a5f593"
+  dependencies:
+    fp-ts "^0.4.3"
+    ifndef "^0.0.31"
+    lodash "^4.17.4"
+    memoize-weak "^1.0.1"
+    tslib "^1.7.1"
+    typelevel-ts "^0.1.3"
 
 wordwrap@0.0.2:
   version "0.0.2"
