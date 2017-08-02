@@ -18,6 +18,7 @@
     "stylable": "^3.0.0"
   },
   "dependencies": {
+    "keycode": "^2.1.9",
     "stylable-react-component": "^1.0.3"
   },
   "devDependencies": {
