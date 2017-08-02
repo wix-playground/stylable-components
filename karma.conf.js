@@ -2,7 +2,7 @@
 // Generated on Sun Jun 18 2017 16:28:13 GMT+0300 (Jerusalem Daylight Time)
 
 const webpack = require('./webpack.config');
-const { testGlob } = require('./package.json');
+const testEntrypoint = './test/webpack.ts';
 
 const sauceLabsLaunchers = { // Check out https://saucelabs.com/platforms for all browser/platform combos
     slChrome: {
@@ -95,7 +95,7 @@ module.exports = function (config) {
         // list of files / patterns to load in the browser
         files: [
             './node_modules/core-js/client/shim.min.js',
-            testGlob
+            testEntrypoint
         ],
 
 
@@ -107,7 +107,7 @@ module.exports = function (config) {
         // preprocess matching files before serving them to the browser
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
         preprocessors: {
-            [testGlob]: ['webpack']
+            [testEntrypoint]: ['webpack']
         },
 
 
