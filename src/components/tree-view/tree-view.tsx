@@ -99,6 +99,11 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
         this.toggleItem(item);
     };
 
+    // sets correct state for items to appear or not
+    filter = (query: string) => {
+
+    };
+
     render() {
         const TreeNode = this.props.itemRenderer!;
         return (

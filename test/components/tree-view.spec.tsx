@@ -110,6 +110,12 @@ describe('<TreeView />', () => {
         return waitForDom(() => expect(elementToSelect, 'did not end up at true').to.have.attr('data-selected', 'true'));
     });
 
+    it('filters tree items correctly', () => {
+        const { select, waitForDom } = clientRenderer.render(<TreeViewDemo />);
+
+
+    });
+
     describe('Using default renderer', () => {
         it('renders correct children', () => {
             const { select, waitForDom } = clientRenderer.render(<TreeView dataSource={treeData} />);
