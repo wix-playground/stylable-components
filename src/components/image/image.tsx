@@ -30,7 +30,7 @@ const hiddenImageStyle = {
     visibility: 'hidden'
 };
 
-const backgroundSizingStyle = {
+const staticWrapperStyle = {
     display: 'inline-block',
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
@@ -60,7 +60,7 @@ export class Image extends React.PureComponent<ImageProps, ImageState>{
 
     getFallbackSrcFor(src: string): string {
         // first, fallback to defaultImage, and later to one transparent pixel
-        return (src === this.props.defaultImage) ? onePixelTransparentSrc : this.props.defaultImage!;
+        return (src !== this.props.defaultImage) ? this.props.defaultImage! : onePixelTransparentSrc;
     }
 
     render() {
@@ -78,16 +78,22 @@ export class Image extends React.PureComponent<ImageProps, ImageState>{
 
         // 'fill' is the default image behavior, so no need to put it on background
         if (resizeMode === 'contain' || resizeMode === 'cover') {
+            const wrapperStyle = {
+                ...staticWrapperStyle,
+                backgroundImage: `url("${this.state.src}")`,
+                backgroundSize: resizeMode,
+                ...style
+            };
             return (
-                <div style={{ ...backgroundSizingStyle, backgroundImage: `url("${this.state.src}")`, backgroundSize: resizeMode, ...style }} className={className}>
-                    <img style={hiddenImageStyle} {...rest} src={this.state.src} onLoad={this.onLoad} onError={this.onError} />
+                <div style={wrapperStyle} className={className} >
+                    <img {...rest} style={hiddenImageStyle} src={this.state.src} onLoad={this.onLoad} onError={this.onError} />
                 </div>
             );
         }
 
         return (
             <img {...rest}
-                style={{display: 'inline-block', ...style}}
+                style={{ display: 'inline-block', ...style }}
                 className={className}
                 src={this.state.src}
                 onLoad={this.onLoad}
