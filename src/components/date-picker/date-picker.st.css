@@ -142,7 +142,7 @@
     background-color: value(color_Hover);
 }
 
-.greyDay {
+.inactiveDay {
     font-family: ArialMT;
     font-size: 14px;
     text-align: center;

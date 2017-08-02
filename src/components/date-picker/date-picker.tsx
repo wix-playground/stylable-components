@@ -1,154 +1,153 @@
 import * as React from 'react';
 import {Calendar} from './calendar';
-import {observable, action} from 'mobx';
-import {observer} from 'mobx-react';
 import {SyntheticEvent} from "react";
 import {KeyCodes} from '../../common/key-codes';
-import {debug} from "util";
-const styles = require('./date-picker.st.css').default;
+import styles from './date-picker.st.css';
 
 const invalidDate: string = 'Invalid Date';
 
 export interface DatePickerProps {
     value: Date;
     onChange (value: Date): void;
-
-    placeholder?: string;
-    startingDay?: number;
-    showDropdownOnInit?: boolean;
-    dataAutomationId?: string;
-    openOnFocus?: boolean;
-    disabled?: boolean;
-    readOnly?: boolean;
+    placeholder: string;
+    openOnFocus: boolean;
+    disabled: boolean;
+    readOnly: boolean;
+    showDropdownOnInit: boolean;
+    startingDay: number;
+    dataAutomationId: string;
 }
 
-@observer
-export class DatePicker extends React.Component<Partial<DatePickerProps>, {}>{
-    static defaultProps = {
-        placeholder: '',
-        startingDay: 0,
-        dataAutomationId: 'DATE_PICKER',
-        openOnFocus: false,
-        disabled: false,
-        readOnly: false,
-        showDropdownOnInit: false
-    };
+export interface DatePickerState {
+    inputValue: string;
+    isDropdownVisible: boolean;
+    dropdownDate: Date;
+    highlightSelectedDate: boolean;
+    highlightFocusedDate: boolean;
+}
 
-    // @observable selectedDate: Date | undefined = this.props.value;
-    @observable dropdownDate: Date = this.props.value ? this.props.value : new Date();
-    @observable inputValue: string | undefined = this.props.value ? this.props.value.toDateString() : undefined;
-    @observable isDropdownVisible: boolean = this.props.showDropdownOnInit ? this.props.showDropdownOnInit : false;
-    @observable highlightSelectedDate: boolean = false;
-    @observable highlightFocusedDate: boolean = false;
+export class DatePicker extends React.Component<Partial<DatePickerProps>, DatePickerState>{
+    componentWillMount () {
+        this.setState({
+            inputValue: this.props.value ? this.props.value.toDateString() : '',
+            isDropdownVisible: this.props.showDropdownOnInit || false,
+            dropdownDate: this.props.value || new Date(),
+        });
+    }
 
     // Called with possibly invalid string from the input
-    @action updateStateFromString = (input: string): void => {
+    updateStateFromString = (input: string): void => {
         if (this.isDateValid(input)) {
             const updatedDate = input ? new Date(input) : new Date();
-            this.inputValue = updatedDate.toDateString();
+            this.setState({ inputValue: updatedDate.toDateString() });
 
             if (this.props.onChange) {
                 this.props.onChange(updatedDate);
             }
         } else {
-            this.inputValue = invalidDate;
+            this.setState({ inputValue: invalidDate });
         }
     };
 
     // Should only be called with valid date from the dropdown
-    @action updateStateFromDate = (input: Date): void => {
-        this.inputValue = input.toDateString();
-        this.isDropdownVisible = false;
-        this.highlightSelectedDate = true;
-        this.highlightFocusedDate = false;
-        this.dropdownDate = input;
+    updateStateFromDate = (input: Date): void => {
+        this.setState({
+            inputValue: input.toDateString() ,
+            isDropdownVisible: false,
+            highlightSelectedDate: true,
+            highlightFocusedDate: false,
+            dropdownDate: input
+        });
 
         if (this.props.onChange) {
             this.props.onChange(input);
         }
     };
 
-    @action updateDropdownDate = (updatedDate: Date): void => {
-        this.highlightFocusedDate = false;
-        this.dropdownDate = updatedDate;
+    updateDropdownDate = (updatedDate: Date): void => {
+        this.setState({
+           highlightFocusedDate: false,
+           dropdownDate: updatedDate
+        });
     };
 
-    @action onInputChange: React.EventHandler<SyntheticEvent<HTMLInputElement>> = (event): void => {
+    onInputChange: React.EventHandler<SyntheticEvent<HTMLInputElement>> = (event): void => {
         const eventTarget = event.target as HTMLInputElement;
-        this.inputValue = eventTarget.value;
+        this.setState({ inputValue: eventTarget.value });
     };
 
-    @action onFocus: React.EventHandler<SyntheticEvent<HTMLInputElement>> = (): void => {
-        this.isDropdownVisible = this.props.openOnFocus!;
+    onFocus: React.EventHandler<SyntheticEvent<HTMLInputElement>> = (): void => {
+        this.setState({ isDropdownVisible: true })
     };
 
-    @action onClick: React.EventHandler<SyntheticEvent<HTMLInputElement>> = (event: React.MouseEvent<HTMLInputElement>): void => {
-        event.preventDefault();
-        this.isDropdownVisible = !this.isDropdownVisible;
+    onMouseDown: React.EventHandler<SyntheticEvent<HTMLInputElement>> = (): void => {
+        this.setState({ isDropdownVisible: !this.state.isDropdownVisible });
     };
 
-    @action onBlur: React.EventHandler<SyntheticEvent<HTMLInputElement>> = (event): void => {
+    onBlur: React.EventHandler<SyntheticEvent<HTMLInputElement>> = (event): void => {
         const eventTarget = event.target as HTMLInputElement;
         this.updateStateFromString(eventTarget.value);
-        this.isDropdownVisible = false;
+        this.setState({ isDropdownVisible: false })
     };
 
-    @action shiftDate = (daysToShift: number): void => {
-        const shiftedDate: Date = new Date(this.dropdownDate.getFullYear(), this.dropdownDate.getMonth(), this.dropdownDate.getDate());
-        shiftedDate.setDate(this.dropdownDate.getDate() + daysToShift);
-        this.highlightFocusedDate = true;
-        this.dropdownDate = shiftedDate;
+    shiftDate = (daysToShift: number): void => {
+        const shiftedDate: Date = new Date(this.state.dropdownDate.getFullYear(), this.state.dropdownDate.getMonth(), this.state.dropdownDate.getDate());
+        shiftedDate.setDate(this.state.dropdownDate.getDate() + daysToShift);
+        this.setState({
+           highlightFocusedDate: true,
+           dropdownDate: shiftedDate
+        });
     };
 
-    @action onKeyDown: React.EventHandler<SyntheticEvent<HTMLInputElement>> = (event: React.KeyboardEvent<HTMLInputElement>): void => {
+    onKeyDown: React.EventHandler<SyntheticEvent<HTMLInputElement>> = (event: React.KeyboardEvent<HTMLInputElement>): void => {
         const eventTarget = event.target as HTMLInputElement;
         const {keyCode} = event;
 
         if (!this.props.disabled && !this.props.readOnly) {
             switch (keyCode) {
                 case KeyCodes.ENTER:
-                    this.highlightFocusedDate ? this.updateStateFromDate(this.dropdownDate) : this.updateStateFromString(eventTarget.value);
+                    this.state.highlightFocusedDate ? this.updateStateFromDate(this.state.dropdownDate) : this.updateStateFromString(eventTarget.value);
                     event.preventDefault();
 
                     if (!this.props.openOnFocus) {
-                        this.isDropdownVisible = !this.isDropdownVisible;
+                        this.setState({ isDropdownVisible: !this.state.isDropdownVisible });
                     } else {
-                        this.isDropdownVisible = false;
+                        this.setState({ isDropdownVisible: false });
                     }
 
                     break;
 
                 case KeyCodes.SPACE:
-                    this.isDropdownVisible = !this.isDropdownVisible;
+                    this.setState({ isDropdownVisible: !this.state.isDropdownVisible });
                     event.preventDefault();
                     break;
 
                 case KeyCodes.RIGHT:
-                    if (this.isDropdownVisible) {
+                    if (this.state.isDropdownVisible) {
                         event.preventDefault();
                         this.shiftDate(1);
                     }
                     break;
 
                 case KeyCodes.LEFT:
-                    if (this.isDropdownVisible) {
+                    if (this.state.isDropdownVisible) {
                         event.preventDefault();
                         this.shiftDate(-1);
                     }
                     break;
 
                 case KeyCodes.UP:
-                    if (this.isDropdownVisible) {
+                    if (this.state.isDropdownVisible) {
                         event.preventDefault();
                         this.shiftDate(-7);
                     }
                     break;
 
                 case KeyCodes.DOWN:
-                    if (this.props.openOnFocus === false && !this.isDropdownVisible) {
-                        this.isDropdownVisible = !this.isDropdownVisible;
-                    } else if (!this.isDropdownVisible) {
-                        this.isDropdownVisible = !this.isDropdownVisible;
+                    if (this.props.openOnFocus === false && !this.state.isDropdownVisible) {
+                        this.setState({ isDropdownVisible: !this.state.isDropdownVisible });
+                    } else if (!this.state.isDropdownVisible) {
+                        this.setState({ isDropdownVisible: !this.state.isDropdownVisible });
                     } else {
                         this.shiftDate(7);
                     }
@@ -167,22 +166,22 @@ export class DatePicker extends React.Component<Partial<DatePickerProps>, {}>{
             <div className={styles.root} data-automation-id={this.props.dataAutomationId}>
                 <input className={styles.input}
                        onKeyDown={this.onKeyDown}
-                       onClick={this.onClick}
+                       onMouseDown={this.onMouseDown}
                        onBlur={this.onBlur}
                        onFocus={this.onFocus}
                        onChange={this.onInputChange}
-                       value={this.inputValue}
+                       value={this.state.inputValue}
                        placeholder={this.props.placeholder}
                        type="text"
                        data-automation-id="DATE_PICKER_INPUT" />
-                {this.isDropdownVisible
+                {this.state.isDropdownVisible
                     ? <Calendar onChange={this.updateStateFromDate}
                                 updateDropdownDate={this.updateDropdownDate}
-                                value={this.dropdownDate}
+                                value={this.state.dropdownDate}
                                 selectedDate={this.props.value}
-                                startingDay={this.props.startingDay!}
-                                highlightSelectedDate={this.highlightSelectedDate}
-                                highlightFocusedDate={this.highlightFocusedDate}  />
+                                startingDay={this.props.startingDay}
+                                highlightSelectedDate={this.state.highlightSelectedDate}
+                                highlightFocusedDate={this.state.highlightFocusedDate}  />
                     : null
                 }
             </div>

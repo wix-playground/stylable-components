@@ -22,7 +22,8 @@ export class DatePickerDemo extends React.Component<DatePickerDemoProps, DatePic
             <div>
                 <h2>Standard DatePicker</h2>
                 <DatePicker dataAutomationId="BASIC_DATEPICKER" placeholder="mm/dd/yyyy" value={this.state.value} onChange={this.onChange} {...this.props} />
-            </div>);
+            </div>
+        );
     }
 }
 

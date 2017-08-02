@@ -20,26 +20,33 @@ export class Day extends React.Component<DayProps, {}> {
     @computed
     get styles(): string {
         if (this.props.focused) {
-            return [styles.calendarItem, styles.day, styles.focusedDay].join(' ');
+            return [styles.calendarItem, styles.day, styles.selectedDay].join(' ');
         } else if (this.props.selected) {
             return [styles.calendarItem, styles.day, styles.selectedDay].join(' ');
         } else if (this.props.currentDay) {
             return [styles.calendarItem, styles.day, styles.currentDay].join(' ');
         } else if (this.props.partOfNextMonth || this.props.partOfPrevMonth) {
-            return [styles.calendarItem, styles.greyDay].join(' ');
+            return [styles.calendarItem, styles.inactiveDay].join(' ');
         } else {
             return [styles.calendarItem, styles.day].join(' ');
         }
     }
 
-    onMouseDown: React.EventHandler<React.SyntheticEvent<HTMLSpanElement>> = (event: React.SyntheticEvent<HTMLSpanElement>) => {
+    onMouseDown: React.EventHandler<React.SyntheticEvent<Element>> = (event) => {
         event.preventDefault();
+
         if (this.props.onSelect) {
             this.props.onSelect(this.props.day);
         }
     };
 
     render() {
-        return <span className={this.styles} onMouseDown={this.onMouseDown} data-automation-id={this.props.dataAutomationId}>{this.props.day}</span>
+        return (
+            <span className={this.styles}
+                     onMouseDown={this.onMouseDown}
+                     data-automation-id={this.props.dataAutomationId}>
+                {this.props.day}
+            </span>
+        );
     }
 }

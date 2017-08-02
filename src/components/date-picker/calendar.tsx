@@ -7,13 +7,13 @@ const styles = require('./date-picker.st.css').default;
 
 export interface CalendarProps {
     value: Date;
-    selectedDate: Date | undefined;
-    focusedDate?: Date;
     onChange (date: Date): void;
     updateDropdownDate (date: Date): void;
-    startingDay: number;
-    highlightSelectedDate: boolean;
-    highlightFocusedDate: boolean;
+    selectedDate?: Date;
+    focusedDate?: Date;
+    startingDay?: number;
+    highlightSelectedDate?: boolean;
+    highlightFocusedDate?: boolean;
 }
 
 const monthNames = getMonthNames();
@@ -41,24 +41,21 @@ export class Calendar extends React.Component<CalendarProps, {}>{
 
     @computed
     get days (): Array<JSX.Element> {
-        const dayArray: Array<number> = [];
+        const dayArray: Array<JSX.Element> = [];
         const daysInMonth = getDaysInMonth(this.props.value);
 
-        for (let i = 1; i <= daysInMonth; i++) {
-            dayArray.push(i);
-        }
-
-        return dayArray.map((day: number) => {
-            return (
-                <Day day={day}
-                     focused={this.isFocused(day)}
-                     selected={this.isSelected(day)}
-                     currentDay={this.isCurrentDay(day)}
-                     onSelect={this.selectDay}
-                     dataAutomationId={'DAY_' + day}
-                     key={'DAY_' + day} />
+        for (let day = 1; day <= daysInMonth; day++) {
+            dayArray.push(<Day day={day}
+                 focused={this.isFocused(day)}
+                 selected={this.isSelected(day)}
+                 currentDay={this.isCurrentDay(day)}
+                 onSelect={this.selectDay}
+                 dataAutomationId={'DAY_' + day}
+                 key={'DAY_' + day} />
             );
-        });
+        };
+
+        return dayArray;
     }
 
     @computed
@@ -77,13 +74,13 @@ export class Calendar extends React.Component<CalendarProps, {}>{
     get previousDays (): Array<JSX.Element> {
         const previousDays: Array<JSX.Element> = [];
         const lastDayOfPrevMonth: number = getDaysInMonth(getMonthFromOffset(this.props.value, -1));
-        const numberOfDaysToDisplay: number = getNumOfPreviousDays(this.props.value, this.props.startingDay);
+        const numberOfDaysToDisplay: number = lastDayOfPrevMonth - getNumOfPreviousDays(this.props.value, this.props.startingDay);
 
-        for (let i = (lastDayOfPrevMonth - numberOfDaysToDisplay) + 1; i <= lastDayOfPrevMonth; i++) {
+        for (let day = numberOfDaysToDisplay + 1; day <= lastDayOfPrevMonth; day++) {
             previousDays.push((
-                <Day day={i}
-                     dataAutomationId={'PREV_DAY_' + i}
-                     key={'PREV_DAY_' + i}
+                <Day day={day}
+                     dataAutomationId={'PREV_DAY_' + day}
+                     key={'PREV_DAY_' + day}
                      partOfPrevMonth={true} />
             ));
         }

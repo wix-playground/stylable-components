@@ -1,5 +1,5 @@
-export * from './tree-view';
 export * from './date-picker';
-export * from './birth-date-picker';
+export * from './tree-view';
+export * from './birthday-picker';
 export * from './checkbox';
 export * from './radio-group';
