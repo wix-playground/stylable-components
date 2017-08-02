@@ -1,9 +1,8 @@
 .root {
-    font-family: Arial, sans-serif;
-    font-size: 16px;
+    font-family: 'Helvetica', Arial, sans-serif;
+    font-size: 18px;
     line-height: 1.5;
     text-align: left;
-    color: #000000;
     outline: 0 solid transparent;
 }
 
@@ -12,17 +11,14 @@
     cursor: pointer;
     display: inline;
     padding: 2px 5px;
-    width: 228px;
-    height: 24px;
 }
 
 .tree-node:focused {
-    background-color: #edf7ff;
+    color: purple;
 }
 
 .tree-node:selected {
-    background-color: #4990e2;
-    color: white;
+    background-color: goldenrod;
 }
 
 .nested-tree {
