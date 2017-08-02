@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { observer } from 'mobx-react';
-import { autorun, observable } from 'mobx';
+import {action, autorun, observable} from 'mobx';
 import { KeyCodes } from '../../common/key-codes';
 
 import { SBComponent, SBStateless } from 'stylable-react-component';
@@ -33,6 +33,7 @@ export interface TreeItemState {
     isSelected: boolean;
     isExpanded: boolean;
     isFocused: boolean;
+    shouldRender: boolean;
 }
 
 export type StateMap = Map<TreeItemData, TreeItemState>;
@@ -43,7 +44,7 @@ const itemIdPrefix = 'TREE_ITEM';
 export const TreeItem: React.SFC<TreeItemProps> = SBStateless(({ item, itemRenderer, onItemClick, onIconClick, stateMap, state }) => {
     const itemLabel = item.label.replace(' ', '_');
     const TreeNode = itemRenderer;
-    return (
+    return state!.shouldRender ? (
         <div>
             <div data-automation-id={`${itemIdPrefix}_${itemLabel}`} className="tree-node"
                  cssStates={{selected: state!.isSelected, focused: state!.isFocused}}
@@ -58,7 +59,7 @@ export const TreeItem: React.SFC<TreeItemProps> = SBStateless(({ item, itemRende
                 )}
             </div>
         </div>
-    )
+    ) : null;
 }, style);
 
 const TreeItemWrapper = observer(TreeItem);
@@ -71,7 +72,7 @@ export class TreeStateMap {
         if (state) {
             return state;
         } else {
-            const newState = observable({ isSelected: false, isExpanded: false, isFocused: false });
+            const newState = observable({ isSelected: false, isExpanded: false, isFocused: false, shouldRender: true });
             this.stateMap.set(item, newState);
             return newState;
         }
@@ -100,18 +101,20 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
     componentDidMount() {
         autorun(() => {
             if (this.props.selectedItem) {
-                this.stateMap.getItemState(this.props.selectedItem).isSelected = true;
+                action(() => this.stateMap.getItemState(this.props.selectedItem!).isSelected = true)();
             }
             if (this.props.focusedItem) {
-                this.stateMap.getItemState(this.props.focusedItem).isFocused = true;
+                action(() => this.stateMap.getItemState(this.props.focusedItem!).isFocused = true)();
             }
         });
     }
 
+    @action
     toggleItem(item: TreeItemData) {
         this.stateMap.getItemState(item).isExpanded = !this.stateMap.getItemState(item).isExpanded;
     }
 
+    @action
     selectItem(item: TreeItemData) {
         if (this.props.selectedItem) {
             if (this.props.selectedItem !== item ) {
@@ -123,11 +126,13 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
         }
     }
 
+    @action
     onSelectItem = (item: TreeItemData) => {
         this.selectItem(item);
         if (this.props.focusedItem) this.stateMap.getItemState(this.props.focusedItem).isFocused = false;
     };
 
+    @action
     onToggleItem = (item: TreeItemData) => {
         if (this.props.focusedItem) this.stateMap.getItemState(this.props.focusedItem).isFocused = false;
         this.toggleItem(item);
@@ -187,6 +192,7 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
 
     }
 
+    @action
     onFocusItem(item: TreeItemData) {
         if (this.props.focusedItem !== item) {
             if (this.props.focusedItem) this.stateMap.getItemState(this.props.focusedItem).isFocused = false;
@@ -217,6 +223,7 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
     focusLast = () =>
         this.props.onFocusItem!(this.getLastAvailableItem(this.props.dataSource[this.props.dataSource.length - 1] as TreeItemData));
 
+    @action
     onKeyDown = (e: any) => {
         if (!this.props.focusedItem) return;
 
@@ -242,15 +249,30 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
         }
     };
 
-    // sets correct state for items to appear or not
-    filter = (query: string) => {
+    updateFilteredState(data: TreeItemData[], query: string) {
+        let shouldRender = false;
+        data.forEach(item => {
+            const startsWithQuery = item.label.startsWith(query);
+            const descendantShouldRender = item.children && this.updateFilteredState(item.children, query);
+            if (startsWithQuery || descendantShouldRender) {
+                shouldRender = true;
+                this.stateMap.getItemState(item).shouldRender = true;
+            }
+        });
+        return shouldRender;
+    }
 
+    // sets correct state for items to appear or not
+    filter = (event: any) => {
+        const query = event.target.data;
+        this.updateFilteredState(this.props.dataSource as TreeItemData[], query);
     };
 
     render() {
         const TreeNode = this.props.itemRenderer!;
         return (
             <div data-automation-id='TREE_VIEW' className="tree-view" tabIndex={0} onKeyDown={this.onKeyDown}>
+                <input type="text" data-automation-id="FILTER_INPUT" placeholder="Filter by..." onChange={this.filter}/>
                 {(this.props.dataSource || []).map((item: TreeItemData, index: number) =>
                     <TreeNode item={item} onItemClick={this.onSelectItem} itemRenderer={this.props.itemRenderer!} onIconClick={this.onToggleItem}
                               stateMap={this.stateMap} state={this.stateMap.getItemState(item)} key={`${index}`} />

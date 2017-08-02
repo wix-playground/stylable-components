@@ -2,7 +2,7 @@ import * as React from 'react';
 import { expect, ClientRenderer, sinon, simulate, waitFor } from 'test-drive-react';
 import { TreeView, TreeItem } from '../../src';
 import { TreeViewDemo } from '../../demo/components/tree-view-demo';
-import {StateMap, TreeItemData, TreeItemState, TreeStateMap} from '../../src/components/tree-view/tree-view';
+import { TreeItemData, TreeItemState, TreeStateMap} from '../../src/components/tree-view/tree-view';
 import { KeyCodes } from '../../src/common/key-codes';
 
 const treeView = 'TREE_VIEW';
@@ -38,13 +38,6 @@ function getAllNodeLabels(treeData: Object[]): string[] {
     return treeData.map(getLabelsList).reduce((prev, next) => [...prev, ...next]);
 }
 
-function initStateMap(data: Object[] = [], stateMap: StateMap) {
-    data.forEach((item: TreeItemData) => {
-        stateMap.set(item, { isSelected: false, isExpanded: true, isFocused: false });
-        initStateMap(item.children || [], stateMap);
-    });
-}
-
 describe('<TreeView />', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
@@ -64,7 +57,7 @@ describe('<TreeView />', () => {
     const item = { label: 'label' };
     const nestedItem: TreeItemData = treeData[0].children![1];
 
-    const state: TreeItemState = { isSelected: false, isExpanded: true, isFocused: false };
+    const state: TreeItemState = { isSelected: false, isExpanded: true, isFocused: false, shouldRender: true };
 
     const allNodesLabels: string[] = getAllNodeLabels(treeData);
 
