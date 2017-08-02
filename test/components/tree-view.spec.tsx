@@ -138,7 +138,6 @@ describe('<TreeView />', () => {
             it('expands and collapses focused treeItem when right and left arrows are clicked', async () => {
                 const { select, waitForDom } = clientRenderer.render(<TreeViewDemo />);
 
-                const rootNode = getTreeItem(treeData[0].label);
                 const nodeChildren = treeData[0].children;
 
                 // to expand root
@@ -155,12 +154,40 @@ describe('<TreeView />', () => {
                 return waitForDom(() => expect(select(getTreeItem(nodeChildren![1].label))).to.be.present());
             });
 
-            it('returns to parent if there is after collapsing the element if possible when left is clicked', () => {
-                throw new Error('TBD');
+            it('returns to parent if there is after collapsing the element if possible when left is clicked', async () => {
+                const { select, waitForDom } = clientRenderer.render(<TreeViewDemo />);
+
+                const nodeChildren = treeData[0].children;
+
+                // to expand root
+                simulate.click(select(getTreeItemIcon(treeData[0].label)));
+
+                await waitForDom(() => expect(select(getTreeItem(nodeChildren![1].label))).to.be.present());
+
+                simulate.click(select(getTreeItemLabel(nodeChildren![1].label)));
+
+                await waitForDom(() => expect(select(getTreeItem(nodeChildren![1].label))).to.have.attr('data-focused', 'true'));
+
+                simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), { keyCode: KeyCodes.LEFT });
+
+                return waitForDom(() => expect(select(getTreeItem(treeData[0].label))).to.have.attr('data-focused', 'true'));
             });
 
-            it('moves to child to if there is one after expanding the element if possible when right is clicked', () => {
-                throw new Error('TBD');
+            it('moves to child to if there is one after expanding the element if possible when right is clicked', async () => {
+                const { select, waitForDom } = clientRenderer.render(<TreeViewDemo />);
+
+                const nodeChildren = treeData[0].children;
+
+                // to expand root
+                simulate.click(select(getTreeItemIcon(treeData[0].label)));
+
+                await waitForDom(() => expect(select(getTreeItem(nodeChildren![0].label))).to.be.present());
+
+                await waitForDom(() => expect(select(getTreeItem(treeData[0].label))).to.have.attr('data-focused', 'true'));
+
+                simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), { keyCode: KeyCodes.RIGHT });
+
+                return waitForDom(() => expect(select(getTreeItem(nodeChildren![0].label))).to.have.attr('data-focused', 'true'));
             });
 
             it('focuses next are previous when down and up arrows are clicked', async () => {
