@@ -249,14 +249,17 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
         }
     };
 
+    @action
     updateFilteredState(data: TreeItemData[], query: string) {
         let shouldRender = false;
         data.forEach(item => {
-            const startsWithQuery = item.label.startsWith(query);
+            const startsWithQuery = item.label.toLowerCase().startsWith(query);
             const descendantShouldRender = item.children && this.updateFilteredState(item.children, query);
             if (startsWithQuery || descendantShouldRender) {
                 shouldRender = true;
                 this.stateMap.getItemState(item).shouldRender = true;
+            } else {
+                this.stateMap.getItemState(item).shouldRender = false;
             }
         });
         return shouldRender;
@@ -264,7 +267,7 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
 
     // sets correct state for items to appear or not
     filter = (event: any) => {
-        const query = event.target.data;
+        const query = event.target.value.toLowerCase();
         this.updateFilteredState(this.props.dataSource as TreeItemData[], query);
     };
 
