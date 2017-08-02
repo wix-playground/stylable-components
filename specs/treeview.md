@@ -184,8 +184,8 @@ const data = [
   ];
 ```
 * Render a tree which shows keyboard navigation working
-* Search for a TreeItem (using a string query - default search)
-* Search for a TreeItem (using a custom search function)
+* Filter tree items (by defualt: using string query)
+* Filter tree items (using a custom search function)
 * Lazy loading -> implement the loadMethod and pending state
 
 
