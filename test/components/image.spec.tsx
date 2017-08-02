@@ -19,7 +19,10 @@ describe('<Image />', () => {
     it('uses one pixel transparent gif as default source', async () => {
         const { select, waitForDom } = clientRenderer.render(<Image data-automation-id={nativeImage} />);
 
-        await waitForDom(() => expect(select(nativeImage)).to.have.attribute('src', onePixelTransparentSrc));
+        await waitForDom(() => {
+            expect(select(nativeImage)).to.have.attribute('src', onePixelTransparentSrc)
+            expect(select(nativeImage)).to.be.present();
+        });
     });
 
     it('uses provided defaultImage as default source', async () => {
