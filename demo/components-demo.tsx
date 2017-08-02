@@ -28,8 +28,10 @@ export class ComponentsDemo extends React.Component<{}, {}>{
                 <TreeViewDemo />
             </div>
             <hr />
-            <h1>{'<DatePicker />'}</h1>
-            <DatePickerDemo />
+            <div>
+                <h2>DatePicker</h2>
+                <DatePickerDemo />
+            </div>
             <hr />
             <div>
                 <h2>Typography</h2>
