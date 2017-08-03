@@ -13,7 +13,7 @@ describe('The DatePicker Component', () => {
 
     afterEach(() => clientRenderer.cleanup());
 
-    const JANUARY_FIRST = new Date(2017, 0, 1;
+    const JANUARY_FIRST = new Date(2017, 0, 1);
     const FEBRUARY_FIRST = new Date(2017, 1, 1);
     const MARCH_FIRST  = new Date(2017, 2, 1);
     const DECEMBER_FIRST = new Date(2017, 11, 1);
