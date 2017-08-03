@@ -95,8 +95,8 @@ describe('The DatePicker Component', () => {
         await waitForDom(() => expect(select(datePickerDropdownId)).to.be.present());
 
         // Advance one week
-        simulate.keyDown(datePickerInput, { keyCode: KeyCodes.DOWN });
-        simulate.keyDown(datePickerInput, { keyCode: KeyCodes.ENTER });
+        simulate.keyDown(datePickerInput, { keyCode: keycode('down') });
+        simulate.keyDown(datePickerInput, { keyCode: keycode('enter') });
 
         await waitForDom(() => {
             expect(select(datePickerDropdownId)).to.be.absent();
