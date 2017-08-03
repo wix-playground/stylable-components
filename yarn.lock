@@ -1629,8 +1629,8 @@ forwarded@~0.1.0:
   resolved "https://registry.yarnpkg.com/forwarded/-/forwarded-0.1.0.tgz#19ef9874c4ae1c297bcf078fde63a09b66a84363"
 
 fp-ts@^0.4.3:
-  version "0.4.3"
-  resolved "https://registry.yarnpkg.com/fp-ts/-/fp-ts-0.4.3.tgz#03877fb7e5aa3c04d0694e9371543e9dbfe3ef6f"
+  version "0.4.4"
+  resolved "https://registry.yarnpkg.com/fp-ts/-/fp-ts-0.4.4.tgz#cde91175fbc6e602073469837a9fdb56fcd47ba8"
 
 fresh@0.5.0:
   version "0.5.0"
@@ -4786,9 +4786,9 @@ window-size@0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/window-size/-/window-size-0.1.0.tgz#5438cd2ea93b202efa3a19fe8887aee7c94f9c9d"
 
-wix-react-tools@^0.5.3:
-  version "0.5.3"
-  resolved "https://registry.yarnpkg.com/wix-react-tools/-/wix-react-tools-0.5.3.tgz#6e0b0faf53fa30083bab830da0310077f7a5f593"
+wix-react-tools@^0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/wix-react-tools/-/wix-react-tools-0.6.0.tgz#228a26d1579f5af737581636e4c1fbb2b04f675d"
   dependencies:
     fp-ts "^0.4.3"
     ifndef "^0.0.31"
