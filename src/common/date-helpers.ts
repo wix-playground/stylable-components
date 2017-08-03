@@ -1,9 +1,8 @@
-import {start} from "repl";
+const dayNames: Array<string> = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
 export function getDayNames (startingDay: number = 0): Array<string> {
     // Days start from Sunday (Sunday = 0, Monday = 1, etc.)
-    const dayNames: Array<string> = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-
     for (let i = startingDay; i > 0; i--) {
         dayNames.push(dayNames.shift()!);
     }
@@ -12,7 +11,7 @@ export function getDayNames (startingDay: number = 0): Array<string> {
 }
 
 export function getMonthNames (): Array<string> {
-    return ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    return monthNames;
 }
 
 export function getMonthFromOffset (date: Date, offset: number): Date {
