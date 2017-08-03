@@ -14,10 +14,10 @@ describe('The DatePicker Component', () => {
 
     afterEach(() => clientRenderer.cleanup());
 
-    const JANUARY_FIRST = new Date(2017, 0, 1);
-    const FEBRUARY_FIRST = new Date(2017, 1, 1);
-    const MARCH_FIRST  = new Date(2017, 2, 1);
-    const DECEMBER_FIRST = new Date(2017, 11, 1);
+    const JANUARY_FIRST = new Date(Date.UTC(2017, 0, 1, 0, 0, 0));
+    const FEBRUARY_FIRST = new Date(Date.UTC(2017, 1, 1, 0, 0, 0));
+    const MARCH_FIRST  = new Date(Date.UTC(2017, 2, 1, 0, 0, 0));
+    const DECEMBER_FIRST = new Date(Date.UTC(2017, 11, 1, 0, 0, 0));
 
     const triggerChange = (domElememt: Element, value: string) => {
         trigger.change(domElememt, value);
