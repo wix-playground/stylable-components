@@ -194,6 +194,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
           value={this.props.value}
           type="number"
           className={style['slider-native-input']}
+          data-automation-id='SLIDER-NATIVE-INPUT'
           name={this.props.name}
           required={this.props.required}
           tabIndex={-1}
