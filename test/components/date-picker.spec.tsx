@@ -206,10 +206,10 @@ describe('The DatePicker Component', () => {
 
         it('has a button which steps back a month', async () => {
             const {select, waitForDom} = clientRenderer.render(<DatePickerDemo isDropdownVisible={true} value={JANUARY_FIRST} />);
-
             expect(select('YEAR')).to.contain.text('2017');
             expect(select('MONTH_NAME')).to.contain.text('January');
             simulate.mouseDown(select('PREV_MONTH_BUTTON'));
+
 
             await waitForDom(() => {
                 expect(select('YEAR')).to.contain.text('2016');
