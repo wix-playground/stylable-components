@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {findDOMNode} from 'react-dom';
 import {SBComponent} from 'stylable-react-component';
 import styles from './time-picker.st.css';
 
@@ -17,14 +18,20 @@ export interface State {
 	ss: string
 }
 
+const formatParts: FormatPart[] = ['hh', 'mm', 'ss'];
 
-const pad2 = (num: string | number) => ('00' + num).slice(-2);
-const validators = {
-	isNumber: (value: string) => /^\d{0,2}$/.test(value),
-	hh: (value: number) => value >= 0 && value <= 23,
-	mm: (value: number) => value >= 0 && value <= 59,
-	ss: (value: number) => value >= 0 && value <= 59,
-};
+const pad2 = (num: string) => ('00' + num).slice(-2);
+const isNumber = (value: string) => /^\d{0,2}$/.test(value);
+
+const isValidValue = (num: number, part: FormatPart, is24format: boolean) => {
+	switch(part) {
+		case 'hh':
+			return num >= 0 && num <= (is24format ? 23 : 12);
+		case 'mm':
+		case 'ss':
+			return num >= 0 && num <= 59;
+	}
+}
 
 @SBComponent(styles)
 export default class TimePicker extends React.Component<Props, State> {
@@ -73,14 +80,32 @@ export default class TimePicker extends React.Component<Props, State> {
 	}
 
 	onChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
-		const {value, name} = e.currentTarget;
-		if (
-			!validators.isNumber(value) ||
-			!validators[name as FormatPart](Number(value))
-		) {
+		const {value} = e.currentTarget;
+		const name = e.currentTarget.name as FormatPart;
+		if (!isNumber(value)) {
 			return;
 		}
-		this.setState({[name as any]: value});
+		const numValue = Number(value);
+
+		if (!isValidValue(numValue, name, true)) {
+			return;
+		}
+		const shouldWaitForInput = isValidValue(numValue * 10, name, true);
+		const nextState = {
+			[name as any]: shouldWaitForInput ? value : pad2(value)
+		};
+		this.setState(nextState, () => {
+			if (shouldWaitForInput) {
+				return;
+			}
+			const refIndex = formatParts.indexOf(name);
+			const nextRef = this.refs[formatParts[refIndex + 1]];
+			if (nextRef) {
+				const next = findDOMNode(nextRef) as HTMLInputElement;
+				next.focus();
+			}
+		});
+
 	}
 
 	componentWillReceiveProps(props: Props) {
@@ -98,6 +123,7 @@ export default class TimePicker extends React.Component<Props, State> {
 				<input
 					className='input'
 					size={2}
+					ref={key}
 					key={key}
 					name={key}
 					value={this.state[key]}
