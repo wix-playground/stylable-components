@@ -97,7 +97,7 @@ const treeData: TreeItemData[] = [
             { label: 'Caesar Salad' }
         ]},
         { label: 'Steaks', children: [
-            { label: 'Fillet Steak' },
+            { label: 'Filet Steak' },
             { label: 'Sirloin Steak' }
         ]},
         { label: 'Desserts', children: [
