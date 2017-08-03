@@ -131,7 +131,7 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
         }
     }
 
-    private stepValue(e: React.SyntheticEvent<HTMLElement>, direction: Direction) {
+    private stepValue(direction: Direction) {
         const {value} = this.state;
         const {step} = this.props;
         const next = (direction == Direction.Increase ?
@@ -148,20 +148,20 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
         e => this.setState({focus: false});
 
     private handleIncrement: React.MouseEventHandler<HTMLElement> =
-        e => this.stepValue(e, Direction.Increase);
+        e => this.stepValue(Direction.Increase);
 
     private handleDecrement: React.MouseEventHandler<HTMLElement> =
-        e => this.stepValue(e, Direction.Decrease);
+        e => this.stepValue(Direction.Decrease);
 
     private handleInputKeyDown: React.KeyboardEventHandler<HTMLElement> =
         e => {
             switch (e.keyCode) {
                 case KeyCodes.UP:
-                    this.stepValue(e, Direction.Increase);
+                    this.stepValue(Direction.Increase);
                     e.preventDefault();
                     break;
                 case KeyCodes.DOWN:
-                    this.stepValue(e, Direction.Decrease);
+                    this.stepValue(Direction.Decrease);
                     e.preventDefault();
                     break;
                 case KeyCodes.ENTER:
