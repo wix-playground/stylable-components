@@ -30,7 +30,7 @@ describe('The DatePicker Component', () => {
             triggerChange(datePickerInput!, '2017/02/01');
             simulate.keyDown(datePickerInput, { keyCode: keycode('enter') });
 
-            await waitForDom(() => expect(select(currentDate)).to.contain.text('Wed Feb 01 2017'));
+            await waitForDom(() => expect(select(currentDate)).to.have.text('Wed Feb 01 2017'));
         });
 
         it('clicks on the input, picks a date from the dropdown, and then expects the dropdown to close and the date to appear in the input', async () => {
@@ -47,7 +47,7 @@ describe('The DatePicker Component', () => {
 
             await waitForDom(() => {
                 expect(select(datePickerDropdownId)).to.be.absent();
-                expect(select(currentDate)).to.contain.text('Wed Jan 04 2017')
+                expect(select(currentDate)).to.have.text('Wed Jan 04 2017')
             });
         });
     });
@@ -65,7 +65,7 @@ describe('The DatePicker Component', () => {
         triggerChange(datePickerInput!, '2017/02/01');
         simulate.blur(datePickerInput);
 
-        await waitForDom(() => expect(select(currentDate)).to.contain.text('Wed Feb 01 2017'));
+        await waitForDom(() => expect(select(currentDate)).to.have.text('Wed Feb 01 2017'));
     });
 
     it('should use a provided placeholder', async () => {
@@ -97,8 +97,8 @@ describe('The DatePicker Component', () => {
             const {select, waitForDom} = clientRenderer.render(<DatePickerDemo isDropdownVisible={true} value={FEBRUARY_FIRST} />);
 
             await waitForDom(() => {
-                dayNames.forEach(name => expect(select(datePickerDropdownId)).to.contain.text(name));
-                days.forEach(day => expect(select(datePickerDropdownId)).to.contain.text(day));
+                dayNames.forEach(dayName => expect(select(`DAY_NAME_${dayName.toUpperCase()}`)).to.have.text(dayName));
+                days.forEach(dayNumeric => expect(select(`DAY_${dayNumeric}`)).to.have.text(dayNumeric));
             });
         });
 
@@ -116,7 +116,7 @@ describe('The DatePicker Component', () => {
             await waitForDom(() => {
                 const dayNameElements = dayNameIds.map((name, index) => {
                     const element: Element = select(name)!;
-                    expect(element).to.contain.text(dayNames[index]);
+                    expect(element).to.have.text(dayNames[index]);
                     return element;
                 });
 
@@ -171,13 +171,13 @@ describe('The DatePicker Component', () => {
         it('displays the year', async () => {
             const {select, waitForDom} = clientRenderer.render(<DatePickerDemo isDropdownVisible={true} value={JANUARY_FIRST} />);
 
-            await waitForDom(() => expect(select('YEAR')).to.contain.text('2017'));
+            await waitForDom(() => expect(select('YEAR')).to.have.text('2017'));
         });
 
         it('displays the name of the month', async () => {
             const {select, waitForDom} = clientRenderer.render(<DatePickerDemo isDropdownVisible={true} value={JANUARY_FIRST} />);
 
-            await waitForDom(() => expect(select('MONTH_NAME')).to.contain.text('January'));
+            await waitForDom(() => expect(select('MONTH_NAME')).to.have.text('January'));
         });
 
         it('displays the days of the week', async () => {
@@ -186,7 +186,7 @@ describe('The DatePicker Component', () => {
 
             await waitForDom(() => {
                for (let i = 0; i < dayNames.length; i++) {
-                   expect(select('DAY_NAME_' + dayNames[i].toUpperCase())).to.contain.text(dayNames[i]);
+                   expect(select('DAY_NAME_' + dayNames[i].toUpperCase())).to.have.text(dayNames[i]);
                }
             });
         });
@@ -194,26 +194,26 @@ describe('The DatePicker Component', () => {
         it('has a button which steps forward a month', async () => {
             const {select, waitForDom} = clientRenderer.render(<DatePickerDemo isDropdownVisible={true} value={DECEMBER_FIRST} />);
 
-            expect(select('YEAR')).to.contain.text('2017');
-            expect(select('MONTH_NAME')).to.contain.text('December');
+            expect(select('YEAR')).to.have.text('2017');
+            expect(select('MONTH_NAME')).to.have.text('December');
             simulate.mouseDown(select('NEXT_MONTH_BUTTON'));
 
             await waitForDom(() => {
-                expect(select('YEAR')).to.contain.text('2018');
-                expect(select('MONTH_NAME')).to.contain.text('January');
+                expect(select('YEAR')).to.have.text('2018');
+                expect(select('MONTH_NAME')).to.have.text('January');
             });
         });
 
         it('has a button which steps back a month', async () => {
             const {select, waitForDom} = clientRenderer.render(<DatePickerDemo isDropdownVisible={true} value={JANUARY_FIRST} />);
-            expect(select('YEAR')).to.contain.text('2017');
-            expect(select('MONTH_NAME')).to.contain.text('January');
+            expect(select('YEAR')).to.have.text('2017');
+            expect(select('MONTH_NAME')).to.have.text('January');
             simulate.mouseDown(select('PREV_MONTH_BUTTON'));
 
 
             await waitForDom(() => {
-                expect(select('YEAR')).to.contain.text('2016');
-                expect(select('MONTH_NAME')).to.contain.text('December');
+                expect(select('YEAR')).to.have.text('2016');
+                expect(select('MONTH_NAME')).to.have.text('December');
             });
         });
 
