@@ -56,7 +56,7 @@ export class Calendar extends React.Component<CalendarProps, {}>{
     get dayNames (): Array<JSX.Element> {
         return getDayNames().map((name: string, index: number) => {
             return (
-                <span className={[styles.calendarItem, styles.dayName].join(' ')}
+                <span className={`${styles.calendarItem} ${styles.dayName}`}
                       key={'DAY_NAME_' + index}
                       data-automation-id={'DAY_NAME_' + name.toUpperCase()}>
                     {name}</span>
@@ -101,18 +101,18 @@ export class Calendar extends React.Component<CalendarProps, {}>{
                 <div className={styles.dropdownArrowWrapper}><div className={styles.dropdownArrow} /></div>
                 <div className={styles.dropdown} data-automation-id="DATE_PICKER_DROPDOWN">
                     <div className={styles.header}>
-                        <span className={[styles.arrowWrapper, styles.arrowWrapperPrev].join(' ')}
+                        <span className={`${styles.arrowWrapper} ${styles.arrowWrapperPrev}`}
                                 onMouseDown={this.goToPrevMonth}
                                 data-automation-id="PREV_MONTH_BUTTON">
-                            <i className={[styles.headerArrow, styles.headerArrowPrev].join(' ')}></i>
+                            <i className={`${styles.headerArrow} ${styles.headerArrowPrev}`} />
                         </span>
                         <span className={styles.headerDate}>
                             <span data-automation-id="MONTH_NAME">{this.monthName}</span>&nbsp;<span data-automation-id="YEAR">{this.year}</span>
                         </span>
-                        <div className={[styles.arrowWrapper, styles.arrowWrapperNext].join(' ')}
+                        <div className={`${styles.arrowWrapper} ${styles.arrowWrapperNext}`}
                              onMouseDown={this.goToNextMonth}
                              data-automation-id="NEXT_MONTH_BUTTON">
-                            <i className={[styles.headerArrow, styles.headerArrowNext].join(' ')}></i>
+                            <i className={`${styles.headerArrow} ${styles.headerArrowNext}`} />
                         </div>
                     </div>
                     <div className={styles.calendar} data-automation-id="DAY_GRID">
