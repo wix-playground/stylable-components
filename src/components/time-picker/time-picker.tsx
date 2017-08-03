@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {findDOMNode} from 'react-dom';
 import {SBComponent} from 'stylable-react-component';
+import * as keycode from 'keycode';
 import styles from './time-picker.st.css';
 
 export type FormatPart = 'hh' | 'mm' | 'ss';
@@ -79,6 +80,15 @@ export default class TimePicker extends React.Component<Props, State> {
 		}
 	}
 
+	moveFocus(currentRefName: FormatPart, increment: number) {
+		const refIndex = formatParts.indexOf(currentRefName);
+		const nextRef = this.refs[formatParts[refIndex + increment]];
+		if (nextRef) {
+			const next = findDOMNode(nextRef) as HTMLInputElement;
+			next.focus();
+		}
+	}
+
 	onChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
 		const {value} = e.currentTarget;
 		const name = e.currentTarget.name as FormatPart;
@@ -95,17 +105,19 @@ export default class TimePicker extends React.Component<Props, State> {
 			[name as any]: shouldWaitForInput ? value : pad2(value)
 		};
 		this.setState(nextState, () => {
-			if (shouldWaitForInput) {
-				return;
-			}
-			const refIndex = formatParts.indexOf(name);
-			const nextRef = this.refs[formatParts[refIndex + 1]];
-			if (nextRef) {
-				const next = findDOMNode(nextRef) as HTMLInputElement;
-				next.focus();
+			if (!shouldWaitForInput) {
+				this.moveFocus(name, 1);
 			}
 		});
+	}
 
+	onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+		const name = e.currentTarget.name as FormatPart;
+		if (keycode(e.keyCode) !== 'backspace' || this.state[name].length) {
+			return;
+		}
+		e.preventDefault();
+		this.moveFocus(name, -1);
 	}
 
 	componentWillReceiveProps(props: Props) {
@@ -130,6 +142,7 @@ export default class TimePicker extends React.Component<Props, State> {
 					onChange={this.onChange}
 					onFocus={this.onFocus}
 					onBlur={this.onBlur}
+					onKeyDown={this.onKeyDown}
 				/>
 			)}
 			<input
