@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {ToggleDemo} from './components/toggle-demo';
 import {DatePickerDemo} from './components/date-picker-demo';
 import {CheckBoxDemo} from "./components/checkbox-demo";
 import { TreeViewDemo } from './components/tree-view-demo';
@@ -28,7 +29,12 @@ export class ComponentsDemo extends React.Component<{}, {}>{
                 <h2>TreeView</h2>
                 <TreeViewDemo />
             </div>
-            <hr />
+            <hr/>
+            <div>
+                <h2>Toggle</h2>
+                <ToggleDemo/>
+            </div>
+            <hr/>
             <div>
                 <h2>DatePicker</h2>
                 <DatePickerDemo />

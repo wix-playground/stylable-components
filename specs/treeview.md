@@ -67,11 +67,10 @@ The following static styles should be used:
 
 ## Properties
 
+The TreeView implements the OptionList intefarface (dataSource, dataScheme and itemRenderer props).
+
 | Name | Type | Default | Required | Description |
 | -- | -- | -- | -- | -- |
-| dataSource | Object[] | none | Yes | The data source of the TreeView which is used to render nodes |
-| mapChildren | func | none | Yes | Maps children for the item renderer |
-| itemRenderer | func: params - TreeItem | default function | No | Overrides the default function for rendering nodes |
 | selectedItem | Object reference | null | No | The selected object, by default none is selected |
 | keyboardNavigation | boolean | true | No | When enabled, user can traverse the tree using keyboard arrow keys |
 | loadOnDemand | boolean | false | No | Whether parent nodes are populated with children before they are expanded. |
