@@ -1,9 +1,9 @@
 import * as React from 'react';
+import * as keycode from 'keycode';
 import {expect, ClientRenderer, simulate, selectDom, trigger} from 'test-drive-react';
 import {getDayNames, getMonthFromOffset, getDaysInMonth, getNumOfPreviousDays, getNumOfFollowingDays} from '../../src/common/date-helpers';
 import {DatePickerDemo} from '../../demo/components/date-picker-demo';
 import {DatePicker} from '../../src';
-import {KeyCodes} from '../../src/common/key-codes';
 
 const currentDate = 'CURRENT_DATE';
 const datePickerInputId = 'DATE_PICKER_INPUT';
@@ -24,8 +24,8 @@ describe('The DatePicker Component', () => {
             const {select, waitForDom} = clientRenderer.render(<DatePickerDemo />);
 
             const datePickerInput = select(datePickerInputId);
-            trigger.change(datePickerInput!, '2017-02-01');
-            simulate.keyDown(datePickerInput, { keyCode: KeyCodes.ENTER });
+            trigger.change(datePickerInput!, '2017/02/01');
+            simulate.keyDown(datePickerInput, { keyCode: keycode('enter') });
 
             await waitForDom(() => expect(select(currentDate)).to.have.text('Wed Feb 01 2017'));
         });
@@ -59,7 +59,7 @@ describe('The DatePicker Component', () => {
         const {select, waitForDom} = clientRenderer.render(<DatePickerDemo />);
 
         const datePickerInput = select(datePickerInputId);
-        trigger.change(datePickerInput!, '2017-02-01');
+        trigger.change(datePickerInput!, '2017/02/01');
         simulate.blur(datePickerInput);
 
         await waitForDom(() => expect(select(currentDate)).to.have.text('Wed Feb 01 2017'));
@@ -112,8 +112,8 @@ describe('The DatePicker Component', () => {
             const {select, waitForDom} = clientRenderer.render(<DatePicker showDropdownOnInit={true} value={FEBRUARY_FIRST} />);
 
             await waitForDom(() => {
-                dayNames.forEach(name => expect(select(datePickerDropdownId)).to.contain.text(name));
-                days.forEach(day => expect(select(datePickerDropdownId)).to.contain.text(day));
+                dayNames.forEach(dayName => expect(select(`DAY_NAME_${dayName.toUpperCase()}`)).to.have.text(dayName));
+                days.forEach(dayNumeric => expect(select(`DAY_${dayNumeric}`)).to.have.text(dayNumeric));
             });
         });
 

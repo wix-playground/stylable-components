@@ -1,7 +1,7 @@
 import * as React from 'react';
+import * as keycode from 'keycode';
+import {SyntheticEvent} from 'react';
 import {Calendar} from './calendar';
-import {SyntheticEvent} from "react";
-import {KeyCodes} from '../../common/key-codes';
 import styles from './date-picker.st.css';
 
 const invalidDate: string = 'Invalid Date';
