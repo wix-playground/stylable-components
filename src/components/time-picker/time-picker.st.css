@@ -1,0 +1,37 @@
+:import {
+    -st-from: "../../style/default-theme/variables.st.css";
+    -st-named:
+        BK3,
+        PR1,
+        PR3
+        ;
+}
+.root {
+	-st-states: focus;
+	border: 1px solid value(BK3);
+	display: inline-block;
+}
+
+.root:hover {
+    border-color: value(PR3);
+}
+.root:focus {
+    border-color: value(PR1);
+}
+
+.input {
+	border: 0;
+}
+.input:hover, .input:focus {
+	border: 0;
+}
+
+.hidden-input {
+    display: block;
+    opacity: 0;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    width: 0;
+	height: 0;
+}

@@ -4,3 +4,4 @@ export * from './toggle';
 export * from './birthday-picker';
 export * from './checkbox';
 export * from './radio-group';
+export * from './time-picker';
