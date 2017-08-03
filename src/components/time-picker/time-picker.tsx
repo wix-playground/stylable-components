@@ -9,7 +9,8 @@ export type FormatPart = 'hh' | 'mm' | 'ss';
 export interface Props {
 	value?: string
 	format?: string
-	onChange?: (value: string) => void
+	onChange?: (value: string) => void,
+	use12?: boolean
 }
 
 export interface State {
@@ -19,15 +20,16 @@ export interface State {
 	ss: string
 }
 
+const isTouch =  'ontouchstart' in window || Boolean(navigator.msMaxTouchPoints);
 const formatParts: FormatPart[] = ['hh', 'mm', 'ss'];
 
 const pad2 = (num: string) => ('00' + num).slice(-2);
 const isNumber = (value: string) => /^\d{0,2}$/.test(value);
 
-const isValidValue = (num: number, part: FormatPart, is24format: boolean) => {
+const isValidValue = (num: number, part: FormatPart, use12: boolean) => {
 	switch(part) {
 		case 'hh':
-			return num >= 0 && num <= (is24format ? 23 : 12);
+			return num >= 0 && num <= (use12 ? 12 : 23);
 		case 'mm':
 		case 'ss':
 			return num >= 0 && num <= 59;
@@ -39,7 +41,8 @@ export default class TimePicker extends React.Component<Props, State> {
 
 	static defaultProps = {
 		value: '00:00:00',
-		format: 'hh:mm:ss'
+		format: 'hh:mm:ss',
+		use12: false
 	}
 
 	constructor(props: Props) {
@@ -67,6 +70,12 @@ export default class TimePicker extends React.Component<Props, State> {
 	onFocus = (e: React.SyntheticEvent<HTMLInputElement>) => {
 		e.currentTarget.select();
 		this.setState({focus: true});
+		if (isTouch) {
+			const input = findDOMNode(this.refs.nativeInput) as HTMLInputElement;
+			e.currentTarget.blur();
+			input.focus();
+			input.click();
+		}
 	}
 
 	onBlur = (e: React.SyntheticEvent<HTMLInputElement>) => {
@@ -90,6 +99,7 @@ export default class TimePicker extends React.Component<Props, State> {
 	}
 
 	onChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
+		const {use12} = this.props;
 		const {value} = e.currentTarget;
 		const name = e.currentTarget.name as FormatPart;
 		if (!isNumber(value)) {
@@ -97,10 +107,10 @@ export default class TimePicker extends React.Component<Props, State> {
 		}
 		const numValue = Number(value);
 
-		if (!isValidValue(numValue, name, true)) {
+		if (!isValidValue(numValue, name, use12!)) {
 			return;
 		}
-		const shouldWaitForInput = isValidValue(numValue * 10, name, true);
+		const shouldWaitForInput = isValidValue(numValue * 10, name, use12!);
 		const nextState = {
 			[name as any]: shouldWaitForInput ? value : pad2(value)
 		};
@@ -118,6 +128,14 @@ export default class TimePicker extends React.Component<Props, State> {
 		}
 		e.preventDefault();
 		this.moveFocus(name, -1);
+	}
+
+	onNativeChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
+		const value = e.currentTarget.value + ':00';
+		this.setState(this.getTimeParts(value));
+		if (this.props.onChange) {
+			this.props.onChange(value)
+		}
 	}
 
 	componentWillReceiveProps(props: Props) {
@@ -146,10 +164,12 @@ export default class TimePicker extends React.Component<Props, State> {
 				/>
 			)}
 			<input
-				className='hidden-input'
+				className='native-input'
+				ref='nativeInput'
 				tabIndex={-1}
 				type='time'
-				defaultValue={this.getValue()}
+				value={this.getValue()}
+				onChange={this.onNativeChange}
 			/>
 		</div>
 	}

@@ -7,9 +7,10 @@
         ;
 }
 .root {
-	-st-states: focus;
-	border: 1px solid value(BK3);
-	display: inline-block;
+    -st-states: focus;
+    position: relative;
+    border: 1px solid value(BK3);
+    display: inline-block;
 }
 
 .root:hover {
@@ -20,18 +21,23 @@
 }
 
 .input {
-	border: 0;
+    border: 0;
+    width: 3em;
 }
-.input:hover, .input:focus {
-	border: 0;
+.input:hover,
+.input:focus {
+    border: 0;
 }
 
-.hidden-input {
-    display: block;
+.native-input {
+    position: absolute;
     opacity: 0;
     padding: 0;
     margin: 0;
     border: 0;
     width: 0;
-	height: 0;
+    height: 0;
+}
+.native-input:focus {
+    border: 0;
 }
