@@ -1,5 +1,5 @@
-import * as React from 'react';
 import * as keycode from 'keycode';
+import * as React from 'react';
 import {SyntheticEvent} from 'react';
 import {Calendar} from './calendar';
 import styles from './date-picker.st.css';
@@ -8,7 +8,7 @@ const invalidDate: string = 'Invalid Date';
 
 export interface DatePickerProps {
     value: Date;
-    onChange (value: Date): void;
+    onChange(value: Date): void;
     isDropdownVisible?: boolean;
     placeholder?: string;
 }
@@ -19,7 +19,7 @@ export interface DatePickerState {
 }
 
 export class DatePicker extends React.Component<DatePickerProps, DatePickerState>{
-    componentWillMount () {
+    componentWillMount() {
         this.setState({
             inputValue: this.props.value ? this.props.value.toDateString() : '',
             isDropdownVisible: this.props.isDropdownVisible ? this.props.isDropdownVisible : false
@@ -38,7 +38,7 @@ export class DatePicker extends React.Component<DatePickerProps, DatePickerState
         } else {
             this.setState({ inputValue: invalidDate });
         }
-    };
+    }
 
     // Should only be called with valid date from the dropdown
     updateStateFromDate = (input: Date): void => {
@@ -50,26 +50,26 @@ export class DatePicker extends React.Component<DatePickerProps, DatePickerState
         if (this.props.onChange) {
             this.props.onChange(input);
         }
-    };
+    }
 
     onInputChange: React.EventHandler<SyntheticEvent<HTMLInputElement>> = (event): void => {
         const eventTarget = event.target as HTMLInputElement;
         this.setState({ inputValue: eventTarget.value });
-    };
+    }
 
     onFocus: React.EventHandler<SyntheticEvent<HTMLInputElement>> = (): void => {
-        this.setState({ isDropdownVisible: true })
-    };
+        this.setState({ isDropdownVisible: true });
+    }
 
     onMouseDown: React.EventHandler<SyntheticEvent<HTMLInputElement>> = (): void => {
         this.setState({ isDropdownVisible: !this.state.isDropdownVisible });
-    };
+    }
 
     onBlur: React.EventHandler<SyntheticEvent<HTMLInputElement>> = (event): void => {
         const eventTarget = event.target as HTMLInputElement;
         this.updateStateFromString(eventTarget.value);
-        this.setState({ isDropdownVisible: false })
-    };
+        this.setState({ isDropdownVisible: false });
+    }
 
     onKeyDown: React.EventHandler<SyntheticEvent<HTMLInputElement>> = (event: React.KeyboardEvent<HTMLInputElement>): void => {
         if (keycode(event.keyCode) === 'enter') {
@@ -77,13 +77,13 @@ export class DatePicker extends React.Component<DatePickerProps, DatePickerState
             this.updateStateFromString(eventTarget.value);
             this.setState({ isDropdownVisible: !this.state.isDropdownVisible });
         }
-    };
+    }
 
     isDateValid = (stringToValidate: string): boolean => {
         const dateFromString = new Date(stringToValidate);
 
         return dateFromString.toDateString() !== invalidDate;
-    };
+    }
 
     render() {
         return (

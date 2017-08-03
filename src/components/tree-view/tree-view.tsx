@@ -1,6 +1,6 @@
-import * as React from 'react';
-import { observer } from 'mobx-react';
 import { autorun, observable } from 'mobx';
+import { observer } from 'mobx-react';
+import * as React from 'react';
 
 import { SBComponent, SBStateless } from 'stylable-react-component';
 import style from './tree-view.st.css';
@@ -41,7 +41,7 @@ export const TreeItem: React.SFC<TreeItemProps> = SBStateless(({ item, itemRende
         <div>
             <div data-automation-id={`${itemIdPrefix}_${itemLabel}`} className="tree-node"
                  cssStates={{selected: state!.isSelected}}
-                 onClick={() => onItemClick!(item)} data-selected={ state!.isSelected }>
+                 onClick={() => onItemClick!(item)} data-selected={state!.isSelected}>
                 <span data-automation-id={`${itemIdPrefix}_${itemLabel}_ICON`}>&gt; </span>
                 <span data-automation-id={`${itemIdPrefix}_${itemLabel}_LABEL`}>{item.label}</span>
             </div>
@@ -52,7 +52,7 @@ export const TreeItem: React.SFC<TreeItemProps> = SBStateless(({ item, itemRende
                 )}
             </div>
         </div>
-    )
+    );
 }, style);
 
 const TreeItemWrapper = observer(TreeItem);
@@ -97,18 +97,17 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
             this.props.onSelectItem!(item);
         }
         this.toggleItem(item);
-    };
+    }
 
     render() {
         const TreeNode = this.props.itemRenderer!;
         return (
-            <div data-automation-id='TREE_VIEW' className="tree-view">
+            <div data-automation-id="TREE_VIEW" className="tree-view">
                 {(this.props.dataSource || []).map((item: TreeItemData, index: number) =>
                     <TreeNode item={item} onItemClick={this.onSelectItem} itemRenderer={this.props.itemRenderer!}
                               stateMap={this.stateMap} state={this.stateMap.get(item)!} key={`${index}`} />
                 )}
             </div>
-        )
+        );
     }
 }
-

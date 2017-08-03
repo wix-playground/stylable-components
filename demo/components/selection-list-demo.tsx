@@ -1,5 +1,5 @@
 import React = require('react');
-import {SelectionList, ItemRendererProps, divider} from "../../src/components/selection-list";
+import {divider, ItemRendererProps, SelectionList} from '../../src/components/selection-list';
 
 export class SelectionListDemo extends React.Component<{}, {}> {
     render() {
@@ -18,7 +18,7 @@ export class FoodList extends React.Component {
         'Bacon',
         'Sausage',
         'Ham',
-        {value: 'Spam', label: 'Spam', disabled: true},
+        {value: 'Spam', label: 'Spam', disabled: true}
     ];
 
     state = {value: 'Bacon'};
@@ -29,7 +29,7 @@ export class FoodList extends React.Component {
             <SelectionList
                 dataSource={this.dataSource}
                 value={this.state.value}
-                onChange={value => this.setState({value})} />
+                onChange={(value) => this.setState({value})} />
             <p data-automation-id="RESULT">
                 {this.state.value}, great choice!
             </p>
@@ -41,14 +41,14 @@ interface EmojiListItemProps extends ItemRendererProps {
     item: {
         value: string;
         icon: string;
-    }
+    };
 }
 
 const EmojiListItem: React.SFC<EmojiListItemProps> = (props) => {
     const style = {
         fontSize: props.selected ? '45px' : '20px',
         transition: 'font-size 300ms',
-        cursor: 'pointer',
+        cursor: 'pointer'
     };
 
     return <div data-value={props.item.value} style={style}>
@@ -65,7 +65,7 @@ class EmojiList extends React.Component {
         {icon: '🦇', name: 'Bat'},
         {icon: '🐙', name: 'Octopus'},
         {icon: '🐌', name: 'Snail'},
-        {icon: '🐝', name: 'Honeybee'},
+        {icon: '🐝', name: 'Honeybee'}
     ];
 
     state = {value: 'Pig'};
@@ -78,7 +78,7 @@ class EmojiList extends React.Component {
             padding: '0 10px',
             borderRadius: '30px',
             alignItems: 'center',
-            justifyContent: 'space-around',
+            justifyContent: 'space-around'
         };
         const anArticleFor = (word: string) => /^[aeiou]/i.test(word) ? 'an' : 'a';
 
@@ -90,7 +90,7 @@ class EmojiList extends React.Component {
                 dataSource={this.dataSource}
                 itemRenderer={EmojiListItem}
                 value={this.state.value}
-                onChange={value => this.setState({value})} />
+                onChange={(value) => this.setState({value})} />
             <p data-automation-id="RESULT">
                 That's {anArticleFor(this.state.value)} {this.state.value.toLowerCase()}.
             </p>

@@ -1,8 +1,8 @@
-import * as React from 'react';
 import * as keycode from 'keycode';
-import {expect, ClientRenderer, simulate, selectDom, trigger} from 'test-drive-react';
-import {getDayNames, getMonthFromOffset, getDaysInMonth, getNumOfPreviousDays, getNumOfFollowingDays} from '../../src/common/date-helpers';
+import * as React from 'react';
+import {ClientRenderer, expect, selectDom, simulate, trigger} from 'test-drive-react';
 import {DatePickerDemo} from '../../demo/components/date-picker-demo';
+import {getDayNames, getDaysInMonth, getMonthFromOffset, getNumOfFollowingDays, getNumOfPreviousDays} from '../../src/common/date-helpers';
 
 const currentDate = 'CURRENT_DATE';
 const datePickerInputId = 'DATE_PICKER_INPUT';
@@ -47,7 +47,7 @@ describe('The DatePicker Component', () => {
 
             await waitForDom(() => {
                 expect(select(datePickerDropdownId)).to.be.absent();
-                expect(select(currentDate)).to.have.text('Wed Jan 04 2017')
+                expect(select(currentDate)).to.have.text('Wed Jan 04 2017');
             });
         });
     });
@@ -90,15 +90,15 @@ describe('The DatePicker Component', () => {
     });
 
     describe('The Dropdown', () => {
-        const dayNames: Array<string> = getDayNames();
-        const days: Array<string> = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28'];
+        const dayNames: string[] = getDayNames();
+        const days: string[] = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28'];
 
         it('should display the days for a fixed month', async () => {
             const {select, waitForDom} = clientRenderer.render(<DatePickerDemo isDropdownVisible={true} value={FEBRUARY_FIRST} />);
 
             await waitForDom(() => {
-                dayNames.forEach(dayName => expect(select(`DAY_NAME_${dayName.toUpperCase()}`)).to.have.text(dayName));
-                days.forEach(dayNumeric => expect(select(`DAY_${dayNumeric}`)).to.have.text(dayNumeric));
+                dayNames.forEach((dayName) => expect(select(`DAY_NAME_${dayName.toUpperCase()}`)).to.have.text(dayName));
+                days.forEach((dayNumeric) => expect(select(`DAY_${dayNumeric}`)).to.have.text(dayNumeric));
             });
         });
 
@@ -111,7 +111,7 @@ describe('The DatePicker Component', () => {
         it('should display the day names in horizontal sequence, and vertically aligned', async () => {
             const {select, waitForDom} = clientRenderer.render(<DatePickerDemo isDropdownVisible={true} value={JANUARY_FIRST} />);
 
-            const dayNameIds = dayNames.map(name => 'DAY_NAME_' + name.toUpperCase());
+            const dayNameIds = dayNames.map((name) => 'DAY_NAME_' + name.toUpperCase());
 
             await waitForDom(() => {
                 const dayNameElements = dayNameIds.map((name, index) => {
@@ -125,7 +125,7 @@ describe('The DatePicker Component', () => {
             });
         });
 
-        function elementsInRow (row: number) {
+        function elementsInRow(row: number) {
             const rowElements = [];
             const select = selectDom(document.body);
 
@@ -136,7 +136,7 @@ describe('The DatePicker Component', () => {
             return rowElements;
         }
 
-        function elementsInColumn (column: number) {
+        function elementsInColumn(column: number) {
             const columnElements = [];
             const select = selectDom(document.body);
 
@@ -149,7 +149,6 @@ describe('The DatePicker Component', () => {
 
         it('should display the days in a grid', async () => {
             const {waitForDom} = clientRenderer.render(<DatePickerDemo value={JANUARY_FIRST} isDropdownVisible={true}/>);
-
 
             await waitForDom(() => {
                 // Check that the days are displayed in rows (checking that each row is in horizontal sequence
@@ -319,7 +318,6 @@ describe('The DatePicker Component', () => {
             const fridayStart4 = getNumOfPreviousDays(fourthDateToTest, 5);
             const saturdayStart4 = getNumOfPreviousDays(fourthDateToTest, 6);
 
-
             expect(mondayStart).to.equal(5);
             expect(tuesdayStart).to.equal(4);
             expect(wednesdayStart).to.equal(3);
@@ -395,7 +393,6 @@ describe('The DatePicker Component', () => {
             const thursdayStart4 = getNumOfFollowingDays(fourthDateToTest, 4);
             const fridayStart4 = getNumOfFollowingDays(fourthDateToTest, 5);
             const saturdayStart4 = getNumOfFollowingDays(fourthDateToTest, 6);
-
 
             expect(mondayStart).to.equal(6);
             expect(tuesdayStart).to.equal(0);

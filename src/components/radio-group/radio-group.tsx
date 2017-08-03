@@ -1,7 +1,7 @@
 import React = require('react');
-import {EventHandler, ReactElement, SyntheticEvent} from "react";
-import {observable, action} from 'mobx';
+import {action, observable} from 'mobx';
 import {observer} from 'mobx-react';
+import {EventHandler, ReactElement, SyntheticEvent} from 'react';
 const style = require('./radio-group.st.css').default;
 
 export interface RadioGroupProps {
@@ -9,7 +9,7 @@ export interface RadioGroupProps {
     dataSource?: RadioButtonProps[];
     onChange: (e: string) => void;
     disabled?: boolean;
-    location?: "right" | "left";
+    location?: 'right' | 'left';
     name?: string;
 }
 
@@ -22,7 +22,7 @@ export interface RadioState {
 @observer
 export class RadioGroup extends React.Component<Partial<RadioGroupProps>, {}> {
     name: string;
-    checkedArray: Array<RadioState>;
+    checkedArray: RadioState[];
 
     static defaultProps = {
         dataSource: [],
@@ -35,7 +35,7 @@ export class RadioGroup extends React.Component<Partial<RadioGroupProps>, {}> {
         this.checkedArray = [];
         if (this.props.children) {
             this.initCheckedArray(this.props.children, true);
-        } else if(this.props.dataSource) {
+        } else if (this.props.dataSource) {
             this.initCheckedArray(this.props.dataSource, false);
         }
         this.name = this.props.name ? this.props.name : 'radio_group_' + counter++;
@@ -43,12 +43,12 @@ export class RadioGroup extends React.Component<Partial<RadioGroupProps>, {}> {
 
     initCheckedArray(dataArray: any[], isChildren: boolean = false) {
         let noCheckedRadioButton = true;
-        for(let i = 0; i < dataArray.length; i++) {
+        for (let i = 0; i < dataArray.length; i++) {
             let button = dataArray[i];
             if (isChildren) {
                 button = dataArray[i].props;
             }
-            this.checkedArray.push(observable({checked: noCheckedRadioButton ? button.checked: false}));
+            this.checkedArray.push(observable({checked: noCheckedRadioButton ? button.checked : false}));
             if (button.checked) {
                 noCheckedRadioButton = false;
             }
@@ -69,7 +69,7 @@ export class RadioGroup extends React.Component<Partial<RadioGroupProps>, {}> {
 
     createChildrenFromDataSource(): React.ReactNode[] {
         const childArray: React.ReactNode[] = [];
-        if(Array.isArray(this.props.dataSource)) {
+        if (Array.isArray(this.props.dataSource)) {
             this.props.dataSource!.forEach((data, index) => {
                 const props: RadioButtonProps = {
                     key: index,
@@ -81,8 +81,8 @@ export class RadioGroup extends React.Component<Partial<RadioGroupProps>, {}> {
                     location: this.props.location,
                     name: this.name
                 };
-                childArray.push(React.createElement(RadioButton, props))
-            })
+                childArray.push(React.createElement(RadioButton, props));
+            });
         }
         return childArray;
     }
@@ -106,8 +106,8 @@ export class RadioGroup extends React.Component<Partial<RadioGroupProps>, {}> {
                 childArray.push(React.cloneElement(data as ReactElement<any>, props));
             } else {
                 childArray.push(React.cloneElement(data as ReactElement<any>, {key: index,
-                    checked: this.checkedArray[index].checked,
-                    onClick: action(this.childrenOnClick(index))}));
+                                                                               checked: this.checkedArray[index].checked,
+                                                                               onClick: action(this.childrenOnClick(index))}));
             }
         }
         return childArray;
@@ -140,7 +140,7 @@ export interface RadioButtonProps {
     name?: string;
     onClick?: (e: string) => void;
     disabled?: boolean;
-    location?: "right" | "left";
+    location?: 'right' | 'left';
     automationId?: string;
 }
 
@@ -162,13 +162,13 @@ export class RadioButton extends React.Component<RadioButtonProps, {}> {
         if (!this.props.disabled) {
             this.props.onClick!(this.props.value);
         }
-    };
+    }
 
     render() {
         return (
             <div data-automation-id={this.props.automationId} className={style['radio-container']} onClick={this.onClick}>
-                {this.props.location === "left" ? <span className={style.leftLabel} data-automation-id="LABEL">{this.props.value}</span> : ''}
-                <div data-automation-id="INPUT_CONTAINER" className={this.props.disabled ? style['disabled'] : style['enabled']}>
+                {this.props.location === 'left' ? <span className={style.leftLabel} data-automation-id="LABEL">{this.props.value}</span> : ''}
+                <div data-automation-id="INPUT_CONTAINER" className={this.props.disabled ? style.disabled : style.enabled}>
                     {this.props.checked ? checkedRadioSvg(this.props.disabled!) : emptyRadioSvg(this.props.disabled!)}
                     <input type="radio"
                            className={style['radio-input']}
@@ -179,24 +179,24 @@ export class RadioButton extends React.Component<RadioButtonProps, {}> {
                            disabled={this.props.disabled}
                            readOnly={true}/>
                 </div>
-                {this.props.location === "right" ? <span className={style.rightLabel} data-automation-id="LABEL">{this.props.value}</span> : ''}
+                {this.props.location === 'right' ? <span className={style.rightLabel} data-automation-id="LABEL">{this.props.value}</span> : ''}
                 {this.props.children}
             </div>
-        )
+        );
     }
 }
 
 function emptyRadioSvg(disabled: boolean) {
-    const svgColor = disabled ? "#d1d1d1" : "#4A90E2";
+    const svgColor = disabled ? '#d1d1d1' : '#4A90E2';
     return (
         <svg xmlns="http://www.w3.org/2000/svg" className={style['radio-svg']} viewBox="0 0 16 16">
             <circle cx="8" cy="8" r="7.5" fill="none" fillRule="evenodd" stroke={svgColor} />
         </svg>
-    )
+    );
 }
 
 function checkedRadioSvg(disabled: boolean) {
-    const svgColor = disabled ? "#d1d1d1" : "#4A90E2";
+    const svgColor = disabled ? '#d1d1d1' : '#4A90E2';
     return (
         <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" className={style['radio-svg']} viewBox="0 0 16 16">
             <defs>

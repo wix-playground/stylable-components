@@ -1,7 +1,7 @@
-import * as React from 'react';
-import {getMonthNames, getMonthFromOffset, getDayNames, getDaysInMonth, getNumOfPreviousDays} from '../../common/date-helpers';
-import {observable, action, computed} from 'mobx';
+import {action, computed, observable} from 'mobx';
 import {observer} from 'mobx-react';
+import * as React from 'react';
+import {getDayNames, getDaysInMonth, getMonthFromOffset, getMonthNames, getNumOfPreviousDays} from '../../common/date-helpers';
 import {Day} from './day';
 const styles = require('./date-picker.st.css').default;
 
@@ -19,26 +19,26 @@ export class Calendar extends React.Component<CalendarProps, {}>{
     onChange = (day: number) => {
         const date = new Date(this.date.getFullYear(), this.date.getMonth(), day);
         this.props.onChange(date);
-    };
+    }
 
     @action
-    setDate (date: Date) {
+    setDate(date: Date) {
         this.date = date;
     }
 
     @computed
-    get monthName (): string {
+    get monthName(): string {
         return monthNames[this.date.getMonth()];
     }
 
     @computed
-    get year (): number {
+    get year(): number {
         return this.date.getFullYear();
     }
 
     @computed
-    get days (): Array<JSX.Element> {
-        const dayArray: Array<JSX.Element> = [];
+    get days(): JSX.Element[] {
+        const dayArray: JSX.Element[] = [];
         const daysInMonth = getDaysInMonth(this.date);
 
         for (let i = 1; i <= daysInMonth; i++) {
@@ -53,7 +53,7 @@ export class Calendar extends React.Component<CalendarProps, {}>{
     }
 
     @computed
-    get dayNames (): Array<JSX.Element> {
+    get dayNames(): JSX.Element[] {
         return getDayNames().map((name: string, index: number) => {
             return (
                 <span className={`${styles.calendarItem} ${styles.dayName}`}
@@ -65,8 +65,8 @@ export class Calendar extends React.Component<CalendarProps, {}>{
     }
 
     @computed
-    get previousDays (): Array<JSX.Element> {
-        const previousDays: Array<JSX.Element> = [];
+    get previousDays(): JSX.Element[] {
+        const previousDays: JSX.Element[] = [];
         const lastDayOfPrevMonth: number = getDaysInMonth(getMonthFromOffset(this.date, -1));
         const numberOfDaysToDisplay: number = lastDayOfPrevMonth - getNumOfPreviousDays(this.date);
 
@@ -82,18 +82,17 @@ export class Calendar extends React.Component<CalendarProps, {}>{
         return previousDays;
     }
 
-
     goToNextMonth: React.EventHandler<React.SyntheticEvent<Element>> = (event) => {
         event.preventDefault();
         const nextMonth: Date = getMonthFromOffset(new Date(this.date.getFullYear(), this.date.getMonth(), 1), 1);
         this.setDate(nextMonth);
-    };
+    }
 
     goToPrevMonth: React.EventHandler<React.SyntheticEvent<Element>> = (event) => {
         event.preventDefault();
         const previousMonth: Date = getMonthFromOffset(new Date(this.date.getFullYear(), this.date.getMonth(), 1), -1);
         this.setDate(previousMonth);
-    };
+    }
 
     render() {
         return (

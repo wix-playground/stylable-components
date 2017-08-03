@@ -26,7 +26,7 @@ export interface ItemRendererProps {
     focused: boolean;
     selected: boolean;
     item: any;
-};
+}
 
 export interface DefaultItemRendererProps extends ItemRendererProps {
     item: {
@@ -34,10 +34,10 @@ export interface DefaultItemRendererProps extends ItemRendererProps {
         label?: string;
         hidden?: boolean;
         disabled?: boolean;
-    }
+    };
 }
 
-const DefaultItemRenderer: React.SFC<DefaultItemRendererProps> = SBStateless(props => {
+const DefaultItemRenderer: React.SFC<DefaultItemRendererProps> = SBStateless((props) => {
     if (props.item === divider) {
         return <div className="divider" data-automation-id="DIVIDER"></div>;
     }
@@ -63,16 +63,16 @@ const DefaultItemRenderer: React.SFC<DefaultItemRendererProps> = SBStateless(pro
 export type SelectionItem = string | object;
 
 export interface OptionList {
-    dataSource?: SelectionItem[],
-    dataSchema?: {},
-    itemRenderer?: React.ComponentType<ItemRendererProps>
+    dataSource?: SelectionItem[];
+    dataSchema?: {};
+    itemRenderer?: React.ComponentType<ItemRendererProps>;
 }
 
 export interface SelectionListProps extends OptionList {
     value?: string;
     onChange?: (value: string) => void;
     style?: any;
-    children?: any
+    children?: any;
 }
 
 @SBComponent(style)
@@ -120,13 +120,13 @@ export class SelectionList extends React.Component<SelectionListProps, {}> {
             return;
         }
         this.props.onChange!(value);
-    };
+    }
 
     render() {
         const rootProps = root(this.props, {
             'data-automation-id': 'LIST',
-            className: 'list',
-            onClick: this.handleClick
+            'className': 'list',
+            'onClick': this.handleClick
         });
 
         return <div {...rootProps}>

@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { expect, ClientRenderer, sinon, simulate, waitFor } from 'test-drive-react';
-import { TreeView, TreeItem } from '../../src';
+import { ClientRenderer, expect, simulate, sinon, waitFor } from 'test-drive-react';
 import { TreeViewDemo } from '../../demo/components/tree-view-demo';
-import { hasCssState } from '../utils/has-css-state';
-import treeViewStyles from '../../src/components/tree-view/tree-view.st.css';
+import { TreeItem, TreeView } from '../../src';
 import { StateMap, TreeItemData, TreeItemState} from '../../src/components/tree-view/tree-view';
+import treeViewStyles from '../../src/components/tree-view/tree-view.st.css';
+import { hasCssState } from '../utils/has-css-state';
 
 const treeView = 'TREE_VIEW';
 const treeItem = 'TREE_ITEM';
@@ -74,9 +74,9 @@ describe('<TreeView />', () => {
         await waitForDom(() => expect(select(getTreeItem(nodeChildren![1].label))).to.be.absent());
 
         simulate.click(select(treeView + '_DEMO', rootNode));
-        nodeChildren!.forEach(item => simulate.click(select(treeView + '_DEMO', getTreeItem(item.label))));
+        nodeChildren!.forEach((item) => simulate.click(select(treeView + '_DEMO', getTreeItem(item.label))));
 
-        await waitForDom(() => allNodesLabels.forEach(item =>
+        await waitForDom(() => allNodesLabels.forEach((item) =>
             expect(select(treeView + '_DEMO', getTreeItem(item)), `item did not appear: ${item}`).to.be.present()));
 
         const elementToSelect = select(treeView + '_DEMO', getTreeItem(allNodesLabels[2]));

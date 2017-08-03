@@ -1,17 +1,17 @@
 import React = require('react');
 import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react';
-import sleep from '../../src/common/sleep';
 import {SelectionListDemo} from '../../demo/components/selection-list-demo';
-import {SelectionList, divider} from '../../src/components/selection-list';
+import sleep from '../../src/common/sleep';
+import {divider, SelectionList} from '../../src/components/selection-list';
 
-describe('<SelectionList />', function () {
+describe('<SelectionList />', function() {
     const clientRenderer = new ClientRenderer();
 
     afterEach(() => {
         clientRenderer.cleanup();
     });
 
-    it("Takes a list of options and allows to select one", async () => {
+    it('Takes a list of options and allows to select one', async () => {
         const {select, waitForDom} = clientRenderer.render(<SelectionListDemo />);
 
         await waitForDom(() => {
@@ -25,7 +25,7 @@ describe('<SelectionList />', function () {
         });
     });
 
-    it("Works with a custom renderer and data schema", async () => {
+    it('Works with a custom renderer and data schema', async () => {
         const {select, waitForDom} = clientRenderer.render(<SelectionListDemo />);
 
         await waitForDom(() => {
@@ -44,7 +44,7 @@ describe('<SelectionList />', function () {
         });
     });
 
-    it("Renders items under each other using the default renderer", async () => {
+    it('Renders items under each other using the default renderer', async () => {
         const {select, waitForDom} = clientRenderer.render(
             <SelectionList dataSource={['One', 'Two', divider, 'Three']} />
         );
@@ -56,7 +56,7 @@ describe('<SelectionList />', function () {
         });
     });
 
-    it("Fires onChange when an item is clicked", async () => {
+    it('Fires onChange when an item is clicked', async () => {
         const dataSource = ['One', 'Two', 'Three'];
         const onChange = sinon.spy();
         const {select, waitForDom} = clientRenderer.render(
@@ -77,7 +77,7 @@ describe('<SelectionList />', function () {
         });
     });
 
-    it("Doesn't fire onChange for clicks on active items, dividers, disabled items, and items without value", async () => {
+    it('Doesn\'t fire onChange for clicks on active items, dividers, disabled items, and items without value', async () => {
         const dataSource = [
             'One',
             divider,
@@ -105,7 +105,7 @@ describe('<SelectionList />', function () {
         });
     });
 
-    it("Renders blank items at the same height as normal items", function() {
+    it('Renders blank items at the same height as normal items', function() {
         const {select, waitForDom} = clientRenderer.render(
             <SelectionList dataSource={['', '1']} />
         );
@@ -121,7 +121,7 @@ describe('<SelectionList />', function () {
         });
     });
 
-    it("Renders a divider", function() {
+    it('Renders a divider', function() {
         const {select, waitForDom} = clientRenderer.render(
             <SelectionList dataSource={[divider]} />
         );

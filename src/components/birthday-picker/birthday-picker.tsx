@@ -1,6 +1,6 @@
-import React = require("react");
-import {autorun, computed, observable, reaction} from "mobx";
-import {observer} from "mobx-react";
+import React = require('react');
+import {autorun, computed, observable, reaction} from 'mobx';
+import {observer} from 'mobx-react';
 
 function daysInMonth(date: Date) {
     return new Date(date.getUTCFullYear(), date.getUTCMonth() + 1, 0).getDate();
@@ -21,7 +21,7 @@ export function dateFromYearMonthDay(
             return date;
         }
     }
-    return new Error("Invalid date");
+    return new Error('Invalid date');
 }
 
 interface OptionData {
@@ -40,10 +40,10 @@ function numberRangeForSelectBox(min: number, max: number): OptionData[] {
 
 function monthOptionsForSelectBox(locale: string): OptionData[] {
     const options = [];
-    for (var i = 0; i < 12; i++) {
+    for (let i = 0; i < 12; i++) {
         options.push({
             value: String(i + 1),
-            label: new Date(2000, i).toLocaleString(locale, {month: "long"})
+            label: new Date(2000, i).toLocaleString(locale, {month: 'long'})
         });
     }
     return options;
@@ -83,16 +83,16 @@ export class BirthdayPicker extends React.Component<BirthdayPickerProps, {}> {
         onChange: () => {}
     };
 
-    @observable year: string = "";
-    @observable month: string = "";
-    @observable day: string = "";
+    @observable year: string = '';
+    @observable month: string = '';
+    @observable day: string = '';
 
     @computed get currentValue() {
         return dateFromYearMonthDay(this.year, this.month, this.day);
     }
 
     private dayOptions = numberRangeForSelectBox(1, 31);
-    private monthOptions = monthOptionsForSelectBox("en-US");
+    private monthOptions = monthOptionsForSelectBox('en-US');
     @computed private get yearOptions() {
         const max = this.props.maxDate!.getUTCFullYear();
         const min = this.props.minDate
@@ -105,14 +105,14 @@ export class BirthdayPicker extends React.Component<BirthdayPickerProps, {}> {
         autorun(() => {
             const date  = this.props.value;
             const valid = date && !Number.isNaN(date.getTime());
-            this.year   = valid ? String(date!.getUTCFullYear())  : "";
-            this.month  = valid ? String(date!.getUTCMonth() + 1) : "";
-            this.day    = valid ? String(date!.getUTCDate())      : "";
+            this.year   = valid ? String(date!.getUTCFullYear())  : '';
+            this.month  = valid ? String(date!.getUTCMonth() + 1) : '';
+            this.day    = valid ? String(date!.getUTCDate())      : '';
         });
 
         reaction(
             () => this.currentValue,
-            value => {
+            (value) => {
                 if (value instanceof Date) {
                     this.props.onChange!(value);
                 }
@@ -151,9 +151,9 @@ export class BirthdayPicker extends React.Component<BirthdayPickerProps, {}> {
     }
 
     handleYearChange = (event: React.FormEvent<HTMLSelectElement>) =>
-        (this.year = event.currentTarget.value);
+        (this.year = event.currentTarget.value)
     handleMonthChange = (event: React.FormEvent<HTMLSelectElement>) =>
-        (this.month = event.currentTarget.value);
+        (this.month = event.currentTarget.value)
     handleDayChange = (event: React.FormEvent<HTMLSelectElement>) =>
-        (this.day = event.currentTarget.value);
+        (this.day = event.currentTarget.value)
 }
