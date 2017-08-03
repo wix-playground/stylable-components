@@ -106,7 +106,7 @@ function getNextItem(dataSource: Object[], item: TreeItemData, stateMap: TreeSta
         const parent = parentsMap.get(item);
         const siblings = parent ? parent.children! : dataSource;
         const itemIdx = siblings.indexOf(item);
-        return itemIdx !== siblings.length - 1 ? siblings[itemIdx + 1] as TreeItemData: getNextParentSibling(item, parent, stateMap, parentsMap);
+        return itemIdx !== siblings.length - 1 ? siblings[itemIdx + 1] as TreeItemData: getNextParentSibling(item, parent, parentsMap);
     }
 }
 
@@ -119,8 +119,7 @@ function getLastAvailableItem(lastChild: TreeItemData, stateMap: TreeStateMap): 
 
 }
 
-function getNextParentSibling(item: TreeItemData, parent: TreeItemData | undefined,
-                              stateMap: TreeStateMap, parentsMap: ParentsMap): TreeItemData {
+function getNextParentSibling(item: TreeItemData, parent: TreeItemData | undefined, parentsMap: ParentsMap): TreeItemData {
     if (!parent) {
         return item;
     } else {
