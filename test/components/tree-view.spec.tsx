@@ -2,7 +2,8 @@ import * as React from 'react';
 import { expect, ClientRenderer, sinon, simulate, waitFor } from 'test-drive-react';
 import { TreeView, TreeItem } from '../../src';
 import { TreeViewDemo } from '../../demo/components/tree-view-demo';
-import {StateMap, TreeItemData, TreeItemState, TreeStateMap} from '../../src/components/tree-view/tree-view';
+import { StateMap, TreeItemData, TreeItemState, TreeStateMap } from '../../src/components/tree-view/tree-view';
+import { getPreviousItem, getNextItem, getLastAvailableItem } from '../../src/components/tree-view//tree-util';
 import { KeyCodes } from '../../src/common/key-codes';
 
 const treeView = 'TREE_VIEW';
@@ -381,6 +382,13 @@ describe('<TreeView />', () => {
 
                 return waitFor(() => expect(onClick).to.have.been.calledOnce);
             });
+        });
+
+        describe('Tree Traversal Utils', () => {
+            it('gets previous item when its a sibling', async () => { throw new Error('TBD')});
+            it('gets previous item when its a parent', async () => { throw new Error('TBD')});
+            it('gets next item when its a sibling', async () => { throw new Error('TBD')});
+            it('gets next item when its a parent', async () => { throw new Error('TBD')});
         });
     });
 });

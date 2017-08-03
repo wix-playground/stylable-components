@@ -2,6 +2,7 @@ import * as React from 'react';
 import { observer } from 'mobx-react';
 import { action, autorun, observable } from 'mobx';
 import { KeyCodes } from '../../common/key-codes';
+import { getPreviousItem, getNextItem, getLastAvailableItem } from './tree-util';
 
 import { SBComponent, SBStateless } from 'stylable-react-component';
 import style from './tree-view.st.css';
@@ -78,58 +79,6 @@ export class TreeStateMap {
     }
 }
 
-function getPreviousItem(dataSource: Object[], item: TreeItemData, stateMap: TreeStateMap, parentsMap: ParentsMap): TreeItemData {
-    const parent = parentsMap.get(item);
-
-    const siblings = parent ? parent.children! : dataSource;
-
-    const itemIdx = siblings.indexOf(item);
-    if (itemIdx === 0) return parent ? parent : item;
-
-    const prevSibling = siblings[itemIdx - 1] as TreeItemData;
-    const prevSiblingState = stateMap.getItemState(prevSibling);
-
-    if (prevSiblingState.isExpanded && prevSibling.children!.length ) {
-        return prevSibling.children![prevSibling.children!.length - 1];
-    } else {
-        return prevSibling;
-    }
-}
-
-function getNextItem(dataSource: Object[], item: TreeItemData, stateMap: TreeStateMap, parentsMap: ParentsMap): TreeItemData {
-    const itemState = stateMap.getItemState(item);
-
-    if (itemState.isExpanded && item.children) {
-        return item.children![0];
-    } else {
-        const parent = parentsMap.get(item);
-        const siblings = parent ? parent.children! : dataSource;
-        const itemIdx = siblings.indexOf(item);
-        return itemIdx !== siblings.length - 1 ? siblings[itemIdx + 1] as TreeItemData: getNextParentSibling(item, parent, parentsMap);
-    }
-}
-
-function getLastAvailableItem(lastChild: TreeItemData, stateMap: TreeStateMap): TreeItemData {
-    if (stateMap.getItemState(lastChild).isExpanded && lastChild.children) {
-        return getLastAvailableItem(lastChild.children[lastChild.children.length - 1], stateMap);
-    } else {
-        return lastChild;
-    }
-
-}
-
-function getNextParentSibling(item: TreeItemData, parent: TreeItemData | undefined, parentsMap: ParentsMap): TreeItemData {
-    if (!parent) {
-        return item;
-    } else {
-        const grandParent = parentsMap.get(parent);
-        if (!grandParent) return item;
-        const grandParentChildren = grandParent!.children!;
-        const parentIdx = grandParentChildren.indexOf(parent);
-        return parentIdx !== grandParentChildren.length - 1 ? grandParentChildren[parentIdx + 1] : item;
-    }
-}
-
 @SBComponent(style) @observer
 export class TreeView extends React.Component<TreeViewProps, {}>{
     static defaultProps: Partial<TreeViewProps> = { itemRenderer: TreeItemWrapper, onSelectItem: () => {}, onFocusItem: () => {} };
@@ -188,59 +137,6 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
         this.props.onFocusItem!(item);
     };
 
-    getPreviousItem(item: TreeItemData) {
-        const parent = this.parentsMap.get(item);
-
-        const siblings = parent ? parent.children! : this.props.dataSource;
-
-        const itemIdx = siblings.indexOf(item);
-        if (itemIdx === 0) return parent ? parent : item;
-
-
-        const prevSibling = siblings[itemIdx - 1] as TreeItemData;
-        const prevSiblingState = this.stateMap.getItemState(prevSibling);
-
-        if (prevSiblingState.isExpanded && prevSibling.children!.length ) {
-            return prevSibling.children![prevSibling.children!.length - 1];
-        } else {
-            return prevSibling;
-        }
-    }
-
-    getNextParentSibling(item: TreeItemData, parent: TreeItemData | undefined) {
-        if (!parent) {
-            return item;
-        } else {
-            const grandParent = this.parentsMap.get(parent);
-            if (!grandParent) return item;
-            const grandParentChildren = grandParent!.children!;
-            const parentIdx = grandParentChildren.indexOf(parent);
-            return parentIdx !== grandParentChildren.length - 1 ? grandParentChildren[parentIdx + 1] : item;
-        }
-    }
-
-    getNextItem(item: TreeItemData) {
-        const itemState = this.stateMap.getItemState(item);
-
-        if (itemState.isExpanded && item.children) {
-            return item.children![0];
-        } else {
-            const parent = this.parentsMap.get(item);
-            const siblings = parent ? parent.children! : this.props.dataSource;
-            const itemIdx = siblings.indexOf(item);
-            return itemIdx !== siblings.length - 1 ? siblings[itemIdx + 1] : this.getNextParentSibling(item, parent);
-        }
-    }
-
-    getLastAvailableItem(lastChild: TreeItemData): TreeItemData {
-        if (this.stateMap.getItemState(lastChild).isExpanded && lastChild.children) {
-            return this.getLastAvailableItem(lastChild.children[lastChild.children.length - 1]);
-        } else {
-            return lastChild;
-        }
-
-    }
-
     @action
     onFocusItem(item: TreeItemData) {
         if (this.props.focusedItem !== item) {
@@ -278,23 +174,21 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
 
         switch(e.keyCode) {
             case KeyCodes.RIGHT:
-                e.preventDefault(); this.expandItem(this.props.focusedItem); return;
+                e.preventDefault(); this.expandItem(this.props.focusedItem); break;
             case KeyCodes.LEFT:
-                e.preventDefault(); this.collapseItem(this.props.focusedItem); return;
+                e.preventDefault(); this.collapseItem(this.props.focusedItem); break;
             case KeyCodes.UP:
-                e.preventDefault(); this.focusPrev(this.props.focusedItem); return;
+                e.preventDefault(); this.focusPrev(this.props.focusedItem); break;
             case KeyCodes.DOWN:
-                e.preventDefault(); this.focusNext(this.props.focusedItem); return;
+                e.preventDefault(); this.focusNext(this.props.focusedItem); break;
             case KeyCodes.ENTER:
-                e.preventDefault(); this.selectItem(this.props.focusedItem); return;
+                e.preventDefault(); this.selectItem(this.props.focusedItem); break;
             case KeyCodes.HOME:
                 this.stateMap.getItemState(this.props.focusedItem).isFocused = false;
-                e.preventDefault(); this.focusFirst(); return;
+                e.preventDefault(); this.focusFirst(); break;
             case KeyCodes.END:
                 this.stateMap.getItemState(this.props.focusedItem).isFocused = false;
-                e.preventDefault(); this.focusLast(); return;
-            default:
-                return;
+                e.preventDefault(); this.focusLast(); break;
         }
     };
 
