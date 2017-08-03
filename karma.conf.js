@@ -25,12 +25,12 @@ const sauceLabsLaunchers = { // Check out https://saucelabs.com/platforms for al
         browserName: 'internet explorer',
         version: '11.0'
     },
-    slIE10: {
-        base: 'SauceLabs',
-        platform: 'Windows 7',
-        browserName: 'internet explorer',
-        version: '10.0'
-    },
+    // slIE10: {
+    //     base: 'SauceLabs',
+    //     platform: 'Windows 7',
+    //     browserName: 'internet explorer',
+    //     version: '10.0'
+    // },
     slSafari10: {
         base: 'SauceLabs',
         platform: 'macOS 10.12',
@@ -136,8 +136,7 @@ module.exports = function (config) {
 
         // start these browsers
         // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-        browsers: process.env.TRAVIS_BRANCH === 'master' && process.env.TRAVIS_PULL_REQUEST === 'false' ?
-        // browsers: true ?
+        browsers: process.env.TRAVIS ?
             Object.keys(sauceLabsLaunchers) :
             ['ChromeHeadless'],
 

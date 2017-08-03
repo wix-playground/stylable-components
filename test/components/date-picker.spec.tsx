@@ -27,7 +27,7 @@ describe('The DatePicker Component', () => {
             const {select, waitForDom} = clientRenderer.render(<DatePickerDemo />);
 
             const datePickerInput = select(datePickerInputId);
-            triggerChange(datePickerInput!, '2017-02-01');
+            triggerChange(datePickerInput!, '2017/02/01');
             simulate.keyDown(datePickerInput, { keyCode: keycode('enter') });
 
             await waitForDom(() => expect(select(currentDate)).to.have.text('Wed Feb 01 2017'));
@@ -62,7 +62,7 @@ describe('The DatePicker Component', () => {
         const {select, waitForDom} = clientRenderer.render(<DatePickerDemo />);
 
         const datePickerInput = select(datePickerInputId);
-        triggerChange(datePickerInput!, '2017-02-01');
+        triggerChange(datePickerInput!, '2017/02/01');
         simulate.blur(datePickerInput);
 
         await waitForDom(() => expect(select(currentDate)).to.have.text('Wed Feb 01 2017'));
@@ -97,8 +97,8 @@ describe('The DatePicker Component', () => {
             const {select, waitForDom} = clientRenderer.render(<DatePickerDemo isDropdownVisible={true} value={FEBRUARY_FIRST} />);
 
             await waitForDom(() => {
-                dayNames.forEach(name => expect(select(datePickerDropdownId)).to.contain.text(name));
-                days.forEach(day => expect(select(datePickerDropdownId)).to.contain.text(day));
+                dayNames.forEach(dayName => expect(select(`DAY_NAME_${dayName.toUpperCase()}`)).to.have.text(dayName));
+                days.forEach(dayNumeric => expect(select(`DAY_${dayNumeric}`)).to.have.text(dayNumeric));
             });
         });
 
@@ -206,7 +206,6 @@ describe('The DatePicker Component', () => {
 
         it('has a button which steps back a month', async () => {
             const {select, waitForDom} = clientRenderer.render(<DatePickerDemo isDropdownVisible={true} value={JANUARY_FIRST} />);
-
             expect(select('YEAR')).to.have.text('2017');
             expect(select('MONTH_NAME')).to.have.text('January');
             simulate.mouseDown(select('PREV_MONTH_BUTTON'));
