@@ -136,8 +136,10 @@ module.exports = function (config) {
 
         // start these browsers
         // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-        // browsers: process.env.TRAVIS_BRANCH === 'master' && process.env.TRAVIS_PULL_REQUEST === 'false' ?
-        browsers: Object.keys(sauceLabsLaunchers),
+        browsers: process.env.TRAVIS_BRANCH === 'master' && process.env.TRAVIS_PULL_REQUEST === 'false' ?
+        // browsers: true ?
+            Object.keys(sauceLabsLaunchers) :
+            ['ChromeHeadless'],
 
 
         // Continuous Integration mode
