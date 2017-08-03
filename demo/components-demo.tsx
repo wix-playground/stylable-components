@@ -1,10 +1,12 @@
 import * as React from 'react';
+import {ToggleDemo} from './components/toggle-demo';
 import {DatePickerDemo} from './components/date-picker-demo';
 import {CheckBoxDemo} from "./components/checkbox-demo";
 import { Image } from '../src';
 import { sampleImage } from '../test/fixtures/sample-image';
 import { TreeViewDemo } from './components/tree-view-demo';
 import { BirthdayPickerDemo } from './components/birthday-picker-demo';
+import { SelectionListDemo } from './components/selection-list-demo';
 import style from './style.st.css';
 import '../src/style/default-theme/base.st.css';
 import { RadioGroupDemo } from './components/radio-group-demo'
@@ -41,10 +43,20 @@ export class ComponentsDemo extends React.Component<{}, {}>{
                 <h2>TreeView</h2>
                 <TreeViewDemo />
             </div>
-            <hr />
+            <hr/>
+            <div>
+                <h2>Toggle</h2>
+                <ToggleDemo/>
+            </div>
+            <hr/>
             <div>
                 <h2>DatePicker</h2>
                 <DatePickerDemo />
+            </div>
+            <hr />
+            <div>
+                <h2>SelectionList</h2>
+                <SelectionListDemo />
             </div>
             <hr />
             <div>
