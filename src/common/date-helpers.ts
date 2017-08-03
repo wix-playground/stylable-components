@@ -4,7 +4,7 @@ export function getDayNames (startingDay: number = 0, nameLength: string = 'shor
 
     // For each of the seven days of the week
     for (let day = 0; day < 7; day++) {
-        const dayName = new Date(Date.UTC(1970, 5, day + startingDay)).toLocaleString(locale, { weekday: nameLength });
+        const dayName = new Date(Date.UTC(1970, 5, day + startingDay)).toLocaleDateString(locale, { weekday: nameLength });
         listOfDayNames.push(dayName);
     }
 
@@ -16,7 +16,7 @@ export function getMonthNames (locale: string = 'en-US'): Array<string> {
 
     // For each of the twelve months of the year
     for (let month = 0; month < 12; month++) {
-        const monthName = new Date(Date.UTC(1970, month, 1)).toLocaleString(locale, { month: 'long' });
+        const monthName = new Date(Date.UTC(1970, month, 1)).toLocaleDateString(locale, { month: 'long' });
         listOfMonthNames.push(monthName);
     }
     return listOfMonthNames;
