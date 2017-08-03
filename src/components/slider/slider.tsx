@@ -126,6 +126,9 @@ export class Slider extends React.Component<SliderProps, SliderState> {
   }
 
   private onSliderAreaMouseDown(event: React.MouseEvent<HTMLElement>) {
+    if (this.props.disabled) {
+      return;
+    }
     const sliderArea = event.currentTarget;
     this.sliderArea = sliderArea;
 
@@ -187,7 +190,8 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         className={style['slider-container']}
         data-automation-id='SLIDER-CONTAINER'
         cssStates={{
-          active: this.state.isActive
+          active: this.state.isActive,
+          disabled: !!this.props.disabled
         }}
       >
         <input
@@ -203,7 +207,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         <div
           className={style['slider']}
           data-automation-id='SLIDER'
-          tabIndex={0}
+          tabIndex={this.props.disabled ? -1 : 0}
           onMouseDown={this.onSliderAreaMouseDown}
         >
           <div className={style['slider-track']} data-automation-id='SLIDER-TRACK'>

@@ -23,7 +23,7 @@
 }
 
 .root {
-  -st-states: active;
+  -st-states: active, disabled;
   width: 100%;
   position: relative;
   display: inline-block;
@@ -98,4 +98,21 @@
 }
 .root:active .slider-track{
   background-color: #adbbc6; 
+}
+
+/* Disabled state */
+.root:disabled .slider{
+  cursor: not-allowed;
+}
+.root:disabled .slider-handle{
+  -webkit-box-shadow: 0 0 0 0px rgba(92, 180, 255, 0.5);
+  box-shadow: 0 0 0 0px rgba(92, 180, 255, 0.5);
+  border-color: #c8c8c8;
+  background-color: #f1f1f1;
+}
+.root:disabled .slider-track{
+  background-color: #c8c8c8; 
+}
+.root:disabled .slider-progress{
+  background-color: transparent; 
 }
