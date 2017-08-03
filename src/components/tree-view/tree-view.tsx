@@ -244,8 +244,6 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
             case KeyCodes.END:
                 this.stateMap.getItemState(this.props.focusedItem).isFocused = false;
                 e.preventDefault(); this.focusLast(); return;
-            default:
-                return;
         }
     };
 

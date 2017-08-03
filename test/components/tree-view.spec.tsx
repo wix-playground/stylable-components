@@ -140,6 +140,33 @@ describe('<TreeView />', () => {
         });
     });
 
+    it('skips focusing hidden elements when doing keyboard navigation', async () => {
+        function simulateFilterChange(query: string) {
+            (select(treeView, 'FILTER_INPUT') as HTMLInputElement).value = query;
+            simulate.change(select(treeView, 'FILTER_INPUT'));
+        }
+
+        const { select, waitForDom } = clientRenderer.render(<TreeViewDemo />);
+
+        const rootChildren = treeData[0].children!;
+
+        expandItemWithLabel(select, treeData[0].label);
+        expandItemWithLabel(select, rootChildren[2].label);
+        expandItemWithLabel(select, rootChildren[0].label);
+
+        simulateFilterChange('C');
+
+        await waitForDom(() => expect(select(getTreeItem('Salads'))).to.have.attr('data-focused', 'true'));
+
+        simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), { keyCode: KeyCodes.DOWN });
+
+        await waitForDom(() => expect(select(getTreeItem('Caesar Salad'))).to.have.attr('data-focused', 'true'));
+
+        simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), { keyCode: KeyCodes.DOWN });
+
+        return waitForDom(() => expect(select(getTreeItem('Desserts'))).to.have.attr('data-focused', 'true'));
+    });
+
     describe('Using default renderer', () => {
         it('renders correct children', () => {
             const { select, waitForDom } = clientRenderer.render(<TreeView dataSource={treeData} />);
