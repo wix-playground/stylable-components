@@ -76,8 +76,8 @@ The following static styles should be used:
 
 | key | action |
 | --- | --- |
-Home | highlights the first item in the TreeView
-End | highlights the last item in the TreeView
+Home | highlights the first open TreeItem in the TreeView
+End | highlights the last open TreeItem in the TreeView
 Enter | Selects current highlighted item (does not expand it though)
 Up arrow | highlights previous item
 Down arrow | highlights next item
