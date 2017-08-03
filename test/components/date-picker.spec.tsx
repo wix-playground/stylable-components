@@ -1,8 +1,8 @@
 import * as React from 'react';
+import * as keycode from 'keycode';
 import {expect, ClientRenderer, simulate, selectDom, trigger} from 'test-drive-react';
 import {getDayNames, getMonthFromOffset, getDaysInMonth, getNumOfPreviousDays, getNumOfFollowingDays} from '../../src/common/date-helpers';
 import {DatePickerDemo} from '../../demo/components/date-picker-demo';
-import {KeyCodes} from '../../src/common/key-codes';
 
 const currentDate = 'CURRENT_DATE';
 const datePickerInputId = 'DATE_PICKER_INPUT';
@@ -28,7 +28,7 @@ describe('The DatePicker Component', () => {
 
             const datePickerInput = select(datePickerInputId);
             triggerChange(datePickerInput!, '2017/02/01');
-            simulate.keyDown(datePickerInput, { keyCode: KeyCodes.ENTER });
+            simulate.keyDown(datePickerInput, { keyCode: keycode('enter') });
 
             await waitForDom(() => expect(select(currentDate)).to.contain.text('Wed Feb 01 2017'));
         });

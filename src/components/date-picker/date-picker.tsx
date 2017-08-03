@@ -1,7 +1,7 @@
 import * as React from 'react';
+import * as keycode from 'keycode';
+import {SyntheticEvent} from 'react';
 import {Calendar} from './calendar';
-import {SyntheticEvent} from "react";
-import {KeyCodes} from '../../common/key-codes';
 import styles from './date-picker.st.css';
 
 const invalidDate: string = 'Invalid Date';
@@ -72,7 +72,7 @@ export class DatePicker extends React.Component<DatePickerProps, DatePickerState
     };
 
     onKeyDown: React.EventHandler<SyntheticEvent<HTMLInputElement>> = (event: React.KeyboardEvent<HTMLInputElement>): void => {
-        if (event.keyCode === KeyCodes.ENTER) {
+        if (keycode(event.keyCode) === 'enter') {
             const eventTarget = event.target as HTMLInputElement;
             this.updateStateFromString(eventTarget.value);
             this.setState({ isDropdownVisible: !this.state.isDropdownVisible });
