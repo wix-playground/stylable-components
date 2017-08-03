@@ -235,37 +235,33 @@ describe('The DatePicker Component', () => {
 
     describe('The Helper Functions', () => {
         it('getMonthFromOffset should return the next month when the second argument is 1', () => {
-            // March 6, 2017
-            const currentDate = new Date(Date.UTC(2017, 2, 6));
+            const currentDate = new Date('Mar 6 2017');
             const nextMonth = getMonthFromOffset(currentDate, 1);
 
-            expect(nextMonth.getUTCMonth()).to.equal(currentDate.getUTCMonth() + 1);
+            expect(nextMonth.getMonth()).to.equal(currentDate.getMonth() + 1);
         });
 
         it('getMonthFromOffset should return the previous month when the second argument is -1', () => {
-            // March 6, 2017
-            const currentDate = new Date(Date.UTC(2017, 2, 6));
+            const currentDate = new Date('Mar 6 2017');
             const nextMonth = getMonthFromOffset(currentDate, -1);
 
-            expect(nextMonth.getUTCMonth()).to.equal(currentDate.getUTCMonth() - 1);
+            expect(nextMonth.getMonth()).to.equal(currentDate.getMonth() - 1);
         });
 
         it('getMonthFromOffset should handle the year changing when moving forward a month', () => {
-            // December 6, 2016
-            const currentDate = new Date(Date.UTC(2016, 11, 6));
+            const currentDate = new Date('Dec 6 2016');
             const nextMonth = getMonthFromOffset(currentDate, 1);
 
-            expect(nextMonth.getUTCFullYear()).to.equal(currentDate.getUTCFullYear() + 1);
-            expect(nextMonth.getUTCMonth()).to.equal(0);
+            expect(nextMonth.getFullYear()).to.equal(currentDate.getFullYear() + 1);
+            expect(nextMonth.getMonth()).to.equal(0);
         });
 
         it('getMonthFromOffset should handle the year changing when moving back a month', () => {
-            // Jan 6, 2018
-            const currentDate = new Date(Date.UTC(2018, 0, 6));
+            const currentDate = new Date('Jan 6 2018');
             const nextMonth = getMonthFromOffset(currentDate, -1);
 
-            expect(nextMonth.getUTCFullYear()).to.equal(currentDate.getUTCFullYear() - 1);
-            expect(nextMonth.getUTCMonth()).to.equal(11);
+            expect(nextMonth.getFullYear()).to.equal(currentDate.getFullYear() - 1);
+            expect(nextMonth.getMonth()).to.equal(11);
         });
 
         it('getDaysInMonth should return the number of days in a given month', () => {
