@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {SBComponent} from 'stylable-react-component';
 
 export type PointerEvent = MouseEvent | TouchEvent;
 
@@ -45,8 +46,10 @@ export interface SliderProps {
 
 export interface SliderState {
   relativeValue: number;
+  isActive: boolean;
 };
 
+@SBComponent(style)
 export class Slider extends React.Component<SliderProps, SliderState> {
   static defaultProps = {
     min: DEFAULT_MIN,
@@ -74,7 +77,8 @@ export class Slider extends React.Component<SliderProps, SliderState> {
     this.onSliderAreaMouseUp = this.onSliderAreaMouseUp.bind(this);
 
     this.state = {
-      relativeValue: this.getRelativeValue(this.props.value!, this.props.min!, this.props.max!)
+      relativeValue: this.getRelativeValue(this.props.value!, this.props.min!, this.props.max!),
+      isActive: false
     }
   }
 
@@ -126,7 +130,8 @@ export class Slider extends React.Component<SliderProps, SliderState> {
     this.sliderArea = sliderArea;
 
     this.setState({
-      relativeValue: this.getValueFromElementAndPointer(event.currentTarget, event.clientX)
+      relativeValue: this.getValueFromElementAndPointer(event.currentTarget, event.clientX),
+      isActive: true
     });
 
     document.addEventListener('mousemove', this.onSliderAreaMouseMove);
@@ -153,7 +158,8 @@ export class Slider extends React.Component<SliderProps, SliderState> {
   private onSliderAreaMouseUp(event: MouseEvent) {
     const relativeValue = this.getValueFromElementAndPointer(this.sliderArea, event.clientX);
     this.setState({
-      relativeValue
+      relativeValue,
+      isActive: false
     });
 
     document.removeEventListener('mousemove', this.onSliderAreaMouseMove);
@@ -177,7 +183,13 @@ export class Slider extends React.Component<SliderProps, SliderState> {
 
   render() {
     return (
-      <div className={style['slider-container']} data-automation-id='SLIDER-CONTAINER'>
+      <div
+        className={style['slider-container']}
+        data-automation-id='SLIDER-CONTAINER'
+        cssStates={{
+          active: this.state.isActive
+        }}
+      >
         <input
           value={this.props.value}
           type="number"

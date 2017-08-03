@@ -22,7 +22,8 @@
   handleBorderHover: 1px solid value(color_Slider_Handle_Active);;
 }
 
-.slider-container{
+.root {
+  -st-states: active;
   width: 100%;
   position: relative;
   display: inline-block;
@@ -35,7 +36,7 @@
   outline: none;
 }
 
-.slider-native-input{
+.slider-native-input {
   position: absolute;
   visibility: hidden;
 }
@@ -84,4 +85,14 @@
 .slider:focus .slider-handle{
   -webkit-box-shadow: 0 0 0 4px rgba(92, 180, 255, 0.5);
   box-shadow: 0 0 0 4px rgba(92, 180, 255, 0.5);
+}
+
+/* Active state */
+.root:active .slider-handle{
+  -webkit-box-shadow: 0 0 0 0px rgba(92, 180, 255, 0.5);
+  box-shadow: 0 0 0 0px rgba(92, 180, 255, 0.5);
+  background-color: #4a90e2;
+}
+.root:active .slider-track{
+  background-color: #adbbc6; 
 }
