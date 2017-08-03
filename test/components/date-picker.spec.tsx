@@ -235,21 +235,24 @@ describe('The DatePicker Component', () => {
 
     describe('The Helper Functions', () => {
         it('getMonthFromOffset should return the next month when the second argument is 1', () => {
-            const currentDate = new Date('Mar 6 2017');
+            // March 6, 2017
+            const currentDate = new Date(Date.UTC(2017, 2, 6, 0, 0, 0));
             const nextMonth = getMonthFromOffset(currentDate, 1);
 
             expect(nextMonth.getMonth()).to.equal(currentDate.getMonth() + 1);
         });
 
         it('getMonthFromOffset should return the previous month when the second argument is -1', () => {
-            const currentDate = new Date('Mar 6 2017');
+            // March 6, 2017
+            const currentDate = new Date(Date.UTC(2017, 2, 6, 0, 0, 0));
             const nextMonth = getMonthFromOffset(currentDate, -1);
 
             expect(nextMonth.getMonth()).to.equal(currentDate.getMonth() - 1);
         });
 
         it('getMonthFromOffset should handle the year changing when moving forward a month', () => {
-            const currentDate = new Date('Dec 6 2016');
+            // December 6, 2016
+            const currentDate = new Date(Date.UTC(2016, 11, 6, 0, 0, 0));
             const nextMonth = getMonthFromOffset(currentDate, 1);
 
             expect(nextMonth.getFullYear()).to.equal(currentDate.getFullYear() + 1);
@@ -257,7 +260,8 @@ describe('The DatePicker Component', () => {
         });
 
         it('getMonthFromOffset should handle the year changing when moving back a month', () => {
-            const currentDate = new Date('Jan 6 2018');
+            // Jan 6, 2018
+            const currentDate = new Date(Date.UTC(2018, 0, 6, 0, 0, 0));
             const nextMonth = getMonthFromOffset(currentDate, -1);
 
             expect(nextMonth.getFullYear()).to.equal(currentDate.getFullYear() - 1);
