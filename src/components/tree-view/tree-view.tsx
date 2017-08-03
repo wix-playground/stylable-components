@@ -78,6 +78,58 @@ export class TreeStateMap {
     }
 }
 
+function getPreviousItem(dataSource: Object[], item: TreeItemData, stateMap: TreeStateMap, parentsMap: ParentsMap): TreeItemData {
+    const parent = parentsMap.get(item);
+
+    const siblings = parent ? parent.children! : dataSource;
+
+    const itemIdx = siblings.indexOf(item);
+    if (itemIdx === 0) return parent ? parent : item;
+
+    const prevSibling = siblings[itemIdx - 1] as TreeItemData;
+    const prevSiblingState = stateMap.getItemState(prevSibling);
+
+    if (prevSiblingState.isExpanded && prevSibling.children!.length ) {
+        return prevSibling.children![prevSibling.children!.length - 1];
+    } else {
+        return prevSibling;
+    }
+}
+
+function getNextItem(dataSource: Object[], item: TreeItemData, stateMap: TreeStateMap, parentsMap: ParentsMap): TreeItemData {
+    const itemState = stateMap.getItemState(item);
+
+    if (itemState.isExpanded && item.children) {
+        return item.children![0];
+    } else {
+        const parent = parentsMap.get(item);
+        const siblings = parent ? parent.children! : dataSource;
+        const itemIdx = siblings.indexOf(item);
+        return itemIdx !== siblings.length - 1 ? siblings[itemIdx + 1] as TreeItemData: getNextParentSibling(item, parent, parentsMap);
+    }
+}
+
+function getLastAvailableItem(lastChild: TreeItemData, stateMap: TreeStateMap): TreeItemData {
+    if (stateMap.getItemState(lastChild).isExpanded && lastChild.children) {
+        return getLastAvailableItem(lastChild.children[lastChild.children.length - 1], stateMap);
+    } else {
+        return lastChild;
+    }
+
+}
+
+function getNextParentSibling(item: TreeItemData, parent: TreeItemData | undefined, parentsMap: ParentsMap): TreeItemData {
+    if (!parent) {
+        return item;
+    } else {
+        const grandParent = parentsMap.get(parent);
+        if (!grandParent) return item;
+        const grandParentChildren = grandParent!.children!;
+        const parentIdx = grandParentChildren.indexOf(parent);
+        return parentIdx !== grandParentChildren.length - 1 ? grandParentChildren[parentIdx + 1] : item;
+    }
+}
+
 @SBComponent(style) @observer
 export class TreeView extends React.Component<TreeViewProps, {}>{
     static defaultProps: Partial<TreeViewProps> = { itemRenderer: TreeItemWrapper, onSelectItem: () => {}, onFocusItem: () => {} };
@@ -214,11 +266,11 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
         }
     };
 
-    focusPrev = (item: TreeItemData) => this.onFocusItem!(this.getPreviousItem(item) as TreeItemData);
-    focusNext = (item: TreeItemData) => this.onFocusItem!(this.getNextItem(item) as TreeItemData);
+    focusPrev = (item: TreeItemData) => this.onFocusItem!(getPreviousItem(this.props.dataSource, item, this.stateMap, this.parentsMap));
+    focusNext = (item: TreeItemData) => this.onFocusItem!(getNextItem(this.props.dataSource, item, this.stateMap, this.parentsMap));
     focusFirst = () => this.props.onFocusItem!(this.props.dataSource[0]);
     focusLast = () =>
-        this.props.onFocusItem!(this.getLastAvailableItem(this.props.dataSource[this.props.dataSource.length - 1] as TreeItemData));
+        this.props.onFocusItem!(getLastAvailableItem(this.props.dataSource[this.props.dataSource.length - 1] as TreeItemData, this.stateMap));
 
     @action
     onKeyDown = (e: any) => {
