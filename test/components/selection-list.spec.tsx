@@ -1,5 +1,6 @@
 import React = require('react');
 import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react';
+import sleep from '../../src/common/sleep';
 import {SelectionListDemo} from '../../demo/components/selection-list-demo';
 import {SelectionList, divider} from '../../src/components/selection-list';
 
@@ -68,10 +69,12 @@ describe('<SelectionList />', function () {
 
         simulate.click(select('LIST')!.children[1]);
 
+        await sleep(100);
+
         return waitFor(() => {
             expect(onChange).to.have.been.calledOnce;
             expect(onChange).to.have.been.calledWithExactly('Two');
-        }, 100);
+        });
     });
 
     it("Doesn't fire onChange for clicks on active items, dividers, disabled items, and items without value", async () => {
@@ -95,9 +98,11 @@ describe('<SelectionList />', function () {
         simulate.click(select('LIST')!.children[2]);
         simulate.click(select('LIST')!.children[3]);
 
+        await sleep(100);
+
         return waitFor(() => {
             expect(onChange).to.have.not.been.called;
-        }, 100);
+        });
     });
 
     it("Renders blank items at the same height as normal items", function() {

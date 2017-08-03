@@ -1,6 +1,4 @@
 import React = require('react');
-import {observable} from 'mobx';
-import {observer} from 'mobx-react';
 import {SelectionList, ItemRendererProps, divider} from "../../src/components/selection-list";
 
 export class SelectionListDemo extends React.Component<{}, {}> {

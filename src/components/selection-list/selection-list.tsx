@@ -6,8 +6,8 @@ import style from './selection-list.st.css';
 
 export const divider = {};
 
-function renameKeys(data: any, schema: any) {
-    const result: any = {};
+function renameKeys(data: {[index: string]: any}, schema: {[index: string]: string}) {
+    const result: {[index: string]: any} = {};
     for (const key in schema) {
         result[key] = data[schema[key]];
     }
@@ -83,9 +83,9 @@ export class SelectionList extends React.Component<SelectionListProps, {}> {
         onChange: () => {}
     };
 
-    normalizeItem(item: SelectionItem) {
+    normalizeItem(item: SelectionItem): {[index: string]: any} {
         if (item === divider) {
-            return item;
+            return divider;
         }
 
         if (typeof item === 'string') {
