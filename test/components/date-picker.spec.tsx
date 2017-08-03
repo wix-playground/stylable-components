@@ -13,10 +13,10 @@ describe('The DatePicker Component', () => {
 
     afterEach(() => clientRenderer.cleanup());
 
-    const JANUARY_FIRST = new Date(Date.UTC(2017, 0, 1, 0, 0, 0));
-    const FEBRUARY_FIRST = new Date(Date.UTC(2017, 1, 1, 0, 0, 0));
-    const MARCH_FIRST  = new Date(Date.UTC(2017, 2, 1, 0, 0, 0));
-    const DECEMBER_FIRST = new Date(Date.UTC(2017, 11, 1, 0, 0, 0));
+    const JANUARY_FIRST = new Date(2017, 0, 1;
+    const FEBRUARY_FIRST = new Date(2017, 1, 1);
+    const MARCH_FIRST  = new Date(2017, 2, 1);
+    const DECEMBER_FIRST = new Date(2017, 11, 1);
 
     const triggerChange = (domElememt: Element, value: string) => {
         trigger.change(domElememt, value);
@@ -27,7 +27,7 @@ describe('The DatePicker Component', () => {
             const {select, waitForDom} = clientRenderer.render(<DatePickerDemo />);
 
             const datePickerInput = select(datePickerInputId);
-            triggerChange(datePickerInput!, '2017-02-01');
+            triggerChange(datePickerInput!, '2017/02/01');
             simulate.keyDown(datePickerInput, { keyCode: KeyCodes.ENTER });
 
             await waitForDom(() => expect(select(currentDate)).to.contain.text('Wed Feb 01 2017'));
@@ -62,7 +62,7 @@ describe('The DatePicker Component', () => {
         const {select, waitForDom} = clientRenderer.render(<DatePickerDemo />);
 
         const datePickerInput = select(datePickerInputId);
-        triggerChange(datePickerInput!, '2017-02-01');
+        triggerChange(datePickerInput!, '2017/02/01');
         simulate.blur(datePickerInput);
 
         await waitForDom(() => expect(select(currentDate)).to.contain.text('Wed Feb 01 2017'));
