@@ -2,8 +2,7 @@
 
 A typed React TreeView component. The TreeView is a generic container in the sense that it can work with any kind of data and be styled according to a specific implementation.
 
-![Image of tree]()
-
+* [Elements](#elements)
 * [Internal Implementation](#internal-implementation)
   * [TreeItem](#treeitem)
   * [ItemRenderer](#default-itemrenderer)
@@ -11,6 +10,10 @@ A typed React TreeView component. The TreeView is a generic container in the sen
 * [Methods](#methods)
 * [Input Handling](#input-handling)
 * [Examples](#examples)
+
+## Elements
+
+![Image of elements](./assets/treeview/treeElements.png)
 
 ## Internal Implementation
 

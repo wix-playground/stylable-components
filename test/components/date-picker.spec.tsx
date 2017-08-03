@@ -3,7 +3,6 @@ import {expect, ClientRenderer, simulate, selectDom, trigger} from 'test-drive-r
 import {getDayNames, getMonthFromOffset, getDaysInMonth, getNumOfPreviousDays, getNumOfFollowingDays} from '../../src/common/date-helpers';
 import {DatePickerDemo} from '../../demo/components/date-picker-demo';
 import {KeyCodes} from '../../src/common/key-codes';
-import {debug} from "util";
 
 const currentDate = 'CURRENT_DATE';
 const datePickerInputId = 'DATE_PICKER_INPUT';
