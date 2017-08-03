@@ -58,7 +58,7 @@ export class Calendar extends React.Component<CalendarProps, {}>{
             return (
                 <span className={[styles.calendarItem, styles.dayName].join(' ')}
                       key={'DAY_NAME_' + index}
-                      data-automation-id={('DAY_NAME_' + name.toUpperCase()).trim()}>
+                      data-automation-id={('DAY_NAME_' + name.toUpperCase())}>
                     {name}</span>
             );
         });
