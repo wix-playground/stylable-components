@@ -36,6 +36,19 @@ A TreeView is composed of nodes. Each node (referred to internally as a TreeItem
 | expandAll | Boolean: deep (default) or shallow | Expands all the tree nodes. |
 | selectItem | item: Object (required) | Selects an item in the tree. |
 
+## Input Handling
+
+### Keyboard Navigation
+
+| key | action |
+| --- | --- |
+Home | highlights the first item in the TreeView
+End | highlights the last item in the TreeView
+Enter | Selects current highlighted item (does not expand it though)
+Up arrow | highlights previous item
+Down arrow | highlights next item
+Left arrow | * if child then highlights parent<br>* if parent then collapses it
+Right arrow | * expands item and highlights it<br>* if item was already expanded then highlights the first child
 
 ### Code Examples
 
