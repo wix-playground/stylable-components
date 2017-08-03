@@ -210,7 +210,6 @@ describe('The DatePicker Component', () => {
             expect(select('MONTH_NAME')).to.have.text('January');
             simulate.mouseDown(select('PREV_MONTH_BUTTON'));
 
-
             await waitForDom(() => {
                 expect(select('YEAR')).to.have.text('2016');
                 expect(select('MONTH_NAME')).to.have.text('December');
