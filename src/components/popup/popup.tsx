@@ -1,6 +1,7 @@
 import React = require('react');
 import ReactDOM = require('react-dom');
 import {CSSProperties} from "react";
+import {observer} from 'mobx-react';
 const style = require('./popup.st.css').default;
 
 export type VerticalPosition =  'top' | 'center' | 'bottom';
@@ -24,13 +25,14 @@ export interface PopupProps {
     popupPosition?: PositionPoint;
     collision?: Collision;
     syncWidth?: boolean;
-    maxHeight?: number
+    maxHeight?: number;
 }
 
 export interface PopupState {
     style: CSSProperties;
 }
 
+@observer
 export class Popup extends React.Component<Partial<PopupProps>,PopupState> {
     popup: HTMLElement | null;
     static defaultProps : Partial<PopupProps> = {
@@ -49,8 +51,15 @@ export class Popup extends React.Component<Partial<PopupProps>,PopupState> {
 
     componentDidMount() {
         if (this.popup) {
+
+
+        }
+    }
+
+    setPosition = (popup: any) => {
+        if (popup) {
             const newStyle = this.state.style;
-            const popupRect = this.popup.getBoundingClientRect();
+            const popupRect = popup.getBoundingClientRect();
             let popupWidth = popupRect.width;
 
             newStyle.maxHeight = this.props.maxHeight;
@@ -61,34 +70,33 @@ export class Popup extends React.Component<Partial<PopupProps>,PopupState> {
 
             let anchorHorizontalPos = this.props.anchorPosition!.horizontal;
             let anchorVerticalPos = this.props.anchorPosition!.vertical;
-            if(this.props.collision!.horizontal === 'flip') {
+            if (this.props.collision!.horizontal === 'flip') {
                 if (this.props.anchorPosition!.horizontal === 'left' && (this.props.anchor as HTMLElement).offsetLeft < popupWidth) {
                     anchorHorizontalPos = reversePosition(anchorHorizontalPos) as 'left' | 'center' | 'right';
                 }
             }
 
-            if(this.props.collision!.vertical === 'flip') {
+            if (this.props.collision!.vertical === 'flip') {
                 if (this.props.anchorPosition!.vertical === 'top' && (this.props.anchor as HTMLElement).offsetTop < popupRect.height) {
                     anchorVerticalPos = reversePosition(anchorVerticalPos) as 'top' | 'center' | 'bottom';
                 }
             }
 
-            setTop(newStyle, (this.props.anchor as HTMLElement).getBoundingClientRect(), anchorVerticalPos, this.popup.getBoundingClientRect().height, this.props.popupPosition!.vertical);
+            setTop(newStyle, (this.props.anchor as HTMLElement).getBoundingClientRect(), anchorVerticalPos, popup.getBoundingClientRect().height, this.props.popupPosition!.vertical);
             setLeft(newStyle, (this.props.anchor as HTMLElement).getBoundingClientRect(), anchorHorizontalPos, popupWidth, this.props.popupPosition!.horizontal);
             if (this.props.syncWidth) {
                 newStyle.width = (this.props.anchor as HTMLElement).getBoundingClientRect().width;
             }
             this.setState({style: newStyle})
         }
-    }
+    };
 
     render() {
         if (!this.props.anchor) {
             return null;
         }
-
         return (
-            <div data-automation-id="POPUP" ref={(popup) => {this.popup = popup}} style={this.state.style} className={!this.props.open ? style.closed : ''}>
+            <div data-automation-id="POPUP" ref={this.setPosition} style={this.state.style} className={!this.props.open ? style.closed : ''}>
                 {this.props.children}
             </div>
         );
@@ -125,18 +133,18 @@ function setLeft(style: CSSProperties, anchorRect: ClientRect, anchorPosition: H
 
 function getVerticalReference(rect: ClientRect, anchorPosition: VerticalPosition) {
     if (anchorPosition === 'center') {
-        return rect.top + (rect.height / 2);
+        return window.scrollY + rect.top + (rect.height / 2);
     } else {
-        return rect[anchorPosition as 'top' | 'bottom'];
+        return window.scrollY + rect[anchorPosition as 'top' | 'bottom'];
     }
 }
 
 function getHorizontalReference(rect: ClientRect, anchorPosition: HorizontalPosition, horizontalCollision?: CollisionOption) {
     let pos = 0;
     if (anchorPosition === 'center') {
-        pos = rect.left + (rect.width / 2);
+        pos = window.scrollX + rect.left + (rect.width / 2);
     } else {
-        pos = rect[anchorPosition as 'left' | 'right'];
+        pos = window.scrollX + rect[anchorPosition as 'left' | 'right'];
     }
     return pos;
 }
