@@ -1,16 +1,22 @@
 :import {
     -st-from: "../../style/default-theme/variables.st.css";
     -st-named:
+	BK2,
         BK3,
         PR1,
         PR3
         ;
 }
+:vars {
+    width: 120px;
+}
 .root {
     -st-states: focus;
     position: relative;
     border: 1px solid value(BK3);
-    display: inline-block;
+    box-sizing: border-box;
+    width: value(width);
+    display: inline-flex;
 }
 
 .root:hover {
@@ -22,7 +28,8 @@
 
 .input {
     border: 0;
-    width: 3em;
+    width: 100%;
+    padding: 6px 10px;
 }
 .input:hover,
 .input:focus {

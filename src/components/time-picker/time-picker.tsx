@@ -9,8 +9,9 @@ export type FormatPart = 'hh' | 'mm' | 'ss';
 export interface Props {
 	value?: string
 	format?: string
-	onChange?: (value: string) => void,
+	onChange?: (value: string) => void
 	use12?: boolean
+	placeholder?: string
 }
 
 export interface State {
@@ -40,7 +41,6 @@ const isValidValue = (num: number, part: FormatPart, use12: boolean) => {
 export default class TimePicker extends React.Component<Props, State> {
 
 	static defaultProps = {
-		value: '00:00:00',
 		format: 'hh:mm:ss',
 		use12: false
 	}
@@ -53,18 +53,25 @@ export default class TimePicker extends React.Component<Props, State> {
 		}
 	}
 
-	getTimeParts(value: string) {
-		const parts = value.split(':')
+	getTimeParts(value?: string) {
+		if (!value) {
+			return {
+				hh: '',
+				mm: '',
+				ss: ''
+			}
+		}
+		const parts = value.split(':').map(pad2);
 		return {
 			hh: parts[0],
 			mm: parts[1],
 			ss: parts[2]
-		}
+		};
 	}
 
 	getValue() {
 		const {hh, mm, ss} = this.state;
-		return [hh, mm, ss].map(pad2).join(':');
+		return [hh, mm, ss].map(String).map(pad2).join(':');
 	}
 
 	onFocus = (e: React.SyntheticEvent<HTMLInputElement>) => {
@@ -89,17 +96,19 @@ export default class TimePicker extends React.Component<Props, State> {
 		}
 	}
 
-	moveFocus(currentRefName: FormatPart, increment: number) {
+	moveFocus(currentRefName: FormatPart, increment: number): boolean {
 		const refIndex = formatParts.indexOf(currentRefName);
 		const nextRef = this.refs[formatParts[refIndex + increment]];
 		if (nextRef) {
 			const next = findDOMNode(nextRef) as HTMLInputElement;
 			next.focus();
+			return true;
 		}
+		return false;
 	}
 
 	onChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
-		const {use12} = this.props;
+		const {onChange, use12} = this.props;
 		const {value} = e.currentTarget;
 		const name = e.currentTarget.name as FormatPart;
 		if (!isNumber(value)) {
@@ -116,7 +125,10 @@ export default class TimePicker extends React.Component<Props, State> {
 		};
 		this.setState(nextState, () => {
 			if (!shouldWaitForInput) {
-				this.moveFocus(name, 1);
+				const focusChanged = this.moveFocus(name, 1);
+				if (!focusChanged && onChange) {
+					onChange(this.getValue());
+				}
 			}
 		});
 	}
@@ -146,13 +158,16 @@ export default class TimePicker extends React.Component<Props, State> {
 
 	render() {
 		const {focus} = this.state;
-		const {format} = this.props;
+		const {format, value, placeholder} = this.props;
+		const formatPars = format!.split(':');
+		const showPlaceholder = placeholder && !this.state.hh;
+		const numberOfInputs = showPlaceholder ? 1 : formatParts.length;
 
 		return <div cssStates={{focus}}>
-			{format!.split(':').map((key: FormatPart) =>
+			{formatParts.slice(0, numberOfInputs).map((key: FormatPart) =>
 				<input
+					placeholder={showPlaceholder ? placeholder : '--'}
 					className='input'
-					size={2}
 					ref={key}
 					key={key}
 					name={key}
