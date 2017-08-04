@@ -1,8 +1,11 @@
 import * as React from 'react';
+import {ToggleDemo} from './components/toggle-demo';
+import {DatePickerDemo} from './components/date-picker-demo';
 import {CheckBoxDemo} from "./components/checkbox-demo";
 import { TreeViewDemo } from './components/tree-view-demo';
 import { NumberInputDemo } from './components/number-input.demo';
-import { BirthDatePickerDemo } from './components/birth-date-picker-demo';
+import { BirthdayPickerDemo } from './components/birthday-picker-demo';
+import { SelectionListDemo } from './components/selection-list-demo';
 import './style.st.css';
 import '../src/style/default-theme/base.st.css';
 import inputStyle from '../src/style/default-theme/controls/input.st.css';
@@ -23,12 +26,27 @@ export class ComponentsDemo extends React.Component<{}, {}>{
             </div>
             <hr />
             <div>
-                <h2>Birth date picker</h2>
-                <BirthDatePickerDemo />
+                <h2>Birthday picker</h2>
+                <BirthdayPickerDemo />
             </div>
             <div>
                 <h2>TreeView</h2>
                 <TreeViewDemo />
+            </div>
+            <hr/>
+            <div>
+                <h2>Toggle</h2>
+                <ToggleDemo/>
+            </div>
+            <hr/>
+            <div>
+                <h2>DatePicker</h2>
+                <DatePickerDemo />
+            </div>
+            <hr />
+            <div>
+                <h2>SelectionList</h2>
+                <SelectionListDemo />
             </div>
             <hr />
             <div>
