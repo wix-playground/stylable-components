@@ -13,7 +13,7 @@ export class TimePickerDemo extends React.Component<any, any> {
     }
     componentDidMount() {
         setInterval(() => {
-            this.setState({now: new Date()});
+            //this.setState({now: new Date()});
         }, 1000)
     }
     render() {
@@ -34,16 +34,7 @@ export class TimePickerDemo extends React.Component<any, any> {
             <div>
                 <TimePicker
                     value={this.state.value1}
-                    onChange={value1 => this.setState({value1})}
-                />
-                <span style={{marginLeft: 20}}>{this.state.value1}</span>
-            </div>
-
-            <h3>Controlled 24 time format with seconds</h3>
-            <div>
-                <TimePicker
-                    value={this.state.value1}
-                    format='hh:mm:ss'
+                    use12={false}
                     onChange={value1 => this.setState({value1})}
                 />
                 <span style={{marginLeft: 20}}>{this.state.value1}</span>
@@ -53,10 +44,10 @@ export class TimePickerDemo extends React.Component<any, any> {
             <div>
                 <TimePicker
                     use12
-                    value={this.state.value2}
-                    onChange={value2 => this.setState({value2})}
+                    value={this.state.value1}
+                    onChange={value1 => this.setState({value1})}
                 />
-                <span style={{marginLeft: 20}}>{this.state.value2}</span>
+                <span style={{marginLeft: 20}}>{this.state.value1}</span>
             </div>
 
             <h3>Placeholder</h3>

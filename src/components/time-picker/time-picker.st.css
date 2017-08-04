@@ -17,7 +17,7 @@
     position: relative;
     border: 1px solid value(BK3);
     width: value(width);
-    display: inline-block;
+    display: inline-flex;
 }
 
 .root:hover {
@@ -31,6 +31,7 @@
     display: flex;
     box-sizing: border-box;
     padding: 6px 8px;
+    flex: 1;
 }
 
 .input-wrap {
@@ -74,4 +75,11 @@
 }
 .native-input:focus {
     border: 0;
+}
+
+.ampm {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
 }

@@ -5,6 +5,7 @@ import * as keycode from 'keycode';
 import styles from './time-picker.st.css';
 
 export type FormatPart = 'hh' | 'mm' | 'ss';
+export enum Ampm {am, pm}
 
 export interface Props {
 	value?: string
@@ -18,14 +19,41 @@ export interface State {
 	focus: boolean
 	hh: string
 	mm: string
-	ss: string
+	ss: string,
+	ampm: Ampm | null
 }
 
 const isTouch =  'ontouchstart' in window || Boolean(navigator.msMaxTouchPoints);
-const formatParts: FormatPart[] = ['hh', 'mm', 'ss'];
+const is12TimeFormat = /AM|PM/.test(new Date().toLocaleTimeString());
+const inputNames: string[] = ['hh', 'mm', 'ss', 'ampm'];
 
-const pad2 = (num: string) => ('00' + num).slice(-2);
+const pad2 = (num: string | number): string => ('00' + num).slice(-2);
 const isNumber = (value: string) => /^\d{0,2}$/.test(value);
+
+const to24 = (hh: number, ampm: Ampm | null) => {
+	if (ampm === null || ampm === Ampm.am) {
+		return hh;
+	}
+	return hh === 12 ? 0 : (hh + 12);
+}
+const toAmpm = (hh: number) => {
+	if (hh < 11) {
+		return {
+			hh,
+			ampm: Ampm.am
+		}
+	} else if (hh === 12) {
+		return {
+			hh,
+			ampm: Ampm.pm
+		}
+	} else {
+		return {
+			hh: hh % 12,
+			ampm: Ampm.pm
+		}
+	}
+}
 
 const isValidValue = (num: number, part: FormatPart, use12: boolean) => {
 	switch(part) {
@@ -42,36 +70,43 @@ export default class TimePicker extends React.Component<Props, State> {
 
 	static defaultProps = {
 		format: 'hh:mm',
-		use12: false
+		use12: is12TimeFormat
 	}
 
 	constructor(props: Props) {
 		super();
 		this.state = {
 			focus: false,
-			...this.getTimeParts(props.value!)
+			...this.getTimeParts(props.value!, props.use12)
 		}
 	}
 
-	getTimeParts(value?: string) {
+	getTimeParts(value?: string, use12?: boolean) {
 		if (!value) {
 			return {
 				hh: '',
 				mm: '',
-				ss: ''
+				ss: '',
+				ampm: null
 			}
 		}
-		const parts = value.split(':').map(pad2);
+		const [hh24, mm, ss] = value.split(':').map(pad2);
+		const {hh, ampm} = toAmpm(Number(hh24));
 		return {
-			hh: parts[0],
-			mm: parts[1],
-			ss: parts[2]
+			hh: use12 ? pad2(hh) : hh24 as string,
+			ampm: use12 ? ampm : null,
+			mm,
+			ss
 		};
 	}
 
 	getValue() {
-		const {hh, mm, ss} = this.state;
-		return [hh, mm, ss].map(String).map(pad2).join(':');
+		const {hh, mm, ss, ampm} = this.state;
+		return [
+			to24(Number(hh), ampm),
+			mm,
+			ss
+		].map(String).map(pad2).join(':');
 	}
 
 	onFocus = (e: React.SyntheticEvent<HTMLInputElement>) => {
@@ -91,14 +126,17 @@ export default class TimePicker extends React.Component<Props, State> {
 			focus: false,
 			[name as any]: pad2(this.state[name as FormatPart])
 		});
-		if (this.props.onChange) {
-			this.props.onChange(this.getValue());
-		}
+		this.commit();
 	}
 
 	moveFocus(currentRefName: FormatPart, increment: number): boolean {
-		const refIndex = formatParts.indexOf(currentRefName);
-		const nextRef = this.refs[formatParts[refIndex + increment]];
+		let refIndex = inputNames.indexOf(currentRefName);
+		let nextRef;
+
+		while (!nextRef && inputNames[refIndex += increment]) {
+			nextRef = this.refs[inputNames[refIndex]];
+		}
+
 		if (nextRef) {
 			const next = findDOMNode(nextRef) as HTMLInputElement;
 			next.focus();
@@ -108,7 +146,7 @@ export default class TimePicker extends React.Component<Props, State> {
 	}
 
 	onChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
-		const {onChange, use12} = this.props;
+		const {use12} = this.props;
 		const {value} = e.currentTarget;
 		const name = e.currentTarget.name as FormatPart;
 		if (!isNumber(value)) {
@@ -126,8 +164,8 @@ export default class TimePicker extends React.Component<Props, State> {
 		this.setState(nextState, () => {
 			if (!shouldWaitForInput) {
 				const focusChanged = this.moveFocus(name, 1);
-				if (!focusChanged && onChange) {
-					onChange(this.getValue());
+				if (!focusChanged) {
+					this.commit();
 				}
 			}
 		});
@@ -144,35 +182,48 @@ export default class TimePicker extends React.Component<Props, State> {
 
 	onNativeChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
 		const value = e.currentTarget.value + ':00';
-		this.setState(this.getTimeParts(value));
-		if (this.props.onChange) {
-			this.props.onChange(value)
+		this.setState(this.getTimeParts(value), this.commit);
+	}
+
+	onAmpmKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+		if (['space', 'enter'].indexOf(keycode(e.keyCode)) === -1) {
+			return;
 		}
+		const input = e.currentTarget;
+
+		this.setState({
+			ampm: 1 - this.state.ampm!
+		}, this.commit);
 	}
 
 	componentWillReceiveProps(props: Props) {
 		if (props.value && !this.state.focus) {
-			this.setState(this.getTimeParts(props.value));
+			this.setState(this.getTimeParts(props.value, props.use12));
+		}
+	}
+
+	commit = () => {
+		if (this.props.onChange) {
+		  	this.props.onChange(this.getValue())
 		}
 	}
 
 	render() {
 		const {focus} = this.state;
-		const {format, value, placeholder} = this.props;
+		const {use12, format, value, placeholder} = this.props;
 		const parts = format!.split(':');
-		const showPlaceholder = placeholder && !this.state.hh;
+		const showPlaceholder = Boolean(placeholder) && !this.state.hh;
 		const numberOfInputs = showPlaceholder ? 1 : parts.length;
 
 		return <div cssStates={{focus}}>
 			<div className='inputs'>
 				{parts.slice(0, numberOfInputs).map((key: FormatPart) =>
-					<div className='input-wrap'>
+					<div className='input-wrap' key={key}>
 						<input
 							placeholder={showPlaceholder ? placeholder : '––'}
 							cssStates={{wide: showPlaceholder}}
 							className='input'
 							ref={key}
-							key={key}
 							name={key}
 							value={this.state[key]}
 							onChange={this.onChange}
@@ -183,6 +234,16 @@ export default class TimePicker extends React.Component<Props, State> {
 					</div>
 				)}
 			</div>
+			{use12 &&
+				<input
+					className='input ampm'
+					ref='ampm'
+					onFocus={this.onFocus}
+					onBlur={this.onBlur}
+					value={this.state.ampm === Ampm.am ? 'AM' : 'PM'}
+					onKeyDown={this.onAmpmKeyDown}
+				/>
+			}
 			<input
 				className='native-input'
 				ref='nativeInput'
