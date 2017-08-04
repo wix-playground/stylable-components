@@ -156,10 +156,7 @@ export default class TimePicker extends React.Component<Props, State> {
 		switch (keycode(e.keyCode)) {
 			case 'space':
 			case 'enter':
-				const input = e.currentTarget;
-				this.setState({
-					ampm: 1 - this.state.ampm!
-				}, this.commit);
+				this.toggleAmpm();
 				break;
 			case 'backspace':
 				e.preventDefault();
@@ -172,6 +169,29 @@ export default class TimePicker extends React.Component<Props, State> {
 		e.currentTarget.select();
 	}
 
+	onAmpmClick = () => {
+		this.toggleAmpm(() => {
+			const input = findDOMNode(this.refs.nativeInput) as HTMLInputElement;
+			input.focus();
+			input.click();
+		});
+	}
+
+	toggleAmpm = (cb?: Function) => {
+		const {ampm} = this.state;
+		if (ampm === Ampm.am && Number(this.state.hh) === 0) {
+			return;
+		}
+		this.setState({
+			ampm: 1 - ampm!
+		}, () => {
+			this.commit();
+			if (cb) {
+				cb();
+			}
+		});
+	}
+
 	commit = () => {
 		if (this.props.onChange) {
 		  	this.props.onChange(this.getValue())
@@ -179,11 +199,12 @@ export default class TimePicker extends React.Component<Props, State> {
 	}
 
 	render() {
-		const {focus} = this.state;
+		const {focus, ampm} = this.state;
 		const {use12, format, value, placeholder} = this.props;
 		const parts = format!.split(':');
 		const showPlaceholder = Boolean(placeholder) && !this.state.hh;
 		const numberOfInputs = showPlaceholder ? 1 : parts.length;
+		const ampmLabel = ampm === Ampm.am ? 'AM' : 'PM';
 
 		return <div cssStates={{focus}}>
 			<div className='inputs'>
@@ -204,15 +225,23 @@ export default class TimePicker extends React.Component<Props, State> {
 					</div>
 				)}
 			</div>
-			{use12 && !showPlaceholder &&
+			{use12 && !showPlaceholder && !isTouch &&
 				<input
 					className='input ampm'
 					ref='ampm'
+					name='ampm'
 					onFocus={this.onFocus}
 					onBlur={this.onBlur}
-					value={this.state.ampm === Ampm.am ? 'AM' : 'PM'}
+					value={ampmLabel}
 					onKeyDown={this.onAmpmKeyDown}
 					onKeyUp={this.onAmpmKeyUp}
+				/>
+			}
+			{use12 && !showPlaceholder && isTouch &&
+				<div
+					className='ampm'
+					children={ampmLabel}
+					onClick={this.onAmpmClick}
 				/>
 			}
 			<input
