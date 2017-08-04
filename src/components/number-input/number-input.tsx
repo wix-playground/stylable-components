@@ -1,10 +1,10 @@
 import * as React from 'react';
+import {codes as KeyCodes} from 'keycode';
 import styles from './number-input.st.css';
 import {SBComponent} from 'stylable-react-component';
 import inputStyles from '../../style/default-theme/controls/input.st.css';
 import {noop, isNumber} from '../../utils';
 import {Stepper} from '../stepper';
-import {KeyCodes} from '../../common/key-codes';
 
 export interface NumberInputProps {
     className?: string
@@ -151,19 +151,19 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
     private handleInputKeyDown: React.KeyboardEventHandler<HTMLElement> =
         e => {
             switch (e.keyCode) {
-                case KeyCodes.UP:
+                case KeyCodes.up:
                     this.stepValue(Direction.Increase);
                     e.preventDefault();
                     break;
-                case KeyCodes.DOWN:
+                case KeyCodes.down:
                     this.stepValue(Direction.Decrease);
                     e.preventDefault();
                     break;
-                case KeyCodes.ENTER:
+                case KeyCodes.enter:
                     this.commit(this.state.value);
                     e.preventDefault();
                     break;
-                case KeyCodes.ESCAPE:
+                case KeyCodes.esc:
                     this.revert();
                     e.preventDefault();
                     break;

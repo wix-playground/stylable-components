@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { expect, ClientRenderer, sinon, simulate } from 'test-drive-react';
-import { KeyCodes } from '../../src/common/key-codes';
+import { codes as KeyCodes} from 'keycode';
 import { NumberInput } from '../../src';
 
 const inputs = new WeakSet();
@@ -235,7 +235,7 @@ describe('<NumberInput />', () => {
                 await waitForDom(() => {
                     const input = select('NATIVE_INPUT_NUMBER');
 
-                    simulate.keyDown(input, {keyCode: KeyCodes.UP});
+                    simulate.keyDown(input, {keyCode: KeyCodes.up});
 
                     assertCommit(input, onChange, value + step);
                 });
@@ -252,7 +252,7 @@ describe('<NumberInput />', () => {
                 await waitForDom(() => {
                     const input = select('NATIVE_INPUT_NUMBER');
 
-                    simulate.keyDown(input, {keyCode: KeyCodes.UP});
+                    simulate.keyDown(input, {keyCode: KeyCodes.up});
 
                     assertCommit(input, onChange, max);
                 });
@@ -269,7 +269,7 @@ describe('<NumberInput />', () => {
                 await waitForDom(() => {
                     const input = select('NATIVE_INPUT_NUMBER');
 
-                    simulate.keyDown(input, {keyCode: KeyCodes.UP});
+                    simulate.keyDown(input, {keyCode: KeyCodes.up});
 
                     assertCommit(input, onChange, min);
                 });
@@ -286,7 +286,7 @@ describe('<NumberInput />', () => {
                 await waitForDom(() => {
                     const input = select('NATIVE_INPUT_NUMBER');
 
-                    simulate.keyDown(input, {keyCode: KeyCodes.UP});
+                    simulate.keyDown(input, {keyCode: KeyCodes.up});
 
                     expect(onChange).not.to.have.been.called;
                     expect(input).to.have.value(String(value));
@@ -307,7 +307,7 @@ describe('<NumberInput />', () => {
                 await waitForDom(() => {
                     const input = select('NATIVE_INPUT_NUMBER');
 
-                    simulate.keyDown(input, {keyCode: KeyCodes.DOWN});
+                    simulate.keyDown(input, {keyCode: KeyCodes.down});
 
                     assertCommit(input, onChange, value - step);
                 });
@@ -324,7 +324,7 @@ describe('<NumberInput />', () => {
                 await waitForDom(() => {
                     const input = select('NATIVE_INPUT_NUMBER');
 
-                    simulate.keyDown(input, {keyCode: KeyCodes.DOWN});
+                    simulate.keyDown(input, {keyCode: KeyCodes.down});
 
                     assertCommit(input, onChange, max);
                 });
@@ -341,7 +341,7 @@ describe('<NumberInput />', () => {
                 await waitForDom(() => {
                     const input = select('NATIVE_INPUT_NUMBER');
 
-                    simulate.keyDown(input, {keyCode: KeyCodes.DOWN});
+                    simulate.keyDown(input, {keyCode: KeyCodes.down});
 
                     assertCommit(input, onChange, min);
                 });
@@ -358,7 +358,7 @@ describe('<NumberInput />', () => {
                 await waitForDom(() => {
                     const input = select('NATIVE_INPUT_NUMBER');
 
-                    simulate.keyDown(input, {keyCode: KeyCodes.DOWN});
+                    simulate.keyDown(input, {keyCode: KeyCodes.down});
 
                     expect(onChange).not.to.have.been.called;
                     expect(input).to.have.value(String(value));
@@ -420,7 +420,7 @@ describe('<NumberInput />', () => {
                         simulateKeyInput(input, '2');
                         simulateKeyInput(input, '3');
 
-                        simulate.keyDown(input, {keyCode: KeyCodes.ENTER});
+                        simulate.keyDown(input, {keyCode: KeyCodes.enter});
 
                         assertCommit(input, onChange, 123);
                     });
@@ -438,8 +438,8 @@ describe('<NumberInput />', () => {
                         simulateKeyInput(input, '2');
                         simulateKeyInput(input, '3');
 
-                        simulate.keyDown(input, {keyCode: KeyCodes.ENTER});
-                        simulate.keyDown(input, {keyCode: KeyCodes.ENTER});
+                        simulate.keyDown(input, {keyCode: KeyCodes.enter});
+                        simulate.keyDown(input, {keyCode: KeyCodes.enter});
 
                         assertCommit(input, onChange, 123);
                     });
@@ -482,7 +482,7 @@ describe('<NumberInput />', () => {
                         simulateKeyInput(input, '2');
                         simulateKeyInput(input, '3');
 
-                        simulate.keyDown(input, {keyCode: KeyCodes.ESCAPE});
+                        simulate.keyDown(input, {keyCode: KeyCodes.esc});
 
                         expect(onChange).not.to.have.been.called;
                         expect(input).to.have.value(String(initialValue));
