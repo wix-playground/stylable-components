@@ -1,42 +1,127 @@
 import * as React from 'react';
 import { expect, ClientRenderer, sinon, simulate } from 'test-drive-react';
-import {Slottable} from '../../src';
 
-describe('Slottable', () => {
+describe('Slottable Components', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
 
-    describe('via props', () => {
+    describe('plain props', () => {
         it('should render in corresponding slots', async () => {
 
-            class Slotted extends Slottable<{}, {}, 'prefix' | 'suffix'> {
+            class Slotted extends React.Component<{
+                prefix: React.ReactNode,
+                suffix: React.ReactNode
+            }> {
                 render() {
-                    const {children} = this.props;
-                    const {prefix, suffix} = this.slots;
+                    const {children, prefix, suffix} = this.props;
 
                     return <div>
-                        <div>{prefix}</div>
+                        <div data-automation-id="slot-prefix">{prefix}</div>
                         {children}
-                        <div>{suffix}</div>
+                        <div data-automation-id="slot-suffix">{suffix}</div>
                     </div>
                 }
             }
 
             const {select, waitForDom} = clientRenderer.render(
                 <Slotted
-                    prefix={<span data-automation-id="prefix"></span>}
-                    suffix={<span data-automation-id="suffix"></span>}
+                    prefix={<span data-automation-id="prefix">prefix</span>}
+                    suffix={<span data-automation-id="suffix">suffix</span>}
                 >
-                    <span data-automaion-id="content"></span>
+                    <span data-automation-id="content">content</span>
                 </Slotted>
             );
 
             await waitForDom(() => {
-                expect(select('prefix')).to.be.present();
-                expect(select('suffix')).to.be.present();
-                expect(select('content')).to.be.present();
+                expect(select('slot-prefix', 'prefix'), 'prefix in slot').to.be.present();
+                expect(select('slot-suffix', 'suffix'), 'suffix in slot').to.be.present();
+                expect(select('content'), 'children').to.be.present();
             });
 
         });
     });
+
+    describe('groupChildren', () => {
+        let groupChildren: (slotNames: string[]) => {[S: string]: React.ReactNode};
+
+        it('should exist', () => {
+            expect(groupChildren).to.exist;
+        });
+
+        describe('component using [data-slot]', () => {
+            class Slottable extends React.Component {
+                groupChildren(slotNames: string[]): {[S: string]: React.ReactNode} {return {}}
+            };
+
+            it('should render in corresponding slots', async () => {
+                class Slotted extends Slottable {
+                    render() {
+                        const {prefix, suffix, children} = this.groupChildren(['prefix', 'suffix']);
+                        return <div>
+                            <div data-automation-id="slot-prefix">{prefix}</div>
+                            {children}
+                            <div data-automation-id="slot-suffix">{suffix}</div>
+                        </div>
+                    }
+                }
+
+                const {select, waitForDom} = clientRenderer.render(
+                    <Slotted>
+                        <span data-slot="prefix" data-automation-id="prefix">prefix</span>
+                        <span data-automation-id="content">content</span>
+                        <span data-slot="suffix" data-automation-id="suffix">suffix</span>
+                    </Slotted>
+                );
+
+                await waitForDom(() => {
+                    expect(select('slot-prefix', 'prefix'), 'prefix in slot').to.be.present();
+                    expect(select('slot-suffix', 'suffix'), 'suffix in slot').to.be.present();
+                    expect(select('content'), 'children').to.be.present();
+                });
+            });
+        });
+
+        describe('<Slot name="slot-name" />', () => {
+            class Slot extends React.Component<{name?: string}> {}
+
+            it('should exist', async () => {
+                const {select, waitForDom, result} = clientRenderer.render(<Slot />);
+
+                await waitForDom(() => {
+                    expect(result).to.exist;
+                });
+
+            });
+
+            describe('component using <Slot />', () => {
+                it('should render in corresponding slots', async () => {
+                    class Slotted extends React.Component {
+                        render() {
+                            const {children} = this.props;
+                            return <div>
+                                <Slot name="prefix" data-automation-id="slot-prefix" />
+                                {children}
+                                <Slot name="suffix" data-automation-id="slot-suffix" />
+                            </div>
+                        }
+                    }
+
+                    const {select, waitForDom} = clientRenderer.render(
+                        <Slotted>
+                            <span data-slot="prefix" data-automation-id="prefix">prefix</span>
+                            <span data-automation-id="content">content</span>
+                            <span data-slot="suffix" data-automation-id="suffix">suffix</span>
+                        </Slotted>
+                    );
+
+                    await waitForDom(() => {
+                        expect(select('slot-prefix', 'prefix'), 'prefix in slot').to.be.present();
+                        expect(select('slot-suffix', 'suffix'), 'suffix in slot').to.be.present();
+                        expect(select('content'), 'children').to.be.present();
+                    });
+                });
+            });
+        });
+    });
+
 });
