@@ -27,7 +27,8 @@ export class NumberInputDemo extends React.Component<{}, {value?: number}> {
                     <NumberInput
                         disabled
                         value={this.state.value}
-                        placeholder="Always Disabled!">
+                        placeholder="Always Disabled!"
+                    >
                         <span data-slot="prefix">prefix</span>
                         <span data-slot="suffix">suffix</span>
                     </NumberInput>
@@ -37,7 +38,8 @@ export class NumberInputDemo extends React.Component<{}, {value?: number}> {
                     <NumberInput
                         error
                         value={this.state.value}
-                        placeholder="Always wrong!">
+                        placeholder="Always wrong!"
+                    >
                         <span data-slot="prefix">prefix</span>
                         <span data-slot="suffix">suffix</span>
                     </NumberInput>
