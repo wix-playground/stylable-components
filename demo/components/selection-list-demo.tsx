@@ -2,16 +2,20 @@ import React = require('react');
 import {divider, ItemRendererProps, SelectionList} from '../../src/components/selection-list';
 
 export class SelectionListDemo extends React.Component<{}, {}> {
-    render() {
-        return <div>
-            <FoodList />
-            <EmojiList />
-        </div>;
+    public render() {
+        return (
+            <div>
+                <FoodList />
+                <EmojiList />
+            </div>
+        );
     }
 }
 
 export class FoodList extends React.Component {
-    dataSource = [
+    public state = {value: 'Bacon'};
+
+    private dataSource = [
         {value: 'Fasting', label: ''},
         divider,
         'Eggs',
@@ -21,19 +25,21 @@ export class FoodList extends React.Component {
         {value: 'Spam', label: 'Spam', disabled: true}
     ];
 
-    state = {value: 'Bacon'};
-
-    render() {
-        return <div data-automation-id="FOOD">
-            <h3>Options from a data source</h3>
-            <SelectionList
-                dataSource={this.dataSource}
-                value={this.state.value}
-                onChange={(value) => this.setState({value})} />
-            <p data-automation-id="RESULT">
-                {this.state.value}, great choice!
-            </p>
-        </div>;
+    public render() {
+        const onChange = (value: string) => this.setState({value});
+        return (
+            <div data-automation-id="FOOD">
+                <h3>Options from a data source</h3>
+                <SelectionList
+                    dataSource={this.dataSource}
+                    value={this.state.value}
+                    onChange={onChange}
+                />
+                <p data-automation-id="RESULT">
+                    {this.state.value}, great choice!
+                </p>
+            </div>
+        );
     }
 }
 
@@ -44,22 +50,25 @@ interface EmojiListItemProps extends ItemRendererProps {
     };
 }
 
-const EmojiListItem: React.SFC<EmojiListItemProps> = (props) => {
+const EmojiListItem: React.SFC<EmojiListItemProps> = props => {
     const style = {
         fontSize: props.selected ? '45px' : '20px',
         transition: 'font-size 300ms',
         cursor: 'pointer'
     };
 
-    return <div data-value={props.item.value} style={style}>
-        {props.item.icon}
-    </div>;
+    return (
+        <div data-value={props.item.value} style={style}>
+            {props.item.icon}
+        </div>
+    );
 };
 
 class EmojiList extends React.Component {
-    dataSchema = {value: 'name', icon: 'icon'};
+    public state = {value: 'Pig'};
 
-    dataSource = [
+    private dataSchema = {value: 'name', icon: 'icon'};
+    private dataSource = [
         {icon: '🦁', name: 'Lion'},
         {icon: '🐷', name: 'Pig'},
         {icon: '🦇', name: 'Bat'},
@@ -68,9 +77,7 @@ class EmojiList extends React.Component {
         {icon: '🐝', name: 'Honeybee'}
     ];
 
-    state = {value: 'Pig'};
-
-    render() {
+    public render() {
         const style = {
             display: 'flex',
             width: '300px',
@@ -81,19 +88,22 @@ class EmojiList extends React.Component {
             justifyContent: 'space-around'
         };
         const anArticleFor = (word: string) => /^[aeiou]/i.test(word) ? 'an' : 'a';
-
-        return <div data-automation-id="EMOJI">
-            <h3>Custom item renderer</h3>
-            <SelectionList
-                style={style}
-                dataSchema={this.dataSchema}
-                dataSource={this.dataSource}
-                itemRenderer={EmojiListItem}
-                value={this.state.value}
-                onChange={(value) => this.setState({value})} />
-            <p data-automation-id="RESULT">
-                That's {anArticleFor(this.state.value)} {this.state.value.toLowerCase()}.
-            </p>
-        </div>;
+        const onChange = (value: string) => this.setState({value});
+        return (
+            <div data-automation-id="EMOJI">
+                <h3>Custom item renderer</h3>
+                <SelectionList
+                    style={style}
+                    dataSchema={this.dataSchema}
+                    dataSource={this.dataSource}
+                    itemRenderer={EmojiListItem}
+                    value={this.state.value}
+                    onChange={onChange}
+                />
+                <p data-automation-id="RESULT">
+                    That's {anArticleFor(this.state.value)} {this.state.value.toLowerCase()}.
+                </p>
+            </div>
+        );
     }
 }

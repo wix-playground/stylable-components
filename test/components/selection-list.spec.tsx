@@ -4,7 +4,7 @@ import {SelectionListDemo} from '../../demo/components/selection-list-demo';
 import sleep from '../../src/common/sleep';
 import {divider, SelectionList} from '../../src/components/selection-list';
 
-describe('<SelectionList />', function() {
+describe('<SelectionList />', () => {
     const clientRenderer = new ClientRenderer();
 
     afterEach(() => {
@@ -77,35 +77,38 @@ describe('<SelectionList />', function() {
         });
     });
 
-    it('Doesn\'t fire onChange for clicks on active items, dividers, disabled items, and items without value', async () => {
-        const dataSource = [
-            'One',
-            divider,
-            {label: 'Two'},
-            {value: 'Three', label: 'Three', disabled: true}
-        ];
-        const onChange = sinon.spy();
-        const {select, waitForDom} = clientRenderer.render(
-            <SelectionList dataSource={dataSource} value="One" onChange={onChange} />
-        );
+    it(
+        `Doesn't fire onChange for clicks on active items, dividers, disabled items, and items without value`,
+        async () => {
+            const dataSource = [
+                'One',
+                divider,
+                {label: 'Two'},
+                {value: 'Three', label: 'Three', disabled: true}
+            ];
+            const onChange = sinon.spy();
+            const {select, waitForDom} = clientRenderer.render(
+                <SelectionList dataSource={dataSource} value="One" onChange={onChange} />
+            );
 
-        await waitForDom(() => {
-            expect(select('LIST')).to.be.present();
-        });
+            await waitForDom(() => {
+                expect(select('LIST')).to.be.present();
+            });
 
-        simulate.click(select('LIST')!.children[0]);
-        simulate.click(select('LIST')!.children[1]);
-        simulate.click(select('LIST')!.children[2]);
-        simulate.click(select('LIST')!.children[3]);
+            simulate.click(select('LIST')!.children[0]);
+            simulate.click(select('LIST')!.children[1]);
+            simulate.click(select('LIST')!.children[2]);
+            simulate.click(select('LIST')!.children[3]);
 
-        await sleep(100);
+            await sleep(100);
 
-        return waitFor(() => {
-            expect(onChange).to.have.not.been.called;
-        });
-    });
+            return waitFor(() => {
+                expect(onChange).to.have.not.been.called;
+            });
+        }
+    );
 
-    it('Renders blank items at the same height as normal items', function() {
+    it('Renders blank items at the same height as normal items', () => {
         const {select, waitForDom} = clientRenderer.render(
             <SelectionList dataSource={['', '1']} />
         );
@@ -121,7 +124,7 @@ describe('<SelectionList />', function() {
         });
     });
 
-    it('Renders a divider', function() {
+    it('Renders a divider', () => {
         const {select, waitForDom} = clientRenderer.render(
             <SelectionList dataSource={[divider]} />
         );

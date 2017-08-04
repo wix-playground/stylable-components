@@ -9,9 +9,9 @@ export const maxDate = new Date();
 
 @observer
 export class BirthdayPickerDemo extends React.Component<{}, {}> {
-    @observable value: Date = initialValue;
+    @observable private value: Date = initialValue;
 
-    render() {
+    public render() {
         const date = this.value;
         const formattedDate = date ? date.toISOString().substr(0, 10) : '';
 
@@ -21,7 +21,7 @@ export class BirthdayPickerDemo extends React.Component<{}, {}> {
                     value={date}
                     minDate={minDate}
                     maxDate={maxDate}
-                    onChange={(newValue) => this.value = newValue}
+                    onChange={this.onChange}
                 />
                 <span data-automation-id="BIRTHDAY_PICKER_DEMO_RESULT">
                     {date ? 'Selected date: ' + formattedDate : 'Date not selected'}
@@ -29,4 +29,6 @@ export class BirthdayPickerDemo extends React.Component<{}, {}> {
             </section>
         );
     }
+
+    private onChange = (newValue: Date) => this.value = newValue;
 }

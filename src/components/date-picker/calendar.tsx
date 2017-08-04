@@ -1,9 +1,15 @@
 import {action, computed, observable} from 'mobx';
 import {observer} from 'mobx-react';
 import * as React from 'react';
-import {getDayNames, getDaysInMonth, getMonthFromOffset, getMonthNames, getNumOfPreviousDays} from '../../common/date-helpers';
+import {
+    getDayNames,
+    getDaysInMonth,
+    getMonthFromOffset,
+    getMonthNames,
+    getNumOfPreviousDays
+} from '../../common/date-helpers';
+import styles from './date-picker.st.css';
 import {Day} from './day';
-const styles = require('./date-picker.st.css').default;
 
 export interface CalendarProps {
     value: Date;
@@ -13,16 +19,54 @@ export interface CalendarProps {
 const monthNames = getMonthNames();
 
 @observer
-export class Calendar extends React.Component<CalendarProps, {}>{
-    @observable date: Date = this.props.value;
+export class Calendar extends React.Component<CalendarProps, {}> {
+    @observable private date: Date = this.props.value;
 
-    onChange = (day: number) => {
+    public render() {
+        return (
+            <div tabIndex={1} id="DATE_PICKER_DROPDOWN">
+                <div className={styles.dropdownArrowWrapper}><div className={styles.dropdownArrow} /></div>
+                <div className={styles.dropdown} data-automation-id="DATE_PICKER_DROPDOWN">
+                    <div className={styles.header}>
+                        <span
+                            className={`${styles.arrowWrapper} ${styles.arrowWrapperPrev}`}
+                            onMouseDown={this.goToPrevMonth}
+                            data-automation-id="PREV_MONTH_BUTTON"
+                        >
+                            <i className={`${styles.headerArrow} ${styles.headerArrowPrev}`} />
+                        </span>
+                        <span className={styles.headerDate}>
+                            <span
+                                data-automation-id="MONTH_NAME"
+                            >
+                                {this.monthName}
+                            </span>&nbsp;<span data-automation-id="YEAR">{this.year}</span>
+                        </span>
+                        <div
+                            className={`${styles.arrowWrapper} ${styles.arrowWrapperNext}`}
+                            onMouseDown={this.goToNextMonth}
+                            data-automation-id="NEXT_MONTH_BUTTON"
+                        >
+                            <i className={`${styles.headerArrow} ${styles.headerArrowNext}`} />
+                        </div>
+                    </div>
+                    <div className={styles.calendar} data-automation-id="DAY_GRID">
+                        {this.dayNames}
+                        {this.previousDays}
+                        {this.days}
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    private onChange = (day: number) => {
         const date = new Date(this.date.getFullYear(), this.date.getMonth(), day);
         this.props.onChange(date);
     }
 
     @action
-    setDate(date: Date) {
+    private setDate(date: Date) {
         this.date = date;
     }
 
@@ -42,10 +86,13 @@ export class Calendar extends React.Component<CalendarProps, {}>{
         const daysInMonth = getDaysInMonth(this.date);
 
         for (let i = 1; i <= daysInMonth; i++) {
-            dayArray.push(<Day day={i}
-                               onSelect={this.onChange}
-                               dataAutomationId={'DAY_' + i}
-                               key={'DAY_' + i} />
+            dayArray.push(
+                <Day
+                    day={i}
+                    onSelect={this.onChange}
+                    dataAutomationId={'DAY_' + i}
+                    key={'DAY_' + i}
+                />
             );
         }
 
@@ -56,10 +103,13 @@ export class Calendar extends React.Component<CalendarProps, {}>{
     get dayNames(): JSX.Element[] {
         return getDayNames().map((name: string, index: number) => {
             return (
-                <span className={`${styles.calendarItem} ${styles.dayName}`}
-                      key={'DAY_NAME_' + index}
-                      data-automation-id={'DAY_NAME_' + name.toUpperCase()}>
-                    {name}</span>
+                <span
+                    className={`${styles.calendarItem} ${styles.dayName}`}
+                    key={'DAY_NAME_' + index}
+                    data-automation-id={'DAY_NAME_' + name.toUpperCase()}
+                >
+                    {name}
+                </span>
             );
         });
     }
@@ -72,55 +122,34 @@ export class Calendar extends React.Component<CalendarProps, {}>{
 
         for (let i = numberOfDaysToDisplay + 1; i <= lastDayOfPrevMonth; i++) {
             previousDays.push((
-                <Day day={''}
-                     dataAutomationId={'PREV_DAY_' + i}
-                     key={'PREV_DAY_' + i}
-                     partOfPrevMonth={true} />
+                <Day
+                    day={''}
+                    dataAutomationId={'PREV_DAY_' + i}
+                    key={'PREV_DAY_' + i}
+                    partOfPrevMonth={true}
+                />
             ));
         }
 
         return previousDays;
     }
 
-    goToNextMonth: React.EventHandler<React.SyntheticEvent<Element>> = (event) => {
+    private goToNextMonth: React.EventHandler<React.SyntheticEvent<Element>> = event => {
         event.preventDefault();
-        const nextMonth: Date = getMonthFromOffset(new Date(this.date.getFullYear(), this.date.getMonth(), 1), 1);
+        const nextMonth: Date = getMonthFromOffset(
+            new Date(this.date.getFullYear(), this.date.getMonth(), 1),
+            1
+        );
         this.setDate(nextMonth);
     }
 
-    goToPrevMonth: React.EventHandler<React.SyntheticEvent<Element>> = (event) => {
+    private goToPrevMonth: React.EventHandler<React.SyntheticEvent<Element>> = event => {
         event.preventDefault();
-        const previousMonth: Date = getMonthFromOffset(new Date(this.date.getFullYear(), this.date.getMonth(), 1), -1);
+        const previousMonth: Date = getMonthFromOffset(
+            new Date(this.date.getFullYear(), this.date.getMonth(), 1),
+            -1
+        );
         this.setDate(previousMonth);
     }
 
-    render() {
-        return (
-            <div tabIndex={1} id="DATE_PICKER_DROPDOWN">
-                <div className={styles.dropdownArrowWrapper}><div className={styles.dropdownArrow} /></div>
-                <div className={styles.dropdown} data-automation-id="DATE_PICKER_DROPDOWN">
-                    <div className={styles.header}>
-                        <span className={`${styles.arrowWrapper} ${styles.arrowWrapperPrev}`}
-                                onMouseDown={this.goToPrevMonth}
-                                data-automation-id="PREV_MONTH_BUTTON">
-                            <i className={`${styles.headerArrow} ${styles.headerArrowPrev}`} />
-                        </span>
-                        <span className={styles.headerDate}>
-                            <span data-automation-id="MONTH_NAME">{this.monthName}</span>&nbsp;<span data-automation-id="YEAR">{this.year}</span>
-                        </span>
-                        <div className={`${styles.arrowWrapper} ${styles.arrowWrapperNext}`}
-                             onMouseDown={this.goToNextMonth}
-                             data-automation-id="NEXT_MONTH_BUTTON">
-                            <i className={`${styles.headerArrow} ${styles.headerArrowNext}`} />
-                        </div>
-                    </div>
-                    <div className={styles.calendar} data-automation-id="DAY_GRID">
-                        {this.dayNames}
-                        {this.previousDays}
-                        {this.days}
-                    </div>
-                </div>
-            </div>
-        );
-    }
 }

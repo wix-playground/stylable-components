@@ -6,11 +6,14 @@ export interface State {
 }
 
 export class ToggleDemo extends React.Component<{}, State> {
-    state = {
+    public state = {
         checked: false
     };
-    render() {
-        return <table>
+
+    public render() {
+        const onChange = (checked: boolean) => this.setState({checked});
+        return (
+            <table>
             <tbody>
                 <tr>
                     <th data-automation-id="TOGGLE_DEMO_CONTROLLED">
@@ -18,7 +21,7 @@ export class ToggleDemo extends React.Component<{}, State> {
                         <Toggle
                             label="with icons"
                             checked={this.state.checked}
-                            onChange={(checked: boolean) => this.setState({checked})}
+                            onChange={onChange}
                         />
                     </th>
                     <th>
@@ -27,7 +30,7 @@ export class ToggleDemo extends React.Component<{}, State> {
                             label="with icons"
                             rtl
                             checked={this.state.checked}
-                            onChange={(checked: boolean) => this.setState({checked})}
+                            onChange={onChange}
                         />
                     </th>
                     <th data-automation-id="TOGGLE_DEMO_UNCONTROLLED">
@@ -56,6 +59,7 @@ export class ToggleDemo extends React.Component<{}, State> {
                     </th>
                 </tr>
             </tbody>
-        </table>;
+            </table>
+        );
     }
 }

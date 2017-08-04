@@ -64,7 +64,7 @@ describe('<Toggle/>', () => {
 
         it('click should not trigger onChange', async () => {
             simulate.click(renderer.select('TOGGLE'));
-            await new Promise((resolve) => setTimeout(resolve, 500));
+            await new Promise(resolve => setTimeout(resolve, 500));
             expect(onChange).to.not.have.been.called;
         });
     });

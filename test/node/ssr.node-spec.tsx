@@ -8,7 +8,7 @@ const isReactComponent = (value: any) => value && value.prototype && value.proto
 describe('SSR compatibility', () => {
     const libExportNames = Object.keys(WixReactComponents);
 
-    libExportNames.forEach((exportName) => {
+    libExportNames.forEach(exportName => {
         const ExportValue = (WixReactComponents as any)[exportName];
 
         if (isReactComponent(ExportValue)) {
