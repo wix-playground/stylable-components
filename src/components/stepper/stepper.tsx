@@ -1,10 +1,9 @@
 import * as React from 'react';
 import styles from './stepper.st.css';
-import buttonStyles from '../../style/default-theme/controls/button.st.css';
 import {SBStateless} from 'stylable-react-component';
+import buttonStyles from '../../style/default-theme/controls/button.st.css';
+import {noop} from '../../utils';
 import {ChevronDownIcon, ChevronUpIcon} from '../../icons';
-
-function noop() {}
 
 export interface StepperProps extends React.HTMLProps<HTMLElement> {
     onUp?: Function

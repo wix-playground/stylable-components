@@ -1,7 +1,8 @@
 import * as React from 'react';
 import styles from './number-input.st.css';
-import inputStyles from '../../style/default-theme/controls/input.st.css';
 import {SBComponent} from 'stylable-react-component';
+import inputStyles from '../../style/default-theme/controls/input.st.css';
+import {noop, isNumber} from '../../utils';
 import {Stepper} from '../stepper';
 import {KeyCodes} from '../../common/key-codes';
 
@@ -42,12 +43,6 @@ enum Slot {
 enum Direction {
     Increase = 'increase',
     Decrease = 'decrease'
-}
-
-function noop() {}
-
-function isNumber(value?: number): value is number {
-    return typeof value == 'number';
 }
 
 function getAffix(children: React.ReactNode): Affix {
