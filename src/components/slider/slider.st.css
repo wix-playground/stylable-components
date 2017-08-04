@@ -68,6 +68,7 @@
   margin: -6px 0 0 -6px;
   background-color: #ffffff;
   border: solid 1px #7d8c98;
+  z-index: 1000;
 }
 
 .slider-scale-container{

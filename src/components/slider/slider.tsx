@@ -6,6 +6,7 @@ export type PointerEvent = MouseEvent | TouchEvent;
 const theme = require('../../style/default-theme/variables.st.css').default;
 const style = require('./slider.st.css').default;
 
+const CONTINIOUS_STEP = 'any';
 const DEFAULT_STEP = 1;
 const DEFAULT_MIN = 0;
 const DEFAULT_MAX = 100;
@@ -22,11 +23,13 @@ function getPercent(value: number, min: number, max: number): number {
   return percent;
 }
 
+export type Step = number | 'any';
+
 export interface SliderProps {
   value?: number;
   min?: number;
   max?: number;
-  step?: number | 'any';
+  step?: Step;
 
   name?: string;
 
@@ -46,6 +49,7 @@ export interface SliderProps {
 
 export interface SliderState {
   relativeValue: number;
+  relativeStep: Step;
   isActive: boolean;
 };
 
@@ -66,7 +70,6 @@ export class Slider extends React.Component<SliderProps, SliderState> {
     onDrag: noop,
     onDragStop: noop
   };
-
   private sliderArea: HTMLElement;
 
   constructor(props: SliderProps, context?: any) {
@@ -77,9 +80,26 @@ export class Slider extends React.Component<SliderProps, SliderState> {
     this.onSliderAreaMouseUp = this.onSliderAreaMouseUp.bind(this);
 
     this.state = {
-      relativeValue: this.getRelativeValue(this.props.value!, this.props.min!, this.props.max!),
+      relativeValue: this.getRelativeValue(this.props.value!, this.props.min!, this.props.max!, this.props.step),
+      relativeStep: this.getRelativeStep(props.step, this.props.min!, this.props.max!),
       isActive: false
     }
+  }
+
+  componentWillReceiveProps(nextProps: SliderProps) {
+    if (this.state.isActive) {
+      return;
+    }
+
+    const value = nextProps.value || this.props.value;
+    const min = nextProps.min || this.props.min;
+    const max = nextProps.max || this.props.max;
+    const step = nextProps.step || this.props.step;
+
+    this.setState({
+      relativeValue: this.getRelativeValue(value!, min!, max!, step),
+      relativeStep: this.getRelativeStep(step, min!, max!)
+    })
   }
 
   private onChange: React.ChangeEventHandler<HTMLInputElement> = event => {
@@ -98,11 +118,18 @@ export class Slider extends React.Component<SliderProps, SliderState> {
     this.props.onBlur!(event);
   }
 
+  private getRelativeStep(step: Step | undefined, min: number, max: number ): Step {
+    if (typeof step === 'undefined' || step === CONTINIOUS_STEP) {
+      return CONTINIOUS_STEP;
+    }
+    return 100 * step / (max - min);
+  }
+
   private getValueInRange(value: number, min: number, max: number): number {
     return value < min ? min : (value > max ? max : value);
   }
 
-  private getRelativeValue(value: number, min: number, max: number): number {
+  private getRelativeValue(value: number, min: number, max: number, step?: Step): number {
     const normilizedMax = max - min;
     const normilizedValue = value - min;
 
@@ -113,7 +140,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
 
   private getAbsoluteValue(relativeValue: number) {
     const range = this.props.max! - this.props.min!;
-    const absoluteValue = range * 100 / relativeValue + this.props.min!
+    const absoluteValue = range * relativeValue / 100 + this.props.min!;
     return this.getValueInRange(absoluteValue, this.props.min!, this.props.max!);
   }
 
@@ -121,8 +148,18 @@ export class Slider extends React.Component<SliderProps, SliderState> {
     const sliderBounds = element.getBoundingClientRect();
     const sliderOffset = sliderBounds.left;
     const sliderSize = sliderBounds.width;
+    const relativeValue = this.getRelativeValue(pointerPosition - sliderOffset, 0, sliderSize);
+    const {relativeStep} = this.state;
 
-    return this.getRelativeValue(pointerPosition - sliderOffset, 0, sliderSize);
+    if (typeof relativeStep === 'undefined' || relativeStep === CONTINIOUS_STEP) {
+      return relativeValue;
+    }
+    let value = Math.round(relativeValue / relativeStep) * relativeStep;
+    value = value > 100 ?
+      value - relativeStep :
+      (value < 0 ? value + relativeStep : value)
+    
+    return value;
   }
 
   private onSliderAreaMouseDown(event: React.MouseEvent<HTMLElement>) {
@@ -169,7 +206,8 @@ export class Slider extends React.Component<SliderProps, SliderState> {
     document.removeEventListener('mouseup', this.onSliderAreaMouseUp);
     
     this.onDragStop(event);
-    this.props.onChange!(this.getAbsoluteValue(relativeValue));
+    const value = this.getAbsoluteValue(relativeValue);
+    this.props.onChange!(value);
   }
 
   private onDragStart(event: PointerEvent) {
