@@ -196,9 +196,14 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
 
     render() {
         const {value, focus, error} = this.state;
-        const {step, min, max, onInput, children, ...inputProps} = this.props;
-        const disableIncrement = inputProps.disabled || (isNumber(value) && value >= max!);
-        const disableDecrement = inputProps.disabled || (isNumber(value) && value <= min!);
+        const {
+            step, min, max,
+            placeholder, name,
+            disabled, required,
+            children
+        } = this.props;
+        const disableIncrement = disabled || (isNumber(value) && value >= max!);
+        const disableDecrement = disabled || (isNumber(value) && value <= min!);
         const {prefix, suffix} = getAffix(children);
 
         return <div
@@ -215,11 +220,14 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
                 </div> : null
             }
             <input
-                {...inputProps}
                 className={`${inputStyles.root} native-input`}
                 data-automation-id="NATIVE_INPUT_NUMBER"
                 type="number"
+                name={name}
                 value={isNumber(value) ? value : ''}
+                placeholder={placeholder}
+                disabled={disabled}
+                required={required}
                 min={min}
                 max={max}
                 step={step}
