@@ -41,7 +41,7 @@ const isValidValue = (num: number, part: FormatPart, use12: boolean) => {
 export default class TimePicker extends React.Component<Props, State> {
 
 	static defaultProps = {
-		format: 'hh:mm:ss',
+		format: 'hh:mm',
 		use12: false
 	}
 
@@ -159,25 +159,30 @@ export default class TimePicker extends React.Component<Props, State> {
 	render() {
 		const {focus} = this.state;
 		const {format, value, placeholder} = this.props;
-		const formatPars = format!.split(':');
+		const parts = format!.split(':');
 		const showPlaceholder = placeholder && !this.state.hh;
-		const numberOfInputs = showPlaceholder ? 1 : formatParts.length;
+		const numberOfInputs = showPlaceholder ? 1 : parts.length;
 
 		return <div cssStates={{focus}}>
-			{formatParts.slice(0, numberOfInputs).map((key: FormatPart) =>
-				<input
-					placeholder={showPlaceholder ? placeholder : '--'}
-					className='input'
-					ref={key}
-					key={key}
-					name={key}
-					value={this.state[key]}
-					onChange={this.onChange}
-					onFocus={this.onFocus}
-					onBlur={this.onBlur}
-					onKeyDown={this.onKeyDown}
-				/>
-			)}
+			<div className='inputs'>
+				{parts.slice(0, numberOfInputs).map((key: FormatPart) =>
+					<div className='input-wrap'>
+						<input
+							placeholder={showPlaceholder ? placeholder : '––'}
+							cssStates={{wide: showPlaceholder}}
+							className='input'
+							ref={key}
+							key={key}
+							name={key}
+							value={this.state[key]}
+							onChange={this.onChange}
+							onFocus={this.onFocus}
+							onBlur={this.onBlur}
+							onKeyDown={this.onKeyDown}
+						/>
+					</div>
+				)}
+			</div>
 			<input
 				className='native-input'
 				ref='nativeInput'

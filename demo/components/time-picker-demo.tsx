@@ -39,6 +39,16 @@ export class TimePickerDemo extends React.Component<any, any> {
                 <span style={{marginLeft: 20}}>{this.state.value1}</span>
             </div>
 
+            <h3>Controlled 24 time format with seconds</h3>
+            <div>
+                <TimePicker
+                    value={this.state.value1}
+                    format='hh:mm:ss'
+                    onChange={value1 => this.setState({value1})}
+                />
+                <span style={{marginLeft: 20}}>{this.state.value1}</span>
+            </div>
+
             <h3>Controlled 12 time format</h3>
             <div>
                 <TimePicker

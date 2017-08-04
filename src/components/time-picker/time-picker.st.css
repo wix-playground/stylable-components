@@ -1,3 +1,5 @@
+@namespace 'time-picker';
+
 :import {
     -st-from: "../../style/default-theme/variables.st.css";
     -st-named:
@@ -14,9 +16,8 @@
     -st-states: focus;
     position: relative;
     border: 1px solid value(BK3);
-    box-sizing: border-box;
     width: value(width);
-    display: inline-flex;
+    display: inline-block;
 }
 
 .root:hover {
@@ -26,14 +27,40 @@
     border-color: value(PR1);
 }
 
+.inputs {
+    display: flex;
+    box-sizing: border-box;
+    padding: 6px 8px;
+}
+
+.input-wrap {
+    position: relative;
+}
+.input-wrap:not(:last-child):after {
+    content: ':';
+    color: value(BK2);
+    position: absolute;
+    top: 0;
+    right: -2px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
 .input {
+    -st-states: wide;
     border: 0;
-    width: 100%;
-    padding: 6px 10px;
+    padding: 0px 4px;
+    width: 26px;
+    height: auto;
+    background: none;
 }
 .input:hover,
 .input:focus {
     border: 0;
+}
+.input:wide {
+    width: 100%;
 }
 
 .native-input {
