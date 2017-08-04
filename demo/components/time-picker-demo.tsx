@@ -13,7 +13,7 @@ export class TimePickerDemo extends React.Component<any, any> {
     }
     componentDidMount() {
         setInterval(() => {
-            //this.setState({now: new Date()});
+            this.setState({now: new Date()});
         }, 1000)
     }
     render() {
