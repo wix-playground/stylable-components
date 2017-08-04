@@ -41,6 +41,12 @@ export default class TimePicker extends React.Component<Props, State> {
 		}
 	}
 
+	componentWillReceiveProps(props: Props) {
+		if (props.value && !this.state.focus) {
+			this.setState(this.getTimeParts(props.value, props.use12));
+		}
+	}
+
 	getTimeParts(value?: string, use12?: boolean) {
 		if (!value) {
 			return {
@@ -89,7 +95,7 @@ export default class TimePicker extends React.Component<Props, State> {
 		this.commit();
 	}
 
-	moveFocus(currentRefName: FormatPart, increment: number): boolean {
+	moveFocus(currentRefName: string, increment: number): boolean {
 		let refIndex = inputNames.indexOf(currentRefName);
 		let nextRef;
 
@@ -146,20 +152,24 @@ export default class TimePicker extends React.Component<Props, State> {
 	}
 
 	onAmpmKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-		if (['space', 'enter'].indexOf(keycode(e.keyCode)) === -1) {
-			return;
+		const keyName = keycode(e.keyCode);
+		switch (keycode(e.keyCode)) {
+			case 'space':
+			case 'enter':
+				const input = e.currentTarget;
+				this.setState({
+					ampm: 1 - this.state.ampm!
+				}, this.commit);
+				break;
+			case 'backspace':
+				e.preventDefault();
+				this.moveFocus('ampm', -1);
+				break;
 		}
-		const input = e.currentTarget;
-
-		this.setState({
-			ampm: 1 - this.state.ampm!
-		}, this.commit);
 	}
 
-	componentWillReceiveProps(props: Props) {
-		if (props.value && !this.state.focus) {
-			this.setState(this.getTimeParts(props.value, props.use12));
-		}
+	onAmpmKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
+		e.currentTarget.select();
 	}
 
 	commit = () => {
@@ -194,7 +204,7 @@ export default class TimePicker extends React.Component<Props, State> {
 					</div>
 				)}
 			</div>
-			{use12 &&
+			{use12 && !showPlaceholder &&
 				<input
 					className='input ampm'
 					ref='ampm'
@@ -202,6 +212,7 @@ export default class TimePicker extends React.Component<Props, State> {
 					onBlur={this.onBlur}
 					value={this.state.ampm === Ampm.am ? 'AM' : 'PM'}
 					onKeyDown={this.onAmpmKeyDown}
+					onKeyUp={this.onAmpmKeyUp}
 				/>
 			}
 			<input

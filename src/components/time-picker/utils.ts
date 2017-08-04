@@ -30,7 +30,7 @@ export const toAmpm = (hh: number) => {
 }
 
 export const isValidValue = (num: number, part: FormatPart, use12: boolean) => {
-	switch(part) {
+	switch (part) {
 		case 'hh':
 			return num >= 0 && num <= (use12 ? 12 : 23);
 		case 'mm':
