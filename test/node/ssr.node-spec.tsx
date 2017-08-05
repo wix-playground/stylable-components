@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { expect } from 'test-drive-react';
 import { renderToString } from 'react-dom/server';
+import { expect } from 'test-drive-react';
 import * as WixReactComponents from '../../src';
 
 const isReactComponent = (value: any) => value && value.prototype && value.prototype instanceof React.Component;
@@ -16,6 +16,6 @@ describe('SSR compatibility', () => {
             it(`<${exportName} /> renders on Node.js using React's server side rendering`, () => {
                 expect(() => renderToString(<ExportValue />)).to.not.throw();
             });
-        };
+        }
     });
 });
