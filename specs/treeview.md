@@ -2,8 +2,7 @@
 
 A typed React TreeView component. The TreeView is a generic container in the sense that it can work with any kind of data and be styled according to a specific implementation.
 
-![Image of tree]()
-
+* [Elements](#elements)
 * [Internal Implementation](#internal-implementation)
   * [TreeItem](#treeitem)
   * [ItemRenderer](#default-itemrenderer)
@@ -11,6 +10,10 @@ A typed React TreeView component. The TreeView is a generic container in the sen
 * [Methods](#methods)
 * [Input Handling](#input-handling)
 * [Examples](#examples)
+
+## Elements
+
+![Image of elements](./assets/treeview/treeElements.png)
 
 ## Internal Implementation
 
@@ -67,11 +70,10 @@ The following static styles should be used:
 
 ## Properties
 
+The TreeView implements the OptionList intefarface (dataSource, dataScheme and itemRenderer props).
+
 | Name | Type | Default | Required | Description |
 | -- | -- | -- | -- | -- |
-| dataSource | Object[] | none | Yes | The data source of the TreeView which is used to render nodes |
-| mapChildren | func | none | Yes | Maps children for the item renderer |
-| itemRenderer | func: params - TreeItem | default function | No | Overrides the default function for rendering nodes |
 | selectedItem | Object reference | null | No | The selected object, by default none is selected |
 | keyboardNavigation | boolean | true | No | When enabled, user can traverse the tree using keyboard arrow keys |
 | loadOnDemand | boolean | false | No | Whether parent nodes are populated with children before they are expanded. |
@@ -184,8 +186,8 @@ const data = [
   ];
 ```
 * Render a tree which shows keyboard navigation working
-* Search for a TreeItem (using a string query - default search)
-* Search for a TreeItem (using a custom search function)
+* Filter tree items (by defualt: using string query)
+* Filter tree items (using a custom search function)
 * Lazy loading -> implement the loadMethod and pending state
 
 

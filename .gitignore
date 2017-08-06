@@ -59,3 +59,4 @@ jspm_packages/
 .env
 
 .history
+.DS_Store
