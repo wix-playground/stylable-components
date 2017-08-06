@@ -3,11 +3,11 @@ import { change, ClientRenderer, expect, sinon, waitFor } from 'test-drive-react
 import { BirthdayPickerDemo } from '../../demo/components/birthday-picker-demo';
 import { BirthdayPicker, dateFromYearMonthDay } from '../../src';
 
-describe('<BirthdayPicker />', () => {
+describe('<BirthdayPicker />', function() {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
 
-    it('Displays the date and allows changing it', async () => {
+    it('Displays the date and allows changing it', async function()  {
         const { select, waitForDom } = clientRenderer.render(<BirthdayPickerDemo />);
 
         await waitForDom(() => {
@@ -29,7 +29,7 @@ describe('<BirthdayPicker />', () => {
         });
     });
 
-    it('Renders with default props', () => {
+    it('Renders with default props', function() {
         const { select, waitForDom } = clientRenderer.render(<BirthdayPicker />);
 
         return waitForDom(() => {
@@ -40,7 +40,7 @@ describe('<BirthdayPicker />', () => {
         });
     });
 
-    it('Displays the provided date', () => {
+    it('Displays the provided date', function() {
         const { select, waitForDom } = clientRenderer.render(
             <BirthdayPicker value={new Date('1986-04-26T00:00Z')} />
         );
@@ -52,7 +52,7 @@ describe('<BirthdayPicker />', () => {
         });
     });
 
-    it('Does not emit onChange for initial value', () => {
+    it('Does not emit onChange for initial value', function() {
         const onChange = sinon.spy();
         const { select, waitForDom } = clientRenderer.render(
             <BirthdayPicker value={new Date()} onChange={onChange} />
@@ -63,7 +63,7 @@ describe('<BirthdayPicker />', () => {
         });
     });
 
-    it('Emits onChange when going from valid to valid state', async () => {
+    it('Emits onChange when going from valid to valid state', async function()  {
         const onChange = sinon.spy();
         const { select, waitForDom } = clientRenderer.render(
             <BirthdayPicker value={new Date('1986-04-26T00:00Z')} onChange={onChange} />
@@ -80,7 +80,7 @@ describe('<BirthdayPicker />', () => {
         });
     });
 
-    it('Does not emit onChange when going from valid to invalid state', async () => {
+    it('Does not emit onChange when going from valid to invalid state', async function()  {
         const onChange = sinon.spy();
         const { select, waitForDom } = clientRenderer.render(
             <BirthdayPicker value={new Date()} onChange={onChange} />
@@ -97,7 +97,7 @@ describe('<BirthdayPicker />', () => {
         });
     });
 
-    it('Does not emit onChange when going from invalid to invalid state', async () => {
+    it('Does not emit onChange when going from invalid to invalid state', async function()  {
         const onChange = sinon.spy();
         const { select, waitForDom } = clientRenderer.render(
             <BirthdayPicker onChange={onChange} />
@@ -114,7 +114,7 @@ describe('<BirthdayPicker />', () => {
         });
     });
 
-    it('Emits onChange when going from invalid to valid state', async () => {
+    it('Emits onChange when going from invalid to valid state', async function()  {
         const onChange = sinon.spy();
         const { select, waitForDom } = clientRenderer.render(
             <BirthdayPicker onChange={onChange} />
@@ -133,23 +133,23 @@ describe('<BirthdayPicker />', () => {
         });
     });
 
-    describe('Validates the date', () => {
-        it('Supports full range of dates', () => {
+    describe('Validates the date', function() {
+        it('Supports full range of dates', function() {
             expect(dateFromYearMonthDay('1000', '01', '01').toString()).equal(new Date('1000-01-01T00:00Z').toString());
             expect(dateFromYearMonthDay('9999', '12', '31').toString()).equal(new Date('9999-12-31T00:00Z').toString());
         });
 
-        it('Allows to omit leading zeroes for month and day, but not for year', () => {
+        it('Allows to omit leading zeroes for month and day, but not for year', function() {
             expect(dateFromYearMonthDay('1987', '4', '6').toString()).equal(new Date('1987-04-06T00:00Z').toString());
             expect(dateFromYearMonthDay('17', '04', '26')).to.be.instanceOf(Error);
         });
 
-        it('Doesn\'t round up out-of-range dates to the next month', () => {
+        it('Doesn\'t round up out-of-range dates to the next month', function() {
             expect(dateFromYearMonthDay('1987', '02', '29')).to.be.instanceOf(Error);
             expect(dateFromYearMonthDay('1987', '04', '31')).to.be.instanceOf(Error);
         });
 
-        it('Doesn\'t attempt to correct invalid data', () => {
+        it('Doesn\'t attempt to correct invalid data', function() {
             expect(dateFromYearMonthDay('1987', '4.5', '26')).to.be.instanceOf(Error);
             expect(dateFromYearMonthDay('1987', '-4', '26')).to.be.instanceOf(Error);
             expect(dateFromYearMonthDay('1987', '4x', '26')).to.be.instanceOf(Error);
