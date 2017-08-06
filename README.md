@@ -1,7 +1,8 @@
 # stylable-components
+[![npm version](https://badge.fury.io/js/stylable-components.svg)](https://www.npmjs.com/package/stylable-components)
 [![Build Status](https://travis-ci.org/wix/stylable-components.svg?branch=master)](https://travis-ci.org/wix/stylable-components)
-<!-- [![Sauce Test Status](https://saucelabs.com/buildstatus/WixReactComponents)](https://saucelabs.com/u/WixReactComponents) -->
 
+<!-- [![Sauce Test Status](https://saucelabs.com/buildstatus/WixReactComponents)](https://saucelabs.com/u/WixReactComponents) -->
 <!-- [![Sauce Test SKtatus](https://saucelabs.com/browser-matrix/WixReactComponents.svg)](https://saucelabs.com/u/WixReactComponents) -->
 
 Fully-tested & strictly-typed component library based on React, using optional Wix styling.
