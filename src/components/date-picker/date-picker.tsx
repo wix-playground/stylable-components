@@ -28,7 +28,8 @@ export interface DatePickerState {
 
 export class DatePicker extends React.Component<Partial<DatePickerProps>, DatePickerState>{
     static defaultProps: Partial<DatePickerProps> = {
-        openOnFocus: true
+        openOnFocus: true,
+        onChange: () => {}
     };
 
     componentWillMount () {
@@ -45,9 +46,7 @@ export class DatePicker extends React.Component<Partial<DatePickerProps>, DatePi
             const updatedDate = input ? new Date(input) : new Date();
             this.setState({ inputValue: updatedDate.toDateString() });
 
-            if (this.props.onChange) {
-                this.props.onChange(updatedDate);
-            }
+            this.props.onChange!(updatedDate);
         } else {
             this.setState({ inputValue: invalidDate });
         }
@@ -63,9 +62,7 @@ export class DatePicker extends React.Component<Partial<DatePickerProps>, DatePi
             dropdownDate: input
         });
 
-        if (this.props.onChange) {
-            this.props.onChange(input);
-        }
+        this.props.onChange!(input);
     };
 
     updateDropdownDate = (updatedDate: Date): void => {

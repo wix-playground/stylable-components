@@ -124,28 +124,31 @@
     cursor: pointer;
 }
 
-.currentDay {
+.current {
     color: value(color_Default);
 }
 
-.focusedDay {
-    background-color: value(color_Keyboard_Focused);
+.focused {
+    outline: solid 1px value(color_Hover);
+    outline-offset: -1px;
 }
 
-.selectedDay {
+.selected {
     color: value(color_MainText_Background);
     background-color: value(color_Active);
 }
 
 .focusedAndSelected {
-}
-
-.day:hover {
     color: value(color_MainText_Background);
     background-color: value(color_Hover);
 }
 
-.inactiveDay {
+.day:hover {
+    color: value(color_MainText);
+    background-color: value(color_Keyboard_Focused);
+}
+
+.inactive {
     font-family: ArialMT;
     font-size: 14px;
     text-align: center;

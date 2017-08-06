@@ -20,17 +20,19 @@ export class Day extends React.Component<DayProps, {}> {
     @computed
     get styles(): string {
         if (this.props.focused && this.props.selected) {
-            return [styles.calendarItem, styles.day, styles.focusedAndSelected].join(' ');
+            return `${styles.calendarItem} ${styles.day} ${styles.focusedAndSelected}`;
+        } else if (this.props.focused && this.props.currentDay) {
+            return `${styles.calendarItem} ${styles.day} ${styles.focused} ${styles.current}`;
         } else if (this.props.focused) {
-            return [styles.calendarItem, styles.day, styles.focusedDay].join(' ');
+            return `${styles.calendarItem} ${styles.day} ${styles.focused}`;
         } else if (this.props.selected) {
-            return [styles.calendarItem, styles.day, styles.selectedDay].join(' ');
+            return `${styles.calendarItem} ${styles.day} ${styles.selected}`;
         } else if (this.props.currentDay) {
-            return [styles.calendarItem, styles.day, styles.currentDay].join(' ');
+            return `${styles.calendarItem} ${styles.day} ${styles.current}`;
         } else if (this.props.partOfNextMonth || this.props.partOfPrevMonth) {
-            return [styles.calendarItem, styles.inactiveDay].join(' ');
+            return `${styles.calendarItem} ${styles.inactive}`;
         } else {
-            return [styles.calendarItem, styles.day].join(' ');
+            return `${styles.calendarItem} ${styles.day}`;
         }
     }
 
