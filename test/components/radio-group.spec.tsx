@@ -15,7 +15,7 @@ describe('<RadioGroup />', function() {
     });
 
     describe('The radio group user', function() {
-        it('clicks on a button and it is selected', async function()  {
+        it('clicks on a button and it is selected', async function() {
             const {select, waitForDom} = clientRenderer.render(<RadioGroupDemo/>);
 
             await waitForDom(() => {
@@ -101,7 +101,7 @@ describe('<RadioGroup />', function() {
         });
     });
 
-    it('renders calls the given onChange function on change', async function()  {
+    it('renders calls the given onChange function on change', async function() {
         const onChange = sinon.spy();
         const {select, waitForDom} = clientRenderer.render(
             <RadioGroup onChange={onChange}>
@@ -118,7 +118,7 @@ describe('<RadioGroup />', function() {
         });
     });
 
-    it('sets the clicked radio button to be active on click', async function()  {
+    it('sets the clicked radio button to be active on click', async function() {
         const {select, waitForDom} = clientRenderer.render(
             <RadioGroup onChange={emptyFunction}>
                 <RadioButton value="Garuda"/>
@@ -136,7 +136,7 @@ describe('<RadioGroup />', function() {
         });
     });
 
-    it('changes the selected button when clicking on a different one', async function()  {
+    it('changes the selected button when clicking on a different one', async function() {
         const {select, waitForDom} = clientRenderer.render(
             <RadioGroup onChange={emptyFunction}>
                 <RadioButton value="Diabolos"/>
@@ -156,7 +156,7 @@ describe('<RadioGroup />', function() {
         });
     });
 
-    it('does not affect buttons in a different radio group', async function()  {
+    it('does not affect buttons in a different radio group', async function() {
         const {select, waitForDom} = clientRenderer.render(
             <div>
                 <div data-automation-id="DIV_0">
@@ -237,7 +237,7 @@ describe('<RadioGroup />', function() {
             });
         });
 
-        it('sets children as checked when being pressed and calls onChange with their value', async function()  {
+        it('sets children as checked when being pressed and calls onChange with their value', async function() {
             const onChange = sinon.spy();
             const {select, waitForDom} = clientRenderer.render(
                 <RadioGroup onChange={emptyFunction}>
@@ -319,7 +319,7 @@ describe('<RadioGroup />', function() {
             });
         });
 
-        it('calls the onClick function when clicked', async function()  {
+        it('calls the onClick function when clicked', async function() {
             const onClick = sinon.spy();
             const { select, waitForDom } = clientRenderer.render(
                 <RadioButton value="Tonberry" onClick={onClick} automationId={radioButton + '_0'} name=""/>

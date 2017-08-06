@@ -63,7 +63,7 @@ describe('<TreeView />', function() {
 
     const allNodesLabels: string[] = getAllNodeLabels(treeData);
 
-    it('renders a tree view with a few children, clicks ones of them to expand and close', async function()  {
+    it('renders a tree view with a few children, clicks ones of them to expand and close', async function() {
         const { select, waitForDom } = clientRenderer.render(<TreeViewDemo />);
 
         await waitForDom(() => expect(select(treeView + '_DEMO'), 'demo not present').to.be.present());
@@ -91,7 +91,7 @@ describe('<TreeView />', function() {
         return waitForDom(() => expect(select(getTreeItem(nodeChildren![1].label))).to.be.absent());
     });
 
-    it('ends up in expected state after multiple clicks on same tree node', async function()  {
+    it('ends up in expected state after multiple clicks on same tree node', async function() {
         const { select, waitForDom } = clientRenderer.render(<TreeViewDemo />);
 
         simulate.click(select(treeView + '_DEMO', getTreeItem(allNodesLabels[0])));

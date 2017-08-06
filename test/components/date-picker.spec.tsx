@@ -32,7 +32,7 @@ describe('The DatePicker Component', function() {
         it(
             `writes into the date picker input field, presses enter,
             and expects the date picker input to have the proper value`,
-            async function()  {
+            async function() {
                 const {select, waitForDom} = clientRenderer.render(<DatePickerDemo />);
 
                 const datePickerInput = select(datePickerInputId);
@@ -46,7 +46,7 @@ describe('The DatePicker Component', function() {
         it(
             `clicks on the input, picks a date from the dropdown,
             and then expects the dropdown to close and the date to appear in the input`,
-            async function()  {
+            async function() {
                 const {select, waitForDom} = clientRenderer.render(<DatePickerDemo value={JANUARY_FIRST} />);
                 const datePickerInput = select(datePickerInputId);
 
@@ -66,13 +66,13 @@ describe('The DatePicker Component', function() {
         );
     });
 
-    it('should use a provided value', async function()  {
+    it('should use a provided value', async function() {
         const {select, waitForDom} = clientRenderer.render(<DatePickerDemo value={JANUARY_FIRST} />);
 
         await waitForDom(() => expect(select(datePickerInputId)).to.have.value(JANUARY_FIRST.toDateString()));
     });
 
-    it('should use the current input value when blurred', async function()  {
+    it('should use the current input value when blurred', async function() {
         const {select, waitForDom} = clientRenderer.render(<DatePickerDemo />);
 
         const datePickerInput = select(datePickerInputId);
@@ -82,13 +82,13 @@ describe('The DatePicker Component', function() {
         await waitForDom(() => expect(select(currentDate)).to.have.text('Wed Feb 01 2017'));
     });
 
-    it('should use a provided placeholder', async function()  {
+    it('should use a provided placeholder', async function() {
         const {select, waitForDom} = clientRenderer.render(<DatePickerDemo placeholder="mm/dd/yyyy" />);
 
         await waitForDom(() => expect(select(datePickerInputId)).to.have.attribute('placeholder', 'mm/dd/yyyy'));
     });
 
-    it('should show and hide the dropdown when the input is clicked', async function()  {
+    it('should show and hide the dropdown when the input is clicked', async function() {
         const {select, waitForDom} = clientRenderer.render(<DatePickerDemo />);
         const datePickerInput = select(datePickerInputId);
 
@@ -111,7 +111,7 @@ describe('The DatePicker Component', function() {
             '20', '21', '22', '23', '24', '25', '26', '27', '28'
         ];
 
-        it('should display the days for a fixed month', async function()  {
+        it('should display the days for a fixed month', async function() {
             const {select, waitForDom} = clientRenderer.render(
                 <DatePickerDemo
                     isDropdownVisible={true}
@@ -125,7 +125,7 @@ describe('The DatePicker Component', function() {
             });
         });
 
-        it('should show the next and previous month buttons horizontally aligned with the month and year', async function()  {
+        it('should show the next and previous month buttons horizontally aligned with the month and year', async function() {
             const {select, waitForDom} = clientRenderer.render(
                 <DatePickerDemo
                     isDropdownVisible={true}
@@ -143,7 +143,7 @@ describe('The DatePicker Component', function() {
             });
         });
 
-        it('should display the day names in horizontal sequence, and vertically aligned', async function()  {
+        it('should display the day names in horizontal sequence, and vertically aligned', async function() {
             const {select, waitForDom} = clientRenderer.render(
                 <DatePickerDemo
                     isDropdownVisible={true}
@@ -187,7 +187,7 @@ describe('The DatePicker Component', function() {
             return columnElements;
         }
 
-        it('should display the days in a grid', async function()  {
+        it('should display the days in a grid', async function() {
             const {waitForDom} = clientRenderer.render(
                 <DatePickerDemo
                     value={JANUARY_FIRST}
@@ -206,7 +206,7 @@ describe('The DatePicker Component', function() {
             });
         });
 
-        it('should show the days starting on the correct day of the week', async function()  {
+        it('should show the days starting on the correct day of the week', async function() {
             const {select, waitForDom} = clientRenderer.render(
                 <DatePickerDemo
                     value={MARCH_FIRST}
@@ -220,7 +220,7 @@ describe('The DatePicker Component', function() {
             ]).to.be.horizontallyAligned('center'));
         });
 
-        it('displays the year', async function()  {
+        it('displays the year', async function() {
             const {select, waitForDom} = clientRenderer.render(
                 <DatePickerDemo
                     isDropdownVisible={true}
@@ -231,7 +231,7 @@ describe('The DatePicker Component', function() {
             await waitForDom(() => expect(select('YEAR')).to.have.text('2017'));
         });
 
-        it('displays the name of the month', async function()  {
+        it('displays the name of the month', async function() {
             const {select, waitForDom} = clientRenderer.render(
                 <DatePickerDemo
                     isDropdownVisible={true}
@@ -242,7 +242,7 @@ describe('The DatePicker Component', function() {
             await waitForDom(() => expect(select('MONTH_NAME')).to.have.text('January'));
         });
 
-        it('displays the days of the week', async function()  {
+        it('displays the days of the week', async function() {
             const {select, waitForDom} = clientRenderer.render(
                 <DatePickerDemo
                     isDropdownVisible={true}
@@ -257,7 +257,7 @@ describe('The DatePicker Component', function() {
             });
         });
 
-        it('has a button which steps forward a month', async function()  {
+        it('has a button which steps forward a month', async function() {
             const {select, waitForDom} = clientRenderer.render(
                 <DatePickerDemo
                     isDropdownVisible={true}
@@ -275,7 +275,7 @@ describe('The DatePicker Component', function() {
             });
         });
 
-        it('has a button which steps back a month', async function()  {
+        it('has a button which steps back a month', async function() {
             const {select, waitForDom} = clientRenderer.render(
                 <DatePickerDemo
                     isDropdownVisible={true}
@@ -292,7 +292,7 @@ describe('The DatePicker Component', function() {
             });
         });
 
-        it('should stay open when the next or previous month buttons are clicked', async function()  {
+        it('should stay open when the next or previous month buttons are clicked', async function() {
             const {select, waitForDom} = clientRenderer.render(<DatePickerDemo isDropdownVisible={true} />);
 
             await waitForDom(() => expect(select(datePickerDropdownId)).to.be.present());

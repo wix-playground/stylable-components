@@ -11,7 +11,7 @@ describe('<SelectionList />', function() {
         clientRenderer.cleanup();
     });
 
-    it('Takes a list of options and allows to select one', async function()  {
+    it('Takes a list of options and allows to select one', async function() {
         const {select, waitForDom} = clientRenderer.render(<SelectionListDemo />);
 
         await waitForDom(() => {
@@ -25,7 +25,7 @@ describe('<SelectionList />', function() {
         });
     });
 
-    it('Works with a custom renderer and data schema', async function()  {
+    it('Works with a custom renderer and data schema', async function() {
         const {select, waitForDom} = clientRenderer.render(<SelectionListDemo />);
 
         await waitForDom(() => {
@@ -44,7 +44,7 @@ describe('<SelectionList />', function() {
         });
     });
 
-    it('Renders items under each other using the default renderer', async function()  {
+    it('Renders items under each other using the default renderer', async function() {
         const {select, waitForDom} = clientRenderer.render(
             <SelectionList dataSource={['One', 'Two', divider, 'Three']} />
         );
@@ -56,7 +56,7 @@ describe('<SelectionList />', function() {
         });
     });
 
-    it('Fires onChange when an item is clicked', async function()  {
+    it('Fires onChange when an item is clicked', async function() {
         const dataSource = ['One', 'Two', 'Three'];
         const onChange = sinon.spy();
         const {select, waitForDom} = clientRenderer.render(
@@ -79,7 +79,7 @@ describe('<SelectionList />', function() {
 
     it(
         `Doesn't fire onChange for clicks on active items, dividers, disabled items, and items without value`,
-        async function()  {
+        async function() {
             const dataSource = [
                 'One',
                 divider,

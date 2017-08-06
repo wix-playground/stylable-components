@@ -7,7 +7,7 @@ describe('<BirthdayPicker />', function() {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
 
-    it('Displays the date and allows changing it', async function()  {
+    it('Displays the date and allows changing it', async function() {
         const { select, waitForDom } = clientRenderer.render(<BirthdayPickerDemo />);
 
         await waitForDom(() => {
@@ -63,7 +63,7 @@ describe('<BirthdayPicker />', function() {
         });
     });
 
-    it('Emits onChange when going from valid to valid state', async function()  {
+    it('Emits onChange when going from valid to valid state', async function() {
         const onChange = sinon.spy();
         const { select, waitForDom } = clientRenderer.render(
             <BirthdayPicker value={new Date('1986-04-26T00:00Z')} onChange={onChange} />
@@ -80,7 +80,7 @@ describe('<BirthdayPicker />', function() {
         });
     });
 
-    it('Does not emit onChange when going from valid to invalid state', async function()  {
+    it('Does not emit onChange when going from valid to invalid state', async function() {
         const onChange = sinon.spy();
         const { select, waitForDom } = clientRenderer.render(
             <BirthdayPicker value={new Date()} onChange={onChange} />
@@ -97,7 +97,7 @@ describe('<BirthdayPicker />', function() {
         });
     });
 
-    it('Does not emit onChange when going from invalid to invalid state', async function()  {
+    it('Does not emit onChange when going from invalid to invalid state', async function() {
         const onChange = sinon.spy();
         const { select, waitForDom } = clientRenderer.render(
             <BirthdayPicker onChange={onChange} />
@@ -114,7 +114,7 @@ describe('<BirthdayPicker />', function() {
         });
     });
 
-    it('Emits onChange when going from invalid to valid state', async function()  {
+    it('Emits onChange when going from invalid to valid state', async function() {
         const onChange = sinon.spy();
         const { select, waitForDom } = clientRenderer.render(
             <BirthdayPicker onChange={onChange} />
