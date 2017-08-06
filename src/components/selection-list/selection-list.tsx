@@ -9,9 +9,7 @@ export const divider = {};
 function renameKeys(data: {[index: string]: any}, schema: {[index: string]: string}) {
     const result: {[index: string]: any} = {};
     for (const key in schema) {
-        if (schema.hasOwnProperty(key)) {
-            result[key] = data[schema[key]];
-        }
+        result[key] = data[schema[key]];
     }
     return result;
 }
@@ -28,7 +26,7 @@ export interface ItemRendererProps {
     focused: boolean;
     selected: boolean;
     item: any;
-}
+};
 
 export interface DefaultItemRendererProps extends ItemRendererProps {
     item: {
@@ -36,12 +34,12 @@ export interface DefaultItemRendererProps extends ItemRendererProps {
         label?: string;
         hidden?: boolean;
         disabled?: boolean;
-    };
+    }
 }
 
 const DefaultItemRenderer: React.SFC<DefaultItemRendererProps> = SBStateless(props => {
     if (props.item === divider) {
-        return <div className="divider" data-automation-id="DIVIDER" />;
+        return <div className="divider" data-automation-id="DIVIDER"></div>;
     }
 
     if (props.item.hidden) {
@@ -56,8 +54,7 @@ const DefaultItemRenderer: React.SFC<DefaultItemRendererProps> = SBStateless(pro
                 focused: props.focused,
                 selected: props.selected,
                 disabled: props.item.disabled!
-            }}
-        >
+            }}>
             {props.item.label}
         </div>
     );
@@ -66,41 +63,27 @@ const DefaultItemRenderer: React.SFC<DefaultItemRendererProps> = SBStateless(pro
 export type SelectionItem = string | object;
 
 export interface OptionList {
-    dataSource?: SelectionItem[];
-    dataSchema?: {};
-    itemRenderer?: React.ComponentType<ItemRendererProps>;
+    dataSource?: SelectionItem[],
+    dataSchema?: {},
+    itemRenderer?: React.ComponentType<ItemRendererProps>
 }
 
 export interface SelectionListProps extends OptionList {
     value?: string;
     onChange?: (value: string) => void;
     style?: any;
-    children?: any;
+    children?: any
 }
 
 @SBComponent(style)
 export class SelectionList extends React.Component<SelectionListProps, {}> {
-    public static defaultProps: SelectionListProps = {
+    static defaultProps: SelectionListProps = {
         dataSource: [],
         itemRenderer: DefaultItemRenderer,
         onChange: () => {}
     };
 
-    public render() {
-        const rootProps = root(this.props, {
-            'data-automation-id': 'LIST',
-            'className': 'list',
-            'onClick': this.handleClick
-        });
-
-        return (
-            <div {...rootProps}>
-                {this.props.dataSource!.map((item, index) => this.renderItem(item, index))}
-            </div>
-        );
-    }
-
-    private normalizeItem(item: SelectionItem): {[index: string]: any} {
+    normalizeItem(item: SelectionItem): {[index: string]: any} {
         if (item === divider) {
             return divider;
         }
@@ -113,23 +96,20 @@ export class SelectionList extends React.Component<SelectionListProps, {}> {
             renameKeys(item, this.props.dataSchema) : item;
     }
 
-    private renderItem(item: SelectionItem, index: number) {
+    renderItem(item: SelectionItem, index: number) {
         const ItemRenderer = this.props.itemRenderer!;
         const normalized = this.normalizeItem(item);
-        return (
-            <ItemRenderer
-                key={index}
-                focused={false}
-                selected={normalized.value === this.props.value}
-                item={normalized}
-            />
-        );
+        return <ItemRenderer
+            key={index}
+            focused={false}
+            selected={normalized.value === this.props.value}
+            item={normalized} />;
     }
 
-    private handleClick: React.EventHandler<React.MouseEvent<HTMLElement>> = event => {
-        const elem = ReactDOM.findDOMNode(this);
+    handleClick: React.EventHandler<React.MouseEvent<HTMLElement>> = (event) => {
+        const root = ReactDOM.findDOMNode(this);
         const item = closestElementMatching(
-            el => el.parentElement === elem,
+            (el) => el.parentElement === root,
             event.target as HTMLElement
         );
         if (!item) {
@@ -140,5 +120,17 @@ export class SelectionList extends React.Component<SelectionListProps, {}> {
             return;
         }
         this.props.onChange!(value);
+    };
+
+    render() {
+        const rootProps = root(this.props, {
+            'data-automation-id': 'LIST',
+            className: 'list',
+            onClick: this.handleClick
+        });
+
+        return <div {...rootProps}>
+            {this.props.dataSource!.map((item, index) => this.renderItem(item, index))}
+        </div>;
     }
 }

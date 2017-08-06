@@ -2,38 +2,35 @@ import * as React from 'react';
 import {Toggle} from '../../src';
 
 export interface State {
-    checked: boolean;
+    checked: boolean,
 }
 
 export class ToggleDemo extends React.Component<{}, State> {
-    public state = {
-        checked: false
-    };
-
-    public render() {
-        const onChange = (checked: boolean) => this.setState({checked});
-        return (
-            <table>
+    state = {
+        checked: false,
+    }
+    render () {
+        return <table>
             <tbody>
                 <tr>
-                    <th data-automation-id="TOGGLE_DEMO_CONTROLLED">
+                    <th data-automation-id='TOGGLE_DEMO_CONTROLLED'>
                         Controlled
                         <Toggle
-                            label="with icons"
+                            label='with icons'
                             checked={this.state.checked}
-                            onChange={onChange}
+                            onChange={(checked: boolean) => this.setState({checked})}
                         />
                     </th>
                     <th>
                         Controlled RTL
                         <Toggle
-                            label="with icons"
+                            label='with icons'
                             rtl
                             checked={this.state.checked}
-                            onChange={onChange}
+                            onChange={(checked: boolean) => this.setState({checked})}
                         />
                     </th>
-                    <th data-automation-id="TOGGLE_DEMO_UNCONTROLLED">
+                    <th data-automation-id='TOGGLE_DEMO_UNCONTROLLED'>
                         Off
                         <Toggle/>
                     </th>
@@ -59,7 +56,6 @@ export class ToggleDemo extends React.Component<{}, State> {
                     </th>
                 </tr>
             </tbody>
-            </table>
-        );
+        </table>
     }
 }

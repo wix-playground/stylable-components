@@ -1,14 +1,26 @@
 import React = require('react');
-import {action, observable} from 'mobx';
+import {RadioGroup, RadioButton} from '../../src';
+import {observable, action} from 'mobx';
 import {observer} from 'mobx-react';
-import {RadioButton, RadioGroup} from '../../src';
+
 
 @observer
 export class RadioGroupDemo extends React.Component<{}, {}> {
-    @observable private myValue: string = '';
-    @observable private myValue2: string = '';
+    @observable myValue: string = '';
+    @observable myValue2: string = '';
 
-    public render() {
+
+    @action
+    onChange = (value: string) => {
+        this.myValue = value;
+    };
+
+    @action
+    onChange2 = (value: string) => {
+        this.myValue2 = value;
+    };
+
+    render() {
         return (
             <div data-automation-id="RADIO_GROUP_DEMO">
                 <div data-automation-id="GROUP_1">
@@ -23,28 +35,10 @@ export class RadioGroupDemo extends React.Component<{}, {}> {
                 </div>
                 <div data-automation-id="GROUP_2">
                     <h3>Data source radio group</h3>
-                    <RadioGroup
-                        onChange={this.onChange2}
-                        location="left"
-                        name="name"
-                        dataSource={[
-                            {value: 'Default'},
-                            {value: 'Checked', checked: true},
-                            {value: 'Disabled', disabled: true}
-                        ]}
-                    />
+                    <RadioGroup onChange={this.onChange2} location="left" name="name" dataSource={[{value:'Default'}, {value:'Checked', checked:true}, {value:'Disabled', disabled:true}]} />
                     <span data-automation-id="RADIO_GROUP_DEMO_VALUE">Value: {this.myValue2}</span>
                 </div>
             </div>
         );
-    }
-    @action
-    private onChange = (value: string) => {
-        this.myValue = value;
-    }
-
-    @action
-    private onChange2 = (value: string) => {
-        this.myValue2 = value;
     }
 }

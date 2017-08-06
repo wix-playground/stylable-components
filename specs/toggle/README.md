@@ -39,12 +39,12 @@ type State = {
 
 export class ComponentsDemo extends React.Component<{}, State>{
   	state: State,
-
+    
     constructor() {
         super();
     },
-
-     public render() {
+          
+     render() {
         return <toggle
         		 value="{this.state.toggleValue}"
                  onChange={newValue => this.setState({toggleValue: newValue})}
@@ -75,7 +75,7 @@ comments to example 2
 
 **if a subcomponent is a COMPONENT, it might have subcomponents -> then we will link here to its documentation*
 
-You can add icons to ::switch subcomponent by adding background-image property.
+You can add icons to ::switch subcomponent by adding background-image property. 
 
 ```css
 Toggle::switch {
@@ -101,7 +101,7 @@ Toggle:checked::switch {
 
 ```css
 @import * from './components/toggle'; /* TODO: fix the correct syntax */
-/* style.st.css
+/* style.st.css 
 Adding rules here (which may be shared between different components) allows us to 	    override specific parts; or even change the whole theme
 */
 Toggle {
