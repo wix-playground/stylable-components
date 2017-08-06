@@ -422,6 +422,11 @@ describe('<TreeView />', () => {
                 const next = getNextItem(treeData, treeData[0].children![1].children![1], treeState, parentsMap);
                 expect(next.label).to.eql(treeData[0].children![2].label);
             });
+
+            it('selects last available item', async () => {
+                const last = getLastAvailableItem(treeData[0], treeState);
+                expect(last.label).to.eql(treeData[0].children![2].label);
+            });
         });
     });
 });
