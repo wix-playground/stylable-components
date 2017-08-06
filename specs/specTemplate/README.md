@@ -50,6 +50,23 @@ List of accepted children
 
 ```jsx
 //code example goes here
+import * as React from 'react';
+import { ExampleInput } from './components/ExampleInput';
+import style from './style.st.css'; // link to Style file - see examples of style files below
+
+export class ComponentsDemo extends React.Component<{}, {}>{
+    constructor() {
+        super();
+    }
+
+    render() {
+        return <ExampleInput
+        		 value="{this.state.exampleInputValue}"
+                 onChange={/* something */}
+
+                 />;
+    }
+}
 ```
 
 *Comments to example 1*
@@ -58,7 +75,25 @@ List of accepted children
 **Example 2:**
 
 ```jsx
-//code example goes here
+//code example goes here	
+import * as React from 'react';
+import { ExampleInput } from './components/ExampleInput';
+import style from './style.st.css'; // link to Style file - see examples of style files below
+
+export class ComponentsDemo extends React.Component<{}, {}>{
+    constructor() {
+        super();
+    }
+
+    render() {
+        return <ExampleInput
+        		 value="{this.state.exampleInputValue}"
+                 onChange={/* something */}>
+    				<span data-slot="prefix">$</span>
+        			<button data-slot="suffix">x</button>
+               </ExampleInput>;
+    }
+}
 ```
 
 *Comments to example 2*
@@ -87,7 +122,23 @@ List of accepted children
 ### Style Code Example
 
 ```css
-/* Code example goes here
-~ Example of styling with Subcomponents
-~ Example of styling with CSS State */
+@import * from './components/element'; /* TODO: fix the correct syntax */
+/* style.st.css 
+Adding rules here (which may be shared between different components) allows us to 	    override specific parts; or even change the whole theme
+*/
+Element {
+  background-color: grey; /* styles the toggle in unchecked state */
+}
+Element:checked {
+  background-color: blue; /* styles the togle in checked state */
+}
+Element::switch {
+  background-color: white; /* styles the switch bg */
+}
+Element::switch {
+    background-image: url('unckecked-icon.svg'); /* adds icon for unchecked state */
+}
+Element:checked::switch {
+    background-image: url('ckecked-icon.svg'); /* adds icon for checked state */
+}
 ```
