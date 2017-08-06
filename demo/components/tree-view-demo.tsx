@@ -23,22 +23,15 @@ export const treeData: TreeItemData[] = [
 ];
 
 function SelectedItem({selectedItem}: any) {
-    return (
-        <div
-            style={{fontSize: '1.41em', textDecoration: 'underline'}}
-        >
-            {selectedItem ?
-                (!selectedItem.children ?
-                    `You chose ${selectedItem.label}. Bon appetit!` :
-                    `You are looking at ${selectedItem.label}. Please choose a dish.`) :
-                'Please choose from the Menu!'
-            }
-        </div>
-    );
+    return <div style={{'fontSize': '1.41em', 'textDecoration': 'underline'}}>{selectedItem ?
+        (!selectedItem.children ? `You chose ${selectedItem.label}. Bon appetit!` :
+            `You are looking at ${selectedItem.label}. Please choose a dish.`) :
+        'Please choose from the Menu!'}</div>
 }
 
 export interface TreeViewDemoState {
     selectedItem: TreeItemData | undefined;
+    focusedItem: TreeItemData | undefined;
 }
 
 export class TreeViewDemo extends React.Component<{}, TreeViewDemoState> {
@@ -46,9 +39,23 @@ export class TreeViewDemo extends React.Component<{}, TreeViewDemoState> {
     constructor() {
         super();
         this.state = {
-            selectedItem: undefined
+            selectedItem: undefined,
+            focusedItem: undefined
         };
     }
+
+    private onSelectItem = (item: TreeItemData) => {
+        this.setState({
+            selectedItem: item,
+            focusedItem: item
+        });
+    };
+
+    private onFocusItem = (item: TreeItemData) => {
+        this.setState({
+            focusedItem: item
+        });
+    };
 
     public render() {
         return (
@@ -57,19 +64,11 @@ export class TreeViewDemo extends React.Component<{}, TreeViewDemoState> {
                 <section data-automation-id="TREE_VIEW_DEMO">
                     <SelectedItem selectedItem={this.state.selectedItem}/>
                     <br/>
-                    <TreeView
-                        dataSource={treeData}
-                        onSelectItem={this.onSelectItem}
-                        selectedItem={this.state.selectedItem}
-                    />
+                    <TreeView dataSource={treeData} onFocusItem={this.onFocusItem}
+                              focusedItem={this.state.focusedItem} onSelectItem={this.onSelectItem}
+                              selectedItem={this.state.selectedItem} />
                 </section>
             </div>
-        );
-    }
-
-    private onSelectItem = (item: TreeItemData) => {
-        this.setState({
-            selectedItem: item
-        });
+        )
     }
 }
