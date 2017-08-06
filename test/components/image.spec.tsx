@@ -79,12 +79,12 @@ describe('<Image />', () => {
     it('calls onError when it cannot load the given default image, and falls back to onePixelTransparentSrc',
         async () => {
             const onError = sinon.spy();
-            const { select, waitForDom } = clientRenderer.render((
+            const { select, waitForDom } = clientRenderer.render(
                 <Image
                     defaultImage={brokenSrc}
                     onError={onError}
                     data-automation-id={nativeImage}
-                />)
+                />
             );
 
             await waitFor(() => expect(onError).to.have.been.calledWithMatch({ src: brokenSrc }));
@@ -93,13 +93,13 @@ describe('<Image />', () => {
 
     describe('resize mode', () => {
         it('sets image as background with size: contain, when resizeMode="contain"', async () => {
-            const { select, waitForDom, container } = clientRenderer.render((
+            const { select, waitForDom, container } = clientRenderer.render(
                 <Image
                     resizeMode="contain"
                     src={sampleImage}
                     data-automation-id={nativeImage}
                 />
-            ));
+            );
 
             await waitForDom(() => {
                 const domImgElement = select(nativeImage);
@@ -112,11 +112,13 @@ describe('<Image />', () => {
 
                 const { parentElement: sizingWrapper } = domImgElement!;
                 expect(sizingWrapper, 'verify image is wrapped for sizing').to.not.equal(container);
-                expect(sizingWrapper).to.have.nested.property('style.backgroundImage', `url("${sampleImage}")`);
                 expect(sizingWrapper).to.have.nested.property('style.backgroundSize', 'contain');
                 expect(sizingWrapper).to.have.nested.property('style.backgroundRepeat', 'no-repeat');
 
-                // problematic: ie11 sets 'center', while chrome 60 sets 'center center'
+                // chrome normalizes to url("http://domain/file"), while safari normalizes to url(http://domain/file)
+                // expect(sizingWrapper).to.have.nested.property('style.backgroundImage', `url("${sampleImage}")`);
+
+                // ie11 normalizes to 'center', while chrome 60 normalizes to 'center center'
                 // expect(sizingWrapper).to.have.nested.property('style.backgroundPosition', 'center');
             });
         });
@@ -136,11 +138,13 @@ describe('<Image />', () => {
 
                 const { parentElement: sizingWrapper } = domImgElement!;
                 expect(sizingWrapper, 'verify image is wrapped for sizing').to.not.equal(container);
-                expect(sizingWrapper).to.have.nested.property('style.backgroundImage', `url("${sampleImage}")`);
                 expect(sizingWrapper).to.have.nested.property('style.backgroundSize', 'cover');
                 expect(sizingWrapper).to.have.nested.property('style.backgroundRepeat', 'no-repeat');
 
-                // problematic: ie11 sets 'center', while chrome 60 sets 'center center'
+                // chrome normalizes to url("http://domain/file"), while safari normalizes to url(http://domain/file)
+                // expect(sizingWrapper).to.have.nested.property('style.backgroundImage', `url("${sampleImage}")`);
+
+                // ie11 normalizes to 'center', while chrome 60 normalizes to 'center center'
                 // expect(sizingWrapper).to.have.nested.property('style.backgroundPosition', 'center');
             });
         });
