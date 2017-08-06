@@ -4,6 +4,12 @@
 
 ![NumberInput examples](./assets/numberInput.png)
 
+The NumberInput component improves upon the native `<input type="number">`:
+
+* provides ability to customize the stepper arrows design
+* provides a common React+Typescript API
+* works out the kinks of native implementations
+
 ## Component API
 
 > tbd :: add method definition
@@ -61,7 +67,7 @@ export class ComponentsDemo extends React.Component<{}, {}>{
 | state                          | description                              |
 | ------------------------------ | ---------------------------------------- |
 | :disabled           | Allows you to style the slider when it's disabled. |
-| :hover, :focus, etc | Standard CSS pseudo classes              |
+| :hover, :focus, etc | Standard CSS pseudo classes.              |
 
 
 ### Style Code Example
