@@ -73,7 +73,6 @@
 	* **flipfit** - Applies flip logic and then fit logic
 	* **none** - no collision detection
 
-
 ## Component API
 
 > tbd :: add method definition
@@ -91,17 +90,15 @@ The following props should be placed in an IPopupProps interface since they will
 
 | name        | type                                  | defaultValue&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | isRequired | description                              |
 | --- | --- | --- | --- | --- |
-| anchorPosition | IPositionPoint | { vertical: bottom, horizontal: left } | no | The point on the anchor element to which the popupPosition will attach to |
-| popupPosition | IPositionPoint | { vertical: top, horizontal: left } | no | The point from which the popupPosition will pivot |
-| collision | ICollision| { vertical: none, horizontal: none } | No | Specify the collision behavior of the component. |
+| anchorPosition | IPositionPoint | { vertical: 'bottom', horizontal: 'left' } | no | The point on the anchor element to which the popupPosition will attach to |
+| popupPosition | IPositionPoint | { vertical: 'top', horizontal: 'left' } | no | The point from which the popupPosition will pivot |
+| collision | ICollision| { vertical: 'none', horizontal: 'none' } | No | Specify the collision behavior of the component. |
 | syncWidth	| boolean |	true | no | If true, the width of the popup will be set to the width of the anchor. If false, it will be set to the width of the children. |
 | maxHeight | number | 500 | no | The max height in pixels of the popup. If set to 0, the property will be ignored and the compenent receives height from its content. |
 
 ### Code Example
 
-* Primary use case
-
-  Given a popup is attached to an element, when it's rendered it should appear on the screen.
+Given a popup is attached to an element, when it's rendered it should appear on the screen.
 
     ```
     <div ref="anchor">Anchor</div>
@@ -111,29 +108,19 @@ The following props should be placed in an IPopupProps interface since they will
     </Popup>
     ```
 
-* Popup inside a React component parent
+## Input Handling
 
-    Given a component is created with a popup connected to an anchor element, when rendered and the parent component receives focus, it should appear on the screen
+### Keyboard
 
-* Popup opens according to anchor positioning
+key | action
+--- | ---
+Esc | Closes the popup.
 
-    Given a popup is connected to an anchor element, when the anchor position is changed, the popup will open on that specific position.
+### Mouse
 
-* Popup opens according to popup positioning
-
-    Given a popup is connected to an anchor element, when the popup position is changed, the popup will pivot according to that position in relation to the location on the anchor to which it was set.
-
-* Collision rules are observed
-
-    Given a popup is connected to an anchor element, when the popup does not have enough space in the viewport, it will realign according to the collision rules.
-
-* Open and close events
-
-    Given a popup, when it opens or closes, registered open and close events are triggered.
-
-* Right-click menu
-
-    Given a popup, when the user right-clicks on a certain point on the screen, a popup opens at that specific point (collision rules apply of course).
+event | action
+--- | ---
+click outside | Closes the popup.
 
 ## Style API
 
