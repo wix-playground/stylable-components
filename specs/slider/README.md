@@ -36,7 +36,7 @@ This component accepts children with the following `data-slot` attribute, in ord
 | --------- | ---------------------------------------- | ---------------------------------------- |
 | tooltip   | Allows you to insert a component (or components) above the input | `<div data-slot="tooltip">hello world</div>` |
 
-###
+### 
 
 ### Code Examples
 
@@ -54,13 +54,13 @@ type State = {
 
 export class ComponentsDemo extends React.Component<{}, State>{
   	state: State,
-
+    
     constructor() {
         super();
     },
 
-    public render() {
-        return <Slider
+    render() {
+        return <Slider 
                  value="{this.state.sliderValue}"
                  onChange={/* something */}
           		/>;
@@ -68,7 +68,7 @@ export class ComponentsDemo extends React.Component<{}, State>{
 }
 ```
 
-Comments to example 1
+Comments to example 1 
 
 **Example 2:**
 
@@ -84,13 +84,13 @@ type State = {
 
 export class ComponentsDemo extends React.Component<{}, State>{
   	state: State,
-
+    
     constructor() {
         super();
     },
 
-    public render() {
-        return <Slider
+    render() {
+        return <Slider 
                  value="{this.state.sliderValue}"
                  onChange={/* something */}>
                  	<span data-slot="tooltip"></span>
@@ -130,7 +130,7 @@ Comments to example 2
 
 ```css
 @import * from './components/slider'; /* TODO: fix the correct syntax */
-/* style.st.css
+/* style.st.css 
 Adding rules here (which may be shared between different components) allows us to 	    override specific parts; or even change the whole theme
 */
 Slider {

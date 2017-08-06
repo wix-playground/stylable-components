@@ -1,19 +1,19 @@
-import React = require('react');
-import {observable} from 'mobx';
-import {observer} from 'mobx-react';
-import {BirthdayPicker} from '../../src';
+import React = require("react");
+import {observable} from "mobx";
+import {observer} from "mobx-react";
+import {BirthdayPicker} from "../../src";
 
-export const initialValue = new Date('1969-07-26T00:00Z');
-export const minDate = new Date('1900-06-06T00:00Z');
+export const initialValue = new Date("1969-07-26T00:00Z");
+export const minDate = new Date("1900-06-06T00:00Z");
 export const maxDate = new Date();
 
 @observer
 export class BirthdayPickerDemo extends React.Component<{}, {}> {
-    @observable private value: Date = initialValue;
+    @observable value: Date = initialValue;
 
-    public render() {
+    render() {
         const date = this.value;
-        const formattedDate = date ? date.toISOString().substr(0, 10) : '';
+        const formattedDate = date ? date.toISOString().substr(0, 10) : "";
 
         return (
             <section>
@@ -21,14 +21,12 @@ export class BirthdayPickerDemo extends React.Component<{}, {}> {
                     value={date}
                     minDate={minDate}
                     maxDate={maxDate}
-                    onChange={this.onChange}
+                    onChange={newValue => this.value = newValue}
                 />
                 <span data-automation-id="BIRTHDAY_PICKER_DEMO_RESULT">
-                    {date ? 'Selected date: ' + formattedDate : 'Date not selected'}
+                    {date ? "Selected date: " + formattedDate : "Date not selected"}
                 </span>
             </section>
         );
     }
-
-    private onChange = (newValue: Date) => this.value = newValue;
 }

@@ -1,6 +1,6 @@
-import React = require('react');
-import {autorun, computed, observable, reaction} from 'mobx';
-import {observer} from 'mobx-react';
+import React = require("react");
+import {autorun, computed, observable, reaction} from "mobx";
+import {observer} from "mobx-react";
 
 function daysInMonth(date: Date) {
     return new Date(date.getUTCFullYear(), date.getUTCMonth() + 1, 0).getDate();
@@ -21,7 +21,7 @@ export function dateFromYearMonthDay(
             return date;
         }
     }
-    return new Error('Invalid date');
+    return new Error("Invalid date");
 }
 
 interface OptionData {
@@ -40,10 +40,10 @@ function numberRangeForSelectBox(min: number, max: number): OptionData[] {
 
 function monthOptionsForSelectBox(locale: string): OptionData[] {
     const options = [];
-    for (let i = 0; i < 12; i++) {
+    for (var i = 0; i < 12; i++) {
         options.push({
-            label: new Date(2000, i).toLocaleString(locale, {month: 'long'}),
-            value: String(i + 1)
+            value: String(i + 1),
+            label: new Date(2000, i).toLocaleString(locale, {month: "long"})
         });
     }
     return options;
@@ -57,12 +57,11 @@ interface SelectProps {
     automationId?: string;
 }
 
-const Select: React.SFC<SelectProps> = props => (
+const Select: React.SFC<SelectProps> = (props) => (
     <select
         value={props.value}
         onChange={props.onChange}
-        data-automation-id={props.automationId}
-    >
+        data-automation-id={props.automationId}>
         <option value="" label={props.placeholder} />
         {props.options.map(({value, label}) =>
             <option key={value} value={value}>{label}</option>
@@ -79,21 +78,21 @@ export interface BirthdayPickerProps {
 
 @observer
 export class BirthdayPicker extends React.Component<BirthdayPickerProps, {}> {
-    public static defaultProps: BirthdayPickerProps = {
+    static defaultProps: BirthdayPickerProps = {
         maxDate: new Date(),
         onChange: () => {}
     };
 
-    @observable private year: string = '';
-    @observable private month: string = '';
-    @observable private day: string = '';
+    @observable year: string = "";
+    @observable month: string = "";
+    @observable day: string = "";
 
     @computed get currentValue() {
         return dateFromYearMonthDay(this.year, this.month, this.day);
     }
 
     private dayOptions = numberRangeForSelectBox(1, 31);
-    private monthOptions = monthOptionsForSelectBox('en-US');
+    private monthOptions = monthOptionsForSelectBox("en-US");
     @computed private get yearOptions() {
         const max = this.props.maxDate!.getUTCFullYear();
         const min = this.props.minDate
@@ -102,13 +101,13 @@ export class BirthdayPicker extends React.Component<BirthdayPickerProps, {}> {
         return numberRangeForSelectBox(min, max);
     }
 
-    public componentWillMount() {
+    componentWillMount() {
         autorun(() => {
             const date  = this.props.value;
             const valid = date && !Number.isNaN(date.getTime());
-            this.year   = valid ? String(date!.getUTCFullYear())  : '';
-            this.month  = valid ? String(date!.getUTCMonth() + 1) : '';
-            this.day    = valid ? String(date!.getUTCDate())      : '';
+            this.year   = valid ? String(date!.getUTCFullYear())  : "";
+            this.month  = valid ? String(date!.getUTCMonth() + 1) : "";
+            this.day    = valid ? String(date!.getUTCDate())      : "";
         });
 
         reaction(
@@ -121,7 +120,7 @@ export class BirthdayPicker extends React.Component<BirthdayPickerProps, {}> {
         );
     }
 
-    public render() {
+    render() {
         const months = numberRangeForSelectBox(1, 12);
 
         return (
@@ -151,10 +150,10 @@ export class BirthdayPicker extends React.Component<BirthdayPickerProps, {}> {
         );
     }
 
-    private handleYearChange = (event: React.FormEvent<HTMLSelectElement>) =>
-        (this.year = event.currentTarget.value)
-    private handleMonthChange = (event: React.FormEvent<HTMLSelectElement>) =>
-        (this.month = event.currentTarget.value)
-    private handleDayChange = (event: React.FormEvent<HTMLSelectElement>) =>
-        (this.day = event.currentTarget.value)
+    handleYearChange = (event: React.FormEvent<HTMLSelectElement>) =>
+        (this.year = event.currentTarget.value);
+    handleMonthChange = (event: React.FormEvent<HTMLSelectElement>) =>
+        (this.month = event.currentTarget.value);
+    handleDayChange = (event: React.FormEvent<HTMLSelectElement>) =>
+        (this.day = event.currentTarget.value);
 }
