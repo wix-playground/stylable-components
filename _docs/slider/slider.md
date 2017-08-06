@@ -10,7 +10,7 @@ Sliders are great for adjusting settings that reflect intensity levels (volume, 
 
 A **Slider** is composed of the following elements: "bar", "handle", "progress". The "handle" is dragged across the "bar" in order to give the slider a desired value, while "progress" marks the range from the minimum value to the current value. 
 
-You can also add elements to it by using the tooltip (e.g. to display value) and error slots, and passing the appropriate props (see component props).
+You can also add elements to it by using the **roles** assigned to the **data slots**, and passing the appropriate props (see component props).
 
 ## Component API
 
@@ -37,13 +37,69 @@ You can also add elements to it by using the tooltip (e.g. to display value) and
 | error       | boolean                                  | false        |            | Sets the `:error` CSS state on the `<slider>` |
 | rtl         | boolean                                  | false        |            | Makes the component RTL                  |
 
-#### Predefined Named Slots
+#### Accepted children
 
-**Slider** has predefined **named slots** which recognize child component roles. The `data-slot` attribute is used to assign a role to the child component. **Slider** uses the roles to connect the child components to their corresponding elements according to the table below.
+The children in **Slider** use the `data-slot` attribute to assign roles to themselves. If **Slider** recognizes the roles, it connects the child components to the corresponding elements according to the table below.
 
 | role | element | description | child component example                                  |
 | --------- | -------- | --------------| ------------------------- |
 | tooltip   | ::handle | Connect a tooltip child component to the ::handle element. | `<span data-slot="tooltip">hello world</span>` |
+
+## Input Handling
+
+### Keyboard 
+
+| key                      | action                         |
+| ------------------------ | ------------------------------ |
+| up / right arrow key     | increase value                 |
+| left / down arrow key    | decrease value                 |
+| fn / ctrl + right / left | set max / min value            |
+| fn / ctrl + up / down    | increase / decrease value by X |
+| tab                      | moves to next element          |
+| shift + tab              | moves to previous element      |
+| enter                    | -                              |
+| esc                      | removes focus (if in focus)    |
+
+**RTL** orientation
+
+| key                    | action         |
+| ---------------------- | -------------- |
+| up  / left arrow key   | increase value |
+| down / right arrow key | decrease value |
+
+### Mouse
+
+| event             | action                                   | note                                     |
+| ----------------- | ---------------------------------------- | ---------------------------------------- |
+| hover             | highlight slider (both bar & handle)     | Event triggers on both bar & handle hover |
+| click & drag      | moves handle one step forward / backwards | drag right/up -> increase value  \| drag down/left -> decrease value |
+| click (on handle) | highlights handle                        |                                         |
+| click (on bar)    | moves handle to position where user clicked |                                         |
+
+### Touch
+
+| event           | action                                   | note                                     |
+| --------------- | ---------------------------------------- | ---------------------------------------- |
+| tap (on handle) | highlights handle                        | we need the ability to expand clickable area for mobile devices |
+| tap (on bar)    | moves handle to position where user clicked |                                         |
+| drag            | moves handle according to drag           |                                        |
+
+## Accessibility
+
+### Keyboard
+
+Accessibility for slider is mostly covered with keyboard behavior (according to ARIA docs).
+
+### Focus
+
+Slider should have a focus state. Focus state looks like a square border around handle. We place focus around handle because in range slider there are no other options and we need to keep consistency in all components.
+ 
+![sliderFocus](./assets/sliderFocus.png)
+
+> reference links:
+> 
+* [ARIA slider part 1](https://www.paciellogroup.com/blog/2008/05/aria-slider-part-1/)
+* [ARIA slider part 2](https://www.paciellogroup.com/blog/2008/06/aria-slider-part-2/)
 
 ### Code Examples
 
@@ -112,11 +168,11 @@ export class ComponentsDemo extends React.Component<{}, State>{
 
 | selector   | description                              | type                                     |
 | ---------- | ---------------------------------------- | ---------------------------------------- |
-| ::handle   | Allows you to style the handle of the slider | HTML Element. This subcomponent has no subcomponents of its own* |
-| ::bar      | Allows you to style the bar of the slider | HTML Element. This subcomponent has no subcomponents of its own* |
-| ::progress | Allows you to style the progress part of the bar | HTML Element. This subcomponent has no subcomponents of its own* |
+| ::handle   | Allows you to style the handle of the slider. | HTML Element. This subcomponent has no subcomponents of its own. |
+| ::bar      | Allows you to style the bar of the slider. | HTML Element. This subcomponent has no subcomponents of its own. |
+| ::progress | Allows you to style the progress part of the bar. | HTML Element. This subcomponent has no subcomponents of its own. |
 
->\* if a subcomponent is a COMPONENT, it might have subcomponents -> then we will link here to its documentation
+> If a subcomponent is a **component**, it might have subcomponents -> then we will link here to its documentation.
 
 ### Custom CSS States (pseudo-classes)
 
@@ -124,6 +180,19 @@ export class ComponentsDemo extends React.Component<{}, State>{
 | ------------------------------ | ---------------------------------------- |
 | :error                         | Style the component on error, i.e. when the `error` prop is not empty |
 | :hover, :focus, :disabled, etc | standard CSS pseudo state                |
+
+## Visual States
+
+| State    | Description                              |
+| :------- | ---------------------------------------- |
+| Default  | Default component appearance             |
+| Hover    | User hovered over bar OR handle          |
+| Focus    | Browser is focused on the component      |
+| Active   | User clicks on bar OR handle             |
+| Disabled | Component can not be changed             |
+| Error    | Error state for the component (can be set with :error pseudo-class) |
+
+![visual states](./assets/visual-states.png)
 
 ### Style Code Example
 
