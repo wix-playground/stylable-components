@@ -2,8 +2,7 @@ import * as React from 'react';
 
 import {autorun, observable} from 'mobx';
 import {observer} from 'mobx-react';
-
-import { SBComponent, SBStateless } from 'stylable-react-component';
+import {SBComponent, SBStateless} from 'stylable-react-component';
 import style from './tree-view.st.css';
 
 export interface TreeItemData {
@@ -11,16 +10,24 @@ export interface TreeItemData {
     children?: TreeItemData[];
 }
 
-export interface TreeItemProps {
-    item: TreeItemData;
+export interface TreeEntity {
     itemRenderer: React.ComponentType<TreeItemProps>;
     onItemClick?: React.EventHandler<any>;
     stateMap: StateMap;
+}
+
+export interface TreeItemProps extends TreeEntity {
+    item: TreeItemData;
     state: TreeItemState;
 }
 
+export interface TreeNodesProps extends TreeEntity {
+    show: boolean;
+    nodes?: TreeItemData[];
+}
+
 export interface TreeViewProps {
-    dataSource: object[];
+    dataSource: TreeItemData[];
     itemRenderer?: React.ComponentType<TreeItemProps>;
     onSelectItem?: React.EventHandler<any>;
     selectedItem?: TreeItemData;
@@ -53,16 +60,13 @@ export const TreeItem: React.SFC<TreeItemProps> =
                 <span data-automation-id={`${itemIdPrefix}_${itemLabel}_LABEL`}>{item.label}</span>
             </div>
             <div className="nested-tree">
-                {state!.isExpanded && (item.children || []).map((child: TreeItemData, index: number) =>
-                    <TreeNode
-                        item={child}
-                        onItemClick={onItemClick}
-                        itemRenderer={itemRenderer}
-                        stateMap={stateMap}
-                        state={stateMap.get(child)!}
-                        key={`${index}`}
-                    />
-                )}
+                <TreeNodes
+                    show={state!.isExpanded}
+                    nodes={item.children}
+                    onItemClick={onItemClick}
+                    itemRenderer={itemRenderer}
+                    stateMap={stateMap}
+                />
             </div>
         </div>
     );
@@ -93,16 +97,13 @@ export class TreeView extends React.Component<TreeViewProps, {}> {
         const TreeNode = this.props.itemRenderer!;
         return (
             <div data-automation-id="TREE_VIEW" className="tree-view">
-                {(this.props.dataSource || []).map((item: TreeItemData, index: number) =>
-                    <TreeNode
-                        item={item}
-                        onItemClick={this.onSelectItem}
-                        itemRenderer={this.props.itemRenderer!}
-                        stateMap={this.stateMap}
-                        state={this.stateMap.get(item)!}
-                        key={`${index}`}
-                    />
-                )}
+                <TreeNodes
+                    show={true}
+                    nodes={this.props.dataSource}
+                    onItemClick={this.onSelectItem}
+                    itemRenderer={this.props.itemRenderer!}
+                    stateMap={this.stateMap}
+                />
             </div>
         );
     }
@@ -130,3 +131,30 @@ export class TreeView extends React.Component<TreeViewProps, {}> {
         this.toggleItem(item);
     }
 }
+
+export const TreeNodes: React.SFC<TreeNodesProps> =
+    (props: TreeNodesProps): React.ReactElement<TreeNodesProps> | null => {
+    const {show, nodes, itemRenderer, onItemClick, stateMap} = props;
+
+    if (!show || !nodes || !nodes.length) {
+        return null;
+    }
+
+    const TreeNode = itemRenderer;
+    return (
+        <div>
+            {nodes.map((node: TreeItemData, index: number) => {
+                return (
+                    <TreeNode
+                        item={node}
+                        itemRenderer={itemRenderer}
+                        onItemClick={onItemClick}
+                        stateMap={stateMap}
+                        state={stateMap.get(node)!}
+                        key={index}
+                    />
+                );
+            })}
+        </div>
+    );
+};
