@@ -1,11 +1,21 @@
 import * as React from 'react';
 import { observer } from 'mobx-react';
 import { action, autorun, observable } from 'mobx';
-import { KeyCodes } from '../../common/key-codes';
 import { getPreviousItem, getNextItem, getLastAvailableItem } from './tree-util';
 
 import { SBComponent, SBStateless } from 'stylable-react-component';
 import style from './tree-view.st.css';
+import * as keycode from 'keycode';
+
+const KeyCodes: any = {
+    ENTER: keycode('enter'),
+    HOME: keycode('home'),
+    END: keycode('end'),
+    UP: keycode('up'),
+    DOWN: keycode('down'),
+    LEFT: keycode('left'),
+    RIGHT: keycode('right'),
+};
 
 export interface TreeItemData {
     label: string;

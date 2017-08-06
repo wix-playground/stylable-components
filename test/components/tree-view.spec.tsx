@@ -4,10 +4,20 @@ import { TreeView, TreeItem } from '../../src';
 import { TreeViewDemo } from '../../demo/components/tree-view-demo';
 import { StateMap, TreeItemData, TreeItemState, TreeStateMap } from '../../src/components/tree-view/tree-view';
 import { getPreviousItem, getNextItem, getLastAvailableItem } from '../../src/components/tree-view//tree-util';
-import { KeyCodes } from '../../src/common/key-codes';
+import * as keycode from 'keycode';
 
 const treeView = 'TREE_VIEW';
 const treeItem = 'TREE_ITEM';
+
+const KeyCodes: any = {
+  ENTER: keycode('enter'),
+  HOME: keycode('home'),
+  END: keycode('end'),
+  UP: keycode('up'),
+  DOWN: keycode('down'),
+  LEFT: keycode('left'),
+  RIGHT: keycode('right'),
+};
 
 const treeData: TreeItemData[] = [
     { label: 'Food Menu', children: [
