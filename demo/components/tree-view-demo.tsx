@@ -29,7 +29,6 @@ function SelectedItem({selectedItem}: any) {
         'Please choose from the Menu!'}</div>
 }
 
-
 export interface TreeViewDemoState {
     selectedItem: TreeItemData | undefined;
     focusedItem: TreeItemData | undefined;
@@ -42,33 +41,31 @@ export class TreeViewDemo extends React.Component<{}, TreeViewDemoState> {
         this.state = {
             selectedItem: undefined,
             focusedItem: undefined
-        }
+        };
     }
 
-    onSelectItem = (item: TreeItemData) => {
+    private onSelectItem = (item: TreeItemData) => {
         this.setState({
             selectedItem: item,
             focusedItem: item
         });
     };
 
-    onFocusItem = (item: TreeItemData) => {
+    private onFocusItem = (item: TreeItemData) => {
         this.setState({
             focusedItem: item
         });
     };
 
-    render() {
+    public render() {
         return (
             <div>
                 <h3>TreeView with ability to select a child</h3>
                 <section data-automation-id="TREE_VIEW_DEMO">
                     <SelectedItem selectedItem={this.state.selectedItem}/>
                     <br/>
-                    <TreeView dataSource={treeData}
-                              onFocusItem={this.onFocusItem}
-                              focusedItem={this.state.focusedItem}
-                              onSelectItem={this.onSelectItem}
+                    <TreeView dataSource={treeData} onFocusItem={this.onFocusItem}
+                              focusedItem={this.state.focusedItem} onSelectItem={this.onSelectItem}
                               selectedItem={this.state.selectedItem} />
                 </section>
             </div>
