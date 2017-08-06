@@ -37,11 +37,11 @@ export class ComponentsDemo extends React.Component<{}, {}>{
         super();
     }
 
-    render() {
-        return <NumberInput 
+    public render() {
+        return <NumberInput
         		 value="{this.state.numberInputValue}"
-                 onChange={/* something */} 
-				 
+                 onChange={/* something */}
+
                  />;
     }
 }
@@ -80,7 +80,7 @@ Comments to example 2
 
 ```css
 @import * from './components/slider'; /* TODO: fix the correct syntax */
-/* style.st.css 
+/* style.st.css
 Adding rules here (which may be shared between different components) allows us to 	    override specific parts; or even change the whole theme
 */
 NumberInput {

@@ -1,9 +1,14 @@
-import * as React from 'react';
 import * as keycode from 'keycode';
-import {expect, ClientRenderer, simulate, selectDom, trigger} from 'test-drive-react';
-import {getDayNames, getMonthFromOffset, getDaysInMonth, getNumOfPreviousDays, getNumOfFollowingDays} from '../../src/common/date-helpers';
+import * as React from 'react';
+import {ClientRenderer, expect, selectDom, simulate, trigger} from 'test-drive-react';
 import {DatePickerDemo} from '../../demo/components/date-picker-demo';
-import {DatePicker} from '../../src';
+import {
+    getDayNames,
+    getDaysInMonth,
+    getMonthFromOffset,
+    getNumOfFollowingDays,
+    getNumOfPreviousDays
+} from '../../src/common/date-helpers';
 
 const currentDate = 'CURRENT_DATE';
 const datePickerInputId = 'DATE_PICKER_INPUT';
@@ -104,9 +109,13 @@ describe('The DatePicker Component', () => {
         });
     });
 
-    describe('The Dropdown', function () {
-        const dayNames: Array<string> = getDayNames();
-        const days: Array<string> = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28'];
+    describe('The Dropdown', () => {
+        const dayNames: string[] = getDayNames();
+        const days: string[] = [
+            '1', '2', '3', '4', '5', '6', '7', '8', '9', '10',
+            '11', '12', '13', '14', '15', '16', '17', '18', '19',
+            '20', '21', '22', '23', '24', '25', '26', '27', '28'
+        ];
 
         it('should display the days for a fixed month', async () => {
             const {select, waitForDom} = clientRenderer.render(<DatePicker showDropdownOnInit={true} value={FEBRUARY_FIRST} />);
@@ -120,7 +129,14 @@ describe('The DatePicker Component', () => {
         it('should show the next and previous month buttons horizontally aligned with the month and year', async () => {
             const {select, waitForDom} = clientRenderer.render(<DatePicker showDropdownOnInit={true} value={JANUARY_FIRST} />);
 
-            await waitForDom(() => expect([select('PREV_MONTH_BUTTON'), select('MONTH_NAME'), select('YEAR'), select('NEXT_MONTH_BUTTON')]).to.be.verticallyAligned('center', 1));
+            await waitForDom(() => {
+                expect([
+                    select('PREV_MONTH_BUTTON'),
+                    select('MONTH_NAME'),
+                    select('YEAR'),
+                    select('NEXT_MONTH_BUTTON')
+                ]).to.be.verticallyAligned('center', 1);
+            });
         });
 
         it('should display the day names in horizontal sequence, and vertically aligned', async () => {
@@ -179,7 +195,10 @@ describe('The DatePicker Component', () => {
         it('should show the days starting on the correct day of the week', async () => {
             const {select, waitForDom} = clientRenderer.render(<DatePicker value={MARCH_FIRST} showDropdownOnInit={true} />);
 
-            await waitForDom(() => expect([select('DAY_1'), select('DAY_NAME_WED')]).to.be.horizontallyAligned('center'));
+            await waitForDom(() => expect([
+                select('DAY_1'),
+                select('DAY_NAME_WED')
+            ]).to.be.horizontallyAligned('center'));
         });
 
         it('should show the trailing days from the last and next months', function () {
@@ -285,29 +304,29 @@ describe('The DatePicker Component', () => {
             const currentDate = new Date('Mar 6 2017');
             const nextMonth = getMonthFromOffset(currentDate, 1);
 
-            expect(nextMonth.getMonth()).to.equal(currentDate.getMonth() + 1);
+            expect(nextMonth.getMonth()).to.equal(date.getMonth() + 1);
         });
 
-        it('getMonthFromOffset should return the previous month when the second argument is -1', () => {
-            const currentDate = new Date('Mar 6 2017');
-            const nextMonth = getMonthFromOffset(currentDate, -1);
+        it('getMonthFromOffset should return the previous month when the second argument is -1', function() {
+            const date = new Date('Mar 6 2017');
+            const nextMonth = getMonthFromOffset(date, -1);
 
-            expect(nextMonth.getMonth()).to.equal(currentDate.getMonth() - 1);
+            expect(nextMonth.getMonth()).to.equal(date.getMonth() - 1);
         });
 
-        it('getMonthFromOffset should handle the year changing when moving forward a month', () => {
-            const currentDate = new Date('Dec 6 2016');
-            const nextMonth = getMonthFromOffset(currentDate, 1);
+        it('getMonthFromOffset should handle the year changing when moving forward a month', function() {
+            const date = new Date('Dec 6 2016');
+            const nextMonth = getMonthFromOffset(date, 1);
 
-            expect(nextMonth.getFullYear()).to.equal(currentDate.getFullYear() + 1);
+            expect(nextMonth.getFullYear()).to.equal(date.getFullYear() + 1);
             expect(nextMonth.getMonth()).to.equal(0);
         });
 
-        it('getMonthFromOffset should handle the year changing when moving back a month', () => {
-            const currentDate = new Date('Jan 6 2018');
-            const nextMonth = getMonthFromOffset(currentDate, -1);
+        it('getMonthFromOffset should handle the year changing when moving back a month', function() {
+            const date = new Date('Jan 6 2018');
+            const nextMonth = getMonthFromOffset(date, -1);
 
-            expect(nextMonth.getFullYear()).to.equal(currentDate.getFullYear() - 1);
+            expect(nextMonth.getFullYear()).to.equal(date.getFullYear() - 1);
             expect(nextMonth.getMonth()).to.equal(11);
         });
 
@@ -367,7 +386,6 @@ describe('The DatePicker Component', () => {
             const thursdayStart4 = getNumOfPreviousDays(fourthDateToTest, 4);
             const fridayStart4 = getNumOfPreviousDays(fourthDateToTest, 5);
             const saturdayStart4 = getNumOfPreviousDays(fourthDateToTest, 6);
-
 
             expect(mondayStart).to.equal(5);
             expect(tuesdayStart).to.equal(4);
@@ -444,7 +462,6 @@ describe('The DatePicker Component', () => {
             const thursdayStart4 = getNumOfFollowingDays(fourthDateToTest, 4);
             const fridayStart4 = getNumOfFollowingDays(fourthDateToTest, 5);
             const saturdayStart4 = getNumOfFollowingDays(fourthDateToTest, 6);
-
 
             expect(mondayStart).to.equal(6);
             expect(tuesdayStart).to.equal(0);

@@ -1,9 +1,16 @@
-import * as React from 'react';
-import {getMonthNames, getMonthFromOffset, getDayNames, getDaysInMonth, getNumOfPreviousDays, getNumOfFollowingDays} from '../../common/date-helpers';
-import {computed} from 'mobx';
+import {action, computed, observable} from 'mobx';
 import {observer} from 'mobx-react';
+import * as React from 'react';
+import {
+    getDayNames,
+    getDaysInMonth,
+    getMonthFromOffset,
+    getMonthNames,
+    getNumOfPreviousDays,
+    getNumOfFollowingDays
+} from '../../common/date-helpers';
+import styles from './date-picker.st.css';
 import {Day} from './day';
-const styles = require('./date-picker.st.css').default;
 
 export interface CalendarProps {
     value: Date;
@@ -62,10 +69,13 @@ export class Calendar extends React.Component<CalendarProps, {}>{
     get dayNames (): Array<JSX.Element> {
         return getDayNames(this.props.startingDay).map((name: string, index: number) => {
             return (
-                <span className={`${styles.calendarItem} ${styles.dayName}`}
-                      key={'DAY_NAME_' + index}
-                      data-automation-id={'DAY_NAME_' + name.toUpperCase()}>
-                    {name}</span>
+                <span
+                    className={`${styles.calendarItem} ${styles.dayName}`}
+                    key={'DAY_NAME_' + index}
+                    data-automation-id={'DAY_NAME_' + name.toUpperCase()}
+                >
+                    {name}
+                </span>
             );
         });
     }
@@ -81,7 +91,8 @@ export class Calendar extends React.Component<CalendarProps, {}>{
                 <Day day={day}
                      dataAutomationId={'PREV_DAY_' + day}
                      key={'PREV_DAY_' + day}
-                     partOfPrevMonth={true} />
+                     partOfPrevMonth={true}
+                />
             ));
         }
 

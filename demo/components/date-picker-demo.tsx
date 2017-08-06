@@ -1,34 +1,31 @@
 import * as React from 'react';
 import { DatePicker, DatePickerProps } from '../../src';
 
-export interface DatePickerDemoProps extends Partial<DatePickerProps> {}
-
 export interface DatePickerDemoState {
     value: Date;
     startingDay: number;
 }
 
-export class DatePickerDemo extends React.Component<DatePickerDemoProps, DatePickerDemoState> {
-    componentWillMount () {
+export class DatePickerDemo extends React.Component<Partial<DatePickerProps>, DatePickerDemoState> {
+    public componentWillMount() {
         this.setState({ value: this.props.value ? this.props.value : new Date() });
     }
 
-    onChange = (updatedDate: Date): void => {
-        this.setState({value: updatedDate });
-    };
-
-    render () {
+    public render () {
         return (
             <div>
                 <h2>Standard DatePicker</h2>
                 <span data-automation-id="CURRENT_DATE">{this.state.value.toDateString()}</span>
-                <DatePicker dataAutomationId="BASIC_DATEPICKER" placeholder="mm/dd/yyyy" value={this.state.value} onChange={this.onChange} {...this.props} />
-            </div>
+                <DatePicker dataAutomationId="BASIC_DATEPICKER" placeholder="mm/dd/yyyy" value={this.state.value} onChange={this.onChange} {...this.props} /></div>
         );
     }
+
+    private onChange = (updatedDate: Date): void => {
+        this.setState({value: updatedDate });
+    };
 }
 
-export class DatePickerDemoStartingDay extends React.Component<DatePickerDemoProps, Partial<DatePickerDemoState>> {
+export class DatePickerDemoStartingDay extends React.Component<DatePickerProps, Partial<DatePickerDemoState>> {
     componentWillMount () {
         this.setState({
             value: this.props.value ? this.props.value : new Date(),
@@ -36,16 +33,7 @@ export class DatePickerDemoStartingDay extends React.Component<DatePickerDemoPro
         });
     }
 
-    onChange = (updatedDate: Date): void => {
-        this.setState({ value: updatedDate });
-    };
-
-    setStartingDay = (event: React.SyntheticEvent<HTMLSelectElement>): void => {
-        const target = event.target as HTMLSelectElement;
-        this.setState({ startingDay: parseInt(target.value) });
-    };
-
-    render () {
+    public render () {
         return (
             <div>
                 <h2>DatePicker with variable week (and showDropdown set to true)</h2>
@@ -64,5 +52,14 @@ export class DatePickerDemoStartingDay extends React.Component<DatePickerDemoPro
                 <DatePicker placeholder="mm/dd/yyyy" startingDay={this.state.startingDay!} showDropdownOnInit={true} value={this.state.value!} onChange={this.onChange} {...this.props} />
             </div>
         );
+    }
+
+    private setStartingDay = (event: React.SyntheticEvent<HTMLSelectElement>): void => {
+        const target = event.target as HTMLSelectElement;
+        this.setState({ startingDay: parseInt(target.value) });
+    };
+
+    private onChange = (updatedDate: Date): void => {
+        this.setState({value: updatedDate });
     }
 }
