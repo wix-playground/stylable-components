@@ -262,7 +262,7 @@ describe('The DatePicker Component', () => {
 
             await waitForDom(() => expect(select(datePickerDropdownId)).to.be.absent());
 
-            simulate.keyDown(select(datePickerInputId), { keyCode: KeyCodes.ENTER });
+            simulate.keyDown(select(datePickerInputId), { keyCode: keycode('enter') });
 
             await waitForDom(() => expect(select(datePickerDropdownId)).to.be.present());
         });
@@ -274,7 +274,7 @@ describe('The DatePicker Component', () => {
 
             await waitForDom(() => expect(select(datePickerDropdownId)).to.be.absent());
 
-            simulate.keyDown(select(datePickerInputId), { keyCode: KeyCodes.SPACE });
+            simulate.keyDown(select(datePickerInputId), { keyCode: keycode('space') });
 
             await waitForDom(() => expect(select(datePickerDropdownId)).to.be.present());
         });

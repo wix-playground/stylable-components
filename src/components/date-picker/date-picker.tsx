@@ -111,39 +111,39 @@ export class DatePicker extends React.Component<Partial<DatePickerProps>, DatePi
 
         if (!this.props.disabled && !this.props.readOnly) {
             switch (keyCode) {
-                case KeyCodes.ENTER:
+                case keycode('enter'):
                     this.state.highlightFocusedDate ? this.updateStateFromDate(this.state.dropdownDate) : this.updateStateFromString(eventTarget.value);
                     this.setState({ isDropdownVisible: !this.state.isDropdownVisible });
                     event.preventDefault();
                     break;
 
-                case KeyCodes.SPACE:
+                case keycode('space'):
                     this.setState({ isDropdownVisible: !this.state.isDropdownVisible });
                     event.preventDefault();
                     break;
 
-                case KeyCodes.RIGHT:
+                case keycode('right'):
                     if (this.state.isDropdownVisible) {
                         event.preventDefault();
                         this.shiftDate(1);
                     }
                     break;
 
-                case KeyCodes.LEFT:
+                case keycode('left'):
                     if (this.state.isDropdownVisible) {
                         event.preventDefault();
                         this.shiftDate(-1);
                     }
                     break;
 
-                case KeyCodes.UP:
+                case keycode('up'):
                     if (this.state.isDropdownVisible) {
                         event.preventDefault();
                         this.shiftDate(-7);
                     }
                     break;
 
-                case KeyCodes.DOWN:
+                case keycode('down'):
                     if (this.props.openOnFocus === false && !this.state.isDropdownVisible) {
                         this.setState({ isDropdownVisible: !this.state.isDropdownVisible });
                     } else if (!this.state.isDropdownVisible) {
