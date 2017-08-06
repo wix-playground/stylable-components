@@ -7,8 +7,12 @@
   "scripts": {
     "clean": "rimraf ./lib",
     "build": "tsc -d --p tsconfig.publish.json && stc --srcDir=src --outDir=lib",
-    "prepublish": "npm run build",
-    "test": "npm run test:browser && npm run test:node",
+    "prepublish": "npm run lint && npm run build",
+    "lint": "npm run lint:source && npm run lint:demo && npm run lint:test",
+    "lint:source": "tslint -c tslint.json --type-check --project tsconfig.json --fix src",
+    "lint:demo": "tslint -c tslint.json --type-check --project tsconfig.json --fix demo",
+    "lint:test": "tslint -c test/tslint.json --type-check --project tsconfig.json --fix test",
+    "test": "npm run lint && npm run test:browser && npm run test:node",
     "test:browser": "karma start --single-run",
     "test:node": "mocha --compilers ts:ts-node/register,tsx:ts-node/register,css:stylable-integration/require \"./test/node/**/*.node-spec.ts?(x)\"",
     "start": "webpack-dev-server --progress"
@@ -18,13 +22,15 @@
     "stylable": "^3.0.0"
   },
   "dependencies": {
+    "keycode": "^2.1.9",
     "stylable-react-component": "^1.0.3"
   },
   "devDependencies": {
     "@types/mocha": "^2.2.41",
-    "@types/node": "^8.0.17",
-    "@types/react": "^15.6.0",
-    "@types/react-dom": "^15.5.1",
+    "@types/node": "^8.0.19",
+    "@types/react": "^16.0.0",
+    "@types/react-dom": "^15.5.2",
+    "@types/webpack-env": "^1.13.0",
     "glob": "^7.1.2",
     "karma": "^1.7.0",
     "karma-chrome-launcher": "^2.2.0",
@@ -35,7 +41,7 @@
     "mobx": "^3.2.2",
     "mobx-react": "^4.2.2",
     "mobx-react-devtools": "^4.2.15",
-    "mocha": "^3.4.2",
+    "mocha": "^3.5.0",
     "mocha-loader": "^1.1.1",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
@@ -44,9 +50,12 @@
     "test-drive-react": "^0.5.1",
     "ts-loader": "^2.3.2",
     "ts-node": "^3.3.0",
+    "tslint": "^5.5.0",
+    "tslint-wix-react": "^1.0.0",
     "typescript": "^2.4.2",
     "webpack": "^3.4.1",
-    "webpack-dev-server": "^2.6.1"
+    "webpack-dev-server": "^2.6.1",
+    "wix-react-tools": "^0.6.0"
   },
   "testGlob": "./test/**/*.spec.ts?(x)",
   "license": "MIT",
