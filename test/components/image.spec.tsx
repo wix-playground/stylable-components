@@ -3,6 +3,7 @@ import { ClientRenderer, expect, sinon, waitFor } from 'test-drive-react';
 import { Image, onePixelTransparentSrc } from '../../src';
 import { sampleImage } from '../fixtures/sample-image';
 
+const brokenSrc = 'data:image/png;base64,this-is-broken!';
 const nativeImage = 'NATIVE_IMAGE';
 
 describe('<Image />', () => {
@@ -65,8 +66,6 @@ describe('<Image />', () => {
         await waitFor(() => expect(onLoad).to.have.been.calledWithMatch({ src: sampleImage }));
     });
 
-    const brokenSrc = 'data:image/png;base64,this-is-broken!';
-
     it('calls onError when it cannot load a source, and falls back to default source', async () => {
         const onError = sinon.spy();
         const { select, waitForDom } =
@@ -76,20 +75,19 @@ describe('<Image />', () => {
         await waitForDom(() => expect(select(nativeImage)).to.have.attribute('src', onePixelTransparentSrc));
     });
 
-    it('calls onError when it cannot load the given default image, and falls back to onePixelTransparentSrc',
-        async () => {
-            const onError = sinon.spy();
-            const { select, waitForDom } = clientRenderer.render(
-                <Image
-                    defaultImage={brokenSrc}
-                    onError={onError}
-                    data-automation-id={nativeImage}
-                />
-            );
+    it('calls onError when cannot load the given default image, and falls back to onePixelTransparentSrc', async () => {
+        const onError = sinon.spy();
+        const { select, waitForDom } = clientRenderer.render(
+            <Image
+                defaultImage={brokenSrc}
+                onError={onError}
+                data-automation-id={nativeImage}
+            />
+        );
 
-            await waitFor(() => expect(onError).to.have.been.calledWithMatch({ src: brokenSrc }));
-            await waitForDom(() => expect(select(nativeImage)).to.have.attribute('src', onePixelTransparentSrc));
-        });
+        await waitFor(() => expect(onError).to.have.been.calledWithMatch({ src: brokenSrc }));
+        await waitForDom(() => expect(select(nativeImage)).to.have.attribute('src', onePixelTransparentSrc));
+    });
 
     describe('resize mode', () => {
         it('sets image as background with size: contain, when resizeMode="contain"', async () => {
