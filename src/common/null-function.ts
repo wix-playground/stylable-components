@@ -1,1 +1,1 @@
-export function nullFunction () {}
+export function nullFunction() {}
