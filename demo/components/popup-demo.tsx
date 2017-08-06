@@ -4,25 +4,35 @@ import {CSSProperties} from "react";
 
 export interface DemoState {
     div: any;
+    isOpen: boolean;
 }
 
 export class PopupDemo extends React.Component<{}, DemoState> {
+
     constructor() {
         super();
-        this.state = {div: undefined};
+        this.state = {div: undefined, isOpen: false};
     }
 
+    onClick = () => {
+        this.setState({div:this.state.div, isOpen: !this.state.isOpen});
+    };
+
     updateState = (ref: any) => {
-        this.setState({div: ref})
+        this.setState({div: ref, isOpen: this.state.isOpen})
     };
 
     render() {
         const divDim: CSSProperties = {width: '50px', border: '1px solid blue'};
         return (
             <div>
-                <div ref={this.updateState} style={divDim} data-automation-id="POPUP_DEMO_DIV">Anchor</div>
-                <Popup anchor={this.state.div} popupPosition={{vertical: 'bottom', horizontal: 'left'}} syncWidth={false} anchorPosition={{vertical: 'top', horizontal: 'right'}} open={true}>
-                    <div style={{border: '1px solid green'}}>
+                <div ref={this.updateState} onClick={this.onClick} style={divDim} data-automation-id="POPUP_DEMO_DIV">Anchor</div>
+                <Popup anchor={this.state.div}
+                       popupPosition={{vertical: 'bottom', horizontal: 'left'}}
+                       syncWidth={false}
+                       anchorPosition={{vertical: 'top', horizontal: 'right'}}
+                       open={this.state.isOpen}>
+                    <div style={{background: 'green', color: 'white'}}>
                         <span>Popup Header</span>
                         <div>Popup Body</div>
                     </div>
