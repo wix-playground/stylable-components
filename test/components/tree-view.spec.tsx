@@ -184,7 +184,7 @@ describe('<TreeView />', () => {
                 return waitForDom(() => expect(select(getTreeItem(nodeChildren![0].label))).to.have.attr('data-focused', 'true'));
             });
 
-            it('focuses next are previous when down and up arrows are clicked', async () => {
+            it('focuses next and previous when down and up arrows are clicked', async () => {
                 const { select, waitForDom } = clientRenderer.render(<TreeViewDemo />);
 
                 const rootNode = getTreeItem(treeData[0].label);
