@@ -2,7 +2,7 @@ import * as React from 'react';
 import { expect, ClientRenderer, sinon, simulate, waitFor } from 'test-drive-react';
 import { TreeView, TreeItem } from '../../src';
 import { TreeViewDemo } from '../../demo/components/tree-view-demo';
-import { StateMap, TreeItemData, TreeItemState, TreeStateMap } from '../../src/components/tree-view/tree-view';
+import { ParentsMap, TreeItemData, TreeItemState, TreeStateMap } from '../../src/components/tree-view/tree-view';
 import { getPreviousItem, getNextItem, getLastAvailableItem } from '../../src/components/tree-view//tree-util';
 import * as keycode from 'keycode';
 
@@ -47,13 +47,6 @@ function getLabelsList(data: {label: string, children?: Object[]}): string[] {
 
 function getAllNodeLabels(treeData: Object[]): string[] {
     return treeData.map(getLabelsList).reduce((prev, next) => [...prev, ...next]);
-}
-
-function initStateMap(data: Object[] = [], stateMap: StateMap) {
-    data.forEach((item: TreeItemData) => {
-        stateMap.set(item, { isSelected: false, isExpanded: true, isFocused: false });
-        initStateMap(item.children || [], stateMap);
-    });
 }
 
 describe('<TreeView />', () => {
@@ -395,10 +388,40 @@ describe('<TreeView />', () => {
         });
 
         describe('Tree Traversal Utils', () => {
-            it('gets previous item when its a sibling', async () => { throw new Error('TBD')});
-            it('gets previous item when its a parent', async () => { throw new Error('TBD')});
-            it('gets next item when its a sibling', async () => { throw new Error('TBD')});
-            it('gets next item when its a parent', async () => { throw new Error('TBD')});
+            const treeState: TreeStateMap = new TreeStateMap();
+
+            treeState.getItemState(treeData[0]).isExpanded = true;
+            treeState.getItemState(treeData[0].children![1]).isExpanded = true;
+
+            function initParentsMap(data: TreeItemData[] = [], parent: TreeItemData | undefined) {
+                data.forEach((item: TreeItemData) => {
+                    parentsMap.set(item, parent);
+                    initParentsMap(item.children || [], item);
+                });
+            }
+
+            const parentsMap: ParentsMap = new Map<TreeItemData, TreeItemData | undefined>();
+            initParentsMap(treeData, undefined);
+
+            it('gets previous item when its a sibling', async () => {
+                const previous = getPreviousItem(treeData, treeData[0].children![1], treeState, parentsMap);
+                expect(previous.label).to.eql(treeData[0].children![0].label);
+            });
+
+            it('gets previous item when its a parent', async () => {
+                const previous = getPreviousItem(treeData, treeData[0].children![0], treeState, parentsMap);
+                expect(previous.label).to.eql(treeData[0].label);
+            });
+
+            it('gets next item when its a sibling', async () => {
+                const next = getNextItem(treeData, treeData[0].children![1].children![0], treeState, parentsMap);
+                expect(next.label).to.eql(treeData[0].children![1].children![1].label);
+            });
+
+            it('gets next item when its a parent', async () => {
+                const next = getNextItem(treeData, treeData[0].children![1].children![1], treeState, parentsMap);
+                expect(next.label).to.eql(treeData[0].children![2].label);
+            });
         });
     });
 });

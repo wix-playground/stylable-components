@@ -1,5 +1,5 @@
-import {TreeItemData} from "../../../lib/components/tree-view/tree-view";
-import {ParentsMap, TreeStateMap} from "./tree-view";
+import { TreeItemData } from './tree-view';
+import { ParentsMap, TreeStateMap } from './tree-view';
 
 export function getPreviousItem(dataSource: Object[], item: TreeItemData, stateMap: TreeStateMap, parentsMap: ParentsMap): TreeItemData {
     const parent = parentsMap.get(item);

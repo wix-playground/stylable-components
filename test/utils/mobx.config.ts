@@ -1,3 +1,3 @@
 import { useStrict } from 'mobx';
 
-useStrict(true);
+useStrict(false);
