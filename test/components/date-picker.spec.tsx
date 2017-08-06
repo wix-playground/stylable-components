@@ -2,6 +2,7 @@ import * as keycode from 'keycode';
 import * as React from 'react';
 import {ClientRenderer, expect, selectDom, simulate, trigger} from 'test-drive-react';
 import {DatePickerDemo} from '../../demo/components/date-picker-demo';
+import {DatePicker} from '../../src';
 import {
     getDayNames,
     getDaysInMonth,
@@ -301,8 +302,8 @@ describe('The DatePicker Component', () => {
 
     describe('The Helper Functions', function () {
         it('getMonthFromOffset should return the next month when the second argument is 1', () => {
-            const currentDate = new Date('Mar 6 2017');
-            const nextMonth = getMonthFromOffset(currentDate, 1);
+            const date = new Date('Mar 6 2017');
+            const nextMonth = getMonthFromOffset(date, 1);
 
             expect(nextMonth.getMonth()).to.equal(date.getMonth() + 1);
         });
