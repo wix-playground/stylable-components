@@ -1,6 +1,7 @@
-import { autorun, observable } from 'mobx';
-import { observer } from 'mobx-react';
 import * as React from 'react';
+
+import {autorun, observable} from 'mobx';
+import {observer} from 'mobx-react';
 
 import { SBComponent, SBStateless } from 'stylable-react-component';
 import style from './tree-view.st.css';
@@ -18,16 +19,8 @@ export interface TreeItemProps {
     state: TreeItemState;
 }
 
-export interface TreeNodesProps {
-    show: boolean;
-    nodes?: TreeItemData[];
-    nodeRenderer: React.ComponentType<TreeItemProps>;
-    onNodeClick?: React.EventHandler<any>;
-    stateMap: StateMap;
-}
-
 export interface TreeViewProps {
-    dataSource: TreeItemData[];
+    dataSource: object[];
     itemRenderer?: React.ComponentType<TreeItemProps>;
     onSelectItem?: React.EventHandler<any>;
     selectedItem?: TreeItemData;
@@ -60,40 +53,17 @@ export const TreeItem: React.SFC<TreeItemProps> =
                 <span data-automation-id={`${itemIdPrefix}_${itemLabel}_LABEL`}>{item.label}</span>
             </div>
             <div className="nested-tree">
-                <TreeNodes
-                    show={state!.isExpanded}
-                    nodes={item.children}
-                    onNodeClick={onItemClick}
-                    nodeRenderer={itemRenderer}
-                    stateMap={stateMap}
-                />
-            </div>
-        </div>
-    );
-}, style);
-
-export const TreeNodes: React.SFC<TreeNodesProps> =
-    SBStateless((props: TreeNodesProps, {}) => {
-    const {show, nodes, nodeRenderer, onNodeClick, stateMap} = props;
-    if (!show || !nodes || !nodes.length) {
-        return null;
-    }
-
-    const TreeNode = nodeRenderer;
-    return (
-        <div>
-            {nodes.map((node: TreeItemData, index: number) => {
-                return (
+                {state!.isExpanded && (item.children || []).map((child: TreeItemData, index: number) =>
                     <TreeNode
-                        item={node}
-                        itemRenderer={nodeRenderer}
-                        onItemClick={onNodeClick}
+                        item={child}
+                        onItemClick={onItemClick}
+                        itemRenderer={itemRenderer}
                         stateMap={stateMap}
-                        state={stateMap.get(node)!}
-                        key={index}
+                        state={stateMap.get(child)!}
+                        key={`${index}`}
                     />
-                );
-            })}
+                )}
+            </div>
         </div>
     );
 }, style);
@@ -123,13 +93,16 @@ export class TreeView extends React.Component<TreeViewProps, {}> {
         const TreeNode = this.props.itemRenderer!;
         return (
             <div data-automation-id="TREE_VIEW" className="tree-view">
-                <TreeNodes
-                    show={true}
-                    nodes={this.props.dataSource}
-                    onNodeClick={this.onSelectItem}
-                    nodeRenderer={this.props.itemRenderer!}
-                    stateMap={this.stateMap}
-                />
+                {(this.props.dataSource || []).map((item: TreeItemData, index: number) =>
+                    <TreeNode
+                        item={item}
+                        onItemClick={this.onSelectItem}
+                        itemRenderer={this.props.itemRenderer!}
+                        stateMap={this.stateMap}
+                        state={this.stateMap.get(item)!}
+                        key={`${index}`}
+                    />
+                )}
             </div>
         );
     }
