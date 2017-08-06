@@ -27,15 +27,15 @@ const IndeterminateSVG: React.SFC<CheckBoxIconProps> = props => {
     );
 };
 
-describe('<Checkbox/>', () => {
+describe('<Checkbox/>', function() {
     const clientRenderer = new ClientRenderer();
 
     afterEach(() => {
         clientRenderer.cleanup();
     });
 
-    describe('Component / Demo test', () => {
-        it('Basic demo', async () => {
+    describe('Component / Demo test', function() {
+        it('Basic demo', async function() {
             const {select, waitForDom} = clientRenderer.render(<BasicDemo/>);
 
             await waitForDom(() => {
@@ -55,7 +55,7 @@ describe('<Checkbox/>', () => {
             });
         });
 
-        it('Disabled Demo', async () => {
+        it('Disabled Demo', async function() {
             const {select, waitForDom} = clientRenderer.render(<DisabledDemo/>);
 
             await waitForDom(() => {
@@ -71,7 +71,7 @@ describe('<Checkbox/>', () => {
             });
         });
 
-        it('Indeterminate Demo', async () => {
+        it('Indeterminate Demo', async function() {
             const {select, waitForDom} = clientRenderer.render(<IndeterminateDemo/>);
 
             await waitForDom(() => {
@@ -89,7 +89,7 @@ describe('<Checkbox/>', () => {
         });
     });
 
-    it('Renders with default values', () => {
+    it('Renders with default values', function() {
         const {select, waitForDom} = clientRenderer.render(<CheckBox/>);
 
         return waitForDom(() => {
@@ -99,7 +99,7 @@ describe('<Checkbox/>', () => {
         });
     });
 
-    it('Displays children', () => {
+    it('Displays children', function() {
         const {select, waitForDom} = clientRenderer.render(
             <CheckBox>
                 <span data-automation-id="CHECKBOX_LABEL">covfefe</span>
@@ -111,7 +111,7 @@ describe('<Checkbox/>', () => {
         });
     });
 
-    it('Displays a box icon', () => {
+    it('Displays a box icon', function() {
         const {select, waitForDom} = clientRenderer.render(
             <CheckBox boxIcon={boxSVG}>
                 <span data-automation-id="CHECKBOX_LABEL">yoyo</span>
@@ -125,7 +125,7 @@ describe('<Checkbox/>', () => {
         });
     });
 
-    it('Displays tick mark when value is true', () => {
+    it('Displays tick mark when value is true', function() {
         const {select, waitForDom} = clientRenderer.render(
             <CheckBox
                 boxIcon={boxSVG}
@@ -140,7 +140,7 @@ describe('<Checkbox/>', () => {
         });
     });
 
-    it('Calls onChange when clicked', async () => {
+    it('Calls onChange when clicked', async function() {
         const onChange = sinon.spy();
 
         const {select, waitForDom} = clientRenderer.render(
@@ -164,7 +164,7 @@ describe('<Checkbox/>', () => {
         });
     });
 
-    it('Renders a native input component of type "checkbox" for SEO purposes', () => {
+    it('Renders a native input component of type "checkbox" for SEO purposes', function() {
         const {select, waitForDom} = clientRenderer.render(
             <CheckBox
                 boxIcon={boxSVG}
@@ -179,8 +179,8 @@ describe('<Checkbox/>', () => {
         expect(nativeInput).to.have.attr('type', 'checkbox');
     });
 
-    describe('When disabled', () => {
-        it('doesn\'t call onChange when clicked', async () => {
+    describe('When disabled', function() {
+        it('doesn\'t call onChange when clicked', async function() {
             const onChange = sinon.spy();
             const {select, waitForDom} = clientRenderer.render(<CheckBox disabled={true} onChange={onChange}/>);
 
@@ -197,7 +197,7 @@ describe('<Checkbox/>', () => {
             });
         });
 
-        it('displays tickmark if value is true', async () => {
+        it('displays tickmark if value is true', async function() {
             const {select, waitForDom} = clientRenderer.render(<CheckBox disabled={true} value={true}/>);
 
             await waitForDom(() => {
@@ -206,7 +206,7 @@ describe('<Checkbox/>', () => {
             });
         });
 
-        it('displays indeterminate icon', async () => {
+        it('displays indeterminate icon', async function() {
             const {select, waitForDom} = clientRenderer.render(<CheckBox disabled={true} value={true} indeterminate/>);
 
             await waitForDom(() => {
@@ -216,8 +216,8 @@ describe('<Checkbox/>', () => {
         });
     });
 
-    describe('When readonly', () => {
-        it('doesn\'t call onChange when clicked', async () => {
+    describe('When readonly', function() {
+        it('doesn\'t call onChange when clicked', async function() {
             const onChange = sinon.spy();
             const {select, waitForDom} = clientRenderer.render(<CheckBox readonly={true} onChange={onChange}/>);
 
@@ -234,7 +234,7 @@ describe('<Checkbox/>', () => {
             });
         });
 
-        it('displays tickmark if value is true', async () => {
+        it('displays tickmark if value is true', async function() {
             const {select, waitForDom} = clientRenderer.render(<CheckBox readonly={true} value={true}/>);
 
             await waitForDom(() => {
@@ -244,8 +244,8 @@ describe('<Checkbox/>', () => {
         });
     });
 
-    describe('When indeterminate', () => {
-        it('renders indeterminate icon when value is true', () => {
+    describe('When indeterminate', function() {
+        it('renders indeterminate icon when value is true', function() {
             const {select, waitForDom} = clientRenderer.render(<CheckBox value={true} indeterminate/>);
 
             return waitForDom(() => {
@@ -255,7 +255,7 @@ describe('<Checkbox/>', () => {
             });
         });
 
-        it('renders indeterminate icon when value is false', () => {
+        it('renders indeterminate icon when value is false', function() {
             const {select, waitForDom} = clientRenderer.render(<CheckBox value={false} indeterminate/>);
 
             return waitForDom(() => {
@@ -264,7 +264,7 @@ describe('<Checkbox/>', () => {
             });
         });
 
-        it('click calls onChange with value true', async () => {
+        it('click calls onChange with value true', async function() {
             const onChange = sinon.spy();
             const {select, waitForDom} = clientRenderer.render(
                 <CheckBox
@@ -286,7 +286,7 @@ describe('<Checkbox/>', () => {
             });
         });
 
-        it('renders custom indeterminate icon', () => {
+        it('renders custom indeterminate icon', function() {
             const {select, waitForDom} = clientRenderer.render(
                 <CheckBox
                     indeterminateIcon={IndeterminateSVG}
@@ -299,7 +299,7 @@ describe('<Checkbox/>', () => {
             });
         });
 
-        it('does not call onChange when disabled', async () => {
+        it('does not call onChange when disabled', async function() {
             const onChange = sinon.spy();
             const {select, waitForDom} = clientRenderer.render(<CheckBox disabled onChange={onChange} indeterminate/>);
 

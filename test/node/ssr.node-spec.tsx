@@ -5,7 +5,7 @@ import * as WixReactComponents from '../../src';
 
 const isReactComponent = (value: any) => value && value.prototype && value.prototype instanceof React.Component;
 
-describe('SSR compatibility', () => {
+describe('SSR compatibility', function() {
     const libExportNames = Object.keys(WixReactComponents);
 
     libExportNames.forEach(exportName => {
