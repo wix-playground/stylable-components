@@ -121,7 +121,7 @@ describe('<Popup />', function () {
     describe('Layout tests', function () {
         const verticalArray = ['top', 'center', 'bottom'];
         const horizontalArray = ['left', 'center', 'right'];
-        const divDim: CSSProperties = { position:'absolute', top:'150px', left:'150px', width: '150px', height: '150px'};
+        const divDim: CSSProperties = { position:'absolute', top:'150px', left:'150px', width: '150px', height: '150px', border: '1px solid blue'};
 
         // Level one: popup position, level two: anchor position
         const topResults = getLayoutTest('vertical');
@@ -144,8 +144,10 @@ describe('<Popup />', function () {
                                 vertical: anchorVertical,
                                 horizontal: anchorHorizontal
                             }} popupPosition={{vertical: popupVertical, horizontal: popupHorizontal}} open={true}>
-                                <span data-automation-id="SPAN">Popup Body</span>
-                                <div>some more stuff</div>
+                                <div style={{background: 'green', color: 'white'}}>
+                                    <span data-automation-id="SPAN">Popup Body</span>
+                                    <div>some more stuff</div>
+                                </div>
                             </Popup>);
 
                             return waitForDom(() => {
