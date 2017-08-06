@@ -52,14 +52,14 @@ const sauceLabsLaunchers = { // Check out https://saucelabs.com/platforms for al
         base: 'SauceLabs',
         browserName: 'Android',
         version: '4.4'
-    },
-    sliOS: {
-        base: 'SauceLabs',
-        deviceName: 'iPhone 7 Plus Simulator',
-        platform: 'iOS',
-        platformVersion: '10.3',
-        browserName: 'Safari'
     }
+    // sliOS: {
+    //     base: 'SauceLabs',
+    //     deviceName: 'iPhone 7 Plus Simulator',
+    //     platform: 'iOS',
+    //     platformVersion: '10.3',
+    //     browserName: 'Safari'
+    // }
 };
 
 module.exports = function (config) {
@@ -80,7 +80,7 @@ module.exports = function (config) {
             tags: [process.env.TRAVIS_BRANCH,"taggable"],
             tunnelIdentifier: process.env.TRAVIS_JOB_NUMBER,
         },
-        captureTimeout: 120000,
+        captureTimeout: 150000,
         browserNoActivityTimeout: 25000,
 
         // base path that will be used to resolve all patterns (eg. files, exclude)
