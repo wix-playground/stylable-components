@@ -34,7 +34,9 @@ export type StateMap = Map<TreeItemData, TreeItemState>;
 
 const itemIdPrefix = 'TREE_ITEM';
 
-export const TreeItem: React.SFC<TreeItemProps> = SBStateless(({ item, itemRenderer, onItemClick, stateMap, state }) => {
+const defaultItemState = { isSelected: false, isExpanded: false };
+
+export const TreeItem: React.SFC<TreeItemProps> = SBStateless(({ item, itemRenderer, onItemClick, stateMap, state = defaultItemState }) => {
     const itemLabel = item.label.replace(' ', '_');
     const TreeNode = itemRenderer;
     return (
