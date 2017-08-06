@@ -248,15 +248,6 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
         }
     };
 
-    setSubtreeVisible(item: TreeItemData) {
-        if (item.children) {
-            item.children.forEach(child => {
-                this.stateMap.getItemState(child).shouldRender = true;
-                this.setSubtreeVisible(child);
-            })
-        }
-    }
-
     @action
     updateFilteredState(data: TreeItemData[], query: string) {
         let shouldRender = false;
@@ -268,8 +259,6 @@ export class TreeView extends React.Component<TreeViewProps, {}>{
                 this.stateMap.getItemState(item).shouldRender = true;
             } else {
                 this.stateMap.getItemState(item).shouldRender = false;
-            } if (startsWithQuery) {
-                this.setSubtreeVisible(item);
             }
         });
         return shouldRender;
