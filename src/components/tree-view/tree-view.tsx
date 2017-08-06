@@ -67,13 +67,13 @@ export const TreeItem: React.SFC<TreeItemProps> =
                 >
                     <span
                         data-automation-id={`${itemIdPrefix}_${itemLabel}_ICON`}
-                        onClick={onIconClick!.bind(null, item)}
+                        onClick={onIconClick && onIconClick.bind(null, item)}
                     >
                         &gt;&nbsp;
                     </span>
                     <span
                         data-automation-id={`${itemIdPrefix}_${itemLabel}_LABEL`}
-                        onClick={onItemClick!.bind(null, item)}
+                        onClick={onItemClick && onItemClick.bind(null, item)}
                     >
                         {item.label}
                     </span>
@@ -137,6 +137,30 @@ export class TreeView extends React.Component<TreeViewProps, {}> {
                 action(() => this.stateMap.getItemState(this.props.focusedItem!).isFocused = true)();
             }
         });
+    }
+
+    public render() {
+        const TreeNode = this.props.itemRenderer!;
+        return (
+            <div
+                data-automation-id="TREE_VIEW"
+                className="tree-view"
+                tabIndex={0}
+                onKeyDown={this.onKeyDown}
+            >
+                {(this.props.dataSource || []).map((item: TreeItemData, index: number) =>
+                    <TreeNode
+                        item={item}
+                        onItemClick={this.onSelectItem}
+                        itemRenderer={this.props.itemRenderer!}
+                        onIconClick={this.onToggleItem}
+                        stateMap={this.stateMap}
+                        state={this.stateMap.getItemState(item)}
+                        key={`${index}`}
+                    />
+                )}
+            </div>
+        );
     }
 
     private initParentsMap(data: TreeItemData[] = [], parent: TreeItemData | undefined) {
