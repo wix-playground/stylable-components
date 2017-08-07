@@ -71,7 +71,8 @@ export const TreeItem: React.SFC<TreeItemProps> =
                         data-automation-id={`${itemIdPrefix}_${itemLabel}_ICON`}
                         onClick={onIconClick && onIconClick.bind(null, item)}
                     >
-                        {item.children ? (state!.isExpanded ? <MinusIcon className="tree-item-icon"/> : <PlusIcon className="tree-item-icon"/>) : null}
+                        {item.children ? (state!.isExpanded ?
+                            <MinusIcon className="tree-item-icon"/> : <PlusIcon className="tree-item-icon"/>) : null}
                     </span>
                     <span
                         data-automation-id={`${itemIdPrefix}_${itemLabel}_LABEL`}
