@@ -60,6 +60,17 @@ describe('<Image />', () => {
         await waitForDom(() => expect(select(nativeImage)).to.have.attribute('src', onePixelTransparentSrc));
     });
 
+    it('updates src if a new one is provided', async () => {
+        const { select, waitForDom, container }
+            = clientRenderer.render(<Image src={sampleImage} data-automation-id={nativeImage} />);
+
+        await waitForDom(() => expect(select(nativeImage)).to.have.attribute('src', sampleImage));
+
+        clientRenderer.render(<Image src="Wonderwoman" data-automation-id={nativeImage} />, container);
+
+        await waitForDom(() => expect(select(nativeImage)).to.have.attribute('src', 'Wonderwoman'));
+    });
+
     it('calls onLoad when image has loaded', async () => {
         const onLoad = sinon.spy();
         clientRenderer.render(<Image src={sampleImage} onLoad={onLoad} data-automation-id={nativeImage} />);
