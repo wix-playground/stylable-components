@@ -1,8 +1,6 @@
 import * as React from 'react';
-import { nullFunction } from '../../common/null-function';
-
-// Transparent 1x1 gif image
-export const onePixelTransparentSrc = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+import { noop } from '../../common/noop-function';
+import { onePixelTransparentSrc } from '../../common/one-pixel-src';
 
 export interface ImageEvent extends React.SyntheticEvent<HTMLImageElement> {
     src: string;
@@ -39,8 +37,8 @@ const staticWrapperStyle = {
 export class Image extends React.PureComponent<ImageProps, ImageState> {
     public static defaultProps: Partial<ImageProps> = {
         defaultImage: onePixelTransparentSrc,
-        onLoad: nullFunction,
-        onError: nullFunction
+        onLoad: noop,
+        onError: noop
     };
 
     public render() {

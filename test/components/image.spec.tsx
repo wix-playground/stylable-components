@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { ClientRenderer, expect, sinon, waitFor } from 'test-drive-react';
-import { Image, onePixelTransparentSrc } from '../../src';
+import { Image } from '../../src';
+import { onePixelTransparentSrc } from '../../src/common/one-pixel-src';
 import { sampleImage } from '../fixtures/sample-image';
 
 const brokenSrc = 'data:image/png;base64,this-is-broken!';
