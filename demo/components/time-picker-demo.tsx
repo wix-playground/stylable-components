@@ -6,8 +6,8 @@ export class TimePickerDemo extends React.Component<any, any> {
         super();
         this.state = {
             now: new Date(),
-            value1: '00:00:00',
-            value2: '00:00:00',
+            value1: '00:00',
+            value2: '00:00',
             value3: null,
         }
     }
@@ -19,8 +19,7 @@ export class TimePickerDemo extends React.Component<any, any> {
     render() {
         const currentTime = [
             this.state.now.getHours(),
-            this.state.now.getMinutes(),
-            this.state.now.getSeconds()
+            this.state.now.getMinutes()
         ].join(':')
         return <div>
 

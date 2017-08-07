@@ -82,23 +82,25 @@ describe.only('<TimePicker/>', () => {
     describe('render with onChange', () => {
         let onChange: any;
         let renderer: any;
+        let root: any;
         let hhInput: any;
         let mmInput: any;
         beforeEach(() => {
             onChange = sinon.spy();
             renderer = clientRenderer.render(<TimePicker use12Hours={false} value="13:55" onChange={onChange}/>);
+            root = renderer.select('TIME_PICKER');
             hhInput = renderer.select('TIME_PICKER_HH');
             mmInput = renderer.select('TIME_PICKER_MM');
         });
 
         describe('entering "3" into hh input', () => {
-            beforeEach(async () => {
+            beforeEach(() => {
                 simulate.focus(hhInput);
                 hhInput.value = '3';
                 simulate.change(hhInput);
             });
             it('should set focus state', () => {
-                hasCssState(renderer.select('TIME_PICKER'), styles, {focus: true})
+                hasCssState(root, styles, {focus: true})
             });
             it('hh input should have "03" value', () => {
                 expect(hhInput).attr('value', '03');
@@ -123,8 +125,47 @@ describe.only('<TimePicker/>', () => {
             it('hh input should wait for input (to keep focus)', () => {
                 expect(document.activeElement).to.equal(hhInput, 'hh input has no focus');
             });
-            it('onChange should be callend with "03:55"', () => {
-                expect(onChange).to.be.calledWithExactly('03:55');
+            it('onChange should not be callen', async () => {
+                await new Promise(resolve => setTimeout(resolve, 500));
+                expect(onChange).to.not.be.called;
+            });
+        });
+
+        describe('entering "7" into mm input', () => {
+            beforeEach(() => {
+                simulate.focus(mmInput);
+                mmInput.value = '7';
+                simulate.change(mmInput);
+            });
+            it('should set focus state', () => {
+                hasCssState(root, styles, {focus: true})
+            });
+            it('mm input should have "07" value', () => {
+                expect(mmInput).attr('value', '07');
+            });
+            it('mm input should keep focus', () => {
+                expect(document.activeElement).to.equal(mmInput, 'mm input has no focus');
+            });
+            it('onChange should be callen with "13:07"', async () => {
+                expect(onChange).to.be.calledWithExactly('13:07');
+            });
+        });
+
+        describe('entering "5" into mm input', () => {
+            beforeEach(() => {
+                simulate.focus(mmInput);
+                mmInput.value = '5';
+                simulate.change(mmInput);
+            });
+            it('mm input should have "5" value', () => {
+                expect(mmInput).attr('value', '5');
+            });
+            it('mm input should keep focus', () => {
+                expect(document.activeElement).to.equal(mmInput, 'mm input has no focus');
+            });
+            it('onChange should not be callen', async () => {
+                await new Promise(resolve => setTimeout(resolve, 500));
+                expect(onChange).to.not.called;
             });
         });
 

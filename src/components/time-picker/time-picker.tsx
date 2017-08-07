@@ -26,6 +26,10 @@ const inputNames: string[] = ['hh', 'mm', 'ampm'];
 
 @SBComponent(styles)
 export default class TimePicker extends React.Component<Props, State> {
+    inputs: {
+        [key: string]: HTMLInputElement | null
+    }
+    committed: boolean
 
     public static defaultProps = {
         use12Hours: is12TimeFormat
@@ -33,6 +37,8 @@ export default class TimePicker extends React.Component<Props, State> {
 
     constructor(props: Props) {
         super();
+        this.inputs = {};
+        this.committed = false;
         this.state = {
             focus: false,
             nativeFocus: false,
@@ -63,7 +69,7 @@ export default class TimePicker extends React.Component<Props, State> {
                                 placeholder={showPlaceholder ? placeholder : '––'}
                                 cssStates={{wide: showPlaceholder}}
                                 className="input"
-                                ref={key}
+                                ref={elem => this.inputs[key] = elem}
                                 name={key}
                                 value={this.state[key]}
                                 onChange={this.onChange}
@@ -78,7 +84,7 @@ export default class TimePicker extends React.Component<Props, State> {
                     <input
                         data-automation-id='TIME_PICKER_AMPM_INPUT'
                         className="input ampm"
-                        ref="ampm"
+                        ref={elem => this.inputs.ampm = elem}
                         name="ampm"
                         onFocus={this.onFocus}
                         onBlur={this.onBlur}
@@ -97,7 +103,7 @@ export default class TimePicker extends React.Component<Props, State> {
                 }
                 <input
                     className="native-input"
-                    ref="nativeInput"
+                    ref={elem => this.inputs.nativeInput = elem}
                     tabIndex={-1}
                     type="time"
                     value={this.getValue()}
@@ -135,7 +141,6 @@ export default class TimePicker extends React.Component<Props, State> {
     }
 
     private onFocus = (e: React.SyntheticEvent<HTMLInputElement>) => {
-        console.log('onfocus');
         this.setState({focus: true});
         if (isTouch) {
             e.currentTarget.blur();
@@ -146,7 +151,6 @@ export default class TimePicker extends React.Component<Props, State> {
     }
 
     private onBlur = (e: React.SyntheticEvent<HTMLInputElement>) => {
-        console.log('onblur');
         const name = e.currentTarget.name;
         const update: Partial<State> = {
             focus: false
@@ -160,12 +164,9 @@ export default class TimePicker extends React.Component<Props, State> {
 
     private moveFocus(currentRefName: string, increment: number): boolean {
         const refIndex = inputNames.indexOf(currentRefName);
-        const nextRef = this.refs[inputNames[refIndex + increment]];
+        const next = this.inputs[inputNames[refIndex + increment]];
 
-        if (nextRef) {
-            const current = findDOMNode(this.refs[currentRefName]) as HTMLInputElement;
-            const next = findDOMNode(nextRef) as HTMLInputElement;
-            current.blur();
+        if (next) {
             next.focus();
             return true;
         }
@@ -190,12 +191,11 @@ export default class TimePicker extends React.Component<Props, State> {
         const nextState = {
             [name as any]: shouldWaitForInput ? value : pad2(value)
         };
+        this.committed = false;
         this.setState(nextState, () => {
             if (!shouldWaitForInput) {
-                const focusChanged = this.moveFocus(name, 1);
-                if (!focusChanged) {
-                    this.commit();
-                }
+                this.commit();
+                this.moveFocus(name, 1);
             }
         });
     }
@@ -233,7 +233,6 @@ export default class TimePicker extends React.Component<Props, State> {
     }
 
     private createOnAmpmClick = (focus: boolean) => () => {
-        console.log('toggle', focus, this.state.nativeFocus)
         this.toggleAmpm(() => {
             if (focus) {
                 this.showNativeKeyboard();
@@ -258,7 +257,8 @@ export default class TimePicker extends React.Component<Props, State> {
     }
 
     private commit = () => {
-        if (this.props.onChange) {
+        if (this.props.onChange && !this.committed) {
+            this.committed = true;
             this.props.onChange(this.getValue());
         }
     }
