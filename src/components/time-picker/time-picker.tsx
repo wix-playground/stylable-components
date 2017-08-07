@@ -1,22 +1,22 @@
+import * as keycode from 'keycode';
 import * as React from 'react';
 import {findDOMNode} from 'react-dom';
 import {SBComponent} from 'stylable-react-component';
-import * as keycode from 'keycode';
 import styles from './time-picker.st.css';
-import {Ampm, FormatPart, pad2, to24, toAmpm, isNumber, isValidValue} from './utils';
+import {Ampm, FormatPart, isNumber, isValidValue, pad2, to24, toAmpm} from './utils';
 
 export interface Props {
-	value?: string
-	onChange?: (value: string) => void
-	use12Hours?: boolean
-	placeholder?: string
+    value?: string;
+    onChange?: (value: string) => void;
+    use12Hours?: boolean;
+    placeholder?: string;
 }
 
 export interface State {
-	focus: boolean
-	hh: string
-	mm: string
-	ampm: Ampm
+    focus: boolean;
+    hh: string;
+    mm: string;
+    ampm: Ampm;
 }
 
 const isTouch =  'ontouchstart' in window || Boolean(navigator.msMaxTouchPoints);
@@ -26,226 +26,229 @@ const inputNames: string[] = ['hh', 'mm', 'ampm'];
 @SBComponent(styles)
 export default class TimePicker extends React.Component<Props, State> {
 
-	static defaultProps = {
-		use12Hours: is12TimeFormat
-	}
+    public static defaultProps = {
+        use12Hours: is12TimeFormat
+    };
 
-	constructor(props: Props) {
-		super();
-		this.state = {
-			focus: false,
-			...this.getTimeParts(props.value!, props.use12Hours)
-		}
-	}
+    constructor(props: Props) {
+        super();
+        this.state = {
+            focus: false,
+            ...this.getTimeParts(props.value!, props.use12Hours)
+        };
+    }
 
-	componentWillReceiveProps(props: Props) {
-		if (props.value && !this.state.focus) {
-			this.setState(this.getTimeParts(props.value, props.use12Hours));
-		}
-	}
+    public componentWillReceiveProps(props: Props) {
+        if (props.value && !this.state.focus) {
+            this.setState(this.getTimeParts(props.value, props.use12Hours));
+        }
+    }
 
-	getTimeParts(value?: string, use12Hours?: boolean) {
-		if (!value) {
-			return {
-				hh: '',
-				mm: '',
-				ampm: Ampm.NONE
-			}
-		}
-		const [hh24, mm] = value.split(':').map(pad2);
-		const {hh, ampm} = toAmpm(Number(hh24));
-		return {
-			hh: use12Hours ? pad2(hh) : hh24,
-			ampm: use12Hours ? ampm : Ampm.NONE,
-			mm
-		};
-	}
+    public render() {
+        const {focus, ampm} = this.state;
+        const {use12Hours, value, placeholder} = this.props;
+        const showPlaceholder = Boolean(placeholder) && !this.state.hh;
+        const inputs = showPlaceholder ? ['hh'] : ['hh', 'mm'];
+        const ampmLabel = ampm === Ampm.AM ? 'AM' : 'PM';
 
-	getValue() {
-		const {hh, mm, ampm} = this.state;
-		return [
-			to24(Number(hh), ampm),
-			mm
-		].map(String).map(pad2).join(':');
-	}
+        return (
+            <div cssStates={{focus}}>
+                <div className="inputs">
+                    {inputs.map((key: FormatPart) =>
+                        <div className="input-wrap" key={key}>
+                            <input
+                                placeholder={showPlaceholder ? placeholder : '––'}
+                                cssStates={{wide: showPlaceholder}}
+                                className="input"
+                                ref={key}
+                                name={key}
+                                value={this.state[key]}
+                                onChange={this.onChange}
+                                onFocus={this.onFocus}
+                                onBlur={this.onBlur}
+                                onKeyDown={this.onKeyDown}
+                            />
+                        </div>
+                    )}
+                </div>
+                {use12Hours && !showPlaceholder && !isTouch &&
+                    <input
+                        className="input ampm"
+                        ref="ampm"
+                        name="ampm"
+                        onFocus={this.onFocus}
+                        onBlur={this.onBlur}
+                        value={ampmLabel}
+                        onKeyDown={this.onAmpmKeyDown}
+                        onKeyUp={this.onAmpmKeyUp}
+                    />
+                }
+                {use12Hours && !showPlaceholder && isTouch &&
+                    <div
+                        className="ampm"
+                        children={ampmLabel}
+                        onClick={this.onAmpmClick}
+                    />
+                }
+                <input
+                    className="native-input"
+                    ref="nativeInput"
+                    tabIndex={-1}
+                    type="time"
+                    value={this.getValue()}
+                    onChange={this.onNativeChange}
+                />
+            </div>
+        );
+    }
 
-	onFocus = (e: React.SyntheticEvent<HTMLInputElement>) => {
-		this.setState({focus: true});
-		if (isTouch) {
-			e.currentTarget.blur();
-			this.showNativeKeyboard();
-		} else {
-			e.currentTarget.select();
-		}
-	}
+    private getTimeParts(value?: string, use12Hours?: boolean) {
+        if (!value) {
+            return {
+                hh: '',
+                mm: '',
+                ampm: Ampm.NONE
+            };
+        }
+        const [hh24, mm] = value.split(':').map(pad2);
+        const {hh, ampm} = toAmpm(Number(hh24));
+        return {
+            hh: use12Hours ? pad2(hh) : hh24,
+            ampm: use12Hours ? ampm : Ampm.NONE,
+            mm
+        };
+    }
 
-	onBlur = (e: React.SyntheticEvent<HTMLInputElement>) => {
-		const name = e.currentTarget.name;
-		const update: Partial<State> = {
-			focus: false
-		};
-		if (name === 'hh' || name === 'mm') {
-			update[name] = pad2(this.state[name]);
-		}
-		this.setState(update as State);
-		this.commit();
-	}
+    private getValue() {
+        const {hh, mm, ampm} = this.state;
+        return [
+            to24(Number(hh), ampm),
+            mm
+        ].map(String).map(pad2).join(':');
+    }
 
-	moveFocus(currentRefName: string, increment: number): boolean {
-		const refIndex = inputNames.indexOf(currentRefName);
-		const nextRef = this.refs[inputNames[refIndex + increment]];
+    private onFocus = (e: React.SyntheticEvent<HTMLInputElement>) => {
+        this.setState({focus: true});
+        if (isTouch) {
+            e.currentTarget.blur();
+            this.showNativeKeyboard();
+        } else {
+            e.currentTarget.select();
+        }
+    }
 
-		if (nextRef) {
-			const node = findDOMNode(nextRef) as HTMLInputElement;
-			node.focus();
-			return true;
-		}
-		return false;
-	}
+    private onBlur = (e: React.SyntheticEvent<HTMLInputElement>) => {
+        const name = e.currentTarget.name;
+        const update: Partial<State> = {
+            focus: false
+        };
+        if (name === 'hh' || name === 'mm') {
+            update[name] = pad2(this.state[name]);
+        }
+        this.setState(update as State);
+        this.commit();
+    }
 
-	onChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
-		const {use12Hours} = this.props;
-		const {ampm} = this.state;
-		const {value} = e.currentTarget;
-		const name = e.currentTarget.name as FormatPart;
-		if (!isNumber(value)) {
-			return;
-		}
-		const numValue = Number(value);
+    private moveFocus(currentRefName: string, increment: number): boolean {
+        const refIndex = inputNames.indexOf(currentRefName);
+        const nextRef = this.refs[inputNames[refIndex + increment]];
 
-		if (!isValidValue(numValue, name, ampm)) {
-			return;
-		}
+        if (nextRef) {
+            const node = findDOMNode(nextRef) as HTMLInputElement;
+            node.focus();
+            return true;
+        }
+        return false;
+    }
 
-		const shouldWaitForInput = isValidValue(numValue * 10, name, ampm);
-		const nextState = {
-			[name as any]: shouldWaitForInput ? value : pad2(value)
-		};
-		this.setState(nextState, () => {
-			if (!shouldWaitForInput) {
-				const focusChanged = this.moveFocus(name, 1);
-				if (!focusChanged) {
-					this.commit();
-				}
-			}
-		});
-	}
+    private onChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
+        const {use12Hours} = this.props;
+        const {ampm} = this.state;
+        const {value} = e.currentTarget;
+        const name = e.currentTarget.name as FormatPart;
+        if (!isNumber(value)) {
+            return;
+        }
+        const numValue = Number(value);
 
-	onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-		const name = e.currentTarget.name as FormatPart;
-		if (keycode(e.keyCode) !== 'backspace' || this.state[name].length) {
-			return;
-		}
-		e.preventDefault();
-		this.moveFocus(name, -1);
-	}
+        if (!isValidValue(numValue, name, ampm)) {
+            return;
+        }
 
-	onNativeChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
-		const value = e.currentTarget.value + ':00';
-		this.setState(this.getTimeParts(value), this.commit);
-	}
+        const shouldWaitForInput = isValidValue(numValue * 10, name, ampm);
+        const nextState = {
+            [name as any]: shouldWaitForInput ? value : pad2(value)
+        };
+        this.setState(nextState, () => {
+            if (!shouldWaitForInput) {
+                const focusChanged = this.moveFocus(name, 1);
+                if (!focusChanged) {
+                    this.commit();
+                }
+            }
+        });
+    }
 
-	onAmpmKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-		const keyName = keycode(e.keyCode);
-		switch (keycode(e.keyCode)) {
-			case 'space':
-			case 'enter':
-				this.toggleAmpm();
-				break;
-			case 'backspace':
-				e.preventDefault();
-				this.moveFocus('ampm', -1);
-				break;
-		}
-	}
+    private onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        const name = e.currentTarget.name as FormatPart;
+        if (keycode(e.keyCode) !== 'backspace' || this.state[name].length) {
+            return;
+        }
+        e.preventDefault();
+        this.moveFocus(name, -1);
+    }
 
-	onAmpmKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
-		e.currentTarget.select();
-	}
+    private onNativeChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
+        const value = e.currentTarget.value + ':00';
+        this.setState(this.getTimeParts(value), this.commit);
+    }
 
-	onAmpmClick = () => {
-		this.toggleAmpm(this.showNativeKeyboard);
-	}
+    private onAmpmKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        const keyName = keycode(e.keyCode);
+        switch (keycode(e.keyCode)) {
+            case 'space':
+            case 'enter':
+                this.toggleAmpm();
+                break;
+            case 'backspace':
+                e.preventDefault();
+                this.moveFocus('ampm', -1);
+                break;
+        }
+    }
 
-	toggleAmpm = (cb?: Function) => {
-		const {hh, ampm} = this.state;
-		const nextAmpm = 1 - ampm;
-		if (!isValidValue(Number(hh), 'hh', nextAmpm)) {
-			return;
-		}
-		this.setState({ampm: nextAmpm}, () => {
-			this.commit();
-			if (cb) {
-				cb();
-			}
-		});
-	}
+    private onAmpmKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        e.currentTarget.select();
+    }
 
-	showNativeKeyboard = () => {
-		const input = findDOMNode(this.refs.nativeInput) as HTMLInputElement;
-		input.focus();
-		input.click();
-	}
+    private onAmpmClick = () => {
+        this.toggleAmpm(this.showNativeKeyboard);
+    }
 
-	commit = () => {
-		if (this.props.onChange) {
-		  	this.props.onChange(this.getValue())
-		}
-	}
+    private toggleAmpm = (cb?: () => void) => {
+        const {hh, ampm} = this.state;
+        const nextAmpm = 1 - ampm;
+        if (!isValidValue(Number(hh), 'hh', nextAmpm)) {
+            return;
+        }
+        this.setState({ampm: nextAmpm}, () => {
+            this.commit();
+            if (cb) {
+                cb();
+            }
+        });
+    }
 
-	render() {
-		const {focus, ampm} = this.state;
-		const {use12Hours, value, placeholder} = this.props;
-		const showPlaceholder = Boolean(placeholder) && !this.state.hh;
-		const inputs = showPlaceholder ? ['hh'] : ['hh', 'mm'];
-		const ampmLabel = ampm === Ampm.AM ? 'AM' : 'PM';
+    private showNativeKeyboard = () => {
+        const input = findDOMNode(this.refs.nativeInput) as HTMLInputElement;
+        input.focus();
+        input.click();
+    }
 
-		return <div cssStates={{focus}}>
-			<div className='inputs'>
-				{inputs.map((key: FormatPart) =>
-					<div className='input-wrap' key={key}>
-						<input
-							placeholder={showPlaceholder ? placeholder : '––'}
-							cssStates={{wide: showPlaceholder}}
-							className='input'
-							ref={key}
-							name={key}
-							value={this.state[key]}
-							onChange={this.onChange}
-							onFocus={this.onFocus}
-							onBlur={this.onBlur}
-							onKeyDown={this.onKeyDown}
-						/>
-					</div>
-				)}
-			</div>
-			{use12Hours && !showPlaceholder && !isTouch &&
-				<input
-					className='input ampm'
-					ref='ampm'
-					name='ampm'
-					onFocus={this.onFocus}
-					onBlur={this.onBlur}
-					value={ampmLabel}
-					onKeyDown={this.onAmpmKeyDown}
-					onKeyUp={this.onAmpmKeyUp}
-				/>
-			}
-			{use12Hours && !showPlaceholder && isTouch &&
-				<div
-					className='ampm'
-					children={ampmLabel}
-					onClick={this.onAmpmClick}
-				/>
-			}
-			<input
-				className='native-input'
-				ref='nativeInput'
-				tabIndex={-1}
-				type='time'
-				value={this.getValue()}
-				onChange={this.onNativeChange}
-			/>
-		</div>
-	}
+    private commit = () => {
+        if (this.props.onChange) {
+            this.props.onChange(this.getValue());
+        }
+    }
+
 }
