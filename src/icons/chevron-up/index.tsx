@@ -1,7 +1,8 @@
 import * as React from 'react';
 
-export const ChevronUpIcon: React.StatelessComponent<React.SVGProps<{}>> = (props) =>
-    <svg {...props}
+export const ChevronUpIcon: React.StatelessComponent<React.SVGProps<{}>> = props => (
+    <svg
+        {...props}
         xmlns="http://www.w3.org/2000/svg"
         width="24"
         height="24"
@@ -12,5 +13,6 @@ export const ChevronUpIcon: React.StatelessComponent<React.SVGProps<{}>> = (prop
         strokeLinecap="round"
         strokeLinejoin="round"
     >
-        <polyline points="18 15 12 9 6 15"></polyline>
+        <polyline points="18 15 12 9 6 15" />
     </svg>
+);
