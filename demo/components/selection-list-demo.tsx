@@ -68,21 +68,19 @@ const EmojiListItem: React.SFC<EmojiListItemProps> = SBStateless(props => {
 
 @SBComponent(style)
 class EmojiList extends React.Component {
-    public state = {value: 'Pig'};
+    public state = {value: 'Crocodile'};
 
     private dataSchema = {value: 'name', icon: 'icon'};
     private dataSource = [
-        {icon: '🦁', name: 'Lion'},
-        {icon: '🐷', name: 'Pig'},
-        {icon: '🦇', name: 'Bat'},
-        {icon: '🐙', name: 'Octopus'},
-        {icon: '🐌', name: 'Snail'},
+        {icon: '🐍', name: 'Snek'},
+        {icon: '🐋', name: 'Whale'},
+        {icon: '🐊', name: 'Crocodile'},
+        {icon: '🐘', name: 'Elephant'},
+        {icon: '🐇', name: 'Rabbit'},
         {icon: '🐝', name: 'Honeybee'}
     ];
 
     public render() {
-        const anArticleFor = (word: string) => /^[aeiou]/i.test(word) ? 'an' : 'a';
-
         return (
             <div data-automation-id="EMOJI">
                 <h3>Custom item renderer</h3>
@@ -95,7 +93,7 @@ class EmojiList extends React.Component {
                     onChange={this.onChange}
                 />
                 <p data-automation-id="RESULT">
-                    That's {anArticleFor(this.state.value)} {this.state.value.toLowerCase()}.
+                    Your spirit animal is {this.state.value.toLowerCase()}.
                 </p>
             </div>
         );

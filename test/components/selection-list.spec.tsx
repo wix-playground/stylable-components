@@ -33,15 +33,15 @@ describe('<SelectionList />', () => {
             expect(select('EMOJI', 'LIST')).to.be.present();
         });
 
-        const octopus = select('EMOJI', 'LIST')!.children[3] as HTMLElement;
+        const elephant = select('EMOJI', 'LIST')!.children[3] as HTMLElement;
 
-        expect(octopus).to.be.present();
-        expect(octopus.dataset.value).to.be.equal('Octopus');
-        expect(octopus).to.contain.text('🐙');
-        simulate.click(octopus);
+        expect(elephant).to.be.present();
+        expect(elephant.dataset.value).to.be.equal('Elephant');
+        expect(elephant).to.contain.text('🐘');
+        simulate.click(elephant);
 
         return waitForDom(() => {
-            expect(select('EMOJI', 'RESULT')).to.contain.text('octopus');
+            expect(select('EMOJI', 'RESULT')).to.contain.text('elephant');
         });
     });
 
