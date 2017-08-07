@@ -26,7 +26,12 @@ export class PopupDemo extends React.Component<{}, DemoState> {
         const divDim: CSSProperties = {width: '50px', border: '1px solid blue'};
         return (
             <div>
-                <div ref={this.updateState} onClick={this.onClick} style={divDim} data-automation-id="POPUP_DEMO_DIV">Anchor</div>
+                <div
+                    ref={this.updateState}
+                    onClick={this.onClick}
+                    style={divDim}
+                    data-automation-id="POPUP_DEMO_DIV"
+                >Anchor</div>
                 <Popup anchor={this.state.div}
                        popupPosition={{vertical: 'bottom', horizontal: 'left'}}
                        syncWidth={false}
