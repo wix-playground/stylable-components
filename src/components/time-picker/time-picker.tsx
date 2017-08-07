@@ -222,20 +222,17 @@ export default class TimePicker extends React.Component<Props, State> {
     }
 
     private onAmpmClick = () => {
+        console.log(this.state.focus);
         this.toggleAmpm(this.showNativeKeyboard);
     }
 
     private toggleAmpm = (cb?: () => void) => {
         const {hh, ampm} = this.state;
-        const nextAmpm = 1 - ampm;
-        if (!isValidValue(Number(hh), 'hh', nextAmpm)) {
-            return;
-        }
-        this.setState({ampm: nextAmpm}, () => {
+        this.setState({ampm: 1 - ampm}, () => {
             this.commit();
-            if (cb) {
-                cb();
-            }
+            //if (cb) {
+                //cb();
+            //}
         });
     }
 

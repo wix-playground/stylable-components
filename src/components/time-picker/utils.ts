@@ -9,28 +9,26 @@ export const pad2 = (num: string | number): string => ('00' + num).slice(-2);
 export const isNumber = (value: string) => /^\d{0,2}$/.test(value);
 
 export const to24 = (hh: number, ampm: Ampm) => {
-    if (ampm === Ampm.NONE || ampm === Ampm.AM) {
-        return hh;
+    switch(ampm) {
+        case Ampm.NONE:
+            return hh;
+        case Ampm.AM:
+            return hh === 12 ? 0 : hh;
+        case Ampm.PM:
+            return hh === 12 ? hh : (hh + 12);
     }
-    return hh === 12 ? 0 : (hh + 12);
 };
-export const toAmpm = (hh: number) => {
-    if (hh < 11) {
-        return {
-            hh,
-            ampm: Ampm.AM
-        };
-    } else if (hh === 12) {
-        return {
-            hh,
-            ampm: Ampm.AM
-        };
+
+export const toAmpm = (hh: number): {hh: number, ampm: Ampm} => {
+    let ampm: Ampm;
+    if (hh < 12) {
+        hh = hh === 0 ? 12 : hh;
+        ampm = Ampm.AM;
     } else {
-        return {
-            hh: hh % 12,
-            ampm: Ampm.AM
-        };
+        hh = hh === 12 ? hh : (hh % 12);
+        ampm = Ampm.PM;
     }
+    return {hh, ampm};
 };
 
 export const isValidValue = (num: number, part: FormatPart, ampm: Ampm) => {
@@ -41,10 +39,7 @@ export const isValidValue = (num: number, part: FormatPart, ampm: Ampm) => {
         case Ampm.NONE:
             return num >= 0 && num <= 23;
         case Ampm.AM:
-            return num >= 0 && num <= 12;
         case Ampm.PM:
-            return num >= 0 && num <= 11;
-        default:
-            return false;
+            return num >= 1 && num <= 12;
     }
 };
