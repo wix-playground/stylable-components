@@ -241,6 +241,23 @@ describe('<NumberInput />', () => {
                 });
             });
 
+            it('should increase value by 10*step with ctrl key', async () => {
+                const value = 0;
+                const step = 2;
+                const onChange = sinon.spy();
+                const {select, waitForDom} = clientRenderer.render(
+                    <NumberInput value={value} step={step} onChange={onChange} />
+                );
+
+                await waitForDom(() => {
+                    const input = select('NATIVE_INPUT_NUMBER');
+
+                    simulate.keyDown(input, {keyCode: KeyCodes.up, ctrlKey: true});
+
+                    assertCommit(input, onChange, value + 10 * step);
+                });
+            });
+
             it('should set value to max when value > max', async () => {
                 const value = 1;
                 const max = 0;
@@ -310,6 +327,23 @@ describe('<NumberInput />', () => {
                     simulate.keyDown(input, {keyCode: KeyCodes.down});
 
                     assertCommit(input, onChange, value - step);
+                });
+            });
+
+            it('should decrease value by 10*step with ctrl key', async () => {
+                const value = 0;
+                const step = 2;
+                const onChange = sinon.spy();
+                const {select, waitForDom} = clientRenderer.render(
+                    <NumberInput value={value} step={step} onChange={onChange} />
+                );
+
+                await waitForDom(() => {
+                    const input = select('NATIVE_INPUT_NUMBER');
+
+                    simulate.keyDown(input, {keyCode: KeyCodes.down, ctrlKey: true});
+
+                    assertCommit(input, onChange, value - 10 * step);
                 });
             });
 

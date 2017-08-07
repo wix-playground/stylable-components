@@ -193,12 +193,15 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
         }
     }
 
-    private stepValue(direction: Direction) {
+    private stepValue(direction: Direction, multiplier = 1) {
         const {value} = this.state;
-        const {step} = this.props;
+        let {step} = this.props;
+
+        step = step! * multiplier;
+
         const next = (direction === Direction.Increase ?
-            isNumber(value) ? value + step! : step! :
-            isNumber(value) ? value - step! : -step!);
+            isNumber(value) ? value + step : step :
+            isNumber(value) ? value - step : -step);
 
         this.commit(next);
     }
@@ -216,11 +219,11 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
     private handleInputKeyDown: React.KeyboardEventHandler<HTMLElement> = e => {
         switch (e.keyCode) {
             case KeyCodes.up:
-                this.stepValue(Direction.Increase);
+                this.stepValue(Direction.Increase, e.ctrlKey ? 10 : 1);
                 e.preventDefault();
                 break;
             case KeyCodes.down:
-                this.stepValue(Direction.Decrease);
+                this.stepValue(Direction.Decrease, e.ctrlKey ? 10 : 1);
                 e.preventDefault();
                 break;
             case KeyCodes.enter:
