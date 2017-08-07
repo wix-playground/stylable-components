@@ -25,12 +25,12 @@ const sauceLabsLaunchers = { // Check out https://saucelabs.com/platforms for al
         browserName: 'internet explorer',
         version: '11.0'
     },
-    slIE10: {
-        base: 'SauceLabs',
-        platform: 'Windows 7',
-        browserName: 'internet explorer',
-        version: '10.0'
-    },
+    // slIE10: {
+    //     base: 'SauceLabs',
+    //     platform: 'Windows 7',
+    //     browserName: 'internet explorer',
+    //     version: '10.0'
+    // },
     slSafari10: {
         base: 'SauceLabs',
         platform: 'macOS 10.12',
@@ -52,14 +52,14 @@ const sauceLabsLaunchers = { // Check out https://saucelabs.com/platforms for al
         base: 'SauceLabs',
         browserName: 'Android',
         version: '4.4'
-    },
-    sliOS: {
-        base: 'SauceLabs',
-        deviceName: 'iPhone 7 Plus Simulator',
-        platform: 'iOS',
-        platformVersion: '10.3',
-        browserName: 'Safari'
     }
+    // sliOS: {
+    //     base: 'SauceLabs',
+    //     deviceName: 'iPhone 7 Plus Simulator',
+    //     platform: 'iOS',
+    //     platformVersion: '10.3',
+    //     browserName: 'Safari'
+    // }
 };
 
 module.exports = function (config) {
@@ -80,7 +80,7 @@ module.exports = function (config) {
             tags: [process.env.TRAVIS_BRANCH,"taggable"],
             tunnelIdentifier: process.env.TRAVIS_JOB_NUMBER,
         },
-        captureTimeout: 120000,
+        captureTimeout: 150000,
         browserNoActivityTimeout: 25000,
 
         // base path that will be used to resolve all patterns (eg. files, exclude)
@@ -136,8 +136,7 @@ module.exports = function (config) {
 
         // start these browsers
         // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-        browsers: process.env.TRAVIS_BRANCH === 'master' && process.env.TRAVIS_PULL_REQUEST === 'false' ?
-        // browsers: true ?
+        browsers: process.env.TRAVIS ?
             Object.keys(sauceLabsLaunchers) :
             ['ChromeHeadless'],
 
