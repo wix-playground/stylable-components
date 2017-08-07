@@ -65,6 +65,7 @@ export class Image extends React.PureComponent<ImageProps, ImageState> {
             return (
                 <div style={wrapperStyle} className={className} >
                     <img
+                        data-automation-id="NATIVE_IMAGE"
                         {...rest}
                         style={hiddenImageStyle}
                         src={this.state.src}
@@ -77,6 +78,7 @@ export class Image extends React.PureComponent<ImageProps, ImageState> {
 
         return (
             <img
+                data-automation-id="NATIVE_IMAGE"
                 {...rest}
                 style={{ display: 'inline-block', ...style }}
                 className={className}
