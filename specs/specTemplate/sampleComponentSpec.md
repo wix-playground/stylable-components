@@ -117,18 +117,6 @@ Detailed description of how input behaves. Logic, corner cases, patterns, etc.
 | drag  |                     |                         |
 
 
-
-## Examples
-
-Examples of component in different configurations:
-
-> component with & without tooltip
-> component with & without step
-> component in vertical & horizontal orientation
-> etc
-
-
-
 ## Design
 
 Link to [assets](link goes here)
