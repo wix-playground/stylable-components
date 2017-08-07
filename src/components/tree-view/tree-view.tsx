@@ -1,10 +1,10 @@
-import { action, autorun, observable } from 'mobx';
-import { observer } from 'mobx-react';
 import * as React from 'react';
-import { getLastAvailableItem, getNextItem, getPreviousItem } from './tree-util';
 
 import * as keycode from 'keycode';
-import { SBComponent, SBStateless } from 'stylable-react-component';
+import {action, autorun, observable} from 'mobx';
+import {observer} from 'mobx-react';
+import {SBComponent, SBStateless} from 'stylable-react-component';
+import {getLastAvailableItem, getNextItem, getPreviousItem} from './tree-util';
 import style from './tree-view.st.css';
 
 const KeyCodes: any = {
@@ -22,17 +22,25 @@ export interface TreeItemData {
     children?: TreeItemData[];
 }
 
-export interface TreeItemProps {
-    item: TreeItemData;
+export interface TreeEntity {
     itemRenderer: React.ComponentType<TreeItemProps>;
     onItemClick?: React.EventHandler<any>;
     onIconClick?: React.EventHandler<any>;
     stateMap: TreeStateMap;
+}
+
+export interface TreeItemProps extends TreeEntity {
+    item: TreeItemData;
     state: TreeItemState;
 }
 
+export interface TreeNodesProps extends TreeEntity {
+    show: boolean;
+    nodes?: TreeItemData[];
+}
+
 export interface TreeViewProps {
-    dataSource: object[];
+    dataSource: TreeItemData[];
     itemRenderer?: React.ComponentType<TreeItemProps>;
     onSelectItem?: React.EventHandler<any>;
     selectedItem?: TreeItemData;
@@ -79,17 +87,14 @@ export const TreeItem: React.SFC<TreeItemProps> =
                     </span>
                 </div>
                 <div className="nested-tree">
-                    {state!.isExpanded && (item.children || []).map((child: TreeItemData, index: number) =>
-                        <TreeNode
-                            item={child}
-                            onItemClick={onItemClick}
-                            itemRenderer={itemRenderer}
-                            onIconClick={onIconClick}
-                            stateMap={stateMap}
-                            state={stateMap.getItemState(child)}
-                            key={`${index}`}
-                        />
-                    )}
+                    <TreeNodes
+                        show={state!.isExpanded}
+                        nodes={item.children}
+                        onItemClick={onItemClick}
+                        itemRenderer={itemRenderer}
+                        onIconClick={onIconClick}
+                        stateMap={stateMap}
+                    />
                 </div>
             </div>
         );
@@ -148,17 +153,14 @@ export class TreeView extends React.Component<TreeViewProps, {}> {
                 tabIndex={0}
                 onKeyDown={this.onKeyDown}
             >
-                {(this.props.dataSource || []).map((item: TreeItemData, index: number) =>
-                    <TreeNode
-                        item={item}
-                        onItemClick={this.onSelectItem}
-                        itemRenderer={this.props.itemRenderer!}
-                        onIconClick={this.onToggleItem}
-                        stateMap={this.stateMap}
-                        state={this.stateMap.getItemState(item)}
-                        key={`${index}`}
-                    />
-                )}
+                <TreeNodes
+                    show={true}
+                    nodes={this.props.dataSource}
+                    onItemClick={this.onSelectItem}
+                    itemRenderer={this.props.itemRenderer!}
+                    onIconClick={this.onToggleItem}
+                    stateMap={this.stateMap}
+                />
             </div>
         );
     }
@@ -259,3 +261,34 @@ export class TreeView extends React.Component<TreeViewProps, {}> {
         }
     }
 }
+
+export const TreeNodes: React.SFC<TreeNodesProps> =
+    (props: TreeNodesProps): React.ReactElement<TreeNodesProps> | null => {
+    const {
+        show, nodes, itemRenderer,
+        onItemClick, stateMap, onIconClick
+    } = props;
+
+    if (!show || !nodes || !nodes.length) {
+        return null;
+    }
+
+    const TreeNode = itemRenderer;
+    return (
+        <div>
+            {nodes.map((node: TreeItemData, index: number) => {
+                return (
+                    <TreeNode
+                        item={node}
+                        itemRenderer={itemRenderer}
+                        onItemClick={onItemClick}
+                        onIconClick={onIconClick}
+                        stateMap={stateMap}
+                        state={stateMap.getItemState(node)}
+                        key={index}
+                    />
+                );
+            })}
+        </div>
+    );
+};
