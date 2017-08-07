@@ -1,5 +1,5 @@
 :import {
-    -st-from: "./variables.st.css";
+    -st-from: "../variables.st.css";
     -st-named: borderRadius;
 }
 
