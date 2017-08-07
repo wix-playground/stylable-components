@@ -2,6 +2,7 @@ import * as React from 'react';
 import { BirthdayPickerDemo } from './components/birthday-picker-demo';
 import {CheckBoxDemo} from './components/checkbox-demo';
 import {DatePickerDemo, DatePickerDemoStartingDay} from './components/date-picker-demo';
+import {NumberInputDemo} from './components/number-input.demo';
 import { RadioGroupDemo } from './components/radio-group-demo';
 import { SelectionListDemo } from './components/selection-list-demo';
 import {ToggleDemo} from './components/toggle-demo';
@@ -138,7 +139,11 @@ export class ComponentsDemo extends React.Component<{}, {}> {
                     <h2>Radio Group</h2>
                     <RadioGroupDemo/>
                 </div>
-            </div>
-        );
+                <hr />
+                <div>
+                    <h2>NumberInput</h2>
+                    <NumberInputDemo />
+                </div>
+            </div>);
     }
 }
