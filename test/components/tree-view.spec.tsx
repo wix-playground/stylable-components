@@ -1,52 +1,60 @@
-import * as React from 'react';
-import { expect, ClientRenderer, sinon, simulate, waitFor } from 'test-drive-react';
-import { TreeView, TreeItem } from '../../src';
-import { TreeViewDemo } from '../../demo/components/tree-view-demo';
-import { ParentsMap, TreeItemData, TreeItemState, TreeStateMap } from '../../src/components/tree-view/tree-view';
-import { getPreviousItem, getNextItem, getLastAvailableItem } from '../../src/components/tree-view//tree-util';
 import * as keycode from 'keycode';
+import * as React from 'react';
+import { ClientRenderer, expect, simulate, sinon, waitFor } from 'test-drive-react';
+import { TreeViewDemo } from '../../demo/components/tree-view-demo';
+import { TreeItem, TreeView } from '../../src';
+import { getLastAvailableItem, getNextItem, getPreviousItem } from '../../src/components/tree-view//tree-util';
+import { ParentsMap, TreeItemData, TreeItemState, TreeStateMap } from '../../src/components/tree-view/tree-view';
 
 const treeView = 'TREE_VIEW';
 const treeItem = 'TREE_ITEM';
 
 const KeyCodes: any = {
-  ENTER: keycode('enter'),
-  HOME: keycode('home'),
-  END: keycode('end'),
-  UP: keycode('up'),
-  DOWN: keycode('down'),
-  LEFT: keycode('left'),
-  RIGHT: keycode('right'),
+    ENTER: keycode('enter'),
+    HOME: keycode('home'),
+    END: keycode('end'),
+    UP: keycode('up'),
+    DOWN: keycode('down'),
+    LEFT: keycode('left'),
+    RIGHT: keycode('right')
 };
 
 const treeData: TreeItemData[] = [
-    { label: 'Food Menu', children: [
-        { label: 'Salads', children: [
-            { label: 'Greek Salad' },
-            { label: 'Israeli Salad' },
-            { label: 'Caesar Salad' }
-        ]},
-        { label: 'Steaks', children: [
-            { label: 'Fillet Steak' },
-            { label: 'Sirloin Steak' }
-        ]},
-        { label: 'Desserts', children: [
-            { label: 'Pancakes' },
-            { label: 'Muffin' },
-            { label: 'Waffle' },
-            { label: 'Cupcake' }
-        ]}
-    ]}
+    {
+        label: 'Food Menu', children: [
+            {
+                label: 'Salads', children: [
+                    { label: 'Greek Salad' },
+                    { label: 'Israeli Salad' },
+                    { label: 'Caesar Salad' }
+                ]
+            },
+            {
+                label: 'Steaks', children: [
+                    { label: 'Fillet Steak' },
+                    { label: 'Sirloin Steak' }
+                ]
+            },
+            {
+                label: 'Desserts', children: [
+                    { label: 'Pancakes' },
+                    { label: 'Muffin' },
+                    { label: 'Waffle' },
+                    { label: 'Cupcake' }
+                ]
+            }
+        ]
+    }
 ];
 
-function getLabelsList(data: {label: string, children?: Object[]}): string[] {
+function getLabelsList(data: { label: string, children?: object[] }): string[] {
     return [data.label]
         .concat(...(data.children || [])
             .map(getLabelsList));
 }
 
-function getAllNodeLabels(treeData: Object[]): string[] {
-    return treeData.map(getLabelsList).reduce((prev, next) => [...prev, ...next]);
+function getAllNodeLabels(data: object[]): string[] {
+    return data.map(getLabelsList).reduce((prev, next) => [...prev, ...next]);
 }
 
 describe('<TreeView />', () => {
@@ -57,7 +65,7 @@ describe('<TreeView />', () => {
     const getTreeItemIcon = (id: string) => `${getTreeItem(id)}_ICON`;
     const getTreeItemLabel = (id: string) => `${getTreeItem(id)}_LABEL`;
 
-    function expandItemWithLabel(select: (...selectors: string[]) =>  Element | null, id: string) {
+    function expandItemWithLabel(select: (...selectors: string[]) => Element | null, id: string) {
         simulate.click(select(getTreeItemIcon(id)));
     }
 
@@ -65,7 +73,7 @@ describe('<TreeView />', () => {
         simulate.click(select(getTreeItemLabel(id)));
     }
 
-    const item = { label: 'label' };
+    const sampleItem = { label: 'label' };
     const nestedItem: TreeItemData = treeData[0].children![1];
 
     const state: TreeItemState = { isSelected: false, isExpanded: true, isFocused: false };
@@ -81,7 +89,7 @@ describe('<TreeView />', () => {
         await waitForDom(() => expect(select(getTreeItem(nodeChildren![1].label))).to.be.absent());
 
         expandItemWithLabel(select, treeData[0].label);
-        nodeChildren!.forEach(item => expandItemWithLabel(select, item.label));
+        nodeChildren!.forEach(child => expandItemWithLabel(select, child.label));
 
         await waitForDom(() => allNodesLabels.forEach(item =>
             expect(select(treeView + '_DEMO', getTreeItem(item)), `item did not appear: ${item}`).to.be.present()));
@@ -119,12 +127,13 @@ describe('<TreeView />', () => {
 
             return waitForDom(() =>
                 treeData.forEach((item: TreeItemData) =>
-                    expect(select(treeView, getTreeItem(item.label)), `${item.label} was not present`).to.be.present()));
+                    expect(select(treeView, getTreeItem(item.label)),
+                        `${item.label} was not present`).to.be.present()));
         });
 
         it('invokes the onSelectItem callback when an item is clicked', () => {
             const onSelectItem = sinon.spy();
-            const { select } = clientRenderer.render(<TreeView dataSource={treeData} onSelectItem={onSelectItem}/>);
+            const { select } = clientRenderer.render(<TreeView dataSource={treeData} onSelectItem={onSelectItem} />);
 
             selectItemWithLabel(select, treeData[0].label);
 
@@ -150,39 +159,45 @@ describe('<TreeView />', () => {
                 return waitForDom(() => expect(select(getTreeItem(nodeChildren![1].label))).to.be.present());
             });
 
-            it('returns to parent if there is after collapsing the element if possible when left is clicked', async () => {
-                const { select, waitForDom } = clientRenderer.render(<TreeViewDemo />);
+            it('returns to parent if there is after collapsing the element if possible when left is clicked',
+                async () => {
+                    const { select, waitForDom } = clientRenderer.render(<TreeViewDemo />);
 
-                const nodeChildren = treeData[0].children;
+                    const nodeChildren = treeData[0].children;
 
-                expandItemWithLabel(select, treeData[0].label);
+                    expandItemWithLabel(select, treeData[0].label);
 
-                await waitForDom(() => expect(select(getTreeItem(nodeChildren![1].label))).to.be.present());
+                    await waitForDom(() => expect(select(getTreeItem(nodeChildren![1].label))).to.be.present());
 
-                selectItemWithLabel(select, nodeChildren![1].label);
+                    selectItemWithLabel(select, nodeChildren![1].label);
 
-                await waitForDom(() => expect(select(getTreeItem(nodeChildren![1].label))).to.have.attr('data-focused', 'true'));
+                    await waitForDom(() =>
+                        expect(select(getTreeItem(nodeChildren![1].label))).to.have.attr('data-focused', 'true'));
 
-                simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), { keyCode: KeyCodes.LEFT });
+                    simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), { keyCode: KeyCodes.LEFT });
 
-                return waitForDom(() => expect(select(getTreeItem(treeData[0].label))).to.have.attr('data-focused', 'true'));
-            });
+                    return waitForDom(() =>
+                        expect(select(getTreeItem(treeData[0].label))).to.have.attr('data-focused', 'true'));
+                });
 
-            it('moves to child to if there is one after expanding the element if possible when right is clicked', async () => {
-                const { select, waitForDom } = clientRenderer.render(<TreeViewDemo />);
+            it('moves to child to if there is one after expanding the element if possible when right is clicked',
+                async () => {
+                    const { select, waitForDom } = clientRenderer.render(<TreeViewDemo />);
 
-                const nodeChildren = treeData[0].children;
+                    const nodeChildren = treeData[0].children;
 
-                expandItemWithLabel(select, treeData[0].label);
+                    expandItemWithLabel(select, treeData[0].label);
 
-                await waitForDom(() => expect(select(getTreeItem(nodeChildren![0].label))).to.be.present());
+                    await waitForDom(() => expect(select(getTreeItem(nodeChildren![0].label))).to.be.present());
 
-                await waitForDom(() => expect(select(getTreeItem(treeData[0].label))).to.have.attr('data-focused', 'true'));
+                    await waitForDom(() =>
+                        expect(select(getTreeItem(treeData[0].label))).to.have.attr('data-focused', 'true'));
 
-                simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), { keyCode: KeyCodes.RIGHT });
+                    simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), { keyCode: KeyCodes.RIGHT });
 
-                return waitForDom(() => expect(select(getTreeItem(nodeChildren![0].label))).to.have.attr('data-focused', 'true'));
-            });
+                    return waitForDom(() =>
+                        expect(select(getTreeItem(nodeChildren![0].label))).to.have.attr('data-focused', 'true'));
+                });
 
             it('focuses next and previous when down and up arrows are clicked', async () => {
                 const { select, waitForDom } = clientRenderer.render(<TreeViewDemo />);
@@ -194,19 +209,23 @@ describe('<TreeView />', () => {
                 expandItemWithLabel(select, treeData[0].label);
 
                 // this should assert first child of root is not focused
-                await waitForDom(() => expect(select(getTreeItem(nodeChildren![0].label))).to.have.attr('data-focused', 'false'));
+                await waitForDom(() =>
+                    expect(select(getTreeItem(nodeChildren![0].label))).to.have.attr('data-focused', 'false'));
 
                 simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), { keyCode: KeyCodes.DOWN });
 
                 // this should assert first child of root is focused
-                await waitForDom(() =>
-                    expect(select(getTreeItem(nodeChildren![0].label)), 'down didnt work').to.have.attr('data-focused', 'true'));
+                await waitForDom(() => {
+                    const item = getTreeItem(nodeChildren![0].label);
+                    expect(select(item), 'down didnt work').to.have.attr('data-focused', 'true');
+                });
 
                 simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), { keyCode: KeyCodes.UP });
 
                 // this should assert first child of root is not focused
                 return waitForDom(() => {
-                    expect(select(getTreeItem(nodeChildren![0].label)), 'up didnt work').to.have.attr('data-focused', 'false');
+                    const item = getTreeItem(nodeChildren![0].label);
+                    expect(select(item), 'up didnt work').to.have.attr('data-focused', 'false');
                     expect(select(rootNode), ).to.have.attr('data-focused', 'true');
                 });
             });
@@ -225,7 +244,7 @@ describe('<TreeView />', () => {
                 await waitForDom(() =>
                     expect(select(getTreeItem(nodeChildren![0].label))).to.have.attr('data-focused', 'true'));
 
-                for (let i = 0; i < nodeChildren![0].children!.length; i++) {
+                for (const child of nodeChildren![0].children!) {
                     simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), { keyCode: KeyCodes.DOWN });
                 }
 
@@ -237,7 +256,8 @@ describe('<TreeView />', () => {
 
                 simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), { keyCode: KeyCodes.DOWN });
 
-                return waitForDom(() => expect(select(getTreeItem(nodeChildren![1].label))).to.have.attr('data-focused', 'true'));
+                return waitForDom(() =>
+                    expect(select(getTreeItem(nodeChildren![1].label))).to.have.attr('data-focused', 'true'));
             });
 
             it('selects currently focused node on Enter click', async () => {
@@ -344,32 +364,55 @@ describe('<TreeView />', () => {
             const stateMap = new TreeStateMap();
 
             it('renders an item', () => {
-                const { select, waitForDom } =
-                    clientRenderer.render(<TreeItem item={item} itemRenderer={TreeItem}
-                                                    state={state} stateMap={stateMap} />);
+                const { select, waitForDom } = clientRenderer.render(
+                    <TreeItem
+                        item={sampleItem}
+                        itemRenderer={TreeItem}
+                        state={state}
+                        stateMap={stateMap}
+                    />
+                );
 
-                return waitForDom(() => expect(select(getTreeItem(item.label))).to.be.present());
+                return waitForDom(() => expect(select(getTreeItem(sampleItem.label))).to.be.present());
             });
 
             it('renders with provided label', () => {
                 const { select, waitForDom } =
-                    clientRenderer.render(<TreeItem item={item} itemRenderer={TreeItem}
-                                                    state={state} stateMap={stateMap} />);
+                    clientRenderer.render(
+                        <TreeItem
+                            item={sampleItem}
+                            itemRenderer={TreeItem}
+                            state={state}
+                            stateMap={stateMap}
+                        />
+                    );
 
-                return waitForDom(() => expect(select(getTreeItem(item.label) + '_LABEL')).to.have.text(item.label));
+                return waitForDom(() =>
+                    expect(select(getTreeItem(sampleItem.label) + '_LABEL')).to.have.text(sampleItem.label));
             });
 
             it('renders with an icon', () => {
-                const { select, waitForDom } =
-                    clientRenderer.render(<TreeItem item={item} itemRenderer={TreeItem}
-                                                    state={state} stateMap={stateMap} />);
+                const { select, waitForDom } = clientRenderer.render(
+                    <TreeItem
+                        item={sampleItem}
+                        itemRenderer={TreeItem}
+                        state={state}
+                        stateMap={stateMap}
+                    />
+                );
 
-                return waitForDom(() => expect(select(getTreeItem(item.label) + '_ICON')).to.be.present());
+                return waitForDom(() => expect(select(getTreeItem(sampleItem.label) + '_ICON')).to.be.present());
             });
 
             it('renders correct children', () => {
-                const { select, waitForDom } = clientRenderer.render(<TreeItem item={nestedItem} itemRenderer={TreeItem}
-                                                                               state={state} stateMap={stateMap} />);
+                const { select, waitForDom } = clientRenderer.render(
+                    <TreeItem
+                        item={nestedItem}
+                        itemRenderer={TreeItem}
+                        state={state}
+                        stateMap={stateMap}
+                    />
+                );
 
                 return waitForDom(() =>
                     nestedItem.children!.forEach((item: TreeItemData) =>
@@ -378,10 +421,17 @@ describe('<TreeView />', () => {
 
             it('invokes onClick when clicked', () => {
                 const onClick = sinon.spy();
-                const { select } = clientRenderer.render(<TreeItem item={item} itemRenderer={TreeItem} onItemClick={onClick}
-                                                                   state={state} stateMap={stateMap} />);
+                const { select } = clientRenderer.render(
+                    <TreeItem
+                        item={sampleItem}
+                        itemRenderer={TreeItem}
+                        onItemClick={onClick}
+                        state={state}
+                        stateMap={stateMap}
+                    />
+                );
 
-                simulate.click(select(getTreeItemLabel(item.label)));
+                simulate.click(select(getTreeItemLabel(sampleItem.label)));
 
                 return waitFor(() => expect(onClick).to.have.been.calledOnce);
             });

@@ -272,7 +272,7 @@ describe('The DatePicker Component', () => {
 
             simulate.mouseDown(select('NEXT_MONTH_BUTTON'));
 
-            return await waitForDom(() => expect(select(datePickerDropdownId)).to.be.present());
+            await waitForDom(() => expect(select(datePickerDropdownId)).to.be.present());
         });
 
         it('should appear when the Enter key is pressed and the openOnFocus property is set to false', async () => {
