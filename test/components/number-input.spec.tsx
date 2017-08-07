@@ -241,7 +241,7 @@ describe('<NumberInput />', () => {
                 });
             });
 
-            it('should increase value by 10*step with ctrl key', async () => {
+            it('should increase value by 10*step with shift key', async () => {
                 const value = 0;
                 const step = 2;
                 const onChange = sinon.spy();
@@ -252,7 +252,7 @@ describe('<NumberInput />', () => {
                 await waitForDom(() => {
                     const input = select('NATIVE_INPUT_NUMBER');
 
-                    simulate.keyDown(input, {keyCode: KeyCodes.up, ctrlKey: true});
+                    simulate.keyDown(input, {keyCode: KeyCodes.up, shiftKey: true});
 
                     assertCommit(input, onChange, value + 10 * step);
                 });
@@ -330,7 +330,7 @@ describe('<NumberInput />', () => {
                 });
             });
 
-            it('should decrease value by 10*step with ctrl key', async () => {
+            it('should decrease value by 10*step with shift key', async () => {
                 const value = 0;
                 const step = 2;
                 const onChange = sinon.spy();
@@ -341,7 +341,7 @@ describe('<NumberInput />', () => {
                 await waitForDom(() => {
                     const input = select('NATIVE_INPUT_NUMBER');
 
-                    simulate.keyDown(input, {keyCode: KeyCodes.down, ctrlKey: true});
+                    simulate.keyDown(input, {keyCode: KeyCodes.down, shiftKey: true});
 
                     assertCommit(input, onChange, value - 10 * step);
                 });

@@ -219,11 +219,11 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
     private handleInputKeyDown: React.KeyboardEventHandler<HTMLElement> = e => {
         switch (e.keyCode) {
             case KeyCodes.up:
-                this.stepValue(Direction.Increase, e.ctrlKey ? 10 : 1);
+                this.stepValue(Direction.Increase, e.shiftKey ? 10 : 1);
                 e.preventDefault();
                 break;
             case KeyCodes.down:
-                this.stepValue(Direction.Decrease, e.ctrlKey ? 10 : 1);
+                this.stepValue(Direction.Decrease, e.shiftKey ? 10 : 1);
                 e.preventDefault();
                 break;
             case KeyCodes.enter:
