@@ -9,6 +9,7 @@ import styles from './number-input.st.css';
 export interface NumberInputProps {
     className?: string;
     value?: number;
+    defaultValue?: number;
     placeholder?: string;
     min?: number;
     max?: number;
@@ -86,20 +87,21 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
         super(props);
 
         this.state = {
-            value: props.value,
+            value: isNumber(props.value) ? props.value : props.defaultValue,
             focus: false,
             error: Boolean(props.error)
         };
     }
 
-    public componentWillReceiveProps({value}: NumberInputProps) {
+    public componentWillReceiveProps({value, defaultValue}: NumberInputProps) {
         const {min, max} = this.props;
 
-        if (value !== this.state.value) {
+        if (defaultValue === undefined && value !== this.state.value) {
             this.committed = true;
             this.setState({value});
         }
     }
+
     public render() {
         const {value, focus, error} = this.state;
         const {
