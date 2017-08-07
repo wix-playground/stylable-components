@@ -1,8 +1,8 @@
 import React = require('react');
 import {SBComponent} from 'stylable-react-component';
 import {CheckBox, CheckBoxIconProps} from '../../src';
-import style from './checkbox-demo.st.css';
 import buttonStyle from '../../src/style/default-theme/controls/button.st.css';
+import style from './checkbox-demo.st.css';
 
 export const demoCheckBoxText: string = 'Yes, I\'m over 18 years old';
 

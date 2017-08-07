@@ -1,6 +1,6 @@
-import * as React from 'react';
-import { expect, ClientRenderer, sinon, simulate } from 'test-drive-react';
 import { codes as KeyCodes} from 'keycode';
+import * as React from 'react';
+import { ClientRenderer, expect, simulate, sinon } from 'test-drive-react';
 import { NumberInput } from '../../src';
 
 const inputs = new WeakSet();
