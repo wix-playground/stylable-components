@@ -120,6 +120,7 @@ describe.only('<Slider />', () => {
     const max = 10;
 
     let onChange: (value: number) => void;
+    let onInput: (value: string) => void;
     let select: (automationId: string) => HTMLElement | null;
     let waitForDom: (expectation: Function) => Promise<void>;
     let environment: Element;
@@ -127,12 +128,14 @@ describe.only('<Slider />', () => {
     beforeEach(() => {
       environment = document.createElement("body");
       onChange = sinon.spy();
+      onInput = sinon.spy();
       const rendered = clientRenderer.render(
         <Slider
           value={value}
           min={min}
           max={max}
           onChange={onChange}
+          onInput={onInput}
           environment={environment}
         />
       );
@@ -167,20 +170,176 @@ describe.only('<Slider />', () => {
 
         simulate.mouseDown(element, {
           currentTarget: element!,
-          clientX: Math.round(bounds.left + bounds.width * 0.7)
+          clientX: Math.round(bounds.left + bounds.width * 0.5)
+        });
+        simulateMouseEvent(
+          environment,
+          'mouseup',
+          {clientX: Math.round(bounds.left + bounds.width * 0.7)}
+        );
+
+        expect(onChange).to.be.calledWith(7);
+      });
+    });
+
+    it('should call onInput', async () => {
+      await waitFor(() => {
+        const element = select('SLIDER');
+        const handle = select('SLIDER-HANDLE');
+        const progress = select('SLIDER-PROGRESS');
+        const bounds = element!.getBoundingClientRect();
+
+        simulate.mouseDown(element, {
+          currentTarget: element!,
+          clientX: Math.round(bounds.left + bounds.width * 0.5)
         });
         simulateMouseEvent(
           environment,
           'mousemove',
-          {clientX: Math.round(bounds.left + bounds.width * 0.75)}
+          {clientX: Math.round(bounds.left + bounds.width * 0.6)}
         );
         simulateMouseEvent(
           environment,
           'mouseup',
-          {clientX: Math.round(bounds.left + bounds.width * 0.8)}
+          { clientX: Math.round(bounds.left + bounds.width * 0.7) }
+        );
+
+        expect(onInput).to.be.calledWith('6');
+        expect(onChange).to.be.calledWith(7);
+      });
+    });
+  });
+
+  describe('dragging with step', () => {
+    const value = 5;
+    const min = 0;
+    const max = 10;
+    const step = 1;
+    let onChange: (value: number) => void;
+    let onInput: (value: string) => void;
+    let select: (automationId: string) => HTMLElement | null;
+    let waitForDom: (expectation: Function) => Promise<void>;
+    let environment: Element;
+
+    beforeEach(() => {
+      environment = document.createElement("body");
+      onChange = sinon.spy();
+      onInput = sinon.spy();
+
+      const rendered = clientRenderer.render(
+        <Slider
+          value={value}
+          min={min}
+          max={max}
+          step={step}
+          onChange={onChange}
+          onInput={onInput}
+          environment={environment}
+        />
+      );
+
+      select = rendered.select;
+      waitForDom = rendered.waitForDom;
+    });
+
+    it('renders ok', async () => {
+      await waitForDom(() => {
+        const element = select('SLIDER');
+
+        expect(element).to.be.present();
+      });
+    });
+
+    it('renders handle on the right place', async () => {
+      await waitForDom(() => {
+        const element = select('SLIDER-HANDLE');
+
+        expect(element!.style.left).to.equal('50%');
+      });
+    });
+
+    it('renders progress bar with the right width', async () => {
+      await waitForDom(() => {
+        const element = select('SLIDER-PROGRESS');
+
+        expect(element).to.be.present();
+        expect(element!.style.width).to.equal('50%');
+      });
+    });
+
+    it('renders invisible native input with right value', async () => {
+      await waitForDom(() => {
+        const element = select('SLIDER-NATIVE-INPUT');
+
+        expect(element).to.be.present();
+        expect(element).to.has.value(String(value));
+      });
+    });
+
+
+    it('should change value according to step', async () => {
+      await waitFor(() => {
+        const element = select('SLIDER');
+        const handle = select('SLIDER-HANDLE');
+        const progress = select('SLIDER-PROGRESS');
+        const bounds = element!.getBoundingClientRect();
+
+        simulate.mouseDown(element, {
+          currentTarget: element!,
+          clientY: bounds.top + bounds.height / 3,
+          clientX: Math.round(bounds.left + bounds.width * 0.77)
+        });
+
+        expect(handle!.style.left).to.equal('80%');
+        expect(progress!.style.width).to.equal('80%');
+      });
+    });
+
+    it('should call onChange with value normilized to step', async () => {
+      await waitFor(() => {
+        const element = select('SLIDER');
+        const handle = select('SLIDER-HANDLE');
+        const progress = select('SLIDER-PROGRESS');
+        const bounds = element!.getBoundingClientRect();
+
+        simulate.mouseDown(element, {
+          currentTarget: element!,
+          clientX: Math.round(bounds.left + bounds.width * 0.5)
+        });
+        simulateMouseEvent(
+          environment,
+          'mouseup',
+          { clientX: Math.round(bounds.left + bounds.width * 0.77) }
         );
 
         expect(onChange).to.be.calledWith(8);
+      });
+    });
+
+    it('should call onInput with value normilized to step', async () => {
+      await waitFor(() => {
+        const element = select('SLIDER');
+        const handle = select('SLIDER-HANDLE');
+        const progress = select('SLIDER-PROGRESS');
+        const bounds = element!.getBoundingClientRect();
+
+        simulate.mouseDown(element, {
+          currentTarget: element!,
+          clientX: Math.round(bounds.left + bounds.width * 0.5)
+        });
+        simulateMouseEvent(
+          environment,
+          'mousemove',
+          { clientX: Math.round(bounds.left + bounds.width * 0.56) }
+        );
+        simulateMouseEvent(
+          environment,
+          'mouseup',
+          { clientX: Math.round(bounds.left + bounds.width * 0.66) }
+        );
+
+        expect(onInput).to.be.calledWith('6');
+        expect(onChange).to.be.calledWith(7);
       });
     });
   });

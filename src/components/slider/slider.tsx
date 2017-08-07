@@ -78,7 +78,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
   
   private sliderArea: HTMLElement;
   
-  private requestAnimationFrame: (callback: FrameRequestCallback) => any = noop;
+  private isSliderMounted: boolean = false;
 
   constructor(props: SliderProps, context?: any) {
     super(props, context);
@@ -95,11 +95,11 @@ export class Slider extends React.Component<SliderProps, SliderState> {
   }
 
   componentDidMount() {
-    this.requestAnimationFrame = requestAnimationFrame.bind(window);
+    this.isSliderMounted = true;
   }
 
   componentWillUnmount() {
-    this.requestAnimationFrame = noop;
+    this.isSliderMounted = false;
   }
 
   componentWillReceiveProps(nextProps: SliderProps) {
@@ -202,13 +202,18 @@ export class Slider extends React.Component<SliderProps, SliderState> {
   private onSliderAreaMouseMove(event: MouseEvent) {
     const relativeValue = this.getValueFromElementAndPointer(this.sliderArea, event.clientX);
 
-    this.requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      if (!this.isSliderMounted) {
+        return;
+      }
+
       this.setState({
         relativeValue
       });
     });
 
     this.onDrag(event);
+    this.props.onInput!(String(this.getAbsoluteValue(relativeValue)));
   }
 
   private onSliderAreaMouseUp(event: MouseEvent) {
