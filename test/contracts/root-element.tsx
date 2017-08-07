@@ -1,12 +1,13 @@
 import {ClientRenderer, expect, RenderingContext, simulate, sinon, waitFor} from 'test-drive-react';
 import React = require('react');
+import {findDOMNode} from 'react-dom';
 
 export function assertRootElementContract(Component: React.ComponentType<any>): void {
     describe('Root Element contract', function() {
         const clientRenderer = new ClientRenderer();
         function render<P>(element: React.ReactElement<P>): RenderingContext<P> & { node: Element } {
             const output = clientRenderer.render(element);
-            return { node: output.container.children[0], ...output};
+            return { node: findDOMNode(output.result as React.ReactInstance), ...output};
         }
 
         afterEach(() => {
