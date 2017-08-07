@@ -66,11 +66,11 @@ export class Calendar extends React.Component<CalendarProps, {}> {
         );
     }
 
-    private setDate(date: Date) {
+    private setDate = (date: Date) => {
         this.props.updateDropdownDate(date);
     }
 
-    private selectDay(day: number) {
+    private selectDay = (day: number) => {
         const date = new Date(this.props.value.getFullYear(), this.props.value.getMonth(), day);
         this.props.onChange(date);
     }
