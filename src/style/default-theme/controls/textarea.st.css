@@ -3,7 +3,7 @@
     -st-named: borderRadius;
 }
 
-.textarea {
+.root {
     height: auto;
     min-height: 50px;
     border-radius: value(borderRadius);
