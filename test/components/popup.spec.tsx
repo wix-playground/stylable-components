@@ -191,8 +191,6 @@ describe('<Popup />', function() {
                                 </Popup>);
 
                             return waitForDom(() => {
-                                console.log(1, div.getBoundingClientRect());
-                                console.log(2, bodySelect(popup)!.getBoundingClientRect());
                                 expect(
                                     topResults[popupVertical][anchorVertical](div, bodySelect(popup) as HTMLElement),
                                     'vertical test failed'

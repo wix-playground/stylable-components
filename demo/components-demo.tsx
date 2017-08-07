@@ -3,6 +3,7 @@ import '../src/style/default-theme/base.st.css';
 import { BirthdayPickerDemo } from './components/birthday-picker-demo';
 import {CheckBoxDemo} from './components/checkbox-demo';
 import {DatePickerDemo} from './components/date-picker-demo';
+import {NumberInputDemo} from './components/number-input.demo';
 import { PopupDemo } from './components/popup-demo';
 import { RadioGroupDemo } from './components/radio-group-demo';
 import { SelectionListDemo } from './components/selection-list-demo';
@@ -143,7 +144,11 @@ export class ComponentsDemo extends React.Component<{}, {}> {
                     <h2>Popup</h2>
                     <PopupDemo/>
                 </div>
-            </div>
-        );
+                <hr />
+                <div>
+                    <h2>NumberInput</h2>
+                    <NumberInputDemo />
+                </div>
+            </div>);
     }
 }
