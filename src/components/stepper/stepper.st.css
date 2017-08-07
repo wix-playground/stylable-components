@@ -1,0 +1,65 @@
+:import {
+    -st-from: "../../style/default-theme/variables.st.css";
+    -st-named: color_MainText,
+               color_MainText_Background,
+               color_Disabled,
+               borderWidth,
+               inputHeight;
+}
+
+:import {
+    -st-from: "../../style/default-theme/controls/button.st.css";
+}
+
+.root {
+    display: inline-block;
+
+    position: relative;
+
+    width: value(inputHeight);
+    height: value(inputHeight);
+}
+
+.control {
+    width: 100%;
+
+    display: flex;
+
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+
+    position: absolute;
+
+    margin: 0;
+    padding: 0;
+
+    background-color: value(color_MainText_Background);
+    color: value(color_MainText);
+}
+
+.control-icon {
+    color: value(color_MainText);
+    width: 16px;
+    height: 16px;
+}
+
+.control:hover .control-icon,
+.control:focus .control-icon,
+.control:disabled .control-icon {
+    color: value(color_MainText_Background);
+}
+
+.up {
+    top: 0;
+    right: 0;
+    bottom: 50%;
+    left: 0;
+}
+
+.down {
+    top: 50%;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}

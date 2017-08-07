@@ -30,7 +30,7 @@ An example branch name might be:
 #### Pull Request
 
 **Title**: Our Own Theme Park<br>
-**Description**: This PR contains our own theme park implementation, which contains a **Blackjack module** and closes issue #42
+**Description**: This PR contains our own theme park implementation, which contains a **Blackjack module** and closes #42
 
 ## Merging PRs
 
@@ -52,7 +52,7 @@ username/own_theme_park (#43)  …
 * tests
 ```
 
-That is ugly and quite useless. 
+That is ugly and quite useless.
 
 Write meaningful text when you're merging PRs. So it looks more like this:
 
