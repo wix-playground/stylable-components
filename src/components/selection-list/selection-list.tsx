@@ -75,7 +75,7 @@ export interface SelectionListProps extends OptionList {
     value?: string;
     onChange?: (value: string) => void;
     style?: any;
-    children?: any;
+    className?: string;
 }
 
 @SBComponent(style)
@@ -93,9 +93,19 @@ export class SelectionList extends React.Component<SelectionListProps, {}> {
             'onClick': this.handleClick
         });
 
+        const dataItems = this.props.dataSource!.map((item, index) =>
+            this.renderDataItem(item, index)
+        );
+
+        const childItems = React.Children.map(
+            this.props.children,
+            (child, index) => this.renderChild(child)
+        );
+
         return (
             <div {...rootProps}>
-                {this.props.dataSource!.map((item, index) => this.renderItem(item, index))}
+                {dataItems}
+                {childItems}
             </div>
         );
     }
@@ -113,7 +123,7 @@ export class SelectionList extends React.Component<SelectionListProps, {}> {
             renameKeys(item, this.props.dataSchema) : item;
     }
 
-    private renderItem(item: SelectionItem, index: number) {
+    private renderDataItem(item: SelectionItem, index: number) {
         const ItemRenderer = this.props.itemRenderer!;
         const normalized = this.normalizeItem(item);
         return (
@@ -126,10 +136,28 @@ export class SelectionList extends React.Component<SelectionListProps, {}> {
         );
     }
 
+    private readValueFromChild(child: React.ReactNode) {
+        return child && typeof child === 'object' ?
+            (child as React.ReactElement<any>).props['data-value'] :
+            undefined;
+    }
+
+    private renderChild(child: React.ReactNode) {
+        if (this.props.value !== undefined &&
+            this.readValueFromChild(child) === this.props.value
+        ) {
+            return React.cloneElement(
+                child as React.ReactElement<any>,
+                {'data-selected': true}
+            );
+        }
+        return child;
+    }
+
     private handleClick: React.EventHandler<React.MouseEvent<HTMLElement>> = event => {
-        const elem = ReactDOM.findDOMNode(this);
+        const listRoot = ReactDOM.findDOMNode(this);
         const item = closestElementMatching(
-            el => el.parentElement === elem,
+            el => el.parentElement === listRoot,
             event.target as HTMLElement
         );
         if (!item) {
