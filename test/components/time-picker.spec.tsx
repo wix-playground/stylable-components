@@ -4,8 +4,9 @@ import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react
 import {TimePicker} from '../../src';
 import {hasCssState} from '../utils/has-css-state';
 import styles from '../../src/components/time-picker/time-picker.st.css';
+import {pad2, to24, toAmpm, isValidValue, Ampm} from '../../src/components/time-picker/utils';
 
-describe.only('<TimePicker/>', () => {
+describe('<TimePicker/>', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
 
@@ -238,11 +239,65 @@ describe.only('<TimePicker/>', () => {
 
 describe('TimePicker/utils', () => {
     describe('pad2()', () => {
+        it('""', () => {
+            expect(pad2('')).to.equal('00');
+        });
+        it('"1"', () => {
+            expect(pad2('1')).to.equal('01');
+        });
+        it('"12"', () => {
+            expect(pad2('12')).to.equal('12');
+        });
     });
     describe('to24()', () => {
+        it('12 AM = 0', () => {
+            expect(to24(12, Ampm.AM)).to.equal(0);
+        });
+        it('1 AM = 1', () => {
+            expect(to24(1, Ampm.AM)).to.equal(1);
+        });
+        it('12 PM = 12', () => {
+            expect(to24(12, Ampm.PM)).to.equal(12);
+        });
+        it('11 PM = 23', () => {
+            expect(to24(11, Ampm.PM)).to.equal(23);
+        });
     });
     describe('toAmpm()', () => {
+        it('0 = 12 AM', () => {
+            expect(toAmpm(0)).to.deep.equal({hh: 12, ampm: Ampm.AM});
+        });
+        it('1 = 1 AM', () => {
+            expect(toAmpm(1)).to.deep.equal({hh: 1, ampm: Ampm.AM});
+        });
+        it('12 = 12 PM', () => {
+            expect(toAmpm(12)).to.deep.equal({hh: 12, ampm: Ampm.PM});
+        });
+        it('15 = 3 PM', () => {
+            expect(toAmpm(15)).to.deep.equal({hh: 3, ampm: Ampm.PM});
+        });
     });
     describe('isValidValue()', () => {
+        it('11:00 AM = true', () => {
+            expect(isValidValue(11, 'hh', Ampm.AM)).to.equal(true);
+        });
+        it('11:00 PM = true', () => {
+            expect(isValidValue(11, 'hh', Ampm.PM)).to.equal(true);
+        });
+        it('13:00 PM = false', () => {
+            expect(isValidValue(13, 'hh', Ampm.PM)).to.equal(false);
+        });
+        it('13:00 = true', () => {
+            expect(isValidValue(13, 'hh', Ampm.NONE)).to.equal(true);
+        });
+        it('25:00 = false', () => {
+            expect(isValidValue(25, 'hh', Ampm.NONE)).to.equal(false);
+        });
+        it('11:25 = true', () => {
+            expect(isValidValue(25, 'mm', Ampm.NONE)).to.equal(true);
+        });
+        it('11:65 = false', () => {
+            expect(isValidValue(65, 'mm', Ampm.NONE)).to.equal(false);
+        });
     });
 });
