@@ -2,7 +2,7 @@ import React = require('react');
 import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react';
 import {BasicDemo, demoCheckBoxText, DisabledDemo, IndeterminateDemo} from '../../demo/components/checkbox-demo';
 import {CheckBox, CheckBoxIconProps} from '../../src';
-import {assertRootElementContract} from "../contracts/root-element";
+import {assertRootElementContract} from '../contracts/root-element';
 
 const boxSVG: React.SFC<CheckBoxIconProps> = props => {
     return (
