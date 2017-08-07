@@ -15,10 +15,15 @@
 .tree-node {
     -st-states: selected, focused;
     cursor: pointer;
-    display: inline;
+    display: inline-block;
     padding: 3px 7px 5px;
     width: 228px;
-    height: 24px;
+
+    border: 1px solid transparent;
+}
+
+.tree-node:hover {
+    border: 1px solid value(color_treeFocused);
 }
 
 .tree-node:focused {
