@@ -16,7 +16,12 @@ export class DatePickerDemo extends React.Component<Partial<DatePickerProps>, Da
             <div>
                 <h2>Standard DatePicker</h2>
                 <span data-automation-id="CURRENT_DATE">{this.state.value.toDateString()}</span>
-                <DatePicker dataAutomationId="BASIC_DATEPICKER" placeholder="mm/dd/yyyy" value={this.state.value} onChange={this.onChange} {...this.props} /></div>
+                <DatePicker dataAutomationId="BASIC_DATEPICKER"
+                            placeholder="mm/dd/yyyy"
+                            value={this.state.value}
+                            onChange={this.onChange}
+                            {...this.props} />
+            </div>
         );
     }
 
@@ -49,7 +54,13 @@ export class DatePickerDemoStartingDay extends React.Component<Partial<DatePicke
                     </select>
                 </span>
                 <span data-automation-id="CURRENT_DATE">{this.state.value!.toDateString()}</span>
-                <DatePicker placeholder="mm/dd/yyyy" startingDay={this.state.startingDay!} showDropdownOnInit={true} value={this.state.value!} onChange={this.onChange} {...this.props} />
+                <DatePicker placeholder="mm/dd/yyyy"
+                            startingDay={this.state.startingDay!}
+                            showDropdownOnInit={true}
+                            value={this.state.value!}
+                            onChange={this.onChange}
+                            {...this.props}
+                />
             </div>
         );
     }

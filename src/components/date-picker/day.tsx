@@ -1,6 +1,6 @@
-import * as React from 'react';
 import {computed} from 'mobx';
 import {observer} from 'mobx-react';
+import * as React from 'react';
 
 import styles from './date-picker.st.css';
 
@@ -12,7 +12,7 @@ export interface DayProps {
     partOfPrevMonth?: boolean;
     partOfNextMonth?: boolean;
     dataAutomationId?: string;
-    onSelect? (day: number): void;
+    onSelect?(day: number): void;
 }
 
 @observer
@@ -36,13 +36,13 @@ export class Day extends React.Component<DayProps, {}> {
         }
     }
 
-    onMouseDown: React.EventHandler<React.SyntheticEvent<Element>> = (event) => {
+    onMouseDown: React.EventHandler<React.SyntheticEvent<Element>> = event => {
         event.preventDefault();
 
         if (this.props.onSelect) {
             this.props.onSelect(this.props.day);
         }
-    };
+    }
 
     render() {
         return (

@@ -26,7 +26,8 @@ describe('The DatePicker Component', () => {
     const DECEMBER_FIRST = new Date(2017, 11, 1);
 
     describe('A Typical User', () => {
-        it('writes into the date picker input field, presses enter, and expects the date picker input to have the proper value', async () => {
+        it('writes into the date picker input field, presses enter, ' +
+            'and expects the date picker input to have the proper value', async () => {
             const {select, waitForDom} = clientRenderer.render(<DatePickerDemo />);
 
             const datePickerInput = select(datePickerInputId);
@@ -36,7 +37,8 @@ describe('The DatePicker Component', () => {
             await waitForDom(() => expect(select(currentDate)).to.have.text('Wed Feb 01 2017'));
         });
 
-        it('clicks on the input, picks a date from the dropdown, and then expects the dropdown to close and the date to appear in the input', async () => {
+        it('clicks on the input, picks a date from the dropdown, ' +
+            'and then expects the dropdown to close and the date to appear in the input', async () => {
             const {select, waitForDom} = clientRenderer.render(<DatePickerDemo value={JANUARY_FIRST} />);
             const datePickerInput = select(datePickerInputId);
 
@@ -119,7 +121,12 @@ describe('The DatePicker Component', () => {
         ];
 
         it('should display the days for a fixed month', async () => {
-            const {select, waitForDom} = clientRenderer.render(<DatePicker showDropdownOnInit={true} value={FEBRUARY_FIRST} />);
+            const {select, waitForDom} = clientRenderer.render(
+                <DatePicker
+                    showDropdownOnInit={true}
+                    value={FEBRUARY_FIRST}
+                />
+            );
 
             await waitForDom(() => {
                 dayNames.forEach(dayName => expect(select(`DAY_NAME_${dayName.toUpperCase()}`)).to.have.text(dayName));
@@ -128,7 +135,12 @@ describe('The DatePicker Component', () => {
         });
 
         it('should show the next and previous month buttons horizontally aligned with the month and year', async () => {
-            const {select, waitForDom} = clientRenderer.render(<DatePicker showDropdownOnInit={true} value={JANUARY_FIRST} />);
+            const {select, waitForDom} = clientRenderer.render(
+                <DatePicker
+                    showDropdownOnInit={true}
+                    value={JANUARY_FIRST}
+                />
+            );
 
             await waitForDom(() => {
                 expect([
@@ -141,7 +153,12 @@ describe('The DatePicker Component', () => {
         });
 
         it('should display the day names in horizontal sequence, and vertically aligned', async () => {
-            const {select, waitForDom} = clientRenderer.render(<DatePicker showDropdownOnInit={true} value={JANUARY_FIRST} />);
+            const {select, waitForDom} = clientRenderer.render(
+                <DatePicker
+                    showDropdownOnInit={true}
+                    value={JANUARY_FIRST}
+                />
+            );
 
             const dayNameIds = dayNames.map(name => 'DAY_NAME_' + name.toUpperCase());
 
@@ -180,7 +197,12 @@ describe('The DatePicker Component', () => {
         }
 
         it('should display the days in a grid', async () => {
-            const {waitForDom} = clientRenderer.render(<DatePicker value={JANUARY_FIRST} showDropdownOnInit={true}/>);
+            const {waitForDom} = clientRenderer.render(
+                <DatePicker
+                    value={JANUARY_FIRST}
+                    showDropdownOnInit={true}
+                />
+            );
 
             await waitForDom(() => {
                 // Check that the days are displayed in rows (checking that each row is in horizontal sequence
@@ -194,7 +216,12 @@ describe('The DatePicker Component', () => {
         });
 
         it('should show the days starting on the correct day of the week', async () => {
-            const {select, waitForDom} = clientRenderer.render(<DatePicker value={MARCH_FIRST} showDropdownOnInit={true} />);
+            const {select, waitForDom} = clientRenderer.render(
+                <DatePicker
+                    value={MARCH_FIRST}
+                    showDropdownOnInit={true}
+                />
+            );
 
             await waitForDom(() => expect([
                 select('DAY_1'),
@@ -203,7 +230,12 @@ describe('The DatePicker Component', () => {
         });
 
         it('should show the trailing days from the last and next months', function () {
-            const {select} = clientRenderer.render(<DatePicker value={MARCH_FIRST} showDropdownOnInit={true} />);
+            const {select} = clientRenderer.render(
+                <DatePicker
+                    value={MARCH_FIRST}
+                    showDropdownOnInit={true}
+                />
+            );
 
             expect(select('PREV_DAY_26')).to.be.present();
             expect(select('PREV_DAY_27')).to.be.present();
@@ -213,20 +245,35 @@ describe('The DatePicker Component', () => {
         });
 
         it('displays the year', async () => {
-            const {select, waitForDom} = clientRenderer.render(<DatePicker showDropdownOnInit={true} value={JANUARY_FIRST} />);
+            const {select, waitForDom} = clientRenderer.render(
+                <DatePicker
+                    showDropdownOnInit={true}
+                    value={JANUARY_FIRST}
+                />
+            );
 
             await waitForDom(() => expect(select('YEAR')).to.have.text('2017'));
         });
 
         it('displays the name of the month', async () => {
-            const {select, waitForDom} = clientRenderer.render(<DatePicker showDropdownOnInit={true} value={JANUARY_FIRST} />);
+            const {select, waitForDom} = clientRenderer.render(
+                <DatePicker
+                    showDropdownOnInit={true}
+                    value={JANUARY_FIRST}
+                />
+            );
 
             await waitForDom(() => expect(select('MONTH_NAME')).to.have.text('January'));
         });
 
         it('displays the days of the week', async () => {
             const dayNames = getDayNames();
-            const {select, waitForDom} = clientRenderer.render(<DatePicker showDropdownOnInit={true} value={JANUARY_FIRST} />);
+            const {select, waitForDom} = clientRenderer.render(
+                <DatePicker
+                    showDropdownOnInit={true}
+                    value={JANUARY_FIRST}
+                />
+            );
 
             await waitForDom(() => {
                 for (let i = 0; i < dayNames.length; i++) {
@@ -236,7 +283,12 @@ describe('The DatePicker Component', () => {
         });
 
         it('has a button which steps forward a month', async () => {
-            const {select, waitForDom} = clientRenderer.render(<DatePicker showDropdownOnInit={true} value={DECEMBER_FIRST} />);
+            const {select, waitForDom} = clientRenderer.render(
+                <DatePicker
+                    showDropdownOnInit={true}
+                    value={DECEMBER_FIRST}
+                />
+            );
 
             expect(select('YEAR')).to.have.text('2017');
             expect(select('MONTH_NAME')).to.have.text('December');
@@ -249,7 +301,12 @@ describe('The DatePicker Component', () => {
         });
 
         it('has a button which steps back a month', async () => {
-            const {select, waitForDom} = clientRenderer.render(<DatePicker showDropdownOnInit={true} value={JANUARY_FIRST} />);
+            const {select, waitForDom} = clientRenderer.render(
+                <DatePicker
+                    showDropdownOnInit={true}
+                    value={JANUARY_FIRST}
+                />
+            );
 
             expect(select('YEAR')).to.have.text('2017');
             expect(select('MONTH_NAME')).to.have.text('January');
