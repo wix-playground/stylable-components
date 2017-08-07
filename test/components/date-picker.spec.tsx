@@ -52,7 +52,7 @@ describe('The DatePicker Component', () => {
 
             await waitForDom(() => {
                 expect(select(datePickerDropdownId)).to.be.absent();
-                expect(select(currentDate)).to.have.text('Wed Jan 04 2017')
+                expect(select(currentDate)).to.have.text('Wed Jan 04 2017');
             });
         });
     });
@@ -94,7 +94,7 @@ describe('The DatePicker Component', () => {
         await waitForDom(() => expect(select(datePickerDropdownId)).to.be.absent());
     });
 
-    it('can be changed with the arrow keys', async function () {
+    it('can be changed with the arrow keys', async function() {
         const {select, waitForDom} = clientRenderer.render(<DatePicker value={JANUARY_FIRST} openOnFocus={true} />);
         const datePickerInput = select(datePickerInputId);
 
@@ -108,7 +108,7 @@ describe('The DatePicker Component', () => {
 
         await waitForDom(() => {
             expect(select(datePickerDropdownId)).to.be.absent();
-            expect(datePickerInput).to.have.value('Sun Jan 08 2017')
+            expect(datePickerInput).to.have.value('Sun Jan 08 2017');
         });
     });
 
@@ -174,7 +174,7 @@ describe('The DatePicker Component', () => {
             });
         });
 
-        function elementsInRow (row: number) {
+        function elementsInRow(row: number) {
             const rowElements = [];
             const select = selectDom(document.body);
 
@@ -185,7 +185,7 @@ describe('The DatePicker Component', () => {
             return rowElements;
         }
 
-        function elementsInColumn (column: number) {
+        function elementsInColumn(column: number) {
             const columnElements = [];
             const select = selectDom(document.body);
 
@@ -229,7 +229,7 @@ describe('The DatePicker Component', () => {
             ]).to.be.horizontallyAligned('center'));
         });
 
-        it('should show the trailing days from the last and next months', function () {
+        it('should show the trailing days from the last and next months', function() {
             const {select} = clientRenderer.render(
                 <DatePicker
                     value={MARCH_FIRST}
@@ -267,7 +267,7 @@ describe('The DatePicker Component', () => {
         });
 
         it('displays the days of the week', async () => {
-            const dayNames = getDayNames();
+            const daysOfTheWeek = getDayNames();
             const {select, waitForDom} = clientRenderer.render(
                 <DatePicker
                     showDropdownOnInit={true}
@@ -276,8 +276,9 @@ describe('The DatePicker Component', () => {
             );
 
             await waitForDom(() => {
-                for (let i = 0; i < dayNames.length; i++) {
-                    expect(select('DAY_NAME_' + dayNames[i].toUpperCase())).to.have.text(dayNames[i]);
+                for (const day of daysOfTheWeek) {
+                    expect(select('DAY_NAME_' + day.toUpperCase())).to.have.text(day);
+
                 }
             });
         });
@@ -357,7 +358,7 @@ describe('The DatePicker Component', () => {
         });
     });
 
-    describe('The Helper Functions', function () {
+    describe('The Helper Functions', function() {
         it('getMonthFromOffset should return the next month when the second argument is 1', () => {
             const date = new Date('Mar 6 2017');
             const nextMonth = getMonthFromOffset(date, 1);

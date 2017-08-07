@@ -17,6 +17,18 @@ export interface DayProps {
 
 @observer
 export class Day extends React.Component<DayProps, {}> {
+    public render() {
+        return (
+            <span
+                className={this.styles}
+                onMouseDown={this.onMouseDown}
+                data-automation-id={this.props.dataAutomationId}
+            >
+                {this.props.day}
+            </span>
+        );
+    }
+
     @computed
     get styles(): string {
         if (this.props.focused && this.props.selected) {
@@ -36,21 +48,11 @@ export class Day extends React.Component<DayProps, {}> {
         }
     }
 
-    onMouseDown: React.EventHandler<React.SyntheticEvent<Element>> = event => {
+    private onMouseDown: React.EventHandler<React.SyntheticEvent<Element>> = event => {
         event.preventDefault();
 
         if (this.props.onSelect) {
             this.props.onSelect(this.props.day);
         }
-    }
-
-    render() {
-        return (
-            <span className={this.styles}
-                     onMouseDown={this.onMouseDown}
-                     data-automation-id={this.props.dataAutomationId}>
-                {this.props.day}
-            </span>
-        );
     }
 }

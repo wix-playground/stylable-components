@@ -137,7 +137,7 @@ export class DatePicker extends React.Component<Partial<DatePickerProps>, DatePi
         });
     }
 
-    private onKeyDown: React.EventHandler<SyntheticEvent<HTMLInputElement>> = (event): void => {
+    private onKeyDown: React.EventHandler<SyntheticEvent<Element>> = (event: React.KeyboardEvent<Element>): void => {
         const eventTarget = event.target as HTMLInputElement;
         const {keyCode} = event;
 

@@ -11,39 +11,44 @@ export class DatePickerDemo extends React.Component<Partial<DatePickerProps>, Da
         this.setState({ value: this.props.value ? this.props.value : new Date() });
     }
 
-    public render () {
+    public render() {
         return (
             <div>
                 <h2>Standard DatePicker</h2>
                 <span data-automation-id="CURRENT_DATE">{this.state.value.toDateString()}</span>
-                <DatePicker dataAutomationId="BASIC_DATEPICKER"
-                            placeholder="mm/dd/yyyy"
-                            value={this.state.value}
-                            onChange={this.onChange}
-                            {...this.props} />
+                <DatePicker
+                    dataAutomationId="BASIC_DATEPICKER"
+                    placeholder="mm/dd/yyyy"
+                    value={this.state.value}
+                    onChange={this.onChange}
+                    {...this.props}
+                />
             </div>
         );
     }
 
     private onChange = (updatedDate: Date): void => {
         this.setState({value: updatedDate });
-    };
+    }
 }
 
 export class DatePickerDemoStartingDay extends React.Component<Partial<DatePickerProps>, Partial<DatePickerDemoState>> {
-    componentWillMount () {
+    public componentWillMount() {
         this.setState({
             value: this.props.value ? this.props.value : new Date(),
             startingDay: 0
         });
     }
 
-    public render () {
+    public render() {
         return (
             <div>
                 <h2>DatePicker with variable week (and showDropdown set to true)</h2>
                 <span>
-                    <select value={this.state.startingDay} onChange={(event: React.SyntheticEvent<HTMLSelectElement>) => this.setStartingDay(event)}>
+                    <select
+                        value={this.state.startingDay}
+                        onChange={this.setStartingDay}
+                    >
                         <option value="0">Sunday</option>
                         <option value="1">Monday</option>
                         <option value="2">Tuesday</option>
@@ -54,12 +59,13 @@ export class DatePickerDemoStartingDay extends React.Component<Partial<DatePicke
                     </select>
                 </span>
                 <span data-automation-id="CURRENT_DATE">{this.state.value!.toDateString()}</span>
-                <DatePicker placeholder="mm/dd/yyyy"
-                            startingDay={this.state.startingDay!}
-                            showDropdownOnInit={true}
-                            value={this.state.value!}
-                            onChange={this.onChange}
-                            {...this.props}
+                <DatePicker
+                    placeholder="mm/dd/yyyy"
+                    startingDay={this.state.startingDay!}
+                    showDropdownOnInit={true}
+                    value={this.state.value!}
+                    onChange={this.onChange}
+                    {...this.props}
                 />
             </div>
         );
@@ -67,8 +73,8 @@ export class DatePickerDemoStartingDay extends React.Component<Partial<DatePicke
 
     private setStartingDay = (event: React.SyntheticEvent<HTMLSelectElement>): void => {
         const target = event.target as HTMLSelectElement;
-        this.setState({ startingDay: parseInt(target.value) });
-    };
+        this.setState({ startingDay: parseInt(target.value, 10) });
+    }
 
     private onChange = (updatedDate: Date): void => {
         this.setState({value: updatedDate });
