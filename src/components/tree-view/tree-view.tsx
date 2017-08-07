@@ -7,6 +7,7 @@ import { root } from 'wix-react-tools';
 import * as keycode from 'keycode';
 import { SBComponent, SBStateless } from 'stylable-react-component';
 import style from './tree-view.st.css';
+import {MinusIcon, PlusIcon} from "./tree-view-icons";
 
 const KeyCodes: any = {
     ENTER: keycode('enter'),
@@ -70,11 +71,12 @@ export const TreeItem: React.SFC<TreeItemProps> =
                         data-automation-id={`${itemIdPrefix}_${itemLabel}_ICON`}
                         onClick={onIconClick && onIconClick.bind(null, item)}
                     >
-                        &gt;&nbsp;
+                        {item.children ? (state!.isExpanded ? <MinusIcon className="tree-item-icon"/> : <PlusIcon className="tree-item-icon"/>) : null}
                     </span>
                     <span
                         data-automation-id={`${itemIdPrefix}_${itemLabel}_LABEL`}
                         onClick={onItemClick && onItemClick.bind(null, item)}
+                        className="tree-item-label"
                     >
                         {item.label}
                     </span>

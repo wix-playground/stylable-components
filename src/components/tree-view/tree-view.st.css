@@ -11,7 +11,7 @@
     -st-states: selected, focused;
     cursor: pointer;
     display: inline;
-    padding: 2px 5px;
+    padding: 3px 7px 5px;
     width: 228px;
     height: 24px;
 }
@@ -27,4 +27,15 @@
 
 .nested-tree {
     margin-left: 25px;
+}
+
+.tree-item-icon {
+    height: 16px;
+    width: 16px;
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
+.tree-item-label {
+    vertical-align: middle;
 }
