@@ -90,6 +90,10 @@ export class Image extends React.PureComponent<ImageProps, ImageState> {
         this.setState({ src: this.props.src || this.props.defaultImage! });
     }
 
+    public componentWillReceiveProps(newProps: ImageProps) {
+        this.setState({ src: newProps.src || this.props.defaultImage! });
+    }
+
     private onError: React.EventHandler<React.SyntheticEvent<HTMLImageElement>> = e => {
         this.props.onError!({ ...e, src: this.state.src });
         this.setState({ src: this.getFallbackSrcFor(this.state.src) });
