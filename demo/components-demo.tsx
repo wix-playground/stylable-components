@@ -3,6 +3,7 @@ import '../src/style/default-theme/base.st.css';
 import { BirthdayPickerDemo } from './components/birthday-picker-demo';
 import {CheckBoxDemo} from './components/checkbox-demo';
 import {DatePickerDemo} from './components/date-picker-demo';
+import { ImageDemo } from './components/image-demo';
 import {NumberInputDemo} from './components/number-input.demo';
 import { RadioGroupDemo } from './components/radio-group-demo';
 import { SelectionListDemo } from './components/selection-list-demo';
@@ -18,6 +19,10 @@ export class ComponentsDemo extends React.Component<{}, {}> {
     public render() {
         return (
             <div>
+                <div>
+                    <h2>Image</h2>
+                    <ImageDemo />
+                </div>
                 <div>
                     <h2>CheckBox</h2>
                     <CheckBoxDemo />
