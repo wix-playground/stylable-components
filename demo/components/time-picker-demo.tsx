@@ -34,7 +34,7 @@ export class TimePickerDemo extends React.Component<any, any> {
             <div>
                 <TimePicker
                     value={this.state.value1}
-                    use12={false}
+                    use12Hours={false}
                     onChange={value1 => this.setState({value1})}
                 />
                 <span style={{marginLeft: 20}}>{this.state.value1}</span>
@@ -43,7 +43,7 @@ export class TimePickerDemo extends React.Component<any, any> {
             <h3>Controlled 12 time format</h3>
             <div>
                 <TimePicker
-                    use12
+                    use12Hours
                     value={this.state.value1}
                     onChange={value1 => this.setState({value1})}
                 />
