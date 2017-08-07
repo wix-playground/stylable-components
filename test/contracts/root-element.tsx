@@ -1,6 +1,5 @@
 import {ClientRenderer, expect, RenderingContext, simulate, sinon, waitFor} from 'test-drive-react';
 import React = require('react');
-import custom =
 
 export function assertRootElementContract(Component: React.ComponentType<any>): void {
     describe('Root Element contract', function () {
