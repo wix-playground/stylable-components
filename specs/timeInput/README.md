@@ -120,7 +120,7 @@ export class ComponentsDemo extends React.Component<{}, {}>{
 ```css
 @import * from './components/timePicker'; /* TODO: fix the correct syntax */
 /* style.st.css
-Adding rules here (which may be shared between different components) allows us to 	    override specific parts; or even change the whole theme
+Adding rules here (which may be shared between different components) allows us to override specific parts; or even change the whole theme
 */
 timePicker {
   background: #bada55;
