@@ -191,6 +191,8 @@ describe('<Popup />', function() {
                                 </Popup>);
 
                             return waitForDom(() => {
+                                console.log(1, div.getBoundingClientRect());
+                                console.log(2, bodySelect(popup)!.getBoundingClientRect());
                                 expect(
                                     topResults[popupVertical][anchorVertical](div, bodySelect(popup) as HTMLElement),
                                     'vertical test failed'
@@ -223,34 +225,39 @@ function getLayoutTest(axis: 'vertical' | 'horizontal') {
     return {
         [start]: {
             [start]: (anchor: HTMLElement, p: HTMLElement) =>
-                p.getBoundingClientRect()[start] === anchor.getBoundingClientRect()[start],
+                equals(p.getBoundingClientRect()[start], anchor.getBoundingClientRect()[start]),
             center: (anchor: HTMLElement, p: HTMLElement) => {
                 const anchorRect = anchor.getBoundingClientRect();
-                return p.getBoundingClientRect()[start] === anchorRect[start] + (anchorRect[length] / 2); },
+                return equals(p.getBoundingClientRect()[start], anchorRect[start] + (anchorRect[length] / 2)); },
             [end]: (anchor: HTMLElement, p: HTMLElement) =>
-                p.getBoundingClientRect()[start] === anchor.getBoundingClientRect()[end]
+                equals(p.getBoundingClientRect()[start], anchor.getBoundingClientRect()[end])
         },
         center: {
             [start]: (anchor: HTMLElement, p: HTMLElement) => {
                 const popupRect = p.getBoundingClientRect();
-                return popupRect[start] === anchor.getBoundingClientRect()[start] - (popupRect[length] / 2); },
+                return equals(popupRect[start], anchor.getBoundingClientRect()[start] - (popupRect[length] / 2)); },
             center: (anchor: HTMLElement, p: HTMLElement) => {
                 const popupRect = p.getBoundingClientRect();
                 const anchorRect = anchor.getBoundingClientRect();
-                return popupRect[start] ===  anchorRect[start] + (anchorRect[length] / 2) - (popupRect[length] / 2);
+                return equals(popupRect[start], anchorRect[start] + (anchorRect[length] / 2) - (popupRect[length] / 2));
             },
             [end]: (anchor: HTMLElement, p: HTMLElement) => {
                 const popupRect = p.getBoundingClientRect();
-                return popupRect[end] === anchor.getBoundingClientRect()[end] + (popupRect[length] / 2); }
+                return equals(popupRect[end], anchor.getBoundingClientRect()[end] + (popupRect[length] / 2)); }
         },
         [end]: {
             [start]: (anchor: HTMLElement, p: HTMLElement) =>
-                p.getBoundingClientRect()[end] === anchor.getBoundingClientRect()[start],
+                equals(p.getBoundingClientRect()[end], anchor.getBoundingClientRect()[start]),
             center: (anchor: HTMLElement, p: HTMLElement) => {
                 const anchorRect = anchor.getBoundingClientRect();
-                return p.getBoundingClientRect()[end] === anchorRect[start] + (anchorRect[length] / 2); },
+                return equals(p.getBoundingClientRect()[end], anchorRect[start] + (anchorRect[length] / 2)); },
             [end]: (anchor: HTMLElement, p: HTMLElement) =>
-                p.getBoundingClientRect()[end] === anchor.getBoundingClientRect()[end]
+                equals(p.getBoundingClientRect()[end], anchor.getBoundingClientRect()[end])
         }
     };
+}
+
+function equals(n: number, m: number, decPoint: number = 2): boolean {
+    const resolution = Math.pow(10, decPoint);
+    return Math.round((n - m) * resolution) / resolution === 0;
 }
