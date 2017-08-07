@@ -1,6 +1,16 @@
 :import{
     -st-from: "../../style/default-theme/variables.st.css";
-    -st-named: color_Default, color_MainText_Background, color_MainText, color_Hover, color_Active;
+    -st-named: color_Default,
+               color_MainText_Background,
+               color_MainText,
+               color_Hover,
+               color_Active,
+               inputWidth;
+}
+
+:import {
+    -st-from: "../../style/default-theme/controls/input.st.css";
+    -st-default: input;
 }
 
 :vars {
@@ -9,11 +19,10 @@
     dropdownWidth: 330px;
     dropdownArrowWidth: 11px;
     dropdownArrowHeight: 12px;
-    inputWidth: 192px;
 }
 
 .input {
-    width: value(inputWidth);
+    -st-extends: input;
 }
 
 .dropdownArrowWrapper {

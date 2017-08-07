@@ -1,9 +1,9 @@
 import * as keycode from 'keycode';
 import * as React from 'react';
 import {SyntheticEvent} from 'react';
+import inputStyles from '../../style/default-theme/controls/input.st.css';
 import {Calendar} from './calendar';
 import styles from './date-picker.st.css';
-
 const invalidDate: string = 'Invalid Date';
 
 export interface DatePickerProps {
@@ -30,7 +30,7 @@ export class DatePicker extends React.Component<DatePickerProps, DatePickerState
         return (
             <div data-automation-id="DATE_PICKER">
                 <input
-                    className={styles.input}
+                    className={`${styles.input} ${inputStyles.root}`}
                     onKeyDown={this.onKeyDown}
                     onMouseDown={this.onMouseDown}
                     onBlur={this.onBlur}
