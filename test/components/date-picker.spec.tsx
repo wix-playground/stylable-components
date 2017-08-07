@@ -125,23 +125,24 @@ describe('The DatePicker Component', function() {
             });
         });
 
-        it('should show the next and previous month buttons horizontally aligned with the month and year', async function() {
-            const {select, waitForDom} = clientRenderer.render(
-                <DatePickerDemo
-                    isDropdownVisible={true}
-                    value={JANUARY_FIRST}
-                />
-            );
+        it('should show the next and previous month buttons horizontally aligned with the month and year',
+            async function() {
+                const { select, waitForDom } = clientRenderer.render(
+                    <DatePickerDemo
+                        isDropdownVisible={true}
+                        value={JANUARY_FIRST}
+                    />
+                );
 
-            await waitForDom(() => {
-                expect([
-                    select('PREV_MONTH_BUTTON'),
-                    select('MONTH_NAME'),
-                    select('YEAR'),
-                    select('NEXT_MONTH_BUTTON')
-                ]).to.be.verticallyAligned('center', 1);
+                await waitForDom(() => {
+                    expect([
+                        select('PREV_MONTH_BUTTON'),
+                        select('MONTH_NAME'),
+                        select('YEAR'),
+                        select('NEXT_MONTH_BUTTON')
+                    ]).to.be.verticallyAligned('center', 1);
+                });
             });
-        });
 
         it('should display the day names in horizontal sequence, and vertically aligned', async function() {
             const {select, waitForDom} = clientRenderer.render(
