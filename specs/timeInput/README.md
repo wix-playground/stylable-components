@@ -20,7 +20,7 @@ The **Time Picker** component improves upon the native `<input type="time">` by 
 | ----------- | ---------------------- | ------------ | ---------- | ---------------------------------------- |
 | value       |                        |              |            |                                          |
 | placeholder | string                 |              |            | Text to display if the value is null     |
-| format      | enum  ('ampm’, '24hr’) | true         |            | Tells the component to display the picker in ampm (12hr) format or 24hr format. |
+| format      | enum  ('ampm’, '24hr’) | system defaul |            | Tells the component to display the picker in ampm (12hr) format or 24hr format. |
 | required    | bool                   | false        |            | Whether or not filling the value is required in a form. |
 | disabled    | bool                   | false        |            | If `true`, the componentName will not be interactive. |
 | label       | string                 |              |            | Text to display in accessibility mode.   |
