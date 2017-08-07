@@ -91,7 +91,7 @@ function setTop(popupStyle: CSSProperties, anchorRect: ClientRect,
             popupStyle.top = getVerticalReference(anchorRect, anchorPosition) - (popupHeight / 2);
             break;
         case 'bottom':
-            popupStyle.bottom = `calc(100% - ${getVerticalReference(anchorRect, anchorPosition)}px`;
+            popupStyle.bottom = `calc(100% - ${getVerticalReference(anchorRect, anchorPosition)}px)`;
             break;
     }
 }
@@ -106,7 +106,7 @@ function setLeft(popupStyle: CSSProperties, anchorRect: ClientRect,
             popupStyle.left = getHorizontalReference(anchorRect, anchorPosition) - (popupWidth / 2);
             break;
         case 'right':
-            popupStyle.right = `calc(100% - ${getHorizontalReference(anchorRect, anchorPosition)}px`;
+            popupStyle.right = `calc(100% - ${getHorizontalReference(anchorRect, anchorPosition)}px)`;
             break;
     }
 }
