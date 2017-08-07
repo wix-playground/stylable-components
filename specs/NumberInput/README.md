@@ -50,7 +50,7 @@ export class ComponentsDemo extends React.Component<{}, {}>{
         super();
     }
 
-    render() {
+    public render() {
         return <NumberInput
         		 value="{this.state.numberInputValue}"
                  onChange={/* something */}
