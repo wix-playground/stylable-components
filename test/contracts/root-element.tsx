@@ -1,8 +1,8 @@
 import {ClientRenderer, expect, RenderingContext, simulate, sinon, waitFor} from 'test-drive-react';
 import React = require('react');
-import {CommonComponentProps} from "../../src/common/types";
+import custom =
 
-export function assertRootElementContract(Component: React.ComponentType<CommonComponentProps>): void {
+export function assertRootElementContract(Component: React.ComponentType<any>): void {
     describe('Root Element contract', function () {
         const clientRenderer = new ClientRenderer();
         function render<P>(element: React.ReactElement<P>): RenderingContext<P> & { node: Element } {
@@ -14,9 +14,16 @@ export function assertRootElementContract(Component: React.ComponentType<CommonC
             clientRenderer.cleanup();
         });
 
-        it('data-automation-id merge', function () {
+        it('assumes data-automation-id merge', function () {
              const {select} = render(<Component data-automation-id="CONTRACT_TEST"/>);
              expect(select("CONTRACT_TEST"), 'data-automation-id not properly merged').to.not.equal(null);
+        });
+
+        it('assumes data-* attribute merge', function () {
+            const customValue = 'some-custom-value';
+            const {node} = render(<Component data-some-custom-attr={customValue}/>);
+            expect(node).to.have.attribute('data-some-custom-attr');
+            expect(node.getAttribute('data-some-custom-attr')).to.contain(customValue);
         });
 
         it('inline style merge', function () {
@@ -31,11 +38,5 @@ export function assertRootElementContract(Component: React.ComponentType<CommonC
             expect(node.classList.contains(testClassName), 'className not properly merged').to.equal(true);
         });
 
-        it('event handlers merge', async function () {
-            const onClick = sinon.spy();
-            const {node} = render(<Component onClick={onClick}/>);
-            simulate.click(node);
-            await waitFor(() => expect(onClick, 'onClick not properly merged').to.have.been.called);
-        });
     });
 }

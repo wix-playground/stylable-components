@@ -2,7 +2,6 @@ import React = require('react');
 import style from './checkbox.st.css';
 import {SBComponent} from 'stylable-react-component';
 import {root} from 'wix-react-tools'
-import {CommonComponentProps} from "../../common/types";
 
 export interface CheckBoxProps {
     value: boolean;
@@ -54,7 +53,7 @@ const DefaultIndeterminateSVG: React.SFC<CheckBoxIconProps> = (props) => {
 };
 
 @SBComponent(style)
-export class CheckBox extends React.Component<Partial<CheckBoxProps> & CommonComponentProps, {}> {
+export class CheckBox extends React.Component<Partial<CheckBoxProps>, {}> {
     static defaultProps: CheckBoxProps = {
         value: false,
         boxIcon: DefaultCheckBoxSVG,
