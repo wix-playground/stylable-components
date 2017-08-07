@@ -25,13 +25,13 @@ export function assertRootElementContract(Component: React.ComponentType<any>): 
             expect(node.getAttribute('data-some-custom-attr')).to.contain(customValue);
         });
 
-        it('inline style merge', function () {
+        it('assumes inline style merge', function () {
             const sampleColor = 'rgb(255, 0, 0)';
             const {node} = render(<Component style={{ backgroundColor: sampleColor }}/>);
             expect(getComputedStyle(node).backgroundColor, 'inline style not properly merged').to.equal(sampleColor);
         });
 
-        it('className merge', function () {
+        it('assumes className merge', function () {
             const testClassName = "sample-class-name";
             const {node} = render(<Component className={testClassName}/>);
             expect(node.classList.contains(testClassName), 'className not properly merged').to.equal(true);
