@@ -1,3 +1,8 @@
+:import{
+    -st-from: "../../style/default-theme/variables.st.css";
+    -st-named: color_treeFocused, color_treeSelected;
+}
+
 .root {
     font-family: Arial, sans-serif;
     font-size: 16px;
@@ -17,11 +22,11 @@
 }
 
 .tree-node:focused {
-    background-color: #edf7ff;
+    background-color: value(color_treeFocused);
 }
 
 .tree-node:selected {
-    background-color: #4990e2;
+    background-color: value(color_treeSelected);
     color: white;
 }
 

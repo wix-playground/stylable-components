@@ -56,4 +56,8 @@
     borderHover: solid 1px value(B2);
     borderFocus: solid 1px value(B3);
     borderDisabled: solid 1px value(B5);
+
+    /* TreeView */
+    color_treeFocused: value(M4);
+    color_treeSelected: value(B3);
 }
