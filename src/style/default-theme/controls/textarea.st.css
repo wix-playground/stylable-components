@@ -1,0 +1,10 @@
+:import {
+    -st-from: "./variables.st.css";
+    -st-named: borderRadius;
+}
+
+.textarea {
+    height: auto;
+    min-height: 50px;
+    border-radius: value(borderRadius);
+}
