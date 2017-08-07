@@ -105,18 +105,18 @@ function setLeft(style: CSSProperties, anchorRect: ClientRect, anchorPosition: H
 
 function getVerticalReference(rect: ClientRect, anchorPosition: VerticalPosition) {
     if (anchorPosition === 'center') {
-        return window.scrollY + rect.top + (rect.height / 2);
+        return (window.scrollY ? window.scrollY : window.pageYOffset) + rect.top + (rect.height / 2);
     } else {
-        return window.scrollY + rect[anchorPosition as 'top' | 'bottom'];
+        return (window.scrollY ? window.scrollY : window.pageYOffset) + rect[anchorPosition as 'top' | 'bottom'];
     }
 }
 
 function getHorizontalReference(rect: ClientRect, anchorPosition: HorizontalPosition) {
     let pos = 0;
     if (anchorPosition === 'center') {
-        pos = window.scrollX + rect.left + (rect.width / 2);
+        pos = (window.scrollX ? window.scrollX : window.pageXOffset) + rect.left + (rect.width / 2);
     } else {
-        pos = window.scrollX + rect[anchorPosition as 'left' | 'right'];
+        pos = (window.scrollX ? window.scrollX : window.pageXOffset) + rect[anchorPosition as 'left' | 'right'];
     }
     return pos;
 }
