@@ -1,14 +1,14 @@
-# Time Input Component
+# Time Picker Component
 
-Time input allows users to select time and switch between time formats ( AM/PM & 24h ).
+Time Picker allows users to select time and switch between time formats ( AM/PM & 24h ).
 
 
 
-## ElementsScreenshot & brief elements description
+## Elements
 
 ![elements](./assets/elements.png)
 
-The **Time Input** component improves upon the native `<input type="time">` by providing ability to customize the stepper arrows design, a common React+Typescript API, and working out the kinks of native implementations
+The **Time Picker** component improves upon the native `<input type="time">` by providing ability to customize the stepper arrows design, a common React+Typescript API, and working out the kinks of native implementations
 
 
 
@@ -16,17 +16,17 @@ The **Time Input** component improves upon the native `<input type="time">` by p
 
 ### Component Props
 
-| name        | type    | defaultValue | isRequired | description                              |
-| ----------- | ------- | ------------ | ---------- | ---------------------------------------- |
-| value       |         |              |            |                                          |
-| placeholder | string  |              |            | Text to display if the value is null     |
-| format      | string  | "hh:mm"      |            | Sets the time format. 'hh:mm:ss'         |
-| !use12Hours | bool    | true         |            | When `true` input uses 12h format & displays AM/PM |
-| disabled    | boolean | false        |            | If `true`, the componentName will not be interactive. |
-| label       | string  |              |            | Text to display in accessibility mode.   |
-| name        | string  |              |            | The name of the slider. Behaves like the name attribute of an input element. |
-| error       | bool    | FALSE        |            | Sets the `:error` CSS state on the `<slider>` |
-| rtl         | bool    | FALSE        |            | Makes the component RTL                  |
+| name        | type                   | defaultValue | isRequired | description                              |
+| ----------- | ---------------------- | ------------ | ---------- | ---------------------------------------- |
+| value       |                        |              |            |                                          |
+| placeholder | string                 |              |            | Text to display if the value is null     |
+| format      | enum  ('ampm’, '24hr’) | system defaul |            | Tells the component to display the picker in ampm (12hr) format or 24hr format. |
+| required    | bool                   | false        |            | Whether or not filling the value is required in a form. |
+| disabled    | bool                   | false        |            | If `true`, the componentName will not be interactive. |
+| label       | string                 |              |            | Text to display in accessibility mode.   |
+| name        | string                 |              |            | The name of the slider. Behaves like the name attribute of an input element. |
+| error       | bool                   | false        |            | Sets the `:error` CSS state on the `<timePicker>` |
+| rtl         | bool                   | false        |            | Makes the component RTL                  |
 
 
 
@@ -48,7 +48,7 @@ This component accepts children with the following `data-slot` attribute, in ord
 ```jsx
 //TODO: code guys - fix code example!
 import * as React from 'react';
-import { TimeInput } from './components/TimeInput';
+import { TimePicker } from './components/TimePicker';
 import style from './style.st.css'; // link to Style file - see examples of style files below
 
 export class ComponentsDemo extends React.Component<{}, {}>{
@@ -57,8 +57,8 @@ export class ComponentsDemo extends React.Component<{}, {}>{
     }
 
     render() {
-        return <TimeInput
-        		 value="{this.state.timeInputValue}"
+        return <TimePicker
+        		 value="{this.state.timePickerValue}"
                  onChange={/* something */}
 
                  />;
@@ -73,7 +73,7 @@ export class ComponentsDemo extends React.Component<{}, {}>{
 ```jsx
 //TODO: code guys - fix code example!
 import * as React from 'react';
-import { TimeInput } from './components/TimeInput';
+import { TimePicker } from './components/TimePicker';
 import style from './style.st.css'; // link to Style file - see examples of style files below
 
 export class ComponentsDemo extends React.Component<{}, {}>{
@@ -82,12 +82,12 @@ export class ComponentsDemo extends React.Component<{}, {}>{
     }
 
     render() {
-        return <TimeInput
-        		 value="{this.state.timeInputValue}"
+        return <TimePicker
+        		 value="{this.state.timePickerValue}"
                  onChange={/* something */}>
     				<span data-slot="prefix">icon</span>
         			<button data-slot="suffix">smth</button>
-               </TimeInput>;
+               </TimePicker>;
     }
 }
 ```
@@ -118,23 +118,23 @@ export class ComponentsDemo extends React.Component<{}, {}>{
 ### Style Code Example
 
 ```css
-@import * from './components/timeInput'; /* TODO: fix the correct syntax */
+@import * from './components/timePicker'; /* TODO: fix the correct syntax */
 /* style.st.css
-Adding rules here (which may be shared between different components) allows us to 	    override specific parts; or even change the whole theme
+Adding rules here (which may be shared between different components) allows us to override specific parts; or even change the whole theme
 */
-timeInput {
+timePicker {
   background: #bada55;
 }
 
-timeInput::stepper {
+timePicker::stepper {
   background-color: transparent;
 }
 
-timeInput::stepper::down, NumberInput::stepper::up {
+timePicker::stepper::down, timeInput::stepper::up {
   color:blue;
 }
 
-timeInput::stepper::down:hover, NumberInput::stepper::up:hover {
+timePicker::stepper::down:hover, timePicker::stepper::up:hover {
   background-color:lightblue;
 }
 ```
