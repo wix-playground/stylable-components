@@ -1,6 +1,6 @@
 import React = require('react');
+import {CSSProperties} from 'react';
 import {Popup} from '../../src/';
-import {CSSProperties} from "react";
 
 export interface DemoState {
     div: any;
@@ -15,12 +15,12 @@ export class PopupDemo extends React.Component<{}, DemoState> {
     }
 
     onClick = () => {
-        this.setState({div:this.state.div, isOpen: !this.state.isOpen});
-    };
+        this.setState({div: this.state.div, isOpen: !this.state.isOpen});
+    }
 
     updateState = (ref: any) => {
-        this.setState({div: ref, isOpen: this.state.isOpen})
-    };
+        this.setState({div: ref, isOpen: this.state.isOpen});
+    }
 
     render() {
         const divDim: CSSProperties = {width: '50px', border: '1px solid blue'};
