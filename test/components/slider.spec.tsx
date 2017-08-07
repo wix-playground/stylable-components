@@ -2,6 +2,13 @@ import * as React from 'react';
 import { expect, ClientRenderer, sinon, simulate, waitFor } from 'test-drive-react';
 import { Slider } from '../../src/components/slider';
 
+function simulateMouseEvent(element: Element, eventType: string, options?: Object) {
+  element.dispatchEvent(new MouseEvent(
+    eventType,
+    options as any as EventInit
+  ));
+}
+
 describe.only('<Slider />', () => {
   const clientRenderer = new ClientRenderer();
 
@@ -21,7 +28,7 @@ describe.only('<Slider />', () => {
       await waitForDom(() => {
         const element = select('SLIDER');
 
-        expect(element).to.be.present();        
+        expect(element).to.be.present();
       });
     });
 
@@ -109,14 +116,16 @@ describe.only('<Slider />', () => {
 
   describe('when drag things around', () => {
     const value = 5;
-    const min = 1;
+    const min = 0;
     const max = 10;
 
     let onChange: (value: number) => void;
     let select: (automationId: string) => HTMLElement | null;
     let waitForDom: (expectation: Function) => Promise<void>;
+    let environment: Element;
 
     beforeEach(() => {
+      environment = document.createElement("body");
       onChange = sinon.spy();
       const rendered = clientRenderer.render(
         <Slider
@@ -124,6 +133,7 @@ describe.only('<Slider />', () => {
           min={min}
           max={max}
           onChange={onChange}
+          environment={environment}
         />
       );
       select = rendered.select;
@@ -143,8 +153,34 @@ describe.only('<Slider />', () => {
           clientX: Math.round(bounds.left + bounds.width * 0.7)
         });
 
-        // expect(handle!.style.left).to.equal('25%');
-        // expect(progress!.style.width).to.equal('25%');
+        expect(handle!.style.left).to.equal('70%');
+        expect(progress!.style.width).to.equal('70%');
+      });
+    });
+
+    it('should call onChange', async () => {
+      await waitFor(() => {
+        const element = select('SLIDER');
+        const handle = select('SLIDER-HANDLE');
+        const progress = select('SLIDER-PROGRESS');
+        const bounds = element!.getBoundingClientRect();
+
+        simulate.mouseDown(element, {
+          currentTarget: element!,
+          clientX: Math.round(bounds.left + bounds.width * 0.7)
+        });
+        simulateMouseEvent(
+          environment,
+          'mousemove',
+          {clientX: Math.round(bounds.left + bounds.width * 0.75)}
+        );
+        simulateMouseEvent(
+          environment,
+          'mouseup',
+          {clientX: Math.round(bounds.left + bounds.width * 0.8)}
+        );
+
+        expect(onChange).to.be.calledWith(8);
       });
     });
   });

@@ -36,6 +36,8 @@ export interface SliderProps {
   disabled?: boolean;
   required?: boolean;
 
+  environment?: Element;
+
   onChange?(value: number): void;
   onInput?(value: string): void;
 
@@ -60,6 +62,9 @@ export class Slider extends React.Component<SliderProps, SliderState> {
     max: DEFAULT_MAX,
     step: DEFAULT_STEP,
     value: DEFAULT_VALUE,
+
+    environment: document,
+
     onChange: noop,
     onInput: noop,
 
@@ -70,7 +75,10 @@ export class Slider extends React.Component<SliderProps, SliderState> {
     onDrag: noop,
     onDragStop: noop
   };
+  
   private sliderArea: HTMLElement;
+  
+  private requestAnimationFrame: (callback: FrameRequestCallback) => any = noop;
 
   constructor(props: SliderProps, context?: any) {
     super(props, context);
@@ -84,6 +92,14 @@ export class Slider extends React.Component<SliderProps, SliderState> {
       relativeStep: this.getRelativeStep(props.step, this.props.min!, this.props.max!),
       isActive: false
     }
+  }
+
+  componentDidMount() {
+    this.requestAnimationFrame = requestAnimationFrame.bind(window);
+  }
+
+  componentWillUnmount() {
+    this.requestAnimationFrame = noop;
   }
 
   componentWillReceiveProps(nextProps: SliderProps) {
@@ -138,7 +154,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
     return this.getValueInRange(relativeValue, 0, 100);;
   }
 
-  private getAbsoluteValue(relativeValue: number) {
+  private getAbsoluteValue(relativeValue: number): number {
     const range = this.props.max! - this.props.min!;
     const absoluteValue = range * relativeValue / 100 + this.props.min!;
     return this.getValueInRange(absoluteValue, this.props.min!, this.props.max!);
@@ -174,8 +190,8 @@ export class Slider extends React.Component<SliderProps, SliderState> {
       isActive: true
     });
 
-    document.addEventListener('mousemove', this.onSliderAreaMouseMove);
-    document.addEventListener('mouseup', this.onSliderAreaMouseUp);
+    this.props.environment!.addEventListener('mousemove', this.onSliderAreaMouseMove);
+    this.props.environment!.addEventListener('mouseup', this.onSliderAreaMouseUp);
 
     event.preventDefault();
     sliderArea.focus();
@@ -186,7 +202,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
   private onSliderAreaMouseMove(event: MouseEvent) {
     const relativeValue = this.getValueFromElementAndPointer(this.sliderArea, event.clientX);
 
-    requestAnimationFrame(() => {
+    this.requestAnimationFrame(() => {
       this.setState({
         relativeValue
       });
@@ -202,8 +218,8 @@ export class Slider extends React.Component<SliderProps, SliderState> {
       isActive: false
     });
 
-    document.removeEventListener('mousemove', this.onSliderAreaMouseMove);
-    document.removeEventListener('mouseup', this.onSliderAreaMouseUp);
+    this.props.environment!.removeEventListener('mousemove', this.onSliderAreaMouseMove);
+    this.props.environment!.removeEventListener('mouseup', this.onSliderAreaMouseUp);
     
     this.onDragStop(event);
     const value = this.getAbsoluteValue(relativeValue);
