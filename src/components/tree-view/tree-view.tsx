@@ -1,13 +1,13 @@
 import { action, autorun, observable } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
-import { getLastAvailableItem, getNextItem, getPreviousItem } from './tree-util';
 import { root } from 'wix-react-tools';
+import { getLastAvailableItem, getNextItem, getPreviousItem } from './tree-util';
 
 import * as keycode from 'keycode';
 import { SBComponent, SBStateless } from 'stylable-react-component';
+import {MinusIcon, PlusIcon} from './tree-view-icons';
 import style from './tree-view.st.css';
-import {MinusIcon, PlusIcon} from "./tree-view-icons";
 
 const KeyCodes: any = {
     ENTER: keycode('enter'),
@@ -57,6 +57,11 @@ export const TreeItem: React.SFC<TreeItemProps> =
     SBStateless(({ item, itemRenderer, onItemClick, onIconClick, stateMap, state }) => {
         const itemLabel = item.label.replace(' ', '_');
         const TreeNode = itemRenderer;
+        const iconProps = {
+            'data-automation-id': `${itemIdPrefix}_${itemLabel}_ICON`,
+            'onClick': onIconClick && onIconClick.bind(null, item),
+            'className': 'tree-item-icon'
+        };
 
         return (
             <div>
@@ -67,13 +72,9 @@ export const TreeItem: React.SFC<TreeItemProps> =
                     data-selected={state!.isSelected}
                     data-focused={state!.isFocused}
                 >
-                    <span
-                        data-automation-id={`${itemIdPrefix}_${itemLabel}_ICON`}
-                        onClick={onIconClick && onIconClick.bind(null, item)}
-                    >
-                        {item.children ? (state!.isExpanded ?
-                            <MinusIcon className="tree-item-icon"/> : <PlusIcon className="tree-item-icon"/>) : null}
-                    </span>
+                    {item.children && (state!.isExpanded ?
+                        <MinusIcon {...iconProps} /> : <PlusIcon {...iconProps} />)}
+
                     <span
                         data-automation-id={`${itemIdPrefix}_${itemLabel}_LABEL`}
                         onClick={onItemClick && onItemClick.bind(null, item)}
