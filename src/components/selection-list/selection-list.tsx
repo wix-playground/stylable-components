@@ -97,10 +97,7 @@ export class SelectionList extends React.Component<SelectionListProps, {}> {
             this.renderDataItem(item, index)
         );
 
-        const childItems = React.Children.map(
-            this.props.children,
-            (child, index) => this.renderChild(child)
-        );
+        const childItems = React.Children.map(this.props.children, child => this.renderChild(child));
 
         return (
             <div {...rootProps}>

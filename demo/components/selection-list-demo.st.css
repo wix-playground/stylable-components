@@ -23,10 +23,6 @@
     cursor: default;
 }
 
-.text-style-list {
-    color: black;
-}
-
 .text-style-list > div {
     padding: 10px 20px;
     color: #000000;
