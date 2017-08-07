@@ -9,7 +9,7 @@ export const pad2 = (num: string | number): string => ('00' + num).slice(-2);
 export const isNumber = (value: string) => /^\d{0,2}$/.test(value);
 
 export const to24 = (hh: number, ampm: Ampm) => {
-    switch(ampm) {
+    switch (ampm) {
         case Ampm.NONE:
             return hh;
         case Ampm.AM:

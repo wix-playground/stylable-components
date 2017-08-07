@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as keycode from 'keycode';
 import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react';
 import {TimePicker} from '../../src';
 import {hasCssState} from '../utils/has-css-state';
@@ -79,7 +80,7 @@ describe.only('<TimePicker/>', () => {
         });
     });
 
-    describe('render with onChange', () => {
+    describe('render with onChange={onChange} use12Hours={false}', () => {
         let onChange: any;
         let renderer: any;
         let root: any;
@@ -169,19 +170,79 @@ describe.only('<TimePicker/>', () => {
             });
         });
 
+        describe('backspace on mm input', () => {
+            beforeEach(() => {
+                simulate.focus(mmInput);
+                mmInput.value = '';
+                simulate.change(mmInput);
+                simulate.keyDown(mmInput, {keyCode: keycode('backspace')});
+            });
+            it('mm input should have "00" value', async () => {
+                await new Promise(resolve => setTimeout(resolve, 500));
+                expect(mmInput).attr('value', '00');
+            });
+            it('should move focus to hh input', () => {
+                expect(document.activeElement).to.equal(hhInput, 'hh input has no focus');
+            });
+        });
+
+    });
+    describe('render with onChange={onChange} use12Hours={true}', () => {
+        let onChange: any;
+        let renderer: any;
+        let root: any;
+        let hhInput: any;
+        let mmInput: any;
+        let ampmInput: any;
+        beforeEach(() => {
+            onChange = sinon.spy();
+            renderer = clientRenderer.render(<TimePicker use12Hours={true} value="04:55" onChange={onChange}/>);
+            root = renderer.select('TIME_PICKER');
+            hhInput = renderer.select('TIME_PICKER_HH');
+            mmInput = renderer.select('TIME_PICKER_MM');
+            ampmInput = renderer.select('TIME_PICKER_AMPM_INPUT');
+        });
+
+        describe('entering "7" into mm input', () => {
+            beforeEach(() => {
+                simulate.focus(mmInput);
+                mmInput.value = '7';
+                simulate.change(mmInput);
+            });
+            it('should set focus state', () => {
+                hasCssState(root, styles, {focus: true})
+            });
+            it('mm input should have "07" value', () => {
+                expect(mmInput).attr('value', '07');
+            });
+            it('should move focus to ampm input', () => {
+                expect(document.activeElement).to.equal(ampmInput, 'ampm input has no focus');
+            });
+            it('onChange should be callen with "04:07"', async () => {
+                expect(onChange).to.be.calledWithExactly('04:07');
+            });
+        });
+
+        describe('focus and change ampm input', () => {
+            beforeEach(() => {
+                simulate.focus(ampmInput);
+                simulate.keyDown(ampmInput, {keyCode: keycode('space')});
+            });
+            it('onChange should be callen with "16:55"', () => {
+                expect(onChange).to.be.calledWithExactly('16:55');
+            });
+        });
     });
 
 });
 
 describe('TimePicker/utils', () => {
     describe('pad2()', () => {
-
-    })
+    });
     describe('to24()', () => {
-    })
+    });
     describe('toAmpm()', () => {
-    })
+    });
     describe('isValidValue()', () => {
-
-    })
-})
+    });
+});

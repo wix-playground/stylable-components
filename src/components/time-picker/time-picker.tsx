@@ -215,7 +215,6 @@ export default class TimePicker extends React.Component<Props, State> {
     }
 
     private onAmpmKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        const keyName = keycode(e.keyCode);
         switch (keycode(e.keyCode)) {
             case 'space':
             case 'enter':
