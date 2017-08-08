@@ -111,12 +111,16 @@ describe('Slottable Components', () => {
                 it('should render in corresponding slots', async () => {
                     class Slotted extends React.Component {
                         public render() {
-                            const {children} = this.props;
+                            const {
+                                prefix,
+                                suffix,
+                                children
+                            } = this.groupChildren(['prefix', 'suffix']);
                             return (
                                 <div>
-                                    <Slot name="prefix" data-automation-id="slot-prefix" />
+                                    <div data-automation-id="slot-prefix">{prefix}</div>
                                     {children}
-                                    <Slot name="suffix" data-automation-id="slot-suffix" />
+                                    <div data-automation-id="slot-suffix">{suffix}</div>
                                 </div>
                             );
                         }
@@ -124,9 +128,13 @@ describe('Slottable Components', () => {
 
                     const {select, waitForDom} = clientRenderer.render(
                         <Slotted>
-                            <span data-slot="prefix" data-automation-id="prefix">prefix</span>
+                            <Slot name="prefix">
+                                <span data-automation-id="prefix">prefix</span>
+                            </Slot>
                             <span data-automation-id="content">content</span>
-                            <span data-slot="suffix" data-automation-id="suffix">suffix</span>
+                            <Slot name="suffix">
+                                <span data-automation-id="suffix">suffix</span>                        
+                            </Slot>
                         </Slotted>
                     );
 
