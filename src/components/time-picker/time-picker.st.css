@@ -3,13 +3,10 @@
 :import {
     -st-from: "../../style/default-theme/variables.st.css";
     -st-named:
-        BK1,
-	BK2,
+        BK2,
         BK3,
-        PR1,
         PR2,
-        PR3
-        ;
+        PR3;
 }
 :vars {
     width: 120px;
