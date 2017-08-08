@@ -6,10 +6,10 @@ export interface DatePickerDemoState {
     startingDay: number;
 }
 
-export class DatePickerDemo extends React.Component<Partial<DatePickerProps>, DatePickerDemoState> {
-    public componentWillMount() {
-        this.setState({ value: this.props.value ? this.props.value : new Date() });
-    }
+export class DatePickerDemo extends React.Component<DatePickerProps, DatePickerDemoState> {
+    public state: DatePickerDemoState = {
+        value: this.props.value ? this.props.value : new Date()
+    };
 
     public render() {
         return (
@@ -32,7 +32,7 @@ export class DatePickerDemo extends React.Component<Partial<DatePickerProps>, Da
     }
 }
 
-export class DatePickerDemoStartingDay extends React.Component<Partial<DatePickerProps>, Partial<DatePickerDemoState>> {
+export class DatePickerDemoStartingDay extends React.Component<DatePickerProps, Partial<DatePickerDemoState>> {
     public componentWillMount() {
         this.setState({
             value: this.props.value ? this.props.value : new Date(),

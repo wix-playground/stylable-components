@@ -1,7 +1,7 @@
 import {computed} from 'mobx';
 import {observer} from 'mobx-react';
-import {root} from 'wix-react-tools';
 import * as React from 'react';
+import {root} from 'wix-react-tools';
 import {
     getDayNames,
     getDaysInMonth,
