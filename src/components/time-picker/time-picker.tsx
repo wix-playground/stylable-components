@@ -36,7 +36,7 @@ export default class TimePicker extends React.Component<Props, State> {
     };
 
     private inputs: {
-        [key: string]: HTMLInputElement | null
+        [key: string]: HTMLInputElement | HTMLDivElement | null
     } = {}
     private lastValue: string | undefined
 
@@ -94,12 +94,15 @@ export default class TimePicker extends React.Component<Props, State> {
                 </div>
                 {format === 'ampm' && !showPlaceholder &&
                     <div
-                        data-automation-id="TIME_PICKER_AMPM_DIV"
+                        data-automation-id="TIME_PICKER_AMPM"
                         tabIndex={0}
+                        ref={elem => this.inputs.ampm = elem}
                         className="ampm"
                         cssStates={{unset: !timeSet}}
                         children={ampmLabel}
-                        onTouchStart={this.onAmpmClick}
+                        onFocus={() => this.setState({currentInput: 'ampm'})}
+                        onBlur={() => this.setState({currentInput: null})}
+                        onMouseDown={this.onAmpmMouseDown}
                         onKeyDown={this.onAmpmKeyDown}
                     />
                 }
@@ -262,8 +265,9 @@ export default class TimePicker extends React.Component<Props, State> {
         }
     }
 
-    private onAmpmClick = () => {
+    private onAmpmMouseDown = (e: React.SyntheticEvent<HTMLDivElement>) => {
         const {currentInput} = this.state;
+        e.preventDefault();
         this.toggleAmpm(() => {
             this.inputs.nativeInput!.blur();
             if (currentInput) {

@@ -61,7 +61,7 @@ describe('<TimePicker/>', () => {
             expect(renderer.select('TIME_PICKER_MM')).attr('value', '55');
         });
         it('should have AMPM input with "PM" value', () => {
-            expect(renderer.select('TIME_PICKER_AMPM_INPUT')).attr('value', 'PM');
+            expect(renderer.select('TIME_PICKER_AMPM')).text('PM');
         });
     });
 
@@ -77,7 +77,7 @@ describe('<TimePicker/>', () => {
             expect(renderer.select('TIME_PICKER_MM')).attr('value', '55');
         });
         it('should not render AMPM input', () => {
-            expect(renderer.select('TIME_PICKER_AMPM_INPUT')).to.be.null;
+            expect(renderer.select('TIME_PICKER_AMPM')).to.be.null;
         });
     });
 
@@ -194,14 +194,14 @@ describe('<TimePicker/>', () => {
         let root: any;
         let hhInput: any;
         let mmInput: any;
-        let ampmInput: any;
+        let ampm: any;
         beforeEach(() => {
             onChange = sinon.spy();
             renderer = clientRenderer.render(<TimePicker format="ampm" value="04:55" onChange={onChange}/>);
             root = renderer.select('TIME_PICKER');
             hhInput = renderer.select('TIME_PICKER_HH');
             mmInput = renderer.select('TIME_PICKER_MM');
-            ampmInput = renderer.select('TIME_PICKER_AMPM_INPUT');
+            ampm = renderer.select('TIME_PICKER_AMPM');
         });
 
         describe('entering "7" into mm input', () => {
@@ -217,7 +217,7 @@ describe('<TimePicker/>', () => {
                 expect(mmInput).attr('value', '07');
             });
             it('should move focus to ampm input', () => {
-                expect(document.activeElement).to.equal(ampmInput, 'ampm input has no focus');
+                expect(document.activeElement).to.equal(ampm, 'ampm has no focus');
             });
             it('onChange should be callen with "04:07"', async () => {
                 expect(onChange).to.be.calledWithExactly('04:07');
@@ -226,8 +226,8 @@ describe('<TimePicker/>', () => {
 
         describe('focus and change ampm input', () => {
             beforeEach(() => {
-                simulate.focus(ampmInput);
-                simulate.keyDown(ampmInput, {keyCode: keycode('space')});
+                simulate.focus(ampm);
+                simulate.keyDown(ampm, {keyCode: keycode('space')});
             });
             it('onChange should be callen with "16:55"', () => {
                 expect(onChange).to.be.calledWithExactly('16:55');
