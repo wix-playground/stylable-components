@@ -34,6 +34,7 @@ export interface SliderProps {
 
   disabled?: boolean;
   required?: boolean;
+  error?: boolean;
 
   environment?: Element;
 
@@ -249,7 +250,8 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         data-automation-id='SLIDER-CONTAINER'
         cssStates={{
           active: this.state.isActive,
-          disabled: !!this.props.disabled
+          disabled: Boolean(this.props.disabled),
+          error: Boolean(this.props.error)
         }}
       >
         <input

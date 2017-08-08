@@ -23,7 +23,7 @@
 }
 
 .root {
-  -st-states: active, disabled;
+  -st-states: active, disabled, error;
   width: 100%;
   position: relative;
   display: inline-block;
@@ -100,6 +100,9 @@
 .root:active .slider-track{
   background-color: #adbbc6; 
 }
+.root:active .slider-progress{
+  background-color: #4a90e2; 
+}
 
 /* Disabled state */
 .root:disabled .slider{
@@ -116,4 +119,12 @@
 }
 .root:disabled .slider-progress{
   background-color: transparent; 
+}
+
+/* Error state */
+.root:error .slider-progress{
+  background-color: #e24a4a;
+}
+.root:error:active .slider-progress{
+  background-color: #4a90e2;
 }
