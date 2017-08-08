@@ -94,7 +94,6 @@ Styles for MultiSelect:
 | tag | The tag box inside the input container |
 | tagDelete | The 'x' that deletes a specific tag |
 
-
 ### States
 
 | Name | Description |
@@ -102,12 +101,12 @@ Styles for MultiSelect:
 | active | self explanatory |
 | focus | self explanatory |
 | disabled | self explanatory |
-| readonly | Relevant for AutoComplete and MultiSelect
+| readonly | Relevant for AutoComplete and MultiSelect |
 | hover | self explanatory |
 
 ## Accessibility
 
-TBD
+
 
 ## Behavior
 
