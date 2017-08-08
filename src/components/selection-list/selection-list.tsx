@@ -99,21 +99,21 @@ export class SelectionList extends React.Component<SelectionListProps, {}> {
             'onClick': this.handleClick
         });
 
-        const dataItems = this.props.dataSource!.map((item, index) =>
-            this.renderDataItem(item, index)
+        const dataSourceItems = this.props.dataSource!.map((item, index) =>
+            this.renderDataSourceItem(item, index)
         );
 
-        const childItems = React.Children.map(this.props.children, child => this.renderChild(child));
+        const childItems = React.Children.map(this.props.children, child => this.renderChildItem(child));
 
         return (
             <div {...rootProps}>
-                {dataItems}
+                {dataSourceItems}
                 {childItems}
             </div>
         );
     }
 
-    private normalizeItem(item: SelectionItem): {[index: string]: any} {
+    private normalizeDataSourceItem(item: SelectionItem): {[index: string]: any} {
         if (item === divider) {
             return divider;
         }
@@ -126,9 +126,9 @@ export class SelectionList extends React.Component<SelectionListProps, {}> {
             renameKeys(item, this.props.dataSchema) : item;
     }
 
-    private renderDataItem(item: SelectionItem, index: number): React.ReactNode {
+    private renderDataSourceItem(item: SelectionItem, index: number): React.ReactNode {
         const ItemRenderer = this.props.itemRenderer!;
-        const normalized = this.normalizeItem(item);
+        const normalized = this.normalizeDataSourceItem(item);
         return (
             <ItemRenderer
                 key={index}
@@ -139,15 +139,15 @@ export class SelectionList extends React.Component<SelectionListProps, {}> {
         );
     }
 
-    private readValueFromChild(child: React.ReactNode): string | undefined {
+    private getValueFromChildItem(child: React.ReactNode): string | undefined {
         return child && typeof child === 'object' ?
             (child as React.ReactElement<any>).props['data-value'] :
             undefined;
     }
 
-    private renderChild(child: React.ReactNode): React.ReactNode {
+    private renderChildItem(child: React.ReactNode): React.ReactNode {
         if (this.props.value !== undefined &&
-            this.readValueFromChild(child) === this.props.value
+            this.getValueFromChildItem(child) === this.props.value
         ) {
             return React.cloneElement(
                 child as React.ReactElement<any>,
