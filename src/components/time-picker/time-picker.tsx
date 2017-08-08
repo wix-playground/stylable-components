@@ -66,6 +66,8 @@ export default class TimePicker extends React.Component<Props, State> {
         const showPlaceholder = Boolean(placeholder) && !timeSet;
         const inputs = showPlaceholder ? ['hh'] : ['hh', 'mm'];
         const ampmLabel = ampm === Ampm.AM ? 'AM' : 'PM';
+        const stepperCurrentInput = this.getStepperInputName();
+        const stepperCurrentValue = Number(this.state[stepperCurrentInput]);
 
         return (
             <div data-automation-id="TIME_PICKER" cssStates={{focus: Boolean(currentInput), disabled: disabled!}}>
@@ -103,6 +105,8 @@ export default class TimePicker extends React.Component<Props, State> {
                 }
                 {!showPlaceholder && !disabled &&
                     <Stepper
+                        disableUp={!isValidValue(stepperCurrentValue + 1, stepperCurrentInput, ampm)}
+                        disableDown={!isValidValue(stepperCurrentValue - 1, stepperCurrentInput, ampm)}
                         onUp={this.createStepperHandler(+1)}
                         onDown={this.createStepperHandler(-1)}
                     />
@@ -119,6 +123,10 @@ export default class TimePicker extends React.Component<Props, State> {
                 />
             </div>
         );
+    }
+    private getStepperInputName() {
+        return isTimePart(this.state.prevInput) ?
+            this.state.prevInput : 'hh';
     }
 
     private getTimeParts(value?: string, format?: Format) {
@@ -148,8 +156,7 @@ export default class TimePicker extends React.Component<Props, State> {
     }
 
     private createStepperHandler = (increment: number) => () => {
-        const name = isTimePart(this.state.prevInput) ?
-            this.state.prevInput : 'hh';
+        const name = this.getStepperInputName();
 
         this.setState({
             [name as any]: pad2(Number(this.state[name]) + increment)
