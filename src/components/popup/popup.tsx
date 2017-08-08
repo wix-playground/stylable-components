@@ -97,7 +97,7 @@ function setTop(popupStyle: CSSProperties, anchorRect: ClientRect,
             popupStyle.top = getVerticalReference(anchorRect, anchorPosition) - (popupHeight / 2);
             break;
         case 'bottom':
-            popupStyle.bottom = `calc(100% - ${getVerticalReference(anchorRect, anchorPosition)}px)`;
+            popupStyle.top = getVerticalReference(anchorRect, anchorPosition) - popupHeight;
             break;
     }
 }
