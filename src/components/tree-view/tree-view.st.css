@@ -10,15 +10,14 @@
     text-align: left;
     color: #000000;
     outline: 0 solid transparent;
+    width: 228px;
+    overflow: hidden;
 }
 
 .tree-node {
     -st-states: selected, focused;
     cursor: pointer;
-    display: inline-block;
     padding: 3px 7px 5px;
-    width: 228px;
-
     border: 1px solid transparent;
 }
 
