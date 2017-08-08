@@ -57,7 +57,7 @@ describe('Slottable Components', () => {
 
         describe('component using [data-slot]', () => {
             class Slottable extends React.Component {
-                groupChildren(slotNames: string[]): {[S: string]: React.ReactNode} {return {}; }
+                groupChildren(slotNames: string[]): {[S: string]: React.ReactNode} {return {};}
             }
 
             it('should render in corresponding slots', async () => {
@@ -109,13 +109,18 @@ describe('Slottable Components', () => {
 
             describe('component using <Slot />', () => {
                 it('should render in corresponding slots', async () => {
-                    class Slotted extends React.Component {
+                    class Slottable extends React.Component {
+                        groupChildren(slotNames: string[]): {[S: string]: React.ReactNode} {return {};}
+                    }
+                    
+                    class Slotted extends Slottable {
                         public render() {
                             const {
                                 prefix,
                                 suffix,
                                 children
                             } = this.groupChildren(['prefix', 'suffix']);
+                            
                             return (
                                 <div>
                                     <div data-automation-id="slot-prefix">{prefix}</div>
