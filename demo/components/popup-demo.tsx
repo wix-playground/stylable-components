@@ -25,7 +25,8 @@ export class PopupDemo extends React.Component<{}, DemoState> {
     }
 
     public render() {
-        const divDim: CSSProperties = {marginLeft: '100px', width: '50px', border: '1px solid blue'};
+        const divDim: CSSProperties = {marginLeft: '100px', width: '100px', border: '1px solid blue'};
+        const flexStyle: CSSProperties = {padding: '10px'};
         return (
             <div>
                 <div
@@ -34,7 +35,7 @@ export class PopupDemo extends React.Component<{}, DemoState> {
                     style={divDim}
                     data-automation-id="POPUP_DEMO_DIV"
                 >
-                    Anchor
+                    Click me!
                 </div>
                 <Popup
                     anchor={this.state.div}
@@ -49,7 +50,7 @@ export class PopupDemo extends React.Component<{}, DemoState> {
                     </div>
                 </Popup>
                 <div style={{display: 'flex'}}>
-                    <div>
+                    <div style={flexStyle}>
                         <h3>Popup position - vertical</h3>
                         <RadioGroup onChange={this.changePVertical}>
                             <RadioButton checked value="top"/>
@@ -57,7 +58,7 @@ export class PopupDemo extends React.Component<{}, DemoState> {
                             <RadioButton value="bottom"/>
                         </RadioGroup>
                     </div>
-                    <div>
+                    <div style={flexStyle}>
                         <h3>Popup position - horizontal</h3>
                         <RadioGroup onChange={this.changePHorizontal}>
                             <RadioButton checked value="left"/>
@@ -65,7 +66,7 @@ export class PopupDemo extends React.Component<{}, DemoState> {
                             <RadioButton value="right"/>
                         </RadioGroup>
                     </div>
-                    <div>
+                    <div style={flexStyle}>
                         <h3>Anchor position - vertical</h3>
                         <RadioGroup onChange={this.changeAVertical}>
                             <RadioButton value="top"/>
@@ -73,7 +74,7 @@ export class PopupDemo extends React.Component<{}, DemoState> {
                             <RadioButton checked value="bottom"/>
                         </RadioGroup>
                     </div>
-                    <div>
+                    <div style={flexStyle}>
                         <h3>Anchor position - horizontal</h3>
                         <RadioGroup onChange={this.changeAHorizontal}>
                             <RadioButton checked value="left"/>
