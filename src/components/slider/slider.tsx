@@ -2,6 +2,7 @@ import * as React from 'react';
 import {SBComponent} from 'stylable-react-component';
 
 export type PointerEvent = MouseEvent | TouchEvent;
+export type Step = number | 'any';
 
 const theme = require('../../style/default-theme/variables.st.css').default;
 const style = require('./slider.st.css').default;
@@ -22,8 +23,6 @@ function getPercent(value: number, min: number, max: number): number {
 
   return percent;
 }
-
-export type Step = number | 'any';
 
 export interface SliderProps {
   value?: number;
@@ -292,23 +291,3 @@ export class Slider extends React.Component<SliderProps, SliderState> {
     );
   }
 }
-
-/* <input
-  value={this.props.value}
-  min={this.props.min}
-  max={this.props.max}
-  step={this.props.step}
-
-  name={this.props.name}
-
-  required={this.props.required}
-
-  className={style['slider']}
-  type="range"
-
-  onChange={this.onChange}
-  onInput={this.onInput}
-
-  onFocus={this.onFocus}
-  onBlur={this.onBlur}
-/> */
