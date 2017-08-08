@@ -43,38 +43,38 @@
 }
 
 .text-style-title {
-    font-family: Helvetica, sans-serifl;
+    font-family: Helvetica, sans-serif;
     font-size: 30pt;
     font-weight: bold;
 }
 
 .text-style-heading {
-    font-family: Helvetica, sans-serifl;
+    font-family: Helvetica, sans-serif;
     font-size: 18pt;
     font-weight: bold;
 }
 
 .text-style-heading-red {
-    font-family: Helvetica, sans-serifl;
+    font-family: Helvetica, sans-serif;
     font-size: 16pt;
     font-weight: bold;
     color: #C82506;
 }
 
 .text-style-body {
-    font-family: Helvetica, sans-serifl;
+    font-family: Helvetica, sans-serif;
     font-size: 11pt;
 }
 
 .text-style-caption {
-    font-family: Helvetica, sans-serifl;
+    font-family: Helvetica, sans-serif;
     font-size: 10pt;
     text-transform: uppercase;
     font-weight: bold;
 }
 
 .text-style-label {
-    font-family: Helvetica, sans-serifl;
+    font-family: Helvetica, sans-serif;
     background: #C0C0C0;
     color: #FFFFFF;
     padding: 2px 3px;
