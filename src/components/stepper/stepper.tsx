@@ -1,16 +1,15 @@
 import * as React from 'react';
-import styles from './stepper.st.css';
-import buttonStyles from '../../style/default-theme/controls/button.st.css';
 import {SBStateless} from 'stylable-react-component';
 import {ChevronDownIcon, ChevronUpIcon} from '../../icons';
-
-function noop() {}
+import buttonStyles from '../../style/default-theme/controls/button.st.css';
+import {noop} from '../../utils';
+import styles from './stepper.st.css';
 
 export interface StepperProps extends React.HTMLProps<HTMLElement> {
-    onUp?: Function
-    onDown?: Function
-    disableUp?: boolean
-    disableDown?: boolean
+    disableUp?: boolean;
+    disableDown?: boolean;
+    onUp?(): void;
+    onDown?(): void;
 }
 
 export const Stepper: React.StatelessComponent<StepperProps> = SBStateless(
@@ -26,7 +25,7 @@ export const Stepper: React.StatelessComponent<StepperProps> = SBStateless(
                 tabIndex={-1}
                 data-automation-id="STEPPER_INCREMENT"
                 className={`${buttonStyles.root} control up`}
-                onClick={() => onUp()}
+                onClick={onUp}
                 disabled={disableUp}
             >
                 <ChevronUpIcon className="control-icon" />
@@ -35,11 +34,12 @@ export const Stepper: React.StatelessComponent<StepperProps> = SBStateless(
                 tabIndex={-1}
                 data-automation-id="STEPPER_DECREMENT"
                 className={`${buttonStyles.root} control down`}
-                onClick={() => onDown()}
+                onClick={onDown}
                 disabled={disableDown}
             >
                 <ChevronDownIcon className="control-icon"/>
             </button>
         </div>
     ),
-styles);
+    styles
+);
