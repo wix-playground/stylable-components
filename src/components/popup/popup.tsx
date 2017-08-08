@@ -23,7 +23,7 @@ export interface PopupState {
     style: CSSProperties;
 }
 
-export class Popup extends React.Component<Partial<PopupProps>, PopupState> {
+export class Popup extends React.Component<PopupProps, PopupState> {
     private static defaultProps: Partial<PopupProps> = {
         open: false,
         anchorPosition: {vertical: 'bottom', horizontal: 'left'},

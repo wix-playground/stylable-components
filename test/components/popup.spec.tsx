@@ -1,7 +1,7 @@
 import React = require('react');
 import {CSSProperties} from 'react';
 import {selectDom} from 'test-drive';
-import { ClientRenderer, expect, simulate } from 'test-drive-react';
+import { ClientRenderer, expect } from 'test-drive-react';
 import {PopupDemo} from '../../demo/components/popup-demo';
 import {HorizontalPosition, Popup, VerticalPosition} from '../../src/components/';
 
