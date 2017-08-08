@@ -34,10 +34,11 @@ export default class TimePicker extends React.Component<Props, State> {
     private inputs: {
         [key: string]: HTMLInputElement | null
     } = {}
-    private committed = false
+    private lastValue: string | undefined
 
     constructor(props: Props) {
         super();
+        this.lastValue = props.value;
         this.state = {
             currentInput: null,
             prevInput: null,
@@ -159,9 +160,10 @@ export default class TimePicker extends React.Component<Props, State> {
         this.setState({
             [name]: pad2(Number(this.state[name]) + increment)
         }, () => {
-            this.inputs[name]!.focus();
-            this.committed = false;
             this.commit();
+            if (!isTouch) {
+                this.inputs[name]!.focus();
+            }
         });
     }
 
@@ -222,7 +224,6 @@ export default class TimePicker extends React.Component<Props, State> {
         const nextState = {
             [name as any]: shouldWaitForInput ? value : pad2(value)
         };
-        this.committed = false;
         this.setState(nextState, () => {
             if (!shouldWaitForInput) {
                 this.commit();
@@ -242,7 +243,6 @@ export default class TimePicker extends React.Component<Props, State> {
 
     private onNativeChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
         const value = e.currentTarget.value;
-        this.committed = false;
         this.setState(this.getTimeParts(value, this.props.use12Hours), this.commit);
     }
 
@@ -278,7 +278,6 @@ export default class TimePicker extends React.Component<Props, State> {
     private toggleAmpm = (cb?: () => void) => {
         const {hh, ampm} = this.state;
         this.setState({ampm: 1 - ampm}, () => {
-            this.committed = false;
             this.commit();
             if (cb) {
                 cb();
@@ -292,9 +291,10 @@ export default class TimePicker extends React.Component<Props, State> {
     }
 
     private commit = () => {
-        if (this.props.onChange && !this.committed) {
-            this.committed = true;
-            this.props.onChange(this.getValue());
+        const value = this.getValue();
+        if (this.props.onChange && this.lastValue !== value) {
+            this.lastValue = value;
+            this.props.onChange(value);
         }
     }
 
