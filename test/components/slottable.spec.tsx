@@ -1,5 +1,10 @@
 import * as React from 'react';
-import { expect, ClientRenderer, sinon, simulate } from 'test-drive-react';
+import {
+    ClientRenderer,
+    expect,
+    simulate,
+    sinon
+} from 'test-drive-react';
 
 describe('Slottable Components', () => {
     const clientRenderer = new ClientRenderer();
@@ -12,14 +17,16 @@ describe('Slottable Components', () => {
                 prefix: React.ReactNode,
                 suffix: React.ReactNode
             }> {
-                render() {
+                public render() {
                     const {children, prefix, suffix} = this.props;
 
-                    return <div>
-                        <div data-automation-id="slot-prefix">{prefix}</div>
-                        {children}
-                        <div data-automation-id="slot-suffix">{suffix}</div>
-                    </div>
+                    return (
+                        <div>
+                            <div data-automation-id="slot-prefix">{prefix}</div>
+                            {children}
+                            <div data-automation-id="slot-suffix">{suffix}</div>
+                        </div>
+                    );
                 }
             }
 
@@ -50,18 +57,25 @@ describe('Slottable Components', () => {
 
         describe('component using [data-slot]', () => {
             class Slottable extends React.Component {
-                groupChildren(slotNames: string[]): {[S: string]: React.ReactNode} {return {}}
-            };
+                groupChildren(slotNames: string[]): {[S: string]: React.ReactNode} {return {}; }
+            }
 
             it('should render in corresponding slots', async () => {
                 class Slotted extends Slottable {
-                    render() {
-                        const {prefix, suffix, children} = this.groupChildren(['prefix', 'suffix']);
-                        return <div>
-                            <div data-automation-id="slot-prefix">{prefix}</div>
-                            {children}
-                            <div data-automation-id="slot-suffix">{suffix}</div>
-                        </div>
+                    public render() {
+                        const {
+                            prefix,
+                            suffix,
+                            children
+                        } = this.groupChildren(['prefix', 'suffix']);
+
+                        return (
+                            <div>
+                                <div data-automation-id="slot-prefix">{prefix}</div>
+                                {children}
+                                <div data-automation-id="slot-suffix">{suffix}</div>
+                            </div>
+                        );
                     }
                 }
 
@@ -96,13 +110,15 @@ describe('Slottable Components', () => {
             describe('component using <Slot />', () => {
                 it('should render in corresponding slots', async () => {
                     class Slotted extends React.Component {
-                        render() {
+                        public render() {
                             const {children} = this.props;
-                            return <div>
-                                <Slot name="prefix" data-automation-id="slot-prefix" />
-                                {children}
-                                <Slot name="suffix" data-automation-id="slot-suffix" />
-                            </div>
+                            return (
+                                <div>
+                                    <Slot name="prefix" data-automation-id="slot-prefix" />
+                                    {children}
+                                    <Slot name="suffix" data-automation-id="slot-suffix" />
+                                </div>
+                            );
                         }
                     }
 
