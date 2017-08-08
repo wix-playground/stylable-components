@@ -394,14 +394,14 @@ describe('<TreeView />', () => {
             it('renders with an icon', () => {
                 const { select, waitForDom } = clientRenderer.render(
                     <TreeItem
-                        item={sampleItem}
+                        item={treeData[0]}
                         itemRenderer={TreeItem}
                         state={state}
                         stateMap={stateMap}
                     />
                 );
 
-                return waitForDom(() => expect(select(getTreeItem(sampleItem.label) + '_ICON')).to.be.present());
+                return waitForDom(() => expect(select(getTreeItem(treeData[0].label) + '_ICON')).to.be.present());
             });
 
             it('renders correct children', () => {
