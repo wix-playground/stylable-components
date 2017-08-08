@@ -1,7 +1,7 @@
 import {computed} from 'mobx';
 import {observer} from 'mobx-react';
 import * as React from 'react';
-
+import {root} from 'wix-react-tools';
 import styles from './date-picker.st.css';
 
 export interface DayProps {
@@ -11,7 +11,6 @@ export interface DayProps {
     focused?: boolean;
     partOfPrevMonth?: boolean;
     partOfNextMonth?: boolean;
-    dataAutomationId?: string;
     onSelect?(day: number): void;
 }
 
@@ -20,9 +19,9 @@ export class Day extends React.Component<DayProps, {}> {
     public render() {
         return (
             <span
+                {...root(this.props, { 'data-automation-id': '', 'className': 'root' })}
                 className={this.styles}
                 onMouseDown={this.onMouseDown}
-                data-automation-id={this.props.dataAutomationId}
             >
                 {this.props.day}
             </span>

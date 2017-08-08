@@ -1,5 +1,6 @@
 import * as keycode from 'keycode';
 import * as React from 'react';
+import {root} from 'wix-react-tools';
 import {SyntheticEvent} from 'react';
 import {Calendar} from './calendar';
 import styles from './date-picker.st.css';
@@ -14,7 +15,6 @@ export interface DatePickerProps {
     readOnly?: boolean;
     showDropdownOnInit?: boolean;
     startingDay?: number;
-    dataAutomationId?: string;
     onChange?(value: Date): void;
 }
 
@@ -41,8 +41,13 @@ export class DatePicker extends React.Component<Partial<DatePickerProps>, DatePi
     }
 
     public render() {
+        const rootProps = root(this.props, {
+            'data-automation-id': 'DATE_PICKER_ROOT',
+            'className': 'root'
+        });
+
         return (
-            <div data-automation-id={this.props.dataAutomationId}>
+            <div {...rootProps}>
                 <input
                     className={styles.input}
                     onKeyDown={this.onKeyDown}

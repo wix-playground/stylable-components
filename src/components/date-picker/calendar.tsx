@@ -1,5 +1,6 @@
 import {computed} from 'mobx';
 import {observer} from 'mobx-react';
+import {root} from 'wix-react-tools';
 import * as React from 'react';
 import {
     getDayNames,
@@ -28,8 +29,13 @@ const monthNames = getMonthNames();
 @observer
 export class Calendar extends React.Component<CalendarProps, {}> {
     public render() {
+        const rootProps = root(this.props, {
+            'data-automation-id': 'DATE_PICKER_CALENDAR',
+            'className': ''
+        });
+
         return (
-            <div tabIndex={1} id="DATE_PICKER_DROPDOWN">
+            <div tabIndex={1} {...rootProps}>
                 <div className={styles.dropdownArrowWrapper}><div className={styles.dropdownArrow} /></div>
                 <div className={styles.dropdown} data-automation-id="DATE_PICKER_DROPDOWN">
                     <div className={styles.header}>
@@ -98,7 +104,7 @@ export class Calendar extends React.Component<CalendarProps, {}> {
                     selected={this.isSelected(day)}
                     currentDay={this.isCurrentDay(day)}
                     onSelect={this.selectDay}
-                    dataAutomationId={'DAY_' + day}
+                    data-automation-id={'DAY_' + day}
                     key={'DAY_' + day}
                 />
             );
@@ -133,7 +139,7 @@ export class Calendar extends React.Component<CalendarProps, {}> {
             previousDays.push((
                 <Day
                     day={day}
-                    dataAutomationId={'PREV_DAY_' + day}
+                    data-automation-id={'PREV_DAY_' + day}
                     key={'PREV_DAY_' + day}
                     partOfPrevMonth={true}
                 />
@@ -152,7 +158,7 @@ export class Calendar extends React.Component<CalendarProps, {}> {
             followingDays.push(
                 <Day
                     day={i}
-                    dataAutomationId={'NEXT_DAY_' + i}
+                    data-automation-id={'NEXT_DAY_' + i}
                     key={'NEXT_DAY_' + i}
                     partOfNextMonth={true}
                 />
