@@ -89,17 +89,16 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
         return this.props.defaultValue !== undefined;
     }
 
-    // this accessor reads the value from state
-    // if input is controlled and from the
-    // input itself if it is uncontrolled
     private get currentValue(): number | undefined {
-        return this.isUncontrolled ?
-            this.inputRef ?
-                this.inputRef.value !== '' ?
-                    Number(this.inputRef.value) :
-                    undefined :
-                this.props.defaultValue :
-            this.state.value;
+        return (
+            this.isUncontrolled ?
+                this.inputRef ?
+                    this.inputRef.value !== '' ?
+                        Number(this.inputRef.value) :
+                        undefined :
+                    this.props.defaultValue :
+                this.state.value
+        );
     }
 
     constructor(props: NumberInputProps) {
