@@ -2,6 +2,7 @@ import * as React from 'react';
 import {NumberInput} from '../../src/components/number-input';
 
 export class NumberInputDemo extends React.Component<{}, {value?: number}> {
+
     constructor() {
         super();
         this.state = {};
