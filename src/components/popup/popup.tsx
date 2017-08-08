@@ -42,6 +42,7 @@ export class Popup extends React.Component<Partial<PopupProps>, PopupState> {
         if (!this.props.anchor) {
             return null;
         }
+
         return (
             <div
                 data-automation-id="POPUP"
@@ -54,27 +55,32 @@ export class Popup extends React.Component<Partial<PopupProps>, PopupState> {
         );
     }
 
-    private setPosition = (popup: any) => {
+    public componentWillReceiveProps(newProps: Partial<PopupProps>) {
+        this.setPosition(this.popup, newProps);
+    }
+
+    private setPosition = (popup: any, props: Partial<PopupProps> = this.props) => {
         if (popup) {
+            this.popup = popup;
             const newStyle = this.state.style;
             const popupRect = popup.getBoundingClientRect();
             let popupWidth = popupRect.width;
 
-            newStyle.maxHeight = this.props.maxHeight;
-            if (this.props.syncWidth) {
-                newStyle.width = (this.props.anchor as HTMLElement).getBoundingClientRect().width;
+            newStyle.maxHeight = props.maxHeight;
+            if (props.syncWidth) {
+                newStyle.width = (props.anchor as HTMLElement).getBoundingClientRect().width;
                 popupWidth = newStyle.width;
             }
 
-            const anchorHorizontalPos = this.props.anchorPosition!.horizontal;
-            const anchorVerticalPos = this.props.anchorPosition!.vertical;
+            const anchorHorizontalPos = props.anchorPosition!.horizontal;
+            const anchorVerticalPos = props.anchorPosition!.vertical;
 
-            setTop(newStyle, (this.props.anchor as HTMLElement).getBoundingClientRect(),
-                anchorVerticalPos, popup.getBoundingClientRect().height, this.props.popupPosition!.vertical);
-            setLeft(newStyle, (this.props.anchor as HTMLElement).getBoundingClientRect(),
-                anchorHorizontalPos, popupWidth, this.props.popupPosition!.horizontal);
-            if (this.props.syncWidth) {
-                newStyle.width = (this.props.anchor as HTMLElement).getBoundingClientRect().width;
+            setTop(newStyle, (props.anchor as HTMLElement).getBoundingClientRect(),
+                anchorVerticalPos, popup.getBoundingClientRect().height, props.popupPosition!.vertical);
+            setLeft(newStyle, (props.anchor as HTMLElement).getBoundingClientRect(),
+                anchorHorizontalPos, popupWidth, props.popupPosition!.horizontal);
+            if (props.syncWidth) {
+                newStyle.width = (props.anchor as HTMLElement).getBoundingClientRect().width;
             }
             this.setState({style: newStyle});
         }
@@ -106,7 +112,7 @@ function setLeft(popupStyle: CSSProperties, anchorRect: ClientRect,
             popupStyle.left = getHorizontalReference(anchorRect, anchorPosition) - (popupWidth / 2);
             break;
         case 'right':
-            popupStyle.right = `calc(100% - ${getHorizontalReference(anchorRect, anchorPosition)}px)`;
+            popupStyle.left = getHorizontalReference(anchorRect, anchorPosition) - popupWidth;
             break;
     }
 }
