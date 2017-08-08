@@ -6,7 +6,7 @@ export enum Ampm {
 export type FormatPart = 'hh' | 'mm';
 
 export function pad2(num: string | number): string {
-    return ('00' + num).slice(-2)
+    return ('00' + num).slice(-2);
 }
 
 export function isNumber(value: string) {

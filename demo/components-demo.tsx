@@ -6,8 +6,8 @@ import {DatePickerDemo} from './components/date-picker-demo';
 import {NumberInputDemo} from './components/number-input.demo';
 import { RadioGroupDemo } from './components/radio-group-demo';
 import { SelectionListDemo } from './components/selection-list-demo';
-import {ToggleDemo} from './components/toggle-demo';
 import {TimePickerDemo} from './components/time-picker-demo';
+import {ToggleDemo} from './components/toggle-demo';
 import { TreeViewDemo } from './components/tree-view-demo';
 import './style.st.css';
 

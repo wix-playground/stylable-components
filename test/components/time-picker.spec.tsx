@@ -1,10 +1,10 @@
-import * as React from 'react';
 import * as keycode from 'keycode';
+import * as React from 'react';
 import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react';
 import {TimePicker} from '../../src';
-import {hasCssState} from '../utils/has-css-state';
 import styles from '../../src/components/time-picker/time-picker.st.css';
-import {pad2, to24, toAmpm, isValidValue, Ampm} from '../../src/components/time-picker/utils';
+import {Ampm, isValidValue, pad2, to24, toAmpm} from '../../src/components/time-picker/utils';
+import {hasCssState} from '../utils/has-css-state';
 
 describe('<TimePicker/>', () => {
     const clientRenderer = new ClientRenderer();
@@ -26,7 +26,7 @@ describe('<TimePicker/>', () => {
     describe('render with value="4:36"', () => {
         let renderer: any;
         beforeEach(() => {
-            renderer = clientRenderer.render(<TimePicker value='4:36'/>);
+            renderer = clientRenderer.render(<TimePicker value="4:36"/>);
         });
         it('should have "04" hours', () => {
             expect(renderer.select('TIME_PICKER_HH')).attr('value', '04');
@@ -102,7 +102,7 @@ describe('<TimePicker/>', () => {
                 simulate.change(hhInput);
             });
             it('should set focus state', () => {
-                hasCssState(root, styles, {focus: true})
+                hasCssState(root, styles, {focus: true});
             });
             it('hh input should have "03" value', () => {
                 expect(hhInput).attr('value', '03');
@@ -140,7 +140,7 @@ describe('<TimePicker/>', () => {
                 simulate.change(mmInput);
             });
             it('should set focus state', () => {
-                hasCssState(root, styles, {focus: true})
+                hasCssState(root, styles, {focus: true});
             });
             it('mm input should have "07" value', () => {
                 expect(mmInput).attr('value', '07');
@@ -211,7 +211,7 @@ describe('<TimePicker/>', () => {
                 simulate.change(mmInput);
             });
             it('should set focus state', () => {
-                hasCssState(root, styles, {focus: true})
+                hasCssState(root, styles, {focus: true});
             });
             it('mm input should have "07" value', () => {
                 expect(mmInput).attr('value', '07');

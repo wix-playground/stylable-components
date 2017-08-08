@@ -34,8 +34,8 @@ export default class TimePicker extends React.Component<Props, State> {
 
     private inputs: {
         [key: string]: HTMLInputElement | null
-    } = {}
-    private lastValue: string | undefined
+    } = {};
+    private lastValue: string | undefined;
 
     constructor(props: Props) {
         super();
@@ -119,7 +119,7 @@ export default class TimePicker extends React.Component<Props, State> {
                 <input
                     className="native-input"
                     ref={elem => this.inputs.nativeInput = elem}
-                    tabIndex={isTouch ? undefined : -1 }
+                    tabIndex={isTouch ? undefined : -1}
                     type="time"
                     value={this.getValue()}
                     onChange={this.onNativeChange}
