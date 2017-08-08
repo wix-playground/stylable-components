@@ -66,4 +66,8 @@
     borderFocus: value(borderStyle) value(borderWidth) value(B3);
     borderDisabled: value(borderStyle) value(borderWidth) value(B5);
     borderError: value(borderStyle) value(borderWidth) value(R1);
+
+    /* TreeView */
+    color_treeFocused: value(M4);
+    color_treeSelected: value(B3);
 }

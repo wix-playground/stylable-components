@@ -1,10 +1,12 @@
 import { action, autorun, observable } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
+import { root } from 'wix-react-tools';
 import { getLastAvailableItem, getNextItem, getPreviousItem } from './tree-util';
 
 import * as keycode from 'keycode';
 import { SBComponent, SBStateless } from 'stylable-react-component';
+import { MinusIcon, PlusIcon } from './tree-view-icons';
 import style from './tree-view.st.css';
 
 const KeyCodes: any = {
@@ -17,6 +19,8 @@ const KeyCodes: any = {
     RIGHT: keycode('right')
 };
 
+export type TreeItemEventHandler = (item: TreeItemData, e: React.MouseEvent<HTMLElement>) => void;
+
 export interface TreeItemData {
     label: string;
     children?: TreeItemData[];
@@ -25,8 +29,8 @@ export interface TreeItemData {
 export interface TreeItemProps {
     item: TreeItemData;
     itemRenderer: React.ComponentType<TreeItemProps>;
-    onItemClick?: React.EventHandler<any>;
-    onIconClick?: React.EventHandler<any>;
+    onItemClick?: TreeItemEventHandler;
+    onIconClick?: TreeItemEventHandler;
     stateMap: TreeStateMap;
     state: TreeItemState;
 }
@@ -35,8 +39,8 @@ export interface TreeViewProps {
     dataSource: object[];
     itemRenderer?: React.ComponentType<TreeItemProps>;
     onSelectItem?: React.EventHandler<any>;
-    selectedItem?: TreeItemData;
     onFocusItem?: React.EventHandler<any>;
+    selectedItem?: TreeItemData;
     focusedItem?: TreeItemData;
 }
 
@@ -55,6 +59,11 @@ export const TreeItem: React.SFC<TreeItemProps> =
     SBStateless(({ item, itemRenderer, onItemClick, onIconClick, stateMap, state }) => {
         const itemLabel = item.label.replace(' ', '_');
         const TreeNode = itemRenderer;
+        const iconProps = {
+            'data-automation-id': `${itemIdPrefix}_${itemLabel}_ICON`,
+            'onClick': onIconClick && onIconClick.bind(null, item),
+            'className': 'tree-item-icon'
+        };
 
         return (
             <div>
@@ -64,16 +73,14 @@ export const TreeItem: React.SFC<TreeItemProps> =
                     cssStates={{ selected: state!.isSelected, focused: state!.isFocused }}
                     data-selected={state!.isSelected}
                     data-focused={state!.isFocused}
+                    onClick={onItemClick && onItemClick.bind(null, item)}
                 >
-                    <span
-                        data-automation-id={`${itemIdPrefix}_${itemLabel}_ICON`}
-                        onClick={onIconClick && onIconClick.bind(null, item)}
-                    >
-                        &gt;&nbsp;
-                    </span>
+                    {item.children && (state!.isExpanded ?
+                        <MinusIcon {...iconProps} /> : <PlusIcon {...iconProps} />)}
+
                     <span
                         data-automation-id={`${itemIdPrefix}_${itemLabel}_LABEL`}
-                        onClick={onItemClick && onItemClick.bind(null, item)}
+                        className="tree-item-label"
                     >
                         {item.label}
                     </span>
@@ -141,10 +148,12 @@ export class TreeView extends React.Component<TreeViewProps, {}> {
 
     public render() {
         const TreeNode = this.props.itemRenderer!;
+        const rootProps = root(this.props, { className: 'tree-view' });
+
         return (
             <div
                 data-automation-id="TREE_VIEW"
-                className="tree-view"
+                className={rootProps.className}
                 tabIndex={0}
                 onKeyDown={this.onKeyDown}
             >
@@ -186,17 +195,19 @@ export class TreeView extends React.Component<TreeViewProps, {}> {
     }
 
     @action
-    private onSelectItem = (item: TreeItemData) => {
+    private onSelectItem = (item: TreeItemData, e: React.MouseEvent<HTMLElement>) => {
+        e.stopPropagation();
         this.selectItem(item);
         if (this.props.focusedItem) { this.stateMap.getItemState(this.props.focusedItem).isFocused = false; }
-    }
+    };
 
     @action
-    private onToggleItem = (item: TreeItemData) => {
+    private onToggleItem = (item: TreeItemData, e: React.MouseEvent<HTMLElement>) => {
+        e.stopPropagation();
         if (this.props.focusedItem) { this.stateMap.getItemState(this.props.focusedItem).isFocused = false; }
         this.toggleItem(item);
         this.props.onFocusItem!(item);
-    }
+    };
 
     @action
     private onFocusItem(item: TreeItemData) {
