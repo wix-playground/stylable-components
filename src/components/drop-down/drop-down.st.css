@@ -1,0 +1,27 @@
+.root {
+    width: 276px;
+    height: 36px;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+}
+
+.drop-down-label {
+    border: 1px solid #adbac5;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .caret {
+        margin-right: 5px;
+        vertical-align: middle;
+    }
+
+    .label {
+        margin-left: 5px;
+    }
+}
+
+.drop-down-label:hover {
+    cursor: pointer;
+    border: 1px solid #5cb4ff;
+}

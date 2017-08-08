@@ -8,6 +8,7 @@ import { RadioGroupDemo } from './components/radio-group-demo';
 import { SelectionListDemo } from './components/selection-list-demo';
 import {ToggleDemo} from './components/toggle-demo';
 import { TreeViewDemo } from './components/tree-view-demo';
+import { DropDownDemo } from './components/drop-down.demo';
 import './style.st.css';
 
 export class ComponentsDemo extends React.Component<{}, {}> {
@@ -18,6 +19,10 @@ export class ComponentsDemo extends React.Component<{}, {}> {
     public render() {
         return (
             <div>
+                <div>
+                    <h2>DropDown</h2>
+                    <DropDownDemo />
+                </div>
                 <div>
                     <h2>CheckBox</h2>
                     <CheckBoxDemo />
