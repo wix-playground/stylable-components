@@ -49,15 +49,12 @@ describe('Slottable Components', () => {
     });
 
     describe('groupChildren', () => {
-        let groupChildren: (slotNames: string[]) => {[S: string]: React.ReactNode};
-
-        it('should exist', () => {
-            expect(groupChildren).to.exist;
-        });
 
         describe('component using [data-slot]', () => {
             class Slottable extends React.Component {
-                groupChildren(slotNames: string[]): {[S: string]: React.ReactNode} {return {};}
+                protected groupChildren(slotNames: string[]): {[S: string]: React.ReactNode} {
+                    return {};
+                }
             }
 
             it('should render in corresponding slots', async () => {
@@ -110,9 +107,9 @@ describe('Slottable Components', () => {
             describe('component using <Slot />', () => {
                 it('should render in corresponding slots', async () => {
                     class Slottable extends React.Component {
-                        groupChildren(slotNames: string[]): {[S: string]: React.ReactNode} {return {};}
+                        protected groupChildren(slotNames: string[]): {[S: string]: React.ReactNode} {return {}; }
                     }
-                    
+
                     class Slotted extends Slottable {
                         public render() {
                             const {
@@ -120,7 +117,7 @@ describe('Slottable Components', () => {
                                 suffix,
                                 children
                             } = this.groupChildren(['prefix', 'suffix']);
-                            
+
                             return (
                                 <div>
                                     <div data-automation-id="slot-prefix">{prefix}</div>
@@ -138,7 +135,7 @@ describe('Slottable Components', () => {
                             </Slot>
                             <span data-automation-id="content">content</span>
                             <Slot name="suffix">
-                                <span data-automation-id="suffix">suffix</span>                        
+                                <span data-automation-id="suffix">suffix</span>
                             </Slot>
                         </Slotted>
                     );
