@@ -63,9 +63,10 @@ describe('The DatePicker Component', () => {
         await waitForDom(() => expect(select(datePickerInputId)).to.have.value(JANUARY_FIRST.toDateString()));
     });
 
-    it.only('should use the current input value when blurred', async () => {
+    it('should use the current input value when blurred', async () => {
         const {select, waitForDom} = clientRenderer.render(<DatePickerDemo />);
         const datePickerInput = select(datePickerInputId);
+
         trigger.change(datePickerInput!, '2017/02/01');
         simulate.blur(datePickerInput);
 

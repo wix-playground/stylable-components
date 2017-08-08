@@ -3,7 +3,7 @@ import { DatePicker, DatePickerProps } from '../../src';
 
 export interface DatePickerDemoState {
     value: Date;
-    startingDay: number;
+    startingDay?: number;
 }
 
 export class DatePickerDemo extends React.Component<DatePickerProps, DatePickerDemoState> {
@@ -17,28 +17,26 @@ export class DatePickerDemo extends React.Component<DatePickerProps, DatePickerD
                 <h2>Standard DatePicker</h2>
                 <span data-automation-id="CURRENT_DATE">{this.state.value.toDateString()}</span>
                 <DatePicker
+                    {...this.props}
                     data-automation-id="BASIC_DATEPICKER"
                     placeholder="mm/dd/yyyy"
                     value={this.state.value}
                     onChange={this.onChange}
-                    {...this.props}
                 />
             </div>
         );
     }
 
     private onChange = (updatedDate: Date): void => {
-        this.setState({value: updatedDate });
+        this.setState({ value: updatedDate });
     }
 }
 
 export class DatePickerDemoStartingDay extends React.Component<DatePickerProps, Partial<DatePickerDemoState>> {
-    public componentWillMount() {
-        this.setState({
-            value: this.props.value ? this.props.value : new Date(),
-            startingDay: 0
-        });
-    }
+    public state: DatePickerDemoState = {
+        value: this.props.value ? this.props.value : new Date(),
+        startingDay: 0
+    };
 
     public render() {
         return (
@@ -77,6 +75,6 @@ export class DatePickerDemoStartingDay extends React.Component<DatePickerProps, 
     }
 
     private onChange = (updatedDate: Date): void => {
-        this.setState({value: updatedDate });
+        this.setState({ value: updatedDate });
     }
 }
