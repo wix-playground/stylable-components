@@ -112,17 +112,19 @@ function setLeft(popupStyle: CSSProperties, anchorRect: ClientRect,
 }
 
 function getVerticalReference(rect: ClientRect, anchorPosition: VerticalPosition) {
+    const yOffset = window.scrollY ? window.scrollY : window.pageYOffset;
     if (anchorPosition === 'center') {
-        return (window.scrollY ? window.scrollY : window.pageYOffset) + rect.top + (rect.height / 2);
+        return yOffset + rect.top + (rect.height / 2);
     } else {
-        return (window.scrollY ? window.scrollY : window.pageYOffset) + rect[anchorPosition as 'top' | 'bottom'];
+        return yOffset + rect[anchorPosition as 'top' | 'bottom'];
     }
 }
 
 function getHorizontalReference(rect: ClientRect, anchorPosition: HorizontalPosition) {
+    const xOffset = window.scrollX ? window.scrollX : window.pageXOffset;
     if (anchorPosition === 'center') {
-        return (window.scrollX ? window.scrollX : window.pageXOffset) + rect.left + (rect.width / 2);
+        return xOffset + rect.left + (rect.width / 2);
     } else {
-        return (window.scrollX ? window.scrollX : window.pageXOffset) + rect[anchorPosition as 'left' | 'right'];
+        return xOffset + rect[anchorPosition as 'left' | 'right'];
     }
 }
