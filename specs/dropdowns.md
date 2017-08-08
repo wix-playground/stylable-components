@@ -1,13 +1,13 @@
 # Dropdown Components Specification
 
-* [Definition]
-* [Elements]
-* [Properties]
-* [Styles]
-* [Accessibility]
-* [Behavior]
-* [Examples]
-* [Design]
+* [Definition](#definition)
+* [Elements](#elements)
+* [Properties](#properties)
+* [Styles](#styles)
+* [Accessibility](#accessibility)
+* [Behavior](#behavior)
+* [Examples](#examples)
+* [Design](#design)
 
 ## Definition
 
@@ -43,7 +43,7 @@ Common Props (all dropdowns)
 | autoFocus | boolean | false | no | see HTML specs |
 | open | boolean | false | no | Whether the Popup is shown |
 | openOnFocus | boolean | false | no | Whether the Popup opens automatically when focus is gained |
-| onSelect | (id: string) => void | NOP | no | Triggered when an item is selected in the list |
+| onChange | (id: string) => void | NOP | no | Triggered when an item is selected in the list |
 | hideSelected | boolean | false | no | Hides selected values so that they do not appear in the selection list |
 | children | any | null | no | Children to be rendered in the list, see SelectionList for further details |
 
@@ -51,7 +51,7 @@ Common Props (all dropdowns)
 
 | Name | Type | Default | Required | Description |
 | -- | -- | -- | -- | -- |
-| selected | string | null | no | id of the selected item |
+| value | string | null | no | id of the selected item |
 
 * AutoComplete Props
 
