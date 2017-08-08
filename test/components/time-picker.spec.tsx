@@ -15,11 +15,11 @@ describe('<TimePicker/>', () => {
         beforeEach(() => {
             renderer = clientRenderer.render(<TimePicker/>);
         });
-        it('should render hh input with "––" placeholder', () => {
-            expect(renderer.select('TIME_PICKER_HH')).attr('placeholder', '––');
+        it('should render hh input with "00 placeholder', () => {
+            expect(renderer.select('TIME_PICKER_HH')).attr('placeholder', '00');
         });
-        it('should render mm input with "––" placeholder', () => {
-            expect(renderer.select('TIME_PICKER_MM')).attr('placeholder', '––');
+        it('should render mm input with "00 placeholder', () => {
+            expect(renderer.select('TIME_PICKER_MM')).attr('placeholder', '00');
         });
     });
 

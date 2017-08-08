@@ -11,6 +11,7 @@ export interface Props {
     onChange?: (value: string) => void;
     use12Hours?: boolean;
     placeholder?: string;
+    disabled?: boolean;
 }
 
 export interface State {
@@ -57,14 +58,14 @@ export default class TimePicker extends React.Component<Props, State> {
 
     public render() {
         const {currentInput, ampm, hh, mm} = this.state;
-        const {use12Hours, value, placeholder} = this.props;
+        const {disabled, use12Hours, value, placeholder} = this.props;
         const timeSet = Boolean(hh);
         const showPlaceholder = Boolean(placeholder) && !timeSet;
         const inputs = showPlaceholder ? ['hh'] : ['hh', 'mm'];
         const ampmLabel = ampm === Ampm.AM ? 'AM' : 'PM';
 
         return (
-            <div data-automation-id="TIME_PICKER" cssStates={{focus: Boolean(currentInput)}}>
+            <div data-automation-id="TIME_PICKER" cssStates={{focus: Boolean(currentInput), disabled: disabled!}}>
                 <div className="inputs">
                     {inputs.map((key: FormatPart) =>
                         <div className="input-wrap" key={key}>
@@ -77,6 +78,7 @@ export default class TimePicker extends React.Component<Props, State> {
                                 ref={elem => this.inputs[key] = elem}
                                 name={key}
                                 value={this.state[key]}
+                                disabled={disabled}
                                 onChange={this.onChange}
                                 onFocus={this.onFocus}
                                 onBlur={this.onBlur}
@@ -108,7 +110,7 @@ export default class TimePicker extends React.Component<Props, State> {
                         onTouchStart={this.onAmpmClick}
                     />
                 }
-                {!showPlaceholder &&
+                {!showPlaceholder && !disabled &&
                     <Stepper
                         onUp={this.createStepperHandler(+1)}
                         onDown={this.createStepperHandler(-1)}
@@ -158,7 +160,7 @@ export default class TimePicker extends React.Component<Props, State> {
             this.state.prevInput : 'hh';
 
         this.setState({
-            [name]: pad2(Number(this.state[name]) + increment)
+            [name as any]: pad2(Number(this.state[name]) + increment)
         }, () => {
             this.commit();
             if (!isTouch) {
@@ -269,7 +271,7 @@ export default class TimePicker extends React.Component<Props, State> {
         const {currentInput} = this.state;
         this.toggleAmpm(() => {
             this.inputs.nativeInput!.blur();
-            if (focus) {
+            if (currentInput) {
                 this.showNativeKeyboard();
             }
         });

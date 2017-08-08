@@ -15,7 +15,7 @@
     width: 120px;
 }
 .root {
-    -st-states: focus;
+    -st-states: focus, disabled;
     font-family: arial;
     font-size: 16px;
     position: relative;
@@ -24,11 +24,14 @@
     display: inline-flex;
 }
 
-.root:hover {
+.root:not(:disabled):hover {
     border-color: value(PR3);
 }
 .root:focus {
     border-color: value(PR2);
+}
+.root:disabled {
+    color: value(BK2);
 }
 
 .inputs {
@@ -59,6 +62,7 @@
     padding: 0px 4px;
     width: 26px;
     height: 24px;
+    color: inherit;
     background: none;
 }
 .input::placeholder {
