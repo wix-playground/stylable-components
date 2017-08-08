@@ -6,7 +6,10 @@ import style from './selection-list.st.css';
 
 export const divider = {};
 
-function renameKeys(data: {[index: string]: any}, schema: {[index: string]: string}) {
+function renameKeys(
+    data: {[index: string]: any},
+    schema: {[index: string]: string}
+): {[index: string]: any} {
     const result: {[index: string]: any} = {};
     for (const key in schema) {
         if (schema.hasOwnProperty(key)) {
@@ -16,7 +19,10 @@ function renameKeys(data: {[index: string]: any}, schema: {[index: string]: stri
     return result;
 }
 
-function closestElementMatching(predicate: (element: HTMLElement) => boolean, startAt: HTMLElement) {
+function closestElementMatching(
+    predicate: (element: HTMLElement) => boolean,
+    startAt: HTMLElement
+): HTMLElement | null {
     let current: HTMLElement | null = startAt;
     while (current && !predicate(current)) {
         current = current.parentElement;
@@ -120,7 +126,7 @@ export class SelectionList extends React.Component<SelectionListProps, {}> {
             renameKeys(item, this.props.dataSchema) : item;
     }
 
-    private renderDataItem(item: SelectionItem, index: number) {
+    private renderDataItem(item: SelectionItem, index: number): React.ReactNode {
         const ItemRenderer = this.props.itemRenderer!;
         const normalized = this.normalizeItem(item);
         return (
@@ -133,13 +139,13 @@ export class SelectionList extends React.Component<SelectionListProps, {}> {
         );
     }
 
-    private readValueFromChild(child: React.ReactNode) {
+    private readValueFromChild(child: React.ReactNode): string | undefined {
         return child && typeof child === 'object' ?
             (child as React.ReactElement<any>).props['data-value'] :
             undefined;
     }
 
-    private renderChild(child: React.ReactNode) {
+    private renderChild(child: React.ReactNode): React.ReactNode {
         if (this.props.value !== undefined &&
             this.readValueFromChild(child) === this.props.value
         ) {
