@@ -74,7 +74,7 @@ export default class TimePicker extends React.Component<Props, State> {
                         <div className="input-wrap" key={key}>
                             <input
                                 data-automation-id={'TIME_PICKER_' + key.toUpperCase()}
-                                tabIndex={isTouch ? -1 : undefined}
+                                tabIndex={isTouch ? -1 : 0}
                                 placeholder={showPlaceholder ? placeholder : '00'}
                                 cssStates={{wide: showPlaceholder}}
                                 className="input"
@@ -90,27 +90,15 @@ export default class TimePicker extends React.Component<Props, State> {
                         </div>
                     )}
                 </div>
-                {format === 'ampm' && !showPlaceholder && !isTouch &&
-                    <input
-                        data-automation-id="TIME_PICKER_AMPM_INPUT"
-                        className="input ampm"
-                        cssStates={{default: !timeSet}}
-                        ref={elem => this.inputs.ampm = elem}
-                        name="ampm"
-                        onFocus={this.onFocus}
-                        onBlur={this.onBlur}
-                        value={ampmLabel}
-                        onKeyDown={this.onAmpmKeyDown}
-                        onKeyUp={this.onAmpmKeyUp}
-                    />
-                }
-                {format === 'ampm' && !showPlaceholder && isTouch &&
+                {format === 'ampm' && !showPlaceholder &&
                     <div
                         data-automation-id="TIME_PICKER_AMPM_DIV"
+                        tabIndex={0}
                         className="ampm"
-                        cssStates={{default: !timeSet}}
+                        cssStates={{unset: !timeSet}}
                         children={ampmLabel}
                         onTouchStart={this.onAmpmClick}
+                        onKeyDown={this.onAmpmKeyDown}
                     />
                 }
                 {!showPlaceholder && !disabled &&
@@ -122,7 +110,7 @@ export default class TimePicker extends React.Component<Props, State> {
                 <input
                     className="native-input"
                     ref={elem => this.inputs.nativeInput = elem}
-                    tabIndex={isTouch ? undefined : -1 }
+                    tabIndex={isTouch ? 0 : -1 }
                     type="time"
                     value={this.getValue()}
                     onChange={this.onNativeChange}
@@ -215,7 +203,7 @@ export default class TimePicker extends React.Component<Props, State> {
     private onChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
         const {ampm} = this.state;
         const {value} = e.currentTarget;
-        const name = e.currentTarget.nameTimePart;
+        const name = e.currentTarget.name as TimePart;
         if (!isNumber(value)) {
             return;
         }
@@ -251,12 +239,13 @@ export default class TimePicker extends React.Component<Props, State> {
         this.setState(this.getTimeParts(value, this.props.format), this.commit);
     }
 
-    private onAmpmKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    private onAmpmKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
         switch (keycode(e.keyCode)) {
             case 'space':
             case 'enter':
             case 'up':
             case 'down':
+                e.preventDefault();
                 this.toggleAmpm();
                 break;
             case 'backspace':
@@ -264,10 +253,6 @@ export default class TimePicker extends React.Component<Props, State> {
                 this.inputs.mm!.focus();
                 break;
         }
-    }
-
-    private onAmpmKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        e.currentTarget.select();
     }
 
     private onAmpmClick = () => {

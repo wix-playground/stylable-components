@@ -100,9 +100,17 @@
     justify-content: center;
     align-items: center;
     user-select: none;
+    margin: 9px 0;
     height: auto;
     width: 32px;
 }
-.ampm:default {
+
+.ampm:focus {
+    color: white;
+    background: red;
+    outline: none;
+    background: value(PR2);
+}
+.ampm:unset {
     color: value(BK2);
 }
