@@ -83,6 +83,25 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
 
     private committed = true;
 
+    private inputRef: HTMLInputElement | null = null;
+
+    private get isUncontrolled(): boolean {
+        return this.props.defaultValue !== undefined;
+    }
+
+    // this accessor reads the value from state
+    // if input is controlled and from the
+    // input itself if it is uncontrolled
+    private get currentValue(): number | undefined {
+        return this.isUncontrolled ?
+            this.inputRef ?
+                this.inputRef.value !== '' ?
+                    Number(this.inputRef.value) :
+                    undefined :
+                this.props.defaultValue :
+            this.state.value;
+    }
+
     constructor(props: NumberInputProps) {
         super(props);
 
@@ -129,6 +148,7 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
                     </div> : null
                 }
                 <input
+                    ref={input => this.inputRef = input}
                     className={`${inputStyles.root} native-input`}
                     data-automation-id="NATIVE_INPUT_NUMBER"
                     type="number"
@@ -187,7 +207,7 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
     }
 
     private updateValue(next?: number) {
-        const {value} = this.state;
+        const value = this.currentValue;
 
         if (value !== next) {
             this.committed = false;
@@ -196,7 +216,7 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
     }
 
     private stepValue(direction: Direction, multiplier = 1) {
-        const {value} = this.state;
+        const value = this.currentValue;
         let {step} = this.props;
 
         step = step! * multiplier;

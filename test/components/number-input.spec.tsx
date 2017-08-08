@@ -532,6 +532,7 @@ describe('<NumberInput />', () => {
     });
 
     describe('uncontrolled input', () => {
+
         it('should set the defaultValue property', async () => {
             const value = 11;
             const {select, waitForDom} = clientRenderer.render(
@@ -542,6 +543,25 @@ describe('<NumberInput />', () => {
                 const numberInput = select('NATIVE_INPUT_NUMBER');
 
                 expect(numberInput).to.have.value(String(value));
+            });
+        });
+
+        it('should treat input as a source of thuth', async () => {
+            const initialValue = 1;
+            const newValue = 3;
+            const {select, waitForDom} = clientRenderer.render(
+                <NumberInput defaultValue={initialValue} />
+            );
+
+            await waitForDom(() => {
+                const input = select('NATIVE_INPUT_NUMBER') as HTMLInputElement;
+                const increment = select('STEPPER_INCREMENT');
+
+                input.value = String(newValue);
+
+                simulate.click(increment);
+
+                expect(input).to.have.value(String(newValue + 1));
             });
         });
 
