@@ -4,12 +4,15 @@ import {findDOMNode} from 'react-dom';
 import {SBComponent} from 'stylable-react-component';
 import {Stepper} from '../stepper';
 import styles from './time-picker.st.css';
-import {Ampm, FormatPart, isFormatPart, isNumber, isValidValue, pad2, to24, toAmpm} from './utils';
+import {
+    Ampm, TimePart, Format,
+    isTimePart, isNumber, isValidValue, pad2, to24, toAmpm
+} from './utils';
 
 export interface Props {
     value?: string;
     onChange?: (value: string) => void;
-    use12Hours?: boolean;
+    format?: Format;
     placeholder?: string;
     disabled?: boolean;
 }
@@ -29,13 +32,13 @@ const inputNames: string[] = ['hh', 'mm', 'ampm'];
 @SBComponent(styles)
 export default class TimePicker extends React.Component<Props, State> {
     public static defaultProps = {
-        use12Hours: is12TimeFormat
+        format: is12TimeFormat ? 'ampm' : '24hr'
     };
 
     private inputs: {
         [key: string]: HTMLInputElement | null
-    } = {};
-    private lastValue: string | undefined;
+    } = {}
+    private lastValue: string | undefined
 
     constructor(props: Props) {
         super();
@@ -43,13 +46,13 @@ export default class TimePicker extends React.Component<Props, State> {
         this.state = {
             currentInput: null,
             prevInput: null,
-            ...this.getTimeParts(props.value, props.use12Hours)
+            ...this.getTimeParts(props.value, props.format)
         };
     }
 
     public componentWillReceiveProps(props: Props) {
         if (props.value && !this.state.currentInput) {
-            this.setState(this.getTimeParts(props.value, props.use12Hours));
+            this.setState(this.getTimeParts(props.value, props.format));
         }
     }
     public shouldComponentUpdate(props: Props, state: State) {
@@ -58,7 +61,7 @@ export default class TimePicker extends React.Component<Props, State> {
 
     public render() {
         const {currentInput, ampm, hh, mm} = this.state;
-        const {disabled, use12Hours, value, placeholder} = this.props;
+        const {disabled, format, value, placeholder} = this.props;
         const timeSet = Boolean(hh);
         const showPlaceholder = Boolean(placeholder) && !timeSet;
         const inputs = showPlaceholder ? ['hh'] : ['hh', 'mm'];
@@ -67,7 +70,7 @@ export default class TimePicker extends React.Component<Props, State> {
         return (
             <div data-automation-id="TIME_PICKER" cssStates={{focus: Boolean(currentInput), disabled: disabled!}}>
                 <div className="inputs">
-                    {inputs.map((key: FormatPart) =>
+                    {inputs.map((key: TimePart) =>
                         <div className="input-wrap" key={key}>
                             <input
                                 data-automation-id={'TIME_PICKER_' + key.toUpperCase()}
@@ -87,7 +90,7 @@ export default class TimePicker extends React.Component<Props, State> {
                         </div>
                     )}
                 </div>
-                {use12Hours && !showPlaceholder && !isTouch &&
+                {format === 'ampm' && !showPlaceholder && !isTouch &&
                     <input
                         data-automation-id="TIME_PICKER_AMPM_INPUT"
                         className="input ampm"
@@ -101,7 +104,7 @@ export default class TimePicker extends React.Component<Props, State> {
                         onKeyUp={this.onAmpmKeyUp}
                     />
                 }
-                {use12Hours && !showPlaceholder && isTouch &&
+                {format === 'ampm' && !showPlaceholder && isTouch &&
                     <div
                         data-automation-id="TIME_PICKER_AMPM_DIV"
                         className="ampm"
@@ -119,7 +122,7 @@ export default class TimePicker extends React.Component<Props, State> {
                 <input
                     className="native-input"
                     ref={elem => this.inputs.nativeInput = elem}
-                    tabIndex={isTouch ? undefined : -1}
+                    tabIndex={isTouch ? undefined : -1 }
                     type="time"
                     value={this.getValue()}
                     onChange={this.onNativeChange}
@@ -130,19 +133,20 @@ export default class TimePicker extends React.Component<Props, State> {
         );
     }
 
-    private getTimeParts(value?: string, use12Hours?: boolean) {
+    private getTimeParts(value?: string, format?: Format) {
+        const isAmpm = format === 'ampm';
         if (!value) {
             return {
                 hh: '',
                 mm: '',
-                ampm: use12Hours ? Ampm.AM : Ampm.NONE
+                ampm: isAmpm ? Ampm.AM : Ampm.NONE
             };
         }
         const [hh24, mm] = value.split(':').map(pad2);
         const {hh, ampm} = toAmpm(Number(hh24));
         return {
-            hh: use12Hours ? pad2(hh) : hh24,
-            ampm: use12Hours ? ampm : Ampm.NONE,
+            hh: isAmpm ? pad2(hh) : hh24,
+            ampm: isAmpm ? ampm : Ampm.NONE,
             mm
         };
     }
@@ -156,7 +160,7 @@ export default class TimePicker extends React.Component<Props, State> {
     }
 
     private createStepperHandler = (increment: number) => () => {
-        const name = isFormatPart(this.state.prevInput) ?
+        const name = isTimePart(this.state.prevInput) ?
             this.state.prevInput : 'hh';
 
         this.setState({
@@ -186,7 +190,7 @@ export default class TimePicker extends React.Component<Props, State> {
             currentInput: null,
             prevInput: this.state.currentInput
         };
-        if (isFormatPart(name)) {
+        if (isTimePart(name)) {
             update[name] = pad2(this.state[name]);
         }
         this.setState(update as State);
@@ -209,10 +213,9 @@ export default class TimePicker extends React.Component<Props, State> {
     }
 
     private onChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
-        const {use12Hours} = this.props;
         const {ampm} = this.state;
         const {value} = e.currentTarget;
-        const name = e.currentTarget.name as FormatPart;
+        const name = e.currentTarget.nameTimePart;
         if (!isNumber(value)) {
             return;
         }
@@ -235,7 +238,7 @@ export default class TimePicker extends React.Component<Props, State> {
     }
 
     private onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        const name = e.currentTarget.name as FormatPart;
+        const name = e.currentTarget.name as TimePart;
         if (keycode(e.keyCode) !== 'backspace' || this.state[name].length) {
             return;
         }
@@ -245,7 +248,7 @@ export default class TimePicker extends React.Component<Props, State> {
 
     private onNativeChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
         const value = e.currentTarget.value;
-        this.setState(this.getTimeParts(value, this.props.use12Hours), this.commit);
+        this.setState(this.getTimeParts(value, this.props.format), this.commit);
     }
 
     private onAmpmKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {

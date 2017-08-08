@@ -49,10 +49,10 @@ describe('<TimePicker/>', () => {
         });
     });
 
-    describe('render with use12Hours={true} value="13:55"', () => {
+    describe('render with format="ampm" value="13:55"', () => {
         let renderer: any;
         beforeEach(() => {
-            renderer = clientRenderer.render(<TimePicker use12Hours value="13:55"/>);
+            renderer = clientRenderer.render(<TimePicker format="ampm" value="13:55"/>);
         });
         it('should have "01" hours', () => {
             expect(renderer.select('TIME_PICKER_HH')).attr('value', '01');
@@ -65,10 +65,10 @@ describe('<TimePicker/>', () => {
         });
     });
 
-    describe('render with use12Hours={false} value="13:55"', () => {
+    describe('render with format="24h" value="13:55"', () => {
         let renderer: any;
         beforeEach(() => {
-            renderer = clientRenderer.render(<TimePicker use12Hours={false} value="13:55"/>);
+            renderer = clientRenderer.render(<TimePicker format="24h" value="13:55"/>);
         });
         it('should have "13" hours', () => {
             expect(renderer.select('TIME_PICKER_HH')).attr('value', '13');
@@ -81,7 +81,7 @@ describe('<TimePicker/>', () => {
         });
     });
 
-    describe('render with onChange={onChange} use12Hours={false}', () => {
+    describe('render with onChange={onChange} format="24h"', () => {
         let onChange: any;
         let renderer: any;
         let root: any;
@@ -89,7 +89,7 @@ describe('<TimePicker/>', () => {
         let mmInput: any;
         beforeEach(() => {
             onChange = sinon.spy();
-            renderer = clientRenderer.render(<TimePicker use12Hours={false} value="13:55" onChange={onChange}/>);
+            renderer = clientRenderer.render(<TimePicker format="24h" value="13:55" onChange={onChange}/>);
             root = renderer.select('TIME_PICKER');
             hhInput = renderer.select('TIME_PICKER_HH');
             mmInput = renderer.select('TIME_PICKER_MM');
@@ -188,7 +188,7 @@ describe('<TimePicker/>', () => {
         });
 
     });
-    describe('render with onChange={onChange} use12Hours={true}', () => {
+    describe('render with onChange={onChange} format="ampm"', () => {
         let onChange: any;
         let renderer: any;
         let root: any;
@@ -197,7 +197,7 @@ describe('<TimePicker/>', () => {
         let ampmInput: any;
         beforeEach(() => {
             onChange = sinon.spy();
-            renderer = clientRenderer.render(<TimePicker use12Hours={true} value="04:55" onChange={onChange}/>);
+            renderer = clientRenderer.render(<TimePicker format="ampm" value="04:55" onChange={onChange}/>);
             root = renderer.select('TIME_PICKER');
             hhInput = renderer.select('TIME_PICKER_HH');
             mmInput = renderer.select('TIME_PICKER_MM');
