@@ -3,9 +3,11 @@
 :import {
     -st-from: "../../style/default-theme/variables.st.css";
     -st-named:
+        BK1,
 	BK2,
         BK3,
         PR1,
+        PR2,
         PR3
         ;
 }
@@ -14,6 +16,8 @@
 }
 .root {
     -st-states: focus;
+    font-family: arial;
+    font-size: 16px;
     position: relative;
     border: 1px solid value(BK3);
     width: value(width);
@@ -24,13 +28,13 @@
     border-color: value(PR3);
 }
 .root:focus {
-    border-color: value(PR1);
+    border-color: value(PR2);
 }
 
 .inputs {
     display: flex;
     box-sizing: border-box;
-    padding: 6px 8px;
+    padding: 6px 0 6px 8px;
     flex: 1;
 }
 
@@ -50,15 +54,25 @@
 
 .input {
     -st-states: wide;
+    font: inherit;
     border: 0;
     padding: 0px 4px;
     width: 26px;
-    height: auto;
+    height: 24px;
     background: none;
+}
+.input::placeholder {
+    color: value(BK2);
+}
+.input::selection {
+    color: white;
+    background: value(PR2);
+    padding: 2px;
 }
 .input:hover,
 .input:focus {
     border: 0;
+    outline: 0;
 }
 .input:wide {
     width: 100%;
@@ -77,10 +91,17 @@
     border: 0;
 }
 
+/*TODO use mixins*/
 .ampm {
+    -st-states: default;
     display: flex;
     flex: 1;
     justify-content: center;
     align-items: center;
     user-select: none;
+    height: auto;
+    width: 32px;
+}
+.ampm:default {
+    color: value(BK2);
 }

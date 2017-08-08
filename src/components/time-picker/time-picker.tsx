@@ -2,8 +2,9 @@ import * as keycode from 'keycode';
 import * as React from 'react';
 import {findDOMNode} from 'react-dom';
 import {SBComponent} from 'stylable-react-component';
+import {Stepper} from '../stepper';
 import styles from './time-picker.st.css';
-import {Ampm, FormatPart, isNumber, isValidValue, pad2, to24, toAmpm} from './utils';
+import {Ampm, FormatPart, isFormatPart, isNumber, isValidValue, pad2, to24, toAmpm} from './utils';
 
 export interface Props {
     value?: string;
@@ -13,7 +14,8 @@ export interface Props {
 }
 
 export interface State {
-    focus: boolean;
+    currentInput: string | null;
+    prevInput: string | null;
     hh: string;
     mm: string;
     ampm: Ampm;
@@ -37,33 +39,38 @@ export default class TimePicker extends React.Component<Props, State> {
     constructor(props: Props) {
         super();
         this.state = {
-            focus: false,
+            currentInput: null,
+            prevInput: null,
             ...this.getTimeParts(props.value, props.use12Hours)
         };
     }
 
     public componentWillReceiveProps(props: Props) {
-        if (props.value && !this.state.focus) {
+        if (props.value && !this.state.currentInput) {
             this.setState(this.getTimeParts(props.value, props.use12Hours));
         }
     }
+    public shouldComponentUpdate(props: Props, state: State) {
+        return props.value !== this.props.value || this.state !== state;
+    }
 
     public render() {
-        const {focus, ampm} = this.state;
+        const {currentInput, ampm, hh, mm} = this.state;
         const {use12Hours, value, placeholder} = this.props;
-        const showPlaceholder = Boolean(placeholder) && !this.state.hh;
+        const timeSet = Boolean(hh);
+        const showPlaceholder = Boolean(placeholder) && !timeSet;
         const inputs = showPlaceholder ? ['hh'] : ['hh', 'mm'];
         const ampmLabel = ampm === Ampm.AM ? 'AM' : 'PM';
 
         return (
-            <div data-automation-id="TIME_PICKER" cssStates={{focus}}>
+            <div data-automation-id="TIME_PICKER" cssStates={{focus: Boolean(currentInput)}}>
                 <div className="inputs">
                     {inputs.map((key: FormatPart) =>
                         <div className="input-wrap" key={key}>
                             <input
                                 data-automation-id={'TIME_PICKER_' + key.toUpperCase()}
                                 tabIndex={isTouch ? -1 : undefined}
-                                placeholder={showPlaceholder ? placeholder : '––'}
+                                placeholder={showPlaceholder ? placeholder : '00'}
                                 cssStates={{wide: showPlaceholder}}
                                 className="input"
                                 ref={elem => this.inputs[key] = elem}
@@ -81,6 +88,7 @@ export default class TimePicker extends React.Component<Props, State> {
                     <input
                         data-automation-id="TIME_PICKER_AMPM_INPUT"
                         className="input ampm"
+                        cssStates={{default: !timeSet}}
                         ref={elem => this.inputs.ampm = elem}
                         name="ampm"
                         onFocus={this.onFocus}
@@ -94,8 +102,15 @@ export default class TimePicker extends React.Component<Props, State> {
                     <div
                         data-automation-id="TIME_PICKER_AMPM_DIV"
                         className="ampm"
+                        cssStates={{default: !timeSet}}
                         children={ampmLabel}
                         onTouchStart={this.onAmpmClick}
+                    />
+                }
+                {!showPlaceholder &&
+                    <Stepper
+                        onUp={this.createStepperHandler(+1)}
+                        onDown={this.createStepperHandler(-1)}
                     />
                 }
                 <input
@@ -137,8 +152,23 @@ export default class TimePicker extends React.Component<Props, State> {
         ].map(String).map(pad2).join(':');
     }
 
+    private createStepperHandler = (increment: number) => () => {
+        const name = isFormatPart(this.state.prevInput) ?
+            this.state.prevInput : 'hh';
+
+        this.setState({
+            [name]: pad2(Number(this.state[name]) + increment)
+        }, () => {
+            this.inputs[name]!.focus();
+            this.committed = false;
+            this.commit();
+        });
+    }
+
     private onFocus = (e: React.SyntheticEvent<HTMLInputElement>) => {
-        this.setState({focus: true});
+        this.setState({
+            currentInput: e.currentTarget.name
+        });
         if (isTouch) {
             this.showNativeKeyboard();
         } else {
@@ -149,17 +179,22 @@ export default class TimePicker extends React.Component<Props, State> {
     private onBlur = (e: React.SyntheticEvent<HTMLInputElement>) => {
         const name = e.currentTarget.name;
         const update: Partial<State> = {
-            focus: false
+            currentInput: null,
+            prevInput: this.state.currentInput
         };
-        if (name === 'hh' || name === 'mm') {
+        if (isFormatPart(name)) {
             update[name] = pad2(this.state[name]);
         }
         this.setState(update as State);
         this.commit();
     }
 
-    private moveFocus(currentRefName: string, increment: number): boolean {
-        const refIndex = inputNames.indexOf(currentRefName);
+    private moveFocus(increment: number): boolean {
+        const {currentInput} = this.state;
+        if (!currentInput) {
+            return false;
+        }
+        const refIndex = inputNames.indexOf(currentInput);
         const next = this.inputs[inputNames[refIndex + increment]];
 
         if (next) {
@@ -191,7 +226,7 @@ export default class TimePicker extends React.Component<Props, State> {
         this.setState(nextState, () => {
             if (!shouldWaitForInput) {
                 this.commit();
-                this.moveFocus(name, 1);
+                this.moveFocus(1);
             }
         });
     }
@@ -202,7 +237,7 @@ export default class TimePicker extends React.Component<Props, State> {
             return;
         }
         e.preventDefault();
-        this.moveFocus(name, -1);
+        this.moveFocus(-1);
     }
 
     private onNativeChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
@@ -215,11 +250,13 @@ export default class TimePicker extends React.Component<Props, State> {
         switch (keycode(e.keyCode)) {
             case 'space':
             case 'enter':
+            case 'up':
+            case 'down':
                 this.toggleAmpm();
                 break;
             case 'backspace':
                 e.preventDefault();
-                this.moveFocus('ampm', -1);
+                this.inputs.mm!.focus();
                 break;
         }
     }
@@ -229,7 +266,7 @@ export default class TimePicker extends React.Component<Props, State> {
     }
 
     private onAmpmClick = () => {
-        const {focus} = this.state;
+        const {currentInput} = this.state;
         this.toggleAmpm(() => {
             this.inputs.nativeInput!.blur();
             if (focus) {
