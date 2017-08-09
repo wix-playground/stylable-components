@@ -1,99 +1,147 @@
 import React = require('react');
-import {SelectionList, ItemRendererProps, divider} from "../../src/components/selection-list";
+import {SBComponent, SBStateless} from 'stylable-react-component';
+import {divider, ItemRendererProps, SelectionList} from '../../src/components/selection-list';
+import style from './selection-list-demo.st.css';
 
 export class SelectionListDemo extends React.Component<{}, {}> {
-    render() {
-        return <div>
-            <FoodList />
-            <EmojiList />
-        </div>;
+    public render() {
+        return (
+            <div>
+                <FoodList />
+                <EmojiList />
+                <TextStyleList />
+            </div>
+        );
     }
 }
 
 export class FoodList extends React.Component {
-    dataSource = [
+    public state = {value: 'Bacon'};
+
+    private dataSource = [
         {value: 'Fasting', label: ''},
         divider,
         'Eggs',
         'Bacon',
         'Sausage',
         'Ham',
-        {value: 'Spam', label: 'Spam', disabled: true},
+        {value: 'Spam', label: 'Spam', disabled: true}
     ];
 
-    state = {value: 'Bacon'};
-
-    render() {
-        return <div data-automation-id="FOOD">
-            <h3>Options from a data source</h3>
-            <SelectionList
-                dataSource={this.dataSource}
-                value={this.state.value}
-                onChange={value => this.setState({value})} />
-            <p data-automation-id="RESULT">
-                {this.state.value}, great choice!
-            </p>
-        </div>;
+    public render() {
+        return (
+            <div data-automation-id="FOOD">
+                <h3>Options from a data source</h3>
+                <SelectionList
+                    dataSource={this.dataSource}
+                    value={this.state.value}
+                    onChange={this.onChange}
+                />
+                <p data-automation-id="RESULT">
+                    {this.state.value}, great choice!
+                </p>
+            </div>
+        );
     }
+
+    private onChange = (value: string) => this.setState({value});
 }
 
 interface EmojiListItemProps extends ItemRendererProps {
     item: {
         value: string;
         icon: string;
-    }
+    };
 }
 
-const EmojiListItem: React.SFC<EmojiListItemProps> = (props) => {
-    const style = {
-        fontSize: props.selected ? '45px' : '20px',
-        transition: 'font-size 300ms',
-        cursor: 'pointer',
-    };
+const EmojiListItem: React.SFC<EmojiListItemProps> = SBStateless(props => {
+    return (
+        <div
+            className="emoji-list-item"
+            data-value={props.item.value}
+            data-selected={props.selected || undefined}
+        >
+            {props.item.icon}
+        </div>
+    );
+}, style);
 
-    return <div data-value={props.item.value} style={style}>
-        {props.item.icon}
-    </div>;
-};
-
+@SBComponent(style)
 class EmojiList extends React.Component {
-    dataSchema = {value: 'name', icon: 'icon'};
+    public state = {value: 'Crocodile'};
 
-    dataSource = [
-        {icon: '🦁', name: 'Lion'},
-        {icon: '🐷', name: 'Pig'},
-        {icon: '🦇', name: 'Bat'},
-        {icon: '🐙', name: 'Octopus'},
-        {icon: '🐌', name: 'Snail'},
-        {icon: '🐝', name: 'Honeybee'},
+    private dataSchema = {value: 'name', icon: 'icon'};
+    private dataSource = [
+        {icon: '🐍', name: 'Snek'},
+        {icon: '🐋', name: 'Whale'},
+        {icon: '🐊', name: 'Crocodile'},
+        {icon: '🐘', name: 'Elephant'},
+        {icon: '🐇', name: 'Rabbit'},
+        {icon: '🐝', name: 'Honeybee'}
     ];
 
-    state = {value: 'Pig'};
-
-    render() {
-        const style = {
-            display: 'flex',
-            width: '300px',
-            height: '60px',
-            padding: '0 10px',
-            borderRadius: '30px',
-            alignItems: 'center',
-            justifyContent: 'space-around',
-        };
-        const anArticleFor = (word: string) => /^[aeiou]/i.test(word) ? 'an' : 'a';
-
-        return <div data-automation-id="EMOJI">
-            <h3>Custom item renderer</h3>
-            <SelectionList
-                style={style}
-                dataSchema={this.dataSchema}
-                dataSource={this.dataSource}
-                itemRenderer={EmojiListItem}
-                value={this.state.value}
-                onChange={value => this.setState({value})} />
-            <p data-automation-id="RESULT">
-                That's {anArticleFor(this.state.value)} {this.state.value.toLowerCase()}.
-            </p>
-        </div>;
+    public render() {
+        return (
+            <div data-automation-id="EMOJI">
+                <h3>Custom item renderer</h3>
+                <SelectionList
+                    className="emoji-list"
+                    dataSchema={this.dataSchema}
+                    dataSource={this.dataSource}
+                    itemRenderer={EmojiListItem}
+                    value={this.state.value}
+                    onChange={this.onChange}
+                />
+                <p data-automation-id="RESULT">
+                    Your spirit animal is {this.state.value.toLowerCase()}.
+                </p>
+            </div>
+        );
     }
+
+    private onChange = (value: string) => this.setState({value});
+}
+
+@SBComponent(style)
+class TextStyleList extends React.Component {
+    public state = {value: 'heading'};
+
+    public render() {
+        return (
+            <div data-automation-id="TEXT_STYLE">
+                <h3>Child components as options</h3>
+                <SelectionList
+                    className="text-style-list"
+                    value={this.state.value}
+                    onChange={this.onChange}
+                >
+                    <div data-value="title">
+                        <span className="text-style-title">Title</span>
+                    </div>
+                    <div data-value="heading">
+                        <span className="text-style-heading">Heading</span>
+                    </div>
+                    <div data-value="heading-red">
+                        <span className="text-style-heading-red">Heading Red</span>
+                    </div>
+                    <div data-value="body">
+                        <span className="text-style-body">Body</span>
+                    </div>
+                    <div data-value="caption">
+                        <span className="text-style-caption">Caption</span>
+                    </div>
+                    <div data-value="label">
+                        <span className="text-style-label">Label</span>
+                    </div>
+                </SelectionList>
+                <p>
+                    <span data-automation-id="RESULT" className={`text-style-${this.state.value}`}>
+                        Styled text
+                    </span>
+                </p>
+            </div>
+        );
+    }
+
+    private onChange = (value: string) => this.setState({value});
 }
