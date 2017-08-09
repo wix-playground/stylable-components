@@ -4,15 +4,17 @@ import { CaretDown } from './drop-down-icons';
 import { SelectionList } from '../selection-list';
 import style from './drop-down.st.css';
 
+export const dropDownDefaultText = 'Default Text';
+
 export interface DropDownLabelProps {
     selectedItem: DropDownItem | undefined;
-    onClick?: React.EventHandler<any>;
+    onClick?: React.EventHandler<React.MouseEvent<HTMLDivElement>>;
 }
 
-export const DropDownLabel: React.SFC<DropDownLabelProps> = SBStateless(props => {
+export const DropDownInput: React.SFC<DropDownLabelProps> = SBStateless(props => {
   return (
-      <div data-automation-id="DROP_DOWN_LABEL" onClick={props.onClick} className="drop-down-label">
-          <span className="label">{props.selectedItem ? props.selectedItem.label : 'Default text'}</span>
+      <div data-automation-id="DROP_DOWN_INPUT" onClick={props.onClick} className="drop-down-input">
+          <span className="label">{props.selectedItem ? props.selectedItem.label : dropDownDefaultText}</span>
           <CaretDown className="caret" />
       </div>
   );
@@ -42,7 +44,7 @@ export interface DropDownItem {
 
 export interface DropDownProps {
     selectedItem: DropDownItem | undefined;
-    onLabelClick?: React.EventHandler<any>;
+    onLabelClick?: React.EventHandler<React.MouseEvent<HTMLDivElement>>;
     open?: boolean;
     items: object[];
 }
@@ -52,7 +54,7 @@ export class DropDown extends React.Component<DropDownProps, {}> {
     public render() {
         return (
             <div data-automation-id="DROP_DOWN" className="drop-down">
-                <DropDownLabel selectedItem={this.props.selectedItem} onClick={this.props.onLabelClick} />
+                <DropDownInput selectedItem={this.props.selectedItem} onClick={this.props.onLabelClick} />
                 <DropDownList
                     selectedItem={this.props.selectedItem}
                     items={this.props.items}

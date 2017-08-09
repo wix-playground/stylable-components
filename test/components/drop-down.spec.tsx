@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { ClientRenderer, expect, simulate, sinon, waitFor } from 'test-drive-react';
-import { DropDown } from '../../src';
+import { DropDown, dropDownDefaultText } from '../../src';
 
 const dropDown = 'DROP_DOWN';
-const label = dropDown + '_LABEL';
+const input = dropDown + '_INPUT';
 const list = dropDown + '_LIST';
 
 describe('<DropDown />', () => {
@@ -19,19 +19,25 @@ describe('<DropDown />', () => {
     ];
 
     it('renders to the screen', () => {
-       const { select, waitForDom } = clientRenderer.render(<DropDown selectedItem={item} items={[]}/>);
-       return waitForDom(() => expect(select(dropDown)).to.be.present());
+       const { select, waitForDom } = clientRenderer.render(<DropDown selectedItem={undefined} items={[]}/>);
+       return waitForDom(() => {
+           expect(select(dropDown)).to.be.present();
+           expect(select(input)).to.have.text(dropDownDefaultText);
+       });
     });
 
     it('has default text initially', () => {
         const { select, waitForDom } = clientRenderer.render(<DropDown selectedItem={item} items={[]}/>);
-        return waitForDom(() => expect(select(dropDown, label)).to.be.present());
+        return waitForDom(() => {
+            expect(select(dropDown)).to.be.present();
+            expect(select(input)).to.have.text(item.label);
+        });
     });
 
     it('invokes the onClick when dropdown label is clicked', () => {
         const onClick = sinon.spy();
         const { select } = clientRenderer.render(<DropDown selectedItem={item} onLabelClick={onClick} items={[]}/>);
-        simulate.click(select(dropDown, label));
+        simulate.click(select(dropDown, input));
         return waitFor(() => expect(onClick).to.have.been.calledOnce);
     });
 
