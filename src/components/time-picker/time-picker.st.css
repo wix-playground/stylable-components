@@ -1,0 +1,135 @@
+@namespace 'time-picker';
+
+:import {
+    -st-from: "../stepper/stepper.st.css";
+    -st-default: Stepper;
+}
+
+:import {
+    -st-from: "../../style/default-theme/variables.st.css";
+    -st-named:
+        BK2,
+        BK3,
+        PR2,
+        PR3;
+}
+:vars {
+    width: 120px;
+}
+.root {
+    -st-states: focus, disabled;
+    font-family: arial;
+    font-size: 16px;
+    position: relative;
+    border: 1px solid value(BK3);
+    width: value(width);
+    display: inline-flex;
+}
+
+.root:not(:disabled):hover {
+    border-color: value(PR3);
+}
+.root:focus {
+    border-color: value(PR2);
+}
+.root:disabled {
+    color: value(BK2);
+}
+
+.inputs {
+    display: flex;
+    box-sizing: border-box;
+    padding: 6px 0 6px 8px;
+    flex: 1;
+}
+
+.input-wrap {
+    position: relative;
+}
+.input-wrap:not(:last-child):after {
+    content: ':';
+    color: value(BK2);
+    position: absolute;
+    top: 0;
+    right: -2px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.input {
+    -st-states: wide;
+    font: inherit;
+    border: 0;
+    padding: 0px 4px;
+    width: 26px;
+    height: 24px;
+    color: inherit;
+    background: none;
+}
+.input::placeholder {
+    color: value(BK2);
+}
+.input::selection {
+    color: white;
+    background: value(PR2);
+    padding: 2px;
+}
+.input:hover,
+.input:focus {
+    border: 0;
+    outline: 0;
+}
+.input:wide {
+    width: 100%;
+}
+
+.native-input {
+    position: absolute;
+    opacity: 0;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    width: 0;
+    height: 0;
+}
+.native-input:focus {
+    border: 0;
+}
+
+.ampm {
+    -st-states: unset;
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+    margin: 9px 0;
+    height: auto;
+    width: 32px;
+    cursor: pointer;
+}
+
+.ampm:focus {
+    color: white;
+    background: red;
+    outline: none;
+    background: value(PR2);
+}
+.ampm:unset {
+    color: value(BK2);
+}
+
+.stepper {
+    -st-extends: Stepper;
+    transition: opacity 100ms ease;
+    opacity: 0;
+}
+.root:focus .stepper,
+.root:hover .stepper {
+    opacity: 1;
+}
+.stepper::control:disabled {
+    color: value(BK2);
+    background: white;
+}

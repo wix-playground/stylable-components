@@ -39,14 +39,15 @@
 }
 
 .control-icon {
-    color: value(color_MainText);
+    color: currentColor;
     width: 16px;
     height: 16px;
+    flex: 1;
 }
 
-.control:hover .control-icon,
-.control:focus .control-icon,
-.control:disabled .control-icon {
+.control:hover,
+.control:focus,
+.control:disabled {
     color: value(color_MainText_Background);
 }
 
