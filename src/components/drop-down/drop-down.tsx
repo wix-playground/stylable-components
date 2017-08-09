@@ -33,7 +33,7 @@ export class DropDown extends React.Component<DropDownProps, {}> {
         const rootProps = root(this.props, {
             'data-automation-id': 'DROP_DOWN',
             'className': 'drop-down'
-        }, ['onLabelClick']);
+        }, ['onInputClick']);
 
         return (
             <div {...rootProps}>
