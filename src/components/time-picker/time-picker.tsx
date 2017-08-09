@@ -6,7 +6,7 @@ import {Stepper} from '../stepper';
 import styles from './time-picker.st.css';
 import {
     Ampm, Format, Segment,
-    isNumber, isTimePart, isValidValue, pad2, TimePart, to24, toAmpm
+    isNumber, isTimeSegment, isValidValue, pad2, TimeSegment, to24, toAmpm
 } from './utils';
 
 export interface Props {
@@ -131,14 +131,35 @@ export default class TimePicker extends React.Component<Props, State> {
         }
     }
 
-    private toggleAmpm() {
-        const {hh, mm} = this.state;
-        const ampm = 1 - this.state.ampm;
-
+    private updateSegmentValue(name: Segment, value: number | Ampm) {
+        const {hh, mm, ampm} = this.state;
         this.setState({
-            inputValue: segmentsToInputValue({hh, mm, ampm}),
-            ampm
-        }, this.commit);
+            [name as any]: value,
+            inputValue: segmentsToInputValue({
+                hh, mm, ampm,
+                [name]: value
+            })
+        }, () => {
+            this.select(name);
+            this.commit();
+        })
+    }
+
+    private toggleAmpm() {
+        this.updateSegmentValue('ampm', 1 - this.state.ampm);
+    }
+
+    private changeValue(step: number) {
+        const name = this.currentSegment;
+        if (!isTimeSegment(name)) {
+            return this.toggleAmpm();
+        }
+        const {hh, mm, ampm} = this.state;
+        const newValue = (this.state[name] || 0) + step;
+
+        if (isValidValue(newValue, name, ampm)) {
+            this.updateSegmentValue(name, newValue);
+        }
     }
 
     private onInputClick = (e: React.SyntheticEvent<HTMLInputElement>) => {
@@ -206,7 +227,9 @@ export default class TimePicker extends React.Component<Props, State> {
 
     private onInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         const keyCode = keycode(e.keyCode);
-        if (!/^\d$/.test(keyCode)) {
+
+        // do not allow to unset selection by preventing all non digets and not system keys
+        if (!e.ctrlKey && !e.metaKey && !e.altKey && !/^\d$/.test(keyCode)) {
             e.preventDefault();
         }
 
@@ -219,6 +242,12 @@ export default class TimePicker extends React.Component<Props, State> {
                 break;
             case 'tab':
                 this.moveSelection(e.shiftKey ? -1 : 1)
+                break;
+            case 'up':
+                this.changeValue(+1)
+                break;
+            case 'down':
+                this.changeValue(-1)
                 break;
             case 'space':
             case 'enter':

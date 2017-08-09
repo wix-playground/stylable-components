@@ -3,9 +3,9 @@ export enum Ampm {
     PM,
     NONE
 }
-export type TimePart = 'hh' | 'mm';
+export type TimeSegment = 'hh' | 'mm';
 export type Format = 'ampm' | '24h';
-export type Segment = 'hh' | 'mm' | 'ampm';
+export type Segment = TimeSegment | 'ampm';
 
 export function pad2(num: string | number): string {
     return ('00' + num).slice(-2);
@@ -15,7 +15,7 @@ export function isNumber(value: string) {
     return /^\d{0,2}$/.test(value);
 }
 
-export function isTimePart(arg: any): arg is TimePart {
+export function isTimeSegment(arg: any): arg is TimeSegment {
     return arg === 'hh' || arg === 'mm';
 }
 
@@ -42,7 +42,7 @@ export function toAmpm(hh: number): {hh: number, ampm: Ampm} {
     return {hh, ampm};
 }
 
-export function isValidValue(num: number, part: TimePart, ampm: Ampm) {
+export function isValidValue(num: number, part: TimeSegment, ampm: Ampm) {
     if (part === 'mm') {
         return num >= 0 && num <= 59;
     }
