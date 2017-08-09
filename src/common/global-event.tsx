@@ -2,7 +2,6 @@ import { Component } from 'react';
 
 export interface GlobalEventProps {
     event: string;
-    debounce?: number;
     handler: EventListener;
 }
 
@@ -20,17 +19,12 @@ export default class GlobalEvent extends Component<GlobalEventProps> {
         this.emitter.removeEventListener(this.props.event, this.handler);
     }
 
+    public render() {
+        return null;
+    }
+
     private handler = (e: Event) => {
-        const { debounce, handler } = this.props;
-
-        if (debounce == null) {
-            handler(e);
-            return;
-        }
-
-        clearTimeout(this.timeoutId);
-        this.timeoutId = setTimeout(() => {
-            handler(e);
-        }, debounce);
+        const { handler } = this.props;
+        handler(e);
     }
 }
