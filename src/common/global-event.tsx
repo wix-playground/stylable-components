@@ -9,8 +9,6 @@ export default class GlobalEvent extends Component<GlobalEventProps> {
 
     private emitter = window;
 
-    private timeoutId: NodeJS.Timer;
-
     public componentDidMount() {
         this.emitter.addEventListener(this.props.event, this.handler);
     }
