@@ -17,7 +17,7 @@ export class DropDownDemo extends React.Component<{}, DropDownDemoState> {
 
     public state = { selectedItem: undefined, open: false };
 
-    public onLabelClick = () => {
+    public onInputClick = () => {
         this.setState({
             open: !this.state.open
         });
@@ -32,12 +32,12 @@ export class DropDownDemo extends React.Component<{}, DropDownDemoState> {
     public render() {
         return (
             <div>
-                <h3>DropDown</h3>
+                <h2>DropDown</h2>
                 <section data-automation-id="DROP_DOWN_DEMO" style={{width: '250px'}}>
                     <DropDown
                         selectedItem={this.state.selectedItem}
                         items={items}
-                        onLabelClick={this.onLabelClick}
+                        onInputClick={this.onInputClick}
                         open={this.state.open}
                         onItemClick={this.onItemClick}
                     />

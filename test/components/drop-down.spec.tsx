@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ClientRenderer, expect, simulate, sinon, waitFor } from 'test-drive-react';
-import { DropDown, dropDownDefaultText } from '../../src';
+import { DropDown } from '../../src';
 import { DropDownDemo } from '../../demo/components/drop-down.demo';
 
 const dropDown = 'DROP_DOWN';
@@ -11,8 +11,6 @@ const list = dropDown + '_LIST';
 describe('<DropDown />', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
-
-    const item = { label: 'Test' };
 
     const items = [
         { label: 'Muffins' },
@@ -42,11 +40,12 @@ describe('<DropDown />', () => {
 
         return waitForDom(() => {
             expect(select(dropDown)).to.be.present();
-            expect(select(dropDown)).to.have.text(dropDownDefaultText);
+            expect(select(dropDown)).to.have.text('Default Text');
         });
     });
 
     it('has correct selected item text', () => {
+        const item = { label: 'Test'};
         const { select, waitForDom } = clientRenderer.render(<DropDown selectedItem={item}/>);
 
         return waitForDom(() => {
@@ -57,8 +56,7 @@ describe('<DropDown />', () => {
 
     it('invokes the onClick when dropdown label is clicked', () => {
         const onClick = sinon.spy();
-        const { select } = clientRenderer.render(<DropDown selectedItem={item} onLabelClick={onClick} items={[]}/>);
-
+        const { select } = clientRenderer.render(<DropDown onInputClick={onClick}/>);
         simulate.click(select(dropDown, input));
 
         return waitFor(() => expect(onClick).to.have.been.calledOnce);

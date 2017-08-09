@@ -3,15 +3,16 @@ import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react
 import {SelectionListDemo} from '../../demo/components/selection-list-demo';
 import sleep from '../../src/common/sleep';
 import {divider, SelectionList} from '../../src/components/selection-list';
+import style from './selection-list-demo.st.css';
 
-describe('<SelectionList />', function() {
+describe('<SelectionList />', () => {
     const clientRenderer = new ClientRenderer();
 
     afterEach(() => {
         clientRenderer.cleanup();
     });
 
-    it('Takes a list of options and allows to select one', async function() {
+    it('Takes a list of options and allows to select one', async () => {
         const {select, waitForDom} = clientRenderer.render(<SelectionListDemo />);
 
         await waitForDom(() => {
@@ -25,26 +26,41 @@ describe('<SelectionList />', function() {
         });
     });
 
-    it('Works with a custom renderer and data schema', async function() {
+    it('Works with a custom renderer and data schema', async () => {
         const {select, waitForDom} = clientRenderer.render(<SelectionListDemo />);
 
         await waitForDom(() => {
             expect(select('EMOJI', 'LIST')).to.be.present();
         });
 
-        const octopus = select('EMOJI', 'LIST')!.children[3] as HTMLElement;
+        const elephant = select('EMOJI', 'LIST')!.children[3] as HTMLElement;
 
-        expect(octopus).to.be.present();
-        expect(octopus.dataset.value).to.be.equal('Octopus');
-        expect(octopus).to.contain.text('🐙');
-        simulate.click(octopus);
+        expect(elephant).to.be.present();
+        expect(elephant.dataset.value).to.be.equal('Elephant');
+        expect(elephant).to.contain.text('🐘');
+        simulate.click(elephant);
 
         return waitForDom(() => {
-            expect(select('EMOJI', 'RESULT')).to.contain.text('octopus');
+            expect(select('EMOJI', 'RESULT')).to.contain.text('elephant');
         });
     });
 
-    it('Renders items under each other using the default renderer', async function() {
+    it('Works with options specified as children', async () => {
+        const {select, waitForDom} = clientRenderer.render(<SelectionListDemo />);
+
+        await waitForDom(() => {
+            expect(select('TEXT_STYLE', 'LIST')).to.be.present();
+        });
+
+        const label = select('TEXT_STYLE', 'LIST')!.children[5] as HTMLElement;
+        simulate.click(label);
+
+        return waitForDom(() => {
+            expect(select('TEXT_STYLE', 'RESULT')!.className).to.match(/text-style-label/);
+        });
+    });
+
+    it('Renders items under each other using the default renderer', async () => {
         const {select, waitForDom} = clientRenderer.render(
             <SelectionList dataSource={['One', 'Two', divider, 'Three']} />
         );
@@ -56,7 +72,7 @@ describe('<SelectionList />', function() {
         });
     });
 
-    it('Fires onChange when an item is clicked', async function() {
+    it('Fires onChange when an item is clicked', async () => {
         const dataSource = ['One', 'Two', 'Three'];
         const onChange = sinon.spy();
         const {select, waitForDom} = clientRenderer.render(
@@ -79,7 +95,7 @@ describe('<SelectionList />', function() {
 
     it(
         `Doesn't fire onChange for clicks on active items, dividers, disabled items, and items without value`,
-        async function() {
+        async () => {
             const dataSource = [
                 'One',
                 divider,
@@ -108,7 +124,7 @@ describe('<SelectionList />', function() {
         }
     );
 
-    it('Renders blank items at the same height as normal items', function() {
+    it('Renders blank items at the same height as normal items', () => {
         const {select, waitForDom} = clientRenderer.render(
             <SelectionList dataSource={['', '1']} />
         );
@@ -124,13 +140,45 @@ describe('<SelectionList />', function() {
         });
     });
 
-    it('Renders a divider', function() {
+    it('Renders a divider', () => {
         const {select, waitForDom} = clientRenderer.render(
             <SelectionList dataSource={[divider]} />
         );
 
         return waitForDom(() => {
             expect(select('LIST', 'DIVIDER')).to.be.present();
+        });
+    });
+
+    it(`Doesn't discard text nodes in the child list`, async () => {
+        const {select, waitForDom} = clientRenderer.render(
+            <SelectionList>
+                <div />
+                Hello, World
+                <div />
+            </SelectionList>
+        );
+
+        return waitForDom(() => {
+            expect(select('LIST')).to.contain.text('Hello, World');
+        });
+    });
+
+    it('Allows to use dataSource and children together', async () => {
+        const {select, waitForDom} = clientRenderer.render(
+            <SelectionList dataSource={['ham', 'spam']}>
+                <div data-value="eggs">eggs</div>
+                <div data-value="bacon">bacon</div>
+            </SelectionList>
+        );
+
+        return waitForDom(() => {
+            expect(select('LIST')).to.be.present();
+            const children = Array.from(select('LIST')!.children) as HTMLElement[];
+            const labels = children.map(el => el.textContent);
+            const values = children.map(el => el.dataset.value);
+            expect(labels).to.be.deep.equal(['ham', 'spam', 'eggs', 'bacon']);
+            expect(values).to.be.deep.equal(['ham', 'spam', 'eggs', 'bacon']);
         });
     });
 });
