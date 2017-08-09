@@ -5,8 +5,8 @@ import {SBComponent} from 'stylable-react-component';
 import {Stepper} from '../stepper';
 import styles from './time-picker.st.css';
 import {
-    Ampm, TimePart, Format,
-    isTimePart, isNumber, isValidValue, pad2, to24, toAmpm
+    Ampm, Format, isNumber,
+    isTimePart, isValidValue, pad2, TimePart, to24, toAmpm
 } from './utils';
 
 export interface Props {
@@ -37,8 +37,8 @@ export default class TimePicker extends React.Component<Props, State> {
 
     private inputs: {
         [key: string]: HTMLInputElement | HTMLDivElement | null
-    } = {}
-    private lastValue: string | undefined
+    } = {};
+    private lastValue: string | undefined;
 
     constructor(props: Props) {
         super();
@@ -112,7 +112,7 @@ export default class TimePicker extends React.Component<Props, State> {
                 }
                 {!showPlaceholder && !disabled &&
                     <Stepper
-                        className='stepper'
+                        className="stepper"
                         disableUp={!isValidValue(stepperCurrentValue + 1, stepperCurrentInput, ampm)}
                         disableDown={!isValidValue(stepperCurrentValue - 1, stepperCurrentInput, ampm)}
                         onUp={this.createStepperHandler(+1)}
@@ -122,7 +122,7 @@ export default class TimePicker extends React.Component<Props, State> {
                 <input
                     className="native-input"
                     ref={elem => this.inputs.nativeInput = elem}
-                    tabIndex={isTouch ? 0 : -1 }
+                    tabIndex={isTouch ? 0 : -1}
                     type="time"
                     value={this.getValue()}
                     onChange={this.onNativeChange}
@@ -206,8 +206,8 @@ export default class TimePicker extends React.Component<Props, State> {
         this.commit();
     }
 
-    private onAmpmFocus = () => this.setState({currentInput: 'ampm'})
-    private onAmpmBlur = () => this.setState({currentInput: null})
+    private onAmpmFocus = () => this.setState({currentInput: 'ampm'});
+    private onAmpmBlur = () => this.setState({currentInput: null});
 
     private moveFocus(increment: number): boolean {
         const {currentInput} = this.state;

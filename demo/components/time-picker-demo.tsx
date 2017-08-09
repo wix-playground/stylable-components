@@ -32,7 +32,7 @@ export class TimePickerDemo extends React.Component<any, any> {
                 <div>
                     <TimePicker
                         value={this.state.value1}
-                        format='24h'
+                        format="24h"
                         onChange={this.createOnChange('value1')}
                     />
                     <span style={{marginLeft: 20}}>{this.state.value1}</span>
@@ -41,7 +41,7 @@ export class TimePickerDemo extends React.Component<any, any> {
                 <h3>Controlled 12 time format</h3>
                 <div>
                     <TimePicker
-                        format='ampm'
+                        format="ampm"
                         value={this.state.value1}
                         onChange={this.createOnChange('value1')}
                     />
