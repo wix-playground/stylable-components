@@ -67,23 +67,21 @@ export class Popup extends React.Component<PopupProps, PopupState> {
     private setPosition = (popup: HTMLElement | null) => {
         if (popup) {
             const newStyle = JSON.parse(JSON.stringify(this.state.style));
-            const popupRect = popup.getBoundingClientRect();
             const anchorRect = this.props.anchor.getBoundingClientRect();
-            let popupWidth = popupRect.width;
 
             newStyle.maxHeight = this.props.maxHeight;
+            newStyle.transform = '';
             if (this.props.syncWidth) {
                 newStyle.width = anchorRect.width;
-                popupWidth = newStyle.width;
             }
 
             const anchorHorizontalPos = this.props.anchorPosition!.horizontal;
             const anchorVerticalPos = this.props.anchorPosition!.vertical;
 
             setTop(newStyle, anchorRect,
-                anchorVerticalPos, popup.getBoundingClientRect().height, this.props.popupPosition!.vertical);
+                anchorVerticalPos, this.props.popupPosition!.vertical);
             setLeft(newStyle, anchorRect,
-                anchorHorizontalPos, popupWidth, this.props.popupPosition!.horizontal);
+                anchorHorizontalPos, this.props.popupPosition!.horizontal);
             if (this.props.syncWidth) {
                 newStyle.width = anchorRect.width;
             }
@@ -93,49 +91,51 @@ export class Popup extends React.Component<PopupProps, PopupState> {
 }
 
 function setTop(popupStyle: CSSProperties, anchorRect: ClientRect,
-                anchorPosition: VerticalPosition, popupHeight: number, popupPoistion: VerticalPosition) {
+                anchorPosition: VerticalPosition, popupPoistion: VerticalPosition) {
     switch (popupPoistion) {
         case 'top':
             popupStyle.top = getVerticalReference(anchorRect, anchorPosition);
             break;
         case 'center':
-            popupStyle.top = getVerticalReference(anchorRect, anchorPosition) - (popupHeight / 2);
+            popupStyle.top = getVerticalReference(anchorRect, anchorPosition);
+            popupStyle.transform += 'translateY(-50%)';
             break;
         case 'bottom':
-            popupStyle.top = getVerticalReference(anchorRect, anchorPosition) - popupHeight;
+            popupStyle.top = getVerticalReference(anchorRect, anchorPosition);
+            popupStyle.transform += 'translateY(-100%)';
             break;
     }
 }
 
 function setLeft(popupStyle: CSSProperties, anchorRect: ClientRect,
-                 anchorPosition: HorizontalPosition, popupWidth: number, popupPoistion: HorizontalPosition) {
+                 anchorPosition: HorizontalPosition, popupPoistion: HorizontalPosition) {
     switch (popupPoistion) {
         case 'left':
             popupStyle.left = getHorizontalReference(anchorRect, anchorPosition);
             break;
         case 'center':
-            popupStyle.left = getHorizontalReference(anchorRect, anchorPosition) - (popupWidth / 2);
+            popupStyle.left = getHorizontalReference(anchorRect, anchorPosition);
+            popupStyle.transform += 'translateX(-50%)';
             break;
         case 'right':
-            popupStyle.left = getHorizontalReference(anchorRect, anchorPosition) - popupWidth;
+            popupStyle.left = getHorizontalReference(anchorRect, anchorPosition);
+            popupStyle.transform += 'translateX(-100%)';
             break;
     }
 }
 
 function getVerticalReference(rect: ClientRect, anchorPosition: VerticalPosition): number {
-    const yOffset = window.scrollY ? window.scrollY : window.pageYOffset;
     if (anchorPosition === 'center') {
-        return yOffset + rect.top + (rect.height / 2);
+        return rect.top + (rect.height / 2);
     } else {
-        return yOffset + rect[anchorPosition as 'top' | 'bottom'];
+        return rect[anchorPosition as 'top' | 'bottom'];
     }
 }
 
 function getHorizontalReference(rect: ClientRect, anchorPosition: HorizontalPosition): number {
-    const xOffset = window.scrollX ? window.scrollX : window.pageXOffset;
     if (anchorPosition === 'center') {
-        return xOffset + rect.left + (rect.width / 2);
+        return rect.left + (rect.width / 2);
     } else {
-        return xOffset + rect[anchorPosition as 'left' | 'right'];
+        return rect[anchorPosition as 'left' | 'right'];
     }
 }
