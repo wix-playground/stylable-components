@@ -116,6 +116,7 @@ export class SelectionList extends React.Component<SelectionListProps, {}> {
     private renderItem(item: SelectionItem, index: number) {
         const ItemRenderer = this.props.itemRenderer!;
         const normalized = this.normalizeItem(item);
+        debugger;
         return (
             <ItemRenderer
                 key={index}

@@ -27,6 +27,8 @@ export interface DropDownListProps {
 export const DropDownList: React.SFC<DropDownListProps> = SBStateless(props => {
     if (!props.open) { return null; }
 
+    debugger;
+
     return (
         <div data-automation-id="DROP_DOWN_LIST">
             <SelectionList dataSource={props.items} value={props.selectedItem && props.selectedItem.label}/>
