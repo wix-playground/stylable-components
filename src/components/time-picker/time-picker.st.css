@@ -14,6 +14,7 @@
         PR3;
 }
 :vars {
+    height: 36px;
     width: 120px;
 }
 .root {
@@ -22,6 +23,7 @@
     font-size: 16px;
     position: relative;
     border: 1px solid value(BK3);
+    height: value(height);
     width: value(width);
     display: inline-flex;
 }
@@ -35,29 +37,6 @@
 .root:disabled {
     color: value(BK2);
 }
-
-/*
-.inputs {
-    display: flex;
-    box-sizing: border-box;
-    padding: 6px 0 6px 8px;
-    flex: 1;
-}
-
-.input-wrap {
-    position: relative;
-}
-.input-wrap:not(:last-child):after {
-    content: ':';
-    color: value(BK2);
-    position: absolute;
-    top: 0;
-    right: -2px;
-    height: 100%;
-    display: flex;
-    align-items: center;
-}
-*/
 
 .input {
     -st-states: wide;
@@ -100,35 +79,11 @@
     border: 0;
 }
 
-/*
-.ampm {
-    -st-states: unset;
-    display: flex;
-    flex: 1;
-    justify-content: center;
-    align-items: center;
-    user-select: none;
-    margin: 9px 0;
-    height: auto;
-    width: 32px;
-    cursor: pointer;
-}
-
-.ampm:focus {
-    color: white;
-    background: red;
-    outline: none;
-    background: value(PR2);
-}
-.ampm:unset {
-    color: value(BK2);
-}
-*/
-
 .stepper {
     -st-extends: Stepper;
+    height: 100%;
     transition: opacity 100ms ease;
-    opacity: 0;
+    /*opacity: 0;*/
 }
 .root:focus .stepper,
 .root:hover .stepper {

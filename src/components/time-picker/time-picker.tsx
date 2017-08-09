@@ -85,7 +85,10 @@ export default class TimePicker extends React.Component<Props, State> {
     }
 
     public render() {
-        const {focus, inputValue} = this.state;
+        const {focus, ampm, inputValue} = this.state;
+        const currentSegment = isTimeSegment(this.currentSegment) ? this.currentSegment : 'hh';
+        const currentSegmentValue = this.state[currentSegment] || 0;
+
         return <div cssStates={{focus}}>
             <input
                 type="text"
@@ -98,6 +101,13 @@ export default class TimePicker extends React.Component<Props, State> {
                 onBlur={this.onInputBlur}
                 onKeyDown={this.onInputKeyDown}
                 onClick={this.onInputClick}
+            />
+            <Stepper
+                className="stepper"
+                disableUp={!isValidValue(currentSegmentValue + 1, currentSegment, ampm)}
+                disableDown={!isValidValue(currentSegmentValue - 1, currentSegment, ampm)}
+                onUp={this.createStepperHandler(+1)}
+                onDown={this.createStepperHandler(-1)}
             />
             <input
                 className="native-input"
@@ -150,7 +160,7 @@ export default class TimePicker extends React.Component<Props, State> {
     }
 
     private changeValue(step: number) {
-        const name = this.currentSegment;
+        const name = this.currentSegment || 'hh';
         if (!isTimeSegment(name)) {
             return this.toggleAmpm();
         }
@@ -161,6 +171,8 @@ export default class TimePicker extends React.Component<Props, State> {
             this.updateSegmentValue(name, newValue);
         }
     }
+
+    private createStepperHandler = (step: number) => () => this.changeValue(step)
 
     private onInputClick = (e: React.SyntheticEvent<HTMLInputElement>) => {
         const cursorPosition = e.currentTarget.selectionStart;
