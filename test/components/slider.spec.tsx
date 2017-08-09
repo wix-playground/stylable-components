@@ -387,7 +387,6 @@ describe.only('<Slider />', () => {
     });
   });
 
-
   describe('when in error state', () => {
     const value = 5;
     const min = 1;
@@ -415,6 +414,55 @@ describe.only('<Slider />', () => {
         const errorAttributeValue = root!.dataset[errorAttributeName];
 
         expect(errorAttributeValue).to.equal('true');
+      });
+    });
+  });
+
+  describe('when value is out of range', () => {
+    const valueLessThenMin = -1;
+    const valueGreaterThenMax = 11;
+    const min = 0;
+    const max = 10;
+
+    it('should normilize value that less than min to min', async () => {
+      const rendered = clientRenderer.render(
+        <Slider
+          value={valueLessThenMin}
+          min={min}
+          max={max}
+        />
+      );
+
+      const select: (automationId: string) => HTMLElement | null = rendered.select;
+      const waitForDom = rendered.waitForDom;
+
+      await waitForDom(() => {
+        const handle = select('SLIDER-HANDLE');
+        const progress = select('SLIDER-PROGRESS');
+
+        expect(handle!.style.left).to.equal('0%');
+        expect(progress!.style.width).to.equal('0%');
+      });
+    });
+
+    it('should normilize value that greater than max to max', async () => {
+      const rendered = clientRenderer.render(
+        <Slider
+          value={valueGreaterThenMax}
+          min={min}
+          max={max}
+        />
+      );
+
+      const select: (automationId: string) => HTMLElement | null = rendered.select;
+      const waitForDom = rendered.waitForDom;
+
+      await waitForDom(() => {
+        const handle = select('SLIDER-HANDLE');
+        const progress = select('SLIDER-PROGRESS');
+
+        expect(handle!.style.left).to.equal('100%');
+        expect(progress!.style.width).to.equal('100%');
       });
     });
   });

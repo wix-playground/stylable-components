@@ -107,11 +107,17 @@ export class Slider extends React.Component<SliderProps, SliderState> {
       return;
     }
 
-    const value = nextProps.value || this.props.value;
+    let value = nextProps.value || this.props.value;
     const min = nextProps.min || this.props.min;
     const max = nextProps.max || this.props.max;
     const step = nextProps.step || this.props.step;
 
+    if (value! > max!) {
+      value = max;
+    } else if (value! < min!) {
+      value = min;
+    }
+    
     this.setState({
       relativeValue: this.getRelativeValue(value!, min!, max!, step),
       relativeStep: this.getRelativeStep(step, min!, max!)
