@@ -4,6 +4,7 @@
 
 ## Elements
 
+![image](./assets/elements.png)
 
 ## Component API
 
@@ -25,7 +26,7 @@
 | dataSchema | object | { id: 'id', displayText:&nbsp;'displayText'&nbsp;} | no | Maps the object properties to the relevant properties required by the ItemRenderer. |
 | itemRenderer | Component | default itemRenderer | no | Renders an item in the list. |
 
-> Note: if both datasource and children are present then the children are rendered first and then the dataSource items.
+> Note: If both datasource and children are present, the children are rendered first and then the dataSource items.
 
 #### Selection Items
 
