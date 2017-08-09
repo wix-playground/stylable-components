@@ -23,6 +23,12 @@ export class DropDownDemo extends React.Component<{}, DropDownDemoState> {
         });
     }
 
+    public onItemClick = (item: DropDownItem) => {
+        this.setState({
+            selectedItem: item
+        });
+    }
+
     public render() {
         return (
             <div>
@@ -33,6 +39,7 @@ export class DropDownDemo extends React.Component<{}, DropDownDemoState> {
                         items={items}
                         onLabelClick={this.onLabelClick}
                         open={this.state.open}
+                        onItemClick={this.onItemClick}
                     />
                 </section>
             </div>
