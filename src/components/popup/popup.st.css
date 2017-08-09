@@ -1,7 +1,9 @@
-.closed {
+@namespace "Popup";
+
+.root {
+    -st-states: open;
+}
+.root:not(:open) {
     display: none;
 }
 
-.default {
-
-}

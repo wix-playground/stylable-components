@@ -13,7 +13,7 @@ export interface PositionPoint {
 }
 
 export interface PopupProps {
-    anchor: React.ReactNode;
+    anchor: HTMLElement;
     open?: boolean;
     anchorPosition?: PositionPoint;
     popupPosition?: PositionPoint;
@@ -45,39 +45,47 @@ export class Popup extends React.Component<PopupProps, PopupState> {
         if (!this.props.anchor) {
             return null;
         }
+        const rootProps = root(this.props, {
+            'data-automation-id': 'POPUP',
+            'className': 'root',
+            'cssStates': {
+                open: this.props.open!
+            }
+        });
+
         return (
             <div
-                data-automation-id="POPUP"
+                {...rootProps}
                 ref={this.setPosition}
                 style={this.state.style}
-                className={!this.props.open ? style.closed : ''}
             >
                 {this.props.children}
             </div>
         );
     }
 
-    private setPosition = (popup: any) => {
+    private setPosition = (popup: HTMLElement | null) => {
         if (popup) {
             const newStyle = JSON.parse(JSON.stringify(this.state.style));
             const popupRect = popup.getBoundingClientRect();
+            const anchorRect = this.props.anchor.getBoundingClientRect();
             let popupWidth = popupRect.width;
 
             newStyle.maxHeight = this.props.maxHeight;
             if (this.props.syncWidth) {
-                newStyle.width = (this.props.anchor as HTMLElement).getBoundingClientRect().width;
+                newStyle.width = anchorRect.width;
                 popupWidth = newStyle.width;
             }
 
             const anchorHorizontalPos = this.props.anchorPosition!.horizontal;
             const anchorVerticalPos = this.props.anchorPosition!.vertical;
 
-            setTop(newStyle, (this.props.anchor as HTMLElement).getBoundingClientRect(),
+            setTop(newStyle, anchorRect,
                 anchorVerticalPos, popup.getBoundingClientRect().height, this.props.popupPosition!.vertical);
-            setLeft(newStyle, (this.props.anchor as HTMLElement).getBoundingClientRect(),
+            setLeft(newStyle, anchorRect,
                 anchorHorizontalPos, popupWidth, this.props.popupPosition!.horizontal);
             if (this.props.syncWidth) {
-                newStyle.width = (this.props.anchor as HTMLElement).getBoundingClientRect().width;
+                newStyle.width = anchorRect.width;
             }
             this.setState({style: newStyle});
         }
