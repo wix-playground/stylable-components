@@ -23,6 +23,7 @@ export class ComponentsDemo extends React.Component<{}, {}> {
                     <h2>DropDown</h2>
                     <DropDownDemo />
                 </div>
+                <hr />
                 <div>
                     <h2>CheckBox</h2>
                     <CheckBoxDemo />

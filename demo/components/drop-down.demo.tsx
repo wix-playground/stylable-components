@@ -15,25 +15,19 @@ const items = [
 
 export class DropDownDemo extends React.Component<{}, DropDownDemoState> {
 
-    constructor() {
-        super();
-        this.state = {
-            selectedItem: undefined,
-            open: false
-        };
-    }
+    public state = { selectedItem: undefined, open: false };
 
     public onLabelClick = () => {
         this.setState({
-           open: !this.state.open
+            open: !this.state.open
         });
-    };
+    }
 
     public render() {
         return (
             <div>
                 <h3>DropDown</h3>
-                <section data-automation-id="DROP_DOWN_DEMO">
+                <section data-automation-id="DROP_DOWN_DEMO" style={{width: '250px'}}>
                     <DropDown
                         selectedItem={this.state.selectedItem}
                         items={items}
