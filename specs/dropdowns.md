@@ -106,7 +106,11 @@ Styles for MultiSelect:
 
 ## Accessibility
 
+### DropDown
 
+* Root role: listbox
+* Children roles (children being the options in the list) will be inserted in the SelectionList specs
+* Children aria role will be in the SelectionList specs
 
 ## Behavior
 
