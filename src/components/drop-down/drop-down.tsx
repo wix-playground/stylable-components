@@ -7,7 +7,7 @@ import style from './drop-down.st.css';
 export const dropDownDefaultText = 'Default Text';
 
 export interface DropDownLabelProps {
-    selectedItem: DropDownItem | undefined;
+    selectedItem?: DropDownItem;
     onClick?: React.EventHandler<React.MouseEvent<HTMLDivElement>>;
 }
 
@@ -25,7 +25,7 @@ export interface DropDownItem {
 }
 
 export interface DropDownProps extends React.HTMLAttributes<HTMLDivElement> {
-    selectedItem: DropDownItem | undefined;
+    selectedItem?: DropDownItem;
     onLabelClick?: React.EventHandler<React.MouseEvent<HTMLDivElement>>;
 }
 
