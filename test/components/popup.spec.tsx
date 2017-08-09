@@ -31,23 +31,6 @@ describe('<Popup />', function() {
         });
     });
 
-    it('renders a hidden pop up', function() {
-        let div;
-        const {select, waitForDom} = clientRenderer.render(
-            <div>
-                <div ref={elem => div = elem}>Anchor</div>
-                <Popup anchor={div}>
-                    <span>Popup Body</span>
-                </Popup>
-            </div>
-        );
-
-        return waitForDom(() => {
-            expect(select(popup)).to.not.be.undefined;
-            expect(select(popup)).to.be.absent();
-        });
-    });
-
     it('displays the popup and renders its children if the open prop is given', async function() {
         let div: HTMLDivElement;
         const { waitForDom} = clientRenderer.render(<div ref={(elem: HTMLDivElement) => div = elem}>Anchor</div>);

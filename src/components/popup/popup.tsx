@@ -1,5 +1,7 @@
 import React = require('react');
 import {CSSProperties} from 'react';
+import {SBComponent} from 'stylable-react-component';
+import {root} from 'wix-react-tools';
 import style from './popup.st.css';
 
 export type VerticalPosition =  'top' | 'center' | 'bottom';
@@ -23,6 +25,7 @@ export interface PopupState {
     style: CSSProperties;
 }
 
+@SBComponent(style)
 export class Popup extends React.Component<PopupProps, PopupState> {
     private static defaultProps: Partial<PopupProps> = {
         open: false,
@@ -111,7 +114,7 @@ function setLeft(popupStyle: CSSProperties, anchorRect: ClientRect,
     }
 }
 
-function getVerticalReference(rect: ClientRect, anchorPosition: VerticalPosition) {
+function getVerticalReference(rect: ClientRect, anchorPosition: VerticalPosition): number {
     const yOffset = window.scrollY ? window.scrollY : window.pageYOffset;
     if (anchorPosition === 'center') {
         return yOffset + rect.top + (rect.height / 2);
@@ -120,7 +123,7 @@ function getVerticalReference(rect: ClientRect, anchorPosition: VerticalPosition
     }
 }
 
-function getHorizontalReference(rect: ClientRect, anchorPosition: HorizontalPosition) {
+function getHorizontalReference(rect: ClientRect, anchorPosition: HorizontalPosition): number {
     const xOffset = window.scrollX ? window.scrollX : window.pageXOffset;
     if (anchorPosition === 'center') {
         return xOffset + rect.left + (rect.width / 2);
