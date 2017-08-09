@@ -34,7 +34,7 @@ All elements of the component and their interactivity will be described, includi
 
 #### Accepted Children / Predefined Roles  ( if applicable )
 
-List of predefined roles assignable to children components. Children are assigned the following `data-slot` attribute, in order to *tell why do we need data-slot in current component*
+List of predefined roles assignable to children components. Children are assigned the `data-slot` attribute, in order to allow the component to use them in various ways and places.
 
 > e.g.
 > This component accepts children with the following `data-slot` attribute, in order to *tell why do we need data-slot in current component*
