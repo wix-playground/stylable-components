@@ -56,7 +56,7 @@ export class Popup extends React.Component<PopupProps, PopupState> {
 
     private setPosition = (popup: any) => {
         if (popup) {
-            const newStyle = this.state.style;
+            const newStyle = JSON.parse(JSON.stringify(this.state.style));
             const popupRect = popup.getBoundingClientRect();
             let popupWidth = popupRect.width;
 
