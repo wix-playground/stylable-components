@@ -1,13 +1,15 @@
 @namespace "SelectionList";
 
-:import {
-    -st-from: "../../style/default-theme/variables.st.css";
-    -st-named: borderFocus;
+.list {
+    -st-states: focused;
+    width: 276px;
+    border: 1px solid #adbbc6;
+    outline: none;
 }
 
-.list {
-    width: 276px;
-    border: value(borderFocus);
+.divider {
+    height: 1px;
+    background-color: #adbbc6;
 }
 
 .list-item {
@@ -23,9 +25,12 @@
     user-select: none;
 }
 
+.list-item:hover {
+    background-color: #edf7ff;
+}
+
 .list-item:selected {
-    background-color: #4990e2;
-    color: #fff;
+    background-color: #f1f1f1;
 }
 
 .list-item:disabled {
@@ -33,20 +38,25 @@
     cursor: default;
 }
 
-.list-item:selected:disabled {
-    background-color: #f1f1f1;
+.list-item:disabled:hover {
+    background: #ffffff;
 }
 
-.list-item:hover {
-    background-color: #edf7ff;
+.list:focused {
+    border-color: #4a90e2;
 }
 
-.list-item:selected:hover {
-    background-color: #5cb4ff;
+.list:focused .list-item:selected {
+    background-color: #4990e2;
     color: #fff;
 }
 
-.divider {
-    height: 1px;
-    background-color: #f1f1f1;
+.list:focused .list-item:focused {
+    background-color: #edf7ff;
+}
+
+.list:focused .list-item:selected:hover,
+.list:focused .list-item:selected:focused {
+    background-color: #5cb4ff;
+    color: #ffffff;
 }

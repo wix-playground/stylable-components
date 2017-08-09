@@ -19,10 +19,10 @@ describe('<SelectionList />', () => {
             expect(select('FOOD', 'LIST')).to.be.present();
         });
 
-        simulate.click(select('FOOD', 'LIST')!.children[4]);
+        simulate.click(select('FOOD', 'LIST')!.children[1]);
 
         await waitForDom(() => {
-            expect(select('FOOD', 'RESULT')).to.contain.text('Sausage');
+            expect(select('FOOD', 'RESULT')).to.contain.text('Bacon');
         });
     });
 

@@ -16,14 +16,13 @@ export class SelectionListDemo extends React.Component<{}, {}> {
 }
 
 export class FoodList extends React.Component {
-    public state = {value: 'Bacon'};
+    public state = {value: 'Eggs'};
 
     private dataSource = [
-        {value: 'Fasting', label: ''},
-        divider,
         'Eggs',
         'Bacon',
         'Sausage',
+        divider,
         'Ham',
         {value: 'Spam', label: 'Spam', disabled: true}
     ];
