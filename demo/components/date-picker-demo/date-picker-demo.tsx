@@ -1,5 +1,7 @@
 import * as React from 'react';
-import { DatePicker, DatePickerProps } from '../../src';
+import { DatePicker, DatePickerProps } from '../../../src';
+import styles from './date-picker-demo.st.css';
+
 
 export interface DatePickerDemoState {
     value: Date;
@@ -13,22 +15,51 @@ export class DatePickerDemo extends React.Component<DatePickerProps, DatePickerD
 
     public render() {
         return (
-            <div>
-                <h2>Standard DatePicker</h2>
-                <span data-automation-id="CURRENT_DATE">{this.state.value.toDateString()}</span>
-                <DatePicker
-                    {...this.props}
-                    data-automation-id="BASIC_DATEPICKER"
-                    placeholder="mm/dd/yyyy"
-                    value={this.state.value}
-                    onChange={this.onChange}
-                />
+            <div className={styles.container}>
+                <div className={styles.background} style={this.backgroundImage} />
+                <h2 className={styles.title}>Pick a season</h2>
+                <div className={styles.datepickerContainer}>
+                    <div className={styles.datepicker}>
+                        <span data-automation-id="CURRENT_DATE" style={{ opacity: 0 }}>
+                            {this.state.value.toDateString()}
+                        </span>
+                        <DatePicker
+                            {...this.props}
+                            data-automation-id="BASIC_DATEPICKER"
+                            placeholder="mm/dd/yyyy"
+                            value={this.state.value}
+                            onChange={this.onChange}
+                        />
+                    </div>
+                </div>
             </div>
         );
     }
 
     private onChange = (updatedDate: Date): void => {
         this.setState({ value: updatedDate });
+    }
+
+    private get backgroundImage(): object {
+        const month: number = this.state.value.getMonth();
+
+        if (month >= 2 && month < 4) {
+            return  { 'background-image':
+                'url("http://i.imgur.com/EWynBnd.gif")' };
+        } else if (month >= 7 && month < 10) {
+            return {
+                'background-image':
+                    'url("https://media.giphy.com/media/5xtDarFdKZA7Df8V67u/giphy.gif")'
+            };
+        } else if (month >= 10 || month < 2) {
+            return {
+                'background-image':
+                    'url("https://68.media.tumblr.com/tumblr_ma5p1oh8oQ1rwlsczo1_500.gif")'
+            };
+        } else {
+            return { 'background-image':
+                'url("https://media.giphy.com/media/xme2XN3AzQOEU/giphy.gif")' };
+        }
     }
 }
 
@@ -40,7 +71,7 @@ export class DatePickerDemoStartingDay extends React.Component<DatePickerProps, 
 
     public render() {
         return (
-            <div>
+            <div className={styles.container}>
                 <h2>DatePicker with variable week (and showDropdown set to true)</h2>
                 <span>
                     <select

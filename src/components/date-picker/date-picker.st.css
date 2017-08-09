@@ -1,7 +1,14 @@
-:import{
+@namespace "DatePicker";
+
+:import {
     -st-from: "../../style/default-theme/variables.st.css";
     -st-named: color_Default, color_MainText_Background, color_MainText, color_Active, color_Hover, color_Keyboard_Focused, fontFamily;
 }
+
+/*:import {*/
+    /*-st-from: "../../style/default-theme/controls/input.st.css";*/
+    /*-st-named: root;*/
+/*}*/
 
 :vars {
     arrowThickness: 0.09em;
@@ -14,6 +21,7 @@
 
 .input {
     width: value(inputWidth);
+    /*-st-extends: root;*/
 }
 
 .dropdownArrowWrapper {
@@ -33,7 +41,7 @@
 
 .dropdown {
     width: value(dropdownWidth);
-    border: solid 1px value(color_Default);
+    outline: solid 1px value(color_Default);
 }
 
 .header {
@@ -95,6 +103,7 @@
     height: calc(100% - value(headerHeight));
     width: value(dropdownWidth);
     padding: 30px;
+    background-color: white;
 }
 
 .calendarItem {

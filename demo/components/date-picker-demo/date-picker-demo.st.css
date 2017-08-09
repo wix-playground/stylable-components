@@ -1,0 +1,47 @@
+:import{
+    -st-from: "../../../src/style/default-theme/variables.st.css";
+    -st-named: color_Default, color_MainText_Background, color_MainText, color_Active, color_Hover, color_Keyboard_Focused, fontFamily;
+}
+
+:vars {
+    demoHeight: 550px;
+    demoWidth: 60vw;
+}
+
+.container {
+    height: value(demoHeight);
+    width: value(demoWidth);
+}
+
+.datepickerContainer {
+    height: value(demoHeight);
+    width: value(demoWidth);
+}
+
+.datepicker {
+    position: relative;
+    top: -121%;
+    left: 55%;
+}
+
+.background {
+    height: value(demoHeight);
+    width: value(demoWidth);
+    background-size: cover;
+    display: block;
+    filter: blur(2px);
+    -webkit-filter: blur(2px);
+}
+
+.title {
+    position: relative;
+    top: -value(demoHeight);
+    left: 50px;
+    font-family: value(fontFamily);
+    color: value(color_MainText_Background);
+    font-size: 70px;
+    opacity: 0.95;@namespace "SelectionList";
+
+    text-shadow: 4px 4px 2px rgba(50, 50, 50, 1);
+
+}

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { BirthdayPickerDemo } from './components/birthday-picker-demo';
 import {CheckBoxDemo} from './components/checkbox-demo';
-import {DatePickerDemo, DatePickerDemoStartingDay} from './components/date-picker-demo';
+import {DatePickerDemo, DatePickerDemoStartingDay} from './components/date-picker-demo/date-picker-demo';
 import {NumberInputDemo} from './components/number-input.demo';
 import { RadioGroupDemo } from './components/radio-group-demo';
 import { SelectionListDemo } from './components/selection-list-demo';
