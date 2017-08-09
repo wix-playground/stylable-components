@@ -11,10 +11,6 @@ export function pad2(num: string | number): string {
     return ('00' + num).slice(-2);
 }
 
-export function isNumber(value: string) {
-    return /^\d{0,2}$/.test(value);
-}
-
 export function isTimeSegment(arg: any): arg is TimeSegment {
     return arg === 'hh' || arg === 'mm';
 }

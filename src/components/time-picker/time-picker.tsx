@@ -6,7 +6,7 @@ import {Stepper} from '../stepper';
 import styles from './time-picker.st.css';
 import {
     Ampm, Format, Segment,
-    isNumber, isTimeSegment, isValidValue, pad2, TimeSegment, to24, toAmpm
+    isTimeSegment, isValidValue, pad2, TimeSegment, to24, toAmpm
 } from './utils';
 
 export interface Props {
@@ -88,7 +88,7 @@ export default class TimePicker extends React.Component<Props, State> {
 
     public render() {
         const {focus, ampm, inputValue} = this.state;
-        const {disabled} = this.props;
+        const {value, disabled} = this.props;
         const currentSegment = isTimeSegment(this.currentSegment) ? this.currentSegment : 'hh';
         const currentSegmentValue = this.state[currentSegment] || 0;
 
@@ -139,17 +139,20 @@ export default class TimePicker extends React.Component<Props, State> {
 
     private select(segment: Segment) {
         const indexes = selectionIndexes[segment];
+        const input = this.input!;
         this.currentSegment = segment;
-        this.input!.selectionStart = indexes[0];
-        this.input!.selectionEnd = indexes[1];
+        input.selectionStart = indexes[0];
+        input.selectionEnd = indexes[1];
+        return input.selectionStart !== input.selectionEnd;
     }
     private moveSelection(step: number) {
         const segments = Object.keys(selectionIndexes) as Segment[]
         const index = segments.indexOf(this.currentSegment!);
         const nextSegment = segments[index + step];
         if (nextSegment) {
-            this.select(nextSegment);
+            return this.select(nextSegment);
         }
+        return false;
     }
 
     private updateSegmentValue(name: Segment, value: number | Ampm) {
@@ -249,14 +252,23 @@ export default class TimePicker extends React.Component<Props, State> {
         this.setState({
             ...segments,
             inputValue
-        }, this.commit)
+        }, this.commit);
     }
 
     private onInputFocus = (e: React.SyntheticEvent<HTMLInputElement>) => {
         this.setState({focus: true});
-        if (isTouch && e.currentTarget !== this.nativeInput) {
-            this.nativeInput!.focus();
-            this.nativeInput!.click();
+        if (isTouch) {
+            if (e.currentTarget !== this.nativeInput) {
+                this.nativeInput!.focus();
+                this.nativeInput!.click();
+            }
+        } else {
+            const input = this.input!;
+            // Initial focus (default tab behaviour)
+            if (input.selectionEnd - input.selectionStart === input.value.length) {
+                e.preventDefault();
+                this.select('hh');
+            }
         }
     }
     private onInputBlur = (e: React.SyntheticEvent<HTMLInputElement>) => {
@@ -266,9 +278,8 @@ export default class TimePicker extends React.Component<Props, State> {
     private onInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         const keyCode = keycode(e.keyCode);
 
-        // do not allow to unset selection by preventing all non digets and not system keys
-        if (!e.ctrlKey && !e.metaKey && !e.altKey && !/^\d$/.test(keyCode)) {
-            e.preventDefault();
+        if (/[a-z]/.test(keyCode)) {
+            return e.preventDefault();
         }
 
         switch(keyCode) {
@@ -279,7 +290,10 @@ export default class TimePicker extends React.Component<Props, State> {
                 this.moveSelection(1)
                 break;
             case 'tab':
-                this.moveSelection(e.shiftKey ? -1 : 1)
+                const moved = this.moveSelection(e.shiftKey ? -1 : 1)
+                if (moved) {
+                    e.preventDefault();
+                }
                 break;
             case 'up':
                 this.changeValue(+1)
