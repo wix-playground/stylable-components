@@ -107,6 +107,7 @@
     margin: 9px 0;
     height: auto;
     width: 32px;
+    cursor: pointer;
 }
 
 .ampm:focus {

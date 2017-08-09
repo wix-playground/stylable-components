@@ -70,7 +70,11 @@ export default class TimePicker extends React.Component<Props, State> {
         const stepperCurrentValue = Number(this.state[stepperCurrentInput]);
 
         return (
-            <div data-automation-id="TIME_PICKER" cssStates={{focus: Boolean(currentInput), disabled: disabled!}}>
+            <div
+                data-automation-id="TIME_PICKER"
+                cssStates={{focus: Boolean(currentInput), disabled: disabled!}}
+                onClick={this.onRootClick}
+            >
                 <div className="inputs">
                     {inputs.map((key: TimePart) =>
                         <div className="input-wrap" key={key}>
@@ -87,7 +91,7 @@ export default class TimePicker extends React.Component<Props, State> {
                                 onChange={this.onChange}
                                 onFocus={this.onFocus}
                                 onBlur={this.onBlur}
-                                onKeyDown={this.onKeyDown}
+                                onKeyDown={this.onInputKeyDown}
                             />
                         </div>
                     )}
@@ -172,6 +176,12 @@ export default class TimePicker extends React.Component<Props, State> {
         });
     }
 
+    private onRootClick = (e: React.SyntheticEvent<HTMLDivElement>) => {
+        if (e.target === e.currentTarget) {
+            this.inputs.hh!.focus();
+        }
+    }
+
     private onFocus = (e: React.SyntheticEvent<HTMLInputElement>) => {
         this.setState({
             currentInput: e.currentTarget.name
@@ -236,13 +246,24 @@ export default class TimePicker extends React.Component<Props, State> {
         });
     }
 
-    private onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    private onInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         const name = e.currentTarget.name as TimePart;
-        if (keycode(e.keyCode) !== 'backspace' || this.state[name].length) {
-            return;
+        switch (keycode(e.keyCode)) {
+            case 'backspace':
+                if (!this.state[name].length) {
+                    e.preventDefault();
+                    this.moveFocus(-1);
+                }
+                break;
+            case 'left':
+                e.preventDefault();
+                this.moveFocus(-1);
+                break;
+            case 'right':
+                e.preventDefault();
+                this.moveFocus(+1);
+                break;
         }
-        e.preventDefault();
-        this.moveFocus(-1);
     }
 
     private onNativeChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
@@ -258,6 +279,14 @@ export default class TimePicker extends React.Component<Props, State> {
             case 'down':
                 e.preventDefault();
                 this.toggleAmpm();
+                break;
+            case 'left':
+                e.preventDefault();
+                this.moveFocus(-1);
+                break;
+            case 'right':
+                e.preventDefault();
+                this.moveFocus(+1);
                 break;
             case 'backspace':
                 e.preventDefault();
