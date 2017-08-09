@@ -496,7 +496,7 @@ describe.only('<Slider />', () => {
 
   describe('when disabled', () => {
     const value = 5;
-    const min = 1;
+    const min = 0;
     const max = 10;
 
     let onChange: (value: number) => void;
@@ -537,9 +537,87 @@ describe.only('<Slider />', () => {
     });
   });
 
+  describe('when label provided', () => {
+    const value = 5;
+    const min = 0;
+    const max = 10;
+    const label = 'Simple Slider';
+
+    it('slider should has title and aria-label equal to passed label value', async () => {
+      const rendered = clientRenderer.render(
+        <Slider
+          value={value}
+          min={min}
+          max={max}
+          label={label}
+        />
+      );
+      const select: (automationId: string) => HTMLElement | null = rendered.select;
+      const waitForDom: (expectation: Function) => Promise<void> = rendered.waitForDom;
+
+      await waitForDom(() => {
+        const slider = select('SLIDER');
+
+        expect(slider!.title).equal(label);
+        expect(slider!.getAttribute('aria-label')).equal(label);
+      });
+    });
+  });
+
+  describe('when name provided', () => {
+    const value = 5;
+    const min = 0;
+    const max = 10;
+    const name = 'Simple Slider';
+
+    it('native input should has name equal to passed name value', async () => {
+      const rendered = clientRenderer.render(
+        <Slider
+          value={value}
+          min={min}
+          max={max}
+          name={name}
+        />
+      );
+      const select: (automationId: string) => HTMLInputElement | null = rendered.select;
+      const waitForDom: (expectation: Function) => Promise<void> = rendered.waitForDom;
+
+      await waitForDom(() => {
+        const sliderInput = select('SLIDER-NATIVE-INPUT');
+
+        expect(sliderInput!.name).equal(name);
+      });
+    });
+  });
+
+  describe('when it is required', () => {
+    const value = 5;
+    const min = 0;
+    const max = 10;
+
+    it('native input should has required attribute equal to true', async () => {
+      const rendered = clientRenderer.render(
+        <Slider
+          value={value}
+          min={min}
+          max={max}
+          required={true}
+        />
+      );
+      const select: (automationId: string) => HTMLInputElement | null = rendered.select;
+      const waitForDom: (expectation: Function) => Promise<void> = rendered.waitForDom;
+
+      await waitForDom(() => {
+        const sliderInput = select('SLIDER-NATIVE-INPUT');
+
+        expect(sliderInput!.required).to.be.true;
+      });
+    });
+  });
+
   describe('when in error state', () => {
     const value = 5;
-    const min = 1;
+    const min = 0;
     const max = 10;
 
     it('should apply Error custom state', async () => {

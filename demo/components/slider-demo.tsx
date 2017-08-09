@@ -74,7 +74,7 @@ export class SliderDemo extends React.Component<SliderDemoProps, SliderDemoState
         <thead>
           <tr>
             <th className={headerCellStyles}>Slider with error state</th>
-            <th className={headerCellStyles}></th>
+            <th className={headerCellStyles}>Slider with label</th>
             <th className={headerCellStyles}></th>
           </tr>
         </thead>
@@ -90,6 +90,13 @@ export class SliderDemo extends React.Component<SliderDemoProps, SliderDemoState
               />
             </td>
             <td>
+              <Slider
+                value={this.state.value}
+                min={min}
+                max={max}
+                label={`It's simple slider.`}
+                onChange={this.onSliderChange}
+              />
             </td>
             <td>
             </td>

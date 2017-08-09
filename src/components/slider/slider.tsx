@@ -31,6 +31,7 @@ export interface SliderProps {
   step?: Step;
 
   name?: string;
+  label?: string;
 
   disabled?: boolean;
   required?: boolean;
@@ -267,12 +268,15 @@ export class Slider extends React.Component<SliderProps, SliderState> {
           data-automation-id='SLIDER-NATIVE-INPUT'
           name={this.props.name}
           required={this.props.required}
+          disabled={this.props.disabled}
           tabIndex={-1}
           readOnly={true}
         />
         <div
           className={style['slider']}
           data-automation-id='SLIDER'
+          title={this.props.label}
+          aria-label={this.props.label}
           tabIndex={this.props.disabled ? -1 : 0}
           onMouseDown={this.onSliderAreaMouseDown}
         >
