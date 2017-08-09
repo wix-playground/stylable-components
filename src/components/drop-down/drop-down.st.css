@@ -1,11 +1,11 @@
 .root {
-    width: 276px;
+    width: auto;
     height: 36px;
     font-family: Arial, sans-serif;
     font-size: 16px;
 }
 
-.drop-down-label {
+.drop-down-input {
     border: 1px solid #adbac5;
     display: flex;
     align-items: center;
@@ -21,7 +21,7 @@
     }
 }
 
-.drop-down-label:hover {
+.drop-down-input:hover {
     cursor: pointer;
     border: 1px solid #5cb4ff;
 }
