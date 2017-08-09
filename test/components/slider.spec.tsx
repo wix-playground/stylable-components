@@ -24,14 +24,6 @@ describe.only('<Slider />', () => {
       waitForDom = rendered.waitForDom;
     });
 
-    it('renders ok', async () => {
-      await waitForDom(() => {
-        const element = select('SLIDER');
-
-        expect(element).to.be.present();
-      });
-    });
-
     it('renders default value on the middle of the track', async () => {
       await waitForDom(() => {
         const element = select('SLIDER-HANDLE');
@@ -79,14 +71,6 @@ describe.only('<Slider />', () => {
       waitForDom = rendered.waitForDom;
     });
 
-    it('renders ok', async () => {
-      await waitForDom(() => {
-        const element = select('SLIDER');
-
-        expect(element).to.be.present();        
-      });
-    });
-
     it('renders handle on the right place', async () => {
       await waitForDom(() => {
         const element = select('SLIDER-HANDLE');
@@ -110,6 +94,55 @@ describe.only('<Slider />', () => {
 
         expect(element).to.be.present();
         expect(element).to.has.value(String(value));
+      });
+    });
+  });
+
+  describe('when value is out of range', () => {
+    const valueLessThenMin = -1;
+    const valueGreaterThenMax = 11;
+    const min = 0;
+    const max = 10;
+
+    it('should normilize value that less than min to min', async () => {
+      const rendered = clientRenderer.render(
+        <Slider
+          value={valueLessThenMin}
+          min={min}
+          max={max}
+        />
+      );
+
+      const select: (automationId: string) => HTMLElement | null = rendered.select;
+      const waitForDom = rendered.waitForDom;
+
+      await waitForDom(() => {
+        const handle = select('SLIDER-HANDLE');
+        const progress = select('SLIDER-PROGRESS');
+
+        expect(handle!.style.left).to.equal('0%');
+        expect(progress!.style.width).to.equal('0%');
+      });
+    });
+
+    it('should normilize value that greater than max to max', async () => {
+      const rendered = clientRenderer.render(
+        <Slider
+          value={valueGreaterThenMax}
+          min={min}
+          max={max}
+        />
+      );
+
+      const select: (automationId: string) => HTMLElement | null = rendered.select;
+      const waitForDom = rendered.waitForDom;
+
+      await waitForDom(() => {
+        const handle = select('SLIDER-HANDLE');
+        const progress = select('SLIDER-PROGRESS');
+
+        expect(handle!.style.left).to.equal('100%');
+        expect(progress!.style.width).to.equal('100%');
       });
     });
   });
@@ -242,14 +275,6 @@ describe.only('<Slider />', () => {
       waitForDom = rendered.waitForDom;
     });
 
-    it('renders ok', async () => {
-      await waitForDom(() => {
-        const element = select('SLIDER');
-
-        expect(element).to.be.present();
-      });
-    });
-
     it('renders handle on the right place', async () => {
       await waitForDom(() => {
         const element = select('SLIDER-HANDLE');
@@ -275,7 +300,6 @@ describe.only('<Slider />', () => {
         expect(element).to.has.value(String(value));
       });
     });
-
 
     it('should change value according to step', async () => {
       await waitFor(() => {
@@ -340,6 +364,132 @@ describe.only('<Slider />', () => {
 
         expect(onInput).to.be.calledWith('6');
         expect(onChange).to.be.calledWith(7);
+      });
+    });
+  });
+
+  describe('when value is out of step', () => {
+    const valueOutOfStep = 3;
+    const value = 5;
+    const min = 0;
+    const max = 10;
+    const step = 5;
+    let onChange: (value: number) => void;
+    let onInput: (value: string) => void;
+    let select: (automationId: string) => HTMLElement | null;
+    let waitForDom: (expectation: Function) => Promise<void>;
+    let environment: Element;
+
+    beforeEach(() => {
+      environment = document.createElement("body");
+      onChange = sinon.spy();
+      onInput = sinon.spy();
+
+      const rendered = clientRenderer.render(
+        <Slider
+          value={valueOutOfStep}
+          min={min}
+          max={max}
+          step={step}
+          onChange={onChange}
+          onInput={onInput}
+          environment={environment}
+        />
+      );
+
+      select = rendered.select;
+      waitForDom = rendered.waitForDom;
+    });
+
+    it('renders handle ignoring step', async () => {
+      await waitForDom(() => {
+        const element = select('SLIDER-HANDLE');
+
+        expect(element!.style.left).to.equal('30%');
+      });
+    });
+
+    it('renders progress bar ignoring step', async () => {
+      await waitForDom(() => {
+        const element = select('SLIDER-PROGRESS');
+
+        expect(element).to.be.present();
+        expect(element!.style.width).to.equal('30%');
+      });
+    });
+
+    it('renders invisible native input with passed value', async () => {
+      await waitForDom(() => {
+        const element = select('SLIDER-NATIVE-INPUT');
+
+        expect(element).to.be.present();
+        expect(element).to.has.value(String(valueOutOfStep));
+      });
+    });
+
+    it('should change value according to step', async () => {
+      await waitFor(() => {
+        const element = select('SLIDER');
+        const handle = select('SLIDER-HANDLE');
+        const progress = select('SLIDER-PROGRESS');
+        const bounds = element!.getBoundingClientRect();
+
+        simulate.mouseDown(element, {
+          currentTarget: element!,
+          clientY: bounds.top + bounds.height / 3,
+          clientX: Math.round(bounds.left + bounds.width * 0.4)
+        });
+
+        expect(handle!.style.left).to.equal('50%');
+        expect(progress!.style.width).to.equal('50%');
+      });
+    });
+
+    it('should call onChange with value normilized to step', async () => {
+      await waitFor(() => {
+        const element = select('SLIDER');
+        const handle = select('SLIDER-HANDLE');
+        const progress = select('SLIDER-PROGRESS');
+        const bounds = element!.getBoundingClientRect();
+
+        simulate.mouseDown(element, {
+          currentTarget: element!,
+          clientX: Math.round(bounds.left + bounds.width * 0.5)
+        });
+        simulateMouseEvent(
+          environment,
+          'mouseup',
+          { clientX: Math.round(bounds.left + bounds.width * 0.8) }
+        );
+
+        expect(onChange).to.be.calledWith(10);
+      });
+    });
+
+    it('should call onInput with value normilized to step', async () => {
+      await waitFor(() => {
+        const element = select('SLIDER');
+        const handle = select('SLIDER-HANDLE');
+        const progress = select('SLIDER-PROGRESS');
+        const bounds = element!.getBoundingClientRect();
+
+        simulate.mouseDown(element, {
+          currentTarget: element!,
+          clientX: Math.round(bounds.left + bounds.width * 0.5)
+        });
+        simulateMouseEvent(
+          environment,
+          'mousemove',
+          { clientX: Math.round(bounds.left + bounds.width * 0.6) }
+        );
+        simulateMouseEvent(
+          environment,
+          'mouseup',
+          { clientX: Math.round(bounds.left + bounds.width * 0.6) }
+        );
+
+        expect(onInput).to.be.calledWith('5');
+        expect(onChange).to.be.calledWith(5);
       });
     });
   });
@@ -418,52 +568,4 @@ describe.only('<Slider />', () => {
     });
   });
 
-  describe('when value is out of range', () => {
-    const valueLessThenMin = -1;
-    const valueGreaterThenMax = 11;
-    const min = 0;
-    const max = 10;
-
-    it('should normilize value that less than min to min', async () => {
-      const rendered = clientRenderer.render(
-        <Slider
-          value={valueLessThenMin}
-          min={min}
-          max={max}
-        />
-      );
-
-      const select: (automationId: string) => HTMLElement | null = rendered.select;
-      const waitForDom = rendered.waitForDom;
-
-      await waitForDom(() => {
-        const handle = select('SLIDER-HANDLE');
-        const progress = select('SLIDER-PROGRESS');
-
-        expect(handle!.style.left).to.equal('0%');
-        expect(progress!.style.width).to.equal('0%');
-      });
-    });
-
-    it('should normilize value that greater than max to max', async () => {
-      const rendered = clientRenderer.render(
-        <Slider
-          value={valueGreaterThenMax}
-          min={min}
-          max={max}
-        />
-      );
-
-      const select: (automationId: string) => HTMLElement | null = rendered.select;
-      const waitForDom = rendered.waitForDom;
-
-      await waitForDom(() => {
-        const handle = select('SLIDER-HANDLE');
-        const progress = select('SLIDER-PROGRESS');
-
-        expect(handle!.style.left).to.equal('100%');
-        expect(progress!.style.width).to.equal('100%');
-      });
-    });
-  });
 });

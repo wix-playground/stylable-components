@@ -107,17 +107,17 @@ export class Slider extends React.Component<SliderProps, SliderState> {
       return;
     }
 
-    let value = nextProps.value || this.props.value;
-    const min = nextProps.min || this.props.min;
-    const max = nextProps.max || this.props.max;
-    const step = nextProps.step || this.props.step;
+    let value = nextProps.value === undefined ? this.props.value : nextProps.value;
+    const min = nextProps.min === undefined ? this.props.min : nextProps.min;
+    const max = nextProps.max === undefined ? this.props.max : nextProps.max;
+    const step = nextProps.step === undefined ? this.props.step : nextProps.step;
 
     if (value! > max!) {
       value = max;
     } else if (value! < min!) {
       value = min;
     }
-    
+
     this.setState({
       relativeValue: this.getRelativeValue(value!, min!, max!, step),
       relativeStep: this.getRelativeStep(step, min!, max!)
@@ -126,7 +126,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
 
   private onChange: React.ChangeEventHandler<HTMLInputElement> = event => {
     this.props.onChange!(Number(event.target.value));
-}
+  }
 
   private onInput: React.ChangeEventHandler<HTMLInputElement> = event => {
     this.props.onInput!(String(event.target.value));

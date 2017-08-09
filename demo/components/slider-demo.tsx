@@ -15,15 +15,23 @@ export class SliderDemo extends React.Component<SliderDemoProps, SliderDemoState
   constructor(props: SliderDemoProps) {
     super(props);
 
+    this.onSliderChange = this.onSliderChange.bind(this);
+
     this.state = {
       value: 50
     }
   }
+
+  onSliderChange(value: number) {
+    this.setState({ value });
+  }
+
   render() {
     const min = 0;
     const max = 100;
     const headerCellStyles = style['table-head-cell'];
-    
+
+
     return (
       <table cellSpacing="24px">
         <thead>
@@ -40,7 +48,7 @@ export class SliderDemo extends React.Component<SliderDemoProps, SliderDemoState
                 value={this.state.value}
                 min={min}
                 max={max}
-                onChange={value => this.setState({ value })}
+                onChange={this.onSliderChange}
               />
             </td>
             <td>
@@ -49,7 +57,7 @@ export class SliderDemo extends React.Component<SliderDemoProps, SliderDemoState
                 min={min}
                 max={max}
                 disabled={true}
-                onChange={value => this.setState({ value })}
+                onChange={this.onSliderChange}
               />
             </td>
             <td>
@@ -58,7 +66,7 @@ export class SliderDemo extends React.Component<SliderDemoProps, SliderDemoState
                 min={min}
                 max={max}
                 step={10}
-                onChange={value => this.setState({ value })}
+                onChange={this.onSliderChange}
               />
             </td>
           </tr>
@@ -78,7 +86,7 @@ export class SliderDemo extends React.Component<SliderDemoProps, SliderDemoState
                 min={min}
                 max={max}
                 error={true}
-                onChange={value => this.setState({ value })}
+                onChange={this.onSliderChange}
               />
             </td>
             <td>
