@@ -5,8 +5,8 @@ import {SBComponent} from 'stylable-react-component';
 import {Stepper} from '../stepper';
 import styles from './time-picker.st.css';
 import {
-    Ampm, Format, isNumber,
-    isTimePart, isValidValue, pad2, TimePart, to24, toAmpm
+    Ampm, Format, Segment,
+    isNumber, isTimePart, isValidValue, pad2, TimePart, to24, toAmpm
 } from './utils';
 
 export interface Props {
@@ -18,17 +18,228 @@ export interface Props {
 }
 
 export interface State {
-    currentInput: string | null;
-    prevInput: string | null;
-    hh: string;
-    mm: string;
+    inputValue: string;
+    focus: boolean;
+    hh?: number;
+    mm?: number;
     ampm: Ampm;
 }
 
 const isTouch =  'ontouchstart' in window || Boolean(navigator.msMaxTouchPoints);
 const is12TimeFormat = /AM|PM/.test(new Date().toLocaleTimeString());
-const inputNames: string[] = ['hh', 'mm', 'ampm'];
+const ampmLabels = {
+    [Ampm.AM]: 'AM',
+    [Ampm.PM]: 'PM',
+    [Ampm.NONE]: '',
+};
+const selectionIndexes = {
+    hh: [0, 2],
+    mm: [3, 5],
+    ampm: [6, 8]
+};
 
+function segmentsToInputValue({hh, mm, ampm}: {hh?: number, mm?: number, ampm: Ampm}) {
+    return [
+        hh ? pad2(hh) : '00',
+        ':',
+        mm ? pad2(mm) : '00',
+        ' ',
+        ampmLabels[ampm]
+    ].join('').trim();
+}
+
+function propsValueToSegments(value?: string, format?: Format) {
+    const isAmpm = format === 'ampm';
+    if (!value) {
+        return {
+            ampm: isAmpm ? Ampm.AM : Ampm.NONE,
+        };
+    }
+    const [hh24, mm] = value.split(':').map(Number);
+    const {hh, ampm} = toAmpm(hh24);
+    return {
+        hh: isAmpm ? hh : hh24,
+        ampm: isAmpm ? ampm : Ampm.NONE,
+        mm
+    };
+}
+
+@SBComponent(styles)
+export default class TimePicker extends React.Component<Props, State> {
+    public static defaultProps = {
+        format: is12TimeFormat ? 'ampm' : '24hr'
+    };
+    private input: HTMLInputElement | null;
+    private lastValue: string | undefined;
+    private currentSegment: Segment | undefined;
+
+    constructor(props: Props) {
+        super();
+        const segments = propsValueToSegments(props.value, props.format);
+        this.lastValue = props.value;
+        this.state = {
+            focus: false,
+            ...segments,
+            inputValue: segmentsToInputValue(segments)
+        };
+    }
+
+    public render() {
+        const {focus, inputValue} = this.state;
+        return <div cssStates={{focus}}>
+            <input
+                type="text"
+                tabIndex={isTouch ? -1 : 0}
+                className="input"
+                ref={elem => this.input = elem}
+                value={inputValue}
+                onChange={this.onInputChange}
+                onFocus={this.onInputFocus}
+                onBlur={this.onInputBlur}
+                onKeyDown={this.onInputKeyDown}
+                onClick={this.onInputClick}
+            />
+            <input
+                className="native-input"
+                tabIndex={isTouch ? 0 : -1}
+                type="time"
+                value={this.getValue()}
+            />
+        </div>
+    }
+
+    private getValue() {
+        const {hh, mm, ampm} = this.state;
+        return [
+            to24(hh || 0, ampm),
+            mm || 0
+        ].map(String).map(pad2).join(':');
+    }
+
+    private select(segment: Segment) {
+        const indexes = selectionIndexes[segment];
+        this.currentSegment = segment;
+        this.input!.selectionStart = indexes[0];
+        this.input!.selectionEnd = indexes[1];
+    }
+    private moveSelection(step: number) {
+        const segments = Object.keys(selectionIndexes) as Segment[]
+        const index = segments.indexOf(this.currentSegment!);
+        const nextSegment = segments[index + step];
+        if (nextSegment) {
+            this.select(nextSegment);
+        }
+    }
+
+    private toggleAmpm() {
+        const {hh, mm} = this.state;
+        const ampm = 1 - this.state.ampm;
+
+        this.setState({
+            inputValue: segmentsToInputValue({hh, mm, ampm}),
+            ampm
+        }, this.commit);
+    }
+
+    private onInputClick = (e: React.SyntheticEvent<HTMLInputElement>) => {
+        const cursorPosition = e.currentTarget.selectionStart;
+        let key: Segment;
+        let currentSegment: Segment = 'hh';
+
+        for (key in selectionIndexes) {
+            if (cursorPosition >= selectionIndexes[key][0] && cursorPosition <= selectionIndexes[key][1]) {
+                currentSegment = key;
+            }
+        }
+        this.select(currentSegment)
+    }
+
+    private onInputChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
+        const {format} = this.props;
+        const {ampm} = this.state;
+        const {value} = e.currentTarget;
+        const match = value.match(/^(\d{1,2}):(\d{1,2})(?:\s(AM|PM))?$/);
+        if (!match) {
+            return;
+        }
+        const hh = Number(match[1]);
+        const mm = Number(match[2]);
+
+        if (
+            !isValidValue(Number(match[1]), 'hh', ampm) ||
+            !isValidValue(Number(match[2]), 'mm', ampm) ||
+            format === 'ampm' && !match[3]
+        ) {
+            return;
+        }
+
+        const input = this.input!
+        const cursorPosition = input.selectionStart;
+        const currentSegment = this.state.hh !== hh ? 'hh' : 'mm';
+        const updatedValue = this.state.hh !== hh ? hh : mm;
+        const shouldWaitForInput = isValidValue(updatedValue * 10, currentSegment, ampm);
+        const inputValue = shouldWaitForInput ?
+            value : segmentsToInputValue({hh, mm, ampm});
+
+        this.setState({
+            inputValue,
+            hh,
+            mm
+        }, () => {
+            if (shouldWaitForInput) {
+                input.selectionStart = input.selectionEnd = cursorPosition;
+            } else {
+                this.currentSegment = currentSegment;
+                this.moveSelection(+1);
+                this.commit();
+            }
+        });
+
+    }
+
+    private onInputFocus = (e: React.SyntheticEvent<HTMLInputElement>) => {
+        this.setState({focus: true});
+    }
+    private onInputBlur = (e: React.SyntheticEvent<HTMLInputElement>) => {
+        this.setState({focus: false});
+    }
+
+    private onInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        const keyCode = keycode(e.keyCode);
+        if (!/^\d$/.test(keyCode)) {
+            e.preventDefault();
+        }
+
+        switch(keyCode) {
+            case 'left':
+                this.moveSelection(-1)
+                break;
+            case 'right':
+                this.moveSelection(1)
+                break;
+            case 'tab':
+                this.moveSelection(e.shiftKey ? -1 : 1)
+                break;
+            case 'space':
+            case 'enter':
+                if (this.currentSegment === 'ampm') {
+                    this.toggleAmpm();
+                }
+        }
+    }
+
+
+    private commit = () => {
+        const value = this.getValue();
+        if (this.props.onChange && this.lastValue !== value) {
+            this.lastValue = value;
+            this.props.onChange(value);
+        }
+    }
+
+}
+
+/*
 @SBComponent(styles)
 export default class TimePicker extends React.Component<Props, State> {
     public static defaultProps = {
@@ -336,3 +547,4 @@ export default class TimePicker extends React.Component<Props, State> {
     }
 
 }
+*/

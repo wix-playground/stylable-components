@@ -5,6 +5,7 @@ export enum Ampm {
 }
 export type TimePart = 'hh' | 'mm';
 export type Format = 'ampm' | '24h';
+export type Segment = 'hh' | 'mm' | 'ampm';
 
 export function pad2(num: string | number): string {
     return ('00' + num).slice(-2);
