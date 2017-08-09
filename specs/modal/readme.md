@@ -28,8 +28,8 @@ Interacting with the modal can consist of:
 | Prop | Type | Default | isRequired | Description |
 | --- | --- | --- | --- | --- |
 | isOpen | bool | false | yes | Managed by state; this is how to control the visibility of the modal|
-| onAfterOpen | func | undefined |  |  |
-| onRequestClose(source) | func | undefined |  | The function used to handle cancel events on the modal; typically sets the open state to false. It is passed a source, as one of a number of possible closing options |
+| onAfterOpen | func | NOOP | no | After the component is rendered |
+| onRequestClose(source) | func | NOOP |  | The function used to handle cancel events on the modal; typically sets the open state to false. It is passed a source, as one of a number of possible closing options |
 | children | any |  |  | children nodes of the modal |
 | aria-* | - | - | - | ARIA attributes. Used for accessibility purposes, to describe the screen to a screen-reader |
 | aria-role | - | 'dialog' |  | Default ARIA attribute of the modal window, defines its role as a `dialog` |
