@@ -9,9 +9,13 @@ describe('<DropDown />', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
 
-    const item = {
-        label: 'Test'
-    };
+    const item = { label: 'Test' };
+
+    const items = [
+        { label: 'Test1' },
+        { label: 'Test2' },
+        { label: 'Test3' }
+    ];
 
     it('renders to the screen', () => {
        const { select, waitForDom } = clientRenderer.render(<DropDown selectedItem={item} />);
@@ -28,5 +32,10 @@ describe('<DropDown />', () => {
         const { select } = clientRenderer.render(<DropDown selectedItem={item} onLabelClick={onClick}/>);
         simulate.click(select(dropDown, label));
         return waitFor(() => expect(onClick).to.have.been.calledOnce);
+    });
+
+    it('displays item list to choose from when open is true', () => {
+        // const { select, waitForDom } = clientRenderer.render(<DropDown selectedItem={undefined} open={true} items={items} />);
+        // return waitForDom(() => {});
     });
 });
