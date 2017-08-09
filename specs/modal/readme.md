@@ -95,10 +95,11 @@ Normally, the modal opens in relation to the screen and not its parent component
 | ::header | the header of the modal | HTML Element |
 | ::header-close-button | the close button in the header | button |
 | ::header-title | the title of the modal | HTML Element |
-| ::body | the main content of the modal | HTML Element |
+| ::content | the main content of the modal | HTML Element |
 | ::footer | the footer of the modal | HTML Element |
 | ::footer-close-button | the close button in the footer | button |
 | ::footer-primary-button | the primary button of the modal | button |
+| ::backdrop | The background or overlay of the modal | HTML Element |
 
 ### Custom CSS States (pseudo-classes)
 
