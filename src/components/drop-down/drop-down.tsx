@@ -24,7 +24,7 @@ export interface DropDownItem {
     label: string;
 }
 
-export interface DropDownProps extends Partial<HTMLDivElement> {
+export interface DropDownProps extends React.HTMLAttributes<HTMLDivElement> {
     selectedItem: DropDownItem | undefined;
     onLabelClick?: React.EventHandler<React.MouseEvent<HTMLDivElement>>;
 }
@@ -32,10 +32,10 @@ export interface DropDownProps extends Partial<HTMLDivElement> {
 @SBComponent(style)
 export class DropDown extends React.Component<DropDownProps, {}> {
     public render() {
-        const rootProps = root(this.props, { className: 'drop-down' });
+        const rootProps = root(this.props, { className: 'drop-down' }, ['onLabelClick']);
 
         return (
-            <div data-automation-id="DROP_DOWN" className={rootProps.className}>
+            <div data-automation-id="DROP_DOWN" {...rootProps}>
                 <DropDownInput selectedItem={this.props.selectedItem} onClick={this.props.onLabelClick} />
             </div>
         );
