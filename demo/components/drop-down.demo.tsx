@@ -8,12 +8,7 @@ export interface DropDownDemoState {
 
 export class DropDownDemo extends React.Component<{}, DropDownDemoState> {
 
-    constructor() {
-        super();
-        this.state = {
-            selectedItem: undefined
-        };
-    }
+    public state = { selectedItem: undefined };
 
     public render() {
         return (
