@@ -9,20 +9,19 @@ describe('<DropDown />', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
 
-    const item = {
-        label: 'Test'
-    };
-
     it('renders to the screen', () => {
-       const { select, waitForDom } = clientRenderer.render(<DropDown selectedItem={undefined} />);
-       return waitForDom(() => {
-           expect(select(dropDown)).to.be.present();
-           expect(select(dropDown)).to.have.text('Default Text');
-       });
+        const { select, waitForDom } = clientRenderer.render(<DropDown />);
+
+        return waitForDom(() => {
+            expect(select(dropDown)).to.be.present();
+            expect(select(dropDown)).to.have.text('Default Text');
+        });
     });
 
     it('has correct selected item text', () => {
+        const item = { label: 'Test'};
         const { select, waitForDom } = clientRenderer.render(<DropDown selectedItem={item}/>);
+
         return waitForDom(() => {
             expect(select(input)).to.be.present();
             expect(select(input)).to.have.text(item.label);
@@ -31,7 +30,7 @@ describe('<DropDown />', () => {
 
     it('invokes the onClick when dropdown label is clicked', () => {
         const onClick = sinon.spy();
-        const { select } = clientRenderer.render(<DropDown selectedItem={item} onInputClick={onClick}/>);
+        const { select } = clientRenderer.render(<DropDown onInputClick={onClick}/>);
         simulate.click(select(dropDown, input));
         return waitFor(() => expect(onClick).to.have.been.calledOnce);
     });
