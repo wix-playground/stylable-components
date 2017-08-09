@@ -11,7 +11,7 @@ export interface PositionPoint {
 }
 
 export interface PopupProps {
-    anchor: any;
+    anchor: React.ReactNode;
     open?: boolean;
     anchorPosition?: PositionPoint;
     popupPosition?: PositionPoint;
