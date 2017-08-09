@@ -21,7 +21,7 @@ describe('<DropDown />', () => {
        });
     });
 
-    it('has default text initially', () => {
+    it('has correct selected item text', () => {
         const { select, waitForDom } = clientRenderer.render(<DropDown selectedItem={item}/>);
         return waitForDom(() => {
             expect(select(input)).to.be.present();
