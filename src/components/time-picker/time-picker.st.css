@@ -1,6 +1,11 @@
 @namespace 'time-picker';
 
 :import {
+    -st-from: "../stepper/stepper.st.css";
+    -st-default: Stepper;
+}
+
+:import {
     -st-from: "../../style/default-theme/variables.st.css";
     -st-named:
         BK2,
@@ -92,9 +97,8 @@
     border: 0;
 }
 
-/*TODO use mixins*/
 .ampm {
-    -st-states: default;
+    -st-states: unset;
     display: flex;
     flex: 1;
     justify-content: center;
@@ -113,4 +117,18 @@
 }
 .ampm:unset {
     color: value(BK2);
+}
+
+.stepper {
+    -st-extends: Stepper;
+    transition: opacity 100ms ease;
+    opacity: 0;
+}
+.root:focus .stepper,
+.root:hover .stepper {
+    opacity: 1;
+}
+.stepper::control:disabled {
+    color: value(BK2);
+    background: white;
 }

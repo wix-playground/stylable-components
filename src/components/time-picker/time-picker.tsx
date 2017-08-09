@@ -108,6 +108,7 @@ export default class TimePicker extends React.Component<Props, State> {
                 }
                 {!showPlaceholder && !disabled &&
                     <Stepper
+                        className='stepper'
                         disableUp={!isValidValue(stepperCurrentValue + 1, stepperCurrentInput, ampm)}
                         disableDown={!isValidValue(stepperCurrentValue - 1, stepperCurrentInput, ampm)}
                         onUp={this.createStepperHandler(+1)}
@@ -277,6 +278,9 @@ export default class TimePicker extends React.Component<Props, State> {
     }
 
     private toggleAmpm = (cb?: () => void) => {
+        if (this.props.disabled) {
+            return;
+        }
         const {hh, ampm} = this.state;
         this.setState({ampm: 1 - ampm}, () => {
             this.commit();
