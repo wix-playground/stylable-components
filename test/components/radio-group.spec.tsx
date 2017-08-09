@@ -1,4 +1,4 @@
-import React = require('react');
+import * as React from 'react';
 import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react';
 import { RadioGroupDemo } from '../../demo/components/radio-group-demo';
 import { RadioButton, RadioGroup } from '../../src';

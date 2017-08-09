@@ -1,5 +1,5 @@
-import React = require('react');
-import ReactDOM = require('react-dom');
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import {SBComponent, SBStateless} from 'stylable-react-component';
 import {root} from 'wix-react-tools';
 import style from './selection-list.st.css';
@@ -97,7 +97,7 @@ export class SelectionList extends React.Component<SelectionListProps, {}> {
             'data-automation-id': 'LIST',
             'className': 'list',
             'onClick': this.handleClick
-        });
+        }) as React.HtmlHTMLAttributes<HTMLDivElement>;
 
         const dataSourceItems = this.props.dataSource!.map((item, index) =>
             this.renderDataSourceItem(item, index)
