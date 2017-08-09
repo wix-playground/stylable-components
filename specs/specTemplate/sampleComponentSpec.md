@@ -121,12 +121,13 @@ A detailed description of the component and its use-cases. This should cover all
 
 #### **Validation **
 
-Form validation defaults need to be addressed, as well as the component behavior when validation is broken.
+Default validation needs to be addressed, as well as the component behavior when validation is broken.
 
 > E.g. 
 > Time Input component will address inputs that fail validation like letters, numbers larger than 24 for hours, numbers larger than 59 for minutes, etc. What should happen, what should be shown to the user, etc.
 
-The component may allow a developer to use his own validation patterns where relevant. **In such a case, there should be an example implementation in the readme doc.**
+The component may allow a developer to use his own validation patterns where relevant. 
+**In such a case, there should be an example implementation in the readme doc.**
 
 
 
