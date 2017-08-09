@@ -276,9 +276,15 @@ export class Slider extends React.Component<SliderProps, SliderState> {
           className={style['slider']}
           data-automation-id='SLIDER'
           title={this.props.label}
-          aria-label={this.props.label}
           tabIndex={this.props.disabled ? -1 : 0}
           onMouseDown={this.onSliderAreaMouseDown}
+
+          role='slider'
+          aria-label={this.props.label}
+          aria-orientation='horizotal'
+          aria-valuemin={`${this.props.min}`}
+          aria-valuemax={`${this.props.max}`}
+          aria-valuenow={`${this.props.value}`}
         >
           <div className={style['slider-track']} data-automation-id='SLIDER-TRACK'>
             <div
