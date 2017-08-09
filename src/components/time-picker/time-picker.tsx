@@ -89,8 +89,8 @@ export default class TimePicker extends React.Component<Props, State> {
                                 value={this.state[key]}
                                 disabled={disabled}
                                 onChange={this.onChange}
-                                onFocus={this.onFocus}
-                                onBlur={this.onBlur}
+                                onFocus={this.onInputFocus}
+                                onBlur={this.onInputBlur}
                                 onKeyDown={this.onInputKeyDown}
                             />
                         </div>
@@ -104,8 +104,8 @@ export default class TimePicker extends React.Component<Props, State> {
                         className="ampm"
                         cssStates={{unset: !timeSet}}
                         children={ampmLabel}
-                        onFocus={() => this.setState({currentInput: 'ampm'})}
-                        onBlur={() => this.setState({currentInput: null})}
+                        onFocus={this.onAmpmFocus}
+                        onBlur={this.onAmpmBlur}
                         onMouseDown={this.onAmpmMouseDown}
                         onKeyDown={this.onAmpmKeyDown}
                     />
@@ -126,8 +126,8 @@ export default class TimePicker extends React.Component<Props, State> {
                     type="time"
                     value={this.getValue()}
                     onChange={this.onNativeChange}
-                    onFocus={this.onFocus}
-                    onBlur={this.onBlur}
+                    onFocus={this.onInputFocus}
+                    onBlur={this.onInputBlur}
                 />
             </div>
         );
@@ -182,7 +182,7 @@ export default class TimePicker extends React.Component<Props, State> {
         }
     }
 
-    private onFocus = (e: React.SyntheticEvent<HTMLInputElement>) => {
+    private onInputFocus = (e: React.SyntheticEvent<HTMLInputElement>) => {
         this.setState({
             currentInput: e.currentTarget.name
         });
@@ -193,7 +193,7 @@ export default class TimePicker extends React.Component<Props, State> {
         }
     }
 
-    private onBlur = (e: React.SyntheticEvent<HTMLInputElement>) => {
+    private onInputBlur = (e: React.SyntheticEvent<HTMLInputElement>) => {
         const name = e.currentTarget.name;
         const update: Partial<State> = {
             currentInput: null,
@@ -205,6 +205,9 @@ export default class TimePicker extends React.Component<Props, State> {
         this.setState(update as State);
         this.commit();
     }
+
+    private onAmpmFocus = () => this.setState({currentInput: 'ampm'})
+    private onAmpmBlur = () => this.setState({currentInput: null})
 
     private moveFocus(increment: number): boolean {
         const {currentInput} = this.state;
