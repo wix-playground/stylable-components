@@ -119,7 +119,7 @@ A detailed description of the component and its use-cases. This should cover all
 
 
 
-#### **Validation **
+#### Validation 
 
 Default validation needs to be addressed, as well as the component behavior when validation is broken.
 
