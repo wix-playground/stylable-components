@@ -12,15 +12,10 @@ import { TreeViewDemo } from './components/tree-view-demo';
 import './style.st.css';
 
 export class ComponentsDemo extends React.Component<{}, {}> {
-    constructor() {
-        super();
-    }
-
     public render() {
         return (
             <div>
                 <div>
-                    <h2>DropDown</h2>
                     <DropDownDemo />
                 </div>
                 <hr />

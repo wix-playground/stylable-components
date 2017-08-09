@@ -4,17 +4,15 @@ import { CaretDown } from './drop-down-icons';
 import { root } from 'wix-react-tools';
 import style from './drop-down.st.css';
 
-export const dropDownDefaultText = 'Default Text';
-
-export interface DropDownLabelProps {
+export interface DropDownInputProps {
     selectedItem?: DropDownItem;
     onClick?: React.EventHandler<React.MouseEvent<HTMLDivElement>>;
 }
 
-export const DropDownInput: React.SFC<DropDownLabelProps> = SBStateless(props => {
+export const DropDownInput: React.SFC<DropDownInputProps> = SBStateless(props => {
   return (
       <div data-automation-id="DROP_DOWN_INPUT" onClick={props.onClick} className="drop-down-input">
-          <span className="label">{props.selectedItem ? props.selectedItem.label : dropDownDefaultText}</span>
+          <span className="label">{props.selectedItem ? props.selectedItem.label : 'Default Text'}</span>
           <CaretDown className="caret" />
       </div>
   );
@@ -26,17 +24,20 @@ export interface DropDownItem {
 
 export interface DropDownProps extends React.HTMLAttributes<HTMLDivElement> {
     selectedItem?: DropDownItem;
-    onLabelClick?: React.EventHandler<React.MouseEvent<HTMLDivElement>>;
+    onInputClick?: React.EventHandler<React.MouseEvent<HTMLDivElement>>;
 }
 
 @SBComponent(style)
 export class DropDown extends React.Component<DropDownProps, {}> {
     public render() {
-        const rootProps = root(this.props, { className: 'drop-down' }, ['onLabelClick']);
+        const rootProps = root(this.props, {
+            'data-automation-id': 'DROP_DOWN',
+            'className': 'drop-down'
+        }, ['onLabelClick']);
 
         return (
-            <div data-automation-id="DROP_DOWN" {...rootProps}>
-                <DropDownInput selectedItem={this.props.selectedItem} onClick={this.props.onLabelClick} />
+            <div {...rootProps}>
+                <DropDownInput selectedItem={this.props.selectedItem} onClick={this.props.onInputClick} />
             </div>
         );
     }

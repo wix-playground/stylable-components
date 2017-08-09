@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ClientRenderer, expect, simulate, sinon, waitFor } from 'test-drive-react';
-import { DropDown, dropDownDefaultText } from '../../src';
+import { DropDown } from '../../src';
 
 const dropDown = 'DROP_DOWN';
 const input = dropDown + '_INPUT';
@@ -17,7 +17,7 @@ describe('<DropDown />', () => {
        const { select, waitForDom } = clientRenderer.render(<DropDown selectedItem={undefined} />);
        return waitForDom(() => {
            expect(select(dropDown)).to.be.present();
-           expect(select(dropDown)).to.have.text(dropDownDefaultText);
+           expect(select(dropDown)).to.have.text('Default Text');
        });
     });
 
@@ -31,7 +31,7 @@ describe('<DropDown />', () => {
 
     it('invokes the onClick when dropdown label is clicked', () => {
         const onClick = sinon.spy();
-        const { select } = clientRenderer.render(<DropDown selectedItem={item} onLabelClick={onClick}/>);
+        const { select } = clientRenderer.render(<DropDown selectedItem={item} onInputClick={onClick}/>);
         simulate.click(select(dropDown, input));
         return waitFor(() => expect(onClick).to.have.been.calledOnce);
     });

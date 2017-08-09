@@ -8,12 +8,12 @@ export interface DropDownDemoState {
 
 export class DropDownDemo extends React.Component<{}, DropDownDemoState> {
 
-    public state = { selectedItem: undefined };
+    public state: DropDownDemoState = { selectedItem: undefined };
 
     public render() {
         return (
             <div>
-                <h3>DropDown</h3>
+                <h2>DropDown</h2>
                 <section data-automation-id="DROP_DOWN_DEMO" style={{width: '250px'}}>
                     <DropDown selectedItem={this.state.selectedItem}/>
                 </section>
