@@ -30,6 +30,9 @@ module.exports = {
     resolve: {
         extensions: ['.ts', '.tsx', '.js']
     },
+    devServer: {
+        disableHostCheck: true
+    },
     output: {
         filename: '[name].js',
         pathinfo: true

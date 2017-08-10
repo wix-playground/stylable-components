@@ -1,9 +1,9 @@
 @namespace "SliderDemo";
 
-.root{
-  width: 100%;
+.root {
+    width: 100%;
 }
 
-.table-head-cell{
-  width: 33%;
+.table-head-cell {
+    width: 33%;
 }

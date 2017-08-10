@@ -1,7 +1,6 @@
 :import {
-  -sb-from: "../../style/default-theme/variables.st.css";
-  -sb-named:
-    color_Border,
+    -sb-from: "../../style/default-theme/variables.st.css";
+    -sb-named: color_Border,
     color_Slider_Track,
     color_Slider_Track_Hover,
     color_Slider_Progress,
@@ -13,118 +12,129 @@
 }
 
 :vars {
-  trackHeight: 4px;
-  handleMargin: -6px;
-  handleWidth: 16px;
-  handleHeight: 16px;
-  handleRadius: 8px;
-  handleBorder: 1px solid value(color_Slider_HandleBorder);
-  handleBorderHover: 1px solid value(color_Slider_Handle_Active);;
+    trackHeight: 4px;
+    handleMargin: -6px;
+    handleWidth: 16px;
+    handleHeight: 16px;
+    handleRadius: 8px;
+    handleBorder: 1px solid value(color_Slider_HandleBorder);
+    handleBorderHover: 1px solid value(color_Slider_Handle_Active);;
 }
 
 .root {
-  -st-states: active, disabled, error;
-  width: 100%;
-  position: relative;
-  display: inline-block;
+    -st-states: active, disabled, error;
+    width: 100%;
+    position: relative;
+    display: inline-block;
 }
 
 .slider {
-  width: 100%;
-  padding: 15px 0;
-  cursor: pointer;
-  outline: none;
+    width: 100%;
+    padding: 15px 0;
+    cursor: pointer;
+    outline: none;
+    user-select: none;
+    pointer-events: inherit;
+    touch-action: none;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    -webkit-touch-callout: none;
 }
 
 .slider-native-input {
-  position: absolute;
-  opacity: 0;
-  width: 0;
-  height: 0;
-  outline: none;
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    outline: none;
 }
 
-.slider-track{
-  position: relative;
-  height: 4px;
-  border-radius: 2px;
-  background-color: #adbbc6; 
+.slider-track {
+    position: relative;
+    height: 4px;
+    border-radius: 2px;
+    background-color: #adbbc6;
 }
 
-.slider-progress{
-  position: absolute;
-  width: 50%;
-  height: inherit;
-  background-color: #4a90e2;
-  border-radius: 2px;
+.slider-progress {
+    position: absolute;
+    width: 50%;
+    height: inherit;
+    background-color: #4a90e2;
+    border-radius: 2px;
 }
 
-.slider-handle{
-  position: absolute;
-  left: 50%;
-  width: 16px;
-  height: 16px;
-  border-radius: 8px;
-  margin: -6px 0 0 -6px;
-  background-color: #ffffff;
-  border: solid 1px #7d8c98;
-  z-index: 1000;
+.slider-handle {
+    position: absolute;
+    left: 50%;
+    width: 16px;
+    height: 16px;
+    border-radius: 8px;
+    margin: -6px 0 0 -6px;
+    background-color: #ffffff;
+    border: solid 1px #7d8c98;
+    z-index: 1000;
 }
 
-.slider-scale-container{
-  height: inherit;
+.slider-scale-container {
+    height: inherit;
 }
 
 /* Hover state */
-.slider:hover .slider-track{
-  background-color: #7d8c98; 
+.slider:hover .slider-track {
+    background-color: #7d8c98;
 }
 
-.slider:hover .slider-handle{
-  background-color: #edf7ff;
-  border: solid 1px #4a90e2;
+.slider:hover .slider-handle {
+    background-color: #edf7ff;
+    border: solid 1px #4a90e2;
 }
 
 /* Focus state */
-.slider:focus .slider-handle{
-  -webkit-box-shadow: 0 0 0 4px rgba(92, 180, 255, 0.5);
-  box-shadow: 0 0 0 4px rgba(92, 180, 255, 0.5);
+.slider:focus .slider-handle {
+    -webkit-box-shadow: 0 0 0 4px rgba(92, 180, 255, 0.5);
+    box-shadow: 0 0 0 4px rgba(92, 180, 255, 0.5);
 }
 
 /* Active state */
-.root:active .slider-handle{
-  -webkit-box-shadow: 0 0 0 0px rgba(92, 180, 255, 0.5);
-  box-shadow: 0 0 0 0px rgba(92, 180, 255, 0.5);
-  background-color: #4a90e2;
+.root:active .slider-handle {
+    -webkit-box-shadow: 0 0 0 0px rgba(92, 180, 255, 0.5);
+    box-shadow: 0 0 0 0px rgba(92, 180, 255, 0.5);
+    background-color: #4a90e2;
 }
-.root:active .slider-track{
-  background-color: #adbbc6; 
+
+.root:active .slider-track {
+    background-color: #adbbc6;
 }
-.root:active .slider-progress{
-  background-color: #4a90e2; 
+
+.root:active .slider-progress {
+    background-color: #4a90e2;
 }
 
 /* Disabled state */
-.root:disabled .slider{
-  cursor: not-allowed;
+.root:disabled .slider {
+    cursor: not-allowed;
 }
-.root:disabled .slider-handle{
-  -webkit-box-shadow: 0 0 0 0px rgba(92, 180, 255, 0.5);
-  box-shadow: 0 0 0 0px rgba(92, 180, 255, 0.5);
-  border-color: #c8c8c8;
-  background-color: #f1f1f1;
+
+.root:disabled .slider-handle {
+    -webkit-box-shadow: 0 0 0 0px rgba(92, 180, 255, 0.5);
+    box-shadow: 0 0 0 0px rgba(92, 180, 255, 0.5);
+    border-color: #c8c8c8;
+    background-color: #f1f1f1;
 }
-.root:disabled .slider-track{
-  background-color: #c8c8c8; 
+
+.root:disabled .slider-track {
+    background-color: #c8c8c8;
 }
-.root:disabled .slider-progress{
-  background-color: transparent; 
+
+.root:disabled .slider-progress {
+    background-color: transparent;
 }
 
 /* Error state */
-.root:error .slider-progress{
-  background-color: #e24a4a;
+.root:error .slider-progress {
+    background-color: #e24a4a;
 }
-.root:error:active .slider-progress{
-  background-color: #4a90e2;
+
+.root:error:active .slider-progress {
+    background-color: #4a90e2;
 }

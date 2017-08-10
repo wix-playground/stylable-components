@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { SBComponent, SBStateless } from 'stylable-react-component/dist/stylable-react';
-import { CaretDown } from './drop-down-icons';
 import { root } from 'wix-react-tools';
+import { CaretDown } from './drop-down-icons';
 import style from './drop-down.st.css';
 
 export interface DropDownInputProps {
