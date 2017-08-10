@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as keycode from 'keycode';
 import { ClientRenderer, expect, simulate, sinon, waitFor } from 'test-drive-react';
 import { DropDown } from '../../src';
 import { DropDownDemo } from '../../demo/components/drop-down.demo';
@@ -7,6 +8,16 @@ const dropDown = 'DROP_DOWN';
 const dropDownDemo = dropDown + '_DEMO';
 const input = dropDown + '_INPUT';
 const list = dropDown + '_LIST';
+
+const KeyCodes: any = {
+    ENTER: keycode('enter'),
+    HOME: keycode('home'),
+    END: keycode('end'),
+    UP: keycode('up'),
+    DOWN: keycode('down'),
+    LEFT: keycode('left'),
+    RIGHT: keycode('right')
+};
 
 describe('<DropDown />', () => {
     const clientRenderer = new ClientRenderer();
@@ -86,5 +97,22 @@ describe('<DropDown />', () => {
         simulate.click(dropDownList!.children[0]);
 
         return waitFor(() => expect(onClick).to.have.been.calledWithMatch(items[0]));
+    });
+
+    describe('Keyboard Navigation', () => {
+       it('toggles visibility of selection list when SPACE is clicked', async () => {
+           const { select, waitForDom } = clientRenderer.render(<DropDownDemo />);
+
+           await waitForDom(() => expect(select(dropDownDemo, list)).to.be.absent());
+
+           (select(dropDownDemo) as HTMLDivElement).focus();
+           simulate.keyDown(select(dropDownDemo), { keyCode: KeyCodes.SPACE });
+
+           await waitForDom(() => expect(select(dropDownDemo, list)).to.be.present());
+
+           simulate.keyDown(select(dropDownDemo), { keyCode: KeyCodes.SPACE });
+
+           return waitForDom(() => expect(select(dropDownDemo, list)).to.be.absent());
+       })
     });
 });

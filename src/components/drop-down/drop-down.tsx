@@ -1,9 +1,21 @@
 import * as React from 'react';
+import * as keycode from 'keycode';
 import { SBComponent, SBStateless } from 'stylable-react-component/dist/stylable-react';
 import { root } from 'wix-react-tools';
 import { CaretDown } from './drop-down-icons';
 import { SelectionList } from '../selection-list';
 import style from './drop-down.st.css';
+
+const KeyCodes: any = {
+    ENTER: keycode('enter'),
+    HOME: keycode('home'),
+    END: keycode('end'),
+    UP: keycode('up'),
+    DOWN: keycode('down'),
+    LEFT: keycode('left'),
+    RIGHT: keycode('right'),
+    SPACE: keycode('space')
+};
 
 export interface DropDownInputProps {
     selectedItem?: DropDownItem;
@@ -51,16 +63,27 @@ export interface DropDownProps extends React.HTMLAttributes<HTMLDivElement> {
     open?: boolean;
     items?: DropDownItem[];
     onItemClick?: (item: DropDownItem) => void;
+
+    tabIndex?: number;
 }
 
 @SBComponent(style)
 export class DropDown extends React.Component<DropDownProps, {}> {
 
-    public static defaultProps: DropDownProps = { items: [], onItemClick: () => {}, onInputClick: () => {} };
+    public static defaultProps: DropDownProps = { items: [], onItemClick: () => {}, onInputClick: () => {}, tabIndex: 0 };
 
     public onItemClick = (item: string) => {
         this.props.onInputClick!();
         this.props.onItemClick!(this.props.items!.filter((elem: DropDownItem) => elem.label === item)[0]);
+    };
+
+    private onKeyDown = (e: any) => {
+        switch (e.keyCode) {
+            case KeyCodes.SPACE:
+                e.preventDefault();
+                this.props.onInputClick!();
+                break;
+        }
     };
 
     public render() {
@@ -70,7 +93,7 @@ export class DropDown extends React.Component<DropDownProps, {}> {
         });
 
         return (
-            <div data-automation-id="DROP_DOWN" {...rootProps}>
+            <div data-automation-id="DROP_DOWN" {...rootProps} onKeyDown={this.onKeyDown} tabIndex={this.props.tabIndex}>
                 <DropDownInput selectedItem={this.props.selectedItem} onClick={this.props.onInputClick} />
                 <DropDownList
                     selectedItem={this.props.selectedItem}
