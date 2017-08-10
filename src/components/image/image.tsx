@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { noop } from '../../utils';
-import { transparentImage } from './transparent-image';
+import { noop, transparentImage } from '../../utils';
 
 export interface ImageEvent extends React.SyntheticEvent<HTMLImageElement> {
     src: string;
@@ -102,13 +101,13 @@ export class Image extends React.PureComponent<ImageProps, ImageState> {
     }
 
     private onLoad: React.EventHandler<React.SyntheticEvent<HTMLImageElement>> = e => {
-        if (this.state.src !== this.props.defaultImage && this.state.src !== onePixelTransparentSrc) {
+        if (this.state.src !== this.props.defaultImage && this.state.src !== transparentImage) {
             this.props.onLoad!({ ...e, src: this.state.src });
         }
     }
 
     private getFallbackSrcFor(src: string): string {
         // first, fallback to defaultImage, and later to one transparent pixel
-        return (src !== this.props.defaultImage) ? this.props.defaultImage! : onePixelTransparentSrc;
+        return (src !== this.props.defaultImage) ? this.props.defaultImage! : transparentImage;
     }
 }
