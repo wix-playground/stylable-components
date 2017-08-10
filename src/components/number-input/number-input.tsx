@@ -23,7 +23,7 @@ export interface NumberInputProps {
     onInput?(value: string): void;
 }
 
-interface DefaultProps extends NumberInputProps {
+interface DefaultProps {
     step: number;
     min: number;
     max: number;
@@ -87,7 +87,7 @@ const DEFAULTS: DefaultProps = {
     onInput: noop
 };
 
-function getPropWithDefault<Prop extends keyof NumberInputProps>(
+function getPropWithDefault<Prop extends keyof NumberInputProps & keyof DefaultProps>(
     props: NumberInputProps,
     name: Prop
 ): (DefaultProps & NumberInputProps)[Prop] {
