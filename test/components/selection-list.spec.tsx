@@ -1,9 +1,14 @@
 import React = require('react');
 import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react';
+import keycode = require('keycode');
 import {SelectionListDemo} from '../../demo/components/selection-list-demo';
 import sleep from '../../src/common/sleep';
 import {divider, SelectionList} from '../../src/components/selection-list';
 import style from './selection-list-demo.st.css';
+
+function simulateKeyDown(element: Element, key: string) {
+    simulate.keyDown(element, {keyCode: keycode(key)});
+}
 
 describe('<SelectionList />', () => {
     const clientRenderer = new ClientRenderer();
@@ -179,6 +184,159 @@ describe('<SelectionList />', () => {
             const values = children.map(el => el.dataset.value);
             expect(labels).to.be.deep.equal(['ham', 'spam', 'eggs', 'bacon']);
             expect(values).to.be.deep.equal(['ham', 'spam', 'eggs', 'bacon']);
+        });
+    });
+
+    describe('Keyboard navigation', () => {
+        it(`Moves down on 'Down' press`, async () => {
+            const onChange = sinon.spy();
+            const {select, waitForDom} = clientRenderer.render(
+                <SelectionList  dataSource={['1', '2', '3', '4', '5']} value="3" onChange={onChange} />
+            );
+
+            await waitForDom(() => expect(select('LIST')).to.be.present());
+
+            const list = select('LIST') as HTMLElement;
+            list.focus();
+            simulateKeyDown(list, 'down');
+            simulateKeyDown(list, 'enter');
+            await waitForDom(() => {
+                expect(onChange).to.have.been.calledOnce;
+                expect(onChange).to.have.been.calledWithExactly('4');
+            });
+        });
+
+        it(`Moves up on 'Up' press`, async () => {
+            const onChange = sinon.spy();
+            const {select, waitForDom} = clientRenderer.render(
+                <SelectionList dataSource={['1', '2', '3', '4', '5']} value="3" onChange={onChange} />
+            );
+
+            await waitForDom(() => expect(select('LIST')).to.be.present());
+
+            const list = select('LIST') as HTMLElement;
+            list.focus();
+            simulateKeyDown(list, 'up');
+            simulateKeyDown(list, 'enter');
+
+            await waitForDom(() => {
+                expect(onChange).to.have.been.calledOnce;
+                expect(onChange).to.have.been.calledWithExactly('2');
+            });
+        });
+
+        it(`Moves to the beginning on 'Home' press`, async () => {
+            const onChange = sinon.spy();
+            const {select, waitForDom} = clientRenderer.render(
+                <SelectionList dataSource={['1', '2', '3', '4', '5']} value="3" onChange={onChange} />
+            );
+
+            await waitForDom(() => expect(select('LIST')).to.be.present());
+
+            const list = select('LIST') as HTMLElement;
+            list.focus();
+            simulateKeyDown(list, 'home');
+            simulateKeyDown(list, 'enter');
+
+            await waitForDom(() => {
+                expect(onChange).to.have.been.calledOnce;
+                expect(onChange).to.have.been.calledWithExactly('1');
+            });
+        });
+
+        it(`Moves to the end on 'End' press`, async () => {
+            const onChange = sinon.spy();
+            const {select, waitForDom} = clientRenderer.render(
+                <SelectionList dataSource={['1', '2', '3', '4', '5']} value="3" onChange={onChange} />
+            );
+
+            await waitForDom(() => expect(select('LIST')).to.be.present());
+
+            const list = select('LIST') as HTMLElement;
+            list.focus();
+            simulateKeyDown(list, 'end');
+            simulateKeyDown(list, 'enter');
+
+            await waitForDom(() => {
+                expect(onChange).to.have.been.calledOnce;
+                expect(onChange).to.have.been.calledWithExactly('5');
+            });
+        });
+
+        it(`Moves to the beginning on 'Down' press if no item is selected`, async () => {
+            const onChange = sinon.spy();
+            const {select, waitForDom} = clientRenderer.render(
+                <SelectionList dataSource={['1', '2', '3', '4', '5']} onChange={onChange} />
+            );
+
+            await waitForDom(() => expect(select('LIST')).to.be.present());
+
+            const list = select('LIST') as HTMLElement;
+            list.focus();
+            simulateKeyDown(list, 'down');
+            simulateKeyDown(list, 'enter');
+
+            await waitForDom(() => {
+                expect(onChange).to.have.been.calledOnce;
+                expect(onChange).to.have.been.calledWithExactly('1');
+            });
+        });
+
+        it(`Moves to the end on 'Up' press if no item is selected`, async () => {
+            const onChange = sinon.spy();
+            const {select, waitForDom} = clientRenderer.render(
+                <SelectionList dataSource={['1', '2', '3', '4', '5']} onChange={onChange} />
+            );
+
+            await waitForDom(() => expect(select('LIST')).to.be.present());
+
+            const list = select('LIST') as HTMLElement;
+            list.focus();
+            simulateKeyDown(list, 'up');
+            simulateKeyDown(list, 'enter');
+
+            await waitForDom(() => {
+                expect(onChange).to.have.been.calledOnce;
+                expect(onChange).to.have.been.calledWithExactly('5');
+            });
+        });
+
+        it(`Selects an item on 'Enter' press`, async () => {
+            const onChange = sinon.spy();
+            const {select, waitForDom} = clientRenderer.render(
+                <SelectionList dataSource={['1', '2', '3', '4', '5']} value="3" onChange={onChange} />
+            );
+
+            await waitForDom(() => expect(select('LIST')).to.be.present());
+
+            const list = select('LIST') as HTMLElement;
+            list.focus();
+            simulateKeyDown(list, 'down');
+            simulateKeyDown(list, 'enter');
+
+            await waitForDom(() => {
+                expect(onChange).to.have.been.calledOnce;
+                expect(onChange).to.have.been.calledWithExactly('4');
+            });
+        });
+
+        it(`Selects an item on 'Space' press`, async () => {
+            const onChange = sinon.spy();
+            const {select, waitForDom} = clientRenderer.render(
+                <SelectionList dataSource={['1', '2', '3', '4', '5']} value="3" onChange={onChange} />
+            );
+
+            await waitForDom(() => expect(select('LIST')).to.be.present());
+
+            const list = select('LIST') as HTMLElement;
+            list.focus();
+            simulateKeyDown(list, 'down');
+            simulateKeyDown(list, 'space');
+
+            await waitForDom(() => {
+                expect(onChange).to.have.been.calledOnce;
+                expect(onChange).to.have.been.calledWithExactly('4');
+            });
         });
     });
 });
