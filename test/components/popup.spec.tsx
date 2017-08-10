@@ -76,7 +76,7 @@ describe('<Popup />', function() {
             </Popup>);
 
         return waitFor(() => {
-            expect((bodySelect(popup)! as HTMLElement).style.maxHeight).to.equal('500px');
+            expect(bodySelect<HTMLElement>(popup)!.style.maxHeight).to.equal('500px');
         });
     });
 
@@ -93,8 +93,8 @@ describe('<Popup />', function() {
             </Popup>);
 
         return waitFor(() => {
-            expect((bodySelect(popup)! as HTMLElement).style.maxHeight).to.equal('5px');
-            expect((bodySelect(popup)! as HTMLElement).getBoundingClientRect().height).to.equal(5);
+            expect(bodySelect<HTMLElement>(popup)!.style.maxHeight).to.equal('5px');
+            expect(bodySelect<HTMLElement>(popup)!.getBoundingClientRect().height).to.equal(5);
         });
     });
 
@@ -179,12 +179,12 @@ describe('<Popup />', function() {
 
                                 return waitFor(() => {
                                     expect(
-                                        topResults[popupVertical][anchorVertical](div, bodySelect(popup) as HTMLElement),
+                                        topResults[popupVertical][anchorVertical](div, bodySelect<HTMLElement>(popup)!),
                                         'vertical test failed'
                                     ).to.be.true;
                                     expect(
                                         leftResults[popupHorizontal][anchorHorizontal](
-                                            div, bodySelect(popup) as HTMLElement
+                                            div, bodySelect<HTMLElement>(popup)!
                                         ), 'horizontal test failed'
                                     ).to.be.true;
                                 });
