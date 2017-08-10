@@ -39,6 +39,9 @@ const selectionIndexes = {
 };
 
 function segmentsToInputValue({hh, mm, ampm}: {hh?: number, mm?: number, ampm: Ampm}) {
+    if (!hh && !mm) {
+        return '';
+    }
     return [
         hh ? pad2(hh) : '00',
         ':',
@@ -46,6 +49,10 @@ function segmentsToInputValue({hh, mm, ampm}: {hh?: number, mm?: number, ampm: A
         ' ',
         ampmLabels[ampm]
     ].join('').trim();
+}
+
+function defaultValue(format: Format, hh: string = '00') {
+    return hh + ':00' + (format === 'ampm' ? ' AM' : '');
 }
 
 function propsValueToSegments(value?: string, format?: Format) {
@@ -88,7 +95,7 @@ export default class TimePicker extends React.Component<Props, State> {
 
     public render() {
         const {focus, ampm, inputValue} = this.state;
-        const {value, disabled} = this.props;
+        const {placeholder, disabled, format} = this.props;
         const currentSegment = isTimeSegment(this.currentSegment) ? this.currentSegment : 'hh';
         const currentSegmentValue = this.state[currentSegment] || 0;
 
@@ -99,14 +106,16 @@ export default class TimePicker extends React.Component<Props, State> {
                 className="input"
                 ref={elem => this.input = elem}
                 value={inputValue}
+                placeholder={placeholder || defaultValue(format!)}
                 disabled={disabled}
                 onChange={this.onInputChange}
                 onFocus={this.onInputFocus}
                 onBlur={this.onInputBlur}
                 onKeyDown={this.onInputKeyDown}
+                onMouseDown={this.onInputMouseDown}
                 onClick={this.onInputClick}
             />
-            {!isTouch && !disabled &&
+            {!isTouch && !disabled && inputValue &&
                 <Stepper
                     className="stepper"
                     disableUp={!isValidValue(currentSegmentValue + 1, currentSegment, ampm)}
@@ -189,6 +198,12 @@ export default class TimePicker extends React.Component<Props, State> {
 
     private createStepperHandler = (step: number) => () => this.changeValue(step)
 
+    private onInputMouseDown = (e: any) => {
+        if (e.detail > 1) {
+            e.preventDefault();
+        }
+    }
+
     private onInputClick = (e: React.SyntheticEvent<HTMLInputElement>) => {
         const cursorPosition = e.currentTarget.selectionStart;
         let key: Segment;
@@ -199,13 +214,20 @@ export default class TimePicker extends React.Component<Props, State> {
                 currentSegment = key;
             }
         }
-        this.select(currentSegment);
+        if (currentSegment === 'ampm') {
+            this.toggleAmpm();
+        } else {
+            this.select(currentSegment);
+        }
     }
 
     private onInputChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
         const {format} = this.props;
         const {ampm} = this.state;
-        const {value} = e.currentTarget;
+        let {value} = e.currentTarget;
+        if (value.length === 1) {
+            value = defaultValue(format!, value);
+        }
         const match = value.match(/^(\d{1,2}):(\d{1,2})(?:\s(AM|PM))?$/);
         if (!match) {
             return;
@@ -278,15 +300,17 @@ export default class TimePicker extends React.Component<Props, State> {
     private onInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         const keyCode = keycode(e.keyCode);
 
-        if (/[a-z]/.test(keyCode)) {
+        if (/^\D$/.test(keyCode)) {
             return e.preventDefault();
         }
 
         switch(keyCode) {
             case 'left':
+                e.preventDefault();
                 this.moveSelection(-1)
                 break;
             case 'right':
+                e.preventDefault();
                 this.moveSelection(1)
                 break;
             case 'tab':
@@ -296,13 +320,16 @@ export default class TimePicker extends React.Component<Props, State> {
                 }
                 break;
             case 'up':
+                e.preventDefault();
                 this.changeValue(+1)
                 break;
             case 'down':
+                e.preventDefault();
                 this.changeValue(-1)
                 break;
             case 'space':
             case 'enter':
+                e.preventDefault();
                 if (this.currentSegment === 'ampm') {
                     this.toggleAmpm();
                 }

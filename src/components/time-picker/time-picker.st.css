@@ -39,7 +39,6 @@
 }
 
 .input {
-    -st-states: wide;
     font: inherit;
     border: 0;
     height: 24px;
@@ -48,6 +47,7 @@
     height: 100%;
     padding: 6px;
     background: none;
+    user-select: none;
 }
 .input::placeholder {
     color: value(BK2);
@@ -62,10 +62,6 @@
     border: 0;
     outline: 0;
 }
-.input:wide {
-    width: 100%;
-}
-
 .native-input {
     position: absolute;
     opacity: 0;
