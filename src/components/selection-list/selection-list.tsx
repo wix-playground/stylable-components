@@ -1,12 +1,15 @@
-import React = require('react');
-import ReactDOM = require('react-dom');
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import {SBComponent, SBStateless} from 'stylable-react-component';
 import {root} from 'wix-react-tools';
 import style from './selection-list.st.css';
 
 export const divider = {};
 
-function renameKeys(data: {[index: string]: any}, schema: {[index: string]: string}) {
+function renameKeys(
+    data: {[index: string]: any},
+    schema: {[index: string]: string}
+): {[index: string]: any} {
     const result: {[index: string]: any} = {};
     for (const key in schema) {
         if (schema.hasOwnProperty(key)) {
@@ -16,7 +19,10 @@ function renameKeys(data: {[index: string]: any}, schema: {[index: string]: stri
     return result;
 }
 
-function closestElementMatching(predicate: (element: HTMLElement) => boolean, startAt: HTMLElement) {
+function closestElementMatching(
+    predicate: (element: HTMLElement) => boolean,
+    startAt: HTMLElement
+): HTMLElement | null {
     let current: HTMLElement | null = startAt;
     while (current && !predicate(current)) {
         current = current.parentElement;
@@ -75,7 +81,7 @@ export interface SelectionListProps extends OptionList {
     value?: string;
     onChange?: (value: string) => void;
     style?: any;
-    children?: any;
+    className?: string;
 }
 
 @SBComponent(style)
@@ -91,16 +97,23 @@ export class SelectionList extends React.Component<SelectionListProps, {}> {
             'data-automation-id': 'LIST',
             'className': 'list',
             'onClick': this.handleClick
-        });
+        }) as React.HtmlHTMLAttributes<HTMLDivElement>;
+
+        const dataSourceItems = this.props.dataSource!.map((item, index) =>
+            this.renderDataSourceItem(item, index)
+        );
+
+        const childItems = React.Children.map(this.props.children, child => this.renderChildItem(child));
 
         return (
             <div {...rootProps}>
-                {this.props.dataSource!.map((item, index) => this.renderItem(item, index))}
+                {dataSourceItems}
+                {childItems}
             </div>
         );
     }
 
-    private normalizeItem(item: SelectionItem): {[index: string]: any} {
+    private normalizeDataSourceItem(item: SelectionItem): {[index: string]: any} {
         if (item === divider) {
             return divider;
         }
@@ -113,9 +126,9 @@ export class SelectionList extends React.Component<SelectionListProps, {}> {
             renameKeys(item, this.props.dataSchema) : item;
     }
 
-    private renderItem(item: SelectionItem, index: number) {
+    private renderDataSourceItem(item: SelectionItem, index: number): React.ReactNode {
         const ItemRenderer = this.props.itemRenderer!;
-        const normalized = this.normalizeItem(item);
+        const normalized = this.normalizeDataSourceItem(item);
         return (
             <ItemRenderer
                 key={index}
@@ -126,10 +139,28 @@ export class SelectionList extends React.Component<SelectionListProps, {}> {
         );
     }
 
+    private getValueFromChildItem(child: React.ReactNode): string | undefined {
+        return child && typeof child === 'object' ?
+            (child as React.ReactElement<any>).props['data-value'] :
+            undefined;
+    }
+
+    private renderChildItem(child: React.ReactNode): React.ReactNode {
+        if (this.props.value !== undefined &&
+            this.getValueFromChildItem(child) === this.props.value
+        ) {
+            return React.cloneElement(
+                child as React.ReactElement<any>,
+                {'data-selected': true}
+            );
+        }
+        return child;
+    }
+
     private handleClick: React.EventHandler<React.MouseEvent<HTMLElement>> = event => {
-        const elem = ReactDOM.findDOMNode(this);
+        const listRoot = ReactDOM.findDOMNode(this);
         const item = closestElementMatching(
-            el => el.parentElement === elem,
+            el => el.parentElement === listRoot,
             event.target as HTMLElement
         );
         if (!item) {

@@ -9,23 +9,24 @@ Brief component description
 
 ## Elements
 
-Screenshot & brief elements description
+All elements of the component and their interactivity will be described, including a visual representation of it (image or animations).
 
 > e.g.
-> Screenshot of the component (http://joxi.ru/bmonQewtMy479r)
+>
+> ![elements](./assets/elements.png)
 > **Toggle** consists of:  **switch**, **icon**, and **background**. The **switch** moves across the **background** in order to set the value to On/Off, and **icon** indicates the state of the value.
 
 
 
 ## API
 
-### Component Props
+#### Component Props
 
 | name     | type    | defaultValue | isRequired | description                              |
 | -------- | ------- | ------------ | ---------- | ---------------------------------------- |
-| disabled | boolean | false        |            | If `true`, the componentName will not be interactive. |
-| label    | string  |              |            | Text to display in accessibility mode.   |
-| name     | string  |              |            | The name of the slider. Behaves like the name attribute of an input element. |
+| disabled | boolean | false        |            | If `true`, the component will not be interactive |
+| label    | string  |              |            | Text to display in accessibility mode    |
+| name     | string  |              |            | The name of the slider. Behaves like the name attribute of an input element |
 | error    | bool    | FALSE        |            | Sets the `:error` CSS state on the `<slider>` |
 | rtl      | bool    | FALSE        |            | Makes the component RTL                  |
 
@@ -33,7 +34,7 @@ Screenshot & brief elements description
 
 #### Accepted Children ( if applicable )
 
-List of accepted children
+List of predefined roles assignable to children components. Children are assigned the `data-slot` attribute, in order to allow the component to use them in various ways and places.
 
 > e.g.
 > This component accepts children with the following `data-slot` attribute, in order to *tell why do we need data-slot in current component*
@@ -44,7 +45,7 @@ List of accepted children
 
 
 
-### Code Example
+### React Code Example
 
 **Example 1:**
 
@@ -102,15 +103,15 @@ export class ComponentsDemo extends React.Component<{}, {}>{
 
 ## Style API
 
-### Subcomponents (pseudo-elements)
+#### Subcomponents (pseudo-elements)
 
-| selector | description                              | type                                     |
-| -------- | ---------------------------------------- | ---------------------------------------- |
-| ::switch | Allows styling the switch of the toggle. | HTML Element - This subcomponent has no subcomponents of its own.* |
+| selector | description                             | type                                     |
+| -------- | --------------------------------------- | ---------------------------------------- |
+| ::switch | Allows styling the switch of the toggle | HTML Element - This subcomponent has no subcomponents of its own |
 
 
 
-### Custom CSS States (pseudo-classes)
+#### Custom CSS States (pseudo-classes)
 
 | state                          | description                              |
 | ------------------------------ | ---------------------------------------- |
@@ -122,10 +123,11 @@ export class ComponentsDemo extends React.Component<{}, {}>{
 ### Style Code Example
 
 ```css
-@import * from './components/element'; /* TODO: fix the correct syntax */
-/* style.st.css 
-Adding rules here (which may be shared between different components) allows us to 	    override specific parts; or even change the whole theme
-*/
+:import {
+    -st-from: './components/element'; 
+    -st-default: Element;
+}
+
 Element {
   background-color: grey; /* styles the toggle in unchecked state */
 }
