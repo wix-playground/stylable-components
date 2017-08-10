@@ -8,13 +8,10 @@ import style from './drop-down.st.css';
 
 const KeyCodes: any = {
     ENTER: keycode('enter'),
-    HOME: keycode('home'),
-    END: keycode('end'),
     UP: keycode('up'),
     DOWN: keycode('down'),
-    LEFT: keycode('left'),
-    RIGHT: keycode('right'),
-    SPACE: keycode('space')
+    SPACE: keycode('space'),
+    ESC: keycode('escape')
 };
 
 export interface DropDownInputProps {
@@ -82,6 +79,14 @@ export class DropDown extends React.Component<DropDownProps, {}> {
             case KeyCodes.SPACE:
                 e.preventDefault();
                 this.props.onInputClick!();
+                break;
+            case KeyCodes.ESC:
+                e.preventDefault();
+                this.props.open && this.props.onInputClick!();
+                break;
+            case KeyCodes.DOWN:
+                e.preventDefault();
+                !this.props.open && this.props.onInputClick!();
                 break;
         }
     };
