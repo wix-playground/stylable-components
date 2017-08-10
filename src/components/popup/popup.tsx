@@ -66,7 +66,7 @@ export class Popup extends React.Component<PopupProps, PopupState> {
 
     private setPosition = (popup: HTMLElement | null) => {
         if (popup) {
-            const newStyle = JSON.parse(JSON.stringify(this.state.style));
+            const newStyle = {...this.state.style};
             const anchorRect = this.props.anchor.getBoundingClientRect();
 
             newStyle.maxHeight = this.props.maxHeight;
