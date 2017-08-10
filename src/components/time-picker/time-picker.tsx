@@ -36,7 +36,7 @@ const ampmLabels = {
 };
 
 function segmentsToInputValue({hh, mm, ampm}: {hh?: number, mm?: number, ampm: Ampm}) {
-    if (!hh && !mm) {
+    if (hh === undefined && mm === undefined) {
         return '';
     }
     return [
