@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { expect, ClientRenderer, sinon, simulate, waitFor } from 'test-drive-react';
+import { ClientRenderer, expect, simulate, sinon, waitFor } from 'test-drive-react';
 import { Slider } from '../../src/components/slider';
 
-function simulateMouseEvent(element: Element, eventType: string, options?: Object) {
+function simulateMouseEvent(element: Element, eventType: string, options?: object) {
   element.dispatchEvent(new MouseEvent(
     eventType,
     options as any as EventInit
@@ -12,11 +12,11 @@ function simulateMouseEvent(element: Element, eventType: string, options?: Objec
 describe.only('<Slider />', () => {
   const clientRenderer = new ClientRenderer();
 
-  afterEach(() => clientRenderer.cleanup())
+  afterEach(() => clientRenderer.cleanup());
 
   describe('without any arguments', () => {
     let select: (automationId: string) => HTMLElement | null;
-    let waitForDom: (expectation: Function) => Promise<void>;
+    let waitForDom: (expectation: () => void) => Promise<void>;
 
     beforeEach(() => {
       const rendered = clientRenderer.render(<Slider />);
@@ -36,7 +36,7 @@ describe.only('<Slider />', () => {
       await waitForDom(() => {
         const element = select('SLIDER-PROGRESS');
 
-        expect(element).to.be.present();        
+        expect(element).to.be.present();
         expect(element!.style.width).to.equal('50%');
       });
     });
@@ -57,7 +57,7 @@ describe.only('<Slider />', () => {
     const max = 10;
 
     let select: (automationId: string) => HTMLElement | null;
-    let waitForDom: (expectation: Function) => Promise<void>;
+    let waitForDom: (expectation: () => void) => Promise<void>;
 
     beforeEach(() => {
       const rendered = clientRenderer.render(
@@ -83,7 +83,7 @@ describe.only('<Slider />', () => {
       await waitForDom(() => {
         const element = select('SLIDER-PROGRESS');
 
-        expect(element).to.be.present();        
+        expect(element).to.be.present();
         expect(element!.style.width).to.equal('75%');
       });
     });
@@ -155,11 +155,11 @@ describe.only('<Slider />', () => {
     let onChange: (value: number) => void;
     let onInput: (value: string) => void;
     let select: (automationId: string) => HTMLElement | null;
-    let waitForDom: (expectation: Function) => Promise<void>;
+    let waitForDom: (expectation: () => void) => Promise<void>;
     let environment: Element;
 
     beforeEach(() => {
-      environment = document.createElement("body");
+      environment = document.createElement('body');
       onChange = sinon.spy();
       onInput = sinon.spy();
       const rendered = clientRenderer.render(
@@ -251,11 +251,11 @@ describe.only('<Slider />', () => {
     let onChange: (value: number) => void;
     let onInput: (value: string) => void;
     let select: (automationId: string) => HTMLElement | null;
-    let waitForDom: (expectation: Function) => Promise<void>;
+    let waitForDom: (expectation: () => void) => Promise<void>;
     let environment: Element;
 
     beforeEach(() => {
-      environment = document.createElement("body");
+      environment = document.createElement('body');
       onChange = sinon.spy();
       onInput = sinon.spy();
 
@@ -377,11 +377,11 @@ describe.only('<Slider />', () => {
     let onChange: (value: number) => void;
     let onInput: (value: string) => void;
     let select: (automationId: string) => HTMLElement | null;
-    let waitForDom: (expectation: Function) => Promise<void>;
+    let waitForDom: (expectation: () => void) => Promise<void>;
     let environment: Element;
 
     beforeEach(() => {
-      environment = document.createElement("body");
+      environment = document.createElement('body');
       onChange = sinon.spy();
       onInput = sinon.spy();
 
@@ -501,7 +501,7 @@ describe.only('<Slider />', () => {
 
     let onChange: (value: number) => void;
     let select: (automationId: string) => HTMLElement | null;
-    let waitForDom: (expectation: Function) => Promise<void>;
+    let waitForDom: (expectation: () => void) => Promise<void>;
 
     beforeEach(() => {
       onChange = sinon.spy();
@@ -527,8 +527,8 @@ describe.only('<Slider />', () => {
 
         simulate.mouseDown(element, {
           currentTarget: element!,
-          clientY: bounds.top + bounds.height/3,
-          clientX: bounds.left + bounds.width/4
+          clientY: bounds.top + bounds.height / 3,
+          clientX: bounds.left + bounds.width / 4
         });
 
         expect(handle!.style.left).not.to.equal('25%');
@@ -553,7 +553,7 @@ describe.only('<Slider />', () => {
         />
       );
       const select: (automationId: string) => HTMLElement | null = rendered.select;
-      const waitForDom: (expectation: Function) => Promise<void> = rendered.waitForDom;
+      const waitForDom: (expectation: () => void) => Promise<void> = rendered.waitForDom;
 
       await waitForDom(() => {
         const slider = select('SLIDER');
@@ -580,7 +580,7 @@ describe.only('<Slider />', () => {
         />
       );
       const select: (automationId: string) => HTMLInputElement | null = rendered.select;
-      const waitForDom: (expectation: Function) => Promise<void> = rendered.waitForDom;
+      const waitForDom: (expectation: () => void) => Promise<void> = rendered.waitForDom;
 
       await waitForDom(() => {
         const sliderInput = select('SLIDER-NATIVE-INPUT');
@@ -605,7 +605,7 @@ describe.only('<Slider />', () => {
         />
       );
       const select: (automationId: string) => HTMLInputElement | null = rendered.select;
-      const waitForDom: (expectation: Function) => Promise<void> = rendered.waitForDom;
+      const waitForDom: (expectation: () => void) => Promise<void> = rendered.waitForDom;
 
       await waitForDom(() => {
         const sliderInput = select('SLIDER-NATIVE-INPUT');
