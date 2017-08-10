@@ -1,4 +1,4 @@
-import React = require('react');
+import * as React from 'react';
 import {SBComponent, SBStateless} from 'stylable-react-component';
 import {divider, ItemRendererProps, SelectionList} from '../../src/components/selection-list';
 import style from './selection-list-demo.st.css';

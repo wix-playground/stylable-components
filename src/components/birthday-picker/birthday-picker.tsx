@@ -1,6 +1,6 @@
 import {autorun, computed, observable, reaction} from 'mobx';
 import {observer} from 'mobx-react';
-import React = require('react');
+import * as React from 'react';
 
 function daysInMonth(date: Date) {
     return new Date(date.getUTCFullYear(), date.getUTCMonth() + 1, 0).getDate();
