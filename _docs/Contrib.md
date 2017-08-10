@@ -22,7 +22,7 @@
             </ol>
         </nav>
         ```
-    2) **WAI-ARIA state & property**: Aria-prefixed markup attribute which sets the state of a component (i.e. "aria-checked" for a checkbox) or a property of it (i.e. aria-label). Note that the difference between a state and property is semantic when considering the code implementation - states usually change a lot while properties do not. For a full listing see [States & Properties](https://www.w3.org/TR/wai-aria-1.1/#states_and_properties).
+    2) **Aria-prefixed markup attribute**:  Used to set the state of a component (i.e. "aria-checked" for a checkbox) or a property of it (i.e. aria-label). Note that the difference between a state and property is semantic when considering the code implementation - states usually change a lot while properties do not. Most of the aria-prefixed attributes are set by the component and not by the user of the component. For a full listing see [States & Properties](https://www.w3.org/TR/wai-aria-1.1/#states_and_properties).
 
         There are two types of aria-* attributes that need to be supported for a component:
 
