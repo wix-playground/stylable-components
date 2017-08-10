@@ -10,11 +10,18 @@ export default class GlobalEvent extends Component<GlobalEventProps> {
     private emitter = window;
 
     public componentDidMount() {
-        this.emitter.addEventListener(this.props.event, this.handler);
+        this.subscribe(this.props.event);
     }
 
     public componentWillUnmount() {
-        this.emitter.removeEventListener(this.props.event, this.handler);
+        this.unsubscribe(this.props.event);
+    }
+
+    public componentWillReceiveProps({event}: GlobalEventProps) {
+        if (event !== this.props.event) {
+            this.unsubscribe(this.props.event);
+            this.subscribe(event);
+        }
     }
 
     public render() {
@@ -24,5 +31,13 @@ export default class GlobalEvent extends Component<GlobalEventProps> {
     private handler = (e: Event) => {
         const { handler } = this.props;
         handler(e);
+    }
+
+    private subscribe(event: string) {
+        this.emitter.addEventListener(event, this.handler);
+    }
+
+    private unsubscribe(event: string) {
+        this.emitter.removeEventListener(event, this.handler);
     }
 }
