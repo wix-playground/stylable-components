@@ -15,6 +15,8 @@ export interface Props {
     format?: Format;
     placeholder?: string;
     disabled?: boolean;
+    label?: string;
+    name?: string;
 }
 
 export interface State {
@@ -90,7 +92,7 @@ export default class TimePicker extends React.Component<Props, State> {
 
     public render() {
         const {focus, ampm, inputValue} = this.state;
-        const {placeholder, disabled, format} = this.props;
+        const {label, name, placeholder, disabled, format} = this.props;
         const currentSegment = isTimeSegment(this.currentSegment) ? this.currentSegment : 'hh';
         const currentSegmentValue = this.state[currentSegment] || 0;
 
@@ -108,6 +110,8 @@ export default class TimePicker extends React.Component<Props, State> {
                     value={inputValue}
                     placeholder={placeholder || defaultValue(format!)}
                     disabled={disabled}
+                    name={name}
+                    arial-label={label}
                     onChange={this.onInputChange}
                     onFocus={this.onInputFocus}
                     onBlur={this.onInputBlur}
@@ -129,6 +133,8 @@ export default class TimePicker extends React.Component<Props, State> {
                     tabIndex={isTouch ? 0 : -1}
                     ref={elem => this.nativeInput = elem}
                     type="time"
+                    name={name}
+                    arial-label={label}
                     value={this.getValue()}
                     disabled={disabled}
                     onFocus={this.onInputFocus}
