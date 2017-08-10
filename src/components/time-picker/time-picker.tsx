@@ -25,7 +25,7 @@ export interface State {
     ampm: Ampm;
 }
 
-const isTouch =  'ontouchstart' in window || Boolean(navigator.msMaxTouchPoints);
+const isTouch = 'orientation' in window;
 const is12TimeFormat = /AM|PM/.test(new Date().toLocaleTimeString());
 const ampmLabels = {
     [Ampm.AM]: 'AM',
