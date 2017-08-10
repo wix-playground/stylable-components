@@ -111,7 +111,7 @@ export default class TimePicker extends React.Component<Props, State> {
                     placeholder={placeholder || defaultValue(format!)}
                     disabled={disabled}
                     name={name}
-                    arial-label={label}
+                    aria-label={label}
                     onChange={this.onInputChange}
                     onFocus={this.onInputFocus}
                     onBlur={this.onInputBlur}
@@ -134,7 +134,7 @@ export default class TimePicker extends React.Component<Props, State> {
                     ref={elem => this.nativeInput = elem}
                     type="time"
                     name={name}
-                    arial-label={label}
+                    aria-label={label}
                     value={this.getValue()}
                     disabled={disabled}
                     onFocus={this.onInputFocus}
