@@ -1,4 +1,4 @@
-import React = require('react');
+import * as React from 'react';
 import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react';
 import {BasicDemo, demoCheckBoxText, DisabledDemo, IndeterminateDemo} from '../../demo/components/checkbox-demo';
 import {CheckBox, CheckBoxIconProps} from '../../src';

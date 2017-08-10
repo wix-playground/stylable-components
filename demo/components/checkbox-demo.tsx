@@ -1,4 +1,4 @@
-import React = require('react');
+import * as React from 'react';
 import {SBComponent} from 'stylable-react-component';
 import {CheckBox, CheckBoxIconProps} from '../../src';
 import buttonStyle from '../../src/style/default-theme/controls/button.st.css';
@@ -93,7 +93,7 @@ export class DisabledDemo extends React.Component<{}, {value: boolean}> {
         );
     }
 
-    private handleChange = (val: boolean) => { this.setState({value: val} ); };
+    private handleChange = (val: boolean) => { this.setState({value: val}); };
 }
 
 export class IndeterminateDemo extends React.Component<{}, {value1: boolean, value2: boolean}> {
@@ -160,7 +160,7 @@ class CustomIconsDemo extends React.Component<{}, {value: boolean}> {
             </div>
         );
     }
-    private handleChange = (val: boolean) => { this.setState({value: val} ); };
+    private handleChange = (val: boolean) => { this.setState({value: val}); };
 }
 
 const TickMarkSVG: React.SFC<CheckBoxIconProps> = props => {
