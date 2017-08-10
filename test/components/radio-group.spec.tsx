@@ -1,24 +1,28 @@
-import React = require('react');
-import {expect, ClientRenderer, simulate, waitFor, sinon} from 'test-drive-react';
-import { RadioButton, RadioGroup } from '../../src'
+import * as React from 'react';
+import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react';
 import { RadioGroupDemo } from '../../demo/components/radio-group-demo';
+import { RadioButton, RadioGroup } from '../../src';
 
 const radioGroup = 'RADIO_GROUP';
 const radioButton = 'RADIO_BUTTON';
 const emptyFunction = () => {};
 
-describe('<RadioGroup />', function () {
+describe('<RadioGroup />', function() {
     const clientRenderer = new ClientRenderer();
 
     afterEach(() => {
         clientRenderer.cleanup();
     });
 
-    describe('The radio group user', function () {
-        it('clicks on a button and it is selected', async function () {
+    describe('The radio group user', function() {
+        it('clicks on a button and it is selected', async function() {
             const {select, waitForDom} = clientRenderer.render(<RadioGroupDemo/>);
 
-            await waitForDom(() => { expect(select("RADIO_GROUP_DEMO", "GROUP_1", radioGroup, radioButton + '_0')).to.be.present() });
+            await waitForDom(() => {
+                expect(
+                    select('RADIO_GROUP_DEMO', 'GROUP_1', radioGroup, radioButton + '_0')
+                ).to.be.present();
+            });
             const button0 = select('GROUP_1', radioGroup, radioButton + '_0') as HTMLInputElement;
             button0.click();
             await waitForDom(() => {
@@ -27,7 +31,7 @@ describe('<RadioGroup />', function () {
         });
     });
 
-    it('renders to the screen with unselected radio buttons as children', function () {
+    it('renders to the screen with unselected radio buttons as children', function() {
         const {select, waitForDom} = clientRenderer.render(
             <RadioGroup onChange={emptyFunction}>
                 <RadioButton value="Ifrit"/>
@@ -49,7 +53,7 @@ describe('<RadioGroup />', function () {
         });
     });
 
-    it('renders other components as children', function () {
+    it('renders other components as children', function() {
         const {select, waitForDom} = clientRenderer.render(
             <RadioGroup onChange={emptyFunction}>
                 <RadioButton value="1"/>
@@ -65,7 +69,7 @@ describe('<RadioGroup />', function () {
 
     });
 
-    it('renders the children with the given name value', function () {
+    it('renders the children with the given name value', function() {
         const {select, waitForDom} = clientRenderer.render(
             <RadioGroup onChange={emptyFunction} name="kupo">
                 <RadioButton value="Ultima"/>
@@ -82,7 +86,7 @@ describe('<RadioGroup />', function () {
         });
     });
 
-    it('renders a checked radio button if the checked prop is true', function () {
+    it('renders a checked radio button if the checked prop is true', function() {
         const {select, waitForDom} = clientRenderer.render(
             <RadioGroup onChange={emptyFunction} name="kupo">
                 <RadioButton value="Minerva"/>
@@ -97,7 +101,7 @@ describe('<RadioGroup />', function () {
         });
     });
 
-    it('renders calls the given onChange function on change', async function () {
+    it('renders calls the given onChange function on change', async function() {
         const onChange = sinon.spy();
         const {select, waitForDom} = clientRenderer.render(
             <RadioGroup onChange={onChange}>
@@ -106,15 +110,15 @@ describe('<RadioGroup />', function () {
             </RadioGroup>
         );
 
-        await waitForDom(() => { expect(select(radioGroup, radioButton + '_1')).to.be.present() });
+        await waitForDom(() => { expect(select(radioGroup, radioButton + '_1')).to.be.present(); });
         simulate.click(select(radioGroup, radioButton + '_1', 'INPUT'));
         return waitFor(() => {
             expect(onChange).to.have.been.calledOnce;
             expect(onChange).to.have.been.calledWithMatch('Quetzalcoatl');
-        })
+        });
     });
 
-    it('sets the clicked radio button to be active on click', async function () {
+    it('sets the clicked radio button to be active on click', async function() {
         const {select, waitForDom} = clientRenderer.render(
             <RadioGroup onChange={emptyFunction}>
                 <RadioButton value="Garuda"/>
@@ -122,17 +126,17 @@ describe('<RadioGroup />', function () {
             </RadioGroup>
         );
 
-        await waitForDom(() => { expect(select(radioGroup, radioButton + '_0')).to.be.present() });
+        await waitForDom(() => { expect(select(radioGroup, radioButton + '_0')).to.be.present(); });
         const button0 = select(radioGroup, radioButton + '_0', 'INPUT') as HTMLInputElement;
         button0.click();
         return waitForDom(() => {
             const button1 = select(radioGroup, radioButton + '_1', 'INPUT') as HTMLInputElement;
             expect(button0.checked).to.be.true;
             expect(button1.checked).to.be.false;
-        })
+        });
     });
 
-    it('changes the selected button when clicking on a different one', async function () {
+    it('changes the selected button when clicking on a different one', async function() {
         const {select, waitForDom} = clientRenderer.render(
             <RadioGroup onChange={emptyFunction}>
                 <RadioButton value="Diabolos"/>
@@ -140,7 +144,7 @@ describe('<RadioGroup />', function () {
             </RadioGroup>
         );
 
-        await waitForDom(() => { expect(select(radioGroup, radioButton + '_0', 'INPUT')).to.be.present() });
+        await waitForDom(() => { expect(select(radioGroup, radioButton + '_0', 'INPUT')).to.be.present(); });
         const button0 = select(radioGroup, radioButton + '_0', 'INPUT') as HTMLInputElement;
         button0.click();
         await waitForDom(() => { expect(button0.checked).to.be.true; });
@@ -152,7 +156,7 @@ describe('<RadioGroup />', function () {
         });
     });
 
-    it('does not affect buttons in a different radio group', async function () {
+    it('does not affect buttons in a different radio group', async function() {
         const {select, waitForDom} = clientRenderer.render(
             <div>
                 <div data-automation-id="DIV_0">
@@ -170,7 +174,7 @@ describe('<RadioGroup />', function () {
             </div>
         );
 
-        await waitForDom(() => { expect(select('DIV_0', radioGroup, radioButton + '_0', 'INPUT')).to.be.present() });
+        await waitForDom(() => { expect(select('DIV_0', radioGroup, radioButton + '_0', 'INPUT')).to.be.present(); });
         const button0 = select('DIV_0', radioGroup, radioButton + '_0', 'INPUT') as HTMLInputElement;
         button0.click();
         await waitForDom(() => { expect(button0.checked).to.be.true; });
@@ -182,7 +186,7 @@ describe('<RadioGroup />', function () {
         });
     });
 
-    it('disabled all radio button children if the disabled prop is true', function () {
+    it('disabled all radio button children if the disabled prop is true', function() {
         const {select, waitForDom} = clientRenderer.render(
             <RadioGroup disabled={true} onChange={emptyFunction}>
                 <RadioButton value="Fafnir"/>
@@ -199,8 +203,13 @@ describe('<RadioGroup />', function () {
         });
     });
 
-    it('renders children from the data source prop if given', function () {
-        const { select, waitForDom } = clientRenderer.render(<RadioGroup dataSource={[{value: 'Child0'}, {value:'Child1'}]} onChange={emptyFunction} />);
+    it('renders children from the data source prop if given', function() {
+        const {select, waitForDom} = clientRenderer.render(
+            <RadioGroup
+                dataSource={[{value: 'Child0'}, {value: 'Child1'}]}
+                onChange={emptyFunction}
+            />
+        );
 
         return waitForDom(() => {
             const button0 = select(radioGroup, radioButton + '_0', 'INPUT') as HTMLInputElement;
@@ -213,8 +222,8 @@ describe('<RadioGroup />', function () {
         });
     });
 
-    describe('Radio Group with children', function () {
-        it('renders a radio group with children', function () {
+    describe('Radio Group with children', function() {
+        it('renders a radio group with children', function() {
             const {select, waitForDom} = clientRenderer.render(
                 <RadioGroup onChange={emptyFunction}>
                     <span data-automation-id="CHILD_1">Child 1</span>
@@ -228,7 +237,7 @@ describe('<RadioGroup />', function () {
             });
         });
 
-        it('sets children as checked when being pressed and calls onChange with their value', async function () {
+        it('sets children as checked when being pressed and calls onChange with their value', async function() {
             const onChange = sinon.spy();
             const {select, waitForDom} = clientRenderer.render(
                 <RadioGroup onChange={emptyFunction}>
@@ -237,19 +246,21 @@ describe('<RadioGroup />', function () {
                 </RadioGroup>
             );
 
-            await waitForDom(() => {expect(select(radioGroup, 'CHILD_1')).to.be.present()});
+            await waitForDom(() => {expect(select(radioGroup, 'CHILD_1')).to.be.present(); });
             const input = select(radioGroup, 'CHILD_1') as HTMLInputElement;
             input.click();
             return waitForDom(() => {
                 expect(onChange).to.have.been.calledOnce;
                 expect(input.checked).to.be.true;
-            })
-        })
+            });
+        });
     });
 
-    describe('<RadioButton />', function () {
-        it('renders a radio button to the screen', function () {
-            const { select, waitForDom } = clientRenderer.render(<RadioButton value="Shiva" automationId={radioButton + '_0'} name=""/>);
+    describe('<RadioButton />', function() {
+        it('renders a radio button to the screen', function() {
+            const { select, waitForDom } = clientRenderer.render(
+                <RadioButton value="Shiva" automationId={radioButton + '_0'} name=""/>
+            );
 
             return waitForDom(() => {
                 expect(select(radioButton + '_0', 'INPUT')).to.be.present().and.to.have.attr('type', 'radio');
@@ -258,8 +269,10 @@ describe('<RadioGroup />', function () {
             });
         });
 
-        it('renders the label next to the radio button (right by default)', function () {
-            const { select, waitForDom } = clientRenderer.render(<RadioButton value="Omega" automationId={radioButton + '_0'} name=""/>);
+        it('renders the label next to the radio button (right by default)', function() {
+            const { select, waitForDom } = clientRenderer.render(
+                <RadioButton value="Omega" automationId={radioButton + '_0'} name=""/>
+            );
 
             return waitForDom(() => {
                 const label = select(radioButton + '_0', 'LABEL');
@@ -267,22 +280,26 @@ describe('<RadioGroup />', function () {
                 expect(label).to.have.text('Omega');
                 expect([button, label]).to.be.horizontallyAligned;
                 expect([button, label]).to.be.inHorizontalSequence({distance: 10});
-            })
+            });
         });
 
-        it('renders the label on the left side', function () {
-            const { select, waitForDom } = clientRenderer.render(<RadioButton value="Tiamat" location="left" automationId={radioButton + '_0'} name=""/>);
+        it('renders the label on the left side', function() {
+            const { select, waitForDom } = clientRenderer.render(
+                <RadioButton value="Tiamat" location="left" automationId={radioButton + '_0'} name=""/>
+            );
 
             return waitForDom(() => {
                 const label = select(radioButton + '_0', 'LABEL');
                 const button = select(radioButton + '_0', 'INPUT_CONTAINER');
                 expect([label, button]).to.be.horizontallyAligned;
                 expect([label, button]).to.be.inHorizontalSequence({distance: 10});
-            })
+            });
         });
 
-        it('renders a checked button if the checked value is passed', function () {
-            const { select, waitForDom } = clientRenderer.render(<RadioButton value="Chocobo" checked={true} automationId={radioButton + '_0'} name=""/>);
+        it('renders a checked button if the checked value is passed', function() {
+            const { select, waitForDom } = clientRenderer.render(
+                <RadioButton value="Chocobo" checked={true} automationId={radioButton + '_0'} name=""/>
+            );
 
             return waitForDom(() => {
                 const button = select(radioButton + '_0', 'INPUT') as HTMLInputElement;
@@ -291,8 +308,10 @@ describe('<RadioGroup />', function () {
             });
         });
 
-        it('set the radio buttons name to the given name', function () {
-            const { select, waitForDom } = clientRenderer.render(<RadioButton value="Moogle" automationId={radioButton + '_0'} name="name"/>);
+        it('set the radio buttons name to the given name', function() {
+            const { select, waitForDom } = clientRenderer.render(
+                <RadioButton value="Moogle" automationId={radioButton + '_0'} name="name"/>
+            );
 
             return waitForDom(() => {
                 const button = select(radioButton + '_0', 'INPUT') as HTMLInputElement;
@@ -300,19 +319,23 @@ describe('<RadioGroup />', function () {
             });
         });
 
-        it('calls the onClick function when clicked', async function () {
+        it('calls the onClick function when clicked', async function() {
             const onClick = sinon.spy();
-            const { select, waitForDom } = clientRenderer.render(<RadioButton value="Tonberry" onClick={onClick} automationId={radioButton + '_0'} name=""/>);
+            const { select, waitForDom } = clientRenderer.render(
+                <RadioButton value="Tonberry" onClick={onClick} automationId={radioButton + '_0'} name=""/>
+            );
 
-            await waitForDom(() => { expect(select(radioButton + '_0')).to.be.present() });
+            await waitForDom(() => { expect(select(radioButton + '_0')).to.be.present(); });
             simulate.click(select(radioButton + '_0'));
             return waitFor(() => {
                 expect(onClick).to.have.been.calledWithMatch('Tonberry');
-            })
+            });
         });
 
-        it('renders a disabled radio button', function () {
-            const { select, waitForDom } = clientRenderer.render(<RadioButton value="Tonberry" disabled={true} automationId={radioButton + '_0'} name=""/>);
+        it('renders a disabled radio button', function() {
+            const { select, waitForDom } = clientRenderer.render(
+                <RadioButton value="Tonberry" disabled={true} automationId={radioButton + '_0'} name=""/>
+            );
 
             return waitForDom(() => {
                 const button = select(radioButton + '_0', 'INPUT');
@@ -320,7 +343,7 @@ describe('<RadioGroup />', function () {
             });
         });
 
-        it('renders any children given to the component', function () {
+        it('renders any children given to the component', function() {
             const { select, waitForDom } = clientRenderer.render(
                 <RadioButton value="" automationId={radioButton + '_0'}>
                     <span data-automation-id="CHILD">Offspring</span>
@@ -328,14 +351,12 @@ describe('<RadioGroup />', function () {
             );
 
             return waitForDom(() => {
-                const child = select(radioButton + '_0','CHILD') as HTMLElement;
+                const child = select(radioButton + '_0', 'CHILD') as HTMLElement;
                 expect(child).to.be.present();
                 expect(child.tagName).to.equal('SPAN');
             });
 
-        })
+        });
     });
 
-
 });
-
