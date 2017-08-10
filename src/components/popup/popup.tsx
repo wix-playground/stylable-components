@@ -73,6 +73,7 @@ export class Popup extends React.Component<PopupProps, {}> {
 
         newStyle.maxHeight = this.props.maxHeight;
         newStyle.transform = '';
+        newStyle.WebkitTransform = '';
         if (this.props.syncWidth) {
             newStyle.width = anchorRect.width;
         }
@@ -99,11 +100,11 @@ function setTop(popupStyle: CSSProperties, anchorRect: ClientRect,
             break;
         case 'center':
             popupStyle.top = getVerticalReference(anchorRect, anchorPosition);
-            popupStyle.transform += 'translateY(-50%)';
+            addTransform(popupStyle, 'translateY(-50%)');
             break;
         case 'bottom':
             popupStyle.top = getVerticalReference(anchorRect, anchorPosition);
-            popupStyle.transform += 'translateY(-100%)';
+            addTransform(popupStyle, 'translateY(-100%)');
             break;
     }
 }
@@ -116,11 +117,11 @@ function setLeft(popupStyle: CSSProperties, anchorRect: ClientRect,
             break;
         case 'center':
             popupStyle.left = getHorizontalReference(anchorRect, anchorPosition);
-            popupStyle.transform += 'translateX(-50%)';
+            addTransform(popupStyle, 'translateX(-50%)');
             break;
         case 'right':
             popupStyle.left = getHorizontalReference(anchorRect, anchorPosition);
-            popupStyle.transform += 'translateX(-100%)';
+            addTransform(popupStyle, 'translateX(-100%)');
             break;
     }
 }
@@ -141,4 +142,9 @@ function getHorizontalReference(rect: ClientRect, anchorPosition: HorizontalPosi
     } else {
         return xOffset + rect[anchorPosition as 'left' | 'right'];
     }
+}
+
+function addTransform(style: CSSProperties, tranformation: string) {
+    style.transform += tranformation;
+    style.WebkitTransform += tranformation;
 }
