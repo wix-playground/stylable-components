@@ -1,4 +1,5 @@
 import React = require('react');
+import ReactDOM = require('react-dom');
 import {selectDom} from 'test-drive';
 import { ClientRenderer, expect, waitFor } from 'test-drive-react';
 import {PopupDemo} from '../../demo/components/popup-demo';
@@ -45,6 +46,22 @@ describe('<Popup />', function() {
             expect(bodySelect(popup)).to.be.present();
             expect(bodySelect(popup, 'SPAN')).to.be.present();
         });
+    });
+
+    it('removes the component when unmounting', async function() {
+        const div = document.body.appendChild(testContainer);
+
+        clientRenderer.render(
+            <Popup
+                anchor={div!}
+                open={true}
+            >
+                <span data-automation-id="SPAN">Popup Body</span>
+            </Popup>);
+
+        await waitFor(() => {expect(bodySelect(popup)).to.be.present(); });
+        ReactDOM.unmountComponentAtNode(bodySelect(popup)!.parentElement!);
+        return waitFor(() => {expect(bodySelect(popup)).to.not.exist; });
     });
 
     it('syncs the popup width', function() {

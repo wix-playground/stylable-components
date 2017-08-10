@@ -11,7 +11,7 @@ export interface PositionPoint {
 }
 
 export interface PopupProps {
-    anchor: HTMLElement;
+    anchor: Element;
     open?: boolean;
     anchorPosition?: PositionPoint;
     popupPosition?: PositionPoint;
