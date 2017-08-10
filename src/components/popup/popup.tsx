@@ -1,9 +1,6 @@
 import React = require('react');
 import ReactDOM = require('react-dom');
 import {CSSProperties} from 'react';
-import {SBComponent} from 'stylable-react-component';
-import {root} from 'wix-react-tools';
-import style from './popup.st.css';
 
 export type VerticalPosition =  'top' | 'center' | 'bottom';
 export type HorizontalPosition = 'left' | 'center' | 'right';
@@ -22,7 +19,6 @@ export interface PopupProps {
     maxHeight?: number;
 }
 
-@SBComponent(style)
 export class Popup extends React.Component<PopupProps, {}> {
     public static defaultProps: Partial<PopupProps> = {
         open: false,
@@ -130,17 +126,19 @@ function setLeft(popupStyle: CSSProperties, anchorRect: ClientRect,
 }
 
 function getVerticalReference(rect: ClientRect, anchorPosition: VerticalPosition): number {
+    const yOffset = window.scrollY ? window.scrollY : window.pageYOffset;
     if (anchorPosition === 'center') {
-        return rect.top + (rect.height / 2);
+        return yOffset + rect.top + (rect.height / 2);
     } else {
-        return rect[anchorPosition as 'top' | 'bottom'];
+        return yOffset + rect[anchorPosition as 'top' | 'bottom'];
     }
 }
 
 function getHorizontalReference(rect: ClientRect, anchorPosition: HorizontalPosition): number {
+    const xOffset = window.scrollX ? window.scrollX : window.pageXOffset;
     if (anchorPosition === 'center') {
-        return rect.left + (rect.width / 2);
+        return xOffset + rect.left + (rect.width / 2);
     } else {
-        return rect[anchorPosition as 'left' | 'right'];
+        return xOffset + rect[anchorPosition as 'left' | 'right'];
     }
 }
