@@ -195,7 +195,7 @@ export default class TimePicker extends React.Component<Props, State> {
         if (!isTimeSegment(name)) {
             return this.toggleAmpm();
         }
-        const {hh, mm, ampm} = this.state;
+        const {ampm} = this.state;
         const newValue = (this.state[name] || 0) + step;
 
         if (isValidValue(newValue, name, ampm)) {
@@ -206,6 +206,7 @@ export default class TimePicker extends React.Component<Props, State> {
     private createStepperHandler = (step: number) => () => this.changeValue(step);
 
     private onInputMouseDown = (e: any) => {
+        //when user select text with double click
         if (e.detail > 1) {
             e.preventDefault();
         }
@@ -243,9 +244,9 @@ export default class TimePicker extends React.Component<Props, State> {
         const mm = Number(match[2]);
 
         if (
-            !isValidValue(Number(match[1]), 'hh', ampm) ||
-            !isValidValue(Number(match[2]), 'mm', ampm) ||
-            format === 'ampm' && !match[3]
+            !isValidValue(hh, 'hh', ampm) ||
+            !isValidValue(mm, 'mm', ampm) ||
+            (format === 'ampm' && !match[3])
         ) {
             return;
         }
@@ -293,7 +294,7 @@ export default class TimePicker extends React.Component<Props, State> {
             }
         } else {
             const input = this.input!;
-            // Initial focus (default tab behaviour)
+            // initial focus (default tab behaviour)
             if (input.selectionEnd - input.selectionStart === input.value.length) {
                 e.preventDefault();
                 this.select('hh');
@@ -336,12 +337,8 @@ export default class TimePicker extends React.Component<Props, State> {
                 break;
             case 'backspace':
                 e.preventDefault();
-                if (isTimeSegment(this.currentSegment)) {
-                    if (this.state[this.currentSegment]) {
-                        this.updateSegmentValue(this.currentSegment, 0);
-                    } else {
-                        this.moveSelection(-1);
-                    }
+                if (isTimeSegment(this.currentSegment) && this.state[this.currentSegment]) {
+                    this.updateSegmentValue(this.currentSegment, 0);
                 } else {
                     this.moveSelection(-1);
                 }
