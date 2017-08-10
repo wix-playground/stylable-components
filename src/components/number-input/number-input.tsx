@@ -9,6 +9,7 @@ import styles from './number-input.st.css';
 export interface NumberInputProps {
     className?: string;
     value?: number;
+    defaultValue?: number;
     placeholder?: string;
     min?: number;
     max?: number;
@@ -82,24 +83,43 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
 
     private committed = true;
 
+    private inputRef: HTMLInputElement | null = null;
+
+    private get isUncontrolled(): boolean {
+        return this.props.defaultValue !== undefined;
+    }
+
+    private get currentValue(): number | undefined {
+        return (
+            this.isUncontrolled ?
+                this.inputRef ?
+                    this.inputRef.value !== '' ?
+                        Number(this.inputRef.value) :
+                        undefined :
+                    this.props.defaultValue :
+                this.state.value
+        );
+    }
+
     constructor(props: NumberInputProps) {
         super(props);
 
         this.state = {
-            value: props.value,
+            value: isNumber(props.value) ? props.value : props.defaultValue,
             focus: false,
             error: Boolean(props.error)
         };
     }
 
-    public componentWillReceiveProps({value}: NumberInputProps) {
+    public componentWillReceiveProps({value, defaultValue}: NumberInputProps) {
         const {min, max} = this.props;
 
-        if (value !== this.state.value) {
+        if (defaultValue === undefined && value !== this.state.value) {
             this.committed = true;
             this.setState({value});
         }
     }
+
     public render() {
         const {value, focus, error} = this.state;
         const {
@@ -127,6 +147,7 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
                     </div> : null
                 }
                 <input
+                    ref={input => this.inputRef = input}
                     className={`${inputStyles.root} native-input`}
                     data-automation-id="NATIVE_INPUT_NUMBER"
                     type="number"
@@ -185,7 +206,7 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
     }
 
     private updateValue(next?: number) {
-        const {value} = this.state;
+        const value = this.currentValue;
 
         if (value !== next) {
             this.committed = false;
@@ -194,7 +215,7 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
     }
 
     private stepValue(direction: Direction, multiplier = 1) {
-        const {value} = this.state;
+        const value = this.currentValue;
         let {step} = this.props;
 
         step = step! * multiplier;
