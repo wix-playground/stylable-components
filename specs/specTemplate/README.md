@@ -32,7 +32,7 @@ All elements of the component and their interactivity will be described, includi
 
 
 
-#### Accepted Children / Predefined Roles  ( if applicable )
+#### Accepted Children ( if applicable )
 
 List of predefined roles assignable to children components. Children are assigned the `data-slot` attribute, in order to allow the component to use them in various ways and places.
 
@@ -103,7 +103,7 @@ export class ComponentsDemo extends React.Component<{}, {}>{
 
 ## Style API
 
-#### Subcomponents / Children of the Component (pseudo-elements)
+#### Subcomponents (pseudo-elements)
 
 | selector | description                             | type                                     |
 | -------- | --------------------------------------- | ---------------------------------------- |
@@ -111,7 +111,7 @@ export class ComponentsDemo extends React.Component<{}, {}>{
 
 
 
-#### Custom CSS States / States of the Component (pseudo-classes)
+#### Custom CSS States (pseudo-classes)
 
 | state                          | description                              |
 | ------------------------------ | ---------------------------------------- |
