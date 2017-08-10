@@ -38,7 +38,7 @@
 
     4) **Focus**: in order for an interactive component to be supported by assistive technologies, its ability to gain focus is crucial. It is important for a composite component (i.e. dropdown, radio group) to gain focus through tab and to explicitly set the tabindex on its children. See [Keyboard navigation inside components](https://www.w3.org/TR/wai-aria-practices/#kbd_general_within) for an explanation on the correct use of tabindex in composite components.
 
-    The following shows the DOM representation of a custom Radio Group, which when gaining focus through tab, assigns the focus to the checked radio button:
+        The following shows the DOM representation of a custom Radio Group, which when gaining focus through tab, assigns the focus to the checked radio button:
     ```
     <div role="radiogroup" aria-labelledby="group_label_1" id="rg1">
         <div role="radio" aria-checked="true" tabindex="0">
