@@ -3,7 +3,11 @@ import {sinon} from 'test-drive-react';
 
 type EventListener = (...args: any[]) => any;
 
-function stubbed(sandbox: SinonSandbox, method: keyof Window, stub: (...args: any[]) => any) {
+function stubWinowMethod(
+    sandbox: SinonSandbox,
+    method: keyof Window,
+    stub: EventListener
+) {
     return sandbox.stub(window, method, stub);
 }
 
@@ -11,7 +15,7 @@ export default class WindowStub {
 
     public sandbox = sinon.sandbox.create();
 
-    public addEventListener = stubbed(
+    public addEventListener = stubWinowMethod(
         this.sandbox, 'addEventListener',
         (type: string, listener: EventListener) => {
             const events = this.events;
@@ -25,7 +29,7 @@ export default class WindowStub {
         }
     );
 
-    public removeEventListener = stubbed(
+    public removeEventListener = stubWinowMethod(
         this.sandbox, 'removeEventListener',
         (type: string, listener?: EventListener) => {
             const events = this.events;
