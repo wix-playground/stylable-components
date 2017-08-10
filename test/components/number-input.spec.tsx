@@ -392,7 +392,7 @@ describe('<NumberInput />', () => {
             it('should call onInput on every keystroke', async () => {
                 const onInput = sinon.spy();
                 const {select, waitForDom} = clientRenderer.render(
-                    <NumberInput value={0} onInput={onInput} />
+                    <NumberInput onInput={onInput} />
                 );
 
                 await waitForDom(() => {
