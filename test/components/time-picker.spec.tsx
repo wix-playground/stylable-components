@@ -4,8 +4,8 @@ import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react
 import {TimePicker} from '../../src';
 import styles from '../../src/components/time-picker/time-picker.st.css';
 import {
-    Ampm, Segment,
-    isValidValue, pad2, to24, toAmpm, selectionIndexes
+    Ampm, isValidValue,
+    pad2, Segment, selectionIndexes, to24, toAmpm
 } from '../../src/components/time-picker/utils';
 import {hasCssState} from '../utils/has-css-state';
 
@@ -43,7 +43,7 @@ describe('<TimePicker/>', () => {
         let renderer: any;
         let input: any;
         beforeEach(() => {
-            renderer = clientRenderer.render(<TimePicker format='ampm'/>);
+            renderer = clientRenderer.render(<TimePicker format="ampm"/>);
             input = renderer.select('TIME_PICKER_INPUT');
         });
         it('should render input with "00:00 AM" placeholder', () => {
@@ -57,7 +57,7 @@ describe('<TimePicker/>', () => {
         let renderer: any;
         let input: any;
         beforeEach(() => {
-            renderer = clientRenderer.render(<TimePicker format='24h'/>);
+            renderer = clientRenderer.render(<TimePicker format="24h"/>);
             input = renderer.select('TIME_PICKER_INPUT');
         });
         it('should render input with "00:00" placeholder', () => {
@@ -140,7 +140,7 @@ describe('<TimePicker/>', () => {
             });
             it('input should have "03:55" value', () => {
                 expect(input).attr('value', '03:55');
-            })
+            });
             it('should move selection to mm segment', () => {
                 hasSelection(input, 'mm');
             });
@@ -155,7 +155,7 @@ describe('<TimePicker/>', () => {
             });
             it('input should have "2:55" value', () => {
                 expect(input).attr('value', '2:55');
-            })
+            });
             it('should keep selection on hh segment', () => {
                 hasCursorInSegment(input, 'hh');
             });
@@ -174,7 +174,7 @@ describe('<TimePicker/>', () => {
             });
             it('input should have "13:07" value', () => {
                 expect(input).attr('value', '13:07');
-            })
+            });
             it('should keep selection on mm segment', () => {
                 hasCursorInSegment(input, 'mm');
             });
@@ -250,7 +250,7 @@ describe('<TimePicker/>', () => {
             });
             it('input should have "04:3 AM" value', () => {
                 expect(input).attr('value', '04:3 AM');
-            })
+            });
             it('should keep selection on mm segment', () => {
                 hasCursorInSegment(input, 'mm');
             });
@@ -269,7 +269,7 @@ describe('<TimePicker/>', () => {
             });
             it('input should have "04:07 AM" value', () => {
                 expect(input).attr('value', '04:07 AM');
-            })
+            });
             it('should move selection on ampm segment', () => {
                 hasSelection(input, 'ampm');
             });

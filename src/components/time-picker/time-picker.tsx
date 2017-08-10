@@ -5,8 +5,8 @@ import {SBComponent} from 'stylable-react-component';
 import {Stepper} from '../stepper';
 import styles from './time-picker.st.css';
 import {
-    Ampm, Format, Segment,
-    selectionIndexes, isTimeSegment, isValidValue, pad2, TimeSegment, to24, toAmpm
+    Ampm, Format, isTimeSegment,
+    isValidValue, pad2, Segment, selectionIndexes, TimeSegment, to24, toAmpm
 } from './utils';
 
 export interface Props {
@@ -30,7 +30,7 @@ const is12TimeFormat = /AM|PM/.test(new Date().toLocaleTimeString());
 const ampmLabels = {
     [Ampm.AM]: 'AM',
     [Ampm.PM]: 'PM',
-    [Ampm.NONE]: '',
+    [Ampm.NONE]: ''
 };
 
 function segmentsToInputValue({hh, mm, ampm}: {hh?: number, mm?: number, ampm: Ampm}) {
@@ -54,7 +54,7 @@ function propsValueToSegments(value?: string, format?: Format) {
     const isAmpm = format === 'ampm';
     if (!value) {
         return {
-            ampm: isAmpm ? Ampm.AM : Ampm.NONE,
+            ampm: isAmpm ? Ampm.AM : Ampm.NONE
         };
     }
     const [hh24, mm] = value.split(':').map(Number);
@@ -94,47 +94,49 @@ export default class TimePicker extends React.Component<Props, State> {
         const currentSegment = isTimeSegment(this.currentSegment) ? this.currentSegment : 'hh';
         const currentSegmentValue = this.state[currentSegment] || 0;
 
-        return <div
-            data-automation-id='TIME_PICKER'
-            cssStates={{focus, disabled: disabled!}}
-        >
-            <input
-                data-automation-id='TIME_PICKER_INPUT'
-                type="text"
-                tabIndex={isTouch ? -1 : 0}
-                className="input"
-                ref={elem => this.input = elem}
-                value={inputValue}
-                placeholder={placeholder || defaultValue(format!)}
-                disabled={disabled}
-                onChange={this.onInputChange}
-                onFocus={this.onInputFocus}
-                onBlur={this.onInputBlur}
-                onKeyDown={this.onInputKeyDown}
-                onMouseDown={this.onInputMouseDown}
-                onClick={this.onInputClick}
-            />
-            {!isTouch && !disabled && inputValue &&
-                <Stepper
-                    className="stepper"
-                    disableUp={!isValidValue(currentSegmentValue + 1, currentSegment, ampm)}
-                    disableDown={!isValidValue(currentSegmentValue - 1, currentSegment, ampm)}
-                    onUp={this.createStepperHandler(+1)}
-                    onDown={this.createStepperHandler(-1)}
+        return (
+            <div
+                data-automation-id="TIME_PICKER"
+                cssStates={{focus, disabled: disabled!}}
+            >
+                <input
+                    data-automation-id="TIME_PICKER_INPUT"
+                    type="text"
+                    tabIndex={isTouch ? -1 : 0}
+                    className="input"
+                    ref={elem => this.input = elem}
+                    value={inputValue}
+                    placeholder={placeholder || defaultValue(format!)}
+                    disabled={disabled}
+                    onChange={this.onInputChange}
+                    onFocus={this.onInputFocus}
+                    onBlur={this.onInputBlur}
+                    onKeyDown={this.onInputKeyDown}
+                    onMouseDown={this.onInputMouseDown}
+                    onClick={this.onInputClick}
                 />
-            }
-            <input
-                className="native-input"
-                tabIndex={isTouch ? 0 : -1}
-                ref={elem => this.nativeInput = elem}
-                type="time"
-                value={this.getValue()}
-                disabled={disabled}
-                onFocus={this.onInputFocus}
-                onBlur={this.onInputBlur}
-                onChange={this.onNativeInputChange}
-            />
-        </div>
+                {!isTouch && !disabled && inputValue &&
+                    <Stepper
+                        className="stepper"
+                        disableUp={!isValidValue(currentSegmentValue + 1, currentSegment, ampm)}
+                        disableDown={!isValidValue(currentSegmentValue - 1, currentSegment, ampm)}
+                        onUp={this.createStepperHandler(+1)}
+                        onDown={this.createStepperHandler(-1)}
+                    />
+                }
+                <input
+                    className="native-input"
+                    tabIndex={isTouch ? 0 : -1}
+                    ref={elem => this.nativeInput = elem}
+                    type="time"
+                    value={this.getValue()}
+                    disabled={disabled}
+                    onFocus={this.onInputFocus}
+                    onBlur={this.onInputBlur}
+                    onChange={this.onNativeInputChange}
+                />
+            </div>
+        );
     }
 
     private getValue() {
@@ -154,10 +156,9 @@ export default class TimePicker extends React.Component<Props, State> {
         return input.selectionStart !== input.selectionEnd;
     }
     private moveSelection(step: number) {
-        const segments = Object.keys(selectionIndexes) as Segment[]
+        const segments = Object.keys(selectionIndexes) as Segment[];
         const index = segments.indexOf(this.currentSegment!);
         const nextSegment = segments[index + step];
-        console.log('move from', this.currentSegment, 'to', nextSegment);
         if (nextSegment) {
             return this.select(nextSegment);
         }
@@ -196,7 +197,7 @@ export default class TimePicker extends React.Component<Props, State> {
         }
     }
 
-    private createStepperHandler = (step: number) => () => this.changeValue(step)
+    private createStepperHandler = (step: number) => () => this.changeValue(step);
 
     private onInputMouseDown = (e: any) => {
         if (e.detail > 1) {
@@ -243,7 +244,7 @@ export default class TimePicker extends React.Component<Props, State> {
             return;
         }
 
-        const input = this.input!
+        const input = this.input!;
         const cursorPosition = input.selectionStart;
         const currentSegment = this.state.hh !== hh ? 'hh' : 'mm';
         const updatedValue = this.state.hh !== hh ? hh : mm;
@@ -304,28 +305,28 @@ export default class TimePicker extends React.Component<Props, State> {
             return e.preventDefault();
         }
 
-        switch(keyCode) {
+        switch (keyCode) {
             case 'left':
                 e.preventDefault();
-                this.moveSelection(-1)
+                this.moveSelection(-1);
                 break;
             case 'right':
                 e.preventDefault();
-                this.moveSelection(1)
+                this.moveSelection(1);
                 break;
             case 'tab':
-                const moved = this.moveSelection(e.shiftKey ? -1 : 1)
+                const moved = this.moveSelection(e.shiftKey ? -1 : 1);
                 if (moved) {
                     e.preventDefault();
                 }
                 break;
             case 'up':
                 e.preventDefault();
-                this.changeValue(+1)
+                this.changeValue(+1);
                 break;
             case 'down':
                 e.preventDefault();
-                this.changeValue(-1)
+                this.changeValue(-1);
                 break;
             case 'backspace':
                 e.preventDefault();
