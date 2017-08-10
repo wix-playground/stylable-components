@@ -54,6 +54,29 @@ describe('<NumberInput />', () => {
         });
     });
 
+    it('should only set appropriate attributes on native input', async () => {
+        const value = 0;
+        const {select, waitForDom} = clientRenderer.render(
+            <NumberInput value={value} />
+        );
+
+        await waitForDom(() => {
+            const numberInput = select('NATIVE_INPUT_NUMBER');
+
+            expect(numberInput).to.be.present();
+            expect(numberInput).to.have.property('tagName', 'INPUT');
+
+            expect(numberInput).to.have.attribute('type', 'number');
+            expect(numberInput).not.to.have.attribute('min');
+            expect(numberInput).not.to.have.attribute('max');
+            expect(numberInput).not.to.have.attribute('step');
+            expect(numberInput).not.to.have.attribute('name');
+            expect(numberInput).not.to.have.attribute('required');
+
+            expect(numberInput).to.have.value(String(value));
+        });
+    });
+
     it('can be disabled', async () => {
         const value = 0;
         const {select, waitForDom} = clientRenderer.render(
