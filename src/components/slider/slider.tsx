@@ -319,7 +319,6 @@ export class Slider extends React.Component<SliderProps, SliderState> {
 
     private onSliderAreaTouchMove(event: TouchEvent) {
         const relativeValue = this.getValueFromElementAndPointer(this.sliderArea, event.changedTouches[0].clientX);
-
         requestAnimationFrame(() => {
             if (!this.isSliderMounted) {
                 return;

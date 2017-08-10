@@ -8,6 +8,7 @@ import { ImageDemo } from './components/image-demo';
 import { NumberInputDemo } from './components/number-input.demo';
 import { RadioGroupDemo } from './components/radio-group-demo';
 import { SelectionListDemo } from './components/selection-list-demo';
+import { SliderDemo } from './components/slider-demo';
 import { ToggleDemo } from './components/toggle-demo';
 import { TreeViewDemo } from './components/tree-view-demo';
 import './style.st.css';
@@ -16,6 +17,10 @@ export class ComponentsDemo extends React.Component<{}, {}> {
     public render() {
         return (
             <div>
+                <div>
+                    <h2>Slider</h2>
+                    <SliderDemo />
+                </div>
                 <div>
                     <h2>Image</h2>
                     <ImageDemo />
