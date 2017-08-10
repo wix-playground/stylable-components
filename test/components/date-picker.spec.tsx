@@ -1,6 +1,6 @@
 import * as keycode from 'keycode';
 import * as React from 'react';
-import {ClientRenderer, expect, selectDom, simulate, trigger} from 'test-drive-react';
+import {ClientRenderer, expect, selectDom, simulate, trigger, sinon} from 'test-drive-react';
 import {DatePickerDemo} from '../../demo/components/date-picker-demo/date-picker-demo';
 import {DatePicker} from '../../src';
 import {
@@ -55,6 +55,18 @@ describe('The DatePicker Component', () => {
                 expect(select(currentDate)).to.have.text('Wed Jan 04 2017');
             });
         });
+    });
+
+    it('should only call onChange once', async () => {
+        // TODO: this needs work
+        const onChange = sinon.spy();
+        const {select, waitForDom} = clientRenderer.render(<DatePicker onChange={onChange} />);
+        const datePickerInput = select(datePickerInputId);
+
+        trigger.change(datePickerInput!, '2017/02/01');
+        simulate.blur(datePickerInput);
+
+        await waitForDom(() => expect(onChange.calledOnce));
     });
 
     it('should use a provided value', async () => {
