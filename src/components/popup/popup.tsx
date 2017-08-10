@@ -1,4 +1,5 @@
 import React = require('react');
+import ReactDOM = require('react-dom');
 import {CSSProperties} from 'react';
 import {SBComponent} from 'stylable-react-component';
 import {root} from 'wix-react-tools';
@@ -21,72 +22,76 @@ export interface PopupProps {
     maxHeight?: number;
 }
 
-export interface PopupState {
-    style: CSSProperties;
-}
-
 @SBComponent(style)
-export class Popup extends React.Component<PopupProps, PopupState> {
-    private static defaultProps: Partial<PopupProps> = {
+export class Popup extends React.Component<PopupProps, {}> {
+    public static defaultProps: Partial<PopupProps> = {
         open: false,
         anchorPosition: {vertical: 'bottom', horizontal: 'left'},
         popupPosition: {vertical: 'top', horizontal: 'left'},
         syncWidth: true,
         maxHeight: 500
     };
-    private popup: HTMLElement | null;
+    private style: CSSProperties = {position: 'absolute'};
+    private popup: JSX.Element;
+    private container: Element | null;
 
-    constructor() {
-        super();
-        this.state = { style: {position: 'absolute'}};
+    public componentDidMount() {
+        this.container = document.body.appendChild(document.createElement('div'));
+        if (this.props.anchor) {
+            ReactDOM.unstable_renderSubtreeIntoContainer(this, this.popup, this.container);
+        }
+    }
+
+    public componentDidUpdate() {
+        if (this.props.anchor && this.container && this.popup) {
+            ReactDOM.unstable_renderSubtreeIntoContainer(this, this.popup, this.container);
+        }
+    }
+
+    public componentWillUnmount() {
+        if (this.container) {
+            ReactDOM.unmountComponentAtNode(this.container);
+            this.container = null;
+        }
     }
 
     public render() {
-        if (!this.props.anchor) {
-            return null;
-        }
-        const rootProps = root(this.props, {
-            'data-automation-id': 'POPUP',
-            'className': 'root',
-            'cssStates': {
-                open: this.props.open!
-            }
-        });
-
-        return (
+        this.setPosition();
+        this.popup = (
             <div
-                {...rootProps}
-                ref={this.setPosition}
-                style={this.state.style}
+                data-automation-id="POPUP"
+                style={this.style}
             >
                 {this.props.children}
-            </div>
-        );
+            </div>);
+        return null;
     }
 
-    private setPosition = (popup: HTMLElement | null) => {
-        if (popup) {
-            const newStyle = {...this.state.style};
-            const anchorRect = this.props.anchor.getBoundingClientRect();
-
-            newStyle.maxHeight = this.props.maxHeight;
-            newStyle.transform = '';
-            if (this.props.syncWidth) {
-                newStyle.width = anchorRect.width;
-            }
-
-            const anchorHorizontalPos = this.props.anchorPosition!.horizontal;
-            const anchorVerticalPos = this.props.anchorPosition!.vertical;
-
-            setTop(newStyle, anchorRect,
-                anchorVerticalPos, this.props.popupPosition!.vertical);
-            setLeft(newStyle, anchorRect,
-                anchorHorizontalPos, this.props.popupPosition!.horizontal);
-            if (this.props.syncWidth) {
-                newStyle.width = anchorRect.width;
-            }
-            this.setState({style: newStyle});
+    private setPosition = () => {
+        if (!this.props.anchor) {
+            return;
         }
+        const newStyle = {...this.style};
+        newStyle.display = this.props.open ? 'initial' : 'none';
+        const anchorRect = this.props.anchor.getBoundingClientRect();
+
+        newStyle.maxHeight = this.props.maxHeight;
+        newStyle.transform = '';
+        if (this.props.syncWidth) {
+            newStyle.width = anchorRect.width;
+        }
+
+        const anchorHorizontalPos = this.props.anchorPosition!.horizontal;
+        const anchorVerticalPos = this.props.anchorPosition!.vertical;
+
+        setTop(newStyle, anchorRect,
+            anchorVerticalPos, this.props.popupPosition!.vertical);
+        setLeft(newStyle, anchorRect,
+            anchorHorizontalPos, this.props.popupPosition!.horizontal);
+        if (this.props.syncWidth) {
+            newStyle.width = anchorRect.width;
+        }
+        this.style = newStyle;
     }
 }
 
