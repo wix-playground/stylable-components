@@ -25,7 +25,9 @@ describe('<Popup />', function() {
                 expect(select(container, popup)).to.be.absent();
             });
             (select(container) as HTMLDivElement).click();
-            await waitForDom(() => {expect(bodySelect(popup)).to.be.present(); });
+            await waitForDom(() => {
+                expect(bodySelect(popup)).to.be.present();
+            });
             (select(container) as HTMLDivElement).click();
             return waitForDom(() => {expect(bodySelect(popup)).to.be.absent(); });
         });
@@ -195,15 +197,9 @@ describe('<Popup />', function() {
                                     </Popup>);
 
                                 return waitFor(() => {
-                                    expect(
-                                        topResults[popupVertical][anchorVertical](div, bodySelect<HTMLElement>(popup)!),
-                                        'vertical test failed'
-                                    ).to.be.true;
-                                    expect(
-                                        leftResults[popupHorizontal][anchorHorizontal](
-                                            div, bodySelect<HTMLElement>(popup)!
-                                        ), 'horizontal test failed'
-                                    ).to.be.true;
+                                    topResults[popupVertical][anchorVertical](div, bodySelect<HTMLElement>(popup)!);
+                                    leftResults[popupHorizontal][anchorHorizontal](
+                                        div, bodySelect<HTMLElement>(popup)!);
                                 });
                             });
                     });
@@ -227,36 +223,44 @@ function getLayoutTest(axis: 'vertical' | 'horizontal') {
     return {
         [start]: {
             [start]: (anchor: HTMLElement, p: HTMLElement) =>
-                equals(p.getBoundingClientRect()[start], anchor.getBoundingClientRect()[start]),
+                createExpect(p.getBoundingClientRect()[start], anchor.getBoundingClientRect()[start]),
             center: (anchor: HTMLElement, p: HTMLElement) => {
                 const anchorRect = anchor.getBoundingClientRect();
-                return equals(p.getBoundingClientRect()[start], anchorRect[start] + (anchorRect[length] / 2)); },
+                createExpect(p.getBoundingClientRect()[start], anchorRect[start] + (anchorRect[length] / 2)); },
             [end]: (anchor: HTMLElement, p: HTMLElement) =>
-                equals(p.getBoundingClientRect()[start], anchor.getBoundingClientRect()[end])
+                createExpect(p.getBoundingClientRect()[start], anchor.getBoundingClientRect()[end])
         },
         center: {
             [start]: (anchor: HTMLElement, p: HTMLElement) => {
                 const popupRect = p.getBoundingClientRect();
-                return equals(popupRect[start], anchor.getBoundingClientRect()[start] - (popupRect[length] / 2)); },
+                createExpect(popupRect[start], anchor.getBoundingClientRect()[start] - (popupRect[length] / 2)); },
             center: (anchor: HTMLElement, p: HTMLElement) => {
                 const popupRect = p.getBoundingClientRect();
                 const anchorRect = anchor.getBoundingClientRect();
-                return equals(popupRect[start], anchorRect[start] + (anchorRect[length] / 2) - (popupRect[length] / 2));
+                createExpect(popupRect[start], anchorRect[start] + (anchorRect[length] / 2) - (popupRect[length] / 2));
             },
             [end]: (anchor: HTMLElement, p: HTMLElement) => {
                 const popupRect = p.getBoundingClientRect();
-                return equals(popupRect[end], anchor.getBoundingClientRect()[end] + (popupRect[length] / 2)); }
+                createExpect(popupRect[end], anchor.getBoundingClientRect()[end] + (popupRect[length] / 2)); }
         },
         [end]: {
             [start]: (anchor: HTMLElement, p: HTMLElement) =>
-                equals(p.getBoundingClientRect()[end], anchor.getBoundingClientRect()[start]),
+                createExpect(p.getBoundingClientRect()[end], anchor.getBoundingClientRect()[start]),
             center: (anchor: HTMLElement, p: HTMLElement) => {
                 const anchorRect = anchor.getBoundingClientRect();
-                return equals(p.getBoundingClientRect()[end], anchorRect[start] + (anchorRect[length] / 2)); },
+                createExpect(p.getBoundingClientRect()[end], anchorRect[start] + (anchorRect[length] / 2)); },
             [end]: (anchor: HTMLElement, p: HTMLElement) =>
-                equals(p.getBoundingClientRect()[end], anchor.getBoundingClientRect()[end])
+                createExpect(p.getBoundingClientRect()[end], anchor.getBoundingClientRect()[end])
         }
     };
+}
+
+function createExpect(pValue: number, aValue: number) {
+    expect(equals(pValue, aValue), testString(pValue, aValue)).to.be.true;
+}
+
+function testString(p: number, a: number) {
+    return `popup: ${p} anchor: ${a}`;
 }
 
 function equals(n: number, m: number, decPoint: number = 2): boolean {
