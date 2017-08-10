@@ -7,6 +7,12 @@ export type TimeSegment = 'hh' | 'mm';
 export type Format = 'ampm' | '24h';
 export type Segment = TimeSegment | 'ampm';
 
+export const selectionIndexes = {
+    hh: [0, 2],
+    mm: [3, 5],
+    ampm: [6, 8]
+};
+
 export function pad2(num: string | number): string {
     return ('00' + num).slice(-2);
 }

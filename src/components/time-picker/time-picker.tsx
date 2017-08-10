@@ -6,7 +6,7 @@ import {Stepper} from '../stepper';
 import styles from './time-picker.st.css';
 import {
     Ampm, Format, Segment,
-    isTimeSegment, isValidValue, pad2, TimeSegment, to24, toAmpm
+    selectionIndexes, isTimeSegment, isValidValue, pad2, TimeSegment, to24, toAmpm
 } from './utils';
 
 export interface Props {
@@ -31,11 +31,6 @@ const ampmLabels = {
     [Ampm.AM]: 'AM',
     [Ampm.PM]: 'PM',
     [Ampm.NONE]: '',
-};
-const selectionIndexes = {
-    hh: [0, 2],
-    mm: [3, 5],
-    ampm: [6, 8]
 };
 
 function segmentsToInputValue({hh, mm, ampm}: {hh?: number, mm?: number, ampm: Ampm}) {
@@ -99,8 +94,12 @@ export default class TimePicker extends React.Component<Props, State> {
         const currentSegment = isTimeSegment(this.currentSegment) ? this.currentSegment : 'hh';
         const currentSegmentValue = this.state[currentSegment] || 0;
 
-        return <div cssStates={{focus, disabled: disabled!}}>
+        return <div
+            data-automation-id='TIME_PICKER'
+            cssStates={{focus, disabled: disabled!}}
+        >
             <input
+                data-automation-id='TIME_PICKER_INPUT'
                 type="text"
                 tabIndex={isTouch ? -1 : 0}
                 className="input"
@@ -158,6 +157,7 @@ export default class TimePicker extends React.Component<Props, State> {
         const segments = Object.keys(selectionIndexes) as Segment[]
         const index = segments.indexOf(this.currentSegment!);
         const nextSegment = segments[index + step];
+        console.log('move from', this.currentSegment, 'to', nextSegment);
         if (nextSegment) {
             return this.select(nextSegment);
         }
@@ -327,10 +327,22 @@ export default class TimePicker extends React.Component<Props, State> {
                 e.preventDefault();
                 this.changeValue(-1)
                 break;
+            case 'backspace':
+                e.preventDefault();
+                if (isTimeSegment(this.currentSegment)) {
+                    if (this.state[this.currentSegment]) {
+                        this.updateSegmentValue(this.currentSegment, 0);
+                    } else {
+                        this.moveSelection(-1);
+                    }
+                } else {
+                    this.moveSelection(-1);
+                }
+                break;
             case 'space':
             case 'enter':
                 e.preventDefault();
-                if (this.currentSegment === 'ampm') {
+                if (!isTimeSegment(this.currentSegment)) {
                     this.toggleAmpm();
                 }
         }
