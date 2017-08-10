@@ -93,9 +93,6 @@ export default class TimePicker extends React.Component<Props, State> {
             this.setState(this.getInitialState(props));
         }
     }
-    public shouldComponentUpdate(props: Props, state: State) {
-        return props.value !== this.props.value || state !== this.state;
-    }
 
     public render() {
         const {focus, ampm, inputValue} = this.state;
