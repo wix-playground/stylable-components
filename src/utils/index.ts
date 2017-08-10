@@ -1,5 +1,3 @@
-export function noop() {}
-
-export function isNumber(value: any): value is number {
-    return typeof value === 'number';
-}
+export * from './is-number';
+export * from './noop';
+export * from './sleep';

@@ -1,15 +1,15 @@
 import {action, computed, observable} from 'mobx';
 import {observer} from 'mobx-react';
 import * as React from 'react';
+import styles from './date-picker.st.css';
+import {Day} from './day';
 import {
     getDayNames,
     getDaysInMonth,
     getMonthFromOffset,
     getMonthNames,
     getNumOfPreviousDays
-} from '../../common/date-helpers';
-import styles from './date-picker.st.css';
-import {Day} from './day';
+} from './utils';
 
 export interface CalendarProps {
     value: Date;

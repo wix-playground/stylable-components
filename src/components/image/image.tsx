@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { noop } from '../../common/noop-function';
-import { onePixelTransparentSrc } from '../../common/one-pixel-src';
+import { noop } from '../../utils';
+import { transparentImage } from './transparent-image';
 
 export interface ImageEvent extends React.SyntheticEvent<HTMLImageElement> {
     src: string;
@@ -36,7 +36,7 @@ const staticWrapperStyle = {
 
 export class Image extends React.PureComponent<ImageProps, ImageState> {
     public static defaultProps: Partial<ImageProps> = {
-        defaultImage: onePixelTransparentSrc,
+        defaultImage: transparentImage,
         onLoad: noop,
         onError: noop
     };
