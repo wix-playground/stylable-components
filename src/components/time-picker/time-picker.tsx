@@ -81,13 +81,20 @@ export default class TimePicker extends React.Component<Props, State> {
 
     constructor(props: Props) {
         super();
-        const segments = propsValueToSegments(props.value, props.format);
         this.lastValue = props.value;
         this.state = {
             focus: false,
-            ...segments,
-            inputValue: segmentsToInputValue(segments)
+            ...this.getInitialState(props)
         };
+    }
+
+    public componentWillReceiveProps(props: Props) {
+        if (props.value !== this.props.value) {
+            this.setState(this.getInitialState(props));
+        }
+    }
+    public shouldComponentUpdate(props: Props, state: State) {
+        return props.value !== this.props.value || state !== this.state;
     }
 
     public render() {
@@ -143,6 +150,14 @@ export default class TimePicker extends React.Component<Props, State> {
                 />
             </div>
         );
+    }
+
+    private getInitialState(props: Props) {
+        const segments = propsValueToSegments(props.value, props.format);
+        return {
+            ...segments,
+            inputValue: segmentsToInputValue(segments)
+        }
     }
 
     private getValue() {
