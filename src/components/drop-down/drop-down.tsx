@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { SBComponent, SBStateless } from 'stylable-react-component/dist/stylable-react';
+import { root } from 'wix-react-tools';
 import { CaretDown } from './drop-down-icons';
 import { SelectionList } from '../selection-list';
-import { root } from 'wix-react-tools';
 import style from './drop-down.st.css';
 
 export interface DropDownInputProps {
@@ -32,6 +32,7 @@ export const DropDownList: React.SFC<DropDownListProps> = SBStateless(props => {
     return (
         <div data-automation-id="DROP_DOWN_LIST">
             <SelectionList
+                className="drop-down-list"
                 dataSource={props.items!.map((item: DropDownItem) => item.label)}
                 value={props.selectedItem && props.selectedItem.label}
                 onChange={props.onItemClick!}
@@ -63,7 +64,10 @@ export class DropDown extends React.Component<DropDownProps, {}> {
     };
 
     public render() {
-        const rootProps = root(this.props, { className: 'drop-down' }, ['onInputClick', 'onItemClick']);
+        const rootProps = root(this.props, {
+            'data-automation-id': 'DROP_DOWN',
+            'className': 'drop-down'
+        });
 
         return (
             <div data-automation-id="DROP_DOWN" {...rootProps}>

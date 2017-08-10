@@ -25,3 +25,8 @@
     cursor: pointer;
     border: 1px solid #5cb4ff;
 }
+
+
+.drop-down-list {
+  width: 100%;
+}
