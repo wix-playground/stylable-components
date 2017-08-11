@@ -1,8 +1,14 @@
+import * as keycode from 'keycode';
 import * as React from 'react';
 import { SBComponent } from 'stylable-react-component';
 
 export type PointerEvent = MouseEvent | TouchEvent;
 export type Step = number | 'any';
+
+enum ChangeDirrection {
+    ascend,
+    descend
+}
 
 import style from './slider.st.css';
 
@@ -82,6 +88,8 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         this.onSliderAreaTouchMove = this.onSliderAreaTouchMove.bind(this);
         this.onSliderAreaTouchEnd = this.onSliderAreaTouchEnd.bind(this);
 
+        this.onSliderAreaKeyDown = this.onSliderAreaKeyDown.bind(this);
+
         this.state = {
             relativeValue: this.getRelativeValue(this.props.value!, this.props.min!, this.props.max!, this.props.step),
             relativeStep: this.getRelativeStep(props.step, this.props.min!, this.props.max!),
@@ -119,6 +127,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
 
                     onMouseDown={this.onSliderAreaMouseDown}
                     onTouchStart={this.onSliderAreaTouchStart}
+                    onKeyDown={this.onSliderAreaKeyDown}
 
                     role="slider"
                     aria-label={this.props.label}
@@ -351,6 +360,77 @@ export class Slider extends React.Component<SliderProps, SliderState> {
 
         this.onDragStop(event);
         this.props.onChange!(value);
+    }
+
+    private onSliderAreaKeyDown(event: React.KeyboardEvent<HTMLElement>) {
+        switch (keycode(event.keyCode)) {
+            case 'page down':
+            case 'down':
+                this.decreaseValue(false, event.shiftKey ? 10 : 1);
+                break;
+            case 'left':
+                this.decreaseValue(false, event.shiftKey ? 10 : 1);
+                break;
+            case 'page up':
+            case 'up':
+                this.increaseValue(false, event.shiftKey ? 10 : 1);
+                break;
+            case 'right':
+                this.increaseValue(false, event.shiftKey ? 10 : 1);
+                break;
+            case 'home':
+                this.increaseValue(true);
+                break;
+            case 'end':
+                this.decreaseValue(true);
+                break;
+            default:
+                return;
+        }
+
+        event.preventDefault();
+    }
+
+    private increaseValue(toEdge: boolean = false, multiplier: number = 1) {
+        this.changeValue(ChangeDirrection.ascend, multiplier, toEdge);
+    }
+
+    private decreaseValue(toEdge: boolean = false, multiplier: number = 1) {
+        this.changeValue(ChangeDirrection.descend, multiplier, toEdge);
+    }
+
+    private changeValue(dirrection: ChangeDirrection, multiplier: number = 1, toEdge: boolean = false) {
+        let newRelativeValue: number;
+
+        const relativeStep = this.state.relativeStep === CONTINUOUS_STEP ?
+            1 :
+            this.state.relativeStep * multiplier;
+
+        if (toEdge) {
+            newRelativeValue = dirrection === ChangeDirrection.ascend ?
+                100 :
+                0;
+        } else {
+            newRelativeValue = this.getValueInRange(
+                dirrection === ChangeDirrection.ascend ?
+                    this.state.relativeValue + relativeStep :
+                    this.state.relativeValue - relativeStep,
+                0, 100
+            );
+        }
+
+        const newAbsoluteValue = this.getAbsoluteValue(newRelativeValue);
+
+        if (newRelativeValue !== this.state.relativeValue) {
+            this.setState({
+                relativeValue: newRelativeValue
+            });
+        }
+
+        this.props.onInput!(String(newAbsoluteValue));
+        if (newAbsoluteValue !== this.props.value) {
+            this.props.onChange!(newAbsoluteValue);
+        }
     }
 
     private onDragStart(event: PointerEvent) {
