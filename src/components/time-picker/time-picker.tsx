@@ -127,8 +127,14 @@ export default class TimePicker extends React.Component<Props, State> {
                 {!isTouch && !disabled && inputValue &&
                     <Stepper
                         className="stepper"
-                        disableUp={currentIsTime && !isValidValue(currentSegmentValue + 1, currentSegment as any, ampm)}
-                        disableDown={currentIsTime && !isValidValue(currentSegmentValue - 1, currentSegment as any, ampm)}
+                        disableUp={
+                            currentIsTime &&
+                            !isValidValue(currentSegmentValue + 1, currentSegment as any, ampm)
+                        }
+                        disableDown={
+                            currentIsTime &&
+                            !isValidValue(currentSegmentValue - 1, currentSegment as any, ampm)
+                        }
                         onUp={this.createStepperHandler(+1)}
                         onDown={this.createStepperHandler(-1)}
                     />
@@ -155,7 +161,7 @@ export default class TimePicker extends React.Component<Props, State> {
         return {
             ...segments,
             inputValue: segmentsToInputValue(segments)
-        }
+        };
     }
 
     private getValue() {
@@ -220,7 +226,7 @@ export default class TimePicker extends React.Component<Props, State> {
     private createStepperHandler = (step: number) => () => this.changeValue(step);
 
     private onInputMouseDown = (e: any) => {
-        //when user select text with double click
+        // when user select text with double click
         if (e.detail > 1) {
             e.preventDefault();
         }
