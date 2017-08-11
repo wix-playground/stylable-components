@@ -25,6 +25,7 @@ export interface State {
     hh?: number;
     mm?: number;
     ampm: Ampm;
+    currentSegment: Segment;
 }
 
 const isTouch = 'orientation' in window;
@@ -77,13 +78,13 @@ export default class TimePicker extends React.Component<Props, State> {
     private input: HTMLInputElement | null;
     private nativeInput: HTMLInputElement | null;
     private lastValue: string | undefined;
-    private currentSegment: Segment | undefined;
 
     constructor(props: Props) {
         super();
         this.lastValue = props.value;
         this.state = {
             focus: false,
+            currentSegment: 'hh',
             ...this.getInitialState(props)
         };
     }
@@ -95,9 +96,9 @@ export default class TimePicker extends React.Component<Props, State> {
     }
 
     public render() {
-        const {focus, ampm, inputValue} = this.state;
+        const {focus, ampm, inputValue, currentSegment} = this.state;
         const {label, name, placeholder, disabled, format} = this.props;
-        const currentSegment = isTimeSegment(this.currentSegment) ? this.currentSegment : 'hh';
+        const currentIsTime = isTimeSegment(currentSegment);
         const currentSegmentValue = this.state[currentSegment] || 0;
 
         return (
@@ -126,8 +127,8 @@ export default class TimePicker extends React.Component<Props, State> {
                 {!isTouch && !disabled && inputValue &&
                     <Stepper
                         className="stepper"
-                        disableUp={!isValidValue(currentSegmentValue + 1, currentSegment, ampm)}
-                        disableDown={!isValidValue(currentSegmentValue - 1, currentSegment, ampm)}
+                        disableUp={currentIsTime && !isValidValue(currentSegmentValue + 1, currentSegment as any, ampm)}
+                        disableDown={currentIsTime && !isValidValue(currentSegmentValue - 1, currentSegment as any, ampm)}
                         onUp={this.createStepperHandler(+1)}
                         onDown={this.createStepperHandler(-1)}
                     />
@@ -168,14 +169,15 @@ export default class TimePicker extends React.Component<Props, State> {
     private select(segment: Segment) {
         const indexes = selectionIndexes[segment];
         const input = this.input!;
-        this.currentSegment = segment;
+        const cursorPosition = input.selectionStart;
         input.selectionStart = indexes[0];
         input.selectionEnd = indexes[1];
+        this.setState({currentSegment: segment});
         return input.selectionStart !== input.selectionEnd;
     }
     private moveSelection(step: number) {
         const segments = Object.keys(selectionIndexes) as Segment[];
-        const index = segments.indexOf(this.currentSegment!);
+        const index = segments.indexOf(this.state.currentSegment!);
         const nextSegment = segments[index + step];
         if (nextSegment) {
             return this.select(nextSegment);
@@ -203,7 +205,7 @@ export default class TimePicker extends React.Component<Props, State> {
     }
 
     private changeValue(step: number) {
-        const name = this.currentSegment || 'hh';
+        const name = this.state.currentSegment;
         if (!isTimeSegment(name)) {
             return this.toggleAmpm();
         }
@@ -279,7 +281,6 @@ export default class TimePicker extends React.Component<Props, State> {
             if (shouldWaitForInput) {
                 input.selectionStart = input.selectionEnd = cursorPosition;
             } else {
-                this.currentSegment = currentSegment;
                 this.moveSelection(+1);
                 this.commit();
             }
@@ -318,10 +319,11 @@ export default class TimePicker extends React.Component<Props, State> {
     }
 
     private onInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        const {currentSegment} = this.state;
         const keyCode = keycode(e.keyCode);
 
-        if (/^\D$/.test(keyCode)) {
-            return e.preventDefault();
+        if (/^\D$/.test(keyCode) || currentSegment === 'ampm') {
+            e.preventDefault();
         }
 
         switch (keyCode) {
@@ -349,8 +351,8 @@ export default class TimePicker extends React.Component<Props, State> {
                 break;
             case 'backspace':
                 e.preventDefault();
-                if (isTimeSegment(this.currentSegment) && this.state[this.currentSegment]) {
-                    this.updateSegmentValue(this.currentSegment, 0);
+                if (isTimeSegment(currentSegment) && this.state[currentSegment]) {
+                    this.updateSegmentValue(currentSegment, 0);
                 } else {
                     this.moveSelection(-1);
                 }
@@ -358,7 +360,7 @@ export default class TimePicker extends React.Component<Props, State> {
             case 'space':
             case 'enter':
                 e.preventDefault();
-                if (!isTimeSegment(this.currentSegment)) {
+                if (!isTimeSegment(currentSegment)) {
                     this.toggleAmpm();
                 }
         }
