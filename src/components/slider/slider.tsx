@@ -379,10 +379,10 @@ export class Slider extends React.Component<SliderProps, SliderState> {
                 this.increaseValue(false, event.shiftKey ? 10 : 1);
                 break;
             case 'home':
-                this.increaseValue(true);
+                this.decreaseValue(true);
                 break;
             case 'end':
-                this.decreaseValue(true);
+                this.increaseValue(true);
                 break;
             default:
                 return;
