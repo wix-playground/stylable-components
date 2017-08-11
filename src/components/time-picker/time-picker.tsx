@@ -76,7 +76,6 @@ export default class TimePicker extends React.Component<Props, State> {
         disabled: false
     };
     private input: HTMLInputElement | null;
-    private nativeInput: HTMLInputElement | null;
     private lastValue: string | undefined;
 
     constructor(props: Props) {
@@ -119,7 +118,6 @@ export default class TimePicker extends React.Component<Props, State> {
                     aria-label={label}
                     onChange={this.onInputChange}
                     onFocus={this.onInputFocus}
-                    onTouchStart={this.onInputTouchStart}
                     onBlur={this.onInputBlur}
                     onKeyDown={this.onInputKeyDown}
                     onMouseDown={this.onInputMouseDown}
@@ -140,19 +138,21 @@ export default class TimePicker extends React.Component<Props, State> {
                         onDown={this.createStepperHandler(-1)}
                     />
                 }
-                <input
-                    className="native-input"
-                    tabIndex={isTouch ? 0 : -1}
-                    ref={elem => this.nativeInput = elem}
-                    type="time"
-                    name={name}
-                    aria-label={label}
-                    value={this.getValue()}
-                    disabled={disabled}
-                    onFocus={this.onNantiveInputFocus}
-                    onBlur={this.onInputBlur}
-                    onChange={this.onNativeInputChange}
-                />
+                {isTouch &&
+                    <label className='label'>
+                        <input
+                            className="native-input"
+                            type="time"
+                            name={name}
+                            aria-label={label}
+                            value={this.getValue()}
+                            disabled={disabled}
+                            onFocus={this.onNantiveInputFocus}
+                            onBlur={this.onInputBlur}
+                            onChange={this.onNativeInputChange}
+                        />
+                    </label>
+                }
             </div>
         );
     }
@@ -230,13 +230,6 @@ export default class TimePicker extends React.Component<Props, State> {
         // when user select text with double click
         if (e.detail > 1) {
             e.preventDefault();
-        }
-    }
-
-    private onInputTouchStart = (e: React.SyntheticEvent<HTMLInputElement>) => {
-        if (isTouch) {
-            e.preventDefault();
-            this.nativeInput!.focus();
         }
     }
 
@@ -320,7 +313,7 @@ export default class TimePicker extends React.Component<Props, State> {
         this.setState({focus: true});
         const input = this.input!;
         // initial focus (default tab behaviour)
-        if (!isTouch && (input.selectionEnd - input.selectionStart === input.value.length)) {
+        if (input.selectionEnd - input.selectionStart === input.value.length) {
             e.preventDefault();
             this.select('hh');
         }
