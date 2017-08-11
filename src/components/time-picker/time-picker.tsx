@@ -119,6 +119,7 @@ export default class TimePicker extends React.Component<Props, State> {
                     aria-label={label}
                     onChange={this.onInputChange}
                     onFocus={this.onInputFocus}
+                    onTouchStart={this.onInputTouchStart}
                     onBlur={this.onInputBlur}
                     onKeyDown={this.onInputKeyDown}
                     onMouseDown={this.onInputMouseDown}
@@ -148,7 +149,7 @@ export default class TimePicker extends React.Component<Props, State> {
                     aria-label={label}
                     value={this.getValue()}
                     disabled={disabled}
-                    onFocus={this.onInputFocus}
+                    onFocus={this.onNantiveInputFocus}
                     onBlur={this.onInputBlur}
                     onChange={this.onNativeInputChange}
                 />
@@ -232,6 +233,13 @@ export default class TimePicker extends React.Component<Props, State> {
         }
     }
 
+    private onInputTouchStart = (e: React.SyntheticEvent<HTMLInputElement>) => {
+        if (isTouch) {
+            e.preventDefault();
+            this.nativeInput!.focus();
+        }
+    }
+
     private onInputClick = (e: React.SyntheticEvent<HTMLInputElement>) => {
         const cursorPosition = e.currentTarget.selectionStart;
         let key: Segment;
@@ -304,20 +312,17 @@ export default class TimePicker extends React.Component<Props, State> {
         }, this.commit);
     }
 
+    private onNantiveInputFocus = () => {
+        this.setState({focus: true});
+    }
+
     private onInputFocus = (e: React.SyntheticEvent<HTMLInputElement>) => {
         this.setState({focus: true});
-        if (isTouch) {
-            if (e.currentTarget !== this.nativeInput) {
-                this.nativeInput!.focus();
-                this.nativeInput!.click();
-            }
-        } else {
-            const input = this.input!;
-            // initial focus (default tab behaviour)
-            if (input.selectionEnd - input.selectionStart === input.value.length) {
-                e.preventDefault();
-                this.select('hh');
-            }
+        const input = this.input!;
+        // initial focus (default tab behaviour)
+        if (!isTouch && (input.selectionEnd - input.selectionStart === input.value.length)) {
+            e.preventDefault();
+            this.select('hh');
         }
     }
     private onInputBlur = (e: React.SyntheticEvent<HTMLInputElement>) => {
