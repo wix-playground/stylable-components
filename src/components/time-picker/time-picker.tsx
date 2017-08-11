@@ -28,7 +28,7 @@ export interface State {
     currentSegment: Segment;
 }
 
-const isTouch = 'orientation' in window;
+const isTouch = typeof window === 'object' && 'orientation' in window;
 const is12TimeFormat = /AM|PM/.test(new Date().toLocaleTimeString());
 const ampmLabels = {
     [Ampm.AM]: 'AM',
