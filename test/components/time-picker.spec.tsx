@@ -18,6 +18,7 @@ function setSelection(input: HTMLInputElement, segment: Segment) {
 function updateSegment(input: HTMLInputElement, segment: Segment, char: string) {
     const [start, end] = selectionIndexes[segment];
     const value = input.value.substr(0, start) + char + input.value.substr(end);
+    setSelection(input, segment);
     simulate.focus(input);
     input.value = value;
     input.selectionStart = input.selectionEnd = start + 1;
