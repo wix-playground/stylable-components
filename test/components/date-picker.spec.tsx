@@ -1,7 +1,7 @@
 import * as keycode from 'keycode';
 import * as React from 'react';
 import {ClientRenderer, expect, selectDom, simulate, trigger, sinon} from 'test-drive-react';
-import {DatePickerDemo} from '../../demo/components/date-picker-demo/date-picker-demo';
+import {DatePickerDemo} from '../../demo/components/date-picker-demo';
 import {DatePicker} from '../../src';
 import {
     getDayNames,
@@ -46,6 +46,7 @@ describe('The DatePicker Component', () => {
 
             simulate.focus(datePickerInput);
 
+            debugger
             await waitForDom(() => expect(select(datePickerDropdownId)).to.be.present());
 
             simulate.mouseDown(select('DAY_4'));
@@ -58,7 +59,6 @@ describe('The DatePicker Component', () => {
     });
 
     it('should only call onChange once', async () => {
-        // TODO: this needs work
         const onChange = sinon.spy();
         const {select, waitForDom} = clientRenderer.render(<DatePicker onChange={onChange} />);
         const datePickerInput = select(datePickerInputId);
@@ -75,14 +75,15 @@ describe('The DatePicker Component', () => {
         await waitForDom(() => expect(select(datePickerInputId)).to.have.value(JANUARY_FIRST.toDateString()));
     });
 
-    it('should use the current input value when blurred', async () => {
-        const {select, waitForDom} = clientRenderer.render(<DatePickerDemo />);
+    it('should call onChange with the current input value when blurred', async () => {
+        const onChange = sinon.spy();
+        const {select, waitForDom} = clientRenderer.render(<DatePicker value={JANUARY_FIRST} onChange={onChange} />);
         const datePickerInput = select(datePickerInputId);
 
         trigger.change(datePickerInput!, '2017/02/01');
         simulate.blur(datePickerInput);
 
-        await waitForDom(() => expect(select(currentDate)).to.have.text('Wed Feb 01 2017'));
+        await waitForDom(() => expect(onChange).to.have.been.calledWith(FEBRUARY_FIRST));
     });
 
     it('should use a provided placeholder', async () => {

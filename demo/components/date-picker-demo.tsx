@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { DatePicker, DatePickerProps } from '../../../src';
+import { DatePicker, DatePickerProps } from '../../src';
 import styles from './date-picker-demo.st.css';
 
 
@@ -72,7 +72,7 @@ export class DatePickerDemoStartingDay extends React.Component<DatePickerProps, 
     public render() {
         return (
             <div className={styles.container}>
-                <h2>DatePicker with variable week (and showDropdown set to true)</h2>
+                <h2>Try changing which day of the week the calendar starts on!</h2>
                 <span>
                     <select
                         value={this.state.startingDay}

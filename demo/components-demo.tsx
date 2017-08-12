@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { BirthdayPickerDemo } from './components/birthday-picker-demo';
 import {CheckBoxDemo} from './components/checkbox-demo';
-import {DatePickerDemo, DatePickerDemoStartingDay} from './components/date-picker-demo/date-picker-demo';
+import {DatePickerDemo, DatePickerDemoStartingDay} from './components/date-picker-demo';
 import {DropDownDemo } from './components/drop-down.demo';
 import { ImageDemo } from './components/image-demo';
 import {NumberInputDemo} from './components/number-input.demo';

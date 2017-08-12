@@ -1,7 +1,6 @@
 import {computed} from 'mobx';
 import {observer} from 'mobx-react';
 import * as React from 'react';
-import {root} from 'wix-react-tools';
 import {
     getDayNames,
     getDaysInMonth,
@@ -29,13 +28,8 @@ const monthNames = getMonthNames();
 @observer
 export class Calendar extends React.Component<CalendarProps, {}> {
     public render() {
-        const rootProps = root(this.props, {
-            'data-automation-id': 'DATE_PICKER_CALENDAR',
-            'className': ''
-        });
-
         return (
-            <div tabIndex={1} {...rootProps}>
+            <div tabIndex={1} data-automation-id="DATE_PICKER_CALENDAR">
                 <div className={styles.dropdownArrowWrapper}><div className={styles.dropdownArrow} /></div>
                 <div className={styles.dropdown} data-automation-id="DATE_PICKER_DROPDOWN">
                     <div className={styles.header}>

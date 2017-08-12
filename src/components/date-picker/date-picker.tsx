@@ -44,7 +44,7 @@ export class DatePicker extends React.Component<DatePickerProps, DatePickerState
         const rootProps = root(this.props, {
             'data-automation-id': 'DATE_PICKER_ROOT',
             'className': 'root'
-        }, ['onChange']);
+        }) as React.HTMLAttributes<HTMLDivElement>;
 
         return (
             <div {...rootProps}>
