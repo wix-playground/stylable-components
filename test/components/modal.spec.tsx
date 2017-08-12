@@ -1,10 +1,23 @@
 import * as React from 'react';
-import { ClientRenderer, expect, sinon, waitFor } from 'test-drive-react';
+import { ClientRenderer, expect, sinon, waitFor, simulate } from 'test-drive-react';
 import { Modal } from '../../src';
+import { ModalDemo } from '../../demo/components/modal-demo';
 
 describe('<Modal />', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
+
+    describe('A typical use case for the modal:', function () {
+        it('is hidden at first, a user clicks on a button, and then the modal appears', async function () {
+            const {select, waitForDom} = clientRenderer.render(<ModalDemo />);
+
+            await waitForDom(() => expect(select('MODAL')).to.be.absent());
+
+            simulate.click(select('MODAL_BUTTON'));
+
+            await waitForDom(() => expect(select('MODAL')).to.be.present());
+        });
+    });
 
     it('renders to the screen', async function () {
         const {select, waitForDom} = clientRenderer.render(<Modal isOpen={true} />);

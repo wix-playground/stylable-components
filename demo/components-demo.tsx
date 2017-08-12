@@ -10,6 +10,7 @@ import { RadioGroupDemo } from './components/radio-group-demo';
 import { SelectionListDemo } from './components/selection-list-demo';
 import { ToggleDemo } from './components/toggle-demo';
 import { TreeViewDemo } from './components/tree-view-demo';
+import { ModalDemo } from './components/modal-demo';
 import './style.st.css';
 
 export class ComponentsDemo extends React.Component<{}, {}> {
@@ -147,6 +148,11 @@ export class ComponentsDemo extends React.Component<{}, {}> {
                 <div>
                     <h2>NumberInput</h2>
                     <NumberInputDemo />
+                </div>
+                <hr />
+                <div>
+                    <h2>Modal</h2>
+                    <ModalDemo />
                 </div>
             </div>);
     }
