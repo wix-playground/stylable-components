@@ -7,62 +7,7 @@ export interface DatePickerDemoState {
     startingDay?: number;
 }
 
-export class DatePickerDemo extends React.Component<DatePickerProps, DatePickerDemoState> {
-    public state: DatePickerDemoState = {
-        value: this.props.value ? this.props.value : new Date()
-    };
-
-    public render() {
-        return (
-            <div className={styles.container}>
-                <div className={styles.background} style={this.backgroundImage} />
-                <h2 className={styles.title}>Pick a season</h2>
-                <div className={styles.datepickerContainer}>
-                    <div className={styles.datepicker}>
-                        <span data-automation-id="CURRENT_DATE" style={{ opacity: 0 }}>
-                            {this.state.value.toDateString()}
-                        </span>
-                        <DatePicker
-                            {...this.props}
-                            data-automation-id="BASIC_DATEPICKER"
-                            placeholder="mm/dd/yyyy"
-                            value={this.state.value}
-                            onChange={this.onChange}
-                        />
-                    </div>
-                </div>
-            </div>
-        );
-    }
-
-    private onChange = (updatedDate: Date): void => {
-        this.setState({ value: updatedDate });
-    }
-
-    private get backgroundImage(): object {
-        const month: number = this.state.value.getMonth();
-
-        if (month >= 2 && month < 5) {
-            return  { 'backgroundImage':
-                'url("http://i.imgur.com/EWynBnd.gif")' };
-        } else if (month >= 8 && month < 11) {
-            return {
-                'backgroundImage':
-                    'url("https://media.giphy.com/media/5xtDarFdKZA7Df8V67u/giphy.gif")'
-            };
-        } else if (month >= 11 || month < 2) {
-            return {
-                'backgroundImage':
-                    'url("https://68.media.tumblr.com/tumblr_ma5p1oh8oQ1rwlsczo1_500.gif")'
-            };
-        } else {
-            return { 'backgroundImage':
-                'url("https://media.giphy.com/media/xme2XN3AzQOEU/giphy.gif")' };
-        }
-    }
-}
-
-export class DatePickerDemoStartingDay extends React.Component<DatePickerProps, Partial<DatePickerDemoState>> {
+export class DatePickerDemo extends React.Component<DatePickerProps, Partial<DatePickerDemoState>> {
     public state: DatePickerDemoState = {
         value: this.props.value ? this.props.value : new Date(),
         startingDay: 0

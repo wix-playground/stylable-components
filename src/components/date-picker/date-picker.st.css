@@ -14,6 +14,10 @@
     inputWidth: 192px;
 }
 
+.root {
+    -st-states: focused, selected, current, inactive;
+}
+
 .input {
     width: value(inputWidth);
 }
@@ -127,18 +131,40 @@
     cursor: pointer;
 }
 
-.current {
+.root:current .day {
     color: value(color_Default);
 }
 
-.focused {
+.root:focused .day {
     outline: solid 1px value(color_Hover);
     outline-offset: -1px;
 }
 
-.selected {
+.root:selected .day {
     color: value(color_MainText_Background);
     background-color: value(color_Active);
+}
+
+.root:inactive .day {
+    font-family: value(fontFamily);
+    font-size: 14px;
+    text-align: center;
+    color: #d8d8d8;
+    width: 36px;
+    line-height: 36px;
+    cursor: default;
+}
+
+
+.current {
+}
+
+.focused {
+
+}
+
+.selected {
+
 }
 
 .focusedAndSelected {
