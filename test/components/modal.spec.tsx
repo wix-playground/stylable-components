@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ClientRenderer, expect, sinon, waitFor, simulate } from 'test-drive-react';
+import { ClientRenderer, expect, simulate } from 'test-drive-react';
 import { Modal } from '../../src';
 import { ModalDemo } from '../../demo/components/modal-demo';
 
@@ -7,8 +7,8 @@ describe('<Modal />', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
 
-    describe('A typical use case for the modal:', function () {
-        it('is hidden at first, a user clicks on a button, and then the modal appears', async function () {
+    describe('A typical use case for the modal:', function() {
+        it('is hidden at first, a user clicks on a button, and then the modal appears', async function() {
             const {select, waitForDom} = clientRenderer.render(<ModalDemo />);
 
             await waitForDom(() => expect(select('MODAL')).to.be.absent());
@@ -19,13 +19,13 @@ describe('<Modal />', () => {
         });
     });
 
-    it('renders to the screen', async function () {
+    it('renders to the screen', async function() {
         const {select, waitForDom} = clientRenderer.render(<Modal isOpen={true} />);
 
         await waitForDom(() => expect(select('MODAL')).to.be.present());
     });
 
-    it('renders any children passed as props', async function () {
+    it('renders any children passed as props', async function() {
         const childrenArray: Array<React.ReactElement<any>> = [
             <p data-automation-id="CHILD_1" key="1">child 1</p>,
             <p data-automation-id="CHILD_2" key="2">child 2</p>
@@ -36,7 +36,7 @@ describe('<Modal />', () => {
         await waitForDom(() => expect(select('CHILD_1'), select('CHILD_2')).to.be.present());
     });
 
-    it('takes the full width and height of the viewport', async function () {
+    it('takes the full width and height of the viewport', async function() {
         const {select, waitForDom} = clientRenderer.render(<Modal isOpen={true} />);
 
         await waitForDom(() => {
