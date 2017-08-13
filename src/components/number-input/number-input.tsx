@@ -9,6 +9,7 @@ import styles from './number-input.st.css';
 export interface NumberInputProps {
     className?: string;
     value?: number;
+    defaultValue?: number;
     placeholder?: string;
     min?: number;
     max?: number;
@@ -20,6 +21,14 @@ export interface NumberInputProps {
     error?: boolean;
     onChange?(value?: number): void;
     onInput?(value: string): void;
+}
+
+interface DefaultProps {
+    step: number;
+    min: number;
+    max: number;
+    onChange(value?: number): void;
+    onInput(value: string): void;
 }
 
 export type SlotElement = React.ReactElement<{'data-slot': string}>;
@@ -70,36 +79,65 @@ function getAffix(children: React.ReactNode): Affix {
         });
 }
 
+const DEFAULTS: DefaultProps = {
+    step: 1,
+    min: -Infinity,
+    max: Infinity,
+    onChange: noop,
+    onInput: noop
+};
+
+function getPropWithDefault<Prop extends keyof NumberInputProps & keyof DefaultProps>(
+    props: NumberInputProps,
+    name: Prop
+): (DefaultProps & NumberInputProps)[Prop] {
+    return props[name] === undefined ? DEFAULTS[name] : props[name];
+}
+
 @SBComponent(styles)
 export class NumberInput extends React.Component<NumberInputProps, NumberInputState> {
     public static defaultProps = {
-        step: 1,
-        min: -Infinity,
-        max: Infinity,
-        onChange: noop,
-        onInput: noop
+        onChange: DEFAULTS.onChange,
+        onInput: DEFAULTS.onInput
     };
 
     private committed = true;
+
+    private inputRef: HTMLInputElement | null = null;
+
+    private get isUncontrolled(): boolean {
+        return this.props.defaultValue !== undefined;
+    }
+
+    private get currentValue(): number | undefined {
+        return (
+            this.isUncontrolled ?
+                this.inputRef ?
+                    this.inputRef.value !== '' ?
+                        Number(this.inputRef.value) :
+                        undefined :
+                    this.props.defaultValue :
+                this.state.value
+        );
+    }
 
     constructor(props: NumberInputProps) {
         super(props);
 
         this.state = {
-            value: props.value,
+            value: isNumber(props.value) ? props.value : props.defaultValue,
             focus: false,
             error: Boolean(props.error)
         };
     }
 
-    public componentWillReceiveProps({value}: NumberInputProps) {
-        const {min, max} = this.props;
-
-        if (value !== this.state.value) {
+    public componentWillReceiveProps({min, max, step, value, defaultValue}: NumberInputProps) {
+        if (defaultValue === undefined && value !== this.state.value) {
             this.committed = true;
             this.setState({value});
         }
     }
+
     public render() {
         const {value, focus, error} = this.state;
         const {
@@ -127,6 +165,7 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
                     </div> : null
                 }
                 <input
+                    ref={input => this.inputRef = input}
                     className={`${inputStyles.root} native-input`}
                     data-automation-id="NATIVE_INPUT_NUMBER"
                     type="number"
@@ -160,9 +199,10 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
     }
 
     private validate(value?: number) {
-        const {min, max} = this.props;
+        const min = getPropWithDefault(this.props, 'min');
+        const max = getPropWithDefault(this.props, 'max');
         return isNumber(value) ?
-            Math.min(max!, Math.max(min!, value))
+            Math.min(max, Math.max(min, value))
             : value;
     }
 
@@ -185,7 +225,7 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
     }
 
     private updateValue(next?: number) {
-        const {value} = this.state;
+        const value = this.currentValue;
 
         if (value !== next) {
             this.committed = false;
@@ -194,10 +234,10 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
     }
 
     private stepValue(direction: Direction, multiplier = 1) {
-        const {value} = this.state;
-        let {step} = this.props;
+        const value = this.currentValue;
+        let step = getPropWithDefault(this.props, 'step');
 
-        step = step! * multiplier;
+        step = step * multiplier;
 
         const next = (direction === Direction.Increase ?
             isNumber(value) ? value + step : step :
