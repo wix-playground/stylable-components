@@ -20,10 +20,10 @@ export interface DayProps {
 export class Day extends React.Component<DayProps, {}> {
     public render() {
         const cssStates = {
-            focused: this.props.focused,
-            selected: this.props.selected,
-            current: this.props.currentDay,
-            inactive: this.props.partOfNextMonth || this.props.partOfPrevMonth
+            focused: !!this.props.focused,
+            selected: !!this.props.selected,
+            current: !!this.props.currentDay,
+            inactive: !!this.props.partOfNextMonth || !!this.props.partOfPrevMonth
         };
 
         return (
@@ -31,7 +31,7 @@ export class Day extends React.Component<DayProps, {}> {
                 {...root(this.props,
                     { 'data-automation-id': '', 'className': 'root' }) as React.HTMLAttributes<HTMLSpanElement>
                 }
-                cssStates={cssStates as any}
+                cssStates={cssStates}
                 className={`${styles.calendarItem} ${styles.day}`}
                 onMouseDown={this.onMouseDown}
             >
