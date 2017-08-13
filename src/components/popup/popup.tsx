@@ -40,7 +40,7 @@ export class Popup extends React.Component<PopupProps, {}> {
 
     public componentDidUpdate() {
         if (this.props.anchor && this.container && this.popup) {
-            ReactDOM.unstable_renderSubtreeIntoContainer(this, this.popup, this.container);
+            const x = ReactDOM.unstable_renderSubtreeIntoContainer(this, this.popup, this.container);
         }
     }
 
@@ -68,7 +68,7 @@ export class Popup extends React.Component<PopupProps, {}> {
             return;
         }
         const newStyle = {...this.style};
-        newStyle.display = this.props.open ? 'initial' : 'none';
+        newStyle.display = this.props.open ? '' : 'none';
         const anchorRect = this.props.anchor.getBoundingClientRect();
 
         newStyle.maxHeight = this.props.maxHeight;
