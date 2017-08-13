@@ -118,8 +118,8 @@ The Popup enables positioning content next to an anchor element.
                <div>Popup Element</div>
          </Popup>
      );
-}
-    ```
+   }
+   ```
 
 * Popup inside a React component parent
 
