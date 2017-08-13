@@ -11,18 +11,18 @@ describe('<Modal />', () => {
         it('is hidden at first, a user clicks on a button, and then the modal appears', async function() {
             const {select, waitForDom} = clientRenderer.render(<ModalDemo />);
 
-            await waitForDom(() => expect(select('MODAL')).to.be.absent());
+            await waitForDom(() => expect(select('MODAL')!).to.be.absent());
 
             simulate.click(select('MODAL_BUTTON'));
 
-            await waitForDom(() => expect(select('MODAL')).to.be.present());
+            await waitForDom(() => expect(select('MODAL')!).to.be.present());
         });
     });
 
     it('renders to the screen', async function() {
         const {select, waitForDom} = clientRenderer.render(<Modal isOpen={true} />);
 
-        await waitForDom(() => expect(select('MODAL')).to.be.present());
+        await waitForDom(() => expect(select('MODAL')!).to.be.present());
     });
 
     it('renders any children passed as props', async function() {
@@ -33,15 +33,22 @@ describe('<Modal />', () => {
 
         const {select, waitForDom} = clientRenderer.render(<Modal isOpen={true} children={childrenArray} />);
 
-        await waitForDom(() => expect(select('CHILD_1'), select('CHILD_2')).to.be.present());
+        await waitForDom(() => {
+            expect(select('CHILD_1')).to.be.present();
+            expect(select('CHILD_2')).to.be.present();
+        });
     });
 
     it('takes the full width and height of the viewport', async function() {
         const {select, waitForDom} = clientRenderer.render(<Modal isOpen={true} />);
 
         await waitForDom(() => {
-            expect(select('MODAL').clientHeight).to.equal(window.innerHeight);
-            expect(select('MODAL').clientWidth).to.equal(window.innerWidth);
+            expect(select('MODAL')!.clientHeight).to.equal(window.innerHeight);
+            expect(select('MODAL')!.clientWidth).to.equal(window.innerWidth);
         });
+    });
+
+    it('sits above any elements already present', async function() {
+
     });
 });
