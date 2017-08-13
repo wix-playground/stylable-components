@@ -1,6 +1,6 @@
 import React = require('react');
+import ReactDOM = require('react-dom');
 import {CSSProperties} from 'react';
-import style from './popup.st.css';
 
 export type VerticalPosition =  'top' | 'center' | 'bottom';
 export type HorizontalPosition = 'left' | 'center' | 'right';
@@ -11,7 +11,7 @@ export interface PositionPoint {
 }
 
 export interface PopupProps {
-    anchor: any;
+    anchor: Element;
     open?: boolean;
     anchorPosition?: PositionPoint;
     popupPosition?: PositionPoint;
@@ -19,116 +19,132 @@ export interface PopupProps {
     maxHeight?: number;
 }
 
-export interface PopupState {
-    style: CSSProperties;
-}
-
-export class Popup extends React.Component<Partial<PopupProps>, PopupState> {
-    private static defaultProps: Partial<PopupProps> = {
+export class Popup extends React.Component<PopupProps, {}> {
+    public static defaultProps: Partial<PopupProps> = {
         open: false,
         anchorPosition: {vertical: 'bottom', horizontal: 'left'},
         popupPosition: {vertical: 'top', horizontal: 'left'},
         syncWidth: true,
         maxHeight: 500
     };
-    private popup: HTMLElement | null;
+    private style: CSSProperties = {position: 'absolute'};
+    private popup: JSX.Element;
+    private container: Element | null;
 
-    constructor() {
-        super();
-        this.state = { style: {position: 'absolute'}};
+    public componentDidMount() {
+        this.container = document.body.appendChild(document.createElement('div'));
+        if (this.props.anchor) {
+            ReactDOM.unstable_renderSubtreeIntoContainer(this, this.popup, this.container);
+        }
+    }
+
+    public componentDidUpdate() {
+        if (this.props.anchor && this.container && this.popup) {
+            const x = ReactDOM.unstable_renderSubtreeIntoContainer(this, this.popup, this.container);
+        }
+    }
+
+    public componentWillUnmount() {
+        if (this.container) {
+            ReactDOM.unmountComponentAtNode(this.container);
+            this.container = null;
+        }
     }
 
     public render() {
-        if (!this.props.anchor) {
-            return null;
-        }
-
-        return (
+        this.setPosition();
+        this.popup = (
             <div
                 data-automation-id="POPUP"
-                ref={this.setPosition}
-                style={this.state.style}
-                className={!this.props.open ? style.closed : ''}
+                style={this.style}
             >
                 {this.props.children}
-            </div>
-        );
+            </div>);
+        return null;
     }
 
-    public componentWillReceiveProps(newProps: Partial<PopupProps>) {
-        this.setPosition(this.popup, newProps);
-    }
-
-    private setPosition = (popup: any, props: Partial<PopupProps> = this.props) => {
-        if (popup) {
-            this.popup = popup;
-            const newStyle = this.state.style;
-            const popupRect = popup.getBoundingClientRect();
-            let popupWidth = popupRect.width;
-
-            newStyle.maxHeight = props.maxHeight;
-            if (props.syncWidth) {
-                newStyle.width = (props.anchor as HTMLElement).getBoundingClientRect().width;
-                popupWidth = newStyle.width;
-            }
-
-            const anchorHorizontalPos = props.anchorPosition!.horizontal;
-            const anchorVerticalPos = props.anchorPosition!.vertical;
-
-            setTop(newStyle, (props.anchor as HTMLElement).getBoundingClientRect(),
-                anchorVerticalPos, popup.getBoundingClientRect().height, props.popupPosition!.vertical);
-            setLeft(newStyle, (props.anchor as HTMLElement).getBoundingClientRect(),
-                anchorHorizontalPos, popupWidth, props.popupPosition!.horizontal);
-            if (props.syncWidth) {
-                newStyle.width = (props.anchor as HTMLElement).getBoundingClientRect().width;
-            }
-            this.setState({style: newStyle});
+    private setPosition = () => {
+        if (!this.props.anchor) {
+            return;
         }
+        const newStyle = {...this.style};
+        newStyle.display = this.props.open ? '' : 'none';
+        const anchorRect = this.props.anchor.getBoundingClientRect();
+
+        newStyle.maxHeight = this.props.maxHeight;
+        newStyle.transform = '';
+        newStyle.WebkitTransform = '';
+        if (this.props.syncWidth) {
+            newStyle.width = anchorRect.width;
+        }
+
+        const anchorHorizontalPos = this.props.anchorPosition!.horizontal;
+        const anchorVerticalPos = this.props.anchorPosition!.vertical;
+
+        setTop(newStyle, anchorRect,
+            anchorVerticalPos, this.props.popupPosition!.vertical);
+        setLeft(newStyle, anchorRect,
+            anchorHorizontalPos, this.props.popupPosition!.horizontal);
+        if (this.props.syncWidth) {
+            newStyle.width = anchorRect.width;
+        }
+        this.style = newStyle;
     }
 }
 
 function setTop(popupStyle: CSSProperties, anchorRect: ClientRect,
-                anchorPosition: VerticalPosition, popupHeight: number, popupPoistion: VerticalPosition) {
+                anchorPosition: VerticalPosition, popupPoistion: VerticalPosition) {
     switch (popupPoistion) {
         case 'top':
             popupStyle.top = getVerticalReference(anchorRect, anchorPosition);
             break;
         case 'center':
-            popupStyle.top = getVerticalReference(anchorRect, anchorPosition) - (popupHeight / 2);
+            popupStyle.top = getVerticalReference(anchorRect, anchorPosition);
+            addTransform(popupStyle, 'translateY(-50%)');
             break;
         case 'bottom':
-            popupStyle.top = getVerticalReference(anchorRect, anchorPosition) - popupHeight;
+            popupStyle.top = getVerticalReference(anchorRect, anchorPosition);
+            addTransform(popupStyle, 'translateY(-100%)');
             break;
     }
 }
 
 function setLeft(popupStyle: CSSProperties, anchorRect: ClientRect,
-                 anchorPosition: HorizontalPosition, popupWidth: number, popupPoistion: HorizontalPosition) {
+                 anchorPosition: HorizontalPosition, popupPoistion: HorizontalPosition) {
     switch (popupPoistion) {
         case 'left':
             popupStyle.left = getHorizontalReference(anchorRect, anchorPosition);
             break;
         case 'center':
-            popupStyle.left = getHorizontalReference(anchorRect, anchorPosition) - (popupWidth / 2);
+            popupStyle.left = getHorizontalReference(anchorRect, anchorPosition);
+            addTransform(popupStyle, 'translateX(-50%)');
             break;
         case 'right':
-            popupStyle.left = getHorizontalReference(anchorRect, anchorPosition) - popupWidth;
+            popupStyle.left = getHorizontalReference(anchorRect, anchorPosition);
+            addTransform(popupStyle, 'translateX(-100%)');
             break;
     }
 }
 
-function getVerticalReference(rect: ClientRect, anchorPosition: VerticalPosition) {
+function getVerticalReference(rect: ClientRect, anchorPosition: VerticalPosition): number {
+    const yOffset = window.scrollY ? window.scrollY : window.pageYOffset;
     if (anchorPosition === 'center') {
-        return (window.scrollY ? window.scrollY : window.pageYOffset) + rect.top + (rect.height / 2);
+        return yOffset + rect.top + (rect.height / 2);
     } else {
-        return (window.scrollY ? window.scrollY : window.pageYOffset) + rect[anchorPosition as 'top' | 'bottom'];
+        return yOffset + rect[anchorPosition as 'top' | 'bottom'];
     }
 }
 
-function getHorizontalReference(rect: ClientRect, anchorPosition: HorizontalPosition) {
+function getHorizontalReference(rect: ClientRect, anchorPosition: HorizontalPosition): number {
+    const xOffset = window.scrollX ? window.scrollX : window.pageXOffset;
     if (anchorPosition === 'center') {
-        return (window.scrollX ? window.scrollX : window.pageXOffset) + rect.left + (rect.width / 2);
+        return xOffset + rect.left + (rect.width / 2);
     } else {
-        return (window.scrollX ? window.scrollX : window.pageXOffset) + rect[anchorPosition as 'left' | 'right'];
+        return xOffset + rect[anchorPosition as 'left' | 'right'];
     }
+}
+
+function addTransform(style: CSSProperties, tranformation: string) {
+    style.transform += tranformation;
+    style.WebkitTransform += tranformation;
 }

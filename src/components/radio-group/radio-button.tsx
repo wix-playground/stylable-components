@@ -1,7 +1,6 @@
-import React = require('react');
 import {action} from 'mobx';
 import {observer} from 'mobx-react';
-import {EventHandler, SyntheticEvent} from 'react';
+import * as React from 'react';
 import style from './radio-group.st.css';
 
 export interface RadioButtonProps {
@@ -75,7 +74,7 @@ export class RadioButton extends React.Component<RadioButtonProps, {}> {
     }
 
     @action
-    private onClick: EventHandler<SyntheticEvent<HTMLDivElement>> = () => {
+    private onClick: React.EventHandler<React.SyntheticEvent<HTMLDivElement>> = () => {
         if (!this.props.disabled) {
             this.props.onClick!(this.props.value);
         }
