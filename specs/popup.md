@@ -92,8 +92,8 @@ The Popup enables positioning content next to an anchor element.
 
 | Name | Type | Default | Required | Description |
 | -- | -- | -- | -- | -- |
-| anchorPosition | IPositionPoint | { vertical: 'bottom', horizontal: 'left'} | no | The point on the anchor element to which the popupPosition will attach to |
-| popupPosition | IPositionPoint | { vertical: 'top', horizontal: 'left'} | no | The point from which the popupPosition will pivot |
+| anchorPosition | PositionPoint | { vertical: 'bottom', horizontal: 'left'} | no | The point on the anchor element to which the popupPosition will attach to |
+| popupPosition | PositionPoint | { vertical: 'top', horizontal: 'left'} | no | The point from which the popupPosition will pivot |
 | collision | ICollision| {'vertical: 'none', horizontal: 'none'} | No | Specify the collision behavior of the component |
 | syncWidth	| boolean |	true | no | If true, the width of the popup will be set to the width of the anchor. If false, it will be set to the width of the children |
 | maxHeight | number | 500 | no | The max height in pixels of the popup. If set to 0, the property will be ignored and receive height from its content |
@@ -111,11 +111,14 @@ The Popup enables positioning content next to an anchor element.
 
   Given a popup is attached to an element, when rendered, then it should appear on the screen
     ```
-    <div ref="anchor">Anchor</div>
-    <Popup anchor={this.refs.anchor}>
-        <label>Popup Header</label>
-        <div>Popup Body</div>
-    </Popup>
+    render() {
+     return (
+         <div ref={ (MyAnchor) => {this.anchorElement = MyAnchor;} }>Anchor Element</div>
+         <Popup anchor={this.anchorElement}>
+               <div>Popup Element</div>
+         </Popup>
+     );
+}
     ```
 
 * Popup inside a React component parent
