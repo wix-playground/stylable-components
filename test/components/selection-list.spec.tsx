@@ -301,7 +301,7 @@ describe('<SelectionList />', () => {
             });
         });
 
-        it(`Selects an item on 'Enter' press`, async () => {
+        it(`Selects item on 'Enter' press`, async () => {
             const onChange = sinon.spy();
             const {select, waitForDom} = clientRenderer.render(
                 <SelectionList dataSource={['1', '2', '3', '4', '5']} value="3" onChange={onChange} />
@@ -320,7 +320,7 @@ describe('<SelectionList />', () => {
             });
         });
 
-        it(`Selects an item on 'Space' press`, async () => {
+        it(`Selects item on 'Space' press`, async () => {
             const onChange = sinon.spy();
             const {select, waitForDom} = clientRenderer.render(
                 <SelectionList dataSource={['1', '2', '3', '4', '5']} value="3" onChange={onChange} />
