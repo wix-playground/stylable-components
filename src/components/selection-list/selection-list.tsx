@@ -1,17 +1,14 @@
-import React = require('react');
-import ReactDOM = require('react-dom');
+import keycode = require('keycode');
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import {SBComponent, SBStateless} from 'stylable-react-component';
 import {root} from 'wix-react-tools';
-import keycode = require('keycode');
 import clamp from '../../common/clamp';
 import style from './selection-list.st.css';
 
 export const divider = {};
 
-function renameKeys(
-    data: {[index: string]: any},
-    schema: {[index: string]: string}
-): {[index: string]: any} {
+function renameKeys(data: {[index: string]: any}, schema: {[index: string]: string}): {[index: string]: any} {
     const result: {[index: string]: any} = {};
     for (const key in schema) {
         if (schema.hasOwnProperty(key)) {
@@ -118,7 +115,7 @@ export class SelectionList extends React.Component<SelectionListProps, Selection
             'cssStates': {
                 focused: this.state.focused
             }
-        });
+        }) as React.HtmlHTMLAttributes<HTMLDivElement>;
 
         const dataSourceItems = this.props.dataSource!.map((item, index) =>
             this.renderDataSourceItem(item, index)

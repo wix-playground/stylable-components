@@ -199,7 +199,7 @@ export class TreeView extends React.Component<TreeViewProps, {}> {
         e.stopPropagation();
         this.selectItem(item);
         if (this.props.focusedItem) { this.stateMap.getItemState(this.props.focusedItem).isFocused = false; }
-    };
+    }
 
     @action
     private onToggleItem = (item: TreeItemData, e: React.MouseEvent<HTMLElement>) => {
@@ -207,7 +207,7 @@ export class TreeView extends React.Component<TreeViewProps, {}> {
         if (this.props.focusedItem) { this.stateMap.getItemState(this.props.focusedItem).isFocused = false; }
         this.toggleItem(item);
         this.props.onFocusItem!(item);
-    };
+    }
 
     @action
     private onFocusItem(item: TreeItemData) {

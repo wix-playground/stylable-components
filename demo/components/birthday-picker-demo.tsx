@@ -1,6 +1,6 @@
-import React = require('react');
 import {observable} from 'mobx';
 import {observer} from 'mobx-react';
+import * as React from 'react';
 import {BirthdayPicker} from '../../src';
 
 export const initialValue = new Date('1969-07-26T00:00Z');
