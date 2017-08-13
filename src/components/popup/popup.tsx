@@ -1,6 +1,5 @@
 import React = require('react');
 import ReactDOM = require('react-dom');
-import {CSSProperties} from 'react';
 
 export type VerticalPosition =  'top' | 'center' | 'bottom';
 export type HorizontalPosition = 'left' | 'center' | 'right';
@@ -27,7 +26,7 @@ export class Popup extends React.Component<PopupProps, {}> {
         syncWidth: true,
         maxHeight: 500
     };
-    private style: CSSProperties = {position: 'absolute'};
+    private style: React.CSSProperties = {position: 'absolute'};
     private popup: JSX.Element;
     private container: Element | null;
 
@@ -40,13 +39,14 @@ export class Popup extends React.Component<PopupProps, {}> {
 
     public componentDidUpdate() {
         if (this.props.anchor && this.container && this.popup) {
-            const x = ReactDOM.unstable_renderSubtreeIntoContainer(this, this.popup, this.container);
+            ReactDOM.unstable_renderSubtreeIntoContainer(this, this.popup, this.container);
         }
     }
 
     public componentWillUnmount() {
         if (this.container) {
             ReactDOM.unmountComponentAtNode(this.container);
+            document.body.removeChild(this.container);
             this.container = null;
         }
     }
@@ -92,9 +92,9 @@ export class Popup extends React.Component<PopupProps, {}> {
     }
 }
 
-function setTop(popupStyle: CSSProperties, anchorRect: ClientRect,
-                anchorPosition: VerticalPosition, popupPoistion: VerticalPosition) {
-    switch (popupPoistion) {
+function setTop(popupStyle: React.CSSProperties, anchorRect: ClientRect,
+                anchorPosition: VerticalPosition, popupPosition: VerticalPosition) {
+    switch (popupPosition) {
         case 'top':
             popupStyle.top = getVerticalReference(anchorRect, anchorPosition);
             break;
@@ -109,7 +109,7 @@ function setTop(popupStyle: CSSProperties, anchorRect: ClientRect,
     }
 }
 
-function setLeft(popupStyle: CSSProperties, anchorRect: ClientRect,
+function setLeft(popupStyle: React.CSSProperties, anchorRect: ClientRect,
                  anchorPosition: HorizontalPosition, popupPoistion: HorizontalPosition) {
     switch (popupPoistion) {
         case 'left':
@@ -144,7 +144,7 @@ function getHorizontalReference(rect: ClientRect, anchorPosition: HorizontalPosi
     }
 }
 
-function addTransform(style: CSSProperties, tranformation: string) {
+function addTransform(style: React.CSSProperties, tranformation: string) {
     style.transform += tranformation;
     style.WebkitTransform += tranformation;
 }

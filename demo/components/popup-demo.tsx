@@ -1,5 +1,4 @@
 import React = require('react');
-import {CSSProperties} from 'react';
 import {Popup} from '../../src/';
 
 export interface DemoState {
@@ -14,7 +13,7 @@ export class PopupDemo extends React.Component<{}, DemoState> {
     }
 
     public render() {
-        const divDim: CSSProperties = {width: '50px', border: '1px solid blue'};
+        const divDim: React.CSSProperties = {width: '50px', border: '1px solid blue'};
         return (
             <div>
                 <div
