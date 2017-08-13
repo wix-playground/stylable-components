@@ -2,7 +2,6 @@ import * as React from 'react';
 import { DatePicker, DatePickerProps } from '../../src';
 import styles from './date-picker-demo.st.css';
 
-
 export interface DatePickerDemoState {
     value: Date;
     startingDay?: number;
@@ -43,21 +42,21 @@ export class DatePickerDemo extends React.Component<DatePickerProps, DatePickerD
     private get backgroundImage(): object {
         const month: number = this.state.value.getMonth();
 
-        if (month >= 2 && month < 4) {
-            return  { 'background-image':
+        if (month >= 2 && month < 5) {
+            return  { 'backgroundImage':
                 'url("http://i.imgur.com/EWynBnd.gif")' };
-        } else if (month >= 7 && month < 10) {
+        } else if (month >= 8 && month < 11) {
             return {
-                'background-image':
+                'backgroundImage':
                     'url("https://media.giphy.com/media/5xtDarFdKZA7Df8V67u/giphy.gif")'
             };
-        } else if (month >= 10 || month < 2) {
+        } else if (month >= 11 || month < 2) {
             return {
-                'background-image':
+                'backgroundImage':
                     'url("https://68.media.tumblr.com/tumblr_ma5p1oh8oQ1rwlsczo1_500.gif")'
             };
         } else {
-            return { 'background-image':
+            return { 'backgroundImage':
                 'url("https://media.giphy.com/media/xme2XN3AzQOEU/giphy.gif")' };
         }
     }

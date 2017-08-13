@@ -1,6 +1,6 @@
 import * as keycode from 'keycode';
 import * as React from 'react';
-import {ClientRenderer, expect, selectDom, simulate, trigger, sinon} from 'test-drive-react';
+import {ClientRenderer, expect, selectDom, simulate, sinon, trigger} from 'test-drive-react';
 import {DatePickerDemo} from '../../demo/components/date-picker-demo';
 import {DatePicker} from '../../src';
 import {
@@ -46,7 +46,6 @@ describe('The DatePicker Component', () => {
 
             simulate.focus(datePickerInput);
 
-            debugger
             await waitForDom(() => expect(select(datePickerDropdownId)).to.be.present());
 
             simulate.mouseDown(select('DAY_4'));

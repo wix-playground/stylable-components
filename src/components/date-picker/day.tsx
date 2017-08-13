@@ -19,7 +19,9 @@ export class Day extends React.Component<DayProps, {}> {
     public render() {
         return (
             <span
-                {...root(this.props, { 'data-automation-id': '', 'className': 'root' })}
+                {...root(this.props,
+                    { 'data-automation-id': '', 'className': 'root' }) as React.HTMLAttributes<HTMLSpanElement>
+                }
                 className={this.styles}
                 onMouseDown={this.onMouseDown}
             >
