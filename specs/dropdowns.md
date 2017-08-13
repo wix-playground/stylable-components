@@ -108,19 +108,26 @@ Styles for MultiSelect:
 
 ### DropDown
 
-* Root role: listbox
-* Children roles (children being the options in the list) will be inserted in the SelectionList specs
-* Children aria role will be in the SelectionList specs
+#### Roles
+* Root role - combobox
+
+#### Aria Attributes
+* User provided props: aria-label, aria-labelledby, aria-describedby
+* Children aria roles will be in the SelectionList specs
+
+#### Focus
+
+On <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">TAB</kbd> the dropdown gets focus.
 
 ## Behavior
 
-### Keyboard Handling
+### Keyboard Navigation
 
-* 'Space' key -> opens/closes dropdown
-* 'Enter' key -> Selects element when focus in SelectionList. Otherwise does nothing.
-* 'Esc' key -> Closes dropdown if opened
-* 'Down' key -> Opens popup if currently closed
-* 'Up' key -> When on first element of popup, closes popup
+* <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">Space</kbd> -> opens/closes dropdown
+* <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">Enter</kbd> -> Opens/closes the dropdown
+* <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">Esc</kbd> -> Closes dropdown if opened
+* <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">Down</kbd> -> Opens popup if currently closed
+* <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">Up</kbd> -> When on first element of popup, closes popup
 
 Additional in AutoComplete:
 
