@@ -33,12 +33,14 @@ export class Popup extends React.Component<PopupProps, {}> {
     public componentDidMount() {
         this.container = document.body.appendChild(document.createElement('div'));
         if (this.props.anchor) {
+            this.updatePopup();
             ReactDOM.unstable_renderSubtreeIntoContainer(this, this.popup, this.container);
         }
     }
 
     public componentDidUpdate() {
-        if (this.props.anchor && this.container && this.popup) {
+        if (this.props.anchor && this.container) {
+            this.updatePopup();
             ReactDOM.unstable_renderSubtreeIntoContainer(this, this.popup, this.container);
         }
     }
@@ -52,14 +54,6 @@ export class Popup extends React.Component<PopupProps, {}> {
     }
 
     public render() {
-        this.setPosition();
-        this.popup = (
-            <div
-                data-automation-id="POPUP"
-                style={this.style}
-            >
-                {this.props.children}
-            </div>);
         return null;
     }
 
@@ -89,6 +83,23 @@ export class Popup extends React.Component<PopupProps, {}> {
             newStyle.width = anchorRect.width;
         }
         this.style = newStyle;
+    }
+
+    private updatePopup() {
+        if (this.props.anchor) {
+            this.setPosition();
+            if (!this.popup) {
+                this.popup = (
+                    <div
+                        data-automation-id="POPUP"
+                        style={this.style}
+                    >
+                        {this.props.children}
+                    </div>);
+            } else {
+                this.popup = React.cloneElement(this.popup, {style:this.style});
+            }
+        }
     }
 }
 
@@ -127,20 +138,18 @@ function setLeft(popupStyle: React.CSSProperties, anchorRect: ClientRect,
 }
 
 function getVerticalReference(rect: ClientRect, anchorPosition: VerticalPosition): number {
-    const yOffset = window.scrollY ? window.scrollY : window.pageYOffset;
     if (anchorPosition === 'center') {
-        return yOffset + rect.top + (rect.height / 2);
+        return window.pageYOffset + rect.top + (rect.height / 2);
     } else {
-        return yOffset + rect[anchorPosition as 'top' | 'bottom'];
+        return window.pageYOffset + rect[anchorPosition as 'top' | 'bottom'];
     }
 }
 
 function getHorizontalReference(rect: ClientRect, anchorPosition: HorizontalPosition): number {
-    const xOffset = window.scrollX ? window.scrollX : window.pageXOffset;
     if (anchorPosition === 'center') {
-        return xOffset + rect.left + (rect.width / 2);
+        return window.pageXOffset + rect.left + (rect.width / 2);
     } else {
-        return xOffset + rect[anchorPosition as 'left' | 'right'];
+        return window.pageXOffset + rect[anchorPosition as 'left' | 'right'];
     }
 }
 
