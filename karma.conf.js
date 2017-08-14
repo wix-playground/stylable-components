@@ -140,10 +140,6 @@ module.exports = function (config) {
             Object.keys(sauceLabsLaunchers) :
             ['ChromeHeadless'],
 
-        plugins: [
-            'karma-webdriver-launcher'
-        ],
-
 
         // Continuous Integration mode
         // if true, Karma captures browsers, runs the tests and exits
