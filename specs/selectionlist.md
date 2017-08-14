@@ -13,8 +13,11 @@ A component which allows the user to take action by choosing an item from a list
 
 | Name | Type | Default | Required | Description |
 | -- | -- | -- | -- | -- |
-| value | string | null | no | id of the selected item |
+| value | string \| Array\<string> | null | no | id/s of the selected item/s |
 | onChange | (value: string) => void | NOP | no | Triggered when an item is selected in the list |
+| multiple | boolean | false | no | Whether the selection list supports a single or multiple selections. When true, adds the aria-multiselectable='true' on the root element.
+| orientation | enum | Vertical | no | The orientation is used mostly for assistive technologies. Changing to Horizontal will change the behavior of keyboard navigation and add an aria-orientation attribute to the root with the 'horizontal' value |
+| typeAhead | boolean | false | no | Enables keyboard type-ahead |
 | children | any | null | no | Children to be rendered in the list |
 
 * The following props should be placed in an OptionList interface since they will need to be passed from higher order components.
@@ -44,7 +47,7 @@ attribute will be displayed, but won't be selectable.
 `item` is an object created by remapping the original SelectionItem using `dataSchema`. Therefore, the
 `item` object has always consistent structure, regardless of the structure of the `dataSource.`
 
-If the original SelectionItemn was string, the resulting `item` object will put this value into 
+If the original SelectionItemn was string, the resulting `item` object will put this value into
 the `value` and `displayText` fields.
 
 ## Default ItemRenderer
@@ -57,11 +60,11 @@ In the default ItemRenderer, the (remapped) item object has following structure:
 
 | Name | Type | Default value | Required | Description |
 | -- | -- | -- | -- | -- |
+| id | string | automatically generated | no | Used in order to provide a key for assistive technologies to locate the focused option |
 | value | string | null | no | The unique value id (for selectable items) |
 | displayText | string | '' | no | Text content of the item |
 | hidden | boolean | false | no | Whether ths item appears in the list |
 | disabled | boolean | false | no | Whether an item is enabled for selection or not |
-
 
 ### Styling
 
@@ -70,10 +73,10 @@ You can customize the following internal parts:
 * item - selector applying to items in the list
 
 ### Style States
- 
+
 The following states apply to the items. They are passed as corresponding props of the ItemRenderer
 and added as an attribute with the appropriate prefix (`data-`).
- 
+
 | Name | Type | Default | Description |
 | -- | -- | -- | -- |
 | selected | boolean | false | Whether the item is selected |
@@ -84,17 +87,42 @@ and added as an attribute with the appropriate prefix (`data-`).
 The only exception is `hover` which doesn't correspond to an attribute. Rather, it should be staled with
 the `:hover` CSS pseudoselector.
 
+## Accessibility
+
+Reference [listbox](https://www.w3.org/TR/wai-aria-practices/#Listbox) in w3 draft.
+
+### Roles
+* Root Role - listbox (identifies the focusable element that has listbox behaviors and contains listbox options)
+* Children role - option (identifies a selectable element)
+
+### Aria
+* aria-activedescendant="ID_REF" - Applied to the element with the listbox role, tells assistive technologies which of the options, if any, is visually indicated as having keyboard focus. idref, refers to the ID of the focused option in the list. When navigation keys, such as Down Arrow, are pressed, the JavaScript changes the value. When the listbox is empty, aria-activedescendant="".
+* aria-selected="true" - Applied to elements with role option that are visually styled as selected to inform assistive technologies that the options are selected. When multiple selections are allowed, this attribute is applied to all selected items.
+
+### Focus
+
+* When <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">Tab</kbd> moves focus into the listbox:
+  * If none of the options is selected, focus is set to first option.
+  * If an option is selected, focus moves to the first selected option.
+
 ## Input Handling
 
 Keyboard and mouse navigation have different styling behaviors.
 
 ### Keyboard Navigation
 
-* Home -> highlights ths first item in the SelectionList
-* End -> highlights the last item in the SelectionList
-* Enter -> Selects current highlighted item
-* Up arrow -> highlights previous item
-* Down arrow -> highlights next item
+* <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">Home</kbd> -> highlights ths first item in the SelectionList
+* <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">End</kbd> -> highlights the last item in the SelectionList
+* <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">Up</kbd> -> highlights previous item
+* <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">Down</kbd> -> highlights next item
+* <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">Space</kbd> -> Toggles the selected state of the focused option (multi-select) or selects the option (single select)
+* <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">Enter</kbd> -> Toggles the selected state of the focused option. Do not prevent default, since the enter key is needed in parent components.
+* Type-ahead, when enabled relevant for all character and number keys (ASCII ordering):
+
+  * Upon input, focus moves to the next item with a name that starts with the typed character.
+  * Upon multiple input in rapid succession(wait 300ms after last input before moving focus?), focus moves to the next item that starts with the characters typed.
+
+  Let's discuss what we need to implement this in a generic fashion.
 
 Non-selectable items (items without `data-value` on the root element) are skipped during the keyboard traversal.
 
