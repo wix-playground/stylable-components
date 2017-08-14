@@ -26,7 +26,7 @@ export class Portal extends React.Component<PortalProps, {}> {
     public componentWillReceiveProps(newProps: PortalProps) {
         if (!newProps.open && this.props.open) {
             this.destroyPortal();
-        } else {
+        } else if (newProps.open) {
             this.renderPortal();
         }
     }
