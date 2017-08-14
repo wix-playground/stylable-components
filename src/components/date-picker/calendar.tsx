@@ -1,6 +1,7 @@
 import {computed} from 'mobx';
 import {observer} from 'mobx-react';
 import * as React from 'react';
+import { SBComponent } from 'stylable-react-component';
 import {
     getDayNames,
     getDaysInMonth,
@@ -25,6 +26,7 @@ export interface CalendarProps {
 
 const monthNames = getMonthNames();
 
+@SBComponent(styles)
 @observer
 export class Calendar extends React.Component<CalendarProps, {}> {
     public render() {
@@ -36,7 +38,7 @@ export class Calendar extends React.Component<CalendarProps, {}> {
                         <span
                             className={`${styles.arrowWrapper} ${styles.arrowWrapperPrev}`}
                             onMouseDown={this.goToPrevMonth}
-                            data-automation-id="PREV_MONTH_BUTTON"
+                            data-automation-id="PREV _MONTH_BUTTON"
                         >
                             <i className={`${styles.headerArrow} ${styles.headerArrowPrev}`} />
                         </span>

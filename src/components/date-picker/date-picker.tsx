@@ -1,5 +1,6 @@
 import * as keycode from 'keycode';
 import * as React from 'react';
+import { SBComponent } from 'stylable-react-component';
 import {root} from 'wix-react-tools';
 import {Calendar} from './calendar';
 import styles from './date-picker.st.css';
@@ -25,6 +26,7 @@ export interface DatePickerState {
     highlightFocusedDate: boolean;
 }
 
+@SBComponent(styles)
 export class DatePicker extends React.Component<DatePickerProps, DatePickerState> {
     public static defaultProps: DatePickerProps = {
         openOnFocus: true,
