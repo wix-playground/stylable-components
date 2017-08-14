@@ -12,81 +12,24 @@
 
 ### Component Props
 
-| name        | type                                  | default | isRequired | description                              |
+| name        | type                                  | default | required | description                              |
 | ----------- | ------------------------------------- | ------------ | ---------- | ---------------------------------------- |
-| value | string | null | no | id of the selected item. |
-| onChange | (value: string) => void | NOP | no | Triggered when an item is selected in the list. |
+| value | string *or* Array\<string> | null | no | IDs of the selected items. |
+| onChange | (value:&nbsp;string)&nbsp;=>&nbsp;void | NOP | no | Triggered when an item is selected in the list. |
+| multiple | boolean | false | no | Whether the selection list supports a single or multiple selections. When true, adds `aria-multiselectable='true'` on the root element.
+| orientation | enum | Vertical | no | The orientation is used mostly for assistive technologies. Changing to Horizontal will change the behavior of keyboard navigation and adds `aria-orientation='horizontal'` to the root. |
+| typeAhead | boolean | false | no | Enables keyboard type-ahead. |
 | children | any | null | no | Children to be rendered in the list. |
 
 ##### The following props should be placed in an OptionList interface since they will need to be passed from higher order components.
 
-| name        | type                                  | default | isRequired | description                              |
+| name        | type                                  | default | required | description                              |
 | ----------- | ------------------------------------- | ------------ | ---------- | ---------------------------------------- |
-| dataSource | SelectionItem[] | [] | no | There are a few options accepted as a datasource (see below for explanation). |
+| dataSource | SelectionItem[] | [] | no | A few options are accepted as a datasource. |
 | dataSchema | object | { id: 'id', displayText:&nbsp;'displayText'&nbsp;} | no | Maps the object properties to the relevant properties required by the ItemRenderer. |
 | itemRenderer | Component | default itemRenderer | no | Renders an item in the list. |
 
 > Note: If both datasource and children are present, the children are rendered first and then the dataSource items.
-
-#### Selection Items
-
-All of the selection items `SelectionItem`, whether passed as `props.children` or rendered from `dataSource`, conform to the same rules. For a `SelectionItem` to be selectable, it must have the `data-value` attribute with a corresponding unique id for the item. The rest (style state handling, etc.) is item renderer-specific.
-
-#### `onChange` Event Handling
-
-`SelectionInput` doesn't add mouse event handlers on every item. Rather, it listens to their common parent and distinguishes the items by their `data-value` attribute.
-
-#### SelectionItem
-
-`SelectionItem` is a union type of the following
-
-type | description |
---- | --- |
-divider | An object (defined in the components library) representing a non-selectable divider.<br> A reference to this object as a SelectionItem is rendered as a divider. 
-string | Represents both item value and label.
-object | Item is represented as object with schema defined by `dataSchema`.
-
-#### dataSchema
-
-Data schema creates mapping, which bridges between data structure of `dataSource` and that assumed by the `itemRenderer`. That is, it is `itemRenderer` and `dataSource` specific.
-
-name | type | default | required | description
---- | --- | --- | --- | ---
-value | string | id | no | Field containing unique identifier of the item's value.
-displayText | string | displayText | no | Field containing text which is rendered as textual content of the item.
-
-If the `'id'` field is missing in the item, it should be displayed but not selectable. (e.g. headings, etc.).
-
-#### ItemRenderer
-
-ItemRenderer is a component with the following props:
-
-| name | type | default | description |
-| --- | --- | --- | --- |
-| item | object or<br> divider | {} | Remapped `SelectionItem` to be rendered by the `ItemRenderer`. |
-| selected | boolean | false | Whether the item is selected. |
-| focused | boolean | false  | Whether the item is focused by keyboard navigation. |
-
-`ItemRenderer` must put `data-value` attribute on the root node of any selectable item. Items without the `data-value` attribute will be displayed, but won't be selectable.
-
-`item` is an object created by remapping the original `SelectionItem` using `dataSchema`. Therefore, the `item` object always has a consistent structure, regardless of the structure of the `dataSource.`
-
-If the original `SelectionItem` was string, the resulting `item` object will put this value into the `value` and `displayText` fields.
-
-##### Default ItemRenderer
-
-If the item doesn't have the `value` field, it is rendered without the `data-value`.
-
-If the item is the **divider object**, it will be rendered as a non-selectable divider in the list.
-
-In the default `ItemRenderer`, the (mapped) item object has the following structure:
-
-name | type | default | required | description
---- | --- | --- | --- | ---
-value | string | null | no | The unique value id (for selectable items).
-displayText | string | '' | no | Text content of the item.
-hidden | boolean | false | no | Whether ths item appears in the list.
-disabled | boolean | false | no | Whether an item is enabled for selection or not.
 
 ### Input Handling
 
@@ -96,13 +39,19 @@ Keyboard and mouse navigation have different styling behaviors.
 
 key | action
 --- | ---
-Home | Highlights ths first item in the SelectionList.
+Home | Highlights the first item in the SelectionList.
 End | Highlights the last item in the SelectionList.
+Up | Highlights previous item.
+Down | Highlights next item.
 Enter | Selects current highlighted item.
-Up arrow | Highlights previous item.
-Down arrow | Highlights next item.
+Space | Toggles the selected state of the focused option (multi-select) or selects the option (single select).
 
 Non-selectable items (items without `data-value` on the root element) are skipped during the keyboard traversal.
+
+##### When `Type-ahead` is enabled, it applies to all character and number keys (ASCII ordering):
+
+Upon input, focus moves to the next item with a name that starts with the typed character.
+Upon multiple input in rapid succession (with a small delay after last input before moving focus), the focus moves to the next item that starts with the characters typed.
 
 #### Mouse
 
@@ -110,6 +59,24 @@ event | action
 --- | ---
 Left-click | Selects an item.
 Mouse over | Gives mouse hover to an item.
+
+### Accessibility
+
+#### Roles
+
+* **Root Role:** listbox (identifies the focusable element that has listbox behaviors and contains listbox options)
+* **Child role:** option (identifies a selectable element)
+
+#### Aria
+
+* **aria-activedescendant="ID_REF":** Applied to the element with the listbox role, tells assistive technologies which of the options, if any, is visually indicated as having keyboard focus. `idref`, refers to the ID of the focused option in the list. When navigation keys, such as `Down Arrow`, are pressed, JavaScript changes the value. When the listbox is empty, then `aria-activedescendant=""`.
+* **aria-selected="true":** Applied to elements with role option that are visually styled as selected to inform assistive technologies that the options are selected. When multiple selections are allowed, this attribute is applied to all selected items.
+
+#### Focus
+
+* When **tab** moves the focus into the listbox:
+  * If none of the options is selected, focus is set to first option.
+  * If an option is selected, focus moves to the first selected option.
 
 ### Code Example
 
@@ -133,6 +100,8 @@ selected | boolean | false | Whether the item is selected.
 focused | boolean | false | Whether the item is focused by keyboard navigation.
 hidden | boolean | false | Whether the item appears in the list.
 disabled | boolean | false | Whether the item is enabled for selection or not.
+
+The only exception is `hover` which doesn't correspond to an attribute. Rather, it should be styled with the `:hover` CSS pseudoselector.
 
 ### Style Code Example
 
