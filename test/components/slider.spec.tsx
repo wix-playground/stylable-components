@@ -42,7 +42,7 @@ function simulateTouchEvent(
     ));
 }
 
-describe.only('<Slider />', () => {
+describe('<Slider />', () => {
     const clientRenderer = new ClientRenderer();
 
     afterEach(() => clientRenderer.cleanup());
@@ -673,7 +673,7 @@ describe.only('<Slider />', () => {
         });
     });
 
-    describe.only('keyboard control', () => {
+    describe('keyboard control', () => {
         const value = 50;
         const min = 0;
         const max = 100;
