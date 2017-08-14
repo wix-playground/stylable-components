@@ -1,9 +1,9 @@
-import sleep from '../../src/common/sleep';
-import React = require('react');
-import ReactDOM = require('react-dom');
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import {selectDom} from 'test-drive';
 import { ClientRenderer, expect, waitFor } from 'test-drive-react';
 import {Portal} from '../../src';
+import sleep from '../../src/common/sleep';
 import {PortalFixture} from '../fixtures/portal-fixture';
 
 const portal = 'PORTAL';
