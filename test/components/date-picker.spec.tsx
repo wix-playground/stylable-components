@@ -184,12 +184,13 @@ describe('The DatePicker Component', () => {
             );
 
             await waitForDom(() => {
-                expect([
+                const headerContents = [
                     select('PREV_MONTH_BUTTON'),
                     select('MONTH_NAME'),
                     select('YEAR'),
                     select('NEXT_MONTH_BUTTON')
-                ]).to.be.verticallyAligned('center', 1);
+                ];
+                expect(headerContents).to.be.verticallyAligned('center', 1);
             });
         });
 

@@ -38,7 +38,7 @@ export class Calendar extends React.Component<CalendarProps, {}> {
                         <span
                             className={`${styles.arrowWrapper} ${styles.arrowWrapperPrev}`}
                             onMouseDown={this.goToPrevMonth}
-                            data-automation-id="PREV _MONTH_BUTTON"
+                            data-automation-id="PREV_MONTH_BUTTON"
                         >
                             <i className={`${styles.headerArrow} ${styles.headerArrowPrev}`} />
                         </span>
