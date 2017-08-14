@@ -282,6 +282,7 @@ export default class TimePicker extends React.Component<Props, State> {
 
         this.setState({
             inputValue,
+            currentSegment,
             hh,
             mm
         }, () => {
