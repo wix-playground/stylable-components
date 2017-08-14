@@ -160,45 +160,41 @@ describe('<Popup />', function() {
         const leftResults = getLayoutTest('horizontal');
         for (const pPosition of fixture) {
             for (const aPosition of fixture) {
-                const pVertical = pPosition.vertical;
-                const pHorizontal = pPosition.horizontal;
-                const aVertical = aPosition.vertical;
-                const aHorizontal = aPosition.horizontal;
-                it(
-                    `Popup position: V: ${pVertical} H: ${pHorizontal};
-                 Anchor position: V: ${aVertical} H: ${aHorizontal}`, function() {
-                        container.style.position = 'absolute';
-                        container.style.top = '150px';
-                        container.style.left = '150px';
-                        container.style.width = '150px';
-                        container.style.height = '150px';
-                        container.style.border = '1px solid blue';
+                it(`Popup position: V: ${pPosition.vertical} H: ${pPosition.horizontal};
+                 Anchor position: V: ${aPosition.vertical} H: ${aPosition.horizontal}`, function() {
+                    container.style.position = 'absolute';
+                    container.style.top = '150px';
+                    container.style.left = '150px';
+                    container.style.width = '150px';
+                    container.style.height = '150px';
+                    container.style.border = '1px solid blue';
 
-                        clientRenderer.render(
-                            <Popup
-                                anchor={container}
-                                anchorPosition={aPosition}
-                                popupPosition={pPosition}
-                                open={true}
+                    clientRenderer.render(
+                        <Popup
+                            anchor={container}
+                            anchorPosition={aPosition}
+                            popupPosition={pPosition}
+                            open={true}
+                        >
+                            <div
+                                style={{background: 'green', color: 'white'}}
                             >
-                                <div
-                                    style={{background: 'green', color: 'white'}}
-                                >
                                     <span
                                         data-automation-id="SPAN"
                                     >
                                         Popup Body
                                     </span>
-                                    <div>some more stuff</div>
-                                </div>
-                            </Popup>);
+                                <div>some more stuff</div>
+                            </div>
+                        </Popup>);
 
-                        return waitFor(() => {
-                            topResults[pVertical][aVertical](container, bodySelect<HTMLElement>(popup)!);
-                            leftResults[pHorizontal][aHorizontal](
-                                container, bodySelect<HTMLElement>(popup)!);
-                        });
+                    return waitFor(() => {
+                        topResults[pPosition.vertical][aPosition.vertical](container,
+                            bodySelect<HTMLElement>(popup)!);
+                        leftResults[pPosition.horizontal][aPosition.horizontal](
+                            container, bodySelect<HTMLElement>(popup)!);
                     });
+                });
             }
         }
     });
