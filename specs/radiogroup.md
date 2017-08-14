@@ -9,7 +9,7 @@ Support a similar to native radiogroup implementations. Please see SelectionList
 | value | ?R&D? | false | no | The value chosen in the checkbox |
 | onChange | ?R&D? | NOOP | no | Triggered by changing a radio button state |
 | children | Array<Node> | null | no | children | radio buttons and/or other nodes which will just be rendered |
-| dataSource | SelectionItem[] | [] | no | There are a few options accepted as a datasource (see below for explanation) |
+| dataSource | Array\<Object> | [] | no | There are a few options accepted as a datasource (see below for explanation) |
 | dataSchema | object | { id: 'id', displayText: 'displayText' } | no | Maps the object properties to the relevant properties required by the ItemRenderer |
 | itemRenderer | Component | default itemRenderer | no | Renders a Radio Button per item in the list |
 | disabled | boolean | false | no | Whether all the radio buttons are disabled |
