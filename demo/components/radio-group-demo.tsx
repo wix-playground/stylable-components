@@ -1,6 +1,6 @@
-import React = require('react');
 import {action, observable} from 'mobx';
 import {observer} from 'mobx-react';
+import * as React from 'react';
 import {RadioButton, RadioGroup} from '../../src';
 
 @observer

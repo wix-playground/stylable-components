@@ -2,21 +2,7 @@ import { codes as KeyCodes} from 'keycode';
 import * as React from 'react';
 import { ClientRenderer, expect, simulate, sinon } from 'test-drive-react';
 import { NumberInput } from '../../src';
-
-const inputs = new WeakSet();
-
-function simulateKeyInput(
-    input: HTMLInputElement,
-    value: string
-) {
-    if (inputs.has(input)) {
-        input.value += value;
-    } else {
-        input.value = value;
-        inputs.add(input);
-    }
-    simulate.change(input);
-}
+import simulateKeyInput from '../utils/simulate-key-input';
 
 function assertCommit(
     input: Element | null,
@@ -65,6 +51,29 @@ describe('<NumberInput />', () => {
 
             expect(numberInput).to.have.value(String(value));
 
+        });
+    });
+
+    it('should only set appropriate attributes on native input', async () => {
+        const value = 0;
+        const {select, waitForDom} = clientRenderer.render(
+            <NumberInput value={value} />
+        );
+
+        await waitForDom(() => {
+            const numberInput = select('NATIVE_INPUT_NUMBER');
+
+            expect(numberInput).to.be.present();
+            expect(numberInput).to.have.property('tagName', 'INPUT');
+
+            expect(numberInput).to.have.attribute('type', 'number');
+            expect(numberInput).not.to.have.attribute('min');
+            expect(numberInput).not.to.have.attribute('max');
+            expect(numberInput).not.to.have.attribute('step');
+            expect(numberInput).not.to.have.attribute('name');
+            expect(numberInput).not.to.have.attribute('required');
+
+            expect(numberInput).to.have.value(String(value));
         });
     });
 
@@ -406,7 +415,7 @@ describe('<NumberInput />', () => {
             it('should call onInput on every keystroke', async () => {
                 const onInput = sinon.spy();
                 const {select, waitForDom} = clientRenderer.render(
-                    <NumberInput value={0} onInput={onInput} />
+                    <NumberInput onInput={onInput} />
                 );
 
                 await waitForDom(() => {
@@ -541,6 +550,74 @@ describe('<NumberInput />', () => {
 
                 expect(prefix).to.be.present();
                 expect(suffix).to.be.present();
+            });
+        });
+    });
+
+    describe('uncontrolled input', () => {
+
+        it('should set the defaultValue property', async () => {
+            const value = 11;
+            const {select, waitForDom} = clientRenderer.render(
+                <NumberInput defaultValue={value} />
+            );
+
+            await waitForDom(() => {
+                const numberInput = select('NATIVE_INPUT_NUMBER');
+
+                expect(numberInput).to.have.value(String(value));
+            });
+        });
+
+        it('should treat input as a source of thuth', async () => {
+            const initialValue = 1;
+            const newValue = 3;
+            const {select, waitForDom} = clientRenderer.render(
+                <NumberInput defaultValue={initialValue} />
+            );
+
+            await waitForDom(() => {
+                const input = select('NATIVE_INPUT_NUMBER') as HTMLInputElement;
+                const increment = select('STEPPER_INCREMENT');
+
+                input.value = String(newValue);
+
+                simulate.click(increment);
+
+                expect(input).to.have.value(String(newValue + 1));
+            });
+        });
+
+        describe('subsequent sets to defaultValue property', () => {
+            it('should only set the value of the input once', async () => {
+                const initialValue = 11;
+                class Fixture extends React.Component<{}, {defaultValue: number}> {
+
+                    public state = {defaultValue: initialValue};
+
+                    public render() {
+                        return (
+                            <div data-automation-id="FIXTURE" onClick={this.handleClick}>
+                                <NumberInput defaultValue={this.state.defaultValue} />
+                            </div>
+                        );
+                    }
+
+                    private handleClick = () => this.setState({defaultValue: this.state.defaultValue + 1});
+                }
+
+                const {select, waitForDom} = clientRenderer.render(<Fixture />);
+
+                await waitForDom(() => {
+                    const fixture = select('FIXTURE');
+                    const numberInput = select('NATIVE_INPUT_NUMBER');
+
+                    simulate.click(fixture);
+                    simulate.click(fixture);
+                    simulate.click(fixture);
+
+                    expect(numberInput).to.have.value(String(initialValue));
+                });
             });
         });
     });

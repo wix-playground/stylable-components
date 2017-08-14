@@ -226,7 +226,7 @@ describe('<TreeView />', () => {
                 return waitForDom(() => {
                     const item = getTreeItem(nodeChildren![0].label);
                     expect(select(item), 'up didnt work').to.have.attr('data-focused', 'false');
-                    expect(select(rootNode), ).to.have.attr('data-focused', 'true');
+                    expect(select(rootNode)).to.have.attr('data-focused', 'true');
                 });
             });
 
