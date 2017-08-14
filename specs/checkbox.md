@@ -26,6 +26,8 @@ Support a similar to native checkbox implementation.
 
 ## Accessibility
 
+The checkbox will implement a native HTML input element in order to support the HTML for attribute. The element should have both ```display:none``` and ```visibility:hidden``` styles implemented. The visibility is needed since some accessibility tools do not support display.
+
 ### Roles
 
 * Root role - checkbox
