@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {findDOMNode} from 'react-dom';
 import {SBComponent} from 'stylable-react-component';
 import style from './toggle.st.css';
 
@@ -38,8 +37,7 @@ export default class Toggle extends React.Component<Props, State> {
             error,
             rtl,
             label,
-            tabIndex,
-            onChange
+            tabIndex
         } = this.props;
         const {focus} = this.state;
 
