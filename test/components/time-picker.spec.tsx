@@ -237,7 +237,6 @@ describe('<TimePicker/>', () => {
 
     });
 
-
     describe('render with value="01:59" format="ampm"', () => {
         let renderer: any;
         let input: any;
@@ -311,10 +310,10 @@ describe('<TimePicker/>', () => {
             stepperDecrement = renderer.select('STEPPER_DECREMENT');
         });
         it ('should not render stepperIncrement', () => {
-            expect(stepperIncrement).to.be.null
+            expect(stepperIncrement).to.be.null;
         });
         it ('should not render stepperDecrement', () => {
-            expect(stepperDecrement).to.be.null
+            expect(stepperDecrement).to.be.null;
         });
     });
 
