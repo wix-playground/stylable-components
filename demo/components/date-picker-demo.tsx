@@ -35,7 +35,6 @@ export class DatePickerDemo extends React.Component<DatePickerProps, Partial<Dat
                 <DatePicker
                     placeholder="mm/dd/yyyy"
                     startingDay={this.state.startingDay!}
-                    showDropdownOnInit={true}
                     value={this.state.value!}
                     onChange={this.onChange}
                     {...this.props}
