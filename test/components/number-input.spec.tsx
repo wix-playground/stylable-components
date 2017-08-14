@@ -2,7 +2,7 @@ import { codes as KeyCodes } from 'keycode';
 import * as React from 'react';
 import { ClientRenderer, expect, simulate, sinon } from 'test-drive-react';
 import { NumberInput } from '../../src';
-import simulateKeyInput from '../utils/simulate-key-input';
+import { simulateKeyInput } from '../utils';
 
 function assertCommit(
     input: Element | null,
