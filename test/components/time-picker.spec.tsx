@@ -237,58 +237,86 @@ describe('<TimePicker/>', () => {
 
     });
 
-    if (!isTouch) {
-        describe('render with value="01:59" format="ampm"', () => {
-            let renderer: any;
-            let input: any;
-            let stepperIncrement: any;
-            let stepperDecrement: any;
+
+    describe('render with value="01:59" format="ampm"', () => {
+        let renderer: any;
+        let input: any;
+        let stepperIncrement: any;
+        let stepperDecrement: any;
+
+        beforeEach(function() {
+            if (isTouch) {
+                this.skip();
+            }
+        });
+        beforeEach(() => {
+            renderer = clientRenderer.render(<TimePicker format="ampm" value="01:59"/>);
+            input = renderer.select('TIME_PICKER_INPUT');
+            stepperIncrement = renderer.select('STEPPER_INCREMENT');
+            stepperDecrement = renderer.select('STEPPER_DECREMENT');
+        });
+        describe('select hh segment', () => {
             beforeEach(() => {
-                renderer = clientRenderer.render(<TimePicker format="ampm" value="01:59"/>);
-                input = renderer.select('TIME_PICKER_INPUT');
-                stepperIncrement = renderer.select('STEPPER_INCREMENT');
-                stepperDecrement = renderer.select('STEPPER_DECREMENT');
+                setSelection(input, 'hh');
             });
-            describe('select hh segment', () => {
-                beforeEach(() => {
-                    setSelection(input, 'hh');
-                });
-                it('should not disable stepper up', () => {
-                    expect(stepperIncrement).not.attr('disabled');
-                });
-                it('should disable stepper down', () => {
-                    expect(stepperDecrement).attr('disabled');
-                });
+            it('should not disable stepper up', () => {
+                expect(stepperIncrement).not.attr('disabled');
             });
-
-            describe('select mm segment', () => {
-                beforeEach(() => {
-                    setSelection(input, 'hh');
-                    simulate.keyDown(input, {keyCode: keycode('tab')});
-                });
-                it('should disable stepper up', () => {
-                    expect(stepperIncrement).attr('disabled');
-                });
-                it('should not disable stepper down', () => {
-                    expect(stepperDecrement).not.attr('disabled');
-                });
-            });
-
-            describe('select ampm segment', () => {
-                beforeEach(() => {
-                    setSelection(input, 'hh');
-                    simulate.keyDown(input, {keyCode: keycode('tab')});
-                    simulate.keyDown(input, {keyCode: keycode('tab')});
-                });
-                it('should not disable stepper up', () => {
-                    expect(stepperIncrement).not.attr('disabled');
-                });
-                it('should not disable stepper down', () => {
-                    expect(stepperDecrement).not.attr('disabled');
-                });
+            it('should disable stepper down', () => {
+                expect(stepperDecrement).attr('disabled');
             });
         });
-    }
+
+        describe('select mm segment', () => {
+            beforeEach(() => {
+                setSelection(input, 'hh');
+                simulate.keyDown(input, {keyCode: keycode('tab')});
+            });
+            it('should disable stepper up', () => {
+                expect(stepperIncrement).attr('disabled');
+            });
+            it('should not disable stepper down', () => {
+                expect(stepperDecrement).not.attr('disabled');
+            });
+        });
+
+        describe('select ampm segment', () => {
+            beforeEach(() => {
+                setSelection(input, 'hh');
+                simulate.keyDown(input, {keyCode: keycode('tab')});
+                simulate.keyDown(input, {keyCode: keycode('tab')});
+            });
+            it('should not disable stepper up', () => {
+                expect(stepperIncrement).not.attr('disabled');
+            });
+            it('should not disable stepper down', () => {
+                expect(stepperDecrement).not.attr('disabled');
+            });
+        });
+    });
+
+    describe('render with value="01:59" format="ampm" (for mobile)', () => {
+        let renderer: any;
+        let stepperIncrement: any;
+        let stepperDecrement: any;
+
+        beforeEach(function() {
+            if (!isTouch) {
+                this.skip();
+            }
+        });
+        beforeEach(() => {
+            renderer = clientRenderer.render(<TimePicker format="ampm" value="01:59"/>);
+            stepperIncrement = renderer.select('STEPPER_INCREMENT');
+            stepperDecrement = renderer.select('STEPPER_DECREMENT');
+        });
+        it ('should not render stepperIncrement', () => {
+            expect(stepperIncrement).to.be.null
+        });
+        it ('should not render stepperDecrement', () => {
+            expect(stepperDecrement).to.be.null
+        });
+    });
 
     describe('render with onChange={onChange} format="ampm" value="04:55"', () => {
         let onChange: any;
