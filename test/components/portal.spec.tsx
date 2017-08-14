@@ -3,8 +3,8 @@ import * as ReactDOM from 'react-dom';
 import {selectDom} from 'test-drive';
 import { ClientRenderer, expect, waitFor } from 'test-drive-react';
 import {Portal} from '../../src';
-import sleep from '../../src/common/sleep';
 import {PortalFixture} from '../fixtures/portal-fixture';
+import {sleep} from '../utils/sleep';
 
 const portal = 'PORTAL';
 
