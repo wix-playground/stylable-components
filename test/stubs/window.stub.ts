@@ -1,21 +1,21 @@
 import {SinonSandbox, SinonStub} from 'sinon';
 import {sinon} from 'test-drive-react';
 
-type EventListener = (...args: any[]) => any;
+type EventListener = (e?: Partial<Event>) => any;
 
-function stubWinowMethod(
+function stubWindowMethod(
     sandbox: SinonSandbox,
     method: keyof Window,
-    stub: EventListener
+    stub: (...args: any[]) => any
 ) {
-    return sandbox.stub(window, method, stub);
+    return sandbox.stub(window, method).callsFake(stub);
 }
 
 export default class WindowStub {
 
     public sandbox = sinon.sandbox.create();
 
-    public addEventListener = stubWinowMethod(
+    public addEventListener = stubWindowMethod(
         this.sandbox, 'addEventListener',
         (type: string, listener: EventListener) => {
             const events = this.events;
@@ -29,7 +29,7 @@ export default class WindowStub {
         }
     );
 
-    public removeEventListener = stubWinowMethod(
+    public removeEventListener = stubWindowMethod(
         this.sandbox, 'removeEventListener',
         (type: string, listener?: EventListener) => {
             const events = this.events;
@@ -56,12 +56,12 @@ export default class WindowStub {
 
     private events = new Map<string, EventListener[]>();
 
-    public simulate(type: string) {
+    public simulate(type: string, event?: Partial<Event>) {
         const events = this.events;
 
         if (events.has(type)) {
             const listeners = events.get(type);
-            listeners!.forEach(listener => listener());
+            listeners!.forEach(listener => listener(event));
         }
     }
 

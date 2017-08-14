@@ -1,11 +1,10 @@
 import * as React from 'react';
 import {render, unmountComponentAtNode} from 'react-dom';
-import { ClientRenderer, expect, simulate, sinon } from 'test-drive-react';
+import {expect, sinon} from 'test-drive-react';
 import GlobalEvent from '../../src/common/global-event';
 import WindowStub from '../stubs/window.stub';
 
 describe('<GlobalEvent />', () => {
-    const clientRenderer = new ClientRenderer();
     let windowStub: WindowStub;
     let container: HTMLElement;
 
@@ -18,8 +17,6 @@ describe('<GlobalEvent />', () => {
 
     afterEach(() => windowStub.sandbox.restore());
     afterEach(() => document.body.removeChild(container));
-
-    afterEach(() => clientRenderer.cleanup());
 
     describe('mount', () => {
         it('should add an event listener on window object when mounted', async () => {
