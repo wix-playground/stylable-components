@@ -34,7 +34,7 @@ The checkbox will implement a native HTML input element in order to support the 
 
 ### Aria Attributes
 * Text content attributes - aria-label, aria-labelledby, aria-describedby
-* When checked the checkbox has aria-state set to true, otherwise aria-checked is set to false. When the checkbox is in an indeterminate state, the aria-checked is set mixed.
+* When checked the checkbox has aria-checked set to true, otherwise aria-checked is set to false. When the checkbox is in an indeterminate state, the aria-checked is set mixed.
 * aria-controls="list of idrefs" - identifies the checkboxes controlled by a mixed checkbox. This should be added to the checkbox component props.
 
 ### Focus
