@@ -21,7 +21,7 @@ export function isTimeSegment(arg: any): arg is TimeSegment {
     return arg === 'hh' || arg === 'mm';
 }
 
-export function to24(hh: number, ampm: Ampm) {
+export function to24(hh: number, ampm: Ampm): number {
     switch (ampm) {
         case Ampm.NONE:
             return hh;
@@ -44,7 +44,7 @@ export function toAmpm(hh: number): {hh: number, ampm: Ampm} {
     return {hh, ampm};
 }
 
-export function isValidValue(num: number, part: TimeSegment, ampm: Ampm) {
+export function isValidValue(num: number, part: TimeSegment, ampm: Ampm): boolean {
     if (part === 'mm') {
         return num >= 0 && num <= 59;
     }
