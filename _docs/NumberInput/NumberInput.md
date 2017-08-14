@@ -51,57 +51,6 @@ The children in **NumberInput** use the data-slot attribute to assign roles to t
 | prefix    | Allows you to insert a component (or components) at the start of the input | `<div data-slot="prefix">hello world</div>` |
 | suffix    | Allows you to insert a component (or components) at the end of the input | `<div data-slot="suffix">hello world</div>` |
 
-## Input Handling and Behavior
-
-Changing value in the input via keyboard precisely mirrors the behavior of the stepper arrows.
-
-Stepping the value (arrows or keyboard) is performed **from current value**. E.g., if current value is 5.2, and step is 2, then **up** will give us 7.2 (unless the **max** prop is less than 7.2), and **down** will give us 3.2.
-
-When the value to be given by the stepper arrows/keyboard exceeds the min/max limits, the value is set to the corresponding min/max.
-
-When the user types a value, it isn't committed until one of the following committing events occurs: enter, tab, click outside, or other committing events according to the description below.
-
-If the user types a value out of range, the value is set to the corresponding min/max on commit.
-
-The component follows the external control pattern (value displayed is defined by the `value` property, and in order for the component to function, it should be bound to a state in the parent component, and the `onChange` handler should be set).
-
-### Keyboard 
-
-| key                  | commits  |action                                   |
-| --------------------- | ---  |---------------------------------------- |
-| type a number         |   | Insert a value without committing it.    |
-| up arrow key          | yes | Increase value (& commit).               |
-| down arrow key        | yes |  Decrease value (& commit).                |
-| shift + up / down | yes |  Increase / Decrease value by step * 10 (& commit). |
-| tab                   | yes |  Move to next element (skips the stepper), and commits the value if needed.  |
-| Shift + tab           | yes |  Move to previous element, and commits the value if needed.  |
-| enter                 | yes |  Commit the value (if value wasn't committed). |
-| esc                   |   | Removes focus (if in focus) and discards non-committed new value (if value typed). |
-
-**RTL** orientation
-
-| key                | action |
-| ------------------- | ------ |
-| no special handling |        |
-
-### Mouse
-
-| event                   | commits | action                                   |
-| ----------------------- | --- | ---------------------------------------- |
-| hover                   |    | Triggers the css `:hover` state.         |     
-| click inside            |   | Focuses the element and selects all text inside. |
-| click outside           |  yes | Blurs and commits value if the value is not committed. |
-| click & drag on stepper |  yes | On drag up/down or left/right, increases/decreases the value (& commits). |
-
-### Touch
-
-| event                   | commits | action                                   |
-| ----------------------- | --- | ---------------------------------------- |
-| tap inside              |     | Focuses the element and selects all text inside. 
-| tap outside             | yes | Blurs and commits value if the value is not committed. |
-| drag                    | yes | up/down/left/right - increase/decrease value by step |
-| tap on a stepper button | yes | Increase / Decrease value by step. |
-
 ## Code Examples
 
 #### Simple example
