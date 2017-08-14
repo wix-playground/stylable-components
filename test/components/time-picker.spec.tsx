@@ -32,7 +32,10 @@ function hasSelection(input: HTMLInputElement, segment: Segment) {
 
 function hasCursorInSegment(input: HTMLInputElement, segment: Segment) {
     const [start, end] = selectionIndexes[segment];
-    expect(input.selectionStart).to.equal(input.selectionEnd, `Input has selection [${input.selectionStart}, ${input.selectionEnd}]`);
+    expect(input.selectionStart).to.equal(
+        input.selectionEnd,
+        `Input has selection [${input.selectionStart}, ${input.selectionEnd}]`
+    );
     expect(input.selectionStart).within(start, end);
 }
 

@@ -139,7 +139,7 @@ export default class TimePicker extends React.Component<Props, State> {
                     />
                 }
                 {isTouch &&
-                    <label className='label'>
+                    <label className="label">
                         <input
                             className="native-input"
                             type="time"
