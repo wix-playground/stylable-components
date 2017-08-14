@@ -88,7 +88,7 @@ The Popup enables positioning content next to an anchor element.
 | onOpen | Triggered when the popup is opened | NOOP | no | Triggered when the popup is shown |
 | onClose | Triggered when popup is closed | NOOP | no | Triggered when the popup is closed |
 
-* The following props should be placed in an IPopupProps interface since they will need to be passed from higher order components.
+* The following props should be placed in a PopupProps interface since they will need to be passed from higher order components.
 
 | Name | Type | Default | Required | Description |
 | -- | -- | -- | -- | -- |
