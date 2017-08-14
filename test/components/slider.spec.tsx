@@ -3,12 +3,15 @@ import * as React from 'react';
 import { ClientRenderer, expect, simulate, sinon, waitFor } from 'test-drive-react';
 import { Slider } from '../../src/components/slider';
 
+const hasTouchSupport = window && ('ontouchstart' in window);
+
 function simulateMouseEvent(element: Element, eventType: string, options?: object) {
     element.dispatchEvent(new MouseEvent(
         eventType,
         options as any as EventInit
     ));
 }
+
 function simulateTouchEvent(
     element: Element,
     eventType: string,
@@ -401,7 +404,8 @@ describe('<Slider />', () => {
             });
         });
     });
-    // Mouse
+
+    // Touch
     describe('when drag things around using touch', () => {
         const value = 5;
         const min = 0;
@@ -413,7 +417,11 @@ describe('<Slider />', () => {
         let waitForDom: (expectation: () => void) => Promise<void>;
         let environment: Element;
 
-        beforeEach(() => {
+        beforeEach(function() {
+            if (!hasTouchSupport) {
+                this.skip();
+            }
+
             environment = document.createElement('body');
             onChange = sinon.spy();
             onInput = sinon.spy();
@@ -534,7 +542,11 @@ describe('<Slider />', () => {
         let waitForDom: (expectation: () => void) => Promise<void>;
         let environment: Element;
 
-        beforeEach(() => {
+        beforeEach(function() {
+            if (!hasTouchSupport) {
+                this.skip();
+            }
+
             environment = document.createElement('body');
             onChange = sinon.spy();
             onInput = sinon.spy();
