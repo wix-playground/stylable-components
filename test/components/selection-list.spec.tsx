@@ -10,6 +10,18 @@ function simulateKeyDown(element: Element, key: string) {
     simulate.keyDown(element, {keyCode: keycode(key)});
 }
 
+function hasState(element: Element, state: string): boolean {
+    return state in (element as HTMLElement).dataset;
+}
+
+function getListItems(list: Element | null): Element[] {
+    return list ? Array.from(list.children) : [];
+}
+
+function getItemValue(item: Element): string | undefined {
+    return (item as HTMLElement).dataset.value;
+}
+
 describe('<SelectionList />', () => {
     const clientRenderer = new ClientRenderer();
 
@@ -24,7 +36,8 @@ describe('<SelectionList />', () => {
             expect(select('FOOD', 'LIST')).to.be.present();
         });
 
-        simulate.click(select('FOOD', 'LIST')!.children[1]);
+        const items = getListItems(select('FOOD', 'LIST'));
+        simulate.click(items[1]);
 
         await waitForDom(() => {
             expect(select('FOOD', 'RESULT')).to.contain.text('Bacon');
@@ -38,10 +51,10 @@ describe('<SelectionList />', () => {
             expect(select('EMOJI', 'LIST')).to.be.present();
         });
 
-        const elephant = select('EMOJI', 'LIST')!.children[3] as HTMLElement;
+        const elephant = getListItems(select('EMOJI', 'LIST'))[3];
 
         expect(elephant).to.be.present();
-        expect(elephant.dataset.value).to.be.equal('Elephant');
+        expect(getItemValue(elephant)).to.be.equal('Elephant');
         expect(elephant).to.contain.text('🐘');
         simulate.click(elephant);
 
@@ -57,7 +70,7 @@ describe('<SelectionList />', () => {
             expect(select('TEXT_STYLE', 'LIST')).to.be.present();
         });
 
-        const label = select('TEXT_STYLE', 'LIST')!.children[5] as HTMLElement;
+        const label = getListItems(select('TEXT_STYLE', 'LIST'))[5];
         simulate.click(label);
 
         return waitForDom(() => {
@@ -71,7 +84,7 @@ describe('<SelectionList />', () => {
         );
 
         return waitForDom(() => {
-            const items = Array.from(select('LIST')!.children);
+            const items = getListItems(select('LIST'));
             expect(items).to.be.inVerticalSequence();
             expect(items).to.be.horizontallyAligned('left');
         });
@@ -88,7 +101,7 @@ describe('<SelectionList />', () => {
             expect(select('LIST')).to.be.present();
         });
 
-        simulate.click(select('LIST')!.children[1]);
+        simulate.click(getListItems(select('LIST'))[1]);
 
         await sleep(100);
 
@@ -116,10 +129,11 @@ describe('<SelectionList />', () => {
                 expect(select('LIST')).to.be.present();
             });
 
-            simulate.click(select('LIST')!.children[0]);
-            simulate.click(select('LIST')!.children[1]);
-            simulate.click(select('LIST')!.children[2]);
-            simulate.click(select('LIST')!.children[3]);
+            const items = getListItems(select('LIST'));
+            simulate.click(items[0]);
+            simulate.click(items[1]);
+            simulate.click(items[2]);
+            simulate.click(items[3]);
 
             await sleep(100);
 
@@ -135,7 +149,7 @@ describe('<SelectionList />', () => {
         );
 
         return waitForDom(() => {
-            const [empty, full] = Array.from(select('LIST')!.children);
+            const [empty, full] = getListItems(select('LIST'));
             expect(empty).to.be.present();
             expect(full).to.be.present();
             expect(empty).to.have.width.at.least(full);
@@ -169,7 +183,7 @@ describe('<SelectionList />', () => {
         });
     });
 
-    it('Allows to use dataSource and children together', async () => {
+    it('Renders dataSource below children when both are provided', async () => {
         const {select, waitForDom} = clientRenderer.render(
             <SelectionList dataSource={['ham', 'spam']}>
                 <div data-value="eggs">eggs</div>
@@ -179,11 +193,11 @@ describe('<SelectionList />', () => {
 
         return waitForDom(() => {
             expect(select('LIST')).to.be.present();
-            const children = Array.from(select('LIST')!.children) as HTMLElement[];
-            const labels = children.map(el => el.textContent);
-            const values = children.map(el => el.dataset.value);
-            expect(labels).to.be.deep.equal(['ham', 'spam', 'eggs', 'bacon']);
-            expect(values).to.be.deep.equal(['ham', 'spam', 'eggs', 'bacon']);
+            const items = getListItems(select('LIST'));
+            const labels = items.map(el => el.textContent);
+            const values = items.map(el => getItemValue(el));
+            expect(labels).to.be.deep.equal(['eggs', 'bacon', 'ham', 'spam']);
+            expect(values).to.be.deep.equal(['eggs', 'bacon', 'ham', 'spam']);
         });
     });
 
@@ -336,6 +350,51 @@ describe('<SelectionList />', () => {
             await waitForDom(() => {
                 expect(onChange).to.have.been.calledOnce;
                 expect(onChange).to.have.been.calledWithExactly('4');
+            });
+        });
+    });
+
+    describe(`Styling`, () => {
+        it(`Puts "focused" state on the container when it's focused`, async () => {
+            const {select, waitForDom} = clientRenderer.render(
+                <SelectionList />
+            );
+
+            await waitForDom(() => expect(select('LIST')).to.be.present());
+            const list = select('LIST') as HTMLElement;
+            expect(hasState(list, 'focused')).to.be.false;
+            list.focus();
+            await waitForDom(() => {
+                expect(hasState(list, 'focused')).to.be.true;
+            });
+        });
+
+        it(`Puts "selected" state on the selected item`, async () => {
+            const {select, waitForDom} = clientRenderer.render(
+                <SelectionList dataSource={['1', '2']} value="1" />
+            );
+
+            await waitForDom(() => expect(select('LIST')).to.be.present());
+            const items = getListItems(select('LIST'));
+            expect(hasState(items[0], 'selected')).to.be.true;
+            expect(hasState(items[1], 'selected')).to.be.false;
+        });
+
+        it(`Puts "focused" state on the item focused via keyboard`, async () => {
+            const {select, waitForDom} = clientRenderer.render(
+                <SelectionList dataSource={['1', '2']} value="1" />
+            );
+
+            await waitForDom(() => expect(select('LIST')).to.be.present());
+
+            const list = select('LIST') as HTMLElement;
+            const item = getListItems(list)[1];
+            expect(hasState(item, 'focused')).to.be.false;
+            list.focus();
+            simulateKeyDown(list, 'down');
+
+            await waitForDom(() => {
+                expect(hasState(item, 'focused')).to.be.true;
             });
         });
     });

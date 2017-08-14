@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {SBComponent, SBStateless} from 'stylable-react-component';
-import {divider, ItemRendererProps, SelectionList} from '../../src/components/selection-list';
-import style from './selection-list-demo.st.css';
+import {divider, SelectionList} from '../../src/components/selection-list';
+import demoStyle from './selection-list-demo.st.css';
 
 export class SelectionListDemo extends React.Component<{}, {}> {
     public render() {
@@ -46,30 +46,30 @@ export class FoodList extends React.Component {
     private onChange = (value: string) => this.setState({value});
 }
 
-interface EmojiListItemProps extends ItemRendererProps {
-    item: {
-        value: string;
-        icon: string;
-    };
+@SBComponent(demoStyle)
+class EmojiListItem extends React.Component<{
+    'data-value'?: string;
+    'data-selected'?: boolean;
+    'data-focused'?: boolean;
+}, {}> {
+    public render() {
+        return (
+            <div
+                className="item"
+                data-value={this.props['data-value']}
+                data-selected={this.props['data-selected']}
+                data-focused={this.props['data-focused']}
+            >
+                {this.props.children}
+            </div>
+        );
+    }
 }
 
-const EmojiListItem: React.SFC<EmojiListItemProps> = SBStateless(props => {
-    return (
-        <div
-            className="emoji-list-item"
-            data-value={props.item.value}
-            data-selected={props.selected || undefined}
-        >
-            {props.item.icon}
-        </div>
-    );
-}, style);
-
-@SBComponent(style)
+@SBComponent(demoStyle)
 class EmojiList extends React.Component {
     public state = {value: 'Crocodile'};
-
-    private dataSchema = {value: 'name', icon: 'icon'};
+    private dataSchema = {value: 'name', label: 'icon'};
     private dataSource = [
         {icon: '🐍', name: 'Snek'},
         {icon: '🐋', name: 'Whale'},
@@ -87,7 +87,7 @@ class EmojiList extends React.Component {
                     className="emoji-list"
                     dataSchema={this.dataSchema}
                     dataSource={this.dataSource}
-                    itemRenderer={EmojiListItem}
+                    renderItem={this.renderItem}
                     value={this.state.value}
                     onChange={this.onChange}
                 />
@@ -98,10 +98,14 @@ class EmojiList extends React.Component {
         );
     }
 
+    private renderItem = ({value, label}: {value: string, label: string}) => {
+        return <EmojiListItem data-value={value}>{label}</EmojiListItem>;
+    }
+
     private onChange = (value: string) => this.setState({value});
 }
 
-@SBComponent(style)
+@SBComponent(demoStyle)
 class TextStyleList extends React.Component {
     public state = {value: 'heading'};
 
@@ -114,22 +118,22 @@ class TextStyleList extends React.Component {
                     value={this.state.value}
                     onChange={this.onChange}
                 >
-                    <div data-value="title">
+                    <div className="item" data-value="title">
                         <span className="text-style-title">Title</span>
                     </div>
-                    <div data-value="heading">
+                    <div className="item" data-value="heading">
                         <span className="text-style-heading">Heading</span>
                     </div>
-                    <div data-value="heading-red">
+                    <div className="item" data-value="heading-red">
                         <span className="text-style-heading-red">Heading Red</span>
                     </div>
-                    <div data-value="body">
+                    <div className="item" data-value="body">
                         <span className="text-style-body">Body</span>
                     </div>
-                    <div data-value="caption">
+                    <div className="item" data-value="caption" data-disabled>
                         <span className="text-style-caption">Caption</span>
                     </div>
-                    <div data-value="label">
+                    <div className="item" data-value="label">
                         <span className="text-style-label">Label</span>
                     </div>
                 </SelectionList>

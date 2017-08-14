@@ -4,7 +4,7 @@ import * as ReactDOM from 'react-dom';
 import {SBComponent, SBStateless} from 'stylable-react-component';
 import {root} from 'wix-react-tools';
 import clamp from '../../common/clamp';
-import style from './selection-list.st.css';
+import listStyle from './selection-list.st.css';
 
 export const divider = {};
 
@@ -29,51 +29,33 @@ function closestElementMatching(
     return current;
 }
 
-export interface ItemRendererProps {
-    focused: boolean;
-    selected: boolean;
-    item: any;
-}
+export type SelectionItem = string | object;
 
-export interface DefaultItemRendererProps extends ItemRendererProps {
-    item: {
-        value?: string;
-        label?: string;
-        hidden?: boolean;
-        disabled?: boolean;
-    };
-}
+export type SelectionItemDefaultFormat = string | {
+    value?: string;
+    label?: React.ReactNode;
+    disabled?: boolean;
+    hidden?: boolean;
+};
 
-const DefaultItemRenderer: React.SFC<DefaultItemRendererProps> = SBStateless(props => {
-    if (props.item === divider) {
+const renderItem = (item: SelectionItemDefaultFormat): React.ReactNode => {
+    if (item === divider) {
         return <div className="divider" data-automation-id="DIVIDER" />;
     }
 
-    if (props.item.hidden) {
-        return null;
+    if (typeof item === 'string') {
+        item = {value: item, label: item};
     }
 
-    return (
-        <div
-            className="list-item"
-            data-value={props.item.disabled! ? null : props.item.value}
-            cssStates={{
-                focused: props.focused,
-                selected: props.selected,
-                disabled: props.item.disabled!
-            }}
-        >
-            {props.item.label}
-        </div>
-    );
-}, style);
-
-export type SelectionItem = string | object;
+    return item.hidden ?
+        null :
+        <div className="item" data-value={item.value} data-disabled={item.disabled}>{item.label}</div>;
+};
 
 export interface OptionList {
     dataSource?: SelectionItem[];
     dataSchema?: {};
-    itemRenderer?: React.ComponentType<ItemRendererProps>;
+    renderItem?: (item: SelectionItem) => React.ReactNode;
 }
 
 export interface SelectionListProps extends OptionList {
@@ -88,11 +70,11 @@ export interface SelectionListState {
     focusedValue?: string;
 }
 
-@SBComponent(style)
+@SBComponent(listStyle)
 export class SelectionList extends React.Component<SelectionListProps, SelectionListState> {
     public static defaultProps: SelectionListProps = {
         dataSource: [],
-        itemRenderer: DefaultItemRenderer,
+        renderItem,
         onChange: () => {}
     };
 
@@ -101,95 +83,74 @@ export class SelectionList extends React.Component<SelectionListProps, Selection
         focusedValue: undefined
     };
 
-    private itemValues: string[] = [];
+    private focusableItemValues: string[] = [];
 
     public render() {
         const rootProps = root(this.props, {
             'data-automation-id': 'LIST',
+            'data-focused': this.state.focused || undefined,
             'className': 'list',
             'tabIndex': -1,
             'onClick': this.handleClick,
             'onKeyDown': this.handleKeyDown,
             'onFocus': this.handleFocus,
-            'onBlur': this.handleBlur,
-            'cssStates': {
-                focused: this.state.focused
-            }
+            'onBlur': this.handleBlur
         }) as React.HtmlHTMLAttributes<HTMLDivElement>;
 
-        const dataSourceItems = this.props.dataSource!.map((item, index) =>
-            this.renderDataSourceItem(item, index)
+        const children = React.Children.map(
+            [this.props.children, this.renderDataSource()],
+            child => this.augmentChild(child)
         );
 
-        const childItems = React.Children.map(this.props.children, child => this.renderChildItem(child));
+        this.focusableItemValues = this.getFocusableItemValuesFromChildren(children);
 
-        return <div {...rootProps}>{dataSourceItems}{childItems}</div>;
+        return <div {...rootProps}>{children}</div>;
     }
 
-    private normalizeDataSourceItem(item: SelectionItem): {[index: string]: any} {
-        if (item === divider) {
-            return divider;
-        }
-
-        if (typeof item === 'string') {
-            item = {value: item, label: item};
-        }
-
-        return this.props.dataSchema ?
-            renameKeys(item, this.props.dataSchema) : item;
-    }
-
-    private renderDataSourceItem(item: SelectionItem, index: number): React.ReactNode {
-        const ItemRenderer = this.props.itemRenderer!;
-        const normalized = this.normalizeDataSourceItem(item);
-        return (
-            <ItemRenderer
-                key={index}
-                focused={normalized.value === this.state.focusedValue}
-                selected={normalized.value === this.props.value}
-                item={normalized}
-            />
+    private renderDataSource(): React.ReactNode[] {
+        const schema = this.props.dataSchema;
+        const render = this.props.renderItem!;
+        return this.props.dataSource!.map(item =>
+            render(schema && typeof item === 'object' ? renameKeys(item, schema) : item)
         );
     }
 
-    private getValueFromChildItem(child: React.ReactNode): string | undefined {
-        if (child && typeof child === 'object') {
-            const value = (child as React.ReactElement<any>).props['data-value'];
-            if (typeof value === 'string') {
-                return value;
+    private augmentChild(node: React.ReactNode): React.ReactNode {
+        if (node && typeof node === 'object') {
+            const element = node as React.ReactElement<any>;
+            const value = element.props['data-value'];
+            if (value !== undefined) {
+                const selected = value === this.props.value;
+                const focused = value === this.state.focusedValue;
+                if (focused || selected) {
+                    return React.cloneElement(element, {
+                        'data-selected': selected || undefined,
+                        'data-focused':  focused || undefined
+                    });
+                }
             }
         }
-        return undefined;
+        return node;
     }
 
-    private renderChildItem(child: React.ReactNode): React.ReactNode {
-        if (this.props.value !== undefined &&
-            this.getValueFromChildItem(child) === this.props.value
-        ) {
-            return React.cloneElement(
-                child as React.ReactElement<any>,
-                {
-                    'data-selected': true
+    private getFocusableItemValuesFromChildren(nodes: React.ReactNode[]): any[] {
+        const result = [];
+        for (const node of nodes) {
+            if (node && typeof node === 'object') {
+                const element = node as React.ReactElement<any>;
+                const value = element.props['data-value'];
+                const disabled = element.props['data-disabled'];
+                if (value !== undefined && !disabled) {
+                    result.push(value);
                 }
-            );
+            }
         }
-        return child;
+        return result;
     }
 
-    // The `data-value` attribute on the HTML element returned by the itemRenderer is the only source of truth
-    // about the item's value, and we can only get it from DOM :(
-    private getItemValuesFromDOM() {
-        const rootNode = ReactDOM.findDOMNode(this);
-        const children = Array.from(rootNode.children) as HTMLElement[];
-        return children.map(elem => elem.dataset.value).filter(value => value !== undefined);
-    }
-
-    private handleFocus: React.FocusEventHandler<HTMLElement> = event => {
-        this.setState({focused: true, focusedValue: this.props.value});
-    }
-
-    private handleBlur: React.FocusEventHandler<HTMLElement> = event => {
-        this.setState({focused: false, focusedValue: undefined});
+    private selectValue = (value: string) => {
+        this.props.onChange!(value);
+        this.setState({focusedValue: undefined});
     }
 
     private handleClick: React.MouseEventHandler<HTMLElement> = event => {
@@ -202,15 +163,22 @@ export class SelectionList extends React.Component<SelectionListProps, Selection
             return;
         }
         const value = item.dataset.value;
-        if (value === undefined || value === this.props.value) {
-            return;
+        const disabled = item.dataset.disabled;
+        if (!disabled && value !== undefined && value !== this.props.value) {
+            this.selectValue(value);
         }
-        this.props.onChange!(value);
-        this.setState({focusedValue: undefined});
+    }
+
+    private handleFocus: React.FocusEventHandler<HTMLElement> = event => {
+        this.setState({focused: true, focusedValue: this.props.value});
+    }
+
+    private handleBlur: React.FocusEventHandler<HTMLElement> = event => {
+        this.setState({focused: false, focusedValue: undefined});
     }
 
     private handleKeyDown: React.KeyboardEventHandler<HTMLElement> = event => {
-        const values = this.getItemValuesFromDOM();
+        const values = this.focusableItemValues;
         const focusedValue = this.state.focusedValue || this.props.value;
         const focusedIndex = (focusedValue === undefined) ? -1 : values.indexOf(focusedValue);
         const maxIndex = values.length - 1;
@@ -220,7 +188,7 @@ export class SelectionList extends React.Component<SelectionListProps, Selection
             case keycode('space'):
                 event.preventDefault();
                 if (focusedValue !== undefined) {
-                    this.props.onChange!(focusedValue);
+                    this.selectValue(focusedValue);
                 }
                 break;
 

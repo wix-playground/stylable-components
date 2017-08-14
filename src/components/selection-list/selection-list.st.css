@@ -1,10 +1,13 @@
 @namespace "SelectionList";
 
 .list {
-    -st-states: focused;
     width: 276px;
     border: 1px solid #adbbc6;
     outline: none;
+}
+
+.list[data-focused] {
+    border-color: #4a90e2;
 }
 
 .divider {
@@ -12,10 +15,9 @@
     background-color: #adbbc6;
 }
 
-.list-item {
-    -st-states: disabled, focused, selected;
+.item {
     width: 100%;
-    height: 36px;
+    min-height: 36px;
     padding: 6px 24px;
     font-family: ArialMT;
     font-size: 16px;
@@ -25,38 +27,34 @@
     user-select: none;
 }
 
-.list-item:hover {
+.item:hover {
     background-color: #edf7ff;
 }
 
-.list-item:selected {
+.item[data-selected] {
     background-color: #f1f1f1;
 }
 
-.list-item:disabled {
+.item[data-disabled] {
     color: #c8c8c8;
     cursor: default;
 }
 
-.list-item:disabled:hover {
+.item[data-disabled]:hover {
     background: #ffffff;
 }
 
-.list:focused {
-    border-color: #4a90e2;
-}
-
-.list:focused .list-item:selected {
+.list[data-focused] > .item[data-selected] {
     background-color: #4990e2;
     color: #fff;
 }
 
-.list:focused .list-item:focused {
+.list[data-focused] > .item[data-focused] {
     background-color: #edf7ff;
 }
 
-.list:focused .list-item:selected:hover,
-.list:focused .list-item:selected:focused {
+.list[data-focused] > .item[data-selected]:hover,
+.list[data-focused] > .item[data-selected][data-focused] {
     background-color: #5cb4ff;
     color: #ffffff;
 }
