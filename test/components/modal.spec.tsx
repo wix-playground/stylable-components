@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { ClientRenderer, expect, simulate } from 'test-drive-react';
-import { Modal } from '../../src';
 import { ModalDemo } from '../../demo/components/modal-demo';
+import { Modal } from '../../src';
+import { ModalFixture } from '../fixtures/modal-fixture';
 
 describe('<Modal />', () => {
     const clientRenderer = new ClientRenderer();
@@ -49,6 +50,21 @@ describe('<Modal />', () => {
     });
 
     it('sits above any elements already present', async function() {
+        const {select, waitForDom} = clientRenderer.render(<ModalFixture />);
+
+        await waitForDom(() => {
+            expect(select('ELEMENT_1')).to.be.present();
+            expect(select('ELEMENT_2')).to.be.present();
+            expect(select('MODAL')).to.be.absent();
+        });
+
+        simulate.click(select('MODAL_BUTTON'));
+
+        await waitForDom(() => {
+            expect(select('ELEMENT_1')).to.be.absent();
+            expect(select('ELEMENT_2')).to.be.absent();
+            expect(select('MODAL')).to.be.present();
+        });
 
     });
 });
