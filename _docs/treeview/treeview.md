@@ -27,62 +27,11 @@ A TreeView is composed of TreeItems (nodes) that have a TreeItem Label and a Tre
 
 | name | type | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | required | description |
 | --- | --- | --- | --- | --- |
-| dataSource | SelectionItem[] | [] | no | Collection of item data |
-| dataSchema | object | { id: 'id',<br>displayText: 'displayText'} | no | Maps the object properties to the relevant properties required by the `itemRenderer` |
-| itemRenderer | Component | default itemRenderer | no | Renders an item in the list |
+| dataSource | SelectionItem[] | [] | no | Collection of item data. |
+| dataSchema | object | { id: 'id',<br>displayText: 'displayText'} | no | Maps the object properties to the relevant properties required by the `itemRenderer`. |
+| itemRenderer | Component | default itemRenderer | no | Renders an item in the list. |
 
 > **Note** If both `dataSource` and children are present, the children are rendered first and then the `dataSource` items.
-
-#### ItemRenderer
-
-`ItemRenderer` renders the item text and draws an arrow icon (if relevant) for each node. It also adds the three tree events to each node it renders.
-
-##### ItemRenderer Props
-
-| name | type | default | required | description |
-| --- | --- | --- | --- | --- |
-| item | TreeItem | none | yes | The root node to render |
-
-##### ItemRenderer Style
-
-The following style states are supported for TreeItem. It's possible that multiple styles are applied to a TreeItem (e.g. hover and emabled).
-
-* hover
-* expanded true/false/pending
-* selected
-* enabled
-
-The following static styles should be used:
-
-| name | description |
-| --- | --- |
-| root | The root class for the node |
-| icon | The style for the arrow icon which appears only if child nodes are available |
-| title | The style for the node title |
-
-### Component Methods
-
-| name        | parameters                                  | description               |
-| ----------- | ------------------------------------- | ------------------------------- |
-| collapse | item: object (required) | Collapses all nodes under a provided node |
-| collapseAll | none | Collapses all the tree nodes |
-| expand | item: TreeItem (required) | Expands all nodes under a provided node |
-| expandAll | boolean: deep (default) or shallow | Expands all the tree nodes |
-| selectItem | item: object (required) | Selects an item in the tree |
-
-## Input Handling
-
-### Keyboard Navigation
-
-| key | action |
-| --- | --- |
-Home | highlights the first open TreeItem in the TreeView
-End | highlights the last open TreeItem in the TreeView
-Enter | Selects current highlighted item (does not expand it though)
-Up arrow | highlights previous item
-Down arrow | highlights next item
-Left arrow | * if child then highlights parent<br>* if parent then collapses it
-Right arrow | * expands item and highlights it<br>* if item was already expanded then highlights the first child
 
 ## Code Examples
 
