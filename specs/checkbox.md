@@ -24,3 +24,24 @@ Support a similar to native checkbox implementation.
 | tickIcon | Sets the style for the checked state |
 | indeterminateIcon | Sets the style for the indeterminate state |
 | label | Sets the style for the checkbox label |
+
+## Accessibility
+
+### Roles
+
+* Root role - checkbox
+
+### Aria Attributes
+* Text content attributes - aria-label, aria-labelledby, aria-describedby
+* When checked the checkbox has aria-state set to true, otherwise aria-checked is set to false. When the checkbox is in an indeterminate state, the aria-checked is set mixed.
+* aria-controls="list of idrefs" - identifies the checkboxes controlled by a mixed checkbox. This should be added to the checkbox component props.
+
+### Focus
+
+* The div of the checkbox will set to tabindex="0" by default.
+
+## Input Handling
+
+### Keyboard Navigation
+
+* <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">Space</kbd> changes the state of the checkbox. Note the state change to indeterminate will be available only when determined so by logic, so implementation should explicitly enable this state only when relevant. Otherwise state should be toggled between checked and unchecked.
