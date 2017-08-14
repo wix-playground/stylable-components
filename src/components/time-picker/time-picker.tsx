@@ -327,7 +327,7 @@ export default class TimePicker extends React.Component<Props, State> {
         const {currentSegment} = this.state;
         const keyCode = keycode(e.keyCode);
 
-        if (/^\D$/.test(keyCode) || currentSegment === 'ampm') {
+        if (/^\D$/.test(keyCode) || /^\d$/.test(keyCode) && currentSegment === 'ampm') {
             e.preventDefault();
         }
 

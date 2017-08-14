@@ -2,6 +2,7 @@ import * as React from 'react';
 import {TimePicker} from '../../src';
 
 export class TimePickerDemo extends React.Component<any, any> {
+    public intervalId: any;
     constructor() {
         super();
         this.state = {
@@ -11,9 +12,12 @@ export class TimePickerDemo extends React.Component<any, any> {
         };
     }
     public componentDidMount() {
-        setInterval(() => {
+        this.intervalId = setInterval(() => {
             this.setState({now: new Date()});
-        }, 1000);
+        }, 1000) as any;
+    }
+    public componentWillUnmount() {
+        clearInterval(this.intervalId as any);
     }
     public render() {
         const currentTime = [
@@ -29,7 +33,7 @@ export class TimePickerDemo extends React.Component<any, any> {
                 </div>
 
                 <h3>Controlled 24 time format</h3>
-                <div>
+                <div data-automation-id="TIME_PICKER_DEMO_CONTROLLED_24">
                     <TimePicker
                         value={this.state.value1}
                         format="24h"
@@ -39,7 +43,7 @@ export class TimePickerDemo extends React.Component<any, any> {
                 </div>
 
                 <h3>Controlled 12 time format</h3>
-                <div>
+                <div data-automation-id="TIME_PICKER_DEMO_CONTROLLED_AMPM">
                     <TimePicker
                         format="ampm"
                         value={this.state.value1}
