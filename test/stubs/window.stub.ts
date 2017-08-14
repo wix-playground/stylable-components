@@ -1,7 +1,7 @@
 import {SinonSandbox, SinonStub} from 'sinon';
 import {sinon} from 'test-drive-react';
 
-type EventListener = (e?: Partial<Event>) => any;
+type EventListener = (e?: Partial<MouseEvent>) => any;
 
 function stubWindowMethod(
     sandbox: SinonSandbox,
@@ -56,7 +56,7 @@ export default class WindowStub {
 
     private events = new Map<string, EventListener[]>();
 
-    public simulate(type: string, event?: Partial<Event>) {
+    public simulate(type: string, event?: Partial<MouseEvent>) {
         const events = this.events;
 
         if (events.has(type)) {

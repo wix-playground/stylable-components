@@ -1,7 +1,12 @@
 import * as React from 'react';
 import {NumberInput} from '../../src/components/number-input';
 
-export class NumberInputDemo extends React.Component<{}, {value?: number}> {
+export interface State {
+    value?: number;
+    smallValue?: number;
+}
+
+export class NumberInputDemo extends React.Component<{}, State> {
 
     constructor() {
         super();
@@ -14,12 +19,25 @@ export class NumberInputDemo extends React.Component<{}, {value?: number}> {
                 <tr>
                     <td>
                         <NumberInput
+                            value={this.state.smallValue}
+                            step={1}
+                            max={100}
+                            onChange={this.handleSmallValueChange}
+                            placeholder="How Many?"
+                        >
+                            <span data-slot="prefix">prefix</span>
+                            <span data-slot="suffix">suffix</span>
+                        </NumberInput>
+                    </td>
+                </tr><tr>
+                    <td>
+                        <NumberInput
                             value={this.state.value}
                             step={2}
                             min={-5}
                             max={5}
                             onChange={this.handleValueChange}
-                            placeholder="How Many?"
+                            placeholder="From -5 to 5 step 2"
                         >
                             <span data-slot="prefix">prefix</span>
                             <span data-slot="suffix">suffix</span>
@@ -53,4 +71,5 @@ export class NumberInputDemo extends React.Component<{}, {value?: number}> {
     }
 
     private handleValueChange = (value?: number) => this.setState({value});
+    private handleSmallValueChange = (value?: number) => this.setState({smallValue: value});
 }
