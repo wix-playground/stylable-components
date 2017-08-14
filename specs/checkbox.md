@@ -23,7 +23,6 @@ Support a similar to native checkbox implementation.
 | boxIconDefault | sets ths style for the empty checkbox
 | tickIcon | Sets the style for the checked state |
 | indeterminateIcon | Sets the style for the indeterminate state |
-| label | Sets the style for the checkbox label |
 
 ## Accessibility
 
