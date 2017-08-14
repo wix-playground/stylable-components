@@ -1,6 +1,12 @@
 @namespace "SelectionListDemo";
 
+:import {
+    -st-from: '../../src/components/selection-list/selection-list.st.css';
+    -st-default: List;
+}
+
 .emoji-list {
+    -st-extends: List;
     display: flex;
     align-items: center;
     justify-content: space-around;
@@ -10,7 +16,7 @@
     border-radius: 30px;
 }
 
-.emoji-list > .item {
+.emoji-list::item {
     width: 30px;
     height: 30px;
     border-radius: 50%;
@@ -18,65 +24,49 @@
     transition: all 300ms;
     cursor: pointer;
     text-align: center;
+
+    min-height: unset;
+    padding: unset;
+    line-height: unset;
 }
 
-.emoji-list > .item[data-selected] {
+.emoji-list::item:selected {
     width: 56px;
     height: 56px;
     font-size: 45px;
     cursor: default;
+    background-color: unset;
 }
 
-.emoji-list > .item:hover,
-.emoji-list > .item[data-focused] {
+.emoji-list::item:focused,
+.emoji-list::item:hover,
+.emoji-list::item:selected:hover,
+.emoji-list::item:selected:focused {
     background-color: #edf7ff;
-}
+} 
 
 .text-style-list {
     -st-extends: List;
 }
 
-.text-style-list > .item {
+.text-style-list::item {
     padding: 10px 20px;
     color: #000000;
     border-top: 1px solid #DDDDDD;
     cursor: pointer;
 }
 
-.text-style-list > .item:first-child {
+.text-style-list::item:first-child {
     border-top: none;
 }
 
-.text-style-list > .item:hover {
-    background-color: #EDF7FF;
+.text-style-list::item:disabled {
+    cursor: default;
 }
 
-.text-style-list > .item[data-selected] {
-    background-color: #f1f1f1;
-}
-
-.text-style-list > .item[data-disabled] * {
+.text-style-list::item:disabled > * {
     filter: grayscale(100%);
     opacity: 0.2;
-}
-
-.text-style-list > .item[data-disabled]:hover {
-    background: #ffffff;
-}
-
-.text-style-list[data-focused] > .item[data-selected] {
-    background-color: #4990e2;
-    color: #fff;
-}
-
-.text-style-list[data-focused] > .item[data-focused] {
-    background-color: #edf7ff;
-}
-
-.text-style-list[data-focused] > .item[data-selected]:hover,
-.text-style-list[data-focused] > .item[data-selected][data-focused] {
-    background-color: #5cb4ff;
-    color: #ffffff;
 }
 
 .text-style-title {

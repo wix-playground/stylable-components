@@ -4,14 +4,20 @@ import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react
 import {SelectionListDemo} from '../../demo/components/selection-list-demo';
 import sleep from '../../src/common/sleep';
 import {divider, SelectionList} from '../../src/components/selection-list';
-import style from './selection-list-demo.st.css';
+import baseStyle from '../../src/components/selection-list/selection-list.st.css';
+import {hasCssState} from '../utils/has-css-state';
 
 function simulateKeyDown(element: Element, key: string) {
     simulate.keyDown(element, {keyCode: keycode(key)});
 }
 
 function hasState(element: Element, state: string): boolean {
-    return state in (element as HTMLElement).dataset;
+    try {
+        hasCssState(element, baseStyle, {[state]: true});
+        return true;
+    } catch (e) {
+        return false;
+    }
 }
 
 function getListItems(list: Element | null): Element[] {

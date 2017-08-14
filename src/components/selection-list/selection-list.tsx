@@ -29,6 +29,37 @@ function closestElementMatching(
     return current;
 }
 
+export interface OptionProps {
+    value?: string;
+    disabled?: boolean;
+    selected?: boolean;
+    focused?: boolean;
+}
+
+@SBComponent(listStyle)
+export class Option extends React.Component<OptionProps, {}> {
+    public render() {
+        const props = {
+            cssStates: {
+                disabled: this.props.disabled || undefined,
+                selected: this.props.selected || undefined,
+                focused:  this.props.focused  || undefined
+            }
+        };
+
+        return (
+            <div
+                className="item"
+                data-value={this.props.value}
+                data-disabled={this.props.disabled || undefined}
+                {...props as React.HtmlHTMLAttributes<HTMLDivElement>}
+            >
+                {this.props.children}
+            </div>
+        );
+    }
+}
+
 export type SelectionItem = string | object;
 
 export type SelectionItemDefaultFormat = string | {
@@ -49,7 +80,7 @@ const renderItem = (item: SelectionItemDefaultFormat): React.ReactNode => {
 
     return item.hidden ?
         null :
-        <div className="item" data-value={item.value} data-disabled={item.disabled}>{item.label}</div>;
+        <Option value={item.value} disabled={item.disabled}>{item.label}</Option>;
 };
 
 export interface OptionList {
@@ -85,11 +116,19 @@ export class SelectionList extends React.Component<SelectionListProps, Selection
 
     private focusableItemValues: string[] = [];
 
+    public componentWillReceiveProps(nextProps: SelectionListProps) {
+        if (this.state.focused) {
+            this.setState({focusedValue: nextProps.value});
+        }
+    }
+
     public render() {
         const rootProps = root(this.props, {
             'data-automation-id': 'LIST',
-            'data-focused': this.state.focused || undefined,
             'className': 'list',
+            'cssStates': {
+                focused: this.state.focused
+            },
             'tabIndex': -1,
             'onClick': this.handleClick,
             'onKeyDown': this.handleKeyDown,
@@ -118,15 +157,12 @@ export class SelectionList extends React.Component<SelectionListProps, Selection
     private augmentChild(node: React.ReactNode): React.ReactNode {
         if (node && typeof node === 'object') {
             const element = node as React.ReactElement<any>;
-            const value = element.props['data-value'];
+            const value = element.props.value;
             if (value !== undefined) {
                 const selected = value === this.props.value;
                 const focused = value === this.state.focusedValue;
                 if (focused || selected) {
-                    return React.cloneElement(element, {
-                        'data-selected': selected || undefined,
-                        'data-focused':  focused || undefined
-                    });
+                    return React.cloneElement(element, {selected, focused});
                 }
             }
         }
@@ -138,8 +174,8 @@ export class SelectionList extends React.Component<SelectionListProps, Selection
         for (const node of nodes) {
             if (node && typeof node === 'object') {
                 const element = node as React.ReactElement<any>;
-                const value = element.props['data-value'];
-                const disabled = element.props['data-disabled'];
+                const value = element.props.value;
+                const disabled = element.props.disabled;
                 if (value !== undefined && !disabled) {
                     result.push(value);
                 }
@@ -150,7 +186,6 @@ export class SelectionList extends React.Component<SelectionListProps, Selection
 
     private selectValue = (value: string) => {
         this.props.onChange!(value);
-        this.setState({focusedValue: undefined});
     }
 
     private handleClick: React.MouseEventHandler<HTMLElement> = event => {

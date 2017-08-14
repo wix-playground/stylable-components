@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {SBComponent, SBStateless} from 'stylable-react-component';
-import {divider, SelectionList} from '../../src/components/selection-list';
+import {divider, Option, SelectionList} from '../../src/components/selection-list';
 import demoStyle from './selection-list-demo.st.css';
 
 export class SelectionListDemo extends React.Component<{}, {}> {
@@ -47,26 +47,6 @@ export class FoodList extends React.Component {
 }
 
 @SBComponent(demoStyle)
-class EmojiListItem extends React.Component<{
-    'data-value'?: string;
-    'data-selected'?: boolean;
-    'data-focused'?: boolean;
-}, {}> {
-    public render() {
-        return (
-            <div
-                className="item"
-                data-value={this.props['data-value']}
-                data-selected={this.props['data-selected']}
-                data-focused={this.props['data-focused']}
-            >
-                {this.props.children}
-            </div>
-        );
-    }
-}
-
-@SBComponent(demoStyle)
 class EmojiList extends React.Component {
     public state = {value: 'Crocodile'};
     private dataSchema = {value: 'name', label: 'icon'};
@@ -99,7 +79,7 @@ class EmojiList extends React.Component {
     }
 
     private renderItem = ({value, label}: {value: string, label: string}) => {
-        return <EmojiListItem data-value={value}>{label}</EmojiListItem>;
+        return <Option value={value}>{label}</Option>;
     }
 
     private onChange = (value: string) => this.setState({value});
@@ -118,24 +98,24 @@ class TextStyleList extends React.Component {
                     value={this.state.value}
                     onChange={this.onChange}
                 >
-                    <div className="item" data-value="title">
+                    <Option value="title">
                         <span className="text-style-title">Title</span>
-                    </div>
-                    <div className="item" data-value="heading">
+                    </Option>
+                    <Option value="heading">
                         <span className="text-style-heading">Heading</span>
-                    </div>
-                    <div className="item" data-value="heading-red">
+                    </Option>
+                    <Option value="heading-red">
                         <span className="text-style-heading-red">Heading Red</span>
-                    </div>
-                    <div className="item" data-value="body">
+                    </Option>
+                    <Option value="body">
                         <span className="text-style-body">Body</span>
-                    </div>
-                    <div className="item" data-value="caption" data-disabled>
+                    </Option>
+                    <Option value="caption" disabled>
                         <span className="text-style-caption">Caption</span>
-                    </div>
-                    <div className="item" data-value="label">
+                    </Option>
+                    <Option value="label">
                         <span className="text-style-label">Label</span>
-                    </div>
+                    </Option>
                 </SelectionList>
                 <p>
                     <span data-automation-id="RESULT" className={`text-style-${this.state.value}`}>
