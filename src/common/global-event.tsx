@@ -7,8 +7,6 @@ export interface GlobalEventProps {
 
 export default class GlobalEvent extends Component<GlobalEventProps> {
 
-    private emitter = window;
-
     public componentDidMount() {
         this.subscribe(this.props.event);
     }
@@ -34,10 +32,10 @@ export default class GlobalEvent extends Component<GlobalEventProps> {
     }
 
     private subscribe(event: string) {
-        this.emitter.addEventListener(event, this.handler);
+        window && window.addEventListener(event, this.handler);
     }
 
     private unsubscribe(event: string) {
-        this.emitter.removeEventListener(event, this.handler);
+        window && window.removeEventListener(event, this.handler);
     }
 }
