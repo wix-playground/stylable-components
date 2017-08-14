@@ -74,6 +74,17 @@ describe('The DatePicker Component', () => {
         await waitForDom(() => expect(select(datePickerInputId)).to.have.value(JANUARY_FIRST.toDateString()));
     });
 
+    it('displays "Invalid Date" when an invalid date is entered', async () => {
+        const onChange = sinon.spy();
+        const {select, waitForDom} = clientRenderer.render(<DatePicker onChange={onChange} />);
+        const datePickerInput = select(datePickerInputId);
+
+        trigger.change(datePickerInput!, '2sgsdfsdfw223');
+        simulate.blur(datePickerInput);
+
+        await waitForDom(() => expect(datePickerInput).to.have.value('Invalid Date'));
+    });
+
     it('should call onChange with the current input value when blurred', async () => {
         const onChange = sinon.spy();
         const {select, waitForDom} = clientRenderer.render(<DatePicker value={JANUARY_FIRST} onChange={onChange} />);
@@ -118,10 +129,28 @@ describe('The DatePicker Component', () => {
         simulate.keyDown(datePickerInput, { keyCode: keycode('down') });
         simulate.keyDown(datePickerInput, { keyCode: keycode('enter') });
 
-        await waitForDom(() => {
-            expect(select(datePickerDropdownId)).to.be.absent();
-            expect(datePickerInput).to.have.value('Sun Jan 08 2017');
-        });
+        await waitForDom(() => expect(datePickerInput).to.have.value('Sun Jan 08 2017'));
+
+        // Go back one week
+        simulate.focus(datePickerInput);
+        simulate.keyDown(datePickerInput, { keyCode: keycode('up') });
+        simulate.keyDown(datePickerInput, { keyCode: keycode('enter') });
+
+        await waitForDom(() => expect(datePickerInput).to.have.value('Sun Jan 01 2017'));
+
+        // Go forward one day
+        simulate.focus(datePickerInput);
+        simulate.keyDown(datePickerInput, { keyCode: keycode('right') });
+        simulate.keyDown(datePickerInput, { keyCode: keycode('enter') });
+
+        await waitForDom(() => expect(datePickerInput).to.have.value('Mon Jan 02 2017'));
+
+        // Go back one day
+        simulate.focus(datePickerInput);
+        simulate.keyDown(datePickerInput, { keyCode: keycode('left') });
+        simulate.keyDown(datePickerInput, { keyCode: keycode('enter') });
+
+        await waitForDom(() => expect(datePickerInput).to.have.value('Sun Jan 01 2017'));
     });
 
     describe('The Dropdown', () => {
