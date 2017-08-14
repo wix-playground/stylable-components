@@ -71,7 +71,7 @@ See [README.md](./README.md) for more info.
 | Default  | Default component appearance             |
 | Hover    | User hovered over bar / handle / slider area |
 | Focus    | Browser is focused on the component (focus is displayed around the 'handle') |
-| Active   | User clicks on bar OR handle             |
+| Active   | User clicks on bar, handle or mark       |
 | Disabled | Component can not be changed             |
 | Error    | Error state for the component (can be set with :error pseudo-class) |
 
@@ -105,7 +105,9 @@ Focus is placed on the slider (the visual object that the mouse user would move,
 |        | `aria-valuemax=255`     | `div`   | Specifies the maximum value of the slider. |
 |        | `aria-valuemin=0`       | `div`   | Specifies the minimum value of the slide |
 |        | `aria-valuenow=NUMBER`  | `div`   | Indicates the current value of the slider. |
+|        | `aria-label`            | `div`   | Defines a string value that labels the current element. |
 |        | `aria-labelledby=IDREF` | `div`   | Refers to the element containing the name of the slider. |
+|        | `aria-describedby`      | `div`   | Identifies the element (or elements) that describes the object. |
 |        | `aria-orientation`      | `div`   | Indicates the orientation of the slider element.Set to `vertical` for sliders with vertical orientation. Set to `horizontal` for sliders with horizontal orientation . |
 
 See ARIA doc for reference - https://www.w3.org/TR/wai-aria-practices/examples/slider/slider-2.html
@@ -125,9 +127,9 @@ http://ilyabirman.net/meanwhile/all/slider/
 
 In order to change the value, user can:
 
-1. drag handle over slider bar 
-2. click on the slider bar to select the value from the range.
-   NOTE: user should be able to grab the handle from any point in the slider area
+1. drag handle over the slider bar 
+2. click on the slider bar, mark OR clickable area to select the value from the range
+3. click & drag  (click = click on handle, slider, mark & clickable area)
 
 Changing the value is performed **from current value** to the next expected value. 
 E.g. if min=0, max=10, step=2, value=3.5, then UP arrow key will give us 4 and Down arrow key will give us 2
@@ -163,12 +165,11 @@ If slider has a 'step' prop, handle should move across the slider bar only accor
 | up / right arrow key                 | increase value              |
 | left / down arrow key                | decrease value              |
 | home ( fn/ctrl + left arrow key)     | set min value               |
-| end ( fn/ctrl + left arrow key)      | set min value               |
+| end ( fn/ctrl + left arrow key)      | set max value               |
 | page up (fn/ctrl + up arrow key)     | increase value by X         |
 | page down (fn/ctrl + down arrow key) | decrease value by X         |
 | tab                                  | moves to next element       |
 | shift + tab                          | moves to previous element   |
-| enter                                | -                           |
 | esc                                  | removes focus (if in focus) |
 
 **RTL** orientation
@@ -182,23 +183,22 @@ If slider has a 'step' prop, handle should move across the slider bar only accor
 
 ### Mouse
 
-| Event                                   | Action                                   |
-| --------------------------------------- | ---------------------------------------- |
-| hover (over bar / handle / slider area) | highlight slider (both bar & handle)     |
-| click & drag (right / up)               | increase value                           |
-| click & drag (down / left)              | decrease value                           |
-| click (on handle)                       | highlights handle                        |
-| click (on bar)                          | moves handle to position where user clicked |
+| Event                                    | Action                                   |
+| ---------------------------------------- | ---------------------------------------- |
+| hover (over bar / handle / clickable area) | highlight slider (bar, handle, marks)    |
+| click & drag (right / left OR up / down) | change value according to direction of movement |
+| click (on handle)                        | highlights handle                        |
+| click (on bar / mark / clickable area)   | moves handle to position where user clicked |
 
 
 
 ### Touch
 
-| Event           | Action                                   | NOTE                                     |
-| --------------- | ---------------------------------------- | ---------------------------------------- |
-| tap (on handle) | highlights handle                        | we need the ability to expand clickable area for mobile devices |
-| tap (on bar)    | moves handle to position where user clicked | -                                        |
-| drag            | moves handle according to drag           | -                                        |
+| Event                                  | Action                                   | NOTE                                     |
+| -------------------------------------- | ---------------------------------------- | ---------------------------------------- |
+| tap (on handle)                        | highlights handle                        | we need the ability to expand clickable area for mobile devices |
+| tap (on bar / mark / capable area)     | moves handle to position where user clicked | -                                        |
+| tap & drag (right / left OR up / down) | change value according to direction of movement | -                                        |
 
 
 ###### Links to sliders (for reference): 
