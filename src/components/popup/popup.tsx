@@ -97,7 +97,7 @@ export class Popup extends React.Component<PopupProps, {}> {
                         {this.props.children}
                     </div>);
             } else {
-                this.popup = React.cloneElement(this.popup, {style:this.style});
+                this.popup = React.cloneElement(this.popup, {style: this.style});
             }
         }
     }

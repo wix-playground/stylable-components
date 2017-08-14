@@ -145,8 +145,6 @@ describe('<Popup />', function() {
     });
 
     describe('Layout tests', function() {
-        // const verticalArray = ['top', 'center', 'bottom'];
-        // const horizontalArray = ['left', 'center', 'right'];
         const fixture: PositionPoint[] = [{vertical: 'top', horizontal: 'left'},
             {vertical: 'top', horizontal: 'center'},
             {vertical: 'top', horizontal: 'right'},
@@ -160,7 +158,6 @@ describe('<Popup />', function() {
         // Level one: popup position, level two: anchor position
         const topResults = getLayoutTest('vertical');
         const leftResults = getLayoutTest('horizontal');
-        const length = fixture.length;
         for (const pPosition of fixture) {
             for (const aPosition of fixture) {
                 const pVertical = pPosition.vertical;
