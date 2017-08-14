@@ -41,7 +41,7 @@ function segmentsToInputValue({hh, mm, ampm}: {hh?: number, mm?: number, ampm: A
     if (hh === undefined && mm === undefined) {
         return '';
     }
-    const timeString = `${pad2(hh || 0)}:${pad2(mm || 0)}`
+    const timeString = `${pad2(hh || 0)}:${pad2(mm || 0)}`;
     const ampmLabel = ampmLabels[ampm];
     return ampmLabel ? (timeString + ' ' + ampmLabel) : timeString;
 }
@@ -204,11 +204,11 @@ export default class TimePicker extends React.Component<Props, State> {
         });
     }
 
-    private toggleAmpm():void {
+    private toggleAmpm(): void {
         this.updateSegmentValue('ampm', 1 - this.state.ampm);
     }
 
-    private changeValue(step: number):void {
+    private changeValue(step: number): void {
         const {currentSegment} = this.state;
         if (!isTimeSegment(currentSegment)) {
             return this.toggleAmpm();
