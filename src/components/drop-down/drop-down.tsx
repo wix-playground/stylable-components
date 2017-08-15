@@ -61,6 +61,8 @@ export interface DropDownProps extends React.HTMLAttributes<HTMLDivElement> {
     items?: DropDownItem[];
     onItemClick?: (item: DropDownItem) => void;
     tabIndex?: number;
+    focusedItem?: DropDownItem;
+    onFocusItem?: (item: DropDownItem) => void;
 }
 
 @SBComponent(style)
@@ -98,6 +100,10 @@ export class DropDown extends React.Component<DropDownProps, {}> {
         );
     }
 
+    private isFirstItemFocused() {
+        return false;
+    }
+
     private onKeyDown = (e: any) => {
         switch (e.keyCode) {
             case KeyCodes.SPACE:
@@ -111,6 +117,12 @@ export class DropDown extends React.Component<DropDownProps, {}> {
             case KeyCodes.DOWN:
                 e.preventDefault();
                 !this.props.open && this.props.onInputClick!();
+                break;
+            case KeyCodes.UP:
+                e.preventDefault();
+                if (this.isFirstItemFocused()) {
+                    this.props.open && this.props.onInputClick!();
+                }
                 break;
         }
     }
