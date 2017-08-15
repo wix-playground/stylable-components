@@ -164,19 +164,74 @@ describe('<Checkbox/>', function() {
         });
     });
 
-    it('Renders a native input component of type "checkbox" for SEO purposes', function() {
+    it('can get focus', async function() {
         const {select, waitForDom} = clientRenderer.render(
-            <CheckBox
-                boxIcon={boxSVG}
-                tickIcon={tickSVG}
-                value={true}
-            />
+            <CheckBox />
         );
-        const nativeInput = select('NATIVE_CHECKBOX') as HTMLInputElement;
+        const checkbox = select('CHECKBOX_ROOT') as HTMLElement;
+        await waitForDom(() => {
+            expect(select('CHECKBOX_ROOT')).to.be.present();
+        });
+        checkbox.focus();
+        await waitFor(() => {
+            expect(document.activeElement).equals(checkbox);
+        });
+    });
 
-        expect(nativeInput, 'native input not found in DOM').to.exist;
-        expect(nativeInput.tagName).to.equal('INPUT');
-        expect(nativeInput).to.have.attr('type', 'checkbox');
+    describe('Accessibility features', function() {
+        it('Renders a native input and pass on checked state', function() {
+            const {select, waitForDom} = clientRenderer.render(
+                <CheckBox value={true}/>
+            );
+            const nativeInput = select('NATIVE_CHECKBOX') as HTMLInputElement;
+
+            return waitForDom(() => {
+                expect(nativeInput, 'native input not found in DOM').to.exist;
+                expect(nativeInput.tagName).to.equal('INPUT');
+                expect(nativeInput).to.have.attr('type', 'checkbox');
+                expect(nativeInput).to.be.absent();
+                expect(nativeInput.checked, 'native checkbox should be checked').to.equal(true);
+            });
+        });
+
+        it('native input gets disabled state', function() {
+            const {select, waitForDom} = clientRenderer.render(
+                <CheckBox disabled/>
+            );
+            const nativeInput = select('NATIVE_CHECKBOX') as HTMLInputElement;
+            return waitForDom(() => {
+                expect(nativeInput.disabled, 'native checkbox should be disabled').to.equal(true);
+            });
+        });
+
+        it('native input gets id prop if supplied by user', function () {
+            const {select, waitForDom} = clientRenderer.render(
+                <CheckBox id="covfefe"/>
+            );
+            const nativeInput = select('NATIVE_CHECKBOX') as HTMLInputElement;
+            return waitForDom(() => {
+                expect(nativeInput.id, 'native checkbox should have id').to.equal('covfefe');
+            });
+        });
+
+        it('component gets tabIndex of 0 by default', function () {
+            const {select, waitForDom} = clientRenderer.render(
+                <CheckBox />
+            );
+            return waitForDom(() => {
+                expect(select('CHECKBOX_ROOT')).to.have.attr('tabIndex', '0');
+            });
+        });
+
+        it('component gets tabIndex supplied by the user', function () {
+            const {select, waitForDom} = clientRenderer.render(
+                <CheckBox tabIndex={99998}/>
+            );
+            return waitForDom(() => {
+                expect(select('CHECKBOX_ROOT')).to.have.attr('tabIndex', '99998');
+            });
+        });
+
     });
 
     describe('When disabled', function() {

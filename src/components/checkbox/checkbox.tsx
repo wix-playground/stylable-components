@@ -13,6 +13,8 @@ export interface CheckBoxProps {
     disabled: boolean;
     readonly: boolean;
     indeterminate: boolean;
+    id?: string;
+    tabIndex?: number;
 }
 
 export interface CheckBoxIconProps {
@@ -69,62 +71,73 @@ export class CheckBox extends React.Component<Partial<CheckBoxProps>, {}> {
         onChange: () => { },
         disabled: false,
         readonly: false,
-        indeterminate: false
+        indeterminate: false,
+        tabIndex: 0
     };
 
     public render() {
-        const BoxIcon = this.props.boxIcon!;
-        const IndeterminateIcon = this.props.indeterminateIcon!;
-        const TickIcon = this.props.tickIcon!;
+        const {value, boxIcon, tickIcon, indeterminateIcon, onChange, disabled,
+               readonly, indeterminate, tabIndex, id, children, ...rest} = this.props;
+        const BoxIcon = boxIcon!;
+        const IndeterminateIcon = indeterminateIcon!;
+        const TickIcon = tickIcon!;
         const rootProps = root(this.props, {
             'data-automation-id': 'CHECKBOX_ROOT',
             'className': 'root'
         });
         const cssStates = {
-                checked: this.props.value!,
-                disabled: this.props.disabled!,
-                readonly: this.props.readonly!,
-                indeterminate: this.props.indeterminate!
+                checked: value!,
+                disabled: disabled!,
+                readonly: readonly!,
+                indeterminate: indeterminate!
         };
 
         return (
-            <div {...rootProps as any} onClick={this.onClick} cssStates={cssStates}>
+            <div
+                {...rootProps as any}
+                onClick={this.onClick}
+                cssStates={cssStates}
+                role="checkbox"
+                aria-checked={indeterminate ? 'mixed' : value}
+                tabIndex={tabIndex}
+            >
 
                 <BoxIcon
-                    value={this.props.value}
-                    indeterminate={this.props.indeterminate}
-                    disabled={this.props.disabled}
+                    value={value}
+                    indeterminate={indeterminate}
+                    disabled={disabled}
                 />
 
-                {this.props.indeterminate &&
+                {indeterminate &&
                     <IndeterminateIcon
-                        value={this.props.value}
-                        indeterminate={this.props.indeterminate}
-                        disabled={this.props.disabled}
+                        value={value}
+                        indeterminate={indeterminate}
+                        disabled={disabled}
                     />
                 }
-                {!this.props.indeterminate && this.props.value &&
+                {!indeterminate && value &&
                     <TickIcon
-                        value={this.props.value}
-                        indeterminate={this.props.indeterminate}
-                        disabled={this.props.disabled}
+                        value={value}
+                        indeterminate={indeterminate}
+                        disabled={disabled}
                     />
                 }
 
-                {this.props.children}
+                {children}
 
                 <input
                     data-automation-id="NATIVE_CHECKBOX"
                     type="checkbox"
                     className="nativeCheckbox"
-                    defaultChecked={this.props.value}
-                    disabled={this.props.disabled}
+                    defaultChecked={value}
+                    disabled={disabled}
+                    id={id}
                 />
             </div>
         );
     }
 
-    private onClick = () => {
+    private onClick = (e: React.SyntheticEvent<HTMLDivElement>) => {
         if (!this.props.disabled && !this.props.readonly) {
             this.props.indeterminate ? this.props.onChange!(true) : this.props.onChange!(!this.props.value);
         }
