@@ -2,6 +2,7 @@ import * as React from 'react';
 import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react';
 import {BasicDemo, demoCheckBoxText, DisabledDemo, IndeterminateDemo} from '../../demo/components/checkbox-demo';
 import {CheckBox, CheckBoxIconProps} from '../../src';
+import * as keycode from 'keycode';
 
 const boxSVG: React.SFC<CheckBoxIconProps> = props => {
     return (
@@ -204,7 +205,7 @@ describe('<Checkbox/>', function() {
             });
         });
 
-        it('native input gets id prop if supplied by user', function () {
+        it('native input gets id prop if supplied by user', function() {
             const {select, waitForDom} = clientRenderer.render(
                 <CheckBox id="covfefe"/>
             );
@@ -214,7 +215,7 @@ describe('<Checkbox/>', function() {
             });
         });
 
-        it('component gets tabIndex of 0 by default', function () {
+        it('component gets tabIndex of 0 by default', function() {
             const {select, waitForDom} = clientRenderer.render(
                 <CheckBox />
             );
@@ -223,7 +224,7 @@ describe('<Checkbox/>', function() {
             });
         });
 
-        it('component gets tabIndex supplied by the user', function () {
+        it('component gets tabIndex supplied by the user', function() {
             const {select, waitForDom} = clientRenderer.render(
                 <CheckBox tabIndex={99998}/>
             );
@@ -232,6 +233,32 @@ describe('<Checkbox/>', function() {
             });
         });
 
+        it('component sends onChange when pressing "SPACE"', async function() {
+            const onChange = sinon.spy();
+
+            const {select, waitForDom} = clientRenderer.render(
+                <CheckBox onChange={onChange}/>
+            );
+
+            const checkbox = select('CHECKBOX_ROOT') as HTMLElement;
+
+            await waitForDom(() => {
+                expect(select('CHECKBOX_ROOT')).to.be.present();
+            });
+
+            checkbox.focus();
+
+            await waitFor(() => {
+                expect(document.activeElement).equals(checkbox);
+            });
+
+            simulate.keyDown(checkbox, {keyCode: keycode('SPACE')});
+
+            await waitFor(() => {
+                expect(onChange).to.be.calledOnce;
+                expect(onChange).to.be.calledWith(true);
+            });
+        });
     });
 
     describe('When disabled', function() {

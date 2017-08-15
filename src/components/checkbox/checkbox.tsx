@@ -2,6 +2,7 @@ import * as React from 'react';
 import { SBComponent } from 'stylable-react-component';
 import { root } from 'wix-react-tools';
 import style from './checkbox.st.css';
+import * as keycode from 'keycode';
 
 export interface CheckBoxProps {
     value: boolean;
@@ -100,6 +101,7 @@ export class CheckBox extends React.Component<Partial<CheckBoxProps>, {}> {
                 role="checkbox"
                 aria-checked={indeterminate ? 'mixed' : value}
                 tabIndex={tabIndex}
+                onKeyDown={this.handleKeyDown}
             >
 
                 <BoxIcon
@@ -140,6 +142,15 @@ export class CheckBox extends React.Component<Partial<CheckBoxProps>, {}> {
     private onClick = (e: React.SyntheticEvent<HTMLDivElement>) => {
         if (!this.props.disabled && !this.props.readonly) {
             this.props.indeterminate ? this.props.onChange!(true) : this.props.onChange!(!this.props.value);
+        }
+    }
+
+    private handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) =>  {
+        if (e.keyCode === keycode('space')) {
+            e.preventDefault();
+            if (!this.props.disabled && !this.props.readonly) {
+                this.props.indeterminate ? this.props.onChange!(true) : this.props.onChange!(!this.props.value);
+            }
         }
     }
 }
