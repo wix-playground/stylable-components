@@ -9,7 +9,7 @@ import {
     getMonthNames,
     getNumOfFollowingDays,
     getNumOfPreviousDays
-} from '../../common/date-helpers';
+} from '../../utils';
 import styles from './date-picker.st.css';
 import {Day} from './day';
 
