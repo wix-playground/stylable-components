@@ -5,11 +5,6 @@
     -st-named: color_Default, color_MainText_Background, color_MainText, color_Active, color_Hover, color_Keyboard_Focused, fontFamily;
 }
 
-:import {
-    -st-from: "../../style/default-theme/controls/input.st.css";
-    -st-default: input;
-}
-
 :vars {
     arrowThickness: 0.09em;
     headerHeight: 60px;
@@ -20,7 +15,6 @@
 }
 
 .input {
-    -st-extends: input;
     width: value(inputWidth);
 }
 
