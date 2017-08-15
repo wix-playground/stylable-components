@@ -4,12 +4,10 @@ import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react
 import {TimePicker} from '../../src';
 import styles from '../../src/components/time-picker/time-picker.st.css';
 import {
-    Ampm, isValidValue,
-    pad2, Segment, selectionIndexes, to24, toAmpm
+    Ampm, isValidValue, isTouch,
+    formatTimeChunk, Segment, selectionIndexes, to24, toAmpm
 } from '../../src/components/time-picker/utils';
 import {hasCssState} from '../utils/has-css-state';
-
-const isTouch = typeof window === 'object' && 'orientation' in window;
 
 function setSelection(input: HTMLInputElement, segment: Segment) {
     const [start, end] = selectionIndexes[segment];
@@ -381,15 +379,15 @@ describe('<TimePicker/>', () => {
 });
 
 describe('TimePicker/utils', () => {
-    describe('pad2()', () => {
+    describe('formatTimeChunk()', () => {
         it('""', () => {
-            expect(pad2('')).to.equal('00');
+            expect(formatTimeChunk('')).to.equal('00');
         });
         it('"1"', () => {
-            expect(pad2('1')).to.equal('01');
+            expect(formatTimeChunk('1')).to.equal('01');
         });
         it('"12"', () => {
-            expect(pad2('12')).to.equal('12');
+            expect(formatTimeChunk('12')).to.equal('12');
         });
     });
     describe('to24()', () => {

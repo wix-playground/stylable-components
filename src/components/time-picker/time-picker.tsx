@@ -6,7 +6,8 @@ import {Stepper} from '../stepper';
 import styles from './time-picker.st.css';
 import {
     Ampm, Format, isTimeSegment,
-    isValidValue, pad2, Segment, selectionIndexes, TimeSegment, to24, toAmpm
+    isTouch, is12TimeFormat, validInputStringRE, ampmLabels,
+    isValidValue, formatTimeChunk, Segment, selectionIndexes, TimeSegment, to24, toAmpm
 } from './utils';
 
 export interface Props {
@@ -28,20 +29,11 @@ export interface State {
     currentSegment: Segment;
 }
 
-const isTouch = typeof window === 'object' && 'orientation' in window;
-const is12TimeFormat = /AM|PM/.test(new Date().toLocaleTimeString());
-const validInputStringRE = /^(\d{1,2}):(\d{1,2})(?:\s(AM|PM))?$/;
-const ampmLabels = {
-    [Ampm.AM]: 'AM',
-    [Ampm.PM]: 'PM',
-    [Ampm.NONE]: ''
-};
-
 function segmentsToInputValue({hh, mm, ampm}: {hh?: number, mm?: number, ampm: Ampm}): string {
     if (hh === undefined && mm === undefined) {
         return '';
     }
-    const timeString = `${pad2(hh || 0)}:${pad2(mm || 0)}`;
+    const timeString = `${formatTimeChunk(hh || 0)}:${formatTimeChunk(mm || 0)}`;
     const ampmLabel = ampmLabels[ampm];
     return ampmLabel ? (timeString + ' ' + ampmLabel) : timeString;
 }
@@ -131,8 +123,8 @@ export default class TimePicker extends React.Component<Props, State> {
                             currentIsTime &&
                             !isValidValue(currentSegmentValue - 1, currentSegment as any, ampm)
                         }
-                        onUp={this.createStepperHandler(+1)}
-                        onDown={this.createStepperHandler(-1)}
+                        onUp={this.onStepperUp}
+                        onDown={this.onStepperDown}
                     />
                 }
                 {isTouch &&
@@ -163,11 +155,10 @@ export default class TimePicker extends React.Component<Props, State> {
     }
 
     private getValue(): string {
-        const {hh, mm, ampm} = this.state;
-        return [
-            to24(hh || 0, ampm),
-            mm || 0
-        ].map(String).map(pad2).join(':');
+        const {hh = 0, mm = 0, ampm} = this.state;
+        const hhString = formatTimeChunk(to24(hh, ampm));
+        const mmString = formatTimeChunk(mm);
+        return `${hhString}:${mmString}`;
     }
 
     private select(segment: Segment): boolean {
@@ -221,7 +212,8 @@ export default class TimePicker extends React.Component<Props, State> {
         }
     }
 
-    private createStepperHandler = (step: number) => () => this.changeValue(step);
+    private onStepperUp = () => this.changeValue(1);
+    private onStepperDown = () => this.changeValue(-1);
 
     private onInputMouseDown = (e: any): void => {
         // when user select text with double click
@@ -286,7 +278,7 @@ export default class TimePicker extends React.Component<Props, State> {
             if (shouldWaitForInput) {
                 input.selectionStart = input.selectionEnd = cursorPosition;
             } else {
-                this.moveSelection(+1);
+                this.moveSelection(1);
                 this.commit();
             }
         });
@@ -324,6 +316,8 @@ export default class TimePicker extends React.Component<Props, State> {
         const {currentSegment} = this.state;
         const keyCode = keycode(e.keyCode);
 
+        // prevent default for and char (a-z) and also for any didgit (0-9) for ampm segment
+        // this is needed to disallow user to move reset select state on input
         if (/^\D$/.test(keyCode) || /^\d$/.test(keyCode) && currentSegment === 'ampm') {
             e.preventDefault();
         }
@@ -345,7 +339,7 @@ export default class TimePicker extends React.Component<Props, State> {
                 break;
             case 'up':
                 e.preventDefault();
-                this.changeValue(+1);
+                this.changeValue(1);
                 break;
             case 'down':
                 e.preventDefault();
