@@ -257,12 +257,17 @@ export class Slider extends React.Component<SliderProps, SliderState> {
     }
 
     private getValueFromElementAndPointer(element: HTMLElement, pointerPosition: PointerPosition): number {
+        const { relativeStep, isVertical } = this.state;
+
         const sliderBounds = element.getBoundingClientRect();
-        const sliderOffset = sliderBounds.left;
-        const sliderSize = sliderBounds.width;
-        const sliderCoordinate = pointerPosition.clientX;
-        const relativeValue = this.getRelativeValue(sliderCoordinate - sliderOffset, 0, sliderSize);
-        const { relativeStep } = this.state;
+
+        const sliderOffset = isVertical ? sliderBounds.top : sliderBounds.left;
+        const sliderSize = isVertical ? sliderBounds.height : sliderBounds.width;
+        const sliderCoordinate = isVertical ? pointerPosition.clientY : pointerPosition.clientX;
+
+        const relativeValue = isVertical ?
+            100 - this.getRelativeValue(sliderCoordinate - sliderOffset, 0, sliderSize) :
+            this.getRelativeValue(sliderCoordinate - sliderOffset, 0, sliderSize);
 
         if (typeof relativeStep === 'undefined' || relativeStep === CONTINUOUS_STEP) {
             return relativeValue;
