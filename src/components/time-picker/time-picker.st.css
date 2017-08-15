@@ -26,6 +26,9 @@
     height: value(height);
     width: value(width);
     display: inline-flex;
+
+    /* preventing window DPI scaling artifacts*/
+    padding: 0.3px;
 }
 
 .root:not(:disabled):hover {
