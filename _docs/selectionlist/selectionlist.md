@@ -31,53 +31,6 @@
 
 > Note: If both datasource and children are present, the children are rendered first and then the dataSource items.
 
-### Input Handling
-
-Keyboard and mouse navigation have different styling behaviors.
-
-#### Keyboard Navigation
-
-key | action
---- | ---
-Home | Highlights the first item in the SelectionList.
-End | Highlights the last item in the SelectionList.
-Up | Highlights previous item.
-Down | Highlights next item.
-Enter | Selects current highlighted item.
-Space | Toggles the selected state of the focused option (multi-select) or selects the option (single select).
-
-Non-selectable items (items without `data-value` on the root element) are skipped during the keyboard traversal.
-
-##### When `Type-ahead` is enabled, it applies to all character and number keys (ASCII ordering):
-
-Upon input, focus moves to the next item with a name that starts with the typed character.
-Upon multiple input in rapid succession (with a small delay after last input before moving focus), the focus moves to the next item that starts with the characters typed.
-
-#### Mouse
-
-event | action
---- | ---
-Left-click | Selects an item.
-Mouse over | Gives mouse hover to an item.
-
-### Accessibility
-
-#### Roles
-
-* **Root Role:** listbox (identifies the focusable element that has listbox behaviors and contains listbox options)
-* **Child role:** option (identifies a selectable element)
-
-#### Aria
-
-* **aria-activedescendant="ID_REF":** Applied to the element with the listbox role, tells assistive technologies which of the options, if any, is visually indicated as having keyboard focus. `idref`, refers to the ID of the focused option in the list. When navigation keys, such as `Down Arrow`, are pressed, JavaScript changes the value. When the listbox is empty, then `aria-activedescendant=""`.
-* **aria-selected="true":** Applied to elements with role option that are visually styled as selected to inform assistive technologies that the options are selected. When multiple selections are allowed, this attribute is applied to all selected items.
-
-#### Focus
-
-* When **tab** moves the focus into the listbox:
-  * If none of the options is selected, focus is set to first option.
-  * If an option is selected, focus moves to the first selected option.
-
 ### Code Example
 
 > TBD
