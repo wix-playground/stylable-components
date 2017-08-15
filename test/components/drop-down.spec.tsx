@@ -137,24 +137,5 @@ describe('<DropDown />', () => {
 
             return waitForDom(() => expect(select(dropDownDemo, list)).to.be.present());
         });
-
-        it('closes selection list when UP is clicked if first item is focused', async () => {
-            const { select, waitForDom } = clientRenderer.render(<DropDownDemo />);
-
-            await waitForDom(() => expect(select(dropDownDemo, list)).to.be.absent());
-
-            simulate.click(select(dropDownDemo, input));
-
-            await waitForDom(() => expect(select(dropDownDemo, list)).to.be.present());
-
-            // the additional click is because after we click the first child
-            // the list closes automatically
-            simulate.click(select(dropDownDemo, list)!.children![0].children[0]);
-            simulate.click(select(dropDownDemo, input));
-
-            simulate.keyDown(select(dropDownDemo, dropDown), { keyCode: KeyCodes.UP });
-
-            return waitForDom(() => expect(select(dropDownDemo, list)).to.be.absent());
-        });
     });
 });
