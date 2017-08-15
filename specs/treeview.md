@@ -93,6 +93,17 @@ The TreeView implements the OptionList intefarface (dataSource, dataScheme and i
 | expandAll | boolean deep (default) or shallow | Expands all the tree nodes |
 | selectItem | item: Object (required) | Selects an item in the three |
 
+## Accessibility
+
+### Roles
+
+* Root role - tree
+* Child node role - treeitem
+
+### Aria Attributes
+
+### Focus
+
 ## Input Handling
 
 ### Keyboard Navigation
