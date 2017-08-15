@@ -20,7 +20,6 @@ export interface CalendarProps {
     startingDay?: number;
     highlightSelectedDate?: boolean;
     highlightFocusedDate?: boolean;
-    tabIndex?: number;
     onChange(date: Date): void;
     updateDropdownDate(date: Date): void;
 }
@@ -32,7 +31,7 @@ const monthNames = getMonthNames();
 export class Calendar extends React.Component<CalendarProps, {}> {
     public render() {
         return (
-            <div tabIndex={this.props.tabIndex} data-automation-id="DATE_PICKER_CALENDAR">
+            <div data-automation-id="DATE_PICKER_CALENDAR">
                 <div className="dropdownArrowWrapper"><div className="dropdownArrow" /></div>
                 <div className="dropdown" data-automation-id="DATE_PICKER_DROPDOWN">
                     <div className="header">
