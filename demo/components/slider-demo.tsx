@@ -93,6 +93,44 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                     <td />
                 </tr>
                 </tbody>
+                <thead>
+                <tr>
+                    <th className={headerCellStyles}>Slider axis="y"</th>
+                    <th className={headerCellStyles}>Slider axis="x-reverse"</th>
+                    <th className={headerCellStyles}>Slider axis="y-reverse"</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>
+                        <Slider
+                            axis={'y'}
+                            value={this.state.value}
+                            min={min}
+                            max={max}
+                            onChange={this.onSliderChange}
+                        />
+                    </td>
+                    <td>
+                        <Slider
+                            axis={'x-reverse'}
+                            value={this.state.value}
+                            min={min}
+                            max={max}
+                            onChange={this.onSliderChange}
+                        />
+                    </td>
+                    <td>
+                        <Slider
+                            axis={'y-reverse'}
+                            value={this.state.value}
+                            min={min}
+                            max={max}
+                            onChange={this.onSliderChange}
+                        />
+                    </td>
+                </tr>
+                </tbody>
             </table>
         );
     }

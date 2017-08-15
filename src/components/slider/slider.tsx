@@ -10,6 +10,15 @@ enum ChangeDirrection {
     descend
 }
 
+export const AXISES = {
+    x: 'x',
+    y: 'y',
+    xReverse: 'x-reverse',
+    yReverse: 'y-reverse'
+};
+
+export type AxisOptions = 'x' | 'y' | 'x-reverse' | 'y-reverse';
+
 import style from './slider.st.css';
 
 const CONTINUOUS_STEP = 'any';
@@ -17,6 +26,7 @@ const DEFAULT_STEP = 1;
 const DEFAULT_MIN = 0;
 const DEFAULT_MAX = 100;
 const DEFAULT_VALUE = 50;
+const DEFAULT_AXIS = AXISES.x;
 
 function noop() { }
 
@@ -25,6 +35,7 @@ export interface SliderProps {
     min?: number;
     max?: number;
     step?: Step;
+    axis?: AxisOptions;
 
     name?: string;
     label?: string;
@@ -59,6 +70,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         max: DEFAULT_MAX,
         step: DEFAULT_STEP,
         value: DEFAULT_VALUE,
+        axis: DEFAULT_AXIS,
 
         environment: document,
 
@@ -100,18 +112,22 @@ export class Slider extends React.Component<SliderProps, SliderState> {
     public render() {
         return (
             <div
-                className={style['slider-container']}
+                className="container"
                 data-automation-id="SLIDER-CONTAINER"
                 cssStates={{
-                    active: this.state.isActive,
-                    disabled: Boolean(this.props.disabled),
-                    error: Boolean(this.props.error)
+                    'active': this.state.isActive,
+                    'disabled': Boolean(this.props.disabled),
+                    'error': Boolean(this.props.error),
+                    'x': this.props.axis === AXISES.x,
+                    'y': this.props.axis === AXISES.y,
+                    'x-reverse': this.props.axis === AXISES.xReverse,
+                    'y-reverse': this.props.axis === AXISES.yReverse
                 }}
             >
                 <input
+                    className="native-input"
                     value={this.props.value}
                     type="number"
-                    className={style['slider-native-input']}
                     data-automation-id="SLIDER-NATIVE-INPUT"
                     name={this.props.name}
                     required={this.props.required}
@@ -120,7 +136,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
                     readOnly={true}
                 />
                 <div
-                    className={style.slider}
+                    className="slider"
                     data-automation-id="SLIDER"
                     title={this.props.label}
                     tabIndex={this.props.disabled ? -1 : 0}
@@ -136,16 +152,19 @@ export class Slider extends React.Component<SliderProps, SliderState> {
                     aria-valuemax={`${this.props.max}`}
                     aria-valuenow={`${this.props.value}`}
                 >
-                    <div className={style['slider-track']} data-automation-id="SLIDER-TRACK">
+                    <div
+                        className="track"
+                        data-automation-id="SLIDER-TRACK"
+                    >
                         <div
-                            className={style['slider-progress']}
+                            className="progress"
                             data-automation-id="SLIDER-PROGRESS"
                             style={{
                                 width: `${this.state.relativeValue}%`
                             }}
                         />
                         <a
-                            className={style['slider-handle']}
+                            className="handle"
                             data-automation-id="SLIDER-HANDLE"
                             style={{
                                 left: `${this.state.relativeValue}%`
@@ -153,7 +172,10 @@ export class Slider extends React.Component<SliderProps, SliderState> {
                         />
                     </div>
                 </div>
-                <div className={style['slider-scale-container']} data-automation-id="SLIDER-SCALE-CONTAINER" />
+                <div
+                    className="scale-container"
+                    data-automation-id="SLIDER-SCALE-CONTAINER"
+                />
 
             </div>
         );

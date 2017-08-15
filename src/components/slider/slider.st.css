@@ -22,7 +22,7 @@
 }
 
 .root {
-    -st-states: active, disabled, error;
+    -st-states: active, disabled, error, x, x-reverse, y, y-reverse;
     width: 100%;
     position: relative;
     display: inline-block;
@@ -40,7 +40,7 @@
     -webkit-touch-callout: none;
 }
 
-.slider-native-input {
+.native-input {
     position: absolute;
     opacity: 0;
     width: 0;
@@ -48,14 +48,14 @@
     outline: none;
 }
 
-.slider-track {
+.track {
     position: relative;
     height: 4px;
     border-radius: 2px;
     background-color: #adbbc6;
 }
 
-.slider-progress {
+.progress {
     position: absolute;
     width: 50%;
     height: inherit;
@@ -63,7 +63,7 @@
     border-radius: 2px;
 }
 
-.slider-handle {
+.handle {
     position: absolute;
     left: 50%;
     width: 16px;
@@ -75,38 +75,38 @@
     z-index: 1000;
 }
 
-.slider-scale-container {
+.scale-container {
     height: inherit;
 }
 
 /* Hover state */
-.slider:hover .slider-track {
+.slider:hover .track {
     background-color: #7d8c98;
 }
 
-.slider:hover .slider-handle {
+.slider:hover .handle {
     background-color: #edf7ff;
     border: solid 1px #4a90e2;
 }
 
 /* Focus state */
-.slider:focus .slider-handle {
+.slider:focus .handle {
     -webkit-box-shadow: 0 0 0 4px rgba(92, 180, 255, 0.5);
     box-shadow: 0 0 0 4px rgba(92, 180, 255, 0.5);
 }
 
 /* Active state */
-.root:active .slider-handle {
+.root:active .handle {
     -webkit-box-shadow: 0 0 0 0px rgba(92, 180, 255, 0.5);
     box-shadow: 0 0 0 0px rgba(92, 180, 255, 0.5);
     background-color: #4a90e2;
 }
 
-.root:active .slider-track {
+.root:active .track {
     background-color: #adbbc6;
 }
 
-.root:active .slider-progress {
+.root:active .progress {
     background-color: #4a90e2;
 }
 
@@ -115,26 +115,26 @@
     cursor: not-allowed;
 }
 
-.root:disabled .slider-handle {
+.root:disabled .handle {
     -webkit-box-shadow: 0 0 0 0px rgba(92, 180, 255, 0.5);
     box-shadow: 0 0 0 0px rgba(92, 180, 255, 0.5);
     border-color: #c8c8c8;
     background-color: #f1f1f1;
 }
 
-.root:disabled .slider-track {
+.root:disabled .track {
     background-color: #c8c8c8;
 }
 
-.root:disabled .slider-progress {
+.root:disabled .progress {
     background-color: transparent;
 }
 
 /* Error state */
-.root:error .slider-progress {
+.root:error .progress {
     background-color: #e24a4a;
 }
 
-.root:error:active .slider-progress {
+.root:error:active .progress {
     background-color: #4a90e2;
 }
