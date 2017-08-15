@@ -1,6 +1,9 @@
 import * as React from 'react';
 import { TreeView } from '../../src';
-import { TreeItemData } from '../../src/components/tree-view/tree-view';
+import {TreeItemData, TreeItemProps} from '../../src/components/tree-view/tree-view';
+import {SBStateless} from "stylable-react-component/dist/stylable-react";
+import {observer} from "mobx-react";
+import style from './tree-view-demo.st.css';
 
 export const treeData: TreeItemData[] = [
     { label: 'Food Menu', children: [
@@ -37,7 +40,52 @@ function SelectedItem({selectedItem}: any) {
 export interface TreeViewDemoState {
     selectedItem: TreeItemData | undefined;
     focusedItem: TreeItemData | undefined;
+    selectedItemCustom: TreeItemData | undefined;
+    focusedItemCustom: TreeItemData | undefined;
 }
+
+export const CustomItem: React.SFC<TreeItemProps> =
+    SBStateless(({ item, itemRenderer, onItemClick, onIconClick, stateMap, state }) => {
+        const TreeNode = itemRenderer;
+        const iconProps = {
+            onClick: onIconClick && onIconClick.bind(null, item),
+            className: 'tree-item-icon'
+        };
+        return (
+            <div>
+                <div
+                    className="tree-node"
+                    cssStates={{ selected: state!.isSelected, focused: state!.isFocused }}
+                    data-selected={state!.isSelected}
+                    data-focused={state!.isFocused}
+                    onClick={onItemClick && onItemClick.bind(null, item)}
+                >
+                    {item.children &&
+                        <span {...iconProps}>{state!.isExpanded ? '[Close] ' : '[Open] '}</span>}
+                    <span
+                        className="tree-item-label"
+                    >
+                        {item.label}
+                    </span>
+                </div>
+                <div className="nested-tree">
+                    {state!.isExpanded && (item.children || []).map((child: TreeItemData, index: number) =>
+                        <TreeNode
+                            item={child}
+                            onItemClick={onItemClick}
+                            itemRenderer={itemRenderer}
+                            onIconClick={onIconClick}
+                            stateMap={stateMap}
+                            state={stateMap.getItemState(child)}
+                            key={`${index}`}
+                        />
+                    )}
+                </div>
+            </div>
+        );
+    }, style);
+
+const CustomItemWrapper = observer(CustomItem);
 
 export class TreeViewDemo extends React.Component<{}, TreeViewDemoState> {
 
@@ -45,7 +93,9 @@ export class TreeViewDemo extends React.Component<{}, TreeViewDemoState> {
         super();
         this.state = {
             selectedItem: undefined,
-            focusedItem: undefined
+            focusedItem: undefined,
+            selectedItemCustom: undefined,
+            focusedItemCustom: undefined
         };
     }
 
@@ -64,6 +114,19 @@ export class TreeViewDemo extends React.Component<{}, TreeViewDemoState> {
                         selectedItem={this.state.selectedItem}
                     />
                 </section>
+                <h3>TreeView with custom item renderer</h3>
+                <section>
+                    <SelectedItem selectedItem={this.state.selectedItemCustom} />
+                    <br />
+                    <TreeView
+                        dataSource={treeData}
+                        itemRenderer={CustomItemWrapper}
+                        onFocusItem={this.onFocusItemCustom}
+                        focusedItem={this.state.focusedItemCustom}
+                        onSelectItem={this.onSelectItemCustom}
+                        selectedItem={this.state.selectedItemCustom}
+                    />
+                </section>
             </div>
         );
     }
@@ -78,6 +141,19 @@ export class TreeViewDemo extends React.Component<{}, TreeViewDemoState> {
     private onFocusItem = (item: TreeItemData) => {
         this.setState({
             focusedItem: item
+        });
+    }
+
+    private onSelectItemCustom = (item: TreeItemData) => {
+        this.setState({
+            selectedItemCustom: item,
+            focusedItemCustom: item
+        });
+    }
+
+    private onFocusItemCustom = (item: TreeItemData) => {
+        this.setState({
+            focusedItemCustom: item
         });
     }
 
