@@ -1,6 +1,6 @@
 # RadioGroup Component
 
-**SelectionList** is a component which allows the user to take action by choosing an item from a list. **SelectionList** will usually be displayed inside of a **Popup** component.
+**RadioGroup** is a component designed to be similar to native radiogroup implementations.
 
 ## Elements
 
