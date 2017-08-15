@@ -1,8 +1,8 @@
 import * as React from 'react';
 import * as keycode from 'keycode';
 import { ClientRenderer, expect, simulate, sinon, waitFor } from 'test-drive-react';
-import { DropDown } from '../../src';
 import { DropDownDemo } from '../../demo/components/drop-down.demo';
+import { DropDown } from '../../src';
 
 const dropDown = 'DROP_DOWN';
 const dropDownDemo = dropDown + '_DEMO';
