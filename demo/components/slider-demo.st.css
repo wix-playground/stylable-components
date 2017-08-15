@@ -7,3 +7,8 @@
 .table-head-cell {
     width: 33%;
 }
+
+.vertical-demo {
+    height: 126px;
+    text-align: center;
+}

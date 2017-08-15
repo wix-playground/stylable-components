@@ -28,9 +28,9 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
             <table cellSpacing="24px">
                 <thead>
                 <tr>
-                    <th className={headerCellStyles}>Default Slider</th>
-                    <th className={headerCellStyles}>Disabled Slider</th>
-                    <th className={headerCellStyles}>Slider with step</th>
+                    <th className="table-head-cell">Default Slider</th>
+                    <th className="table-head-cell">Disabled Slider</th>
+                    <th className="table-head-cell">Slider with step</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -65,9 +65,9 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                 </tbody>
                 <thead>
                 <tr>
-                    <th className={headerCellStyles}>Slider with error state</th>
-                    <th className={headerCellStyles}>Slider with label</th>
-                    <th className={headerCellStyles} />
+                    <th className="table-head-cell">Slider with error state</th>
+                    <th className="table-head-cell">Slider with label</th>
+                    <th className="table-head-cell" />
                 </tr>
                 </thead>
                 <tbody>
@@ -95,14 +95,14 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                 </tbody>
                 <thead>
                 <tr>
-                    <th className={headerCellStyles}>Slider axis="y"</th>
-                    <th className={headerCellStyles}>Slider axis="x-reverse"</th>
-                    <th className={headerCellStyles}>Slider axis="y-reverse"</th>
+                    <th className="table-head-cell">Slider axis="y"</th>
+                    <th className="table-head-cell">Slider axis="x-reverse"</th>
+                    <th className="table-head-cell">Slider axis="y-reverse"</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr>
-                    <td>
+                    <td className="vertical-demo">
                         <Slider
                             axis={'y'}
                             value={this.state.value}
@@ -120,7 +120,7 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                             onChange={this.onSliderChange}
                         />
                     </td>
-                    <td>
+                    <td className="vertical-demo">
                         <Slider
                             axis={'y-reverse'}
                             value={this.state.value}
