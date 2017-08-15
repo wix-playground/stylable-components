@@ -14,7 +14,7 @@
 
   - [Input Methods](#input-methods)
     - [Keyboard](#keyboard)
-    - [Mouse](#Mouse)
+    - [Mouse](#mouse)
     - [Touch](#touch)
 
 - [RTL](#rtl)
@@ -75,7 +75,7 @@ Design [assets](https://zpl.io/2kRTvO)
 
 ## Accessibility
 
-##### Keyboard
+##### Keyboard behavior
 
 Accessibility for slider is mostly covered with keyboard behavior (according to ARIA docs).
 See [keyboard](#keyboard) section for reference.
