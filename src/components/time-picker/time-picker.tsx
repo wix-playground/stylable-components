@@ -29,6 +29,12 @@ export interface State {
     currentSegment: Segment;
 }
 
+const ampmSwitch = {
+    [Ampm.AM]: Ampm.PM,
+    [Ampm.PM]: Ampm.AM,
+    [Ampm.NONE]: Ampm.NONE
+};
+
 function segmentsToInputValue({hh, mm, ampm}: {hh?: number, mm?: number, ampm: Ampm}): string {
     if (hh === undefined && mm === undefined) {
         return '';
@@ -196,7 +202,7 @@ export default class TimePicker extends React.Component<Props, State> {
     }
 
     private toggleAmpm(): void {
-        this.updateSegmentValue('ampm', 1 - this.state.ampm);
+        this.updateSegmentValue('ampm', ampmSwitch[this.state.ampm]);
     }
 
     private changeValue(step: number): void {
