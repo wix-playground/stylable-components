@@ -30,9 +30,11 @@ export class Day extends React.Component<DayProps, {}> {
         return (
             <span
                 {...root(this.props,
-                    { 'data-automation-id': '', 'className': 'root' }) as React.HTMLAttributes<HTMLSpanElement>
+                    {   'data-automation-id': '',
+                        'className': 'root calendarItem day'
+                    }) as React.HTMLAttributes<HTMLSpanElement>
                 }
-                className={`${styles.calendarItem} ${styles.day}`}
+                className="calendarItem day"
                 onMouseDown={this.onMouseDown}
                 cssStates={cssStates}
             >
