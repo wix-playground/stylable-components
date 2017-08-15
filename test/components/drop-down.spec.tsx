@@ -98,20 +98,20 @@ describe('<DropDown />', () => {
     });
 
     describe('Keyboard Navigation', () => {
-       it('toggles visibility of selection list when SPACE is clicked', async () => {
-           const { select, waitForDom } = clientRenderer.render(<DropDownDemo />);
+        it('toggles visibility of selection list when SPACE is clicked', async () => {
+            const { select, waitForDom } = clientRenderer.render(<DropDownDemo />);
 
-           await waitForDom(() => expect(select(dropDownDemo, list)).to.be.absent());
+            await waitForDom(() => expect(select(dropDownDemo, list)).to.be.absent());
 
-           simulate.focus(select(dropDownDemo, dropDown));
-           simulate.keyDown(select(dropDownDemo, dropDown), { keyCode: KeyCodes.SPACE });
+            simulate.focus(select(dropDownDemo, dropDown));
+            simulate.keyDown(select(dropDownDemo, dropDown), { keyCode: KeyCodes.SPACE });
 
-           await waitForDom(() => expect(select(dropDownDemo, list)).to.be.present());
+            await waitForDom(() => expect(select(dropDownDemo, list)).to.be.present());
 
-           simulate.keyDown(select(dropDownDemo, dropDown), { keyCode: KeyCodes.SPACE });
+            simulate.keyDown(select(dropDownDemo, dropDown), { keyCode: KeyCodes.SPACE });
 
-           return waitForDom(() => expect(select(dropDownDemo, list)).to.be.absent());
-       });
+            return waitForDom(() => expect(select(dropDownDemo, list)).to.be.absent());
+        });
 
         it('closes selection list when ESC is clicked', async () => {
             const { select, waitForDom } = clientRenderer.render(<DropDownDemo />);
@@ -157,6 +157,4 @@ describe('<DropDown />', () => {
             return waitForDom(() => expect(select(dropDownDemo, list)).to.be.absent());
         });
     });
-
-
 });

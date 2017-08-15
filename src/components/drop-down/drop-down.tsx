@@ -1,9 +1,9 @@
-import * as React from 'react';
 import * as keycode from 'keycode';
+import * as React from 'react';
 import { SBComponent, SBStateless } from 'stylable-react-component/dist/stylable-react';
 import { root } from 'wix-react-tools';
-import { CaretDown } from './drop-down-icons';
 import { SelectionList } from '../selection-list';
+import { CaretDown } from './drop-down-icons';
 import style from './drop-down.st.css';
 
 const KeyCodes: any = {
@@ -60,19 +60,43 @@ export interface DropDownProps extends React.HTMLAttributes<HTMLDivElement> {
     open?: boolean;
     items?: DropDownItem[];
     onItemClick?: (item: DropDownItem) => void;
-
     tabIndex?: number;
 }
 
 @SBComponent(style)
 export class DropDown extends React.Component<DropDownProps, {}> {
 
-    public static defaultProps: DropDownProps = { items: [], onItemClick: () => {}, onInputClick: () => {}, tabIndex: 0 };
+    public static defaultProps: DropDownProps =
+        { items: [], onItemClick: () => {}, onInputClick: () => {}, tabIndex: 0 };
 
     public onItemClick = (item: string) => {
         this.props.onInputClick!();
         this.props.onItemClick!(this.props.items!.filter((elem: DropDownItem) => elem.label === item)[0]);
-    };
+    }
+
+    public render() {
+        const rootProps = root(this.props, {
+            'data-automation-id': 'DROP_DOWN',
+            'className': 'drop-down'
+        });
+
+        return (
+            <div
+                data-automation-id="DROP_DOWN"
+                {...rootProps}
+                onKeyDown={this.onKeyDown}
+                tabIndex={this.props.tabIndex}
+            >
+                <DropDownInput selectedItem={this.props.selectedItem} onClick={this.props.onInputClick} />
+                <DropDownList
+                    selectedItem={this.props.selectedItem}
+                    items={this.props.items}
+                    open={!!this.props.open}
+                    onItemClick={this.onItemClick}
+                />
+            </div>
+        );
+    }
 
     private onKeyDown = (e: any) => {
         switch (e.keyCode) {
@@ -89,24 +113,5 @@ export class DropDown extends React.Component<DropDownProps, {}> {
                 !this.props.open && this.props.onInputClick!();
                 break;
         }
-    };
-
-    public render() {
-        const rootProps = root(this.props, {
-            'data-automation-id': 'DROP_DOWN',
-            'className': 'drop-down'
-        });
-
-        return (
-            <div data-automation-id="DROP_DOWN" {...rootProps} onKeyDown={this.onKeyDown} tabIndex={this.props.tabIndex}>
-                <DropDownInput selectedItem={this.props.selectedItem} onClick={this.props.onInputClick} />
-                <DropDownList
-                    selectedItem={this.props.selectedItem}
-                    items={this.props.items}
-                    open={!!this.props.open}
-                    onItemClick={this.onItemClick}
-                />
-            </div>
-        );
     }
 }

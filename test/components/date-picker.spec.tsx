@@ -8,7 +8,7 @@ import {
     getMonthFromOffset,
     getNumOfFollowingDays,
     getNumOfPreviousDays
-} from '../../src/common/date-helpers';
+} from '../../src/utils';
 
 const currentDate = 'CURRENT_DATE';
 const datePickerInputId = 'DATE_PICKER_INPUT';
