@@ -33,7 +33,6 @@ Not relevant for radio group
 ### Aria attributes
 
 * Text content attributes relevant for the radiogroup - aria-label, aria-labelledby, aria-describedby.
-* Text content attributes relevant only for the children - aria-label, aria-labelledby, aria-describedby.
 * aria-checked is set to true on the checked radio button and set to false on the unchecked radio buttons.
 * aria-activedescendant="ID_REF" - Applied to the element with the radiogroup role, tells assistive technologies which of the options, if any, is visually indicated as having keyboard focus. idref, refers to the ID of the focused option in the radio group. When navigation keys, such as Down Arrow, are pressed, the JavaScript changes the value.
 
