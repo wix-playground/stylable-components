@@ -2,9 +2,9 @@ import keycode = require('keycode');
 import * as React from 'react';
 import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react';
 import {SelectionListDemo} from '../../demo/components/selection-list-demo';
-import sleep from '../../src/common/sleep';
 import {divider, SelectionList} from '../../src/components/selection-list';
 import baseStyle from '../../src/components/selection-list/selection-list.st.css';
+import {sleep} from '../utils';
 import {hasCssState} from '../utils/has-css-state';
 
 function simulateKeyDown(element: Element, key: string) {

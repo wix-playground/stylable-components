@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ClientRenderer, expect, sinon, waitFor } from 'test-drive-react';
 import { Image } from '../../src';
-import { onePixelTransparentSrc } from '../../src/common/one-pixel-src';
+import { transparentImage } from '../../src/utils';
 import { brokenSrc, onePixelBlack, onePixelBlue } from '../fixtures/sample-images';
 
 const nativeImage = 'NATIVE_IMAGE';
@@ -26,7 +26,7 @@ describe('<Image />', () => {
             <Image />
         );
 
-        await waitForDom(() => expect(select(nativeImage)).to.have.attribute('src', onePixelTransparentSrc));
+        await waitForDom(() => expect(select(nativeImage)).to.have.attribute('src', transparentImage));
     });
 
     it('sets the provided src', async () => {
@@ -98,14 +98,14 @@ describe('<Image />', () => {
         await waitForDom(() => expect(select(nativeImage)).to.have.attribute('src', onePixelBlue));
     });
 
-    it('calls onError when cannot load the default image, and falls back to onePixelTransparentSrc', async () => {
+    it('calls onError when cannot load the default image, and falls back to `transparentImage`', async () => {
         const onError = sinon.spy();
         const { select, waitForDom } = clientRenderer.render(
             <Image defaultImage={brokenSrc} onError={onError} />
         );
 
         await waitFor(() => expect(onError).to.have.been.calledWithMatch({ src: brokenSrc }));
-        await waitForDom(() => expect(select(nativeImage)).to.have.attribute('src', onePixelTransparentSrc));
+        await waitForDom(() => expect(select(nativeImage)).to.have.attribute('src', transparentImage));
     });
 
     describe('resize mode', () => {

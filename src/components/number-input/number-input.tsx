@@ -225,7 +225,7 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
     }
 
     private updateValue(next?: number) {
-        const value = this.currentValue;
+        const {value} = this.state;
 
         if (value !== next) {
             this.committed = false;

@@ -3,7 +3,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {SBComponent, SBStateless} from 'stylable-react-component';
 import {root} from 'wix-react-tools';
-import clamp from '../../common/clamp';
+import {clamp} from '../../utils';
 import listStyle from './selection-list.st.css';
 
 export const divider = {};
