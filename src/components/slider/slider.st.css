@@ -72,11 +72,13 @@
 }
 
 .root:y .slider{
+    min-height: 36px;
     height: 100%;
     padding: 0 15px;
 }
 
 .root:y-reverse .slider{
+    min-height: 36px;
     height: 100%;
     padding: 0 15px;
 }
@@ -101,12 +103,14 @@
     text-align: left;
     width: 4px;
     height: 100%;
+    min-height: 36px;
 }
 
 .root:y-reverse .track{
     text-align: left;
     width: 4px;
     height: 100%;
+    min-height: 36px;
 }
 
 .progress {
