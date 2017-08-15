@@ -1,7 +1,7 @@
 import keycode = require('keycode');
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import {SBComponent, SBStateless} from 'stylable-react-component';
+import {SBComponent} from 'stylable-react-component';
 import {root} from 'wix-react-tools';
 import {clamp} from '../../utils';
 import listStyle from './selection-list.st.css';
@@ -41,9 +41,9 @@ export class Option extends React.Component<OptionProps, {}> {
     public render() {
         const props = {
             cssStates: {
-                disabled: this.props.disabled || undefined,
-                selected: this.props.selected || undefined,
-                focused:  this.props.focused  || undefined
+                disabled: this.props.disabled,
+                selected: this.props.selected,
+                focused:  this.props.focused
             }
         };
 
@@ -94,6 +94,7 @@ export interface SelectionListProps extends OptionList {
     onChange?: (value: string) => void;
     style?: any;
     className?: string;
+    tabIndex?: number;
 }
 
 export interface SelectionListState {
@@ -104,6 +105,7 @@ export interface SelectionListState {
 @SBComponent(listStyle)
 export class SelectionList extends React.Component<SelectionListProps, SelectionListState> {
     public static defaultProps: SelectionListProps = {
+        tabIndex: -1,
         dataSource: [],
         renderItem,
         onChange: () => {}
@@ -123,19 +125,6 @@ export class SelectionList extends React.Component<SelectionListProps, Selection
     }
 
     public render() {
-        const rootProps = root(this.props, {
-            'data-automation-id': 'LIST',
-            'className': 'list',
-            'cssStates': {
-                focused: this.state.focused
-            },
-            'tabIndex': -1,
-            'onClick': this.handleClick,
-            'onKeyDown': this.handleKeyDown,
-            'onFocus': this.handleFocus,
-            'onBlur': this.handleBlur
-        }) as React.HtmlHTMLAttributes<HTMLDivElement>;
-
         const children = React.Children.map(
             [this.props.children, this.renderDataSource()],
             child => this.augmentChild(child)
@@ -143,7 +132,26 @@ export class SelectionList extends React.Component<SelectionListProps, Selection
 
         this.focusableItemValues = this.getFocusableItemValuesFromChildren(children);
 
-        return <div {...rootProps}>{children}</div>;
+        const rootProps = root(this.props, {
+            className: 'list',
+            cssStates: {
+                focused: this.state.focused
+            }
+        }) as React.HtmlHTMLAttributes<HTMLDivElement>;
+
+        return (
+            <div
+                {...rootProps}
+                data-automation-id="LIST"
+                onClick={this.handleClick}
+                onKeyDown={this.handleKeyDown}
+                onFocus={this.handleFocus}
+                onBlur={this.handleBlur}
+                tabIndex={this.props.tabIndex}
+            >
+                {children}
+            </div>
+        );
     }
 
     private renderDataSource(): React.ReactNode[] {
