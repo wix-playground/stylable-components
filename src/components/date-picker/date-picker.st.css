@@ -118,7 +118,7 @@
 }
 
 .day {
-    -st-states: focused, selected, current, inactive, active;
+    -st-states: focused, selected, current, inactive;
     font-family: value(fontFamily);
     font-size: 14px;
     text-align: center;
@@ -143,9 +143,6 @@
 }
 
 .day:inactive {
-    font-family: value(fontFamily);
-    font-size: 14px;
-    text-align: center;
     color: #d8d8d8;
     width: 36px;
     line-height: 36px;
@@ -157,7 +154,12 @@
     background-color: value(color_Hover);
 }
 
-.day:active:hover {
+.day:hover {
     color: value(color_MainText);
     background-color: value(color_Keyboard_Focused);
+}
+
+.day:inactive:hover {
+    color: #d8d8d8;
+    background-color: value(color_MainText_Background);
 }

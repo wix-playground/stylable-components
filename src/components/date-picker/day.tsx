@@ -23,18 +23,16 @@ export class Day extends React.Component<DayProps, {}> {
             focused: this.props.focused!,
             selected: this.props.selected!,
             current: this.props.currentDay!,
-            inactive: this.props.partOfNextMonth! || this.props.partOfPrevMonth!,
-            active: !this.props.partOfNextMonth! && !this.props.partOfPrevMonth!
+            inactive: this.props.partOfNextMonth! || this.props.partOfPrevMonth!
         };
 
         return (
             <span
                 {...root(this.props,
                     {   'data-automation-id': '',
-                        'className': 'root'
+                        'className': 'calendarItem day'
                     }) as React.HTMLAttributes<HTMLSpanElement>
                 }
-                className="calendarItem day"
                 onMouseDown={this.onMouseDown}
                 cssStates={cssStates}
             >

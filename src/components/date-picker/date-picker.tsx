@@ -64,7 +64,7 @@ export class DatePicker extends React.Component<DatePickerProps, DatePickerState
                 />
                 {this.state.isDropdownVisible
                     ? <Calendar
-                        onChange={this.updateStateFromDate}
+                        onChange={this.onCalendarInput}
                         updateDropdownDate={this.updateDropdownDate}
                         value={this.state.dropdownDate}
                         selectedDate={this.props.value}
@@ -79,7 +79,7 @@ export class DatePicker extends React.Component<DatePickerProps, DatePickerState
     }
 
     // Called with possibly invalid string from the input
-    private updateStateFromString = (input: string): void => {
+    private onUserInput = (input: string): void => {
         if (this.isDateValid(input)) {
             const updatedDate = input ? new Date(input) : new Date();
             this.setState({ inputValue: updatedDate.toDateString() });
@@ -91,7 +91,7 @@ export class DatePicker extends React.Component<DatePickerProps, DatePickerState
     }
 
     // Should only be called with valid date from the dropdown
-    private updateStateFromDate = (input: Date): void => {
+    private onCalendarInput = (input: Date): void => {
         this.setState({
             inputValue: input.toDateString() ,
             isDropdownVisible: false,
@@ -127,7 +127,7 @@ export class DatePicker extends React.Component<DatePickerProps, DatePickerState
 
     private onBlur: React.EventHandler<React.SyntheticEvent<HTMLInputElement>> = (event): void => {
         const eventTarget = event.target as HTMLInputElement;
-        this.updateStateFromString(eventTarget.value);
+        this.onUserInput(eventTarget.value);
         this.setState({ isDropdownVisible: false });
     }
 
@@ -152,8 +152,8 @@ export class DatePicker extends React.Component<DatePickerProps, DatePickerState
             switch (keyCode) {
                 case keycode('enter'):
                     this.state.highlightFocusedDate
-                        ? this.updateStateFromDate(this.state.dropdownDate)
-                        : this.updateStateFromString(eventTarget.value);
+                        ? this.onCalendarInput(this.state.dropdownDate)
+                        : this.onUserInput(eventTarget.value);
                     this.setState({ isDropdownVisible: !this.state.isDropdownVisible });
                     event.preventDefault();
                     break;
