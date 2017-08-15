@@ -256,5 +256,5 @@ function testString(p: number, a: number) {
 
 function equals(n: number, m: number, decPoint: number = 2): boolean {
     const resolution = Math.pow(10, decPoint);
-    return Math.floor((n - m) * resolution) / resolution === 0;
+    return Math.round((n - m) * resolution) / resolution === 0;
 }
