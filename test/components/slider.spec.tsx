@@ -45,7 +45,7 @@ function simulateTouchEvent(
     ));
 }
 
-describe.only('<Slider />', () => {
+describe('<Slider />', () => {
     const clientRenderer = new ClientRenderer();
 
     afterEach(() => clientRenderer.cleanup());
@@ -1096,7 +1096,7 @@ describe.only('<Slider />', () => {
         });
     });
 
-    describe.only('Vertical Slider', () => {
+    describe('Vertical Slider', () => {
         describe('with value, min and max', () => {
             const value = 5;
             const min = -10;
@@ -1775,6 +1775,1380 @@ describe.only('<Slider />', () => {
 
                 return waitFor(() => {
                     expect(onChange).have.been.calledWith(100);
+                });
+            });
+        });
+    });
+
+    describe('Reverse Slider', () => {
+        describe('with value, min and max', () => {
+            const value = 5;
+            const min = -10;
+            const max = 10;
+
+            let select: (automationId: string) => HTMLElement | null;
+            let waitForDom: (expectation: () => void) => Promise<void>;
+
+            beforeEach(() => {
+                const rendered = clientRenderer.render(
+                    <Slider
+                        value={value}
+                        min={min}
+                        max={max}
+                        axis="x-reverse"
+                    />
+                );
+                select = rendered.select;
+                waitForDom = rendered.waitForDom;
+            });
+
+            it('renders handle on the right place', async () => {
+                await waitForDom(() => {
+                    const element = select('SLIDER-HANDLE');
+
+                    expect(element!.style.right).to.equal('75%');
+                });
+            });
+
+            it('renders progress bar with the right width', async () => {
+                await waitForDom(() => {
+                    const element = select('SLIDER-PROGRESS');
+
+                    expect(element).to.be.present();
+                    expect(element!.style.width).to.equal('75%');
+                });
+            });
+
+            it('renders invisible native input with right value', async () => {
+                await waitForDom(() => {
+                    const element = select('SLIDER-NATIVE-INPUT');
+
+                    expect(element).to.be.present();
+                    expect(element).to.has.value(String(value));
+                });
+            });
+        });
+
+        describe('when drag things around', () => {
+            const value = 5;
+            const min = 0;
+            const max = 10;
+
+            let onChange: (value: number) => void;
+            let onInput: (value: string) => void;
+            let select: (automationId: string) => HTMLElement | null;
+            let waitForDom: (expectation: () => void) => Promise<void>;
+            let environment: Element;
+
+            beforeEach(() => {
+                environment = document.createElement('body');
+                onChange = sinon.spy();
+                onInput = sinon.spy();
+                const rendered = clientRenderer.render(
+                    <Slider
+                        value={value}
+                        min={min}
+                        max={max}
+                        axis="x-reverse"
+                        onChange={onChange}
+                        onInput={onInput}
+                        environment={environment}
+                    />
+                );
+                select = rendered.select;
+                waitForDom = rendered.waitForDom;
+            });
+
+            it('should change value', async () => {
+                await waitFor(() => {
+                    const element = select('SLIDER');
+                    const handle = select('SLIDER-HANDLE');
+                    const progress = select('SLIDER-PROGRESS');
+                    const bounds = element!.getBoundingClientRect();
+
+                    simulate.mouseDown(element, {
+                        currentTarget: element!,
+                        clientY: bounds.top + bounds.height / 3,
+                        clientX: Math.round(bounds.left + bounds.width * 0.7)
+                    });
+
+                    expect(handle!.style.right).to.equal('30%');
+                    expect(progress!.style.width).to.equal('30%');
+                });
+            });
+
+            it('should call onChange', async () => {
+                await waitFor(() => {
+                    const element = select('SLIDER');
+                    const handle = select('SLIDER-HANDLE');
+                    const progress = select('SLIDER-PROGRESS');
+                    const bounds = element!.getBoundingClientRect();
+
+                    simulate.mouseDown(element, {
+                        currentTarget: element!,
+                        clientX: Math.round(bounds.left + bounds.width * 0.5)
+                    });
+                    simulateMouseEvent(
+                        environment,
+                        'mouseup',
+                        {clientX: Math.round(bounds.left + bounds.width * 0.7)}
+                    );
+
+                    expect(onChange).to.be.calledWith(3);
+                });
+            });
+
+            it('should call onInput', async () => {
+                await waitFor(() => {
+                    const element = select('SLIDER');
+                    const handle = select('SLIDER-HANDLE');
+                    const progress = select('SLIDER-PROGRESS');
+                    const bounds = element!.getBoundingClientRect();
+
+                    simulate.mouseDown(element, {
+                        currentTarget: element!,
+                        clientX: Math.round(bounds.left + bounds.width * 0.5)
+                    });
+                    simulateMouseEvent(
+                        environment,
+                        'mousemove',
+                        {clientX: Math.round(bounds.left + bounds.width * 0.6)}
+                    );
+                    simulateMouseEvent(
+                        environment,
+                        'mouseup',
+                        { clientX: Math.round(bounds.left + bounds.width * 0.7) }
+                    );
+
+                    expect(onInput).to.be.calledWith('4');
+                    expect(onChange).to.be.calledWith(3);
+                });
+            });
+        });
+
+        describe('dragging with step', () => {
+            const value = 5;
+            const min = 0;
+            const max = 10;
+            const step = 1;
+            let onChange: (value: number) => void;
+            let onInput: (value: string) => void;
+            let select: (automationId: string) => HTMLElement | null;
+            let waitForDom: (expectation: () => void) => Promise<void>;
+            let environment: Element;
+
+            beforeEach(() => {
+                environment = document.createElement('body');
+                onChange = sinon.spy();
+                onInput = sinon.spy();
+
+                const rendered = clientRenderer.render(
+                    <Slider
+                        value={value}
+                        min={min}
+                        max={max}
+                        axis="x-reverse"
+                        step={step}
+                        onChange={onChange}
+                        onInput={onInput}
+                        environment={environment}
+                    />
+                );
+
+                select = rendered.select;
+                waitForDom = rendered.waitForDom;
+            });
+
+            it('renders handle on the right place', async () => {
+                await waitForDom(() => {
+                    const element = select('SLIDER-HANDLE');
+
+                    expect(element!.style.right).to.equal('50%');
+                });
+            });
+
+            it('renders progress bar with the right width', async () => {
+                await waitForDom(() => {
+                    const element = select('SLIDER-PROGRESS');
+
+                    expect(element).to.be.present();
+                    expect(element!.style.width).to.equal('50%');
+                });
+            });
+
+            it('renders invisible native input with right value', async () => {
+                await waitForDom(() => {
+                    const element = select('SLIDER-NATIVE-INPUT');
+
+                    expect(element).to.be.present();
+                    expect(element).to.has.value(String(value));
+                });
+            });
+
+            it('should change value according to step', async () => {
+                await waitFor(() => {
+                    const element = select('SLIDER');
+                    const handle = select('SLIDER-HANDLE');
+                    const progress = select('SLIDER-PROGRESS');
+                    const bounds = element!.getBoundingClientRect();
+
+                    simulate.mouseDown(element, {
+                        currentTarget: element!,
+                        clientY: bounds.top + bounds.height / 3,
+                        clientX: Math.round(bounds.left + bounds.width * 0.77)
+                    });
+
+                    expect(handle!.style.right).to.equal('20%');
+                    expect(progress!.style.width).to.equal('20%');
+                });
+            });
+
+            it('should call onChange with value normilized to step', async () => {
+                await waitFor(() => {
+                    const element = select('SLIDER');
+                    const handle = select('SLIDER-HANDLE');
+                    const progress = select('SLIDER-PROGRESS');
+                    const bounds = element!.getBoundingClientRect();
+
+                    simulate.mouseDown(element, {
+                        currentTarget: element!,
+                        clientX: Math.round(bounds.left + bounds.width * 0.5)
+                    });
+                    simulateMouseEvent(
+                        environment,
+                        'mouseup',
+                        { clientX: Math.round(bounds.left + bounds.width * 0.77) }
+                    );
+
+                    expect(onChange).to.be.calledWith(2);
+                });
+            });
+
+            it('should call onInput with value normilized to step', async () => {
+                await waitFor(() => {
+                    const element = select('SLIDER');
+                    const handle = select('SLIDER-HANDLE');
+                    const progress = select('SLIDER-PROGRESS');
+                    const bounds = element!.getBoundingClientRect();
+
+                    simulate.mouseDown(element, {
+                        currentTarget: element!,
+                        clientX: Math.round(bounds.left + bounds.width * 0.5)
+                    });
+                    simulateMouseEvent(
+                        environment,
+                        'mousemove',
+                        { clientX: Math.round(bounds.left + bounds.width * 0.56) }
+                    );
+                    simulateMouseEvent(
+                        environment,
+                        'mouseup',
+                        { clientX: Math.round(bounds.left + bounds.width * 0.66) }
+                    );
+
+                    expect(onInput).to.be.calledWith('4');
+                    expect(onChange).to.be.calledWith(3);
+                });
+            });
+        });
+
+        describe('when drag things around using touch', () => {
+            const value = 5;
+            const min = 0;
+            const max = 10;
+
+            let onChange: (value: number) => void;
+            let onInput: (value: string) => void;
+            let select: (automationId: string) => HTMLElement | null;
+            let waitForDom: (expectation: () => void) => Promise<void>;
+            let environment: Element;
+
+            beforeEach(function() {
+                if (!hasTouchSupport) {
+                    this.skip();
+                }
+
+                environment = document.createElement('body');
+                onChange = sinon.spy();
+                onInput = sinon.spy();
+                const rendered = clientRenderer.render(
+                    <Slider
+                        value={value}
+                        min={min}
+                        max={max}
+                        axis="x-reverse"
+                        onChange={onChange}
+                        onInput={onInput}
+                        environment={environment}
+                    />
+                );
+                select = rendered.select;
+                waitForDom = rendered.waitForDom;
+            });
+
+            it('should change value', async () => {
+                await waitFor(() => {
+                    const element = select('SLIDER');
+                    const handle = select('SLIDER-HANDLE');
+                    const progress = select('SLIDER-PROGRESS');
+                    const bounds = element!.getBoundingClientRect();
+
+                    simulate.touchStart(element, {
+                        currentTarget: element!,
+                        touches: {
+                            0: {
+                                clientY: bounds.top + bounds.height / 3,
+                                clientX: Math.round(bounds.left + bounds.width * 0.7)
+                            }
+                        } as any as TouchList
+                    });
+
+                    expect(handle!.style.right).to.equal('30%');
+                    expect(progress!.style.width).to.equal('30%');
+                });
+            });
+
+            it('should call onChange', async () => {
+                await waitFor(() => {
+                    const element = select('SLIDER');
+                    const handle = select('SLIDER-HANDLE');
+                    const progress = select('SLIDER-PROGRESS');
+                    const bounds = element!.getBoundingClientRect();
+
+                    simulate.touchStart(element, {
+                        currentTarget: element!,
+                        touches: {
+                            0: {
+                                clientY: bounds.top + bounds.height / 3,
+                                clientX: Math.round(bounds.left + bounds.width * 0.7)
+                            }
+                        } as any as TouchList
+                    });
+
+                    simulateTouchEvent(
+                        environment,
+                        'touchend',
+                        {
+                            y: bounds.top + bounds.height / 3,
+                            x: Math.round(bounds.left + bounds.width * 0.7)
+                        }
+                    );
+
+                    expect(onChange).to.be.calledWith(3);
+                });
+            });
+
+            it('should call onInput', async () => {
+                await waitFor(() => {
+                    const element = select('SLIDER');
+                    const handle = select('SLIDER-HANDLE');
+                    const progress = select('SLIDER-PROGRESS');
+                    const bounds = element!.getBoundingClientRect();
+
+                    simulate.touchStart(element, {
+                        currentTarget: element!,
+                        touches: {
+                            0: {
+                                clientY: bounds.top + bounds.height / 3,
+                                clientX: Math.round(bounds.left + bounds.width * 0.7)
+                            }
+                        } as any as TouchList
+                    });
+                    simulateTouchEvent(
+                        environment,
+                        'touchmove',
+                        {
+                            y: bounds.top + bounds.height / 3,
+                            x: Math.round(bounds.left + bounds.width * 0.7)
+                        }
+                    );
+
+                    simulateTouchEvent(
+                        environment,
+                        'touchend',
+                        {
+                            y: bounds.top + bounds.height / 3,
+                            x: Math.round(bounds.left + bounds.width * 0.7)
+                        }
+                    );
+
+                    expect(onInput).to.be.calledWith('3');
+                    expect(onChange).to.be.calledWith(3);
+                });
+            });
+        });
+
+        describe('touch dragging with step', () => {
+            const value = 5;
+            const min = 0;
+            const max = 10;
+            const step = 1;
+            let onChange: (value: number) => void;
+            let onInput: (value: string) => void;
+            let select: (automationId: string) => HTMLElement | null;
+            let waitForDom: (expectation: () => void) => Promise<void>;
+            let environment: Element;
+
+            beforeEach(function() {
+                if (!hasTouchSupport) {
+                    this.skip();
+                }
+
+                environment = document.createElement('body');
+                onChange = sinon.spy();
+                onInput = sinon.spy();
+
+                const rendered = clientRenderer.render(
+                    <Slider
+                        value={value}
+                        min={min}
+                        max={max}
+                        axis="x-reverse"
+                        step={step}
+                        onChange={onChange}
+                        onInput={onInput}
+                        environment={environment}
+                    />
+                );
+
+                select = rendered.select;
+                waitForDom = rendered.waitForDom;
+            });
+
+            it('renders handle on the right place', async () => {
+                await waitForDom(() => {
+                    const element = select('SLIDER-HANDLE');
+
+                    expect(element!.style.right).to.equal('50%');
+                });
+            });
+
+            it('renders progress bar with the right width', async () => {
+                await waitForDom(() => {
+                    const element = select('SLIDER-PROGRESS');
+
+                    expect(element).to.be.present();
+                    expect(element!.style.width).to.equal('50%');
+                });
+            });
+
+            it('renders invisible native input with right value', async () => {
+                await waitForDom(() => {
+                    const element = select('SLIDER-NATIVE-INPUT');
+
+                    expect(element).to.be.present();
+                    expect(element).to.has.value(String(value));
+                });
+            });
+
+            it('should change value according to step', async () => {
+                await waitFor(() => {
+                    const element = select('SLIDER');
+                    const handle = select('SLIDER-HANDLE');
+                    const progress = select('SLIDER-PROGRESS');
+                    const bounds = element!.getBoundingClientRect();
+
+                    simulate.touchStart(element, {
+                        currentTarget: element!,
+                        touches: {
+                            0: {
+                                clientY: bounds.top + bounds.height / 3,
+                                clientX: Math.round(bounds.left + bounds.width * 0.77)
+                            }
+                        } as any as TouchList
+                    });
+
+                    expect(handle!.style.right).to.equal('20%');
+                    expect(progress!.style.width).to.equal('20%');
+                });
+            });
+
+            it('should call onChange with value normilized to step', async () => {
+                await waitFor(() => {
+                    const element = select('SLIDER');
+                    const handle = select('SLIDER-HANDLE');
+                    const progress = select('SLIDER-PROGRESS');
+                    const bounds = element!.getBoundingClientRect();
+
+                    simulate.touchStart(element, {
+                        currentTarget: element!,
+                        touches: {
+                            0: {
+                                clientY: bounds.top + bounds.height / 3,
+                                clientX: Math.round(bounds.left + bounds.width * 0.7)
+                            }
+                        } as any as TouchList
+                    });
+
+                    simulateTouchEvent(
+                        environment,
+                        'touchend',
+                        {
+                            y: bounds.top + bounds.height / 3,
+                            x: Math.round(bounds.left + bounds.width * 0.77)
+                        }
+                    );
+
+                    expect(onChange).to.be.calledWith(2);
+                });
+            });
+
+            it('should call onInput with value normilized to step', async () => {
+                await waitFor(() => {
+                    const element = select('SLIDER');
+                    const handle = select('SLIDER-HANDLE');
+                    const progress = select('SLIDER-PROGRESS');
+                    const bounds = element!.getBoundingClientRect();
+
+                    simulate.touchStart(element, {
+                        currentTarget: element!,
+                        touches: {
+                            0: {
+                                clientY: bounds.top + bounds.height / 3,
+                                clientX: Math.round(bounds.left + bounds.width * 0.5)
+                            }
+                        } as any as TouchList
+                    });
+                    simulateTouchEvent(
+                        environment,
+                        'touchmove',
+                        {
+                            y: bounds.top + bounds.height / 3,
+                            x: Math.round(bounds.left + bounds.width * 0.56)
+                        }
+                    );
+
+                    simulateTouchEvent(
+                        environment,
+                        'touchend',
+                        {
+                            y: bounds.top + bounds.height / 3,
+                            x: Math.round(bounds.left + bounds.width * 0.67)
+                        }
+                    );
+
+                    expect(onInput).to.be.calledWith('4');
+                    expect(onChange).to.be.calledWith(3);
+                });
+            });
+        });
+
+        describe('keyboard control', () => {
+            const value = 50;
+            const min = 0;
+            const max = 100;
+
+            let onChange: (value: number) => void;
+            let onInput: (value: string) => void;
+            let select: (automationId: string) => HTMLElement | null;
+            let waitForDom: (expectation: () => void) => Promise<void>;
+            let environment: Element;
+
+            beforeEach(() => {
+                environment = document.createElement('body');
+                onChange = sinon.spy();
+                onInput = sinon.spy();
+                const rendered = clientRenderer.render(
+                    <Slider
+                        value={value}
+                        min={min}
+                        max={max}
+                        axis="x-reverse"
+                        onChange={onChange}
+                        onInput={onInput}
+                        environment={environment}
+                    />
+                );
+                select = rendered.select;
+                waitForDom = rendered.waitForDom;
+            });
+
+            it('on pressing up key', async () => {
+                simulate.keyDown(select('SLIDER'), {
+                    keyCode: keycode.codes.up
+                });
+
+                return waitFor(() => {
+                    expect(onChange).have.been.calledWith(49);
+                });
+            });
+
+            it('on pressing page up key', async () => {
+                simulate.keyDown(select('SLIDER'), {
+                    keyCode: keycode.codes['page up']
+                });
+
+                return waitFor(() => {
+                    expect(onChange).have.been.calledWith(51);
+                });
+            });
+
+            it('on pressing up key with shift', async () => {
+                simulate.keyDown(select('SLIDER'), {
+                    shiftKey: true,
+                    keyCode: keycode.codes.up
+                });
+
+                return waitFor(() => {
+                    expect(onChange).have.been.calledWith(40);
+                });
+            });
+
+            it('on pressing page up key with shift', async () => {
+                simulate.keyDown(select('SLIDER'), {
+                    shiftKey: true,
+                    keyCode: keycode.codes['page up']
+                });
+
+                return waitFor(() => {
+                    expect(onChange).have.been.calledWith(60);
+                });
+            });
+
+            it('on pressing down key', async () => {
+                simulate.keyDown(select('SLIDER'), {
+                    keyCode: keycode.codes.down
+                });
+
+                return waitFor(() => {
+                    expect(onChange).have.been.calledWith(51);
+                });
+            });
+
+            it('on pressing page down key', async () => {
+                simulate.keyDown(select('SLIDER'), {
+                    keyCode: keycode.codes['page down']
+                });
+
+                return waitFor(() => {
+                    expect(onChange).have.been.calledWith(49);
+                });
+            });
+
+            it('on pressing down key with shift', async () => {
+                simulate.keyDown(select('SLIDER'), {
+                    shiftKey: true,
+                    keyCode: keycode.codes.down
+                });
+
+                return waitFor(() => {
+                    expect(onChange).have.been.calledWith(60);
+                });
+            });
+
+            it('on pressing page down key with shift', async () => {
+                simulate.keyDown(select('SLIDER'), {
+                    shiftKey: true,
+                    keyCode: keycode.codes['page down']
+                });
+
+                return waitFor(() => {
+                    expect(onChange).have.been.calledWith(40);
+                });
+            });
+
+            it('on pressing home key', async () => {
+                simulate.keyDown(select('SLIDER'), {
+                    keyCode: keycode.codes.home
+                });
+
+                return waitFor(() => {
+                    expect(onChange).have.been.calledWith(100);
+                });
+            });
+
+            it('on pressing end key', async () => {
+                simulate.keyDown(select('SLIDER'), {
+                    shiftKey: true,
+                    keyCode: keycode.codes.end
+                });
+
+                return waitFor(() => {
+                    expect(onChange).have.been.calledWith(0);
+                });
+            });
+        });
+    });
+
+    describe('Vertical Reverse Slider', () => {
+        describe('with value, min and max', () => {
+            const value = 5;
+            const min = -10;
+            const max = 10;
+
+            let select: (automationId: string) => HTMLElement | null;
+            let waitForDom: (expectation: () => void) => Promise<void>;
+
+            beforeEach(() => {
+                const rendered = clientRenderer.render(
+                    <Slider
+                        value={value}
+                        min={min}
+                        max={max}
+                        axis="y-reverse"
+                    />
+                );
+                select = rendered.select;
+                waitForDom = rendered.waitForDom;
+            });
+
+            it('renders handle on the right place', async () => {
+                await waitForDom(() => {
+                    const element = select('SLIDER-HANDLE');
+
+                    expect(element!.style.top).to.equal('75%');
+                });
+            });
+
+            it('renders progress bar with the right width', async () => {
+                await waitForDom(() => {
+                    const element = select('SLIDER-PROGRESS');
+
+                    expect(element).to.be.present();
+                    expect(element!.style.height).to.equal('75%');
+                });
+            });
+
+            it('renders invisible native input with right value', async () => {
+                await waitForDom(() => {
+                    const element = select('SLIDER-NATIVE-INPUT');
+
+                    expect(element).to.be.present();
+                    expect(element).to.has.value(String(value));
+                });
+            });
+        });
+
+        describe('when drag things around', () => {
+            const value = 5;
+            const min = 0;
+            const max = 10;
+
+            let onChange: (value: number) => void;
+            let onInput: (value: string) => void;
+            let select: (automationId: string) => HTMLElement | null;
+            let waitForDom: (expectation: () => void) => Promise<void>;
+            let environment: Element;
+
+            beforeEach(() => {
+                environment = document.createElement('body');
+                onChange = sinon.spy();
+                onInput = sinon.spy();
+                const rendered = clientRenderer.render(
+                    <Slider
+                        value={value}
+                        min={min}
+                        max={max}
+                        axis="y-reverse"
+                        onChange={onChange}
+                        onInput={onInput}
+                        environment={environment}
+                    />
+                );
+                select = rendered.select;
+                waitForDom = rendered.waitForDom;
+            });
+
+            it('should change value', async () => {
+                await waitFor(() => {
+                    const element = select('SLIDER');
+                    const handle = select('SLIDER-HANDLE');
+                    const progress = select('SLIDER-PROGRESS');
+                    const bounds = element!.getBoundingClientRect();
+
+                    simulate.mouseDown(element, {
+                        currentTarget: element!,
+                        clientX: bounds.left + bounds.width / 3,
+                        clientY: Math.round(bounds.top + bounds.height * 0.7)
+                    });
+
+                    expect(handle!.style.top).to.equal('70%');
+                    expect(progress!.style.height).to.equal('70%');
+                });
+            });
+
+            it('should call onChange', async () => {
+                await waitFor(() => {
+                    const element = select('SLIDER');
+                    const handle = select('SLIDER-HANDLE');
+                    const progress = select('SLIDER-PROGRESS');
+                    const bounds = element!.getBoundingClientRect();
+
+                    simulate.mouseDown(element, {
+                        currentTarget: element!,
+                        clientX: Math.round(bounds.left + bounds.width * 0.5)
+                    });
+                    simulateMouseEvent(
+                        environment,
+                        'mouseup',
+                        {clientY: Math.round(bounds.top + bounds.height * 0.7)}
+                    );
+
+                    expect(onChange).to.be.calledWith(7);
+                });
+            });
+
+            it('should call onInput', async () => {
+                await waitFor(() => {
+                    const element = select('SLIDER');
+                    const handle = select('SLIDER-HANDLE');
+                    const progress = select('SLIDER-PROGRESS');
+                    const bounds = element!.getBoundingClientRect();
+
+                    simulate.mouseDown(element, {
+                        currentTarget: element!,
+                        clientY: Math.round(bounds.top + bounds.height * 0.7)
+                    });
+                    simulateMouseEvent(
+                        environment,
+                        'mousemove',
+                        {clientY: Math.round(bounds.top + bounds.height * 0.7)}
+                    );
+                    simulateMouseEvent(
+                        environment,
+                        'mouseup',
+                        {clientY: Math.round(bounds.top + bounds.height * 0.7)}
+                    );
+
+                    expect(onInput).to.be.calledWith('7');
+                    expect(onChange).to.be.calledWith(7);
+                });
+            });
+        });
+
+        describe('dragging with step', () => {
+            const value = 5;
+            const min = 0;
+            const max = 10;
+            const step = 1;
+            let onChange: (value: number) => void;
+            let onInput: (value: string) => void;
+            let select: (automationId: string) => HTMLElement | null;
+            let waitForDom: (expectation: () => void) => Promise<void>;
+            let environment: Element;
+
+            beforeEach(() => {
+                environment = document.createElement('body');
+                onChange = sinon.spy();
+                onInput = sinon.spy();
+
+                const rendered = clientRenderer.render(
+                    <Slider
+                        value={value}
+                        min={min}
+                        max={max}
+                        axis="y-reverse"
+                        step={step}
+                        onChange={onChange}
+                        onInput={onInput}
+                        environment={environment}
+                    />
+                );
+
+                select = rendered.select;
+                waitForDom = rendered.waitForDom;
+            });
+
+            it('renders handle on the right place', async () => {
+                await waitForDom(() => {
+                    const element = select('SLIDER-HANDLE');
+
+                    expect(element!.style.top).to.equal('50%');
+                });
+            });
+
+            it('renders progress bar with the right width', async () => {
+                await waitForDom(() => {
+                    const element = select('SLIDER-PROGRESS');
+
+                    expect(element).to.be.present();
+                    expect(element!.style.height).to.equal('50%');
+                });
+            });
+
+            it('renders invisible native input with right value', async () => {
+                await waitForDom(() => {
+                    const element = select('SLIDER-NATIVE-INPUT');
+
+                    expect(element).to.be.present();
+                    expect(element).to.has.value(String(value));
+                });
+            });
+
+            it('should change value according to step', async () => {
+                await waitFor(() => {
+                    const element = select('SLIDER');
+                    const handle = select('SLIDER-HANDLE');
+                    const progress = select('SLIDER-PROGRESS');
+                    const bounds = element!.getBoundingClientRect();
+
+                    simulate.mouseDown(element, {
+                        currentTarget: element!,
+                        clientX: bounds.left + bounds.width / 3,
+                        clientY: Math.round(bounds.bottom - bounds.height * 0.77)
+                    });
+
+                    expect(handle!.style.top).to.equal('20%');
+                    expect(progress!.style.height).to.equal('20%');
+                });
+            });
+
+            it('should call onChange with value normilized to step', async () => {
+                await waitFor(() => {
+                    const element = select('SLIDER');
+                    const handle = select('SLIDER-HANDLE');
+                    const progress = select('SLIDER-PROGRESS');
+                    const bounds = element!.getBoundingClientRect();
+
+                    simulate.mouseDown(element, {
+                        currentTarget: element!,
+                        clientY: Math.round(bounds.bottom - bounds.height * 0.77)
+                    });
+                    simulateMouseEvent(
+                        environment,
+                        'mouseup',
+                        {clientY: Math.round(bounds.bottom - bounds.height * 0.77)}
+                    );
+
+                    expect(onChange).to.be.calledWith(2);
+                });
+            });
+
+            it('should call onInput with value normilized to step', async () => {
+                await waitFor(() => {
+                    const element = select('SLIDER');
+                    const handle = select('SLIDER-HANDLE');
+                    const progress = select('SLIDER-PROGRESS');
+                    const bounds = element!.getBoundingClientRect();
+
+                    simulate.mouseDown(element, {
+                        currentTarget: element!,
+                        clientY: Math.round(bounds.bottom - bounds.height * 0.77)
+                    });
+                    simulateMouseEvent(
+                        environment,
+                        'mousemove',
+                        {clientY: Math.round(bounds.bottom - bounds.height * 0.77)}
+                    );
+                    simulateMouseEvent(
+                        environment,
+                        'mouseup',
+                        {clientY: Math.round(bounds.bottom - bounds.height * 0.77)}
+                    );
+
+                    expect(onInput).to.be.calledWith('2');
+                    expect(onChange).to.be.calledWith(2);
+                });
+            });
+        });
+
+        describe('when drag things around using touch', () => {
+            const value = 5;
+            const min = 0;
+            const max = 10;
+
+            let onChange: (value: number) => void;
+            let onInput: (value: string) => void;
+            let select: (automationId: string) => HTMLElement | null;
+            let waitForDom: (expectation: () => void) => Promise<void>;
+            let environment: Element;
+
+            beforeEach(function() {
+                if (!hasTouchSupport) {
+                    // this.skip();
+                }
+
+                environment = document.createElement('body');
+                onChange = sinon.spy();
+                onInput = sinon.spy();
+                const rendered = clientRenderer.render(
+                    <Slider
+                        value={value}
+                        min={min}
+                        max={max}
+                        axis="y-reverse"
+                        onChange={onChange}
+                        onInput={onInput}
+                        environment={environment}
+                    />
+                );
+                select = rendered.select;
+                waitForDom = rendered.waitForDom;
+            });
+
+            it('should change value', async () => {
+                await waitFor(() => {
+                    const element = select('SLIDER');
+                    const handle = select('SLIDER-HANDLE');
+                    const progress = select('SLIDER-PROGRESS');
+                    const bounds = element!.getBoundingClientRect();
+
+                    simulate.touchStart(element, {
+                        currentTarget: element!,
+                        touches: {
+                            0: {
+                                clientY: Math.round(bounds.bottom - bounds.height * 0.7)
+                            }
+                        } as any as TouchList
+                    });
+
+                    expect(handle!.style.top).to.equal('30%');
+                    expect(progress!.style.height).to.equal('30%');
+                });
+            });
+
+            it('should call onChange', async () => {
+                await waitFor(() => {
+                    const element = select('SLIDER');
+                    const handle = select('SLIDER-HANDLE');
+                    const progress = select('SLIDER-PROGRESS');
+                    const bounds = element!.getBoundingClientRect();
+
+                    simulate.touchStart(element, {
+                        currentTarget: element!,
+                        touches: {
+                            0: {
+                                clientY: Math.round(bounds.bottom - bounds.height * 0.7)
+                            }
+                        } as any as TouchList
+                    });
+
+                    simulateTouchEvent(
+                        environment,
+                        'touchend',
+                        {
+                            x: bounds.left + bounds.height / 3,
+                            y: Math.round(bounds.bottom - bounds.height * 0.7)
+                        }
+                    );
+
+                    expect(onChange).to.be.calledWith(3);
+                });
+            });
+
+            it('should call onInput', async () => {
+                await waitFor(() => {
+                    const element = select('SLIDER');
+                    const handle = select('SLIDER-HANDLE');
+                    const progress = select('SLIDER-PROGRESS');
+                    const bounds = element!.getBoundingClientRect();
+
+                    simulate.touchStart(element, {
+                        currentTarget: element!,
+                        touches: {
+                            0: {
+                                clientY: Math.round(bounds.bottom - bounds.height * 0.7)
+                            }
+                        } as any as TouchList
+                    });
+                    simulateTouchEvent(
+                        environment,
+                        'touchmove',
+                        {
+                            x: bounds.left + bounds.height / 3,
+                            y: Math.round(bounds.bottom - bounds.height * 0.7)
+                        }
+                    );
+
+                    simulateTouchEvent(
+                        environment,
+                        'touchend',
+                        {
+                            x: bounds.left + bounds.height / 3,
+                            y: Math.round(bounds.bottom - bounds.height * 0.7)
+                        }
+                    );
+
+                    expect(onInput).to.be.calledWith('3');
+                    expect(onChange).to.be.calledWith(3);
+                });
+            });
+        });
+
+        describe('touch dragging with step', () => {
+            const value = 5;
+            const min = 0;
+            const max = 10;
+            const step = 1;
+            let onChange: (value: number) => void;
+            let onInput: (value: string) => void;
+            let select: (automationId: string) => HTMLElement | null;
+            let waitForDom: (expectation: () => void) => Promise<void>;
+            let environment: Element;
+
+            beforeEach(function() {
+                if (!hasTouchSupport) {
+                    this.skip();
+                }
+
+                environment = document.createElement('body');
+                onChange = sinon.spy();
+                onInput = sinon.spy();
+
+                const rendered = clientRenderer.render(
+                    <Slider
+                        value={value}
+                        min={min}
+                        max={max}
+                        axis="y-reverse"
+                        step={step}
+                        onChange={onChange}
+                        onInput={onInput}
+                        environment={environment}
+                    />
+                );
+
+                select = rendered.select;
+                waitForDom = rendered.waitForDom;
+            });
+
+            it('renders handle on the right place', async () => {
+                await waitForDom(() => {
+                    const element = select('SLIDER-HANDLE');
+
+                    expect(element!.style.top).to.equal('50%');
+                });
+            });
+
+            it('renders progress bar with the right width', async () => {
+                await waitForDom(() => {
+                    const element = select('SLIDER-PROGRESS');
+
+                    expect(element).to.be.present();
+                    expect(element!.style.height).to.equal('50%');
+                });
+            });
+
+            it('renders invisible native input with right value', async () => {
+                await waitForDom(() => {
+                    const element = select('SLIDER-NATIVE-INPUT');
+
+                    expect(element).to.be.present();
+                    expect(element).to.has.value(String(value));
+                });
+            });
+
+            it('should change value according to step', async () => {
+                await waitFor(() => {
+                    const element = select('SLIDER');
+                    const handle = select('SLIDER-HANDLE');
+                    const progress = select('SLIDER-PROGRESS');
+                    const bounds = element!.getBoundingClientRect();
+
+                    simulate.touchStart(element, {
+                        currentTarget: element!,
+                        touches: {
+                            0: {
+                                clientY: Math.round(bounds.bottom - bounds.height * 0.77)
+                            }
+                        } as any as TouchList
+                    });
+
+                    expect(handle!.style.top).to.equal('20%');
+                    expect(progress!.style.height).to.equal('20%');
+                });
+            });
+
+            it('should call onChange with value normilized to step', async () => {
+                await waitFor(() => {
+                    const element = select('SLIDER');
+                    const handle = select('SLIDER-HANDLE');
+                    const progress = select('SLIDER-PROGRESS');
+                    const bounds = element!.getBoundingClientRect();
+
+                    simulate.touchStart(element, {
+                        currentTarget: element!,
+                        touches: {
+                            0: {
+                                clientY: Math.round(bounds.bottom - bounds.height * 0.77)
+                            }
+                        } as any as TouchList
+                    });
+
+                    simulateTouchEvent(
+                        environment,
+                        'touchend',
+                        {
+                            y: Math.round(bounds.bottom - bounds.height * 0.77),
+                            x: Math.round(bounds.left + bounds.width * 0.5)
+                        }
+                    );
+
+                    expect(onChange).to.be.calledWith(2);
+                });
+            });
+
+            it('should call onInput with value normilized to step', async () => {
+                await waitFor(() => {
+                    const element = select('SLIDER');
+                    const handle = select('SLIDER-HANDLE');
+                    const progress = select('SLIDER-PROGRESS');
+                    const bounds = element!.getBoundingClientRect();
+
+                    simulate.touchStart(element, {
+                        currentTarget: element!,
+                        touches: {
+                            0: {
+                                clientY: Math.round(bounds.bottom - bounds.height * 0.77)
+                            }
+                        } as any as TouchList
+                    });
+                    simulateTouchEvent(
+                        environment,
+                        'touchmove',
+                        {
+                            y: Math.round(bounds.bottom - bounds.height * 0.77),
+                            x: Math.round(bounds.left + bounds.width * 0.5)
+                        }
+                    );
+
+                    simulateTouchEvent(
+                        environment,
+                        'touchend',
+                        {
+                            y: Math.round(bounds.bottom - bounds.height * 0.77),
+                            x: Math.round(bounds.left + bounds.width * 0.5)
+                        }
+                    );
+
+                    expect(onInput).to.be.calledWith('2');
+                    expect(onChange).to.be.calledWith(2);
+                });
+            });
+        });
+
+        describe('keyboard control', () => {
+            const value = 50;
+            const min = 0;
+            const max = 100;
+
+            let onChange: (value: number) => void;
+            let onInput: (value: string) => void;
+            let select: (automationId: string) => HTMLElement | null;
+            let waitForDom: (expectation: () => void) => Promise<void>;
+            let environment: Element;
+
+            beforeEach(() => {
+                environment = document.createElement('body');
+                onChange = sinon.spy();
+                onInput = sinon.spy();
+                const rendered = clientRenderer.render(
+                    <Slider
+                        value={value}
+                        min={min}
+                        max={max}
+                        axis="y-reverse"
+                        onChange={onChange}
+                        onInput={onInput}
+                        environment={environment}
+                    />
+                );
+                select = rendered.select;
+                waitForDom = rendered.waitForDom;
+            });
+
+            it('on pressing up key', async () => {
+                simulate.keyDown(select('SLIDER'), {
+                    keyCode: keycode.codes.up
+                });
+
+                return waitFor(() => {
+                    expect(onChange).have.been.calledWith(49);
+                });
+            });
+
+            it('on pressing page up key', async () => {
+                simulate.keyDown(select('SLIDER'), {
+                    keyCode: keycode.codes['page up']
+                });
+
+                return waitFor(() => {
+                    expect(onChange).have.been.calledWith(51);
+                });
+            });
+
+            it('on pressing up key with shift', async () => {
+                simulate.keyDown(select('SLIDER'), {
+                    shiftKey: true,
+                    keyCode: keycode.codes.up
+                });
+
+                return waitFor(() => {
+                    expect(onChange).have.been.calledWith(40);
+                });
+            });
+
+            it('on pressing page up key with shift', async () => {
+                simulate.keyDown(select('SLIDER'), {
+                    shiftKey: true,
+                    keyCode: keycode.codes['page up']
+                });
+
+                return waitFor(() => {
+                    expect(onChange).have.been.calledWith(60);
+                });
+            });
+
+            it('on pressing down key', async () => {
+                simulate.keyDown(select('SLIDER'), {
+                    keyCode: keycode.codes.down
+                });
+
+                return waitFor(() => {
+                    expect(onChange).have.been.calledWith(51);
+                });
+            });
+
+            it('on pressing page down key', async () => {
+                simulate.keyDown(select('SLIDER'), {
+                    keyCode: keycode.codes['page down']
+                });
+
+                return waitFor(() => {
+                    expect(onChange).have.been.calledWith(49);
+                });
+            });
+
+            it('on pressing down key with shift', async () => {
+                simulate.keyDown(select('SLIDER'), {
+                    shiftKey: true,
+                    keyCode: keycode.codes.down
+                });
+
+                return waitFor(() => {
+                    expect(onChange).have.been.calledWith(60);
+                });
+            });
+
+            it('on pressing page down key with shift', async () => {
+                simulate.keyDown(select('SLIDER'), {
+                    shiftKey: true,
+                    keyCode: keycode.codes['page down']
+                });
+
+                return waitFor(() => {
+                    expect(onChange).have.been.calledWith(40);
+                });
+            });
+
+            it('on pressing home key', async () => {
+                simulate.keyDown(select('SLIDER'), {
+                    keyCode: keycode.codes.home
+                });
+
+                return waitFor(() => {
+                    expect(onChange).have.been.calledWith(100);
+                });
+            });
+
+            it('on pressing end key', async () => {
+                simulate.keyDown(select('SLIDER'), {
+                    shiftKey: true,
+                    keyCode: keycode.codes.end
+                });
+
+                return waitFor(() => {
+                    expect(onChange).have.been.calledWith(0);
                 });
             });
         });

@@ -414,26 +414,35 @@ export class Slider extends React.Component<SliderProps, SliderState> {
     }
 
     private onSliderAreaKeyDown(event: React.KeyboardEvent<HTMLElement>) {
+        const {isReverse} = this.state;
         switch (keycode(event.keyCode)) {
             case 'page down':
-            case 'down':
                 this.decreaseValue(false, event.shiftKey ? 10 : 1);
                 break;
+            case 'down':
             case 'left':
-                this.decreaseValue(false, event.shiftKey ? 10 : 1);
+                isReverse ?
+                    this.increaseValue(false, event.shiftKey ? 10 : 1) :
+                    this.decreaseValue(false, event.shiftKey ? 10 : 1);
                 break;
             case 'page up':
-            case 'up':
                 this.increaseValue(false, event.shiftKey ? 10 : 1);
                 break;
+            case 'up':
             case 'right':
-                this.increaseValue(false, event.shiftKey ? 10 : 1);
+                isReverse ?
+                    this.decreaseValue(false, event.shiftKey ? 10 : 1) :
+                    this.increaseValue(false, event.shiftKey ? 10 : 1);
                 break;
             case 'home':
-                this.decreaseValue(true);
+                isReverse ?
+                    this.increaseValue(true) :
+                    this.decreaseValue(true);
                 break;
             case 'end':
-                this.increaseValue(true);
+                isReverse ?
+                    this.decreaseValue(true) :
+                    this.increaseValue(true);
                 break;
             default:
                 return;
