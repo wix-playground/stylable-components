@@ -4,26 +4,22 @@
 
 - [Elements](#elements)
 
-- [Slider States](#slider-states)
+- [API](#api)
 
-- [Slider Props](#slider-props)
-
-- [UI Customizations](#ui-customizations)
-
-- [Behavior](#behavior)
-  - [Keyboard](#keyboard)
-  - [Mouse](#mouse)
-  - [Touch](#touch)
-
-- [Error handling](#error-handling)
+- [States](#states)
 
 - [Accessibility](#accessibility)
 
-- [Examples](#examples)
-  - [Simple](#simple)
-  - [Stepped](#stepped)
-  - [Horizontal / Vertical Axis](#horizontal-/-vertical)
-  - [Tooltip](#tooltip)
+- [Behavior](#behavior)
+
+  - [Input Methods](#input-methods)
+    - [Keyboard](#keyboard)
+    - [Mouse](#Mouse)
+    - [Touch](#touch)
+
+- [RTL](#rtl)
+
+- [DOM structure](#dom-structure)
 
 - [Design](#design)
 
@@ -179,7 +175,7 @@ If slider has a 'step' prop, handle should move across the slider bar only accor
 
 
 
-### Mouse
+#### Mouse
 
 | Event                                    | Action                                   |
 | ---------------------------------------- | ---------------------------------------- |
@@ -190,7 +186,7 @@ If slider has a 'step' prop, handle should move across the slider bar only accor
 
 
 
-### Touch
+#### Touch
 
 | Event                                  | Action                                   | NOTE                                     |
 | -------------------------------------- | ---------------------------------------- | ---------------------------------------- |
