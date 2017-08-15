@@ -3,6 +3,10 @@ import * as React from 'react';
 import { SBComponent } from 'stylable-react-component';
 
 export type PointerEvent = MouseEvent | TouchEvent;
+export interface PointerPosition {
+    clientX: number;
+    clientY: number;
+}
 export type Step = number | 'any';
 
 enum ChangeDirrection {
@@ -252,11 +256,12 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         return this.getValueInRange(absoluteValue, this.props.min!, this.props.max!);
     }
 
-    private getValueFromElementAndPointer(element: HTMLElement, pointerPosition: number): number {
+    private getValueFromElementAndPointer(element: HTMLElement, pointerPosition: PointerPosition): number {
         const sliderBounds = element.getBoundingClientRect();
         const sliderOffset = sliderBounds.left;
         const sliderSize = sliderBounds.width;
-        const relativeValue = this.getRelativeValue(pointerPosition - sliderOffset, 0, sliderSize);
+        const sliderCoordinate = pointerPosition.clientX;
+        const relativeValue = this.getRelativeValue(sliderCoordinate - sliderOffset, 0, sliderSize);
         const { relativeStep } = this.state;
 
         if (typeof relativeStep === 'undefined' || relativeStep === CONTINUOUS_STEP) {
@@ -283,7 +288,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         event.preventDefault();
         sliderArea.focus();
 
-        const relativeValue = this.getValueFromElementAndPointer(this.sliderArea, event.clientX);
+        const relativeValue = this.getValueFromElementAndPointer(this.sliderArea, event);
 
         this.setState({
             relativeValue,
@@ -295,7 +300,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
     }
 
     private onSliderAreaMouseMove(event: MouseEvent) {
-        const relativeValue = this.getValueFromElementAndPointer(this.sliderArea, event.clientX);
+        const relativeValue = this.getValueFromElementAndPointer(this.sliderArea, event);
 
         requestAnimationFrame(() => {
             if (!this.isSliderMounted) {
@@ -315,7 +320,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         this.props.environment!.removeEventListener('mousemove', this.onSliderAreaMouseMove);
         this.props.environment!.removeEventListener('mouseup', this.onSliderAreaMouseUp);
 
-        const relativeValue = this.getValueFromElementAndPointer(this.sliderArea, event.clientX);
+        const relativeValue = this.getValueFromElementAndPointer(this.sliderArea, event);
         const value = this.getAbsoluteValue(relativeValue);
 
         this.setState({
@@ -341,7 +346,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
 
         sliderArea.focus();
 
-        const relativeValue = this.getValueFromElementAndPointer(this.sliderArea, event.touches[0].clientX);
+        const relativeValue = this.getValueFromElementAndPointer(this.sliderArea, event.touches[0]);
 
         this.setState({
             relativeValue,
@@ -355,7 +360,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
     }
 
     private onSliderAreaTouchMove(event: TouchEvent) {
-        const relativeValue = this.getValueFromElementAndPointer(this.sliderArea, event.changedTouches[0].clientX);
+        const relativeValue = this.getValueFromElementAndPointer(this.sliderArea, event.changedTouches[0]);
         requestAnimationFrame(() => {
             if (!this.isSliderMounted) {
                 return;
@@ -378,7 +383,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         this.props.environment!.removeEventListener('touchend', this.onSliderAreaTouchEnd);
         this.props.environment!.removeEventListener('touchcancel', this.onSliderAreaTouchEnd);
 
-        const relativeValue = this.getValueFromElementAndPointer(this.sliderArea, event.changedTouches[0].clientX);
+        const relativeValue = this.getValueFromElementAndPointer(this.sliderArea, event.changedTouches[0]);
         const value = this.getAbsoluteValue(relativeValue);
 
         this.setState({
