@@ -172,11 +172,6 @@ export class Slider extends React.Component<SliderProps, SliderState> {
                         />
                     </div>
                 </div>
-                <div
-                    className="scale-container"
-                    data-automation-id="SLIDER-SCALE-CONTAINER"
-                />
-
             </div>
         );
     }

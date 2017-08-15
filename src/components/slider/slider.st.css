@@ -21,16 +21,37 @@
     handleBorderHover: 1px solid value(color_Slider_Handle_Active);;
 }
 
+.native-input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    outline: none;
+}
+
 .root {
     -st-states: active, disabled, error, x, x-reverse, y, y-reverse;
-    width: 100%;
     position: relative;
     display: inline-block;
 }
 
-.slider {
+.root:x {
     width: 100%;
-    padding: 15px 0;
+}
+
+.root:x-reverse {
+    width: 100%;
+}
+
+.root:y {
+    height: 100%;
+}
+
+.root:y-reverse {
+    height: 100%;
+}
+
+.slider {
     cursor: pointer;
     outline: none;
     user-select: none;
@@ -40,32 +61,77 @@
     -webkit-touch-callout: none;
 }
 
-.native-input {
-    position: absolute;
-    opacity: 0;
-    width: 0;
-    height: 0;
-    outline: none;
+.root:x .slider{
+    width: 100%;
+    padding: 15px 0;
+}
+
+.root:x-reverse .slider{
+    width: 100%;
+    padding: 15px 0;
+}
+
+.root:y .slider{
+    height: 100%;
+    padding: 0 15px;
+}
+
+.root:y-reverse .slider{
+    height: 100%;
+    padding: 0 15px;
 }
 
 .track {
     position: relative;
-    height: 4px;
     border-radius: 2px;
     background-color: #adbbc6;
 }
 
+.root:x .track{
+    height: 4px;
+    width: 100%;
+}
+
+.root:x-reverse .track{
+    height: 4px;
+    width: 100%;
+}
+
+.root:y .track{
+    width: 4px;
+    height: 100%;
+}
+
+.root:y-reverse .track{
+    width: 4px;
+    height: 100%;
+}
+
 .progress {
     position: absolute;
-    width: 50%;
     height: inherit;
     background-color: #4a90e2;
     border-radius: 2px;
 }
 
+.root:x .progress{
+    left: 0;
+}
+
+.root:x-reverse .progress{
+    right: 0;
+}
+
+.root:y .progress{
+    bottom: 0;
+}
+
+.root:y-reverse .progress{
+    top: 0;
+}
+
 .handle {
     position: absolute;
-    left: 50%;
     width: 16px;
     height: 16px;
     border-radius: 8px;
@@ -73,10 +139,6 @@
     background-color: #ffffff;
     border: solid 1px #7d8c98;
     z-index: 1000;
-}
-
-.scale-container {
-    height: inherit;
 }
 
 /* Hover state */
