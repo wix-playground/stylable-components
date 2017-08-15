@@ -4,7 +4,7 @@ import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react
 import {ToggleDemo} from '../../demo/components/toggle-demo';
 import {Toggle} from '../../src';
 import styles from '../../src/components/toggle/toggle.st.css';
-import {hasCssState} from '../utils/has-css-state';
+import {hasCssState} from '../utils';
 
 describe('<Toggle/>', function() {
     const clientRenderer = new ClientRenderer();
