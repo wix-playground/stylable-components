@@ -15,7 +15,7 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
         this.onSliderChange = this.onSliderChange.bind(this);
 
         this.state = {
-            value: 100
+            value: 50
         };
     }
 

@@ -66,6 +66,7 @@ export interface SliderState {
     relativeStep: Step;
     isActive: boolean;
     isVertical: boolean;
+    isReverse: boolean;
 }
 
 @SBComponent(style)
@@ -111,7 +112,8 @@ export class Slider extends React.Component<SliderProps, SliderState> {
             relativeValue: this.getRelativeValue(this.props.value!, this.props.min!, this.props.max!, this.props.step),
             relativeStep: this.getRelativeStep(props.step, this.props.min!, this.props.max!),
             isActive: false,
-            isVertical: this.isVertical(this.props.axis!)
+            isVertical: this.isVertical(this.props.axis!),
+            isReverse: this.isReverse(this.props.axis!)
         };
     }
 
@@ -175,9 +177,13 @@ export class Slider extends React.Component<SliderProps, SliderState> {
                             className="handle"
                             data-automation-id="SLIDER-HANDLE"
                             style={
-                                this.state.isVertical ?
-                                    {bottom: `${this.state.relativeValue}%`} :
-                                    {left: `${this.state.relativeValue}%`}
+                                this.state.isReverse ?
+                                    (this.state.isVertical ?
+                                        {top: `${this.state.relativeValue}%`} :
+                                        {right: `${this.state.relativeValue}%`}) :
+                                    (this.state.isVertical ?
+                                        {bottom: `${this.state.relativeValue}%`} :
+                                        {left: `${this.state.relativeValue}%`})
                             }
                         />
                     </div>
@@ -214,7 +220,8 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         this.setState({
             relativeValue: this.getRelativeValue(value!, min!, max!, step),
             relativeStep: this.getRelativeStep(step, min!, max!),
-            isVertical: this.isVertical(nextProps.axis || this.props.axis!)
+            isVertical: this.isVertical(nextProps.axis || this.props.axis!),
+            isReverse: this.isReverse(nextProps.axis || this.props.axis!)
         });
     }
 
@@ -228,6 +235,10 @@ export class Slider extends React.Component<SliderProps, SliderState> {
 
     private isVertical(axis: AxisOptions): boolean {
         return axis === AXISES.y || axis === AXISES.yReverse;
+    }
+
+    private isReverse(axis: AxisOptions): boolean {
+        return axis === AXISES.xReverse || axis === AXISES.yReverse;
     }
 
     private getRelativeStep(step: Step | undefined, min: number, max: number): Step {
@@ -257,7 +268,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
     }
 
     private getValueFromElementAndPointer(element: HTMLElement, pointerPosition: PointerPosition): number {
-        const { relativeStep, isVertical } = this.state;
+        const { relativeStep, isVertical, isReverse } = this.state;
 
         const sliderBounds = element.getBoundingClientRect();
 
@@ -265,9 +276,11 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         const sliderSize = isVertical ? sliderBounds.height : sliderBounds.width;
         const sliderCoordinate = isVertical ? pointerPosition.clientY : pointerPosition.clientX;
 
-        const relativeValue = isVertical ?
-            100 - this.getRelativeValue(sliderCoordinate - sliderOffset, 0, sliderSize) :
-            this.getRelativeValue(sliderCoordinate - sliderOffset, 0, sliderSize);
+        let relativeValue = this.getRelativeValue(sliderCoordinate - sliderOffset, 0, sliderSize);
+
+        relativeValue = isReverse ?
+            (isVertical ? relativeValue : 100 - relativeValue) :
+            (isVertical ? 100 - relativeValue : relativeValue);
 
         if (typeof relativeStep === 'undefined' || relativeStep === CONTINUOUS_STEP) {
             return relativeValue;

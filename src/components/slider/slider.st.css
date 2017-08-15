@@ -146,23 +146,24 @@
     border-radius: 8px;
     background-color: #ffffff;
     border: solid 1px #7d8c98;
+    box-sizing: border-box;
     z-index: 1000;
 }
 
 .root:x .handle{
-    margin: -6px 0 0 -6px;
+    margin: -6px 0 0 -8px;
 }
 
 .root:x-reverse .handle{
-    margin: -6px 0 0 -6px;
+    margin: -6px -8px 0px 0px;
 }
 
 .root:y .handle{
-    margin: 0px 0px -6px -6px;
+    margin: 0px 0px -8px -6px;
 }
 
 .root:y-reverse .handle{
-    margin: 0px 0px -6px -6px;
+    margin: -8px 0px 0px -6px;
 }
 
 /* Hover state */
