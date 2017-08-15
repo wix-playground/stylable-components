@@ -5,9 +5,9 @@ import {SBComponent} from 'stylable-react-component';
 import {Stepper} from '../stepper';
 import styles from './time-picker.st.css';
 import {
-    Ampm, Format, isTimeSegment,
-    isTouch, is12TimeFormat, validInputStringRE, ampmLabels,
-    isValidValue, formatTimeChunk, Segment, selectionIndexes, TimeSegment, to24, toAmpm
+    Ampm, ampmLabels, Format,
+    formatTimeChunk, is12TimeFormat, isTimeSegment, isTouch,
+    isValidValue, Segment, selectionIndexes, TimeSegment, to24, toAmpm, validInputStringRE
 } from './utils';
 
 export interface Props {

@@ -4,8 +4,8 @@ import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react
 import {TimePicker} from '../../src';
 import styles from '../../src/components/time-picker/time-picker.st.css';
 import {
-    Ampm, isValidValue, isTouch,
-    formatTimeChunk, Segment, selectionIndexes, to24, toAmpm
+    Ampm, formatTimeChunk, isTouch,
+    isValidValue, Segment, selectionIndexes, to24, toAmpm
 } from '../../src/components/time-picker/utils';
 import {hasCssState} from '../utils/has-css-state';
 
