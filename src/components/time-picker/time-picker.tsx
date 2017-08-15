@@ -186,7 +186,7 @@ export default class TimePicker extends React.Component<Props, State> {
         return false;
     }
 
-    private updateSegmentValue(name: Segment, value: number | Ampm): void {
+    private updateSegmentValue(name: Segment, value: number | Ampm, shouldSelect: boolean = true): void {
         const {hh, mm, ampm} = this.state;
         this.setState({
             [name as any]: value,
@@ -195,20 +195,22 @@ export default class TimePicker extends React.Component<Props, State> {
                 [name]: value
             })
         }, () => {
-            this.input!.focus();
-            this.select(name);
+            if (shouldSelect) {
+                this.input!.focus();
+                this.select(name);
+            }
             this.commit();
         });
     }
 
-    private toggleAmpm(): void {
-        this.updateSegmentValue('ampm', ampmSwitch[this.state.ampm]);
+    private toggleAmpm(shouldSelect: boolean): void {
+        this.updateSegmentValue('ampm', ampmSwitch[this.state.ampm], shouldSelect);
     }
 
     private changeValue(step: number): void {
         const {currentSegment} = this.state;
         if (!isTimeSegment(currentSegment)) {
-            return this.toggleAmpm();
+            return this.toggleAmpm(true);
         }
         const {ampm} = this.state;
         const newValue = (this.state[currentSegment] || 0) + step;
@@ -239,7 +241,7 @@ export default class TimePicker extends React.Component<Props, State> {
             }
         }
         if (currentSegment === 'ampm') {
-            this.toggleAmpm();
+            this.toggleAmpm(false);
         } else {
             this.select(currentSegment);
         }
@@ -363,7 +365,7 @@ export default class TimePicker extends React.Component<Props, State> {
             case 'enter':
                 e.preventDefault();
                 if (!isTimeSegment(currentSegment)) {
-                    this.toggleAmpm();
+                    this.toggleAmpm(true);
                 }
         }
     }
