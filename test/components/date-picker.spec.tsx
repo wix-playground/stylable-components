@@ -65,7 +65,7 @@ describe('The DatePicker Component', () => {
         trigger.change(datePickerInput!, '2017/02/01');
         simulate.blur(datePickerInput);
 
-        await waitForDom(() => expect(onChange.calledOnce));
+        await waitForDom(() => expect(onChange).to.have.been.calledOnce());
     });
 
     it('should use a provided value', async () => {
