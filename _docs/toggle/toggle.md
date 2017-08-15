@@ -22,47 +22,6 @@
 | label    | string |              |            | Text to display in accessibility mode.    |
 | error    | boolean   | false        |            | Sets the `:error` CSS state on the `<toggle/>`. |
 | rtl      | boolean   | false        |            | Makes the component RTL.
-  
-### Input Handling
-
-#### Keyboard
-
-| key        | action                                   |
-| ----------- | ---------------------------------------- |
-| tab         | moves to next element                    |
-| shift + tab | moves to previous element                |
-| enter       | -                                        |
-| space       | switch toggle to On / Off correspondingly (if toggle is in focus) |
-| esc         | removes focus (if in focus)              |
-
-**RTL** orientation does not change keyboard behavior
-
-#### Mouse
-
-| event                 | action                                   | note                                     |
-| --------------------- | ---------------------------------------- | ---------------------------------------- |
-| hover                 | highlight toggle (both switch & background) | Event triggers on both switch & background hover |
-| click (on switch)     | switch toggle to On / Off correspondingly | Event triggers on Mouse Release event    |
-| click (on background) | switch toggle to On / Off correspondingly | Event triggers on Mouse Release event    |
-
-#### Touch
-
-| event               | action                                   | note                            |
-| ------------------- | ---------------------------------------- | ------------------------------- |
-| tap (on handle)     | switch toggle to On / Off correspondingly | Event triggers on Touch Release |
-| tap (on background) | switch toggle to On / Off correspondingly | Event triggers on Touch Release |
-
-### Accessibility
-
-#### Keyboard
-
-For now accessibility for toggle is covered with keyboard behavior and label prop that shows text hint.
-
-#### Focus
-
-Toggle should have a focus state. Focus state looks like a square border around the entire component.
-
-![toggleFocus](./assets/toggleFocus.png)
 
 ### Code Example
 
@@ -107,19 +66,6 @@ export class ComponentsDemo extends React.Component<{}, State>{
 | :error                         | Style the component on error, i.e. when the `error` prop is true. |
 | :checked                       | Style the toggle element in checked state. |
 | :hover, :focus, :disabled, etc | Standard CSS states                       |
-
-### Visual States
-
-| State          | Description                         |
-| -------------- | ----------------------------------- |
-| On             | Toggle is on / checked              |
-| Off            | Toggle is off / unchecked           |
-| On + hover     | Toggle is on / checked & hovered    |
-| Off + hover    | Toggle is off / unchecked & hovered |
-| On + disabled  | Toggle is on & disabled             |
-| Off + disabled | Toggle is off & disabled            |
-
-![image](./assets/visual-states.png)
 
 ### Style Code Example
 
