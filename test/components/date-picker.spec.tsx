@@ -65,7 +65,7 @@ describe('The DatePicker Component', () => {
         trigger.change(datePickerInput!, '2017/02/01');
         simulate.blur(datePickerInput);
 
-        await waitForDom(() => expect(onChange).to.have.been.calledOnce());
+        await waitForDom(() => expect(onChange).to.have.been.calledOnce);
     });
 
     it('should use a provided value', async () => {
@@ -74,7 +74,7 @@ describe('The DatePicker Component', () => {
         await waitForDom(() => expect(select(datePickerInputId)).to.have.value(JANUARY_FIRST.toDateString()));
     });
 
-    it('displays "Invalid Date" when an invalid date is entered', async () => {
+    it('should not call onChange with an invalid date', async () => {
         const onChange = sinon.spy();
         const {select, waitForDom} = clientRenderer.render(<DatePicker onChange={onChange} />);
         const datePickerInput = select(datePickerInputId);
@@ -82,7 +82,7 @@ describe('The DatePicker Component', () => {
         trigger.change(datePickerInput!, '2sgsdfsdfw223');
         simulate.blur(datePickerInput);
 
-        await waitForDom(() => expect(datePickerInput).to.have.value('Invalid Date'));
+        await waitForDom(() => expect(onChange).to.have.not.been.calledOnce);
     });
 
     it('should call onChange with the current input value when blurred', async () => {

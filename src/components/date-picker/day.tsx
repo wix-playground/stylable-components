@@ -3,7 +3,7 @@ import {observer} from 'mobx-react';
 import * as React from 'react';
 import { SBComponent } from 'stylable-react-component';
 import {root} from 'wix-react-tools';
-import styles from './day.st.css';
+import styles from './date-picker.st.css';
 
 export interface DayProps {
     day: number;
@@ -24,8 +24,7 @@ export class Day extends React.Component<DayProps, {}> {
             selected: this.props.selected!,
             current: this.props.currentDay!,
             inactive: this.props.partOfNextMonth! || this.props.partOfPrevMonth!,
-            active: !this.props.partOfNextMonth! && !this.props.partOfPrevMonth!,
-            focusedAndSelected: this.props.selected! && this.props.focused!
+            active: !this.props.partOfNextMonth! && !this.props.partOfPrevMonth!
         };
 
         return (

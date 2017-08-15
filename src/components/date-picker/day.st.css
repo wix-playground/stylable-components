@@ -15,7 +15,6 @@
 }
 
 .root {
-    -st-states: focused, selected, current, inactive, active, focusedAndSelected;
 }
 
 .calendarItem {
@@ -24,6 +23,7 @@
 }
 
 .day {
+    -st-states: focused, selected, current, inactive, active, focusedAndSelected;
     font-family: value(fontFamily);
     font-size: 14px;
     text-align: center;
@@ -33,21 +33,21 @@
     cursor: pointer;
 }
 
-.root:current {
+.day:current {
     color: value(color_Default);
 }
 
-.root:focused {
+.day:focused {
     outline: solid 1px value(color_Hover);
     outline-offset: -1px;
 }
 
-.root:selected {
+.day:selected {
     color: value(color_MainText_Background);
     background-color: value(color_Active);
 }
 
-.root:inactive {
+.day:inactive {
     font-family: value(fontFamily);
     font-size: 14px;
     text-align: center;
@@ -57,12 +57,12 @@
     cursor: default;
 }
 
-.root:focusedAndSelected {
+.day:focusedAndSelected {
     color: value(color_MainText_Background);
     background-color: value(color_Hover);
 }
 
-.root:active:hover {
+.day:active:hover {
     color: value(color_MainText);
     background-color: value(color_Keyboard_Focused);
 }
