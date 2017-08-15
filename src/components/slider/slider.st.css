@@ -98,36 +98,41 @@
 }
 
 .root:y .track{
+    text-align: left;
     width: 4px;
     height: 100%;
 }
 
 .root:y-reverse .track{
+    text-align: left;
     width: 4px;
     height: 100%;
 }
 
 .progress {
     position: absolute;
-    height: inherit;
     background-color: #4a90e2;
     border-radius: 2px;
 }
 
 .root:x .progress{
     left: 0;
+    height: inherit;
 }
 
 .root:x-reverse .progress{
     right: 0;
+    height: inherit;
 }
 
 .root:y .progress{
     bottom: 0;
+    width: inherit;
 }
 
 .root:y-reverse .progress{
     top: 0;
+    width: inherit;
 }
 
 .handle {
@@ -135,10 +140,25 @@
     width: 16px;
     height: 16px;
     border-radius: 8px;
-    margin: -6px 0 0 -6px;
     background-color: #ffffff;
     border: solid 1px #7d8c98;
     z-index: 1000;
+}
+
+.root:x .handle{
+    margin: -6px 0 0 -6px;
+}
+
+.root:x-reverse .handle{
+    margin: -6px 0 0 -6px;
+}
+
+.root:y .handle{
+    margin: 0px 0px -6px -6px;
+}
+
+.root:y-reverse .handle{
+    margin: 0px 0px -6px -6px;
 }
 
 /* Hover state */
