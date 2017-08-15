@@ -31,7 +31,7 @@ export class Day extends React.Component<DayProps, {}> {
             <span
                 {...root(this.props,
                     {   'data-automation-id': '',
-                        'className': 'root calendarItem day'
+                        'className': 'root'
                     }) as React.HTMLAttributes<HTMLSpanElement>
                 }
                 className="calendarItem day"

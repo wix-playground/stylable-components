@@ -33,17 +33,17 @@ export class Calendar extends React.Component<CalendarProps, {}> {
     public render() {
         return (
             <div tabIndex={this.props.tabIndex} data-automation-id="DATE_PICKER_CALENDAR">
-                <div className={styles.dropdownArrowWrapper}><div className={styles.dropdownArrow} /></div>
-                <div className={styles.dropdown} data-automation-id="DATE_PICKER_DROPDOWN">
-                    <div className={styles.header}>
+                <div className="dropdownArrowWrapper"><div className="dropdownArrow" /></div>
+                <div className="dropdown" data-automation-id="DATE_PICKER_DROPDOWN">
+                    <div className="header">
                         <span
-                            className={`${styles.arrowWrapper} ${styles.arrowWrapperPrev}`}
+                            className="arrowWrapper arrowWrapperPrev"
                             onMouseDown={this.goToPrevMonth}
                             data-automation-id="PREV_MONTH_BUTTON"
                         >
-                            <i className={`${styles.headerArrow} ${styles.headerArrowPrev}`} />
+                            <i className="headerArrow headerArrowPrev" />
                         </span>
-                        <span className={styles.headerDate}>
+                        <span className="headerDate">
                             <span data-automation-id="MONTH_NAME">
                                 {this.monthName}
                             </span>
@@ -51,14 +51,14 @@ export class Calendar extends React.Component<CalendarProps, {}> {
                             <span data-automation-id="YEAR">{this.year}</span>
                         </span>
                         <span
-                            className={`${styles.arrowWrapper} ${styles.arrowWrapperNext}`}
+                            className="arrowWrapper arrowWrapperNext"
                             onMouseDown={this.goToNextMonth}
                             data-automation-id="NEXT_MONTH_BUTTON"
                         >
-                            <i className={`${styles.headerArrow} ${styles.headerArrowNext}`} />
+                            <i className="headerArrow headerArrowNext" />
                         </span>
                     </div>
-                    <div className={styles.calendar} data-automation-id="DAY_GRID">
+                    <div className="calendar" data-automation-id="DAY_GRID">
                         {this.dayNames}
                         {this.previousDays}
                         {this.days}
@@ -111,7 +111,7 @@ export class Calendar extends React.Component<CalendarProps, {}> {
         return getDayNames(this.props.startingDay).map((name: string, index: number) => {
             return (
                 <span
-                    className={`${styles.calendarItem} ${styles.dayName}`}
+                    className="calendarItem dayName"
                     key={'DAY_NAME_' + index}
                     data-automation-id={'DAY_NAME_' + name.toUpperCase()}
                 >
