@@ -1,12 +1,12 @@
 .root {
     width: auto;
-    height: 36px;
     font-family: Arial, sans-serif;
     font-size: 16px;
 }
 
 .drop-down-input {
     border: 1px solid #adbac5;
+    height: 36px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -24,4 +24,9 @@
 .drop-down-input:hover {
     cursor: pointer;
     border: 1px solid #5cb4ff;
+}
+
+
+.drop-down-list {
+  width: 100%;
 }

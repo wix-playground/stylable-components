@@ -1,6 +1,6 @@
 import {simulate} from 'test-drive-react';
 
-export default function simulateKeyInput(
+export function simulateKeyInput(
     input: HTMLInputElement,
     value: string
 ) {
