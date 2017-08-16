@@ -30,7 +30,7 @@ export const getCircularValue = (name: TimeSegment, value: number, ampm: Ampm): 
         return (value + 24) % 24;
     }
     return 1 + (value + 11) % 12;
-}
+};
 
 export function formatTimeChunk(num: string | number): string {
     return ('00' + num).slice(-2);

@@ -6,8 +6,8 @@ import {Stepper} from '../stepper';
 import styles from './time-picker.st.css';
 import {
     Ampm, ampmLabels, Format,
-    formatTimeChunk, is12TimeFormat, isTimeSegment, isTouch,
-    isValidValue, Segment, selectionIndexes, TimeSegment, to24, toAmpm, validInputStringRE, getCircularValue
+    formatTimeChunk, getCircularValue, is12TimeFormat, isTimeSegment,
+    isTouch, isValidValue, Segment, selectionIndexes, TimeSegment, to24, toAmpm, validInputStringRE
 } from './utils';
 
 export interface Props {
