@@ -74,6 +74,7 @@
 
     border: none;
     height: auto;
+    outline: none;
 
     -moz-appearance: textfield;
 }
