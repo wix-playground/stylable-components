@@ -165,7 +165,7 @@ describe('<Checkbox/>', function() {
     });
 
     it('Renders a native input component of type "checkbox" for SEO purposes', function() {
-        const {select, waitForDom} = clientRenderer.render(
+        const {select} = clientRenderer.render(
             <CheckBox
                 boxIcon={boxSVG}
                 tickIcon={tickSVG}

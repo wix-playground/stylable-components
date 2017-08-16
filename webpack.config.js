@@ -6,7 +6,7 @@ const testFiles = glob.sync(testGlob);
 module.exports = {
     devtool: 'source-map',
     entry: {
-        demos: './demo/index.tsx',
+        demos: ['core-js/shim', './demo/index.tsx'],
         tests: ['core-js/shim', './test/utils/mobx.config.ts', ...testFiles.map(fileName => `mocha-loader!${fileName}`)]
     },
     module: {

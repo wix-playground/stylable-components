@@ -244,9 +244,9 @@ describe('<TreeView />', () => {
                 await waitForDom(() =>
                     expect(select(getTreeItem(nodeChildren![0].label))).to.have.attr('data-focused', 'true'));
 
-                for (const child of nodeChildren![0].children!) {
-                    simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), { keyCode: KeyCodes.DOWN });
-                }
+                nodeChildren![0].children!.forEach(
+                    () => simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), { keyCode: KeyCodes.DOWN })
+                );
 
                 const firstSubtreeChildren = nodeChildren![0].children!;
 
