@@ -35,14 +35,14 @@ describe('<Portal />', function() {
             >
                 <span data-automation-id="SPAN">Portal Body</span>
             </Portal>);
-        await sleep(500);
+        await sleep(10);
         await waitFor(() => {
             expect(bodySelect(portal)).to.not.exist;
             expect(bodySelect(portal, 'SPAN')).to.not.exist;
         });
     });
 
-    it('removes the portal if the props update', async function() {
+    it('should unmount portal when open prop is changed to false', async function() {
         let comp: PortalFixture | null;
         clientRenderer.render(<PortalFixture ref={ref => comp = ref}/>);
 
