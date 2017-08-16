@@ -7,7 +7,7 @@ import styles from './time-picker.st.css';
 import {
     Ampm, ampmLabels, Format,
     formatTimeChunk, is12TimeFormat, isTimeSegment, isTouch,
-    isValidValue, Segment, selectionIndexes, TimeSegment, to24, toAmpm, validInputStringRE
+    isValidValue, Segment, selectionIndexes, TimeSegment, to24, toAmpm, validInputStringRE, getCircularValue
 } from './utils';
 
 export interface Props {
@@ -213,16 +213,13 @@ export default class TimePicker extends React.Component<Props, State> {
     }
 
     private changeValue(step: number): void {
-        const {currentSegment} = this.state;
+        const {currentSegment, ampm} = this.state;
         if (!isTimeSegment(currentSegment)) {
             return this.toggleAmpm(true);
         }
-        const {ampm} = this.state;
-        const newValue = (this.state[currentSegment] || 0) + step;
+        const newValue = getCircularValue(currentSegment, (this.state[currentSegment] || 0) + step, ampm);
 
-        if (isValidValue(newValue, currentSegment, ampm)) {
-            this.updateSegmentValue(currentSegment, newValue);
-        }
+        this.updateSegmentValue(currentSegment, newValue);
     }
 
     private onStepperUp = () => this.changeValue(1);
@@ -361,6 +358,18 @@ export default class TimePicker extends React.Component<Props, State> {
             case 'down':
                 e.preventDefault();
                 this.changeValue(-1);
+                break;
+            case 'page up':
+                e.preventDefault();
+                if (currentSegment === 'mm') {
+                    this.changeValue(10);
+                }
+                break;
+            case 'page down':
+                e.preventDefault();
+                if (currentSegment === 'mm') {
+                    this.changeValue(-10);
+                }
                 break;
             case 'backspace':
                 e.preventDefault();

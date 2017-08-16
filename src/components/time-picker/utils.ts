@@ -22,6 +22,16 @@ export const selectionIndexes = {
     ampm: [6, 8]
 };
 
+export const getCircularValue = (name: TimeSegment, value: number, ampm: Ampm): number => {
+    if (name === 'mm') {
+        return (value + 60) % 60;
+    }
+    if (ampm === Ampm.NONE) {
+        return 1 + (value + 24) % 24;
+    }
+    return 1 + (value + 12) % 12;
+}
+
 export function formatTimeChunk(num: string | number): string {
     return ('00' + num).slice(-2);
 }
