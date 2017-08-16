@@ -225,16 +225,19 @@ export default class TimePicker extends React.Component<Props, State> {
         }
     }
 
-    private onInputClick = (e: React.SyntheticEvent<HTMLInputElement>): void => {
-        const cursorPosition = e.currentTarget.selectionStart;
+    private getSegmentUnderCursor(): Segment {
+        const cursorPosition = this.input!.selectionStart;
         let key: Segment;
-        let currentSegment: Segment = 'hh';
-
         for (key in selectionIndexes) {
             if (cursorPosition >= selectionIndexes[key][0] && cursorPosition <= selectionIndexes[key][1]) {
-                currentSegment = key;
+                return key;
             }
         }
+        return 'hh';
+    }
+
+    private onInputClick = (e: React.SyntheticEvent<HTMLInputElement>): void => {
+        const currentSegment = this.getSegmentUnderCursor();
         if (currentSegment === 'ampm') {
             this.toggleAmpm(false);
         } else {
@@ -265,9 +268,9 @@ export default class TimePicker extends React.Component<Props, State> {
         }
 
         const input = this.input!;
-        const cursorPosition = input.selectionStart;
-        const currentSegment = this.state.hh !== hh ? 'hh' : 'mm';
-        const updatedValue = this.state.hh !== hh ? hh : mm;
+        const cursorPosition = this.input!.selectionStart;
+        const currentSegment = this.getSegmentUnderCursor() as TimeSegment;
+        const updatedValue = currentSegment === 'hh' ? hh : mm;
         const shouldWaitForInput = isValidValue(updatedValue * 10, currentSegment, ampm);
         const inputValue = shouldWaitForInput ?
             value : segmentsToInputValue({hh, mm, ampm});

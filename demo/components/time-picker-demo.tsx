@@ -7,7 +7,7 @@ export class TimePickerDemo extends React.Component<any, any> {
         super();
         this.state = {
             now: new Date(),
-            value1: '13:55',
+            value1: '01:55',
             value2: null
         };
     }

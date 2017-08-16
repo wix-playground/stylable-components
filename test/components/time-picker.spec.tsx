@@ -235,59 +235,28 @@ describe('<TimePicker/>', () => {
 
     });
 
-    describe('render with value="01:59" format="ampm"', () => {
+    describe('render with format="24h" value="01:55"', () => {
         let renderer: any;
+        let root: any;
         let input: any;
-        let stepperIncrement: any;
-        let stepperDecrement: any;
-
-        beforeEach(function() {
-            if (isTouch) {
-                this.skip();
-            }
-        });
         beforeEach(() => {
-            renderer = clientRenderer.render(<TimePicker format="ampm" value="01:59"/>);
+            renderer = clientRenderer.render(<TimePicker format="24h" value="01:55"/>);
+            root = renderer.select('TIME_PICKER');
             input = renderer.select('TIME_PICKER_INPUT');
-            stepperIncrement = renderer.select('STEPPER_INCREMENT');
-            stepperDecrement = renderer.select('STEPPER_DECREMENT');
-        });
-        describe('select hh segment', () => {
-            beforeEach(() => {
-                setSelection(input, 'hh');
-            });
-            it('should not disable stepper up', () => {
-                expect(stepperIncrement).not.attr('disabled');
-            });
-            it('should disable stepper down', () => {
-                expect(stepperDecrement).attr('disabled');
-            });
         });
 
-        describe('select mm segment', () => {
+        describe('entering "1" into hh segment', () => {
             beforeEach(() => {
-                setSelection(input, 'hh');
-                simulate.keyDown(input, {keyCode: keycode('tab')});
+                updateSegment(input, 'hh', '1');
             });
-            it('should disable stepper up', () => {
-                expect(stepperIncrement).attr('disabled');
+            it('should set focus state', () => {
+                hasCssState(root, styles, {focus: true});
             });
-            it('should not disable stepper down', () => {
-                expect(stepperDecrement).not.attr('disabled');
+            it('input should have "1:55" value', () => {
+                expect(input).attr('value', '1:55');
             });
-        });
-
-        describe('select ampm segment', () => {
-            beforeEach(() => {
-                setSelection(input, 'hh');
-                simulate.keyDown(input, {keyCode: keycode('tab')});
-                simulate.keyDown(input, {keyCode: keycode('tab')});
-            });
-            it('should not disable stepper up', () => {
-                expect(stepperIncrement).not.attr('disabled');
-            });
-            it('should not disable stepper down', () => {
-                expect(stepperDecrement).not.attr('disabled');
+            it('should keep curson in hh segment', () => {
+                hasCursorInSegment(input, 'hh');
             });
         });
     });
