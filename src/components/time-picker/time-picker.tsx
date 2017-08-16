@@ -319,7 +319,11 @@ export default class TimePicker extends React.Component<Props, State> {
         }
     }
     private onInputBlur = (e: React.SyntheticEvent<HTMLInputElement>) => {
-        this.setState({focus: false});
+        this.setState({
+            focus: false,
+            inputValue: segmentsToInputValue(this.state)
+        });
+        this.commit();
     }
 
     private onInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
