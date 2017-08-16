@@ -33,13 +33,14 @@ export interface DropDownListProps {
     items?: DropDownItem[];
     selectedItem?: DropDownItem;
     onItemClick?: (item: string) => void;
+    listRef: any;
 }
 
 export const DropDownList: React.SFC<DropDownListProps> = SBStateless(props => {
     if (!props.open) { return null; }
 
     return (
-        <div data-automation-id="DROP_DOWN_LIST">
+        <div data-automation-id="DROP_DOWN_LIST" ref={props.listRef}>
             <SelectionList
                 className="drop-down-list"
                 dataSource={props.items!.map((item: DropDownItem) => item.label)}
@@ -71,8 +72,10 @@ export class DropDown extends React.Component<DropDownProps, {}> {
     public static defaultProps: DropDownProps =
         { items: [], onItemClick: () => {}, onInputClick: () => {}, tabIndex: 0 };
 
+    private dropdown: HTMLDivElement | null;
+
     public onItemClick = (item: string) => {
-        this.props.onInputClick!();
+        this.toggleDropDown();
         this.props.onItemClick!(this.props.items!.filter((elem: DropDownItem) => elem.label === item)[0]);
     }
 
@@ -88,9 +91,11 @@ export class DropDown extends React.Component<DropDownProps, {}> {
                 {...rootProps}
                 onKeyDown={this.onKeyDown}
                 tabIndex={this.props.tabIndex}
+                ref={dropdown => this.dropdown = dropdown}
             >
                 <DropDownInput selectedItem={this.props.selectedItem} onClick={this.props.onInputClick} />
                 <DropDownList
+                    listRef={this.focusList}
                     selectedItem={this.props.selectedItem}
                     items={this.props.items}
                     open={!!this.props.open}
@@ -100,19 +105,28 @@ export class DropDown extends React.Component<DropDownProps, {}> {
         );
     }
 
+    private focusList(el: HTMLDivElement | null) {
+        if (el) { el.children[0].focus(); }
+    }
+
+    private toggleDropDown() {
+        if (this.props.open) { this.dropdown!.focus(); }
+        this.props.onInputClick!();
+    }
+
     private onKeyDown = (e: any) => {
         switch (e.keyCode) {
             case KeyCodes.SPACE:
                 e.preventDefault();
-                this.props.onInputClick!();
+                this.toggleDropDown()
                 break;
             case KeyCodes.ESC:
                 e.preventDefault();
-                this.props.open && this.props.onInputClick!();
+                this.props.open && this.toggleDropDown();
                 break;
             case KeyCodes.DOWN:
                 e.preventDefault();
-                !this.props.open && this.props.onInputClick!();
+                !this.props.open && this.toggleDropDown();
                 break;
         }
     }
