@@ -85,7 +85,12 @@ export default class TimePicker extends React.Component<Props, State> {
 
     public componentWillReceiveProps(props: Props) {
         if (props.value !== this.props.value) {
-            this.setState(this.getInitialSegments(props));
+            this.setState(this.getInitialSegments(props), () => {
+                const {focus, currentSegment} = this.state;
+                if (focus && currentSegment) {
+                    this.select(currentSegment);
+                }
+            });
         }
     }
 
@@ -309,6 +314,10 @@ export default class TimePicker extends React.Component<Props, State> {
 
     private onInputFocus = (e: React.SyntheticEvent<HTMLInputElement>) => {
         this.setState({focus: true});
+        if (!this.state.inputValue) {
+            return this.updateSegmentValue('hh', 1);
+        }
+
         const input = this.input!;
         // initial focus (default tab behaviour)
         if (input.selectionEnd - input.selectionStart === input.value.length) {
