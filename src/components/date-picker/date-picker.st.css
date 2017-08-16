@@ -14,11 +14,14 @@
     inputWidth: 192px;
 }
 
+/* The DatePicker Input */
 .input {
     width: value(inputWidth);
 }
 
+/* The dropdown arrow extends from the input and into the calendar view */
 .dropdownArrowWrapper {
+    /* Switch width to the calendar width to center with regards to the calendar */
     width: value(inputWidth);
 }
 
@@ -26,18 +29,20 @@
     width: 0;
     height: 0;
     position: relative;
-    /* Center arrow */
+    /* Center arrow with regards to the input */
     left: calc(50% - value(dropdownArrowWidth));
     border-left: value(dropdownArrowWidth) solid transparent;
     border-right: value(dropdownArrowWidth) solid transparent;
     border-bottom: value(dropdownArrowHeight) solid value(color_Default);
 }
 
+/* The dropdown contains everything but the input */
 .dropdown {
     width: value(dropdownWidth);
     outline: solid 1px value(color_Default);
 }
 
+/* This contains the current month and year as well as the buttons to step between months */
 .header {
     width: 100%;
     height: value(headerHeight);
@@ -48,6 +53,7 @@
     margin: 0;
 }
 
+/* Contains current month and year */
 .headerDate {
     display: inline;
     width: 150px;
@@ -59,6 +65,7 @@
     color: value(color_MainText_Background);
 }
 
+/* General styling for the month buttons */
 .arrowWrapper {
     height: 100%;
     width: 20%;
@@ -74,6 +81,7 @@
     text-align: right;
 }
 
+/* General styles for both the prev and next month buttons */
 .headerArrow {
     border: solid value(color_MainText_Background);
     border-width: 0 value(arrowThickness) value(arrowThickness) 0;
@@ -81,16 +89,19 @@
     padding: 0.26em;
 }
 
+/* Next month button */
 .headerArrowNext {
     transform: rotate(-45deg);
     margin-right: 24px;
 }
 
+/* Previous month button */
 .headerArrowPrev {
     transform: rotate(135deg);
     margin-left: 24px;
 }
 
+/* The calendar view contains the days of the month and days of the week */
 .calendar {
     display: flex;
     flex-wrap: wrap;
@@ -100,11 +111,13 @@
     background-color: white;
 }
 
+/* Each item in the grid gets this style */
 .calendarItem {
     /* 100/7 = 14.2857... show 7 items per row */
     flex: 0 0 14.2857%;
 }
 
+/* Styling for the days of the week */
 .dayName {
     font-family: value(fontFamily);
     font-size: 14px;
@@ -117,6 +130,7 @@
     cursor: default;
 }
 
+/* Styling for the days of the month */
 .day {
     -st-states: focused, selected, current, inactive;
     font-family: value(fontFamily);
@@ -128,20 +142,24 @@
     cursor: pointer;
 }
 
+/* The current day, i.e. today's date */
 .day:current {
     color: value(color_Default);
 }
 
+/* The styles for keyboard navigation */
 .day:focused {
     outline: solid 1px value(color_Hover);
     outline-offset: -1px;
 }
 
+/* Styles for the user entered date */
 .day:selected {
     color: value(color_MainText_Background);
     background-color: value(color_Active);
 }
 
+/* Styles for the days of the previous and next month */
 .day:inactive {
     color: #d8d8d8;
     width: 36px;
@@ -149,16 +167,19 @@
     cursor: default;
 }
 
+/* Special case for when a user selected a date and then navigates to it using the keyboard */
 .day:focused:selected {
     color: value(color_MainText_Background);
     background-color: value(color_Hover);
 }
 
+/* Hover styles for normal days */
 .day:hover {
     color: value(color_MainText);
     background-color: value(color_Keyboard_Focused);
 }
 
+/* Hover styles for the days of the previous and next months */
 .day:inactive:hover {
     color: #d8d8d8;
     background-color: value(color_MainText_Background);
