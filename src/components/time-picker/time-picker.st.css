@@ -97,7 +97,3 @@
 .root:hover .stepper {
     opacity: 1;
 }
-.stepper::control:disabled {
-    color: value(BK2);
-    background: white;
-}

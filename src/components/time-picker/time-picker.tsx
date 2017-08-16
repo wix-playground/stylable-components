@@ -95,10 +95,8 @@ export default class TimePicker extends React.Component<Props, State> {
     }
 
     public render() {
-        const {focus, ampm, inputValue, currentSegment} = this.state;
+        const {focus, inputValue} = this.state;
         const {label, name, placeholder, disabled, format} = this.props;
-        const currentIsTime = isTimeSegment(currentSegment);
-        const currentSegmentValue = this.state[currentSegment] || 0;
 
         return (
             <div
@@ -126,14 +124,6 @@ export default class TimePicker extends React.Component<Props, State> {
                 {!isTouch && !disabled && inputValue &&
                     <Stepper
                         className="stepper"
-                        disableUp={
-                            currentIsTime &&
-                            !isValidValue(currentSegmentValue + 1, currentSegment as any, ampm)
-                        }
-                        disableDown={
-                            currentIsTime &&
-                            !isValidValue(currentSegmentValue - 1, currentSegment as any, ampm)
-                        }
                         onUp={this.onStepperUp}
                         onDown={this.onStepperDown}
                     />
@@ -222,7 +212,6 @@ export default class TimePicker extends React.Component<Props, State> {
             return this.toggleAmpm(true);
         }
         const newValue = getCircularValue(currentSegment, (this.state[currentSegment] || 0) + step, ampm);
-
         this.updateSegmentValue(currentSegment, newValue);
     }
 

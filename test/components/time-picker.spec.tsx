@@ -5,7 +5,7 @@ import {TimePicker} from '../../src';
 import styles from '../../src/components/time-picker/time-picker.st.css';
 import {
     Ampm, formatTimeChunk, isTouch,
-    isValidValue, Segment, selectionIndexes, to24, toAmpm
+    isValidValue, Segment, selectionIndexes, to24, toAmpm, getCircularValue
 } from '../../src/components/time-picker/utils';
 import {hasCssState} from '../utils/has-css-state';
 
@@ -441,4 +441,30 @@ describe('TimePicker/utils', () => {
             expect(isValidValue(65, 'mm', Ampm.NONE)).to.equal(false);
         });
     });
+    describe('getCircularValue', () => {
+        it('55 minites = 55', () => {
+            expect(getCircularValue('mm', 55, Ampm.NONE)).to.equal(55);
+        })
+        it('60 minites = 0', () => {
+            expect(getCircularValue('mm', 60, Ampm.NONE)).to.equal(0);
+        })
+        it('-5 minites = 55', () => {
+            expect(getCircularValue('mm', -5, Ampm.NONE)).to.equal(55);
+        })
+        it('13 hh AM = 1', () => {
+            expect(getCircularValue('hh', 13, Ampm.AM)).to.equal(1);
+        })
+        it('13 hh = 13', () => {
+            expect(getCircularValue('hh', 13, Ampm.NONE)).to.equal(13);
+        })
+        it('24 hh AM = 12', () => {
+            expect(getCircularValue('hh', 12, Ampm.AM)).to.equal(12);
+        })
+        it('24 hh = 0', () => {
+            expect(getCircularValue('hh', 24, Ampm.NONE)).to.equal(0);
+        })
+        it('-2 hh = 22', () => {
+            expect(getCircularValue('hh', -2, Ampm.NONE)).to.equal(22);
+        })
+    })
 });

@@ -27,9 +27,9 @@ export const getCircularValue = (name: TimeSegment, value: number, ampm: Ampm): 
         return (value + 60) % 60;
     }
     if (ampm === Ampm.NONE) {
-        return 1 + (value + 24) % 24;
+        return (value + 24) % 24;
     }
-    return 1 + (value + 12) % 12;
+    return 1 + (value + 11) % 12;
 }
 
 export function formatTimeChunk(num: string | number): string {
