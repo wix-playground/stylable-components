@@ -105,7 +105,7 @@ export class DropDown extends React.Component<DropDownProps, {}> {
         );
     }
 
-    private focusList(el: HTMLDivElement | null) {
+    private focusList(el: any) {
         if (el) { el.children[0].focus(); }
     }
 
@@ -118,7 +118,7 @@ export class DropDown extends React.Component<DropDownProps, {}> {
         switch (e.keyCode) {
             case KeyCodes.SPACE:
                 e.preventDefault();
-                this.toggleDropDown()
+                this.toggleDropDown();
                 break;
             case KeyCodes.ESC:
                 e.preventDefault();
