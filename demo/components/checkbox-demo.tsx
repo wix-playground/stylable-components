@@ -154,9 +154,11 @@ class CustomIconsDemo extends React.Component<{}, {value: boolean}> {
                     onChange={this.handleChange}
                     boxIcon={CheckBoxSVG}
                     tickIcon={TickMarkSVG}
-                >
-                    <span className={style.label}>I choose triangle</span>
-                </CheckBox>
+                    id="myCustomCheckbox"
+                />
+                <label htmlFor="myCustomCheckbox">
+                    <span className={style.label} >I choose triangle</span>
+                </label>
             </div>
         );
     }
