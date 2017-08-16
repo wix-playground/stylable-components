@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {SBComponent} from 'stylable-react-component';
-import {CheckBox, CheckBoxIconProps} from '../../src';
+import {CheckBox, CheckBoxChangeEvent, CheckBoxIconProps} from '../../src';
 import buttonStyle from '../../src/style/default-theme/controls/button.st.css';
 import style from './checkbox-demo.st.css';
 
@@ -55,7 +55,7 @@ export class BasicDemo extends React.Component<{}, {value: boolean}> {
             </div>
         );
     }
-    private handleChange = (val: boolean) => { this.setState({value: val}); };
+    private handleChange = (e: CheckBoxChangeEvent) => { this.setState({value: e.value}); };
 }
 
 export class DisabledDemo extends React.Component<{}, {value: boolean}> {
@@ -93,7 +93,7 @@ export class DisabledDemo extends React.Component<{}, {value: boolean}> {
         );
     }
 
-    private handleChange = (val: boolean) => { this.setState({value: val}); };
+    private handleChange = (e: CheckBoxChangeEvent) => { this.setState({value: e.value}); };
 }
 
 export class IndeterminateDemo extends React.Component<{}, {value1: boolean, value2: boolean}> {
@@ -108,7 +108,7 @@ export class IndeterminateDemo extends React.Component<{}, {value1: boolean, val
             <ul data-automation-id="INDETERMINATE_DEMO">
                 <CheckBox
                     value={this.state.value1 && this.state.value2}
-                    onChange={this.onChangeDemo}
+                    onChange={this.onChangeParent}
                     indeterminate={this.state.value1 !== this.state.value2}
                     data-automation-id="INDETERMINATE_DEMO_TOP_LEVEL"
                 >
@@ -117,7 +117,7 @@ export class IndeterminateDemo extends React.Component<{}, {value1: boolean, val
                 <li style={{listStyle: 'none', marginLeft: '1em'}}>
                     <CheckBox
                         value={this.state.value1}
-                        onChange={this.onChangeDemo1}
+                        onChange={this.onChangeChild1}
                         data-automation-id="INDETERMINATE_DEMO_OPTION1"
                     >
                         <span className={style.label}>Option1</span>
@@ -126,7 +126,7 @@ export class IndeterminateDemo extends React.Component<{}, {value1: boolean, val
                 <li  style={{listStyle: 'none', marginLeft: '1em'}}>
                     <CheckBox
                         value={this.state.value2}
-                        onChange={this.onChangeDemo2}
+                        onChange={this.onChangeChild2}
                         data-automation-id="INDETERMINATE_DEMO_OPTION2"
                     >
                         <span className={style.label}>Option2</span>
@@ -136,9 +136,9 @@ export class IndeterminateDemo extends React.Component<{}, {value1: boolean, val
         );
     }
 
-    private onChangeDemo = (val: boolean) => this.setState({value1: val, value2: val});
-    private onChangeDemo1 = (val: boolean) => this.setState({value1: val});
-    private onChangeDemo2 = (val: boolean) => this.setState({value2: val});
+    private onChangeParent = (e: CheckBoxChangeEvent) => { this.setState({value1: e.value, value2: e.value}); };
+    private onChangeChild1 = (e: CheckBoxChangeEvent) => { this.setState({value1: e.value}); };
+    private onChangeChild2 = (e: CheckBoxChangeEvent) => { this.setState({value2: e.value}); };
 }
 
 class CustomIconsDemo extends React.Component<{}, {value: boolean}> {
@@ -160,7 +160,7 @@ class CustomIconsDemo extends React.Component<{}, {value: boolean}> {
             </div>
         );
     }
-    private handleChange = (val: boolean) => { this.setState({value: val}); };
+    private handleChange = (e: CheckBoxChangeEvent) => { this.setState({value: e.value}); };
 }
 
 const TickMarkSVG: React.SFC<CheckBoxIconProps> = props => {

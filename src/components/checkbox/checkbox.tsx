@@ -1,20 +1,22 @@
 import * as React from 'react';
 import { SBComponent } from 'stylable-react-component';
 import { root } from 'wix-react-tools';
-import style from './checkbox.st.css';
+import styles from './checkbox.st.css';
 
-export interface CheckBoxProps {
+export interface CheckBoxChangeEvent extends React.ChangeEvent<HTMLInputElement> {
+    value: boolean;
+}
+
+export interface CheckBoxProps extends React.HTMLAttributes<HTMLInputElement> {
     value: boolean;
     boxIcon: React.ComponentType<CheckBoxIconProps>;
     tickIcon: React.ComponentType<CheckBoxIconProps>;
     indeterminateIcon: React.ComponentType<CheckBoxIconProps>;
-    onChange: (value: boolean) => void;
+    onChange: (event: CheckBoxChangeEvent) => void;
     children?: any;
     disabled: boolean;
     readonly: boolean;
     indeterminate: boolean;
-    id?: string;
-    tabIndex?: number;
 }
 
 export interface CheckBoxIconProps {
@@ -26,7 +28,7 @@ export interface CheckBoxIconProps {
 const DefaultCheckBoxSVG: React.SFC<CheckBoxIconProps> = props => {
     return (
         <svg
-            className={style.boxIconDefault}
+            className={styles.boxIconDefault}
             data-automation-id="CHECKBOX_BOX"
             xmlns="http://www.w3.org/2000/svg"
         >
@@ -38,7 +40,7 @@ const DefaultCheckBoxSVG: React.SFC<CheckBoxIconProps> = props => {
 const DefaultTickMarkSVG: React.SFC<CheckBoxIconProps> = props => {
     return (
         <svg
-            className={style.tickIcon}
+            className={styles.tickIcon}
             data-automation-id="CHECKBOX_TICKMARK"
             xmlns="http://www.w3.org/2000/svg"
         >
@@ -50,7 +52,7 @@ const DefaultTickMarkSVG: React.SFC<CheckBoxIconProps> = props => {
 const DefaultIndeterminateSVG: React.SFC<CheckBoxIconProps> = props => {
     return (
         <svg
-            className={style.indeterminateIcon}
+            className={styles.indeterminateIcon}
             data-automation-id="CHECKBOX_INDETERMINATE"
             xmlns="http://www.w3.org/2000/svg"
             width="15"
@@ -61,7 +63,7 @@ const DefaultIndeterminateSVG: React.SFC<CheckBoxIconProps> = props => {
     );
 };
 
-@SBComponent(style)
+@SBComponent(styles)
 export class CheckBox extends React.Component<Partial<CheckBoxProps>, {}> {
     public static defaultProps: CheckBoxProps = {
         value: false,
@@ -78,6 +80,8 @@ export class CheckBox extends React.Component<Partial<CheckBoxProps>, {}> {
     private inputRef: HTMLInputElement | null = null;
 
     public render() {
+
+
         const BoxIcon = this.props.boxIcon!;
         const IndeterminateIcon = this.props.indeterminateIcon!;
         const TickIcon = this.props.tickIcon!;
@@ -102,15 +106,14 @@ export class CheckBox extends React.Component<Partial<CheckBoxProps>, {}> {
             >
 
                 <input
+                    {...this.getInputImplicitProps()}
                     data-automation-id="NATIVE_CHECKBOX"
                     type="checkbox"
                     className="nativeCheckbox"
                     defaultChecked={this.props.value}
                     disabled={this.props.disabled}
-                    id={this.props.id}
                     onChange={this.handleChange}
                     ref={ref => this.inputRef = ref}
-                    tabIndex={this.props.tabIndex}
                 />
 
                 <BoxIcon
@@ -143,9 +146,17 @@ export class CheckBox extends React.Component<Partial<CheckBoxProps>, {}> {
         this.inputRef && this.inputRef.click();
     }
 
-    private handleChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
+    private handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (!this.props.disabled && !this.props.readonly) {
-            this.props.indeterminate ? this.props.onChange!(true) : this.props.onChange!(!this.props.value);
+            this.props.indeterminate ?
+                this.props.onChange!({...e, value: true}) :
+                this.props.onChange!({...e, value: !this.props.value});
         }
+    }
+
+    private getInputImplicitProps = (): React.HTMLAttributes<HTMLInputElement> => {
+        const {value, boxIcon, indeterminate, indeterminateIcon, tickIcon,
+               onChange, children, disabled, readonly, ...rest} = this.props;
+        return {...rest};
     }
 }

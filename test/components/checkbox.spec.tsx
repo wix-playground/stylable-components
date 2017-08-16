@@ -160,7 +160,7 @@ describe('<Checkbox/>', function() {
 
         return waitFor(() => {
             expect(onChange).to.have.been.calledOnce;
-            expect(onChange).to.have.been.calledWith(false);
+            expect(onChange).to.have.been.calledWithMatch({value: false});
         });
     });
 
@@ -321,7 +321,7 @@ describe('<Checkbox/>', function() {
 
             return waitFor(() => {
                 expect(onChange).to.have.been.calledOnce;
-                expect(onChange).to.have.been.calledWith(true);
+                expect(onChange).to.have.been.calledWithMatch({value: true});
             });
         });
 
