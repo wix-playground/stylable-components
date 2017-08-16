@@ -1096,7 +1096,38 @@ describe('<Slider />', () => {
         });
     });
 
-    describe('Vertical Slider', () => {
+    describe('tooltip', () => {
+        const value = 5;
+        const min = 0;
+        const max = 10;
+        const label = 'Simple Slider Tooltip';
+
+        it('should be presented', async () => {
+            const rendered = clientRenderer.render(
+                <Slider
+                    value={value}
+                    min={min}
+                    max={max}
+                    label={label}
+                >
+                    <div data-slot="tooltip" data-automation-id="TOOLTIP-CUSTOM-CONTENT">{label}</div>
+                </Slider>
+            );
+            const select: (automationId: string) => HTMLElement | null = rendered.select;
+            const waitForDom: (expectation: () => void) => Promise<void> = rendered.waitForDom;
+
+            await waitForDom(() => {
+                const tooltip = select('SLIDER-TOOLTIP');
+                const tooltipContent = select('TOOLTIP-CUSTOM-CONTENT');
+
+                expect(tooltip).to.be.present();
+                expect(tooltipContent).to.be.present();
+                expect(tooltipContent!.innerText).to.equal(label);
+            });
+        });
+    });
+
+    describe('vertical Slider', () => {
         describe('with value, min and max', () => {
             const value = 5;
             const min = -10;
@@ -1780,7 +1811,7 @@ describe('<Slider />', () => {
         });
     });
 
-    describe('Reverse Slider', () => {
+    describe('veverse Slider', () => {
         describe('with value, min and max', () => {
             const value = 5;
             const min = -10;
@@ -2470,7 +2501,7 @@ describe('<Slider />', () => {
         });
     });
 
-    describe('Vertical Reverse Slider', () => {
+    describe('vertical Reverse Slider', () => {
         describe('with value, min and max', () => {
             const value = 5;
             const min = -10;
@@ -3150,37 +3181,6 @@ describe('<Slider />', () => {
                 return waitFor(() => {
                     expect(onChange).have.been.calledWith(0);
                 });
-            });
-        });
-    });
-
-    describe('Tooltip', () => {
-        const value = 5;
-        const min = 0;
-        const max = 10;
-        const label = 'Simple Slider Tooltip';
-
-        it('should be presented', async () => {
-            const rendered = clientRenderer.render(
-                <Slider
-                    value={value}
-                    min={min}
-                    max={max}
-                    label={label}
-                >
-                    <div data-slot="tooltip" data-automation-id="TOOLTIP-CUSTOM-CONTENT">{label}</div>
-                </Slider>
-            );
-            const select: (automationId: string) => HTMLElement | null = rendered.select;
-            const waitForDom: (expectation: () => void) => Promise<void> = rendered.waitForDom;
-
-            await waitForDom(() => {
-                const tooltip = select('SLIDER-TOOLTIP');
-                const tooltipContent = select('TOOLTIP-CUSTOM-CONTENT');
-
-                expect(tooltip).to.be.present();
-                expect(tooltipContent).to.be.present();
-                expect(tooltipContent!.innerText).to.equal(label);
             });
         });
     });
