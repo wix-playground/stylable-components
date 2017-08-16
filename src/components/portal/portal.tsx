@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
 export interface PortalProps {
+    children: React.ReactNode;
     open: boolean;
     style?: React.CSSProperties;
 }
@@ -11,15 +12,11 @@ export class Portal extends React.PureComponent<PortalProps, {}> {
     private portalContent: React.ReactElement<React.HTMLAttributes<HTMLDivElement>>;
 
     public render() {
-        if (!this.props.children) {
-            this.portalContent = <div data-automation-id="PORTAL" />;
-        } else {
-            this.portalContent = (
-                <div data-automation-id="PORTAL" style={this.props.style}>
-                    {this.props.children}
-                </div>
-            );
-        }
+        this.portalContent = (
+            <div data-automation-id="PORTAL" style={this.props.style}>
+                {this.props.children}
+            </div>
+        );
 
         return null;
     }
