@@ -25,6 +25,15 @@ describe('<Portal />', function() {
         });
     });
 
+    it('applies supplied styles to the popup', async function() {
+        clientRenderer.render(
+            <Portal open={true} style={{ position: 'absolute' }}>
+                <span data-automation-id="SPAN">Portal Body</span>
+            </Portal>);
+
+        await waitFor(() => expect((bodySelect(portal) as HTMLElement)!.style.position).to.equal('absolute'));
+    });
+
     it('does not add the portal to the DOM if open is false', async function() {
         clientRenderer.render(
             <Portal open={false}>
