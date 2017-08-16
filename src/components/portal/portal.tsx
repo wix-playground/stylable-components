@@ -6,12 +6,13 @@ export interface PortalProps {
     style?: React.CSSProperties;
 }
 
-export class Portal extends React.Component<PortalProps, {}> {
+export class Portal extends React.PureComponent<PortalProps, {}> {
     public static defaultProps: Partial<PortalProps> = { style: {} };
     private container: Element | null;
     private portal: React.ReactElement<any>;
 
     public render() {
+        this.createPortal();
         return null;
     }
 
@@ -21,11 +22,15 @@ export class Portal extends React.Component<PortalProps, {}> {
         }
     }
 
+    public componentDidUpdate() {
+        if (this.props.open) {
+            this.renderPortal();
+        }
+    }
+
     public componentWillReceiveProps(newProps: PortalProps) {
         if (!newProps.open && this.props.open) {
             this.destroyPortal();
-        } else if (newProps.open) {
-            this.renderPortal();
         }
     }
 
@@ -35,7 +40,6 @@ export class Portal extends React.Component<PortalProps, {}> {
 
     private renderPortal() {
         this.container = this.getContainer();
-        this.createPortal();
         ReactDOM.unstable_renderSubtreeIntoContainer(this, this.portal, this.container);
     }
 
