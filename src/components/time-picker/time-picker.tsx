@@ -172,21 +172,25 @@ export default class TimePicker extends React.Component<Props, State> {
         return `${hhString}:${mmString}`;
     }
 
-    private select(segment: Segment): boolean {
+    private select(segment: Segment) {
         const indexes = selectionIndexes[segment];
         const input = this.input!;
-        const cursorPosition = input.selectionStart;
-        input.selectionStart = indexes[0];
-        input.selectionEnd = indexes[1];
-        this.setState({currentSegment: segment});
-        return input.selectionStart !== input.selectionEnd;
+        this.setState({
+            currentSegment: segment,
+            inputValue: segmentsToInputValue(this.state)
+        }, () => {
+            input.selectionStart = indexes[0];
+            input.selectionEnd = indexes[1];
+        });
     }
     private moveSelection(step: number): boolean {
+        const {ampm} = this.state;
         const segments = Object.keys(selectionIndexes) as Segment[];
         const index = segments.indexOf(this.state.currentSegment!);
         const nextSegment = segments[index + step];
-        if (nextSegment) {
-            return this.select(nextSegment);
+        if (nextSegment && (nextSegment !== 'ampm' || ampm !== Ampm.NONE)) {
+            this.select(nextSegment);
+            return true;
         }
         return false;
     }
