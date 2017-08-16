@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react';
+import {ClientRenderer, expect, simulate, sinon} from 'test-drive-react';
 
 import {ToggleDemo} from '../../demo/components/toggle-demo';
 import {Toggle} from '../../src';

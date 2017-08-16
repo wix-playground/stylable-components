@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { change, ClientRenderer, expect, sinon, waitFor } from 'test-drive-react';
+import { change, ClientRenderer, expect, sinon } from 'test-drive-react';
 import { BirthdayPickerDemo } from '../../demo/components/birthday-picker-demo';
 import { BirthdayPicker, dateFromYearMonthDay } from '../../src';
 
@@ -54,7 +54,7 @@ describe('<BirthdayPicker />', function() {
 
     it('Does not emit onChange for initial value', function() {
         const onChange = sinon.spy();
-        const { select, waitForDom } = clientRenderer.render(
+        const { waitForDom } = clientRenderer.render(
             <BirthdayPicker value={new Date()} onChange={onChange} />
         );
 
