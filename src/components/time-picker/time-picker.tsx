@@ -119,6 +119,7 @@ export default class TimePicker extends React.Component<Props, State> {
                     onBlur={this.onInputBlur}
                     onKeyDown={this.onInputKeyDown}
                     onMouseDown={this.onInputMouseDown}
+                    onMouseUp={this.onInputMouseUp}
                     onClick={this.onInputClick}
                 />
                 {!isTouch && !disabled && inputValue &&
@@ -224,6 +225,7 @@ export default class TimePicker extends React.Component<Props, State> {
             e.preventDefault();
         }
     }
+    private onInputMouseUp = (e: any): void => e.preventDefault();
 
     private getSegmentUnderCursor(): Segment {
         const cursorPosition = this.input!.selectionStart;
