@@ -45,7 +45,8 @@
     font: inherit;
     border: 0;
     color: inherit;
-    width: 100%;
+    flex: 1 auto;
+    width: 0;
     height: 100%;
     padding: 6px;
     background: none;
