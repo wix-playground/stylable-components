@@ -504,5 +504,3 @@ describe('The DatePicker Component', function() {
         });
     });
 });
-
-let b = <div />;
