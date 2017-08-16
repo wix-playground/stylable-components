@@ -24,8 +24,7 @@ describe('<NumberInput />', () => {
         const max = 5;
         const step = 2;
         const name = 'input-name';
-        const required = true;
-        const { select, waitForDom } = clientRenderer.render(
+        const {select, waitForDom} = clientRenderer.render(
             <NumberInput
                 value={value}
                 min={min}

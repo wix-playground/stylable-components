@@ -4518,9 +4518,9 @@ tslint-react@^3.1.0:
   dependencies:
     tsutils "^2.8.0"
 
-tslint-wix-react@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/tslint-wix-react/-/tslint-wix-react-1.0.0.tgz#2425d6fd92b0f5eca848efe83bcde40e4c79e661"
+tslint-wix-react@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/tslint-wix-react/-/tslint-wix-react-2.0.0.tgz#137747a793affd6c84b7661b327449b832faaf09"
   dependencies:
     tslint-react "^3.1.0"
 

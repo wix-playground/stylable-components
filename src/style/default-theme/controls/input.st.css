@@ -34,7 +34,7 @@
     outline: 0;
 }
 
-.root:placeholder {
+.root::placeholder {
     color: value(color_MainPlaceholder);
 }
 
