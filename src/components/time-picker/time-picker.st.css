@@ -8,6 +8,7 @@
 :import {
     -st-from: "../../style/default-theme/variables.st.css";
     -st-named:
+        DS2,
         BK2,
         BK3,
         PR2,
@@ -31,9 +32,12 @@
     padding: 0.3px;
 }
 
-.root:not(:disabled):hover {
-    border-color: value(PR3);
+@media (hover: hover) {
+    .root:not(:disabled):hover {
+        border-color: value(PR3);
+    }
 }
+
 .root:focus {
     border-color: value(PR2);
 }
@@ -54,6 +58,13 @@
 .input::placeholder {
     color: value(BK2);
 }
+/**
+ * for some reason ios ignores the value set by javascript
+ * that is why you can see both value and placeholder
+ */
+.input:valid::placeholder {
+    color: transparent;
+}
 .input::selection {
     color: white;
     background: value(PR2);
@@ -63,6 +74,10 @@
 .input:focus {
     border: 0;
     outline: 0;
+}
+.input:disabled {
+    background-color: value(DS2);
+    -webkit-text-fill-color: currentColor;
 }
 .label {
     position: absolute;

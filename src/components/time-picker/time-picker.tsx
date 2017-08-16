@@ -105,6 +105,7 @@ export default class TimePicker extends React.Component<Props, State> {
             >
                 <input
                     data-automation-id="TIME_PICKER_INPUT"
+                    required
                     type="text"
                     tabIndex={isTouch ? -1 : 0}
                     className="input"
