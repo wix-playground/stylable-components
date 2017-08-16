@@ -7,7 +7,6 @@ export interface PortalProps {
 }
 
 export class Portal extends React.PureComponent<PortalProps, {}> {
-    public static defaultProps: Partial<PortalProps> = { style: {} };
     private container: Element | null;
     private portal: React.ReactElement<any>;
 
