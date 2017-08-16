@@ -125,6 +125,8 @@ describe('The DatePicker Component', function() {
             });
         });
 
+
+
         it('should show the next and previous month buttons horizontally aligned with the month and year',
             async function() {
                 const { select, waitForDom } = clientRenderer.render(
@@ -502,3 +504,5 @@ describe('The DatePicker Component', function() {
         });
     });
 });
+
+let b = <div />;
