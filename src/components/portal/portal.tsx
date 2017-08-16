@@ -13,17 +13,13 @@ export class Portal extends React.PureComponent<PortalProps, {}> {
     public render() {
         if (!this.props.children) {
             this.portalContent = <div data-automation-id="PORTAL" />;
-            return null;
+        } else {
+            this.portalContent = (
+                <div data-automation-id="PORTAL" style={this.props.style}>
+                    {this.props.children}
+                </div>
+            );
         }
-
-        this.portalContent = (
-            <div
-                data-automation-id="PORTAL"
-                style={this.props.style}
-            >
-                {this.props.children}
-            </div>
-        );
 
         return null;
     }
