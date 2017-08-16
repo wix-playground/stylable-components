@@ -7,11 +7,9 @@ export interface PortalProps {
 }
 
 export class Portal extends React.Component<PortalProps, {}> {
-    private static defaultProps: Partial<PortalProps> = {
-        style: {}
-    };
+    private static defaultProps: Partial<PortalProps> = { style: {} };
     private container: Element | null;
-    private portal: JSX.Element;
+    private portal: React.ReactElement<any>;
 
     public render() {
         return null;
@@ -54,11 +52,11 @@ export class Portal extends React.Component<PortalProps, {}> {
     }
 
     private createPortal() {
-        if (!this.props.children) {
-            return;
-        }
-
         if (!this.portal) {
+            if (!this.props.children) {
+                this.portal = <div data-automation-id="PORTAL" />;
+            }
+
             this.portal = (
                 <div
                     data-automation-id="PORTAL"

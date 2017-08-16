@@ -3,7 +3,6 @@ import * as ReactDOM from 'react-dom';
 import {selectDom} from 'test-drive';
 import { ClientRenderer, expect, waitFor } from 'test-drive-react';
 import {Portal} from '../../src';
-import {PortalFixture} from '../fixtures/portal-fixture';
 import {sleep} from '../utils/sleep';
 
 const portal = 'PORTAL';
@@ -34,7 +33,8 @@ describe('<Portal />', function() {
                 open={false}
             >
                 <span data-automation-id="SPAN">Portal Body</span>
-            </Portal>);
+            </Portal>
+        );
         await sleep(10);
         await waitFor(() => {
             expect(bodySelect(portal)).to.not.exist;
@@ -43,18 +43,26 @@ describe('<Portal />', function() {
     });
 
     it('should unmount portal when open prop is changed to false', async function() {
-        let comp: PortalFixture | null;
-        clientRenderer.render(<PortalFixture ref={ref => comp = ref}/>);
+        const {container} = clientRenderer.render(
+            <Portal
+                open={true}
+            >
+                <span data-automation-id="SPAN">Portal Body</span>
+            </Portal>
+        );
 
-        await waitFor(() => {
-            expect(bodySelect(portal)).to.be.present();
-            expect(bodySelect('FIXTURE_CHILDREN')).to.be.present();
-        });
-        comp!.toggle();
-        await waitFor(() => {
-            expect(bodySelect(portal)).to.not.exist;
-            expect(bodySelect(portal, 'FIXTURE_CHILDREN')).to.not.exist;
-        });
+        await waitFor(() => expect(bodySelect(portal)).to.be.present());
+
+        clientRenderer.render(
+            <Portal
+                open={false}
+            >
+                <span data-automation-id="SPAN">Portal Body</span>
+            </Portal>,
+            container
+        );
+
+        await waitFor(() => expect(bodySelect(portal)).to.not.exist);
     });
 
     it('removes the component when unmounting', async function() {
