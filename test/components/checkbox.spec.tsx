@@ -2,7 +2,6 @@ import * as React from 'react';
 import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react';
 import {BasicDemo, demoCheckBoxText, DisabledDemo, IndeterminateDemo} from '../../demo/components/checkbox-demo';
 import {CheckBox, CheckBoxIconProps} from '../../src';
-import * as keycode from 'keycode';
 
 const boxSVG: React.SFC<CheckBoxIconProps> = props => {
     return (
@@ -165,20 +164,6 @@ describe('<Checkbox/>', function() {
         });
     });
 
-    it('can get focus', async function() {
-        const {select, waitForDom} = clientRenderer.render(
-            <CheckBox />
-        );
-        const checkbox = select('CHECKBOX_ROOT') as HTMLElement;
-        await waitForDom(() => {
-            expect(select('CHECKBOX_ROOT')).to.be.present();
-        });
-        checkbox.focus();
-        await waitFor(() => {
-            expect(document.activeElement).equals(checkbox);
-        });
-    });
-
     describe('Accessibility features', function() {
         it('Renders a native input and pass on checked state', function() {
             const {select, waitForDom} = clientRenderer.render(
@@ -190,7 +175,6 @@ describe('<Checkbox/>', function() {
                 expect(nativeInput, 'native input not found in DOM').to.exist;
                 expect(nativeInput.tagName).to.equal('INPUT');
                 expect(nativeInput).to.have.attr('type', 'checkbox');
-                expect(nativeInput).to.be.absent();
                 expect(nativeInput.checked, 'native checkbox should be checked').to.equal(true);
             });
         });
@@ -220,7 +204,7 @@ describe('<Checkbox/>', function() {
                 <CheckBox />
             );
             return waitForDom(() => {
-                expect(select('CHECKBOX_ROOT')).to.have.attr('tabIndex', '0');
+                expect(select('NATIVE_CHECKBOX')).to.have.attr('tabIndex', '0');
             });
         });
 
@@ -229,34 +213,7 @@ describe('<Checkbox/>', function() {
                 <CheckBox tabIndex={99998}/>
             );
             return waitForDom(() => {
-                expect(select('CHECKBOX_ROOT')).to.have.attr('tabIndex', '99998');
-            });
-        });
-
-        it('component sends onChange when pressing "SPACE"', async function() {
-            const onChange = sinon.spy();
-
-            const {select, waitForDom} = clientRenderer.render(
-                <CheckBox onChange={onChange}/>
-            );
-
-            const checkbox = select('CHECKBOX_ROOT') as HTMLElement;
-
-            await waitForDom(() => {
-                expect(select('CHECKBOX_ROOT')).to.be.present();
-            });
-
-            checkbox.focus();
-
-            await waitFor(() => {
-                expect(document.activeElement).equals(checkbox);
-            });
-
-            simulate.keyDown(checkbox, {keyCode: keycode('SPACE')});
-
-            await waitFor(() => {
-                expect(onChange).to.be.calledOnce;
-                expect(onChange).to.be.calledWith(true);
+                expect(select('NATIVE_CHECKBOX')).to.have.attr('tabIndex', '99998');
             });
         });
     });

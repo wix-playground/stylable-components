@@ -2,7 +2,6 @@ import * as React from 'react';
 import { SBComponent } from 'stylable-react-component';
 import { root } from 'wix-react-tools';
 import style from './checkbox.st.css';
-import * as keycode from 'keycode';
 
 export interface CheckBoxProps {
     value: boolean;
@@ -76,81 +75,77 @@ export class CheckBox extends React.Component<Partial<CheckBoxProps>, {}> {
         tabIndex: 0
     };
 
+    private inputRef: HTMLInputElement | null = null;
+
     public render() {
-        const {value, boxIcon, tickIcon, indeterminateIcon, onChange, disabled,
-               readonly, indeterminate, tabIndex, id, children, ...rest} = this.props;
-        const BoxIcon = boxIcon!;
-        const IndeterminateIcon = indeterminateIcon!;
-        const TickIcon = tickIcon!;
+        const BoxIcon = this.props.boxIcon!;
+        const IndeterminateIcon = this.props.indeterminateIcon!;
+        const TickIcon = this.props.tickIcon!;
         const rootProps = root(this.props, {
             'data-automation-id': 'CHECKBOX_ROOT',
             'className': 'root'
         });
         const cssStates = {
-                checked: value!,
-                disabled: disabled!,
-                readonly: readonly!,
-                indeterminate: indeterminate!
+            checked: this.props.value,
+            disabled: this.props.disabled,
+            readonly: this.props.readonly,
+            indeterminate: this.props.indeterminate
         };
 
         return (
             <div
                 {...rootProps as any}
-                onClick={this.onClick}
+                onClick={this.handleClick}
                 cssStates={cssStates}
                 role="checkbox"
-                aria-checked={indeterminate ? 'mixed' : value}
-                tabIndex={tabIndex}
-                onKeyDown={this.handleKeyDown}
+                aria-checked={this.props.indeterminate ? 'mixed' : this.props.value}
             >
-
-                <BoxIcon
-                    value={value}
-                    indeterminate={indeterminate}
-                    disabled={disabled}
-                />
-
-                {indeterminate &&
-                    <IndeterminateIcon
-                        value={value}
-                        indeterminate={indeterminate}
-                        disabled={disabled}
-                    />
-                }
-                {!indeterminate && value &&
-                    <TickIcon
-                        value={value}
-                        indeterminate={indeterminate}
-                        disabled={disabled}
-                    />
-                }
-
-                {children}
 
                 <input
                     data-automation-id="NATIVE_CHECKBOX"
                     type="checkbox"
                     className="nativeCheckbox"
-                    defaultChecked={value}
-                    disabled={disabled}
-                    id={id}
+                    defaultChecked={this.props.value}
+                    disabled={this.props.disabled}
+                    id={this.props.id}
+                    onChange={this.handleChange}
+                    ref={ref => this.inputRef = ref}
+                    tabIndex={this.props.tabIndex}
                 />
+
+                <BoxIcon
+                    value={this.props.value}
+                    indeterminate={this.props.indeterminate}
+                    disabled={this.props.disabled}
+                />
+
+                {this.props.indeterminate &&
+                    <IndeterminateIcon
+                        value={this.props.value}
+                        indeterminate={this.props.indeterminate}
+                        disabled={this.props.disabled}
+                    />
+                }
+                {!this.props.indeterminate && this.props.value &&
+                    <TickIcon
+                        value={this.props.value}
+                        indeterminate={this.props.indeterminate}
+                        disabled={this.props.disabled}
+                    />
+                }
+
+                {this.props.children}
             </div>
         );
     }
 
-    private onClick = (e: React.SyntheticEvent<HTMLDivElement>) => {
-        if (!this.props.disabled && !this.props.readonly) {
-            this.props.indeterminate ? this.props.onChange!(true) : this.props.onChange!(!this.props.value);
-        }
+    private handleClick = (e: React.SyntheticEvent<HTMLDivElement>) => {
+        this.inputRef && this.inputRef.click();
     }
 
-    private handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) =>  {
-        if (e.keyCode === keycode('space')) {
-            e.preventDefault();
-            if (!this.props.disabled && !this.props.readonly) {
-                this.props.indeterminate ? this.props.onChange!(true) : this.props.onChange!(!this.props.value);
-            }
+    private handleChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
+        if (!this.props.disabled && !this.props.readonly) {
+            this.props.indeterminate ? this.props.onChange!(true) : this.props.onChange!(!this.props.value);
         }
     }
 }
