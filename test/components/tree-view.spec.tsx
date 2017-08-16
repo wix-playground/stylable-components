@@ -226,7 +226,7 @@ describe('<TreeView />', () => {
                 return waitForDom(() => {
                     const item = getTreeItem(nodeChildren![0].label);
                     expect(select(item), 'up didnt work').to.have.attr('data-focused', 'false');
-                    expect(select(rootNode), ).to.have.attr('data-focused', 'true');
+                    expect(select(rootNode)).to.have.attr('data-focused', 'true');
                 });
             });
 
@@ -244,9 +244,9 @@ describe('<TreeView />', () => {
                 await waitForDom(() =>
                     expect(select(getTreeItem(nodeChildren![0].label))).to.have.attr('data-focused', 'true'));
 
-                for (const child of nodeChildren![0].children!) {
-                    simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), { keyCode: KeyCodes.DOWN });
-                }
+                nodeChildren![0].children!.forEach(
+                    () => simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), { keyCode: KeyCodes.DOWN })
+                );
 
                 const firstSubtreeChildren = nodeChildren![0].children!;
 
@@ -394,14 +394,14 @@ describe('<TreeView />', () => {
             it('renders with an icon', () => {
                 const { select, waitForDom } = clientRenderer.render(
                     <TreeItem
-                        item={sampleItem}
+                        item={treeData[0]}
                         itemRenderer={TreeItem}
                         state={state}
                         stateMap={stateMap}
                     />
                 );
 
-                return waitForDom(() => expect(select(getTreeItem(sampleItem.label) + '_ICON')).to.be.present());
+                return waitForDom(() => expect(select(getTreeItem(treeData[0].label) + '_ICON')).to.be.present());
             });
 
             it('renders correct children', () => {

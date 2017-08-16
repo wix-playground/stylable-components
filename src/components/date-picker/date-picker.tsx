@@ -1,6 +1,5 @@
 import * as keycode from 'keycode';
 import * as React from 'react';
-import {SyntheticEvent} from 'react';
 import inputStyles from '../../style/default-theme/controls/input.st.css';
 import {Calendar} from './calendar';
 import styles from './date-picker.st.css';
@@ -78,26 +77,26 @@ export class DatePicker extends React.Component<DatePickerProps, DatePickerState
         }
     }
 
-    private onInputChange: React.EventHandler<SyntheticEvent<HTMLInputElement>> = (event): void => {
+    private onInputChange: React.EventHandler<React.SyntheticEvent<HTMLInputElement>> = (event): void => {
         const eventTarget = event.target as HTMLInputElement;
         this.setState({ inputValue: eventTarget.value });
     }
 
-    private onFocus: React.EventHandler<SyntheticEvent<HTMLInputElement>> = (): void => {
+    private onFocus: React.EventHandler<React.SyntheticEvent<HTMLInputElement>> = (): void => {
         this.setState({ isDropdownVisible: true });
     }
 
-    private onMouseDown: React.EventHandler<SyntheticEvent<HTMLInputElement>> = (): void => {
+    private onMouseDown: React.EventHandler<React.SyntheticEvent<HTMLInputElement>> = (): void => {
         this.setState({ isDropdownVisible: !this.state.isDropdownVisible });
     }
 
-    private onBlur: React.EventHandler<SyntheticEvent<HTMLInputElement>> = (event): void => {
+    private onBlur: React.EventHandler<React.SyntheticEvent<HTMLInputElement>> = (event): void => {
         const eventTarget = event.target as HTMLInputElement;
         this.updateStateFromString(eventTarget.value);
         this.setState({ isDropdownVisible: false });
     }
 
-    private onKeyDown: React.EventHandler<SyntheticEvent<HTMLInputElement>> =
+    private onKeyDown: React.EventHandler<React.SyntheticEvent<HTMLInputElement>> =
         (event: React.KeyboardEvent<HTMLInputElement>): void => {
             if (keycode(event.keyCode) === 'enter') {
                 const eventTarget = event.target as HTMLInputElement;

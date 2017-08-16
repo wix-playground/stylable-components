@@ -1,9 +1,7 @@
-import React = require('react');
 import {action, observable} from 'mobx';
 import {observer} from 'mobx-react';
-import {EventHandler, ReactElement, SyntheticEvent} from 'react';
+import * as React from 'react';
 import {RadioButton, RadioButtonProps} from './radio-button';
-import style from './radio-group.st.css';
 
 export interface RadioGroupProps {
     children?: any;
@@ -124,11 +122,11 @@ export class RadioGroup extends React.Component<Partial<RadioGroupProps>, {}> {
                     location: this.props.location,
                     name: this.name};
 
-                childArray.push(React.cloneElement(data as ReactElement<any>, props));
+                childArray.push(React.cloneElement(data as React.ReactElement<any>, props));
             } else {
                 childArray.push(
                     React.cloneElement(
-                        data as ReactElement<any>,
+                        data as React.ReactElement<any>,
                         {
                             key: index,
                             checked: this.checkedArray[index].checked,

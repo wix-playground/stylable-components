@@ -25,7 +25,7 @@
 
 ## Definition
 
-Time input allows users to input & select time in 12 & 24 hours format. 
+Time Picker allows users to input & select time in 12 & 24 hours format. 
 
 
 
@@ -37,7 +37,7 @@ Time input allows users to input & select time in 12 & 24 hours format.
 
 
 
-The **Time Input** functions as native  `<input type="time">` component with additional ability to customize stepper arrows design (using `::stepper` subcomponent) and add prefix / suffix elements 
+The **Time Picker** functions as native  `<input type="time">` component with additional ability to customize stepper arrows design (using `::stepper` subcomponent) and add prefix / suffix elements 
 
 > NOTE: suffix is displayed after the stepper for for several reasons:
 >
@@ -55,7 +55,7 @@ See [README.md](./README.md) for more info.
 
 ## Style
 
-Time Input allows additional style customization with  `::stepper` subcomponent. 
+Time Picker allows additional style customization with  `::stepper` subcomponent. 
 For more info & code samples, see [README.md](./README.md). 
 
 
@@ -64,12 +64,12 @@ For more info & code samples, see [README.md](./README.md).
 
 ##### Keyboard
 
-Time Input has all basic accessibility features related to keyboard behavior (tab, space, shift, arrows, etc).
+Time Picker has all basic accessibility features related to keyboard behavior (tab, space, shift, arrows, etc).
 See [keyboard](#keyboard) section for more info. 
 
 ##### Focus
 
-Focus behavior for Time Input differs from other components. Unlike other components, focus is not applied to entire component but to its internal elements (e.g. 'hh', 'mm', 'am/pm'). 
+Focus behavior for Time Picker differs from other components. Unlike other components, focus is not applied to entire component but to its internal elements (e.g. 'hh', 'mm', 'am/pm'). 
 
 For more info see [keyboard](#keyboard),  [mouse](#mouse) & [touch](#touch) sections. 
 
@@ -79,12 +79,17 @@ For more info see [keyboard](#keyboard),  [mouse](#mouse) & [touch](#touch) sect
 
 Changing value in the input via keyboard mirrors the behavior of the stepper arrows.
 
-Stepping the value (arrows or keyboard) is performed **from current value** if there is any value OR from 0 if there is no value. Step is set to 1 
-NOTE: there is no way to change step via API for now.  
+Stepping the value (arrows or keyboard) is performed **from current value** if there is any value OR from 0 if there is no value. Step is set to. 
+
+
+> NOTE: there is no way to change step via API for now. There are several reasons for that:
+>
+> 1. All competitor libs allow to set step only for minutes. In our case we support shift+up/down which covers part of the cases. 
+> 2. Step for hours makes no sense since we operate in 0-24 range. Step adds extra functionality here.  
 
 When user types a value, it isn't committed until enter, tab, click outside OR internal validation happen.  Enter, tab, click outside are described below in [keyboard](#keyboard), [mouse](#mouse) & [touch](#touch) sections. As for internal validation, we check if value entered in active sections is maximum. If so, we move focus to the next input (e.g user enters 4 into 'hh' -> move focus to 'mm').
 
-**Tab / Shift+Tab** & **Right / Left** arrow key moves focus to the next number within input ('hh' -> 'mm' -> 'am/pm'). We mirror the behavior of [native HTML number input](https://www.w3schools.com/html/tryit.asp?filename=tryhtml_input_time + add few additional tweaks which are described in [keyboard](#keyboard), [mouse](#mouse) & [touch](#touch) sections.
+**Tab / Shift+Tab** & **Right / Left** arrow key moves focus to the next number within input ('hh' -> 'mm' -> 'am/pm'). We mirror the behavior of [native HTML number input](https://www.w3schools.com/html/tryit.asp?filename=tryhtml_input_time) + add few additional tweaks which are described in [keyboard](#keyboard), [mouse](#mouse) & [touch](#touch) sections.
 
 If the user types a value that is out of current format range (e.g. 14h in 12hours format), we automatically convert time to relevant value (e.g. 14h = 2, 15 = 3, etc).
 We mirror the behavior of [native HTML number input.](https://www.w3schools.com/html/tryit.asp?filename=tryhtml_input_time)
@@ -100,7 +105,7 @@ The component follows the external control pattern (value displayed is defined b
 | user clears input and starts typing time | once user types 'hh' we automatically add ':' and then user can type 'mm' |
 | user clears input and removes focus      | display previously entered time          |
 | user enters unsupported characters       | nothing is added. We do not allow to enter anythings except for numbers ( 0 - 9 ) |
-| user enters 13 for 'hh' when `use12Hours` is `true` | change 13 to corresponding time in 12h format (13 = 1, 14 = 2, etc) |
+| user enters 13 for 'hh' when `format` is `ampm` | change 13 to corresponding time in 12h format (13 = 1, 14 = 2, etc) |
 
 
 
@@ -111,7 +116,8 @@ The component follows the external control pattern (value displayed is defined b
 | type a number              | insert a value without committing it     |
 | up arrow key               | increase & commit value (for focused element) |
 | down arrow key             | decrease & commit value (for focused element) |
-| fn / ctrl + up / down      | increase / decrease & commit value by 10 (NOTE: works only for 'mm') |
+| page up (fn/ctrl + up arrow key)| increase & commit value by 10 (NOTE: works only for 'mm') |
+| page down (fn/ctrl + down arrow key)| decrease & commit value by 10 (NOTE: works only for 'mm') |
 | tab / right arrow key      | moves focus to previous element within component ('hh' -> 'mm' -> 'am/pm') AND then to the next component |
 | shift+tab / left arrow key | moves focus to previous element within component ('am/pm' -> 'mm' -> 'hh') AND then to the previous component |
 | esc                        | removes focus (if on focus)              |

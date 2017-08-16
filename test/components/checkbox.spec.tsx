@@ -1,4 +1,4 @@
-import React = require('react');
+import * as React from 'react';
 import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react';
 import {BasicDemo, demoCheckBoxText, DisabledDemo, IndeterminateDemo} from '../../demo/components/checkbox-demo';
 import {CheckBox, CheckBoxIconProps} from '../../src';
@@ -165,7 +165,7 @@ describe('<Checkbox/>', function() {
     });
 
     it('Renders a native input component of type "checkbox" for SEO purposes', function() {
-        const {select, waitForDom} = clientRenderer.render(
+        const {select} = clientRenderer.render(
             <CheckBox
                 boxIcon={boxSVG}
                 tickIcon={tickSVG}
