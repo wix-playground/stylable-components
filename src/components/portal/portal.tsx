@@ -8,7 +8,7 @@ export interface PortalProps {
 
 export class Portal extends React.PureComponent<PortalProps, {}> {
     private container: Element | null;
-    private portal: React.DOMElement<React.HTMLAttributes<HTMLDivElement>>;
+    private portal: React.ReactElement<React.HTMLAttributes<HTMLDivElement>>;
 
     public render() {
         this.createPortal();
