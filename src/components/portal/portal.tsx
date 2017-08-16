@@ -16,20 +16,14 @@ export class Portal extends React.PureComponent<PortalProps, {}> {
     }
 
     public componentDidMount() {
-        if (this.props.open) {
-            this.renderPortal();
-        }
+        this.renderPortal();
     }
 
     public componentDidUpdate() {
-        if (this.props.open) {
-            this.renderPortal();
-        }
-    }
-
-    public componentWillReceiveProps(newProps: PortalProps) {
-        if (!newProps.open && this.props.open) {
+        if (!this.props.open) {
             this.destroyPortal();
+        } else {
+            this.renderPortal();
         }
     }
 
@@ -38,8 +32,8 @@ export class Portal extends React.PureComponent<PortalProps, {}> {
     }
 
     private renderPortal() {
-        this.container = this.getContainer();
-        ReactDOM.unstable_renderSubtreeIntoContainer(this, this.portal, this.container);
+        if (!this.props.open) { return; }
+        ReactDOM.unstable_renderSubtreeIntoContainer(this, this.portal, this.upsertContainer());
     }
 
     private destroyPortal() {
@@ -50,8 +44,12 @@ export class Portal extends React.PureComponent<PortalProps, {}> {
         }
     }
 
-    private getContainer() {
-        return this.container ? this.container : document.body.appendChild(document.createElement('div'));
+    private upsertContainer() {
+        if (!this.container) {
+            this.container = document.body.appendChild(document.createElement('div'));
+        }
+
+        return this.container;
     }
 
     private createPortal() {
