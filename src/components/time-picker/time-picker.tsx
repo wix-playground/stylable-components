@@ -335,7 +335,10 @@ export default class TimePicker extends React.Component<Props, State> {
 
         // prevent default for and char (a-z) and also for any didgit (0-9) for ampm segment
         // this is needed to disallow user to move reset select state on input
-        if (/^\D$/.test(keyCode) || /^\d$/.test(keyCode) && currentSegment === 'ampm') {
+        if (
+            (/^\D$/.test(keyCode) || /^\d$/.test(keyCode) && currentSegment === 'ampm') &&
+            !e.ctrlKey && !e.altKey && !e.metaKey
+        ) {
             e.preventDefault();
         }
 
