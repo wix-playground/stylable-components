@@ -8,15 +8,30 @@ export interface PortalProps {
 
 export class Portal extends React.PureComponent<PortalProps, {}> {
     private container: Element | null;
-    private portal: React.ReactElement<React.HTMLAttributes<HTMLDivElement>>;
+    private portalContent: React.ReactElement<React.HTMLAttributes<HTMLDivElement>>;
 
     public render() {
-        this.createPortal();
+        if (!this.props.children) {
+            this.portalContent = <div data-automation-id="PORTAL" />;
+            return null;
+        }
+
+        this.portalContent = (
+            <div
+                data-automation-id="PORTAL"
+                style={this.props.style}
+            >
+                {this.props.children}
+            </div>
+        );
+
         return null;
     }
 
     public componentDidMount() {
-        this.renderPortal();
+        if (this.props.open) {
+            this.renderPortal();
+        }
     }
 
     public componentDidUpdate() {
@@ -32,8 +47,7 @@ export class Portal extends React.PureComponent<PortalProps, {}> {
     }
 
     private renderPortal() {
-        if (!this.props.open) { return; }
-        ReactDOM.unstable_renderSubtreeIntoContainer(this, this.portal, this.upsertContainer());
+        ReactDOM.unstable_renderSubtreeIntoContainer(this, this.portalContent, this.upsertContainer());
     }
 
     private destroyPortal() {
@@ -50,24 +64,5 @@ export class Portal extends React.PureComponent<PortalProps, {}> {
         }
 
         return this.container;
-    }
-
-    private createPortal() {
-        if (!this.portal) {
-            if (!this.props.children) {
-                this.portal = <div data-automation-id="PORTAL" />;
-            }
-
-            this.portal = (
-                <div
-                    data-automation-id="PORTAL"
-                    style={this.props.style}
-                >
-                    {this.props.children}
-                </div>);
-        } else {
-            this.portal = React.cloneElement(this.portal, this.props.style);
-        }
-
     }
 }

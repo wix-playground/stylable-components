@@ -15,9 +15,7 @@ describe('<Portal />', function() {
 
     it('displays the portal and renders its children if the open prop is given', async function() {
         clientRenderer.render(
-            <Portal
-                open={true}
-            >
+            <Portal open={true}>
                 <span data-automation-id="SPAN">Portal Body</span>
             </Portal>);
 
@@ -29,9 +27,7 @@ describe('<Portal />', function() {
 
     it('does not add the portal to the DOM if open is false', async function() {
         clientRenderer.render(
-            <Portal
-                open={false}
-            >
+            <Portal open={false}>
                 <span data-automation-id="SPAN">Portal Body</span>
             </Portal>
         );
@@ -44,9 +40,7 @@ describe('<Portal />', function() {
 
     it('should unmount portal when open prop is changed to false', async function() {
         const {container} = clientRenderer.render(
-            <Portal
-                open={true}
-            >
+            <Portal open={true}>
                 <span data-automation-id="SPAN">Portal Body</span>
             </Portal>
         );
@@ -54,9 +48,7 @@ describe('<Portal />', function() {
         await waitFor(() => expect(bodySelect(portal)).to.be.present());
 
         clientRenderer.render(
-            <Portal
-                open={false}
-            >
+            <Portal open={false}>
                 <span data-automation-id="SPAN">Portal Body</span>
             </Portal>,
             container
@@ -68,9 +60,7 @@ describe('<Portal />', function() {
     it('removes the component when unmounting', async function() {
         const div = document.body.appendChild(document.createElement('div'));
         clientRenderer.render(
-            <Portal
-                open={true}
-            >
+            <Portal open={true}>
                 <span data-automation-id="SPAN">Popup Body</span>
             </Portal>, div);
 
@@ -81,5 +71,24 @@ describe('<Portal />', function() {
             expect(bodySelect(portal)).to.not.exist;
             expect(bodySelect('SPAN')).to.not.exist;
         });
+    });
+
+    it('updates the portal content if the children are changed', async function() {
+        const {container} = clientRenderer.render(
+            <Portal open={true}>
+                <span data-automation-id="SPAN">Portal Body</span>
+            </Portal>
+        );
+
+        await waitFor(() => expect(bodySelect('SPAN')).to.be.present());
+
+        clientRenderer.render(
+            <Portal open={true}>
+                <span data-automation-id="UPDATED_SPAN">Portal Body</span>
+            </Portal>,
+            container
+        );
+
+        await waitFor(() => expect(bodySelect('UPDATED_SPAN')).to.be.present());
     });
 });
