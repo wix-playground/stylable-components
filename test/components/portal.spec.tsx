@@ -25,13 +25,24 @@ describe('<Portal />', function() {
         });
     });
 
-    it('applies supplied styles to the popup', async function() {
-        clientRenderer.render(
+    it('applies supplied styles to the popup and updates them if changed', async function() {
+        const {container} = clientRenderer.render(
             <Portal open={true} style={{ position: 'absolute' }}>
                 <span data-automation-id="SPAN">Portal Body</span>
-            </Portal>);
+            </Portal>
+        );
 
         await waitFor(() => expect((bodySelect(portal) as HTMLElement)!.style.position).to.equal('absolute'));
+
+        clientRenderer.render(
+            <Portal open={true} style={{ position: 'fixed' }}>
+                <span data-automation-id="SPAN">Portal Body</span>
+            </Portal>,
+            container
+        );
+
+        await waitFor(() => expect((bodySelect(portal) as HTMLElement)!.style.position).to.equal('fixed'));
+
     });
 
     it('does not add the portal to the DOM if open is false', async function() {
