@@ -1,15 +1,15 @@
 @namespace "CheckBox";
 
 .root {
-    -st-states: checked, disabled, indeterminate, readonly;
+    -st-states: checked, disabled, indeterminate, readonly, focused;
     display: inline;
     position: relative;
     cursor: pointer;
 }
 
 .boxIconDefault {
-    height: 1em;
-    width: 1em;
+    height: 16px;
+    width: 16px;
     fill: none;
     stroke: #D1D1D1;
 }
@@ -22,9 +22,13 @@
     fill: #f1f1f1;
 }
 
+.root:focused .boxIconDefault {
+    outline: 4px solid #add9ff;
+}
+
 .tickIcon {
-    height: 1em;
-    width: 1em;
+    height: 16px;
+    width: 16px;
     position: relative;
     margin-left: -1em;
     stroke: #FFF;
@@ -43,11 +47,6 @@
     margin-left: -1em;
     stroke: #FFF;
     stroke-width: 1.5;
-}
-
-.label {
-    margin-left: 5px;
-    vertical-align: top
 }
 
 .nativeCheckbox {

@@ -25,6 +25,10 @@ export interface CheckBoxIconProps {
     disabled?: boolean;
 }
 
+export interface CheckBoxState {
+    isFocused: boolean;
+}
+
 const DefaultCheckBoxSVG: React.SFC<CheckBoxIconProps> = props => {
     return (
         <svg
@@ -64,7 +68,7 @@ const DefaultIndeterminateSVG: React.SFC<CheckBoxIconProps> = props => {
 };
 
 @SBComponent(styles)
-export class CheckBox extends React.Component<Partial<CheckBoxProps>, {}> {
+export class CheckBox extends React.Component<Partial<CheckBoxProps>, CheckBoxState> {
     public static defaultProps: CheckBoxProps = {
         value: false,
         boxIcon: DefaultCheckBoxSVG,
@@ -77,11 +81,11 @@ export class CheckBox extends React.Component<Partial<CheckBoxProps>, {}> {
         tabIndex: 0
     };
 
+    public state = {isFocused: false};
+
     private inputRef: HTMLInputElement | null = null;
 
     public render() {
-
-
         const BoxIcon = this.props.boxIcon!;
         const IndeterminateIcon = this.props.indeterminateIcon!;
         const TickIcon = this.props.tickIcon!;
@@ -93,7 +97,8 @@ export class CheckBox extends React.Component<Partial<CheckBoxProps>, {}> {
             checked: this.props.value,
             disabled: this.props.disabled,
             readonly: this.props.readonly,
-            indeterminate: this.props.indeterminate
+            indeterminate: this.props.indeterminate,
+            focused: this.state.isFocused
         };
 
         return (
@@ -114,6 +119,8 @@ export class CheckBox extends React.Component<Partial<CheckBoxProps>, {}> {
                     disabled={this.props.disabled}
                     onChange={this.handleChange}
                     ref={ref => this.inputRef = ref}
+                    onFocus={this.handleFocus}
+                    onBlur={this.handleBlur}
                 />
 
                 <BoxIcon
@@ -152,6 +159,14 @@ export class CheckBox extends React.Component<Partial<CheckBoxProps>, {}> {
                 this.props.onChange!({...e, value: true}) :
                 this.props.onChange!({...e, value: !this.props.value});
         }
+    }
+
+    private handleFocus = () => {
+        this.setState({isFocused: true});
+    }
+
+    private handleBlur = () => {
+        this.setState({isFocused: false});
     }
 
     private getInputImplicitProps = (): React.HTMLAttributes<HTMLInputElement> => {
