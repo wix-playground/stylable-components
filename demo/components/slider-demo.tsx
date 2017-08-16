@@ -5,6 +5,7 @@ import style from './slider-demo.st.css';
 
 export interface SliderDemoState {
     value: number;
+    rawValue: string;
 }
 
 @SBComponent(style)
@@ -12,10 +13,9 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
     constructor(props: {}) {
         super(props);
 
-        this.onSliderChange = this.onSliderChange.bind(this);
-
         this.state = {
-            value: 50
+            value: 50,
+            rawValue: '50'
         };
     }
 
@@ -67,7 +67,7 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                 <tr>
                     <th className="table-head-cell">Slider with error state</th>
                     <th className="table-head-cell">Slider with label</th>
-                    <th className="table-head-cell" />
+                    <th className="table-head-cell">Slider with tooltip</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -90,7 +90,17 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                             onChange={this.onSliderChange}
                         />
                     </td>
-                    <td />
+                    <td>
+                        <Slider
+                            value={this.state.value}
+                            min={min}
+                            max={max}
+                            onChange={this.onSliderChange}
+                            onInput={this.onSliderInput}
+                        >
+                            <div data-slot="tooltip" className="tooltip">{this.state.rawValue}</div>
+                        </Slider>
+                    </td>
                 </tr>
                 </tbody>
                 <thead>
@@ -135,7 +145,14 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
         );
     }
 
-    private onSliderChange(value: number) {
-        this.setState({value});
+    private onSliderChange = (value: number) => {
+        this.setState({
+            value,
+            rawValue: String(value)
+        });
+    }
+
+    private onSliderInput = (rawValue: string) => {
+        this.setState({rawValue});
     }
 }

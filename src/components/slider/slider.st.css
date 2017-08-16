@@ -166,6 +166,18 @@
     margin: -8px 0px 0px -6px;
 }
 
+.tooltip{
+    position: absolute;
+    text-align: center;
+    left: calc(50%);
+    bottom: 20px;
+}
+.tooltip > *{
+    display: inline-block;
+    position: relative;
+    left: calc(-50%);
+}
+
 /* Hover state */
 .slider:hover .track {
     background-color: #7d8c98;

@@ -185,7 +185,14 @@ export class Slider extends React.Component<SliderProps, SliderState> {
                                         {bottom: `${this.state.relativeValue}%`} :
                                         {left: `${this.state.relativeValue}%`})
                             }
-                        />
+                        >
+                            <div
+                                className="tooltip"
+                                data-automation-id="SLIDER-TOOLTIP"
+                            >
+                                {this.getTooltip()}
+                            </div>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -239,6 +246,16 @@ export class Slider extends React.Component<SliderProps, SliderState> {
 
     private isReverse(axis: AxisOptions): boolean {
         return axis === AXISES.xReverse || axis === AXISES.yReverse;
+    }
+
+    private getTooltip(): number | string | React.ReactElement<any> | undefined {
+        return React.Children
+            .toArray(this.props.children)
+            .find(
+                item => typeof item === 'object' ?
+                    item.props['data-slot'] === 'tooltip' :
+                    false
+            );
     }
 
     private getRelativeStep(step: Step | undefined, min: number, max: number): Step {
