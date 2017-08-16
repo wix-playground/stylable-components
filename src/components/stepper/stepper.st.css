@@ -23,12 +23,6 @@
 .control {
     width: 100%;
 
-    display: flex;
-
-    justify-content: center;
-    align-content: center;
-    align-items: center;
-
     position: absolute;
 
     margin: 0;
