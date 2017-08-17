@@ -466,6 +466,9 @@ export class Slider extends React.Component<SliderProps, SliderState> {
     }
 
     private onSliderAreaKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
+        if (this.props.disabled) {
+            return;
+        }
         const {isReverse} = this.state;
         switch (keycode(event.keyCode)) {
             case 'page down':
