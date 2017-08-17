@@ -22,7 +22,7 @@ export interface BasicListProps {
     value?: ItemValue;
     focusedValue?: ItemValue;
     focused?: boolean;
-    style?: any;
+    style?: React.CSSProperties;
     className?: string;
     tabIndex?: number;
     onChange?: (value: ItemValue) => void;

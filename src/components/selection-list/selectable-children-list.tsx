@@ -6,7 +6,7 @@ import {BasicList, ItemValue} from './basic-list';
 export interface SelectableChildrenListProps {
     value?: ItemValue;
     onChange?: (value: ItemValue) => void;
-    style?: any;
+    style?: React.CSSProperties;
     className?: string;
     tabIndex?: number;
 }
