@@ -13,7 +13,7 @@ export interface CheckBoxProps extends React.HTMLAttributes<HTMLInputElement> {
     tickIcon: React.ComponentType<CheckBoxIconProps>;
     indeterminateIcon: React.ComponentType<CheckBoxIconProps>;
     onChange: (event: CheckBoxChangeEvent) => void;
-    children?: any;
+    children?: React.ReactNode;
     disabled: boolean;
     readonly: boolean;
     indeterminate: boolean;
@@ -81,100 +81,98 @@ export class CheckBox extends React.Component<Partial<CheckBoxProps>, CheckBoxSt
         disabled: false,
         readonly: false,
         indeterminate: false,
-        tabIndex: 0
     };
 
-    public state = {isFocused: false};
+    public state: CheckBoxState = {isFocused: false};
 
     private inputRef: HTMLInputElement | null = null;
 
     public render() {
-        const BoxIcon = this.props.boxIcon!;
-        const IndeterminateIcon = this.props.indeterminateIcon!;
-        const TickIcon = this.props.tickIcon!;
+        const {value, boxIcon, indeterminate, indeterminateIcon, tickIcon,
+               onChange, children, disabled, readonly, ...rest} = this.props;
+
+        const BoxIcon = boxIcon!;
+        const IndeterminateIcon = indeterminateIcon!;
+        const TickIcon = tickIcon!;
         const rootProps = root(this.props, {
             'data-automation-id': 'CHECKBOX_ROOT',
             'className': 'root'
         });
         const cssStates = {
-            checked: this.props.value,
-            disabled: this.props.disabled,
-            readonly: this.props.readonly,
-            indeterminate: this.props.indeterminate,
+            checked: value!,
+            disabled: disabled!,
+            readonly: readonly!,
+            indeterminate: indeterminate!,
             focused: this.state.isFocused
         };
 
         return (
             <div
-                {...rootProps as any}
-                onClick={this.handleClick}
+                {...rootProps as React.HTMLAttributes<HTMLDivElement>}
+                onClick={this.handleRootClick}
                 cssStates={cssStates}
                 role="checkbox"
-                aria-checked={this.props.indeterminate ? 'mixed' : this.props.value}
+                aria-checked={indeterminate ? 'mixed' : value}
             >
 
                 <input
-                    {...this.getInputImplicitProps()}
+                    {...rest}
                     data-automation-id="NATIVE_CHECKBOX"
                     type="checkbox"
                     className="nativeCheckbox"
-                    defaultChecked={this.props.value}
-                    disabled={this.props.disabled}
-                    onChange={this.handleChange}
-                    ref={ref => this.inputRef = ref}
-                    onFocus={this.handleFocus}
-                    onBlur={this.handleBlur}
+                    checked={value}
+                    disabled={disabled}
+                    onChange={this.handleInputChange}
+                    ref={this.handleInputRef}
+                    onFocus={this.handleInputFocus}
+                    onBlur={this.handleInputBlur}
                 />
 
                 <BoxIcon
-                    value={this.props.value}
-                    indeterminate={this.props.indeterminate}
-                    disabled={this.props.disabled}
+                    value={value}
+                    indeterminate={indeterminate}
+                    disabled={disabled}
                 />
 
-                {this.props.indeterminate &&
+                {indeterminate &&
                     <IndeterminateIcon
-                        value={this.props.value}
-                        indeterminate={this.props.indeterminate}
-                        disabled={this.props.disabled}
+                        value={value}
+                        indeterminate={indeterminate}
+                        disabled={disabled}
                     />
                 }
-                {!this.props.indeterminate && this.props.value &&
+                {!indeterminate && value &&
                     <TickIcon
-                        value={this.props.value}
-                        indeterminate={this.props.indeterminate}
-                        disabled={this.props.disabled}
+                        value={value}
+                        indeterminate={indeterminate}
+                        disabled={disabled}
                     />
                 }
 
-                {this.props.children}
+                {children}
             </div>
         );
     }
 
-    private handleClick = (e: React.SyntheticEvent<HTMLDivElement>) => {
+    private handleRootClick = (e: React.SyntheticEvent<HTMLDivElement>) => {
         this.inputRef && this.inputRef.click();
     }
 
-    private handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    private handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (!this.props.disabled && !this.props.readonly) {
-            this.props.indeterminate ?
-                this.props.onChange!({...e, value: true}) :
-                this.props.onChange!({...e, value: !this.props.value});
+                this.props.onChange!({...e, value: this.props.indeterminate ? true : !this.props.value});
         }
     }
 
-    private handleFocus = () => {
+    private handleInputFocus = () => {
         this.setState({isFocused: true});
     }
 
-    private handleBlur = () => {
+    private handleInputBlur = () => {
         this.setState({isFocused: false});
     }
 
-    private getInputImplicitProps = (): React.HTMLAttributes<HTMLInputElement> => {
-        const {value, boxIcon, indeterminate, indeterminateIcon, tickIcon,
-               onChange, children, disabled, readonly, ...rest} = this.props;
-        return {...rest};
+    private handleInputRef = (ref: HTMLInputElement | null) => {
+        this.inputRef = ref;
     }
 }

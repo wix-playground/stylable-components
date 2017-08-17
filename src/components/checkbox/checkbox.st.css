@@ -8,8 +8,8 @@
 }
 
 .boxIconDefault {
-    height: 16px;
-    width: 16px;
+    height: 1rem;
+    width: 1rem;
     fill: none;
     stroke: #D1D1D1;
 }
@@ -27,10 +27,10 @@
 }
 
 .tickIcon {
-    height: 16px;
-    width: 16px;
+    height: 1rem;
+    width: 1rem;
     position: relative;
-    margin-left: -1em;
+    margin-left: -1rem;
     stroke: #FFF;
     stroke-linecap: square;
     stroke-width: 1.5;
@@ -44,7 +44,7 @@
     height: 1em;
     width: 1em;
     position: relative;
-    margin-left: -1em;
+    margin-left: -1rem;
     stroke: #FFF;
     stroke-width: 1.5;
 }
