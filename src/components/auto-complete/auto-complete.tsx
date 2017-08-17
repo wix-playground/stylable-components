@@ -52,13 +52,18 @@ const prefixFilter: FilterPredicate = (item: string, prefix: string) => item.sta
 @SBComponent(style)
 export class AutoComplete extends React.Component<AutoCompleteProps, AutoCompleteState> {
 
-    public static defaultProps:
-        AutoCompleteProps = { dataSource: [], value: '', filter: prefixFilter, onChange: () => {}, onItemClick: () => {} };
+    public static defaultProps: AutoCompleteProps = {
+        dataSource: [],
+        value: '',
+        filter: prefixFilter,
+        onChange: () => {},
+        onItemClick: () => {}
+    };
 
     public render() {
         const rootProps = root(this.props, {
             'data-automation-id': 'AUTO_COMPLETE',
-            className: 'auto-complete',
+            'className': 'auto-complete'
         }) as React.HtmlHTMLAttributes<HTMLDivElement>;
 
         return (
