@@ -9,3 +9,4 @@ export * from './radio-group';
 export * from './tree-view';
 export * from './drop-down';
 export * from './auto-complete';
+export * from './portal';
