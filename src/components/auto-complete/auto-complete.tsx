@@ -1,6 +1,6 @@
 import * as React from 'react';
+import { OptionList } from '../selection-list/selection-list';
 import { SBComponent } from 'stylable-react-component/dist/stylable-react';
-import { OptionList } from '../../../lib/components/selection-list/selection-list';
 import { root } from 'wix-react-tools';
 import style from './auto-complete.st.css';
 
