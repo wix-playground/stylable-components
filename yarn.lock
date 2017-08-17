@@ -567,6 +567,13 @@ bytes@2.5.0:
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/bytes/-/bytes-2.5.0.tgz#4c9423ea2d252c270c41b2bdefeff9bb6b62c06a"
 
+c3-platform@^1.0.0:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/c3-platform/-/c3-platform-1.0.1.tgz#f8fcfdd5c4b53051ed169dcb90904a7060c3f4ff"
+  dependencies:
+    karma-junit-reporter "^1.2.0"
+    karma-webdriver-launcher "^1.0.5"
+
 callsite@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/callsite/-/callsite-1.0.0.tgz#280398e5d664bd74038b6f0905153e6e8af1bc20"
@@ -4511,9 +4518,9 @@ tslint-react@^3.1.0:
   dependencies:
     tsutils "^2.8.0"
 
-tslint-wix-react@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/tslint-wix-react/-/tslint-wix-react-1.0.0.tgz#2425d6fd92b0f5eca848efe83bcde40e4c79e661"
+tslint-wix-react@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/tslint-wix-react/-/tslint-wix-react-2.0.0.tgz#137747a793affd6c84b7661b327449b832faaf09"
   dependencies:
     tslint-react "^3.1.0"
 

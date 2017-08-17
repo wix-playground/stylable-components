@@ -2,7 +2,6 @@ import {action, observable} from 'mobx';
 import {observer} from 'mobx-react';
 import * as React from 'react';
 import {RadioButton, RadioButtonProps} from './radio-button';
-import style from './radio-group.st.css';
 
 export interface RadioGroupProps {
     children?: any;
