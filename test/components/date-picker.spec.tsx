@@ -427,26 +427,17 @@ describe('The DatePicker Component', () => {
         });
 
         it('getDaysInMonth should return the number of days in a given month', () => {
-            const dateOne = getDaysInMonth(new Date('Feb 18 2017'));
-            const dateTwo = getDaysInMonth(new Date('Jun 5 2016'));
-            const dateThree = getDaysInMonth(new Date('Jan 28, 2017'));
-
-            expect(dateOne).to.equal(28);
-            expect(dateTwo).to.equal(30);
-            expect(dateThree).to.equal(31);
+            expect(getDaysInMonth(new Date('Feb 18 2017'))).to.equal(28);
+            expect(getDaysInMonth(new Date('Jun 5 2016'))).to.equal(30);
+            expect(getDaysInMonth(new Date('Jan 28, 2017'))).to.equal(31);
         });
 
         it('getNumOfPreviousDays should return the number of days to display for the previous month', () => {
             // Sunday is the default starting day
-            const dateOne = getNumOfPreviousDays(new Date('Feb 18 2017'));
-            const dateTwo = getNumOfPreviousDays(new Date('Jun 5 2017'));
-            const dateThree = getNumOfPreviousDays(new Date('July 5 2017'));
-            const dateFour = getNumOfPreviousDays(new Date('September 5 2019'));
-
-            expect(dateOne).to.equal(3);
-            expect(dateTwo).to.equal(4);
-            expect(dateThree).to.equal(6);
-            expect(dateFour).to.equal(0);
+            expect(getNumOfPreviousDays(new Date('Feb 18 2017'))).to.equal(3);
+            expect(getNumOfPreviousDays(new Date('Jun 5 2017'))).to.equal(4);
+            expect(getNumOfPreviousDays(new Date('July 5 2017'))).to.equal(6);
+            expect(getNumOfPreviousDays(new Date('September 5 2019'))).to.equal(0);
         });
 
         it('getNumOfPreviousDays should handle starting on different days of the week', () => {
@@ -486,15 +477,10 @@ describe('The DatePicker Component', () => {
 
         it('getNumOfFollowingDays should return the number of days to display for the next month', () => {
             // Sunday is the default starting day
-            const dateOne = getNumOfFollowingDays(new Date('Feb 18 2017'));
-            const dateTwo = getNumOfFollowingDays(new Date('Jun 5 2017'));
-            const dateThree = getNumOfFollowingDays(new Date('July 5 2017'));
-            const dateFour = getNumOfFollowingDays(new Date('September 5 2019'));
-
-            expect(dateOne).to.equal(4);
-            expect(dateTwo).to.equal(1);
-            expect(dateThree).to.equal(5);
-            expect(dateFour).to.equal(5);
+            expect(getNumOfFollowingDays(new Date('Feb 18 2017'))).to.equal(4);
+            expect(getNumOfFollowingDays(new Date('Jun 5 2017'))).to.equal(1);
+            expect(getNumOfFollowingDays(new Date('July 5 2017'))).to.equal(5);
+            expect(getNumOfFollowingDays(new Date('September 5 2019'))).to.equal(5);
         });
 
         it('getNumOfFollowingDays should handle starting on different days of the week', () => {
