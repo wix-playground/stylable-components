@@ -2,7 +2,7 @@ import React = require('react');
 import ReactDOM  = require('react-dom');
 import {SBComponent} from 'stylable-react-component';
 import {root} from 'wix-react-tools';
-import {clamp} from '../../utils';
+import {noop} from '../../utils';
 import listStyle from './selection-list.st.css';
 
 export type ItemValue = string;
@@ -16,6 +16,21 @@ function closestElementMatching(
         current = current.parentElement;
     }
     return current;
+}
+
+export function getFocusableItemValues(nodes: React.ReactNode): ItemValue[] {
+    const result: ItemValue[] = [];
+    React.Children.forEach(nodes, node => {
+        if (node && typeof node === 'object') {
+            const element = node as React.ReactElement<any>;
+            const value = element.props.value;
+            const disabled = element.props.disabled;
+            if (value !== undefined && !disabled) {
+                result.push(value);
+            }
+        }
+    });
+    return result;
 }
 
 export interface BasicListProps {
@@ -33,7 +48,9 @@ export interface BasicListProps {
 
 @SBComponent(listStyle)
 export class BasicList extends React.Component<BasicListProps, {}> {
-    private focusableItemValues: ItemValue[] = [];
+    public static defaultProps = {
+        onChange: noop
+    };
 
     public render() {
         const mergedProps = root(this.props, {
@@ -43,8 +60,7 @@ export class BasicList extends React.Component<BasicListProps, {}> {
             }
         }) as React.HtmlHTMLAttributes<HTMLDivElement>;
 
-        const children = React.Children.map(this.props.children, child => this.augmentChild(child));
-        this.focusableItemValues = this.getFocusableItemValuesFromChildren(children);
+        const children = React.Children.map(this.props.children, child => this.renderChild(child));
 
         return (
             <div
@@ -63,34 +79,7 @@ export class BasicList extends React.Component<BasicListProps, {}> {
         );
     }
 
-    public getFirstFocusableValue() {
-        return this.focusableItemValues[0];
-    }
-
-    public getLastFocusableValue() {
-        return this.focusableItemValues[this.focusableItemValues.length - 1];
-    }
-
-    public getPreviousFocusableValue() {
-        return this.getAdjacentFocusable(-1);
-    }
-
-    public getNextFocusableValue() {
-        return this.getAdjacentFocusable(1);
-    }
-
-    public getAdjacentFocusable(distance: number) {
-        const values = this.focusableItemValues;
-        const focusedValue = this.props.focusedValue;
-        const focusedIndex = (focusedValue === undefined) ? -1 : values.indexOf(focusedValue);
-        if (focusedIndex === -1) {
-            return distance > 0 ? this.getFirstFocusableValue() : this.getLastFocusableValue();
-        } else {
-            return values[clamp(focusedIndex + distance, 0, values.length - 1)];
-        }
-    }
-
-    private augmentChild(node: React.ReactNode): React.ReactNode {
+    private renderChild(node: React.ReactNode): React.ReactNode {
         if (node && typeof node === 'object') {
             const element = node as React.ReactElement<any>;
             const value = element.props.value;
@@ -105,25 +94,6 @@ export class BasicList extends React.Component<BasicListProps, {}> {
         return node;
     }
 
-    private getFocusableItemValuesFromChildren(nodes: React.ReactNode[]): any[] {
-        const result = [];
-        for (const node of nodes) {
-            if (node && typeof node === 'object') {
-                const element = node as React.ReactElement<any>;
-                const value = element.props.value;
-                const disabled = element.props.disabled;
-                if (value !== undefined && !disabled) {
-                    result.push(value);
-                }
-            }
-        }
-        return result;
-    }
-
-    private selectValue(value: ItemValue) {
-        this.props.onChange && this.props.onChange(value);
-    }
-
     private handleClick: React.MouseEventHandler<HTMLElement> = event => {
         const rootNode = ReactDOM.findDOMNode(this);
         const item = closestElementMatching(
@@ -136,7 +106,7 @@ export class BasicList extends React.Component<BasicListProps, {}> {
         const value = item.dataset.value;
         const disabled = item.dataset.disabled;
         if (!disabled && value !== undefined && value !== this.props.value) {
-            this.selectValue(value);
+            this.props.onChange!(value);
         }
     }
 }

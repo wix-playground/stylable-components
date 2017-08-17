@@ -1,101 +1,92 @@
+import keycode = require('keycode');
 import React = require('react');
-import ReactDOM  = require('react-dom');
-import {SBComponent, SBStateless} from 'stylable-react-component';
-import {SelectableChildrenList, SelectableChildrenListProps} from './selectable-children-list';
+import {noop} from '../../utils';
+import {BasicList, BasicListProps, getFocusableItemValues, ItemValue} from './basic-list';
+import {OptionList, renderDataSource} from './data-source';
+import {ListNavigation} from './list-navigation';
 import listStyle from './selection-list.st.css';
 
-export type SelectionItem = string | object;
+export {divider, Divider} from './divider';
+export {Option} from './option';
 
-export type SelectionItemDefaultFormat = string | {
-    value?: string;
-    label?: React.ReactNode;
-    disabled?: boolean;
-    hidden?: boolean;
-};
+export interface SelectionListProps extends OptionList, BasicListProps {}
 
-export interface OptionProps {
-    value?: string;
-    disabled?: boolean;
-    selected?: boolean;
-    focused?: boolean;
-}
-
-export interface OptionList {
-    dataSource?: SelectionItem[];
-    dataSchema?: {};
-    renderItem?: (item: SelectionItem) => React.ReactNode;
-}
-
-export interface SelectionListProps extends OptionList, SelectableChildrenListProps {}
-
-function renameKeys(data: {[index: string]: any}, schema: {[index: string]: string}): {[index: string]: any} {
-    const result: {[index: string]: any} = {};
-    for (const key in schema) {
-        if (schema.hasOwnProperty(key)) {
-            result[key] = data[schema[key]];
-        }
-    }
-    return result;
-}
-
-export const divider = {};
-
-export const Divider: React.SFC<{}> = SBStateless(
-    () => <div className="divider" data-automation-id="DIVIDER" />,
-    listStyle
-);
-
-@SBComponent(listStyle)
-export class Option extends React.Component<OptionProps, {}> {
-    public render() {
-        const props = {
-            cssStates: {
-                disabled: this.props.disabled,
-                selected: this.props.selected,
-                focused:  this.props.focused
-            }
-        };
-
-        return (
-            <div
-                className="item"
-                data-value={this.props.value}
-                data-disabled={this.props.disabled || undefined}
-                {...props as React.HtmlHTMLAttributes<HTMLDivElement>}
-            >
-                {this.props.children}
-            </div>
-        );
-    }
-}
-
-function defaultRenderItem(item: SelectionItemDefaultFormat): React.ReactNode {
-    if (item === divider) {
-        return <Divider />;
-    }
-
-    if (typeof item === 'string') {
-        item = {value: item, label: item};
-    }
-
-    return item.hidden ?
-        null :
-        <Option value={item.value} disabled={item.disabled}>{item.label}</Option>;
-}
-
-function renderDataSource({dataSource = [], dataSchema, renderItem = defaultRenderItem}: OptionList) {
-    return dataSource.map(item =>
-        renderItem(dataSchema && typeof item === 'object' ? renameKeys(item, dataSchema) : item)
-    );
+export interface SelectionListState {
+    focused: boolean;
+    focusedValue?: ItemValue;
 }
 
 export class SelectionList extends React.Component<SelectionListProps, {}> {
+    public static defaultProps: SelectionListProps = {
+        onChange: noop,
+        tabIndex: -1
+    };
+
+    public state: SelectionListState = {
+        focused: false,
+        focusedValue: undefined
+    };
+
+    private items: React.ReactNode[] = [];
+    private focusableItemValues: ItemValue[] = [];
+
+    public componentWillMount() {
+        this.populateItems(this.props);
+        this.setState({focusedValue: this.props.value});
+    }
+
+    public componentWillReceiveProps(nextProps: SelectionListProps) {
+        this.populateItems(nextProps);
+        this.setState({focusedValue: nextProps.value});
+    }
+
     public render() {
-        const {dataSource, dataSchema, renderItem, children, ...attrs} = this.props;
+        const {dataSource, dataSchema, renderItem, children, ...rest} = this.props;
+
         return (
-            <SelectableChildrenList {...attrs}>
-                {[children, renderDataSource({dataSource, dataSchema, renderItem})]}
-            </SelectableChildrenList>
+            <BasicList
+                {...rest}
+                focused={this.state.focused}
+                focusedValue={this.state.focusedValue}
+                onFocus={this.handleFocus}
+                onBlur={this.handleBlur}
+                onKeyDown={this.handleKeyDown}
+            >
+                {this.items}
+            </BasicList>
         );
+    }
+
+    // TODO: fix any here!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+    public populateItems(props: any) {
+        this.items = [props.children, renderDataSource(props)];
+        this.focusableItemValues = getFocusableItemValues(this.items);
+    }
+
+    private handleFocus: React.FocusEventHandler<HTMLElement> = event => {
+        this.setState({focused: true});
+    }
+
+    private handleBlur: React.FocusEventHandler<HTMLElement> = event => {
+        this.setState({focused: false});
+    }
+
+    private handleKeyDown: React.KeyboardEventHandler<HTMLElement> = event => {
+        switch (event.keyCode) {
+            case keycode('enter'):
+            case keycode('space'):
+                event.preventDefault();
+                if (this.state.focusedValue !== undefined) {
+                    this.props.onChange!(this.state.focusedValue);
+                }
+                break;
+            default:
+                const nav = new ListNavigation(this.focusableItemValues);
+                nav.focusValue(this.state.focusedValue || this.props.value);
+                if (nav.handleKeydown(event)) {
+                    event.preventDefault();
+                    this.setState({focusedValue: nav.getFocusedValue()});
+                }
+        }
     }
 }
