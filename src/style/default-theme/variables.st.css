@@ -59,6 +59,7 @@
     color_Active: value(B3);
     color_Focus: value(B4);
     color_Disabled: value(B5);
+    color_Keyboard_Focused: value(M4);
 
     /* Specific component colors */
     color_Slider_Track: value(STC5);
