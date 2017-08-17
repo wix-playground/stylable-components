@@ -45,7 +45,7 @@ function simulateTouchEvent(
     ));
 }
 
-describe.only('<Slider />', () => {
+describe('<Slider />', () => {
     const clientRenderer = new ClientRenderer();
 
     afterEach(() => clientRenderer.cleanup());
