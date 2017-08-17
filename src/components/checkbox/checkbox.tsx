@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { SBComponent } from 'stylable-react-component';
 import { root } from 'wix-react-tools';
+import { noop } from '../../utils';
 import styles from './checkbox.st.css';
 
 export interface CheckBoxChangeEvent extends React.ChangeEvent<HTMLInputElement> {
@@ -72,14 +73,11 @@ const DefaultIndeterminateSVG: React.SFC<CheckBoxIconProps> = props => {
 
 @SBComponent(styles)
 export class CheckBox extends React.Component<Partial<CheckBoxProps>, CheckBoxState> {
-    public static defaultProps: CheckBoxProps = {
-        value: false,
+    public static defaultProps: Partial<CheckBoxProps> = {
         boxIcon: DefaultCheckBoxSVG,
         tickIcon: DefaultTickMarkSVG,
         indeterminateIcon: DefaultIndeterminateSVG,
-        onChange: () => { },
-        disabled: false,
-        readonly: false,
+        onChange: noop,
         indeterminate: false
     };
 

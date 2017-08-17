@@ -175,7 +175,7 @@ describe('<Checkbox/>', function() {
                 expect(nativeInput, 'native input not found in DOM').to.be.present();
                 expect(nativeInput).to.be.instanceOf(HTMLInputElement);
                 expect(nativeInput).to.have.attribute('type', 'checkbox');
-                expect(nativeInput.checked, 'native checkbox should be checked').to.equal(true);
+                expect(nativeInput, 'native checkbox should be checked').to.have.property('checked', true);
             });
         });
 
