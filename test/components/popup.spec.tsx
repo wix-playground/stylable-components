@@ -11,16 +11,16 @@ const demoContainer = 'POPUP_DEMO_DIV';
 describe('<Popup />', function() {
     const clientRenderer = new ClientRenderer();
     const bodySelect = selectDom(document.body);
-    const container = document.body.appendChild(document.createElement('div'));
-    container.style.position = 'absolute';
-    container.style.top = '150px';
-    container.style.left = '150px';
-    container.style.width = '150px';
-    container.style.height = '150px';
-    container.style.border = '1px solid blue';
+    const anchor = document.body.appendChild(document.createElement('div'));
+    anchor.style.position = 'absolute';
+    anchor.style.top = '150px';
+    anchor.style.left = '150px';
+    anchor.style.width = '150px';
+    anchor.style.height = '150px';
+    anchor.style.border = '1px solid blue';
 
     afterEach(function() {clientRenderer.cleanup(); });
-    after(() => {document.body.removeChild(container); });
+    after(() => {document.body.removeChild(anchor); });
 
     describe('The popup user', function() {
         it('clicks on the parent and the popup opens and closes after another click', async function() {
@@ -42,7 +42,7 @@ describe('<Popup />', function() {
     it('displays the popup and renders its children if the open prop is given', function() {
         clientRenderer.render(
             <Popup
-                anchor={container}
+                anchor={anchor}
                 open={true}
             >
                 <span data-automation-id="SPAN">Popup Body</span>
@@ -57,7 +57,7 @@ describe('<Popup />', function() {
     it('removes the component when unmounting', async function() {
         clientRenderer.render(
             <Popup
-                anchor={container}
+                anchor={anchor}
                 open={true}
             >
                 <span data-automation-id="SPAN">Popup Body</span>
@@ -71,7 +71,7 @@ describe('<Popup />', function() {
     it('syncs the popup width', function() {
         clientRenderer.render(
             <Popup
-                anchor={container}
+                anchor={anchor}
                 syncWidth={true}
                 open={true}
             >
@@ -80,14 +80,14 @@ describe('<Popup />', function() {
 
         return waitFor(() => {
             expect(bodySelect(portalId)!.getBoundingClientRect().width)
-                .to.equal(container.getBoundingClientRect().width);
+                .to.equal(anchor.getBoundingClientRect().width);
         });
     });
 
     it('sets the default maxHeight', function() {
         clientRenderer.render(
             <Popup
-                anchor={container}
+                anchor={anchor}
                 open={true}
             >
                 <span data-automation-id="SPAN">Popup Body</span>
@@ -101,7 +101,7 @@ describe('<Popup />', function() {
     it('sets and enforces the maxHeight', function() {
         clientRenderer.render(
             <Popup
-                anchor={container}
+                anchor={anchor}
                 maxHeight={5}
                 open={true}
             >
@@ -159,7 +159,7 @@ describe('<Popup />', function() {
                 it(`Popup position: V: ${popupPos.vertical} H: ${popupPos.horizontal};
                  Anchor position: V: ${anchorPos.vertical} H: ${anchorPos.horizontal}`, function() {
                     clientRenderer.render(
-                        <Popup anchor={container} anchorPosition={anchorPos} popupPosition={popupPos} open={true}>
+                        <Popup anchor={anchor} anchorPosition={anchorPos} popupPosition={popupPos} open={true}>
                             <div style={{background: 'green', color: 'white'}}>
                                     <span data-automation-id="SPAN">
                                         Popup Body
@@ -171,7 +171,7 @@ describe('<Popup />', function() {
                     return waitFor(() => {
                         const popup = bodySelect<HTMLElement>(portalId)!;
 
-                        runTest(popup, container, popupPos, anchorPos);
+                        runTest(popup, anchor, popupPos, anchorPos);
                     });
                 });
             }
