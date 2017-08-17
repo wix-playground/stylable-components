@@ -8,7 +8,8 @@ export interface AutoCompleteDemoState {
     inputText: string;
 }
 
-const items = ['Muffins', 'Pancakes', 'Cupcakes', 'Souffles', 'Pasta', 'Soup', 'Caramel', 'Avazim', 'Moses', 'Wassermelon'];
+const items = ['Muffins', 'Pancakes', 'Cupcakes', 'Souffles',
+               'Pasta', 'Soup', 'Caramel', 'Avazim', 'Moses', 'Wassermelon'];
 
 export class AutoCompleteDemo extends React.Component<{}, AutoCompleteDemoState> {
 
