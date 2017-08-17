@@ -59,13 +59,7 @@
 }
 .input::placeholder {
     color: value(BK2);
-}
-/**
- * for some reason ios ignores the value set by javascript
- * that is why you can see both value and placeholder
- */
-.input:valid::placeholder {
-    color: transparent;
+    -webkit-text-fill-color: currentColor;
 }
 .input::selection {
     color: white;
@@ -84,7 +78,7 @@
 .ampm {
     display: flex;
     align-items: center;
-    width: 28px;
+    width: 30px;
     margin: 6px 0;
     user-select: none;
     background-color: inherit;
