@@ -78,8 +78,7 @@
 .ampm {
     display: flex;
     align-items: center;
-    width: 30px;
-    margin: 6px 0;
+    margin: 6px 7px 6px 0;
     user-select: none;
     background-color: inherit;
     cursor: pointer;
@@ -93,7 +92,7 @@
     color: white;
 }
 .root:disabled::ampm {
-    padding-right: 66px;
+    margin-right: 43px;
 }
 .root:disabled::ampm:hover {
     color: inherit;

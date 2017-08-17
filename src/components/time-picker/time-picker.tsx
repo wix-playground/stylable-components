@@ -87,7 +87,7 @@ export default class TimePicker extends React.Component<Props, State> {
 
     public componentWillReceiveProps(props: Props, state: State) {
         if (props.value !== this.props.value) {
-            this.setState(this.getInitialSegments(props.value, state.format), () => {
+            this.setState(this.getInitialSegments(props.value, this.state.format), () => {
                 const {focus, currentSegment} = this.state;
                 if (focus && currentSegment) {
                     this.select(currentSegment);
@@ -419,6 +419,17 @@ export default class TimePicker extends React.Component<Props, State> {
                 if (!isTimeSegment(currentSegment)) {
                     this.toggleAmpm(true);
                 }
+                break;
+            case 'p':
+                if (!isTimeSegment(currentSegment)) {
+                    this.updateSegmentValue('ampm', Ampm.PM);
+                }
+                break;
+            case 'a':
+                if (!isTimeSegment(currentSegment)) {
+                    this.updateSegmentValue('ampm', Ampm.AM);
+                }
+                break;
         }
     }
 
