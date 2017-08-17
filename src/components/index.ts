@@ -8,4 +8,5 @@ export * from './image';
 export * from './radio-group';
 export * from './tree-view';
 export * from './drop-down';
+export * from './portal';
 export * from './popup';

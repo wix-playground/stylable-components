@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import {Portal} from '../../../src';
 
 export type VerticalPosition =  'top' | 'center' | 'bottom';
 export type HorizontalPosition = 'left' | 'center' | 'right';
@@ -27,33 +27,16 @@ export class Popup extends React.Component<PopupProps, {}> {
         maxHeight: 500
     };
     private style: React.CSSProperties = {position: 'absolute'};
-    private popup: JSX.Element;
-    private container: Element | null;
-
-    public componentDidMount() {
-        this.container = document.body.appendChild(document.createElement('div'));
-        if (this.props.anchor) {
-            this.updatePopup();
-            ReactDOM.unstable_renderSubtreeIntoContainer(this, this.popup, this.container);
-        }
-    }
-
-    public componentDidUpdate() {
-        if (this.props.anchor && this.container) {
-            this.updatePopup();
-            ReactDOM.unstable_renderSubtreeIntoContainer(this, this.popup, this.container);
-        }
-    }
-
-    public componentWillUnmount() {
-        if (this.container) {
-            ReactDOM.unmountComponentAtNode(this.container);
-            document.body.removeChild(this.container);
-            this.container = null;
-        }
-    }
 
     public render() {
+        if (this.props.anchor && this.props.open) {
+            this.setPosition();
+            return (
+                <Portal style={this.style}>
+                    {this.props.children}
+                </Portal>);
+        }
+
         return null;
     }
 
@@ -83,23 +66,6 @@ export class Popup extends React.Component<PopupProps, {}> {
             newStyle.width = anchorRect.width;
         }
         this.style = newStyle;
-    }
-
-    private updatePopup() {
-        if (this.props.anchor) {
-            this.setPosition();
-            if (!this.popup) {
-                this.popup = (
-                    <div
-                        data-automation-id="POPUP"
-                        style={this.style}
-                    >
-                        {this.props.children}
-                    </div>);
-            } else {
-                this.popup = React.cloneElement(this.popup, {style: this.style});
-            }
-        }
     }
 }
 

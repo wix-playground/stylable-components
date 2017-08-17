@@ -5,7 +5,7 @@ import { ClientRenderer, expect, waitFor } from 'test-drive-react';
 import {PopupDemo} from '../../demo/components/popup-demo';
 import {Popup, PositionPoint} from '../../src/components/';
 
-const popupId = 'POPUP';
+const portalId = 'PORTAL';
 const demoContainer = 'POPUP_DEMO_DIV';
 
 describe('<Popup />', function() {
@@ -28,14 +28,14 @@ describe('<Popup />', function() {
 
             await waitForDom(() => {
                 expect(select(demoContainer)).to.be.present();
-                expect(select(demoContainer, popupId)).to.be.absent();
+                expect(select(demoContainer, portalId)).to.be.absent();
             });
             (select(demoContainer) as HTMLDivElement).click();
             await waitForDom(() => {
-                expect(bodySelect(popupId)).to.be.present();
+                expect(bodySelect(portalId)).to.be.present();
             });
             (select(demoContainer) as HTMLDivElement).click();
-            return waitForDom(() => {expect(bodySelect(popupId)).to.be.absent(); });
+            return waitForDom(() => {expect(bodySelect(portalId)).to.be.absent(); });
         });
     });
 
@@ -49,8 +49,8 @@ describe('<Popup />', function() {
             </Popup>);
 
         return waitFor(() => {
-            expect(bodySelect(popupId)).to.be.present();
-            expect(bodySelect(popupId, 'SPAN')).to.be.present();
+            expect(bodySelect(portalId)).to.be.present();
+            expect(bodySelect(portalId, 'SPAN')).to.be.present();
         });
     });
 
@@ -63,9 +63,9 @@ describe('<Popup />', function() {
                 <span data-automation-id="SPAN">Popup Body</span>
             </Popup>);
 
-        await waitFor(() => {expect(bodySelect(popupId)).to.be.present(); });
-        ReactDOM.unmountComponentAtNode(bodySelect(popupId)!.parentElement!);
-        return waitFor(() => {expect(bodySelect(popupId)).to.not.exist; });
+        await waitFor(() => {expect(bodySelect(portalId)).to.be.present(); });
+        ReactDOM.unmountComponentAtNode(bodySelect(portalId)!.parentElement!);
+        return waitFor(() => {expect(bodySelect(portalId)).to.not.exist; });
     });
 
     it('syncs the popup width', function() {
@@ -79,7 +79,7 @@ describe('<Popup />', function() {
             </Popup>);
 
         return waitFor(() => {
-            expect(bodySelect(popupId)!.getBoundingClientRect().width)
+            expect(bodySelect(portalId)!.getBoundingClientRect().width)
                 .to.equal(container.getBoundingClientRect().width);
         });
     });
@@ -94,7 +94,7 @@ describe('<Popup />', function() {
             </Popup>);
 
         return waitFor(() => {
-            expect(bodySelect<HTMLElement>(popupId)!.style.maxHeight).to.equal('500px');
+            expect(bodySelect<HTMLElement>(portalId)!.style.maxHeight).to.equal('500px');
         });
     });
 
@@ -109,8 +109,8 @@ describe('<Popup />', function() {
             </Popup>);
 
         return waitFor(() => {
-            expect(bodySelect<HTMLElement>(popupId)!.style.maxHeight).to.equal('5px');
-            expect(bodySelect<HTMLElement>(popupId)!.getBoundingClientRect().height).to.equal(5);
+            expect(bodySelect<HTMLElement>(portalId)!.style.maxHeight).to.equal('5px');
+            expect(bodySelect<HTMLElement>(portalId)!.getBoundingClientRect().height).to.equal(5);
         });
     });
 
@@ -146,7 +146,7 @@ describe('<Popup />', function() {
                 </Popup>);
 
             return waitForDom(() => {
-                expect([div, bodySelect(popupId)]).to.be.inVerticalSequence();
+                expect([div, bodySelect(portalId)]).to.be.inVerticalSequence();
             });
         });
     });
@@ -169,7 +169,7 @@ describe('<Popup />', function() {
                         </Popup>);
 
                     return waitFor(() => {
-                        const popup = bodySelect<HTMLElement>(popupId)!;
+                        const popup = bodySelect<HTMLElement>(portalId)!;
 
                         runTest(popup, container, popupPos, anchorPos);
                     });
