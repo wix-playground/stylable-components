@@ -2,7 +2,6 @@ import * as React from 'react';
 import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react';
 import { RadioGroupDemo } from '../../demo/components/radio-group-demo';
 import { RadioButton, RadioGroup } from '../../src';
-import {InputFixture} from '../fixtures/input-fixture';
 
 const radioGroup = 'RADIO_GROUP';
 const radioButton = 'RADIO_BUTTON';
@@ -243,7 +242,7 @@ describe('<RadioGroup />', function() {
             const {select, waitForDom} = clientRenderer.render(
                 <RadioGroup onChange={emptyFunction}>
                     <span>1</span>
-                    <InputFixture value="Test" onChange={onChange}/>
+                    <ControlledRadioInput value="Test" onChange={onChange}/>
                 </RadioGroup>
             );
 
@@ -359,5 +358,32 @@ describe('<RadioGroup />', function() {
 
         });
     });
-
 });
+
+export interface ControlledRadioInputProps {
+    value: string;
+    onChange: (e: string) => void;
+}
+
+export interface ControlledRadioInputState {
+    checked: boolean;
+}
+
+class ControlledRadioInput extends React.Component<ControlledRadioInputProps, ControlledRadioInputState> {
+    public state = {checked: false};
+    public render() {
+        return (
+            <input
+                type="radio"
+                value={this.props.value}
+                checked={this.state.checked}
+                onClick={this.handleClick}
+                data-automation-id="INPUT_FIXTURE"
+            />);
+    }
+
+    private handleClick = () => {
+        this.setState({checked: !this.state.checked});
+        this.props.onChange(this.props.value);
+    }
+}
