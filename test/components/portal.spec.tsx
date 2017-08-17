@@ -3,7 +3,6 @@ import * as ReactDOM from 'react-dom';
 import {selectDom} from 'test-drive';
 import { ClientRenderer, expect, waitFor } from 'test-drive-react';
 import {Portal} from '../../src';
-import {sleep} from '../utils/sleep';
 
 const portal = 'PORTAL';
 
@@ -13,9 +12,9 @@ describe('<Portal />', function() {
 
     afterEach(function() {clientRenderer.cleanup(); });
 
-    it('displays the portal and renders its children if the open prop is given', async function() {
+    it('displays the portal and renders its children', async function() {
         clientRenderer.render(
-            <Portal open={true}>
+            <Portal>
                 <span data-automation-id="SPAN">Portal Body</span>
             </Portal>);
 
@@ -27,7 +26,7 @@ describe('<Portal />', function() {
 
     it('applies supplied styles to the popup and updates them if changed', async function() {
         const {container} = clientRenderer.render(
-            <Portal open={true} style={{ position: 'absolute' }}>
+            <Portal style={{ position: 'absolute' }}>
                 <span data-automation-id="SPAN">Portal Body</span>
             </Portal>
         );
@@ -35,7 +34,7 @@ describe('<Portal />', function() {
         await waitFor(() => expect((bodySelect(portal) as HTMLElement)!.style.position).to.equal('absolute'));
 
         clientRenderer.render(
-            <Portal open={true} style={{ position: 'fixed' }}>
+            <Portal style={{ position: 'fixed' }}>
                 <span data-automation-id="SPAN">Portal Body</span>
             </Portal>,
             container
@@ -45,42 +44,10 @@ describe('<Portal />', function() {
 
     });
 
-    it('does not add the portal to the DOM if open is false', async function() {
-        clientRenderer.render(
-            <Portal open={false}>
-                <span data-automation-id="SPAN">Portal Body</span>
-            </Portal>
-        );
-        await sleep(10);
-        await waitFor(() => {
-            expect(bodySelect(portal)).to.not.exist;
-            expect(bodySelect(portal, 'SPAN')).to.not.exist;
-        });
-    });
-
-    it('should unmount portal when open prop is changed to false', async function() {
-        const {container} = clientRenderer.render(
-            <Portal open={true}>
-                <span data-automation-id="SPAN">Portal Body</span>
-            </Portal>
-        );
-
-        await waitFor(() => expect(bodySelect(portal)).to.be.present());
-
-        clientRenderer.render(
-            <Portal open={false}>
-                <span data-automation-id="SPAN">Portal Body</span>
-            </Portal>,
-            container
-        );
-
-        await waitFor(() => expect(bodySelect(portal)).to.not.exist);
-    });
-
     it('removes the component when unmounting', async function() {
         const div = document.body.appendChild(document.createElement('div'));
         clientRenderer.render(
-            <Portal open={true}>
+            <Portal>
                 <span data-automation-id="SPAN">Popup Body</span>
             </Portal>, div);
 
@@ -95,7 +62,7 @@ describe('<Portal />', function() {
 
     it('updates the portal content if the children are changed', async function() {
         const {container} = clientRenderer.render(
-            <Portal open={true}>
+            <Portal>
                 <span data-automation-id="SPAN">Portal Body</span>
             </Portal>
         );
@@ -103,7 +70,7 @@ describe('<Portal />', function() {
         await waitFor(() => expect(bodySelect('SPAN')).to.be.present());
 
         clientRenderer.render(
-            <Portal open={true}>
+            <Portal>
                 <span data-automation-id="UPDATED_SPAN">Portal Body</span>
             </Portal>,
             container

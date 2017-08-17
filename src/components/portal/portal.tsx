@@ -3,7 +3,6 @@ import * as ReactDOM from 'react-dom';
 
 export interface PortalProps {
     children: React.ReactNode;
-    open: boolean;
     style?: React.CSSProperties;
 }
 
@@ -22,28 +21,15 @@ export class Portal extends React.PureComponent<PortalProps, {}> {
     }
 
     public componentDidMount() {
-        if (this.props.open) {
-            this.renderPortal();
-        }
+        this.renderPortal();
     }
 
     public componentDidUpdate() {
-        if (!this.props.open) {
-            this.destroyPortal();
-        } else {
-            this.renderPortal();
-        }
+        this.renderPortal();
+
     }
 
     public componentWillUnmount() {
-        this.destroyPortal();
-    }
-
-    private renderPortal() {
-        ReactDOM.unstable_renderSubtreeIntoContainer(this, this.portalContent, this.upsertContainer());
-    }
-
-    private destroyPortal() {
         if (this.container) {
             ReactDOM.unmountComponentAtNode(this.container);
             document.body.removeChild(this.container);
@@ -51,7 +37,11 @@ export class Portal extends React.PureComponent<PortalProps, {}> {
         }
     }
 
-    private upsertContainer() {
+    private renderPortal() {
+        ReactDOM.unstable_renderSubtreeIntoContainer(this, this.portalContent, this.getContainer());
+    }
+
+    private getContainer() {
         if (!this.container) {
             this.container = document.body.appendChild(document.createElement('div'));
         }
