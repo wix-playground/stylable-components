@@ -8,9 +8,11 @@ import style from './auto-complete.st.css';
 // i would love to implement it like the TreeView where the reference to an object
 // was the way to point at the selected item
 
+export type FilterPredicate = (item: string, filterString: string) => boolean;
+
 export interface AutoCompleteListProps {
     open: boolean;
-    items?: SelectionItem[];
+    items?: string[];
     selectedItem?: string;
     onItemClick?: (item: string) => void;
 }
@@ -38,12 +40,20 @@ export interface AutoCompleteProps extends OptionList {
     onItemClick?: (item: string) => void;
     open?: boolean;
     selectedItem?: string;
+    filter?: FilterPredicate;
 }
 
-@SBComponent(style)
-export class AutoComplete extends React.Component<AutoCompleteProps, {}> {
+export interface AutoCompleteState {
+    filteredItems: SelectionItem[];
+}
 
-    public static defaultProps: AutoCompleteProps = { dataSource: [], value: '', onChange: () => {}, onItemClick: () => {} };
+const prefixFilter: FilterPredicate = (item: string, prefix: string) => item.startsWith(prefix);
+
+@SBComponent(style)
+export class AutoComplete extends React.Component<AutoCompleteProps, AutoCompleteState> {
+
+    public static defaultProps:
+        AutoCompleteProps = { dataSource: [], value: '', filter: prefixFilter, onChange: () => {}, onItemClick: () => {} };
 
     public render() {
         const rootProps = root(this.props, {
@@ -54,14 +64,15 @@ export class AutoComplete extends React.Component<AutoCompleteProps, {}> {
         return (
             <div {...rootProps}>
                 <input
+                    className="auto-complete-input"
                     data-automation-id="AUTO_COMPLETE_INPUT"
                     type="text"
                     onChange={this.onChange}
                     value={this.props.value}
                 />
                 <AutoCompleteList
-                    selectedItem={this.props.selectedItem}
-                    items={this.props.dataSource}
+                    selectedItem={this.props.selectedItem as string}
+                    items={this.props.value ? this.state.filteredItems as string[]: this.props.dataSource as string[]}
                     open={!!this.props.open}
                     onItemClick={this.onItemClick}
                 />
@@ -71,6 +82,9 @@ export class AutoComplete extends React.Component<AutoCompleteProps, {}> {
 
     private onChange = (e: any) => {
         this.props.onChange!(e.target.value || '');
+        this.setState({
+           filteredItems: this.props.dataSource!.filter((item: string) => this.props.filter!(item, e.target.value))
+        });
     };
 
     private onItemClick = (item: string) => {

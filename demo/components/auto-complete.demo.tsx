@@ -37,6 +37,7 @@ export class AutoCompleteDemo extends React.Component<{}, AutoCompleteDemoState>
                         onChange={this.onChange}
                         open={this.state.open}
                         onItemClick={this.onItemClick}
+                        value={this.state.inputText}
                     />
                 </section>
             </div>
