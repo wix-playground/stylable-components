@@ -26,7 +26,6 @@ export class Portal extends React.PureComponent<PortalProps, {}> {
 
     public componentDidUpdate() {
         this.renderPortal();
-
     }
 
     public componentWillUnmount() {
@@ -42,10 +41,6 @@ export class Portal extends React.PureComponent<PortalProps, {}> {
     }
 
     private getContainer() {
-        if (!this.container) {
-            this.container = document.body.appendChild(document.createElement('div'));
-        }
-
-        return this.container;
+        return this.container = this.container || document.body.appendChild(document.createElement('div'));
     }
 }

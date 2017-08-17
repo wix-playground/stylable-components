@@ -1,10 +1,9 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import {selectDom} from 'test-drive';
-import { ClientRenderer, expect, waitFor } from 'test-drive-react';
+import { ClientRenderer, expect, selectDom, waitFor } from 'test-drive-react';
 import {Portal} from '../../src';
 
-const portal = 'PORTAL';
+const portalId = 'PORTAL';
 
 describe('<Portal />', function() {
     const clientRenderer = new ClientRenderer();
@@ -19,8 +18,8 @@ describe('<Portal />', function() {
             </Portal>);
 
         await waitFor(() => {
-            expect(bodySelect(portal)).to.be.present();
-            expect(bodySelect(portal, 'SPAN')).to.be.present();
+            expect(bodySelect(portalId)).to.be.present();
+            expect(bodySelect(portalId, 'SPAN')).to.be.present();
         });
     });
 
@@ -31,7 +30,7 @@ describe('<Portal />', function() {
             </Portal>
         );
 
-        await waitFor(() => expect((bodySelect(portal) as HTMLElement)!.style.position).to.equal('absolute'));
+        await waitFor(() => expect(bodySelect(portalId)).to.have.nested.property('style.position', 'absolute'));
 
         clientRenderer.render(
             <Portal style={{ position: 'fixed' }}>
@@ -40,23 +39,24 @@ describe('<Portal />', function() {
             container
         );
 
-        await waitFor(() => expect((bodySelect(portal) as HTMLElement)!.style.position).to.equal('fixed'));
-
+        await waitFor(() => expect(bodySelect(portalId)).to.have.nested.property('style.position', 'fixed'));
     });
 
     it('removes the component when unmounting', async function() {
-        const div = document.body.appendChild(document.createElement('div'));
+        const container = document.body.appendChild(document.createElement('div'));
         clientRenderer.render(
             <Portal>
                 <span data-automation-id="SPAN">Popup Body</span>
-            </Portal>, div);
+            </Portal>, container);
 
-        await waitFor(() => expect(bodySelect(portal)).to.be.present());
-        ReactDOM.unmountComponentAtNode(div);
-        document.body.removeChild(div);
+        await waitFor(() => expect(bodySelect(portalId)).to.be.present());
+
+        ReactDOM.unmountComponentAtNode(container);
+        document.body.removeChild(container);
+
         await waitFor(() => {
-            expect(bodySelect(portal)).to.not.exist;
-            expect(bodySelect('SPAN')).to.not.exist;
+            expect(bodySelect(portalId)).to.be.absent();
+            expect(bodySelect('SPAN')).to.be.absent();
         });
     });
 
@@ -77,5 +77,25 @@ describe('<Portal />', function() {
         );
 
         await waitFor(() => expect(bodySelect('UPDATED_SPAN')).to.be.present());
+    });
+
+    it('renders the portal in the bottom of the DOM', async function() {
+        const {container} = clientRenderer.render(
+            <Portal>
+                <span data-automation-id="SPAN">Portal Body</span>
+            </Portal>
+        );
+
+        await waitFor(() => {
+            const portal = bodySelect<HTMLElement>(portalId)!;
+            const children = bodySelect<HTMLElement>('SPAN')!;
+
+            /* tslint:disable:no-bitwise */
+            expect(portal.compareDocumentPosition(children) & Node.DOCUMENT_POSITION_CONTAINED_BY,
+                'children contained in portal').to.equal(Node.DOCUMENT_POSITION_CONTAINED_BY);
+            expect(container.compareDocumentPosition(portal) & Node.DOCUMENT_POSITION_FOLLOWING,
+                'portal is following the app container').to.equal(Node.DOCUMENT_POSITION_FOLLOWING);
+            /* tslint:enable:no-bitwise */
+        });
     });
 });
