@@ -2,7 +2,9 @@
 
 **DatePicker** is a form element that is used to select a single date as input.
 
-It has the following elements (subcomponents):
+## Elements
+
+**DatePicker** has the following elements (subcomponents):
 
 * Input component containing an icon component.
 * Popup component which displays the calendar view.
@@ -40,18 +42,44 @@ It has the following elements (subcomponents):
 | showPrevNextDays | boolean | false |    | Show the days of the previous and next months in the calendar display. |
 | showDivider | boolean | true |   | Whether to show the divider in the Calendar View. |
 
-### Other exports
+### Exports
 
-| Export | Description |
+| export | description |
 | --- | --- |
 | getDisplayValue(value, options) | Formats the value according to options.
 
 ### Events
 
-| Event Name | Description |
+| name | description |
 | --- | --- |
 | onFocus | Triggered when the DatePicker gets focus. |
 | onChange | Triggered when a new date has been selected in the calendar view. |
 | onBlur | Triggered when focus is lost from the input component. |
 | onClose | Triggered when the Calendar View is closed. |
 | onOpen | Triggered when the Calendar View is opened. |
+
+### Code Example
+
+> TBD
+
+## Style API
+
+### Style Classes
+
+| name | description |
+| --- | --- |
+| inputStyle | Used for the input component |
+| iconStyle | Used for the icon component |
+| calendarViewStyle | Used for the Calendar View |
+| itemStyle | For an item in the Calendar View |
+| calendarTitleStyle | For changing the look of the month/year title |
+| calendarIconStyle | For changing the icons style |
+| calendarDividerStyle | Control appearance of the title divider |
+
+### Subcomponents (pseudo elements)
+
+### Custom CSS States (pseudo-classes)
+
+### Style Code Example
+
+> TBD
