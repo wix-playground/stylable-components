@@ -460,61 +460,33 @@ describe('The DatePicker Component', () => {
             const thirdDateToTest = new Date('October 5 2017');
             const fourthDateToTest = new Date('August 5 2019');
 
-            const mondayStart = getNumOfPreviousDays(dateToTest, 1);
-            const tuesdayStart = getNumOfPreviousDays(dateToTest, 2);
-            const wednesdayStart = getNumOfPreviousDays(dateToTest, 3);
-            const thursdayStart = getNumOfPreviousDays(dateToTest, 4);
-            const fridayStart = getNumOfPreviousDays(dateToTest, 5);
-            const saturdayStart = getNumOfPreviousDays(dateToTest, 6);
+            expect(getNumOfPreviousDays(dateToTest, 1), 'Wrong number of days for Monday').to.equal(5);
+            expect(getNumOfPreviousDays(dateToTest, 2), 'Wrong number of days for Tuesday').to.equal(4);
+            expect(getNumOfPreviousDays(dateToTest, 3), 'Wrong number of days for Wednesday').to.equal(3);
+            expect(getNumOfPreviousDays(dateToTest, 4), 'Wrong number of days for Thursday').to.equal(2);
+            expect(getNumOfPreviousDays(dateToTest, 5), 'Wrong number of days for Friday').to.equal(1);
+            expect(getNumOfPreviousDays(dateToTest, 6), 'Wrong number of days for Saturday').to.equal(0);
 
-            const mondayStart2 = getNumOfPreviousDays(secondDateToTest, 1);
-            const tuesdayStart2 = getNumOfPreviousDays(secondDateToTest, 2);
-            const wednesdayStart2 = getNumOfPreviousDays(secondDateToTest, 3);
-            const thursdayStart2 = getNumOfPreviousDays(secondDateToTest, 4);
-            const fridayStart2 = getNumOfPreviousDays(secondDateToTest, 5);
-            const saturdayStart2 = getNumOfPreviousDays(secondDateToTest, 6);
+            expect(getNumOfPreviousDays(secondDateToTest, 1), 'Wrong number of days for Monday').to.equal(4);
+            expect(getNumOfPreviousDays(secondDateToTest, 2), 'Wrong number of days for Tuesday').to.equal(3);
+            expect(getNumOfPreviousDays(secondDateToTest, 3), 'Wrong number of days for Wednesday').to.equal(2);
+            expect(getNumOfPreviousDays(secondDateToTest, 4), 'Wrong number of days for Thursday').to.equal(1);
+            expect(getNumOfPreviousDays(secondDateToTest, 5), 'Wrong number of days for Friday').to.equal(0);
+            expect(getNumOfPreviousDays(secondDateToTest, 6), 'Wrong number of days for Saturday').to.equal(6);
 
-            const mondayStart3 = getNumOfPreviousDays(thirdDateToTest, 1);
-            const tuesdayStart3 = getNumOfPreviousDays(thirdDateToTest, 2);
-            const wednesdayStart3 = getNumOfPreviousDays(thirdDateToTest, 3);
-            const thursdayStart3 = getNumOfPreviousDays(thirdDateToTest, 4);
-            const fridayStart3 = getNumOfPreviousDays(thirdDateToTest, 5);
-            const saturdayStart3 = getNumOfPreviousDays(thirdDateToTest, 6);
+            expect(getNumOfPreviousDays(thirdDateToTest, 1), 'Wrong number of days for Monday').to.equal(6);
+            expect(getNumOfPreviousDays(thirdDateToTest, 2), 'Wrong number of days for Tuesday').to.equal(5);
+            expect(getNumOfPreviousDays(thirdDateToTest, 3), 'Wrong number of days for Wednesday').to.equal(4);
+            expect(getNumOfPreviousDays(thirdDateToTest, 4), 'Wrong number of days for Thursday').to.equal(3);
+            expect(getNumOfPreviousDays(thirdDateToTest, 5), 'Wrong number of days for Friday').to.equal(2);
+            expect(getNumOfPreviousDays(thirdDateToTest, 6), 'Wrong number of days for Saturday').to.equal(1);
 
-            const mondayStart4 = getNumOfPreviousDays(fourthDateToTest, 1);
-            const tuesdayStart4 = getNumOfPreviousDays(fourthDateToTest, 2);
-            const wednesdayStart4 = getNumOfPreviousDays(fourthDateToTest, 3);
-            const thursdayStart4 = getNumOfPreviousDays(fourthDateToTest, 4);
-            const fridayStart4 = getNumOfPreviousDays(fourthDateToTest, 5);
-            const saturdayStart4 = getNumOfPreviousDays(fourthDateToTest, 6);
-
-            expect(mondayStart).to.equal(5);
-            expect(tuesdayStart).to.equal(4);
-            expect(wednesdayStart).to.equal(3);
-            expect(thursdayStart).to.equal(2);
-            expect(fridayStart).to.equal(1);
-            expect(saturdayStart).to.equal(0);
-
-            expect(mondayStart2).to.equal(4);
-            expect(tuesdayStart2).to.equal(3);
-            expect(wednesdayStart2).to.equal(2);
-            expect(thursdayStart2).to.equal(1);
-            expect(fridayStart2).to.equal(0);
-            expect(saturdayStart2).to.equal(6);
-
-            expect(mondayStart3).to.equal(6);
-            expect(tuesdayStart3).to.equal(5);
-            expect(wednesdayStart3).to.equal(4);
-            expect(thursdayStart3).to.equal(3);
-            expect(fridayStart3).to.equal(2);
-            expect(saturdayStart3).to.equal(1);
-
-            expect(mondayStart4).to.equal(3);
-            expect(tuesdayStart4).to.equal(2);
-            expect(wednesdayStart4).to.equal(1);
-            expect(thursdayStart4).to.equal(0);
-            expect(fridayStart4).to.equal(6);
-            expect(saturdayStart4).to.equal(5);
+            expect(getNumOfPreviousDays(fourthDateToTest, 1), 'Wrong number of days for Monday').to.equal(3);
+            expect(getNumOfPreviousDays(fourthDateToTest, 2), 'Wrong number of days for Tuesday').to.equal(2);
+            expect(getNumOfPreviousDays(fourthDateToTest, 3), 'Wrong number of days for Wednesday').to.equal(1);
+            expect(getNumOfPreviousDays(fourthDateToTest, 4), 'Wrong number of days for Thursday').to.equal(0);
+            expect(getNumOfPreviousDays(fourthDateToTest, 5), 'Wrong number of days for Friday').to.equal(6);
+            expect(getNumOfPreviousDays(fourthDateToTest, 6), 'Wrong number of days for Saturday').to.equal(5);
         });
 
         it('getNumOfFollowingDays should return the number of days to display for the next month', () => {
@@ -536,61 +508,33 @@ describe('The DatePicker Component', () => {
             const thirdDateToTest = new Date('October 5 2017');
             const fourthDateToTest = new Date('August 5 2019');
 
-            const mondayStart = getNumOfFollowingDays(dateToTest, 1);
-            const tuesdayStart = getNumOfFollowingDays(dateToTest, 2);
-            const wednesdayStart = getNumOfFollowingDays(dateToTest, 3);
-            const thursdayStart = getNumOfFollowingDays(dateToTest, 4);
-            const fridayStart = getNumOfFollowingDays(dateToTest, 5);
-            const saturdayStart = getNumOfFollowingDays(dateToTest, 6);
+            expect(getNumOfFollowingDays(dateToTest, 1), 'Wrong number of days for Monday').to.equal(6);
+            expect(getNumOfFollowingDays(dateToTest, 2), 'Wrong number of days for Tuesday').to.equal(0);
+            expect(getNumOfFollowingDays(dateToTest, 3), 'Wrong number of days for Wednesday').to.equal(1);
+            expect(getNumOfFollowingDays(dateToTest, 4), 'Wrong number of days for Thursday').to.equal(2);
+            expect(getNumOfFollowingDays(dateToTest, 5), 'Wrong number of days for Friday').to.equal(3);
+            expect(getNumOfFollowingDays(dateToTest, 6), 'Wrong number of days for Saturday').to.equal(4);
 
-            const mondayStart2 = getNumOfFollowingDays(secondDateToTest, 1);
-            const tuesdayStart2 = getNumOfFollowingDays(secondDateToTest, 2);
-            const wednesdayStart2 = getNumOfFollowingDays(secondDateToTest, 3);
-            const thursdayStart2 = getNumOfFollowingDays(secondDateToTest, 4);
-            const fridayStart2 = getNumOfFollowingDays(secondDateToTest, 5);
-            const saturdayStart2 = getNumOfFollowingDays(secondDateToTest, 6);
+            expect(getNumOfFollowingDays(secondDateToTest, 1), 'Wrong number of days for Monday').to.equal(1);
+            expect(getNumOfFollowingDays(secondDateToTest, 2), 'Wrong number of days for Tuesday').to.equal(2);
+            expect(getNumOfFollowingDays(secondDateToTest, 3), 'Wrong number of days for Wednesday').to.equal(3);
+            expect(getNumOfFollowingDays(secondDateToTest, 4), 'Wrong number of days for Thursday').to.equal(4);
+            expect(getNumOfFollowingDays(secondDateToTest, 5), 'Wrong number of days for Friday').to.equal(5);
+            expect(getNumOfFollowingDays(secondDateToTest, 6), 'Wrong number of days for Saturday').to.equal(6);
 
-            const mondayStart3 = getNumOfFollowingDays(thirdDateToTest, 1);
-            const tuesdayStart3 = getNumOfFollowingDays(thirdDateToTest, 2);
-            const wednesdayStart3 = getNumOfFollowingDays(thirdDateToTest, 3);
-            const thursdayStart3 = getNumOfFollowingDays(thirdDateToTest, 4);
-            const fridayStart3 = getNumOfFollowingDays(thirdDateToTest, 5);
-            const saturdayStart3 = getNumOfFollowingDays(thirdDateToTest, 6);
+            expect(getNumOfFollowingDays(thirdDateToTest, 1), 'Wrong number of days for Monday').to.equal(5);
+            expect(getNumOfFollowingDays(thirdDateToTest, 2), 'Wrong number of days for Tuesday').to.equal(6);
+            expect(getNumOfFollowingDays(thirdDateToTest, 3), 'Wrong number of days for Wednesday').to.equal(0);
+            expect(getNumOfFollowingDays(thirdDateToTest, 4), 'Wrong number of days for Thursday').to.equal(1);
+            expect(getNumOfFollowingDays(thirdDateToTest, 5), 'Wrong number of days for Friday').to.equal(2);
+            expect(getNumOfFollowingDays(thirdDateToTest, 6), 'Wrong number of days for Saturday').to.equal(3);
 
-            const mondayStart4 = getNumOfFollowingDays(fourthDateToTest, 1);
-            const tuesdayStart4 = getNumOfFollowingDays(fourthDateToTest, 2);
-            const wednesdayStart4 = getNumOfFollowingDays(fourthDateToTest, 3);
-            const thursdayStart4 = getNumOfFollowingDays(fourthDateToTest, 4);
-            const fridayStart4 = getNumOfFollowingDays(fourthDateToTest, 5);
-            const saturdayStart4 = getNumOfFollowingDays(fourthDateToTest, 6);
-
-            expect(mondayStart).to.equal(6);
-            expect(tuesdayStart).to.equal(0);
-            expect(wednesdayStart).to.equal(1);
-            expect(thursdayStart).to.equal(2);
-            expect(fridayStart).to.equal(3);
-            expect(saturdayStart).to.equal(4);
-
-            expect(mondayStart2).to.equal(1);
-            expect(tuesdayStart2).to.equal(2);
-            expect(wednesdayStart2).to.equal(3);
-            expect(thursdayStart2).to.equal(4);
-            expect(fridayStart2).to.equal(5);
-            expect(saturdayStart2).to.equal(6);
-
-            expect(mondayStart3).to.equal(5);
-            expect(tuesdayStart3).to.equal(6);
-            expect(wednesdayStart3).to.equal(0);
-            expect(thursdayStart3).to.equal(1);
-            expect(fridayStart3).to.equal(2);
-            expect(saturdayStart3).to.equal(3);
-
-            expect(mondayStart4).to.equal(1);
-            expect(tuesdayStart4).to.equal(2);
-            expect(wednesdayStart4).to.equal(3);
-            expect(thursdayStart4).to.equal(4);
-            expect(fridayStart4).to.equal(5);
-            expect(saturdayStart4).to.equal(6);
+            expect(getNumOfFollowingDays(fourthDateToTest, 1), 'Wrong number of days for Monday').to.equal(1);
+            expect(getNumOfFollowingDays(fourthDateToTest, 2), 'Wrong number of days for Tuesday').to.equal(2);
+            expect(getNumOfFollowingDays(fourthDateToTest, 3), 'Wrong number of days for Wednesday').to.equal(3);
+            expect(getNumOfFollowingDays(fourthDateToTest, 4), 'Wrong number of days for Thursday').to.equal(4);
+            expect(getNumOfFollowingDays(fourthDateToTest, 5), 'Wrong number of days for Friday').to.equal(5);
+            expect(getNumOfFollowingDays(fourthDateToTest, 6), 'Wrong number of days for Saturday').to.equal(6);
         });
     });
 });
