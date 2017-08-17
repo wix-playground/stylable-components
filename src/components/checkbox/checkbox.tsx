@@ -80,7 +80,7 @@ export class CheckBox extends React.Component<Partial<CheckBoxProps>, CheckBoxSt
         onChange: () => { },
         disabled: false,
         readonly: false,
-        indeterminate: false,
+        indeterminate: false
     };
 
     public state: CheckBoxState = {isFocused: false};
