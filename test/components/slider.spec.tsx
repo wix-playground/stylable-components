@@ -185,7 +185,6 @@ describe('<Slider />', () => {
 
     describe('when value is out of step', () => {
         const valueOutOfStep = 3;
-        const value = 5;
         const min = 0;
         const max = 10;
         const step = 5;
@@ -263,8 +262,6 @@ describe('<Slider />', () => {
         it('should call onChange with value normilized to step', async () => {
             await waitFor(() => {
                 const element = select('SLIDER');
-                const handle = select('SLIDER-HANDLE');
-                const progress = select('SLIDER-PROGRESS');
                 const bounds = element!.getBoundingClientRect();
 
                 simulate.mouseDown(element, {
@@ -284,8 +281,6 @@ describe('<Slider />', () => {
         it('should call onInput with value normilized to step', async () => {
             await waitFor(() => {
                 const element = select('SLIDER');
-                const handle = select('SLIDER-HANDLE');
-                const progress = select('SLIDER-PROGRESS');
                 const bounds = element!.getBoundingClientRect();
 
                 simulate.mouseDown(element, {
@@ -359,8 +354,6 @@ describe('<Slider />', () => {
         it('should call onChange', async () => {
             await waitFor(() => {
                 const element = select('SLIDER');
-                const handle = select('SLIDER-HANDLE');
-                const progress = select('SLIDER-PROGRESS');
                 const bounds = element!.getBoundingClientRect();
 
                 simulate.mouseDown(element, {
@@ -380,8 +373,6 @@ describe('<Slider />', () => {
         it('should call onInput', async () => {
             await waitFor(() => {
                 const element = select('SLIDER');
-                const handle = select('SLIDER-HANDLE');
-                const progress = select('SLIDER-PROGRESS');
                 const bounds = element!.getBoundingClientRect();
 
                 simulate.mouseDown(element, {
@@ -484,8 +475,6 @@ describe('<Slider />', () => {
         it('should call onChange with value normilized to step', async () => {
             await waitFor(() => {
                 const element = select('SLIDER');
-                const handle = select('SLIDER-HANDLE');
-                const progress = select('SLIDER-PROGRESS');
                 const bounds = element!.getBoundingClientRect();
 
                 simulate.mouseDown(element, {
@@ -505,8 +494,6 @@ describe('<Slider />', () => {
         it('should call onInput with value normilized to step', async () => {
             await waitFor(() => {
                 const element = select('SLIDER');
-                const handle = select('SLIDER-HANDLE');
-                const progress = select('SLIDER-PROGRESS');
                 const bounds = element!.getBoundingClientRect();
 
                 simulate.mouseDown(element, {
@@ -588,8 +575,6 @@ describe('<Slider />', () => {
         it('should call onChange', async () => {
             await waitFor(() => {
                 const element = select('SLIDER');
-                const handle = select('SLIDER-HANDLE');
-                const progress = select('SLIDER-PROGRESS');
                 const bounds = element!.getBoundingClientRect();
 
                 simulate.touchStart(element, {
@@ -618,8 +603,6 @@ describe('<Slider />', () => {
         it('should call onInput', async () => {
             await waitFor(() => {
                 const element = select('SLIDER');
-                const handle = select('SLIDER-HANDLE');
-                const progress = select('SLIDER-PROGRESS');
                 const bounds = element!.getBoundingClientRect();
 
                 simulate.touchStart(element, {
@@ -742,8 +725,6 @@ describe('<Slider />', () => {
         it('should call onChange with value normilized to step', async () => {
             await waitFor(() => {
                 const element = select('SLIDER');
-                const handle = select('SLIDER-HANDLE');
-                const progress = select('SLIDER-PROGRESS');
                 const bounds = element!.getBoundingClientRect();
 
                 simulate.touchStart(element, {
@@ -772,8 +753,6 @@ describe('<Slider />', () => {
         it('should call onInput with value normilized to step', async () => {
             await waitFor(() => {
                 const element = select('SLIDER');
-                const handle = select('SLIDER-HANDLE');
-                const progress = select('SLIDER-PROGRESS');
                 const bounds = element!.getBoundingClientRect();
 
                 simulate.touchStart(element, {
@@ -1227,8 +1206,6 @@ describe('<Slider />', () => {
             it('should call onChange', async () => {
                 await waitFor(() => {
                     const element = select('SLIDER');
-                    const handle = select('SLIDER-HANDLE');
-                    const progress = select('SLIDER-PROGRESS');
                     const bounds = element!.getBoundingClientRect();
 
                     simulate.mouseDown(element, {
@@ -1248,8 +1225,6 @@ describe('<Slider />', () => {
             it('should call onInput', async () => {
                 await waitFor(() => {
                     const element = select('SLIDER');
-                    const handle = select('SLIDER-HANDLE');
-                    const progress = select('SLIDER-PROGRESS');
                     const bounds = element!.getBoundingClientRect();
 
                     simulate.mouseDown(element, {
@@ -1353,8 +1328,6 @@ describe('<Slider />', () => {
             it('should call onChange with value normilized to step', async () => {
                 await waitFor(() => {
                     const element = select('SLIDER');
-                    const handle = select('SLIDER-HANDLE');
-                    const progress = select('SLIDER-PROGRESS');
                     const bounds = element!.getBoundingClientRect();
 
                     simulate.mouseDown(element, {
@@ -1374,8 +1347,6 @@ describe('<Slider />', () => {
             it('should call onInput with value normilized to step', async () => {
                 await waitFor(() => {
                     const element = select('SLIDER');
-                    const handle = select('SLIDER-HANDLE');
-                    const progress = select('SLIDER-PROGRESS');
                     const bounds = element!.getBoundingClientRect();
 
                     simulate.mouseDown(element, {
@@ -1457,8 +1428,6 @@ describe('<Slider />', () => {
             it('should call onChange', async () => {
                 await waitFor(() => {
                     const element = select('SLIDER');
-                    const handle = select('SLIDER-HANDLE');
-                    const progress = select('SLIDER-PROGRESS');
                     const bounds = element!.getBoundingClientRect();
 
                     simulate.touchStart(element, {
@@ -1486,8 +1455,6 @@ describe('<Slider />', () => {
             it('should call onInput', async () => {
                 await waitFor(() => {
                     const element = select('SLIDER');
-                    const handle = select('SLIDER-HANDLE');
-                    const progress = select('SLIDER-PROGRESS');
                     const bounds = element!.getBoundingClientRect();
 
                     simulate.touchStart(element, {
@@ -1609,8 +1576,6 @@ describe('<Slider />', () => {
             it('should call onChange with value normilized to step', async () => {
                 await waitFor(() => {
                     const element = select('SLIDER');
-                    const handle = select('SLIDER-HANDLE');
-                    const progress = select('SLIDER-PROGRESS');
                     const bounds = element!.getBoundingClientRect();
 
                     simulate.touchStart(element, {
@@ -1638,8 +1603,6 @@ describe('<Slider />', () => {
             it('should call onInput with value normilized to step', async () => {
                 await waitFor(() => {
                     const element = select('SLIDER');
-                    const handle = select('SLIDER-HANDLE');
-                    const progress = select('SLIDER-PROGRESS');
                     const bounds = element!.getBoundingClientRect();
 
                     simulate.touchStart(element, {
@@ -1811,7 +1774,7 @@ describe('<Slider />', () => {
         });
     });
 
-    describe('veverse Slider', () => {
+    describe('reverse Slider', () => {
         describe('with value, min and max', () => {
             const value = 5;
             const min = -10;
@@ -1911,8 +1874,6 @@ describe('<Slider />', () => {
             it('should call onChange', async () => {
                 await waitFor(() => {
                     const element = select('SLIDER');
-                    const handle = select('SLIDER-HANDLE');
-                    const progress = select('SLIDER-PROGRESS');
                     const bounds = element!.getBoundingClientRect();
 
                     simulate.mouseDown(element, {
@@ -1932,8 +1893,6 @@ describe('<Slider />', () => {
             it('should call onInput', async () => {
                 await waitFor(() => {
                     const element = select('SLIDER');
-                    const handle = select('SLIDER-HANDLE');
-                    const progress = select('SLIDER-PROGRESS');
                     const bounds = element!.getBoundingClientRect();
 
                     simulate.mouseDown(element, {
@@ -2037,8 +1996,6 @@ describe('<Slider />', () => {
             it('should call onChange with value normilized to step', async () => {
                 await waitFor(() => {
                     const element = select('SLIDER');
-                    const handle = select('SLIDER-HANDLE');
-                    const progress = select('SLIDER-PROGRESS');
                     const bounds = element!.getBoundingClientRect();
 
                     simulate.mouseDown(element, {
@@ -2058,8 +2015,6 @@ describe('<Slider />', () => {
             it('should call onInput with value normilized to step', async () => {
                 await waitFor(() => {
                     const element = select('SLIDER');
-                    const handle = select('SLIDER-HANDLE');
-                    const progress = select('SLIDER-PROGRESS');
                     const bounds = element!.getBoundingClientRect();
 
                     simulate.mouseDown(element, {
@@ -2142,8 +2097,6 @@ describe('<Slider />', () => {
             it('should call onChange', async () => {
                 await waitFor(() => {
                     const element = select('SLIDER');
-                    const handle = select('SLIDER-HANDLE');
-                    const progress = select('SLIDER-PROGRESS');
                     const bounds = element!.getBoundingClientRect();
 
                     simulate.touchStart(element, {
@@ -2172,8 +2125,6 @@ describe('<Slider />', () => {
             it('should call onInput', async () => {
                 await waitFor(() => {
                     const element = select('SLIDER');
-                    const handle = select('SLIDER-HANDLE');
-                    const progress = select('SLIDER-PROGRESS');
                     const bounds = element!.getBoundingClientRect();
 
                     simulate.touchStart(element, {
@@ -2297,8 +2248,6 @@ describe('<Slider />', () => {
             it('should call onChange with value normilized to step', async () => {
                 await waitFor(() => {
                     const element = select('SLIDER');
-                    const handle = select('SLIDER-HANDLE');
-                    const progress = select('SLIDER-PROGRESS');
                     const bounds = element!.getBoundingClientRect();
 
                     simulate.touchStart(element, {
@@ -2327,8 +2276,6 @@ describe('<Slider />', () => {
             it('should call onInput with value normilized to step', async () => {
                 await waitFor(() => {
                     const element = select('SLIDER');
-                    const handle = select('SLIDER-HANDLE');
-                    const progress = select('SLIDER-PROGRESS');
                     const bounds = element!.getBoundingClientRect();
 
                     simulate.touchStart(element, {
@@ -2501,7 +2448,7 @@ describe('<Slider />', () => {
         });
     });
 
-    describe('vertical Reverse Slider', () => {
+    describe('vertical reverse Slider', () => {
         describe('with value, min and max', () => {
             const value = 5;
             const min = -10;
@@ -2601,8 +2548,6 @@ describe('<Slider />', () => {
             it('should call onChange', async () => {
                 await waitFor(() => {
                     const element = select('SLIDER');
-                    const handle = select('SLIDER-HANDLE');
-                    const progress = select('SLIDER-PROGRESS');
                     const bounds = element!.getBoundingClientRect();
 
                     simulate.mouseDown(element, {
@@ -2622,8 +2567,6 @@ describe('<Slider />', () => {
             it('should call onInput', async () => {
                 await waitFor(() => {
                     const element = select('SLIDER');
-                    const handle = select('SLIDER-HANDLE');
-                    const progress = select('SLIDER-PROGRESS');
                     const bounds = element!.getBoundingClientRect();
 
                     simulate.mouseDown(element, {
@@ -2727,8 +2670,6 @@ describe('<Slider />', () => {
             it('should call onChange with value normilized to step', async () => {
                 await waitFor(() => {
                     const element = select('SLIDER');
-                    const handle = select('SLIDER-HANDLE');
-                    const progress = select('SLIDER-PROGRESS');
                     const bounds = element!.getBoundingClientRect();
 
                     simulate.mouseDown(element, {
@@ -2748,8 +2689,6 @@ describe('<Slider />', () => {
             it('should call onInput with value normilized to step', async () => {
                 await waitFor(() => {
                     const element = select('SLIDER');
-                    const handle = select('SLIDER-HANDLE');
-                    const progress = select('SLIDER-PROGRESS');
                     const bounds = element!.getBoundingClientRect();
 
                     simulate.mouseDown(element, {
@@ -2831,8 +2770,6 @@ describe('<Slider />', () => {
             it('should call onChange', async () => {
                 await waitFor(() => {
                     const element = select('SLIDER');
-                    const handle = select('SLIDER-HANDLE');
-                    const progress = select('SLIDER-PROGRESS');
                     const bounds = element!.getBoundingClientRect();
 
                     simulate.touchStart(element, {
@@ -2860,8 +2797,6 @@ describe('<Slider />', () => {
             it('should call onInput', async () => {
                 await waitFor(() => {
                     const element = select('SLIDER');
-                    const handle = select('SLIDER-HANDLE');
-                    const progress = select('SLIDER-PROGRESS');
                     const bounds = element!.getBoundingClientRect();
 
                     simulate.touchStart(element, {
@@ -2983,8 +2918,6 @@ describe('<Slider />', () => {
             it('should call onChange with value normilized to step', async () => {
                 await waitFor(() => {
                     const element = select('SLIDER');
-                    const handle = select('SLIDER-HANDLE');
-                    const progress = select('SLIDER-PROGRESS');
                     const bounds = element!.getBoundingClientRect();
 
                     simulate.touchStart(element, {
@@ -3012,8 +2945,6 @@ describe('<Slider />', () => {
             it('should call onInput with value normilized to step', async () => {
                 await waitFor(() => {
                     const element = select('SLIDER');
-                    const handle = select('SLIDER-HANDLE');
-                    const progress = select('SLIDER-PROGRESS');
                     const bounds = element!.getBoundingClientRect();
 
                     simulate.touchStart(element, {

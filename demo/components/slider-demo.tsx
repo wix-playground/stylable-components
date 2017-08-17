@@ -22,7 +22,6 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
     public render() {
         const min = 0;
         const max = 100;
-        const headerCellStyles = style['table-head-cell'];
 
         return (
             <table cellSpacing="24px">

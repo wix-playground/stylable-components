@@ -53,8 +53,8 @@ export interface SliderProps {
     onChange?(value: number): void;
     onInput?(value: string): void;
 
-    onFocus?(event: React.SyntheticEvent<HTMLInputElement>): void;
-    onBlur?(event: React.SyntheticEvent<HTMLInputElement>): void;
+    onFocus?(event: React.SyntheticEvent<HTMLElement>): void;
+    onBlur?(event: React.SyntheticEvent<HTMLElement>): void;
 
     onDragStart?(event: PointerEvent): void;
     onDrag?(event: PointerEvent): void;
@@ -97,16 +97,6 @@ export class Slider extends React.Component<SliderProps, SliderState> {
 
     constructor(props: SliderProps, context?: any) {
         super(props, context);
-
-        this.onSliderAreaMouseDown = this.onSliderAreaMouseDown.bind(this);
-        this.onSliderAreaMouseMove = this.onSliderAreaMouseMove.bind(this);
-        this.onSliderAreaMouseUp = this.onSliderAreaMouseUp.bind(this);
-
-        this.onSliderAreaTouchStart = this.onSliderAreaTouchStart.bind(this);
-        this.onSliderAreaTouchMove = this.onSliderAreaTouchMove.bind(this);
-        this.onSliderAreaTouchEnd = this.onSliderAreaTouchEnd.bind(this);
-
-        this.onSliderAreaKeyDown = this.onSliderAreaKeyDown.bind(this);
 
         this.state = {
             relativeValue: this.getRelativeValue(this.props.value!, this.props.min!, this.props.max!, this.props.step),
@@ -152,6 +142,9 @@ export class Slider extends React.Component<SliderProps, SliderState> {
                     onMouseDown={this.onSliderAreaMouseDown}
                     onTouchStart={this.onSliderAreaTouchStart}
                     onKeyDown={this.onSliderAreaKeyDown}
+
+                    onFocus={this.onSliderFocus}
+                    onBlur={this.onSliderBlur}
 
                     role="slider"
                     aria-label={this.props.label}
@@ -232,22 +225,6 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         });
     }
 
-    private onFocus: React.FocusEventHandler<HTMLInputElement> = event => {
-        this.props.onFocus!(event);
-    }
-
-    private onBlur: React.FocusEventHandler<HTMLInputElement> = event => {
-        this.props.onBlur!(event);
-    }
-
-    private isVertical(axis: AxisOptions): boolean {
-        return axis === AXISES.y || axis === AXISES.yReverse;
-    }
-
-    private isReverse(axis: AxisOptions): boolean {
-        return axis === AXISES.xReverse || axis === AXISES.yReverse;
-    }
-
     private getTooltip(): number | string | React.ReactElement<any> | undefined {
         return React.Children
             .toArray(this.props.children)
@@ -258,214 +235,20 @@ export class Slider extends React.Component<SliderProps, SliderState> {
             );
     }
 
-    private getRelativeStep(step: Step | undefined, min: number, max: number): Step {
-        if (typeof step === 'undefined' || step === CONTINUOUS_STEP) {
-            return CONTINUOUS_STEP;
-        }
-        return 100 * step / (max - min);
+    private onSliderFocus: React.FocusEventHandler<HTMLElement> = event => {
+        this.props.onFocus!(event);
     }
 
-    private getValueInRange(value: number, min: number, max: number): number {
-        return value < min ? min : (value > max ? max : value);
+    private onSliderBlur: React.FocusEventHandler<HTMLElement> = event => {
+        this.props.onBlur!(event);
     }
 
-    private getRelativeValue(value: number, min: number, max: number, step?: Step): number {
-        const normilizedMax = max - min;
-        const normilizedValue = value - min;
-
-        const relativeValue = (normilizedValue * 100) / normilizedMax;
-
-        return this.getValueInRange(relativeValue, 0, 100);
+    private isVertical(axis: AxisOptions): boolean {
+        return axis === AXISES.y || axis === AXISES.yReverse;
     }
 
-    private getAbsoluteValue(relativeValue: number): number {
-        const range = this.props.max! - this.props.min!;
-        const absoluteValue = range * relativeValue / 100 + this.props.min!;
-        return this.getValueInRange(absoluteValue, this.props.min!, this.props.max!);
-    }
-
-    private getValueFromElementAndPointer(element: HTMLElement, pointerPosition: PointerPosition): number {
-        const { relativeStep, isVertical, isReverse } = this.state;
-
-        const sliderBounds = element.getBoundingClientRect();
-
-        const sliderOffset = isVertical ? sliderBounds.top : sliderBounds.left;
-        const sliderSize = isVertical ? sliderBounds.height : sliderBounds.width;
-        const sliderCoordinate = isVertical ? pointerPosition.clientY : pointerPosition.clientX;
-
-        let relativeValue = this.getRelativeValue(sliderCoordinate - sliderOffset, 0, sliderSize);
-
-        relativeValue = isReverse ?
-            (isVertical ? relativeValue : 100 - relativeValue) :
-            (isVertical ? 100 - relativeValue : relativeValue);
-
-        if (typeof relativeStep === 'undefined' || relativeStep === CONTINUOUS_STEP) {
-            return relativeValue;
-        }
-        let value = Math.round(relativeValue / relativeStep) * relativeStep;
-        value = value > 100 ?
-            value - relativeStep :
-            (value < 0 ? value + relativeStep : value);
-
-        return value;
-    }
-
-    private onSliderAreaMouseDown(event: React.MouseEvent<HTMLElement>) {
-        if (this.props.disabled) {
-            return;
-        }
-        const sliderArea = event.currentTarget;
-        this.sliderArea = sliderArea;
-
-        this.props.environment!.addEventListener('mousemove', this.onSliderAreaMouseMove);
-        this.props.environment!.addEventListener('mouseup', this.onSliderAreaMouseUp);
-
-        event.preventDefault();
-        sliderArea.focus();
-
-        const relativeValue = this.getValueFromElementAndPointer(this.sliderArea, event);
-
-        this.setState({
-            relativeValue,
-            isActive: true
-        });
-
-        this.onDragStart(event.nativeEvent);
-        this.props.onInput!(String(this.getAbsoluteValue(relativeValue)));
-    }
-
-    private onSliderAreaMouseMove(event: MouseEvent) {
-        const relativeValue = this.getValueFromElementAndPointer(this.sliderArea, event);
-
-        requestAnimationFrame(() => {
-            if (!this.isSliderMounted) {
-                return;
-            }
-
-            this.setState({
-                relativeValue
-            });
-        });
-
-        this.onDrag(event);
-        this.props.onInput!(String(this.getAbsoluteValue(relativeValue)));
-    }
-
-    private onSliderAreaMouseUp(event: MouseEvent) {
-        this.props.environment!.removeEventListener('mousemove', this.onSliderAreaMouseMove);
-        this.props.environment!.removeEventListener('mouseup', this.onSliderAreaMouseUp);
-
-        const relativeValue = this.getValueFromElementAndPointer(this.sliderArea, event);
-        const value = this.getAbsoluteValue(relativeValue);
-
-        this.setState({
-            relativeValue,
-            isActive: false
-        });
-
-        this.onDragStop(event);
-        this.props.onChange!(value);
-    }
-
-    private onSliderAreaTouchStart(event: React.TouchEvent<HTMLElement>) {
-        if (this.props.disabled) {
-            return;
-        }
-        const sliderArea = event.currentTarget;
-        this.sliderArea = sliderArea;
-
-        this.props.environment!.addEventListener('touchmove', this.onSliderAreaTouchMove);
-        this.props.environment!.addEventListener('touchup', this.onSliderAreaTouchEnd);
-        this.props.environment!.addEventListener('touchend', this.onSliderAreaTouchEnd);
-        this.props.environment!.addEventListener('touchcancel', this.onSliderAreaTouchEnd);
-
-        sliderArea.focus();
-
-        const relativeValue = this.getValueFromElementAndPointer(this.sliderArea, event.touches[0]);
-
-        this.setState({
-            relativeValue,
-            isActive: true
-        });
-
-        event.preventDefault();
-
-        this.onDragStart(event.nativeEvent);
-        this.props.onInput!(String(this.getAbsoluteValue(relativeValue)));
-    }
-
-    private onSliderAreaTouchMove(event: TouchEvent) {
-        const relativeValue = this.getValueFromElementAndPointer(this.sliderArea, event.changedTouches[0]);
-        requestAnimationFrame(() => {
-            if (!this.isSliderMounted) {
-                return;
-            }
-
-            this.setState({
-                relativeValue
-            });
-        });
-
-        event.preventDefault();
-
-        this.onDrag(event);
-        this.props.onInput!(String(this.getAbsoluteValue(relativeValue)));
-    }
-
-    private onSliderAreaTouchEnd(event: TouchEvent) {
-        this.props.environment!.removeEventListener('touchmove', this.onSliderAreaTouchMove);
-        this.props.environment!.removeEventListener('touchup', this.onSliderAreaTouchEnd);
-        this.props.environment!.removeEventListener('touchend', this.onSliderAreaTouchEnd);
-        this.props.environment!.removeEventListener('touchcancel', this.onSliderAreaTouchEnd);
-
-        const relativeValue = this.getValueFromElementAndPointer(this.sliderArea, event.changedTouches[0]);
-        const value = this.getAbsoluteValue(relativeValue);
-
-        this.setState({
-            relativeValue,
-            isActive: false
-        });
-
-        this.onDragStop(event);
-        this.props.onChange!(value);
-    }
-
-    private onSliderAreaKeyDown(event: React.KeyboardEvent<HTMLElement>) {
-        const {isReverse} = this.state;
-        switch (keycode(event.keyCode)) {
-            case 'page down':
-                this.decreaseValue(false, event.shiftKey ? 10 : 1);
-                break;
-            case 'down':
-            case 'left':
-                isReverse ?
-                    this.increaseValue(false, event.shiftKey ? 10 : 1) :
-                    this.decreaseValue(false, event.shiftKey ? 10 : 1);
-                break;
-            case 'page up':
-                this.increaseValue(false, event.shiftKey ? 10 : 1);
-                break;
-            case 'up':
-            case 'right':
-                isReverse ?
-                    this.decreaseValue(false, event.shiftKey ? 10 : 1) :
-                    this.increaseValue(false, event.shiftKey ? 10 : 1);
-                break;
-            case 'home':
-                isReverse ?
-                    this.increaseValue(true) :
-                    this.decreaseValue(true);
-                break;
-            case 'end':
-                isReverse ?
-                    this.decreaseValue(true) :
-                    this.increaseValue(true);
-                break;
-            default:
-                return;
-        }
-
-        event.preventDefault();
+    private isReverse(axis: AxisOptions): boolean {
+        return axis === AXISES.xReverse || axis === AXISES.yReverse;
     }
 
     private increaseValue(toEdge: boolean = false, multiplier: number = 1) {
@@ -508,6 +291,216 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         if (newAbsoluteValue !== this.props.value) {
             this.props.onChange!(newAbsoluteValue);
         }
+    }
+
+    private getRelativeStep(step: Step | undefined, min: number, max: number): Step {
+        if (typeof step === 'undefined' || step === CONTINUOUS_STEP) {
+            return CONTINUOUS_STEP;
+        }
+        return 100 * step / (max - min);
+    }
+
+    private getRelativeValue(value: number, min: number, max: number, step?: Step): number {
+        const normilizedMax = max - min;
+        const normilizedValue = value - min;
+
+        const relativeValue = (normilizedValue * 100) / normilizedMax;
+
+        return this.getValueInRange(relativeValue, 0, 100);
+    }
+
+    private getAbsoluteValue(relativeValue: number): number {
+        const range = this.props.max! - this.props.min!;
+        const absoluteValue = range * relativeValue / 100 + this.props.min!;
+        return this.getValueInRange(absoluteValue, this.props.min!, this.props.max!);
+    }
+
+    private getValueInRange(value: number, min: number, max: number): number {
+        return value < min ? min : (value > max ? max : value);
+    }
+
+    private getValueFromElementAndPointer(element: HTMLElement, pointerPosition: PointerPosition): number {
+        const { relativeStep, isVertical, isReverse } = this.state;
+
+        const sliderBounds = element.getBoundingClientRect();
+
+        const sliderOffset = isVertical ? sliderBounds.top : sliderBounds.left;
+        const sliderSize = isVertical ? sliderBounds.height : sliderBounds.width;
+        const sliderCoordinate = isVertical ? pointerPosition.clientY : pointerPosition.clientX;
+
+        let relativeValue = this.getRelativeValue(sliderCoordinate - sliderOffset, 0, sliderSize);
+
+        relativeValue = isReverse ?
+            (isVertical ? relativeValue : 100 - relativeValue) :
+            (isVertical ? 100 - relativeValue : relativeValue);
+
+        if (typeof relativeStep === 'undefined' || relativeStep === CONTINUOUS_STEP) {
+            return relativeValue;
+        }
+        let value = Math.round(relativeValue / relativeStep) * relativeStep;
+        value = value > 100 ?
+            value - relativeStep :
+            (value < 0 ? value + relativeStep : value);
+
+        return value;
+    }
+
+    private onSliderAreaMouseDown = (event: React.MouseEvent<HTMLElement>) => {
+        if (this.props.disabled) {
+            return;
+        }
+        const sliderArea = event.currentTarget;
+        this.sliderArea = sliderArea;
+
+        this.props.environment!.addEventListener('mousemove', this.onSliderAreaMouseMove);
+        this.props.environment!.addEventListener('mouseup', this.onSliderAreaMouseUp);
+
+        event.preventDefault();
+        sliderArea.focus();
+
+        const relativeValue = this.getValueFromElementAndPointer(this.sliderArea, event);
+
+        this.setState({
+            relativeValue,
+            isActive: true
+        });
+
+        this.onDragStart(event.nativeEvent);
+        this.props.onInput!(String(this.getAbsoluteValue(relativeValue)));
+    }
+
+    private onSliderAreaMouseMove = (event: MouseEvent) => {
+        const relativeValue = this.getValueFromElementAndPointer(this.sliderArea, event);
+
+        requestAnimationFrame(() => {
+            if (!this.isSliderMounted) {
+                return;
+            }
+
+            this.setState({
+                relativeValue
+            });
+        });
+
+        this.onDrag(event);
+        this.props.onInput!(String(this.getAbsoluteValue(relativeValue)));
+    }
+
+    private onSliderAreaMouseUp = (event: MouseEvent) => {
+        this.props.environment!.removeEventListener('mousemove', this.onSliderAreaMouseMove);
+        this.props.environment!.removeEventListener('mouseup', this.onSliderAreaMouseUp);
+
+        const relativeValue = this.getValueFromElementAndPointer(this.sliderArea, event);
+        const value = this.getAbsoluteValue(relativeValue);
+
+        this.setState({
+            relativeValue,
+            isActive: false
+        });
+
+        this.onDragStop(event);
+        this.props.onChange!(value);
+    }
+
+    private onSliderAreaTouchStart = (event: React.TouchEvent<HTMLElement>) => {
+        if (this.props.disabled) {
+            return;
+        }
+        const sliderArea = event.currentTarget;
+        this.sliderArea = sliderArea;
+
+        this.props.environment!.addEventListener('touchmove', this.onSliderAreaTouchMove);
+        this.props.environment!.addEventListener('touchup', this.onSliderAreaTouchEnd);
+        this.props.environment!.addEventListener('touchend', this.onSliderAreaTouchEnd);
+        this.props.environment!.addEventListener('touchcancel', this.onSliderAreaTouchEnd);
+
+        sliderArea.focus();
+
+        const relativeValue = this.getValueFromElementAndPointer(this.sliderArea, event.touches[0]);
+
+        this.setState({
+            relativeValue,
+            isActive: true
+        });
+
+        event.preventDefault();
+
+        this.onDragStart(event.nativeEvent);
+        this.props.onInput!(String(this.getAbsoluteValue(relativeValue)));
+    }
+
+    private onSliderAreaTouchMove = (event: TouchEvent) => {
+        const relativeValue = this.getValueFromElementAndPointer(this.sliderArea, event.changedTouches[0]);
+        requestAnimationFrame(() => {
+            if (!this.isSliderMounted) {
+                return;
+            }
+
+            this.setState({
+                relativeValue
+            });
+        });
+
+        event.preventDefault();
+
+        this.onDrag(event);
+        this.props.onInput!(String(this.getAbsoluteValue(relativeValue)));
+    }
+
+    private onSliderAreaTouchEnd = (event: TouchEvent) => {
+        this.props.environment!.removeEventListener('touchmove', this.onSliderAreaTouchMove);
+        this.props.environment!.removeEventListener('touchup', this.onSliderAreaTouchEnd);
+        this.props.environment!.removeEventListener('touchend', this.onSliderAreaTouchEnd);
+        this.props.environment!.removeEventListener('touchcancel', this.onSliderAreaTouchEnd);
+
+        const relativeValue = this.getValueFromElementAndPointer(this.sliderArea, event.changedTouches[0]);
+        const value = this.getAbsoluteValue(relativeValue);
+
+        this.setState({
+            relativeValue,
+            isActive: false
+        });
+
+        this.onDragStop(event);
+        this.props.onChange!(value);
+    }
+
+    private onSliderAreaKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
+        const {isReverse} = this.state;
+        switch (keycode(event.keyCode)) {
+            case 'page down':
+                this.decreaseValue(false, event.shiftKey ? 10 : 1);
+                break;
+            case 'down':
+            case 'left':
+                isReverse ?
+                    this.increaseValue(false, event.shiftKey ? 10 : 1) :
+                    this.decreaseValue(false, event.shiftKey ? 10 : 1);
+                break;
+            case 'page up':
+                this.increaseValue(false, event.shiftKey ? 10 : 1);
+                break;
+            case 'up':
+            case 'right':
+                isReverse ?
+                    this.decreaseValue(false, event.shiftKey ? 10 : 1) :
+                    this.increaseValue(false, event.shiftKey ? 10 : 1);
+                break;
+            case 'home':
+                isReverse ?
+                    this.increaseValue(true) :
+                    this.decreaseValue(true);
+                break;
+            case 'end':
+                isReverse ?
+                    this.decreaseValue(true) :
+                    this.increaseValue(true);
+                break;
+            default:
+                return;
+        }
+
+        event.preventDefault();
     }
 
     private onDragStart(event: PointerEvent) {
