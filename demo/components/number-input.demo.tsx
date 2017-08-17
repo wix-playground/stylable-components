@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {NumberInput} from '../../src/components/number-input';
+import * as style from '../wix-theme/theme.st.css';
 
 export class NumberInputDemo extends React.Component<{}, {value?: number}> {
 

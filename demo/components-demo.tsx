@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {SBComponent} from 'stylable-react-component';
 import '../src/style/default-theme/base.st.css';
 import { BirthdayPickerDemo } from './components/birthday-picker-demo';
 import { CheckBoxDemo } from './components/checkbox-demo';
@@ -11,7 +12,9 @@ import { SelectionListDemo } from './components/selection-list-demo';
 import { ToggleDemo } from './components/toggle-demo';
 import { TreeViewDemo } from './components/tree-view-demo';
 import './style.st.css';
+import theme from './wix-theme/theme.st.css';
 
+@SBComponent(theme)
 export class ComponentsDemo extends React.Component<{}, {}> {
     public render() {
         return (
