@@ -155,8 +155,9 @@ class CustomIconsDemo extends React.Component<{}, {value: boolean}> {
                     boxIcon={CheckBoxSVG}
                     tickIcon={TickMarkSVG}
                     id="myCustomCheckbox"
+                    aria-labelledby="customLabel"
                 />
-                <label htmlFor="myCustomCheckbox">
+                <label id="customLabel" htmlFor="myCustomCheckbox">
                     <span className={style.label} >I choose triangle</span>
                 </label>
             </div>
