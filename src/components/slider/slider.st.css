@@ -189,9 +189,10 @@
 }
 
 /* Focus state */
-.slider:focus .handle {
+.handle:focus {
     -webkit-box-shadow: 0 0 0 4px rgba(92, 180, 255, 0.5);
     box-shadow: 0 0 0 4px rgba(92, 180, 255, 0.5);
+    outline: none;
 }
 
 /* Active state */

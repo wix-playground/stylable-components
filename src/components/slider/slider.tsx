@@ -91,6 +91,8 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         onDragStop: noop
     };
 
+    private focusableElement: HTMLElement;
+
     private sliderArea: HTMLElement;
 
     private isSliderMounted: boolean = false;
@@ -125,33 +127,20 @@ export class Slider extends React.Component<SliderProps, SliderState> {
                 <input
                     className="native-input"
                     value={this.props.value}
-                    type="number"
+                    type="hidden"
                     data-automation-id="SLIDER-NATIVE-INPUT"
                     name={this.props.name}
                     required={this.props.required}
                     disabled={this.props.disabled}
-                    tabIndex={-1}
-                    readOnly={true}
                 />
                 <div
+                    ref={el => this.sliderArea = el as HTMLElement}
                     className="slider"
                     data-automation-id="SLIDER"
                     title={this.props.label}
-                    tabIndex={this.props.disabled ? -1 : 0}
 
                     onMouseDown={this.onSliderAreaMouseDown}
                     onTouchStart={this.onSliderAreaTouchStart}
-                    onKeyDown={this.onSliderAreaKeyDown}
-
-                    onFocus={this.onSliderFocus}
-                    onBlur={this.onSliderBlur}
-
-                    role="slider"
-                    aria-label={this.props.label}
-                    aria-orientation="horizontal"
-                    aria-valuemin={`${this.props.min}`}
-                    aria-valuemax={`${this.props.max}`}
-                    aria-valuenow={`${this.props.value}`}
                 >
                     <div
                         className="track"
@@ -167,6 +156,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
                             }
                         />
                         <a
+                            ref={el => this.focusableElement = el as HTMLElement}
                             className="handle"
                             data-automation-id="SLIDER-HANDLE"
                             style={
@@ -178,6 +168,19 @@ export class Slider extends React.Component<SliderProps, SliderState> {
                                         {bottom: `${this.state.relativeValue}%`} :
                                         {left: `${this.state.relativeValue}%`})
                             }
+
+                            onKeyDown={this.onSliderAreaKeyDown}
+
+                            onFocus={this.onSliderFocus}
+                            onBlur={this.onSliderBlur}
+
+                            role="slider"
+                            aria-label={this.props.label}
+                            aria-orientation="horizontal"
+                            aria-valuemin={`${this.props.min}`}
+                            aria-valuemax={`${this.props.max}`}
+                            aria-valuenow={`${this.props.value}`}
+                            tabIndex={this.props.disabled ? -1 : 0}
                         >
                             <div
                                 className="tooltip"
@@ -349,14 +352,12 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         if (this.props.disabled) {
             return;
         }
-        const sliderArea = event.currentTarget;
-        this.sliderArea = sliderArea;
 
         this.props.environment!.addEventListener('mousemove', this.onSliderAreaMouseMove);
         this.props.environment!.addEventListener('mouseup', this.onSliderAreaMouseUp);
 
         event.preventDefault();
-        sliderArea.focus();
+        this.focusableElement.focus();
 
         const relativeValue = this.getValueFromElementAndPointer(this.sliderArea, event);
 
@@ -398,6 +399,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
             isActive: false
         });
 
+        this.focusableElement.focus();
         this.onDragStop(event);
         this.props.onChange!(value);
     }
@@ -406,15 +408,15 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         if (this.props.disabled) {
             return;
         }
-        const sliderArea = event.currentTarget;
-        this.sliderArea = sliderArea;
+        const focusableElement = event.currentTarget;
+        this.focusableElement = focusableElement;
 
         this.props.environment!.addEventListener('touchmove', this.onSliderAreaTouchMove);
         this.props.environment!.addEventListener('touchup', this.onSliderAreaTouchEnd);
         this.props.environment!.addEventListener('touchend', this.onSliderAreaTouchEnd);
         this.props.environment!.addEventListener('touchcancel', this.onSliderAreaTouchEnd);
 
-        sliderArea.focus();
+        focusableElement.focus();
 
         const relativeValue = this.getValueFromElementAndPointer(this.sliderArea, event.touches[0]);
 

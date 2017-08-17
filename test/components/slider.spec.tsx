@@ -45,7 +45,7 @@ function simulateTouchEvent(
     ));
 }
 
-describe('<Slider />', () => {
+describe.only('<Slider />', () => {
     const clientRenderer = new ClientRenderer();
 
     afterEach(() => clientRenderer.cleanup());
@@ -81,7 +81,6 @@ describe('<Slider />', () => {
             await waitForDom(() => {
                 const element = select('SLIDER-NATIVE-INPUT');
 
-                expect(element).to.be.present();
                 expect(element).to.has.value('50');
             });
         });
@@ -128,7 +127,6 @@ describe('<Slider />', () => {
             await waitForDom(() => {
                 const element = select('SLIDER-NATIVE-INPUT');
 
-                expect(element).to.be.present();
                 expect(element).to.has.value(String(value));
             });
         });
@@ -236,7 +234,6 @@ describe('<Slider />', () => {
             await waitForDom(() => {
                 const element = select('SLIDER-NATIVE-INPUT');
 
-                expect(element).to.be.present();
                 expect(element).to.has.value(String(valueOutOfStep));
             });
         });
@@ -449,7 +446,6 @@ describe('<Slider />', () => {
             await waitForDom(() => {
                 const element = select('SLIDER-NATIVE-INPUT');
 
-                expect(element).to.be.present();
                 expect(element).to.has.value(String(value));
             });
         });
@@ -695,7 +691,6 @@ describe('<Slider />', () => {
             await waitForDom(() => {
                 const element = select('SLIDER-NATIVE-INPUT');
 
-                expect(element).to.be.present();
                 expect(element).to.has.value(String(value));
             });
         });
@@ -818,7 +813,7 @@ describe('<Slider />', () => {
         });
 
         it('on pressing up key', async () => {
-            simulate.keyDown(select('SLIDER'), {
+            simulate.keyDown(select('SLIDER-HANDLE'), {
                 keyCode: keycode.codes.up
             });
 
@@ -828,7 +823,7 @@ describe('<Slider />', () => {
         });
 
         it('on pressing page up key', async () => {
-            simulate.keyDown(select('SLIDER'), {
+            simulate.keyDown(select('SLIDER-HANDLE'), {
                 keyCode: keycode.codes['page up']
             });
 
@@ -838,7 +833,7 @@ describe('<Slider />', () => {
         });
 
         it('on pressing up key with shift', async () => {
-            simulate.keyDown(select('SLIDER'), {
+            simulate.keyDown(select('SLIDER-HANDLE'), {
                 shiftKey: true,
                 keyCode: keycode.codes.up
             });
@@ -849,7 +844,7 @@ describe('<Slider />', () => {
         });
 
         it('on pressing page up key with shift', async () => {
-            simulate.keyDown(select('SLIDER'), {
+            simulate.keyDown(select('SLIDER-HANDLE'), {
                 shiftKey: true,
                 keyCode: keycode.codes['page up']
             });
@@ -860,7 +855,7 @@ describe('<Slider />', () => {
         });
 
         it('on pressing down key', async () => {
-            simulate.keyDown(select('SLIDER'), {
+            simulate.keyDown(select('SLIDER-HANDLE'), {
                 keyCode: keycode.codes.down
             });
 
@@ -870,7 +865,7 @@ describe('<Slider />', () => {
         });
 
         it('on pressing page down key', async () => {
-            simulate.keyDown(select('SLIDER'), {
+            simulate.keyDown(select('SLIDER-HANDLE'), {
                 keyCode: keycode.codes['page down']
             });
 
@@ -880,7 +875,7 @@ describe('<Slider />', () => {
         });
 
         it('on pressing down key with shift', async () => {
-            simulate.keyDown(select('SLIDER'), {
+            simulate.keyDown(select('SLIDER-HANDLE'), {
                 shiftKey: true,
                 keyCode: keycode.codes.down
             });
@@ -891,7 +886,7 @@ describe('<Slider />', () => {
         });
 
         it('on pressing page down key with shift', async () => {
-            simulate.keyDown(select('SLIDER'), {
+            simulate.keyDown(select('SLIDER-HANDLE'), {
                 shiftKey: true,
                 keyCode: keycode.codes['page down']
             });
@@ -902,7 +897,7 @@ describe('<Slider />', () => {
         });
 
         it('on pressing home key', async () => {
-            simulate.keyDown(select('SLIDER'), {
+            simulate.keyDown(select('SLIDER-HANDLE'), {
                 keyCode: keycode.codes.home
             });
 
@@ -912,7 +907,7 @@ describe('<Slider />', () => {
         });
 
         it('on pressing end key', async () => {
-            simulate.keyDown(select('SLIDER'), {
+            simulate.keyDown(select('SLIDER-HANDLE'), {
                 shiftKey: true,
                 keyCode: keycode.codes.end
             });
@@ -986,9 +981,10 @@ describe('<Slider />', () => {
 
             await waitForDom(() => {
                 const slider = select('SLIDER');
+                const sliderHandle = select('SLIDER-HANDLE');
 
                 expect(slider!.title).equal(label);
-                expect(slider!.getAttribute('aria-label')).equal(label);
+                expect(sliderHandle!.getAttribute('aria-label')).equal(label);
             });
         });
     });
@@ -1149,7 +1145,6 @@ describe('<Slider />', () => {
                 await waitForDom(() => {
                     const element = select('SLIDER-NATIVE-INPUT');
 
-                    expect(element).to.be.present();
                     expect(element).to.has.value(String(value));
                 });
             });
@@ -1302,7 +1297,6 @@ describe('<Slider />', () => {
                 await waitForDom(() => {
                     const element = select('SLIDER-NATIVE-INPUT');
 
-                    expect(element).to.be.present();
                     expect(element).to.has.value(String(value));
                 });
             });
@@ -1547,7 +1541,6 @@ describe('<Slider />', () => {
                 await waitForDom(() => {
                     const element = select('SLIDER-NATIVE-INPUT');
 
-                    expect(element).to.be.present();
                     expect(element).to.has.value(String(value));
                 });
             });
@@ -1668,7 +1661,7 @@ describe('<Slider />', () => {
             });
 
             it('on pressing up key', async () => {
-                simulate.keyDown(select('SLIDER'), {
+                simulate.keyDown(select('SLIDER-HANDLE'), {
                     keyCode: keycode.codes.up
                 });
 
@@ -1678,7 +1671,7 @@ describe('<Slider />', () => {
             });
 
             it('on pressing page up key', async () => {
-                simulate.keyDown(select('SLIDER'), {
+                simulate.keyDown(select('SLIDER-HANDLE'), {
                     keyCode: keycode.codes['page up']
                 });
 
@@ -1688,7 +1681,7 @@ describe('<Slider />', () => {
             });
 
             it('on pressing up key with shift', async () => {
-                simulate.keyDown(select('SLIDER'), {
+                simulate.keyDown(select('SLIDER-HANDLE'), {
                     shiftKey: true,
                     keyCode: keycode.codes.up
                 });
@@ -1699,7 +1692,7 @@ describe('<Slider />', () => {
             });
 
             it('on pressing page up key with shift', async () => {
-                simulate.keyDown(select('SLIDER'), {
+                simulate.keyDown(select('SLIDER-HANDLE'), {
                     shiftKey: true,
                     keyCode: keycode.codes['page up']
                 });
@@ -1710,7 +1703,7 @@ describe('<Slider />', () => {
             });
 
             it('on pressing down key', async () => {
-                simulate.keyDown(select('SLIDER'), {
+                simulate.keyDown(select('SLIDER-HANDLE'), {
                     keyCode: keycode.codes.down
                 });
 
@@ -1720,7 +1713,7 @@ describe('<Slider />', () => {
             });
 
             it('on pressing page down key', async () => {
-                simulate.keyDown(select('SLIDER'), {
+                simulate.keyDown(select('SLIDER-HANDLE'), {
                     keyCode: keycode.codes['page down']
                 });
 
@@ -1730,7 +1723,7 @@ describe('<Slider />', () => {
             });
 
             it('on pressing down key with shift', async () => {
-                simulate.keyDown(select('SLIDER'), {
+                simulate.keyDown(select('SLIDER-HANDLE'), {
                     shiftKey: true,
                     keyCode: keycode.codes.down
                 });
@@ -1741,7 +1734,7 @@ describe('<Slider />', () => {
             });
 
             it('on pressing page down key with shift', async () => {
-                simulate.keyDown(select('SLIDER'), {
+                simulate.keyDown(select('SLIDER-HANDLE'), {
                     shiftKey: true,
                     keyCode: keycode.codes['page down']
                 });
@@ -1752,7 +1745,7 @@ describe('<Slider />', () => {
             });
 
             it('on pressing home key', async () => {
-                simulate.keyDown(select('SLIDER'), {
+                simulate.keyDown(select('SLIDER-HANDLE'), {
                     keyCode: keycode.codes.home
                 });
 
@@ -1762,7 +1755,7 @@ describe('<Slider />', () => {
             });
 
             it('on pressing end key', async () => {
-                simulate.keyDown(select('SLIDER'), {
+                simulate.keyDown(select('SLIDER-HANDLE'), {
                     shiftKey: true,
                     keyCode: keycode.codes.end
                 });
@@ -1817,7 +1810,6 @@ describe('<Slider />', () => {
                 await waitForDom(() => {
                     const element = select('SLIDER-NATIVE-INPUT');
 
-                    expect(element).to.be.present();
                     expect(element).to.has.value(String(value));
                 });
             });
@@ -1970,7 +1962,6 @@ describe('<Slider />', () => {
                 await waitForDom(() => {
                     const element = select('SLIDER-NATIVE-INPUT');
 
-                    expect(element).to.be.present();
                     expect(element).to.has.value(String(value));
                 });
             });
@@ -2218,7 +2209,6 @@ describe('<Slider />', () => {
                 await waitForDom(() => {
                     const element = select('SLIDER-NATIVE-INPUT');
 
-                    expect(element).to.be.present();
                     expect(element).to.has.value(String(value));
                 });
             });
@@ -2342,7 +2332,7 @@ describe('<Slider />', () => {
             });
 
             it('on pressing up key', async () => {
-                simulate.keyDown(select('SLIDER'), {
+                simulate.keyDown(select('SLIDER-HANDLE'), {
                     keyCode: keycode.codes.up
                 });
 
@@ -2352,7 +2342,7 @@ describe('<Slider />', () => {
             });
 
             it('on pressing page up key', async () => {
-                simulate.keyDown(select('SLIDER'), {
+                simulate.keyDown(select('SLIDER-HANDLE'), {
                     keyCode: keycode.codes['page up']
                 });
 
@@ -2362,7 +2352,7 @@ describe('<Slider />', () => {
             });
 
             it('on pressing up key with shift', async () => {
-                simulate.keyDown(select('SLIDER'), {
+                simulate.keyDown(select('SLIDER-HANDLE'), {
                     shiftKey: true,
                     keyCode: keycode.codes.up
                 });
@@ -2373,7 +2363,7 @@ describe('<Slider />', () => {
             });
 
             it('on pressing page up key with shift', async () => {
-                simulate.keyDown(select('SLIDER'), {
+                simulate.keyDown(select('SLIDER-HANDLE'), {
                     shiftKey: true,
                     keyCode: keycode.codes['page up']
                 });
@@ -2384,7 +2374,7 @@ describe('<Slider />', () => {
             });
 
             it('on pressing down key', async () => {
-                simulate.keyDown(select('SLIDER'), {
+                simulate.keyDown(select('SLIDER-HANDLE'), {
                     keyCode: keycode.codes.down
                 });
 
@@ -2394,7 +2384,7 @@ describe('<Slider />', () => {
             });
 
             it('on pressing page down key', async () => {
-                simulate.keyDown(select('SLIDER'), {
+                simulate.keyDown(select('SLIDER-HANDLE'), {
                     keyCode: keycode.codes['page down']
                 });
 
@@ -2404,7 +2394,7 @@ describe('<Slider />', () => {
             });
 
             it('on pressing down key with shift', async () => {
-                simulate.keyDown(select('SLIDER'), {
+                simulate.keyDown(select('SLIDER-HANDLE'), {
                     shiftKey: true,
                     keyCode: keycode.codes.down
                 });
@@ -2415,7 +2405,7 @@ describe('<Slider />', () => {
             });
 
             it('on pressing page down key with shift', async () => {
-                simulate.keyDown(select('SLIDER'), {
+                simulate.keyDown(select('SLIDER-HANDLE'), {
                     shiftKey: true,
                     keyCode: keycode.codes['page down']
                 });
@@ -2426,7 +2416,7 @@ describe('<Slider />', () => {
             });
 
             it('on pressing home key', async () => {
-                simulate.keyDown(select('SLIDER'), {
+                simulate.keyDown(select('SLIDER-HANDLE'), {
                     keyCode: keycode.codes.home
                 });
 
@@ -2436,7 +2426,7 @@ describe('<Slider />', () => {
             });
 
             it('on pressing end key', async () => {
-                simulate.keyDown(select('SLIDER'), {
+                simulate.keyDown(select('SLIDER-HANDLE'), {
                     shiftKey: true,
                     keyCode: keycode.codes.end
                 });
@@ -2491,7 +2481,6 @@ describe('<Slider />', () => {
                 await waitForDom(() => {
                     const element = select('SLIDER-NATIVE-INPUT');
 
-                    expect(element).to.be.present();
                     expect(element).to.has.value(String(value));
                 });
             });
@@ -2644,7 +2633,6 @@ describe('<Slider />', () => {
                 await waitForDom(() => {
                     const element = select('SLIDER-NATIVE-INPUT');
 
-                    expect(element).to.be.present();
                     expect(element).to.has.value(String(value));
                 });
             });
@@ -2889,7 +2877,6 @@ describe('<Slider />', () => {
                 await waitForDom(() => {
                     const element = select('SLIDER-NATIVE-INPUT');
 
-                    expect(element).to.be.present();
                     expect(element).to.has.value(String(value));
                 });
             });
@@ -3010,7 +2997,7 @@ describe('<Slider />', () => {
             });
 
             it('on pressing up key', async () => {
-                simulate.keyDown(select('SLIDER'), {
+                simulate.keyDown(select('SLIDER-HANDLE'), {
                     keyCode: keycode.codes.up
                 });
 
@@ -3020,7 +3007,7 @@ describe('<Slider />', () => {
             });
 
             it('on pressing page up key', async () => {
-                simulate.keyDown(select('SLIDER'), {
+                simulate.keyDown(select('SLIDER-HANDLE'), {
                     keyCode: keycode.codes['page up']
                 });
 
@@ -3030,7 +3017,7 @@ describe('<Slider />', () => {
             });
 
             it('on pressing up key with shift', async () => {
-                simulate.keyDown(select('SLIDER'), {
+                simulate.keyDown(select('SLIDER-HANDLE'), {
                     shiftKey: true,
                     keyCode: keycode.codes.up
                 });
@@ -3041,7 +3028,7 @@ describe('<Slider />', () => {
             });
 
             it('on pressing page up key with shift', async () => {
-                simulate.keyDown(select('SLIDER'), {
+                simulate.keyDown(select('SLIDER-HANDLE'), {
                     shiftKey: true,
                     keyCode: keycode.codes['page up']
                 });
@@ -3052,7 +3039,7 @@ describe('<Slider />', () => {
             });
 
             it('on pressing down key', async () => {
-                simulate.keyDown(select('SLIDER'), {
+                simulate.keyDown(select('SLIDER-HANDLE'), {
                     keyCode: keycode.codes.down
                 });
 
@@ -3062,7 +3049,7 @@ describe('<Slider />', () => {
             });
 
             it('on pressing page down key', async () => {
-                simulate.keyDown(select('SLIDER'), {
+                simulate.keyDown(select('SLIDER-HANDLE'), {
                     keyCode: keycode.codes['page down']
                 });
 
@@ -3072,7 +3059,7 @@ describe('<Slider />', () => {
             });
 
             it('on pressing down key with shift', async () => {
-                simulate.keyDown(select('SLIDER'), {
+                simulate.keyDown(select('SLIDER-HANDLE'), {
                     shiftKey: true,
                     keyCode: keycode.codes.down
                 });
@@ -3083,7 +3070,7 @@ describe('<Slider />', () => {
             });
 
             it('on pressing page down key with shift', async () => {
-                simulate.keyDown(select('SLIDER'), {
+                simulate.keyDown(select('SLIDER-HANDLE'), {
                     shiftKey: true,
                     keyCode: keycode.codes['page down']
                 });
@@ -3094,7 +3081,7 @@ describe('<Slider />', () => {
             });
 
             it('on pressing home key', async () => {
-                simulate.keyDown(select('SLIDER'), {
+                simulate.keyDown(select('SLIDER-HANDLE'), {
                     keyCode: keycode.codes.home
                 });
 
@@ -3104,7 +3091,7 @@ describe('<Slider />', () => {
             });
 
             it('on pressing end key', async () => {
-                simulate.keyDown(select('SLIDER'), {
+                simulate.keyDown(select('SLIDER-HANDLE'), {
                     shiftKey: true,
                     keyCode: keycode.codes.end
                 });
