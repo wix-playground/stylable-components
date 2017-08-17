@@ -42,18 +42,20 @@
     border-color: value(PR2);
 }
 .root:disabled {
+    background-color: value(DS2);
     color: value(BK2);
 }
 
 .input {
     font: inherit;
     border: 0;
-    color: inherit;
     flex: 1 auto;
     width: 0;
     height: 100%;
-    padding: 6px;
+    padding: 6px 0 6px 6px;
     background: none;
+    color: inherit;
+    -webkit-text-fill-color: inherit;
 }
 .input::placeholder {
     color: value(BK2);
@@ -75,9 +77,32 @@
     border: 0;
     outline: 0;
 }
+/* reset ios safari disabled opacity */
 .input:disabled {
-    background-color: value(DS2);
-    -webkit-text-fill-color: currentColor;
+    opacity: 1;
+}
+.ampm {
+    display: flex;
+    align-items: center;
+    width: 28px;
+    margin: 6px 0;
+    user-select: none;
+    background-color: inherit;
+    cursor: pointer;
+}
+.ampm:hover {
+    color: value(PR3);
+}
+.ampm:focus {
+    background: value(PR2);
+    outline: none;
+    color: white;
+}
+.root:disabled::ampm {
+    padding-right: 66px;
+}
+.root:disabled::ampm:hover {
+    color: inherit;
 }
 .label {
     position: absolute;

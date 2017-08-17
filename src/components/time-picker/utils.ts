@@ -9,7 +9,7 @@ export type Segment = TimeSegment | 'ampm';
 
 export const isTouch = typeof window === 'object' && 'orientation' in window;
 export const is12TimeFormat = /AM|PM/.test(new Date().toLocaleTimeString());
-export const validInputStringRE = /^(\d{1,2}):(\d{1,2})(?:\s(AM|PM))?$/;
+export const validInputStringRE = /^(\d{1,2}):(\d{1,2})$/;
 export const ampmLabels = {
     [Ampm.AM]: 'AM',
     [Ampm.PM]: 'PM',

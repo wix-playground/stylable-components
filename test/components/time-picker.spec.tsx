@@ -75,12 +75,17 @@ describe('<TimePicker/>', () => {
     describe('render with value="4:36" format="ampm"', () => {
         let renderer: any;
         let input: any;
+        let ampm: any;
         beforeEach(() => {
             renderer = clientRenderer.render(<TimePicker value="4:36"/>);
             input = renderer.select('TIME_PICKER_INPUT');
+            ampm = renderer.select('TIME_PICKER_AMPM');
         });
-        it('should have "04:36 AM" value', () => {
-            expect(input).attr('value', '04:36 AM');
+        it('input should have "04:36" value', () => {
+            expect(input).attr('value', '04:36');
+        });
+        it('ampm should have "AM" value', () => {
+            expect(ampm).text('AM');
         });
     });
 
@@ -102,12 +107,17 @@ describe('<TimePicker/>', () => {
     describe('render with format="ampm" value="13:55"', () => {
         let renderer: any;
         let input: any;
+        let ampm: any;
         beforeEach(() => {
             renderer = clientRenderer.render(<TimePicker format="ampm" value="13:55"/>);
             input = renderer.select('TIME_PICKER_INPUT');
+            ampm = renderer.select('TIME_PICKER_AMPM');
         });
-        it('should have input "01:55 PM" value', () => {
-            expect(input).attr('value', '01:55 PM');
+        it('should have input "01:55" value', () => {
+            expect(input).attr('value', '01:55');
+        });
+        it('ampm should have input "PM" value', () => {
+            expect(ampm).text('PM');
         });
     });
 
@@ -289,11 +299,13 @@ describe('<TimePicker/>', () => {
         let renderer: any;
         let root: any;
         let input: any;
+        let ampm: any;
         beforeEach(() => {
             onChange = sinon.spy();
             renderer = clientRenderer.render(<TimePicker format="ampm" value="04:55" onChange={onChange}/>);
             root = renderer.select('TIME_PICKER');
             input = renderer.select('TIME_PICKER_INPUT');
+            ampm = renderer.select('TIME_PICKER_AMPM');
         });
         describe('entering "3" into mm segment', () => {
             beforeEach(() => {
@@ -302,8 +314,11 @@ describe('<TimePicker/>', () => {
             it('should set focus state', () => {
                 hasCssState(root, styles, {focus: true});
             });
-            it('input should have "04:3 AM" value', () => {
-                expect(input).attr('value', '04:3 AM');
+            it('input should have "04:3" value', () => {
+                expect(input).attr('value', '04:3');
+            });
+            it('ampm should have "AM" value', () => {
+                expect(ampm).text('AM');
             });
             it('should keep selection on mm segment', () => {
                 hasCursorInSegment(input, 'mm');
@@ -321,11 +336,14 @@ describe('<TimePicker/>', () => {
             it('should set focus state', () => {
                 hasCssState(root, styles, {focus: true});
             });
-            it('input should have "04:07 AM" value', () => {
-                expect(input).attr('value', '04:07 AM');
+            it('input should have "04:07" value', () => {
+                expect(input).attr('value', '04:07');
+            });
+            it('ampm should have "AM" value', () => {
+                expect(ampm).text('AM');
             });
             it('should move selection on ampm segment', () => {
-                hasSelection(input, 'ampm');
+                expect(document.activeElement).to.equal(ampm);
             });
             it('onChange should be callen with "04:07"', async () => {
                 expect(onChange).to.be.calledWithExactly('04:07');
@@ -334,9 +352,7 @@ describe('<TimePicker/>', () => {
 
         describe('focus and change ampm input', () => {
             beforeEach(() => {
-                simulate.focus(input);
-                setSelection(input, 'ampm');
-                simulate.click(input);
+                ampm.focus();
                 simulate.keyDown(input, {keyCode: keycode('space')});
             });
             it('onChange should be callen with "16:55"', () => {
