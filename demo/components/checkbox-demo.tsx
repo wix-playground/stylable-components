@@ -174,6 +174,7 @@ const TickMarkSVG: React.SFC<CheckBoxIconProps> = props => {
             xmlns="http://www.w3.org/2000/svg"
             height="16"
             width="16"
+            focusable="false"
         >
             <circle cx="10" cy="14" r="4"/>
         </svg>
@@ -186,6 +187,7 @@ const CheckBoxSVG: React.SFC<CheckBoxIconProps> = props => {
             className={style.boxIcon + (props.value ? ' ' + style.boxIconChecked : '')}
             data-automation-id="CHECKBOX_BOX"
             xmlns="http://www.w3.org/2000/svg"
+            focusable="false"
         >
             <path d="M 10,1 20,20 1,20 z"/>
         </svg>

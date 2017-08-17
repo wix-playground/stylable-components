@@ -35,6 +35,7 @@ const DefaultCheckBoxSVG: React.SFC<CheckBoxIconProps> = props => {
             className={styles.boxIconDefault}
             data-automation-id="CHECKBOX_BOX"
             xmlns="http://www.w3.org/2000/svg"
+            focusable="false"
         >
             <path d="M.5.5h15v15H.5z" />
         </svg>
@@ -47,6 +48,7 @@ const DefaultTickMarkSVG: React.SFC<CheckBoxIconProps> = props => {
             className={styles.tickIcon}
             data-automation-id="CHECKBOX_TICKMARK"
             xmlns="http://www.w3.org/2000/svg"
+            focusable="false"
         >
             <path d="M5 8.685l2.496 1.664M8 10.685L11.748 6" />
         </svg>
@@ -61,6 +63,7 @@ const DefaultIndeterminateSVG: React.SFC<CheckBoxIconProps> = props => {
             xmlns="http://www.w3.org/2000/svg"
             width="15"
             height="15"
+            focusable="false"
         >
             <line x1="4" y1="8" x2="12" y2="8" />
         </svg>
