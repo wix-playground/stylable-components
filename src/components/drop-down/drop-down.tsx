@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { SBComponent, SBStateless } from 'stylable-react-component/dist/stylable-react';
 import { root } from 'wix-react-tools';
-import { CaretDown } from './drop-down-icons';
 import { SelectionList } from '../selection-list';
+import { CaretDown } from './drop-down-icons';
 import style from './drop-down.st.css';
 
 export interface DropDownInputProps {
@@ -61,7 +61,7 @@ export class DropDown extends React.Component<DropDownProps, {}> {
     public onItemClick = (item: string) => {
         this.props.onInputClick!();
         this.props.onItemClick!(this.props.items!.filter((elem: DropDownItem) => elem.label === item)[0]);
-    };
+    }
 
     public render() {
         const rootProps = root(this.props, {

@@ -1,4 +1,3 @@
-import {expect} from 'test-drive-react';
 
 import {Stylesheet} from 'stylable';
 
