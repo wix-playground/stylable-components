@@ -4,7 +4,9 @@
                color_MainText_Background,
                color_Disabled,
                borderWidth,
-               inputHeight;
+               inputHeight,
+               BK3,
+               PR3;
 }
 
 :import {
@@ -16,7 +18,7 @@
 
     position: relative;
 
-    width: value(inputHeight);
+    width: 30px;
     height: value(inputHeight);
 }
 
@@ -35,7 +37,7 @@
     padding: 0;
 
     background-color: value(color_MainText_Background);
-    color: value(color_MainText);
+    color: value(BK3);
 }
 
 .control-icon {
@@ -49,6 +51,10 @@
 .control:focus,
 .control:disabled {
     color: value(color_MainText_Background);
+}
+.control:hover {
+    background: transparent;
+    color: value(PR3);
 }
 
 .up {

@@ -93,7 +93,7 @@ export default class TimePicker extends React.Component<Props, State> {
         const {focus, hh, mm, ampm, format} = this.state;
         const {label, placeholder, disabled} = this.props;
         const valueSet = hh !== undefined || mm !== undefined;
-        const timeSegments: TimeSegment[] = valueSet ? ['hh', 'mm'] : ['hh'];
+        const timeSegments: TimeSegment[] = ['hh', 'mm'];
 
         return (
             <div
@@ -113,7 +113,7 @@ export default class TimePicker extends React.Component<Props, State> {
                             tabIndex={isTouch ? -1 : 0}
                             ref={elem => this[name] = elem}
                             value={this.state[name] || ''}
-                            placeholder={placeholder || defaultValue(format!)}
+                            placeholder="00"
                             disabled={disabled}
                             name={name}
                             onMouseDown={this.onInputMouseDown}
@@ -124,7 +124,7 @@ export default class TimePicker extends React.Component<Props, State> {
                         />
                     </div>
                 )}
-                {format === 'ampm' && valueSet &&
+                {format === 'ampm' &&
                     <div
                         data-automation-id="TIME_PICKER_AMPM"
                         className="ampm"
@@ -135,6 +135,13 @@ export default class TimePicker extends React.Component<Props, State> {
                         onFocus={this.onAmpmFocus}
                         onBlur={this.onBlur}
                         onKeyDown={this.onKeyDown}
+                    />
+                }
+                {placeholder && !valueSet &&
+                    <div
+                        className='placeholder'
+                        children={placeholder}
+                        onClick={this.onPlaceholderClick}
                     />
                 }
                 {!isTouch && !disabled && valueSet &&
@@ -225,6 +232,8 @@ export default class TimePicker extends React.Component<Props, State> {
         newValue = formatTimeChunk(newValue);
         this.updateSegmentValue(currentSegment, newValue);
     }
+
+    private onPlaceholderClick = () => this.hh!.focus();
 
     private onStepperUp = () => this.changeValue(1);
     private onStepperDown = () => this.changeValue(-1);

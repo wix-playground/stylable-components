@@ -8,6 +8,7 @@
 :import {
     -st-from: "../../style/default-theme/variables.st.css";
     -st-named:
+        DS1,
         DS2,
         BK2,
         BK3,
@@ -30,13 +31,13 @@
 
     /* preventing window DPI scaling artifacts*/
     padding: 0.3px;
-    padding-left: 6px;
+    padding-left: 12px;
 }
 
+.root:not(:disabled):hover {
+    border-color: value(PR3);
+}
 @media (hover: hover) {
-    .root:not(:disabled):hover {
-        border-color: value(PR3);
-    }
 }
 
 .root:focus {
@@ -44,8 +45,12 @@
 }
 .root:disabled {
     background-color: value(DS2);
+    color: value(DS1);
+}
+.root:empty {
     color: value(BK2);
 }
+
 .input-wrap {
     position: relative;
     display: inline-block;
@@ -72,10 +77,19 @@
     color: inherit;
     -webkit-text-fill-color: inherit;
 }
-.input::placeholder {
+
+.input::-webkit-input-placeholder {
     color: value(BK2);
     -webkit-text-fill-color: currentColor;
 }
+.input:-ms-input-placeholder {
+    color: value(BK2);
+}
+
+.input::-moz-placeholder {
+    opacity: 1;
+}
+
 .input::selection {
     color: white;
     background: value(PR2);
@@ -90,9 +104,19 @@
 .input:disabled {
     opacity: 1;
 }
-.root:empty::input {
+
+.placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
+    height: 100%;
+    padding: 0 12px;
+    display: flex;
+    align-items: center;
+    background: white;
 }
+
 .ampm {
     display: inline-flex;
     align-items: center;
