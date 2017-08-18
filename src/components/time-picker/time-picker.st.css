@@ -19,14 +19,14 @@
     width: 120px;
 }
 .root {
-    -st-states: focus, disabled;
+    -st-states: focus, disabled, empty;
     font-family: arial;
     font-size: 16px;
     position: relative;
     border: 1px solid value(BK3);
     height: value(height);
     width: value(width);
-    display: inline-flex;
+    display: inline-block;
 
     /* preventing window DPI scaling artifacts*/
     padding: 0.3px;
@@ -46,22 +46,31 @@
     background-color: value(DS2);
     color: value(BK2);
 }
+.input-wrap {
+    position: relative;
+    display: inline-block;
+    height: 100%;
+}
+.input-wrap:nth-child(2):before {
+    content: ':';
+    position: absolute;
+    right: 100%;
+    top: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
 
 .input {
-    -st-states: wide;
     position: relative;
     font: inherit;
     border: 0;
     width: 0;
     height: 100%;
     width: 24px;
-    padding: 6px 0;
     background: none;
     color: inherit;
     -webkit-text-fill-color: inherit;
-}
-.input:wide {
-    width: 100%;
 }
 .input::placeholder {
     color: value(BK2);
@@ -81,12 +90,15 @@
 .input:disabled {
     opacity: 1;
 }
+.root:empty::input {
+    width: 100%;
+}
 .ampm {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    margin: 8px 7px 8px 0;
     user-select: none;
     background-color: inherit;
+    height: 19px;
     cursor: pointer;
 }
 .ampm:hover {
@@ -97,11 +109,9 @@
     outline: none;
     color: white;
 }
-.root:disabled::ampm {
-    margin-right: 43px;
-}
 .root:disabled::ampm:hover {
     color: inherit;
+    cursor: inherit;
 }
 .label {
     position: absolute;
@@ -131,7 +141,8 @@
     -st-extends: Stepper;
     height: 100%;
     transition: opacity 100ms ease;
-    /*opacity: 0;*/
+    float: right;
+    opacity: 0;
 }
 .root:focus .stepper,
 .root:hover .stepper {

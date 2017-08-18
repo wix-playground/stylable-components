@@ -9,127 +9,143 @@ import {
 } from '../../src/components/time-picker/utils';
 import {hasCssState} from '../utils/has-css-state';
 
-function setSelection(input: HTMLInputElement, segment: Segment) {
-    const [start, end] = selectionIndexes[segment];
-    input.selectionStart = start;
-    input.selectionEnd = end;
-}
+const describeTouch = isTouch ? describe : describe.skip;
+const describeDesktop = !isTouch ? describe : describe.skip;
+const itTouch = isTouch ? it : it.skip;
+const itDesktop = !isTouch ? it : it.skip;
 
-function updateSegment(input: HTMLInputElement, segment: Segment, char: string) {
-    const [start, end] = selectionIndexes[segment];
-    const value = input.value.substr(0, start) + char + input.value.substr(end);
-    setSelection(input, segment);
-    simulate.focus(input);
-    input.value = value;
-    input.selectionStart = input.selectionEnd = start + 1;
-    simulate.change(input);
-}
-
-function hasSelection(input: HTMLInputElement, segment: Segment) {
-    expect([input.selectionStart, input.selectionEnd])
-        .to.deep.equal(selectionIndexes[segment], 'Selections did not match');
-}
-
-function hasCursorInSegment(input: HTMLInputElement, segment: Segment) {
-    const [start, end] = selectionIndexes[segment];
-    expect(input.selectionStart).to.equal(
-        input.selectionEnd,
-        `Input has selection [${input.selectionStart}, ${input.selectionEnd}]`
-    );
-    expect(input.selectionStart).within(start, end);
-}
-
-describe('<TimePicker/>', () => {
+describe.only('<TimePicker/>', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
 
-    describe('render with format="ampm"', () => {
+    describeDesktop('render with format="ampm"', () => {
         let renderer: any;
-        let input: any;
+        let hh: any;
+        let mm: any;
         beforeEach(() => {
             renderer = clientRenderer.render(<TimePicker format="ampm"/>);
-            input = renderer.select('TIME_PICKER_INPUT');
+            hh = renderer.select('TIME_PICKER_INPUT_HH');
+            mm = renderer.select('TIME_PICKER_INPUT_MM');
         });
         it('should render input with "00:00 AM" placeholder', () => {
-            expect(input).attr('placeholder', '00:00 AM');
+            expect(hh).attr('placeholder', '00:00 AM');
         });
         it('should not have value set', () => {
-            expect(input).attr('value', '');
+            expect(hh).attr('value', '');
+        });
+        it('should not render mm input', () => {
+            expect(mm).to.be.null;
         });
     });
     describe('render with format="24h"', () => {
         let renderer: any;
-        let input: any;
+        let hh: any;
+        let mm: any;
         beforeEach(() => {
             renderer = clientRenderer.render(<TimePicker format="24h"/>);
-            input = renderer.select('TIME_PICKER_INPUT');
+            hh = renderer.select('TIME_PICKER_INPUT_HH');
+            mm = renderer.select('TIME_PICKER_INPUT_MM');
         });
         it('should render input with "00:00" placeholder', () => {
-            expect(input).attr('placeholder', '00:00');
+            expect(hh).attr('placeholder', '00:00');
         });
         it('should not have value set', () => {
-            expect(input).attr('value', '');
+            expect(hh).attr('value', '');
+        });
+        it('should not render mm input', () => {
+            expect(mm).to.be.null;
         });
     });
 
     describe('render with value="4:36" format="ampm"', () => {
         let renderer: any;
-        let input: any;
+        let hh: any;
+        let mm: any;
         let ampm: any;
         beforeEach(() => {
             renderer = clientRenderer.render(<TimePicker value="4:36"/>);
-            input = renderer.select('TIME_PICKER_INPUT');
+            hh = renderer.select('TIME_PICKER_INPUT_HH');
+            mm = renderer.select('TIME_PICKER_INPUT_MM');
             ampm = renderer.select('TIME_PICKER_AMPM');
         });
-        it('input should have "04:36" value', () => {
-            expect(input).attr('value', '04:36');
+        it('hh input should have "04" value', () => {
+            expect(hh).attr('value', '04');
         });
-        it('ampm should have "AM" value', () => {
+        it('mm input should have "36" value', () => {
+            expect(mm).attr('value', '36');
+        });
+        itDesktop('ampm should have "AM" value', () => {
             expect(ampm).text('AM');
         });
     });
 
     describe('render with placeholder="Enter Time"', () => {
         let renderer: any;
-        let input: any;
+        let hh: any;
+        let mm: any;
         beforeEach(() => {
             renderer = clientRenderer.render(<TimePicker placeholder="Enter Time"/>);
-            input = renderer.select('TIME_PICKER_INPUT');
+            hh = renderer.select('TIME_PICKER_INPUT_HH');
+            mm = renderer.select('TIME_PICKER_INPUT_MM');
         });
         it('should render hh input with placeholder', () => {
-            expect(input).attr('placeholder', 'Enter Time');
+            expect(hh).attr('placeholder', 'Enter Time');
         });
         it('should not have value set', () => {
-            expect(input).attr('value', '');
+            expect(hh).attr('value', '');
+        });
+        it('should not render mm input', () => {
+            expect(mm).to.be.null;
         });
     });
 
     describe('render with format="ampm" value="13:55"', () => {
         let renderer: any;
-        let input: any;
+        let hh: any;
+        let mm: any;
         let ampm: any;
         beforeEach(() => {
             renderer = clientRenderer.render(<TimePicker format="ampm" value="13:55"/>);
-            input = renderer.select('TIME_PICKER_INPUT');
+            hh = renderer.select('TIME_PICKER_INPUT_HH');
+            mm = renderer.select('TIME_PICKER_INPUT_MM');
             ampm = renderer.select('TIME_PICKER_AMPM');
         });
-        it('should have input "01:55" value', () => {
-            expect(input).attr('value', '01:55');
+
+        describeDesktop('desktop', () => {
+            it('hh input should have "01" value', () => {
+                expect(hh).attr('value', '01');
+            });
+            it('mm input should have "55" value', () => {
+                expect(mm).attr('value', '55');
+            });
+            it('ampm should have input "PM" value', function() {
+                expect(ampm).text('PM');
+            });
         });
-        it('ampm should have input "PM" value', () => {
-            expect(ampm).text('PM');
+        describeTouch('mobile', () => {
+            it('hh input should have "13" value', () => {
+                expect(hh).attr('value', '13');
+            });
+            it('mm input should have "55" value', () => {
+                expect(mm).attr('value', '55');
+            });
         });
     });
 
     describe('render with format="24h" value="13:55"', () => {
         let renderer: any;
-        let input: any;
+        let hh: any;
+        let mm: any;
         beforeEach(() => {
             renderer = clientRenderer.render(<TimePicker format="24h" value="13:55"/>);
-            input = renderer.select('TIME_PICKER_INPUT');
+            hh = renderer.select('TIME_PICKER_INPUT_HH');
+            mm = renderer.select('TIME_PICKER_INPUT_MM');
         });
-        it('should have input "13:55" value', () => {
-            expect(input).attr('value', '13:55');
+        it('hh input should have "13" value', () => {
+            expect(hh).attr('value', '13');
+        });
+        it('mm input should have "55" value', () => {
+            expect(mm).attr('value', '55');
         });
     });
 
@@ -137,26 +153,33 @@ describe('<TimePicker/>', () => {
         let onChange: any;
         let renderer: any;
         let root: any;
-        let input: any;
+        let hh: any;
+        let mm: any;
         beforeEach(() => {
             onChange = sinon.spy();
             renderer = clientRenderer.render(<TimePicker format="24h" value="13:55" onChange={onChange}/>);
             root = renderer.select('TIME_PICKER');
-            input = renderer.select('TIME_PICKER_INPUT');
+            hh = renderer.select('TIME_PICKER_INPUT_HH');
+            mm = renderer.select('TIME_PICKER_INPUT_MM');
         });
 
         describe('entering "3" into hh segment', () => {
             beforeEach(() => {
-                updateSegment(input, 'hh', '3');
+                simulate.focus(hh);
+                hh.value = '3';
+                simulate.change(hh);
             });
             it('should set focus state', () => {
                 hasCssState(root, styles, {focus: true});
             });
-            it('input should have "03:55" value', () => {
-                expect(input).attr('value', '03:55');
+            it('hh input should have "03" value', () => {
+                expect(hh).attr('value', '03');
+            });
+            it('mm input should have "55" value', () => {
+                expect(mm).attr('value', '55');
             });
             it('should move selection to mm segment', () => {
-                hasSelection(input, 'mm');
+                expect(document.activeElement).to.equal(mm);
             });
             it('onChange should be callend with "03:55"', () => {
                 expect(onChange).to.be.calledWithExactly('03:55');
@@ -165,13 +188,18 @@ describe('<TimePicker/>', () => {
 
         describe('entering "2" into hh segment', () => {
             beforeEach(async () => {
-                updateSegment(input, 'hh', '2');
+                simulate.focus(hh);
+                hh.value = '2';
+                simulate.change(hh);
             });
-            it('input should have "2:55" value', () => {
-                expect(input).attr('value', '2:55');
+            it('hh input should have "2" value', () => {
+                expect(hh).attr('value', '2');
+            });
+            it('mm input should have "55" value', () => {
+                expect(mm).attr('value', '55');
             });
             it('should keep selection on hh segment', () => {
-                hasCursorInSegment(input, 'hh');
+                expect(document.activeElement).to.equal(hh);
             });
             it('onChange should not be callen', async () => {
                 await new Promise(resolve => setTimeout(resolve, 500));
@@ -181,16 +209,21 @@ describe('<TimePicker/>', () => {
 
         describe('entering "7" into mm segment', () => {
             beforeEach(() => {
-                updateSegment(input, 'mm', '7');
+                simulate.focus(mm);
+                mm.value = '7';
+                simulate.change(mm);
             });
             it('should set focus state', () => {
                 hasCssState(root, styles, {focus: true});
             });
-            it('input should have "13:07" value', () => {
-                expect(input).attr('value', '13:07');
+            it('hh input should have "13" value', () => {
+                expect(hh).attr('value', '13');
+            });
+            it('mm input should have "07" value', () => {
+                expect(mm).attr('value', '07');
             });
             it('should keep selection on mm segment', () => {
-                hasCursorInSegment(input, 'mm');
+                expect(document.activeElement).to.equal(mm);
             });
             it('onChange should be callen with "13:07"', async () => {
                 expect(onChange).to.be.calledWithExactly('13:07');
@@ -199,13 +232,18 @@ describe('<TimePicker/>', () => {
 
         describe('entering "5" into mm input', () => {
             beforeEach(() => {
-                updateSegment(input, 'mm', '5');
+                simulate.focus(mm);
+                mm.value = '5';
+                simulate.change(mm);
             });
-            it('input should have "13:5" value', () => {
-                expect(input).attr('value', '13:5');
+            it('hh input should have "13" value', () => {
+                expect(hh).attr('value', '13');
+            });
+            it('mm input should have "5" value', () => {
+                expect(mm).attr('value', '5');
             });
             it('should keep selection on mm segment', () => {
-                hasCursorInSegment(input, 'mm');
+                expect(document.activeElement).to.equal(mm);
             });
             it('onChange should not be callen', async () => {
                 await new Promise(resolve => setTimeout(resolve, 500));
@@ -215,31 +253,35 @@ describe('<TimePicker/>', () => {
 
         describe('backspace on mm segment', () => {
             beforeEach(() => {
-                simulate.focus(input);
-                setSelection(input, 'mm');
-                simulate.click(input);
-                simulate.keyDown(input, {keyCode: keycode('backspace')});
+                simulate.focus(mm);
+                simulate.click(mm);
+                simulate.keyDown(mm, {keyCode: keycode('backspace')});
             });
-            it('mm input should have "13:00" value', async () => {
-                expect(input).attr('value', '13:00');
+            it('hh input should have "13" value', () => {
+                expect(hh).attr('value', '13');
+            });
+            it('mm input should have "00" value', () => {
+                expect(mm).attr('value', '00');
             });
             it('should keep selection on mm segment', () => {
-                hasSelection(input, 'mm');
+                expect(document.activeElement).to.equal(mm);
             });
         });
         describe('backspace x 2 on mm segment', () => {
             beforeEach(() => {
-                simulate.focus(input);
-                setSelection(input, 'mm');
-                simulate.click(input);
-                simulate.keyDown(input, {keyCode: keycode('backspace')});
-                simulate.keyDown(input, {keyCode: keycode('backspace')});
+                simulate.focus(mm);
+                simulate.click(mm);
+                simulate.keyDown(mm, {keyCode: keycode('backspace')});
+                simulate.keyDown(mm, {keyCode: keycode('backspace')});
             });
-            it('mm input should have "13:00" value', async () => {
-                expect(input).attr('value', '13:00');
+            it('hh input should have "13" value', () => {
+                expect(hh).attr('value', '13');
             });
-            it('should keep selection on hh segment', () => {
-                hasSelection(input, 'hh');
+            it('mm input should have "00" value', () => {
+                expect(mm).attr('value', '00');
+            });
+            it('should move selection on hh segment', () => {
+                expect(document.activeElement).to.equal(mm);
             });
         });
 
@@ -248,39 +290,41 @@ describe('<TimePicker/>', () => {
     describe('render with format="24h" value="01:55"', () => {
         let renderer: any;
         let root: any;
-        let input: any;
+        let hh: any;
+        let mm: any;
         beforeEach(() => {
             renderer = clientRenderer.render(<TimePicker format="24h" value="01:55"/>);
             root = renderer.select('TIME_PICKER');
-            input = renderer.select('TIME_PICKER_INPUT');
+            hh = renderer.select('TIME_PICKER_INPUT_HH');
+            mm = renderer.select('TIME_PICKER_INPUT_MM');
         });
 
         describe('entering "1" into hh segment', () => {
             beforeEach(() => {
-                updateSegment(input, 'hh', '1');
+                simulate.focus(hh);
+                hh.value = '1';
+                simulate.change(hh);
             });
             it('should set focus state', () => {
                 hasCssState(root, styles, {focus: true});
             });
-            it('input should have "1:55" value', () => {
-                expect(input).attr('value', '1:55');
+            it('hh input should have "1" value', () => {
+                expect(hh).attr('value', '1');
+            });
+            it('mm input should have "55" value', () => {
+                expect(mm).attr('value', '55');
             });
             it('should keep curson in hh segment', () => {
-                hasCursorInSegment(input, 'hh');
+                expect(document.activeElement).to.equal(hh);
             });
         });
     });
 
-    describe('render with value="01:59" format="ampm" (for mobile)', () => {
+    describeTouch('render with value="01:59" format="ampm" (touch)', () => {
         let renderer: any;
         let stepperIncrement: any;
         let stepperDecrement: any;
 
-        beforeEach(function() {
-            if (!isTouch) {
-                this.skip();
-            }
-        });
         beforeEach(() => {
             renderer = clientRenderer.render(<TimePicker format="ampm" value="01:59"/>);
             stepperIncrement = renderer.select('STEPPER_INCREMENT');
@@ -298,30 +342,37 @@ describe('<TimePicker/>', () => {
         let onChange: any;
         let renderer: any;
         let root: any;
-        let input: any;
+        let hh: any;
+        let mm: any;
         let ampm: any;
         beforeEach(() => {
             onChange = sinon.spy();
             renderer = clientRenderer.render(<TimePicker format="ampm" value="04:55" onChange={onChange}/>);
             root = renderer.select('TIME_PICKER');
-            input = renderer.select('TIME_PICKER_INPUT');
+            hh = renderer.select('TIME_PICKER_INPUT_HH');
+            mm = renderer.select('TIME_PICKER_INPUT_MM');
             ampm = renderer.select('TIME_PICKER_AMPM');
         });
         describe('entering "3" into mm segment', () => {
             beforeEach(() => {
-                updateSegment(input, 'mm', '3');
+                simulate.focus(mm);
+                mm.value = '3';
+                simulate.change(mm);
             });
             it('should set focus state', () => {
                 hasCssState(root, styles, {focus: true});
             });
-            it('input should have "04:3" value', () => {
-                expect(input).attr('value', '04:3');
+            it('hh input should have "04" value', () => {
+                expect(hh).attr('value', '04');
             });
-            it('ampm should have "AM" value', () => {
+            it('mm input should have "3" value', () => {
+                expect(mm).attr('value', '3');
+            });
+            itDesktop('ampm should have "AM" value', function() {
                 expect(ampm).text('AM');
             });
             it('should keep selection on mm segment', () => {
-                hasCursorInSegment(input, 'mm');
+                expect(document.activeElement).to.equal(mm);
             });
             it('onChange should not be callen', async () => {
                 await new Promise(resolve => setTimeout(resolve, 500));
@@ -331,18 +382,23 @@ describe('<TimePicker/>', () => {
 
         describe('entering "7" into mm segment', () => {
             beforeEach(() => {
-                updateSegment(input, 'mm', '7');
+                simulate.focus(mm);
+                mm.value = '7';
+                simulate.change(mm);
             });
             it('should set focus state', () => {
                 hasCssState(root, styles, {focus: true});
             });
-            it('input should have "04:07" value', () => {
-                expect(input).attr('value', '04:07');
+            it('hh input should have "04" value', () => {
+                expect(hh).attr('value', '04');
             });
-            it('ampm should have "AM" value', () => {
+            it('mm input should have "07" value', () => {
+                expect(mm).attr('value', '07');
+            });
+            itDesktop('ampm should have "AM" value', () => {
                 expect(ampm).text('AM');
             });
-            it('should move selection on ampm segment', () => {
+            itDesktop('should move selection on ampm segment', () => {
                 expect(document.activeElement).to.equal(ampm);
             });
             it('onChange should be callen with "04:07"', async () => {
@@ -350,10 +406,10 @@ describe('<TimePicker/>', () => {
             });
         });
 
-        describe('focus and change ampm input', () => {
+        describeDesktop('focus and change ampm input', () => {
             beforeEach(() => {
                 ampm.focus();
-                simulate.keyDown(input, {keyCode: keycode('space')});
+                simulate.keyDown(ampm, {keyCode: keycode('space')});
             });
             it('onChange should be callen with "16:55"', () => {
                 expect(onChange).to.be.calledWithExactly('16:55');

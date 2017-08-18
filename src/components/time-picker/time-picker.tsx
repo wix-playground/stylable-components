@@ -98,27 +98,31 @@ export default class TimePicker extends React.Component<Props, State> {
         return (
             <div
                 data-automation-id="TIME_PICKER"
-                cssStates={{focus, disabled: disabled!}}
+                cssStates={{
+                    focus,
+                    disabled: disabled!,
+                    empty: !valueSet
+                }}
             >
                 {timeSegments.map(name =>
-                    <input
-                        data-automation-id={'TIME_PICKER_INPUT_' + name.toUpperCase()}
-                        className="input"
-                        cssStates={{wide: !valueSet}}
-                        key={name}
-                        type="text"
-                        tabIndex={isTouch ? -1 : 0}
-                        ref={elem => this[name] = elem}
-                        value={this.state[name]}
-                        placeholder={placeholder || defaultValue(format!)}
-                        disabled={disabled}
-                        name={name}
-                        onMouseDown={this.onInputMouseDown}
-                        onChange={this.onInputChange}
-                        onFocus={this.onInputFocus}
-                        onBlur={this.onBlur}
-                        onKeyDown={this.onKeyDown}
-                    />
+                    <div key={name} className="input-wrap">
+                        <input
+                            data-automation-id={'TIME_PICKER_INPUT_' + name.toUpperCase()}
+                            className="input"
+                            type="text"
+                            tabIndex={isTouch ? -1 : 0}
+                            ref={elem => this[name] = elem}
+                            value={this.state[name] || ''}
+                            placeholder={placeholder || defaultValue(format!)}
+                            disabled={disabled}
+                            name={name}
+                            onMouseDown={this.onInputMouseDown}
+                            onChange={this.onInputChange}
+                            onFocus={this.onInputFocus}
+                            onBlur={this.onBlur}
+                            onKeyDown={this.onKeyDown}
+                        />
+                    </div>
                 )}
                 {format === 'ampm' && valueSet &&
                     <div
@@ -227,7 +231,9 @@ export default class TimePicker extends React.Component<Props, State> {
 
     private onAmpmMouseDown = (e: React.SyntheticEvent<HTMLDivElement>) => {
         e.preventDefault();
-        this.toggleAmpm(document.activeElement === this.ampm);
+        if (!this.props.disabled) {
+            this.toggleAmpm(document.activeElement === this.ampm);
+        }
     }
 
     private onAmpmFocus = (e: React.SyntheticEvent<HTMLDivElement>) => {
