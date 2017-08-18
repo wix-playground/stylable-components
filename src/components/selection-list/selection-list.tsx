@@ -27,16 +27,16 @@ export class SelectionList extends React.Component<SelectionListProps, {}> {
         focusedValue: undefined
     };
 
-    private items: React.ReactNode[] = [];
+    private itemNodes: React.ReactNode[] = [];
     private focusableItemValues: ItemValue[] = [];
 
     public componentWillMount() {
-        this.populateItems(this.props);
+        this.populateItemsFromProps(this.props);
         this.setState({focusedValue: this.props.value});
     }
 
     public componentWillReceiveProps(nextProps: SelectionListProps) {
-        this.populateItems(nextProps);
+        this.populateItemsFromProps(nextProps);
         this.setState({focusedValue: nextProps.value});
     }
 
@@ -52,15 +52,14 @@ export class SelectionList extends React.Component<SelectionListProps, {}> {
                 onBlur={this.handleBlur}
                 onKeyDown={this.handleKeyDown}
             >
-                {this.items}
+                {this.itemNodes}
             </BasicList>
         );
     }
 
-    // TODO: fix any here!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
-    public populateItems(props: any) {
-        this.items = [props.children, renderDataSource(props)];
-        this.focusableItemValues = getFocusableItemValues(this.items);
+    public populateItemsFromProps(props: SelectionListProps & {children?: React.ReactNode}) {
+        this.itemNodes = [props.children, renderDataSource(props)];
+        this.focusableItemValues = getFocusableItemValues(this.itemNodes);
     }
 
     private handleFocus: React.FocusEventHandler<HTMLElement> = event => {
@@ -72,21 +71,41 @@ export class SelectionList extends React.Component<SelectionListProps, {}> {
     }
 
     private handleKeyDown: React.KeyboardEventHandler<HTMLElement> = event => {
+        const nav = new ListNavigation(this.focusableItemValues);
+        nav.focusValue(this.state.focusedValue || this.props.value);
+
         switch (event.keyCode) {
             case keycode('enter'):
             case keycode('space'):
                 event.preventDefault();
-                if (this.state.focusedValue !== undefined) {
-                    this.props.onChange!(this.state.focusedValue);
+                if (nav.getFocusedValue() !== undefined) {
+                    this.props.onChange!(nav.getFocusedValue());
                 }
                 break;
-            default:
-                const nav = new ListNavigation(this.focusableItemValues);
-                nav.focusValue(this.state.focusedValue || this.props.value);
-                if (nav.handleKeydown(event)) {
-                    event.preventDefault();
-                    this.setState({focusedValue: nav.getFocusedValue()});
-                }
+
+            case keycode('up'):
+                event.preventDefault();
+                nav.focusPrevious();
+                this.setState({focusedValue: nav.getFocusedValue()});
+                break;
+
+            case keycode('down'):
+                event.preventDefault();
+                nav.focusNext();
+                this.setState({focusedValue: nav.getFocusedValue()});
+                break;
+
+            case keycode('home'):
+                event.preventDefault();
+                nav.focusFirst();
+                this.setState({focusedValue: nav.getFocusedValue()});
+                break;
+
+            case keycode('end'):
+                event.preventDefault();
+                nav.focusLast();
+                this.setState({focusedValue: nav.getFocusedValue()});
+                break;
         }
     }
 }

@@ -10,16 +10,6 @@ export class ListNavigation {
         this.values = focusableValues;
     }
 
-    public handleKeydown(event: React.KeyboardEvent<any>): boolean {
-        switch (event.keyCode) {
-            case keycode('up'):   this.focusPrevious(); return true;
-            case keycode('down'): this.focusNext();     return true;
-            case keycode('home'): this.focusFirst();    return true;
-            case keycode('end'):  this.focusLast();     return true;
-        }
-        return false;
-    }
-
     public getFocusedValue() {
         return this.values[this.position];
     }
