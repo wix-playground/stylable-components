@@ -166,6 +166,46 @@
     margin: -8px 0px 0px -6px;
 }
 
+.markProgress,
+.markTrack
+{
+    width: 8px;
+    height: 8px;
+    position: absolute;
+    border-radius: 4px;
+}
+.markProgress{
+    background-color: #4a90e2;
+}
+.markTrack{
+    background-color: #adbbc6;
+}
+
+
+.root:x .markProgress,
+.root:x .markTrack
+{
+    margin: -2px 0 0 -4px;
+}
+
+.root:x-reverse .markProgress,
+.root:x-reverse .markTrack
+{
+    margin: -2px -4px 0 0;
+}
+
+.root:y .markProgress,
+.root:y .markTrack
+{
+    margin: 0 0 -4px -2px;
+}
+
+.root:y-reverse .markProgress,
+.root:y-reverse .markTrack
+{
+    margin: -4px 0 0 -2px;
+}
+
 .tooltip{
     position: absolute;
     text-align: center;
@@ -180,6 +220,10 @@
 
 /* Hover state */
 .slider:hover .track {
+    background-color: #7d8c98;
+}
+
+.slider:hover .markTrack {
     background-color: #7d8c98;
 }
 
@@ -206,6 +250,10 @@
     background-color: #adbbc6;
 }
 
+.root:active .markTrack {
+    background-color: #adbbc6;
+}
+
 .root:active .progress {
     background-color: #4a90e2;
 }
@@ -223,6 +271,10 @@
 }
 
 .root:disabled .track {
+    background-color: #c8c8c8;
+}
+
+.root:disabled .markTrack {
     background-color: #c8c8c8;
 }
 

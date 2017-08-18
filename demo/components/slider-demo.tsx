@@ -120,7 +120,7 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                             onChange={this.onSliderChange}
                         />
                     </td>
-                    <td>
+                    <td className="vertical-demo">
                         <Slider
                             axis={'x-reverse'}
                             value={this.state.value}
@@ -135,6 +135,49 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                             value={this.state.value}
                             min={min}
                             max={max}
+                            onChange={this.onSliderChange}
+                        />
+                    </td>
+                </tr>
+                </tbody>
+                <thead>
+                <tr>
+                    <th className="table-head-cell">Slider width marks</th>
+                    <th className="table-head-cell">Vertical Slider with marks</th>
+                    <th className="table-head-cell">Reverse Slider with marks</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td className="vertical-demo">
+                        <Slider
+                            value={this.state.value}
+                            min={min}
+                            max={max}
+                            step={10}
+                            marks={true}
+                            onChange={this.onSliderChange}
+                        />
+                    </td>
+                    <td className="vertical-demo">
+                        <Slider
+                            axis={'y'}
+                            value={this.state.value}
+                            min={min}
+                            max={max}
+                            step={10}
+                            marks={true}
+                            onChange={this.onSliderChange}
+                        />
+                    </td>
+                    <td className="vertical-demo">
+                        <Slider
+                            axis={'x-reverse'}
+                            value={this.state.value}
+                            min={min}
+                            max={max}
+                            step={10}
+                            marks={true}
                             onChange={this.onSliderChange}
                         />
                     </td>

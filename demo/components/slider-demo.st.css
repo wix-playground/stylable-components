@@ -6,11 +6,13 @@
 
 .table-head-cell {
     width: 33%;
+    padding-top: 12px;
 }
 
 .vertical-demo {
     height: 126px;
     text-align: center;
+    vertical-align: top;
 }
 .tooltip {
     font-family: Verdana;
