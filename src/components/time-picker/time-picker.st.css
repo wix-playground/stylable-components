@@ -30,6 +30,7 @@
 
     /* preventing window DPI scaling artifacts*/
     padding: 0.3px;
+    padding-left: 6px;
 }
 
 @media (hover: hover) {
@@ -47,15 +48,20 @@
 }
 
 .input {
+    -st-states: wide;
+    position: relative;
     font: inherit;
     border: 0;
-    flex: 1 auto;
     width: 0;
     height: 100%;
-    padding: 6px 0 6px 6px;
+    width: 24px;
+    padding: 6px 0;
     background: none;
     color: inherit;
     -webkit-text-fill-color: inherit;
+}
+.input:wide {
+    width: 100%;
 }
 .input::placeholder {
     color: value(BK2);
@@ -125,7 +131,7 @@
     -st-extends: Stepper;
     height: 100%;
     transition: opacity 100ms ease;
-    opacity: 0;
+    /*opacity: 0;*/
 }
 .root:focus .stepper,
 .root:hover .stepper {
