@@ -28,17 +28,16 @@ type DataSourceItemDefaultFormat = string | {
 };
 
 function defaultRender(item: DataSourceItemDefaultFormat): React.ReactNode {
-    if (item === divider) {
-        return <Divider />;
-    }
-
     if (typeof item === 'string') {
         item = {value: item, label: item};
     }
 
-    return item.hidden ?
-        null :
-        <Option value={item.value} disabled={item.disabled}>{item.label}</Option>;
+    if (item === divider) {
+        return <Divider />;
+    } else if (item.hidden) {
+        return null;
+    }
+    return <Option value={item.value} disabled={item.disabled}>{item.label}</Option>;
 }
 
 export function renderDataSource({dataSource = [], dataSchema, renderItem = defaultRender}: OptionList) {
