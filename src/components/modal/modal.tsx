@@ -13,10 +13,6 @@ export interface ModalProps {
 
 @SBComponent(styles)
 export class Modal extends React.PureComponent<ModalProps, {}> {
-    // public static defaultProps: Partial<ModalProps> = {
-    //     onRequestClose: noop
-    // };
-
     public componentWillMount() {
         if (this.props.isOpen) {
             stopScrolling();
