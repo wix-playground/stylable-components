@@ -50,4 +50,32 @@ describe('<Modal />', () => {
             expect(bodySelect('MODAL')!.clientWidth).to.equal(window.innerWidth);
         });
     });
+
+    it('is centered in the viewport', async function() {
+        clientRenderer.render(<Modal isOpen={true} />);
+
+        function checkIfCentered(element: Element) {
+            const rects = element.getBoundingClientRect();
+            return rects.top === 0
+                && rects.left === 0
+                && rects.right === window.innerWidth
+                && rects.bottom === window.innerHeight;
+        }
+
+        await waitFor(() => expect(checkIfCentered(bodySelect('MODAL')!)).to.equal(true));
+    });
+
+    it('renders children in the center of the viewport', async function() {
+        clientRenderer.render(
+            <Modal isOpen={true}>
+                <p data-automation-id="CHILD_1">child 1</p>
+                <p data-automation-id="CHILD_2">child 2</p>
+            </Modal>
+        );
+
+        await waitFor(() => {
+            expect(bodySelect('CHILD_1').getBoundingClientRect().right).to.equal(window.innerWidth / 2);
+            // expect(bodySelect('CHILD_2')).to.be.present();
+        });
+    });
 });
