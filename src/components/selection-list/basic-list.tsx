@@ -34,16 +34,16 @@ export function getFocusableItemValues(nodes: React.ReactNode): ItemValue[] {
 }
 
 export interface BasicListProps {
-    value?: ItemValue;
-    focusedValue?: ItemValue;
-    focused?: boolean;
-    style?: React.CSSProperties;
     className?: string;
-    tabIndex?: number;
+    focused?: boolean;
+    focusedValue?: ItemValue;
+    onBlur?: React.FocusEventHandler<HTMLElement>;
     onChange?: (value: ItemValue) => void;
     onFocus?: React.FocusEventHandler<HTMLElement>;
-    onBlur?: React.FocusEventHandler<HTMLElement>;
     onKeyDown?: React.KeyboardEventHandler<HTMLElement>;
+    style?: React.CSSProperties;
+    tabIndex?: number;
+    value?: ItemValue;
 }
 
 @SBComponent(listStyle)

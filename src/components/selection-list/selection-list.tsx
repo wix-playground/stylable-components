@@ -41,11 +41,11 @@ export class SelectionList extends React.Component<SelectionListProps, {}> {
     }
 
     public render() {
-        const {dataSource, dataSchema, renderItem, children, ...rest} = this.props;
+        const {dataSource, dataSchema, renderItem, children, ...passThroughProps} = this.props;
 
         return (
             <BasicList
-                {...rest}
+                {...passThroughProps}
                 focused={this.state.focused}
                 focusedValue={this.state.focusedValue}
                 onFocus={this.handleFocus}
