@@ -1,5 +1,5 @@
-import  * as React from 'react';
-import { ClientRenderer, expect, selectDom, simulate, waitFor } from 'test-drive-react';
+import * as React from 'react';
+import { ClientRenderer, expect, selectDom, simulate, waitFor, sinon } from 'test-drive-react';
 import { ModalDemo } from '../../demo/components/modal-demo';
 import { Modal } from '../../src';
 
@@ -95,12 +95,41 @@ describe('<Modal />', () => {
         });
     });
 
-    it('prevents scrolling when open', async function() {
-        // const bigDiv =
+    it('adds overflow: hidden to the body when opened and removes it when closed', async function() {
         clientRenderer.render(<Modal isOpen={true} />);
 
         await waitFor(() => {
-            expect(true).to.be.false;
+            expect(window.getComputedStyle(document.body).overflow).to.equal('hidden');
         });
+
+        clientRenderer.render(<Modal isOpen={false} />);
+
+        await waitFor(() => {
+            expect(window.getComputedStyle(document.body).overflow).to.not.equal('hidden');
+        });
+    });
+
+    it('appears centered even when the page is scrolled', async function() {
+        const scroll = document.createElement('div');
+        scroll.style.height = '1000vh';
+        scroll.style.width = '1000vw';
+        document.body.appendChild(scroll);
+        window.scrollTo(0, 2 * window.innerHeight);
+        clientRenderer.render(<Modal isOpen={true} />);
+
+        await waitFor(() => {
+            expect(bodySelect('MODAL')!.getBoundingClientRect().top).to.equal(0);
+        });
+
+        document.body.removeChild(scroll);
+    });
+
+    it('calls onRequestClose with "backdrop" when the backdrop is clicked', async function() {
+        const onRequestClose = sinon.spy();
+        clientRenderer.render(<Modal isOpen={true} onRequestClose={onRequestClose} />);
+
+        simulate.click(bodySelect('MODAL')!);
+
+        await waitFor(() => expect(onRequestClose).to.have.been.calledWith('backdrop'));
     });
 });
