@@ -1,7 +1,7 @@
 import keycode = require('keycode');
 import React = require('react');
 import {noop} from '../../utils';
-import {BasicList, BasicListProps, getFocusableItemValues, ItemValue} from './basic-list';
+import {BasicList, BasicListProps, ItemValue} from './basic-list';
 import {OptionList, renderDataSource} from './data-source';
 import {ListNavigation} from './list-navigation';
 import listStyle from './selection-list.st.css';
@@ -28,7 +28,7 @@ export class SelectionList extends React.Component<SelectionListProps, {}> {
     };
 
     private itemNodes: React.ReactNode[] = [];
-    private focusableItemValues: ItemValue[] = [];
+    private navigation: ListNavigation;
 
     public componentWillMount() {
         this.populateItemsFromProps(this.props);
@@ -59,7 +59,7 @@ export class SelectionList extends React.Component<SelectionListProps, {}> {
 
     public populateItemsFromProps(props: SelectionListProps & {children?: React.ReactNode}) {
         this.itemNodes = [props.children, renderDataSource(props)];
-        this.focusableItemValues = getFocusableItemValues(this.itemNodes);
+        this.navigation = new ListNavigation(this.itemNodes);
     }
 
     private handleFocus: React.FocusEventHandler<HTMLElement> = event => {
@@ -71,40 +71,39 @@ export class SelectionList extends React.Component<SelectionListProps, {}> {
     }
 
     private handleKeyDown: React.KeyboardEventHandler<HTMLElement> = event => {
-        const nav = new ListNavigation(this.focusableItemValues);
-        nav.focusValue(this.state.focusedValue || this.props.value);
+        this.navigation.focusValue(this.state.focusedValue || this.props.value);
 
         switch (event.keyCode) {
             case keycode('enter'):
             case keycode('space'):
                 event.preventDefault();
-                if (nav.getFocusedValue() !== undefined) {
-                    this.props.onChange!(nav.getFocusedValue());
+                if (this.navigation.getFocusedValue() !== undefined) {
+                    this.props.onChange!(this.navigation.getFocusedValue());
                 }
                 break;
 
             case keycode('up'):
                 event.preventDefault();
-                nav.focusPrevious();
-                this.setState({focusedValue: nav.getFocusedValue()});
+                this.navigation.focusPrevious();
+                this.setState({focusedValue: this.navigation.getFocusedValue()});
                 break;
 
             case keycode('down'):
                 event.preventDefault();
-                nav.focusNext();
-                this.setState({focusedValue: nav.getFocusedValue()});
+                this.navigation.focusNext();
+                this.setState({focusedValue: this.navigation.getFocusedValue()});
                 break;
 
             case keycode('home'):
                 event.preventDefault();
-                nav.focusFirst();
-                this.setState({focusedValue: nav.getFocusedValue()});
+                this.navigation.focusFirst();
+                this.setState({focusedValue: this.navigation.getFocusedValue()});
                 break;
 
             case keycode('end'):
                 event.preventDefault();
-                nav.focusLast();
-                this.setState({focusedValue: nav.getFocusedValue()});
+                this.navigation.focusLast();
+                this.setState({focusedValue: this.navigation.getFocusedValue()});
                 break;
         }
     }

@@ -1,13 +1,13 @@
 import keycode = require('keycode');
 import {clamp} from '../../utils';
-import {ItemValue} from './basic-list';
+import {getFocusableItemValues, ItemValue} from './basic-list';
 
 export class ListNavigation {
     private values: ItemValue[] = [];
     private position: number = -1;
 
-    constructor(focusableValues: ItemValue[]) {
-        this.values = focusableValues;
+    constructor(listItems: React.ReactNode[]) {
+        this.values = getFocusableItemValues(listItems);
     }
 
     public getFocusedValue() {
