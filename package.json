@@ -26,13 +26,13 @@
     "mobx": "^3.2.2",
     "mobx-react": "^4.2.2",
     "stylable-react-component": "^1.0.3",
-    "wix-react-tools": "^1.0.2"
+    "wix-react-tools": "^1.1.0"
   },
   "devDependencies": {
     "@types/mocha": "^2.2.41",
-    "@types/node": "^8.0.20",
+    "@types/node": "^8.0.24",
     "@types/react": "^16.0.2",
-    "@types/react-dom": "^15.5.2",
+    "@types/react-dom": "^15.5.3",
     "@types/webpack-env": "^1.13.0",
     "glob": "^7.1.2",
     "karma": "^1.7.0",
@@ -49,14 +49,14 @@
     "stylable": "^3.0.0",
     "stylable-integration": "3.0.8",
     "test-drive-react": "^0.5.1",
-    "ts-loader": "^2.3.2",
+    "ts-loader": "^2.3.3",
     "ts-node": "^3.3.0",
     "tslint": "^5.6.0",
     "tslint-wix-react": "^2.0.0",
-    "typescript": "^2.4.2",
-    "webpack": "^3.5.2",
+    "typescript": "~2.4.2",
+    "webpack": "^3.5.5",
     "webpack-dev-server": "^2.7.1",
-     "c3-platform": "^1.0.0"
+     "c3-platform": "^1.0.1"
   },
   "testGlob": "./test/**/*.spec.ts?(x)",
   "license": "MIT",
