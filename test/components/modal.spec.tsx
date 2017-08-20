@@ -1,8 +1,7 @@
-import * as React from 'react';
-import { ClientRenderer, expect, simulate, waitFor, selectDom } from 'test-drive-react';
+import  * as React from 'react';
+import { ClientRenderer, expect, selectDom, simulate, waitFor } from 'test-drive-react';
 import { ModalDemo } from '../../demo/components/modal-demo';
 import { Modal } from '../../src';
-import { ModalFixture } from '../fixtures/modal-fixture';
 
 describe('<Modal />', () => {
     const clientRenderer = new ClientRenderer();
@@ -65,7 +64,22 @@ describe('<Modal />', () => {
         await waitFor(() => expect(checkIfCentered(bodySelect('MODAL')!)).to.equal(true));
     });
 
-    it('renders children in the center of the viewport', async function() {
+    it('renders one child in the center of the viewport', async function() {
+        clientRenderer.render(
+            <Modal isOpen={true}>
+                <p data-automation-id="CHILD_1">child 1</p>
+            </Modal>
+        );
+
+        await waitFor(() => {
+            const child = bodySelect('CHILD_1');
+            const modal = bodySelect('MODAL');
+            expect([child, modal]).to.be.horizontallyAligned('center');
+            expect([child, modal]).to.be.verticallyAligned('center');
+        });
+    });
+
+    it('renders children in horizontal alignment', async function() {
         clientRenderer.render(
             <Modal isOpen={true}>
                 <p data-automation-id="CHILD_1">child 1</p>
@@ -74,8 +88,19 @@ describe('<Modal />', () => {
         );
 
         await waitFor(() => {
-            expect(bodySelect('CHILD_1').getBoundingClientRect().right).to.equal(window.innerWidth / 2);
-            // expect(bodySelect('CHILD_2')).to.be.present();
+            const childOne = bodySelect('CHILD_1');
+            const childTwo = bodySelect('CHILD_2');
+            const modal = bodySelect('MODAL');
+            expect([childOne, childTwo, modal]).to.be.horizontallyAligned('center');
+        });
+    });
+
+    it('prevents scrolling when open', async function() {
+        // const bigDiv =
+        clientRenderer.render(<Modal isOpen={true} />);
+
+        await waitFor(() => {
+            expect(true).to.be.false;
         });
     });
 });
