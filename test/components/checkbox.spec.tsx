@@ -199,12 +199,12 @@ describe('<Checkbox/>', function() {
             });
         });
 
-        it('component does not get tabIndex default', async function() {
+        it('component gets tabIndex 0 by default', async function() {
             const {select, waitForDom} = clientRenderer.render(
                 <CheckBox />
             );
             await waitForDom(() => {
-                expect(select('NATIVE_CHECKBOX')).to.not.have.attribute('tabIndex');
+                expect(select('NATIVE_CHECKBOX')).to.have.attribute('tabIndex', '0');
             });
         });
 

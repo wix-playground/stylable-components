@@ -78,7 +78,8 @@ export class CheckBox extends React.Component<Partial<CheckBoxProps>, CheckBoxSt
         tickIcon: DefaultTickMarkSVG,
         indeterminateIcon: DefaultIndeterminateSVG,
         onChange: noop,
-        indeterminate: false
+        indeterminate: false,
+        tabIndex: 0
     };
 
     public state: CheckBoxState = {isFocused: false};
