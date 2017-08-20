@@ -103,5 +103,3 @@
 :global(a.disabled), :global(a[disabled]) {
     color: value(color_Disabled);
 }
-
-
