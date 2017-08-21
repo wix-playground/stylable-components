@@ -57,8 +57,8 @@ describe('<Modal />', () => {
             const rects = element.getBoundingClientRect();
             return rects.top === 0
                 && rects.left === 0
-                && rects.right === window.innerWidth
-                && rects.bottom === window.innerHeight;
+                && Math.abs(rects.right - window.innerWidth) < 1 // Client rects are floats on IE11 + Edge
+                && Math.abs(rects.bottom - window.innerHeight) < 1;
         }
 
         await waitFor(() => expect(checkIfCentered(bodySelect('MODAL')!)).to.equal(true));
@@ -74,8 +74,8 @@ describe('<Modal />', () => {
         await waitFor(() => {
             const child = bodySelect('CHILD_1');
             const modal = bodySelect('MODAL');
-            expect([child, modal]).to.be.horizontallyAligned('center');
-            expect([child, modal]).to.be.verticallyAligned('center');
+            expect([child, modal]).to.be.horizontallyAligned('center', 1);
+            expect([child, modal]).to.be.verticallyAligned('center', 1);
         });
     });
 
@@ -91,7 +91,7 @@ describe('<Modal />', () => {
             const childOne = bodySelect('CHILD_1');
             const childTwo = bodySelect('CHILD_2');
             const modal = bodySelect('MODAL');
-            expect([childOne, childTwo, modal]).to.be.horizontallyAligned('center');
+            expect([childOne, childTwo, modal]).to.be.horizontallyAligned('center', 1);
         });
     });
 
