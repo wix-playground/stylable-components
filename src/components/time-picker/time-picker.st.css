@@ -34,10 +34,11 @@
     padding-left: 12px;
 }
 
+/* The hove should be here, but stylable did not support it yet */
+@media (hover: hover) {
+}
 .root:not(:disabled):hover {
     border-color: value(PR3);
-}
-@media (hover: hover) {
 }
 
 .root:focus {

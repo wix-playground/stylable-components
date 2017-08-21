@@ -16,12 +16,6 @@ export const ampmLabels = {
     [Ampm.NONE]: ''
 };
 
-export const selectionIndexes = {
-    hh: [0, 2],
-    mm: [3, 5],
-    ampm: [6, 8]
-};
-
 export const getCircularValue = (name: TimeSegment, value: number, ampm: Ampm): number => {
     if (name === 'mm') {
         return (value + 60) % 60;

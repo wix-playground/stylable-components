@@ -1,17 +1,16 @@
 import * as keycode from 'keycode';
 import * as React from 'react';
-import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react';
+import {ClientRenderer, expect, simulate, sinon} from 'test-drive-react';
 import {TimePicker} from '../../src';
 import styles from '../../src/components/time-picker/time-picker.st.css';
 import {
     Ampm, formatTimeChunk, getCircularValue,
-    isTouch, isValidValue, Segment, selectionIndexes, to24, toAmpm
+    isTouch, isValidValue, to24, toAmpm
 } from '../../src/components/time-picker/utils';
 import {hasCssState} from '../utils/has-css-state';
 
 const describeTouch = isTouch ? describe : describe.skip;
 const describeDesktop = !isTouch ? describe : describe.skip;
-const itTouch = isTouch ? it : it.skip;
 const itDesktop = !isTouch ? it : it.skip;
 
 describe.only('<TimePicker/>', () => {
@@ -22,38 +21,54 @@ describe.only('<TimePicker/>', () => {
         let renderer: any;
         let hh: any;
         let mm: any;
+        let placeholder: any;
         beforeEach(() => {
             renderer = clientRenderer.render(<TimePicker format="ampm"/>);
             hh = renderer.select('TIME_PICKER_INPUT_HH');
             mm = renderer.select('TIME_PICKER_INPUT_MM');
+            placeholder = renderer.select('TIME_PICKER_PLACEHOLDER');
         });
-        it('should render input with "00:00 AM" placeholder', () => {
-            expect(hh).attr('placeholder', '00:00 AM');
+        it('should not render with placeholder', () => {
+            expect(placeholder).to.be.null;
         });
-        it('should not have value set', () => {
+        it('hh should not have value set', () => {
             expect(hh).attr('value', '');
         });
-        it('should not render mm input', () => {
-            expect(mm).to.be.null;
+        it('hh should have placeholder "00"', () => {
+            expect(hh).attr('placeholder', '00');
+        });
+        it('mm should not have value set', () => {
+            expect(mm).attr('value', '');
+        });
+        it('mm should have placeholder "00"', () => {
+            expect(mm).attr('placeholder', '00');
         });
     });
     describe('render with format="24h"', () => {
         let renderer: any;
         let hh: any;
         let mm: any;
+        let placeholder: any;
         beforeEach(() => {
             renderer = clientRenderer.render(<TimePicker format="24h"/>);
             hh = renderer.select('TIME_PICKER_INPUT_HH');
             mm = renderer.select('TIME_PICKER_INPUT_MM');
+            placeholder = renderer.select('TIME_PICKER_PLACEHOLDER');
         });
-        it('should render input with "00:00" placeholder', () => {
-            expect(hh).attr('placeholder', '00:00');
+        it('should not render with placeholder', () => {
+            expect(placeholder).to.be.null;
         });
-        it('should not have value set', () => {
+        it('hh should not have value set', () => {
             expect(hh).attr('value', '');
         });
-        it('should not render mm input', () => {
-            expect(mm).to.be.null;
+        it('hh should have placeholder "00"', () => {
+            expect(hh).attr('placeholder', '00');
+        });
+        it('mm should not have value set', () => {
+            expect(mm).attr('value', '');
+        });
+        it('mm should have placeholder "00"', () => {
+            expect(mm).attr('placeholder', '00');
         });
     });
 
@@ -83,19 +98,21 @@ describe.only('<TimePicker/>', () => {
         let renderer: any;
         let hh: any;
         let mm: any;
+        let placeholder: any;
         beforeEach(() => {
             renderer = clientRenderer.render(<TimePicker placeholder="Enter Time"/>);
             hh = renderer.select('TIME_PICKER_INPUT_HH');
             mm = renderer.select('TIME_PICKER_INPUT_MM');
+            placeholder = renderer.select('TIME_PICKER_PLACEHOLDER');
         });
-        it('should render hh input with placeholder', () => {
-            expect(hh).attr('placeholder', 'Enter Time');
+        it('placeholder should render with "Enter Time"', () => {
+            expect(placeholder).text('Enter Time');
         });
-        it('should not have value set', () => {
+        it('hh should not have value set', () => {
             expect(hh).attr('value', '');
         });
-        it('should not render mm input', () => {
-            expect(mm).to.be.null;
+        it('mm should not have value set', () => {
+            expect(mm).attr('value', '');
         });
     });
 
