@@ -13,7 +13,7 @@ export interface ModalProps {
 
 @SBComponent(styles)
 export class Modal extends React.PureComponent<ModalProps, {}> {
-    public componentWillMount() {
+    public componentDidMount() {
         if (this.props.isOpen) {
             stopScrolling();
         } else {
