@@ -32,6 +32,7 @@
 .input {
     position: absolute;
     display: block;
+    position: absolute;
     opacity: 0;
     padding: 0;
     margin: 0;
@@ -49,7 +50,6 @@
     justify-content: center;
     align-items: center;
     transition: all 100ms linear;
-    background-size: 10px 10px;
     background-repeat: no-repeat;
     background-position: center;
     background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjIiIHZpZXdCb3g9IjAgMCA4IDIiPiAgICA8cGF0aCBmaWxsPSIjRkZGIiBmaWxsLXJ1bGU9Im5vbnplcm8iIGQ9Ik0xIDJoNmExIDEgMCAwIDAgMC0ySDFhMSAxIDAgMCAwIDAgMnoiLz48L3N2Zz4=);
