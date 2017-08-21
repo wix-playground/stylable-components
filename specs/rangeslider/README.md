@@ -1,6 +1,6 @@
-# Slider Spec
+# Range Slider Spec
 
-A **slider** an input where the user selects a value from within a given range.
+A **range slider** an input where the user selects a value from within a given range.
 
 
 
