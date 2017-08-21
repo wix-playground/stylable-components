@@ -120,14 +120,9 @@ The TreeView implements the OptionList intefarface (dataSource, dataScheme and i
 * Set aria-expanded to false if node is not expanded, otherwise set aria-expanded to true. End nodes do not have this attribute.
 * aria-selected is set to true only on the selected node.
 
-#### Lazy Loading
-
-If lazy loading is enabled then the following attributes apply:
-* aria-level should be set with an integer value representing the depth of node.
-* aria-setsize
-
-
 ### Focus
+
+Tabindex and aria-activedescendant solution postponed for the moment.
 
 ## Input Handling
 
