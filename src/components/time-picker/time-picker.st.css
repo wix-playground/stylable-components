@@ -34,11 +34,10 @@
     padding-left: 12px;
 }
 
-/* The hove should be here, but stylable did not support it yet */
 @media (hover: hover) {
-}
-.root:not(:disabled):hover {
-    border-color: value(PR3);
+    .root:not(:disabled):hover {
+        border-color: value(PR3);
+    }
 }
 
 .root:focus {
@@ -78,15 +77,11 @@
     -webkit-text-fill-color: inherit;
 }
 
-.input::-webkit-input-placeholder {
+.input::-webkit-input-placeholder,
+.input:-ms-input-placeholder,
+.input::-moz-placeholder {
     color: value(BK2);
     -webkit-text-fill-color: currentColor;
-}
-.input:-ms-input-placeholder {
-    color: value(BK2);
-}
-
-.input::-moz-placeholder {
     opacity: 1;
 }
 

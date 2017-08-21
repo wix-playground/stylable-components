@@ -2492,6 +2492,10 @@ lodash.camelcase@^3.0.1:
   dependencies:
     lodash._createcompounder "^3.0.0"
 
+lodash.clonedeep@^4.5.0:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/lodash.clonedeep/-/lodash.clonedeep-4.5.0.tgz#e23f3f9c4f8fbdde872529c1071857a086e5ccef"
+
 lodash.create@3.1.1:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/lodash.create/-/lodash.create-3.1.1.tgz#d7f2849f0dbda7e04682bb8cd72ab022461debe7"
@@ -2792,7 +2796,7 @@ multicast-dns@^6.0.1:
     dns-packet "^1.0.1"
     thunky "^0.1.0"
 
-murmurhash@^0.0.2:
+murmurhash@0.0.2, murmurhash@^0.0.2:
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/murmurhash/-/murmurhash-0.0.2.tgz#6f07bd8a1105e709c26fc89420cb5930c24585fe"
 
@@ -4244,9 +4248,9 @@ strip-json-comments@^2.0.0, strip-json-comments@~2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-2.0.1.tgz#3c531942e908c2697c0ec344858c286c7ca0a60a"
 
-stylable-integration@^4.1.0:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/stylable-integration/-/stylable-integration-4.1.0.tgz#74b5296f2d019d36c9be440d257d22f46bd23b84"
+stylable-integration@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/stylable-integration/-/stylable-integration-5.0.0.tgz#f9a73e6d6c95e8b3eb8936abf7d33f884a26f3d6"
   dependencies:
     deindent "^0.1.0"
     enhanced-resolve "^3.4.1"
@@ -4259,17 +4263,20 @@ stylable-react-component@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/stylable-react-component/-/stylable-react-component-1.0.3.tgz#8dd58b352f3b57c0991487e6d00a9dde2109f317"
 
-stylable@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/stylable/-/stylable-3.0.0.tgz#e409d7df9595f73d17d9b94ace70ea321a393a64"
+stylable@^4.0.2:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/stylable/-/stylable-4.0.2.tgz#739d6d2863e6913ef3f9a2c5b12e77f2ff23ba84"
   dependencies:
     camelcase-css "^1.0.1"
     css-selector-tokenizer "^0.7.0"
     kebab-case "^1.0.0"
+    lodash.clonedeep "^4.5.0"
+    murmurhash "0.0.2"
     postcss "^6.0.3"
     postcss-js "^1.0.0"
     postcss-nested "^2.0.2"
     postcss-safe-parser "^3.0.1"
+    postcss-value-parser "^3.3.0"
     stylis "^3.2.3"
 
 style-loader@~0.13.1:
