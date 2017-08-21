@@ -1,0 +1,20 @@
+.root {
+    width: auto;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+}
+
+.auto-complete-input {
+  border: 1px solid #adbac5;
+  height: 36px;
+  width: 100%;
+}
+
+.auto-complete-input:hover {
+  cursor: pointer;
+  border: 1px solid #5cb4ff;
+}
+
+.auto-complete-list {
+  width: 100%;
+}
