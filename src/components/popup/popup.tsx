@@ -26,13 +26,11 @@ export class Popup extends React.Component<PopupProps, {}> {
         syncWidth: true,
         maxHeight: 500
     };
-    private style: React.CSSProperties = {position: 'absolute'};
 
     public render() {
         if (this.props.anchor && this.props.open) {
-            this.setPosition();
             return (
-                <Portal style={this.style}>
+                <Portal style={this.getStyle()}>
                     {this.props.children}
                 </Portal>);
         }
@@ -40,11 +38,11 @@ export class Popup extends React.Component<PopupProps, {}> {
         return null;
     }
 
-    private setPosition = () => {
+    private getStyle() {
         if (!this.props.anchor) {
             return;
         }
-        const newStyle = {...this.style};
+        const newStyle: React.CSSProperties = {position: 'absolute'};
         newStyle.display = this.props.open ? '' : 'none';
         const anchorRect = this.props.anchor.getBoundingClientRect();
 
@@ -65,7 +63,7 @@ export class Popup extends React.Component<PopupProps, {}> {
         if (this.props.syncWidth) {
             newStyle.width = anchorRect.width;
         }
-        this.style = newStyle;
+        return newStyle;
     }
 }
 

@@ -247,14 +247,5 @@ function getFixture(): PositionPoint[] {
 }
 
 function createExpect(pValue: number, aValue: number) {
-    expect(equals(pValue, aValue), testString(pValue, aValue)).to.be.true;
-}
-
-function testString(p: number, a: number) {
-    return `popup value: ${p} anchor value: ${a}`;
-}
-
-function equals(n: number, m: number, decPoint: number = 2): boolean {
-    const resolution = Math.pow(10, decPoint);
-    return Math.round((n - m) * resolution) / resolution === 0;
+    expect(pValue, `popup value: ${pValue} anchor value: ${aValue}`).to.be.closeTo(aValue, 0.01);
 }
