@@ -17,7 +17,7 @@
 | value | string *or* Array\<string> | null | no | IDs of the selected items. |
 | onChange | (value:&nbsp;string)&nbsp;=>&nbsp;void | NOP | no | Triggered when an item is selected in the list. |
 | multiple | boolean | false | no | Whether the selection list supports a single or multiple selections. When true, adds `aria-multiselectable='true'` on the root element.
-| orientation | enum | Vertical | no | The orientation is used mostly for assistive technologies. Changing to Horizontal will change the behavior of keyboard navigation and adds `aria-orientation='horizontal'` to the root. |
+| orientation | enum:<br>'Vertical',<br>'Horizontal' | 'Vertical' | no | The orientation is used mostly for assistive technologies. Changing to 'Horizontal' will change the behavior of keyboard navigation and adds `aria-orientation='Horizontal'` to the root. |
 | typeAhead | boolean | false | no | Enables keyboard type-ahead. |
 | children | any | null | no | Children to be rendered in the list. |
 
