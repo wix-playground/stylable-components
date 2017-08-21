@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ClientRenderer, expect, selectDom, simulate, waitFor, sinon } from 'test-drive-react';
+import { ClientRenderer, expect, selectDom, simulate, sinon, waitFor } from 'test-drive-react';
 import { ModalDemo } from '../../demo/components/modal-demo';
 import { Modal } from '../../src';
 

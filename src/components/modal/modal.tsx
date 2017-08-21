@@ -2,11 +2,10 @@ import * as React from 'react';
 import { SBComponent } from 'stylable-react-component';
 import { root } from 'wix-react-tools';
 import {Portal} from '../../../src';
-import {noop} from '../../utils/noop';
 import {enableScrolling, stopScrolling} from '../../utils/stop-scrolling';
 import styles from './modal.st.css';
 
-export interface ModalProps {
+export interface ModalProps extends React.HTMLAttributes<HTMLDivElement> {
     isOpen: boolean;
     onRequestClose?(source: string): void;
 }

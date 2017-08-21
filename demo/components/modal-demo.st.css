@@ -1,13 +1,3 @@
-:import {
-    -st-from: '../../src/components/modal/modal.st.css';
-    -st-default: Modal;
-}
-
-Modal .backdrop {
-    background-color: grey;
-    opacity: 0.8;
-}
-
 .content {
     width: 400px;
     height: 300px;
