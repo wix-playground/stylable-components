@@ -7,7 +7,15 @@ export type TimeSegment = 'hh' | 'mm';
 export type Format = 'ampm' | '24h';
 export type Segment = TimeSegment | 'ampm';
 
-export const isTouch = typeof window === 'object' && 'orientation' in window;
+export const isTouch = (() => {
+    if ((typeof window !== 'object') || !('orientation' in window)) {
+        return false;
+    }
+    const input = document.createElement('input');
+    input.type = 'time';
+    return input.type === 'time';
+})();
+
 export const is12TimeFormat = /AM|PM/.test(new Date().toLocaleTimeString());
 export const validInputStringRE = /^(\d{1,2}):(\d{1,2})$/;
 export const ampmLabels = {

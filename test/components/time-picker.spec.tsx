@@ -13,7 +13,7 @@ const describeTouch = isTouch ? describe : describe.skip;
 const describeDesktop = !isTouch ? describe : describe.skip;
 const itDesktop = !isTouch ? it : it.skip;
 
-describe.only('<TimePicker/>', () => {
+describe('<TimePicker/>', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
 
