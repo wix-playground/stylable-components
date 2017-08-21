@@ -30,7 +30,7 @@ export class Popup extends React.Component<PopupProps, {}> {
     public render() {
         if (this.props.anchor && this.props.open) {
             return (
-                <Portal style={this.getStyle()}>
+                <Portal style={this.createStyle()}>
                     {this.props.children}
                 </Portal>);
         }
@@ -38,7 +38,7 @@ export class Popup extends React.Component<PopupProps, {}> {
         return null;
     }
 
-    private getStyle() {
+    private createStyle() {
         if (!this.props.anchor) {
             return;
         }
