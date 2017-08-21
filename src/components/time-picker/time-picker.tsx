@@ -79,7 +79,7 @@ export default class TimePicker extends React.Component<Props, State> {
         if (props.value !== this.props.value) {
             this.setState(propsValueToSegments(props.value, this.state.format), () => {
                 const {focus, currentSegment} = this.state;
-                if (focus && currentSegment) {
+                if (!isTouch && focus && currentSegment) {
                     this.select(currentSegment);
                 }
             });
