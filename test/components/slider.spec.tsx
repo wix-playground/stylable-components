@@ -1,7 +1,7 @@
 import * as keycode from 'keycode';
 import * as React from 'react';
-import { ClientRenderer, expect, simulate, sinon, waitFor } from 'test-drive-react';
-import { Slider } from '../../src/components/slider';
+import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react';
+import {Slider} from '../../src/components/slider';
 
 const hasTouchSupport = window && ('ontouchstart' in window);
 
@@ -268,7 +268,7 @@ describe('<Slider />', () => {
                 simulateMouseEvent(
                     environment,
                     'mouseup',
-                    { clientX: Math.round(bounds.left + bounds.width * 0.8) }
+                    {clientX: Math.round(bounds.left + bounds.width * 0.8)}
                 );
 
                 expect(onChange).to.be.calledWith(10);
@@ -287,12 +287,12 @@ describe('<Slider />', () => {
                 simulateMouseEvent(
                     environment,
                     'mousemove',
-                    { clientX: Math.round(bounds.left + bounds.width * 0.6) }
+                    {clientX: Math.round(bounds.left + bounds.width * 0.6)}
                 );
                 simulateMouseEvent(
                     environment,
                     'mouseup',
-                    { clientX: Math.round(bounds.left + bounds.width * 0.6) }
+                    {clientX: Math.round(bounds.left + bounds.width * 0.6)}
                 );
 
                 expect(onInput).to.be.calledWith('5');
@@ -384,7 +384,7 @@ describe('<Slider />', () => {
                 simulateMouseEvent(
                     environment,
                     'mouseup',
-                    { clientX: Math.round(bounds.left + bounds.width * 0.7) }
+                    {clientX: Math.round(bounds.left + bounds.width * 0.7)}
                 );
 
                 expect(onInput).to.be.calledWith('6');
@@ -480,7 +480,7 @@ describe('<Slider />', () => {
                 simulateMouseEvent(
                     environment,
                     'mouseup',
-                    { clientX: Math.round(bounds.left + bounds.width * 0.77) }
+                    {clientX: Math.round(bounds.left + bounds.width * 0.77)}
                 );
 
                 expect(onChange).to.be.calledWith(8);
@@ -499,12 +499,12 @@ describe('<Slider />', () => {
                 simulateMouseEvent(
                     environment,
                     'mousemove',
-                    { clientX: Math.round(bounds.left + bounds.width * 0.56) }
+                    {clientX: Math.round(bounds.left + bounds.width * 0.56)}
                 );
                 simulateMouseEvent(
                     environment,
                     'mouseup',
-                    { clientX: Math.round(bounds.left + bounds.width * 0.66) }
+                    {clientX: Math.round(bounds.left + bounds.width * 0.66)}
                 );
 
                 expect(onInput).to.be.calledWith('6');
@@ -1907,7 +1907,7 @@ describe('<Slider />', () => {
                     simulateMouseEvent(
                         environment,
                         'mouseup',
-                        { clientX: Math.round(bounds.left + bounds.width * 0.7) }
+                        {clientX: Math.round(bounds.left + bounds.width * 0.7)}
                     );
 
                     expect(onInput).to.be.calledWith('4');
@@ -2004,7 +2004,7 @@ describe('<Slider />', () => {
                     simulateMouseEvent(
                         environment,
                         'mouseup',
-                        { clientX: Math.round(bounds.left + bounds.width * 0.77) }
+                        {clientX: Math.round(bounds.left + bounds.width * 0.77)}
                     );
 
                     expect(onChange).to.be.calledWith(2);
@@ -2023,12 +2023,12 @@ describe('<Slider />', () => {
                     simulateMouseEvent(
                         environment,
                         'mousemove',
-                        { clientX: Math.round(bounds.left + bounds.width * 0.56) }
+                        {clientX: Math.round(bounds.left + bounds.width * 0.56)}
                     );
                     simulateMouseEvent(
                         environment,
                         'mouseup',
-                        { clientX: Math.round(bounds.left + bounds.width * 0.66) }
+                        {clientX: Math.round(bounds.left + bounds.width * 0.66)}
                     );
 
                     expect(onInput).to.be.calledWith('4');

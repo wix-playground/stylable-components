@@ -1,6 +1,6 @@
 import * as keycode from 'keycode';
 import * as React from 'react';
-import { SBComponent } from 'stylable-react-component';
+import {SBComponent} from 'stylable-react-component';
 
 export type PointerEvent = MouseEvent | TouchEvent;
 export interface PointerPosition {
@@ -369,7 +369,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
     }
 
     private getValueFromElementAndPointer(element: HTMLElement, pointerPosition: PointerPosition): number {
-        const { relativeStep, isVertical, isReverse } = this.state;
+        const {relativeStep, isVertical, isReverse} = this.state;
 
         const sliderBounds = element.getBoundingClientRect();
 
