@@ -109,7 +109,6 @@ export class TimePicker extends React.Component<Props, State> {
                             data-automation-id={'TIME_PICKER_INPUT_' + segment.toUpperCase()}
                             className="input"
                             type="text"
-                            size={2}
                             tabIndex={isNative ? -1 : 0}
                             ref={elem => this.segments[segment] = elem}
                             value={this.state[segment] || ''}

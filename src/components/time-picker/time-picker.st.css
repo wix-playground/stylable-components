@@ -31,7 +31,7 @@
 
     /* preventing window DPI scaling artifacts*/
     padding: 0.3px;
-    padding-left: 12px;
+    padding-left: 9px;
 }
 
 /* apply :hover for devices which really has hover */
@@ -60,21 +60,25 @@
 .input-wrap.mm:before {
     content: ':';
     position: absolute;
-    right: 100%;
     top: 0;
+    width: 10px;
+    left: -5px;
     height: 100%;
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 
 .input {
     position: relative;
     font: inherit;
     border: 0;
+    padding: 0 3px;
+    margin: 0;
+    width: 1.5em;
     height: 100%;
     background: none;
     color: inherit;
-    max-width: 1.5em;
     -webkit-text-fill-color: inherit;
 }
 
