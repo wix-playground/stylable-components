@@ -5,13 +5,13 @@ import {TimePicker} from '../../src';
 import styles from '../../src/components/time-picker/time-picker.st.css';
 import {
     Ampm, formatTimeChunk, getCircularValue,
-    isTouch, isValidValue, to24, toAmpm
+    isNative, isValidValue, to24, toAmpm
 } from '../../src/components/time-picker/utils';
 import {hasCssState} from '../utils/has-css-state';
 
-const describeTouch = isTouch ? describe : describe.skip;
-const describeDesktop = !isTouch ? describe : describe.skip;
-const itDesktop = !isTouch ? it : it.skip;
+const describeNative = isNative ? describe : describe.skip;
+const describeDesktop = !isNative ? describe : describe.skip;
+const itDesktop = !isNative ? it : it.skip;
 
 describe('<TimePicker/>', () => {
     const clientRenderer = new ClientRenderer();
@@ -139,7 +139,7 @@ describe('<TimePicker/>', () => {
                 expect(ampm).text('PM');
             });
         });
-        describeTouch('mobile', () => {
+        describeNative('mobile', () => {
             it('hh input should have "13" value', () => {
                 expect(hh).attr('value', '13');
             });
@@ -337,7 +337,7 @@ describe('<TimePicker/>', () => {
         });
     });
 
-    describeTouch('render with value="01:59" format="ampm" (touch)', () => {
+    describeNative('render with value="01:59" format="ampm" (touch)', () => {
         let renderer: any;
         let stepperIncrement: any;
         let stepperDecrement: any;

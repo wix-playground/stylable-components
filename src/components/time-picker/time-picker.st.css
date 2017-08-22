@@ -34,6 +34,7 @@
     padding-left: 12px;
 }
 
+/* apply :hover for devices which really has hover */
 @media (hover: hover) {
     .root:not(:disabled):hover {
         border-color: value(PR3);
@@ -56,7 +57,7 @@
     display: inline-block;
     height: 100%;
 }
-.input-wrap:nth-child(2):before {
+.input-wrap.mm:before {
     content: ':';
     position: absolute;
     right: 100%;
@@ -117,7 +118,7 @@
     align-items: center;
     user-select: none;
     background-color: inherit;
-    height: 19px;
+    height: 1em;
     cursor: pointer;
 }
 .ampm:hover {

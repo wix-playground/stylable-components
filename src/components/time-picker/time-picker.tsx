@@ -5,8 +5,8 @@ import {Stepper} from '../stepper';
 import styles from './time-picker.st.css';
 import {
     Ampm, ampmLabels, Format,
-    formatTimeChunk, getCircularValue, is12TimeFormat, isTimeSegment,
-    isTouch, isValidValue, Segment, TimeSegment, to24, toAmpm
+    formatTimeChunk, getCircularValue, is12TimeFormat, isNative,
+    isTimeSegment, isValidValue, Segment, TimeSegment, to24, toAmpm
 } from './utils';
 
 export interface Props {
@@ -52,19 +52,21 @@ function propsValueToSegments(value?: string, format?: Format): {hh?: string, mm
 }
 
 @SBComponent(styles)
-export default class TimePicker extends React.Component<Props, State> {
-    public static defaultProps = {
-        format: is12TimeFormat ? 'ampm' : '24hr',
+export class TimePicker extends React.Component<Props, State> {
+    public static defaultProps: Partial<Props> = {
+        format: is12TimeFormat ? 'ampm' : '24h',
         disabled: false
     };
     private segments: {
-        [key: string]: HTMLInputElement | HTMLDivElement | null
+        hh?: HTMLInputElement | null,
+        mm?: HTMLInputElement | null,
+        ampm?: HTMLDivElement | null
     };
     private lastValue: string | undefined;
 
     constructor(props: Props) {
         super();
-        const format = isTouch ? '24h' : props.format!;
+        const format = isNative ? '24h' : props.format!;
         this.lastValue = props.value;
         this.segments = {};
         this.state = {
@@ -79,7 +81,7 @@ export default class TimePicker extends React.Component<Props, State> {
         if (props.value !== this.props.value) {
             this.setState(propsValueToSegments(props.value, this.state.format), () => {
                 const {focus, currentSegment} = this.state;
-                if (!isTouch && focus && currentSegment) {
+                if (!isNative && focus && currentSegment) {
                     this.select(currentSegment);
                 }
             });
@@ -89,7 +91,7 @@ export default class TimePicker extends React.Component<Props, State> {
     public render() {
         const {focus, hh, mm, ampm, format} = this.state;
         const {label, placeholder, disabled} = this.props;
-        const valueSet = hh !== undefined || mm !== undefined;
+        const isValueSet = hh !== undefined || mm !== undefined;
         const timeSegments: TimeSegment[] = ['hh', 'mm'];
 
         return (
@@ -98,17 +100,17 @@ export default class TimePicker extends React.Component<Props, State> {
                 cssStates={{
                     focus,
                     disabled: disabled!,
-                    empty: !valueSet
+                    empty: !isValueSet
                 }}
             >
                 {timeSegments.map(name =>
-                    <div key={name} className="input-wrap">
+                    <div key={name} className={'input-wrap ' + name}>
                         <input
                             data-automation-id={'TIME_PICKER_INPUT_' + name.toUpperCase()}
                             className="input"
                             type="text"
                             size={2}
-                            tabIndex={isTouch ? -1 : 0}
+                            tabIndex={isNative ? -1 : 0}
                             ref={elem => this.segments[name] = elem}
                             value={this.state[name] || ''}
                             placeholder="00"
@@ -127,7 +129,7 @@ export default class TimePicker extends React.Component<Props, State> {
                         data-automation-id="TIME_PICKER_AMPM"
                         className="ampm"
                         ref={elem => this.segments.ampm = elem}
-                        tabIndex={disabled || isTouch ? -1 : 0}
+                        tabIndex={disabled || isNative ? -1 : 0}
                         children={ampmLabels[ampm]}
                         onMouseDown={this.onAmpmMouseDown}
                         onFocus={this.onAmpmFocus}
@@ -135,7 +137,7 @@ export default class TimePicker extends React.Component<Props, State> {
                         onKeyDown={this.onKeyDown}
                     />
                 }
-                {placeholder && !valueSet &&
+                {placeholder && !isValueSet &&
                     <div
                         data-automation-id="TIME_PICKER_PLACEHOLDER"
                         className="placeholder"
@@ -143,14 +145,14 @@ export default class TimePicker extends React.Component<Props, State> {
                         onClick={this.onPlaceholderClick}
                     />
                 }
-                {!isTouch && !disabled && valueSet &&
+                {!isNative && !disabled && isValueSet &&
                     <Stepper
                         className="stepper"
                         onUp={this.onStepperUp}
                         onDown={this.onStepperDown}
                     />
                 }
-                {isTouch &&
+                {isNative &&
                     <label className="label">
                         <input
                             className="native-input"
@@ -176,7 +178,7 @@ export default class TimePicker extends React.Component<Props, State> {
         return `${hhString}:${mmString}`;
     }
 
-    private select(segment: Segment) {
+    private select(segment: Segment): void {
         const input = this.segments[segment]!;
         this.setState({
             currentSegment: segment
@@ -187,6 +189,7 @@ export default class TimePicker extends React.Component<Props, State> {
             }
         });
     }
+
     private moveSelection(step: number): boolean {
         const index = segments.indexOf(this.state.currentSegment!);
         const nextSegment = segments[index + step];
@@ -244,7 +247,7 @@ export default class TimePicker extends React.Component<Props, State> {
         this.setState({focus: true, currentSegment: 'ampm'});
     }
 
-    private onInputMouseDown = (e: any): void => {
+    private onInputMouseDown = (e: React.SyntheticEvent<HTMLInputElement>): void => {
         e.preventDefault();
         e.currentTarget.focus();
     }

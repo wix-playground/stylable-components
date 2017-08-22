@@ -1,3 +1,5 @@
+import {isTouch} from '../../utils/is-touch';
+
 export enum Ampm {
     AM,
     PM,
@@ -7,8 +9,8 @@ export type TimeSegment = 'hh' | 'mm';
 export type Format = 'ampm' | '24h';
 export type Segment = TimeSegment | 'ampm';
 
-export const isTouch = (() => {
-    if ((typeof window !== 'object') || !('orientation' in window)) {
+export const isNative = (() => {
+    if (!isTouch) {
         return false;
     }
     const input = document.createElement('input');
