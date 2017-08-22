@@ -11,14 +11,17 @@ const demoContainer = 'POPUP_DEMO_DIV';
 describe('<Popup />', function() {
     const clientRenderer = new ClientRenderer();
     const bodySelect = selectDom(document.body);
-    const anchor = document.body.appendChild(document.createElement('div'));
-    anchor.style.position = 'absolute';
-    anchor.style.top = '150px';
-    anchor.style.left = '150px';
-    anchor.style.width = '150px';
-    anchor.style.height = '150px';
-    anchor.style.border = '1px solid blue';
+    let anchor: HTMLElement;
 
+    before(() => {
+        anchor = document.body.appendChild(document.createElement('div'));
+        anchor.style.position = 'absolute';
+        anchor.style.top = '150px';
+        anchor.style.left = '150px';
+        anchor.style.width = '150px';
+        anchor.style.height = '150px';
+        anchor.style.border = '1px solid blue';
+    });
     afterEach(function() {clientRenderer.cleanup(); });
     after(() => {document.body.removeChild(anchor); });
 
@@ -121,7 +124,11 @@ describe('<Popup />', function() {
 
         before(() => {document.body.appendChild(scroll); });
 
-        after(() => {document.body.removeChild(scroll); });
+        after(() => {
+            document.body.removeChild(scroll);
+            document.body.scrollTop = 0;
+            document.body.scrollLeft = 0;
+        });
 
         it('renders the popup in the right location when it is out of view', async function() {
             let div: HTMLDivElement;

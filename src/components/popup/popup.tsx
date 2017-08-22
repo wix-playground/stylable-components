@@ -43,7 +43,6 @@ export class Popup extends React.Component<PopupProps, {}> {
             return;
         }
         const newStyle: React.CSSProperties = {position: 'absolute'};
-        newStyle.display = this.props.open ? '' : 'none';
         const anchorRect = this.props.anchor.getBoundingClientRect();
 
         newStyle.maxHeight = this.props.maxHeight;
@@ -53,51 +52,26 @@ export class Popup extends React.Component<PopupProps, {}> {
             newStyle.width = anchorRect.width;
         }
 
-        const anchorHorizontalPos = this.props.anchorPosition!.horizontal;
-        const anchorVerticalPos = this.props.anchorPosition!.vertical;
-
-        setTop(newStyle, anchorRect,
-            anchorVerticalPos, this.props.popupPosition!.vertical);
-        setLeft(newStyle, anchorRect,
-            anchorHorizontalPos, this.props.popupPosition!.horizontal);
-        if (this.props.syncWidth) {
-            newStyle.width = anchorRect.width;
+        newStyle.top = getVerticalReference(anchorRect, this.props.anchorPosition!.vertical);
+        newStyle.left = getHorizontalReference(anchorRect, this.props.anchorPosition!.horizontal);
+        switch (this.props.popupPosition!.vertical) {
+            case 'center':
+                addTransform(newStyle, 'translateY(-50%)');
+                break;
+            case 'bottom':
+                addTransform(newStyle, 'translateY(-100%)');
+                break;
         }
+        switch (this.props.popupPosition!.horizontal) {
+            case 'center':
+                addTransform(newStyle, 'translateX(-50%)');
+                break;
+            case 'right':
+                addTransform(newStyle, 'translateX(-100%)');
+                break;
+        }
+
         return newStyle;
-    }
-}
-
-function setTop(popupStyle: React.CSSProperties, anchorRect: ClientRect,
-                anchorPosition: VerticalPosition, popupPosition: VerticalPosition) {
-    switch (popupPosition) {
-        case 'top':
-            popupStyle.top = getVerticalReference(anchorRect, anchorPosition);
-            break;
-        case 'center':
-            popupStyle.top = getVerticalReference(anchorRect, anchorPosition);
-            addTransform(popupStyle, 'translateY(-50%)');
-            break;
-        case 'bottom':
-            popupStyle.top = getVerticalReference(anchorRect, anchorPosition);
-            addTransform(popupStyle, 'translateY(-100%)');
-            break;
-    }
-}
-
-function setLeft(popupStyle: React.CSSProperties, anchorRect: ClientRect,
-                 anchorPosition: HorizontalPosition, popupPoistion: HorizontalPosition) {
-    switch (popupPoistion) {
-        case 'left':
-            popupStyle.left = getHorizontalReference(anchorRect, anchorPosition);
-            break;
-        case 'center':
-            popupStyle.left = getHorizontalReference(anchorRect, anchorPosition);
-            addTransform(popupStyle, 'translateX(-50%)');
-            break;
-        case 'right':
-            popupStyle.left = getHorizontalReference(anchorRect, anchorPosition);
-            addTransform(popupStyle, 'translateX(-100%)');
-            break;
     }
 }
 
@@ -117,7 +91,7 @@ function getHorizontalReference(rect: ClientRect, anchorPosition: HorizontalPosi
     }
 }
 
-function addTransform(style: React.CSSProperties, tranformation: string) {
-    style.transform += tranformation;
-    style.WebkitTransform += tranformation;
+function addTransform(style: React.CSSProperties, transformation: string) {
+    style.transform += transformation;
+    style.WebkitTransform += transformation;
 }
