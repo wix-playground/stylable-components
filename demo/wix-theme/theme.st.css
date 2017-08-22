@@ -1,9 +1,22 @@
 :import {
 	-st-from: "../../src/components/number-input/number-input.st.css";
 	-st-default: NumberInput;
-	
 }
+
+:import {
+	-st-from: "../../src/components/toggle/toggle.st.css";
+	-st-default: Toggle;
+}
+
+:import {
+	-st-from: "../../src/components/toggle/toggle.st.css";
+	-st-named:
+		borderWidth;
+}
+
+
 /* Fonts */
+
 
 /* Theme Colors */
 
@@ -19,28 +32,22 @@
 	B40: #daeffe;
 	B50: #eaf7ff;
 	B60: #f4fafe;
-
-    D10: #162d3d;
-    D20: #32536A;
-    D30: #577083;
-    D40: #7a92a5;
-    D50: #b6c1cd;
-    D55: #cbd3dc;
-    D60: #dfe5eb;
-    D70: #f0f4f7;
+	D10: #162d3d;
+	D20: #32536A;
+	D30: #577083;
+	D40: #7a92a5;
+	D50: #b6c1cd;
+	D55: #cbd3dc;
+	D60: #dfe5eb;
+	D70: #f0f4f7;
 	D80: #ffffff;
-	
 	/* Disabled */
 	primary-color: value(B30);
-
-
 }
 
 
 /* Number Input */
 
-
-}
 NumberInput {
 	-st-extends: NumberInput;
 	border: 1px solid value(primary-color);
@@ -48,25 +55,25 @@ NumberInput {
 	background: transparent;
 }
 
-
 NumberInput:hover {
 	background: value(B60);
 	border: 1px solid value(B30);
 }
-NumberInput::stepper{
+
+NumberInput::stepper {
 	width: 30px;
 }
-
 
 NumberInput::stepper::down, NumberInput::stepper::up {
 	background-color: transparent;
 }
+
 NumberInput input {
 	background-color: transparent;
 }
 
 NumberInput input::placeholder {
-	font-family: "HelveticaNeue-Light", sans-serif; 
+	font-family: "HelveticaNeue-Light", sans-serif;
 }
 
 NumberInput::stepper::down::control-icon, NumberInput::stepper::up::control-icon {
@@ -75,24 +82,47 @@ NumberInput::stepper::down::control-icon, NumberInput::stepper::up::control-icon
 }
 
 NumberInput::stepper::up::control-icon {
-	position:relative;
+	position: relative;
 	top: 2px;
 }
 
 NumberInput::stepper::down::control-icon {
-	position:relative;
+	position: relative;
 	bottom: 2px;
 }
-
 
 NumberInput::stepper::down::control-icon:hover, NumberInput::stepper::up::control-icon:hover {
 	color: value(B20);
 }
+
 NumberInput:disabled {
 	background-color: red;
 	outline-color: red;
 }
+
 NumberInput:error {
 	background-color: red;
 	outline-color: red;
+}
+
+
+/* Toggle */
+
+Toggle {
+	-st-extends: Toggle;
+	border: none;
+	background-color: value(B10);
+}
+
+Toggle:checked {
+  background-color: value(B40); /* styles the togle in checked state */
+  background-image: url('demo/wix-theme/assets/ic-checkbox-off.svg');
+}
+
+Toggle::switch {
+	width: 22px;
+	height: 22px;
+	box-shadow: 0 2px 1px 0 rgba(32, 69, 94, 0.50);
+	background-image: url('demo/wix-theme/assets/ic-checkbox-on.svg');
+	background-color: value(D80);
 }
