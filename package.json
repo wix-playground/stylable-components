@@ -19,14 +19,14 @@
   },
   "peerDependencies": {
     "react": ">15.5.0",
-    "stylable": "^3.0.0"
+    "stylable": "^4.0.5"
   },
   "dependencies": {
     "keycode": "^2.1.9",
     "mobx": "^3.2.2",
     "mobx-react": "^4.2.2",
     "stylable-react-component": "^1.0.3",
-    "wix-react-tools": "^1.1.0"
+    "wix-react-tools": "^2.0.0"
   },
   "devDependencies": {
     "@types/mocha": "^2.2.41",
@@ -46,8 +46,8 @@
     "mocha-loader": "^1.1.1",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
-    "stylable": "^3.0.0",
-    "stylable-integration": "^4.1.0",
+    "stylable": "^4.0.5",
+    "stylable-integration": "^5.0.0",
     "test-drive-react": "^0.5.1",
     "ts-loader": "^2.3.3",
     "ts-node": "^3.3.0",
@@ -55,8 +55,7 @@
     "tslint-wix-react": "^4.1.0",
     "typescript": "~2.4.2",
     "webpack": "^3.5.5",
-    "webpack-dev-server": "^2.7.1",
-     "c3-platform": "^1.0.1"
+    "webpack-dev-server": "^2.7.1"
   },
   "testGlob": "./test/**/*.spec.ts?(x)",
   "license": "MIT",
