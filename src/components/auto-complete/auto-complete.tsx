@@ -13,24 +13,26 @@ export type FilterPredicate = (item: string, filterString: string) => boolean;
 export interface AutoCompleteListProps {
     open: boolean;
     items?: string[];
-    selectedItem?: string;
     onItemClick?: (item: string) => void;
+    // selectedItem?: string;
 }
 
 export const AutoCompleteList: React.SFC<AutoCompleteListProps> = SBStateless(props => {
-    if (!props.open) { return null; }
-
-    return (
-        <div data-automation-id="AUTO_COMPLETE_LIST">
-            <SelectionList
-                className="auto-complete-list"
-                dataSource={props.items}
-                value={props.selectedItem}
-                onChange={props.onItemClick!}
-            />
-        </div>
-    );
+    if (props.open) {
+        return (
+            <div data-automation-id="AUTO_COMPLETE_LIST">
+                <SelectionList
+                    className="auto-complete-list"
+                    dataSource={props.items}
+                    onChange={props.onItemClick!}
+                />
+            </div>
+        );
+    }
+    return null;
 }, style);
+
+// value={props.selectedItem}
 
 export interface AutoCompleteProps extends OptionList {
     value?: string;
@@ -39,7 +41,7 @@ export interface AutoCompleteProps extends OptionList {
     className?: string;
     onItemClick?: (item: string) => void;
     open?: boolean;
-    selectedItem?: string;
+    // selectedItem?: string;
     filter?: FilterPredicate;
 }
 
@@ -76,14 +78,14 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
                     value={this.props.value}
                 />
                 <AutoCompleteList
-                    selectedItem={this.props.selectedItem as string}
-                    items={this.props.value ? this.state.filteredItems as string[] : this.props.dataSource as string[]}
                     open={!!this.props.open}
+                    items={this.props.dataSource as string[]}
                     onItemClick={this.onItemClick}
                 />
             </div>
         );
     }
+    // selectedItem={this.props.selectedItem as string}
 
     private onChange = (e: any) => {
         this.props.onChange!(e.target.value || '');
