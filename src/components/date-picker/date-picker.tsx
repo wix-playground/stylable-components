@@ -1,6 +1,6 @@
 import * as keycode from 'keycode';
 import * as React from 'react';
-import { SBComponent } from 'stylable-react-component';
+import {SBComponent} from 'stylable-react-component';
 import {root} from 'wix-react-tools';
 import inputStyles from '../../style/default-theme/controls/input.st.css';
 import {Calendar} from './calendar';
@@ -82,11 +82,11 @@ export class DatePicker extends React.Component<DatePickerProps, DatePickerState
     private onUserInput = (input: string): void => {
         if (this.isDateValid(input)) {
             const updatedDate = input ? new Date(input) : new Date();
-            this.setState({ inputValue: updatedDate.toDateString() });
+            this.setState({inputValue: updatedDate.toDateString()});
 
             this.props.onChange!(updatedDate);
         } else {
-            this.setState({ inputValue: invalidDate });
+            this.setState({inputValue: invalidDate});
         }
     }
 
@@ -112,23 +112,23 @@ export class DatePicker extends React.Component<DatePickerProps, DatePickerState
 
     private onInputChange: React.EventHandler<React.SyntheticEvent<HTMLInputElement>> = (event): void => {
         const eventTarget = event.target as HTMLInputElement;
-        this.setState({ inputValue: eventTarget.value });
+        this.setState({inputValue: eventTarget.value});
     }
 
     private onFocus: React.EventHandler<React.SyntheticEvent<HTMLInputElement>> = (): void => {
         if (this.props.openOnFocus) {
-            this.setState({ isDropdownVisible: true });
+            this.setState({isDropdownVisible: true});
         }
     }
 
     private onMouseDown: React.EventHandler<React.SyntheticEvent<HTMLInputElement>> = (): void => {
-        this.setState({ isDropdownVisible: !this.state.isDropdownVisible });
+        this.setState({isDropdownVisible: !this.state.isDropdownVisible});
     }
 
     private onBlur: React.EventHandler<React.SyntheticEvent<HTMLInputElement>> = (event): void => {
         const eventTarget = event.target as HTMLInputElement;
         this.onUserInput(eventTarget.value);
-        this.setState({ isDropdownVisible: false });
+        this.setState({isDropdownVisible: false});
     }
 
     private shiftDate = (daysToShift: number): void => {
@@ -154,12 +154,12 @@ export class DatePicker extends React.Component<DatePickerProps, DatePickerState
                     this.state.highlightFocusedDate
                         ? this.onCalendarInput(this.state.dropdownDate)
                         : this.onUserInput(eventTarget.value);
-                    this.setState({ isDropdownVisible: !this.state.isDropdownVisible });
+                    this.setState({isDropdownVisible: !this.state.isDropdownVisible});
                     event.preventDefault();
                     break;
 
                 case keycode('space'):
-                    this.setState({ isDropdownVisible: !this.state.isDropdownVisible });
+                    this.setState({isDropdownVisible: !this.state.isDropdownVisible});
                     event.preventDefault();
                     break;
 
@@ -186,9 +186,9 @@ export class DatePicker extends React.Component<DatePickerProps, DatePickerState
 
                 case keycode('down'):
                     if (this.props.openOnFocus === false && !this.state.isDropdownVisible) {
-                        this.setState({ isDropdownVisible: !this.state.isDropdownVisible });
+                        this.setState({isDropdownVisible: !this.state.isDropdownVisible});
                     } else if (!this.state.isDropdownVisible) {
-                        this.setState({ isDropdownVisible: !this.state.isDropdownVisible });
+                        this.setState({isDropdownVisible: !this.state.isDropdownVisible});
                     } else {
                         this.shiftDate(7);
                     }

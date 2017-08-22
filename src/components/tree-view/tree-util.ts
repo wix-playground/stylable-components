@@ -1,4 +1,4 @@
-import { ParentsMap, TreeItemData, TreeStateMap } from './tree-view';
+import {ParentsMap, TreeItemData, TreeStateMap} from './tree-view';
 
 export function getPreviousItem(
     dataSource: object[],

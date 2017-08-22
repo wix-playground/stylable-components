@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react';
-import { RadioGroupDemo } from '../../demo/components/radio-group-demo';
-import { RadioButton, RadioGroup } from '../../src';
+import {RadioGroupDemo} from '../../demo/components/radio-group-demo';
+import {RadioButton, RadioGroup} from '../../src';
 
 const radioGroup = 'RADIO_GROUP';
 const radioButton = 'RADIO_BUTTON';
@@ -258,7 +258,7 @@ describe('<RadioGroup />', function() {
 
     describe('<RadioButton />', function() {
         it('renders a radio button to the screen', function() {
-            const { select, waitForDom } = clientRenderer.render(
+            const {select, waitForDom} = clientRenderer.render(
                 <RadioButton value="Shiva" automationId={radioButton + '_0'} name=""/>
             );
 
@@ -270,7 +270,7 @@ describe('<RadioGroup />', function() {
         });
 
         it('renders the label next to the radio button (right by default)', function() {
-            const { select, waitForDom } = clientRenderer.render(
+            const {select, waitForDom} = clientRenderer.render(
                 <RadioButton value="Omega" automationId={radioButton + '_0'} name=""/>
             );
 
@@ -284,7 +284,7 @@ describe('<RadioGroup />', function() {
         });
 
         it('renders the label on the left side', function() {
-            const { select, waitForDom } = clientRenderer.render(
+            const {select, waitForDom} = clientRenderer.render(
                 <RadioButton value="Tiamat" location="left" automationId={radioButton + '_0'} name=""/>
             );
 
@@ -297,7 +297,7 @@ describe('<RadioGroup />', function() {
         });
 
         it('renders a checked button if the checked value is passed', function() {
-            const { select, waitForDom } = clientRenderer.render(
+            const {select, waitForDom} = clientRenderer.render(
                 <RadioButton value="Chocobo" checked={true} automationId={radioButton + '_0'} name=""/>
             );
 
@@ -309,7 +309,7 @@ describe('<RadioGroup />', function() {
         });
 
         it('set the radio buttons name to the given name', function() {
-            const { select, waitForDom } = clientRenderer.render(
+            const {select, waitForDom} = clientRenderer.render(
                 <RadioButton value="Moogle" automationId={radioButton + '_0'} name="name"/>
             );
 
@@ -321,7 +321,7 @@ describe('<RadioGroup />', function() {
 
         it('calls the onClick function when clicked', async function() {
             const onClick = sinon.spy();
-            const { select, waitForDom } = clientRenderer.render(
+            const {select, waitForDom} = clientRenderer.render(
                 <RadioButton value="Tonberry" onClick={onClick} automationId={radioButton + '_0'} name=""/>
             );
 
@@ -333,7 +333,7 @@ describe('<RadioGroup />', function() {
         });
 
         it('renders a disabled radio button', function() {
-            const { select, waitForDom } = clientRenderer.render(
+            const {select, waitForDom} = clientRenderer.render(
                 <RadioButton value="Tonberry" disabled={true} automationId={radioButton + '_0'} name=""/>
             );
 
@@ -344,7 +344,7 @@ describe('<RadioGroup />', function() {
         });
 
         it('renders any children given to the component', function() {
-            const { select, waitForDom } = clientRenderer.render(
+            const {select, waitForDom} = clientRenderer.render(
                 <RadioButton value="" automationId={radioButton + '_0'}>
                     <span data-automation-id="CHILD">Offspring</span>
                 </RadioButton>
