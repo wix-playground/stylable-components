@@ -304,7 +304,7 @@ export default class TimePicker extends React.Component<Props, State> {
         const {currentSegment} = this.state;
         const keyCode = keycode(e.keyCode);
 
-        // prevent default for and char (a-z) and also for any didgit (0-9) for ampm segment
+        // prevent default for and char (a-z)
         // this is needed to disallow user to move reset select state on input
         if (
             isTimeSegment(currentSegment) &&
@@ -354,10 +354,10 @@ export default class TimePicker extends React.Component<Props, State> {
             case 'space':
             case 'enter':
                 e.preventDefault();
-                if (!isTimeSegment(currentSegment)) {
-                    this.toggleAmpm(true);
+                if (isTimeSegment(currentSegment)) {
+                    this.moveSelection(1);
                 } else {
-                    this.updateSegmentValue(currentSegment, formatTimeChunk(this.state[currentSegment]!));
+                    this.toggleAmpm(true);
                 }
                 break;
         }
