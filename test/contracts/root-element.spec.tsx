@@ -21,9 +21,9 @@ describe('Root Element contract', function() {
 
 export function assertRootElementContract(Component: React.ComponentType<any>): void {
     const clientRenderer = new ClientRenderer();
-    function render<P>(element: React.ReactElement<P>): RenderingContext<P> & { node: Element } {
+    function render<P>(element: React.ReactElement<P>): RenderingContext<P> & { rootNode: Element } {
         const output = clientRenderer.render(element);
-        return {node: findDOMNode(output.result as React.ReactInstance), ...output};
+        return {rootNode: findDOMNode(output.result as React.ReactInstance), ...output};
     }
 
     afterEach(() => {
@@ -31,26 +31,26 @@ export function assertRootElementContract(Component: React.ComponentType<any>): 
     });
 
     it('performs data-automation-id merge', function() {
-         const {select} = render(<Component data-automation-id="CONTRACT_TEST"/>);
-         expect(select('CONTRACT_TEST'), 'data-automation-id not properly merged').to.not.equal(null);
+         const {select, rootNode} = render(<Component data-automation-id="CONTRACT_TEST"/>);
+         expect(select('CONTRACT_TEST'), 'data-automation-id not properly merged').to.equal(rootNode);
     });
 
     it('performs data-* attribute merge', function() {
         const customValue = 'some-custom-value';
-        const {node} = render(<Component data-some-custom-attr={customValue}/>);
-        expect(node).to.have.attribute('data-some-custom-attr');
-        expect(node.getAttribute('data-some-custom-attr')).to.contain(customValue);
+        const {rootNode} = render(<Component data-some-custom-attr={customValue}/>);
+        expect(rootNode).to.have.attribute('data-some-custom-attr');
+        expect(rootNode.getAttribute('data-some-custom-attr')).to.contain(customValue);
     });
 
     it('performs inline style merge', function() {
         const sampleColor = 'rgb(255, 0, 0)';
-        const {node} = render(<Component style={{backgroundColor: sampleColor}}/>);
-        expect(getComputedStyle(node).backgroundColor, 'inline style not properly merged').to.equal(sampleColor);
+        const {rootNode} = render(<Component style={{backgroundColor: sampleColor}}/>);
+        expect(getComputedStyle(rootNode).backgroundColor, 'inline style not properly merged').to.equal(sampleColor);
     });
 
     it('performs className merge', function() {
         const testClassName = 'sample-class-name';
-        const {node} = render(<Component className={testClassName}/>);
-        expect(node.classList.contains(testClassName), 'className not properly merged').to.equal(true);
+        const {rootNode} = render(<Component className={testClassName}/>);
+        expect(rootNode.classList.contains(testClassName), 'className not properly merged').to.equal(true);
     });
 }
