@@ -4,13 +4,11 @@ import {ClientRenderer, expect, RenderingContext} from 'test-drive-react';
 import * as WixReactComponents from '../../src';
 import {isReactComponent} from '../utils/is-react-component';
 
-
 // const allComponents = Object.keys(WixReactComponents);
 // Not all components are passing the contract test right now.
 // failing: TreeView, NumberInput, Toggle, BirthdayPicker, RadioButton, RadioGroup, Portal
 
 const testedComponents: string[] = ['DatePicker', 'CheckBox', 'Image', 'DropDown'];
-
 
 describe('Root Element contract', function() {
     testedComponents.forEach(exportName => describe(exportName, function() {
