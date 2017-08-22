@@ -177,7 +177,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
 
                             role="slider"
                             aria-label={this.props.label}
-                            aria-orientation="horizontal"
+                            aria-orientation={this.state.isVertical ? 'vertical' : 'horizontal'}
                             aria-valuemin={`${this.props.min}`}
                             aria-valuemax={`${this.props.max}`}
                             aria-valuenow={`${this.props.value}`}

@@ -1148,6 +1148,14 @@ describe('<Slider />', () => {
                     expect(element).to.has.value(String(value));
                 });
             });
+
+            it('renders with proper aria-orientation', async () => {
+                await waitForDom(() => {
+                    const element = select('SLIDER-HANDLE');
+
+                    expect(element!.getAttribute('aria-orientation')).to.equal('vertical');
+                });
+            });
         });
 
         describe('when drag things around', () => {
@@ -2482,6 +2490,14 @@ describe('<Slider />', () => {
                     const element = select('SLIDER-NATIVE-INPUT');
 
                     expect(element).to.has.value(String(value));
+                });
+            });
+
+            it('renders with proper aria-orientation', async () => {
+                await waitForDom(() => {
+                    const element = select('SLIDER-HANDLE');
+
+                    expect(element!.getAttribute('aria-orientation')).to.equal('vertical');
                 });
             });
         });
