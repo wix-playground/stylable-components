@@ -2,6 +2,7 @@ import {action} from 'mobx';
 import {observer} from 'mobx-react';
 import * as React from 'react';
 import {SBComponent} from 'stylable-react-component';
+import {root} from 'wix-react-tools';
 import style from './radio-group.st.css';
 
 export interface RadioButtonProps {
@@ -12,26 +13,25 @@ export interface RadioButtonProps {
     onClick?: (e: string) => void;
     disabled?: boolean;
     location?: 'right' | 'left';
-    automationId?: string;
+    'data-automation-id'?: string;
 }
 
 @SBComponent(style) @observer
 export class RadioButton extends React.Component<RadioButtonProps, {}> {
     public static defaultProps: RadioButtonProps = {
         value: '',
-        checked: false,
-        name: '',
         onClick: () => {},
-        location: 'right',
-        disabled: false,
-        automationId: ''
+        location: 'right'
     };
 
     public render() {
+        const rootProps = root(this.props, {
+            className: 'radioContainer'
+        });
+
         return (
             <div
-                data-automation-id={this.props.automationId}
-                className='radioContainer'
+                {...rootProps}
                 onClick={this.onClick}
             >
                 {

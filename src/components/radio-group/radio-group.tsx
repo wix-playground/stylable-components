@@ -1,12 +1,13 @@
 import {action, observable} from 'mobx';
 import {observer} from 'mobx-react';
 import * as React from 'react';
+import {root} from 'wix-react-tools';
 import {RadioButton, RadioButtonProps} from './radio-button';
 
 export interface RadioGroupProps {
     children?: any;
     dataSource?: RadioButtonProps[];
-    onChange: (e: string) => void;
+    onChange?: (e: string) => void;
     disabled?: boolean;
     location?: 'right' | 'left';
     name?: string;
@@ -19,7 +20,7 @@ export interface RadioState {
 }
 
 @observer
-export class RadioGroup extends React.Component<Partial<RadioGroupProps>, {}> {
+export class RadioGroup extends React.Component<RadioGroupProps, {}> {
     public static defaultProps = {
         dataSource: [],
         location: 'right',
@@ -53,10 +54,16 @@ export class RadioGroup extends React.Component<Partial<RadioGroupProps>, {}> {
             childArray = this.createChildrenFromDataSource();
         }
 
+        const rootProps = root(this.props, {
+            'className': 'root',
+            'data-automation-id': 'RADIO_GROUP'
+        });
+
         return (
-            <div data-automation-id="RADIO_GROUP">
+            <div {...rootProps}>
                 {childArray}
-            </div>);
+            </div>
+        );
     }
 
     private initCheckedArray(dataArray: any[], isChildren: boolean = false) {
@@ -93,7 +100,7 @@ export class RadioGroup extends React.Component<Partial<RadioGroupProps>, {}> {
                 const props: RadioButtonProps = {
                     key: index,
                     value: data.value,
-                    automationId: 'RADIO_BUTTON_' + index,
+                    ['data-automation-id']: 'RADIO_BUTTON_' + index,
                     checked: this.checkedArray[index].checked,
                     onClick: this.childrenOnClick(index),
                     disabled: this.props.disabled || data.disabled,
@@ -115,7 +122,7 @@ export class RadioGroup extends React.Component<Partial<RadioGroupProps>, {}> {
                 const props: RadioButtonProps = {
                     key: index,
                     value: data.props.value,
-                    automationId: 'RADIO_BUTTON_' + index,
+                    ['data-automation-id']: 'RADIO_BUTTON_' + index,
                     checked: this.checkedArray[index].checked,
                     onClick: this.childrenOnClick(index),
                     disabled: this.props.disabled || data.props.disabled,
