@@ -9,7 +9,7 @@ export interface AutoCompleteDemoState {
 }
 
 const items = ['Muffins', 'Pancakes', 'Cupcakes', 'Souffles',
-               'Pasta', 'Soup', 'Caramel', 'Avazim', 'Moses', 'Wassermelon'];
+               'Pasta', 'Soup', 'Caramel', 'Avazim', 'Moses'];
 
 export class AutoCompleteDemo extends React.Component<{}, AutoCompleteDemoState> {
 

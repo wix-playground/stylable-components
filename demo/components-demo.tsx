@@ -1,12 +1,11 @@
 import * as React from 'react';
-import '../src/style/default-theme/base.st.css';
 import { AutoCompleteDemo } from './components/auto-complete.demo';
 import { BirthdayPickerDemo } from './components/birthday-picker-demo';
-import { CheckBoxDemo } from './components/checkbox-demo';
-import { DatePickerDemo } from './components/date-picker-demo';
-import { DropDownDemo } from './components/drop-down.demo';
+import {CheckBoxDemo} from './components/checkbox-demo';
+import {DatePickerDemo} from './components/date-picker-demo';
+import {DropDownDemo } from './components/drop-down.demo';
 import { ImageDemo } from './components/image-demo';
-import { NumberInputDemo } from './components/number-input.demo';
+import {NumberInputDemo} from './components/number-input.demo';
 import { RadioGroupDemo } from './components/radio-group-demo';
 import { SelectionListDemo } from './components/selection-list-demo';
 import { ToggleDemo } from './components/toggle-demo';
