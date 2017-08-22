@@ -55,7 +55,7 @@ export interface DropDownItem {
     label: string;
 }
 
-export interface DropDownProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface DropDownProps {
     selectedItem?: DropDownItem;
     onInputClick?: () => void;
     open?: boolean;
