@@ -32,7 +32,7 @@ describe('The DatePicker Component', () => {
 
             const datePickerInput = select(datePickerInputId);
             trigger.change(datePickerInput!, '2017/02/01');
-            simulate.keyDown(datePickerInput, { keyCode: keycode('enter') });
+            simulate.keyDown(datePickerInput, {keyCode: keycode('enter')});
 
             await waitForDom(() => expect(select(currentDate)).to.have.text('Wed Feb 01 2017'));
         });
@@ -123,8 +123,8 @@ describe('The DatePicker Component', () => {
 
         function simulateKeyPress(keyToPress: string) {
             simulate.focus(datePickerInput);
-            simulate.keyDown(datePickerInput, { keyCode: keycode(keyToPress) });
-            simulate.keyDown(datePickerInput, { keyCode: keycode('enter') });
+            simulate.keyDown(datePickerInput, {keyCode: keycode(keyToPress)});
+            simulate.keyDown(datePickerInput, {keyCode: keycode('enter')});
         }
 
         // Advance one week
@@ -377,7 +377,7 @@ describe('The DatePicker Component', () => {
 
             await waitForDom(() => expect(select(datePickerDropdownId)).to.be.absent());
 
-            simulate.keyDown(select(datePickerInputId), { keyCode: keycode('enter') });
+            simulate.keyDown(select(datePickerInputId), {keyCode: keycode('enter')});
 
             await waitForDom(() => expect(select(datePickerDropdownId)).to.be.present());
         });
@@ -389,7 +389,7 @@ describe('The DatePicker Component', () => {
 
             await waitForDom(() => expect(select(datePickerDropdownId)).to.be.absent());
 
-            simulate.keyDown(select(datePickerInputId), { keyCode: keycode('space') });
+            simulate.keyDown(select(datePickerInputId), {keyCode: keycode('space')});
 
             await waitForDom(() => expect(select(datePickerDropdownId)).to.be.present());
         });
