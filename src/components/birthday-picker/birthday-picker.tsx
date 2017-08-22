@@ -1,10 +1,6 @@
-import React = require('react');
 import {autorun, computed, observable, reaction} from 'mobx';
 import {observer} from 'mobx-react';
-
-function daysInMonth(date: Date) {
-    return new Date(date.getUTCFullYear(), date.getUTCMonth() + 1, 0).getDate();
-}
+import * as React from 'react';
 
 export function dateFromYearMonthDay(
     y: string,
@@ -122,8 +118,6 @@ export class BirthdayPicker extends React.Component<BirthdayPickerProps, {}> {
     }
 
     public render() {
-        const months = numberRangeForSelectBox(1, 12);
-
         return (
             <span data-automation-id="BIRTHDAY_PICKER">
                 <Select

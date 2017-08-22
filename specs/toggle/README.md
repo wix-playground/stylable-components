@@ -1,4 +1,4 @@
-## Toggle Spec
+## Toggle
 
 A toggle switch is used as an on/off control
 

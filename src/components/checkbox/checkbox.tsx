@@ -1,15 +1,20 @@
-import React = require('react');
+import * as React from 'react';
 import {SBComponent} from 'stylable-react-component';
 import {root} from 'wix-react-tools';
-import style from './checkbox.st.css';
+import {noop} from '../../utils';
+import styles from './checkbox.st.css';
 
-export interface CheckBoxProps {
+export interface CheckBoxChangeEvent extends React.ChangeEvent<HTMLInputElement> {
+    value: boolean;
+}
+
+export interface CheckBoxProps extends React.HTMLAttributes<HTMLInputElement> {
     value: boolean;
     boxIcon: React.ComponentType<CheckBoxIconProps>;
     tickIcon: React.ComponentType<CheckBoxIconProps>;
     indeterminateIcon: React.ComponentType<CheckBoxIconProps>;
-    onChange: (value: boolean) => any;
-    children?: any;
+    onChange: (event: CheckBoxChangeEvent) => void;
+    children?: React.ReactNode;
     disabled: boolean;
     readonly: boolean;
     indeterminate: boolean;
@@ -21,14 +26,19 @@ export interface CheckBoxIconProps {
     disabled?: boolean;
 }
 
+export interface CheckBoxState {
+    isFocused: boolean;
+}
+
 const DefaultCheckBoxSVG: React.SFC<CheckBoxIconProps> = props => {
     return (
         <svg
-            className={style.boxIconDefault}
+            className={styles.boxIconDefault}
             data-automation-id="CHECKBOX_BOX"
             xmlns="http://www.w3.org/2000/svg"
+            focusable="false"
         >
-            <path d="M.5.5h15v15H.5z"/>
+            <path d="M.5.5h15v15H.5z" />
         </svg>
     );
 };
@@ -36,11 +46,12 @@ const DefaultCheckBoxSVG: React.SFC<CheckBoxIconProps> = props => {
 const DefaultTickMarkSVG: React.SFC<CheckBoxIconProps> = props => {
     return (
         <svg
-            className={style.tickIcon}
+            className={styles.tickIcon}
             data-automation-id="CHECKBOX_TICKMARK"
             xmlns="http://www.w3.org/2000/svg"
+            focusable="false"
         >
-            <path d="M5 8.685l2.496 1.664M8 10.685L11.748 6"/>
+            <path d="M5 8.685l2.496 1.664M8 10.685L11.748 6" />
         </svg>
     );
 };
@@ -48,98 +59,119 @@ const DefaultTickMarkSVG: React.SFC<CheckBoxIconProps> = props => {
 const DefaultIndeterminateSVG: React.SFC<CheckBoxIconProps> = props => {
     return (
         <svg
-            className={style.indeterminateIcon}
+            className={styles.indeterminateIcon}
             data-automation-id="CHECKBOX_INDETERMINATE"
             xmlns="http://www.w3.org/2000/svg"
             width="15"
             height="15"
+            focusable="false"
         >
-            <line x1="4" y1="8" x2="12" y2="8"/>
+            <line x1="4" y1="8" x2="12" y2="8" />
         </svg>
     );
 };
 
-@SBComponent(style)
-export class CheckBox extends React.Component<Partial<CheckBoxProps>, {}> {
-    public static defaultProps: CheckBoxProps = {
-        value: false,
+@SBComponent(styles)
+export class CheckBox extends React.Component<Partial<CheckBoxProps>, CheckBoxState> {
+    public static defaultProps: Partial<CheckBoxProps> = {
         boxIcon: DefaultCheckBoxSVG,
         tickIcon: DefaultTickMarkSVG,
         indeterminateIcon: DefaultIndeterminateSVG,
-        onChange: (value: boolean) => {},
-        disabled: false,
-        readonly: false,
-        indeterminate: false
+        onChange: noop,
+        indeterminate: false,
+        tabIndex: 0
     };
 
+    public state: CheckBoxState = {isFocused: false};
+
+    private inputRef: HTMLInputElement | null = null;
+
     public render() {
-        const BoxIcon = this.props.boxIcon!;
-        const IndeterminateIcon = this.props.indeterminateIcon!;
-        const TickIcon = this.props.tickIcon!;
+        const {value, boxIcon, indeterminate, indeterminateIcon, tickIcon,
+               onChange, children, disabled, readonly, ...rest} = this.props;
+
+        const BoxIcon = boxIcon!;
+        const IndeterminateIcon = indeterminateIcon!;
+        const TickIcon = tickIcon!;
         const rootProps = root(this.props, {
             'data-automation-id': 'CHECKBOX_ROOT',
-            'className': 'root',
-            'cssStates': {
-                checked: this.props.value!,
-                disabled: this.props.disabled!,
-                readonly: this.props.readonly!,
-                indeterminate: this.props.indeterminate!
-            },
-            'onClick': (event: any) => executeClickHandler(
-                this.props.onChange!,
-                !this.props.value,
-                this.props.disabled!,
-                this.props.readonly!,
-                this.props.indeterminate!
-            )
-        }, ['onChange']);
+            'className': 'root'
+        });
+        const cssStates = {
+            checked: value!,
+            disabled: disabled!,
+            readonly: readonly!,
+            indeterminate: indeterminate!,
+            focused: this.state.isFocused
+        };
 
         return (
-            <div {...rootProps}>
-
-                <BoxIcon
-                    value={this.props.value}
-                    indeterminate={this.props.indeterminate}
-                    disabled={this.props.disabled}
-                />
-
-                {this.props.indeterminate &&
-                    <IndeterminateIcon
-                        value={this.props.value}
-                        indeterminate={this.props.indeterminate}
-                        disabled={this.props.disabled}
-                    />
-                }
-                {!this.props.indeterminate && this.props.value &&
-                    <TickIcon
-                        value={this.props.value}
-                        indeterminate={this.props.indeterminate}
-                        disabled={this.props.disabled}
-                    />
-                }
-
-                {this.props.children}
+            <div
+                {...rootProps as React.HTMLAttributes<HTMLDivElement>}
+                onClick={this.handleRootClick}
+                cssStates={cssStates}
+                role="checkbox"
+                aria-checked={indeterminate ? 'mixed' : value}
+            >
 
                 <input
+                    {...rest}
                     data-automation-id="NATIVE_CHECKBOX"
                     type="checkbox"
                     className="nativeCheckbox"
-                    defaultChecked={this.props.value}
-                    disabled={this.props.disabled}
+                    checked={value}
+                    disabled={disabled}
+                    onChange={this.handleInputChange}
+                    ref={this.handleInputRef}
+                    onFocus={this.handleInputFocus}
+                    onBlur={this.handleInputBlur}
                 />
+
+                <BoxIcon
+                    value={value}
+                    indeterminate={indeterminate}
+                    disabled={disabled}
+                />
+
+                {indeterminate &&
+                    <IndeterminateIcon
+                        value={value}
+                        indeterminate={indeterminate}
+                        disabled={disabled}
+                    />
+                }
+                {!indeterminate && value &&
+                    <TickIcon
+                        value={value}
+                        indeterminate={indeterminate}
+                        disabled={disabled}
+                    />
+                }
+
+                {children}
             </div>
         );
     }
-}
 
-function executeClickHandler(
-    handler: (value: boolean) => any,
-    value: boolean,
-    isDisabled: boolean,
-    isReadOnly: boolean,
-    isIndeterminate: boolean
-): void {
-    if (!isDisabled && !isReadOnly) {
-        isIndeterminate ? handler(true) : handler(value);
+    private handleRootClick = (e: React.SyntheticEvent<HTMLDivElement>) => {
+        this.inputRef && this.inputRef.click();
+    }
+
+    private handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (!this.props.disabled && !this.props.readonly) {
+                this.props.onChange!({...e, value: this.props.indeterminate ? true : !this.props.value});
+        }
+    }
+
+    private handleInputFocus = () => {
+        this.setState({isFocused: true});
+    }
+
+    private handleInputBlur = () => {
+        this.setState({isFocused: false});
+    }
+
+    private handleInputRef = (ref: HTMLInputElement | null) => {
+        this.inputRef = ref;
     }
 }

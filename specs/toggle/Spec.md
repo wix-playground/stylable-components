@@ -101,13 +101,27 @@ TBD
 
 ##### Keyboard
 
-For now accessibility for toggle is covered with keyboard behavior & label prop that shows text hint.
+When the toggle has focus, pressing the Space key changes the state of the toggle.
+See [W3C](https://www.w3.org/TR/wai-aria-practices/#checkbox) for reference.
 
 ##### Focus
 
 Toggle should have a focus state. Focus state looks like a square border around the entire component.
 
 ![toggleFocus](./assets/toggleFocus.png)
+
+**Roles & Attributes**
+
+| Role       | Attribute              | Element | Usage                                    |
+| ---------- | ---------------------- | ------- | ---------------------------------------- |
+| `checkbox` |                        | `div`   | The `role="checkbox"` attribute identifies the `div`element as a ARIA `checkbox`.The accessible name comes the child text content of the `div[role="checkbox"]` element.The `checkbox` widget needs a `tabindex="0"` value. |
+|            | `tabindex="0"`         | `div`   | The `div["checkbox"]` is identified as an ineractive element and is added to the tab order of the page by setting the `tabindex="0"`. |
+|            | `aria-checked="false"` | `div`   | Identifies the `checkbox` button as unchecked. CSS attribute selectors (e.g. `[aria-checked="false"]`) are used to synchronize the visual states with the value of the `aria-checked`attribute. |
+|            | `aria-checked="true"`  | `div`   | Identifies the `checkbox` as checked. CSS attribute selectors (e.g. `[aria-checked="true"]`) are used to synchronize the visual states with the value of the `aria-checked` attribute. |
+
+See ARIA doc for reference:
+https://www.w3.org/TR/wai-aria-practices/examples/checkbox/checkbox-1/checkbox-1.html
+https://www.w3.org/TR/wai-aria-practices/#checkbox
 
 ## Examples
 
