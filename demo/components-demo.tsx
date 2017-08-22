@@ -6,7 +6,7 @@ import {DropDownDemo} from './components/drop-down.demo';
 import {ImageDemo} from './components/image-demo';
 import { ModalDemo } from './components/modal-demo';
 import {NumberInputDemo} from './components/number-input.demo';
-import {RadioGroupDemo} from './components/radio-group-demo';
+import { PopupDemo } from './components/popup-demo';
 import {SelectionListDemo} from './components/selection-list-demo';
 import {ToggleDemo} from './components/toggle-demo';
 import {TreeViewDemo} from './components/tree-view-demo';
@@ -140,8 +140,8 @@ export class ComponentsDemo extends React.Component<{}, {}> {
                 </div>
                 <hr />
                 <div>
-                    <h2>Radio Group</h2>
-                    <RadioGroupDemo />
+                    <h2>Popup</h2>
+                    <PopupDemo/>
                 </div>
                 <hr />
                 <div>
