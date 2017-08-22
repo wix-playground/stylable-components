@@ -7,12 +7,12 @@
 	-st-from: "../../src/components/toggle/toggle.st.css";
 	-st-default: Toggle;
 }
-
+/*
 :import {
 	-st-from: "../../src/components/toggle/toggle.st.css";
 	-st-named:
 		borderWidth;
-}
+}*/
 
 
 /* Fonts */
@@ -49,7 +49,6 @@
 /* Number Input */
 
 NumberInput {
-	-st-extends: NumberInput;
 	border: 1px solid value(primary-color);
 	border-radius: 6px;
 	background: transparent;
@@ -62,6 +61,7 @@ NumberInput:hover {
 
 NumberInput::stepper {
 	width: 30px;
+
 }
 
 NumberInput::stepper::down, NumberInput::stepper::up {
@@ -109,20 +109,18 @@ NumberInput:error {
 /* Toggle */
 
 Toggle {
-	-st-extends: Toggle;
 	border: none;
 	background-color: value(B10);
 }
 
 Toggle:checked {
   background-color: value(B40); /* styles the togle in checked state */
-  background-image: url('demo/wix-theme/assets/ic-checkbox-off.svg');
+ 
 }
 
 Toggle::switch {
 	width: 22px;
 	height: 22px;
 	box-shadow: 0 2px 1px 0 rgba(32, 69, 94, 0.50);
-	background-image: url('demo/wix-theme/assets/ic-checkbox-on.svg');
 	background-color: value(D80);
 }
