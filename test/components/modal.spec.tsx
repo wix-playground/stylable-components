@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { ClientRenderer, expect, selectDom, simulate, sinon, waitFor } from 'test-drive-react';
-import { ModalDemo } from '../../demo/components/modal-demo';
-import { Modal } from '../../src';
+import {ClientRenderer, expect, selectDom, simulate, sinon, waitFor} from 'test-drive-react';
+import {ModalDemo} from '../../demo/components/modal-demo';
+import {Modal} from '../../src';
 
 describe('<Modal />', () => {
     const clientRenderer = new ClientRenderer();
