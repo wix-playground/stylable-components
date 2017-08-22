@@ -1,4 +1,5 @@
-.radio-container {
+.radioContainer {
+    -st-extends: root;
     display: flex;
     display: -ms-flexbox;
     position: relative;
@@ -12,7 +13,7 @@
     cursor: default;
 }
 
-.radio-input {
+.radioInput {
     cursor: inherit;
     opacity: 0;
     position: absolute;
@@ -21,7 +22,7 @@
     margin: 0;
 }
 
-.radio-svg {
+.radioSVG {
     cursor: inherit;
     align-self: center;
     width: 16px;

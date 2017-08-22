@@ -1,6 +1,7 @@
 import {action} from 'mobx';
 import {observer} from 'mobx-react';
 import * as React from 'react';
+import {SBComponent} from 'stylable-react-component';
 import style from './radio-group.st.css';
 
 export interface RadioButtonProps {
@@ -14,7 +15,7 @@ export interface RadioButtonProps {
     automationId?: string;
 }
 
-@observer
+@SBComponent(style) @observer
 export class RadioButton extends React.Component<RadioButtonProps, {}> {
     public static defaultProps: RadioButtonProps = {
         value: '',
@@ -30,12 +31,12 @@ export class RadioButton extends React.Component<RadioButtonProps, {}> {
         return (
             <div
                 data-automation-id={this.props.automationId}
-                className={style['radio-container']}
+                className='radioContainer'
                 onClick={this.onClick}
             >
                 {
                     this.props.location === 'left' && (
-                        <span className={style.leftLabel} data-automation-id="LABEL">{this.props.value}</span>
+                        <span className="leftLabel" data-automation-id="LABEL">{this.props.value}</span>
                     )
                 }
                 <div
@@ -49,7 +50,7 @@ export class RadioButton extends React.Component<RadioButtonProps, {}> {
                     }
                     <input
                         type="radio"
-                        className={style['radio-input']}
+                        className="radioInput"
                         data-automation-id={'INPUT'}
                         value={this.props.value}
                         checked={this.props.checked}
@@ -61,7 +62,7 @@ export class RadioButton extends React.Component<RadioButtonProps, {}> {
                 {
                     this.props.location === 'right' && (
                         <span
-                            className={style.rightLabel}
+                            className="rightLabel"
                             data-automation-id="LABEL"
                         >
                             {this.props.value}
@@ -86,7 +87,7 @@ function emptyRadioSvg(disabled: boolean) {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"
-            className={style['radio-svg']}
+            className={style.radioSVG}
             viewBox="0 0 16 16"
         >
             <circle cx="8" cy="8" r="7.5" fill="none" fillRule="evenodd" stroke={svgColor} />
@@ -100,7 +101,7 @@ function checkedRadioSvg(disabled: boolean) {
         <svg
             xmlns="http://www.w3.org/2000/svg"
             xmlnsXlink="http://www.w3.org/1999/xlink"
-            className={style['radio-svg']}
+            className={style.radioSVG}
             viewBox="0 0 16 16"
         >
             <defs>
