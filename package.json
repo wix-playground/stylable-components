@@ -55,8 +55,7 @@
     "tslint-wix-react": "^4.1.0",
     "typescript": "~2.4.2",
     "webpack": "^3.5.5",
-    "webpack-dev-server": "^2.7.1",
-     "c3-platform": "^1.0.1"
+    "webpack-dev-server": "^2.7.1"   
   },
   "testGlob": "./test/**/*.spec.ts?(x)",
   "license": "MIT",
