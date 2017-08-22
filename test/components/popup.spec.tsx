@@ -4,6 +4,7 @@ import {selectDom} from 'test-drive';
 import { ClientRenderer, expect, waitFor } from 'test-drive-react';
 import {PopupDemo} from '../../demo/components/popup-demo';
 import {Popup, PositionPoint} from '../../src/components/';
+import {sleep} from '../utils';
 
 const portalId = 'PORTAL';
 const demoContainer = 'POPUP_DEMO_DIV';
@@ -44,17 +45,35 @@ describe('<Popup />', function() {
 
     it('displays the popup and renders its children if the open prop is given', function() {
         clientRenderer.render(
-            <Popup
-                anchor={anchor}
-                open={true}
-            >
+            <Popup anchor={anchor} open>
                 <span data-automation-id="SPAN">Popup Body</span>
-            </Popup>);
+            </Popup>
+        );
 
         return waitFor(() => {
             expect(bodySelect(portalId)).to.be.present();
             expect(bodySelect(portalId, 'SPAN')).to.be.present();
         });
+    });
+
+    it('does not render the popup if there is no anchor', async function() {
+        clientRenderer.render(
+            <Popup anchor={null} open={true}>
+                <span data-automation-id="SPAN">Popup Body</span>
+            </Popup>
+        );
+        await sleep(100);
+        await waitFor(() => expect(bodySelect(portalId)).to.be.absent());
+    });
+
+    it('does not reder the popup if the open prop is false', async function() {
+        clientRenderer.render(
+            <Popup anchor={anchor} open={false}>
+                <span data-automation-id="SPAN">Popup Body</span>
+            </Popup>
+        );
+        await sleep(100);
+        await waitFor(() => expect(bodySelect(portalId)).to.be.absent());
     });
 
     it('removes the component when unmounting', async function() {

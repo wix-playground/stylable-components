@@ -2,15 +2,12 @@ import React = require('react');
 import {Popup} from '../../src/';
 
 export interface DemoState {
-    div: any;
+    div: HTMLElement | null;
     isOpen: boolean;
 }
 
 export class PopupDemo extends React.Component<{}, DemoState> {
-    constructor() {
-        super();
-        this.state = {div: undefined, isOpen: false};
-    }
+    public state = {div: null, isOpen: false};
 
     public render() {
         const divDim: React.CSSProperties = {width: '50px', border: '1px solid blue'};
@@ -44,7 +41,7 @@ export class PopupDemo extends React.Component<{}, DemoState> {
         this.setState({div: this.state.div, isOpen: !this.state.isOpen});
     }
 
-    private updateState = (ref: any) => {
+    private updateState = (ref: HTMLElement | null) => {
         this.setState({div: ref, isOpen: this.state.isOpen});
     }
 

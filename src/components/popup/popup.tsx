@@ -10,7 +10,7 @@ export interface PositionPoint {
 }
 
 export interface PopupProps {
-    anchor: Element;
+    anchor: Element | null;
     open?: boolean;
     anchorPosition?: PositionPoint;
     popupPosition?: PositionPoint;
@@ -38,12 +38,12 @@ export class Popup extends React.Component<PopupProps, {}> {
         return null;
     }
 
-    private createStyle() {
+    private createStyle(): React.CSSProperties {
         if (!this.props.anchor) {
-            return;
+            return {};
         }
         const newStyle: React.CSSProperties = {position: 'absolute'};
-        const anchorRect = this.props.anchor.getBoundingClientRect();
+        const anchorRect = this.props.anchor!.getBoundingClientRect();
 
         newStyle.maxHeight = this.props.maxHeight;
         newStyle.transform = '';
