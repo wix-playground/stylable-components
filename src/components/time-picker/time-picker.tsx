@@ -290,7 +290,7 @@ export class TimePicker extends React.Component<Props, State> {
             currentSegment: e.currentTarget.name as Segment
         };
         if (!hh && !mm) {
-            update.hh = '00';
+            update.hh = '12';
             update.mm = '00';
         }
         this.setState(update, () => {

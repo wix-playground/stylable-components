@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {TimePicker} from '../../src';
+import {is12TimeFormat} from '../../src/components/time-picker/utils';
 
 export class TimePickerDemo extends React.Component<any, any> {
     public intervalId: any;
@@ -26,7 +27,10 @@ export class TimePickerDemo extends React.Component<any, any> {
         ].join(':');
         return (
             <div>
-                <h3>Current time</h3>
+                <div>
+                    System time format: <code>{is12TimeFormat ? 'ampm' : '24h'}</code>
+                </div>
+                <h3>Current time (read-only)</h3>
                 <div>
                     <TimePicker value={currentTime}/>
                     <span style={{marginLeft: 20}}>{currentTime}</span>
@@ -52,7 +56,7 @@ export class TimePickerDemo extends React.Component<any, any> {
                     <span style={{marginLeft: 20}}>{this.state.value1}</span>
                 </div>
 
-                <h3>Placeholder</h3>
+                <h3>Placeholder (read-only)</h3>
                 <div>
                     <TimePicker
                         placeholder="Pick the time"
@@ -62,7 +66,7 @@ export class TimePickerDemo extends React.Component<any, any> {
                     <span style={{marginLeft: 20}}>{this.state.value2}</span>
                 </div>
 
-                <h3>No value</h3>
+                <h3>No value (read-only)</h3>
                 <div>
                     <TimePicker/>
                 </div>
