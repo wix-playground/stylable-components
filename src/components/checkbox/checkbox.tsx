@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { SBComponent } from 'stylable-react-component';
-import { root } from 'wix-react-tools';
-import { noop } from '../../utils';
+import {SBComponent} from 'stylable-react-component';
+import {root} from 'wix-react-tools';
+import {noop} from '../../utils';
 import styles from './checkbox.st.css';
 
 export interface CheckBoxChangeEvent extends React.ChangeEvent<HTMLInputElement> {

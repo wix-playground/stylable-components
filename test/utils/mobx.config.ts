@@ -1,3 +1,3 @@
-import { useStrict } from 'mobx';
+import {useStrict} from 'mobx';
 
 useStrict(false);

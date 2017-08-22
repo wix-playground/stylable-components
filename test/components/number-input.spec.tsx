@@ -1,8 +1,8 @@
-import { codes as KeyCodes } from 'keycode';
+import {codes as KeyCodes} from 'keycode';
 import * as React from 'react';
-import { ClientRenderer, expect, simulate, sinon } from 'test-drive-react';
-import { NumberInput } from '../../src';
-import { simulateKeyInput } from '../utils';
+import {ClientRenderer, expect, simulate, sinon} from 'test-drive-react';
+import {NumberInput} from '../../src';
+import {simulateKeyInput} from '../utils';
 
 function assertCommit(
     input: Element | null,
@@ -55,7 +55,7 @@ describe('<NumberInput />', () => {
 
     it('should only set appropriate attributes on native input', async () => {
         const value = 0;
-        const { select, waitForDom } = clientRenderer.render(
+        const {select, waitForDom} = clientRenderer.render(
             <NumberInput value={value} />
         );
 
@@ -78,7 +78,7 @@ describe('<NumberInput />', () => {
 
     it('can be disabled', async () => {
         const value = 0;
-        const { select, waitForDom } = clientRenderer.render(
+        const {select, waitForDom} = clientRenderer.render(
             <NumberInput
                 value={value}
                 disabled
@@ -97,7 +97,7 @@ describe('<NumberInput />', () => {
     });
 
     it('should render a stepper', async () => {
-        const { select, waitForDom } = clientRenderer.render(
+        const {select, waitForDom} = clientRenderer.render(
             <NumberInput value={0} />
         );
 
@@ -110,7 +110,7 @@ describe('<NumberInput />', () => {
 
     describe('<Stepper />', () => {
         it('should render increment and decrement controls', async () => {
-            const { select, waitForDom } = clientRenderer.render(
+            const {select, waitForDom} = clientRenderer.render(
                 <NumberInput value={0} />
             );
 
@@ -129,7 +129,7 @@ describe('<NumberInput />', () => {
                 const value = 0;
                 const step = 2;
                 const onChange = sinon.spy();
-                const { select, waitForDom } = clientRenderer.render(
+                const {select, waitForDom} = clientRenderer.render(
                     <NumberInput value={value} step={step} onChange={onChange} />
                 );
 
@@ -146,7 +146,7 @@ describe('<NumberInput />', () => {
             it('should be disabled when value >= max', async () => {
                 const value = 2;
                 const max = 2;
-                const { select, waitForDom } = clientRenderer.render(
+                const {select, waitForDom} = clientRenderer.render(
                     <NumberInput value={value} max={max} />
                 );
 
@@ -161,7 +161,7 @@ describe('<NumberInput />', () => {
                 const value = -3;
                 const min = 0;
                 const onChange = sinon.spy();
-                const { select, waitForDom } = clientRenderer.render(
+                const {select, waitForDom} = clientRenderer.render(
                     <NumberInput value={value} min={min} onChange={onChange} />
                 );
 
@@ -181,7 +181,7 @@ describe('<NumberInput />', () => {
                 const value = 0;
                 const step = 2;
                 const onChange = sinon.spy();
-                const { select, waitForDom } = clientRenderer.render(
+                const {select, waitForDom} = clientRenderer.render(
                     <NumberInput value={value} step={step} onChange={onChange} />
                 );
 
@@ -198,7 +198,7 @@ describe('<NumberInput />', () => {
             it('should be disabled when value <= min', async () => {
                 const value = -1;
                 const min = 0;
-                const { select, waitForDom } = clientRenderer.render(
+                const {select, waitForDom} = clientRenderer.render(
                     <NumberInput value={value} min={min} />
                 );
 
@@ -213,7 +213,7 @@ describe('<NumberInput />', () => {
                 const value = 3;
                 const max = 0;
                 const onChange = sinon.spy();
-                const { select, waitForDom } = clientRenderer.render(
+                const {select, waitForDom} = clientRenderer.render(
                     <NumberInput value={value} max={max} onChange={onChange} />
                 );
 
@@ -236,14 +236,14 @@ describe('<NumberInput />', () => {
                 const value = 0;
                 const step = 2;
                 const onChange = sinon.spy();
-                const { select, waitForDom } = clientRenderer.render(
+                const {select, waitForDom} = clientRenderer.render(
                     <NumberInput value={value} step={step} onChange={onChange} />
                 );
 
                 await waitForDom(() => {
                     const input = select('NATIVE_INPUT_NUMBER');
 
-                    simulate.keyDown(input, { keyCode: KeyCodes.up });
+                    simulate.keyDown(input, {keyCode: KeyCodes.up});
 
                     assertCommit(input, onChange, value + step);
                 });
@@ -253,14 +253,14 @@ describe('<NumberInput />', () => {
                 const value = 0;
                 const step = 2;
                 const onChange = sinon.spy();
-                const { select, waitForDom } = clientRenderer.render(
+                const {select, waitForDom} = clientRenderer.render(
                     <NumberInput value={value} step={step} onChange={onChange} />
                 );
 
                 await waitForDom(() => {
                     const input = select('NATIVE_INPUT_NUMBER');
 
-                    simulate.keyDown(input, { keyCode: KeyCodes.up, shiftKey: true });
+                    simulate.keyDown(input, {keyCode: KeyCodes.up, shiftKey: true});
 
                     assertCommit(input, onChange, value + 10 * step);
                 });
@@ -270,14 +270,14 @@ describe('<NumberInput />', () => {
                 const value = 1;
                 const max = 0;
                 const onChange = sinon.spy();
-                const { select, waitForDom } = clientRenderer.render(
+                const {select, waitForDom} = clientRenderer.render(
                     <NumberInput value={value} max={max} onChange={onChange} />
                 );
 
                 await waitForDom(() => {
                     const input = select('NATIVE_INPUT_NUMBER');
 
-                    simulate.keyDown(input, { keyCode: KeyCodes.up });
+                    simulate.keyDown(input, {keyCode: KeyCodes.up});
 
                     assertCommit(input, onChange, max);
                 });
@@ -287,14 +287,14 @@ describe('<NumberInput />', () => {
                 const value = 0;
                 const min = 1;
                 const onChange = sinon.spy();
-                const { select, waitForDom } = clientRenderer.render(
+                const {select, waitForDom} = clientRenderer.render(
                     <NumberInput value={value} min={min} onChange={onChange} />
                 );
 
                 await waitForDom(() => {
                     const input = select('NATIVE_INPUT_NUMBER');
 
-                    simulate.keyDown(input, { keyCode: KeyCodes.up });
+                    simulate.keyDown(input, {keyCode: KeyCodes.up});
 
                     assertCommit(input, onChange, min);
                 });
@@ -304,14 +304,14 @@ describe('<NumberInput />', () => {
                 const value = 0;
                 const max = 0;
                 const onChange = sinon.spy();
-                const { select, waitForDom } = clientRenderer.render(
+                const {select, waitForDom} = clientRenderer.render(
                     <NumberInput value={value} max={max} onChange={onChange} />
                 );
 
                 await waitForDom(() => {
                     const input = select('NATIVE_INPUT_NUMBER');
 
-                    simulate.keyDown(input, { keyCode: KeyCodes.up });
+                    simulate.keyDown(input, {keyCode: KeyCodes.up});
 
                     expect(onChange).not.to.have.been.called;
                     expect(input).to.have.value(String(value));
@@ -325,14 +325,14 @@ describe('<NumberInput />', () => {
                 const value = 0;
                 const step = 2;
                 const onChange = sinon.spy();
-                const { select, waitForDom } = clientRenderer.render(
+                const {select, waitForDom} = clientRenderer.render(
                     <NumberInput value={value} step={step} onChange={onChange} />
                 );
 
                 await waitForDom(() => {
                     const input = select('NATIVE_INPUT_NUMBER');
 
-                    simulate.keyDown(input, { keyCode: KeyCodes.down });
+                    simulate.keyDown(input, {keyCode: KeyCodes.down});
 
                     assertCommit(input, onChange, value - step);
                 });
@@ -342,14 +342,14 @@ describe('<NumberInput />', () => {
                 const value = 0;
                 const step = 2;
                 const onChange = sinon.spy();
-                const { select, waitForDom } = clientRenderer.render(
+                const {select, waitForDom} = clientRenderer.render(
                     <NumberInput value={value} step={step} onChange={onChange} />
                 );
 
                 await waitForDom(() => {
                     const input = select('NATIVE_INPUT_NUMBER');
 
-                    simulate.keyDown(input, { keyCode: KeyCodes.down, shiftKey: true });
+                    simulate.keyDown(input, {keyCode: KeyCodes.down, shiftKey: true});
 
                     assertCommit(input, onChange, value - 10 * step);
                 });
@@ -359,14 +359,14 @@ describe('<NumberInput />', () => {
                 const value = 1;
                 const max = 0;
                 const onChange = sinon.spy();
-                const { select, waitForDom } = clientRenderer.render(
+                const {select, waitForDom} = clientRenderer.render(
                     <NumberInput value={value} max={max} onChange={onChange} />
                 );
 
                 await waitForDom(() => {
                     const input = select('NATIVE_INPUT_NUMBER');
 
-                    simulate.keyDown(input, { keyCode: KeyCodes.down });
+                    simulate.keyDown(input, {keyCode: KeyCodes.down});
 
                     assertCommit(input, onChange, max);
                 });
@@ -376,14 +376,14 @@ describe('<NumberInput />', () => {
                 const value = 0;
                 const min = 1;
                 const onChange = sinon.spy();
-                const { select, waitForDom } = clientRenderer.render(
+                const {select, waitForDom} = clientRenderer.render(
                     <NumberInput value={value} min={min} onChange={onChange} />
                 );
 
                 await waitForDom(() => {
                     const input = select('NATIVE_INPUT_NUMBER');
 
-                    simulate.keyDown(input, { keyCode: KeyCodes.down });
+                    simulate.keyDown(input, {keyCode: KeyCodes.down});
 
                     assertCommit(input, onChange, min);
                 });
@@ -393,14 +393,14 @@ describe('<NumberInput />', () => {
                 const value = 0;
                 const min = 0;
                 const onChange = sinon.spy();
-                const { select, waitForDom } = clientRenderer.render(
+                const {select, waitForDom} = clientRenderer.render(
                     <NumberInput value={value} min={min} onChange={onChange} />
                 );
 
                 await waitForDom(() => {
                     const input = select('NATIVE_INPUT_NUMBER');
 
-                    simulate.keyDown(input, { keyCode: KeyCodes.down });
+                    simulate.keyDown(input, {keyCode: KeyCodes.down});
 
                     expect(onChange).not.to.have.been.called;
                     expect(input).to.have.value(String(value));
@@ -413,7 +413,7 @@ describe('<NumberInput />', () => {
 
             it('should call onInput on every keystroke', async () => {
                 const onInput = sinon.spy();
-                const { select, waitForDom } = clientRenderer.render(
+                const {select, waitForDom} = clientRenderer.render(
                     <NumberInput onInput={onInput} />
                 );
 
@@ -432,7 +432,7 @@ describe('<NumberInput />', () => {
 
             it('should not commit and validate the value', async () => {
                 const onChange = sinon.spy();
-                const { select, waitForDom } = clientRenderer.render(
+                const {select, waitForDom} = clientRenderer.render(
                     <NumberInput max={10} onChange={onChange} />
                 );
 
@@ -451,7 +451,7 @@ describe('<NumberInput />', () => {
             describe('enter', () => {
                 it('should commit the entered value', async () => {
                     const onChange = sinon.spy();
-                    const { select, waitForDom } = clientRenderer.render(
+                    const {select, waitForDom} = clientRenderer.render(
                         <NumberInput onChange={onChange} />
                     );
 
@@ -462,14 +462,14 @@ describe('<NumberInput />', () => {
                         simulateKeyInput(input, '2');
                         simulateKeyInput(input, '3');
 
-                        simulate.keyDown(input, { keyCode: KeyCodes.enter });
+                        simulate.keyDown(input, {keyCode: KeyCodes.enter});
 
                         assertCommit(input, onChange, 123);
                     });
                 });
                 it('should not commit already committed value', async () => {
                     const onChange = sinon.spy();
-                    const { select, waitForDom } = clientRenderer.render(
+                    const {select, waitForDom} = clientRenderer.render(
                         <NumberInput onChange={onChange} />
                     );
 
@@ -480,8 +480,8 @@ describe('<NumberInput />', () => {
                         simulateKeyInput(input, '2');
                         simulateKeyInput(input, '3');
 
-                        simulate.keyDown(input, { keyCode: KeyCodes.enter });
-                        simulate.keyDown(input, { keyCode: KeyCodes.enter });
+                        simulate.keyDown(input, {keyCode: KeyCodes.enter});
+                        simulate.keyDown(input, {keyCode: KeyCodes.enter});
 
                         assertCommit(input, onChange, 123);
                     });
@@ -491,7 +491,7 @@ describe('<NumberInput />', () => {
             describe('focus', () => {
                 it('should commit on blur', async () => {
                     const onChange = sinon.spy();
-                    const { select, waitForDom } = clientRenderer.render(
+                    const {select, waitForDom} = clientRenderer.render(
                         <NumberInput onChange={onChange} />
                     );
 
@@ -513,7 +513,7 @@ describe('<NumberInput />', () => {
                 it('should discard uncommitted changes', async () => {
                     const initialValue = 3;
                     const onChange = sinon.spy();
-                    const { select, waitForDom } = clientRenderer.render(
+                    const {select, waitForDom} = clientRenderer.render(
                         <NumberInput value={initialValue} onChange={onChange} />
                     );
 
@@ -524,7 +524,7 @@ describe('<NumberInput />', () => {
                         simulateKeyInput(input, '2');
                         simulateKeyInput(input, '3');
 
-                        simulate.keyDown(input, { keyCode: KeyCodes.esc });
+                        simulate.keyDown(input, {keyCode: KeyCodes.esc});
 
                         expect(onChange).not.to.have.been.called;
                         expect(input).to.have.value(String(initialValue));
@@ -536,7 +536,7 @@ describe('<NumberInput />', () => {
 
     describe('children', () => {
         it('should render an elements with data-slot="prefix" and data-slot="suffix" attribute', async () => {
-            const { select, waitForDom } = clientRenderer.render(
+            const {select, waitForDom} = clientRenderer.render(
                 <NumberInput>
                     <span data-slot="prefix" data-automation-id="PREFIX">prefix</span>
                     <span data-slot="suffix" data-automation-id="SUFFIX">suffix</span>
@@ -559,7 +559,7 @@ describe('<NumberInput />', () => {
 
             it('should set the value of input', async () => {
                 const value = 11;
-                const { select, waitForDom } = clientRenderer.render(
+                const {select, waitForDom} = clientRenderer.render(
                     <NumberInput defaultValue={value} />
                 );
 
@@ -574,7 +574,7 @@ describe('<NumberInput />', () => {
                 const initialValue = 11;
                 class Fixture extends React.Component<{}, { defaultValue: number }> {
 
-                    public state = { defaultValue: initialValue };
+                    public state = {defaultValue: initialValue};
 
                     public render() {
                         return (
@@ -584,10 +584,10 @@ describe('<NumberInput />', () => {
                         );
                     }
 
-                    private handleClick = () => this.setState({ defaultValue: this.state.defaultValue + 1 });
+                    private handleClick = () => this.setState({defaultValue: this.state.defaultValue + 1});
                 }
 
-                const { select, waitForDom } = clientRenderer.render(<Fixture />);
+                const {select, waitForDom} = clientRenderer.render(<Fixture />);
 
                 await waitForDom(() => {
                     const fixture = select('FIXTURE');
@@ -607,7 +607,7 @@ describe('<NumberInput />', () => {
 
             it('should allow the user to enter values', async () => {
                 const initialValue = 1;
-                const { select, waitForDom } = clientRenderer.render(
+                const {select, waitForDom} = clientRenderer.render(
                     <NumberInput defaultValue={initialValue} />
                 );
 
@@ -624,7 +624,7 @@ describe('<NumberInput />', () => {
             it('should be controlled by stepper correctly', async () => {
                 const initialValue = 1;
                 const newValue = 3;
-                const { select, waitForDom } = clientRenderer.render(
+                const {select, waitForDom} = clientRenderer.render(
                     <NumberInput defaultValue={initialValue} />
                 );
 
