@@ -103,19 +103,19 @@ export class TimePicker extends React.Component<Props, State> {
                     empty: !isValueSet
                 }}
             >
-                {timeSegments.map(name =>
-                    <div key={name} className={'input-wrap ' + name}>
+                {timeSegments.map(segment =>
+                    <div key={segment} className={'input-wrap ' + segment}>
                         <input
-                            data-automation-id={'TIME_PICKER_INPUT_' + name.toUpperCase()}
+                            data-automation-id={'TIME_PICKER_INPUT_' + segment.toUpperCase()}
                             className="input"
                             type="text"
                             size={2}
                             tabIndex={isNative ? -1 : 0}
-                            ref={elem => this.segments[name] = elem}
-                            value={this.state[name] || ''}
+                            ref={elem => this.segments[segment] = elem}
+                            value={this.state[segment] || ''}
                             placeholder="00"
                             disabled={disabled}
-                            name={name}
+                            name={segment}
                             onMouseDown={this.onInputMouseDown}
                             onChange={this.onInputChange}
                             onFocus={this.onInputFocus}
@@ -152,21 +152,20 @@ export class TimePicker extends React.Component<Props, State> {
                         onDown={this.onStepperDown}
                     />
                 }
-                {isNative &&
-                    <label className="label">
-                        <input
-                            className="native-input"
-                            type="time"
-                            name={name}
-                            aria-label={label}
-                            value={this.getValue()}
-                            disabled={disabled}
-                            onFocus={this.onNantiveInputFocus}
-                            onBlur={this.onBlur}
-                            onChange={this.onNativeInputChange}
-                        />
-                    </label>
-                }
+                <label className="label" cssStates={{visible: isNative}}>
+                    <input
+                        className="native-input"
+                        type="time"
+                        tabIndex={isNative ? 0 : -1}
+                        name={name}
+                        aria-label={label}
+                        value={this.getValue()}
+                        disabled={disabled}
+                        onFocus={this.onNantiveInputFocus}
+                        onBlur={this.onBlur}
+                        onChange={this.onNativeInputChange}
+                    />
+                </label>
             </div>
         );
     }

@@ -134,6 +134,8 @@
     cursor: inherit;
 }
 .label {
+    -st-states: visible;
+    display: none;
     position: absolute;
     top: 0;
     left: 0;
@@ -143,6 +145,9 @@
     -webkit-tap-highlight-color: transparent;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
+}
+.label:visible {
+    display: block;
 }
 .native-input {
     position: absolute;
