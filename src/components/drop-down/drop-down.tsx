@@ -56,9 +56,16 @@ export interface DropDownItem {
 }
 
 export interface DropDownProps {
+    open?: boolean;
+    disabled?: boolean;
+    openOnFocus?: boolean;
+    onChange?: (id: string) => void;
+    hideSelected?: boolean;
+    children?: any;
+    value?: string;
+
     selectedItem?: DropDownItem;
     onInputClick?: () => void;
-    open?: boolean;
     items?: DropDownItem[];
     onItemClick?: (item: DropDownItem) => void;
     tabIndex?: number;
