@@ -7,7 +7,7 @@ const radioGroup = 'RADIO_GROUP';
 const radioButton = 'RADIO_BUTTON';
 const emptyFunction = () => {};
 
-describe('<RadioGroup />', function() {
+xdescribe('<RadioGroup />', function() {
     const clientRenderer = new ClientRenderer();
 
     afterEach(() => {
