@@ -23,6 +23,6 @@ export class ModalDemo extends React.Component<{}, ModalDemoState> {
     }
 
     private onClick = () => {
-        this.setState({ isOpen: !this.state.isOpen });
+        this.setState({isOpen: !this.state.isOpen});
     }
 }
