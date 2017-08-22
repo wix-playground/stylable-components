@@ -1,10 +1,10 @@
 import styles from './stop-scrolling.st.css';
-export const noScollClass = 'stop-scrolling';
+export const noScrollClass = 'stop-scrolling';
 
 export function stopScrolling() {
-    document.body.classList.add(styles[noScollClass]);
+    document.body.classList.add(styles[noScrollClass]);
 }
 
 export function enableScrolling() {
-    document.body.classList.remove(styles[noScollClass]);
+    document.body.classList.remove(styles[noScrollClass]);
 }

@@ -42,8 +42,10 @@ export class Modal extends React.PureComponent<ModalProps, {}> {
             this.props.isOpen ?
                 (
                     <Portal>
-                        <div {...rootProps} onClick={this.onBackdropClick}>
-                            {this.props.children}
+                        <div {...rootProps} onClick={this.onClick('backdrop')}>
+                            <div onClick={this.onClick('children')}>
+                                {this.props.children}
+                            </div>
                         </div>
                     </Portal>
                 )
@@ -51,9 +53,12 @@ export class Modal extends React.PureComponent<ModalProps, {}> {
         );
     }
 
-    private onBackdropClick = () => {
-        if (this.props.onRequestClose) {
-            this.props.onRequestClose('backdrop');
-        }
+    private onClick = (source: string) => {
+        return (event: React.SyntheticEvent<HTMLDivElement>) => {
+            event.stopPropagation();
+            if (this.props.onRequestClose && source !== 'children') {
+                this.props.onRequestClose(source);
+            }
+        };
     }
 }
