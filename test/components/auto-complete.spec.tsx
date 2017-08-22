@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { ClientRenderer, expect, simulate, sinon, waitFor } from 'test-drive-react';
-import { AutoComplete } from '../../src';
 import { AutoCompleteDemo } from '../../demo/components/auto-complete.demo';
+import { AutoComplete } from '../../src';
 
 const autoComp = 'AUTO_COMPLETE';
 const autoCompDemo = autoComp + '_DEMO';
 const input = autoComp + '_INPUT';
 const list = autoComp + '_LIST';
 
-const items = ['Muffins', 'Pancakes', 'Cupcakes', 'Souffles', 'Pasta', 'Soup', 'Caramel', 'Avazim', 'Moses', 'Wassermelon'];
+const items = ['Muffins', 'Pancakes', 'Cupcakes', 'Souffles', 'Pasta', 'Soup', 'Caramel', 'Avazim', 'Moses'];
 
 describe('<AutoComplete />', () => {
     const clientRenderer = new ClientRenderer();
@@ -25,7 +25,9 @@ describe('<AutoComplete />', () => {
         (select(autoCompDemo, input) as HTMLInputElement).value = prefix;
         simulate.change(select(autoCompDemo, input));
 
-        return waitForDom(() => expect(itemList!.textContent).to.eql(items.filter(item => item.startsWith(prefix)).join('')));
+        return waitForDom(() => {
+            expect(itemList!.textContent).to.eql(items.filter(item => item.startsWith(prefix)).join(''));
+        });
     });
 
     it('renders to the screen', () => {

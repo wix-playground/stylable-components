@@ -1,5 +1,6 @@
 import * as React from 'react';
 import '../src/style/default-theme/base.st.css';
+import { AutoCompleteDemo } from './components/auto-complete.demo';
 import { BirthdayPickerDemo } from './components/birthday-picker-demo';
 import { CheckBoxDemo } from './components/checkbox-demo';
 import { DatePickerDemo } from './components/date-picker-demo';
@@ -10,7 +11,6 @@ import { RadioGroupDemo } from './components/radio-group-demo';
 import { SelectionListDemo } from './components/selection-list-demo';
 import { ToggleDemo } from './components/toggle-demo';
 import { TreeViewDemo } from './components/tree-view-demo';
-import { AutoCompleteDemo } from './components/auto-complete.demo';
 import './style.st.css';
 
 export class ComponentsDemo extends React.Component<{}, {}> {

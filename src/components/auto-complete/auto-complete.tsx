@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { SelectionList, OptionList, SelectionItem } from '../selection-list/selection-list';
 import { SBComponent, SBStateless } from 'stylable-react-component/dist/stylable-react';
 import { root } from 'wix-react-tools';
+import { OptionList, SelectionItem, SelectionList } from '../selection-list/selection-list';
 import style from './auto-complete.st.css';
 
 // Selected item is a string because of selection list's constraints
@@ -77,7 +77,7 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
                 />
                 <AutoCompleteList
                     selectedItem={this.props.selectedItem as string}
-                    items={this.props.value ? this.state.filteredItems as string[]: this.props.dataSource as string[]}
+                    items={this.props.value ? this.state.filteredItems as string[] : this.props.dataSource as string[]}
                     open={!!this.props.open}
                     onItemClick={this.onItemClick}
                 />
@@ -90,7 +90,7 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
         this.setState({
            filteredItems: this.props.dataSource!.filter((item: string) => this.props.filter!(item, e.target.value))
         });
-    };
+    }
 
     private onItemClick = (item: string) => {
         this.props.onItemClick!(item);
