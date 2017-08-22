@@ -68,8 +68,12 @@ export interface DropDownProps extends React.HTMLAttributes<HTMLDivElement> {
 
 @SBComponent(style)
 export class DropDown extends React.Component<DropDownProps, {}> {
-
-    public static defaultProps: DropDownProps = { items: [], onItemClick: () => {}, onInputClick: () => {} , tabIndex: 0 };
+    public static defaultProps: DropDownProps = {
+        items: [],
+        onItemClick: () => {},
+        onInputClick: () => {} ,
+        tabIndex: 0
+    };
 
     private dropdown: HTMLDivElement | null;
 

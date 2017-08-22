@@ -1,5 +1,5 @@
-import * as React from 'react';
 import * as keycode from 'keycode';
+import * as React from 'react';
 import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react';
 import {DropDownDemo} from '../../demo/components/drop-down.demo';
 import {DropDown} from '../../src';
@@ -99,22 +99,22 @@ describe('<DropDown />', () => {
 
     describe('Keyboard Navigation', () => {
         it('toggles visibility of selection list when SPACE is clicked', async () => {
-            const { select, waitForDom } = clientRenderer.render(<DropDownDemo />);
+            const {select, waitForDom} = clientRenderer.render(<DropDownDemo />);
 
             await waitForDom(() => expect(select(dropDownDemo, list)).to.be.absent());
 
             simulate.focus(select(dropDownDemo, dropDown));
-            simulate.keyDown(select(dropDownDemo, dropDown), { keyCode: KeyCodes.SPACE });
+            simulate.keyDown(select(dropDownDemo, dropDown), {keyCode: KeyCodes.SPACE});
 
             await waitForDom(() => expect(select(dropDownDemo, list)).to.be.present());
 
-            simulate.keyDown(select(dropDownDemo, dropDown), { keyCode: KeyCodes.SPACE });
+            simulate.keyDown(select(dropDownDemo, dropDown), {keyCode: KeyCodes.SPACE});
 
             return waitForDom(() => expect(select(dropDownDemo, list)).to.be.absent());
         });
 
         it('closes selection list when ESC is clicked', async () => {
-            const { select, waitForDom } = clientRenderer.render(<DropDownDemo />);
+            const {select, waitForDom} = clientRenderer.render(<DropDownDemo />);
 
             await waitForDom(() => expect(select(dropDownDemo, list)).to.be.absent());
 
@@ -122,18 +122,18 @@ describe('<DropDown />', () => {
 
             await waitForDom(() => expect(select(dropDownDemo, list)).to.be.present());
 
-            simulate.keyDown(select(dropDownDemo, dropDown), { keyCode: KeyCodes.ESC });
+            simulate.keyDown(select(dropDownDemo, dropDown), {keyCode: KeyCodes.ESC});
 
             return waitForDom(() => expect(select(dropDownDemo, list)).to.be.absent());
         });
 
         it('opens selection list when DOWN is clicked and it is closed', async () => {
-            const { select, waitForDom } = clientRenderer.render(<DropDownDemo />);
+            const {select, waitForDom} = clientRenderer.render(<DropDownDemo />);
 
             await waitForDom(() => expect(select(dropDownDemo, list)).to.be.absent());
 
             simulate.focus(select(dropDownDemo, dropDown));
-            simulate.keyDown(select(dropDownDemo, dropDown), { keyCode: KeyCodes.DOWN });
+            simulate.keyDown(select(dropDownDemo, dropDown), {keyCode: KeyCodes.DOWN});
 
             return waitForDom(() => expect(select(dropDownDemo, list)).to.be.present());
         });
