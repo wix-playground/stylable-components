@@ -1,9 +1,9 @@
 import * as keycode from 'keycode';
 import * as React from 'react';
-import { SBComponent, SBStateless } from 'stylable-react-component/dist/stylable-react';
-import { root } from 'wix-react-tools';
-import { SelectionList } from '../selection-list';
-import { CaretDown } from './drop-down-icons';
+import {SBComponent, SBStateless} from 'stylable-react-component/dist/stylable-react';
+import {root} from 'wix-react-tools';
+import {SelectionList} from '../selection-list';
+import {CaretDown} from './drop-down-icons';
 import style from './drop-down.st.css';
 
 const KeyCodes: any = {
@@ -69,8 +69,7 @@ export interface DropDownProps extends React.HTMLAttributes<HTMLDivElement> {
 @SBComponent(style)
 export class DropDown extends React.Component<DropDownProps, {}> {
 
-    public static defaultProps: DropDownProps =
-        { items: [], onItemClick: () => {}, onInputClick: () => {}, tabIndex: 0 };
+    public static defaultProps: DropDownProps = { items: [], onItemClick: () => {}, onInputClick: () => {} , tabIndex: 0 };
 
     private dropdown: HTMLDivElement | null;
 
