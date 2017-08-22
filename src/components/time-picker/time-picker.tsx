@@ -356,6 +356,8 @@ export default class TimePicker extends React.Component<Props, State> {
                 e.preventDefault();
                 if (!isTimeSegment(currentSegment)) {
                     this.toggleAmpm(true);
+                } else {
+                    this.updateSegmentValue(currentSegment, formatTimeChunk(this.state[currentSegment]!));
                 }
                 break;
         }
