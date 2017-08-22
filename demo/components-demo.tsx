@@ -5,6 +5,7 @@ import {DatePickerDemo} from './components/date-picker-demo';
 import {DropDownDemo} from './components/drop-down.demo';
 import {ImageDemo} from './components/image-demo';
 import {NumberInputDemo} from './components/number-input.demo';
+import {RadioGroupDemo} from './components/radio-group-demo';
 import {SelectionListDemo} from './components/selection-list-demo';
 import {ToggleDemo} from './components/toggle-demo';
 import {TreeViewDemo} from './components/tree-view-demo';
@@ -47,6 +48,11 @@ export class ComponentsDemo extends React.Component<{}, {}> {
                 <div>
                     <h2>SelectionList</h2>
                     <SelectionListDemo />
+                </div>
+                <hr />
+                <div>
+                    <h2>Radio Group</h2>
+                    <RadioGroupDemo />
                 </div>
                 <hr />
                 <div>
@@ -136,7 +142,6 @@ export class ComponentsDemo extends React.Component<{}, {}> {
                         </tbody>
                     </table>
                 </div>
-                <hr />
                 <hr />
                 <div>
                     <h2>NumberInput</h2>
