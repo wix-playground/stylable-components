@@ -19,14 +19,14 @@
   },
   "peerDependencies": {
     "react": ">15.5.0",
-    "stylable": "^3.0.0"
+    "stylable": "^4.0.5"
   },
   "dependencies": {
     "keycode": "^2.1.9",
     "mobx": "^3.2.2",
     "mobx-react": "^4.2.2",
     "stylable-react-component": "^1.0.3",
-    "wix-react-tools": "^1.1.0"
+    "wix-react-tools": "^2.0.0"
   },
   "devDependencies": {
     "@types/mocha": "^2.2.41",
@@ -49,7 +49,7 @@
     "mocha-loader": "^1.1.1",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
-    "stylable": "^4.0.2",
+    "stylable": "^4.0.5",
     "stylable-integration": "^5.0.0",
     "test-drive-react": "^0.5.1",
     "ts-loader": "^2.3.3",

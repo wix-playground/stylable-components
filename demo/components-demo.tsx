@@ -5,7 +5,6 @@ import {DatePickerDemo} from './components/date-picker-demo';
 import {DropDownDemo} from './components/drop-down.demo';
 import {ImageDemo} from './components/image-demo';
 import {NumberInputDemo} from './components/number-input.demo';
-import {RadioGroupDemo} from './components/radio-group-demo';
 import {SelectionListDemo} from './components/selection-list-demo';
 import {TimePickerDemo} from './components/time-picker-demo';
 import {ToggleDemo} from './components/toggle-demo';
@@ -144,10 +143,6 @@ export class ComponentsDemo extends React.Component<{}, {}> {
                     </table>
                 </div>
                 <hr />
-                <div>
-                    <h2>Radio Group</h2>
-                    <RadioGroupDemo />
-                </div>
                 <hr />
                 <div>
                     <h2>NumberInput</h2>
