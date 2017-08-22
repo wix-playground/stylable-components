@@ -142,10 +142,6 @@ export class ComponentsDemo extends React.Component<{}, {}> {
                     </table>
                 </div>
                 <hr />
-                <div>
-                    <h2>Radio Group</h2>
-                    <RadioGroupDemo />
-                </div>
                 <hr />
                 <div>
                     <h2>NumberInput</h2>
