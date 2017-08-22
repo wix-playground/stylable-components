@@ -9,7 +9,7 @@
 * Input component containing an icon component.
 * Popup component which displays the calendar view.
 
-![Date picker examples](./assets/DatePickerBasicInput.png)
+![Date picker examples](./assets/elements.png)
 
 
 ## API
@@ -64,21 +64,37 @@
 
 ## Style API
 
-### Style Classes
-
-| name | description |
-| --- | --- |
-| inputStyle | Used for the input component |
-| iconStyle | Used for the icon component |
-| calendarViewStyle | Used for the Calendar View |
-| itemStyle | For an item in the Calendar View |
-| calendarTitleStyle | For changing the look of the month/year title |
-| calendarIconStyle | For changing the icons style |
-| calendarDividerStyle | Control appearance of the title divider |
-
 ### Subcomponents (pseudo elements)
 
+name | description
+--- | ---
+input | A field to manually input the date, or to display the date selected from the calendar view.
+dropdownArrowWrapper | defines the region where the dropdownArrow will be displayed
+dropdownArrow | visually connects the dropdown to the input
+dropdown | container of all components except for input
+header | current month name, and the prev month and next month buttons
+headerDate | current month and year
+arrowWrapper | general display of the prev and next month buttons
+arrowWrapperPrev | 
+arrowWrapperNext |
+headerArrow | general arrow for the next and previous buttons
+headerArrowPrev | button for the previous month
+headerArrowNext | button for the next month
+calendarItem | individual 
+calendar | view that contains the days of the month
+dayName | day of the week title
+day | day element in the calendar
+
 ### Custom CSS States (pseudo-classes)
+
+state                          | description                             
+------------------------------ | ----------------------------------------
+:error                         | Style the component on error, i.e. when the `error` prop is true.
+:selected	| Style for the user entered date.
+:current                       | Style the day element in the calendar.
+:inactive | Style for the days of the previous and next months.
+:focused | Style for keyboard navigation of day elements in the calendar.
+:hover, etc | Standard CSS state                      
 
 ### Style Code Example
 
