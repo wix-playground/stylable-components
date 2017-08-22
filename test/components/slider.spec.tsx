@@ -301,6 +301,58 @@ describe('<Slider />', () => {
         });
     });
 
+    describe('when marks=true', () => {
+        it('renders proper number of marks', async () => {
+            const value = 5;
+            const min = 0;
+            const max = 10;
+            const step = 5;
+            const rendered = clientRenderer.render(
+                <Slider
+                    value={value}
+                    min={min}
+                    max={max}
+                    step={step}
+                    marks={true}
+                />
+            );
+            const select: (automationId: string) => HTMLElement | null = rendered.select;
+            const waitForDom: (expectation: () => void) => Promise<void> = rendered.waitForDom;
+
+            await waitForDom(() => {
+                expect(select(`SLIDER-MARKS-0`)).to.be.present();
+                expect(select(`SLIDER-MARKS-1`)).to.be.present();
+                expect(select(`SLIDER-MARKS-2`)).to.be.present();
+                expect(select(`SLIDER-MARKS-3`)).not.to.be.present();
+            });
+        });
+
+        it('renders marks on proper places', async () => {
+            const value = 5;
+            const min = 0;
+            const max = 10;
+            const step = 2;
+            const rendered = clientRenderer.render(
+                <Slider
+                    value={value}
+                    min={min}
+                    max={max}
+                    step={step}
+                    marks={true}
+                />
+            );
+            const select: (automationId: string) => HTMLElement | null = rendered.select;
+            const waitForDom: (expectation: () => void) => Promise<void> = rendered.waitForDom;
+
+            await waitForDom(() => {
+                for (let i = 0; i <= 5; i++) {
+                    const mark = select(`SLIDER-MARKS-${i}`);
+                    expect(mark!.style.left).to.equal(`${20 * i}%`);
+                }
+            });
+        });
+    });
+
     describe('when drag things around', () => {
         const value = 5;
         const min = 0;

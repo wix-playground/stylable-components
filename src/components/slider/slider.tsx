@@ -277,6 +277,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
                                 {left: `${position}%`})
 
                     }
+                    data-automation-id={`SLIDER-MARKS-${i}`}
                 />
             ));
         }
