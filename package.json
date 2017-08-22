@@ -34,7 +34,6 @@
     "@types/react": "^16.0.2",
     "@types/react-dom": "^15.5.3",
     "@types/webpack-env": "^1.13.0",
-    "c3-platform": "^1.0.1",
     "glob": "^7.1.2",
     "karma": "^1.7.0",
     "karma-chrome-launcher": "^2.2.0",
@@ -56,7 +55,7 @@
     "tslint-wix-react": "^4.1.0",
     "typescript": "~2.4.2",
     "webpack": "^3.5.5",
-    "webpack-dev-server": "^2.7.1"   
+    "webpack-dev-server": "^2.7.1"
   },
   "testGlob": "./test/**/*.spec.ts?(x)",
   "license": "MIT",
