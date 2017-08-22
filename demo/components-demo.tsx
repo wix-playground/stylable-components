@@ -1,15 +1,15 @@
 import * as React from 'react';
-import { BirthdayPickerDemo } from './components/birthday-picker-demo';
+import {BirthdayPickerDemo} from './components/birthday-picker-demo';
 import {CheckBoxDemo} from './components/checkbox-demo';
 import {DatePickerDemo} from './components/date-picker-demo';
-import {DropDownDemo } from './components/drop-down.demo';
-import { ImageDemo } from './components/image-demo';
+import {DropDownDemo} from './components/drop-down.demo';
+import {ImageDemo} from './components/image-demo';
 import {NumberInputDemo} from './components/number-input.demo';
-import { RadioGroupDemo } from './components/radio-group-demo';
-import { SelectionListDemo } from './components/selection-list-demo';
-import { TimePickerDemo } from './components/time-picker-demo';
-import { ToggleDemo } from './components/toggle-demo';
-import { TreeViewDemo } from './components/tree-view-demo';
+import {RadioGroupDemo} from './components/radio-group-demo';
+import {SelectionListDemo} from './components/selection-list-demo';
+import {TimePickerDemo} from './components/time-picker-demo';
+import {ToggleDemo} from './components/toggle-demo';
+import {TreeViewDemo} from './components/tree-view-demo';
 import './style.st.css';
 
 export class ComponentsDemo extends React.Component<{}, {}> {

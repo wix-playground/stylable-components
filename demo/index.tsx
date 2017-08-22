@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { ComponentsDemo } from './components-demo';
+import {ComponentsDemo} from './components-demo';
 
 const meta = document.createElement('meta');
 meta.name = 'viewport';
