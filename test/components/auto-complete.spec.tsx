@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ClientRenderer, expect, simulate, sinon, waitFor } from 'test-drive-react';
-// import { AutoCompleteDemo } from '../../demo/components/auto-complete.demo';
+import { AutoCompleteDemo } from '../../demo/components/auto-complete.demo';
 import { AutoComplete } from '../../src';
 
 const autoComp = 'AUTO_COMPLETE';
@@ -13,22 +13,6 @@ const items = ['Muffins', 'Pancakes', 'Cupcakes', 'Souffles', 'Pasta', 'Soup', '
 describe('<AutoComplete />', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
-
-    // it('displays filtered results according to input text', async () => {
-    //     const { select, waitForDom } = clientRenderer.render(<AutoCompleteDemo />);
-    //
-    //     const itemList = select(autoCompDemo, list);
-    //
-    //     await waitForDom(() => expect(itemList!.textContent).to.eql(items.join('')));
-    //
-    //     const prefix = 'P';
-    //     (select(autoCompDemo, input) as HTMLInputElement).value = prefix;
-    //     simulate.change(select(autoCompDemo, input));
-    //
-    //     return waitForDom(() => {
-    //         expect(itemList!.textContent).to.eql(items.filter(item => item.startsWith(prefix)).join(''));
-    //     });
-    // });
 
     it('renders to the screen', () => {
         const { select, waitForDom } = clientRenderer.render(<AutoComplete />);
@@ -58,9 +42,7 @@ describe('<AutoComplete />', () => {
     it('renders the items if given', async () => {
         const { select, waitForDom } = clientRenderer.render(<AutoComplete open dataSource={items}/>);
 
-        await waitForDom(() => {
-            expect(select(autoComp, list, 'LIST')!.children[0].innerHTML).to.be.equal('Muffins');
-        });
+        await waitForDom(() => expect(select(autoComp, list, 'LIST')!.children[0].innerHTML).to.be.equal('Muffins'));
     });
 
     it('invokes the onItemClick when an option is clicked', async () => {
@@ -74,6 +56,21 @@ describe('<AutoComplete />', () => {
         await waitFor(() => {
             expect(onItemClick).to.have.been.calledOnce;
             expect(onItemClick).to.have.been.calledWithMatch('Cat');
+        });
+    });
+
+    it('displays filtered results according to input text', async () => {
+        const { container, select, waitForDom } = clientRenderer.render(<AutoComplete open dataSource={items}/>);
+
+        const itemList = select(autoComp, list);
+
+        await waitForDom(() => expect(itemList!.textContent).to.eql(items.join('')));
+
+        const prefix = 'P';
+        clientRenderer.render(<AutoComplete open dataSource={items} value={prefix}/>, container);
+
+        return waitForDom(() => {
+            expect(itemList!.textContent).to.eql(items.filter(item => item.startsWith(prefix)).join(''));
         });
     });
 });

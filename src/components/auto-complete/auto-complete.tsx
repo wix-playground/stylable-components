@@ -45,16 +45,12 @@ export interface AutoCompleteProps extends OptionList {
     filter?: FilterPredicate;
 }
 
-export interface AutoCompleteState {
-    filteredItems: SelectionItem[];
-}
-
 const prefixFilter: FilterPredicate = (item: string, prefix: string) => item.startsWith(prefix);
 
 @SBComponent(style)
-export class AutoComplete extends React.Component<AutoCompleteProps, AutoCompleteState> {
-
+export class AutoComplete extends React.Component<AutoCompleteProps, {}> {
     public static defaultProps: AutoCompleteProps = {
+        open: false,
         dataSource: [],
         value: '',
         filter: prefixFilter,
@@ -67,7 +63,9 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
             'data-automation-id': 'AUTO_COMPLETE',
             'className': 'auto-complete'
         }) as React.HtmlHTMLAttributes<HTMLDivElement>;
-
+        const filteredItems = this.props.value ?
+            this.props.dataSource!.filter((item: string) => this.props.filter!(item, this.props.value!)) :
+            this.props.dataSource;
         return (
             <div {...rootProps}>
                 <input
@@ -78,8 +76,8 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
                     value={this.props.value}
                 />
                 <AutoCompleteList
-                    open={!!this.props.open}
-                    items={this.props.dataSource as string[]}
+                    open={this.props.open!}
+                    items={filteredItems as string[]}
                     onItemClick={this.onItemClick}
                 />
             </div>
@@ -89,9 +87,6 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
 
     private onChange = (e: any) => {
         this.props.onChange!(e.target.value || '');
-        this.setState({
-           filteredItems: this.props.dataSource!.filter((item: string) => this.props.filter!(item, e.target.value))
-        });
     }
 
     private onItemClick = (item: string) => {
