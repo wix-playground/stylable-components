@@ -5,7 +5,7 @@ import {DatePickerDemo} from './components/date-picker-demo';
 import {DropDownDemo} from './components/drop-down.demo';
 import {ImageDemo} from './components/image-demo';
 import {NumberInputDemo} from './components/number-input.demo';
-import { PopupDemo } from './components/popup-demo';
+import {PopupDemo} from './components/popup-demo';
 import {SelectionListDemo} from './components/selection-list-demo';
 import {SliderDemo} from './components/slider-demo';
 import {ToggleDemo} from './components/toggle-demo';

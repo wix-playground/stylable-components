@@ -98,6 +98,8 @@ export class Slider extends React.Component<SliderProps, SliderState> {
 
     private isSliderMounted: boolean = false;
 
+    private isActive: boolean = false;
+
     constructor(props: SliderProps, context?: any) {
         super(props, context);
 
@@ -206,7 +208,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
     }
 
     public componentWillReceiveProps(nextProps: SliderProps) {
-        if (this.state.isActive) {
+        if (this.isActive) {
             return;
         }
 
@@ -412,6 +414,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
             relativeValue,
             isActive: true
         });
+        this.isActive = true;
 
         this.onDragStart(event.nativeEvent);
         this.props.onInput!(String(this.getAbsoluteValue(relativeValue)));
@@ -445,6 +448,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
             relativeValue,
             isActive: false
         });
+        this.isActive = false;
 
         this.focusableElement.focus();
         this.onDragStop(event);
@@ -471,6 +475,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
             relativeValue,
             isActive: true
         });
+        this.isActive = true;
 
         event.preventDefault();
 
@@ -509,6 +514,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
             relativeValue,
             isActive: false
         });
+        this.isActive = false;
 
         this.onDragStop(event);
         this.props.onChange!(value);
