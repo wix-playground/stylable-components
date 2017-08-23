@@ -264,18 +264,21 @@
     cursor: not-allowed;
 }
 
-.root:disabled .handle {
+.root:disabled .handle ,
+.root:disabled .slider:hover .handle {
     -webkit-box-shadow: 0 0 0 0px rgba(92, 180, 255, 0.5);
     box-shadow: 0 0 0 0px rgba(92, 180, 255, 0.5);
     border-color: #c8c8c8;
     background-color: #f1f1f1;
 }
 
-.root:disabled .track {
+.root:disabled .track ,
+.root:disabled .slider:hover .track {
     background-color: #c8c8c8;
 }
 
-.root:disabled .markTrack {
+.root:disabled .markTrack ,
+.root:disabled .slider:hover .markTrack {
     background-color: #c8c8c8;
 }
 
