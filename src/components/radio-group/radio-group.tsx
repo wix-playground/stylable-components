@@ -3,13 +3,13 @@ import {observer} from 'mobx-react';
 import * as React from 'react';
 import {SBComponent} from 'stylable-react-component';
 import {root} from 'wix-react-tools';
-import {RadioButton, RadioButtonProps} from './radio-button';
+import {RadioButton, RadioButtonProps, RadioChangeEvent} from './radio-button';
 import styles from './radio-group.st.css';
 
 export interface RadioGroupProps {
     children?: any;
     dataSource?: RadioButtonProps[];
-    onChange?: (e: string) => void;
+    onChange?: (e: RadioChangeEvent) => void;
     disabled?: boolean;
     location?: 'right' | 'left';
     name?: string;
@@ -83,13 +83,13 @@ export class RadioGroup extends React.Component<RadioGroupProps, {}> {
     }
 
     private childrenOnClick(index: number) {
-        return (value: string) => {
+        return (e: RadioChangeEvent) => {
             this.checkedArray.forEach(data => {
                 data.checked = false;
             });
             this.checkedArray[index].checked = true;
             if (this.props.onChange) {
-                this.props.onChange(value);
+                this.props.onChange(e);
             }
         };
     }
@@ -103,7 +103,7 @@ export class RadioGroup extends React.Component<RadioGroupProps, {}> {
                     value: data.value,
                     ['data-automation-id']: 'RADIO_BUTTON_' + index,
                     checked: this.checkedArray[index].checked,
-                    onClick: this.childrenOnClick(index),
+                    onChange: this.childrenOnClick(index),
                     disabled: this.props.disabled || data.disabled,
                     location: this.props.location,
                     name: this.name
@@ -125,7 +125,7 @@ export class RadioGroup extends React.Component<RadioGroupProps, {}> {
                     value: data.props.value,
                     ['data-automation-id']: 'RADIO_BUTTON_' + index,
                     checked: this.checkedArray[index].checked,
-                    onClick: this.childrenOnClick(index),
+                    onChange: this.childrenOnClick(index),
                     disabled: this.props.disabled || data.props.disabled,
                     location: this.props.location,
                     name: this.name};

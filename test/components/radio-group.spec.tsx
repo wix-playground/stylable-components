@@ -127,7 +127,7 @@ describe('<RadioGroup />', () => {
 
         await waitFor(() => {
             expect(onChange).to.have.been.calledOnce;
-            expect(onChange).to.have.been.calledWithMatch('Quetzalcoatl');
+            expect(onChange).to.have.been.calledWithMatch({value: 'Quetzalcoatl'});
         });
     });
 
@@ -318,9 +318,9 @@ describe('<RadioGroup />', () => {
         });
 
         it('calls the onClick function when clicked', async () => {
-            const onClick = sinon.spy();
+            const onChange = sinon.spy();
             const {select, waitForDom} = clientRenderer.render(
-                <RadioButton value="Tonberry" onClick={onClick} data-automation-id={radioButton + '_0'}/>
+                <RadioButton value="Tonberry" onChange={onChange} data-automation-id={radioButton + '_0'}/>
             );
 
             const button = select(radioButton + '_0');
@@ -330,7 +330,7 @@ describe('<RadioGroup />', () => {
             simulate.click(button);
 
             return waitFor(() => {
-                expect(onClick).to.have.been.calledWithMatch('Tonberry');
+                expect(onChange).to.have.been.calledWithMatch({value: 'Tonberry'});
             });
         });
 

@@ -6,12 +6,16 @@ import {root} from 'wix-react-tools';
 import {noop} from '../../utils';
 import style from './radio-button.st.css';
 
-export interface RadioButtonProps {
+export interface RadioChangeEvent extends React.ChangeEvent<HTMLInputElement> {
+    value: string;
+}
+
+export interface RadioButtonProps extends React.InputHTMLAttributes<HTMLInputElement> {
     key?: number;
     value: string;
     checked?: boolean;
     name?: string;
-    onClick?: (e: string) => void;
+    onChange?: (event: RadioChangeEvent) => void;
     disabled?: boolean;
     location?: 'right' | 'left';
     'data-automation-id'?: string;
@@ -21,9 +25,9 @@ export interface RadioButtonProps {
 export class RadioButton extends React.Component<RadioButtonProps, {}> {
     public static defaultProps: RadioButtonProps = {
         value: '',
-        onClick: noop,
+        onChange: noop,
         location: 'right',
-        checked: false  // required for a bug in firefox
+        checked: false // required for a bug in firefox
     };
 
     public render() {
@@ -68,9 +72,9 @@ export class RadioButton extends React.Component<RadioButtonProps, {}> {
     }
 
     @action
-    private onClick: React.EventHandler<React.SyntheticEvent<HTMLDivElement>> = () => {
+    private onClick: React.EventHandler<RadioChangeEvent> = (e) => {
         if (!this.props.disabled) {
-            this.props.onClick!(this.props.value);
+            this.props.onChange!({...e, value: this.props.value});
         }
     }
 }
