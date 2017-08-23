@@ -425,7 +425,7 @@ describe('<TimePicker/>', () => {
 
         describeDesktop('focus and change ampm input', () => {
             beforeEach(() => {
-                ampm.focus();
+                simulate.focus(ampm);
                 simulate.keyDown(ampm, {keyCode: keycode('space')});
             });
             it('onChange should be callen with "16:55"', () => {
