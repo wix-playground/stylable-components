@@ -312,6 +312,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
     }
 
     private changeValue(dirrection: ChangeDirrection, multiplier: number = 1, toEdge: boolean = false) {
+        const {relativeValue} = this.state;
         let newRelativeValue: number;
 
         const relativeStep = this.state.relativeStep === CONTINUOUS_STEP ?
@@ -325,8 +326,8 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         } else {
             newRelativeValue = this.getValueInRange(
                 dirrection === ChangeDirrection.ascend ?
-                    this.state.relativeValue + relativeStep :
-                    this.state.relativeValue - relativeStep,
+                    Math.floor(relativeValue / relativeStep) * relativeStep + relativeStep :
+                    Math.ceil(relativeValue / relativeStep) * relativeStep - relativeStep,
                 0, 100
             );
         }
