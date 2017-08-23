@@ -240,7 +240,8 @@
 }
 
 /* Active state */
-.root:active .handle {
+.root:active .handle,
+.root:active .slider:hover .handle {
     -webkit-box-shadow: 0 0 0 0px rgba(92, 180, 255, 0.5);
     box-shadow: 0 0 0 0px rgba(92, 180, 255, 0.5);
     background-color: #4a90e2;
@@ -283,10 +284,13 @@
 }
 
 /* Error state */
-.root:error .progress {
+.root:error .markProgress,
+.root:error .progress
+{
     background-color: #e24a4a;
 }
-
-.root:error:active .progress {
-    background-color: #4a90e2;
+.root:active:error .handle,
+.root:active:error .slider:hover .handle {
+    background-color: #e24a4a;
+    border-color: #e24a4a;
 }
