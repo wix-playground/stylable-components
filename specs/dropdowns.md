@@ -114,10 +114,13 @@ Styles for MultiSelect:
 #### Aria Attributes
 * User provided props: aria-label, aria-labelledby, aria-describedby
 * Children aria roles will be in the SelectionList specs
+* aria-activedescendant="ID_REF" - Applied to the element with the listbox role, tells assistive technologies which of the options, if any, is visually indicated as having keyboard focus. idref, refers to the ID of the focused option in the list. When navigation keys, such as Down Arrow, are pressed, the JavaScript changes the value. When the listbox is empty, aria-activedescendant="".
 
 #### Focus
 
-On <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">TAB</kbd> the dropdown gets focus.
+* When <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">Tab</kbd> moves focus into the listbox:
+  * If none of the options is selected, focus is set to first option.
+  * If an option is selected, focus moves to the first selected option.
 
 ## Behavior
 
