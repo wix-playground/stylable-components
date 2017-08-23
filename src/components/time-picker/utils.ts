@@ -19,7 +19,6 @@ export const isTouchTimeInputSupported = (() => {
 })();
 
 export const is12TimeFormat = /AM|PM/.test(new Date().toLocaleTimeString());
-export const validInputStringRE = /^(\d{1,2}):(\d{1,2})$/;
 export const ampmLabels = {
     [Ampm.AM]: 'AM',
     [Ampm.PM]: 'PM',
