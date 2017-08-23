@@ -68,7 +68,7 @@ export class TimePickerDemo extends React.Component<any, any> {
 
                 <h3>No value (read-only)</h3>
                 <div>
-                    <TimePicker/>
+                    <TimePicker format='ampm'/>
                 </div>
 
                 <h3>Disabled</h3>

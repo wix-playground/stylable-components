@@ -39,7 +39,7 @@ function propsValueToSegments(value?: string, format?: Format): {hh?: string, mm
     const isAmpm = format === 'ampm';
     if (!value) {
         return {
-            ampm: isAmpm ? Ampm.AM : Ampm.NONE
+            ampm: isAmpm ? Ampm.PM : Ampm.NONE
         };
     }
     const [hh24, mm] = value.split(':').map(Number);
