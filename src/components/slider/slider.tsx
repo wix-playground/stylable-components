@@ -521,7 +521,8 @@ export class Slider extends React.Component<SliderProps, SliderState> {
     }
 
     private onSliderAreaKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
-        if (this.props.disabled) {
+        if (this.isActive || this.props.disabled) {
+            event.preventDefault();
             return;
         }
 
