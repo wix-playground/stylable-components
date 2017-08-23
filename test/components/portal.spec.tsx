@@ -106,6 +106,6 @@ describe('<Portal />', function() {
             </Portal>
         );
 
-        await waitFor(() => expect(bodySelect(portalId).className).to.contain('test-class'));
+        await waitFor(() => expect(bodySelect(portalId)!.className).to.contain('test-class'));
     });
 });
