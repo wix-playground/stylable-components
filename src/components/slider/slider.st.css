@@ -30,7 +30,7 @@
 }
 
 .root {
-    -st-states: active, disabled, error, x, x-reverse, y, y-reverse;
+    -st-states: active, disabled, error, x, x-reverse, y, y-reverse, pointed;
     position: relative;
     display: inline-block;
 }
@@ -236,6 +236,14 @@
 .handle:focus {
     -webkit-box-shadow: 0 0 0 4px rgba(92, 180, 255, 0.5);
     box-shadow: 0 0 0 4px rgba(92, 180, 255, 0.5);
+    outline: none;
+}
+
+/* Pointed state */
+.root:pointed .handle,
+.root:pointed .handle:focus {
+    -webkit-box-shadow: 0 0 0 0 rgba(92, 180, 255, 0.5);
+    box-shadow: 0 0 0 0 rgba(92, 180, 255, 0.5);
     outline: none;
 }
 
