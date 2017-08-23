@@ -864,6 +864,16 @@ describe('<Slider />', () => {
             waitForDom = rendered.waitForDom;
         });
 
+        it('on pressing right key', async () => {
+            simulate.keyDown(select('SLIDER-HANDLE'), {
+                keyCode: keycode.codes.right
+            });
+
+            return waitFor(() => {
+                expect(onChange).have.been.calledWith(51);
+            });
+        });
+
         it('on pressing up key', async () => {
             simulate.keyDown(select('SLIDER-HANDLE'), {
                 keyCode: keycode.codes.up
@@ -906,6 +916,16 @@ describe('<Slider />', () => {
             });
         });
 
+        it('on pressing left key', async () => {
+            simulate.keyDown(select('SLIDER-HANDLE'), {
+                keyCode: keycode.codes.left
+            });
+
+            return waitFor(() => {
+                expect(onChange).have.been.calledWith(49);
+            });
+        });
+
         it('on pressing down key', async () => {
             simulate.keyDown(select('SLIDER-HANDLE'), {
                 keyCode: keycode.codes.down
@@ -913,6 +933,169 @@ describe('<Slider />', () => {
 
             return waitFor(() => {
                 expect(onChange).have.been.calledWith(49);
+            });
+        });
+
+        it('on pressing page down key', async () => {
+            simulate.keyDown(select('SLIDER-HANDLE'), {
+                keyCode: keycode.codes['page down']
+            });
+
+            return waitFor(() => {
+                expect(onChange).have.been.calledWith(40);
+            });
+        });
+
+        it('on pressing down key with ctrl', async () => {
+            simulate.keyDown(select('SLIDER-HANDLE'), {
+                ctrlKey: true,
+                keyCode: keycode.codes.down
+            });
+
+            return waitFor(() => {
+                expect(onChange).have.been.calledWith(40);
+            });
+        });
+
+        it('on pressing right key with ctrl', async () => {
+            simulate.keyDown(select('SLIDER-HANDLE'), {
+                ctrlKey: true,
+                keyCode: keycode.codes.right
+            });
+
+            return waitFor(() => {
+                expect(onChange).have.been.calledWith(100);
+            });
+        });
+
+        it('on pressing home key', async () => {
+            simulate.keyDown(select('SLIDER-HANDLE'), {
+                keyCode: keycode.codes.home
+            });
+
+            return waitFor(() => {
+                expect(onChange).have.been.calledWith(0);
+            });
+        });
+
+        it('on pressing end key', async () => {
+            simulate.keyDown(select('SLIDER-HANDLE'), {
+                shiftKey: true,
+                keyCode: keycode.codes.end
+            });
+
+            return waitFor(() => {
+                expect(onChange).have.been.calledWith(100);
+            });
+        });
+    });
+
+    describe('keyboard control with step', () => {
+        const value = 50;
+        const min = 0;
+        const max = 100;
+        const step = 4;
+
+        let onChange: (value: number) => void;
+        let onInput: (value: string) => void;
+        let select: (automationId: string) => HTMLElement | null;
+        let waitForDom: (expectation: () => void) => Promise<void>;
+        let environment: Element;
+
+        beforeEach(() => {
+            environment = document.createElement('body');
+            onChange = sinon.spy();
+            onInput = sinon.spy();
+            const rendered = clientRenderer.render(
+                <Slider
+                    value={value}
+                    min={min}
+                    max={max}
+                    step={step}
+                    onChange={onChange}
+                    onInput={onInput}
+                    environment={environment}
+                />
+            );
+            select = rendered.select;
+            waitForDom = rendered.waitForDom;
+        });
+
+        it('on pressing right key', async () => {
+            simulate.keyDown(select('SLIDER-HANDLE'), {
+                keyCode: keycode.codes.right
+            });
+            simulate.keyDown(select('SLIDER-HANDLE'), {
+                keyCode: keycode.codes.right
+            });
+
+            return waitFor(() => {
+                expect(onChange).have.been.calledWith(56);
+            });
+        });
+
+        it('on pressing up key', async () => {
+            simulate.keyDown(select('SLIDER-HANDLE'), {
+                keyCode: keycode.codes.up
+            });
+
+            return waitFor(() => {
+                expect(onChange).have.been.calledWith(52);
+            });
+        });
+
+        it('on pressing page up key', async () => {
+            simulate.keyDown(select('SLIDER-HANDLE'), {
+                keyCode: keycode.codes['page up']
+            });
+
+            return waitFor(() => {
+                expect(onChange).have.been.calledWith(80);
+            });
+        });
+
+        it('on pressing up key with ctrl', async () => {
+            simulate.keyDown(select('SLIDER-HANDLE'), {
+                ctrlKey: true,
+                keyCode: keycode.codes.up
+            });
+
+            return waitFor(() => {
+                expect(onChange).have.been.calledWith(80);
+            });
+        });
+
+        it('on pressing left key with ctrl', async () => {
+            simulate.keyDown(select('SLIDER-HANDLE'), {
+                ctrlKey: true,
+                keyCode: keycode.codes.left
+            });
+
+            return waitFor(() => {
+                expect(onChange).have.been.calledWith(0);
+            });
+        });
+
+        it('on pressing left key', async () => {
+            simulate.keyDown(select('SLIDER-HANDLE'), {
+                keyCode: keycode.codes.left
+            });
+            simulate.keyDown(select('SLIDER-HANDLE'), {
+                keyCode: keycode.codes.left
+            });
+
+            return waitFor(() => {
+                expect(onChange).have.been.calledWith(44);
+            });
+        });
+
+        it('on pressing down key', async () => {
+            simulate.keyDown(select('SLIDER-HANDLE'), {
+                keyCode: keycode.codes.down
+            });
+
+            return waitFor(() => {
+                expect(onChange).have.been.calledWith(48);
             });
         });
 
