@@ -2781,7 +2781,7 @@ describe('<Slider />', () => {
 
             beforeEach(function() {
                 if (!hasTouchSupport) {
-                    // this.skip();
+                    this.skip();
                 }
 
                 environment = document.createElement('body');
