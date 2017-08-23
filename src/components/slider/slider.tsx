@@ -67,7 +67,6 @@ export interface SliderState {
     relativeStep: Step;
     isActive: boolean;
     isVertical: boolean;
-    isPointed: boolean;
     isReverse: boolean;
 }
 
@@ -109,7 +108,6 @@ export class Slider extends React.Component<SliderProps, SliderState> {
             relativeStep: this.getRelativeStep(props.step, this.props.min!, this.props.max!),
             isActive: false,
             isVertical: this.isVertical(this.props.axis!),
-            isPointed: false,
             isReverse: this.isReverse(this.props.axis!)
         };
     }
@@ -120,7 +118,6 @@ export class Slider extends React.Component<SliderProps, SliderState> {
                 className="container"
                 data-automation-id="SLIDER-CONTAINER"
                 cssStates={{
-                    'pointed': this.state.isPointed,
                     'active': this.state.isActive,
                     'disabled': Boolean(this.props.disabled),
                     'error': Boolean(this.props.error),
@@ -415,8 +412,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
 
         this.setState({
             relativeValue,
-            isActive: true,
-            isPointed: true
+            isActive: true
         });
         this.isActive = true;
 
@@ -450,8 +446,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
 
         this.setState({
             relativeValue,
-            isActive: false,
-            isPointed: true
+            isActive: false
         });
         this.isActive = false;
 
@@ -478,8 +473,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
 
         this.setState({
             relativeValue,
-            isActive: true,
-            isPointed: true
+            isActive: true
         });
         this.isActive = true;
 
@@ -518,8 +512,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
 
         this.setState({
             relativeValue,
-            isActive: false,
-            isPointed: true
+            isActive: false
         });
         this.isActive = false;
 
@@ -577,7 +570,6 @@ export class Slider extends React.Component<SliderProps, SliderState> {
                 return;
         }
 
-        this.setState({isPointed: false});
         event.preventDefault();
     }
 
