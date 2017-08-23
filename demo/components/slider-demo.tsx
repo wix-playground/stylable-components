@@ -64,7 +64,10 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                 </tbody>
                 <thead>
                 <tr>
-                    <th className="table-head-cell">Slider with error state</th>
+                    <th className="table-head-cell">
+                        Slider with error state<br />
+                        <span style={{color: '#777', fontSize: '12px'}}>To be continued...</span>
+                    </th>
                     <th className="table-head-cell">Slider with label</th>
                     <th className="table-head-cell">Slider with tooltip</th>
                 </tr>
