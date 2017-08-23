@@ -526,26 +526,28 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         }
 
         const {isReverse} = this.state;
-        const multiplier = event.shiftKey ? 10 : 1;
+        const {ctrlKey} = event;
 
         switch (keycode(event.keyCode)) {
-            case 'page down':
-                this.decreaseValue(false, multiplier);
-                break;
-            case 'down':
-            case 'left':
-                isReverse ?
-                    this.increaseValue(false, multiplier) :
-                    this.decreaseValue(false, multiplier);
-                break;
-            case 'page up':
-                this.increaseValue(false, multiplier);
-                break;
             case 'up':
+                isReverse ?
+                    this.decreaseValue(false, ctrlKey ? 10 : 1) :
+                    this.increaseValue(false, ctrlKey ? 10 : 1);
+                break;
             case 'right':
                 isReverse ?
-                    this.decreaseValue(false, multiplier) :
-                    this.increaseValue(false, multiplier);
+                    this.decreaseValue(ctrlKey, 1) :
+                    this.increaseValue(ctrlKey, 1);
+                break;
+            case 'down':
+                isReverse ?
+                    this.increaseValue(false, ctrlKey ? 10 : 1) :
+                    this.decreaseValue(false, ctrlKey ? 10 : 1);
+                break;
+            case 'left':
+                isReverse ?
+                    this.increaseValue(ctrlKey, 1) :
+                    this.decreaseValue(ctrlKey, 1);
                 break;
             case 'home':
                 isReverse ?
@@ -556,6 +558,12 @@ export class Slider extends React.Component<SliderProps, SliderState> {
                 isReverse ?
                     this.decreaseValue(true) :
                     this.increaseValue(true);
+                break;
+            case 'page up':
+                this.increaseValue(false, 10);
+                break;
+            case 'page down':
+                this.decreaseValue(false, 10);
                 break;
             default:
                 return;

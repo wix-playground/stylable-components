@@ -880,13 +880,13 @@ describe('<Slider />', () => {
             });
 
             return waitFor(() => {
-                expect(onChange).have.been.calledWith(51);
+                expect(onChange).have.been.calledWith(60);
             });
         });
 
-        it('on pressing up key with shift', async () => {
+        it('on pressing up key with ctrl', async () => {
             simulate.keyDown(select('SLIDER-HANDLE'), {
-                shiftKey: true,
+                ctrlKey: true,
                 keyCode: keycode.codes.up
             });
 
@@ -895,14 +895,14 @@ describe('<Slider />', () => {
             });
         });
 
-        it('on pressing page up key with shift', async () => {
+        it('on pressing left key with ctrl', async () => {
             simulate.keyDown(select('SLIDER-HANDLE'), {
-                shiftKey: true,
-                keyCode: keycode.codes['page up']
+                ctrlKey: true,
+                keyCode: keycode.codes.left
             });
 
             return waitFor(() => {
-                expect(onChange).have.been.calledWith(60);
+                expect(onChange).have.been.calledWith(0);
             });
         });
 
@@ -922,13 +922,13 @@ describe('<Slider />', () => {
             });
 
             return waitFor(() => {
-                expect(onChange).have.been.calledWith(49);
+                expect(onChange).have.been.calledWith(40);
             });
         });
 
-        it('on pressing down key with shift', async () => {
+        it('on pressing down key with ctrl', async () => {
             simulate.keyDown(select('SLIDER-HANDLE'), {
-                shiftKey: true,
+                ctrlKey: true,
                 keyCode: keycode.codes.down
             });
 
@@ -937,14 +937,14 @@ describe('<Slider />', () => {
             });
         });
 
-        it('on pressing page down key with shift', async () => {
+        it('on pressing right key with ctrl', async () => {
             simulate.keyDown(select('SLIDER-HANDLE'), {
-                shiftKey: true,
-                keyCode: keycode.codes['page down']
+                ctrlKey: true,
+                keyCode: keycode.codes.right
             });
 
             return waitFor(() => {
-                expect(onChange).have.been.calledWith(40);
+                expect(onChange).have.been.calledWith(100);
             });
         });
 
@@ -1736,13 +1736,13 @@ describe('<Slider />', () => {
                 });
 
                 return waitFor(() => {
-                    expect(onChange).have.been.calledWith(51);
+                    expect(onChange).have.been.calledWith(60);
                 });
             });
 
-            it('on pressing up key with shift', async () => {
+            it('on pressing up key with ctrl', async () => {
                 simulate.keyDown(select('SLIDER-HANDLE'), {
-                    shiftKey: true,
+                    ctrlKey: true,
                     keyCode: keycode.codes.up
                 });
 
@@ -1751,14 +1751,14 @@ describe('<Slider />', () => {
                 });
             });
 
-            it('on pressing page up key with shift', async () => {
+            it('on pressing left key with ctrl', async () => {
                 simulate.keyDown(select('SLIDER-HANDLE'), {
-                    shiftKey: true,
-                    keyCode: keycode.codes['page up']
+                    ctrlKey: true,
+                    keyCode: keycode.codes.left
                 });
 
                 return waitFor(() => {
-                    expect(onChange).have.been.calledWith(60);
+                    expect(onChange).have.been.calledWith(0);
                 });
             });
 
@@ -1778,13 +1778,13 @@ describe('<Slider />', () => {
                 });
 
                 return waitFor(() => {
-                    expect(onChange).have.been.calledWith(49);
+                    expect(onChange).have.been.calledWith(40);
                 });
             });
 
-            it('on pressing down key with shift', async () => {
+            it('on pressing down key with ctrl', async () => {
                 simulate.keyDown(select('SLIDER-HANDLE'), {
-                    shiftKey: true,
+                    ctrlKey: true,
                     keyCode: keycode.codes.down
                 });
 
@@ -1793,14 +1793,14 @@ describe('<Slider />', () => {
                 });
             });
 
-            it('on pressing page down key with shift', async () => {
+            it('on pressing right key with ctrl', async () => {
                 simulate.keyDown(select('SLIDER-HANDLE'), {
-                    shiftKey: true,
-                    keyCode: keycode.codes['page down']
+                    ctrlKey: true,
+                    keyCode: keycode.codes.right
                 });
 
                 return waitFor(() => {
-                    expect(onChange).have.been.calledWith(40);
+                    expect(onChange).have.been.calledWith(100);
                 });
             });
 
@@ -2407,13 +2407,13 @@ describe('<Slider />', () => {
                 });
 
                 return waitFor(() => {
-                    expect(onChange).have.been.calledWith(51);
+                    expect(onChange).have.been.calledWith(60);
                 });
             });
 
-            it('on pressing up key with shift', async () => {
+            it('on pressing up key with ctrl', async () => {
                 simulate.keyDown(select('SLIDER-HANDLE'), {
-                    shiftKey: true,
+                    ctrlKey: true,
                     keyCode: keycode.codes.up
                 });
 
@@ -2422,14 +2422,14 @@ describe('<Slider />', () => {
                 });
             });
 
-            it('on pressing page up key with shift', async () => {
+            it('on pressing left key with ctrl', async () => {
                 simulate.keyDown(select('SLIDER-HANDLE'), {
-                    shiftKey: true,
-                    keyCode: keycode.codes['page up']
+                    ctrlKey: true,
+                    keyCode: keycode.codes.left
                 });
 
                 return waitFor(() => {
-                    expect(onChange).have.been.calledWith(60);
+                    expect(onChange).have.been.calledWith(100);
                 });
             });
 
@@ -2449,13 +2449,13 @@ describe('<Slider />', () => {
                 });
 
                 return waitFor(() => {
-                    expect(onChange).have.been.calledWith(49);
+                    expect(onChange).have.been.calledWith(40);
                 });
             });
 
-            it('on pressing down key with shift', async () => {
+            it('on pressing down key with ctrl', async () => {
                 simulate.keyDown(select('SLIDER-HANDLE'), {
-                    shiftKey: true,
+                    ctrlKey: true,
                     keyCode: keycode.codes.down
                 });
 
@@ -2464,14 +2464,14 @@ describe('<Slider />', () => {
                 });
             });
 
-            it('on pressing page down key with shift', async () => {
+            it('on pressing right key with ctrl', async () => {
                 simulate.keyDown(select('SLIDER-HANDLE'), {
-                    shiftKey: true,
-                    keyCode: keycode.codes['page down']
+                    ctrlKey: true,
+                    keyCode: keycode.codes.right
                 });
 
                 return waitFor(() => {
-                    expect(onChange).have.been.calledWith(40);
+                    expect(onChange).have.been.calledWith(0);
                 });
             });
 
@@ -3080,13 +3080,13 @@ describe('<Slider />', () => {
                 });
 
                 return waitFor(() => {
-                    expect(onChange).have.been.calledWith(51);
+                    expect(onChange).have.been.calledWith(60);
                 });
             });
 
-            it('on pressing up key with shift', async () => {
+            it('on pressing up key with ctrl', async () => {
                 simulate.keyDown(select('SLIDER-HANDLE'), {
-                    shiftKey: true,
+                    ctrlKey: true,
                     keyCode: keycode.codes.up
                 });
 
@@ -3095,14 +3095,14 @@ describe('<Slider />', () => {
                 });
             });
 
-            it('on pressing page up key with shift', async () => {
+            it('on pressing left key with ctrl', async () => {
                 simulate.keyDown(select('SLIDER-HANDLE'), {
-                    shiftKey: true,
-                    keyCode: keycode.codes['page up']
+                    ctrlKey: true,
+                    keyCode: keycode.codes.left
                 });
 
                 return waitFor(() => {
-                    expect(onChange).have.been.calledWith(60);
+                    expect(onChange).have.been.calledWith(100);
                 });
             });
 
@@ -3122,13 +3122,13 @@ describe('<Slider />', () => {
                 });
 
                 return waitFor(() => {
-                    expect(onChange).have.been.calledWith(49);
+                    expect(onChange).have.been.calledWith(40);
                 });
             });
 
-            it('on pressing down key with shift', async () => {
+            it('on pressing down key with ctrl', async () => {
                 simulate.keyDown(select('SLIDER-HANDLE'), {
-                    shiftKey: true,
+                    ctrlKey: true,
                     keyCode: keycode.codes.down
                 });
 
@@ -3137,14 +3137,14 @@ describe('<Slider />', () => {
                 });
             });
 
-            it('on pressing page down key with shift', async () => {
+            it('on pressing right key with ctrl', async () => {
                 simulate.keyDown(select('SLIDER-HANDLE'), {
-                    shiftKey: true,
-                    keyCode: keycode.codes['page down']
+                    ctrlKey: true,
+                    keyCode: keycode.codes.right
                 });
 
                 return waitFor(() => {
-                    expect(onChange).have.been.calledWith(40);
+                    expect(onChange).have.been.calledWith(0);
                 });
             });
 
