@@ -1,0 +1,67 @@
+@namespace "RadioButton";
+
+:vars {
+    enabledBlue: #4A90E2;
+    disabledGrey: #d1d1d1;
+}
+
+.root {
+    -st-states: disabled, isLeftLabel;
+    display: flex;
+    display: -ms-flexbox;
+    position: relative;
+    cursor: pointer;
+}
+
+.root:disabled {
+    cursor: default;
+}
+
+.contentContainer {
+    display: flex;
+}
+
+.root:isLeftLabel .contentContainer {
+    flex-direction: row-reverse;
+}
+
+.radioInput {
+    cursor: inherit;
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 0;
+}
+
+.radioSVG {
+    cursor: inherit;
+    align-self: center;
+    width: 16px;
+    height: 16px;
+    fillRule: evenodd;
+    stroke: value(enabledBlue);
+}
+
+.radioSVG .checkMark {
+    fill: value(enabledBlue);
+}
+
+.root:disabled .radioSVG {
+    stroke: value(disabledGrey);
+}
+
+.root:disabled .radioSVG .checkMark {
+    fill: value(disabledGrey);
+}
+
+.radioLabel {
+    margin-left: 10px;
+}
+
+.root:isLeftLabel .radioLabel {
+    margin-left: 0;
+    margin-right: 10px;
+}
+
+

@@ -4,7 +4,7 @@ import * as React from 'react';
 import {SBComponent} from 'stylable-react-component';
 import {root} from 'wix-react-tools';
 import {noop} from '../../utils';
-import style from './radio-group.st.css';
+import style from './radio-button.st.css';
 
 export interface RadioButtonProps {
     key?: number;
@@ -28,31 +28,30 @@ export class RadioButton extends React.Component<RadioButtonProps, {}> {
 
     public render() {
         const rootProps = root(this.props, {
-            className: 'radioContainer'
+            className: 'root'
         });
+
+        const cssStates = {
+            disabled: this.props.disabled,
+            isLeftLabel: this.props.location === 'left'
+        };
+
         return (
             <div
                 {...rootProps}
                 onClick={this.onClick}
+                cssStates={cssStates}
             >
-                {
-                    this.props.location === 'left' && (
-                        <span className="leftLabel" data-automation-id="LABEL">{this.props.value}</span>
-                    )
-                }
+                <div className="contentContainer">
                 <div
                     data-automation-id="INPUT_CONTAINER"
                     className={this.props.disabled ? style.disabled : style.enabled}
                 >
-                    {
-                        this.props.checked ?
-                            checkedRadioSvg(this.props.disabled!) :
-                            emptyRadioSvg(this.props.disabled!)
-                    }
+                    {this.props.checked ? checkedRadioSvg() : emptyRadioSvg()}
                     <input
                         type="radio"
                         className="radioInput"
-                        data-automation-id={'INPUT'}
+                        data-automation-id="INPUT"
                         value={this.props.value}
                         checked={this.props.checked}
                         name={this.props.name}
@@ -60,17 +59,10 @@ export class RadioButton extends React.Component<RadioButtonProps, {}> {
                         readOnly={true}
                     />
                 </div>
-                {
-                    this.props.location === 'right' && (
-                        <span
-                            className="rightLabel"
-                            data-automation-id="LABEL"
-                        >
-                            {this.props.value}
-                        </span>
-                    )
-                }
+
+                {this.props.value && <span className="radioLabel" data-automation-id="LABEL">{this.props.value}</span>}
                 {this.props.children}
+                </div>
             </div>
         );
     }
@@ -83,21 +75,19 @@ export class RadioButton extends React.Component<RadioButtonProps, {}> {
     }
 }
 
-function emptyRadioSvg(disabled: boolean) {
-    const svgColor = disabled ? '#d1d1d1' : '#4A90E2';
+function emptyRadioSvg() {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"
             className={style.radioSVG}
             viewBox="0 0 16 16"
         >
-            <circle cx="8" cy="8" r="7.5" fill="none" fillRule="evenodd" stroke={svgColor} />
+            <circle cx="8" cy="8" r="7.5" fill="none"/>
         </svg>
     );
 }
 
-function checkedRadioSvg(disabled: boolean) {
-    const svgColor = disabled ? '#d1d1d1' : '#4A90E2';
+function checkedRadioSvg() {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -108,10 +98,9 @@ function checkedRadioSvg(disabled: boolean) {
             <defs>
                 <circle id="a" cx="8" cy="8" r="8"/>
             </defs>
-            <g fill="none" fillRule="evenodd">
-                <use fill={svgColor} xlinkHref="#a"/>
-                <circle cx="8" cy="8" r="6.75" stroke="#FFF" strokeWidth="2.5"/>
-                <circle cx="8" cy="8" r="7.5" stroke={svgColor}/>
+            <g fill="none">
+                <circle cx="8" cy="8" r="6.75" stroke="#FFF" strokeWidth="2.5" className="checkMark"/>
+                <circle cx="8" cy="8" r="7.5"/>
             </g>
         </svg>
     );

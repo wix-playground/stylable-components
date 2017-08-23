@@ -5,7 +5,6 @@ import {RadioButton, RadioGroup} from '../../src';
 
 const radioGroup = 'RADIO_GROUP';
 const radioButton = 'RADIO_BUTTON';
-const emptyFunction = () => {};
 
 describe('<RadioGroup />', () => {
     const clientRenderer = new ClientRenderer();
