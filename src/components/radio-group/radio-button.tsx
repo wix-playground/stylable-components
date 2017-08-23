@@ -3,6 +3,7 @@ import {observer} from 'mobx-react';
 import * as React from 'react';
 import {SBComponent} from 'stylable-react-component';
 import {root} from 'wix-react-tools';
+import {noop} from '../../utils';
 import style from './radio-group.st.css';
 
 export interface RadioButtonProps {
@@ -20,15 +21,15 @@ export interface RadioButtonProps {
 export class RadioButton extends React.Component<RadioButtonProps, {}> {
     public static defaultProps: RadioButtonProps = {
         value: '',
-        onClick: () => {},
-        location: 'right'
+        onClick: noop,
+        location: 'right',
+        checked: false  // required for a bug in firefox
     };
 
     public render() {
         const rootProps = root(this.props, {
             className: 'radioContainer'
         });
-
         return (
             <div
                 {...rootProps}

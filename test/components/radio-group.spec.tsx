@@ -23,8 +23,11 @@ describe('<RadioGroup />', () => {
                     select('RADIO_GROUP_DEMO', 'GROUP_1', radioGroup, radioButton + '_0')
                 ).to.be.present();
             });
+
             const button0 = select('GROUP_1', radioGroup, radioButton + '_0') as HTMLInputElement;
+
             button0.click();
+
             await waitForDom(() => {
                 expect(select('GROUP_1', 'RADIO_GROUP_DEMO_VALUE')).to.have.text('Value: This way!');
             });
@@ -39,10 +42,10 @@ describe('<RadioGroup />', () => {
             </RadioGroup>
         );
 
-        await waitForDom(() => {
-            const button0 = select(radioGroup, radioButton + '_0', 'INPUT') as HTMLInputElement;
-            const button1 = select(radioGroup, radioButton + '_1', 'INPUT') as HTMLInputElement;
+        const button0 = select(radioGroup, radioButton + '_0', 'INPUT') as HTMLInputElement;
+        const button1 = select(radioGroup, radioButton + '_1', 'INPUT') as HTMLInputElement;
 
+        await waitForDom(() => {
             expect(button0).to.be.present();
             expect(button0).to.have.property('checked', false);
             expect(button0).to.have.value('Ifrit');
@@ -63,8 +66,9 @@ describe('<RadioGroup />', () => {
             </RadioGroup>
         );
 
+        const container = select(radioGroup) as HTMLDivElement;
+
         await waitForDom(() => {
-            const container = select(radioGroup) as HTMLDivElement;
             expect(container.children.length, 'expected RadioGroup to have 3 children').to.equal(3);
             expect(container.children[1]).to.be.instanceOf(HTMLSpanElement);
         });
@@ -79,27 +83,27 @@ describe('<RadioGroup />', () => {
             </RadioGroup>
         );
 
-        await waitForDom(() => {
-            const button0 = select(radioGroup, radioButton + '_0', 'INPUT') as HTMLInputElement;
-            const button1 = select(radioGroup, radioButton + '_1', 'INPUT') as HTMLInputElement;
+        const button0 = select(radioGroup, radioButton + '_0', 'INPUT') as HTMLInputElement;
+        const button1 = select(radioGroup, radioButton + '_1', 'INPUT') as HTMLInputElement;
 
-            expect(button0.name).to.equal('kupo');
-            expect(button1.name).to.equal('kupo');
+        await waitForDom(() => {
+            expect(button0).to.have.attribute('name', 'kupo');
+            expect(button1).to.have.attribute('name', 'kupo');
         });
     });
 
     it('renders a checked radio button if the checked prop is true', async () => {
         const {select, waitForDom} = clientRenderer.render(
             <RadioGroup name="kupo">
-                <RadioButton value="Minerva"/>
-                <RadioButton checked={true} value="Kitsune"/>
+                <RadioButton  value="Minerva"/>
+                <RadioButton checked value="Kitsune"/>
             </RadioGroup>
         );
 
-        await waitForDom(() => {
-            const button0 = select(radioGroup, radioButton + '_0', 'INPUT') as HTMLInputElement;
-            const button1 = select(radioGroup, radioButton + '_1', 'INPUT') as HTMLInputElement;
+        const button0 = select(radioGroup, radioButton + '_0', 'INPUT') as HTMLInputElement;
+        const button1 = select(radioGroup, radioButton + '_1', 'INPUT') as HTMLInputElement;
 
+        await waitForDom(() => {
             expect(button0).to.have.property('checked', false);
             expect(button1).to.have.property('checked', true);
         });
@@ -245,46 +249,6 @@ describe('<RadioGroup />', () => {
             expect(button0).to.have.value('Child0');
             expect(button1).to.be.present();
             expect(button1).to.have.value('Child1');
-        });
-    });
-
-    describe('Radio Group with children', () => {
-        it('renders a radio group with children', async () => {
-            const {select, waitForDom} = clientRenderer.render(
-                <RadioGroup>
-                    <span data-automation-id="CHILD_1">Child 1</span>
-                </RadioGroup>
-            );
-
-            const child = select(radioGroup, 'CHILD_1') as HTMLElement;
-
-            await waitForDom(() => {
-                expect(child).to.be.present();
-                expect(child).to.be.instanceOf(HTMLSpanElement);
-            });
-        });
-
-        it('sets children as checked when being pressed and calls onChange with their value', async () => {
-            const onChange = sinon.spy();
-            const {select, waitForDom} = clientRenderer.render(
-                <RadioGroup onChange={emptyFunction}>
-                    <span>1</span>
-                    <input type="radio" value="Test" onChange={onChange} data-automation-id="CHILD_1" />
-                </RadioGroup>
-            );
-
-            const input = select(radioGroup, 'CHILD_1') as HTMLInputElement;
-
-            await waitForDom(() => {
-                expect(input).to.be.present();
-            });
-
-            input.click();
-
-            await waitForDom(() => {
-                expect(onChange).to.have.been.calledOnce;
-                expect(input).to.have.property('checked', true);
-            });
         });
     });
 

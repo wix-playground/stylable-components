@@ -23,8 +23,7 @@ export interface RadioState {
 export class RadioGroup extends React.Component<RadioGroupProps, {}> {
     public static defaultProps = {
         dataSource: [],
-        location: 'right',
-        disabled: false
+        location: 'right'
     };
 
     private name: string;
