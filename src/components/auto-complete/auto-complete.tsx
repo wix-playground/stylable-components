@@ -14,7 +14,6 @@ export interface AutoCompleteListProps {
     open: boolean;
     items?: string[];
     onItemClick?: (item: string) => void;
-    // selectedItem?: string;
 }
 
 export const AutoCompleteList: React.SFC<AutoCompleteListProps> = SBStateless(props => {
@@ -32,8 +31,6 @@ export const AutoCompleteList: React.SFC<AutoCompleteListProps> = SBStateless(pr
     return null;
 }, style);
 
-// value={props.selectedItem}
-
 export interface AutoCompleteProps extends OptionList {
     value?: string;
     onChange?: (value: string) => void;
@@ -41,7 +38,6 @@ export interface AutoCompleteProps extends OptionList {
     className?: string;
     onItemClick?: (item: string) => void;
     open?: boolean;
-    // selectedItem?: string;
     filter?: FilterPredicate;
 }
 
@@ -83,7 +79,6 @@ export class AutoComplete extends React.Component<AutoCompleteProps, {}> {
             </div>
         );
     }
-    // selectedItem={this.props.selectedItem as string}
 
     private onChange = (e: any) => {
         this.props.onChange!(e.target.value || '');

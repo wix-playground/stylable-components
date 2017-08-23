@@ -14,6 +14,26 @@ describe('<AutoComplete />', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
 
+    describe('The autocomplete user', () => {
+        it('types in the input and selects a value', async () => {
+            const { select, waitForDom } = clientRenderer.render(<AutoCompleteDemo />);
+            const itemList = select(autoCompDemo, list)!;
+            const prefix = 'P';
+            const filteredItems = items.filter(item => item.startsWith(prefix)).join('');
+
+            await waitForDom(() => expect(itemList.textContent).to.eql(items.join('')));
+
+            (select(autoCompDemo, input) as HTMLInputElement).value = prefix;
+            simulate.change(select(autoCompDemo, input));
+            await waitForDom(() => expect(itemList.textContent).to.eql(filteredItems));
+            
+            simulate.click(select(autoCompDemo, list, 'LIST')!.children[0]);
+            await waitForDom(() => {
+                expect(select(autoCompDemo + '_TEXT')).to.have.text('You picked: Pancakes');
+            });
+        });
+    });
+
     it('renders to the screen', () => {
         const { select, waitForDom } = clientRenderer.render(<AutoComplete />);
 

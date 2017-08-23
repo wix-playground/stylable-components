@@ -39,7 +39,7 @@ export class AutoCompleteDemo extends React.Component<{}, AutoCompleteDemoState>
                         onItemClick={this.onItemClick}
                     />
                 </section>
-                <span>You picked: {this.state.inputText}</span>
+                <span data-automation-id="AUTO_COMPLETE_DEMO_TEXT">You picked: {this.state.inputText}</span>
             </div>
         );
     }
