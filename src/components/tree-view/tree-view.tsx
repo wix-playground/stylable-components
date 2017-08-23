@@ -1,12 +1,12 @@
-import { action, autorun, observable } from 'mobx';
-import { observer } from 'mobx-react';
+import {action, autorun, observable} from 'mobx';
+import {observer} from 'mobx-react';
 import * as React from 'react';
-import { root } from 'wix-react-tools';
-import { getLastAvailableItem, getNextItem, getPreviousItem } from './tree-util';
+import {root} from 'wix-react-tools';
+import {getLastAvailableItem, getNextItem, getPreviousItem} from './tree-util';
 
 import * as keycode from 'keycode';
-import { SBComponent, SBStateless } from 'stylable-react-component';
-import { MinusIcon, PlusIcon } from './tree-view-icons';
+import {SBComponent, SBStateless} from 'stylable-react-component';
+import {MinusIcon, PlusIcon} from './tree-view-icons';
 import style from './tree-view.st.css';
 
 const KeyCodes: any = {
@@ -56,7 +56,7 @@ export type ParentsMap = Map<TreeItemData, TreeItemData | undefined>;
 const itemIdPrefix = 'TREE_ITEM';
 
 export const TreeItem: React.SFC<TreeItemProps> =
-    SBStateless(({ item, itemRenderer, onItemClick, onIconClick, stateMap, state }) => {
+    SBStateless(({item, itemRenderer, onItemClick, onIconClick, stateMap, state}) => {
         const itemLabel = item.label.replace(' ', '_');
         const TreeNode = itemRenderer;
         const iconProps = {
@@ -70,7 +70,7 @@ export const TreeItem: React.SFC<TreeItemProps> =
                 <div
                     data-automation-id={`${itemIdPrefix}_${itemLabel}`}
                     className="tree-node"
-                    cssStates={{ selected: state!.isSelected, focused: state!.isFocused }}
+                    cssStates={{selected: state!.isSelected, focused: state!.isFocused}}
                     data-selected={state!.isSelected}
                     data-focused={state!.isFocused}
                     onClick={onItemClick && onItemClick.bind(null, item)}
@@ -112,7 +112,7 @@ export class TreeStateMap {
         if (state) {
             return state;
         } else {
-            const newState = observable({ isSelected: false, isExpanded: false, isFocused: false });
+            const newState = observable({isSelected: false, isExpanded: false, isFocused: false});
             this.stateMap.set(item, newState);
             return newState;
         }
@@ -148,7 +148,7 @@ export class TreeView extends React.Component<TreeViewProps, {}> {
 
     public render() {
         const TreeNode = this.props.itemRenderer!;
-        const rootProps = root(this.props, { className: 'tree-view' });
+        const rootProps = root(this.props, {className: 'tree-view'});
 
         return (
             <div

@@ -3,6 +3,7 @@ import {SBComponent} from 'stylable-react-component';
 import style from './toggle.st.css';
 
 export interface Props {
+    className?: string;
     checked?: boolean;
     error?: boolean;
     disabled?: boolean;
