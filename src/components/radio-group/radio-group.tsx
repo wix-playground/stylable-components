@@ -70,7 +70,7 @@ export class RadioGroup extends React.Component<RadioGroupProps, {}> {
     private initCheckedArray(dataArray: any[], isChildren: boolean = false) {
         let noCheckedRadioButton = true;
         for (let button of dataArray) {
-            if (isChildren) {
+            if (typeof button === 'object' && isChildren) {
                 button = button.props;
             }
             this.checkedArray.push(
@@ -94,56 +94,52 @@ export class RadioGroup extends React.Component<RadioGroupProps, {}> {
         };
     }
 
-    private createChildrenFromDataSource(): React.ReactNode[] {
-        const childArray: React.ReactNode[] = [];
-        if (Array.isArray(this.props.dataSource)) {
-            this.props.dataSource!.forEach((data, index) => {
-                const props: RadioButtonProps = {
-                    key: index,
-                    value: data.value,
-                    ['data-automation-id']: 'RADIO_BUTTON_' + index,
-                    checked: this.checkedArray[index].checked,
-                    onChange: this.childrenOnClick(index),
-                    disabled: this.props.disabled || data.disabled,
-                    location: this.props.location,
-                    name: this.name
-                };
-                childArray.push(React.createElement(RadioButton, props));
-            });
-        }
-        return childArray;
+    private createChildrenFromDataSource(): Array<React.ReactElement<RadioButton>> {
+        return this.props.dataSource!.map((props, index) => (
+            <RadioButton
+                key={index}
+                value={props.value}
+                data-automation-id={'RADIO_BUTTON_' + index}
+                checked={this.checkedArray[index].checked}
+                onChange={this.childrenOnClick(index)}
+                disabled={this.props.disabled || props.disabled}
+                location={this.props.location}
+                name={this.name}
+            />
+        ));
     }
 
-    private createChildren(dataArray: any): React.ReactNode[] {
-        const childArray: React.ReactNode[] = [];
-        for (let index = 0; index < dataArray.length; index++) {
-            const data = dataArray[index];
-
-            if (data.type === RadioButton) {
-                const props: RadioButtonProps = {
-                    key: index,
-                    value: data.props.value,
-                    ['data-automation-id']: 'RADIO_BUTTON_' + index,
-                    checked: this.checkedArray[index].checked,
-                    onChange: this.childrenOnClick(index),
-                    disabled: this.props.disabled || data.props.disabled,
-                    location: this.props.location,
-                    name: this.name};
-
-                childArray.push(React.cloneElement(data as React.ReactElement<any>, props));
+    private createChildren(dataArray: React.ReactNode[]): React.ReactNode[] {
+        return dataArray.map((data, index) => {
+            if (data && typeof data === 'object') {
+                const element = data as React.ReactElement<any>;
+                if (element.type === RadioButton) {
+                    return (
+                        <RadioButton
+                            key={index}
+                            value={element.props.value}
+                            data-automation-id={'RADIO_BUTTON_' + index}
+                            checked={this.checkedArray[index].checked}
+                            onChange={this.childrenOnClick(index)}
+                            disabled={this.props.disabled || element.props.disabled}
+                            location={this.props.location}
+                            name={this.name}
+                        />
+                    );
+                } else {
+                    return (
+                        React.cloneElement(element,
+                            {
+                                key: index,
+                                checked: this.checkedArray[index].checked,
+                                onChange: action(this.childrenOnClick(index))
+                            }
+                        )
+                    );
+                }
             } else {
-                childArray.push(
-                    React.cloneElement(
-                        data as React.ReactElement<any>,
-                        {
-                            key: index,
-                            checked: this.checkedArray[index].checked,
-                            onClick: action(this.childrenOnClick(index))
-                        }
-                    )
-                );
+                return data;
             }
-        }
-        return childArray;
+        });
     }
 }

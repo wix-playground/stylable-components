@@ -11,20 +11,17 @@ export interface RadioChangeEvent extends React.ChangeEvent<HTMLInputElement> {
 }
 
 export interface RadioButtonProps extends React.InputHTMLAttributes<HTMLInputElement> {
-    key?: number;
     value: string;
     checked?: boolean;
     name?: string;
     onChange?: (event: RadioChangeEvent) => void;
     disabled?: boolean;
     location?: 'right' | 'left';
-    'data-automation-id'?: string;
 }
 
 @SBComponent(style) @observer
 export class RadioButton extends React.Component<RadioButtonProps, {}> {
-    public static defaultProps: RadioButtonProps = {
-        value: '',
+    public static defaultProps: Partial<RadioButtonProps> = {
         onChange: noop,
         location: 'right',
         checked: false // required for a bug in firefox
@@ -72,7 +69,7 @@ export class RadioButton extends React.Component<RadioButtonProps, {}> {
     }
 
     @action
-    private onClick: React.EventHandler<RadioChangeEvent> = (e) => {
+    private onClick: React.EventHandler<RadioChangeEvent> = e => {
         if (!this.props.disabled) {
             this.props.onChange!({...e, value: this.props.value});
         }
