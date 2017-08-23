@@ -91,7 +91,7 @@ export class TimePicker extends React.Component<Props, State> {
 
     public render() {
         const {focus, hh, mm, ampm, format} = this.state;
-        const {label, placeholder, disabled} = this.props;
+        const {label, placeholder, disabled, name} = this.props;
         const isValueSet = hh !== undefined || mm !== undefined;
         const timeSegments: TimeSegment[] = ['hh', 'mm'];
 
