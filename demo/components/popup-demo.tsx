@@ -1,5 +1,4 @@
 import React = require('react');
-import {CSSProperties} from 'react';
 import { HorizontalPosition, Popup, PositionPoint, RadioButton, RadioGroup, VerticalPosition } from '../../src/';
 
 export interface DemoState {
@@ -22,8 +21,8 @@ export class PopupDemo extends React.Component<{}, DemoState> {
     };
 
     public render() {
-        const divDim: CSSProperties = {marginLeft: '100px', width: '100px', border: '1px solid blue'};
-        const flexStyle: CSSProperties = {padding: '10px'};
+        const divDim: React.CSSProperties = {marginLeft: '100px', width: '100px', border: '1px solid blue'};
+        const flexStyle: React.CSSProperties = {padding: '10px'};
         const popupPos: PositionPoint = {
             vertical: this.state.pVertical as VerticalPosition, horizontal: this.state.pHorizontal as HorizontalPosition
         };
