@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {root} from 'wix-react-tools';
 
-export interface PortalProps {
+export interface PortalProps extends React.HTMLAttributes<HTMLDivElement> {
     children: React.ReactNode;
     style?: React.CSSProperties;
 }
