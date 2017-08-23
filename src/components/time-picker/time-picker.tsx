@@ -57,6 +57,7 @@ export class TimePicker extends React.Component<Props, State> {
         format: is12TimeFormat ? 'ampm' : '24h',
         disabled: false
     };
+    private nativeInput: HTMLInputElement | null;
     private segments: {
         hh?: HTMLInputElement | null,
         mm?: HTMLInputElement | null,
@@ -112,7 +113,7 @@ export class TimePicker extends React.Component<Props, State> {
                             tabIndex={isNative ? -1 : 0}
                             ref={elem => this.segments[segment] = elem}
                             value={this.state[segment] || ''}
-                            placeholder="00"
+                            placeholder={this.state[segment] ? '' : '00'}
                             disabled={disabled}
                             name={segment}
                             onMouseDown={this.onInputMouseDown}
@@ -124,17 +125,19 @@ export class TimePicker extends React.Component<Props, State> {
                     </div>
                 )}
                 {format === 'ampm' &&
-                    <div
-                        data-automation-id="TIME_PICKER_AMPM"
-                        className="ampm"
-                        ref={elem => this.segments.ampm = elem}
-                        tabIndex={disabled || isNative ? -1 : 0}
-                        children={ampmLabels[ampm]}
-                        onMouseDown={this.onAmpmMouseDown}
-                        onFocus={this.onAmpmFocus}
-                        onBlur={this.onBlur}
-                        onKeyDown={this.onKeyDown}
-                    />
+                    <div className="ampm-wrap">
+                        <div
+                            data-automation-id="TIME_PICKER_AMPM"
+                            className="ampm"
+                            ref={elem => this.segments.ampm = elem}
+                            tabIndex={disabled || isNative ? -1 : 0}
+                            children={ampmLabels[ampm]}
+                            onMouseDown={this.onAmpmMouseDown}
+                            onFocus={this.onAmpmFocus}
+                            onBlur={this.onBlur}
+                            onKeyDown={this.onKeyDown}
+                        />
+                    </div>
                 }
                 {placeholder && !isValueSet &&
                     <div
@@ -156,6 +159,7 @@ export class TimePicker extends React.Component<Props, State> {
                         className="native-input"
                         type="time"
                         tabIndex={isNative ? 0 : -1}
+                        ref={elem => this.nativeInput = elem}
                         name={name}
                         aria-label={label}
                         value={this.getValue()}
@@ -229,12 +233,18 @@ export class TimePicker extends React.Component<Props, State> {
         this.updateSegmentValue(currentSegment, newValue);
     }
 
-    private onPlaceholderClick = () => this.segments.hh!.focus();
-
+    private onPlaceholderClick = () => {
+        if (isNative) {
+            this.nativeInput!.focus();
+        } else {
+            this.segments.hh!.focus();
+        }
+    }
     private onStepperUp = () => this.changeValue(1);
     private onStepperDown = () => this.changeValue(-1);
 
     private onAmpmMouseDown = (e: React.SyntheticEvent<HTMLDivElement>) => {
+        e.stopPropagation();
         e.preventDefault();
         if (!this.props.disabled) {
             this.toggleAmpm(document.activeElement === this.segments.ampm);
@@ -246,6 +256,7 @@ export class TimePicker extends React.Component<Props, State> {
     }
 
     private onInputMouseDown = (e: React.SyntheticEvent<HTMLInputElement>): void => {
+        e.stopPropagation();
         e.preventDefault();
         e.currentTarget.focus();
     }
@@ -297,7 +308,14 @@ export class TimePicker extends React.Component<Props, State> {
         });
     }
     private onBlur = (e: React.SyntheticEvent<HTMLElement>) => {
-        this.setState({focus: false});
+        const name = e.currentTarget instanceof HTMLInputElement && e.currentTarget.name;
+        const update: Pick<State, TimeSegment | 'focus'> = {
+            focus: false
+        };
+        if (isTimeSegment(name)) {
+            update[name] = formatTimeChunk(this.state[name]!);
+        }
+        this.setState(update);
         this.commit();
     }
 

@@ -34,10 +34,13 @@
     padding-left: 9px;
 }
 
-/* apply :hover for devices which really has hover */
-@media (hover: hover) {
-    .root:not(:disabled):hover {
-        border-color: value(PR3);
+.root:not(:disabled):hover {
+    border-color: value(PR3);
+}
+/* reset :hover for touch devices */
+@media (hover: none) {
+    .root:not(:focus):hover {
+        border-color: value(BK3);
     }
 }
 
@@ -75,26 +78,42 @@
     border: 0;
     padding: 0 3px;
     margin: 0;
-    width: 1.5em;
+    width: 1.6em;
     height: 100%;
     background: none;
     color: inherit;
     -webkit-text-fill-color: inherit;
 }
 
-.input::-webkit-input-placeholder,
-.input:-ms-input-placeholder,
+/* TODO replace with mixin */
+.input::-webkit-input-placeholder {
+    color: value(BK2);
+    -webkit-text-fill-color: currentColor;
+    opacity: 1;
+}
+.input:-ms-input-placeholder {
+    color: value(BK2);
+    -webkit-text-fill-color: currentColor;
+    opacity: 1;
+}
 .input::-moz-placeholder {
     color: value(BK2);
     -webkit-text-fill-color: currentColor;
     opacity: 1;
 }
 
+/* TODO replace with mixin */
+.input::-moz-selection {
+    color: white;
+    background: value(PR2);
+    padding: 2px;
+}
 .input::selection {
     color: white;
     background: value(PR2);
     padding: 2px;
 }
+
 .input:hover,
 .input:focus {
     border: 0;
@@ -117,13 +136,15 @@
     background: white;
 }
 
-.ampm {
+.ampm-wrap {
     display: inline-flex;
-    align-items: center;
-    user-select: none;
     background-color: inherit;
-    height: 1em;
     cursor: pointer;
+
+    height: 100%;
+    vertical-align: bottom;
+    align-items: center;
+
 }
 .ampm:hover {
     color: value(PR3);
