@@ -32,6 +32,11 @@ export function assertRootElementContract(Component: React.ComponentType<any>): 
         clientRenderer.cleanup();
     });
 
+    it('is rendered with default props', function() {
+        const {rootNode} = render(<Component data-automation-id="CONTRACT_TEST"/>);
+        expect(rootNode).to.be.instanceOf(Element);
+    });
+
     it('performs data-automation-id merge', function() {
          const {select, rootNode} = render(<Component data-automation-id="CONTRACT_TEST"/>);
          expect(select('CONTRACT_TEST'), 'data-automation-id not properly merged').to.equal(rootNode);
