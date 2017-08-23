@@ -1,9 +1,7 @@
 import * as React from 'react';
 import { AutoComplete } from '../../src';
-import { SelectionItem } from '../../src/components/selection-list/selection-list';
 
 export interface AutoCompleteDemoState {
-    selectedItem: SelectionItem | undefined;
     open: boolean;
     inputText: string;
 }
@@ -12,7 +10,7 @@ const items = ['Muffins', 'Pancakes', 'Cupcakes', 'Souffles',
                'Pasta', 'Soup', 'Caramel', 'Avazim', 'Moses'];
 
 export class AutoCompleteDemo extends React.Component<{}, AutoCompleteDemoState> {
-    public state = { selectedItem: undefined, open: true, inputText: '' };
+    public state = { open: true, inputText: '' };
 
     public onChange = (value: string) => {
         this.setState({
@@ -43,5 +41,4 @@ export class AutoCompleteDemo extends React.Component<{}, AutoCompleteDemoState>
             </div>
         );
     }
-//    selectedItem={this.state.selectedItem}
 }

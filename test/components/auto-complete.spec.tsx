@@ -26,7 +26,7 @@ describe('<AutoComplete />', () => {
             (select(autoCompDemo, input) as HTMLInputElement).value = prefix;
             simulate.change(select(autoCompDemo, input));
             await waitForDom(() => expect(itemList.textContent).to.eql(filteredItems));
-            
+
             simulate.click(select(autoCompDemo, list, 'LIST')!.children[0]);
             await waitForDom(() => {
                 expect(select(autoCompDemo + '_TEXT')).to.have.text('You picked: Pancakes');
