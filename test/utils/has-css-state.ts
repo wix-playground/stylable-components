@@ -1,4 +1,3 @@
-import {expect} from 'test-drive-react';
 
 import {Stylesheet} from 'stylable';
 
@@ -15,7 +14,7 @@ export function hasCssState(
     const errors = [];
     for (const k in stateMap) {
         if (stateMap.hasOwnProperty(k)) {
-            const mapping = stylesheet.$stylesheet.cssStates({ [k]: true });
+            const mapping = stylesheet.$stylesheet.cssStates({[k]: true});
             if (stateMap[k]) {
                 for (const m in mapping) {
                     if (!elem.hasAttribute(m)) {

@@ -1,19 +1,26 @@
 @namespace "SelectionList";
 
-:import {
-    -st-from: "../../style/default-theme/variables.st.css";
-    -st-named: borderFocus;
-}
-
 .list {
+    -st-extends: root;
+    -st-states: focused;
     width: 276px;
-    border: value(borderFocus);
+    border: 1px solid #adbbc6;
+    outline: none;
 }
 
-.list-item {
-    -st-states: disabled, focused, selected;
+.list:focused {
+    border-color: #4a90e2;
+}
+
+.divider {
+    height: 1px;
+    background-color: #adbbc6;
+}
+
+.item {
+    -st-states: selected, focused, disabled;
     width: 100%;
-    height: 36px;
+    min-height: 36px;
     padding: 6px 24px;
     font-family: ArialMT;
     font-size: 16px;
@@ -23,30 +30,34 @@
     user-select: none;
 }
 
-.list-item:selected {
-    background-color: #4990e2;
-    color: #fff;
+.item:hover {
+    background-color: #edf7ff;
 }
 
-.list-item:disabled {
+.item:selected:not(:hover) {
+    background-color: #f1f1f1;
+}
+
+.item:disabled {
     color: #c8c8c8;
     cursor: default;
 }
 
-.list-item:selected:disabled {
-    background-color: #f1f1f1;
+.item:disabled:hover {
+    background: #ffffff;
 }
 
-.list-item:hover {
-    background-color: #edf7ff;
-}
-
-.list-item:selected:hover {
-    background-color: #5cb4ff;
+.list:focused > .item:selected {
+    background-color: #4990e2;
     color: #fff;
 }
 
-.divider {
-    height: 1px;
-    background-color: #f1f1f1;
+.list:focused > .item:focused {
+    background-color: #edf7ff;
+}
+
+.list:focused > .item:selected:hover,
+.list:focused > .item:selected:focused {
+    background-color: #5cb4ff;
+    color: #ffffff;
 }

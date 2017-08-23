@@ -1,32 +1,35 @@
 import React = require('react');
 import {CSSProperties} from 'react';
-import { HorizontalPosition, Popup, RadioButton, RadioGroup, VerticalPosition } from '../../src/';
+import { HorizontalPosition, Popup, PositionPoint, RadioButton, RadioGroup, VerticalPosition } from '../../src/';
 
 export interface DemoState {
-    div: any;
+    div: HTMLElement | null;
     isOpen: boolean;
-    pVertical: VerticalPosition;
-    pHorizontal: HorizontalPosition;
-    aVertical: VerticalPosition;
-    aHorizontal: HorizontalPosition;
+    pVertical: string;
+    pHorizontal: string;
+    aVertical: string;
+    aHorizontal: string;
 }
 
 export class PopupDemo extends React.Component<{}, DemoState> {
-    constructor() {
-        super();
-        this.state = {
-            div: undefined,
-            isOpen: false,
-            pVertical: 'top',
-            pHorizontal: 'left',
-            aVertical: 'bottom',
-            aHorizontal: 'left'
-        };
-    }
+    public state = {
+        div: null,
+        isOpen: false,
+        pVertical: 'top',
+        pHorizontal: 'left',
+        aVertical: 'bottom',
+        aHorizontal: 'left'
+    };
 
     public render() {
         const divDim: CSSProperties = {marginLeft: '100px', width: '100px', border: '1px solid blue'};
         const flexStyle: CSSProperties = {padding: '10px'};
+        const popupPos: PositionPoint = {
+            vertical: this.state.pVertical as VerticalPosition, horizontal: this.state.pHorizontal as HorizontalPosition
+        };
+        const anchorPos: PositionPoint = {
+            vertical: this.state.aVertical as VerticalPosition, horizontal: this.state.aHorizontal as HorizontalPosition
+        };
         return (
             <div>
                 <div
@@ -39,9 +42,9 @@ export class PopupDemo extends React.Component<{}, DemoState> {
                 </div>
                 <Popup
                     anchor={this.state.div}
-                    popupPosition={{vertical: this.state.pVertical, horizontal: this.state.pHorizontal}}
+                    popupPosition={popupPos}
                     syncWidth={false}
-                    anchorPosition={{vertical: this.state.aVertical, horizontal: this.state.aHorizontal}}
+                    anchorPosition={anchorPos}
                     open={this.state.isOpen}
                 >
                     <div style={{background: 'green', color: 'white'}}>
@@ -91,24 +94,24 @@ export class PopupDemo extends React.Component<{}, DemoState> {
         this.setState({div: this.state.div, isOpen: !this.state.isOpen});
     }
 
-    private updateState = (ref: any) => {
+    private updateState = (ref: HTMLElement | null) => {
         this.setState({div: ref, isOpen: this.state.isOpen});
     }
 
-    private changePVertical = (e: any) => {
-        this.setState({div: this.state.div, pVertical: e});
+    private changePVertical = (e: string) => {
+        this.setState({div: this.state.div, pVertical: e as VerticalPosition});
     }
 
-    private changePHorizontal = (e: any) => {
-        this.setState({div: this.state.div, pHorizontal: e});
+    private changePHorizontal = (e: string) => {
+        this.setState({div: this.state.div, pHorizontal: e as HorizontalPosition});
     }
 
-    private changeAVertical = (e: any) => {
-        this.setState({div: this.state.div, aVertical: e});
+    private changeAVertical = (e: string) => {
+        this.setState({div: this.state.div, aVertical: e as VerticalPosition});
     }
 
-    private changeAHorizontal = (e: any) => {
-        this.setState({div: this.state.div, aHorizontal: e});
+    private changeAHorizontal = (e: string) => {
+        this.setState({div: this.state.div, aHorizontal: e as HorizontalPosition});
     }
 
 }

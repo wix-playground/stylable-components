@@ -81,16 +81,16 @@ The component follows the external control pattern (value displayed is defined b
 
 #### Keyboard 
 
-| Keys                  | Action                                   |
-| --------------------- | ---------------------------------------- |
-| type a number         | insert a value without committing it.    |
-| up arrow key          | increase value (& commit)                |
-| down arrow key        | decrease value (& commit)                |
-| fn / ctrl + up / down | increase / decrease value by step * 10 (& commit) |
-| tab                   | commits the value if needed, moves to next element (skips the stepper) |
-| Shift + tab           | commits the value if needed, moves to previous element |
-| enter                 | Commits the value (if value wasn't committed) |
-| esc                   | removes focus (if in focus), discards non-committed new value (if value typed) |
+| Keys              | Action                                   |
+| ----------------- | ---------------------------------------- |
+| type a number     | insert a value without committing it.    |
+| up arrow key      | increase value (& commit)                |
+| down arrow key    | decrease value (& commit)                |
+| shift + up / down | increase / decrease value by step * 10 (& commit) |
+| tab               | commits the value if needed, moves to next element (skips the stepper) |
+| Shift + tab       | commits the value if needed, moves to previous element |
+| enter             | Commits the value (if value wasn't committed) |
+| esc               | removes focus (if in focus), discards non-committed new value (if value typed) |
 
 **RTL** orientation
 
