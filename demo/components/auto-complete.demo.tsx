@@ -22,7 +22,7 @@ export class AutoCompleteDemo extends React.Component<{}, AutoCompleteDemoState>
 
     public onItemClick = (item: string) => {
         this.setState({
-            selectedItem: item
+            inputText: item
         });
     }
 
@@ -39,7 +39,7 @@ export class AutoCompleteDemo extends React.Component<{}, AutoCompleteDemoState>
                         onItemClick={this.onItemClick}
                     />
                 </section>
-                <input value={this.state.inputText} />
+                <span>You picked: {this.state.inputText}</span>
             </div>
         );
     }

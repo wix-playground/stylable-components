@@ -59,15 +59,10 @@ describe('<AutoComplete />', () => {
         });
     });
 
-    it('displays filtered results according to input text', async () => {
-        const { container, select, waitForDom } = clientRenderer.render(<AutoComplete open dataSource={items}/>);
-
-        const itemList = select(autoComp, list);
-
-        await waitForDom(() => expect(itemList!.textContent).to.eql(items.join('')));
-
+    it('displays filtered results according to given value', async () => {
         const prefix = 'P';
-        clientRenderer.render(<AutoComplete open dataSource={items} value={prefix}/>, container);
+        const { select, waitForDom } = clientRenderer.render(<AutoComplete open dataSource={items} value={prefix}/>);
+        const itemList = select(autoComp, list);
 
         return waitForDom(() => {
             expect(itemList!.textContent).to.eql(items.filter(item => item.startsWith(prefix)).join(''));
