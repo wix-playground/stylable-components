@@ -1,8 +1,5 @@
-.enabled {
-    cursor: pointer;
-}
+@namespace "RadioGroup";
 
-.disabled {
-    cursor: default;
-}
+.root {
 
+}

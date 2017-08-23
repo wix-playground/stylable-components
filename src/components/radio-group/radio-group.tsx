@@ -1,8 +1,10 @@
 import {action, observable} from 'mobx';
 import {observer} from 'mobx-react';
 import * as React from 'react';
+import {SBComponent} from 'stylable-react-component';
 import {root} from 'wix-react-tools';
 import {RadioButton, RadioButtonProps} from './radio-button';
+import styles from './radio-group.st.css';
 
 export interface RadioGroupProps {
     children?: any;
@@ -19,7 +21,7 @@ export interface RadioState {
     checked: boolean;
 }
 
-@observer
+@SBComponent(styles) @observer
 export class RadioGroup extends React.Component<RadioGroupProps, {}> {
     public static defaultProps = {
         dataSource: [],
