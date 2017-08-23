@@ -41,8 +41,8 @@ describe('<RadioGroup />', () => {
             </RadioGroup>
         );
 
-        const button0 = select(radioGroup, radioButton + '_0', 'INPUT') as HTMLInputElement;
-        const button1 = select(radioGroup, radioButton + '_1', 'INPUT') as HTMLInputElement;
+        const button0 = select(radioGroup, radioButton + '_0', 'NATIVE_INPUT') as HTMLInputElement;
+        const button1 = select(radioGroup, radioButton + '_1', 'NATIVE_INPUT') as HTMLInputElement;
 
         await waitForDom(() => {
             expect(button0).to.be.present();
@@ -82,8 +82,8 @@ describe('<RadioGroup />', () => {
             </RadioGroup>
         );
 
-        const button0 = select(radioGroup, radioButton + '_0', 'INPUT') as HTMLInputElement;
-        const button1 = select(radioGroup, radioButton + '_1', 'INPUT') as HTMLInputElement;
+        const button0 = select(radioGroup, radioButton + '_0', 'NATIVE_INPUT') as HTMLInputElement;
+        const button1 = select(radioGroup, radioButton + '_1', 'NATIVE_INPUT') as HTMLInputElement;
 
         await waitForDom(() => {
             expect(button0).to.have.attribute('name', 'kupo');
@@ -99,10 +99,11 @@ describe('<RadioGroup />', () => {
             </RadioGroup>
         );
 
-        const button0 = select(radioGroup, radioButton + '_0', 'INPUT') as HTMLInputElement;
-        const button1 = select(radioGroup, radioButton + '_1', 'INPUT') as HTMLInputElement;
+        const button0 = select(radioGroup, radioButton + '_0', 'NATIVE_INPUT') as HTMLInputElement;
+        const button1 = select(radioGroup, radioButton + '_1', 'NATIVE_INPUT') as HTMLInputElement;
 
         await waitForDom(() => {
+            debugger;
             expect(button0).to.have.property('checked', false);
             expect(button1).to.have.property('checked', true);
         });
@@ -143,8 +144,8 @@ describe('<RadioGroup />', () => {
             expect(select(radioGroup, radioButton + '_0')).to.be.present();
         });
 
-        const button0 = select(radioGroup, radioButton + '_0', 'INPUT') as HTMLInputElement;
-        const button1 = select(radioGroup, radioButton + '_1', 'INPUT') as HTMLInputElement;
+        const button0 = select(radioGroup, radioButton + '_0', 'NATIVE_INPUT') as HTMLInputElement;
+        const button1 = select(radioGroup, radioButton + '_1', 'NATIVE_INPUT') as HTMLInputElement;
 
         button0.click();
 
@@ -162,10 +163,10 @@ describe('<RadioGroup />', () => {
             </RadioGroup>
         );
 
-        await waitForDom(() => { expect(select(radioGroup, radioButton + '_0', 'INPUT')).to.be.present(); });
+        await waitForDom(() => { expect(select(radioGroup, radioButton + '_0', 'NATIVE_INPUT')).to.be.present(); });
 
-        const button0 = select(radioGroup, radioButton + '_0', 'INPUT') as HTMLInputElement;
-        const button1 = select(radioGroup, radioButton + '_1', 'INPUT') as HTMLInputElement;
+        const button0 = select(radioGroup, radioButton + '_0', 'NATIVE_INPUT') as HTMLInputElement;
+        const button1 = select(radioGroup, radioButton + '_1', 'NATIVE_INPUT') as HTMLInputElement;
 
         button0.click();
 
@@ -195,8 +196,8 @@ describe('<RadioGroup />', () => {
             </div>
         );
 
-        const button0InGroup0 = select('GROUP_0', radioGroup, radioButton + '_0', 'INPUT') as HTMLInputElement;
-        const button1InGroup1 = select('GROUP_1', radioGroup, radioButton + '_1', 'INPUT') as HTMLInputElement;
+        const button0InGroup0 = select('GROUP_0', radioGroup, radioButton + '_0', 'NATIVE_INPUT') as HTMLInputElement;
+        const button1InGroup1 = select('GROUP_1', radioGroup, radioButton + '_1', 'NATIVE_INPUT') as HTMLInputElement;
 
         await waitForDom(() => {
             expect(button0InGroup0).to.be.present();
@@ -224,8 +225,8 @@ describe('<RadioGroup />', () => {
             </RadioGroup>
         );
 
-        const button0 = select(radioGroup, radioButton + '_0', 'INPUT') as HTMLInputElement;
-        const button1 = select(radioGroup, radioButton + '_1', 'INPUT') as HTMLInputElement;
+        const button0 = select(radioGroup, radioButton + '_0', 'NATIVE_INPUT') as HTMLInputElement;
+        const button1 = select(radioGroup, radioButton + '_1', 'NATIVE_INPUT') as HTMLInputElement;
 
         await waitForDom(() => {
             expect(button0).to.have.attribute('disabled');
@@ -240,8 +241,8 @@ describe('<RadioGroup />', () => {
             />
         );
 
-        const button1 = select(radioGroup, radioButton + '_1', 'INPUT') as HTMLInputElement;
-        const button0 = select(radioGroup, radioButton + '_0', 'INPUT') as HTMLInputElement;
+        const button1 = select(radioGroup, radioButton + '_1', 'NATIVE_INPUT') as HTMLInputElement;
+        const button0 = select(radioGroup, radioButton + '_0', 'NATIVE_INPUT') as HTMLInputElement;
 
         await waitForDom(() => {
             expect(button0).to.be.present();
@@ -258,15 +259,15 @@ describe('<RadioGroup />', () => {
             );
 
             await waitForDom(() => {
-                expect(select(radioButton + '_0', 'INPUT')).to.be.present().and.to.have.attribute('type', 'radio');
-                expect(select(radioButton + '_0', 'INPUT')).to.have.value('Shiva');
-
+                expect(select(radioButton + '_0', 'NATIVE_INPUT')).to.be.present().and.to.have.attribute('type', 'radio');
+                expect(select(radioButton + '_0', 'NATIVE_INPUT')).to.have.value('Shiva');
+                expect(select(radioButton + '_0', 'UNCHECKED_RADIO_ICON')).to.be.present();
             });
         });
 
         it('renders the label next to the radio button (right by default)', async () => {
             const {select, waitForDom} = clientRenderer.render(
-                <RadioButton value="Omega" data-automation-id={radioButton + '_0'} name=""/>
+                <RadioButton value="Omega" data-automation-id={radioButton + '_0'} />
             );
 
             const label = select(radioButton + '_0', 'LABEL');
@@ -298,10 +299,11 @@ describe('<RadioGroup />', () => {
                 <RadioButton value="Chocobo" checked={true} data-automation-id={radioButton + '_0'} name=""/>
             );
 
-            const button = select(radioButton + '_0', 'INPUT') as HTMLInputElement;
+            const button = select(radioButton + '_0', 'NATIVE_INPUT') as HTMLInputElement;
 
             await waitForDom(() => {
                 expect(button).to.have.property('checked', true);
+                expect(select(radioButton + '_0', 'CHECKED_RADIO_ICON')).to.be.present();
             });
         });
 
@@ -310,7 +312,7 @@ describe('<RadioGroup />', () => {
                 <RadioButton value="Moogle" data-automation-id={radioButton + '_0'} name="name"/>
             );
 
-            const button = select(radioButton + '_0', 'INPUT') as HTMLInputElement;
+            const button = select(radioButton + '_0', 'NATIVE_INPUT') as HTMLInputElement;
 
             return waitForDom(() => {
                 expect(button).to.have.attribute('name', 'name');
@@ -339,10 +341,25 @@ describe('<RadioGroup />', () => {
                 <RadioButton value="Tonberry" disabled data-automation-id={radioButton + '_0'}/>
             );
 
-            const button = select(radioButton + '_0', 'INPUT');
+            const button = select(radioButton + '_0', 'NATIVE_INPUT');
 
             await waitForDom(() => {
                 expect(button).to.have.attribute('disabled');
+                expect(select(radioButton + '_0', 'UNCHECKED_RADIO_ICON')).to.be.present();
+            });
+        });
+
+        it('renders a checked disabled radio button', async () => {
+            const {select, waitForDom} = clientRenderer.render(
+                <RadioButton value="Tonberry" disabled checked data-automation-id={radioButton + '_0'}/>
+            );
+
+            const button = select(radioButton + '_0', 'NATIVE_INPUT');
+
+            await waitForDom(() => {
+                expect(button).to.have.attribute('disabled');
+                expect(button).to.have.property('checked', true);
+                expect(select(radioButton + '_0', 'CHECKED_RADIO_ICON')).to.be.present();
             });
         });
 

@@ -43,26 +43,25 @@ export class RadioButton extends React.Component<RadioButtonProps, {}> {
                 onClick={this.onClick}
                 cssStates={cssStates}
             >
+                <input
+                    type="radio"
+                    className="radioInput"
+                    data-automation-id="NATIVE_INPUT"
+                    value={this.props.value}
+                    checked={this.props.checked}
+                    name={this.props.name}
+                    disabled={this.props.disabled}
+                    readOnly={true}
+                />
                 <div className="contentContainer">
-                <div
-                    data-automation-id="INPUT_CONTAINER"
-                    className={this.props.disabled ? style.disabled : style.enabled}
-                >
-                    {this.props.checked ? checkedRadioSvg() : emptyRadioSvg()}
-                    <input
-                        type="radio"
-                        className="radioInput"
-                        data-automation-id="INPUT"
-                        value={this.props.value}
-                        checked={this.props.checked}
-                        name={this.props.name}
-                        disabled={this.props.disabled}
-                        readOnly={true}
-                    />
-                </div>
-
-                {this.props.value && <span className="radioLabel" data-automation-id="LABEL">{this.props.value}</span>}
-                {this.props.children}
+                    <div
+                        data-automation-id="INPUT_CONTAINER"
+                        className={this.props.disabled ? style.disabled : style.enabled}
+                    >
+                        {this.props.checked ? checkedRadioSvg() : emptyRadioSvg()}
+                    </div>
+                    <span className="radioLabel" data-automation-id="LABEL">{this.props.value}</span>
+                    {this.props.children}
                 </div>
             </div>
         );
@@ -82,6 +81,8 @@ function emptyRadioSvg() {
             xmlns="http://www.w3.org/2000/svg"
             className={style.radioSVG}
             viewBox="0 0 16 16"
+            data-automation-id="UNCHECKED_RADIO_ICON"
+
         >
             <circle cx="8" cy="8" r="7.5" fill="none"/>
         </svg>
@@ -95,6 +96,7 @@ function checkedRadioSvg() {
             xmlnsXlink="http://www.w3.org/1999/xlink"
             className={style.radioSVG}
             viewBox="0 0 16 16"
+            data-automation-id="CHECKED_RADIO_ICON"
         >
             <defs>
                 <circle id="a" cx="8" cy="8" r="8"/>
