@@ -5,7 +5,7 @@ import {DatePickerDemo} from './components/date-picker-demo';
 import {DropDownDemo} from './components/drop-down.demo';
 import {ImageDemo} from './components/image-demo';
 import {NumberInputDemo} from './components/number-input.demo';
-import {RadioGroupDemo} from './components/radio-group-demo';
+import { PopupDemo } from './components/popup-demo';
 import {SelectionListDemo} from './components/selection-list-demo';
 import {SliderDemo} from './components/slider-demo';
 import {ToggleDemo} from './components/toggle-demo';
@@ -144,8 +144,8 @@ export class ComponentsDemo extends React.Component<{}, {}> {
                 </div>
                 <hr />
                 <div>
-                    <h2>Radio Group</h2>
-                    <RadioGroupDemo />
+                    <h2>Popup</h2>
+                    <PopupDemo/>
                 </div>
                 <hr />
                 <div>
