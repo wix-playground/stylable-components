@@ -5,8 +5,8 @@ import {Stepper} from '../stepper';
 import styles from './time-picker.st.css';
 import {
     Ampm, ampmLabels, Format,
-    formatTimeChunk, getCircularValue, is12TimeFormat, isNative,
-    isTimeSegment, isValidValue, Segment, TimeSegment, to24, toAmpm
+    formatTimeChunk, getCircularValue, is12TimeFormat, isTimeSegment,
+    isTouchTimeInputSupported, isValidValue, Segment, TimeSegment, to24, toAmpm
 } from './utils';
 
 export interface Props {
@@ -67,7 +67,7 @@ export class TimePicker extends React.Component<Props, State> {
 
     constructor(props: Props) {
         super();
-        const format = isNative ? '24h' : props.format!;
+        const format = isTouchTimeInputSupported ? '24h' : props.format!;
         this.lastValue = props.value;
         this.segments = {};
         this.state = {
@@ -82,7 +82,7 @@ export class TimePicker extends React.Component<Props, State> {
         if (props.value !== this.props.value) {
             this.setState(propsValueToSegments(props.value, this.state.format), () => {
                 const {focus, currentSegment} = this.state;
-                if (!isNative && focus && currentSegment) {
+                if (!isTouchTimeInputSupported && focus && currentSegment) {
                     this.select(currentSegment);
                 }
             });
@@ -110,7 +110,7 @@ export class TimePicker extends React.Component<Props, State> {
                             data-automation-id={'TIME_PICKER_INPUT_' + segment.toUpperCase()}
                             className="input"
                             type="text"
-                            tabIndex={isNative ? -1 : 0}
+                            tabIndex={isTouchTimeInputSupported ? -1 : 0}
                             ref={elem => this.segments[segment] = elem}
                             value={this.state[segment] || ''}
                             placeholder={this.state[segment] ? '' : '00'}
@@ -130,7 +130,7 @@ export class TimePicker extends React.Component<Props, State> {
                             data-automation-id="TIME_PICKER_AMPM"
                             className="ampm"
                             ref={elem => this.segments.ampm = elem}
-                            tabIndex={disabled || isNative ? -1 : 0}
+                            tabIndex={disabled || isTouchTimeInputSupported ? -1 : 0}
                             children={ampmLabels[ampm]}
                             onMouseDown={this.onAmpmMouseDown}
                             onFocus={this.onAmpmFocus}
@@ -147,18 +147,18 @@ export class TimePicker extends React.Component<Props, State> {
                         onClick={this.onPlaceholderClick}
                     />
                 }
-                {!isNative && !disabled && isValueSet &&
+                {!isTouchTimeInputSupported && !disabled && isValueSet &&
                     <Stepper
                         className="stepper"
                         onUp={this.onStepperUp}
                         onDown={this.onStepperDown}
                     />
                 }
-                <label className="label" cssStates={{visible: isNative}}>
+                <label className="label" cssStates={{visible: isTouchTimeInputSupported}}>
                     <input
                         className="native-input"
                         type="time"
-                        tabIndex={isNative ? 0 : -1}
+                        tabIndex={isTouchTimeInputSupported ? 0 : -1}
                         ref={elem => this.nativeInput = elem}
                         name={name}
                         aria-label={label}
@@ -234,7 +234,7 @@ export class TimePicker extends React.Component<Props, State> {
     }
 
     private onPlaceholderClick = () => {
-        if (isNative) {
+        if (isTouchTimeInputSupported) {
             this.nativeInput!.focus();
         } else {
             this.segments.hh!.focus();

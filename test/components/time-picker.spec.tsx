@@ -5,13 +5,13 @@ import {TimePicker} from '../../src';
 import styles from '../../src/components/time-picker/time-picker.st.css';
 import {
     Ampm, formatTimeChunk, getCircularValue,
-    isNative, isValidValue, to24, toAmpm
+    isTouchTimeInputSupported, isValidValue, to24, toAmpm
 } from '../../src/components/time-picker/utils';
 import {hasCssState} from '../utils/has-css-state';
 
-const describeNative = isNative ? describe : describe.skip;
-const describeDesktop = !isNative ? describe : describe.skip;
-const itDesktop = !isNative ? it : it.skip;
+const describeNative = isTouchTimeInputSupported ? describe : describe.skip;
+const describeDesktop = !isTouchTimeInputSupported ? describe : describe.skip;
+const itDesktop = !isTouchTimeInputSupported ? it : it.skip;
 
 describe('<TimePicker/>', () => {
     const clientRenderer = new ClientRenderer();

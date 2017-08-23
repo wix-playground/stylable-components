@@ -1,4 +1,4 @@
-import {isTouch} from '../../utils/is-touch';
+import {isTouch} from '../../utils';
 
 export enum Ampm {
     AM,
@@ -9,7 +9,7 @@ export type TimeSegment = 'hh' | 'mm';
 export type Format = 'ampm' | '24h';
 export type Segment = TimeSegment | 'ampm';
 
-export const isNative = (() => {
+export const isTouchTimeInputSupported = (() => {
     if (!isTouch) {
         return false;
     }
