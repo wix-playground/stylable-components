@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Modal } from '../../src';
+import {Modal} from '../../src';
 import styles from './modal-demo.st.css';
 
 export interface ModalDemoState {

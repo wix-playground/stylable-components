@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { SBComponent } from 'stylable-react-component';
-import { root } from 'wix-react-tools';
+import {SBComponent} from 'stylable-react-component';
+import {root} from 'wix-react-tools';
 import {Portal} from '../../../src';
 import {enableScrolling, stopScrolling} from '../../utils/stop-scrolling';
 import styles from './modal.st.css';
@@ -34,15 +34,15 @@ export class Modal extends React.PureComponent<ModalProps, {}> {
 
     public render() {
         const rootProps = root(this.props, {
-            'data-automation-id': 'MODAL',
-            'className': 'backdrop'
+            'data-automation-id': '',
+            'className': ''
         });
 
         return (
             this.props.isOpen ?
                 (
-                    <Portal>
-                        <div {...rootProps} onClick={this.onClick('backdrop')}>
+                    <Portal {...rootProps}>
+                        <div className="backdrop" data-automation-id="MODAL" onClick={this.onClick('backdrop')}>
                             <div onClick={this.onClick('children')}>
                                 {this.props.children}
                             </div>
