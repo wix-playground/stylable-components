@@ -104,7 +104,6 @@ describe('<RadioGroup />', () => {
         const button1 = select(radioGroup, radioButton + '_1', 'NATIVE_INPUT') as HTMLInputElement;
 
         await waitForDom(() => {
-            debugger;
             expect(button0).to.have.property('checked', false);
             expect(button1).to.have.property('checked', true);
         });

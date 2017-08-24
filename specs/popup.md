@@ -85,8 +85,7 @@ The Popup enables positioning content next to an anchor element.
 | -- | -- | -- | -- | -- |
 | anchor | Node \| Point | none | Yes | The element to be used as an anchor for the popup (will open next to it). |
 | open | boolean | false | no | Whether to show or hide the Popup |
-| onOpen | Triggered when the popup is opened | NOOP | no | Triggered when the popup is shown |
-| onClose | Triggered when popup is closed | NOOP | no | Triggered when the popup is closed |
+| onOpenStateChange | function | NOOP | no | Triggered when the popup is opened/closed |
 
 * The following props should be placed in a PopupProps interface since they will need to be passed from higher order components.
 

@@ -153,6 +153,7 @@ export class ComponentsDemo extends React.Component<{}, {}> {
                     <h2>NumberInput</h2>
                     <NumberInputDemo />
                 </div>
-            </div>);
+            </div>
+        );
     }
 }
