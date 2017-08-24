@@ -105,7 +105,7 @@ function emptyRadioSvg() {
             data-automation-id="UNCHECKED_RADIO_ICON"
             focusable="false"
         >
-            <circle cx="8" cy="8" r="7.5" fill="none"/>
+            <circle cx="8" cy="8" r="7.5"/>
         </svg>
     );
 }
@@ -123,7 +123,7 @@ function checkedRadioSvg() {
             <defs>
                 <circle id="a" cx="8" cy="8" r="8"/>
             </defs>
-            <g fill="none">
+            <g>
                 <circle cx="8" cy="8" r="6.75" stroke="#FFF" strokeWidth="2.5" className="checkMark"/>
                 <circle cx="8" cy="8" r="7.5"/>
             </g>

@@ -6,7 +6,7 @@
     checkedFill: #4A90E2;
     disabledStroke: #d1d1d1;
     disabledFill: #f1f1f1;
-    disabledCheckedFill: #adbbc6;
+    disabledCheckedFill: #d1d1d1;
     focusOutline: rgba(92, 180, 255, 0.5);
 }
 
@@ -50,9 +50,10 @@
     stroke: value(defaultStroke);
     border-radius: 50%;
     box-sizing: content-box;
+    fill: none;
 }
 
-.root:checked .radioSVG {
+.root:checked:not(:disabled) .radioSVG {
     stroke: value(checkedStroke);
 }
 
@@ -64,7 +65,7 @@
     stroke: value(disabledStroke);
 }
 
-.root:disabled .radioSVG circle {
+.root:disabled:not(:checked) .radioSVG {
     fill: value(disabledFill);
 }
 
