@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { DatePicker, DatePickerProps } from '../../src';
+import {DatePicker, DatePickerProps} from '../../src';
 
 export interface DatePickerDemoState {
     value: Date;
@@ -44,10 +44,10 @@ export class DatePickerDemo extends React.Component<DatePickerProps, Partial<Dat
 
     private setStartingDay = (event: React.SyntheticEvent<HTMLSelectElement>): void => {
         const target = event.target as HTMLSelectElement;
-        this.setState({ startingDay: parseInt(target.value, 10) });
+        this.setState({startingDay: parseInt(target.value, 10)});
     }
 
     private onChange = (updatedDate: Date): void => {
-        this.setState({ value: updatedDate });
+        this.setState({value: updatedDate});
     }
 }

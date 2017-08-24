@@ -1,14 +1,14 @@
 import * as React from 'react';
-import { change, ClientRenderer, expect, sinon } from 'test-drive-react';
-import { BirthdayPickerDemo } from '../../demo/components/birthday-picker-demo';
-import { BirthdayPicker, dateFromYearMonthDay } from '../../src';
+import {change, ClientRenderer, expect, sinon} from 'test-drive-react';
+import {BirthdayPickerDemo} from '../../demo/components/birthday-picker-demo';
+import {BirthdayPicker, dateFromYearMonthDay} from '../../src';
 
 describe('<BirthdayPicker />', function() {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
 
     it('Displays the date and allows changing it', async function() {
-        const { select, waitForDom } = clientRenderer.render(<BirthdayPickerDemo />);
+        const {select, waitForDom} = clientRenderer.render(<BirthdayPickerDemo />);
 
         await waitForDom(() => {
             expect(select('BIRTHDAY_PICKER')).to.be.present();
@@ -30,7 +30,7 @@ describe('<BirthdayPicker />', function() {
     });
 
     it('Renders with default props', function() {
-        const { select, waitForDom } = clientRenderer.render(<BirthdayPicker />);
+        const {select, waitForDom} = clientRenderer.render(<BirthdayPicker />);
 
         return waitForDom(() => {
             expect(select('BIRTHDAY_PICKER')).to.be.present();
@@ -41,7 +41,7 @@ describe('<BirthdayPicker />', function() {
     });
 
     it('Displays the provided date', function() {
-        const { select, waitForDom } = clientRenderer.render(
+        const {select, waitForDom} = clientRenderer.render(
             <BirthdayPicker value={new Date('1986-04-26T00:00Z')} />
         );
 
@@ -54,7 +54,7 @@ describe('<BirthdayPicker />', function() {
 
     it('Does not emit onChange for initial value', function() {
         const onChange = sinon.spy();
-        const { waitForDom } = clientRenderer.render(
+        const {waitForDom} = clientRenderer.render(
             <BirthdayPicker value={new Date()} onChange={onChange} />
         );
 
@@ -65,7 +65,7 @@ describe('<BirthdayPicker />', function() {
 
     it('Emits onChange when going from valid to valid state', async function() {
         const onChange = sinon.spy();
-        const { select, waitForDom } = clientRenderer.render(
+        const {select, waitForDom} = clientRenderer.render(
             <BirthdayPicker value={new Date('1986-04-26T00:00Z')} onChange={onChange} />
         );
 
@@ -82,7 +82,7 @@ describe('<BirthdayPicker />', function() {
 
     it('Does not emit onChange when going from valid to invalid state', async function() {
         const onChange = sinon.spy();
-        const { select, waitForDom } = clientRenderer.render(
+        const {select, waitForDom} = clientRenderer.render(
             <BirthdayPicker value={new Date()} onChange={onChange} />
         );
 
@@ -99,7 +99,7 @@ describe('<BirthdayPicker />', function() {
 
     it('Does not emit onChange when going from invalid to invalid state', async function() {
         const onChange = sinon.spy();
-        const { select, waitForDom } = clientRenderer.render(
+        const {select, waitForDom} = clientRenderer.render(
             <BirthdayPicker onChange={onChange} />
         );
 
@@ -116,7 +116,7 @@ describe('<BirthdayPicker />', function() {
 
     it('Emits onChange when going from invalid to valid state', async function() {
         const onChange = sinon.spy();
-        const { select, waitForDom } = clientRenderer.render(
+        const {select, waitForDom} = clientRenderer.render(
             <BirthdayPicker onChange={onChange} />
         );
 
