@@ -1,7 +1,7 @@
 import React = require('react');
 import ReactDOM = require('react-dom');
 import {selectDom} from 'test-drive';
-import {ClientRenderer, expect, waitFor} from 'test-drive-react';
+import {ClientRenderer, expect, waitFor, sinon} from 'test-drive-react';
 import {PopupDemo} from '../../demo/components/popup-demo';
 import {Popup, PositionPoint} from '../../src/components/';
 import {sleep} from '../utils';
@@ -134,6 +134,22 @@ describe('<Popup />', function() {
             expect(bodySelect<HTMLElement>(portalId)!.style.maxHeight).to.equal('5px');
             expect(bodySelect<HTMLElement>(portalId)!.getBoundingClientRect().height).to.equal(5);
         });
+    });
+
+    it('calls onOpen when the popup opens', async function () {
+        const onOpen = sinon.spy();
+        const {container} = clientRenderer.render(
+            <Popup anchor={anchor} onOpen={onOpen}>
+                <span data-automation-id="SPAN">Popup Body</span>
+            </Popup>);
+
+        sleep(20);
+
+        clientRenderer.render(
+            <Popup anchor={anchor} open onOpen={onOpen}>
+                <span data-automation-id="SPAN">Popup Body</span>
+            </Popup>, container);
+        await waitFor(() => expect(onOpen).to.have.been.calledOnce);
     });
 
     describe('Scrolling tests', function() {

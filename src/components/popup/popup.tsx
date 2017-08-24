@@ -10,22 +10,28 @@ export interface PositionPoint {
 }
 
 export interface PopupProps {
-    anchor: Element | null;
     open?: boolean;
+    onOpen?: () => void;
     anchorPosition?: PositionPoint;
     popupPosition?: PositionPoint;
     syncWidth?: boolean;
     maxHeight?: number;
 }
 
-export class Popup extends React.Component<PopupProps, {}> {
-    public static defaultProps: Partial<PopupProps> = {
+export interface PopupCompProps extends PopupProps {
+    anchor: Element | null;
+}
+
+export class Popup extends React.Component<PopupCompProps, {}> {
+    public static defaultProps: Partial<PopupCompProps> = {
         open: false,
+        onOpen: () => {},
         anchorPosition: {vertical: 'bottom', horizontal: 'left'},
         popupPosition: {vertical: 'top', horizontal: 'left'},
         syncWidth: true,
         maxHeight: 500
     };
+    private isOpened = false;
 
     public render() {
         if (this.props.anchor && this.props.open) {
@@ -36,6 +42,16 @@ export class Popup extends React.Component<PopupProps, {}> {
         }
 
         return null;
+    }
+
+    public componentDidUpdate() {
+        if (this.isOpened) {
+            this.props.onOpen!();
+        }
+    }
+
+    public componentWillReceiveProps(newProps: PopupCompProps) {
+        this.isOpened = newProps.open && !this.props.open ? true : false;
     }
 
     private createStyle(): React.CSSProperties {
