@@ -1,5 +1,3 @@
-export interface BaseEvent {}
-
-export interface ChangeEvent<T> extends BaseEvent {
+export interface ChangeEvent<T> {
     value: T;
 }

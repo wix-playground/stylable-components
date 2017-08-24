@@ -1,4 +1,4 @@
-import {ChangeEvent} from "./events";
+import {ChangeEvent} from './events';
 
 export interface FormInputProps<T, S = any> {
     value: T;
