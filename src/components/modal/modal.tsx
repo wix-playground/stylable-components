@@ -16,7 +16,7 @@ export interface RequestCloseEvent {
 
 export interface ModalProps extends React.HTMLAttributes<HTMLDivElement> {
     isOpen: boolean;
-    onRequestClose?({source: RequestCloseEvent}): void;
+    onRequestClose?({source}: RequestCloseEvent): void;
 }
 
 @SBComponent(styles)
