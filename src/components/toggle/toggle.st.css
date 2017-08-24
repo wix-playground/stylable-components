@@ -27,9 +27,10 @@
     background-color: value(WT1);
     cursor: pointer;
     user-select: none;
-    transition: background-color 200ms linear,
+    transition: background-color 200ms linear;
 }
 .input {
+    position: absolute;
     display: block;
     position: absolute;
     opacity: 0;
