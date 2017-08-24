@@ -159,7 +159,7 @@ If slider has a 'step' prop, handle should move across the slider bar only accor
 | up / right arrow key                 | increase value              |
 | left / down arrow key                | decrease value              |
 | home ( fn/ctrl + left arrow key)     | set min value               |
-| end ( fn/ctrl + left arrow key)      | set max value               |
+| end ( fn/ctrl + right arrow key)     | set max value               |
 | page up (fn/ctrl + up arrow key)     | increase value by X         |
 | page down (fn/ctrl + down arrow key) | decrease value by X         |
 | tab                                  | moves to next element       |

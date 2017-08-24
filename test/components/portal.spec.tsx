@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { ClientRenderer, expect, selectDom, waitFor } from 'test-drive-react';
+import {ClientRenderer, expect, selectDom, waitFor} from 'test-drive-react';
 import {Portal} from '../../src';
 
 const portalId = 'PORTAL';
@@ -25,7 +25,7 @@ describe('<Portal />', function() {
 
     it('applies supplied styles to the popup and updates them if changed', async function() {
         const {container} = clientRenderer.render(
-            <Portal style={{ position: 'absolute' }}>
+            <Portal style={{position: 'absolute'}}>
                 <span data-automation-id="SPAN">Portal Body</span>
             </Portal>
         );
@@ -33,7 +33,7 @@ describe('<Portal />', function() {
         await waitFor(() => expect(bodySelect(portalId)).to.have.nested.property('style.position', 'absolute'));
 
         clientRenderer.render(
-            <Portal style={{ position: 'fixed' }}>
+            <Portal style={{position: 'fixed'}}>
                 <span data-automation-id="SPAN">Portal Body</span>
             </Portal>,
             container

@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { ClientRenderer, expect, sinon, waitFor } from 'test-drive-react';
-import { Image } from '../../src';
-import { transparentImage } from '../../src/utils';
-import { brokenSrc, onePixelBlack, onePixelBlue } from '../fixtures/sample-images';
+import {ClientRenderer, expect, sinon, waitFor} from 'test-drive-react';
+import {Image} from '../../src';
+import {transparentImage} from '../../src/utils';
+import {brokenSrc, onePixelBlack, onePixelBlue} from '../fixtures/sample-images';
 
 const nativeImage = 'NATIVE_IMAGE';
 
@@ -11,7 +11,7 @@ describe('<Image />', () => {
     afterEach(() => clientRenderer.cleanup());
 
     it('outputs a visible html image element to dom', async () => {
-        const { select, waitForDom } = clientRenderer.render(
+        const {select, waitForDom} = clientRenderer.render(
             <Image />
         );
 
@@ -22,7 +22,7 @@ describe('<Image />', () => {
     });
 
     it('uses one pixel transparent gif as default source', async () => {
-        const { select, waitForDom } = clientRenderer.render(
+        const {select, waitForDom} = clientRenderer.render(
             <Image />
         );
 
@@ -30,7 +30,7 @@ describe('<Image />', () => {
     });
 
     it('sets the provided src', async () => {
-        const { select, waitForDom } = clientRenderer.render(
+        const {select, waitForDom} = clientRenderer.render(
             <Image src={onePixelBlack} />
         );
 
@@ -38,7 +38,7 @@ describe('<Image />', () => {
     });
 
     it('uses provided defaultImage as default source', async () => {
-        const { select, waitForDom } = clientRenderer.render(
+        const {select, waitForDom} = clientRenderer.render(
             <Image defaultImage={onePixelBlue} />
         );
 
@@ -46,7 +46,7 @@ describe('<Image />', () => {
     });
 
     it('sets the provided alt attribute', async () => {
-        const { select, waitForDom } = clientRenderer.render(
+        const {select, waitForDom} = clientRenderer.render(
             <Image alt="Calvin Cordozar Broadus" />
         );
 
@@ -54,7 +54,7 @@ describe('<Image />', () => {
     });
 
     it('sets the provided title attribute', async () => {
-        const { select, waitForDom } = clientRenderer.render(
+        const {select, waitForDom} = clientRenderer.render(
             <Image title="Daredevil" />
         );
 
@@ -62,7 +62,7 @@ describe('<Image />', () => {
     });
 
     it('uses default image if provided src is an empty string', async () => {
-        const { select, waitForDom } = clientRenderer.render(
+        const {select, waitForDom} = clientRenderer.render(
             <Image src="" defaultImage={onePixelBlack} />
         );
 
@@ -70,7 +70,7 @@ describe('<Image />', () => {
     });
 
     it('updates src if a new one is provided', async () => {
-        const { select, waitForDom, container } = clientRenderer.render(
+        const {select, waitForDom, container} = clientRenderer.render(
             <Image src={onePixelBlack} />
         );
 
@@ -85,32 +85,32 @@ describe('<Image />', () => {
         const onLoad = sinon.spy();
         clientRenderer.render(<Image src={onePixelBlack} onLoad={onLoad} />);
 
-        await waitFor(() => expect(onLoad).to.have.been.calledWithMatch({ src: onePixelBlack }));
+        await waitFor(() => expect(onLoad).to.have.been.calledWithMatch({src: onePixelBlack}));
     });
 
     it('calls onError when it cannot load a source, and falls back to default source', async () => {
         const onError = sinon.spy();
-        const { select, waitForDom } = clientRenderer.render(
+        const {select, waitForDom} = clientRenderer.render(
             <Image src={brokenSrc} defaultImage={onePixelBlue} onError={onError} />
         );
 
-        await waitFor(() => expect(onError).to.have.been.calledWithMatch({ src: brokenSrc }));
+        await waitFor(() => expect(onError).to.have.been.calledWithMatch({src: brokenSrc}));
         await waitForDom(() => expect(select(nativeImage)).to.have.attribute('src', onePixelBlue));
     });
 
     it('calls onError when cannot load the default image, and falls back to `transparentImage`', async () => {
         const onError = sinon.spy();
-        const { select, waitForDom } = clientRenderer.render(
+        const {select, waitForDom} = clientRenderer.render(
             <Image defaultImage={brokenSrc} onError={onError} />
         );
 
-        await waitFor(() => expect(onError).to.have.been.calledWithMatch({ src: brokenSrc }));
+        await waitFor(() => expect(onError).to.have.been.calledWithMatch({src: brokenSrc}));
         await waitForDom(() => expect(select(nativeImage)).to.have.attribute('src', transparentImage));
     });
 
     describe('resize mode', () => {
         it('sets image as background with size: contain, when resizeMode="contain"', async () => {
-            const { select, waitForDom, container } = clientRenderer.render(
+            const {select, waitForDom, container} = clientRenderer.render(
                 <Image resizeMode="contain" src={onePixelBlack} />
             );
 
@@ -123,7 +123,7 @@ describe('<Image />', () => {
                 expect(domImgElement).to.have.nested.property('style.maxWidth', '100%');
                 expect(domImgElement).to.have.nested.property('style.height', '100%');
 
-                const { parentElement: sizingWrapper } = domImgElement!;
+                const {parentElement: sizingWrapper} = domImgElement!;
                 expect(sizingWrapper, 'verify image is wrapped for sizing').to.not.equal(container);
                 expect(sizingWrapper).to.have.nested.property('style.backgroundSize', 'contain');
                 expect(sizingWrapper).to.have.nested.property('style.backgroundRepeat', 'no-repeat');
@@ -137,7 +137,7 @@ describe('<Image />', () => {
         });
 
         it('sets image as background with size: cover, when resizeMode="cover"', async () => {
-            const { select, waitForDom, container } = clientRenderer.render(
+            const {select, waitForDom, container} = clientRenderer.render(
                 <Image resizeMode="cover" src={onePixelBlack} />
             );
 
@@ -150,7 +150,7 @@ describe('<Image />', () => {
                 expect(domImgElement).to.have.nested.property('style.maxWidth', '100%');
                 expect(domImgElement).to.have.nested.property('style.height', '100%');
 
-                const { parentElement: sizingWrapper } = domImgElement!;
+                const {parentElement: sizingWrapper} = domImgElement!;
                 expect(sizingWrapper, 'verify image is wrapped for sizing').to.not.equal(container);
                 expect(sizingWrapper).to.have.nested.property('style.backgroundSize', 'cover');
                 expect(sizingWrapper).to.have.nested.property('style.backgroundRepeat', 'no-repeat');
@@ -164,7 +164,7 @@ describe('<Image />', () => {
         });
 
         it('leaves image as-is when resizeMode="fill"', async () => {
-            const { select, waitForDom, container } = clientRenderer.render(
+            const {select, waitForDom, container} = clientRenderer.render(
                 <Image resizeMode="fill" src={onePixelBlack} />
             );
 

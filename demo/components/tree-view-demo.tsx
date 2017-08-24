@@ -1,30 +1,30 @@
 import * as React from 'react';
-import { TreeView } from '../../src';
-import { TreeItemData } from '../../src/components/tree-view/tree-view';
+import {TreeView} from '../../src';
+import {TreeItemData} from '../../src/components/tree-view/tree-view';
 
 export const treeData: TreeItemData[] = [
     { label: 'Food Menu', children: [
         { label: 'Salads', children: [
-            { label: 'Greek Salad' },
-            { label: 'Israeli Salad' },
-            { label: 'Caesar Salad' }
+            {label: 'Greek Salad'},
+            {label: 'Israeli Salad'},
+            {label: 'Caesar Salad'}
         ]},
         { label: 'Steaks', children: [
-            { label: 'Fillet Steak' },
-            { label: 'Sirloin Steak' }
+            {label: 'Fillet Steak'},
+            {label: 'Sirloin Steak'}
         ]},
         { label: 'Desserts', children: [
-            { label: 'Pancakes' },
-            { label: 'Muffin' },
-            { label: 'Waffle' },
-            { label: 'Cupcake' }
+            {label: 'Pancakes'},
+            {label: 'Muffin'},
+            {label: 'Waffle'},
+            {label: 'Cupcake'}
         ]}
     ]}
 ];
 
 function SelectedItem({selectedItem}: any) {
     return (
-        <div style={{ fontSize: '1.41em', textDecoration: 'underline' }}>
+        <div style={{fontSize: '1.41em', textDecoration: 'underline'}}>
             {selectedItem ?
                 (!selectedItem.children ?
                     `You chose ${selectedItem.label}. Bon appetit!` :
