@@ -60,10 +60,7 @@ describe('<Modal />', () => {
 
         function checkIfCentered(element: Element) {
             const rects = element.getBoundingClientRect();
-            return rects.top === 0
-                && rects.left === 0
-                && Math.abs(rects.right - window.innerWidth) < 1 // Client rects are floats on IE11 + Edge
-                && Math.abs(rects.bottom - window.innerHeight) < 1;
+            return rects.top === 0 && rects.left === 0;
         }
 
         await waitFor(() => expect(checkIfCentered(bodySelect('MODAL')!), 'The modal wasn\'t centered').to.equal(true));
