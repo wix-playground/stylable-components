@@ -136,20 +136,36 @@ describe('<Popup />', function() {
         });
     });
 
-    it('calls onOpen when the popup opens', async function () {
+    it('calls onOpenStateChange when the popup opens', async function() {
         const onOpen = sinon.spy();
         const {container} = clientRenderer.render(
-            <Popup anchor={anchor} onOpen={onOpen}>
+            <Popup anchor={anchor} onOpenStateChange={onOpen}>
                 <span data-automation-id="SPAN">Popup Body</span>
             </Popup>);
 
         sleep(20);
 
         clientRenderer.render(
-            <Popup anchor={anchor} open onOpen={onOpen}>
+            <Popup anchor={anchor} open onOpenStateChange={onOpen}>
                 <span data-automation-id="SPAN">Popup Body</span>
             </Popup>, container);
         await waitFor(() => expect(onOpen).to.have.been.calledOnce);
+    });
+
+    it('calls onOpenStateChange when the popup closes', async function() {
+        const onClose = sinon.spy();
+        const {container} = clientRenderer.render(
+            <Popup anchor={anchor} open onOpenStateChange={onClose}>
+                <span data-automation-id="SPAN">Popup Body</span>
+            </Popup>);
+
+        sleep(20);
+
+        clientRenderer.render(
+            <Popup anchor={anchor} onOpenStateChange={onClose}>
+                <span data-automation-id="SPAN">Popup Body</span>
+            </Popup>, container);
+        await waitFor(() => expect(onClose).to.have.been.calledOnce);
     });
 
     describe('Scrolling tests', function() {
