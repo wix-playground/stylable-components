@@ -73,7 +73,7 @@ Supports AutoComplete props as well as the native text input props.
 
 | Name | Type | Default | Required | Description |
 | -- | -- | -- | -- | -- |
-| selected | Array<String> | empty | no | list of selected ids |
+| value | Array<String> | empty | no | list of selected ids |
 | maxSelected | number | 0 (unlimited) | no | number of selections allowed |
 
 ## Styles
@@ -132,13 +132,18 @@ Based on the old w3 [spec](https://rawgit.com/w3c/aria-practices/master/aria-pra
 #### Roles
 
 * Root role - *combobox*
+* Input role - *textbox*
 
 #### Aria Attributes
 
 * aria-expanded=true if the popup is open, otherwise aria-expanded=false. Placed on the root element.
 * aria-haspopup=true on the root element
 * User provided props: aria-label, aria-labelledby, aria-describedby copied to root
-* aria-autocomplete=list on the root element
+* aria-autocomplete=list on the input element (the one with the *textbox* role)
+
+#### Focus
+
+* Initially, focus resides on the input element (user sees a caret in the input element)
 
 ### MultiSelect
 
@@ -170,6 +175,17 @@ The following behaviors are implemented in the SelectionList (relevant when a po
 * <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">Space</kbd> -> Selects the highlighted option, closes the popup
 * <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">Enter</kbd> -> Selects the highlighted option, closes the popup.
 * Type-Ahead -> Changes the highlighted item in the list. See SelectionList [spec](./selectionlist.md).
+
+#### AutoComplete
+
+* alt + <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">down</kbd> -> Opens the popup
+* alt + <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">up</kbd> -> Closes the popup (when opened of course)
+* <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">down</kbd> -> When the popup is closed changes selection to the next item in the list
+* <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">up</kbd> -> When the popup is closed changes selection to the previous item in the list if there is a valid selected item. If there is no valid selection (the input container being empty is such a case) then nothing happens.
+* <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">left</kbd> -> Moves the caret to the left
+* <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">right</kbd> -> Moves the caret to the right
+
+
 
 Additional in AutoComplete:
 
