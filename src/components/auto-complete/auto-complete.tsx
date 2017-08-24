@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {SBComponent, SBStateless} from 'stylable-react-component/dist/stylable-react';
 import {root} from 'wix-react-tools';
+import {noop} from '../../utils';
 import {OptionList, SelectionList} from '../selection-list/selection-list';
 import style from './auto-complete.st.css';
 
@@ -51,7 +52,7 @@ export class AutoComplete extends React.Component<AutoCompleteProps, {}> {
         dataSource: [],
         value: '',
         filter: prefixFilter,
-        onChange: () => {}
+        onChange: noop
     };
 
     public render() {
