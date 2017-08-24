@@ -3,10 +3,11 @@
 :vars {
     enabledBlue: #4A90E2;
     disabledGrey: #d1d1d1;
+    focusBlue: rgba(92, 180, 255, 0.5);
 }
 
 .root {
-    -st-states: disabled, isLeftLabel;
+    -st-states: disabled, isLeftLabel, focused;
     display: flex;
     display: -ms-flexbox;
     position: relative;
@@ -43,9 +44,11 @@
     height: 16px;
     fillRule: evenodd;
     stroke: value(enabledBlue);
+    border-radius: 50%;
+    box-sizing: content-box;
 }
 
-.radioSVG .checkMark {
+.checkMark {
     fill: value(enabledBlue);
 }
 
@@ -53,8 +56,20 @@
     stroke: value(disabledGrey);
 }
 
-.root:disabled .radioSVG .checkMark {
+.root:disabled .checkMark {
     fill: value(disabledGrey);
+}
+
+.root:focused .iconContainer::after {
+    content: "";
+    width: 22px;
+    height: 22px;
+    position: absolute;
+    pointer-events: none;
+    background: value(focusBlue);
+    border-radius: 50%;
+    margin: -3px 0 0 -19px;
+    z-index: -1;
 }
 
 .radioLabel {

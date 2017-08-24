@@ -1,5 +1,3 @@
-import {action} from 'mobx';
-import {observer} from 'mobx-react';
 import * as React from 'react';
 import {SBComponent} from 'stylable-react-component';
 import {root} from 'wix-react-tools';
@@ -19,13 +17,22 @@ export interface RadioButtonProps extends React.InputHTMLAttributes<HTMLInputEle
     location?: 'right' | 'left';
 }
 
-@SBComponent(style) @observer
-export class RadioButton extends React.Component<RadioButtonProps, {}> {
+export interface RadioButtonState {
+    isFocused: boolean;
+}
+
+@SBComponent(style)
+export class RadioButton extends React.Component<RadioButtonProps, RadioButtonState> {
     public static defaultProps: Partial<RadioButtonProps> = {
         onChange: noop,
         location: 'right',
-        checked: false // required for a bug in firefox
+        checked: false, // required for a bug in firefox
+        tabIndex: 0
     };
+
+    public state: RadioButtonState = {isFocused: false}
+
+    private inputRef: HTMLInputElement | null = null;
 
     public render() {
         const rootProps = root(this.props, {
@@ -34,7 +41,8 @@ export class RadioButton extends React.Component<RadioButtonProps, {}> {
 
         const cssStates = {
             disabled: this.props.disabled,
-            isLeftLabel: this.props.location === 'left'
+            isLeftLabel: this.props.location === 'left',
+            focused: this.state.isFocused
         };
 
         const {onChange, location, children, ...restOfProps} = this.props;
@@ -49,11 +57,15 @@ export class RadioButton extends React.Component<RadioButtonProps, {}> {
                     type="radio"
                     className="radioInput"
                     data-automation-id="NATIVE_INPUT"
+                    ref={ref => this.inputRef = ref}
+                    onChange={this.onInputChange}
+                    onFocus={this.onInputFocus}
+                    onBlur={this.onInputBlur}
                 />
                 <div className="contentContainer">
                     <div
                         data-automation-id="INPUT_CONTAINER"
-                        className={this.props.disabled ? style.disabled : style.enabled}
+                        className="iconContainer"
                     >
                         {this.props.checked ? checkedRadioSvg() : emptyRadioSvg()}
                     </div>
@@ -64,11 +76,22 @@ export class RadioButton extends React.Component<RadioButtonProps, {}> {
         );
     }
 
-    @action
-    private onRootClick: React.EventHandler<RadioChangeEvent> = e => {
+    private onRootClick = (e: React.MouseEvent<HTMLDivElement>) => {
+        this.inputRef && this.inputRef.click();
+    }
+
+    private onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (!this.props.disabled && !this.props.readOnly) {
             this.props.onChange!({...e, value: this.props.value});
         }
+    }
+
+    private onInputFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+        this.setState({isFocused: true});
+    }
+
+    private onInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+        this.setState({isFocused: false});
     }
 }
 
@@ -79,6 +102,7 @@ function emptyRadioSvg() {
             className={style.radioSVG}
             viewBox="0 0 16 16"
             data-automation-id="UNCHECKED_RADIO_ICON"
+            focusable="false"
         >
             <circle cx="8" cy="8" r="7.5" fill="none"/>
         </svg>
@@ -93,6 +117,7 @@ function checkedRadioSvg() {
             className={style.radioSVG}
             viewBox="0 0 16 16"
             data-automation-id="CHECKED_RADIO_ICON"
+            focusable="false"
         >
             <defs>
                 <circle id="a" cx="8" cy="8" r="8"/>
