@@ -108,7 +108,7 @@ Styles for MultiSelect:
 
 ### DropDown
 
-Based on the old w3 [spec](https://rawgit.com/w3c/aria-practices/master/aria-practices-DeletedSectionsArchive.html#combobox).
+Based on the old w3 [spec](https://rawgit.com/w3c/aria-practices/master/aria-practices-DeletedSectionsArchive.html#autocomplete).
 
 #### Roles
 * Root role - *combobox*
@@ -126,6 +126,19 @@ Based on the old w3 [spec](https://rawgit.com/w3c/aria-practices/master/aria-pra
 * The caret should **not** be in the tab order
 
 ### AutoComplete
+
+Based on the old w3 [spec](https://rawgit.com/w3c/aria-practices/master/aria-practices-DeletedSectionsArchive.html#combobox).
+
+#### Roles
+
+* Root role - *combobox*
+
+#### Aria Attributes
+
+* aria-expanded=true if the popup is open, otherwise aria-expanded=false. Placed on the root element.
+* aria-haspopup=true on the root element
+* User provided props: aria-label, aria-labelledby, aria-describedby copied to root
+* aria-autocomplete=list on the root element
 
 ### MultiSelect
 
@@ -168,8 +181,16 @@ Additional in MultiSelect:
 
 ### Mouse Handling
 
-* Click outside - closes dropdown
-* Click on element - sets selection
+#### Dropdown
+
+* Click outside:
+  * When popup is closed, focus is lost
+  * When popup is opened, focus is lost and popup is closed
+* Click on the input container:
+  * When popup is closed, opens the popup and:
+    * If an element is selected, focus moves to that element
+    * If no element is selected, focus moves to the first element
+* Click on an option (SelectionList) - option is selected and popup is closed
 
 Additional in MultiSelect:
 
@@ -178,8 +199,9 @@ Additional in MultiSelect:
 
 ### Touch Handling
 
-* Tap outside - closes dropdown
-* Tap on element - sets selection
+#### Dropdown
+
+Same as click behavior, apart from touchdown behavior which will be implemented in the next iteration.
 
 Additional in MultiSelect:
 
