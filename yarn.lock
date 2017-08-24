@@ -4255,9 +4255,9 @@ strip-json-comments@^2.0.0, strip-json-comments@~2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-2.0.1.tgz#3c531942e908c2697c0ec344858c286c7ca0a60a"
 
-stylable-integration@^5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/stylable-integration/-/stylable-integration-5.0.0.tgz#f9a73e6d6c95e8b3eb8936abf7d33f884a26f3d6"
+stylable-integration@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/stylable-integration/-/stylable-integration-5.0.1.tgz#f7da8bdace10c0fced3283d7da37ab4343ebbff5"
   dependencies:
     deindent "^0.1.0"
     enhanced-resolve "^3.4.1"
@@ -4270,9 +4270,9 @@ stylable-react-component@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/stylable-react-component/-/stylable-react-component-1.0.3.tgz#8dd58b352f3b57c0991487e6d00a9dde2109f317"
 
-stylable@^4.0.5:
-  version "4.0.5"
-  resolved "https://registry.yarnpkg.com/stylable/-/stylable-4.0.5.tgz#01656b72c0c04a3f727a4ece11404fffa8b338e2"
+stylable@^4.0.8:
+  version "4.0.8"
+  resolved "https://registry.yarnpkg.com/stylable/-/stylable-4.0.8.tgz#64ddc1e888144463ad2ce2f18ae074d6caf66e92"
   dependencies:
     camelcase-css "^1.0.1"
     css-selector-tokenizer "^0.7.0"
