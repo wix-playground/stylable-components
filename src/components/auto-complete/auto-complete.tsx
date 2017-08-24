@@ -36,7 +36,7 @@ export const AutoCompleteList: React.SFC<AutoCompleteListProps> = SBStateless(pr
     return null;
 }, style);
 
-export interface AutoCompleteProps extends React.InputHTMLAttributes<HTMLInputElement>, OptionList {
+export interface AutoCompleteProps extends React.InputHTMLAttributes<HTMLInputElement>, Partial<OptionList> {
     open?: boolean;
     value?: string;
     onChange?: (event: Partial<AutoCompleteChangeEvent>) => void;

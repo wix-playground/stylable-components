@@ -1,13 +1,18 @@
 .root {
     width: auto;
-    font-family: Arial, sans-serif;
     font-size: 16px;
 }
 
 .auto-complete-input {
   border: 1px solid #adbac5;
+  font-family: ArialMT;
+  font-size: 16px;
   height: 36px;
   width: 100%;
+}
+
+.auto-complete-list {
+    -st-extends: List;
 }
 
 .auto-complete-input:hover {
