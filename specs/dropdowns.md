@@ -219,6 +219,13 @@ Additional in MultiSelect:
     * If no element is selected, focus moves to the first element
 * Click on an option (SelectionList) - option is selected and popup is closed
 
+#### AutoComplete
+* Click outside:
+  * When popup is closed, focus is lost
+  * When popup is opened, focus is lost and popup is closed
+* Click on toggle opens the popup
+* Click on an option (SelectionList) - option is selected and popup is closed
+
 Additional in MultiSelect:
 
 * Click on clear icon on tag -> removes value from selection
@@ -227,6 +234,10 @@ Additional in MultiSelect:
 ### Touch Handling
 
 #### Dropdown
+
+Same as click behavior, apart from touchdown behavior which will be implemented in the next iteration.
+
+#### AutoComplete
 
 Same as click behavior, apart from touchdown behavior which will be implemented in the next iteration.
 
