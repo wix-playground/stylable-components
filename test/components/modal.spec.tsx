@@ -66,7 +66,7 @@ describe('<Modal />', () => {
                 && Math.abs(rects.bottom - window.innerHeight) < 1;
         }
 
-        await waitFor(() => expect(checkIfCentered(bodySelect('MODAL')!)).to.equal(true));
+        await waitFor(() => expect(checkIfCentered(bodySelect('MODAL')!), 'The modal wasn\'t centered').to.equal(true));
     });
 
     it('renders one child in the center of the viewport', async function() {
@@ -130,13 +130,13 @@ describe('<Modal />', () => {
         document.body.removeChild(scroll);
     });
 
-    it('calls onRequestClose with "backdrop" when the backdrop is clicked', async function() {
+    it('calls onRequestClose with source equal to backdrop when the backdrop is clicked', async function() {
         const onRequestClose = sinon.spy();
         clientRenderer.render(<Modal isOpen={true} onRequestClose={onRequestClose} />);
 
         simulate.click(bodySelect('MODAL')!);
 
-        await waitFor(() => expect(onRequestClose).to.have.been.calledWith('backdrop'));
+        await waitFor(() => expect(onRequestClose).to.have.been.calledWithMatch({source: 'backdrop'}));
     });
 
     it('should not call onRequestClose when the children are clicked', async function() {

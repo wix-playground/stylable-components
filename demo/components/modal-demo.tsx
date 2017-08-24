@@ -1,11 +1,13 @@
 import * as React from 'react';
-import {Modal} from '../../src';
+import {SBComponent} from 'stylable-react-component/dist/stylable-react';
+import {Modal, Image} from '../../src';
 import styles from './modal-demo.st.css';
 
 export interface ModalDemoState {
     isOpen: boolean;
 }
 
+@SBComponent(styles)
 export class ModalDemo extends React.Component<{}, ModalDemoState> {
     public state: ModalDemoState = {
         isOpen: false
@@ -15,8 +17,8 @@ export class ModalDemo extends React.Component<{}, ModalDemoState> {
         return (
             <div>
                 <button data-automation-id="MODAL_BUTTON" onClick={this.onClick}>Open The Modal!</button>
-                <Modal isOpen={this.state.isOpen} onRequestClose={this.onClick}>
-                    <p className={styles.content}>Hey, I'm in a modal</p>
+                <Modal className="root" isOpen={this.state.isOpen} onRequestClose={this.onClick}>
+                    <Image className="image" src="http://i.imgur.com/2tP1V6y.png" />
                 </Modal>
             </div>
         );

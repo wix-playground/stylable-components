@@ -5,9 +5,18 @@ import {Portal} from '../../../src';
 import {enableScrolling, stopScrolling} from '../../utils/stop-scrolling';
 import styles from './modal.st.css';
 
+export const Sources = {
+    backdrop: 'backdrop',
+    children: 'children'
+};
+
+export interface RequestCloseEvent {
+    source: string;
+}
+
 export interface ModalProps extends React.HTMLAttributes<HTMLDivElement> {
     isOpen: boolean;
-    onRequestClose?(source: string): void;
+    onRequestClose?({source: RequestCloseEvent}): void;
 }
 
 @SBComponent(styles)
@@ -35,15 +44,15 @@ export class Modal extends React.PureComponent<ModalProps, {}> {
     public render() {
         const rootProps = root(this.props, {
             'data-automation-id': '',
-            'className': ''
+            'className': 'root'
         });
 
         return (
             this.props.isOpen ?
                 (
                     <Portal {...rootProps}>
-                        <div className="backdrop" data-automation-id="MODAL" onClick={this.onClick('backdrop')}>
-                            <div onClick={this.onClick('children')}>
+                        <div className="backdrop" data-automation-id="MODAL" onClick={this.onClick(Sources.backdrop)}>
+                            <div onClick={this.onClick(Sources.children)}>
                                 {this.props.children}
                             </div>
                         </div>
@@ -56,8 +65,8 @@ export class Modal extends React.PureComponent<ModalProps, {}> {
     private onClick = (source: string) => {
         return (event: React.SyntheticEvent<HTMLDivElement>) => {
             event.stopPropagation();
-            if (this.props.onRequestClose && source !== 'children') {
-                this.props.onRequestClose(source);
+            if (this.props.onRequestClose && source !== Sources.children) {
+                this.props.onRequestClose({source});
             }
         };
     }
