@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { SBComponent, SBStateless } from 'stylable-react-component/dist/stylable-react';
-import { root } from 'wix-react-tools';
-import { OptionList, SelectionItem, SelectionList } from '../selection-list/selection-list';
+import {SBComponent, SBStateless} from 'stylable-react-component/dist/stylable-react';
+import {root} from 'wix-react-tools';
+import {OptionList, SelectionList} from '../selection-list/selection-list';
 import style from './auto-complete.st.css';
 
 // Selected item is a string because of selection list's constraints
@@ -13,7 +13,11 @@ export type FilterPredicate = (item: string, filterString: string) => boolean;
 export interface AutoCompleteListProps {
     open: boolean;
     items?: string[];
-    onItemClick?: (item: string) => void;
+    onChange?: (item: string) => void;
+}
+
+export interface AutoCompleteChangeEvent extends React.ChangeEvent<HTMLInputElement> {
+    value: string;
 }
 
 export const AutoCompleteList: React.SFC<AutoCompleteListProps> = SBStateless(props => {
@@ -23,7 +27,7 @@ export const AutoCompleteList: React.SFC<AutoCompleteListProps> = SBStateless(pr
                 <SelectionList
                     className="auto-complete-list"
                     dataSource={props.items}
-                    onChange={props.onItemClick!}
+                    onChange={props.onChange!}
                 />
             </div>
         );
@@ -31,13 +35,10 @@ export const AutoCompleteList: React.SFC<AutoCompleteListProps> = SBStateless(pr
     return null;
 }, style);
 
-export interface AutoCompleteProps extends OptionList {
-    value?: string;
-    onChange?: (value: string) => void;
-    style?: any;
-    className?: string;
-    onItemClick?: (item: string) => void;
+export interface AutoCompleteProps extends React.InputHTMLAttributes<HTMLInputElement>, OptionList {
     open?: boolean;
+    value?: string;
+    onChange?: (event: Partial<AutoCompleteChangeEvent>) => void;
     filter?: FilterPredicate;
 }
 
@@ -50,8 +51,7 @@ export class AutoComplete extends React.Component<AutoCompleteProps, {}> {
         dataSource: [],
         value: '',
         filter: prefixFilter,
-        onChange: () => {},
-        onItemClick: () => {}
+        onChange: () => {}
     };
 
     public render() {
@@ -74,17 +74,17 @@ export class AutoComplete extends React.Component<AutoCompleteProps, {}> {
                 <AutoCompleteList
                     open={this.props.open!}
                     items={filteredItems as string[]}
-                    onItemClick={this.onItemClick}
+                    onChange={this.onClick}
                 />
             </div>
         );
     }
 
-    private onChange = (e: any) => {
-        this.props.onChange!(e.target.value || '');
+    private onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        this.props.onChange!({value: e.target.value || ''});
     }
 
-    private onItemClick = (item: string) => {
-        this.props.onItemClick!(item);
+    private onClick = (item: string) => {
+        this.props.onChange!({value: item});
     }
 }

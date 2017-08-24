@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { ClientRenderer, expect, simulate, sinon, waitFor } from 'test-drive-react';
-import { AutoCompleteDemo } from '../../demo/components/auto-complete.demo';
-import { AutoComplete } from '../../src';
+import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react';
+import {AutoCompleteDemo} from '../../demo/components/auto-complete.demo';
+import {AutoComplete} from '../../src';
 
 const autoComp = 'AUTO_COMPLETE';
 const autoCompDemo = autoComp + '_DEMO';
@@ -16,7 +16,7 @@ describe('<AutoComplete />', () => {
 
     describe('The autocomplete user', () => {
         it('types in the input and selects a value', async () => {
-            const { select, waitForDom } = clientRenderer.render(<AutoCompleteDemo />);
+            const {select, waitForDom} = clientRenderer.render(<AutoCompleteDemo />);
             const itemList = select(autoCompDemo, list)!;
             const prefix = 'P';
             const filteredItems = items.filter(item => item.startsWith(prefix)).join('');
@@ -35,53 +35,53 @@ describe('<AutoComplete />', () => {
     });
 
     it('renders to the screen', () => {
-        const { select, waitForDom } = clientRenderer.render(<AutoComplete />);
+        const {select, waitForDom} = clientRenderer.render(<AutoComplete />);
 
         return waitForDom(() => expect(select(autoComp)).to.be.present());
     });
 
     it('invokes the onChange when text is entered to label', () => {
         const onChange = sinon.spy();
-        const { select } = clientRenderer.render(<AutoComplete onChange={onChange}/>);
+        const {select} = clientRenderer.render(<AutoComplete onChange={onChange}/>);
 
         (select(autoComp, input) as HTMLInputElement).value = 'abc';
         simulate.change(select(autoComp, input));
 
         return waitFor(() => {
             expect(onChange).to.have.been.calledOnce;
-            expect(onChange).to.have.been.calledWithMatch('abc');
+            expect(onChange).to.have.been.calledWithMatch({value: 'abc'});
         });
     });
 
     it('renders the item list if open is given', async () => {
-        const { select, waitForDom } = clientRenderer.render(<AutoComplete open/>);
+        const {select, waitForDom} = clientRenderer.render(<AutoComplete open/>);
 
         await waitForDom(() => expect(select(autoComp, list)).to.be.present());
     });
 
     it('renders the items if given', async () => {
-        const { select, waitForDom } = clientRenderer.render(<AutoComplete open dataSource={items}/>);
+        const {select, waitForDom} = clientRenderer.render(<AutoComplete open dataSource={items}/>);
 
         await waitForDom(() => expect(select(autoComp, list, 'LIST')!.children[0].innerHTML).to.be.equal('Muffins'));
     });
 
-    it('invokes the onItemClick when an option is clicked', async () => {
-        const onItemClick = sinon.spy();
-        const { select } = clientRenderer.render(
-            <AutoComplete open dataSource={['Cat', 'Dog']} onItemClick={onItemClick}/>
+    it('invokes the onChange when an option is clicked', async () => {
+        const onChange = sinon.spy();
+        const {select} = clientRenderer.render(
+            <AutoComplete open dataSource={['Cat', 'Dog']} onChange={onChange}/>
         );
 
         simulate.click(select(autoComp, list, 'LIST')!.children[0]);
 
         await waitFor(() => {
-            expect(onItemClick).to.have.been.calledOnce;
-            expect(onItemClick).to.have.been.calledWithMatch('Cat');
+            expect(onChange).to.have.been.calledOnce;
+            expect(onChange).to.have.been.calledWithMatch({value: 'Cat'});
         });
     });
 
     it('displays filtered results according to given value', async () => {
         const prefix = 'P';
-        const { select, waitForDom } = clientRenderer.render(<AutoComplete open dataSource={items} value={prefix}/>);
+        const {select, waitForDom} = clientRenderer.render(<AutoComplete open dataSource={items} value={prefix}/>);
         const itemList = select(autoComp, list);
 
         return waitForDom(() => {

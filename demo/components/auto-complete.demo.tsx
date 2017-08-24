@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { AutoComplete } from '../../src';
+import {AutoComplete} from '../../src';
 
 export interface AutoCompleteDemoState {
     open: boolean;
@@ -10,17 +10,11 @@ const items = ['Muffins', 'Pancakes', 'Cupcakes', 'Souffles',
                'Pasta', 'Soup', 'Caramel', 'Avazim', 'Moses'];
 
 export class AutoCompleteDemo extends React.Component<{}, AutoCompleteDemoState> {
-    public state = { open: true, inputText: '' };
+    public state = {open: true, inputText: ''};
 
-    public onChange = (value: string) => {
+    public onChange = (e: any) => {
         this.setState({
-            inputText: value
-        });
-    }
-
-    public onItemClick = (item: string) => {
-        this.setState({
-            inputText: item
+            inputText: e.value
         });
     }
 
@@ -34,7 +28,6 @@ export class AutoCompleteDemo extends React.Component<{}, AutoCompleteDemoState>
                         onChange={this.onChange}
                         open={this.state.open}
                         value={this.state.inputText}
-                        onItemClick={this.onItemClick}
                     />
                 </section>
                 <span data-automation-id="AUTO_COMPLETE_DEMO_TEXT">You picked: {this.state.inputText}</span>

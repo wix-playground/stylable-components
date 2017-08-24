@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { AutoCompleteDemo } from './components/auto-complete.demo';
+import {AutoCompleteDemo} from './components/auto-complete.demo';
 import {BirthdayPickerDemo} from './components/birthday-picker-demo';
 import {CheckBoxDemo} from './components/checkbox-demo';
 import {DatePickerDemo} from './components/date-picker-demo';
