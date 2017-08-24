@@ -242,16 +242,16 @@ describe('<RadioGroup />', function() {
             const {select, waitForDom} = clientRenderer.render(
                 <RadioGroup onChange={emptyFunction}>
                     <span>1</span>
-                    <input type="radio" value="Test" onChange={onChange} data-automation-id="CHILD_1" />
+                    <ControlledRadioInput value="Test" onChange={onChange}/>
                 </RadioGroup>
             );
 
-            await waitForDom(() => {expect(select(radioGroup, 'CHILD_1')).to.be.present(); });
-            const input = select(radioGroup, 'CHILD_1') as HTMLInputElement;
-            input.click();
+            await waitForDom(() => {expect(select(radioGroup, 'INPUT_FIXTURE')).to.be.present(); });
+            const input = select(radioGroup, 'INPUT_FIXTURE');
+            simulate.click(input);
             return waitForDom(() => {
                 expect(onChange).to.have.been.calledOnce;
-                expect(input.checked).to.be.true;
+                expect(select<HTMLInputElement>(radioGroup, 'INPUT_FIXTURE')!.checked).to.be.true;
             });
         });
     });
@@ -358,5 +358,32 @@ describe('<RadioGroup />', function() {
 
         });
     });
-
 });
+
+export interface ControlledRadioInputProps {
+    value: string;
+    onChange: (e: string) => void;
+}
+
+export interface ControlledRadioInputState {
+    checked: boolean;
+}
+
+class ControlledRadioInput extends React.Component<ControlledRadioInputProps, ControlledRadioInputState> {
+    public state = {checked: false};
+    public render() {
+        return (
+            <input
+                type="radio"
+                value={this.props.value}
+                checked={this.state.checked}
+                onClick={this.handleClick}
+                data-automation-id="INPUT_FIXTURE"
+            />);
+    }
+
+    private handleClick = () => {
+        this.setState({checked: !this.state.checked});
+        this.props.onChange(this.props.value);
+    }
+}
