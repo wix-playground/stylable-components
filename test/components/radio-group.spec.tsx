@@ -2,6 +2,7 @@ import * as React from 'react';
 import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react';
 import {RadioGroupDemo} from '../../demo/components/radio-group-demo';
 import {RadioButton, RadioGroup} from '../../src';
+import {sleep} from "../utils/sleep";
 
 const radioGroup = 'RADIO_GROUP';
 const radioButton = 'RADIO_BUTTON';
@@ -349,6 +350,25 @@ describe('<RadioGroup />', () => {
             });
         });
 
+        it('does not call onChange when clicking disabled radio', async () => {
+            const onChange = sinon.spy();
+            const {select, waitForDom} = clientRenderer.render(
+                <RadioButton value="Tonberry" disabled data-automation-id={radioButton + '_0'} onChange={onChange}/>
+            );
+
+            const button = select(radioButton + '_0', 'NATIVE_INPUT');
+
+            await waitForDom(() => {
+                expect(button).to.have.attribute('disabled');
+                expect(select(radioButton + '_0', 'UNCHECKED_RADIO_ICON')).to.be.present();
+            });
+
+            simulate.click(select(radioButton + '_0'));
+
+            await sleep(500);
+            expect(onChange).to.have.not.been.called;
+        });
+
         it('renders a checked disabled radio button', async () => {
             const {select, waitForDom} = clientRenderer.render(
                 <RadioButton value="Tonberry" disabled checked data-automation-id={radioButton + '_0'}/>
@@ -362,6 +382,53 @@ describe('<RadioGroup />', () => {
                 expect(select(radioButton + '_0', 'CHECKED_RADIO_ICON')).to.be.present();
             });
         });
+
+        it('renders a readOnly radio button', async () => {
+            const {select, waitForDom} = clientRenderer.render(
+                <RadioButton value="Tonberry" readOnly data-automation-id={radioButton + '_0'}/>
+            );
+
+            const button = select(radioButton + '_0', 'NATIVE_INPUT');
+
+            await waitForDom(() => {
+                expect(button).to.have.attribute('readOnly');
+                expect(select(radioButton + '_0', 'UNCHECKED_RADIO_ICON')).to.be.present();
+            });
+        });
+
+        it('does not call onChange when clicking readOnly radio', async () => {
+            const onChange = sinon.spy();
+            const {select, waitForDom} = clientRenderer.render(
+                <RadioButton value="Tonberry" readOnly data-automation-id={radioButton + '_0'} onChange={onChange}/>
+            );
+
+            const button = select(radioButton + '_0', 'NATIVE_INPUT');
+
+            await waitForDom(() => {
+                expect(button).to.have.attribute('readOnly');
+                expect(select(radioButton + '_0', 'UNCHECKED_RADIO_ICON')).to.be.present();
+            });
+
+            simulate.click(select(radioButton + '_0'));
+
+            await sleep(500);
+            expect(onChange).to.have.not.been.called;
+        });
+
+        it('renders a checked readOnly radio button', async () => {
+            const {select, waitForDom} = clientRenderer.render(
+                <RadioButton value="Tonberry" readOnly checked data-automation-id={radioButton + '_0'}/>
+            );
+
+            const button = select(radioButton + '_0', 'NATIVE_INPUT');
+
+            await waitForDom(() => {
+                expect(button).to.have.attribute('readOnly');
+                expect(button).to.have.property('checked', true);
+                expect(select(radioButton + '_0', 'CHECKED_RADIO_ICON')).to.be.present();
+            });
+        });
+
 
         it('renders any children given to the component', async () => {
             const {select, waitForDom} = clientRenderer.render(

@@ -105,6 +105,7 @@ export class RadioGroup extends React.Component<RadioGroupProps, {}> {
                 disabled={this.props.disabled || props.disabled}
                 location={this.props.location}
                 name={this.name}
+                className="radioGroupChild"
             />
         ));
     }
@@ -124,6 +125,7 @@ export class RadioGroup extends React.Component<RadioGroupProps, {}> {
                             disabled={this.props.disabled || element.props.disabled}
                             location={this.props.location}
                             name={this.name}
+                            className="radioGroupChild"
                         />
                     );
                 } else {
@@ -132,7 +134,8 @@ export class RadioGroup extends React.Component<RadioGroupProps, {}> {
                             {
                                 key: index,
                                 checked: this.checkedArray[index].checked,
-                                onChange: action(this.childrenOnClick(index))
+                                onChange: action(this.childrenOnClick(index)),
+                                className: 'radioGroupChild'
                             }
                         )
                     );

@@ -37,21 +37,18 @@ export class RadioButton extends React.Component<RadioButtonProps, {}> {
             isLeftLabel: this.props.location === 'left'
         };
 
+        const {onChange, location, children, ...restOfProps} = this.props;
         return (
             <div
                 {...rootProps}
-                onClick={this.onClick}
+                onClick={this.onRootClick}
                 cssStates={cssStates}
             >
                 <input
+                    {...restOfProps}
                     type="radio"
                     className="radioInput"
                     data-automation-id="NATIVE_INPUT"
-                    value={this.props.value}
-                    checked={this.props.checked}
-                    name={this.props.name}
-                    disabled={this.props.disabled}
-                    readOnly={true}
                 />
                 <div className="contentContainer">
                     <div
@@ -68,8 +65,8 @@ export class RadioButton extends React.Component<RadioButtonProps, {}> {
     }
 
     @action
-    private onClick: React.EventHandler<RadioChangeEvent> = e => {
-        if (!this.props.disabled) {
+    private onRootClick: React.EventHandler<RadioChangeEvent> = e => {
+        if (!this.props.disabled && !this.props.readOnly) {
             this.props.onChange!({...e, value: this.props.value});
         }
     }
@@ -82,7 +79,6 @@ function emptyRadioSvg() {
             className={style.radioSVG}
             viewBox="0 0 16 16"
             data-automation-id="UNCHECKED_RADIO_ICON"
-
         >
             <circle cx="8" cy="8" r="7.5" fill="none"/>
         </svg>
