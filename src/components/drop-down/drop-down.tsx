@@ -2,6 +2,7 @@ import * as keycode from 'keycode';
 import * as React from 'react';
 import {SBComponent, SBStateless} from 'stylable-react-component/dist/stylable-react';
 import {root} from 'wix-react-tools';
+import {Popup} from '../../../src';
 import {SelectionList} from '../selection-list';
 import {CaretDown} from './drop-down-icons';
 import style from './drop-down.st.css';
@@ -37,17 +38,15 @@ export interface DropDownListProps {
 }
 
 export const DropDownList: React.SFC<DropDownListProps> = SBStateless(props => {
-    if (!props.open) { return null; }
-
     return (
-        <div data-automation-id="DROP_DOWN_LIST" ref={props.listRef}>
+        <Popup open={props.open} anchor={props.listRef}>
             <SelectionList
                 className="drop-down-list"
                 dataSource={props.items!.map((item: DropDownItem) => item.label)}
                 value={props.selectedItem && props.selectedItem.label}
                 onChange={props.onItemClick!}
             />
-        </div>
+        </Popup>
     );
 }, style);
 
@@ -61,7 +60,7 @@ export interface DropDownProps {
     openOnFocus?: boolean;
     onChange?: (id: string) => void;
     hideSelected?: boolean;
-    children?: any;
+    // children?: any;
     value?: string;
 
     selectedItem?: DropDownItem;
@@ -105,7 +104,7 @@ export class DropDown extends React.Component<DropDownProps, {}> {
             >
                 <DropDownInput selectedItem={this.props.selectedItem} onClick={this.props.onInputClick} />
                 <DropDownList
-                    listRef={this.focusList}
+                    listRef={this.dropdown}
                     selectedItem={this.props.selectedItem}
                     items={this.props.items}
                     open={!!this.props.open}

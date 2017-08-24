@@ -1,5 +1,6 @@
 import * as keycode from 'keycode';
 import * as React from 'react';
+import {selectDom} from 'test-drive';
 import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react';
 import {DropDownDemo} from '../../demo/components/drop-down.demo';
 import {DropDown} from '../../src';
@@ -17,9 +18,10 @@ const KeyCodes: any = {
     ESC: keycode('escape')
 };
 
-describe('<DropDown />', () => {
+describe.only('<DropDown />', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
+    const bodySelect = selectDom(document.body);
 
     const items = [
         {label: 'Muffins'},
@@ -30,16 +32,16 @@ describe('<DropDown />', () => {
     it('renders a dropdown, opens it with a click, selects an item', async () => {
         const {select, waitForDom} = clientRenderer.render(<DropDownDemo />);
 
-        await waitForDom(() => expect(select(dropDownDemo, list)).to.be.absent());
+        await waitForDom(() => expect(bodySelect('LIST')).to.be.absent());
 
         simulate.click(select(dropDownDemo, input));
 
-        await waitForDom(() => expect(select(dropDownDemo, list)).to.be.present());
+        await waitForDom(() => expect(bodySelect('LIST')).to.be.present());
 
-        simulate.click(select(dropDownDemo, list)!.children![0].children[0]);
+        simulate.click(bodySelect('LIST')!.children![0]);
 
         return waitForDom(() => {
-            expect(select(dropDownDemo, list)).to.be.absent();
+            expect(bodySelect('LIST')).to.be.absent();
             expect(select(dropDownDemo)).to.have.text(items[0].label);
         });
     });
@@ -71,11 +73,12 @@ describe('<DropDown />', () => {
         return waitFor(() => expect(onClick).to.have.been.calledOnce);
     });
 
-    it('displays item list to choose from when open is true', () => {
+    it.only('displays item list to choose from when open is true', () => {
         const {select, waitForDom} =
             clientRenderer.render(<DropDown selectedItem={undefined} open={true} items={items} />);
-        const dropDownList = select(dropDown, list, 'LIST');
+        const dropDownList = bodySelect('LIST');
 
+        debugger
         return waitForDom(() => {
             expect(dropDownList).to.be.present();
             items.forEach((elem, idx) => {

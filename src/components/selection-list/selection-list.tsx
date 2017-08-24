@@ -133,16 +133,17 @@ export class SelectionList extends React.Component<SelectionListProps, Selection
         this.focusableItemValues = this.getFocusableItemValuesFromChildren(children);
 
         const rootProps = root(this.props, {
-            className: 'list',
-            cssStates: {
+            'data-automation-id': 'LIST',
+            'className': 'list',
+            'cssStates': {
                 focused: this.state.focused
             }
         }) as React.HtmlHTMLAttributes<HTMLDivElement>;
+        debugger
 
         return (
             <div
                 {...rootProps}
-                data-automation-id="LIST"
                 onClick={this.handleClick}
                 onKeyDown={this.handleKeyDown}
                 onFocus={this.handleFocus}
