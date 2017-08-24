@@ -40,6 +40,7 @@ export class RadioButton extends React.Component<RadioButtonProps, RadioButtonSt
         });
 
         const cssStates = {
+            checked: this.props.checked,
             disabled: this.props.disabled,
             isLeftLabel: this.props.location === 'left',
             focused: this.state.isFocused
