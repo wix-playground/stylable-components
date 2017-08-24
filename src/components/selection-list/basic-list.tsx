@@ -93,9 +93,8 @@ export class BasicList extends React.Component<BasicListProps, {}> {
     }
 
     private handleClick: React.MouseEventHandler<HTMLElement> = event => {
-        const rootNode = ReactDOM.findDOMNode(this);
         const item = closestElementMatching(
-            el => el.parentElement === rootNode,
+            el => el.parentElement === event.currentTarget,
             event.target as HTMLElement
         );
         if (!item) {
