@@ -1,4 +1,6 @@
 .image {
-    width: 800px;
-    height: 556px;
+    width: 374px;
+    height: 400px;
+    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+    background-image: url("https://ci4.googleusercontent.com/proxy/UFmAW4oaWnp3Vdg9ZJl84xUcMgswIBU5vubhBNdZ2iMM2NkDCeKKo5ElPMdyrR4aodOLpr75IKkncU7KwojTKV4wjqwHulvLzyAooCGzGU77NAXbh9iyxq2NGvvmtIbgaBw8S_PQZr54hzeV2_dI0S3Mtf7XvscxpxEyYwInGUgbpp0KCHev1mDKMZ1vlCo=s0-d-e1-ft#http://static.wixstatic.com/media/22734d_f7212acdd1504853ba8e63e963a64167~mv2.png/v1/fit/w_700,h_2000,al_c,q_85/image.jpg");
 }
