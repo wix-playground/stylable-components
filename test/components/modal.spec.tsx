@@ -126,6 +126,7 @@ describe('<Modal />', () => {
             expect(bodySelect('MODAL')!.getBoundingClientRect().top).to.equal(0);
         });
 
+        window.scrollTo(0, 0);
         document.body.removeChild(scroll);
     });
 
