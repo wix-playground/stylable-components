@@ -4,7 +4,6 @@ import {noop} from '../../utils';
 import {BasicList, BasicListProps, ItemValue} from './basic-list';
 import {OptionList, renderDataSource} from './data-source';
 import {ListNavigation} from './list-navigation';
-import listStyle from './selection-list.st.css';
 
 export {divider, Divider} from './divider';
 export {Option} from './option';

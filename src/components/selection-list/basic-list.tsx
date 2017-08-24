@@ -22,9 +22,8 @@ export function getFocusableItemValues(nodes: React.ReactNode): ItemValue[] {
     const result: ItemValue[] = [];
     React.Children.forEach(nodes, node => {
         if (node && typeof node === 'object') {
-            const element = node as React.ReactElement<any>;
-            const value = element.props.value;
-            const disabled = element.props.disabled;
+            const value = node.props.value;
+            const disabled = node.props.disabled;
             if (value !== undefined && !disabled) {
                 result.push(value);
             }
@@ -79,15 +78,14 @@ export class BasicList extends React.Component<BasicListProps, {}> {
         );
     }
 
-    private renderChild(node: React.ReactNode): React.ReactNode {
+    private renderChild(node: React.ReactChild): React.ReactChild {
         if (node && typeof node === 'object') {
-            const element = node as React.ReactElement<any>;
-            const value = element.props.value;
+            const value = node.props.value;
             if (value !== undefined) {
                 const selected = value === this.props.value;
                 const focused = value === this.props.focusedValue && this.props.focused;
                 if (focused || selected) {
-                    return React.cloneElement(element, {selected, focused});
+                    return React.cloneElement(node, {selected, focused});
                 }
             }
         }
