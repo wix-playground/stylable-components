@@ -30,7 +30,7 @@ export class RadioButton extends React.Component<RadioButtonProps, RadioButtonSt
         tabIndex: 0
     };
 
-    public state: RadioButtonState = {isFocused: false}
+    public state: RadioButtonState = {isFocused: false};
 
     private inputRef: HTMLInputElement | null = null;
 

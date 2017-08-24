@@ -2,7 +2,7 @@ import * as React from 'react';
 import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react';
 import {RadioGroupDemo} from '../../demo/components/radio-group-demo';
 import {RadioButton, RadioGroup} from '../../src';
-import {sleep} from "../utils/sleep";
+import {sleep} from '../utils/sleep';
 
 const radioGroup = 'RADIO_GROUP';
 const radioButton = 'RADIO_BUTTON';
@@ -259,7 +259,8 @@ describe('<RadioGroup />', () => {
             );
 
             await waitForDom(() => {
-                expect(select(radioButton + '_0', 'NATIVE_INPUT')).to.be.present().and.to.have.attribute('type', 'radio');
+                expect(select(radioButton + '_0', 'NATIVE_INPUT')).to.be.present();
+                expect(select(radioButton + '_0', 'NATIVE_INPUT')).to.have.attribute('type', 'radio');
                 expect(select(radioButton + '_0', 'NATIVE_INPUT')).to.have.value('Shiva');
                 expect(select(radioButton + '_0', 'UNCHECKED_RADIO_ICON')).to.be.present();
             });
@@ -427,7 +428,6 @@ describe('<RadioGroup />', () => {
                 expect(select(radioButton + '_0', 'CHECKED_RADIO_ICON')).to.be.present();
             });
         });
-
 
         it('renders any children given to the component', async () => {
             const {select, waitForDom} = clientRenderer.render(
