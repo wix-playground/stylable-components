@@ -139,7 +139,6 @@ export class SelectionList extends React.Component<SelectionListProps, Selection
                 focused: this.state.focused
             }
         }) as React.HtmlHTMLAttributes<HTMLDivElement>;
-        debugger
 
         return (
             <div

@@ -66,7 +66,7 @@ export interface DropDownProps {
     selectedItem?: DropDownItem;
     onInputClick?: () => void;
     items?: DropDownItem[];
-    onItemClick?: (item: DropDownItem) => void;
+    onItemClick?: (item: string) => void;
     tabIndex?: number;
     focusedItem?: DropDownItem;
     onFocusItem?: (item: DropDownItem) => void;
@@ -103,13 +103,21 @@ export class DropDown extends React.Component<DropDownProps, {}> {
                 ref={dropdown => this.dropdown = dropdown}
             >
                 <DropDownInput selectedItem={this.props.selectedItem} onClick={this.props.onInputClick} />
-                <DropDownList
-                    listRef={this.dropdown}
-                    selectedItem={this.props.selectedItem}
-                    items={this.props.items}
-                    open={!!this.props.open}
-                    onItemClick={this.onItemClick}
-                />
+                <Popup open={!!this.props.open} anchor={this.dropdown}>
+                    <SelectionList
+                        className="drop-down-list"
+                        dataSource={this.props.items!.map((item: DropDownItem) => item.label)}
+                        value={this.props.selectedItem && this.props.selectedItem.label}
+                        onChange={this.props.onItemClick!}
+                    />
+                </Popup>
+                {/*<DropDownList*/}
+                    {/*listRef={this.dropdown}*/}
+                    {/*selectedItem={this.props.selectedItem}*/}
+                    {/*items={this.props.items}*/}
+                    {/*open={!!this.props.open}*/}
+                    {/*onItemClick={this.onItemClick}*/}
+                {/*/>*/}
             </div>
         );
     }
