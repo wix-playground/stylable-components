@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {Portal} from '../../../src';
+import {noop} from '../../utils';
 
 export type VerticalPosition =  'top' | 'center' | 'bottom';
 export type HorizontalPosition = 'left' | 'center' | 'right';
@@ -25,7 +26,7 @@ export interface PopupCompProps extends PopupProps {
 export class Popup extends React.Component<PopupCompProps, {}> {
     public static defaultProps: Partial<PopupCompProps> = {
         open: false,
-        onOpenStateChange: () => {},
+        onOpenStateChange: noop,
         anchorPosition: {vertical: 'bottom', horizontal: 'left'},
         popupPosition: {vertical: 'top', horizontal: 'left'},
         syncWidth: true,
