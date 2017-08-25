@@ -155,6 +155,20 @@ You can allow/forbade handles to cross using `allowCross` prop. Handles can not 
 
 If use is trying to set min/max value to one handle, allowed min/max value is determine either by sliders range or by next/previous handle. 
 
+**Alignment & Direction**
+
+You can adjust sliders alignment and direction in which the range is going to change with axis prop.
+
+1. `axis="x"` -> horizontal slider, progress is moving from left to right
+
+2. `axis="x-reverse"` -> horizontal slider, progress is moving from right to left
+
+3. `axis="y"` -> vertical slider, progress is moving from bottom to top
+
+4. `axis="y-reverse"` -> vertical slider, progress is moving from top to bottom
+
+   ​
+
 #### Validation
 
 | Case                          | Handling          |
