@@ -25,7 +25,7 @@ A **slider** an input where the user selects a value from within a given range.
 | value        | number                                | min          |            | Displays default OR actual value of the slider |
 | min          | number                                | 0            |            | The absolute minimum of the slider's range |
 | max          | number                                | 1            |            | The absolute maximum of the slider's range |
-| step         | number OR string "any"                | 1            |            | Set the slider's step. If step = number it causes slider to move in discrete increments. If step = "any"  sliders moves along a subjective range. |
+| step         | number OR string "any"                | 1            |            | Set the slider's step. If step = "number" it causes slider to move in discrete increments. If step = "any"  sliders moves along a subjective range. |
 | required     | bool                                  | fasle        |            | Whether or not the slider is required in a form. |
 | disabled     | bool                                  | false        |            | If true, the slider will not be interactive |
 | label        | string                                |              |            | Text to display in accessibility mode    |
