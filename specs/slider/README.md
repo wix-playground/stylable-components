@@ -144,9 +144,10 @@ Comments to example 2
 **Example 1:**
 
 ```css
-@import * from './components/slider'; /* TODO: fix the correct syntax */
+@import * from './components/slider'; 
+/* TODO: fix the correct syntax */
 /* style.st.css
-Adding rules here (which may be shared between different components) allows us to 	    override specific parts; or even change the whole theme
+Adding rules here (which may be shared between different components) allows us to override specific parts; or even change the whole theme
 */
 Slider {
   background: transparent;
