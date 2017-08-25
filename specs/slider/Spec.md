@@ -82,7 +82,7 @@ See [keyboard](#keyboard) section for reference.
 
 ##### Focus
 
-Focus is placed on the handle (the visual object that the mouse user would move, also known as the thumb).
+Focus is placed on the handle.
 
 > NOTE:
 > Focus is placed on handle according to ARIA doc
