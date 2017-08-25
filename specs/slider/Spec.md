@@ -129,7 +129,7 @@ Changing the value is performed **from current value** to the next expected valu
 E.g. if min=0, max=10, step=2, value=3.5, then UP arrow key will give us 4 and Down arrow key will give us 2
 Value can not exceed the min/max limits. If value is > or < than min/max it is automatically set to corresponding min/max.
 
-If slider has a 'step' prop, handle should move across the slider bar only according to the step.
+If slider has a step prop set to "number", handle should move across the slider bar only according to the step.
 
 #### Validation
 
