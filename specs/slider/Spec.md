@@ -63,7 +63,7 @@ See [README.md](./README.md) for more info.
 | State    | Description                              |
 | :------- | ---------------------------------------- |
 | Default  | Default component appearance             |
-| Hover    | User hovered over bar / handle / slider area |
+| Hover    | User hovered over bar / handle / clickable area |
 | Focus    | Browser is focused on the component (focus is displayed around the 'handle') |
 | Active   | User clicks on bar, handle or mark       |
 | Disabled | Component can not be changed             |
