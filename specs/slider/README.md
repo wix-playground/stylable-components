@@ -1,4 +1,4 @@
-# Slider Spec
+# Slider
 
 A **slider** an input where the user selects a value from within a given range.
 
