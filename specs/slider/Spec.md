@@ -170,8 +170,8 @@ You can adjust sliders alignment and direction in which the range is going to ch
 | left / down arrow key                | decrease value              |
 | home ( fn/ctrl + left arrow key)     | set min value               |
 | end ( fn/ctrl + right arrow key)     | set max value               |
-| page up (fn/ctrl + up arrow key)     | increase value by X         |
-| page down (fn/ctrl + down arrow key) | decrease value by X         |
+| page up (fn/ctrl + up arrow key)     | increase value by 10        |
+| page down (fn/ctrl + down arrow key) | decrease value by 10        |
 | tab                                  | moves to next element       |
 | shift + tab                          | moves to previous element   |
 | esc                                  | removes focus (if in focus) |
