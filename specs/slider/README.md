@@ -124,8 +124,8 @@ Comments to example 2
 | ::handle        | Allows you to style the handle of the slider |                                          |
 | ::bar           | Allows you to style the bar of the slider |                                          |
 | ::progressBar   | Allows you to style the progress bar of the slider |                                          |
-| ::marks         | Allows to style marks that are shown on the ::bar section of the slider | by default ::marks use background color of the ::bar |
-| ::progressMarks | Allows to style marks that are shown on the :progress section of the slider | by default ::progressMarks use background color of the ::progressBar |
+| ::marks         | Allows to style marks that are shown on the ::bar section of the slider | by default ::marks use the same background color as ::bar |
+| ::progressMarks | Allows to style marks that are shown on the :progressBar section of the slider | by default ::progressMarks use the same background color as ::progressBar |
 
 
 
