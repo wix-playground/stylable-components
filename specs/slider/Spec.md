@@ -146,7 +146,7 @@ If slider has a step prop set to "number", handle should move across the slider 
 | Case                                     | Handling                                 | Example                                  |
 | ---------------------------------------- | ---------------------------------------- | ---------------------------------------- |
 | value is out of `step`                   | keep current value & display handle at the position that represents this value | `min=0` `max=10` `step=2` `value=3.5`. Handle is displayed at the position that represents 3.5. When user changes value (keyboard / mouse) we move it to the next expected, which is 4 or 2 |
-| `step` is not set & `displayMarks` is set to true | show marks at the beginning and at the end of the slider |                                          |
+| `step` is not set & `marks` are set to true | show marks at the beginning and at the end of the slider |                                          |
 
 
 
