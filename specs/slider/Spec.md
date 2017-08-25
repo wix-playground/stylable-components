@@ -191,7 +191,7 @@ If slider has a step prop set to "number", handle should move across the slider 
 | Event                                  | Action                                   | NOTE                                     |
 | -------------------------------------- | ---------------------------------------- | ---------------------------------------- |
 | tap (on handle)                        | highlights handle                        | we need the ability to expand clickable area for mobile devices |
-| tap (on bar / mark / capable area)     | moves handle to position where user clicked | -                                        |
+| tap (on bar / mark / clickable area)     | moves handle to position where user clicked | -                                        |
 | tap & drag (right / left OR up / down) | change value according to direction of movement | -                                        |
 
 
