@@ -131,6 +131,16 @@ Value can not exceed the min/max limits. If value is > or < than min/max it is a
 
 If slider has a step prop set to "number", handle should move across the slider bar only according to the step.
 
+**Alignment & Direction**
+
+You can adjust sliders alignment and direction in which the range is going to change with axis prop.
+
+1. `axis="x"` -> horizontal slider, progress is moving from left to right
+2. `axis="x-reverse"` -> horizontal slider, progress is moving from right to left
+3. `axis="y"` -> vertical slider, progress is moving from bottom to top
+4. `axis="y-reverse"` -> vertical slider, progress is moving from top to bottom
+
+
 #### Validation
 
 | Case                          | Handling          |
