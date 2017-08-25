@@ -64,7 +64,7 @@ See [README.md](./README.md) for more info.
 | :------- | ---------------------------------------- |
 | Default  | Default component appearance             |
 | Hover    | User hovered over bar / handle / clickable area |
-| Focus    | Browser is focused on the component (focus is displayed around the 'handle') |
+| Focus    | User focuses on the components. Focus appears on click, tap or when user focuses on element with TAB button (focus is displayed around the 'handle') |
 | Active   | User clicks on bar, handle or mark       |
 | Disabled | Component can not be changed             |
 | Error    | Error state for the component (can be set with :error pseudo-class) |
