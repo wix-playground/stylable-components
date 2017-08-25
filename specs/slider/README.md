@@ -8,7 +8,7 @@ A **slider** an input where the user selects a value from within a given range.
 
 ![elements](./assets/elements.png)
 
-**Slider consists of:** "bar", "handle", "progress". The "handle" is dragged across the "bar" in order to give the slider a desired value while "progress" shows range from min value to the current value. Marks are representing the step. 
+**Slider consists of:** "bar", "handle", "progressBar". The "handle" is dragged across the "bar" in order to give the slider a desired value while "progress" shows range from min value to the current value. Marks are representing the step. 
 
 > TBD (need to decide on how to implement tooltip)
 > Also, you can display tooltip (e.g. to display current value) by adding child DOM element with relevant data-slot (data-slot="tooltip")
