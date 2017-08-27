@@ -100,27 +100,6 @@ describe('<TreeView />', () => {
         return waitForDom(() => expect(elementToSelect).to.have.attr('data-selected', 'true'));
     });
 
-    it('ends up in expected state after multiple clicks on same tree node', async () => {
-        const {select, waitForDom} = clientRenderer.render(<TreeViewDemo />);
-
-        expandItemWithLabel(select, allNodesLabels[0]);
-
-        const elementToSelect = select(treeView + '_DEMO', getTreeItemIcon(allNodesLabels[1]));
-        let elementToAssert = select(treeView + '_DEMO', getTreeItem(allNodesLabels[2]));
-
-        await waitForDom(() => expect(elementToSelect).to.be.present());
-        await waitForDom(() => expect(elementToAssert).to.be.absent());
-
-        expandItemWithLabel(select, allNodesLabels[1]);
-
-        elementToAssert = select(treeView + '_DEMO', getTreeItem(allNodesLabels[2]));
-        await waitForDom(() => expect(elementToAssert).to.be.present());
-
-        expandItemWithLabel(select, allNodesLabels[1]);
-
-        return waitForDom(() => expect(elementToAssert).to.be.absent());
-    });
-
     describe('Using default renderer', () => {
         it('renders correct children', () => {
             const {select, waitForDom} = clientRenderer.render(<TreeView dataSource={treeData} />);
@@ -359,6 +338,26 @@ describe('<TreeView />', () => {
             });
         });
 
+        describe('Reaction to dataSource changes', () => {
+            it('renders the additional item when a new data array is passed', async () => {
+                const {container, select, waitForDom} = clientRenderer.render(<TreeView dataSource={treeData} />);
+
+                expandItemWithLabel(select, treeData[0].label);
+                expandItemWithLabel(select, treeData[0].children![2].label);
+
+                await waitForDom(() => expect(select(treeView, getTreeItem('Kaiserschmarrn'))).to.be.absent());
+
+                const newTreeData = treeData.map(data => ({...data}));
+                newTreeData[0].children![2].children!.push({label: 'Kaiserschmarrn'});
+
+                clientRenderer.render(<TreeView dataSource={newTreeData} />, container);
+
+                expandItemWithLabel(select, newTreeData[0].label);
+
+                return waitForDom(() => expect(select(treeView, getTreeItem('Kaiserschmarrn'))).to.be.present());
+            });
+        });
+
         describe('<TreeItem />', () => {
 
             const stateMap = new TreeStateMap();
@@ -478,5 +477,26 @@ describe('<TreeView />', () => {
                 expect(last.label).to.eql(treeData[0].children![2].label);
             });
         });
+    });
+
+    it('ends up in expected state after multiple clicks on same tree node', async () => {
+        const {select, waitForDom} = clientRenderer.render(<TreeViewDemo />);
+
+        expandItemWithLabel(select, allNodesLabels[0]);
+
+        const elementToSelect = select(treeView + '_DEMO', getTreeItemIcon(allNodesLabels[1]));
+        let elementToAssert = select(treeView + '_DEMO', getTreeItem(allNodesLabels[2]));
+
+        await waitForDom(() => expect(elementToSelect).to.be.present());
+        await waitForDom(() => expect(elementToAssert).to.be.absent());
+
+        expandItemWithLabel(select, allNodesLabels[1]);
+
+        elementToAssert = select(treeView + '_DEMO', getTreeItem(allNodesLabels[2]));
+        await waitForDom(() => expect(elementToAssert).to.be.present());
+
+        expandItemWithLabel(select, allNodesLabels[1]);
+
+        return waitForDom(() => expect(elementToAssert).to.be.absent());
     });
 });
