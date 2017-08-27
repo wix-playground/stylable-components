@@ -97,7 +97,7 @@ Reference [listbox](https://www.w3.org/TR/wai-aria-practices/#Listbox) in w3 dra
 * Children role - option (identifies a selectable element)
 
 ### Aria
-* aria-selected="true" - Applied to elements with role option that are visually styled as selected to inform assistive technologies that the options are selected. When multiple selections are allowed, this attribute is applied to all selected items.
+* aria-selected="true" - Applied to elements with role option that are visually styled as selected to inform assistive technologies that the options are selected. When multiple selections are allowed, this attribute is applied to all selected items (false when not selected).
 
 ### Focus
 

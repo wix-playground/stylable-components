@@ -119,6 +119,7 @@ Based on the old w3 [spec](https://rawgit.com/w3c/aria-practices/master/aria-pra
 * aria-expanded=true if the popup is open, otherwise aria-expanded=false. Placed on the root element.
 * aria-haspopup=true on the root element
 * User provided props: aria-label, aria-labelledby, aria-describedby copied to root
+* aria-selected=true on the option selected in the SelectionList
 
 #### Focus
 * Current focus implementation gives focus to the input container (which has tabindex=0) and controls focus between the input container and the list using js code. This means that it is not accessible. To be changed in the next version.
@@ -140,6 +141,7 @@ Based on the old w3 [spec](https://rawgit.com/w3c/aria-practices/master/aria-pra
 * aria-haspopup=true on the root element
 * User provided props: aria-label, aria-labelledby, aria-describedby copied to root
 * aria-autocomplete=list on the input element (the one with the *textbox* role)
+* aria-selected=true on the option selected in the SelectionList
 
 #### Focus
 
@@ -150,6 +152,25 @@ The autocomplete manages 2 focus states, one for the input element, the *real* f
   * showNoSuggestion=true - The first item that is matched is highlighted. If no item is matched then the noSuggestion element is rendered and no highlighting occurs.
 
 ### MultiSelect
+
+#### Roles
+
+* Root role - *combobox*
+* Input role - *textbox*
+* Clear all icon role - *button*, tag delete icons should not be accessible, so verify no active role is used or HTML element which suggests action.
+
+#### Aria Attributes
+
+* aria-expanded=true if the popup is open, otherwise aria-expanded=false. Placed on the root element.
+* aria-haspopup=true on the root element
+* User provided props: aria-label, aria-labelledby, aria-describedby copied to root
+* aria-autocomplete=list on the input element (the one with the *textbox* role)
+* aria-multiselectable=true on the SelectionList
+* aria-selected=true on the option selected in the SelectionList, **all** other options should have aria-selected=false.
+
+#### Focus
+
+Same as AutoComplete. The tag elements are **not** focusable through keyboard navigation, the reason being it makes accessibility ridiculously difficult for the users.
 
 ## Behavior
 
@@ -201,10 +222,15 @@ The following behaviors are implemented in the SelectionList (relevant when a po
 * <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">up</kbd> -> Highlights the previous item in the list.
 * <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">Enter</kbd> -> Selects the highlighted item, closes the popup.
 
+#### MultiSelect
 
-Additional in MultiSelect:
+Same as AutoComplete and includes the following:
 
-* 'Backspace' key -> Deletes tag when cursor is after it.
+* <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">Backspace</kbd> -> Deletes tag when cursor is after it.
+
+The following behaviors are implemented in the SelectionList (relevant when a popup is opened and focus is in the SelectionList:
+
+* <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">Enter</kbd> -> Changes the selection state of the highlighted item
 
 ### Mouse Handling
 
@@ -226,7 +252,9 @@ Additional in MultiSelect:
 * Click on toggle opens the popup
 * Click on an option (SelectionList) - option is selected and popup is closed
 
-Additional in MultiSelect:
+#### MultiSelect
+
+Same as AutoComplete and including:
 
 * Click on clear icon on tag -> removes value from selection
 * Click on clear icon for component -> removes all selected items
@@ -241,7 +269,9 @@ Same as click behavior, apart from touchdown behavior which will be implemented 
 
 Same as click behavior, apart from touchdown behavior which will be implemented in the next iteration.
 
-Additional in MultiSelect:
+#### MultiSelect
+
+Same as AutoComplete, including:
 
 * Tap on clear icon on tag -> removes value from selection
 * Tap on clear icon for component -> removes all selected items
