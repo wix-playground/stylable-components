@@ -340,22 +340,37 @@ describe('<TreeView />', () => {
 
         describe('Reaction to dataSource changes', () => {
             it('renders the additional item when a new data array is passed', async () => {
-                const {container, select, waitForDom} = clientRenderer.render(<TreeView dataSource={treeData} />);
+                const {select, waitForDom} = clientRenderer.render(<TreeViewDemo />);
 
                 expandItemWithLabel(select, treeData[0].label);
                 expandItemWithLabel(select, treeData[0].children![2].label);
 
-                await waitForDom(() => expect(select(treeView, getTreeItem('Kaiserschmarrn'))).to.be.absent());
+                await waitForDom(() =>
+                    expect(select(treeView + '_DEMO', getTreeItem('Kaiserschmarrn'))).to.be.absent());
 
-                const newTreeData = treeData.map(data => ({...data}));
-                newTreeData[0].children![2].children!.push({label: 'Kaiserschmarrn'});
+                simulate.click(select(treeView + '_DEMO', 'SWITCH'));
+                expandItemWithLabel(select, treeData[0].label);
 
-                clientRenderer.render(<TreeView dataSource={newTreeData} />, container);
-
-                expandItemWithLabel(select, newTreeData[0].label);
-
-                return waitForDom(() => expect(select(treeView, getTreeItem('Kaiserschmarrn'))).to.be.present());
+                return waitForDom(() =>
+                    expect(select(treeView + '_DEMO', getTreeItem('Kaiserschmarrn'))).to.be.present());
             });
+
+            // it('renders the additional item when a new data element is added to existing data', async () => {
+            //     const {container, select, waitForDom} = clientRenderer.render(<TreeView dataSource={treeData} />);
+            //
+            //     expandItemWithLabel(select, treeData[0].label);
+            //     expandItemWithLabel(select, treeData[0].children![2].label);
+            //
+            //     await waitForDom(() => expect(select(treeView, getTreeItem('Kaiserschmarrn'))).to.be.absent());
+            //
+            //     newTreeData[0].children![2].children!.push({label: 'Kaiserschmarrn'});
+            //
+            //     clientRenderer.render(<TreeView dataSource={newTreeData} />, container);
+            //
+            //     expandItemWithLabel(select, newTreeData[0].label);
+            //
+            //     return waitForDom(() => expect(select(treeView, getTreeItem('Kaiserschmarrn'))).to.be.present());
+            // });
         });
 
         describe('<TreeItem />', () => {

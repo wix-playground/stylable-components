@@ -37,6 +37,7 @@ function SelectedItem({selectedItem}: any) {
 export interface TreeViewDemoState {
     selectedItem: TreeItemData | undefined;
     focusedItem: TreeItemData | undefined;
+    treeData: object[];
 }
 
 export class TreeViewDemo extends React.Component<{}, TreeViewDemoState> {
@@ -45,7 +46,8 @@ export class TreeViewDemo extends React.Component<{}, TreeViewDemoState> {
         super();
         this.state = {
             selectedItem: undefined,
-            focusedItem: undefined
+            focusedItem: undefined,
+            treeData
         };
     }
 
@@ -57,15 +59,26 @@ export class TreeViewDemo extends React.Component<{}, TreeViewDemoState> {
                     <SelectedItem selectedItem={this.state.selectedItem} />
                     <br />
                     <TreeView
-                        dataSource={treeData}
+                        dataSource={this.state.treeData}
                         onFocusItem={this.onFocusItem}
                         focusedItem={this.state.focusedItem}
                         onSelectItem={this.onSelectItem}
                         selectedItem={this.state.selectedItem}
                     />
+                    <br />
+                    <button onClick={this.switchDataSource} data-automation-id="SWITCH">Switch!</button>
                 </section>
             </div>
         );
+    }
+
+    private switchDataSource = () => {
+        const newTreeData = treeData.map(data => ({...data}));
+        newTreeData[0].children![2].children!.push({label: 'Kaiserschmarrn'});
+
+        this.setState({
+           treeData: newTreeData
+        });
     }
 
     private onSelectItem = (item: TreeItemData) => {
