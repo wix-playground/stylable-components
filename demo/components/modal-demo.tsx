@@ -1,6 +1,6 @@
 import * as React from 'react';
-import {SBComponent} from 'stylable-react-component/dist/stylable-react';
-import {Modal, Image} from '../../src';
+import {SBComponent} from 'stylable-react-component';
+import {Image, Modal} from '../../src';
 import styles from './modal-demo.st.css';
 
 export interface ModalDemoState {
