@@ -252,6 +252,68 @@ describe('<RadioGroup />', () => {
         });
     });
 
+    describe('Accessibility', () => {
+        it('if no child is checked - gives tabindex to the first one and the rest get -1', async () => {
+            const {select, waitForDom} = clientRenderer.render(
+                <RadioGroup tabIndex={8}>
+                    <RadioButton value="male"/>
+                    <RadioButton value="female"/>
+                    <RadioButton value="other"/>
+                </RadioGroup>
+            );
+
+            const button0 = select(radioGroup, radioButton + '_0', 'NATIVE_INPUT') as HTMLInputElement;
+            const button1 = select(radioGroup, radioButton + '_1', 'NATIVE_INPUT') as HTMLInputElement;
+            const button2 = select(radioGroup, radioButton + '_2', 'NATIVE_INPUT') as HTMLInputElement;
+
+            await waitForDom(() => {
+                expect(button0, 'first child should have tabindex 8').to.have.attribute('tabIndex', '8');
+                expect(button1, 'second child should have tabindex -1').to.have.attribute('tabIndex', '-1');
+                expect(button2, 'third child should have tabindex -1').to.have.attribute('tabIndex', '-1');
+            });
+        });
+
+        it('if a child is checked - gives that child tabIndex and the rest get -1', async () => {
+            const {select, waitForDom} = clientRenderer.render(
+                <RadioGroup>
+                    <RadioButton value="male"/>
+                    <RadioButton value="female" checked/>
+                    <RadioButton value="other"/>
+                </RadioGroup>
+            );
+
+            const button0 = select(radioGroup, radioButton + '_0', 'NATIVE_INPUT') as HTMLInputElement;
+            const button1 = select(radioGroup, radioButton + '_1', 'NATIVE_INPUT') as HTMLInputElement;
+            const button2 = select(radioGroup, radioButton + '_2', 'NATIVE_INPUT') as HTMLInputElement;
+
+            await waitForDom(() => {
+                expect(button0, 'first child should have tabindex -1').to.have.attribute('tabIndex', '-1');
+                expect(button1, 'second child should have tabindex 0').to.have.attribute('tabIndex', '0');
+                expect(button2, 'third child should have tabindex -1').to.have.attribute('tabIndex', '-1');
+            });
+
+            simulate.click(button2);
+
+            await waitFor(() => {
+                expect(button0, 'first child should have tabindex -1').to.have.attribute('tabIndex', '-1');
+                expect(button1, 'second child should have tabindex -1').to.have.attribute('tabIndex', '-1');
+                expect(button2, 'third child should have tabindex 0').to.have.attribute('tabIndex', '0');
+            });
+        });
+
+        it('if a child is checked - gives that child tabIndex and the rest get -1', async () => {
+            const {select, waitForDom} = clientRenderer.render(
+                <RadioGroup name="yaya">
+                    <RadioButton value="male"/>
+                </RadioGroup>
+            );
+
+            await waitForDom(() => {
+                expect(select(radioGroup)).to.have.attribute('role', 'radiogroup');
+            });
+        });
+    });
+
     describe('<RadioButton />', () => {
         it('renders a radio button to the screen', async () => {
             const {select, waitForDom} = clientRenderer.render(
@@ -443,6 +505,40 @@ describe('<RadioGroup />', () => {
                 expect(child).to.be.instanceOf(HTMLSpanElement);
             });
 
+        });
+
+        describe('Accessibility', () => {
+            it('has tabIndex 0 by default', async () => {
+                const {select, waitForDom} = clientRenderer.render(<RadioButton value="yaya"/>);
+
+                await waitForDom(() => {
+                    expect(select('NATIVE_INPUT')).to.have.attribute('tabIndex', '0');
+                });
+            });
+
+            it('gets tabIndex from the user', async () => {
+                const {select, waitForDom} = clientRenderer.render(<RadioButton value="yaya" tabIndex={666}/>);
+
+                await waitForDom(() => {
+                    expect(select('NATIVE_INPUT')).to.have.attribute('tabIndex', '666');
+                });
+            });
+
+            it('has aria-checked property when checked', async () => {
+                const {select, waitForDom} = clientRenderer.render(<RadioButton value="yaya" checked/>);
+
+                await waitForDom(() => {
+                    expect(select('RADIO_BUTTON_ROOT')).to.have.attribute('aria-checked', 'true');
+                });
+            });
+
+            it('root has role - radio', async () => {
+                const {select, waitForDom} = clientRenderer.render(<RadioButton value="yaya" checked/>);
+
+                await waitForDom(() => {
+                    expect(select('RADIO_BUTTON_ROOT')).to.have.attribute('role', 'radio');
+                });
+            });
         });
     });
 

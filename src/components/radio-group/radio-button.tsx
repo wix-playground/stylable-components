@@ -36,7 +36,8 @@ export class RadioButton extends React.Component<RadioButtonProps, RadioButtonSt
 
     public render() {
         const rootProps = root(this.props, {
-            className: 'root'
+            className: 'root',
+            ['data-automation-id']: 'RADIO_BUTTON_ROOT'
         });
 
         const cssStates = {
@@ -52,6 +53,8 @@ export class RadioButton extends React.Component<RadioButtonProps, RadioButtonSt
                 {...rootProps}
                 onClick={this.onRootClick}
                 cssStates={cssStates}
+                role="radio"
+                aria-checked={this.props.checked}
             >
                 <input
                     {...restOfProps}

@@ -13,7 +13,7 @@ export class RadioGroupDemo extends React.Component<{}, {}> {
             <div data-automation-id="RADIO_GROUP_DEMO">
                 <div data-automation-id="GROUP_1">
                     <h3>Children radio group</h3>
-                    <RadioGroup onChange={this.onChange}>
+                    <RadioGroup onChange={this.onChange} name="demo">
                         <RadioButton value="This way!" />
                         <RadioButton value="No, that way!"/>
                         <RadioButton value="But not here" disabled={true} />

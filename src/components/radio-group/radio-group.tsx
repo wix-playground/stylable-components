@@ -13,6 +13,7 @@ export interface RadioGroupProps {
     disabled?: boolean;
     location?: 'right' | 'left';
     name?: string;
+    tabIndex?: number;
 }
 
 let counter = 0;
@@ -25,7 +26,8 @@ export interface RadioState {
 export class RadioGroup extends React.Component<RadioGroupProps, {}> {
     public static defaultProps = {
         dataSource: [],
-        location: 'right'
+        location: 'right',
+        tabIndex: 0
     };
 
     private name: string;
@@ -61,7 +63,7 @@ export class RadioGroup extends React.Component<RadioGroupProps, {}> {
         });
 
         return (
-            <div {...rootProps}>
+            <div {...rootProps} role="radiogroup">
                 {childArray}
             </div>
         );
@@ -95,6 +97,8 @@ export class RadioGroup extends React.Component<RadioGroupProps, {}> {
     }
 
     private createChildrenFromDataSource(): Array<React.ReactElement<RadioButton>> {
+        const isGroupChecked: boolean = this.isGroupChecked();
+
         return this.props.dataSource!.map((props, index) => (
             <RadioButton
                 key={index}
@@ -106,11 +110,14 @@ export class RadioGroup extends React.Component<RadioGroupProps, {}> {
                 location={this.props.location}
                 name={this.name}
                 className="radioGroupChild"
+                tabIndex={this.getChildTabIndex(index, isGroupChecked)}
             />
         ));
     }
 
     private createChildren(dataArray: React.ReactNode[]): React.ReactNode[] {
+        const isGroupChecked: boolean = this.isGroupChecked();
+
         return dataArray.map((data, index) => {
             if (data && typeof data === 'object') {
                 const element = data as React.ReactElement<any>;
@@ -126,6 +133,7 @@ export class RadioGroup extends React.Component<RadioGroupProps, {}> {
                             location={this.props.location}
                             name={this.name}
                             className="radioGroupChild"
+                            tabIndex={this.getChildTabIndex(index, isGroupChecked)}
                         />
                     );
                 } else {
@@ -135,7 +143,8 @@ export class RadioGroup extends React.Component<RadioGroupProps, {}> {
                                 key: index,
                                 checked: this.checkedArray[index].checked,
                                 onChange: action(this.childrenOnClick(index)),
-                                className: 'radioGroupChild'
+                                className: 'radioGroupChild',
+                                tabIndex: this.getChildTabIndex(index, isGroupChecked)
                             }
                         )
                     );
@@ -144,5 +153,17 @@ export class RadioGroup extends React.Component<RadioGroupProps, {}> {
                 return data;
             }
         });
+    }
+
+    private isGroupChecked = (): boolean => {
+        return !!this.checkedArray.find(elm => elm.checked);
+    }
+
+    private getChildTabIndex = (index: number, isGroupChecked: boolean): number | undefined => {
+        if (isGroupChecked) {
+            return this.checkedArray[index].checked ? this.props.tabIndex : -1;
+        } else {
+            return index === 0 ? this.props.tabIndex : -1;
+        }
     }
 }
