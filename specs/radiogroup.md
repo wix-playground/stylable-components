@@ -14,9 +14,6 @@ Support a similar to native radiogroup implementations. Please see SelectionList
 | itemRenderer | Component | default itemRenderer | no | Renders a Radio Button per item in the list |
 | disabled | boolean | false | no | Whether all the radio buttons are disabled |
 | readonly | boolean | false | no | Whether the group value cannot be changed |
-| ariaLabel | string | null | no | aria attribute |
-| ariaLabelledBy | string | null | no | aria attribute |
-| ariaDescribedBy | string | null | no | aria attribute |
 
 
 ## Styling
