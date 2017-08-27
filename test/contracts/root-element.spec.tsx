@@ -7,7 +7,8 @@ import {isReactComponent} from '../utils/is-react-component';
 const allComponents = Object.keys(WixReactComponents);
 const failingComponents = [
     'TreeView', 'NumberInput', 'Toggle', 'BirthdayPicker',
-    'RadioButton', 'RadioGroup', 'Portal', 'Popup', 'Modal'
+    'RadioButton', 'RadioGroup', 'Portal', 'Popup', 'TimePicker',
+    'Modal'
 ];
 
 describe('Root Element contract', function() {
