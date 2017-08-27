@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { noop } from '../../common/noop-function';
-import { onePixelTransparentSrc } from '../../common/one-pixel-src';
+import {noop, transparentImage} from '../../utils';
 
 export interface ImageEvent extends React.SyntheticEvent<HTMLImageElement> {
     src: string;
@@ -36,7 +35,7 @@ const staticWrapperStyle = {
 
 export class Image extends React.PureComponent<ImageProps, ImageState> {
     public static defaultProps: Partial<ImageProps> = {
-        defaultImage: onePixelTransparentSrc,
+        defaultImage: transparentImage,
         onLoad: noop,
         onError: noop
     };
@@ -80,7 +79,7 @@ export class Image extends React.PureComponent<ImageProps, ImageState> {
             <img
                 data-automation-id="NATIVE_IMAGE"
                 {...rest}
-                style={{ display: 'inline-block', ...style }}
+                style={{display: 'inline-block', ...style}}
                 className={className}
                 src={this.state.src}
                 onLoad={this.onLoad}
@@ -89,26 +88,26 @@ export class Image extends React.PureComponent<ImageProps, ImageState> {
         );
     }
     public componentWillMount() {
-        this.setState({ src: this.props.src || this.props.defaultImage! });
+        this.setState({src: this.props.src || this.props.defaultImage!});
     }
 
     public componentWillReceiveProps(newProps: ImageProps) {
-        this.setState({ src: newProps.src || this.props.defaultImage! });
+        this.setState({src: newProps.src || this.props.defaultImage!});
     }
 
     private onError: React.EventHandler<React.SyntheticEvent<HTMLImageElement>> = e => {
-        this.props.onError!({ ...e, src: this.state.src });
-        this.setState({ src: this.getFallbackSrcFor(this.state.src) });
+        this.props.onError!({...e, src: this.state.src});
+        this.setState({src: this.getFallbackSrcFor(this.state.src)});
     }
 
     private onLoad: React.EventHandler<React.SyntheticEvent<HTMLImageElement>> = e => {
-        if (this.state.src !== this.props.defaultImage && this.state.src !== onePixelTransparentSrc) {
-            this.props.onLoad!({ ...e, src: this.state.src });
+        if (this.state.src !== this.props.defaultImage && this.state.src !== transparentImage) {
+            this.props.onLoad!({...e, src: this.state.src});
         }
     }
 
     private getFallbackSrcFor(src: string): string {
         // first, fallback to defaultImage, and later to one transparent pixel
-        return (src !== this.props.defaultImage) ? this.props.defaultImage! : onePixelTransparentSrc;
+        return (src !== this.props.defaultImage) ? this.props.defaultImage! : transparentImage;
     }
 }

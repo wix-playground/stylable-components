@@ -5,6 +5,7 @@ A component which allows the user to take action by choosing an item from a list
 * [Properties](#properties)
 * [ItemRenderer Contract](#itemrenderer-contract)
 * [Default ItemRenderer](#default-itemrenderer)
+* [Accessibility](#accessibility)
 * [Input Handling](#input-handling)
 * [Internal Implementation](#internal-implementation)
 * [Examples](#examples)
@@ -96,14 +97,11 @@ Reference [listbox](https://www.w3.org/TR/wai-aria-practices/#Listbox) in w3 dra
 * Children role - option (identifies a selectable element)
 
 ### Aria
-* aria-activedescendant="ID_REF" - Applied to the element with the listbox role, tells assistive technologies which of the options, if any, is visually indicated as having keyboard focus. idref, refers to the ID of the focused option in the list. When navigation keys, such as Down Arrow, are pressed, the JavaScript changes the value. When the listbox is empty, aria-activedescendant="".
-* aria-selected="true" - Applied to elements with role option that are visually styled as selected to inform assistive technologies that the options are selected. When multiple selections are allowed, this attribute is applied to all selected items.
+* aria-selected="true" - Applied to elements with role option that are visually styled as selected to inform assistive technologies that the options are selected. When multiple selections are allowed, this attribute is applied to all selected items (false when not selected).
 
 ### Focus
 
-* When <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">Tab</kbd> moves focus into the listbox:
-  * If none of the options is selected, focus is set to first option.
-  * If an option is selected, focus moves to the first selected option.
+Focus handled by the parent component.
 
 ## Input Handling
 

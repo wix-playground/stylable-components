@@ -1,7 +1,7 @@
 import * as React from 'react';
-import {SBComponent, SBStateless} from 'stylable-react-component';
-import {divider, ItemRendererProps, SelectionList} from '../../src/components/selection-list';
-import style from './selection-list-demo.st.css';
+import {SBComponent} from 'stylable-react-component';
+import {divider, Option, SelectionList} from '../../src/components/selection-list';
+import demoStyle from './selection-list-demo.st.css';
 
 export class SelectionListDemo extends React.Component<{}, {}> {
     public render() {
@@ -16,14 +16,13 @@ export class SelectionListDemo extends React.Component<{}, {}> {
 }
 
 export class FoodList extends React.Component {
-    public state = {value: 'Bacon'};
+    public state = {value: 'Eggs'};
 
     private dataSource = [
-        {value: 'Fasting', label: ''},
-        divider,
         'Eggs',
         'Bacon',
         'Sausage',
+        divider,
         'Ham',
         {value: 'Spam', label: 'Spam', disabled: true}
     ];
@@ -47,30 +46,10 @@ export class FoodList extends React.Component {
     private onChange = (value: string) => this.setState({value});
 }
 
-interface EmojiListItemProps extends ItemRendererProps {
-    item: {
-        value: string;
-        icon: string;
-    };
-}
-
-const EmojiListItem: React.SFC<EmojiListItemProps> = SBStateless(props => {
-    return (
-        <div
-            className="emoji-list-item"
-            data-value={props.item.value}
-            data-selected={props.selected || undefined}
-        >
-            {props.item.icon}
-        </div>
-    );
-}, style);
-
-@SBComponent(style)
+@SBComponent(demoStyle)
 class EmojiList extends React.Component {
     public state = {value: 'Crocodile'};
-
-    private dataSchema = {value: 'name', icon: 'icon'};
+    private dataSchema = {value: 'name', label: 'icon'};
     private dataSource = [
         {icon: '🐍', name: 'Snek'},
         {icon: '🐋', name: 'Whale'},
@@ -88,7 +67,7 @@ class EmojiList extends React.Component {
                     className="emoji-list"
                     dataSchema={this.dataSchema}
                     dataSource={this.dataSource}
-                    itemRenderer={EmojiListItem}
+                    renderItem={this.renderItem}
                     value={this.state.value}
                     onChange={this.onChange}
                 />
@@ -99,10 +78,14 @@ class EmojiList extends React.Component {
         );
     }
 
+    private renderItem = ({value, label}: {value: string, label: string}) => {
+        return <Option value={value}>{label}</Option>;
+    }
+
     private onChange = (value: string) => this.setState({value});
 }
 
-@SBComponent(style)
+@SBComponent(demoStyle)
 class TextStyleList extends React.Component {
     public state = {value: 'heading'};
 
@@ -115,24 +98,24 @@ class TextStyleList extends React.Component {
                     value={this.state.value}
                     onChange={this.onChange}
                 >
-                    <div data-value="title">
+                    <Option value="title">
                         <span className="text-style-title">Title</span>
-                    </div>
-                    <div data-value="heading">
+                    </Option>
+                    <Option value="heading">
                         <span className="text-style-heading">Heading</span>
-                    </div>
-                    <div data-value="heading-red">
+                    </Option>
+                    <Option value="heading-red">
                         <span className="text-style-heading-red">Heading Red</span>
-                    </div>
-                    <div data-value="body">
+                    </Option>
+                    <Option value="body">
                         <span className="text-style-body">Body</span>
-                    </div>
-                    <div data-value="caption">
+                    </Option>
+                    <Option value="caption" disabled>
                         <span className="text-style-caption">Caption</span>
-                    </div>
-                    <div data-value="label">
+                    </Option>
+                    <Option value="label">
                         <span className="text-style-label">Label</span>
-                    </div>
+                    </Option>
                 </SelectionList>
                 <p>
                     <span data-automation-id="RESULT" className={`text-style-${this.state.value}`}>
