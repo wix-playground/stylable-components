@@ -1,4 +1,4 @@
-import {action, observable} from 'mobx';
+import {action, computed, observable} from 'mobx';
 import {observer} from 'mobx-react';
 import * as React from 'react';
 import {SBComponent} from 'stylable-react-component';
@@ -94,8 +94,6 @@ export class RadioGroup extends React.Component<RadioGroupProps, {}> {
     }
 
     private createChildrenFromDataSource(): Array<React.ReactElement<RadioButton>> {
-        const isGroupChecked: boolean = this.isGroupChecked();
-
         return this.props.dataSource!.map((props, index) => (
             <RadioButton
                 key={index}
@@ -107,15 +105,13 @@ export class RadioGroup extends React.Component<RadioGroupProps, {}> {
                 location={this.props.location}
                 name={this.name}
                 className="radioGroupChild"
-                tabIndex={this.getChildTabIndex(index, isGroupChecked)}
+                tabIndex={this.getChildTabIndex(index, this.isGroupChecked)}
             />
         ));
     }
 
-    private createChildren(dataArray: React.ReactNode[]): React.ReactNode[] {
-        const isGroupChecked: boolean = this.isGroupChecked();
-
-        return dataArray.map((data, index) => {
+    private createChildren(dataArray: React.ReactNode): React.ReactNode[] {
+        return React.Children.map(dataArray, (data, index) => {
             if (data && typeof data === 'object') {
                 const element = data as React.ReactElement<any>;
                 if (element.type === RadioButton) {
@@ -130,7 +126,7 @@ export class RadioGroup extends React.Component<RadioGroupProps, {}> {
                             location={this.props.location}
                             name={this.name}
                             className="radioGroupChild"
-                            tabIndex={this.getChildTabIndex(index, isGroupChecked)}
+                            tabIndex={this.getChildTabIndex(index, this.isGroupChecked)}
                         />
                     );
                 } else {
@@ -141,7 +137,7 @@ export class RadioGroup extends React.Component<RadioGroupProps, {}> {
                                 checked: this.checkedArray[index].checked,
                                 onChange: action(this.childrenOnClick(index)),
                                 className: 'radioGroupChild',
-                                tabIndex: this.getChildTabIndex(index, isGroupChecked)
+                                tabIndex: this.getChildTabIndex(index, this.isGroupChecked)
                             }
                         )
                     );
@@ -152,7 +148,8 @@ export class RadioGroup extends React.Component<RadioGroupProps, {}> {
         });
     }
 
-    private isGroupChecked = (): boolean => {
+    @computed
+    get isGroupChecked(): boolean {
         return !!this.checkedArray.find(elm => elm.checked);
     }
 

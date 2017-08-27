@@ -1,5 +1,9 @@
 @namespace "RadioGroup";
 
 .root {
+    display: inline-block;
+}
 
+.radioGroupChild {
+    /*keep this here for children inner selectors to work*/
 }

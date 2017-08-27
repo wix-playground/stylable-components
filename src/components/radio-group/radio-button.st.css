@@ -12,7 +12,7 @@
 
 .root {
     -st-states: disabled, isLeftLabel, focused, checked;
-    display: flex;
+    display: inline-flex;
     display: -ms-flexbox;
     position: relative;
     cursor: pointer;
