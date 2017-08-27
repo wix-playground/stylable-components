@@ -5,7 +5,7 @@ import {TreeViewDemo} from '../../demo/components/tree-view-demo';
 import {TreeItem, TreeView} from '../../src';
 import {getLastAvailableItem, getNextItem, getPreviousItem} from '../../src/components/tree-view//tree-util';
 import {ParentsMap, TreeItemData, TreeItemState, TreeStateMap} from '../../src/components/tree-view/tree-view';
-import {TreeViewWrapper} from '../utils/tree-view-wrapper';
+import {TreeViewMobxWrapper, TreeViewWrapper} from '../utils/tree-view-wrapper';
 
 const treeView = 'TREE_VIEW';
 const treeItem = 'TREE_ITEM';
@@ -352,6 +352,21 @@ describe('<TreeView />', () => {
                 (result as TreeViewWrapper).switchDataSource();
                 expandItemWithLabel(select, treeData[0].label);
                 expandItemWithLabel(select, treeData[0].children![2].label);
+
+                return waitForDom(() =>
+                    expect(select(treeView, getTreeItem('Kaiserschmarrn'))).to.be.present());
+            });
+
+            it('renders the additional item when a new data element is added to existing data', async () => {
+                const {select, waitForDom, result} = clientRenderer.render(<TreeViewMobxWrapper />);
+
+                expandItemWithLabel(select, treeData[0].label);
+                expandItemWithLabel(select, treeData[0].children![2].label);
+
+                await waitForDom(() =>
+                    expect(select(treeView, getTreeItem('Kaiserschmarrn'))).to.be.absent());
+
+                (result as TreeViewMobxWrapper).modifyMobxDataSource();
 
                 return waitForDom(() =>
                     expect(select(treeView, getTreeItem('Kaiserschmarrn'))).to.be.present());

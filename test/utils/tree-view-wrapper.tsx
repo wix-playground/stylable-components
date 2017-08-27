@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {observable} from 'mobx';
 import {TreeView} from '../../src';
 import {TreeItemData} from '../../src/components/tree-view/tree-view';
 
@@ -46,5 +47,17 @@ export class TreeViewWrapper extends React.Component<{}, TreeViewWrapperState> {
         this.setState({
            treeData: newTreeData
         });
+    }
+}
+
+export class TreeViewMobxWrapper extends React.Component<{}, {}> {
+    @observable private obsTreeData: TreeItemData[] = treeData;
+
+    public render() {
+        return <TreeView dataSource={this.obsTreeData}/>;
+    }
+
+    public modifyMobxDataSource = () => {
+        this.obsTreeData[0].children![2].children!.push({label: 'Kaiserschmarrn'});
     }
 }
