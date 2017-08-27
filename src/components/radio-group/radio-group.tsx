@@ -6,14 +6,11 @@ import {root} from 'wix-react-tools';
 import {RadioButton, RadioButtonProps, RadioChangeEvent} from './radio-button';
 import styles from './radio-group.st.css';
 
-export interface RadioGroupProps {
+export interface RadioGroupProps extends React.InputHTMLAttributes<HTMLInputElement> {
     children?: any;
     dataSource?: RadioButtonProps[];
     onChange?: (e: RadioChangeEvent) => void;
-    disabled?: boolean;
     location?: 'right' | 'left';
-    name?: string;
-    tabIndex?: number;
 }
 
 let counter = 0;
