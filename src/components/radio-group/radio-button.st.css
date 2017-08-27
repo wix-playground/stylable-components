@@ -24,6 +24,7 @@
 
 .contentContainer {
     display: flex;
+    align-items: center;
 }
 
 .root:isLeftLabel .contentContainer {
@@ -39,6 +40,14 @@
     padding: 0;
     border: 0;
     opacity: 0;
+}
+
+.iconContainer {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .radioSVG {
@@ -69,24 +78,16 @@
     fill: value(disabledFill);
 }
 
+.root:focused .radioSVG {
+    border: 4px solid  value(focusOutline);
+}
+
 .checkMark {
     fill: value(checkedFill);
 }
 
 .root:disabled .checkMark {
     fill: value(disabledCheckedFill);
-}
-
-.root:focused .iconContainer::after {
-    content: "";
-    width: 22px;
-    height: 22px;
-    position: absolute;
-    pointer-events: none;
-    background: value(focusOutline);
-    border-radius: 50%;
-    margin: -3px 0 0 -19px;
-    z-index: -1;
 }
 
 .radioLabel {
