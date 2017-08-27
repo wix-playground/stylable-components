@@ -6,9 +6,9 @@ The **Modal** component is a window that opens on top of the application's main 
 
 ![Modal](./assets/elements.png)
 
-The modal consists of a header, body and footer. The header usually contains a title and optionally a close button, the body contains the main modal content, and the footer usually contains a primary button and another close button. The modal has a backdrop that blocks interactivity with the rest of the screen.
+**Modal** consists of a **header**, **body**, and **footer**. The **header** usually contains a **title** and optionally a close button, the **body** contains the main modal content, and the **footer** usually contains a primary button and another close button. **Modal** has a **backdrop** that blocks interactivity with the rest of the screen.
 
-Interacting with the modal can consist of:
+Interacting with **modal** can consist of:
   
 - clicking its primary button
 - clicking its backdrop
@@ -20,7 +20,7 @@ Interacting with the modal can consist of:
 
 | name | type | default | required | description |
 | --- | --- | --- | --- | --- |
-| isOpen | boolean | false | yes | Managed by state; this is how to control the visibility of the modal. |
+| isOpen | boolean | false | yes | This prop controls the visibility of the **modal**. |
 | onAfterOpen | function | NOOP | no | Invoked after the component is rendered. |
 | onRequestClose(source) | function | NOOP |  | The function used to handle cancel events on the modal; typically sets the open state to false. It is passed a source, as one of a number of possible closing options. |
 | children | any |  |  | Children nodes of the modal. |
@@ -29,7 +29,7 @@ Interacting with the modal can consist of:
 
 #### Modal Roles
 
-Modal children can have a `role` attribute that allows them to declare which part of the modal is described by the node.
+Children (subcomponents) of a **modal** component can have a `role` attribute that allows them to declare which part of the modal is described by the child subcomponent.
 
 | role | class | description |
 | --- | --- | --- |
@@ -63,7 +63,7 @@ Modal children can have a `role` attribute that allows them to declare which par
 
 ## Style API
 
-Normally, the modal opens in relation to the screen and not its parent component. Because it breaks the flow of the entire page, it needs to be prominent on the entire view-port. 
+Normally, **modal** opens in relation to the screen and not its parent component. It needs to be prominent on the entire view-port because it breaks the flow of the entire page. 
 
 ### Subcomponents (pseudo-elements)
 
