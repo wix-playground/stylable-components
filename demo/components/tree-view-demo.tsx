@@ -37,7 +37,6 @@ function SelectedItem({selectedItem}: any) {
 export interface TreeViewDemoState {
     selectedItem: TreeItemData | undefined;
     focusedItem: TreeItemData | undefined;
-    treeData: object[];
 }
 
 export class TreeViewDemo extends React.Component<{}, TreeViewDemoState> {
@@ -46,8 +45,7 @@ export class TreeViewDemo extends React.Component<{}, TreeViewDemoState> {
         super();
         this.state = {
             selectedItem: undefined,
-            focusedItem: undefined,
-            treeData
+            focusedItem: undefined
         };
     }
 
@@ -59,7 +57,7 @@ export class TreeViewDemo extends React.Component<{}, TreeViewDemoState> {
                     <SelectedItem selectedItem={this.state.selectedItem} />
                     <br />
                     <TreeView
-                        dataSource={this.state.treeData}
+                        dataSource={treeData}
                         onFocusItem={this.onFocusItem}
                         focusedItem={this.state.focusedItem}
                         onSelectItem={this.onSelectItem}
