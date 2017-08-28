@@ -1,6 +1,6 @@
-# Radio Group
+# Radio Group and Radio Button
 
-The **RadioGroup** component is used to group together children and provide them with similar properties.  
+The **RadioGroup** component is used to group together children and provide them with similar properties. Most common use case is to render **RadioButton** components under the group. 
 
 
 ## Elements
@@ -9,7 +9,7 @@ The **RadioGroup** component is used to group together children and provide them
 ## API
 
 #### Component Props
-RadioGroup Props:
+**RadioGroup** Props:
 
 | Name | Type | Default | Required | Description |
 |------|------|---------|----------|-------------
@@ -20,7 +20,7 @@ RadioGroup Props:
 | onChange | (e: RadioChangeEvent) => void | NOOP | no | Triggered by changing a radio button state |
 | dataSource | Array\<RadioButtonProps> | [] | no | Array of dataSchema objects |
 
-RadioButton Props:
+**RadioButton** Props:
 
 | Name | Type | Default | Required | Description |
 |------|------|---------|----------|-------------
@@ -113,13 +113,13 @@ export class Example2 extends React.Component<{}, {}>{
 
 ## Style API
 
-#### RadioGroup Subcomponents (pseudo-elements)
+#### **RadioGroup** Subcomponents (pseudo-elements)
 
 | selector | description  | type | children pseudo-states |
 |----------|--------------|------|------------------------|
-| ::radioGroupChild | Allows styling the children under the RadioGroup | RadioButton | :error - allows styling the error state of the internal switch |
+| ::radioGroupChild | Allows styling the children under the **RadioGroup** | **RadioButton** | :error - allows styling the error state of the internal switch |
 
-#### RadioButton Custom CSS States (pseudo-classes)
+#### **RadioButton** Custom CSS States (pseudo-classes)
 
 | state | description |
 | ----- | ----------- |
