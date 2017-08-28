@@ -537,8 +537,6 @@ describe('<TimePicker/>', () => {
         let hh: any;
         let mm: any;
         let ampm: any;
-        let stepperIncrement: any;
-        let stepperDecrement: any;
 
         beforeEach(() => {
             onChange = sinon.spy();
@@ -546,8 +544,6 @@ describe('<TimePicker/>', () => {
             hh = renderer.select('TIME_PICKER_INPUT_HH');
             mm = renderer.select('TIME_PICKER_INPUT_MM');
             ampm = renderer.select('TIME_PICKER_AMPM');
-            stepperIncrement = renderer.select('STEPPER_INCREMENT');
-            stepperDecrement = renderer.select('STEPPER_DECREMENT');
         });
 
         describe('arrow up on mm segment', () => {
@@ -577,8 +573,6 @@ describe('<TimePicker/>', () => {
         let hh: any;
         let mm: any;
         let ampm: any;
-        let stepperIncrement: any;
-        let stepperDecrement: any;
 
         beforeEach(() => {
             onChange = sinon.spy();
@@ -586,8 +580,6 @@ describe('<TimePicker/>', () => {
             hh = renderer.select('TIME_PICKER_INPUT_HH');
             mm = renderer.select('TIME_PICKER_INPUT_MM');
             ampm = renderer.select('TIME_PICKER_AMPM');
-            stepperIncrement = renderer.select('STEPPER_INCREMENT');
-            stepperDecrement = renderer.select('STEPPER_DECREMENT');
         });
 
         describe('arrow down on mm segment', () => {
