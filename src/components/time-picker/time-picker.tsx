@@ -223,27 +223,34 @@ export class TimePicker extends React.Component<Props, State> {
     }
 
     private changeValue(step: number, isBigStep: boolean): void {
-        const {currentSegment, ampm} = this.state;
+        const {currentSegment} = this.state;
         if (!isTimeSegment(currentSegment)) {
             return this.toggleAmpm(true);
         }
+
         let hh = Number(this.state.hh || 0);
         let mm = Number(this.state.mm || 0);
+        let ampm = this.state.ampm;
+
         if (currentSegment === 'mm') {
             mm += step * (isBigStep ? 10 : 1);
         } else {
             hh += step;
         }
-        const totalMinutes: number = hh! * 60 + mm!;
-        mm = totalMinutes % 60;
-        hh = Math.floor(totalMinutes / 60);
-        hh = ampm === Ampm.NONE ?
-            ((hh + 24) % 24) :
-            (1 + (hh + 11) % 12);
+
+        const totalMinutes: number = to24(hh, ampm) * 60 + mm;
+        mm = (totalMinutes + 60) % 60;
+        hh = Math.floor(totalMinutes / 60 + 24) % 24;
+        if (ampm !== Ampm.NONE) {
+            const hhAmpm = toAmpm(hh);
+            hh = hhAmpm.hh;
+            ampm = hhAmpm.ampm;
+        }
 
         this.setState({
             hh: formatTimeChunk(hh),
-            mm: formatTimeChunk(mm)
+            mm: formatTimeChunk(mm),
+            ampm
         }, this.commit);
     }
 
