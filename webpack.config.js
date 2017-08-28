@@ -1,6 +1,7 @@
 const glob = require('glob');
 
 const { testGlob } = require('./package.json');
+const StylablePlugin = require('stylable-integration/webpack-plugin');
 const testFiles = glob.sync(testGlob);
 
 module.exports = {
@@ -22,8 +23,8 @@ module.exports = {
             },
             {
                 test: /\.css$/,
-                loader: 'stylable-integration/webpack',
-                options: { standalone: true }
+                loader: 'stylable-integration/webpack-loader',
+                options: { injectFileCss: true }
             }
         ]
     },
@@ -33,5 +34,8 @@ module.exports = {
     output: {
         filename: '[name].js',
         pathinfo: true
-    }
+    },
+    plugins: [
+        new StylablePlugin({ injectFileCss: true })
+    ]
 }
