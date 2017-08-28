@@ -14,13 +14,6 @@
 :vars {
     trackHeight: 4px;
 
-    handleMargin: -6px;
-    handleWidth: 16px;
-    handleHeight: 16px;
-    handleRadius: 8px;
-    handleBorder: 1px solid value(colorHandleBorder);
-    handleBorderHover: 1px solid value(colorHandle_Active);
-
     colorTrack: value(STC5);
     colorTrack_Hover: value(STC20);
     colorProgress: value(M3);
@@ -29,6 +22,13 @@
     colorHandleBorder: value(STC20);
     colorHandle_Hover: value(STC10);
     colorHandle_Active: value(M3);
+
+    handleMargin: -6px;
+    handleWidth: 16px;
+    handleHeight: 16px;
+    handleRadius: 8px;
+    handleBorder: 1px solid value(STC20);
+    handleBorderHover: 1px solid value(M3);
 }
 
 .native-input {
