@@ -19,7 +19,7 @@
   },
   "peerDependencies": {
     "react": ">15.5.0",
-    "stylable": "^4.0.5"
+    "stylable": "^4.0.6"
   },
   "dependencies": {
     "keycode": "^2.1.9",

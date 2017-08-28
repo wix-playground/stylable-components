@@ -7,12 +7,18 @@
 	-st-from: "../../src/components/toggle/toggle.st.css";
 	-st-default: Toggle;
 }
-/*
+
 :import {
-	-st-from: "../../src/components/toggle/toggle.st.css";
-	-st-named:
-		borderWidth;
-}*/
+	-st-from: "../../src/components/drop-down/drop-down.st.css";
+	-st-default: DropDown;
+}
+
+
+/* General */
+
+.root {
+	background: value(D70);
+}
 
 
 /* Fonts */
@@ -41,6 +47,11 @@
 	D60: #dfe5eb;
 	D70: #f0f4f7;
 	D80: #ffffff;
+	R00: #d6453d;
+	R05: '#d8504c';
+	R10: '#ee5951';
+	R20: '#ff6666';
+	R30: '#ffd7d7';
 	/* Disabled */
 	primary-color: value(B30);
 }
@@ -48,10 +59,24 @@
 
 /* Number Input */
 
+
+/* Basic */
+
 NumberInput {
 	border: 1px solid value(primary-color);
 	border-radius: 6px;
+	background: value(D80);
+}
+
+NumberInput input {
+	font-family: "HelveticaNeue-Regular", sans-serif;
+	color: value(D10);
 	background: transparent;
+}
+
+NumberInput input::placeholder {
+	font-family: "HelveticaNeue-Regular", sans-serif;
+	color: value(D40);
 }
 
 NumberInput:hover {
@@ -61,19 +86,10 @@ NumberInput:hover {
 
 NumberInput::stepper {
 	width: 30px;
-
 }
 
 NumberInput::stepper::down, NumberInput::stepper::up {
 	background-color: transparent;
-}
-
-NumberInput input {
-	background-color: transparent;
-}
-
-NumberInput input::placeholder {
-	font-family: "HelveticaNeue-Light", sans-serif;
 }
 
 NumberInput::stepper::down::control-icon, NumberInput::stepper::up::control-icon {
@@ -92,17 +108,31 @@ NumberInput::stepper::down::control-icon {
 }
 
 NumberInput::stepper::down::control-icon:hover, NumberInput::stepper::up::control-icon:hover {
-	color: value(B20);
+	color: value(B00);
+}
+
+
+/* Disabled */
+
+NumberInput input:disabled::placeholder {
+	color: value(D50);
 }
 
 NumberInput:disabled {
-	background-color: red;
-	outline-color: red;
+	background-color: value(D80);
+	border-color: value(D60);
+	color: value(D50);
 }
 
+NumberInput:disabled::stepper::down::control-icon, NumberInput:disabled::stepper::up::control-icon {
+	color: value(D50);
+}
+
+
+/* Error */
+
 NumberInput:error {
-	background-color: red;
-	outline-color: red;
+	border-color: value(R00);
 }
 
 
@@ -110,12 +140,15 @@ NumberInput:error {
 
 Toggle {
 	border: none;
-	background-color: value(B10);
+	background-color: value(B40);
 }
 
 Toggle:checked {
-  background-color: value(B40); /* styles the togle in checked state */
- 
+	background-color: value(B10);
+}
+
+Toggle:checked::switch {
+	background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIHdpZHRoPSIxMnB4IiBoZWlnaHQ9IjEycHgiIHZpZXdCb3g9IjAgMCAxMiAxMiIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj4gICAgICAgIDx0aXRsZT5pYy1jaGVja2JveC1vbjwvdGl0bGU+ICAgIDxkZXNjPkNyZWF0ZWQgd2l0aCBTa2V0Y2guPC9kZXNjPiAgICA8ZGVmcz48L2RlZnM+ICAgIDxnIGlkPSJTeW1ib2xzIiBzdHJva2U9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4gICAgICAgIDxnIGlkPSJpYy1jaGVja2JveC1vbiIgZmlsbC1ydWxlPSJub256ZXJvIiBmaWxsPSIjMzg5OUVDIj4gICAgICAgICAgICA8ZyBpZD0iMTJ4MTIiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEuMDAwMDAwLCAyLjAwMDAwMCkiPiAgICAgICAgICAgICAgICA8cG9seWdvbiBpZD0iU2hhcGUiIHBvaW50cz0iOC44IDAgMy44IDUgMS4yIDIuNSAwIDMuNyAzLjggNy41IDEwIDEuMiI+PC9wb2x5Z29uPiAgICAgICAgICAgIDwvZz4gICAgICAgIDwvZz4gICAgPC9nPjwvc3ZnPg==);
 }
 
 Toggle::switch {
@@ -123,4 +156,35 @@ Toggle::switch {
 	height: 22px;
 	box-shadow: 0 2px 1px 0 rgba(32, 69, 94, 0.50);
 	background-color: value(D80);
+	background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIHdpZHRoPSIxMnB4IiBoZWlnaHQ9IjEycHgiIHZpZXdCb3g9IjAgMCAxMiAxMiIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj4gICAgICAgIDx0aXRsZT5pYy1jaGVja2JveC1vZmY8L3RpdGxlPiAgICA8ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz4gICAgPGRlZnM+PC9kZWZzPiAgICA8ZyBpZD0iU3ltYm9scyIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+ICAgICAgICA8ZyBpZD0iaWMtY2hlY2tib3gtb2ZmIiBmaWxsPSIjREFFRkZFIj4gICAgICAgICAgICA8cmVjdCBpZD0iUmVjdGFuZ2xlLTI2OSIgeD0iMSIgeT0iNSIgd2lkdGg9IjEwIiBoZWlnaHQ9IjIiPjwvcmVjdD4gICAgICAgIDwvZz4gICAgPC9nPjwvc3ZnPg==);
+}
+
+
+/* Dropdown */
+
+DropDown::drop-down-input {
+	background: #FFFFFF;
+	border: 1px solid #C1E4FE;
+	border-radius: 6px;
+	width: 276px;
+	height: 36px;
+}
+
+DropDown::label {
+	padding-left: 12px;
+}
+
+DropDown::drop-down-list {
+	border:none;
+	background: #FFFFFF;
+	box-shadow: 0 0 18px 0 rgba(22, 45, 61, 0.12), 0 6px 6px 0 rgba(22, 45, 61, 0.06);
+	border-radius: 8px;
+}
+
+DropDown::drop-down-list::item {
+	background: red;
+}
+
+DropDownItem {
+	background: red;
 }
