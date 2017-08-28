@@ -140,9 +140,9 @@ The component follows the external control pattern (value displayed is defined b
 | type a number                        | insert a value without committing it     |
 | up arrow key                         | increase & commit value (for focused element) |
 | down arrow key                       | decrease & commit value (for focused element) |
-| page up (fn/ctrl + up arrow key)     | increase & commit value by 10 (NOTE: works only for 'mm') |
-| page down (fn/ctrl + down arrow key) | decrease & commit value by 10 (NOTE: works only for 'mm') |
-| tab / right arrow key                | moves focus to previous element within component ('hh' -> 'mm' -> 'am/pm') AND then to the next component |
+| shift + up arrow key                 | increase & commit value by 10 (NOTE: works only for 'mm') |
+| shift + down arrow key               | decrease & commit value by 10 (NOTE: works only for 'mm') |
+| tab / right arrow key                | moves focus to previous element within component ('hh' -> 'mm' -> 'am/pm') AND then to the next component                  |
 | shift+tab / left arrow key           | moves focus to previous element within component ('am/pm' -> 'mm' -> 'hh') AND then to the previous component |
 | esc                                  | removes focus (if on focus)              |
 | enter                                | removes focus (if in focus), discards non-committed new value (if value typed) |
