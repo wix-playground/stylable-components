@@ -28,18 +28,25 @@ describe('<Popup />', function() {
 
     describe('The popup user', function() {
         it('clicks on the parent and the popup opens and closes after another click', async function() {
-            const {select, waitForDom} = clientRenderer.render(<PopupDemo />);
+            const onOpenStateChange = sinon.spy();
+            const {select, waitForDom} = clientRenderer.render(<PopupDemo onOpenStateChange={onOpenStateChange}/>);
 
             await waitForDom(() => {
                 expect(select(demoContainer)).to.be.present();
                 expect(select(demoContainer, portalId)).to.be.absent();
             });
-            (select(demoContainer) as HTMLDivElement).click();
+            onOpenStateChange.reset();
+            select<HTMLDivElement>(demoContainer)!.click();
             await waitForDom(() => {
+                expect(onOpenStateChange).to.have.been.calledWithMatch(true);
                 expect(bodySelect(portalId)).to.be.present();
             });
-            (select(demoContainer) as HTMLDivElement).click();
-            return waitForDom(() => {expect(bodySelect(portalId)).to.be.absent(); });
+            onOpenStateChange.reset();
+            select<HTMLDivElement>(demoContainer)!.click();
+            return waitForDom(() => {
+                expect(onOpenStateChange).to.have.been.calledWithMatch(false);
+                expect(bodySelect(portalId)).to.be.absent();
+            });
         });
     });
 
@@ -134,38 +141,6 @@ describe('<Popup />', function() {
             expect(bodySelect<HTMLElement>(portalId)!.style.maxHeight).to.equal('5px');
             expect(bodySelect<HTMLElement>(portalId)!.getBoundingClientRect().height).to.equal(5);
         });
-    });
-
-    it('calls onOpenStateChange when the popup opens', async function() {
-        const onOpen = sinon.spy();
-        const {container} = clientRenderer.render(
-            <Popup anchor={anchor} onOpenStateChange={onOpen}>
-                <span data-automation-id="SPAN">Popup Body</span>
-            </Popup>);
-
-        sleep(20);
-
-        clientRenderer.render(
-            <Popup anchor={anchor} open onOpenStateChange={onOpen}>
-                <span data-automation-id="SPAN">Popup Body</span>
-            </Popup>, container);
-        await waitFor(() => expect(onOpen).to.have.been.calledOnce);
-    });
-
-    it('calls onOpenStateChange when the popup closes', async function() {
-        const onClose = sinon.spy();
-        const {container} = clientRenderer.render(
-            <Popup anchor={anchor} open onOpenStateChange={onClose}>
-                <span data-automation-id="SPAN">Popup Body</span>
-            </Popup>);
-
-        sleep(20);
-
-        clientRenderer.render(
-            <Popup anchor={anchor} onOpenStateChange={onClose}>
-                <span data-automation-id="SPAN">Popup Body</span>
-            </Popup>, container);
-        await waitFor(() => expect(onClose).to.have.been.calledOnce);
     });
 
     describe('Scrolling tests', function() {

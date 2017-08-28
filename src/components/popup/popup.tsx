@@ -12,7 +12,7 @@ export interface PositionPoint {
 
 export interface PopupProps {
     open?: boolean;
-    onOpenStateChange?: () => void;
+    onOpenStateChange?: (open: boolean) => void;
     anchorPosition?: PositionPoint;
     popupPosition?: PositionPoint;
     syncWidth?: boolean;
@@ -32,9 +32,9 @@ export class Popup extends React.Component<PopupCompProps, {}> {
         syncWidth: true,
         maxHeight: 500
     };
-    private isOpenStateChanged = false;
 
     public render() {
+        this.props.onOpenStateChange!(!!this.props.open);
         if (this.props.anchor && this.props.open) {
             return (
                 <Portal style={this.createStyle()}>
@@ -43,17 +43,6 @@ export class Popup extends React.Component<PopupCompProps, {}> {
         }
 
         return null;
-    }
-
-    public componentDidUpdate() {
-        if (this.isOpenStateChanged) {
-            this.props.onOpenStateChange!();
-        }
-    }
-
-    public componentWillReceiveProps(newProps: PopupCompProps) {
-        this.isOpenStateChanged = (newProps.open && !this.props.open) ||
-        (!newProps.open && this.props.open) ? true : false;
     }
 
     private createStyle(): React.CSSProperties {
