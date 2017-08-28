@@ -1,11 +1,11 @@
 import * as keycode from 'keycode';
 import * as React from 'react';
 import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react';
+import {observable} from 'mobx';
 import {TreeViewDemo} from '../../demo/components/tree-view-demo';
 import {TreeItem, TreeView} from '../../src';
 import {getLastAvailableItem, getNextItem, getPreviousItem} from '../../src/components/tree-view//tree-util';
 import {ParentsMap, TreeItemData, TreeItemState, TreeStateMap} from '../../src/components/tree-view/tree-view';
-import {TreeViewMobxWrapper, TreeViewWrapper} from '../utils/tree-view-wrapper';
 
 const treeView = 'TREE_VIEW';
 const treeItem = 'TREE_ITEM';
@@ -47,6 +47,45 @@ const treeData: TreeItemData[] = [
         ]
     }
 ];
+
+const newTreeData = JSON.parse(JSON.stringify(treeData));
+newTreeData[0].children![2].children!.push({label: 'Kaiserschmarrn'});
+
+export interface TreeViewWrapperState {
+    treeData: object[];
+}
+
+export class TreeViewWrapper extends React.Component<{}, TreeViewWrapperState> {
+
+    constructor() {
+        super();
+        this.state = {
+            treeData
+        };
+    }
+
+    public render() {
+        return <TreeView dataSource={this.state.treeData}/>;
+    }
+
+    public switchDataSource = () => {
+        this.setState({
+            treeData: newTreeData
+        });
+    }
+}
+
+export class TreeViewMobxWrapper extends React.Component<{}, {}> {
+    @observable private obsTreeData: TreeItemData[] = treeData;
+
+    public render() {
+        return <TreeView dataSource={this.obsTreeData}/>;
+    }
+
+    public modifyMobxDataSource = () => {
+        this.obsTreeData[0].children![2].children!.push({label: 'Kaiserschmarrn'});
+    }
+}
 
 function getLabelsList(data: { label: string, children?: object[] }): string[] {
     return [data.label]
