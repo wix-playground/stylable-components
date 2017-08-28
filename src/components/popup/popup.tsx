@@ -34,7 +34,6 @@ export class Popup extends React.Component<PopupCompProps, {}> {
     };
 
     public render() {
-        this.props.onOpenStateChange!(!!this.props.open);
         if (this.props.anchor && this.props.open) {
             return (
                 <Portal style={this.createStyle()}>

@@ -28,25 +28,16 @@ describe('<Popup />', function() {
 
     describe('The popup user', function() {
         it('clicks on the parent and the popup opens and closes after another click', async function() {
-            const onOpenStateChange = sinon.spy();
-            const {select, waitForDom} = clientRenderer.render(<PopupDemo onOpenStateChange={onOpenStateChange}/>);
+            const {select, waitForDom} = clientRenderer.render(<PopupDemo />);
 
             await waitForDom(() => {
                 expect(select(demoContainer)).to.be.present();
                 expect(select(demoContainer, portalId)).to.be.absent();
             });
-            onOpenStateChange.reset();
             select<HTMLDivElement>(demoContainer)!.click();
-            await waitForDom(() => {
-                expect(onOpenStateChange).to.have.been.calledWithMatch(true);
-                expect(bodySelect(portalId)).to.be.present();
-            });
-            onOpenStateChange.reset();
+            await waitForDom(() => expect(bodySelect(portalId)).to.be.present());
             select<HTMLDivElement>(demoContainer)!.click();
-            return waitForDom(() => {
-                expect(onOpenStateChange).to.have.been.calledWithMatch(false);
-                expect(bodySelect(portalId)).to.be.absent();
-            });
+            return waitForDom(() => expect(bodySelect(portalId)).to.be.absent());
         });
     });
 

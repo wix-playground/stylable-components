@@ -6,14 +6,7 @@ export interface DemoState {
     isOpen: boolean;
 }
 
-export interface DemoProps {
-    onOpenStateChange?: (isOpen: boolean) => void;
-}
-
-export class PopupDemo extends React.Component<DemoProps, DemoState> {
-    private static defaultProps = {
-        onOpenStateChange: (open: boolean) => {}
-    }
+export class PopupDemo extends React.Component<{}, DemoState> {
     public state = {div: null, isOpen: false};
 
     public render() {
@@ -34,7 +27,6 @@ export class PopupDemo extends React.Component<DemoProps, DemoState> {
                     syncWidth={false}
                     anchorPosition={{vertical: 'top', horizontal: 'right'}}
                     open={this.state.isOpen}
-                    onOpenStateChange={this.props.onOpenStateChange}
                 >
                     <div style={{background: 'green', color: 'white'}}>
                         <span>Popup Header</span>
