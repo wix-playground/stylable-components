@@ -192,17 +192,17 @@ You can adjust sliders alignment and direction in which the range is going to ch
 
 #### Keyboard
 
-| Keys                                 | Action                      |
-| ------------------------------------ | --------------------------- |
-| up / right arrow key                 | increase value              |
-| left / down arrow key                | decrease value              |
-| home ( fn/ctrl + left arrow key)     | set min value               |
-| end ( fn/ctrl + left arrow key)      | set max value               |
-| page up (fn/ctrl + up arrow key)     | increase value by 10        |
-| page down (fn/ctrl + down arrow key) | decrease value by 10        |
-| tab                                  | moves to next element       |
-| shift + tab                          | moves to previous element   |
-| esc                                  | removes focus (if in focus) |
+| Keys                                     | Action                      |
+| ---------------------------------------- | --------------------------- |
+| up / right arrow key                     | increase value              |
+| left / down arrow key                    | decrease value              |
+| home ( fn/ctrl) OR shift + left arrow key | set min value               |
+| end ( fn/ctrl) OR shift + left arrow key | set max value               |
+| page up (fn/ctrl) OR shift + up arrow key | increase value by 10        |
+| page down (fn/ctrl) OR shift + down arrow key | decrease value by 10        |
+| tab                                      | moves to next element       |
+| shift + tab                              | moves to previous element   |
+| esc                                      | removes focus (if in focus) |
 
 **RTL** orientation
 
