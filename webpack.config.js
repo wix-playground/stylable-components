@@ -38,6 +38,9 @@ module.exports = {
         filename: '[name].js',
         pathinfo: true
     },
+    devServer: {
+        disableHostCheck: true
+    },
     plugins: [
         new StylablePlugin({ injectFileCss: true })
     ]

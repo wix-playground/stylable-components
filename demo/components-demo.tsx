@@ -8,6 +8,7 @@ import {NumberInputDemo} from './components/number-input.demo';
 import {PopupDemo} from './components/popup-demo';
 import {SelectionListDemo} from './components/selection-list-demo';
 import {SliderDemo} from './components/slider-demo';
+import {TimePickerDemo} from './components/time-picker-demo';
 import {ToggleDemo} from './components/toggle-demo';
 import {TreeViewDemo} from './components/tree-view-demo';
 import './style.st.css';
@@ -40,6 +41,11 @@ export class ComponentsDemo extends React.Component<{}, {}> {
                     <TreeViewDemo />
                 </div>
                 <hr />
+                <div>
+                    <h2>TimePicker</h2>
+                    <TimePickerDemo/>
+                </div>
+                <hr/>
                 <div>
                     <h2>Toggle</h2>
                     <ToggleDemo />
