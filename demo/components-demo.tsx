@@ -20,6 +20,7 @@ export class ComponentsDemo extends React.Component<{}, {}> {
                     <h2>Image</h2>
                     <ImageDemo />
                 </div>
+                <hr />
                 <DropDownDemo />
                 <hr />
                 <div>
@@ -31,6 +32,7 @@ export class ComponentsDemo extends React.Component<{}, {}> {
                     <h2>Birthday picker</h2>
                     <BirthdayPickerDemo />
                 </div>
+                <hr />
                 <div>
                     <h2>TreeView</h2>
                     <TreeViewDemo />

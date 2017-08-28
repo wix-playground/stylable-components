@@ -1,9 +1,18 @@
+import * as keycode from 'keycode';
 import * as React from 'react';
 import {SBComponent, SBStateless} from 'stylable-react-component';
 import {root} from 'wix-react-tools';
 import {SelectionList} from '../selection-list';
 import {CaretDown} from './drop-down-icons';
 import style from './drop-down.st.css';
+
+const KeyCodes: any = {
+    ENTER: keycode('enter'),
+    UP: keycode('up'),
+    DOWN: keycode('down'),
+    SPACE: keycode('space'),
+    ESC: keycode('escape')
+};
 
 export interface DropDownInputProps {
     selectedItem?: DropDownItem;
@@ -24,13 +33,14 @@ export interface DropDownListProps {
     items?: DropDownItem[];
     selectedItem?: DropDownItem;
     onItemClick?: (item: string) => void;
+    listRef: any;
 }
 
 export const DropDownList: React.SFC<DropDownListProps> = SBStateless(props => {
     if (!props.open) { return null; }
 
     return (
-        <div data-automation-id="DROP_DOWN_LIST">
+        <div data-automation-id="DROP_DOWN_LIST" ref={props.listRef}>
             <SelectionList
                 className="drop-down-list"
                 dataSource={props.items!.map((item: DropDownItem) => item.label)}
@@ -51,15 +61,24 @@ export interface DropDownProps extends React.HTMLAttributes<HTMLDivElement> {
     open?: boolean;
     items?: DropDownItem[];
     onItemClick?: (item: DropDownItem) => void;
+    tabIndex?: number;
+    focusedItem?: DropDownItem;
+    onFocusItem?: (item: DropDownItem) => void;
 }
 
 @SBComponent(style)
 export class DropDown extends React.Component<DropDownProps, {}> {
+    public static defaultProps: DropDownProps = {
+        items: [],
+        onItemClick: () => {},
+        onInputClick: () => {} ,
+        tabIndex: 0
+    };
 
-    public static defaultProps: DropDownProps = {items: [], onItemClick: () => {}, onInputClick: () => {}};
+    private dropdown: HTMLDivElement | null;
 
     public onItemClick = (item: string) => {
-        this.props.onInputClick!();
+        this.toggleDropDown();
         this.props.onItemClick!(this.props.items!.filter((elem: DropDownItem) => elem.label === item)[0]);
     }
 
@@ -70,9 +89,16 @@ export class DropDown extends React.Component<DropDownProps, {}> {
         });
 
         return (
-            <div data-automation-id="DROP_DOWN" {...rootProps}>
+            <div
+                data-automation-id="DROP_DOWN"
+                {...rootProps}
+                onKeyDown={this.onKeyDown}
+                tabIndex={this.props.tabIndex}
+                ref={dropdown => this.dropdown = dropdown}
+            >
                 <DropDownInput selectedItem={this.props.selectedItem} onClick={this.props.onInputClick} />
                 <DropDownList
+                    listRef={this.focusList}
                     selectedItem={this.props.selectedItem}
                     items={this.props.items}
                     open={!!this.props.open}
@@ -80,5 +106,31 @@ export class DropDown extends React.Component<DropDownProps, {}> {
                 />
             </div>
         );
+    }
+
+    private focusList(el: any) {
+        if (el) { el.children[0].focus(); }
+    }
+
+    private toggleDropDown() {
+        if (this.props.open) { this.dropdown!.focus(); }
+        this.props.onInputClick!();
+    }
+
+    private onKeyDown = (e: any) => {
+        switch (e.keyCode) {
+            case KeyCodes.SPACE:
+                e.preventDefault();
+                this.toggleDropDown();
+                break;
+            case KeyCodes.ESC:
+                e.preventDefault();
+                this.props.open && this.toggleDropDown();
+                break;
+            case KeyCodes.DOWN:
+                e.preventDefault();
+                !this.props.open && this.toggleDropDown();
+                break;
+        }
     }
 }
