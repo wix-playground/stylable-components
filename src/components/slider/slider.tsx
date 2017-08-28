@@ -1,6 +1,7 @@
 import * as keycode from 'keycode';
 import * as React from 'react';
 import {SBComponent} from 'stylable-react-component';
+import {root} from 'wix-react-tools';
 
 export type PointerEvent = MouseEvent | TouchEvent;
 export interface PointerPosition {
@@ -115,8 +116,10 @@ export class Slider extends React.Component<SliderProps, SliderState> {
     public render() {
         return (
             <div
-                className="container"
-                data-automation-id="SLIDER-CONTAINER"
+                {...root(this.props, {
+                    'data-automation-id': 'SLIDER-CONTAINER',
+                    'className': 'container'
+                })}
                 cssStates={{
                     'active': this.state.isActive,
                     'disabled': Boolean(this.props.disabled),

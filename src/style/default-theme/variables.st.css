@@ -61,16 +61,6 @@
     color_Disabled: value(B5);
     color_Keyboard_Focused: value(M4);
 
-    /* Specific component colors */
-    color_Slider_Track: value(STC5);
-    color_Slider_Track_Hover: value(STC20);
-    color_Slider_Progress: value(M3);
-    color_Slider_Progress_Hover: value(M3);
-    color_Slider_Handle: value(M0);
-    color_Slider_HandleBorder: value(STC20);
-    color_Slider_Handle_Hover: value(STC10);
-    color_Slider_Handle_Active: value(M3);
-
     /* Copmponent Sizes */
     inputHeight: 36px;
     inputWidth: 192px;

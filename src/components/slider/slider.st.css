@@ -1,24 +1,34 @@
+@namespace "Slider";
+
 :import {
-    -sb-from: "../../style/default-theme/variables.st.css";
-    -sb-named: color_Border,
-    color_Slider_Track,
-    color_Slider_Track_Hover,
-    color_Slider_Progress,
-    color_Slider_Progress_Hover,
-    color_Slider_Handle,
-    color_Slider_HandleBorder,
-    color_Slider_Handle_Hover,
-    color_Slider_Handle_Active;
+    -st-from: "../../style/default-theme/variables.st.css";
+    -st-named:
+        color_Border,
+        M0,
+        M3,
+        STC5,
+        STC10,
+        STC20;
 }
 
 :vars {
     trackHeight: 4px;
+
     handleMargin: -6px;
     handleWidth: 16px;
     handleHeight: 16px;
     handleRadius: 8px;
-    handleBorder: 1px solid value(color_Slider_HandleBorder);
-    handleBorderHover: 1px solid value(color_Slider_Handle_Active);;
+    handleBorder: 1px solid value(colorHandleBorder);
+    handleBorderHover: 1px solid value(colorHandle_Active);
+
+    colorTrack: value(STC5);
+    colorTrack_Hover: value(STC20);
+    colorProgress: value(M3);
+    colorProgress_Hover: value(M3);
+    colorHandle: value(M0);
+    colorHandleBorder: value(STC20);
+    colorHandle_Hover: value(STC10);
+    colorHandle_Active: value(M3);
 }
 
 .native-input {
