@@ -453,7 +453,7 @@ describe('<TimePicker/>', () => {
             });
         });
 
-        describe('shift + stepper up (mm focus)', () => {
+        describeDesktop('shift + stepper up (mm focus)', () => {
             beforeEach(() => {
                 simulate.focus(mm);
                 simulate.click(mm);
@@ -470,7 +470,7 @@ describe('<TimePicker/>', () => {
             });
         });
 
-        describe('shift + stepper down (mm focus)', () => {
+        describeDesktop('shift + stepper down (mm focus)', () => {
             beforeEach(() => {
                 simulate.focus(mm);
                 simulate.click(mm);
@@ -484,7 +484,7 @@ describe('<TimePicker/>', () => {
             });
         });
 
-        describe('shift + stepper up (hh focus)', () => {
+        describeDesktop('shift + stepper up (hh focus)', () => {
             beforeEach(() => {
                 simulate.focus(hh);
                 simulate.click(hh);
@@ -498,7 +498,7 @@ describe('<TimePicker/>', () => {
             });
         });
 
-        describe('shift + stepper down (hh focus)', () => {
+        describeDesktop('shift + stepper down (hh focus)', () => {
             beforeEach(() => {
                 simulate.focus(hh);
                 simulate.click(hh);
