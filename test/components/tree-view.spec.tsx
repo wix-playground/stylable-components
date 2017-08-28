@@ -76,8 +76,6 @@ describe('<TreeView />', () => {
     const sampleItem = {label: 'label'};
     const nestedItem: TreeItemData = treeData[0].children![1];
 
-    const state: TreeItemState = {isSelected: false, isExpanded: true, isFocused: false};
-
     const allNodesLabels: string[] = getAllNodeLabels(treeData);
 
     it('renders a tree view with a few children, clicks ones of them to expand and close', async () => {
@@ -362,13 +360,13 @@ describe('<TreeView />', () => {
         describe('<TreeItem />', () => {
 
             const stateMap = new TreeStateMap();
+            stateMap.getItemState(nestedItem).isExpanded = true;
 
             it('renders an item', () => {
                 const {select, waitForDom} = clientRenderer.render(
                     <TreeItem
                         item={sampleItem}
                         itemRenderer={TreeItem}
-                        state={state}
                         stateMap={stateMap}
                     />
                 );
@@ -382,7 +380,6 @@ describe('<TreeView />', () => {
                         <TreeItem
                             item={sampleItem}
                             itemRenderer={TreeItem}
-                            state={state}
                             stateMap={stateMap}
                         />
                     );
@@ -396,7 +393,6 @@ describe('<TreeView />', () => {
                     <TreeItem
                         item={treeData[0]}
                         itemRenderer={TreeItem}
-                        state={state}
                         stateMap={stateMap}
                     />
                 );
@@ -409,7 +405,6 @@ describe('<TreeView />', () => {
                     <TreeItem
                         item={nestedItem}
                         itemRenderer={TreeItem}
-                        state={state}
                         stateMap={stateMap}
                     />
                 );
@@ -426,7 +421,6 @@ describe('<TreeView />', () => {
                         item={sampleItem}
                         itemRenderer={TreeItem}
                         onItemClick={onClick}
-                        state={state}
                         stateMap={stateMap}
                     />
                 );
