@@ -30,8 +30,9 @@ export class DatePickerDemo extends React.Component<DatePickerProps, Partial<Dat
                         <option value="6">Saturday</option>
                     </select>
                 </span>
-                <span data-automation-id="CURRENT_DATE">{this.state.value!.toDateString()}</span>
-                <br/><br/>
+                <span style={{marginBottom: '1em'}} data-automation-id="CURRENT_DATE">
+                    {this.state.value!.toDateString()}
+                </span>
                 <DatePicker
                     placeholder="mm/dd/yyyy"
                     startingDay={this.state.startingDay!}
