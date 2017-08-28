@@ -66,22 +66,41 @@ export interface DropDownProps {
     selectedItem?: DropDownItem;
     onInputClick?: () => void;
     items?: DropDownItem[];
-    onItemClick?: (item: string) => void;
+    onItemClick?: (item: string | DropDownItem) => void;
     tabIndex?: number;
     focusedItem?: DropDownItem;
     onFocusItem?: (item: DropDownItem) => void;
 }
 
+export interface DropDownState {
+    dropdown: HTMLDivElement | null;
+}
+
 @SBComponent(style)
-export class DropDown extends React.Component<DropDownProps, {}> {
+export class DropDown extends React.Component<DropDownProps, DropDownState> {
     public static defaultProps: DropDownProps = {
         items: [],
         onItemClick: () => {},
-        onInputClick: () => {} ,
+        onInputClick: () => {},
         tabIndex: 0
     };
 
-    private dropdown: HTMLDivElement | null;
+    // componentWillMount() {
+    //     debugger
+    // }
+    //
+    // componentWillReceiveProps() {
+    //     debugger
+    // }
+    //
+    componentWillUpdate() {
+        debugger
+    }
+
+    constructor() {
+        super();
+        this.state = {dropdown: null};
+    }
 
     public onItemClick = (item: string) => {
         this.toggleDropDown();
@@ -100,10 +119,10 @@ export class DropDown extends React.Component<DropDownProps, {}> {
                 {...rootProps}
                 onKeyDown={this.onKeyDown}
                 tabIndex={this.props.tabIndex}
-                ref={dropdown => this.dropdown = dropdown}
+                ref={dropdown => this.setState({dropdown})}
             >
                 <DropDownInput selectedItem={this.props.selectedItem} onClick={this.props.onInputClick} />
-                <Popup open={!!this.props.open} anchor={this.dropdown}>
+                <Popup open={!!this.props.open} anchor={this.state.dropdown}>
                     <SelectionList
                         className="drop-down-list"
                         dataSource={this.props.items!.map((item: DropDownItem) => item.label)}
@@ -111,23 +130,16 @@ export class DropDown extends React.Component<DropDownProps, {}> {
                         onChange={this.props.onItemClick!}
                     />
                 </Popup>
-                {/*<DropDownList*/}
-                    {/*listRef={this.dropdown}*/}
-                    {/*selectedItem={this.props.selectedItem}*/}
-                    {/*items={this.props.items}*/}
-                    {/*open={!!this.props.open}*/}
-                    {/*onItemClick={this.onItemClick}*/}
-                {/*/>*/}
             </div>
         );
     }
 
-    private focusList(el: any) {
-        if (el) { el.children[0].focus(); }
-    }
+    // private focusList(el: any) {
+    //     if (el) { el.children[0].focus(); }
+    // }
 
     private toggleDropDown() {
-        if (this.props.open) { this.dropdown!.focus(); }
+        if (this.props.open) { this.state.dropdown!.focus(); }
         this.props.onInputClick!();
     }
 
