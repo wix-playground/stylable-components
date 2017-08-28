@@ -46,24 +46,19 @@ describe('<Modal />', () => {
         });
     });
 
-    it('takes the full width and height of the viewport', async function() {
+    it('takes the full width and height of the viewport and is centered in the viewport', async function() {
         clientRenderer.render(<Modal isOpen={true} />);
 
-        await waitFor(() => {
-            expect(bodySelect('MODAL')!.clientHeight).to.equal(window.innerHeight);
-            expect(bodySelect('MODAL')!.clientWidth).to.equal(window.innerWidth);
-        });
-    });
-
-    it('is centered in the viewport', async function() {
-        clientRenderer.render(<Modal isOpen={true} />);
-
-        function checkIfCentered(element: Element) {
+        function checkIfAlignedToScreen(element: Element) {
             const rects = element.getBoundingClientRect();
             return rects.top === 0 && rects.left === 0;
         }
 
-        await waitFor(() => expect(checkIfCentered(bodySelect('MODAL')!), 'The modal wasn\'t centered').to.equal(true));
+        await waitFor(() => {
+            expect(checkIfAlignedToScreen(bodySelect('MODAL')!), 'The modal wasn\'t centered').to.equal(true);
+            expect(bodySelect('MODAL')!.clientHeight).to.equal(window.innerHeight);
+            expect(bodySelect('MODAL')!.clientWidth).to.equal(window.innerWidth);
+        });
     });
 
     it('renders one child in the center of the viewport', async function() {
@@ -136,16 +131,16 @@ describe('<Modal />', () => {
         await waitFor(() => expect(onRequestClose).to.have.been.calledWithMatch({source: 'backdrop'}));
     });
 
-    it('should not call onRequestClose when the children are clicked', async function() {
+    it('calls onRequestClose with source equal to children when the child is clicked', async function() {
         const onRequestClose = sinon.spy();
         clientRenderer.render(
             <Modal isOpen={true} onRequestClose={onRequestClose}>
-                <p data-automation-id="CHILD_1">child 1</p>
+                <p role="children" data-automation-id="CHILD_1">child 1</p>
             </Modal>
         );
 
         simulate.click(bodySelect('CHILD_1'));
 
-        await waitFor(() => expect(onRequestClose).to.have.not.been.called);
+        await waitFor(() => expect(onRequestClose).to.have.been.calledWithMatch({source: 'children'}));
     });
 });
