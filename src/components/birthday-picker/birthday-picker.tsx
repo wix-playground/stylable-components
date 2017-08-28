@@ -1,5 +1,6 @@
 import {autorun, computed, observable, reaction} from 'mobx';
 import {observer} from 'mobx-react';
+import {root} from 'wix-react-tools';
 import * as React from 'react';
 
 export function dateFromYearMonthDay(
@@ -118,8 +119,10 @@ export class BirthdayPicker extends React.Component<BirthdayPickerProps, {}> {
     }
 
     public render() {
+        const rootProps = root(this.props, {'data-automation-id': 'BIRTHDAY_PICKER', 'className': ''});
+
         return (
-            <span data-automation-id="BIRTHDAY_PICKER">
+            <span {...rootProps}>
                 <Select
                     automationId="BIRTHDAY_PICKER_DAY"
                     value={this.day}
