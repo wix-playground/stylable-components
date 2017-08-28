@@ -9,9 +9,19 @@ import {NumberInput} from '../src';
 
 storiesOf('NumberInput', module)
     .addDecorator(withKnobs)
-    .add('basic', () => (
+    .add('uncontrolled', () => (
         <NumberInput
             placeholder={text('placeholder', 'How Many?')}
+            defaultValue={number('defaultValue', 0)}
+            disabled={boolean('disabled', false)}
+            error={boolean('error', false)}
+            onChange={action('onChange')}
+            onInput={action('onInput')}
+        />
+    ))
+    .add('controlled', () => (
+        <NumberInput
+            value={number('value', 0)}
             disabled={boolean('disabled', false)}
             error={boolean('error', false)}
             onChange={action('onChange')}
