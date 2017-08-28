@@ -1,4 +1,4 @@
-# Slider Spec
+# Slider
 
 A **slider** an input where the user selects a value from within a given range.
 
@@ -8,7 +8,7 @@ A **slider** an input where the user selects a value from within a given range.
 
 ![elements](./assets/elements.png)
 
-**Slider consists of:** "bar", "handle", "progress". The "handle" is dragged across the "bar" in order to give the slider a desired value while "progress" shows range from min value to the current value. Marks are representing the step. 
+**Slider consists of:** "bar", "handle", "progressBar". The "handle" is dragged across the "bar" in order to give the slider a desired value while "progress" shows range from min value to the current value. Marks are representing the step. 
 
 > TBD (need to decide on how to implement tooltip)
 > Also, you can display tooltip (e.g. to display current value) by adding child DOM element with relevant data-slot (data-slot="tooltip")
@@ -25,7 +25,7 @@ A **slider** an input where the user selects a value from within a given range.
 | value        | number                                | min          |            | Displays default OR actual value of the slider |
 | min          | number                                | 0            |            | The absolute minimum of the slider's range |
 | max          | number                                | 1            |            | The absolute maximum of the slider's range |
-| step         | number OR string "any"                | 1            |            | Set the slider's step. If step = number it causes slider to move in discrete increments. If step = "any"  sliders moves along a subjective range. |
+| step         | number OR string "any"                | 1            |            | Set the slider's step. If step = "number" it causes slider to move in discrete increments. If step = "any"  sliders moves along a subjective range. |
 | required     | bool                                  | fasle        |            | Whether or not the slider is required in a form. |
 | disabled     | bool                                  | false        |            | If true, the slider will not be interactive |
 | label        | string                                |              |            | Text to display in accessibility mode    |
@@ -123,9 +123,9 @@ Comments to example 2
 | --------------- | ---------------------------------------- | ---------------------------------------- |
 | ::handle        | Allows you to style the handle of the slider |                                          |
 | ::bar           | Allows you to style the bar of the slider |                                          |
-| ::progressMarks   | Allows you to style the progress bar of the slider |                                          |
-| ::marks         | Allows to style marks that are shown on the ::bar section of the slider | by default ::marks use background color of the ::bar |
-| ::progressMarks | Allows to style marks that are shown on the :progress section of the slider | by default ::progressMarks use background color of the ::progressBar |
+| ::progressBar   | Allows you to style the progress bar of the slider |                                          |
+| ::marks         | Allows to style marks that are shown on the ::bar section of the slider | by default ::marks use the same background color as ::bar |
+| ::progressMarks | Allows to style marks that are shown on the :progressBar section of the slider | by default ::progressMarks use the same background color as ::progressBar |
 
 
 
@@ -144,9 +144,10 @@ Comments to example 2
 **Example 1:**
 
 ```css
-@import * from './components/slider'; /* TODO: fix the correct syntax */
+@import * from './components/slider'; 
+/* TODO: fix the correct syntax */
 /* style.st.css
-Adding rules here (which may be shared between different components) allows us to 	    override specific parts; or even change the whole theme
+Adding rules here (which may be shared between different components) allows us to override specific parts; or even change the whole theme
 */
 Slider {
   background: transparent;

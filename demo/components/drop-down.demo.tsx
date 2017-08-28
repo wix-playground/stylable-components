@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { DropDown } from '../../src';
-import { DropDownItem } from '../../src/components/drop-down/drop-down';
+import {DropDown} from '../../src';
+import {DropDownItem} from '../../src/components/drop-down/drop-down';
 
 export interface DropDownDemoState {
     selectedItem: DropDownItem | undefined;
@@ -8,14 +8,14 @@ export interface DropDownDemoState {
 }
 
 const items = [
-    { label: 'Muffins' },
-    { label: 'Pancakes' },
-    { label: 'Waffles' }
+    {label: 'Muffins'},
+    {label: 'Pancakes'},
+    {label: 'Waffles'}
 ];
 
 export class DropDownDemo extends React.Component<{}, DropDownDemoState> {
 
-    public state = { selectedItem: undefined, open: false };
+    public state = {selectedItem: undefined, open: false};
 
     public onInputClick = () => {
         this.setState({

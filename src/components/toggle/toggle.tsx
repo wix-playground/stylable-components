@@ -3,6 +3,7 @@ import {SBComponent} from 'stylable-react-component';
 import style from './toggle.st.css';
 
 export interface Props {
+    className?: string;
     checked?: boolean;
     error?: boolean;
     disabled?: boolean;
@@ -53,22 +54,24 @@ export default class Toggle extends React.Component<Props, State> {
                     rtl: rtl!
                 }}
             >
-            {!disabled &&
-                <input
-                    data-automation-id="TOGGLE_INPUT"
-                    className="input"
-                    type="checkbox"
-                    aria-label={label}
-                    checked={checked}
-                    onChange={this.toggle}
-                    tabIndex={tabIndex}
-                    onFocus={this.onInputFocus}
-                    onBlur={this.onInputBlur}
-                />
-            }
-            <div className="switch"/>
+                {!disabled &&
+                    <input
+                        data-automation-id="TOGGLE_INPUT"
+                        className="input"
+                        type="checkbox"
+                        aria-label={label}
+                        checked={checked}
+                        onChange={this.toggle}
+                        tabIndex={tabIndex}
+                        onFocus={this.onInputFocus}
+                        onBlur={this.onInputBlur}
+                    />
+                }
+                <div className="switch-wrap">
+                    <div className="switch"/>
+                </div>
             </label>
-            );
+        );
     }
 
     private onInputFocus = () => this.setState({focus: true});

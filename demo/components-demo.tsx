@@ -3,26 +3,25 @@ import anchorStyle from '../src/style/default-theme/anchor.st.css';
 import buttonStyle from '../src/style/default-theme/controls/button.st.css';
 import inputStyle from '../src/style/default-theme/controls/input.st.css';
 import typographyStyle from '../src/style/default-theme/typography.st.css';
-import { BirthdayPickerDemo } from './components/birthday-picker-demo';
+import {BirthdayPickerDemo} from './components/birthday-picker-demo';
 import {CheckBoxDemo} from './components/checkbox-demo';
 import {DatePickerDemo} from './components/date-picker-demo';
-import {DropDownDemo } from './components/drop-down.demo';
-import { ImageDemo } from './components/image-demo';
+import {DropDownDemo} from './components/drop-down.demo';
+import {ImageDemo} from './components/image-demo';
 import {NumberInputDemo} from './components/number-input.demo';
-import { RadioGroupDemo } from './components/radio-group-demo';
-import { SelectionListDemo } from './components/selection-list-demo';
-import { ToggleDemo } from './components/toggle-demo';
-import { TreeViewDemo } from './components/tree-view-demo';
+import {PopupDemo} from './components/popup-demo';
+import {SelectionListDemo} from './components/selection-list-demo';
+import {TimePickerDemo} from './components/time-picker-demo';
+import {ToggleDemo} from './components/toggle-demo';
+import {TreeViewDemo} from './components/tree-view-demo';
 import './style.st.css';
 
-export class ComponentsDemo extends React.Component<{}, {}> {
+export class ComponentsDemo extends React.Component {
     public render() {
         return (
             <div>
-                <div>
-                    <h2>Image</h2>
-                    <ImageDemo />
-                </div>
+                <ImageDemo />
+                <hr />
                 <DropDownDemo />
                 <hr />
                 <div>
@@ -39,6 +38,11 @@ export class ComponentsDemo extends React.Component<{}, {}> {
                     <TreeViewDemo />
                 </div>
                 <hr />
+                <div>
+                    <h2>TimePicker</h2>
+                    <TimePickerDemo/>
+                </div>
+                <hr/>
                 <div>
                     <h2>Toggle</h2>
                     <ToggleDemo />
@@ -155,8 +159,8 @@ export class ComponentsDemo extends React.Component<{}, {}> {
                 </div>
                 <hr />
                 <div>
-                    <h2>Radio Group</h2>
-                    <RadioGroupDemo />
+                    <h2>Popup</h2>
+                    <PopupDemo/>
                 </div>
                 <hr />
                 <div>

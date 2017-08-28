@@ -1,0 +1,80 @@
+import {isTouch} from '../../utils';
+
+export enum Ampm {
+    AM,
+    PM,
+    NONE
+}
+export type TimeSegment = 'hh' | 'mm';
+export type Format = 'ampm' | '24h';
+export type Segment = TimeSegment | 'ampm';
+
+export const isTouchTimeInputSupported = (() => {
+    if (!isTouch) {
+        return false;
+    }
+    const input = document.createElement('input');
+    input.type = 'time';
+    return input.type === 'time';
+})();
+
+export const is12TimeFormat = /AM|PM/.test(new Date().toLocaleTimeString());
+export const ampmLabels = {
+    [Ampm.AM]: 'AM',
+    [Ampm.PM]: 'PM',
+    [Ampm.NONE]: ''
+};
+
+export const getCircularValue = (name: TimeSegment, value: number, ampm: Ampm): number => {
+    if (name === 'mm') {
+        return (value + 60) % 60;
+    }
+    if (ampm === Ampm.NONE) {
+        return (value + 24) % 24;
+    }
+    return 1 + (value + 11) % 12;
+};
+
+export function formatTimeChunk(num: string | number): string {
+    return ('00' + num).slice(-2);
+}
+
+export function isTimeSegment(arg: any): arg is TimeSegment {
+    return arg === 'hh' || arg === 'mm';
+}
+
+export function to24(hh: number, ampm: Ampm): number {
+    switch (ampm) {
+        case Ampm.NONE:
+            return hh;
+        case Ampm.AM:
+            return hh === 12 ? 0 : hh;
+        case Ampm.PM:
+            return hh === 12 ? hh : (hh + 12);
+    }
+}
+
+export function toAmpm(hh: number): {hh: number, ampm: Ampm} {
+    let ampm: Ampm;
+    if (hh < 12) {
+        hh = hh === 0 ? 12 : hh;
+        ampm = Ampm.AM;
+    } else {
+        hh = hh === 12 ? hh : (hh % 12);
+        ampm = Ampm.PM;
+    }
+    return {hh, ampm};
+}
+
+export function isValidValue(num: number, part: TimeSegment, ampm: Ampm): boolean {
+    if (part === 'mm') {
+        return num >= 0 && num <= 59;
+    }
+    switch (ampm) {
+        case Ampm.NONE:
+            return num >= 0 && num <= 23;
+        case Ampm.AM:
+        case Ampm.PM:
+            return num >= 1 && num <= 12;
+    }
+}
