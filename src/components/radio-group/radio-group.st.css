@@ -1,9 +1,14 @@
 @namespace "RadioGroup";
 
+:import{
+    -st-from: "./radio-button.st.css";
+    -st-default: Radio;
+}
+
 .root {
     display: inline-block;
 }
 
 .radioGroupChild {
-    /*keep this here for children inner selectors to work*/
+    -st-extends: Radio;
 }

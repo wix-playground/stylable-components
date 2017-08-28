@@ -34,7 +34,7 @@ export class RadioButton extends React.Component<RadioButtonProps, RadioButtonSt
 
     public render() {
         const rootProps = root(this.props, {
-            className: 'root',
+            className: '',
             ['data-automation-id']: 'RADIO_BUTTON_ROOT'
         });
 
