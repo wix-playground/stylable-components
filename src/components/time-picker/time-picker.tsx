@@ -222,10 +222,13 @@ export class TimePicker extends React.Component<Props, State> {
         }
     }
 
-    private changeValue(step: number): void {
+    private changeValue(step: number, isBigStep: boolean): void {
         const {currentSegment, ampm} = this.state;
         if (!isTimeSegment(currentSegment)) {
             return this.toggleAmpm(true);
+        }
+        if (currentSegment === 'mm' && isBigStep) {
+            step *= 10;
         }
         let newValue: any = Number(this.state[currentSegment] || 0) + step;
         newValue = getCircularValue(currentSegment, newValue, ampm);
@@ -240,8 +243,8 @@ export class TimePicker extends React.Component<Props, State> {
             this.segments.hh!.focus();
         }
     }
-    private onStepperUp = () => this.changeValue(1);
-    private onStepperDown = () => this.changeValue(-1);
+    private onStepperUp = (e: React.MouseEvent<HTMLButtonElement>) => this.changeValue(1, e.shiftKey);
+    private onStepperDown = (e: React.MouseEvent<HTMLButtonElement>) => this.changeValue(-1, e.shiftKey);
 
     private onAmpmMouseDown = (e: React.SyntheticEvent<HTMLDivElement>) => {
         e.stopPropagation();
@@ -344,23 +347,19 @@ export class TimePicker extends React.Component<Props, State> {
                 break;
             case 'up':
                 e.preventDefault();
-                this.changeValue(1);
+                this.changeValue(1, e.shiftKey);
                 break;
             case 'down':
                 e.preventDefault();
-                this.changeValue(-1);
+                this.changeValue(-1, e.shiftKey);
                 break;
             case 'page up':
                 e.preventDefault();
-                if (currentSegment === 'mm') {
-                    this.changeValue(10);
-                }
+                this.changeValue(1, true);
                 break;
             case 'page down':
                 e.preventDefault();
-                if (currentSegment === 'mm') {
-                    this.changeValue(-10);
-                }
+                this.changeValue(-1, true);
                 break;
             case 'backspace':
                 e.preventDefault();

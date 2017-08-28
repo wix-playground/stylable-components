@@ -302,6 +302,210 @@ describe('<TimePicker/>', () => {
             });
         });
 
+        describe('arrow down on hh segment', () => {
+            beforeEach(() => {
+                simulate.focus(hh);
+                simulate.click(hh);
+                simulate.keyDown(hh, {keyCode: keycode('down')});
+            });
+            it('hh input should have "12" value', () => {
+                expect(hh).attr('value', '12');
+            });
+            it('onChange should be callen with "12:55"', async () => {
+                expect(onChange).to.be.calledWithExactly('12:55');
+            });
+        });
+
+        describe('arrow up on hh segment', () => {
+            beforeEach(() => {
+                simulate.focus(hh);
+                simulate.click(hh);
+                simulate.keyDown(hh, {keyCode: keycode('up')});
+            });
+            it('hh input should have "14" value', () => {
+                expect(hh).attr('value', '14');
+            });
+            it('onChange should be callen with "14:55"', async () => {
+                expect(onChange).to.be.calledWithExactly('14:55');
+            });
+        });
+
+        describe('arrow down on mm segment', () => {
+            beforeEach(() => {
+                simulate.focus(mm);
+                simulate.click(mm);
+                simulate.keyDown(mm, {keyCode: keycode('down')});
+            });
+            it('mm input should have "54" value', () => {
+                expect(mm).attr('value', '54');
+            });
+            it('onChange should be callen with "13:54"', async () => {
+                expect(onChange).to.be.calledWithExactly('13:54');
+            });
+        });
+
+        describe('arrow up on mm segment', () => {
+            beforeEach(() => {
+                simulate.focus(mm);
+                simulate.click(mm);
+                simulate.keyDown(mm, {keyCode: keycode('up')});
+            });
+            it('mm input should have "56" value', () => {
+                expect(mm).attr('value', '56');
+            });
+            it('onChange should be callen with "13:56"', async () => {
+                expect(onChange).to.be.calledWithExactly('13:56');
+            });
+        });
+
+    });
+
+    describe.only('render with onChange={onChange} format="24h" value="13:59"', () => {
+        let onChange: any;
+        let renderer: any;
+        let hh: any;
+        let mm: any;
+        let stepperIncrement: any;
+        let stepperDecrement: any;
+
+        beforeEach(() => {
+            onChange = sinon.spy();
+            renderer = clientRenderer.render(<TimePicker format="24h" value="13:59" onChange={onChange}/>);
+            hh = renderer.select('TIME_PICKER_INPUT_HH');
+            mm = renderer.select('TIME_PICKER_INPUT_MM');
+            stepperIncrement = renderer.select('STEPPER_INCREMENT');
+            stepperDecrement = renderer.select('STEPPER_DECREMENT');
+        });
+
+        describe('arrow up on mm segment', () => {
+            beforeEach(() => {
+                simulate.focus(mm);
+                simulate.click(mm);
+                simulate.keyDown(mm, {keyCode: keycode('up')});
+            });
+            it('mm input should have "00" value', () => {
+                expect(mm).attr('value', '00');
+            });
+            it('onChange should be callen with "13:00"', async () => {
+                expect(onChange).to.be.calledWithExactly('13:00');
+            });
+        });
+
+        describe('arrow shift + up on mm segment', () => {
+            beforeEach(() => {
+                simulate.focus(mm);
+                simulate.click(mm);
+                simulate.keyDown(mm, {keyCode: keycode('up'), shiftKey: true});
+            });
+            it('mm input should have "09" value', () => {
+                expect(mm).attr('value', '09');
+            });
+            it('onChange should be callen with "13:09"', async () => {
+                expect(onChange).to.be.calledWithExactly('13:09');
+            });
+        });
+
+
+        describe('arrow shift + down on mm segment', () => {
+            beforeEach(() => {
+                simulate.focus(mm);
+                simulate.click(mm);
+                simulate.keyDown(mm, {keyCode: keycode('down'), shiftKey: true});
+            });
+            it('mm input should have "49" value', () => {
+                expect(mm).attr('value', '49');
+            });
+            it('onChange should be callen with "13:49"', async () => {
+                expect(onChange).to.be.calledWithExactly('13:49');
+            });
+        });
+
+
+        describe('arrow shift + up on hh segment', () => {
+            beforeEach(() => {
+                simulate.focus(hh);
+                simulate.click(hh);
+                simulate.keyDown(mm, {keyCode: keycode('up'), shiftKey: true});
+            });
+            it('hh input should have "14" value', () => {
+                expect(hh).attr('value', '14');
+            });
+            it('onChange should be callen with "14:59"', async () => {
+                expect(onChange).to.be.calledWithExactly('14:59');
+            });
+        });
+
+        describe('arrow shift + down on hh segment', () => {
+            beforeEach(() => {
+                simulate.focus(hh);
+                simulate.click(hh);
+                simulate.keyDown(mm, {keyCode: keycode('down'), shiftKey: true});
+            });
+            it('hh input should have "12" value', () => {
+                expect(hh).attr('value', '12');
+            });
+            it('onChange should be callen with "12:59"', async () => {
+                expect(onChange).to.be.calledWithExactly('12:59');
+            });
+        });
+
+        describe('shift + stepper up (mm focus)', () => {
+            beforeEach(() => {
+                simulate.focus(mm);
+                simulate.click(mm);
+                simulate.click(stepperIncrement, {shiftKey: true});
+            });
+            it('mm input should have "09" value', () => {
+                expect(mm).attr('value', '09');
+            });
+            it('onChange should be callen with "13:09"', async () => {
+                expect(onChange).to.be.calledWithExactly('13:09');
+            });
+        });
+
+        describe('shift + stepper down (mm focus)', () => {
+            beforeEach(() => {
+                simulate.focus(mm);
+                simulate.click(mm);
+                simulate.click(stepperDecrement, {shiftKey: true});
+            });
+            it('mm input should have "49" value', () => {
+                expect(mm).attr('value', '49');
+            });
+            it('onChange should be callen with "13:49"', async () => {
+                expect(onChange).to.be.calledWithExactly('13:49');
+            });
+        });
+
+        describe('shift + stepper up (hh focus)', () => {
+            beforeEach(() => {
+                simulate.focus(hh);
+                simulate.click(hh);
+                simulate.click(stepperIncrement, {shiftKey: true});
+            });
+            it('hh input should have "14" value', () => {
+                expect(hh).attr('value', '14');
+            });
+            it('onChange should be callen with "14:59"', async () => {
+                expect(onChange).to.be.calledWithExactly('14:59');
+            });
+        });
+
+        describe('shift + stepper down (hh focus)', () => {
+            beforeEach(() => {
+                simulate.focus(hh);
+                simulate.click(hh);
+                simulate.click(stepperDecrement, {shiftKey: true});
+            });
+            it('hh input should have "12" value', () => {
+                expect(hh).attr('value', '12');
+            });
+            it('onChange should be callen with "12:59"', async () => {
+                expect(onChange).to.be.calledWithExactly('12:59');
+            });
+        });
+
+
     });
 
     describe('render with format="24h" value="01:55"', () => {
