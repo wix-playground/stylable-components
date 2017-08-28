@@ -14,15 +14,15 @@ describe('<Modal />', () => {
             'and then the user clicks on the background and the model closes', async function() {
             clientRenderer.render(<ModalDemo />);
 
-            await waitFor(() => expect(bodySelect('MODAL')!).to.be.absent());
+            await waitFor(() => expect(bodySelect('MODAL')).to.be.absent());
 
             simulate.click(bodySelect('MODAL_BUTTON'));
 
-            await waitFor(() => expect(bodySelect('MODAL')!).to.be.present());
+            await waitFor(() => expect(bodySelect('MODAL')).to.be.present());
 
             simulate.click(bodySelect('MODAL')!);
 
-            await waitFor(() => expect(bodySelect('MODAL')!).to.be.absent());
+            await waitFor(() => expect(bodySelect('MODAL')).to.be.absent());
         });
     });
 
@@ -131,7 +131,7 @@ describe('<Modal />', () => {
         const onRequestClose = sinon.spy();
         clientRenderer.render(<Modal isOpen={true} onRequestClose={onRequestClose} />);
 
-        simulate.click(bodySelect('MODAL')!);
+        simulate.click(bodySelect('MODAL'));
 
         await waitFor(() => expect(onRequestClose).to.have.been.calledWithMatch({source: 'backdrop'}));
     });
@@ -144,7 +144,7 @@ describe('<Modal />', () => {
             </Modal>
         );
 
-        simulate.click(bodySelect('CHILD_1')!);
+        simulate.click(bodySelect('CHILD_1'));
 
         await waitFor(() => expect(onRequestClose).to.have.not.been.called);
     });

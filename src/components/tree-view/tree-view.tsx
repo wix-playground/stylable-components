@@ -148,12 +148,11 @@ export class TreeView extends React.Component<TreeViewProps, {}> {
 
     public render() {
         const TreeNode = this.props.itemRenderer!;
-        const rootProps = root(this.props, {className: 'tree-view'});
+        const rootProps = root(this.props, {'data-automation-id': 'TREE_VIEW', 'className': 'tree-view'});
 
         return (
             <div
-                data-automation-id="TREE_VIEW"
-                className={rootProps.className}
+                {...rootProps}
                 tabIndex={0}
                 onKeyDown={this.onKeyDown}
             >

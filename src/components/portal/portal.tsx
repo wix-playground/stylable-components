@@ -4,7 +4,6 @@ import {root} from 'wix-react-tools';
 
 export interface PortalProps extends React.HTMLAttributes<HTMLDivElement> {
     children: React.ReactNode;
-    style?: React.CSSProperties;
 }
 
 export class Portal extends React.PureComponent<PortalProps, {}> {
@@ -18,7 +17,7 @@ export class Portal extends React.PureComponent<PortalProps, {}> {
         });
 
         this.portalContent = (
-            <div {...rootProps} style={this.props.style}>
+            <div {...rootProps}>
                 {this.props.children}
             </div>
         );
