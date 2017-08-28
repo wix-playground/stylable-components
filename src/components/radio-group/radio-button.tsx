@@ -14,7 +14,7 @@ export interface RadioButtonProps extends React.InputHTMLAttributes<HTMLInputEle
     name?: string;
     onChange?: (event: RadioChangeEvent) => void;
     disabled?: boolean;
-    location?: 'right' | 'left';
+    radioLocation?: 'right' | 'left';
 }
 
 export interface RadioButtonState {
@@ -25,7 +25,7 @@ export interface RadioButtonState {
 export class RadioButton extends React.Component<RadioButtonProps, RadioButtonState> {
     public static defaultProps: Partial<RadioButtonProps> = {
         onChange: noop,
-        location: 'right',
+        radioLocation: 'right',
         checked: false, // required for a bug in firefox
         tabIndex: 0
     };
@@ -41,11 +41,11 @@ export class RadioButton extends React.Component<RadioButtonProps, RadioButtonSt
         const cssStates = {
             checked: this.props.checked,
             disabled: this.props.disabled,
-            isLeftLabel: this.props.location === 'left',
+            isLeftLabel: this.props.radioLocation === 'left',
             focused: this.state.isFocused
         };
 
-        const {onChange, location, children, ...restOfProps} = this.props;
+        const {onChange, radioLocation, children, ...restOfProps} = this.props;
         return (
             <div
                 {...rootProps}

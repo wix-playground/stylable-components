@@ -345,7 +345,7 @@ describe('<RadioGroup />', () => {
 
         it('renders the label on the left side', async () => {
             const {select, waitForDom} = clientRenderer.render(
-                <RadioButton value="Tiamat" location="left" data-automation-id={radioButton + '_0'} name=""/>
+                <RadioButton value="Tiamat" radioLocation="left" data-automation-id={radioButton + '_0'} name=""/>
             );
 
             const label = select(radioButton + '_0', 'LABEL');
