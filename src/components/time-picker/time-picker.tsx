@@ -228,9 +228,9 @@ export class TimePicker extends React.Component<Props, State> {
             return this.toggleAmpm(true);
         }
 
-        let hh = Number(this.state.hh || 0);
-        let mm = Number(this.state.mm || 0);
         let ampm = this.state.ampm;
+        let hh = to24(Number(this.state.hh || 0), ampm);
+        let mm = Number(this.state.mm || 0);
 
         if (currentSegment === 'mm') {
             mm += step * (isBigStep ? 10 : 1);
@@ -238,7 +238,7 @@ export class TimePicker extends React.Component<Props, State> {
             hh += step;
         }
 
-        const totalMinutes: number = to24(hh, ampm) * 60 + mm;
+        const totalMinutes: number = hh * 60 + mm;
         mm = (totalMinutes + 60) % 60;
         hh = Math.floor(totalMinutes / 60 + 24) % 24;
         if (ampm !== Ampm.NONE) {
