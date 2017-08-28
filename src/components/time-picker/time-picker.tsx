@@ -5,7 +5,7 @@ import {Stepper} from '../stepper';
 import styles from './time-picker.st.css';
 import {
     Ampm, ampmLabels, Format,
-    formatTimeChunk, getCircularValue, is12TimeFormat, isTimeSegment,
+    formatTimeChunk, is12TimeFormat, isTimeSegment,
     isTouchTimeInputSupported, isValidValue, Segment, TimeSegment, to24, toAmpm
 } from './utils';
 
@@ -227,13 +227,24 @@ export class TimePicker extends React.Component<Props, State> {
         if (!isTimeSegment(currentSegment)) {
             return this.toggleAmpm(true);
         }
-        if (currentSegment === 'mm' && isBigStep) {
-            step *= 10;
+        let hh = Number(this.state.hh || 0);
+        let mm = Number(this.state.mm || 0);
+        if (currentSegment === 'mm') {
+            mm += step * (isBigStep ? 10 : 1);
+        } else {
+            hh += step;
         }
-        let newValue: any = Number(this.state[currentSegment] || 0) + step;
-        newValue = getCircularValue(currentSegment, newValue, ampm);
-        newValue = formatTimeChunk(newValue);
-        this.updateSegmentValue(currentSegment, newValue);
+        const totalMinutes: number = hh! * 60 + mm!;
+        mm = totalMinutes % 60;
+        hh = Math.floor(totalMinutes / 60);
+        hh = ampm === Ampm.NONE ?
+            ((hh + 24) % 24) :
+            (1 + (hh + 11) % 12);
+
+        this.setState({
+            hh: formatTimeChunk(hh),
+            mm: formatTimeChunk(mm)
+        }, this.commit);
     }
 
     private onPlaceholderClick = () => {
