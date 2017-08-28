@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {SBComponent} from 'stylable-react-component'
+import {SBComponent} from 'stylable-react-component';
 import {RadioButton, RadioChangeEvent, RadioGroup} from '../../src';
 import styles from './radio-group-demo.st.css';
 
@@ -8,7 +8,7 @@ export class RadioGroupDemo extends React.Component<{}, {}> {
     public state = {
         myValue1: '',
         myValue2: ''
-    }
+    };
 
     public render() {
         return (

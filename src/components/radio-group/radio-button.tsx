@@ -32,8 +32,6 @@ export class RadioButton extends React.Component<RadioButtonProps, RadioButtonSt
 
     public state: RadioButtonState = {isFocused: false};
 
-    private inputRef: HTMLInputElement | null = null;
-
     public render() {
         const rootProps = root(this.props, {
             className: 'root',
@@ -51,7 +49,7 @@ export class RadioButton extends React.Component<RadioButtonProps, RadioButtonSt
         return (
             <div
                 {...rootProps}
-                onClick={this.onRootClick}
+                onClick={this.onChange}
                 cssStates={cssStates}
                 role="radio"
                 aria-checked={this.props.checked}
@@ -61,8 +59,7 @@ export class RadioButton extends React.Component<RadioButtonProps, RadioButtonSt
                     type="radio"
                     className="radioInput"
                     data-automation-id="NATIVE_INPUT"
-                    ref={ref => this.inputRef = ref}
-                    onChange={this.onInputChange}
+                    onChange={this.onChange}
                     onFocus={this.onInputFocus}
                     onBlur={this.onInputBlur}
                 />
@@ -80,11 +77,7 @@ export class RadioButton extends React.Component<RadioButtonProps, RadioButtonSt
         );
     }
 
-    private onRootClick = (e: React.MouseEvent<HTMLDivElement>) => {
-        this.inputRef && this.inputRef.click();
-    }
-
-    private onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    private onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (!this.props.disabled && !this.props.readOnly) {
             this.props.onChange!({...e, value: this.props.value});
         }
