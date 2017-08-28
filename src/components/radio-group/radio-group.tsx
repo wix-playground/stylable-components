@@ -111,18 +111,17 @@ export class RadioGroup extends React.Component<RadioGroupProps, {}> {
     }
 
     private createChildren(dataArray: React.ReactNode): React.ReactNode[] {
-        return React.Children.map(dataArray, (data, index) => {
-            if (data && typeof data === 'object') {
-                const element = data as React.ReactElement<any>;
-                if (element.type === RadioButton) {
+        return React.Children.map(dataArray, (child, index) => {
+            if (child && typeof child === 'object') {
+                if (child.type === RadioButton) {
                     return (
                         <RadioButton
                             key={index}
-                            value={element.props.value}
+                            value={child.props.value}
                             data-automation-id={'RADIO_BUTTON_' + index}
                             checked={this.checkedArray[index].checked}
                             onChange={this.childrenOnClick(index)}
-                            disabled={this.props.disabled || element.props.disabled}
+                            disabled={this.props.disabled || child.props.disabled}
                             location={this.props.location}
                             name={this.name}
                             className="radioGroupChild"
@@ -131,7 +130,7 @@ export class RadioGroup extends React.Component<RadioGroupProps, {}> {
                     );
                 } else {
                     return (
-                        React.cloneElement(element,
+                        React.cloneElement(child,
                             {
                                 key: index,
                                 checked: this.checkedArray[index].checked,
@@ -143,7 +142,7 @@ export class RadioGroup extends React.Component<RadioGroupProps, {}> {
                     );
                 }
             } else {
-                return data;
+                return child;
             }
         });
     }
