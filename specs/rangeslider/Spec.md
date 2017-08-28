@@ -46,10 +46,10 @@ The handles are dragged across the bar in order to give the slider a desired ran
 ::marks - represent step
 ::rangeMarks - represent step that it displayed within ::rangeBar	
 
-
-
 > TBD (need to decide on how to implement tooltip)
 > Also, you can display tooltip (e.g. to display current value) by adding child DOM element with relevant data-slot (data-slot="tooltip")
+
+
 
 ## API
 
@@ -61,7 +61,7 @@ See [README.md](./README.md) for more info.
 
 Slider can be customized using ::bar, ::rangeBar, ::handles, ::marks and ::rangeMarks. 
 
-See [README.md](./README.md) for more info.
+For more info, see [README.md](./README.md).
 
 
 
@@ -102,7 +102,7 @@ Focus is placed around the handle. If user focuses on the slider with TAB button
 | ------ | ----------------------- | ------- | ---------------------------------------- | ---------------------------------------- |
 | slider |                         | div     | 1) Identifies the element as a slider. 2) Set on the `div` that represents as the movable thumb because it is the operable element that represents the slider value. | Each element serving as a focusable slider thumb has role [slider](https://www.w3.org/TR/wai-aria-1.1/#slider) |
 |        | `tabindex=0`            | `div`   | Includes the slider thumb in the page tab sequence |                                          |
-|        | `aria-valuemax=255`     | `div`   | Specifies the maximum value of the slider |                                          |
+|        | `aria-valuemax=100`     | `div`   | Specifies the maximum value of the slider |                                          |
 |        | `aria-valuemin=0`       | `div`   | Specifies the minimum value of the slide |                                          |
 |        | `aria-valuenow=NUMBER`  | `div`   | Indicates the current value of the slider |                                          |
 |        | `aria-label`            | `div`   | Defines a string value that labels the current element |                                          |

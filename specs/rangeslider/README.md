@@ -25,8 +25,8 @@ The handles are dragged across the bar in order to give the slider a desired ran
 
 | name        | type                                  | defaultValue | isRequired | description                              |
 | ----------- | ------------------------------------- | ------------ | ---------- | ---------------------------------------- |
-| value       | array of numbers                      | [2, 5]       |            | Difference between values represent slider's selected range. Each number from a value represents one handle. The more values the more handles. |
-| allowCross  | bool                                  | true         |            | Allows ::handles to cross                |
+| value       | array of numbers                      | [2, 5]       |            | Difference between values represent slider's selected range. Each number represents one handle. The more values the more handles. |
+| allowCross  | bool                                  | true         |            | If true, allows ::handles to cross       |
 | axis        | enum: 'x' 'x-reverse' 'y' 'y-reverse' | 'x'          |            | The axis on which the slider will slide  |
 | min         | number                                | 0            |            | The absolute minimum of the slider's range |
 | max         | number                                | 1            |            | The absolute maximum of the slider's range |
@@ -127,11 +127,11 @@ Comments to example 2
 
 | selector     | description                              | note                                     |
 | ------------ | ---------------------------------------- | ---------------------------------------- |
-| ::handles    | Allows to style the handles of the slider | There is no way to style each handle separately. |
+| ::handles    | Allows to style the handles of the slider | For now there is no way to style each handle separately |
 | ::bar        | Allows to style the bar of the slider    |                                          |
 | ::rangeBar   | Allows to style the section of the bar that represents selected range |                                          |
 | ::marks      | Allows to style marks that are shown on the ::bar section of the slider | by default ::marks use the same background color as ::bar |
-| ::rangeMarks | Allows to style marks that are shown on the :rangeBar section of the slider | by default ::rangeMarks use the same background color as ::Bar |
+| ::rangeMarks | Allows to style marks that are shown on the :rangeBar section of the slider | by default ::rangeMarks use the same background color as ::rangeBar |
 
 ### Custom CSS States (pseudo-classes)
 
