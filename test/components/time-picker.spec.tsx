@@ -389,6 +389,9 @@ describe('<TimePicker/>', () => {
             it('mm input should have "00" value', () => {
                 expect(mm).attr('value', '00');
             });
+            it('mm input should have selection', () => {
+                expect([mm.selectionStart, mm.selectionEnd]).to.deep.equal([0, 2]);
+            });
             it('onChange should be callen with "14:00"', async () => {
                 expect(onChange).to.be.calledWithExactly('14:00');
             });
@@ -465,6 +468,9 @@ describe('<TimePicker/>', () => {
             it('mm input should have "09" value', () => {
                 expect(mm).attr('value', '09');
             });
+            it('mm input should have selection', () => {
+                expect([mm.selectionStart, mm.selectionEnd]).to.deep.equal([0, 2]);
+            });
             it('onChange should be callen with "14:09"', async () => {
                 expect(onChange).to.be.calledWithExactly('14:09');
             });
@@ -493,6 +499,9 @@ describe('<TimePicker/>', () => {
             it('hh input should have "14" value', () => {
                 expect(hh).attr('value', '14');
             });
+            it('hh input should have selection', () => {
+                expect([hh.selectionStart, hh.selectionEnd]).to.deep.equal([0, 2]);
+            });
             it('onChange should be callen with "14:59"', async () => {
                 expect(onChange).to.be.calledWithExactly('14:59');
             });
@@ -506,6 +515,9 @@ describe('<TimePicker/>', () => {
             });
             it('hh input should have "12" value', () => {
                 expect(hh).attr('value', '12');
+            });
+            it('hh input should have selection', () => {
+                expect([hh.selectionStart, hh.selectionEnd]).to.deep.equal([0, 2]);
             });
             it('onChange should be callen with "12:59"', async () => {
                 expect(onChange).to.be.calledWithExactly('12:59');

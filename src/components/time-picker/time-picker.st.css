@@ -194,6 +194,9 @@
     float: right;
     opacity: 0;
 }
+.stepper::control {
+    background: transparent;
+}
 .root:focus .stepper,
 .root:hover .stepper {
     opacity: 1;

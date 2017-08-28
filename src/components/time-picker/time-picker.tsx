@@ -251,7 +251,10 @@ export class TimePicker extends React.Component<Props, State> {
             hh: formatTimeChunk(hh),
             mm: formatTimeChunk(mm),
             ampm
-        }, this.commit);
+        }, () => {
+            this.select(currentSegment);
+            this.commit();
+        });
     }
 
     private onPlaceholderClick = () => {
