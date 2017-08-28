@@ -10,7 +10,7 @@ export interface RadioGroupProps extends React.InputHTMLAttributes<HTMLInputElem
     children?: any;
     dataSource?: RadioButtonProps[];
     onChange?: (e: RadioChangeEvent) => void;
-    radioLocation?: 'right' | 'left';
+    labelLocation?: 'right' | 'left';
 }
 
 let counter = 0;
@@ -102,7 +102,8 @@ export class RadioGroup extends React.Component<RadioGroupProps, {}> {
                 checked={this.checkedArray[index].checked}
                 onChange={this.childrenOnClick(index)}
                 disabled={this.props.disabled || props.disabled}
-                radioLocation={this.props.radioLocation}
+                readOnly={this.props.readOnly || props.readOnly}
+                labelLocation={this.props.labelLocation}
                 name={this.name}
                 className="radioGroupChild"
                 tabIndex={this.getChildTabIndex(index, this.isGroupChecked)}
@@ -122,7 +123,8 @@ export class RadioGroup extends React.Component<RadioGroupProps, {}> {
                             checked={this.checkedArray[index].checked}
                             onChange={this.childrenOnClick(index)}
                             disabled={this.props.disabled || child.props.disabled}
-                            radioLocation={this.props.radioLocation}
+                            readOnly={this.props.readOnly || child.props.readOnly}
+                            labelLocation={this.props.labelLocation}
                             name={this.name}
                             className="radioGroupChild"
                             tabIndex={this.getChildTabIndex(index, this.isGroupChecked)}

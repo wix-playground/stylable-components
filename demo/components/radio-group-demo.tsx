@@ -28,7 +28,7 @@ export class RadioGroupDemo extends React.Component<{}, {}> {
                     <h3>Data source radio group</h3>
                     <RadioGroup
                         onChange={this.onChange2}
-                        radioLocation="left"
+                        labelLocation="left"
                         name="name"
                         className="rg"
                         dataSource={[
