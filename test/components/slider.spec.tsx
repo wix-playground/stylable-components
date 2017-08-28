@@ -2,48 +2,8 @@ import * as keycode from 'keycode';
 import * as React from 'react';
 import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react';
 import {Slider} from '../../src/components/slider';
-
+import {simulateMouseEvent, simulateTouchEvent} from '../utils';
 const hasTouchSupport = window && ('ontouchstart' in window);
-
-function simulateMouseEvent(element: Element, eventType: string, options?: object) {
-    element.dispatchEvent(new MouseEvent(
-        eventType,
-        options as any as EventInit
-    ));
-}
-
-function simulateTouchEvent(
-    element: Element,
-    eventType: string,
-    options: {
-        x: number,
-        y: number
-    }
-) {
-    const TouchConstructor: any = Touch;
-    const touchObj = new TouchConstructor({
-        identifier: Date.now(),
-        target: element,
-        clientX: options.x,
-        clientY: options.y,
-        radiusX: 2.5,
-        radiusY: 2.5,
-        rotationAngle: 10,
-        force: 0.5
-    });
-
-    element.dispatchEvent(new TouchEvent(
-        eventType,
-        {
-            cancelable: true,
-            bubbles: true,
-            touches: [touchObj],
-            targetTouches: [],
-            changedTouches: [touchObj],
-            shiftKey: false
-        } as any as EventInit
-    ));
-}
 
 describe('<Slider />', () => {
     const clientRenderer = new ClientRenderer();
