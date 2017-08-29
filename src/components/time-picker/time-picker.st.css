@@ -28,6 +28,8 @@
     height: value(height);
     min-width: value(width);
     display: inline-block;
+    user-select: none;
+    -webkit-user-select: none;
 
     /* preventing window DPI scaling artifacts*/
     padding: 0.3px;
