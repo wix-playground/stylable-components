@@ -115,6 +115,27 @@ describe('<AutoComplete />', () => {
         await waitForDom(() => expect(select(autoComp, list, 'LIST')!.children.length).to.equal(2));
     });
 
+    it('shows the default no suggestions message', async () => {
+        const {select, waitForDom} = clientRenderer.render(
+            <AutoComplete showNoSuggestions open />
+        );
+
+        await waitForDom(() => {
+            expect(select(list)).to.be.present();
+            expect(select(autoComp, list, 'LIST')!.children[0].innerHTML).to.equal('No Results');
+        });
+    });
+
+    it('shows the given no suggestions message', async () => {
+        const {select, waitForDom} = clientRenderer.render(
+            <AutoComplete noSuggestionsNotice={'Wap Wap'} showNoSuggestions open />
+        );
+
+        await waitForDom(() => {
+            expect(select(autoComp, list, 'LIST')!.children[0].innerHTML).to.equal('Wap Wap');
+        });
+    });
+
     it('disables the autocomplete if the prop is passed', async () => {
         const {select, waitForDom} = clientRenderer.render(<AutoComplete disabled />);
 

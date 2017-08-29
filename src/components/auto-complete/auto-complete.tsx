@@ -43,6 +43,8 @@ export interface AutoCompleteProps extends React.InputHTMLAttributes<HTMLInputEl
     filter?: FilterPredicate;
     maxCharacters?: number;
     maxSearchResults?: number;
+    showNoSuggestions?: boolean;
+    noSuggestionsNotice?: string;
 }
 
 const prefixFilter: FilterPredicate = (item: string, prefix: string) => item.startsWith(prefix);
@@ -57,6 +59,8 @@ export class AutoComplete extends React.Component<AutoCompleteProps, {}> {
         onChange: noop,
         maxCharacters: 0,
         maxSearchResults: 0,
+        showNoSuggestions: false,
+        noSuggestionsNotice: 'No Results',
         disabled: false
     };
 
@@ -95,7 +99,9 @@ export class AutoComplete extends React.Component<AutoCompleteProps, {}> {
     private getFilteredItems(): string[] {
         const items = this.props.dataSource!
             .filter((item: string) => this.props.filter!(item, this.props.value!)) as string[];
-
+        if (!items.length && this.props.showNoSuggestions) {
+            return [this.props.noSuggestionsNotice!];
+        }
         return this.props.maxSearchResults ? items.slice(0, this.props.maxSearchResults) : items;
     }
 }
