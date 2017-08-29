@@ -830,22 +830,21 @@ describe('<TimePicker/>', () => {
             });
         });
 
-        describe.only('focus on mm segment on first input then on mm segment on second input then', () => {
+        describe('focus on mm segment on first input then on mm segment on second input then', () => {
             beforeEach(() => {
                 simulate.click(firstInputMM);
                 simulate.focus(firstInputMM);
             });
             describe('focus on mm segment on second input', () => {
                 beforeEach(() => {
+                    simulate.blur(firstInputMM);
                     simulate.click(secondInputMM);
                     simulate.focus(secondInputMM);
                 });
                 describe('click on stepper in first input', () => {
-                    it('should set focus on hh on first input', async () => {
+                    it('should set focus on hh on first input', () => {
                         simulate.focus(firstStepperUp);
-                        await new Promise(resolve => setTimeout(resolve, 300));
                         simulate.click(firstStepperUp);
-                        await new Promise(resolve => setTimeout(resolve, 300));
                         expect(document.activeElement === firstInputHH).to.be.true;
                     });
                 });
