@@ -6,15 +6,15 @@ import {noop} from '../../utils';
 import styles from './checkbox.st.css';
 
 export interface CheckBoxProps extends FormInputProps<boolean> {
-    boxIcon: React.ComponentType<CheckBoxIconProps>;
-    tickIcon: React.ComponentType<CheckBoxIconProps>;
-    indeterminateIcon: React.ComponentType<CheckBoxIconProps>;
+    boxIcon?: React.ComponentType<CheckBoxIconProps>;
+    tickIcon?: React.ComponentType<CheckBoxIconProps>;
+    indeterminateIcon?: React.ComponentType<CheckBoxIconProps>;
     children?: React.ReactNode;
-    disabled: boolean;
-    readonly: boolean;
-    indeterminate: boolean;
-    tabIndex: number;
-    id: string;
+    disabled?: boolean;
+    readonly?: boolean;
+    indeterminate?: boolean;
+    tabIndex?: number;
+    id?: string;
 }
 
 export interface CheckBoxIconProps {
@@ -69,7 +69,7 @@ const DefaultIndeterminateSVG: React.SFC<CheckBoxIconProps> = props => {
 };
 
 @SBComponent(styles)
-export class CheckBox extends React.Component<Partial<CheckBoxProps>, CheckBoxState> {
+export class CheckBox extends React.Component<CheckBoxProps, CheckBoxState> {
     public static defaultProps: Partial<CheckBoxProps> = {
         boxIcon: DefaultCheckBoxSVG,
         tickIcon: DefaultTickMarkSVG,
