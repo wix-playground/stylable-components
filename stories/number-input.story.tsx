@@ -9,19 +9,9 @@ import {NumberInput} from '../src';
 
 storiesOf('NumberInput', module)
     .addDecorator(withKnobs)
-    .add('uncontrolled', () => (
+    .add('basic', () => (
         <NumberInput
             placeholder={text('placeholder', 'How Many?')}
-            defaultValue={number('defaultValue', 0)}
-            disabled={boolean('disabled', false)}
-            error={boolean('error', false)}
-            onChange={action('onChange')}
-            onInput={action('onInput')}
-        />
-    ))
-    .add('controlled', () => (
-        <NumberInput
-            value={number('value', 0)}
             disabled={boolean('disabled', false)}
             error={boolean('error', false)}
             onChange={action('onChange')}
@@ -30,6 +20,7 @@ storiesOf('NumberInput', module)
     ))
     .add('min, max and step', () => (
         <NumberInput
+            placeholder={text('placeholder', 'min/max/step')}
             min={number('min', -5)}
             max={number('max', 5)}
             step={number('step', 2)}
