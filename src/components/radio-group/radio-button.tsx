@@ -1,20 +1,18 @@
 import * as React from 'react';
 import {SBComponent} from 'stylable-react-component';
 import {root} from 'wix-react-tools';
+import {FormInputProps} from '../../types/forms';
 import {noop} from '../../utils';
 import style from './radio-button.st.css';
 
-export interface RadioChangeEvent extends React.ChangeEvent<HTMLInputElement> {
-    value: string;
-}
-
-export interface RadioButtonProps extends React.InputHTMLAttributes<HTMLInputElement> {
-    value: string;
+export interface RadioButtonProps extends FormInputProps<string> {
     checked?: boolean;
     name?: string;
-    onChange?: (event: RadioChangeEvent) => void;
     disabled?: boolean;
+    readOnly?: boolean;
     labelLocation?: 'right' | 'left';
+    tabIndex?: number;
+    className?: string;
 }
 
 export interface RadioButtonState {
@@ -45,7 +43,6 @@ export class RadioButton extends React.Component<RadioButtonProps, RadioButtonSt
             focused: this.state.isFocused
         };
 
-        const {onChange, labelLocation, children, ...restOfProps} = this.props;
         return (
             <div
                 {...rootProps}
@@ -55,13 +52,18 @@ export class RadioButton extends React.Component<RadioButtonProps, RadioButtonSt
                 aria-checked={this.props.checked}
             >
                 <input
-                    {...restOfProps}
                     type="radio"
                     className="radioInput"
                     data-automation-id="NATIVE_INPUT"
                     onChange={this.onChange}
                     onFocus={this.onInputFocus}
                     onBlur={this.onInputBlur}
+                    value={this.props.value}
+                    tabIndex={this.props.tabIndex}
+                    checked={this.props.checked}
+                    disabled={this.props.disabled}
+                    readOnly={this.props.readOnly}
+                    name={this.props.name}
                 />
                 <div className="contentContainer">
                     <div
@@ -79,7 +81,7 @@ export class RadioButton extends React.Component<RadioButtonProps, RadioButtonSt
 
     private onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (!this.props.disabled && !this.props.readOnly) {
-            this.props.onChange!({...e, value: this.props.value});
+            this.props.onChange!({value: this.props.value});
         }
     }
 

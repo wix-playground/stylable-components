@@ -1,7 +1,7 @@
 import {autorun, computed, observable, reaction} from 'mobx';
 import {observer} from 'mobx-react';
-import {root} from 'wix-react-tools';
 import * as React from 'react';
+import {root} from 'wix-react-tools';
 
 export function dateFromYearMonthDay(
     y: string,

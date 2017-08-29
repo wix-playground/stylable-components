@@ -3,14 +3,20 @@ import {observer} from 'mobx-react';
 import * as React from 'react';
 import {SBComponent} from 'stylable-react-component';
 import {root} from 'wix-react-tools';
-import {RadioButton, RadioButtonProps, RadioChangeEvent} from './radio-button';
+import {ChangeEvent} from '../../types/events';
+import {RadioButton, RadioButtonProps} from './radio-button';
 import styles from './radio-group.st.css';
 
-export interface RadioGroupProps extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface RadioGroupProps {
     children?: any;
     dataSource?: RadioButtonProps[];
-    onChange?: (e: RadioChangeEvent) => void;
+    onChange?: (e: ChangeEvent<string>) => void;
     labelLocation?: 'right' | 'left';
+    name?: string;
+    disabled?: boolean;
+    readOnly?: boolean;
+    tabIndex?: number;
+    className?: string;
 }
 
 let counter = 0;
@@ -82,7 +88,7 @@ export class RadioGroup extends React.Component<RadioGroupProps, {}> {
     }
 
     private childrenOnClick(index: number) {
-        return (e: RadioChangeEvent) => {
+        return (e: ChangeEvent<string>) => {
             this.checkedArray.forEach(data => {
                 data.checked = false;
             });
