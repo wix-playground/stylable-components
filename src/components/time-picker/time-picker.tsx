@@ -151,6 +151,7 @@ export class TimePicker extends React.Component<Props, State> {
                 {!isTouchTimeInputSupported && !disabled && isValueSet &&
                     <Stepper
                         className="stepper"
+                        onMouseDown={this.onStepperMouseDown}
                         onUp={this.onStepperUp}
                         onDown={this.onStepperDown}
                     />
@@ -270,6 +271,10 @@ export class TimePicker extends React.Component<Props, State> {
         }
     }
 
+    private onStepperMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+        e.preventDefault();
+    }
+
     private onStepperUp = (e: React.MouseEvent<HTMLButtonElement>) => this.changeValue(1, e.shiftKey ? 10 : 1);
     private onStepperDown = (e: React.MouseEvent<HTMLButtonElement>) => this.changeValue(-1, e.shiftKey ? 10 : 1);
 
@@ -340,8 +345,9 @@ export class TimePicker extends React.Component<Props, State> {
     }
     private onBlur = (e: React.SyntheticEvent<HTMLElement>) => {
         const name = e.currentTarget instanceof HTMLInputElement && e.currentTarget.name;
-        const update: Pick<State, TimeSegment | 'focus'> = {
-            focus: false
+        const update: Pick<State, TimeSegment | 'focus' | 'currentSegment'> = {
+            focus: false,
+            currentSegment: 'hh'
         };
         if (isTimeSegment(name)) {
             update[name] = formatTimeChunk(this.state[name]!);
