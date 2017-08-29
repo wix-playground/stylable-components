@@ -56,13 +56,7 @@ export interface TreeViewWrapperState {
 }
 
 export class TreeViewWrapper extends React.Component<{}, TreeViewWrapperState> {
-
-    constructor() {
-        super();
-        this.state = {
-            treeData
-        };
-    }
+    public state = { treeData };
 
     public render() {
         return <TreeView dataSource={this.state.treeData}/>;
