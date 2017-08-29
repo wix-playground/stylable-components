@@ -73,12 +73,11 @@ describe.only('<DropDown />', () => {
         return waitFor(() => expect(onClick).to.have.been.calledOnce);
     });
 
-    it.only('displays item list to choose from when open is true', () => {
-        const {select, waitForDom} =
+    it('displays item list to choose from when open is true', () => {
+        const {waitForDom} =
             clientRenderer.render(<DropDown selectedItem={undefined} open={true} items={items} />);
         const dropDownList = bodySelect('LIST');
 
-        debugger
         return waitForDom(() => {
             expect(dropDownList).to.be.present();
             items.forEach((elem, idx) => {
@@ -91,9 +90,8 @@ describe.only('<DropDown />', () => {
     it('invokes onClick handler when an item is clicked', () => {
         const onClick = sinon.spy();
 
-        const {select} =
-            clientRenderer.render(<DropDown selectedItem={undefined} open={true} items={items} onItemClick={onClick}/>);
-        const dropDownList = select(dropDown, list, 'LIST');
+        clientRenderer.render(<DropDown selectedItem={undefined} open={true} items={items} onItemClick={onClick}/>);
+        const dropDownList = bodySelect('LIST');
 
         simulate.click(dropDownList!.children[0]);
 
@@ -104,41 +102,41 @@ describe.only('<DropDown />', () => {
         it('toggles visibility of selection list when SPACE is clicked', async () => {
             const {select, waitForDom} = clientRenderer.render(<DropDownDemo />);
 
-            await waitForDom(() => expect(select(dropDownDemo, list)).to.be.absent());
+            await waitForDom(() => expect(bodySelect('LIST')).to.be.absent());
 
             simulate.focus(select(dropDownDemo, dropDown));
             simulate.keyDown(select(dropDownDemo, dropDown), {keyCode: KeyCodes.SPACE});
 
-            await waitForDom(() => expect(select(dropDownDemo, list)).to.be.present());
+            await waitForDom(() => expect(bodySelect('LIST')).to.be.present());
 
             simulate.keyDown(select(dropDownDemo, dropDown), {keyCode: KeyCodes.SPACE});
 
-            return waitForDom(() => expect(select(dropDownDemo, list)).to.be.absent());
+            return waitForDom(() => expect(bodySelect('LIST')).to.be.absent());
         });
 
         it('closes selection list when ESC is clicked', async () => {
             const {select, waitForDom} = clientRenderer.render(<DropDownDemo />);
 
-            await waitForDom(() => expect(select(dropDownDemo, list)).to.be.absent());
+            await waitForDom(() => expect(bodySelect('LIST')).to.be.absent());
 
             simulate.click(select(dropDownDemo, input));
 
-            await waitForDom(() => expect(select(dropDownDemo, list)).to.be.present());
+            await waitForDom(() => expect(bodySelect('LIST')).to.be.present());
 
             simulate.keyDown(select(dropDownDemo, dropDown), {keyCode: KeyCodes.ESC});
 
-            return waitForDom(() => expect(select(dropDownDemo, list)).to.be.absent());
+            return waitForDom(() => expect(bodySelect('LIST')).to.be.absent());
         });
 
         it('opens selection list when DOWN is clicked and it is closed', async () => {
             const {select, waitForDom} = clientRenderer.render(<DropDownDemo />);
 
-            await waitForDom(() => expect(select(dropDownDemo, list)).to.be.absent());
+            await waitForDom(() => expect(bodySelect('LIST')).to.be.absent());
 
             simulate.focus(select(dropDownDemo, dropDown));
             simulate.keyDown(select(dropDownDemo, dropDown), {keyCode: KeyCodes.DOWN});
 
-            return waitForDom(() => expect(select(dropDownDemo, list)).to.be.present());
+            return waitForDom(() => expect(bodySelect('LIST')).to.be.present());
         });
     });
 });

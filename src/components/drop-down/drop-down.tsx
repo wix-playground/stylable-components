@@ -23,7 +23,12 @@ export interface DropDownInputProps {
 export const DropDownInput: React.SFC<DropDownInputProps> = SBStateless(props => {
     return (
         <div data-automation-id="DROP_DOWN_INPUT" onClick={props.onClick} className="drop-down-input">
-            <span className="label">{props.selectedItem ? props.selectedItem.label : 'Default Text'}</span>
+            <span className="label">{
+                props.selectedItem ?
+                    props.selectedItem.label ?
+                    props.selectedItem.label :
+                    props.selectedItem :
+                    'Default Text'}</span>
             <CaretDown className="caret" />
         </div>
     );
@@ -85,18 +90,6 @@ export class DropDown extends React.Component<DropDownProps, DropDownState> {
         tabIndex: 0
     };
 
-    // componentWillMount() {
-    //     debugger
-    // }
-    //
-    // componentWillReceiveProps() {
-    //     debugger
-    // }
-    //
-    componentWillUpdate() {
-        debugger
-    }
-
     constructor() {
         super();
         this.state = {dropdown: null};
@@ -119,7 +112,11 @@ export class DropDown extends React.Component<DropDownProps, DropDownState> {
                 {...rootProps}
                 onKeyDown={this.onKeyDown}
                 tabIndex={this.props.tabIndex}
-                ref={dropdown => this.setState({dropdown})}
+                ref={dropdown => {
+                    if (!this.state.dropdown) {
+                        this.setState({dropdown});
+                    }
+                }}
             >
                 <DropDownInput selectedItem={this.props.selectedItem} onClick={this.props.onInputClick} />
                 <Popup open={!!this.props.open} anchor={this.state.dropdown}>
@@ -127,16 +124,12 @@ export class DropDown extends React.Component<DropDownProps, DropDownState> {
                         className="drop-down-list"
                         dataSource={this.props.items!.map((item: DropDownItem) => item.label)}
                         value={this.props.selectedItem && this.props.selectedItem.label}
-                        onChange={this.props.onItemClick!}
+                        onChange={this.onItemClick!}
                     />
                 </Popup>
             </div>
         );
     }
-
-    // private focusList(el: any) {
-    //     if (el) { el.children[0].focus(); }
-    // }
 
     private toggleDropDown() {
         if (this.props.open) { this.state.dropdown!.focus(); }
