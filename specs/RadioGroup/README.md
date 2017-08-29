@@ -4,7 +4,6 @@ The **RadioGroup** component is used to group together children and provide them
 
 
 ## Elements
-???
 
 ## API
 
@@ -33,23 +32,13 @@ The **RadioGroup** component is used to group together children and provide them
 | onChange | (e: RadioChangeEvent) => void | NOOP | no | Triggered by changing the button's state |
 
 
-
-
-#### Accepted Children
-
-The **RadioGroup** component will render children in one of two forms:
-1. As React JSX (see example 1)
-2. As data source - an array of objects adhering to the data schema (see example 2) 
-
-
-
-### React Code Example
+### React Code Examples
 
 **Example 1:**
 
 ```jsx
 import * as React from 'react';
-import { RadioGroup, RadioButton, RadioChangeEvent } from 'stylable-components';
+import { RadioGroup, RadioButton } from 'stylable-components';
 import style from './style.st.css'; // link to Style file - see examples of style files below
 
 export class Example1 extends React.Component<{}, {}>{
@@ -57,17 +46,16 @@ export class Example1 extends React.Component<{}, {}>{
       myValue: '',
     };
 
-    private onChange = (e: RadioChangeEvent) => {
+    private onChange = (e: {value: string}) => {
         this.setState({myValue: e.value});
     }
     
     render() {
         return (
             <RadioGroup onChange={this.onChange} name="example1" className="rg1">
-               <RadioButton value="I am a radio button!"/>
-               <RadioButton value="I am as well!"/>
-               <RadioButton value="Me too, but disabled" disabled/>
-               <RadioButton value="I am both disabled and checked" checked disabled />
+               <RadioButton value="Option 1"/>
+               <RadioButton value="Option 2" checked/>
+               <RadioButton value="Option 3"/>
            </RadioGroup>
        );
     }
@@ -87,7 +75,7 @@ export class Example2 extends React.Component<{}, {}>{
       myValue: '',
     };
 
-    private onChange = (e: RadioChangeEvent) => {
+    private onChange = (e: {value: string}) => {
         this.setState({myValue: e.value});
     }
     
@@ -99,9 +87,9 @@ export class Example2 extends React.Component<{}, {}>{
                  name="example2"
                  className="rg2"
                  dataSource={[
-                     {value: 'Default'},
-                     {value: 'Checked', checked: true},
-                     {value: 'Disabled', disabled: true}
+                     {value: 'Option 1'},
+                     {value: 'Option 2', checked: true},
+                     {value: 'Option 3'}
                  ]}
             />
        );
