@@ -791,51 +791,59 @@ describe('<TimePicker/>', () => {
 
     describeDesktop('Render <TimePickerDemo/>', () => {
         let renderer: any;
-        let hh1: any;
-        let hh2: any;
-        let mm1: any;
-        let mm2: any;
-        let stepperUp1: any;
-        let stepperUp2: any;
+        let firstInputHH: any;
+        let firstInputMM: any;
+        let firstStepperUp: any;
+        let secondInputHH: any;
+        let secondInputMM: any;
+        let secondStepperUp: any;
         beforeEach(() => {
             renderer = clientRenderer.render(<TimePickerDemo/>);
-            hh1 = renderer.select('TIME_PICKER_DEMO_CONTROLLED_24', 'TIME_PICKER_INPUT_HH');
-            hh2 = renderer.select('TIME_PICKER_DEMO_CONTROLLED_AMPM', 'TIME_PICKER_INPUT_HH');
-            mm1 = renderer.select('TIME_PICKER_DEMO_CONTROLLED_24', 'TIME_PICKER_INPUT_MM');
-            mm2 = renderer.select('TIME_PICKER_DEMO_CONTROLLED_AMPM', 'TIME_PICKER_INPUT_MM');
-            stepperUp1 = renderer.select('TIME_PICKER_DEMO_CONTROLLED_24', 'STEPPER_INCREMENT');
-            stepperUp2 = renderer.select('TIME_PICKER_DEMO_CONTROLLED_AMPM', 'STEPPER_INCREMENT');
+            firstInputHH = renderer.select('TIME_PICKER_DEMO_CONTROLLED_24', 'TIME_PICKER_INPUT_HH');
+            firstInputMM = renderer.select('TIME_PICKER_DEMO_CONTROLLED_24', 'TIME_PICKER_INPUT_MM');
+            firstStepperUp = renderer.select('TIME_PICKER_DEMO_CONTROLLED_24', 'STEPPER_INCREMENT');
+            secondInputHH = renderer.select('TIME_PICKER_DEMO_CONTROLLED_AMPM', 'TIME_PICKER_INPUT_HH');
+            secondInputMM = renderer.select('TIME_PICKER_DEMO_CONTROLLED_AMPM', 'TIME_PICKER_INPUT_MM');
+            secondStepperUp = renderer.select('TIME_PICKER_DEMO_CONTROLLED_AMPM', 'STEPPER_INCREMENT');
         });
 
-        describe('focus on hh on first input', () => {
-            it('should keep focus on hh input', () => {
-                simulate.focus(hh1);
-                simulate.click(stepperUp1);
-                expect(document.activeElement).to.equal(hh1);
+        describe('focus on hh segment on first input', () => {
+            it('should keep focus on hh segment of first input', () => {
+                simulate.focus(firstInputHH);
+                simulate.click(firstStepperUp);
+                expect(document.activeElement).to.equal(firstInputHH);
             });
         });
 
-        describe('focus on mm on first input', () => {
-            it('should keep focus on mm input', () => {
-                simulate.focus(mm1);
-                simulate.click(stepperUp1);
-                expect(document.activeElement).to.equal(mm1);
+        describe('focus on mm segment on first input', () => {
+            it('should keep focus on mm segment on first input', () => {
+                simulate.focus(firstInputMM);
+                simulate.click(firstStepperUp);
+                expect(document.activeElement).to.equal(firstInputMM);
             });
         });
 
-        describe('initial click on stepper', () => {
-            it('should keep focus on hh input', () => {
-                simulate.click(stepperUp1);
-                expect(document.activeElement).to.equal(hh1);
+        describe('initial click on stepper inside first input', () => {
+            it('should move focus on hh segment on first input', () => {
+                simulate.click(firstStepperUp);
+                expect(document.activeElement).to.equal(firstInputHH);
             });
         });
 
-        describe('focus on mm1 then mm2 then click on stepperUp1', () => {
-            it('should set focus on hh on first input', () => {
-                simulate.focus(mm1);
-                simulate.focus(mm2);
-                simulate.click(stepperUp1);
-                expect(document.activeElement).to.equal(hh1);
+        describe('focus on mm segment on first input then on mm segment on second input then', () => {
+            beforeEach(() => {
+                simulate.focus(firstInputMM);
+            });
+            describe('focus on mm segment on second input', () => {
+                beforeEach(() => {
+                    simulate.focus(secondInputMM);
+                });
+                describe('click on stepper in first input', () => {
+                    it('should set focus on hh on first input', () => {
+                        simulate.click(firstStepperUp);
+                        expect(document.activeElement).to.equal(firstInputHH);
+                    });
+                });
             });
         });
     });
