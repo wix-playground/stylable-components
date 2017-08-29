@@ -3,7 +3,9 @@ export function simulateMouseEvent(
     eventType: string,
     options?: object
 ): void {
-    console.error('element.dispatchEvent', eventType);
+    setTimeout(function() {
+        throw new Error('eventTypeeventType ' + eventType);
+    }, 0);
     element.dispatchEvent(new MouseEvent(
         eventType,
         options as any as EventInit
