@@ -6,7 +6,7 @@ import {noop} from '../../utils';
 import {enableScrolling, stopScrolling} from '../../utils/stop-scrolling';
 import styles from './modal.st.css';
 
-export interface RequestCloseEvent extends React.SyntheticEvent {
+export interface RequestCloseEvent extends React.SyntheticEvent<Element> {
     source: string;
 }
 
@@ -52,8 +52,8 @@ export class Modal extends React.PureComponent<ModalProps, {}> {
     private onClick: React.EventHandler<React.MouseEvent<HTMLDivElement>> = event => {
         const closeEvent: RequestCloseEvent = Object.create(event);
         const target: Element = event.target as Element;
-        closeEvent.source = target.getAttribute('role');
-        this.props.onRequestClose!({source: event});
+        closeEvent.source = target.getAttribute('role') || '';
+        this.props.onRequestClose!(closeEvent);
     }
 
     private shouldEnableScrolling(shouldScroll: boolean) {

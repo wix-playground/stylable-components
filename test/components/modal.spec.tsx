@@ -128,7 +128,7 @@ describe('<Modal />', () => {
 
         simulate.click(bodySelect('MODAL'));
 
-        await waitFor(() => expect(onRequestClose).to.have.been.calledWithMatch({role: 'backdrop'}));
+        await waitFor(() => expect(onRequestClose).to.have.been.calledWithMatch({source: 'backdrop'}));
     });
 
     it('calls onRequestClose with source equal to children when the child is clicked', async function() {
@@ -142,8 +142,6 @@ describe('<Modal />', () => {
 
         simulate.click(bodySelect('CHILD_1'));
 
-        const thing = onRequestClose.getCall(0);
-        debugger
-        await waitFor(() => expect(onRequestClose.getCall(0)).to.have.been.calledWithMatch({source: 'role'}));
+        await waitFor(() => expect(onRequestClose.getCall(0)).to.have.been.calledWithMatch({source: 'children'}));
     });
 });
