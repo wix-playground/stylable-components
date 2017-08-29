@@ -369,11 +369,11 @@ export class TimePicker extends React.Component<Props, State> {
                 break;
             case 'up':
                 e.preventDefault();
-                this.changeValue(1, e.shiftKey ? 10: 1);
+                this.changeValue(1, e.shiftKey ? 10 : 1);
                 break;
             case 'down':
                 e.preventDefault();
-                this.changeValue(-1, e.shiftKey ? 10: 1);
+                this.changeValue(-1, e.shiftKey ? 10 : 1);
                 break;
             case 'page up':
                 e.preventDefault();
