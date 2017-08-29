@@ -38,8 +38,8 @@ describe('<RadioGroup />', () => {
     it('renders to the screen with unselected radio buttons as children', async () => {
         const {select, waitForDom} = clientRenderer.render(
             <RadioGroup>
-                <RadioButton value="Ifrit" onChange={noop}/>
-                <RadioButton value="Titan" onChange={noop}/>
+                <RadioButton value="Ifrit"/>
+                <RadioButton value="Titan"/>
             </RadioGroup>
         );
 
@@ -61,9 +61,9 @@ describe('<RadioGroup />', () => {
     it('renders non RadioButton components as children', async () => {
         const {select, waitForDom} = clientRenderer.render(
             <RadioGroup>
-                <RadioButton value="1" onChange={noop}/>
+                <RadioButton value="1"/>
                 <span>Surprise!</span>
-                <RadioButton value="2" onChange={noop}/>
+                <RadioButton value="2"/>
             </RadioGroup>
         );
 
@@ -79,8 +79,8 @@ describe('<RadioGroup />', () => {
     it('renders the children with the given name value', async () => {
         const {select, waitForDom} = clientRenderer.render(
             <RadioGroup name="kupo">
-                <RadioButton value="Ultima" onChange={noop}/>
-                <RadioButton value="Hades" onChange={noop}/>
+                <RadioButton value="Ultima"/>
+                <RadioButton value="Hades"/>
             </RadioGroup>
         );
 
@@ -96,8 +96,8 @@ describe('<RadioGroup />', () => {
     it('renders a checked radio button if the checked prop is true', async () => {
         const {select, waitForDom} = clientRenderer.render(
             <RadioGroup name="kupo">
-                <RadioButton  value="Minerva" onChange={noop}/>
-                <RadioButton checked value="Kitsune" onChange={noop}/>
+                <RadioButton value="Minerva"/>
+                <RadioButton checked value="Kitsune"/>
             </RadioGroup>
         );
 
@@ -114,8 +114,8 @@ describe('<RadioGroup />', () => {
         const onChange = sinon.spy();
         const {select, waitForDom} = clientRenderer.render(
             <RadioGroup onChange={onChange}>
-                <RadioButton value="Leviathan" onChange={noop}/>
-                <RadioButton value="Quetzalcoatl" onChange={noop}/>
+                <RadioButton value="Leviathan"/>
+                <RadioButton value="Quetzalcoatl"/>
             </RadioGroup>
         );
 
@@ -136,8 +136,8 @@ describe('<RadioGroup />', () => {
     it('sets the clicked radio button to be active on click', async () => {
         const {select, waitForDom} = clientRenderer.render(
             <RadioGroup>
-                <RadioButton value="Garuda" onChange={noop}/>
-                <RadioButton value="Ramuh" onChange={noop}/>
+                <RadioButton value="Garuda"/>
+                <RadioButton value="Ramuh"/>
             </RadioGroup>
         );
 
@@ -159,12 +159,14 @@ describe('<RadioGroup />', () => {
     it('changes the selected button when clicking on a different one', async () => {
         const {select, waitForDom} = clientRenderer.render(
             <RadioGroup>
-                <RadioButton value="Diabolos" onChange={noop}/>
-                <RadioButton value="Bahamut" onChange={noop}/>
+                <RadioButton value="Diabolos"/>
+                <RadioButton value="Bahamut"/>
             </RadioGroup>
         );
 
-        await waitForDom(() => { expect(select(radioGroup, radioButton + '_0', 'NATIVE_INPUT')).to.be.present(); });
+        await waitForDom(() => {
+            expect(select(radioGroup, radioButton + '_0', 'NATIVE_INPUT')).to.be.present();
+        });
 
         const button0 = select(radioGroup, radioButton + '_0', 'NATIVE_INPUT') as HTMLInputElement;
         const button1 = select(radioGroup, radioButton + '_1', 'NATIVE_INPUT') as HTMLInputElement;
@@ -187,12 +189,12 @@ describe('<RadioGroup />', () => {
         const {select, waitForDom} = clientRenderer.render(
             <div>
                 <RadioGroup data-automation-id="GROUP_0">
-                    <RadioButton value="Siren" onChange={noop}/>
-                    <RadioButton value="Cerberus" onChange={noop}/>
+                    <RadioButton value="Siren"/>
+                    <RadioButton value="Cerberus"/>
                 </RadioGroup>
                 <RadioGroup data-automation-id="GROUP_1">
-                    <RadioButton value="Alexander" onChange={noop}/>
-                    <RadioButton value="Odin" onChange={noop}/>
+                    <RadioButton value="Alexander"/>
+                    <RadioButton value="Odin"/>
                 </RadioGroup>
             </div>
         );
@@ -221,8 +223,8 @@ describe('<RadioGroup />', () => {
     it('disabled all radio button children if the disabled prop is true', async () => {
         const {select, waitForDom} = clientRenderer.render(
             <RadioGroup disabled>
-                <RadioButton value="Fafnir" onChange={noop}/>
-                <RadioButton value="Sleipnir" onChange={noop}/>
+                <RadioButton value="Fafnir"/>
+                <RadioButton value="Sleipnir"/>
             </RadioGroup>
         );
 
@@ -238,7 +240,7 @@ describe('<RadioGroup />', () => {
     it('renders children from the data source prop if given', async () => {
         const {select, waitForDom} = clientRenderer.render(
             <RadioGroup
-                dataSource={[{value: 'Child0', onChange: noop}, {value: 'Child1', onChange: noop}]}
+                dataSource={[{value: 'Child0'}, {value: 'Child1'}]}
             />
         );
 
@@ -257,9 +259,9 @@ describe('<RadioGroup />', () => {
         it('if no child is checked - gives tabindex to the first one and the rest get -1', async () => {
             const {select, waitForDom} = clientRenderer.render(
                 <RadioGroup tabIndex={8}>
-                    <RadioButton value="male" onChange={noop}/>
-                    <RadioButton value="female" onChange={noop}/>
-                    <RadioButton value="other" onChange={noop}/>
+                    <RadioButton value="male"/>
+                    <RadioButton value="female"/>
+                    <RadioButton value="other"/>
                 </RadioGroup>
             );
 
@@ -277,9 +279,9 @@ describe('<RadioGroup />', () => {
         it('if a child is checked - gives that child tabIndex and the rest get -1', async () => {
             const {select, waitForDom} = clientRenderer.render(
                 <RadioGroup>
-                    <RadioButton value="male" onChange={noop}/>
-                    <RadioButton value="female" checked onChange={noop}/>
-                    <RadioButton value="other" onChange={noop}/>
+                    <RadioButton value="male"/>
+                    <RadioButton value="female" checked/>
+                    <RadioButton value="other"/>
                 </RadioGroup>
             );
 
@@ -305,7 +307,7 @@ describe('<RadioGroup />', () => {
         it('if a child is checked - gives that child tabIndex and the rest get -1', async () => {
             const {select, waitForDom} = clientRenderer.render(
                 <RadioGroup name="yaya">
-                    <RadioButton value="male" onChange={noop}/>
+                    <RadioButton value="male"/>
                 </RadioGroup>
             );
 
@@ -318,7 +320,7 @@ describe('<RadioGroup />', () => {
     describe('<RadioButton />', () => {
         it('renders a radio button to the screen', async () => {
             const {select, waitForDom} = clientRenderer.render(
-                <RadioButton value="Shiva" data-automation-id={radioButton + '_0'} name="" onChange={noop}/>
+                <RadioButton value="Shiva" data-automation-id={radioButton + '_0'} name=""/>
             );
 
             await waitForDom(() => {
@@ -331,7 +333,7 @@ describe('<RadioGroup />', () => {
 
         it('renders the label next to the radio button (right by default)', async () => {
             const {select, waitForDom} = clientRenderer.render(
-                <RadioButton value="Omega" data-automation-id={radioButton + '_0'} onChange={noop}/>
+                <RadioButton value="Omega" data-automation-id={radioButton + '_0'}/>
             );
 
             const label = select(radioButton + '_0', 'LABEL');
@@ -351,7 +353,6 @@ describe('<RadioGroup />', () => {
                     labelLocation="left"
                     data-automation-id={radioButton + '_0'}
                     name=""
-                    onChange={noop}
                 />
             );
 
@@ -371,7 +372,6 @@ describe('<RadioGroup />', () => {
                     checked={true}
                     data-automation-id={radioButton + '_0'}
                     name=""
-                    onChange={noop}
                 />
             );
 
@@ -385,7 +385,7 @@ describe('<RadioGroup />', () => {
 
         it('set the radio buttons name to the given name', () => {
             const {select, waitForDom} = clientRenderer.render(
-                <RadioButton value="Moogle" data-automation-id={radioButton + '_0'} name="name" onChange={noop}/>
+                <RadioButton value="Moogle" data-automation-id={radioButton + '_0'} name="name"/>
             );
 
             const button = select(radioButton + '_0', 'NATIVE_INPUT') as HTMLInputElement;
@@ -403,7 +403,9 @@ describe('<RadioGroup />', () => {
 
             const button = select(radioButton + '_0');
 
-            await waitForDom(() => { expect(button).to.be.present(); });
+            await waitForDom(() => {
+                expect(button).to.be.present();
+            });
 
             simulate.click(button);
 
@@ -414,7 +416,7 @@ describe('<RadioGroup />', () => {
 
         it('renders a disabled radio button', async () => {
             const {select, waitForDom} = clientRenderer.render(
-                <RadioButton value="Tonberry" disabled data-automation-id={radioButton + '_0'} onChange={noop}/>
+                <RadioButton value="Tonberry" disabled data-automation-id={radioButton + '_0'}/>
             );
 
             const button = select(radioButton + '_0', 'NATIVE_INPUT');
@@ -446,7 +448,7 @@ describe('<RadioGroup />', () => {
 
         it('renders a checked disabled radio button', async () => {
             const {select, waitForDom} = clientRenderer.render(
-                <RadioButton value="Tonberry" disabled checked data-automation-id={radioButton + '_0'} onChange={noop}/>
+                <RadioButton value="Tonberry" disabled checked data-automation-id={radioButton + '_0'}/>
             );
 
             const button = select(radioButton + '_0', 'NATIVE_INPUT');
@@ -460,7 +462,7 @@ describe('<RadioGroup />', () => {
 
         it('renders a readOnly radio button', async () => {
             const {select, waitForDom} = clientRenderer.render(
-                <RadioButton value="Tonberry" readOnly data-automation-id={radioButton + '_0'} onChange={noop}/>
+                <RadioButton value="Tonberry" readOnly data-automation-id={radioButton + '_0'}/>
             );
 
             const button = select(radioButton + '_0', 'NATIVE_INPUT');
@@ -492,7 +494,7 @@ describe('<RadioGroup />', () => {
 
         it('renders a checked readOnly radio button', async () => {
             const {select, waitForDom} = clientRenderer.render(
-                <RadioButton value="Tonberry" readOnly checked data-automation-id={radioButton + '_0'} onChange={noop}/>
+                <RadioButton value="Tonberry" readOnly checked data-automation-id={radioButton + '_0'}/>
             );
 
             const button = select(radioButton + '_0', 'NATIVE_INPUT');
@@ -506,7 +508,7 @@ describe('<RadioGroup />', () => {
 
         it('renders any children given to the component', async () => {
             const {select, waitForDom} = clientRenderer.render(
-                <RadioButton value="" data-automation-id={radioButton + '_0'} onChange={noop}>
+                <RadioButton value="" data-automation-id={radioButton + '_0'}>
                     <span data-automation-id="CHILD">Offspring</span>
                 </RadioButton>
             );
@@ -522,7 +524,7 @@ describe('<RadioGroup />', () => {
 
         describe('Accessibility', () => {
             it('has tabIndex 0 by default', async () => {
-                const {select, waitForDom} = clientRenderer.render(<RadioButton value="yaya" onChange={noop}/>);
+                const {select, waitForDom} = clientRenderer.render(<RadioButton value="yaya"/>);
 
                 await waitForDom(() => {
                     expect(select('NATIVE_INPUT')).to.have.attribute('tabIndex', '0');
@@ -531,7 +533,7 @@ describe('<RadioGroup />', () => {
 
             it('gets tabIndex from the user', async () => {
                 const {select, waitForDom} = clientRenderer.render(
-                    <RadioButton value="yaya" tabIndex={666} onChange={noop}/>
+                    <RadioButton value="yaya" tabIndex={666}/>
                 );
 
                 await waitForDom(() => {
@@ -540,7 +542,7 @@ describe('<RadioGroup />', () => {
             });
 
             it('has aria-checked property when checked', async () => {
-                const {select, waitForDom} = clientRenderer.render(<RadioButton value="yaya" checked onChange={noop}/>);
+                const {select, waitForDom} = clientRenderer.render(<RadioButton value="yaya" checked/>);
 
                 await waitForDom(() => {
                     expect(select('RADIO_BUTTON_ROOT')).to.have.attribute('aria-checked', 'true');
@@ -548,7 +550,7 @@ describe('<RadioGroup />', () => {
             });
 
             it('root has role - radio', async () => {
-                const {select, waitForDom} = clientRenderer.render(<RadioButton value="yaya" checked onChange={noop}/>);
+                const {select, waitForDom} = clientRenderer.render(<RadioButton value="yaya" checked/>);
 
                 await waitForDom(() => {
                     expect(select('RADIO_BUTTON_ROOT')).to.have.attribute('role', 'radio');

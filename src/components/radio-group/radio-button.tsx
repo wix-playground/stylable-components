@@ -81,7 +81,7 @@ export class RadioButton extends React.Component<RadioButtonProps, RadioButtonSt
 
     private onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (!this.props.disabled && !this.props.readOnly) {
-            this.props.onChange!({value: this.props.value});
+            this.props.onChange!({value: this.props.value!});
         }
     }
 
