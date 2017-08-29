@@ -131,9 +131,7 @@ describe('<AutoComplete />', () => {
             <AutoComplete noSuggestionsNotice={'Wap Wap'} showNoSuggestions open />
         );
 
-        await waitForDom(() => {
-            expect(select(autoComp, list, 'LIST')!.children[0].innerHTML).to.equal('Wap Wap');
-        });
+        await waitForDom(() => expect(select(autoComp, list, 'LIST')!.children[0].innerHTML).to.equal('Wap Wap'));
     });
 
     it('disables the autocomplete if the prop is passed', async () => {
