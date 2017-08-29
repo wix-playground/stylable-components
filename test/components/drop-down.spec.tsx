@@ -17,7 +17,7 @@ const KeyCodes: any = {
     ESC: keycode('escape')
 };
 
-describe.only('<DropDown />', () => {
+describe('<DropDown />', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
     const bodySelect = selectDom(document.body);

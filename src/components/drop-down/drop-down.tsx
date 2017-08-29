@@ -34,40 +34,12 @@ export const DropDownInput: React.SFC<DropDownInputProps> = SBStateless(props =>
     );
 }, style);
 
-export interface DropDownListProps {
-    open: boolean;
-    items?: DropDownItem[];
-    selectedItem?: DropDownItem;
-    onItemClick?: (item: string) => void;
-    listRef: any;
-}
-
-export const DropDownList: React.SFC<DropDownListProps> = SBStateless(props => {
-    return (
-        <Popup open={props.open} anchor={props.listRef}>
-            <SelectionList
-                className="drop-down-list"
-                dataSource={props.items!.map((item: DropDownItem) => item.label)}
-                value={props.selectedItem && props.selectedItem.label}
-                onChange={props.onItemClick!}
-            />
-        </Popup>
-    );
-}, style);
-
 export interface DropDownItem {
     label: string;
 }
 
 export interface DropDownProps {
     open?: boolean;
-    disabled?: boolean;
-    openOnFocus?: boolean;
-    onChange?: (id: string) => void;
-    hideSelected?: boolean;
-    // children?: any;
-    value?: string;
-
     selectedItem?: DropDownItem;
     onInputClick?: () => void;
     items?: DropDownItem[];
