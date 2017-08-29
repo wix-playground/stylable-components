@@ -13,6 +13,11 @@
 	-st-default: DropDown;
 }
 
+:import {
+	-st-from: "../../src/components/checkbox/checkbox.st.css";
+	-st-default: CheckBox;
+}
+
 
 /* General */
 
@@ -175,7 +180,7 @@ DropDown::label {
 }
 
 DropDown::drop-down-list {
-	border:none;
+	border: none;
 	background: #FFFFFF;
 	box-shadow: 0 0 18px 0 rgba(22, 45, 61, 0.12), 0 6px 6px 0 rgba(22, 45, 61, 0.06);
 	border-radius: 8px;
@@ -187,4 +192,38 @@ DropDown::drop-down-list::item {
 
 DropDownItem {
 	background: red;
+}
+
+
+/* CheckBox */
+
+CheckBox {
+	font-family: HelveticaNeueW01-45Light;
+	font-size: 16px;
+	color: value(D20);
+	line-height: 24px;
+}
+
+CheckBox:disabled::boxIconDefault {
+	background: value(D70);
+	border: 1px solid #DADADA;	
+}
+
+CheckBox:disabled:checked::boxIconDefault {
+	fill: #F0F4F7;
+	border: 1px solid #DFE5EB;
+}
+
+CheckBox:checked::boxIconDefault {
+	fill: value(B10);
+}
+
+CheckBox::boxIconDefault {
+	background: value(D80);
+	border: 1px solid value(B20);
+	border-radius: 4px;
+}
+
+CheckBox::boxIconDefault:hover {
+	background: value(B50);
 }
