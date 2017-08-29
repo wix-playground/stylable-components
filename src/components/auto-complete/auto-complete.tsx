@@ -41,6 +41,8 @@ export interface AutoCompleteProps extends React.InputHTMLAttributes<HTMLInputEl
     value?: string;
     onChange?: (event: Partial<AutoCompleteChangeEvent>) => void;
     filter?: FilterPredicate;
+    maxCharacters?: number;
+    maxSearchResults?: number;
 }
 
 const prefixFilter: FilterPredicate = (item: string, prefix: string) => item.startsWith(prefix);
@@ -52,7 +54,10 @@ export class AutoComplete extends React.Component<AutoCompleteProps, {}> {
         dataSource: [],
         value: '',
         filter: prefixFilter,
-        onChange: noop
+        onChange: noop,
+        maxCharacters: 0,
+        maxSearchResults: 0,
+        disabled: false
     };
 
     public render() {
@@ -60,9 +65,6 @@ export class AutoComplete extends React.Component<AutoCompleteProps, {}> {
             'data-automation-id': 'AUTO_COMPLETE',
             'className': 'auto-complete'
         }) as React.HtmlHTMLAttributes<HTMLDivElement>;
-        const filteredItems = this.props.value ?
-            this.props.dataSource!.filter((item: string) => this.props.filter!(item, this.props.value!)) :
-            this.props.dataSource;
         return (
             <div {...rootProps}>
                 <input
@@ -71,10 +73,11 @@ export class AutoComplete extends React.Component<AutoCompleteProps, {}> {
                     type="text"
                     onChange={this.onChange}
                     value={this.props.value}
+                    disabled={this.props.disabled}
                 />
                 <AutoCompleteList
-                    open={this.props.open!}
-                    items={filteredItems as string[]}
+                    open={this.props.open! && this.props.value!.length >= this.props.maxCharacters!}
+                    items={this.getFilteredItems()}
                     onChange={this.onClick}
                 />
             </div>
@@ -87,5 +90,12 @@ export class AutoComplete extends React.Component<AutoCompleteProps, {}> {
 
     private onClick = (item: string) => {
         this.props.onChange!({value: item});
+    }
+
+    private getFilteredItems(): string[] {
+        const items = this.props.dataSource!
+            .filter((item: string) => this.props.filter!(item, this.props.value!)) as string[];
+
+        return this.props.maxSearchResults ? items.slice(0, this.props.maxSearchResults) : items;
     }
 }

@@ -84,8 +84,40 @@ describe('<AutoComplete />', () => {
         const {select, waitForDom} = clientRenderer.render(<AutoComplete open dataSource={items} value={prefix}/>);
         const itemList = select(autoComp, list);
 
-        return waitForDom(() => {
+        await waitForDom(() => {
             expect(itemList!.textContent).to.eql(items.filter(item => item.startsWith(prefix)).join(''));
         });
+    });
+
+    it('does not show suggestions if the number of characters is smaller than maxCharacters', async () => {
+        const prefix = 'P';
+        const {select, waitForDom} = clientRenderer.render(
+            <AutoComplete open dataSource={items} maxCharacters={2} value={prefix}/>
+        );
+
+        await waitForDom(() => expect(select(list)).to.be.absent());
+    });
+
+    it('shows suggestions if the number of characters is larger than maxCharacters', async () => {
+        const prefix = 'Pa';
+        const {select, waitForDom} = clientRenderer.render(
+            <AutoComplete open dataSource={items} maxCharacters={2} value={prefix}/>
+        );
+
+        await waitForDom(() => expect(select(list)).to.be.present());
+    });
+
+    it('shows the correct amount of results according to maxSearchResults', async () => {
+        const {select, waitForDom} = clientRenderer.render(
+            <AutoComplete open dataSource={items} maxSearchResults={2} />
+        );
+
+        await waitForDom(() => expect(select(autoComp, list, 'LIST')!.children.length).to.equal(2));
+    });
+
+    it('disables the autocomplete if the prop is passed', async () => {
+        const {select, waitForDom} = clientRenderer.render(<AutoComplete disabled />);
+
+        await waitForDom(() => expect(select(input)).to.have.attribute('disabled'));
     });
 });
