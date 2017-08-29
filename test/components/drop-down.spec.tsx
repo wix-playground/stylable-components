@@ -8,7 +8,6 @@ import {DropDown} from '../../src';
 const dropDown = 'DROP_DOWN';
 const dropDownDemo = dropDown + '_DEMO';
 const input = dropDown + '_INPUT';
-const list = dropDown + '_LIST';
 
 const KeyCodes: any = {
     ENTER: keycode('enter'),
