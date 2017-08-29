@@ -283,6 +283,7 @@ export class TimePicker extends React.Component<Props, State> {
         e.stopPropagation();
         e.preventDefault();
         e.currentTarget.focus();
+        e.currentTarget.select();
     }
 
     private onInputChange = (e: React.SyntheticEvent<HTMLInputElement>): void => {

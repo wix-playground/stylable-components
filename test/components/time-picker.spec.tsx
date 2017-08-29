@@ -12,6 +12,7 @@ import {hasCssState} from '../utils/has-css-state';
 const describeNative = isTouchTimeInputSupported ? describe : describe.skip;
 const describeDesktop = !isTouchTimeInputSupported ? describe : describe.skip;
 const itDesktop = !isTouchTimeInputSupported ? it : it.skip;
+const itNative = isTouchTimeInputSupported ? it : it.skip;
 
 describe('<TimePicker/>', () => {
     const clientRenderer = new ClientRenderer();
@@ -389,7 +390,7 @@ describe('<TimePicker/>', () => {
             it('mm input should have "00" value', () => {
                 expect(mm).attr('value', '00');
             });
-            it('mm input should have selection', () => {
+            itDesktop('mm input should have selection', () => {
                 expect([mm.selectionStart, mm.selectionEnd]).to.deep.equal([0, 2]);
             });
             it('onChange should be callen with "14:00"', async () => {
@@ -468,7 +469,7 @@ describe('<TimePicker/>', () => {
             it('mm input should have "09" value', () => {
                 expect(mm).attr('value', '09');
             });
-            it('mm input should have selection', () => {
+            itDesktop('mm input should have selection', () => {
                 expect([mm.selectionStart, mm.selectionEnd]).to.deep.equal([0, 2]);
             });
             it('onChange should be callen with "14:09"', async () => {
@@ -499,7 +500,7 @@ describe('<TimePicker/>', () => {
             it('hh input should have "14" value', () => {
                 expect(hh).attr('value', '14');
             });
-            it('hh input should have selection', () => {
+            itDesktop('hh input should have selection', () => {
                 expect([hh.selectionStart, hh.selectionEnd]).to.deep.equal([0, 2]);
             });
             it('onChange should be callen with "14:59"', async () => {
@@ -516,7 +517,7 @@ describe('<TimePicker/>', () => {
             it('hh input should have "12" value', () => {
                 expect(hh).attr('value', '12');
             });
-            it('hh input should have selection', () => {
+            itDesktop('hh input should have selection', () => {
                 expect([hh.selectionStart, hh.selectionEnd]).to.deep.equal([0, 2]);
             });
             it('onChange should be callen with "12:59"', async () => {
@@ -543,7 +544,7 @@ describe('<TimePicker/>', () => {
 
     });
 
-    describe('render with onChange={onChange} format="ampm" value="11:59"', () => {
+    describe('render with onChange={onChange} format=ampm" value="11:59"', () => {
         let onChange: any;
         let renderer: any;
         let hh: any;
@@ -570,7 +571,7 @@ describe('<TimePicker/>', () => {
             it('mm input should have "00" value', () => {
                 expect(mm).attr('value', '00');
             });
-            it('ampm input should have "PM" value', () => {
+            itDesktop('ampm input should have "PM" value', () => {
                 expect(ampm).text('PM');
             });
             it('onChange should be callen with "12:00"', async () => {
@@ -600,13 +601,16 @@ describe('<TimePicker/>', () => {
                 simulate.click(hh);
                 simulate.keyDown(hh, {keyCode: keycode('up')});
             });
-            it('hh input should have "12" value', () => {
+            itDesktop('hh input should have "12" value', () => {
                 expect(hh).attr('value', '12');
+            });
+            itNative('hh input should have "00" value', () => {
+                expect(hh).attr('value', '00');
             });
             it('mm input should have "59" value', () => {
                 expect(mm).attr('value', '59');
             });
-            it('ampm input should have "AM" value', () => {
+            itDesktop('ampm input should have "AM" value', () => {
                 expect(ampm).text('AM');
             });
             it('onChange should be callen with "00:59"', async () => {
@@ -636,13 +640,16 @@ describe('<TimePicker/>', () => {
                 simulate.click(mm);
                 simulate.keyDown(mm, {keyCode: keycode('down')});
             });
-            it('hh input should have "11" value', () => {
+            itDesktop('hh input should have "11" value', () => {
                 expect(hh).attr('value', '11');
+            });
+            itNative('hh input should have "23" value', () => {
+                expect(hh).attr('value', '23');
             });
             it('mm input should have "59" value', () => {
                 expect(mm).attr('value', '59');
             });
-            it('ampm input should have "PM" value', () => {
+            itDesktop('ampm input should have "PM" value', () => {
                 expect(ampm).text('PM');
             });
             it('onChange should be callen with "23:59"', async () => {

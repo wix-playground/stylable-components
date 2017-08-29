@@ -110,6 +110,7 @@
 }
 .input::selection {
     color: white;
+    -webkit-text-fill-color: currentColor;
     background: value(PR2);
     padding: 2px;
 }
