@@ -4,7 +4,7 @@ import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react
 import {TreeViewDemo} from '../../demo/components/tree-view-demo';
 import {TreeItem, TreeView} from '../../src';
 import {getLastAvailableItem, getNextItem, getPreviousItem} from '../../src/components/tree-view//tree-util';
-import {ParentsMap, TreeItemData, TreeStateMap} from '../../src/components/tree-view/tree-view';
+import {ParentsMap, TreeItemData, TreeItemState, TreeStateMap} from '../../src/components/tree-view/tree-view';
 
 const treeView = 'TREE_VIEW';
 const treeItem = 'TREE_ITEM';

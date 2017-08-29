@@ -91,7 +91,7 @@ export class DropDown extends React.Component<DropDownProps, DropDownState> {
                 }}
             >
                 <DropDownInput selectedItem={this.props.selectedItem} onClick={this.props.onInputClick} />
-                <Popup open={!!this.props.open} anchor={this.state.dropdown}>
+                <Popup className="root" open={!!this.props.open} anchor={this.state.dropdown}>
                     <SelectionList
                         className="drop-down-list"
                         dataSource={this.props.items!.map((item: DropDownItem) => item.label)}
