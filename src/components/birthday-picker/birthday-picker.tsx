@@ -119,7 +119,10 @@ export class BirthdayPicker extends React.Component<BirthdayPickerProps, {}> {
     }
 
     public render() {
-        const rootProps = root(this.props, {'data-automation-id': 'BIRTHDAY_PICKER', 'className': ''});
+        const rootProps = root(this.props, {
+            'data-automation-id': 'BIRTHDAY_PICKER',
+            'className': ''
+        }) as React.HtmlHTMLAttributes<HTMLSpanElement>;
 
         return (
             <span {...rootProps}>

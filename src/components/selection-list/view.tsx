@@ -3,9 +3,8 @@ import ReactDOM  = require('react-dom');
 import {SBComponent} from 'stylable-react-component';
 import {root} from 'wix-react-tools';
 import {noop} from '../../utils';
+import {Item, ItemValue, Model} from './model';
 import listStyle from './selection-list.st.css';
-
-export type ItemValue = string;
 
 function closestElementMatching(
     predicate: (element: HTMLElement) => boolean,
@@ -18,35 +17,20 @@ function closestElementMatching(
     return current;
 }
 
-export function getFocusableItemValues(nodes: React.ReactNode): ItemValue[] {
-    const result: ItemValue[] = [];
-    React.Children.forEach(nodes, node => {
-        if (node && typeof node === 'object') {
-            const value = node.props.value;
-            const disabled = node.props.disabled;
-            if (value !== undefined && !disabled) {
-                result.push(value);
-            }
-        }
-    });
-    return result;
-}
-
-export interface BasicListProps {
+export interface ViewProps {
     className?: string;
     focused?: boolean;
-    focusedValue?: ItemValue;
+    list: Model;
     onBlur?: React.FocusEventHandler<HTMLElement>;
     onChange?: (value: ItemValue) => void;
     onFocus?: React.FocusEventHandler<HTMLElement>;
     onKeyDown?: React.KeyboardEventHandler<HTMLElement>;
     style?: React.CSSProperties;
     tabIndex?: number;
-    value?: ItemValue;
 }
 
 @SBComponent(listStyle)
-export class BasicList extends React.Component<BasicListProps, {}> {
+export class View extends React.Component<ViewProps, {}> {
     public static defaultProps = {
         onChange: noop
     };
@@ -58,8 +42,6 @@ export class BasicList extends React.Component<BasicListProps, {}> {
                 focused: this.props.focused
             }
         }) as React.HtmlHTMLAttributes<HTMLDivElement>;
-
-        const children = React.Children.map(this.props.children, child => this.renderChild(child));
 
         return (
             <div
@@ -73,23 +55,17 @@ export class BasicList extends React.Component<BasicListProps, {}> {
                 onKeyDown={this.props.onKeyDown}
                 data-automation-id="LIST"
             >
-                {children}
+                {this.props.list.items.map((item, index) => this.renderItem(item, index))}
             </div>
         );
     }
 
-    private renderChild(node: React.ReactChild): React.ReactChild {
-        if (node && typeof node === 'object') {
-            const value = node.props.value;
-            if (value !== undefined) {
-                const selected = value === this.props.value;
-                const focused = value === this.props.focusedValue && this.props.focused;
-                if (focused || selected) {
-                    return React.cloneElement(node, {selected, focused});
-                }
-            }
-        }
-        return node;
+    private renderItem({element, selectable, value}: Item, index: number) {
+        return React.cloneElement(element, {
+            key: index,
+            selected: selectable && value === this.props.list.selectedValue,
+            focused:  selectable && value === this.props.list.focusedValue
+        });
     }
 
     private handleClick: React.MouseEventHandler<HTMLElement> = event => {
@@ -102,7 +78,7 @@ export class BasicList extends React.Component<BasicListProps, {}> {
         }
         const value = item.dataset.value;
         const disabled = item.dataset.disabled;
-        if (!disabled && value !== undefined && value !== this.props.value) {
+        if (!disabled && value !== undefined && value !== this.props.list.selectedValue) {
             this.props.onChange!(value);
         }
     }

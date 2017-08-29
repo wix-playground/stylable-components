@@ -175,20 +175,6 @@ describe('<SelectionList />', () => {
         });
     });
 
-    it(`Doesn't discard text nodes in the child list`, async () => {
-        const {select, waitForDom} = clientRenderer.render(
-            <SelectionList>
-                <div />
-                Hello, World
-                <div />
-            </SelectionList>
-        );
-
-        return waitForDom(() => {
-            expect(select('LIST')).to.contain.text('Hello, World');
-        });
-    });
-
     it('Renders dataSource below children when both are provided', async () => {
         const {select, waitForDom} = clientRenderer.render(
             <SelectionList dataSource={['ham', 'spam']}>

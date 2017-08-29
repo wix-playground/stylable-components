@@ -1,6 +1,6 @@
 import React = require('react');
 import {SBComponent} from 'stylable-react-component';
-import {ItemValue} from './basic-list';
+import {ItemValue} from './model';
 import listStyle from './selection-list.st.css';
 
 export interface OptionProps {
