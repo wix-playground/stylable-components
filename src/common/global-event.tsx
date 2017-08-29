@@ -1,43 +1,48 @@
 import { Component } from 'react';
 
-export interface GlobalEventProps {
-    event: string;
-    handler: EventListener;
+export type Handler<E>  = (e: E) => void;
+
+export interface Props {
+    click?: Handler<MouseEvent>;
 }
 
-export default class GlobalEvent extends Component<GlobalEventProps> {
+export default class GlobalEvent extends Component<Props> {
 
     private emitter = window;
 
     public componentDidMount() {
-        this.subscribe(this.props.event);
+        this.forEachEvent(name => this.subscribe(name, this.props[name] as EventListener));
     }
 
     public componentWillUnmount() {
-        this.unsubscribe(this.props.event);
+        this.forEachEvent(name => this.unsubscribe(name, this.props[name] as EventListener));
     }
 
-    public componentWillReceiveProps({event}: GlobalEventProps) {
-        if (event !== this.props.event) {
-            this.unsubscribe(this.props.event);
-            this.subscribe(event);
-        }
+    public componentWillReceiveProps(props: Props) {
+        this.forEachEvent(name => {
+            if (this.props[name] !== props[name]) {
+                this.unsubscribe(name, this.props[name] as EventListener);
+                props[name] && this.subscribe(name, props[name] as EventListener);
+            }
+        });
     }
 
     public render() {
         return null;
     }
 
-    private handler = (e: Event) => {
-        const { handler } = this.props;
-        handler(e);
+    private forEachEvent(fn: (name: keyof Props) => void) {
+        Object
+            .keys(this.props)
+            .filter(name => name !== 'children')
+            .forEach(fn);
     }
 
-    private subscribe(event: string) {
-        this.emitter.addEventListener(event, this.handler);
+    private subscribe(event: string, handler: EventListener) {
+        this.emitter.addEventListener(event, handler);
     }
 
-    private unsubscribe(event: string) {
-        this.emitter.removeEventListener(event, this.handler);
+    private unsubscribe(event: string, handler: EventListener) {
+        this.emitter.removeEventListener(event, handler);
     }
 }
