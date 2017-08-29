@@ -73,7 +73,7 @@ Supports AutoComplete props as well as the native text input props.
 
 | Name | Type | Default | Required | Description |
 | -- | -- | -- | -- | -- |
-| selected | Array<String> | empty | no | list of selected ids |
+| value | Array<String> | empty | no | list of selected ids |
 | maxSelected | number | 0 (unlimited) | no | number of selections allowed |
 
 ## Styles
@@ -108,50 +108,170 @@ Styles for MultiSelect:
 
 ### DropDown
 
+Based on the old w3 [spec](https://rawgit.com/w3c/aria-practices/master/aria-practices-DeletedSectionsArchive.html#autocomplete).
+
 #### Roles
-* Root role - combobox
+* Root role - *combobox*
+* Caret role - *button*
+* SelectionList role - *listbox*, each item in the list having the role *option*
 
 #### Aria Attributes
-* User provided props: aria-label, aria-labelledby, aria-describedby
-* Children aria roles will be in the SelectionList specs
+* aria-expanded=true if the popup is open, otherwise aria-expanded=false. Placed on the root element.
+* aria-haspopup=true on the root element
+* User provided props: aria-label, aria-labelledby, aria-describedby copied to root
+* aria-selected=true on the option selected in the SelectionList
+
+#### Focus
+* Current focus implementation gives focus to the input container (which has tabindex=0) and controls focus between the input container and the list using js code. This means that it is not accessible. To be changed in the next version.
+* Focus (for the purpose of handling keyboard navigation) can be either in the input container or in the selectionlist.
+* The caret should **not** be in the tab order
+
+### AutoComplete
+
+Based on the old w3 [spec](https://rawgit.com/w3c/aria-practices/master/aria-practices-DeletedSectionsArchive.html#combobox).
+
+#### Roles
+
+* Root role - *combobox*
+* Input role - *textbox*
+
+#### Aria Attributes
+
+* aria-expanded=true if the popup is open, otherwise aria-expanded=false. Placed on the root element.
+* aria-haspopup=true on the root element
+* User provided props: aria-label, aria-labelledby, aria-describedby copied to root
+* aria-autocomplete=list on the input element (the one with the *textbox* role)
+* aria-selected=true on the option selected in the SelectionList
 
 #### Focus
 
-On <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">TAB</kbd> the dropdown gets focus.
+The autocomplete manages 2 focus states, one for the input element, the *real* focus, and one in the list (seen through CSS highlighting).
+
+* Focus resides on the input element (user sees a caret in the input element). When a character is entered, focus stays on the input element, however a focus state appears on the SelectionList in the following manner:
+  * showNoSuggestions=false - The first item that is matched is highlighted. If no item is matched then the first item in the list is highlighted.
+  * showNoSuggestion=true - The first item that is matched is highlighted. If no item is matched then the noSuggestion element is rendered and no highlighting occurs.
+
+### MultiSelect
+
+#### Roles
+
+* Root role - *combobox*
+* Input role - *textbox*
+* Clear all icon role - *button*, tag delete icons should not be accessible, so verify no active role is used or HTML element which suggests action.
+
+#### Aria Attributes
+
+* aria-expanded=true if the popup is open, otherwise aria-expanded=false. Placed on the root element.
+* aria-haspopup=true on the root element
+* User provided props: aria-label, aria-labelledby, aria-describedby copied to root
+* aria-autocomplete=list on the input element (the one with the *textbox* role)
+* aria-multiselectable=true on the SelectionList
+* aria-selected=true on the option selected in the SelectionList, **all** other options should have aria-selected=false.
+
+#### Focus
+
+Same as AutoComplete. The tag elements are **not** focusable through keyboard navigation, the reason being it makes accessibility ridiculously difficult for the users.
 
 ## Behavior
 
 ### Keyboard Navigation
 
-* <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">Space</kbd> -> opens/closes dropdown
-* <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">Enter</kbd> -> Opens/closes the dropdown
-* <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">Esc</kbd> -> Closes dropdown if opened
-* <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">Down</kbd> -> Opens popup if currently closed
+Studied examples from [React Widgets](http://jquense.github.io/react-widgets/docs/#/dropdownlist?_k=p7z1pg) and [Kendo](http://demos.telerik.com/kendo-ui/dropdownlist/keyboard-navigation) which exhibit excellent accessibility features and are comparable to the w3 specs. If the details below are not clear, look at these examples to verify you understand the required behavior.
 
-Additional in AutoComplete:
+#### DropDown
 
-* number/string input -> Causes the dropdown to open if results are found or if the showNoSuggestions flag is used.
+* alt + <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">down</kbd> -> Opens the popup
+* alt + <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">up</kbd> -> Closes the popup (when opened of course)
+* <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">down</kbd> -> When the popup is closed changes selection to the next item in the list
+* <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">right</kbd> -> When the popup is closed changes selection to the next item in the list
+* <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">up</kbd> -> When the popup is closed changes selection to the previous item in the list
+* <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">left</kbd> -> When the popup is closed changes selection to the previous item in the list
+* <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">Esc</kbd> -> Closes dropdown if opened. Focus returns to the input container.
+* <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">Home</kbd> -> When the popup is closed, selects the first item in the SelectionList
+* <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">End</kbd> -> When the popup is closed selects the last item in the SelectionList
+* Type-Ahead -> Changes the selection of the list. See SelectionList [spec](./selectionlist.md).
 
-Additional in MultiSelect:
+The following behaviors are implemented in the SelectionList (relevant when a popup is opened and focus is in the SelectionList:
 
-* 'Backspace' key -> Deletes tag when cursor is after it.
+* <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">Home</kbd> -> highlights ths first item in the SelectionList
+* <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">End</kbd> -> highlights the last item in the SelectionList
+* <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">Up</kbd> -> highlights previous item
+* <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">Down</kbd> -> highlights next item
+* <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">Space</kbd> -> Selects the highlighted option, closes the popup
+* <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">Enter</kbd> -> Selects the highlighted option, closes the popup.
+* Type-Ahead -> Changes the highlighted item in the list. See SelectionList [spec](./selectionlist.md).
+
+#### AutoComplete
+
+* alt + <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">down</kbd> -> Opens the popup
+* alt + <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">up</kbd> -> Closes the popup (when opened of course)
+* <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">down</kbd> -> When the popup is closed changes selection to the next item in the list. If the current selected item is not valid, the first item in the list is selected.
+* <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">up</kbd> -> When the popup is closed changes selection to the previous item in the list if there is a valid selected item. If there is no valid selection (the input container being empty is such a case) then nothing happens.
+* <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">left</kbd> -> Moves the caret to the left
+* <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">right</kbd> -> Moves the caret to the right
+* <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">Esc</kbd> -> Closes dropdown if opened. Focus returns to the input container.
+* <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">Home</kbd> -> When the popup is closed, selects the first item in the SelectionList
+* <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">End</kbd> -> When the popup is closed selects the last item in the SelectionList
+* Any other characters are entered in the input element, filtering the list of available options or showing the no suggestions element when relevant (see autocomplete focus section for details).
+
+The following behaviors are implemented in the SelectionList (relevant when a popup is opened and focus is in the SelectionList:
+
+* <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">Home</kbd> -> highlights the first item in the SelectionList
+* <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">End</kbd> -> highlights the last item in the SelectionList
+* <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">down</kbd> -> Highlights the next item in the list.
+* <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">up</kbd> -> Highlights the previous item in the list.
+* <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">Enter</kbd> -> Selects the highlighted item, closes the popup.
+
+#### MultiSelect
+
+Same as AutoComplete and includes the following:
+
+* <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">Backspace</kbd> -> Deletes tag when cursor is after it.
+
+The following behaviors are implemented in the SelectionList (relevant when a popup is opened and focus is in the SelectionList:
+
+* <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">Enter</kbd> -> Changes the selection state of the highlighted item
 
 ### Mouse Handling
 
-* Click outside - closes dropdown
-* Click on element - sets selection
+#### Dropdown
 
-Additional in MultiSelect:
+* Click outside:
+  * When popup is closed, focus is lost
+  * When popup is opened, focus is lost and popup is closed
+* Click on the input container:
+  * When popup is closed, opens the popup and:
+    * If an element is selected, focus moves to that element
+    * If no element is selected, focus moves to the first element
+* Click on an option (SelectionList) - option is selected and popup is closed
+
+#### AutoComplete
+* Click outside:
+  * When popup is closed, focus is lost
+  * When popup is opened, focus is lost and popup is closed
+* Click on toggle opens the popup
+* Click on an option (SelectionList) - option is selected and popup is closed
+
+#### MultiSelect
+
+Same as AutoComplete and including:
 
 * Click on clear icon on tag -> removes value from selection
 * Click on clear icon for component -> removes all selected items
 
 ### Touch Handling
 
-* Tap outside - closes dropdown
-* Tap on element - sets selection
+#### Dropdown
 
-Additional in MultiSelect:
+Same as click behavior, apart from touchdown behavior which will be implemented in the next iteration.
+
+#### AutoComplete
+
+Same as click behavior, apart from touchdown behavior which will be implemented in the next iteration.
+
+#### MultiSelect
+
+Same as AutoComplete, including:
 
 * Tap on clear icon on tag -> removes value from selection
 * Tap on clear icon for component -> removes all selected items

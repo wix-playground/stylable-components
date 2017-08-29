@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {SBComponent, SBStateless} from 'stylable-react-component';
+import {SBComponent} from 'stylable-react-component';
 import {divider, Option, SelectionList} from '../../src/components/selection-list';
 import demoStyle from './selection-list-demo.st.css';
 

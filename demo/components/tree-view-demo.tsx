@@ -1,33 +1,33 @@
 import * as React from 'react';
-import { TreeView } from '../../src';
-import { TreeItemData, TreeItemProps } from '../../src/components/tree-view/tree-view';
-import { SBStateless } from 'stylable-react-component/dist/stylable-react';
-import { observer } from 'mobx-react';
+import {TreeView} from '../../src';
+import {TreeItemData , TreeItemProps} from '../../src/components/tree-view/tree-view';
+import {observer} from 'mobx-react';
+import {SBStateless} from 'stylable-react-component';
 import style from './tree-view-demo.st.css';
 
 export const treeData: TreeItemData[] = [
     { label: 'Food Menu', children: [
         { label: 'Salads', children: [
-            { label: 'Greek Salad' },
-            { label: 'Israeli Salad' },
-            { label: 'Caesar Salad' }
+            {label: 'Greek Salad'},
+            {label: 'Israeli Salad'},
+            {label: 'Caesar Salad'}
         ]},
         { label: 'Steaks', children: [
-            { label: 'Fillet Steak' },
-            { label: 'Sirloin Steak' }
+            {label: 'Fillet Steak'},
+            {label: 'Sirloin Steak'}
         ]},
         { label: 'Desserts', children: [
-            { label: 'Pancakes' },
-            { label: 'Muffin' },
-            { label: 'Waffle' },
-            { label: 'Cupcake' }
+            {label: 'Pancakes'},
+            {label: 'Muffin'},
+            {label: 'Waffle'},
+            {label: 'Cupcake'}
         ]}
     ]}
 ];
 
 function SelectedItem({selectedItem}: any) {
     return (
-        <div style={{ fontSize: '1.41em', textDecoration: 'underline' }}>
+        <div style={{fontSize: '1.41em', textDecoration: 'underline'}}>
             {selectedItem ?
                 (!selectedItem.children ?
                     `You chose ${selectedItem.label}. Bon appetit!` :
@@ -45,7 +45,8 @@ export interface TreeViewDemoState {
 }
 
 export const CustomItem: React.SFC<TreeItemProps> =
-    SBStateless(({ item, itemRenderer, onItemClick, onIconClick, stateMap, state }) => {
+    SBStateless(({item, itemRenderer, onItemClick, onIconClick, stateMap}) => {
+        const state = stateMap.getItemState(item);
         const TreeNode = itemRenderer;
         const iconProps = {
             onClick: onIconClick && onIconClick.bind(null, item),
@@ -55,7 +56,7 @@ export const CustomItem: React.SFC<TreeItemProps> =
             <div>
                 <div
                     className="tree-node"
-                    cssStates={{ selected: state!.isSelected, focused: state!.isFocused }}
+                    cssStates={{selected: state!.isSelected, focused: state!.isFocused}}
                     data-selected={state!.isSelected}
                     data-focused={state!.isFocused}
                     onClick={onItemClick && onItemClick.bind(null, item)}
@@ -76,7 +77,6 @@ export const CustomItem: React.SFC<TreeItemProps> =
                             itemRenderer={itemRenderer}
                             onIconClick={onIconClick}
                             stateMap={stateMap}
-                            state={stateMap.getItemState(child)}
                             key={`${index}`}
                         />
                     )}
