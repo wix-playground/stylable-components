@@ -63,8 +63,8 @@ See [README.md](./README.md) for more info.
 | State    | Description                              |
 | :------- | ---------------------------------------- |
 | Default  | Default component appearance             |
-| Hover    | User hovered over bar / handle / slider area |
-| Focus    | Browser is focused on the component (focus is displayed around the 'handle') |
+| Hover    | User hovered over bar / handle / clickable area |
+| Focus    | User focuses on the components. Focus appears on click, tap or when user focuses on element with TAB button (focus is displayed around the 'handle') |
 | Active   | User clicks on bar, handle or mark       |
 | Disabled | Component can not be changed             |
 | Error    | Error state for the component (can be set with :error pseudo-class) |
@@ -82,7 +82,7 @@ See [keyboard](#keyboard) section for reference.
 
 ##### Focus
 
-Focus is placed on the slider (the visual object that the mouse user would move, also known as the thumb).
+Focus is placed on the handle.
 
 > NOTE:
 > Focus is placed on handle according to ARIA doc
@@ -129,7 +129,17 @@ Changing the value is performed **from current value** to the next expected valu
 E.g. if min=0, max=10, step=2, value=3.5, then UP arrow key will give us 4 and Down arrow key will give us 2
 Value can not exceed the min/max limits. If value is > or < than min/max it is automatically set to corresponding min/max.
 
-If slider has a 'step' prop, handle should move across the slider bar only according to the step.
+If slider has a step prop set to "number", handle should move across the slider bar only according to the step.
+
+**Alignment & Direction**
+
+You can adjust sliders alignment and direction in which the range is going to change with axis prop.
+
+1. `axis="x"` -> horizontal slider, progress is moving from left to right
+2. `axis="x-reverse"` -> horizontal slider, progress is moving from right to left
+3. `axis="y"` -> vertical slider, progress is moving from bottom to top
+4. `axis="y-reverse"` -> vertical slider, progress is moving from top to bottom
+
 
 #### Validation
 
@@ -146,7 +156,7 @@ If slider has a 'step' prop, handle should move across the slider bar only accor
 | Case                                     | Handling                                 | Example                                  |
 | ---------------------------------------- | ---------------------------------------- | ---------------------------------------- |
 | value is out of `step`                   | keep current value & display handle at the position that represents this value | `min=0` `max=10` `step=2` `value=3.5`. Handle is displayed at the position that represents 3.5. When user changes value (keyboard / mouse) we move it to the next expected, which is 4 or 2 |
-| `step` is not set & `displayMarks` is set to true | show marks at the beginning and at the end of the slider |                                          |
+| `step` is not set & `marks` are set to true | show marks at the beginning and at the end of the slider |                                          |
 
 
 
@@ -154,17 +164,17 @@ If slider has a 'step' prop, handle should move across the slider bar only accor
 
 #### Keyboard
 
-| Keys                                 | Action                      |
-| ------------------------------------ | --------------------------- |
-| up / right arrow key                 | increase value              |
-| left / down arrow key                | decrease value              |
-| home ( fn/ctrl + left arrow key)     | set min value               |
-| end ( fn/ctrl + left arrow key)      | set max value               |
-| page up (fn/ctrl + up arrow key)     | increase value by X         |
-| page down (fn/ctrl + down arrow key) | decrease value by X         |
-| tab                                  | moves to next element       |
-| shift + tab                          | moves to previous element   |
-| esc                                  | removes focus (if in focus) |
+| Keys                                          | Action                      |
+| --------------------------------------------- | --------------------------- |
+| up / right arrow key                          | increase value              |
+| left / down arrow key                         | decrease value              |
+| home (fn/ctrl) OR shift + left arrow key      | set min value               |
+| end (fn/ctrl) OR shift + right arrow key      | set max value               |
+| page up (fn/ctrl) OR shift + up arrow key     | increase value by 10        |
+| page down (fn/ctrl) OR shift + down arrow ke  | decrease value by 10        |
+| tab                                           | moves to next element       |
+| shift + tab                                   | moves to previous element   |
+| esc                                           | removes focus (if in focus) |
 
 **RTL** orientation
 
@@ -191,7 +201,7 @@ If slider has a 'step' prop, handle should move across the slider bar only accor
 | Event                                  | Action                                   | NOTE                                     |
 | -------------------------------------- | ---------------------------------------- | ---------------------------------------- |
 | tap (on handle)                        | highlights handle                        | we need the ability to expand clickable area for mobile devices |
-| tap (on bar / mark / capable area)     | moves handle to position where user clicked | -                                        |
+| tap (on bar / mark / clickable area)     | moves handle to position where user clicked | -                                        |
 | tap & drag (right / left OR up / down) | change value according to direction of movement | -                                        |
 
 
