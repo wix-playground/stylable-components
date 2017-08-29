@@ -40,15 +40,22 @@ function SelectedItem({selectedItem}: any) {
 export interface TreeViewDemoState {
     selectedItem: TreeItemData | undefined;
     focusedItem: TreeItemData | undefined;
+}
+
+export interface TreeViewDemoCustomState {
     selectedItemCustom: TreeItemData | undefined;
     focusedItemCustom: TreeItemData | undefined;
 }
+
+const itemIdPrefix = 'TREE_ITEM';
 
 export const CustomItem: React.SFC<TreeItemProps> =
     SBStateless(({item, itemRenderer, onItemClick, onIconClick, stateMap}) => {
         const state = stateMap.getItemState(item);
         const TreeNode = itemRenderer;
+        const itemLabel = item.label.replace(' ', '_');
         const iconProps = {
+            ['data-automation-id']: `${itemIdPrefix}_${itemLabel}_ICON`,
             onClick: onIconClick && onIconClick.bind(null, item),
             className: 'tree-item-icon'
         };
@@ -60,10 +67,12 @@ export const CustomItem: React.SFC<TreeItemProps> =
                     data-selected={state!.isSelected}
                     data-focused={state!.isFocused}
                     onClick={onItemClick && onItemClick.bind(null, item)}
+                    data-automation-id={`${itemIdPrefix}_${itemLabel}`}
                 >
                     {item.children &&
                         <span {...iconProps}>{state!.isExpanded ? '[Close] ' : '[Open] '}</span>}
                     <span
+                        data-automation-id={`${itemIdPrefix}_${itemLabel}_LABEL`}
                         className="tree-item-label"
                     >
                         {item.label}
@@ -93,9 +102,7 @@ export class TreeViewDemo extends React.Component<{}, TreeViewDemoState> {
         super();
         this.state = {
             selectedItem: undefined,
-            focusedItem: undefined,
-            selectedItemCustom: undefined,
-            focusedItemCustom: undefined
+            focusedItem: undefined
         };
     }
 
@@ -114,19 +121,6 @@ export class TreeViewDemo extends React.Component<{}, TreeViewDemoState> {
                         selectedItem={this.state.selectedItem}
                     />
                 </section>
-                <h3>TreeView with custom item renderer</h3>
-                <section>
-                    <SelectedItem selectedItem={this.state.selectedItemCustom} />
-                    <br />
-                    <TreeView
-                        dataSource={treeData}
-                        itemRenderer={CustomItemWrapper}
-                        onFocusItem={this.onFocusItemCustom}
-                        focusedItem={this.state.focusedItemCustom}
-                        onSelectItem={this.onSelectItemCustom}
-                        selectedItem={this.state.selectedItemCustom}
-                    />
-                </section>
             </div>
         );
     }
@@ -142,6 +136,38 @@ export class TreeViewDemo extends React.Component<{}, TreeViewDemoState> {
         this.setState({
             focusedItem: item
         });
+    }
+
+}
+
+export class TreeViewDemoCustom extends React.Component<{}, TreeViewDemoCustomState> {
+
+    constructor() {
+        super();
+        this.state = {
+            selectedItemCustom: undefined,
+            focusedItemCustom: undefined
+        };
+    }
+
+    public render() {
+        return (
+            <div>
+                <h3>TreeView with custom item renderer</h3>
+                <section data-automation-id="TREE_VIEW_DEMO_CUSTOM">
+                    <SelectedItem selectedItem={this.state.selectedItemCustom} />
+                    <br />
+                    <TreeView
+                        dataSource={treeData}
+                        itemRenderer={CustomItemWrapper}
+                        onFocusItem={this.onFocusItemCustom}
+                        focusedItem={this.state.focusedItemCustom}
+                        onSelectItem={this.onSelectItemCustom}
+                        selectedItem={this.state.selectedItemCustom}
+                    />
+                </section>
+            </div>
+        );
     }
 
     private onSelectItemCustom = (item: TreeItemData) => {
