@@ -126,19 +126,17 @@ export class TimePicker extends React.Component<Props, State> {
                     </div>
                 )}
                 {format === 'ampm' &&
-                    <div className="ampm-wrap">
-                        <div
-                            data-automation-id="TIME_PICKER_AMPM"
-                            className="ampm"
-                            ref={elem => this.segments.ampm = elem}
-                            tabIndex={disabled || isTouchTimeInputSupported ? -1 : 0}
-                            children={ampmLabels[ampm]}
-                            onMouseDown={this.onAmpmMouseDown}
-                            onFocus={this.onAmpmFocus}
-                            onBlur={this.onBlur}
-                            onKeyDown={this.onKeyDown}
-                        />
-                    </div>
+                    <div
+                        data-automation-id="TIME_PICKER_AMPM"
+                        className="ampm"
+                        ref={elem => this.segments.ampm = elem}
+                        tabIndex={disabled || isTouchTimeInputSupported ? -1 : 0}
+                        children={ampmLabels[ampm]}
+                        onMouseDown={this.onAmpmMouseDown}
+                        onFocus={this.onAmpmFocus}
+                        onBlur={this.onBlur}
+                        onKeyDown={this.onKeyDown}
+                    />
                 }
                 {placeholder && !isValueSet &&
                     <div
