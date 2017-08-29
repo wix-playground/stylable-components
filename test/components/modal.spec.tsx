@@ -64,7 +64,7 @@ describe('<Modal />', () => {
     it('renders one child in the center of the viewport', async function() {
         clientRenderer.render(
             <Modal isOpen={true}>
-                <p data-automation-id="CHILD_1">child 1</p>
+                <p data-automation-id="CHILD_1" style={{width: '50px', height: '50px'}}>child 1</p>
             </Modal>
         );
 
@@ -79,8 +79,8 @@ describe('<Modal />', () => {
     it('renders children in horizontal alignment', async function() {
         clientRenderer.render(
             <Modal isOpen={true}>
-                <p data-automation-id="CHILD_1">child 1</p>
-                <p data-automation-id="CHILD_2">child 2</p>
+                <p data-automation-id="CHILD_1" style={{width: '50px', height: '50px'}}>child 1</p>
+                <p data-automation-id="CHILD_2" style={{width: '50px', height: '50px'}}>child 2</p>
             </Modal>
         );
 
@@ -93,17 +93,17 @@ describe('<Modal />', () => {
     });
 
     it('adds overflow: hidden to the body when opened and removes it when closed', async function() {
-        clientRenderer.render(<Modal isOpen={true} />);
+        const {container} = clientRenderer.render(<Modal isOpen={true} />);
 
-        await waitFor(() => {
-            expect(window.getComputedStyle(document.body).overflow).to.equal('hidden');
-        });
+        await waitFor(() => expect(window.getComputedStyle(document.body).overflow).to.equal('hidden'));
 
-        clientRenderer.render(<Modal isOpen={false} />);
+        clientRenderer.render(<Modal isOpen={false} />, container);
 
-        await waitFor(() => {
-            expect(window.getComputedStyle(document.body).overflow).to.not.equal('hidden');
-        });
+        await waitFor(() => expect(window.getComputedStyle(document.body).overflow).to.not.equal('hidden'));
+
+        clientRenderer.render(<Modal isOpen={true} />, container);
+
+        await waitFor(() => expect(window.getComputedStyle(document.body).overflow).to.equal('hidden'));
     });
 
     it('appears centered even when the page is scrolled', async function() {
@@ -128,11 +128,12 @@ describe('<Modal />', () => {
 
         simulate.click(bodySelect('MODAL'));
 
-        await waitFor(() => expect(onRequestClose).to.have.been.calledWithMatch({source: 'backdrop'}));
+        await waitFor(() => expect(onRequestClose).to.have.been.calledWithMatch({role: 'backdrop'}));
     });
 
     it('calls onRequestClose with source equal to children when the child is clicked', async function() {
         const onRequestClose = sinon.spy();
+
         clientRenderer.render(
             <Modal isOpen={true} onRequestClose={onRequestClose}>
                 <p role="children" data-automation-id="CHILD_1">child 1</p>
@@ -141,6 +142,8 @@ describe('<Modal />', () => {
 
         simulate.click(bodySelect('CHILD_1'));
 
-        await waitFor(() => expect(onRequestClose).to.have.been.calledWithMatch({source: 'children'}));
+        const thing = onRequestClose.getCall(0);
+        debugger
+        await waitFor(() => expect(onRequestClose.getCall(0)).to.have.been.calledWithMatch({source: 'role'}));
     });
 });

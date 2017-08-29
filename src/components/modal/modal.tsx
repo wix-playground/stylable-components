@@ -6,13 +6,13 @@ import {noop} from '../../utils';
 import {enableScrolling, stopScrolling} from '../../utils/stop-scrolling';
 import styles from './modal.st.css';
 
-export interface RequestCloseEvent {
+export interface RequestCloseEvent extends React.SyntheticEvent {
     source: string;
 }
 
 export interface ModalProps extends React.HTMLAttributes<HTMLDivElement> {
     isOpen: boolean;
-    onRequestClose?({source}: RequestCloseEvent): void;
+    onRequestClose?(event: RequestCloseEvent): void;
 }
 
 @SBComponent(styles)
@@ -28,10 +28,6 @@ export class Modal extends React.PureComponent<ModalProps, {}> {
 
     public componentWillReceiveProps(nextProps: ModalProps) {
         this.shouldEnableScrolling(!nextProps.isOpen);
-    }
-
-    public componentWillUnmount() {
-        this.shouldEnableScrolling(true);
     }
 
     public render() {
@@ -54,8 +50,10 @@ export class Modal extends React.PureComponent<ModalProps, {}> {
     }
 
     private onClick: React.EventHandler<React.MouseEvent<HTMLDivElement>> = event => {
+        const closeEvent: RequestCloseEvent = Object.create(event);
         const target: Element = event.target as Element;
-        this.props.onRequestClose!({source: target.getAttribute('role') || ''});
+        closeEvent.source = target.getAttribute('role');
+        this.props.onRequestClose!({source: event});
     }
 
     private shouldEnableScrolling(shouldScroll: boolean) {
