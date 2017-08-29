@@ -12,14 +12,11 @@ import {ToggleDemo} from './components/toggle-demo';
 import {TreeViewDemo} from './components/tree-view-demo';
 import './style.st.css';
 
-export class ComponentsDemo extends React.Component<{}, {}> {
+export class ComponentsDemo extends React.Component {
     public render() {
         return (
             <div>
-                <div>
-                    <h2>Image</h2>
-                    <ImageDemo />
-                </div>
+                <ImageDemo />
                 <hr />
                 <DropDownDemo />
                 <hr />
