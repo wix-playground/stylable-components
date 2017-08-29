@@ -811,7 +811,7 @@ describe('<TimePicker/>', () => {
             it('should keep focus on hh segment of first input', () => {
                 simulate.focus(firstInputHH);
                 simulate.click(firstStepperUp);
-                expect(document.activeElement).to.equal(firstInputHH);
+                expect(document.activeElement === firstInputHH).to.be.true;
             });
         });
 
@@ -819,14 +819,14 @@ describe('<TimePicker/>', () => {
             it('should keep focus on mm segment on first input', () => {
                 simulate.focus(firstInputMM);
                 simulate.click(firstStepperUp);
-                expect(document.activeElement).to.equal(firstInputMM);
+                expect(document.activeElement === firstInputMM).to.be.true;
             });
         });
 
         describe('initial click on stepper inside first input', () => {
             it('should move focus on hh segment on first input', () => {
                 simulate.click(firstStepperUp);
-                expect(document.activeElement).to.equal(firstInputHH);
+                expect(document.activeElement === firstInputHH).to.be.true;
             });
         });
 
@@ -843,7 +843,7 @@ describe('<TimePicker/>', () => {
                         simulate.focus(firstStepperUp);
                         await new Promise(resolve => setTimeout(resolve, 500));
                         simulate.click(firstStepperUp);
-                        expect(document.activeElement).to.equal(firstInputHH);
+                        expect(document.activeElement === firstInputHH).to.be.true;
                     });
                 });
             });
