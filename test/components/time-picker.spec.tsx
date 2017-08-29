@@ -1,6 +1,7 @@
 import * as keycode from 'keycode';
 import * as React from 'react';
 import {ClientRenderer, expect, simulate, sinon} from 'test-drive-react';
+import {TimePickerDemo} from '../../demo/components/time-picker-demo';
 import {TimePicker} from '../../src';
 import styles from '../../src/components/time-picker/time-picker.st.css';
 import {
@@ -784,6 +785,57 @@ describe('<TimePicker/>', () => {
             });
             it('onChange should be callen with "16:55"', () => {
                 expect(onChange).to.be.calledWithExactly('16:55');
+            });
+        });
+    });
+
+    describeDesktop('Render <TimePickerDemo/>', () => {
+        let renderer: any;
+        let hh1: any;
+        let hh2: any;
+        let mm1: any;
+        let mm2: any;
+        let stepperUp1: any;
+        let stepperUp2: any;
+        beforeEach(() => {
+            renderer = clientRenderer.render(<TimePickerDemo/>);
+            hh1 = renderer.select('TIME_PICKER_DEMO_CONTROLLED_24', 'TIME_PICKER_INPUT_HH');
+            hh2 = renderer.select('TIME_PICKER_DEMO_CONTROLLED_AMPM', 'TIME_PICKER_INPUT_HH');
+            mm1 = renderer.select('TIME_PICKER_DEMO_CONTROLLED_24', 'TIME_PICKER_INPUT_MM');
+            mm2 = renderer.select('TIME_PICKER_DEMO_CONTROLLED_AMPM', 'TIME_PICKER_INPUT_MM');
+            stepperUp1 = renderer.select('TIME_PICKER_DEMO_CONTROLLED_24', 'STEPPER_INCREMENT');
+            stepperUp2 = renderer.select('TIME_PICKER_DEMO_CONTROLLED_AMPM', 'STEPPER_INCREMENT');
+        });
+
+        describe('focus on hh on first input', () => {
+            it('should keep focus on hh input', () => {
+                simulate.focus(hh1);
+                simulate.click(stepperUp1);
+                expect(document.activeElement).to.equal(hh1);
+            });
+        });
+
+        describe('focus on mm on first input', () => {
+            it('should keep focus on mm input', () => {
+                simulate.focus(mm1);
+                simulate.click(stepperUp1);
+                expect(document.activeElement).to.equal(mm1);
+            });
+        });
+
+        describe('initial click on stepper', () => {
+            it('should keep focus on hh input', () => {
+                simulate.click(stepperUp1);
+                expect(document.activeElement).to.equal(hh1);
+            });
+        });
+
+        describe('focus on mm1 then mm2 then click on stepperUp1', () => {
+            it('should set focus on hh on first input', () => {
+                simulate.focus(mm1);
+                simulate.focus(mm2);
+                simulate.click(stepperUp1);
+                expect(document.activeElement).to.equal(hh1);
             });
         });
     });
