@@ -7,25 +7,25 @@
                color_Disabled;
 }
 
-.a {
+.root {
     text-decoration: none;
     user-select: none;
     color: value(color_Default);
     outline: 0;
 }
 
-.a:focus {
+.root:focus {
     color: value(color_Default);
 }
 
-.a:visited:not(.button):not(a[disabled]) {
+.root:visited:not(.button):not(root[disabled]) {
     color: value(color_Focus);
 }
 
-.a:hover {
+.root:hover {
     color: value(color_Hover);
 }
 
-.a.disabled, .a[disabled] {
+.root.disabled, .root[disabled] {
     color: value(color_Disabled);
 }

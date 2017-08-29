@@ -2,18 +2,19 @@
 
 :import {
     -st-from: "../../style/default-theme/variables.st.css";
-    -st-named: color_Default,
+    -st-named: fontFamily,
+               color_Default,
                color_MainText_Background,
                color_MainText,
                color_Hover,
                color_Active,
+               color_Keyboard_Focused,
                inputWidth;
 }
 
 :import {
     -st-from: "../../style/default-theme/controls/input.st.css";
     -st-default: input;
-    -st-named: color_Default, color_MainText_Background, color_MainText, color_Active, color_Hover, color_Keyboard_Focused, fontFamily;
 }
 
 :vars {

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {SBComponent} from 'stylable-react-component';
 import anchorStyle from '../src/style/default-theme/anchor.st.css';
 import buttonStyle from '../src/style/default-theme/controls/button.st.css';
 import inputStyle from '../src/style/default-theme/controls/input.st.css';
@@ -14,8 +15,9 @@ import {SelectionListDemo} from './components/selection-list-demo';
 import {TimePickerDemo} from './components/time-picker-demo';
 import {ToggleDemo} from './components/toggle-demo';
 import {TreeViewDemo} from './components/tree-view-demo';
-import './style.st.css';
+import style from './style.st.css';
 
+@SBComponent(style)
 export class ComponentsDemo extends React.Component {
     public render() {
         return (
@@ -126,11 +128,17 @@ export class ComponentsDemo extends React.Component {
                         <tbody>
                             <tr>
                                 <th>
-                                    <a className={anchorStyle.a} href="http://www.wix.com" target="_blank">Normal</a>
+                                    <a
+                                        className="a"
+                                        href="http://www.wix.com"
+                                        target="_blank"
+                                    >
+                                        Normal
+                                    </a>
                                 </th>
                                 <th>
                                     <a
-                                        className={`${anchorStyle.a} ${anchorStyle.disabled}`}
+                                        className="a disabled"
                                         href="http://www.wix.com"
                                         target="_blank"
                                     >
