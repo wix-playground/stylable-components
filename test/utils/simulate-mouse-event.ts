@@ -27,6 +27,7 @@ export function simulateMouseEvent(
             0,
             null
         );
+        element.dispatchEvent(event);
     } else {
         element.dispatchEvent(new MouseEvent(
             eventType,
