@@ -112,6 +112,7 @@
 }
 .input::selection {
     color: white;
+    -webkit-text-fill-color: currentColor;
     background: value(PR2);
     padding: 2px;
 }
@@ -195,6 +196,9 @@
     transition: opacity 100ms ease;
     float: right;
     opacity: 0;
+}
+.stepper::control {
+    background: transparent;
 }
 .root:focus .stepper,
 .root:hover .stepper {

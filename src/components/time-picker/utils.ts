@@ -25,16 +25,6 @@ export const ampmLabels = {
     [Ampm.NONE]: ''
 };
 
-export const getCircularValue = (name: TimeSegment, value: number, ampm: Ampm): number => {
-    if (name === 'mm') {
-        return (value + 60) % 60;
-    }
-    if (ampm === Ampm.NONE) {
-        return (value + 24) % 24;
-    }
-    return 1 + (value + 11) % 12;
-};
-
 export function formatTimeChunk(num: string | number): string {
     return ('00' + num).slice(-2);
 }
