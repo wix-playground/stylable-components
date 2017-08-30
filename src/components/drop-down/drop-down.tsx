@@ -80,7 +80,6 @@ export class DropDown extends React.Component<DropDownProps, DropDownState> {
 
         return (
             <div
-                data-automation-id="DROP_DOWN"
                 {...rootProps}
                 onKeyDown={this.onKeyDown}
                 tabIndex={this.props.tabIndex}
@@ -94,6 +93,7 @@ export class DropDown extends React.Component<DropDownProps, DropDownState> {
                 <Popup open={!!this.props.open} anchor={this.state.dropdown}>
                     <div className="root">
                         <SelectionList
+                            data-automation-id="DROP_DOWN_LIST"
                             className="drop-down-list"
                             dataSource={this.props.items!.map((item: DropDownItem) => item.label)}
                             value={this.props.selectedItem && this.props.selectedItem.label}
