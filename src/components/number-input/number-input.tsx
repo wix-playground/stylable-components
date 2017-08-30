@@ -139,12 +139,12 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
     }
 
     public render() {
-        const {value, focus, error} = this.state;
+        const {value, focus} = this.state;
         const {
             step, min, max,
             placeholder, name,
             disabled, required,
-            children
+            children, error
         } = this.props;
         const disableIncrement = disabled || (isNumber(value) && value >= max!);
         const disableDecrement = disabled || (isNumber(value) && value <= min!);
@@ -153,8 +153,9 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
         return (
             <div
                 cssStates={{
-                    disabled: Boolean(this.props.disabled),
-                    focus, error
+                    disabled: Boolean(disabled),
+                    error: Boolean(error),
+                    focus
                 }}
                 onFocus={this.handleFocus}
                 onBlur={this.handleBlur}
