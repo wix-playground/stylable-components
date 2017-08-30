@@ -64,6 +64,7 @@ export interface DropDownState {
 export class DropDown extends React.Component<DropDownProps, DropDownState> {
     public static defaultProps: DropDownProps = {
         items: [],
+        onChange: noop,
         onItemClick: () => {},
         onInputClick: () => {},
         tabIndex: 0
