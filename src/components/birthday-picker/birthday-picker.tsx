@@ -1,7 +1,7 @@
 import {autorun, computed, observable, reaction} from 'mobx';
 import {observer} from 'mobx-react';
 import * as React from 'react';
-import {root} from 'wix-react-tools';
+import {properties} from 'wix-react-tools';
 
 export function dateFromYearMonthDay(
     y: string,
@@ -67,15 +67,15 @@ const Select: React.SFC<SelectProps> = props => (
     </select>
 );
 
-export interface BirthdayPickerProps {
+export interface BirthdayPickerProps extends properties.Props {
     value?: Date;
     minDate?: Date;
     maxDate?: Date;
     onChange?: (newValue: Date) => void;
 }
-
 @observer
-export class BirthdayPicker extends React.Component<BirthdayPickerProps, {}> {
+@properties
+export class BirthdayPicker extends React.Component<BirthdayPickerProps> {
     public static defaultProps: BirthdayPickerProps = {
         maxDate: new Date(),
         onChange: () => {}
@@ -119,10 +119,8 @@ export class BirthdayPicker extends React.Component<BirthdayPickerProps, {}> {
     }
 
     public render() {
-        const rootProps = root(this.props, {'data-automation-id': 'BIRTHDAY_PICKER', 'className': ''});
-
         return (
-            <span {...rootProps}>
+            <span data-automation-id="BIRTHDAY_PICKER">
                 <Select
                     automationId="BIRTHDAY_PICKER_DAY"
                     value={this.day}

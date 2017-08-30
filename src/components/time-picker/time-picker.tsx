@@ -1,6 +1,7 @@
 import * as keycode from 'keycode';
 import * as React from 'react';
-import {SBComponent} from 'stylable-react-component';
+import {stylable} from 'wix-react-tools';
+
 import {Stepper} from '../stepper';
 import styles from './time-picker.st.css';
 import {
@@ -51,7 +52,7 @@ function propsValueToSegments(value?: string, format?: Format): {hh?: string, mm
     };
 }
 
-@SBComponent(styles)
+@stylable(styles)
 export class TimePicker extends React.Component<Props, State> {
     public static defaultProps: Partial<Props> = {
         format: is12TimeFormat ? 'ampm' : '24h',
@@ -98,7 +99,7 @@ export class TimePicker extends React.Component<Props, State> {
         return (
             <div
                 data-automation-id="TIME_PICKER"
-                cssStates={{
+                style-state={{
                     focus,
                     disabled: disabled!,
                     empty: !isValueSet
@@ -154,7 +155,7 @@ export class TimePicker extends React.Component<Props, State> {
                         onDown={this.onStepperDown}
                     />
                 }
-                <label className="label" cssStates={{visible: isTouchTimeInputSupported}}>
+                <label className="label" style-state={{visible: isTouchTimeInputSupported}}>
                     <input
                         className="native-input"
                         type="time"

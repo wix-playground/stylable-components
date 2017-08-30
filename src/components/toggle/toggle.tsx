@@ -1,5 +1,6 @@
 import * as React from 'react';
-import {SBComponent} from 'stylable-react-component';
+import {stylable} from 'wix-react-tools';
+
 import style from './toggle.st.css';
 
 export interface Props {
@@ -16,7 +17,7 @@ export interface State {
     focus: boolean;
 }
 
-@SBComponent(style)
+@stylable(style)
 export default class Toggle extends React.Component<Props, State> {
     public static defaultProps = {
         checked: false,
@@ -46,7 +47,7 @@ export default class Toggle extends React.Component<Props, State> {
             <label
                 data-automation-id="TOGGLE"
                 onMouseDown={this.onMouseDown}
-                cssStates={{
+                style-state={{
                     checked: checked!,
                     disabled: disabled!,
                     focus: focus!,

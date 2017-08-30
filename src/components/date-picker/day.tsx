@@ -1,10 +1,9 @@
 import {observer} from 'mobx-react';
 import * as React from 'react';
-import {SBComponent} from 'stylable-react-component';
-import {root} from 'wix-react-tools';
+import {properties, stylable} from 'wix-react-tools';
 import styles from './date-picker.st.css';
 
-export interface DayProps {
+export interface DayProps extends properties.Props {
     day: number;
     selected?: boolean;
     currentDay?: boolean;
@@ -14,26 +13,21 @@ export interface DayProps {
     onSelect?(day: number): void;
 }
 
-@SBComponent(styles)
 @observer
+@properties
+@stylable(styles)
 export class Day extends React.Component<DayProps, {}> {
     public render() {
-        const cssStates = {
-            focused: this.props.focused!,
-            selected: this.props.selected!,
-            current: this.props.currentDay!,
-            inactive: this.props.partOfNextMonth! || this.props.partOfPrevMonth!
-        };
-
         return (
             <span
-                {...root(this.props,
-                    {   'data-automation-id': '',
-                        'className': 'calendarItem day'
-                    }) as React.HTMLAttributes<HTMLSpanElement>
-                }
+                className="calendarItem day"
                 onMouseDown={this.onMouseDown}
-                cssStates={cssStates}
+                style-state={{
+                    focused: this.props.focused!,
+                    selected: this.props.selected!,
+                    current: this.props.currentDay!,
+                    inactive: this.props.partOfNextMonth! || this.props.partOfPrevMonth!
+                }}
             >
                 {this.props.day}
             </span>

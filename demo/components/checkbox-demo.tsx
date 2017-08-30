@@ -1,13 +1,13 @@
 import * as React from 'react';
-import {SBComponent} from 'stylable-react-component';
+import {stylable} from 'wix-react-tools';
 import {CheckBox, CheckBoxChangeEvent, CheckBoxIconProps} from '../../src';
 import buttonStyle from '../../src/style/default-theme/controls/button.st.css';
 import style from './checkbox-demo.st.css';
 
-export const demoCheckBoxText: string = 'Yes, I\'m over 18 years old';
+export const demoCheckBoxText: string = `Yes, I'm over 18 years old`;
 
-@SBComponent(style)
-export class CheckBoxDemo extends React.Component<{}, {}> {
+@stylable(style)
+export class CheckBoxDemo extends React.Component {
     public render() {
         return (
             <div>

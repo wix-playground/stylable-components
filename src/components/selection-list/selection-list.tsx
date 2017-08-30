@@ -1,8 +1,7 @@
 import keycode = require('keycode');
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import {SBComponent} from 'stylable-react-component';
-import {root} from 'wix-react-tools';
+import {properties, stylable} from 'wix-react-tools';
 import {clamp} from '../../utils';
 import listStyle from './selection-list.st.css';
 
@@ -36,23 +35,19 @@ export interface OptionProps {
     focused?: boolean;
 }
 
-@SBComponent(listStyle)
+@stylable(listStyle)
 export class Option extends React.Component<OptionProps, {}> {
     public render() {
-        const props = {
-            cssStates: {
-                disabled: this.props.disabled,
-                selected: this.props.selected,
-                focused:  this.props.focused
-            }
-        };
-
         return (
             <div
                 className="item"
                 data-value={this.props.value}
                 data-disabled={this.props.disabled || undefined}
-                {...props as React.HtmlHTMLAttributes<HTMLDivElement>}
+                style-state={{
+                    disabled: this.props.disabled,
+                    selected: this.props.selected,
+                    focused:  this.props.focused
+                }}
             >
                 {this.props.children}
             </div>
@@ -89,11 +84,9 @@ export interface OptionList {
     renderItem?: (item: SelectionItem) => React.ReactNode;
 }
 
-export interface SelectionListProps extends OptionList {
+export interface SelectionListProps extends OptionList, properties.Props {
     value?: string;
     onChange?: (value: string) => void;
-    style?: any;
-    className?: string;
     tabIndex?: number;
 }
 
@@ -102,7 +95,8 @@ export interface SelectionListState {
     focusedValue?: string;
 }
 
-@SBComponent(listStyle)
+@properties
+@stylable(listStyle)
 export class SelectionList extends React.Component<SelectionListProps, SelectionListState> {
     public static defaultProps: SelectionListProps = {
         tabIndex: -1,
@@ -132,16 +126,10 @@ export class SelectionList extends React.Component<SelectionListProps, Selection
 
         this.focusableItemValues = this.getFocusableItemValuesFromChildren(children);
 
-        const rootProps = root(this.props, {
-            className: 'list',
-            cssStates: {
-                focused: this.state.focused
-            }
-        }) as React.HtmlHTMLAttributes<HTMLDivElement>;
-
         return (
             <div
-                {...rootProps}
+                className="list"
+                style-state={{focused: this.state.focused}}
                 data-automation-id="LIST"
                 onClick={this.handleClick}
                 onKeyDown={this.handleKeyDown}

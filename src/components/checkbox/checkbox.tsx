@@ -1,6 +1,5 @@
 import * as React from 'react';
-import {SBComponent} from 'stylable-react-component';
-import {root} from 'wix-react-tools';
+import {properties, stylable} from 'wix-react-tools';
 import {noop} from '../../utils';
 import styles from './checkbox.st.css';
 
@@ -71,7 +70,8 @@ const DefaultIndeterminateSVG: React.SFC<CheckBoxIconProps> = props => {
     );
 };
 
-@SBComponent(styles)
+@properties
+@stylable(styles)
 export class CheckBox extends React.Component<Partial<CheckBoxProps>, CheckBoxState> {
     public static defaultProps: Partial<CheckBoxProps> = {
         boxIcon: DefaultCheckBoxSVG,
@@ -93,23 +93,18 @@ export class CheckBox extends React.Component<Partial<CheckBoxProps>, CheckBoxSt
         const BoxIcon = boxIcon!;
         const IndeterminateIcon = indeterminateIcon!;
         const TickIcon = tickIcon!;
-        const rootProps = root(this.props, {
-            'data-automation-id': 'CHECKBOX_ROOT',
-            'className': 'root'
-        });
-        const cssStates = {
-            checked: value!,
-            disabled: disabled!,
-            readonly: readonly!,
-            indeterminate: indeterminate!,
-            focused: this.state.isFocused
-        };
 
         return (
             <div
-                {...rootProps as React.HTMLAttributes<HTMLDivElement>}
+                data-automation-id="CHECKBOX_ROOT"
                 onClick={this.handleRootClick}
-                cssStates={cssStates}
+                style-state={{
+                    checked: value!,
+                    disabled: disabled!,
+                    readonly: readonly!,
+                    indeterminate: indeterminate!,
+                    focused: this.state.isFocused
+                }}
                 role="checkbox"
                 aria-checked={indeterminate ? 'mixed' : value}
             >
