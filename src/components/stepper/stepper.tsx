@@ -71,8 +71,10 @@ export class Stepper extends React.Component<StepperProps, State> {
                 >
                     <ChevronDownIcon className="control-icon"/>
                 </button>
-                {dragged ? <GlobalEvent event="mousemove" handler={this.handleDrag} /> : null}
-                <GlobalEvent event="mouseup" handler={this.handleDragStop} />
+                <GlobalEvent
+                    mousemove={dragged ? this.handleDrag : undefined}
+                    mouseup={this.handleDragStop}
+                />
             </div>
         );
     }
