@@ -18,7 +18,7 @@ export function simulateTouchEvent(
         {
             touches: [touchObj],
             targetTouches: [],
-            changedTouches: [touchObj],
-        } as any as EventInit
+            changedTouches: [touchObj]
+        } as any as TouchEventInit
     ));
 }
