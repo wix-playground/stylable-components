@@ -2,9 +2,9 @@ import { Component } from 'react';
 
 export type Handler<E>  = (e: E) => void;
 
-export interface Props {
-    click?: Handler<MouseEvent>;
-}
+export type Props = {
+    [E in keyof WindowEventMap]?: Handler<WindowEventMap[E]>
+};
 
 export default class GlobalEvent extends Component<Props> {
 
