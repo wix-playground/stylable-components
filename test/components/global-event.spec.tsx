@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {render, unmountComponentAtNode} from 'react-dom';
 import {expect, sinon} from 'test-drive-react';
-import GlobalEvent from '../../src/common/global-event';
+import GlobalEvent, {Props as GlobalEventProps} from '../../src/common/global-event';
 import WindowStub from '../stubs/window.stub';
 
 describe('<GlobalEvent />', () => {
@@ -16,15 +16,17 @@ describe('<GlobalEvent />', () => {
     });
 
     afterEach(() => windowStub.sandbox.restore());
-    afterEach(() => document.body.removeChild(container));
+    afterEach(() => {
+        unmountComponentAtNode(container);
+        document.body.removeChild(container);
+    });
 
     describe('mount', () => {
         it('should add an event listener on window object when mounted', async () => {
-            const event = 'click';
             const handler = () => {};
 
             render(
-                <GlobalEvent event={event} handler={handler} />,
+                <GlobalEvent click={handler} />,
                 container
             );
 
@@ -34,11 +36,10 @@ describe('<GlobalEvent />', () => {
 
     describe('unmount', () => {
         it('should remove an event listener on window object when unmounted', async () => {
-            const event = 'click';
             const handler = () => {};
 
             render(
-                <GlobalEvent event={event} handler={handler} />,
+                <GlobalEvent click={handler} />,
                 container
             );
 
@@ -48,53 +49,68 @@ describe('<GlobalEvent />', () => {
         });
     });
 
-    describe('passing event prop', () => {
-        it('should remove listener for old event and add listener to the new one', () => {
-            const originalEvent = 'original.event';
-            const newEvent = 'new.event';
-
-            class Fixture extends React.Component<{}, {event: string, handler: () => void}> {
-
-                public state = {event: originalEvent, handler: () => {}};
-
-                public render() {
-                    const {event, handler} = this.state;
-                    return <GlobalEvent event={event} handler={handler} />;
-                }
+    describe('changing a listener', () => {
+        class Fixture extends React.Component<
+            {listener: GlobalEventProps['click']},
+            {listener: GlobalEventProps['click']}
+        > {
+            constructor({listener}: {listener: EventListener}) {
+                super();
+                this.state = {listener};
             }
+            public render() {
+                const {listener} = this.state;
+                return <GlobalEvent click={listener} />;
+            }
+        }
 
-            const fixture = render(<Fixture />, container) as Fixture;
+        it('should not call a handler after it was unset', () => {
+            const originalListener = sinon.spy();
 
-            fixture.setState({event: newEvent});
+            const fixture = render(
+                <Fixture listener={originalListener} />, container
+            ) as Fixture;
+            fixture.setState({listener: undefined});
 
-            expect(windowStub.removeEventListener).to.have.been.calledWith(originalEvent);
-            expect(windowStub.addEventListener).to.have.been.calledWith(newEvent);
+            windowStub.simulate('click');
+
+            expect(originalListener).not.to.have.been.called;
         });
+
+        it('should call new handler but not the old one', () => {
+            const originalListener = sinon.spy();
+            const newListener = sinon.spy();
+
+            const fixture = render(
+                <Fixture listener={originalListener} />, container
+            ) as Fixture;
+            fixture.setState({listener: newListener});
+
+            windowStub.simulate('click');
+
+            expect(originalListener).not.to.have.been.called;
+            expect(newListener).to.have.been.calledOnce;
+        });
+
     });
 
-    describe('passing handler props', () => {
-        it('should call new handler but not the old one', () => {
-            const originalEvent = 'event';
-            const originalHandler = sinon.spy();
-            const newHandler = sinon.spy();
+    describe('listening to multiple events', () => {
+        it('should call all appropriate handlers', () => {
+            const onMouseDown = sinon.spy();
+            const onMouseMove = sinon.spy();
+            const onMouseUp = sinon.spy();
 
-            class Fixture extends React.Component<{}, {event: string, handler: () => void}> {
+            render(
+                <GlobalEvent mousedown={onMouseDown} mousemove={onMouseMove} mouseup={onMouseUp} />,
+                container
+            );
 
-                public state = {event: originalEvent, handler: originalHandler};
+            windowStub.simulate('mousedown');
+            windowStub.simulate('mousemove');
+            windowStub.simulate('mouseup');
 
-                public render() {
-                    const {event, handler} = this.state;
-                    return <GlobalEvent event={event} handler={handler} />;
-                }
-            }
-
-            const fixture = render(<Fixture />, container) as Fixture;
-            fixture.setState({handler: newHandler});
-
-            windowStub.simulate(originalEvent);
-
-            expect(originalHandler).not.to.have.been.called;
-            expect(newHandler).to.have.been.calledOnce;
+            expect(onMouseDown).to.have.been.calledBefore(onMouseMove);
+            expect(onMouseMove).to.have.been.calledBefore(onMouseUp);
         });
     });
 

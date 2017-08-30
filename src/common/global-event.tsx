@@ -1,41 +1,46 @@
 import { Component } from 'react';
 
-export interface GlobalEventProps {
-    event: string;
-    handler: EventListener;
-}
+export type Props = {
+    [EventName in keyof WindowEventMap]?: (event: WindowEventMap[EventName]) => void;
+};
 
-export default class GlobalEvent extends Component<GlobalEventProps> {
+export default class GlobalEvent extends Component<Props> {
+
+    private emitter = window;
 
     public componentDidMount() {
-        this.subscribe(this.props.event);
+        this.forEachEvent((name, listener) => this.subscribe(name, listener));
     }
 
     public componentWillUnmount() {
-        this.unsubscribe(this.props.event);
+        this.forEachEvent((name, listener) => this.unsubscribe(name, listener));
     }
 
-    public componentWillReceiveProps({event}: GlobalEventProps) {
-        if (event !== this.props.event) {
-            this.unsubscribe(this.props.event);
-            this.subscribe(event);
-        }
+    public componentWillReceiveProps(props: Props) {
+        this.forEachEvent((name, listener) => {
+            if (listener !== props[name]) {
+                this.unsubscribe(name, listener);
+                props[name] && this.subscribe(name, props[name] as EventListener);
+            }
+        });
     }
 
     public render() {
         return null;
     }
 
-    private handler = (e: Event) => {
-        const { handler } = this.props;
-        handler(e);
+    private forEachEvent(fn: (name: keyof Props, listener: EventListener) => void) {
+        (Object
+            .keys(this.props)
+            .filter(name => name !== 'children') as Array<keyof Props>)
+            .forEach(name => fn(name, this.props[name] as EventListener));
     }
 
-    private subscribe(event: string) {
-        window && window.addEventListener(event, this.handler);
+    private subscribe(event: string, listener: EventListener) {
+        this.emitter.addEventListener(event, listener);
     }
 
-    private unsubscribe(event: string) {
-        window && window.removeEventListener(event, this.handler);
+    private unsubscribe(event: string, listener: EventListener) {
+        this.emitter.removeEventListener(event, listener);
     }
 }
