@@ -54,6 +54,7 @@ export class Stepper extends React.Component<StepperProps, State> {
                 onMouseDown={this.handleDragStart}
             >
                 <button
+                    type="button"
                     tabIndex={-1}
                     data-automation-id="STEPPER_INCREMENT"
                     className={`${buttonStyles.root} control up`}
@@ -63,6 +64,7 @@ export class Stepper extends React.Component<StepperProps, State> {
                     <ChevronUpIcon className="control-icon" />
                 </button>
                 <button
+                    type="button"
                     tabIndex={-1}
                     data-automation-id="STEPPER_DECREMENT"
                     className={`${buttonStyles.root} control down`}

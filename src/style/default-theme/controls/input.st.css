@@ -28,13 +28,14 @@
     font-size: value(fontSize);
     font-weight: value(fontWeight);
     line-height: value(lineHeight);
+    margin: 0;
     padding: 6px 12px;
     height: value(inputHeight);
     width: value(inputWidth);
     outline: 0;
 }
 
-.root:placeholder {
+.root::placeholder {
     color: value(color_MainPlaceholder);
 }
 

@@ -1,8 +1,8 @@
-import { codes as KeyCodes} from 'keycode';
+import {codes as KeyCodes} from 'keycode';
 import * as React from 'react';
-import { ClientRenderer, expect, simulate, sinon } from 'test-drive-react';
-import { NumberInput } from '../../src';
-import simulateKeyInput from '../utils/simulate-key-input';
+import {ClientRenderer, expect, simulate, sinon} from 'test-drive-react';
+import {NumberInput} from '../../src';
+import {simulateKeyInput} from '../utils';
 
 function assertCommit(
     input: Element | null,
@@ -24,7 +24,6 @@ describe('<NumberInput />', () => {
         const max = 5;
         const step = 2;
         const name = 'input-name';
-        const required = true;
         const {select, waitForDom} = clientRenderer.render(
             <NumberInput
                 value={value}
@@ -556,42 +555,24 @@ describe('<NumberInput />', () => {
 
     describe('uncontrolled input', () => {
 
-        it('should set the defaultValue property', async () => {
-            const value = 11;
-            const {select, waitForDom} = clientRenderer.render(
-                <NumberInput defaultValue={value} />
-            );
+        describe('defaultValue prop', () => {
 
-            await waitForDom(() => {
-                const numberInput = select('NATIVE_INPUT_NUMBER');
+            it('should set the value of input', async () => {
+                const value = 11;
+                const {select, waitForDom} = clientRenderer.render(
+                    <NumberInput defaultValue={value} />
+                );
 
-                expect(numberInput).to.have.value(String(value));
+                await waitForDom(() => {
+                    const numberInput = select('NATIVE_INPUT_NUMBER');
+
+                    expect(numberInput).to.have.value(String(value));
+                });
             });
-        });
 
-        it('should treat input as a source of thuth', async () => {
-            const initialValue = 1;
-            const newValue = 3;
-            const {select, waitForDom} = clientRenderer.render(
-                <NumberInput defaultValue={initialValue} />
-            );
-
-            await waitForDom(() => {
-                const input = select('NATIVE_INPUT_NUMBER') as HTMLInputElement;
-                const increment = select('STEPPER_INCREMENT');
-
-                input.value = String(newValue);
-
-                simulate.click(increment);
-
-                expect(input).to.have.value(String(newValue + 1));
-            });
-        });
-
-        describe('subsequent sets to defaultValue property', () => {
             it('should only set the value of the input once', async () => {
                 const initialValue = 11;
-                class Fixture extends React.Component<{}, {defaultValue: number}> {
+                class Fixture extends React.Component<{}, { defaultValue: number }> {
 
                     public state = {defaultValue: initialValue};
 
@@ -619,6 +600,48 @@ describe('<NumberInput />', () => {
                     expect(numberInput).to.have.value(String(initialValue));
                 });
             });
+
         });
+
+        describe('treating DOM as the source of truth', () => {
+
+            it('should allow the user to enter values', async () => {
+                const initialValue = 1;
+                const {select, waitForDom} = clientRenderer.render(
+                    <NumberInput defaultValue={initialValue} />
+                );
+
+                await waitForDom(() => {
+                    const input = select('NATIVE_INPUT_NUMBER') as HTMLInputElement;
+
+                    simulateKeyInput(input, '2');
+                    simulateKeyInput(input, '3');
+
+                    expect(input).to.have.value(String(123));
+                });
+            });
+
+            it('should be controlled by stepper correctly', async () => {
+                const initialValue = 1;
+                const newValue = 3;
+                const {select, waitForDom} = clientRenderer.render(
+                    <NumberInput defaultValue={initialValue} />
+                );
+
+                await waitForDom(() => {
+                    const input = select('NATIVE_INPUT_NUMBER') as HTMLInputElement;
+                    const increment = select('STEPPER_INCREMENT');
+
+                    input.value = String(newValue);
+
+                    simulate.click(increment);
+
+                    expect(input).to.have.value(String(newValue + 1));
+
+                });
+            });
+
+        });
+
     });
 });
