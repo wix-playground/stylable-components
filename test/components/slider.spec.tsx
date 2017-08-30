@@ -259,7 +259,7 @@ describe('<Slider />', () => {
             });
         });
 
-        it('should call onChange with value normilized to step', async () => {
+        it('should call onChange with value normalized to step', async () => {
             await waitFor(() => {
                 const element = select('SLIDER');
                 const bounds = element!.getBoundingClientRect();
@@ -278,7 +278,7 @@ describe('<Slider />', () => {
             });
         });
 
-        it('should call onInput with value normilized to step', async () => {
+        it('should call onInput with value normalized to step', async () => {
             await waitFor(() => {
                 const element = select('SLIDER');
                 const bounds = element!.getBoundingClientRect();
@@ -519,7 +519,7 @@ describe('<Slider />', () => {
             });
         });
 
-        it('should call onChange with value normilized to step', async () => {
+        it('should call onChange with value normalized to step', async () => {
             await waitFor(() => {
                 const element = select('SLIDER');
                 const bounds = element!.getBoundingClientRect();
@@ -538,7 +538,7 @@ describe('<Slider />', () => {
             });
         });
 
-        it('should call onInput with value normilized to step', async () => {
+        it('should call onInput with value normalized to step', async () => {
             await waitFor(() => {
                 const element = select('SLIDER');
                 const bounds = element!.getBoundingClientRect();
@@ -764,7 +764,7 @@ describe('<Slider />', () => {
             });
         });
 
-        it('should call onChange with value normilized to step', async () => {
+        it('should call onChange with value normalized to step', async () => {
             await waitFor(() => {
                 const element = select('SLIDER');
                 const bounds = element!.getBoundingClientRect();
@@ -792,7 +792,7 @@ describe('<Slider />', () => {
             });
         });
 
-        it('should call onInput with value normilized to step', async () => {
+        it('should call onInput with value normalized to step', async () => {
             await waitFor(() => {
                 const element = select('SLIDER');
                 const bounds = element!.getBoundingClientRect();
@@ -1549,7 +1549,7 @@ describe('<Slider />', () => {
                 });
             });
 
-            it('should call onChange with value normilized to step', async () => {
+            it('should call onChange with value normalized to step', async () => {
                 await waitFor(() => {
                     const element = select('SLIDER');
                     const bounds = element!.getBoundingClientRect();
@@ -1568,7 +1568,7 @@ describe('<Slider />', () => {
                 });
             });
 
-            it('should call onInput with value normilized to step', async () => {
+            it('should call onInput with value normalized to step', async () => {
                 await waitFor(() => {
                     const element = select('SLIDER');
                     const bounds = element!.getBoundingClientRect();
@@ -1792,7 +1792,7 @@ describe('<Slider />', () => {
                 });
             });
 
-            it('should call onChange with value normilized to step', async () => {
+            it('should call onChange with value normalized to step', async () => {
                 await waitFor(() => {
                     const element = select('SLIDER');
                     const bounds = element!.getBoundingClientRect();
@@ -1819,7 +1819,7 @@ describe('<Slider />', () => {
                 });
             });
 
-            it('should call onInput with value normilized to step', async () => {
+            it('should call onInput with value normalized to step', async () => {
                 await waitFor(() => {
                     const element = select('SLIDER');
                     const bounds = element!.getBoundingClientRect();
@@ -2204,7 +2204,7 @@ describe('<Slider />', () => {
                 });
             });
 
-            it('should call onChange with value normilized to step', async () => {
+            it('should call onChange with value normalized to step', async () => {
                 await waitFor(() => {
                     const element = select('SLIDER');
                     const bounds = element!.getBoundingClientRect();
@@ -2223,7 +2223,7 @@ describe('<Slider />', () => {
                 });
             });
 
-            it('should call onInput with value normilized to step', async () => {
+            it('should call onInput with value normalized to step', async () => {
                 await waitFor(() => {
                     const element = select('SLIDER');
                     const bounds = element!.getBoundingClientRect();
@@ -2451,7 +2451,7 @@ describe('<Slider />', () => {
                 });
             });
 
-            it('should call onChange with value normilized to step', async () => {
+            it('should call onChange with value normalized to step', async () => {
                 await waitFor(() => {
                     const element = select('SLIDER');
                     const bounds = element!.getBoundingClientRect();
@@ -2479,7 +2479,7 @@ describe('<Slider />', () => {
                 });
             });
 
-            it('should call onInput with value normilized to step', async () => {
+            it('should call onInput with value normalized to step', async () => {
                 await waitFor(() => {
                     const element = select('SLIDER');
                     const bounds = element!.getBoundingClientRect();
@@ -2873,7 +2873,7 @@ describe('<Slider />', () => {
                 });
             });
 
-            it('should call onChange with value normilized to step', async () => {
+            it('should call onChange with value normalized to step', async () => {
                 await waitFor(() => {
                     const element = select('SLIDER');
                     const bounds = element!.getBoundingClientRect();
@@ -2892,7 +2892,7 @@ describe('<Slider />', () => {
                 });
             });
 
-            it('should call onInput with value normilized to step', async () => {
+            it('should call onInput with value normalized to step', async () => {
                 await waitFor(() => {
                     const element = select('SLIDER');
                     const bounds = element!.getBoundingClientRect();
@@ -3116,7 +3116,7 @@ describe('<Slider />', () => {
                 });
             });
 
-            it('should call onChange with value normilized to step', async () => {
+            it('should call onChange with value normalized to step', async () => {
                 await waitFor(() => {
                     const element = select('SLIDER');
                     const bounds = element!.getBoundingClientRect();
@@ -3143,7 +3143,7 @@ describe('<Slider />', () => {
                 });
             });
 
-            it('should call onInput with value normilized to step', async () => {
+            it('should call onInput with value normalized to step', async () => {
                 await waitFor(() => {
                     const element = select('SLIDER');
                     const bounds = element!.getBoundingClientRect();
