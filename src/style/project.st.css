@@ -1,4 +1,5 @@
-/* Typography  */
+@namespace "project";
+
 :vars {
     fontFamily: Arial;
     fontSize: 100%;
@@ -6,7 +7,7 @@
     lineHeight: 1.5;
 
     /* Colors from styleguide */
-    BK1: #000000;
+    BK1: color(black, #FFFFFF);
     BK3: #adbbc6;
     DS2: #f1f1f1;
     PR1: #257ade;
@@ -18,8 +19,7 @@
     ER1: #d0011b;
     BK2: #7d8c98;
 
-    /* Other colors */
-    /* TODO: we should not use any of them */
+    /* Other colors - TODO: we should not use any of them  */
     B1: #4990e2;
     B2: #5cb4ff;
     B3: #4990e2;
@@ -70,4 +70,73 @@
     /* TreeView */
     color_treeFocused: value(M4);
     color_treeSelected: value(B3);
+}
+
+/* Typography */
+h1 {
+    color: value(color_MainText);
+    font-size: 32px;
+    line-height: 48px;
+}
+h2 {
+    color: value(color_MainText);
+    font-size: 24px;
+    line-height: 36px;
+}
+h3 {
+    color: value(color_MainText);
+    font-size: 19px;
+    line-height: 28px;
+}
+h4 {
+    color: value(color_MainText);
+    font-size: 16px;
+    line-height: 24px;
+}
+h5 {
+    color: value(color_MainText);
+    font-size: 14px;
+    line-height: 20px;
+}
+h6 {
+    color: value(color_MainText);
+    font-size: 12px;
+    line-height: 18px;
+}
+p {
+    color: value(color_MainText);
+    font-size: 16px;
+    line-height: 24px;
+}
+label {
+    color: value(color_MainPlaceholder);
+    font-size: 16px;
+    line-height: 24px;
+}
+img {
+    display: inline-block;
+    vertical-align: middle;
+}
+textarea {
+    height: auto;
+    min-height: 50px;
+    border-radius: value(borderRadius);
+}
+a {
+    text-decoration: none;
+    user-select: none;
+    color: value(color_Default);
+    outline: 0;
+}
+a:focus {
+    color: value(color_Default);
+}
+a:visited:not(.button):not([disabled]) {
+    color: value(color_Focus);
+}
+a:hover {
+    color: value(color_Hover);
+}
+a.disabled, a[disabled] {
+    color: value(color_Disabled);
 }

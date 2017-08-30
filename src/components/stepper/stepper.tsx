@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {SBStateless} from 'stylable-react-component';
 import {ChevronDownIcon, ChevronUpIcon} from '../../icons';
-import buttonStyles from '../../style/default-theme/controls/button.st.css';
 import {noop} from '../../utils';
 import styles from './stepper.st.css';
 
@@ -25,7 +24,7 @@ export const Stepper: React.StatelessComponent<StepperProps> = SBStateless(
                 type="button"
                 tabIndex={-1}
                 data-automation-id="STEPPER_INCREMENT"
-                className={`${buttonStyles.root} control up`}
+                className="control up"
                 onClick={onUp}
                 disabled={disableUp}
             >
@@ -35,7 +34,7 @@ export const Stepper: React.StatelessComponent<StepperProps> = SBStateless(
                 type="button"
                 tabIndex={-1}
                 data-automation-id="STEPPER_DECREMENT"
-                className={`${buttonStyles.root} control down`}
+                className="control down"
                 onClick={onDown}
                 disabled={disableDown}
             >

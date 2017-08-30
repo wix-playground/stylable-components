@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {SBComponent} from 'stylable-react-component';
 import {CheckBox, CheckBoxChangeEvent, CheckBoxIconProps} from '../../src';
-import buttonStyle from '../../src/style/default-theme/controls/button.st.css';
 import style from './checkbox-demo.st.css';
 
 export const demoCheckBoxText: string = 'Yes, I\'m over 18 years old';
@@ -49,7 +48,7 @@ export class BasicDemo extends React.Component<{}, {value: boolean}> {
                 >
                     <span data-automation-id="BASIC_LABEL" className={style.label}>{demoCheckBoxText}</span>
                 </CheckBox> <br/>
-                <button className={buttonStyle.root} disabled={!this.state.value} data-automation-id="BUTTON_SUBMIT">
+                <button disabled={!this.state.value} data-automation-id="BUTTON_SUBMIT">
                     Proceed
                 </button>
             </div>

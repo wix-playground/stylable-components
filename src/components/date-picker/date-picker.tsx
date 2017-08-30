@@ -2,7 +2,6 @@ import * as keycode from 'keycode';
 import * as React from 'react';
 import {SBComponent} from 'stylable-react-component';
 import {root} from 'wix-react-tools';
-import inputStyles from '../../style/default-theme/controls/input.st.css';
 import {Calendar} from './calendar';
 import styles from './date-picker.st.css';
 
@@ -51,7 +50,7 @@ export class DatePicker extends React.Component<DatePickerProps, DatePickerState
         return (
             <div {...rootProps}>
                 <input
-                    className={inputStyles.root + ' input'}
+                    className="input"
                     onKeyDown={this.onKeyDown}
                     onMouseDown={this.onMouseDown}
                     onBlur={this.onBlur}

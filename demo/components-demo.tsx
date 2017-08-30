@@ -1,4 +1,6 @@
 import * as React from 'react';
+import {SBComponent} from 'stylable-react-component';
+
 import {BirthdayPickerDemo} from './components/birthday-picker-demo';
 import {CheckBoxDemo} from './components/checkbox-demo';
 import {DatePickerDemo} from './components/date-picker-demo';
@@ -10,8 +12,10 @@ import {SelectionListDemo} from './components/selection-list-demo';
 import {TimePickerDemo} from './components/time-picker-demo';
 import {ToggleDemo} from './components/toggle-demo';
 import {TreeViewDemo} from './components/tree-view-demo';
-import './style.st.css';
+import ComponentsDemoCSS from './style.st.css';
 
+
+@SBComponent(ComponentsDemoCSS)
 export class ComponentsDemo extends React.Component {
     public render() {
         return (

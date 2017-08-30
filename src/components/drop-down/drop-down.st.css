@@ -1,3 +1,8 @@
+:import {
+    -st-from: "../selection-list/selection-list.st.css";
+    -st-default: SelectionList;
+}
+
 .root {
     width: auto;
     font-family: Arial, sans-serif;
@@ -10,15 +15,15 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
 
-    .caret {
-        margin-right: 5px;
-        vertical-align: middle;
-    }
+.drop-down-input .caret {
+    margin-right: 5px;
+    vertical-align: middle;
+}
 
-    .label {
-        margin-left: 5px;
-    }
+.drop-down-input .label {
+    margin-left: 5px;
 }
 
 .drop-down-input:hover {
@@ -26,7 +31,7 @@
     border: 1px solid #5cb4ff;
 }
 
-
 .drop-down-list {
-  width: 100%;
+    -st-extends: SelectionList;
+    width: 100%;
 }
