@@ -1,7 +1,9 @@
 import * as React from 'react';
 import {SBComponent, SBStateless} from 'stylable-react-component/dist/stylable-react';
 import {root} from 'wix-react-tools';
+import {Popup} from '../../';
 import {noop} from '../../utils';
+import {CaretDown} from '../drop-down/drop-down-icons';
 import {OptionList, SelectionList} from '../selection-list/selection-list';
 import style from './auto-complete.st.css';
 
@@ -43,10 +45,15 @@ export interface AutoCompleteProps extends React.InputHTMLAttributes<HTMLInputEl
     filter?: FilterPredicate;
 }
 
+export interface AutoCompleteState {
+    isOpen: boolean;
+    input: HTMLInputElement | null;
+}
+
 const prefixFilter: FilterPredicate = (item: string, prefix: string) => item.startsWith(prefix);
 
 @SBComponent(style)
-export class AutoComplete extends React.Component<AutoCompleteProps, {}> {
+export class AutoComplete extends React.Component<AutoCompleteProps, AutoCompleteState> {
     public static defaultProps: AutoCompleteProps = {
         open: false,
         dataSource: [],
@@ -54,6 +61,7 @@ export class AutoComplete extends React.Component<AutoCompleteProps, {}> {
         filter: prefixFilter,
         onChange: noop
     };
+    public state = {input: null, isOpen: this.props.open!};
 
     public render() {
         const rootProps = root(this.props, {
@@ -71,14 +79,22 @@ export class AutoComplete extends React.Component<AutoCompleteProps, {}> {
                     type="text"
                     onChange={this.onChange}
                     value={this.props.value}
+                    ref={this.refCallback}
                 />
-                <AutoCompleteList
-                    open={this.props.open!}
-                    items={filteredItems as string[]}
-                    onChange={this.onClick}
-                />
+                <CaretDown onClick={this.onCaretClick} className="caret" data-automation-id="AUTO_COMPLETE_CARET"/>
+                <Popup anchor={this.state.input} open={this.state.isOpen}>
+                    <AutoCompleteList
+                        open={true}
+                        items={filteredItems as string[]}
+                        onChange={this.onClick}
+                    />
+                </Popup>
             </div>
         );
+    }
+
+    private refCallback = (ref: HTMLInputElement) => {
+        this.setState({input: ref});
     }
 
     private onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -87,5 +103,9 @@ export class AutoComplete extends React.Component<AutoCompleteProps, {}> {
 
     private onClick = (item: string) => {
         this.props.onChange!({value: item});
+    }
+
+    private onCaretClick = () => {
+        this.setState({isOpen: !this.state.isOpen});
     }
 }

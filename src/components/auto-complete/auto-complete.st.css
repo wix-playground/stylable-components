@@ -1,6 +1,7 @@
 .root {
     width: auto;
     font-size: 16px;
+    position: relative;
 }
 
 .auto-complete-input {
@@ -13,6 +14,7 @@
 
 .auto-complete-list {
     -st-extends: List;
+    background: #FFFFFF;
 }
 
 .auto-complete-input:hover {
@@ -22,4 +24,12 @@
 
 .auto-complete-list {
   width: 100%;
+}
+
+.caret {
+    cursor: pointer;
+    position:absolute;
+    top:50%;
+    left: 90%;
+    transform:translateY(-50%);
 }
