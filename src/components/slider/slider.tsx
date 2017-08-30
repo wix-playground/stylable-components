@@ -80,7 +80,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         value: DEFAULT_VALUE,
         axis: DEFAULT_AXIS,
 
-        environment: document,
+        environment: document || new Element(),
 
         onChange: noop,
         onInput: noop,
