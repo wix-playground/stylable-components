@@ -40,6 +40,13 @@ export interface DropDownItem {
 
 export interface DropDownProps {
     open?: boolean;
+    disabled?: boolean;
+    openOnFocus?: boolean;
+    onChange?: (id: string) => void;
+    hideSelected?: boolean;
+    // children?: any;
+    value?: string;
+
     selectedItem?: DropDownItem;
     onInputClick?: () => void;
     items?: DropDownItem[];
