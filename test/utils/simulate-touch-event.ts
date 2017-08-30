@@ -32,7 +32,7 @@ export function simulateTouchEvent(
     if (TouchEvent) {
         touchEventInit.bubbles = true;
         touchEventInit.cancelable = true;
-        event = new TouchEvent(eventType, touchEventInit);
+        // event = new TouchEvent(eventType, touchEventInit);
     } else {
         event = new CustomEvent(eventType, {bubbles: true, cancelable: true});
         Object.keys(touchEventInit)
