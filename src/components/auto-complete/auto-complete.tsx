@@ -1,7 +1,9 @@
 import * as React from 'react';
-import {SBComponent, SBStateless} from 'stylable-react-component/dist/stylable-react';
+import {SBComponent, SBStateless} from 'stylable-react-component';
 import {root} from 'wix-react-tools';
+import {Popup} from '../../';
 import {noop} from '../../utils';
+import {CaretDown} from '../drop-down/drop-down-icons';
 import {OptionList, SelectionList} from '../selection-list/selection-list';
 import style from './auto-complete.st.css';
 
@@ -22,18 +24,18 @@ export interface AutoCompleteChangeEvent extends React.ChangeEvent<HTMLInputElem
 }
 
 export const AutoCompleteList: React.SFC<AutoCompleteListProps> = SBStateless(props => {
-    if (props.open) {
-        return (
-            <div data-automation-id="AUTO_COMPLETE_LIST">
-                <SelectionList
-                    className="auto-complete-list"
-                    dataSource={props.items}
-                    onChange={props.onChange!}
-                />
-            </div>
-        );
+    if (!props.open) {
+        return null;
     }
-    return null;
+    return (
+        <div data-automation-id="AUTO_COMPLETE_LIST">
+            <SelectionList
+                className="auto-complete-list"
+                dataSource={props.items}
+                onChange={props.onChange!}
+            />
+        </div>
+    );
 }, style);
 
 export interface AutoCompleteProps extends React.InputHTMLAttributes<HTMLInputElement>, Partial<OptionList> {
@@ -47,10 +49,15 @@ export interface AutoCompleteProps extends React.InputHTMLAttributes<HTMLInputEl
     noSuggestionsNotice?: string;
 }
 
+export interface AutoCompleteState {
+    isOpen: boolean;
+    input: HTMLInputElement | null;
+}
+
 const prefixFilter: FilterPredicate = (item: string, prefix: string) => item.startsWith(prefix);
 
 @SBComponent(style)
-export class AutoComplete extends React.Component<AutoCompleteProps, {}> {
+export class AutoComplete extends React.Component<AutoCompleteProps, AutoCompleteState> {
     public static defaultProps: AutoCompleteProps = {
         open: false,
         dataSource: [],
@@ -63,12 +70,13 @@ export class AutoComplete extends React.Component<AutoCompleteProps, {}> {
         noSuggestionsNotice: 'No Results',
         disabled: false
     };
+    public state = {input: null, isOpen: this.props.open!};
 
     public render() {
         const rootProps = root(this.props, {
             'data-automation-id': 'AUTO_COMPLETE',
             'className': 'auto-complete'
-        }) as React.HtmlHTMLAttributes<HTMLDivElement>;
+        }) as React.HTMLAttributes<HTMLDivElement>;
         return (
             <div {...rootProps}>
                 <input
@@ -77,15 +85,26 @@ export class AutoComplete extends React.Component<AutoCompleteProps, {}> {
                     type="text"
                     onChange={this.onChange}
                     value={this.props.value}
+                    ref={this.refCallback}
                     disabled={this.props.disabled}
                 />
-                <AutoCompleteList
-                    open={this.props.open! && this.props.value!.length >= this.props.maxCharacters!}
-                    items={this.getFilteredItems()}
-                    onChange={this.onClick}
-                />
+                <CaretDown onClick={this.onCaretClick} className="caret" data-automation-id="AUTO_COMPLETE_CARET"/>
+                <Popup
+                    anchor={this.state.input}
+                    open={this.state.isOpen && this.props.value!.length >= this.props.maxCharacters!}
+                >
+                    <AutoCompleteList
+                        open={true}
+                        items={this.getFilteredItems()}
+                        onChange={this.onClick}
+                    />
+                </Popup>
             </div>
         );
+    }
+
+    private refCallback = (ref: HTMLInputElement) => {
+        this.setState({input: ref});
     }
 
     private onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -93,7 +112,12 @@ export class AutoComplete extends React.Component<AutoCompleteProps, {}> {
     }
 
     private onClick = (item: string) => {
+        this.setState({isOpen: false});
         this.props.onChange!({value: item});
+    }
+
+    private onCaretClick = () => {
+        this.setState({isOpen: !this.state.isOpen});
     }
 
     private getFilteredItems(): string[] {

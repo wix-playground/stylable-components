@@ -8,8 +8,8 @@ import styles from './stepper.st.css';
 export interface StepperProps extends React.HTMLProps<HTMLElement> {
     disableUp?: boolean;
     disableDown?: boolean;
-    onUp?(): void;
-    onDown?(): void;
+    onUp?: React.MouseEventHandler<HTMLButtonElement>;
+    onDown?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 export const Stepper: React.StatelessComponent<StepperProps> = SBStateless(
@@ -22,6 +22,7 @@ export const Stepper: React.StatelessComponent<StepperProps> = SBStateless(
     }) => (
         <div {...props}>
             <button
+                type="button"
                 tabIndex={-1}
                 data-automation-id="STEPPER_INCREMENT"
                 className={`${buttonStyles.root} control up`}
@@ -31,6 +32,7 @@ export const Stepper: React.StatelessComponent<StepperProps> = SBStateless(
                 <ChevronUpIcon className="control-icon" />
             </button>
             <button
+                type="button"
                 tabIndex={-1}
                 data-automation-id="STEPPER_DECREMENT"
                 className={`${buttonStyles.root} control down`}

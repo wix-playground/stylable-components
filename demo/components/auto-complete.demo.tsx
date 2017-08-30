@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {AutoComplete} from '../../src';
+import {AutoComplete, AutoCompleteChangeEvent} from '../../src';
 
 export interface AutoCompleteDemoState {
     open: boolean;
@@ -12,7 +12,7 @@ const items = ['Muffins', 'Pancakes', 'Cupcakes', 'Souffles',
 export class AutoCompleteDemo extends React.Component<{}, AutoCompleteDemoState> {
     public state = {open: true, inputText: ''};
 
-    public onChange = (e: any) => {
+    public onChange = (e: AutoCompleteChangeEvent) => {
         this.setState({
             inputText: e.value
         });
