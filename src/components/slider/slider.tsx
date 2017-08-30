@@ -5,11 +5,12 @@ import {root} from 'wix-react-tools';
 import {environment as dummyEnvironment} from '../../utils/dummy-environment';
 
 export type PointerEvent = MouseEvent | TouchEvent;
+export type Step = number | 'any';
+
 export interface PointerPosition {
     clientX: number;
     clientY: number;
 }
-export type Step = number | 'any';
 
 enum ChangeDirrection {
     ascend,
