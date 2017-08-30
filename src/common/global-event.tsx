@@ -1,9 +1,7 @@
 import { Component } from 'react';
 
-export type Handler<E>  = (e: E) => void;
-
 export type Props = {
-    [E in keyof WindowEventMap]?: Handler<WindowEventMap[E]>
+    [EventName in keyof WindowEventMap]?: (event: WindowEventMap[EventName]) => void;
 };
 
 export default class GlobalEvent extends Component<Props> {
