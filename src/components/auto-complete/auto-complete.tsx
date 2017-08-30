@@ -24,18 +24,18 @@ export interface AutoCompleteChangeEvent extends React.ChangeEvent<HTMLInputElem
 }
 
 export const AutoCompleteList: React.SFC<AutoCompleteListProps> = SBStateless(props => {
-    if (props.open) {
-        return (
-            <div data-automation-id="AUTO_COMPLETE_LIST">
-                <SelectionList
-                    className="auto-complete-list"
-                    dataSource={props.items}
-                    onChange={props.onChange!}
-                />
-            </div>
-        );
+    if (!props.open) {
+        return null;
     }
-    return null;
+    return (
+        <div data-automation-id="AUTO_COMPLETE_LIST">
+            <SelectionList
+                className="auto-complete-list"
+                dataSource={props.items}
+                onChange={props.onChange!}
+            />
+        </div>
+    );
 }, style);
 
 export interface AutoCompleteProps extends React.InputHTMLAttributes<HTMLInputElement>, Partial<OptionList> {
@@ -67,7 +67,7 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
         const rootProps = root(this.props, {
             'data-automation-id': 'AUTO_COMPLETE',
             'className': 'auto-complete'
-        }) as React.HtmlHTMLAttributes<HTMLDivElement>;
+        }) as React.HTMLAttributes<HTMLDivElement>;
         const filteredItems = this.props.value ?
             this.props.dataSource!.filter((item: string) => this.props.filter!(item, this.props.value!)) :
             this.props.dataSource;
