@@ -39,10 +39,16 @@ Sliders are great for adjusting settings that reflect intensity levels (volume, 
 
 ![elements](./assets/elements.png)
 
-**Slider consists of:** ::bar, ::handle, ::progressBar, ::marks and ::progressMarks . The ::handle is dragged across the bar in order to give the slider a desired value. ::progressBar shows range from min value to the current value. ::marks and ::progressMarks are representing the step
+The handle is dragged across the bar in order to give the slider a desired value. progressBar shows range from min value to the current value while marks and ::progressMarks are representing the step. Tooltip is showing the value.
 
-> TBD (need to decide on how to implement tooltip)
-> Also, you can display tooltip (e.g. to display current value) by adding child DOM element with relevant data-slot (data-slot="tooltip")
+**Slider consists of:** 
+
+::bar - represents range from min to max value
+::progressBar - represents range from min value to the current
+::handle - dragged across the bar in order to give the slider a desired value
+::marks - represent step within ::bar section
+::progressMarks - represent step within ::progressBar section
+::tooltip - displays current value
 
 ## API
 
@@ -141,6 +147,21 @@ You can adjust sliders alignment and direction in which the range is going to ch
 4. `axis="y-reverse"` -> vertical slider, progress is moving from top to bottom
 
 
+**Tooltip**
+
+To enable tooltip, set `displayTooltip` prop to `true`. 
+
+Tooltip is shown on: 
+
+1. Hover over the "handle"
+2. Focus over the "handle"
+
+See [sample slider](https://ant.design/components/slider/).
+
+Tooltip is showing on top of slider for both horizontal & vertical alignment.
+
+
+
 #### Validation
 
 | Case                          | Handling          |
@@ -164,17 +185,17 @@ You can adjust sliders alignment and direction in which the range is going to ch
 
 #### Keyboard
 
-| Keys                                          | Action                      |
-| --------------------------------------------- | --------------------------- |
-| up / right arrow key                          | increase value              |
-| left / down arrow key                         | decrease value              |
-| home (fn/ctrl) OR shift + left arrow key      | set min value               |
-| end (fn/ctrl) OR shift + right arrow key      | set max value               |
-| page up (fn/ctrl) OR shift + up arrow key     | increase value by 10        |
-| page down (fn/ctrl) OR shift + down arrow ke  | decrease value by 10        |
-| tab                                           | moves to next element       |
-| shift + tab                                   | moves to previous element   |
-| esc                                           | removes focus (if in focus) |
+| Keys                                     | Action                      |
+| ---------------------------------------- | --------------------------- |
+| up / right arrow key                     | increase value              |
+| left / down arrow key                    | decrease value              |
+| home (fn/ctrl) OR shift + left arrow key | set min value               |
+| end (fn/ctrl) OR shift + right arrow key | set max value               |
+| page up (fn/ctrl) OR shift + up arrow key | increase value by 10        |
+| page down (fn/ctrl) OR shift + down arrow ke | decrease value by 10        |
+| tab                                      | moves to next element       |
+| shift + tab                              | moves to previous element   |
+| esc                                      | removes focus (if in focus) |
 
 **RTL** orientation
 
@@ -201,7 +222,7 @@ You can adjust sliders alignment and direction in which the range is going to ch
 | Event                                  | Action                                   | NOTE                                     |
 | -------------------------------------- | ---------------------------------------- | ---------------------------------------- |
 | tap (on handle)                        | highlights handle                        | we need the ability to expand clickable area for mobile devices |
-| tap (on bar / mark / clickable area)     | moves handle to position where user clicked | -                                        |
+| tap (on bar / mark / clickable area)   | moves handle to position where user clicked | -                                        |
 | tap & drag (right / left OR up / down) | change value according to direction of movement | -                                        |
 
 
