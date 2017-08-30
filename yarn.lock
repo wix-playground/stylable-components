@@ -4864,9 +4864,9 @@ window-size@0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/window-size/-/window-size-0.1.0.tgz#5438cd2ea93b202efa3a19fe8887aee7c94f9c9d"
 
-wix-react-tools@3.0.0-1:
-  version "3.0.0-1"
-  resolved "https://registry.yarnpkg.com/wix-react-tools/-/wix-react-tools-3.0.0-1.tgz#08e9b5f527993b791005cf904e15a1d207081124"
+wix-react-tools@3.0.0-2:
+  version "3.0.0-2"
+  resolved "https://registry.yarnpkg.com/wix-react-tools/-/wix-react-tools-3.0.0-2.tgz#7cecd2a579fce96d1d841cd8a386099517457ef4"
   dependencies:
     fp-ts "^0.4.3"
     ifndef "^0.0.31"
