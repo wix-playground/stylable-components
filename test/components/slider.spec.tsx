@@ -21,7 +21,7 @@ describe('<Slider />', () => {
             waitForDom = rendered.waitForDom;
         });
 
-        it('renders default value on the middle of the track', async () => {
+        it('renders default value on the start of the track', async () => {
             await waitForDom(() => {
                 const element = select('SLIDER-HANDLE');
 
