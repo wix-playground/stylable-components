@@ -1,7 +1,10 @@
 import * as React from 'react';
 import {SBComponent} from 'stylable-react-component';
-import {divider, Option, SelectionList} from '../../src/components/selection-list';
+import {divider, Option, SelectionList} from '../../src/components/selection-list-mobx';
 import demoStyle from './selection-list-demo.st.css';
+
+import {observable} from 'mobx';
+(window as any).observable = observable;
 
 export class SelectionListDemo extends React.Component<{}, {}> {
     public render() {
@@ -18,14 +21,14 @@ export class SelectionListDemo extends React.Component<{}, {}> {
 export class FoodList extends React.Component {
     public state = {value: 'Eggs'};
 
-    private dataSource = [
+    private dataSource = observable([
         'Eggs',
         'Bacon',
         'Sausage',
         divider,
         'Ham',
         {value: 'Spam', label: 'Spam', disabled: true}
-    ];
+    ]);
 
     public render() {
         return (

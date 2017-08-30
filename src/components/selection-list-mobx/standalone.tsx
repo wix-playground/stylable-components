@@ -1,4 +1,6 @@
 import keycode = require('keycode');
+import {autorun, computed, observable} from 'mobx';
+import {observer} from 'mobx-react';
 import React = require('react');
 import {noop} from '../../utils';
 import {ItemValue, Model, OptionList} from './model';
@@ -12,35 +14,38 @@ export interface Props extends OptionList {
     value?: ItemValue;
 }
 
-export interface State {
-    focused: boolean;
-}
-
-export class Standalone extends React.Component<Props, State> {
+@observer
+export class Standalone extends React.Component<Props, {}> {
     public static defaultProps: Props = {
         onChange: noop,
         tabIndex: -1
     };
 
-    public state: State = {
-        focused: false
-    };
+    @computed public get children()   { return this.props.children; }
+    @computed public get dataSource() { return this.props.dataSource; }
+    @computed public get dataSchema() { return this.props.dataSchema; }
+    @computed public get renderItem() { return this.props.renderItem; }
+    @computed public get value()      { return this.props.value; }
 
-    private list: Model;
+    @observable private focused: boolean = false;
+    @observable private list: Model;
 
     public componentWillMount() {
-        this.list = this.createList(this.props);
-    }
-
-    public componentWillReceiveProps(nextProps: Props) {
-        this.list = this.createList(nextProps);
+        autorun(() => {
+            const list = new Model();
+            list.addChildren(this.children);
+            list.addDataSource(this);
+            this.list = list;
+        });
+        autorun(() => this.list.selectedValue = this.value);
+        autorun(() => this.list.focusedValue = this.focused ? this.value : undefined);
     }
 
     public render() {
         return (
             <View
                 className={this.props.className}
-                focused={this.state.focused}
+                focused={this.focused}
                 list={this.list}
                 onBlur={this.handleBlur}
                 onChange={this.props.onChange}
@@ -52,21 +57,12 @@ export class Standalone extends React.Component<Props, State> {
         );
     }
 
-    public createList(props: Props & {children?: React.ReactNode}) {
-        const list = new Model();
-        list.addChildren(props.children);
-        list.addDataSource(props);
-        list.selectedValue = props.value;
-        list.focusedValue = props.value;
-        return list;
-    }
-
     private handleFocus: React.FocusEventHandler<HTMLElement> = event => {
-        this.setState({focused: true});
+        this.focused = true;
     }
 
     private handleBlur: React.FocusEventHandler<HTMLElement> = event => {
-        this.setState({focused: false});
+        this.focused = false;
     }
 
     private handleKeyDown: React.KeyboardEventHandler<HTMLElement> = event => {
@@ -82,25 +78,21 @@ export class Standalone extends React.Component<Props, State> {
             case keycode('up'):
                 event.preventDefault();
                 this.list.focusPrevious();
-                this.forceUpdate();
                 break;
 
             case keycode('down'):
                 event.preventDefault();
                 this.list.focusNext();
-                this.forceUpdate();
                 break;
 
             case keycode('home'):
                 event.preventDefault();
                 this.list.focusFirst();
-                this.forceUpdate();
                 break;
 
             case keycode('end'):
                 event.preventDefault();
                 this.list.focusLast();
-                this.forceUpdate();
                 break;
         }
     }
