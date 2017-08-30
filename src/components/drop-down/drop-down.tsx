@@ -3,6 +3,7 @@ import * as React from 'react';
 import {SBComponent, SBStateless} from 'stylable-react-component';
 import {root} from 'wix-react-tools';
 import {Popup} from '../../../src';
+import {noop} from '../../utils/noop';
 import {SelectionList} from '../selection-list';
 import {CaretDown} from './drop-down-icons';
 import style from './drop-down.st.css';
@@ -57,8 +58,8 @@ export interface DropDownState {
 export class DropDown extends React.Component<DropDownProps, DropDownState> {
     public static defaultProps: DropDownProps = {
         items: [],
-        onItemClick: () => {},
-        onInputClick: () => {},
+        onItemClick: noop,
+        onInputClick: noop,
         tabIndex: 0
     };
 
