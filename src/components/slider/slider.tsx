@@ -30,7 +30,7 @@ const CONTINUOUS_STEP = 'any';
 const DEFAULT_STEP = 1;
 const DEFAULT_MIN = 0;
 const DEFAULT_MAX = 100;
-const DEFAULT_VALUE = 50;
+const DEFAULT_VALUE = DEFAULT_MIN;
 const DEFAULT_AXIS = AXISES.x;
 
 function noop() { }

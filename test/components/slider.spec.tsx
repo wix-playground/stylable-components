@@ -24,7 +24,7 @@ describe('<Slider />', () => {
             await waitForDom(() => {
                 const element = select('SLIDER-HANDLE');
 
-                expect(element!.style.left).to.equal('50%');
+                expect(element!.style.left).to.equal('0%');
             });
         });
 
@@ -32,8 +32,8 @@ describe('<Slider />', () => {
             await waitForDom(() => {
                 const element = select('SLIDER-PROGRESS');
 
-                expect(element).to.be.present();
-                expect(element!.style.width).to.equal('50%');
+                expect(element).not.to.be.null;
+                expect(element!.style.width).to.equal('0%');
             });
         });
 
@@ -41,7 +41,7 @@ describe('<Slider />', () => {
             await waitForDom(() => {
                 const element = select('SLIDER-NATIVE-INPUT');
 
-                expect(element).to.has.value('50');
+                expect(element).to.has.value('0');
             });
         });
     });
