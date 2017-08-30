@@ -16,12 +16,9 @@ export function simulateTouchEvent(
     element.dispatchEvent(new TouchEvent(
         eventType,
         {
-            cancelable: true,
-            bubbles: true,
             touches: [touchObj],
             targetTouches: [],
             changedTouches: [touchObj],
-            shiftKey: Boolean(options.shiftKey)
         } as any as EventInit
     ));
 }
