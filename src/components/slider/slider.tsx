@@ -26,6 +26,8 @@ export type AxisOptions = 'x' | 'y' | 'x-reverse' | 'y-reverse';
 
 import style from './slider.st.css';
 
+const document: Window | Element = window || new Element();
+
 const CONTINUOUS_STEP = 'any';
 const DEFAULT_STEP = 1;
 const DEFAULT_MIN = 0;
@@ -79,7 +81,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         step: DEFAULT_STEP,
         axis: DEFAULT_AXIS,
 
-        environment: document || new Element(),
+        environment: document,
 
         onChange: noop,
         onInput: noop,
