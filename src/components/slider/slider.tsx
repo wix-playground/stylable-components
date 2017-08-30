@@ -26,7 +26,7 @@ export type AxisOptions = 'x' | 'y' | 'x-reverse' | 'y-reverse';
 
 import style from './slider.st.css';
 
-const document: Window | Element = window || new Element();
+const document: Window | Element = typeof window !== 'undefined' ? window : new Element();
 
 const CONTINUOUS_STEP = 'any';
 const DEFAULT_STEP = 1;
