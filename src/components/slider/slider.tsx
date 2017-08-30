@@ -77,7 +77,6 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         min: DEFAULT_MIN,
         max: DEFAULT_MAX,
         step: DEFAULT_STEP,
-        value: DEFAULT_VALUE,
         axis: DEFAULT_AXIS,
 
         environment: document || new Element(),
@@ -104,12 +103,14 @@ export class Slider extends React.Component<SliderProps, SliderState> {
     constructor(props: SliderProps, context?: any) {
         super(props, context);
 
+        const {min, max, step, axis} = this.props;
+
         this.state = {
-            relativeValue: this.getRelativeValue(this.props.value!, this.props.min!, this.props.max!, this.props.step),
-            relativeStep: this.getRelativeStep(props.step, this.props.min!, this.props.max!),
+            relativeValue: this.getRelativeValue(this.getDefaultValue(), min!, max!, step),
+            relativeStep: this.getRelativeStep(step, min!, max!),
             isActive: false,
-            isVertical: this.isVertical(this.props.axis!),
-            isReverse: this.isReverse(this.props.axis!)
+            isVertical: this.isVertical(axis!),
+            isReverse: this.isReverse(axis!)
         };
     }
 
@@ -233,6 +234,13 @@ export class Slider extends React.Component<SliderProps, SliderState> {
             isVertical: this.isVertical(nextProps.axis || this.props.axis!),
             isReverse: this.isReverse(nextProps.axis || this.props.axis!)
         });
+    }
+
+    private getDefaultValue() {
+        const {value, min} = this.props;
+        return typeof value === 'undefined' ?
+            (typeof min !== 'undefined' ? min : DEFAULT_VALUE) :
+            value;
     }
 
     private getTooltip(): number | string | React.ReactElement<any> | undefined {

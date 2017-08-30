@@ -41,7 +41,51 @@ describe('<Slider />', () => {
             await waitForDom(() => {
                 const element = select('SLIDER-NATIVE-INPUT');
 
-                expect(element).to.has.value('0');
+                expect(element).to.has.value('');
+            });
+        });
+    });
+
+    describe('with min and max and no value', () => {
+        const min = -10;
+        const max = 10;
+
+        let select: (automationId: string) => HTMLElement | null;
+        let waitForDom: (expectation: () => void) => Promise<void>;
+
+        beforeEach(() => {
+            const rendered = clientRenderer.render(
+                <Slider
+                    min={min}
+                    max={max}
+                />
+            );
+            select = rendered.select;
+            waitForDom = rendered.waitForDom;
+        });
+
+        it('renders handle on the right place', async () => {
+            await waitForDom(() => {
+                const element = select('SLIDER-HANDLE');
+
+                expect(element!.style.left).to.equal('0%');
+            });
+        });
+
+        it('renders progress bar with the right width', async () => {
+            await waitForDom(() => {
+                const element = select('SLIDER-PROGRESS');
+
+                expect(element).not.to.be.present();
+                expect(element!.style.width).to.equal('0%');
+            });
+        });
+
+        it('renders invisible native input with right value', async () => {
+            await waitForDom(() => {
+                const element = select('SLIDER-NATIVE-INPUT');
+
+                expect(element).to.has.value('');
             });
         });
     });
