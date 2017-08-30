@@ -7,17 +7,11 @@ export function simulateTouchEvent(
         shiftKey?: boolean
     }
 ): void {
-    const TouchConstructor: any = Touch;
-    const touchObj = new TouchConstructor({
-        identifier: Date.now(),
+    const touchObj = {
         target: element,
         clientX: options.x,
-        clientY: options.y,
-        radiusX: 2.5,
-        radiusY: 2.5,
-        rotationAngle: 10,
-        force: 0.5
-    });
+        clientY: options.y
+    };
 
     element.dispatchEvent(new TouchEvent(
         eventType,
