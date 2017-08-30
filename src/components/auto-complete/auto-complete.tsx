@@ -102,6 +102,7 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
     }
 
     private onClick = (item: string) => {
+        this.setState({isOpen: false});
         this.props.onChange!({value: item});
     }
 

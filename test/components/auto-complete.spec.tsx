@@ -66,7 +66,7 @@ describe('<AutoComplete />', () => {
         await waitFor(() => expect(bodySelect(list, 'LIST')!.children[0].innerHTML).to.be.equal('Muffins'));
     });
 
-    it('invokes the onChange when an option is clicked', async () => {
+    it('invokes the onChange when an option is clicked and closes the popup', async () => {
         const onChange = sinon.spy();
         clientRenderer.render(
             <AutoComplete open dataSource={['Cat', 'Dog']} onChange={onChange}/>
@@ -77,6 +77,7 @@ describe('<AutoComplete />', () => {
         await waitFor(() => {
             expect(onChange).to.have.been.calledOnce;
             expect(onChange).to.have.been.calledWithMatch({value: 'Cat'});
+            expect(bodySelect(list)).to.be.absent();
         });
     });
 
