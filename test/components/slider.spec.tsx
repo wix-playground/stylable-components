@@ -4,6 +4,7 @@ import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react
 import {Slider} from '../../src/components/slider';
 import {simulateMouseEvent, simulateTouchEvent} from '../utils';
 const hasTouchSupport = window && ('ontouchstart' in window);
+import {environment} from '../../src/utils/dummy-environment';
 
 describe('<Slider />', () => {
     const clientRenderer = new ClientRenderer();
@@ -194,10 +195,8 @@ describe('<Slider />', () => {
         let onInput: (value: string) => void;
         let select: (automationId: string) => HTMLElement | null;
         let waitForDom: (expectation: () => void) => Promise<void>;
-        let environment: Element;
 
         beforeEach(() => {
-            environment = document.createElement('body');
             onChange = sinon.spy();
             onInput = sinon.spy();
 
@@ -366,10 +365,8 @@ describe('<Slider />', () => {
         let onInput: (value: string) => void;
         let select: (automationId: string) => HTMLElement | null;
         let waitForDom: (expectation: () => void) => Promise<void>;
-        let environment: Element;
 
         beforeEach(() => {
-            environment = document.createElement('body');
             onChange = sinon.spy();
             onInput = sinon.spy();
             const rendered = clientRenderer.render(
@@ -458,10 +455,8 @@ describe('<Slider />', () => {
         let onInput: (value: string) => void;
         let select: (automationId: string) => HTMLElement | null;
         let waitForDom: (expectation: () => void) => Promise<void>;
-        let environment: Element;
 
         beforeEach(() => {
-            environment = document.createElement('body');
             onChange = sinon.spy();
             onInput = sinon.spy();
 
@@ -578,14 +573,12 @@ describe('<Slider />', () => {
         let onInput: (value: string) => void;
         let select: (automationId: string) => HTMLElement | null;
         let waitForDom: (expectation: () => void) => Promise<void>;
-        let environment: Element;
 
         beforeEach(function() {
             if (!hasTouchSupport) {
                 this.skip();
             }
 
-            environment = document.createElement('body');
             onChange = sinon.spy();
             onInput = sinon.spy();
             const rendered = clientRenderer.render(
@@ -699,14 +692,12 @@ describe('<Slider />', () => {
         let onInput: (value: string) => void;
         let select: (automationId: string) => HTMLElement | null;
         let waitForDom: (expectation: () => void) => Promise<void>;
-        let environment: Element;
 
         beforeEach(function() {
             if (!hasTouchSupport) {
                 this.skip();
             }
 
-            environment = document.createElement('body');
             onChange = sinon.spy();
             onInput = sinon.spy();
 
@@ -848,10 +839,8 @@ describe('<Slider />', () => {
         let onInput: (value: string) => void;
         let select: (automationId: string) => HTMLElement | null;
         let waitForDom: (expectation: () => void) => Promise<void>;
-        let environment: Element;
 
         beforeEach(() => {
-            environment = document.createElement('body');
             onChange = sinon.spy();
             onInput = sinon.spy();
             const rendered = clientRenderer.render(
@@ -1004,10 +993,8 @@ describe('<Slider />', () => {
         let onInput: (value: string) => void;
         let select: (automationId: string) => HTMLElement | null;
         let waitForDom: (expectation: () => void) => Promise<void>;
-        let environment: Element;
 
         beforeEach(() => {
-            environment = document.createElement('body');
             onChange = sinon.spy();
             onInput = sinon.spy();
             const rendered = clientRenderer.render(
@@ -1406,10 +1393,8 @@ describe('<Slider />', () => {
             let onInput: (value: string) => void;
             let select: (automationId: string) => HTMLElement | null;
             let waitForDom: (expectation: () => void) => Promise<void>;
-            let environment: Element;
 
             beforeEach(() => {
-                environment = document.createElement('body');
                 onChange = sinon.spy();
                 onInput = sinon.spy();
                 const rendered = clientRenderer.render(
@@ -1499,10 +1484,8 @@ describe('<Slider />', () => {
             let onInput: (value: string) => void;
             let select: (automationId: string) => HTMLElement | null;
             let waitForDom: (expectation: () => void) => Promise<void>;
-            let environment: Element;
 
             beforeEach(() => {
-                environment = document.createElement('body');
                 onChange = sinon.spy();
                 onInput = sinon.spy();
 
@@ -1620,14 +1603,12 @@ describe('<Slider />', () => {
             let onInput: (value: string) => void;
             let select: (automationId: string) => HTMLElement | null;
             let waitForDom: (expectation: () => void) => Promise<void>;
-            let environment: Element;
 
             beforeEach(function() {
                 if (!hasTouchSupport) {
                     this.skip();
                 }
 
-                environment = document.createElement('body');
                 onChange = sinon.spy();
                 onInput = sinon.spy();
                 const rendered = clientRenderer.render(
@@ -1739,14 +1720,12 @@ describe('<Slider />', () => {
             let onInput: (value: string) => void;
             let select: (automationId: string) => HTMLElement | null;
             let waitForDom: (expectation: () => void) => Promise<void>;
-            let environment: Element;
 
             beforeEach(function() {
                 if (!hasTouchSupport) {
                     this.skip();
                 }
 
-                environment = document.createElement('body');
                 onChange = sinon.spy();
                 onInput = sinon.spy();
 
@@ -1886,10 +1865,8 @@ describe('<Slider />', () => {
             let onInput: (value: string) => void;
             let select: (automationId: string) => HTMLElement | null;
             let waitForDom: (expectation: () => void) => Promise<void>;
-            let environment: Element;
 
             beforeEach(() => {
-                environment = document.createElement('body');
                 onChange = sinon.spy();
                 onInput = sinon.spy();
                 const rendered = clientRenderer.render(
@@ -2071,10 +2048,8 @@ describe('<Slider />', () => {
             let onInput: (value: string) => void;
             let select: (automationId: string) => HTMLElement | null;
             let waitForDom: (expectation: () => void) => Promise<void>;
-            let environment: Element;
 
             beforeEach(() => {
-                environment = document.createElement('body');
                 onChange = sinon.spy();
                 onInput = sinon.spy();
                 const rendered = clientRenderer.render(
@@ -2164,10 +2139,8 @@ describe('<Slider />', () => {
             let onInput: (value: string) => void;
             let select: (automationId: string) => HTMLElement | null;
             let waitForDom: (expectation: () => void) => Promise<void>;
-            let environment: Element;
 
             beforeEach(() => {
-                environment = document.createElement('body');
                 onChange = sinon.spy();
                 onInput = sinon.spy();
 
@@ -2285,14 +2258,12 @@ describe('<Slider />', () => {
             let onInput: (value: string) => void;
             let select: (automationId: string) => HTMLElement | null;
             let waitForDom: (expectation: () => void) => Promise<void>;
-            let environment: Element;
 
             beforeEach(function() {
                 if (!hasTouchSupport) {
                     this.skip();
                 }
 
-                environment = document.createElement('body');
                 onChange = sinon.spy();
                 onInput = sinon.spy();
                 const rendered = clientRenderer.render(
@@ -2407,14 +2378,12 @@ describe('<Slider />', () => {
             let onInput: (value: string) => void;
             let select: (automationId: string) => HTMLElement | null;
             let waitForDom: (expectation: () => void) => Promise<void>;
-            let environment: Element;
 
             beforeEach(function() {
                 if (!hasTouchSupport) {
                     this.skip();
                 }
 
-                environment = document.createElement('body');
                 onChange = sinon.spy();
                 onInput = sinon.spy();
 
@@ -2557,10 +2526,8 @@ describe('<Slider />', () => {
             let onInput: (value: string) => void;
             let select: (automationId: string) => HTMLElement | null;
             let waitForDom: (expectation: () => void) => Promise<void>;
-            let environment: Element;
 
             beforeEach(() => {
-                environment = document.createElement('body');
                 onChange = sinon.spy();
                 onInput = sinon.spy();
                 const rendered = clientRenderer.render(
@@ -2750,10 +2717,8 @@ describe('<Slider />', () => {
             let onInput: (value: string) => void;
             let select: (automationId: string) => HTMLElement | null;
             let waitForDom: (expectation: () => void) => Promise<void>;
-            let environment: Element;
 
             beforeEach(() => {
-                environment = document.createElement('body');
                 onChange = sinon.spy();
                 onInput = sinon.spy();
                 const rendered = clientRenderer.render(
@@ -2843,10 +2808,8 @@ describe('<Slider />', () => {
             let onInput: (value: string) => void;
             let select: (automationId: string) => HTMLElement | null;
             let waitForDom: (expectation: () => void) => Promise<void>;
-            let environment: Element;
 
             beforeEach(() => {
-                environment = document.createElement('body');
                 onChange = sinon.spy();
                 onInput = sinon.spy();
 
@@ -2964,14 +2927,12 @@ describe('<Slider />', () => {
             let onInput: (value: string) => void;
             let select: (automationId: string) => HTMLElement | null;
             let waitForDom: (expectation: () => void) => Promise<void>;
-            let environment: Element;
 
             beforeEach(function() {
                 if (!hasTouchSupport) {
                     this.skip();
                 }
 
-                environment = document.createElement('body');
                 onChange = sinon.spy();
                 onInput = sinon.spy();
                 const rendered = clientRenderer.render(
@@ -3083,14 +3044,12 @@ describe('<Slider />', () => {
             let onInput: (value: string) => void;
             let select: (automationId: string) => HTMLElement | null;
             let waitForDom: (expectation: () => void) => Promise<void>;
-            let environment: Element;
 
             beforeEach(function() {
                 if (!hasTouchSupport) {
                     this.skip();
                 }
 
-                environment = document.createElement('body');
                 onChange = sinon.spy();
                 onInput = sinon.spy();
 
@@ -3230,10 +3189,8 @@ describe('<Slider />', () => {
             let onInput: (value: string) => void;
             let select: (automationId: string) => HTMLElement | null;
             let waitForDom: (expectation: () => void) => Promise<void>;
-            let environment: Element;
 
             beforeEach(() => {
-                environment = document.createElement('body');
                 onChange = sinon.spy();
                 onInput = sinon.spy();
                 const rendered = clientRenderer.render(

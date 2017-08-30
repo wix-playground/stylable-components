@@ -4,7 +4,7 @@ export interface Options {
 }
 
 export function simulateMouseEvent(
-    element: Element,
+    element: any,
     eventType: string,
     options?: Options
 ): void {

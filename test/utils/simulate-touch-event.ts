@@ -1,5 +1,5 @@
 export function simulateTouchEvent(
-    element: Element,
+    element: any,
     eventType: string,
     options: {
         x: number,

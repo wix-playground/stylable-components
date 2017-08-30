@@ -2,6 +2,7 @@ import * as keycode from 'keycode';
 import * as React from 'react';
 import {SBComponent} from 'stylable-react-component';
 import {root} from 'wix-react-tools';
+import {environment as dummyEnvironment} from '../../utils/dummy-environment';
 
 export type PointerEvent = MouseEvent | TouchEvent;
 export interface PointerPosition {
@@ -52,7 +53,7 @@ export interface SliderProps {
     required?: boolean;
     error?: boolean;
 
-    environment?: Element;
+    environment?: any;
 
     onChange?(value: number): void;
     onInput?(value: string): void;
@@ -81,7 +82,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         step: DEFAULT_STEP,
         axis: DEFAULT_AXIS,
 
-        environment: document,
+        environment: typeof document === 'undefined' ? dummyEnvironment : document,
 
         onChange: noop,
         onInput: noop,
