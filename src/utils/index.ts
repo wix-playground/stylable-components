@@ -4,3 +4,4 @@ export * from './noop';
 export * from './transparent-image';
 export * from './date-helpers';
 export * from './is-touch';
+export * from './notify-screen-reader';

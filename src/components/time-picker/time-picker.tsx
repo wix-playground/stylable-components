@@ -1,6 +1,7 @@
 import * as keycode from 'keycode';
 import * as React from 'react';
 import {SBComponent} from 'stylable-react-component';
+import {notifyScreenReader} from '../../utils';
 import {Stepper} from '../stepper';
 import styles from './time-picker.st.css';
 import {
@@ -34,6 +35,11 @@ const ampmSwitch = {
     [Ampm.NONE]: Ampm.NONE
 };
 const segments: Segment[] = ['hh', 'mm', 'ampm'];
+const helpLabels = {
+    hh: 'Hours',
+    mm: 'Minutes',
+    ampm: 'AM/PM'
+};
 
 function propsValueToSegments(value?: string, format?: Format): {hh?: string, mm?: string, ampm: Ampm} {
     const isAmpm = format === 'ampm';
@@ -117,6 +123,11 @@ export class TimePicker extends React.Component<Props, State> {
                             placeholder={this.state[segment] ? '' : '00'}
                             disabled={disabled}
                             name={segment}
+
+                            role="spinbutton"
+                            aria-label={helpLabels[segment]}
+                            aria-valuetext={this.state[segment]}
+
                             onMouseDown={this.onInputMouseDown}
                             onChange={this.onInputChange}
                             onFocus={this.onInputFocus}
@@ -132,6 +143,11 @@ export class TimePicker extends React.Component<Props, State> {
                         ref={elem => this.segments.ampm = elem}
                         tabIndex={disabled || isTouchTimeInputSupported ? -1 : 0}
                         children={ampmLabels[ampm]}
+
+                        role="spinbutton"
+                        aria-label={helpLabels.ampm}
+                        aria-valuetext={ampmLabels[ampm]}
+
                         onMouseDown={this.onAmpmMouseDown}
                         onFocus={this.onAmpmFocus}
                         onBlur={this.onBlur}
@@ -209,6 +225,7 @@ export class TimePicker extends React.Component<Props, State> {
             if (isTimeSegment(name)) {
                 this.select(name);
             }
+            notifyScreenReader(this.getValue());
             this.commit();
         });
     }
@@ -252,6 +269,7 @@ export class TimePicker extends React.Component<Props, State> {
             mm: formatTimeChunk(mm),
             ampm
         }, () => {
+            notifyScreenReader(this.getValue());
             this.select(currentSegment);
             this.commit();
         });
