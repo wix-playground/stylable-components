@@ -6,8 +6,6 @@ export type Props = {
 
 export default class GlobalEvent extends Component<Props> {
 
-    private emitter = window;
-
     public componentDidMount() {
         this.forEachEvent((name, listener) => this.subscribe(name, listener));
     }
@@ -37,10 +35,10 @@ export default class GlobalEvent extends Component<Props> {
     }
 
     private subscribe(event: string, listener: EventListener) {
-        this.emitter.addEventListener(event, listener);
+        window && window.addEventListener(event, listener);
     }
 
     private unsubscribe(event: string, listener: EventListener) {
-        this.emitter.removeEventListener(event, listener);
+        window && window.removeEventListener(event, listener);
     }
 }
