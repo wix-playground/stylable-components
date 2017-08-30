@@ -82,7 +82,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         step: DEFAULT_STEP,
         axis: DEFAULT_AXIS,
 
-        environment: typeof document === 'undefined' ? dummyEnvironment : document,
+        environment: typeof window === 'undefined' ? dummyEnvironment : window,
 
         onChange: noop,
         onInput: noop,
