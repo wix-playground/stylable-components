@@ -1,6 +1,6 @@
 import React = require('react');
 import {SBStateless} from 'stylable-react-component';
-import listStyle from './selection-list.st.css';
+import listStyle from '../selection-list.st.css';
 
 export const divider = Symbol('divider');
 

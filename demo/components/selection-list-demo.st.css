@@ -1,7 +1,7 @@
 @namespace "SelectionListDemo";
 
 :import {
-    -st-from: '../../src/components/selection-list-mobx/selection-list.st.css';
+    -st-from: '../../src/components/selection-list/selection-list.st.css';
     -st-default: List;
 }
 

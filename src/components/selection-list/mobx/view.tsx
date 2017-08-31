@@ -1,9 +1,11 @@
+import {expr} from 'mobx';
+import {observer} from 'mobx-react';
 import React = require('react');
 import {SBComponent} from 'stylable-react-component';
 import {root} from 'wix-react-tools';
-import {noop} from '../../utils';
+import {noop} from '../../../utils';
+import listStyle from '../selection-list.st.css';
 import {Item, ItemValue, Model} from './model';
-import listStyle from './selection-list.st.css';
 
 function closestElementMatching(
     predicate: (element: HTMLElement) => boolean,
@@ -28,6 +30,7 @@ export interface ViewProps {
     tabIndex?: number;
 }
 
+@observer
 @SBComponent(listStyle)
 export class View extends React.Component<ViewProps, {}> {
     public static defaultProps = {
@@ -57,19 +60,11 @@ export class View extends React.Component<ViewProps, {}> {
                 style={this.props.style}
                 tabIndex={this.props.tabIndex}
             >
-                {this.props.list.items.map((item, index) => this.renderItem(item, index))}
+                {this.props.list.items.map((item, index) =>
+                    <ItemWrapper key={index} list={this.props.list} item={item} />
+                )}
             </div>
         );
-    }
-
-    private renderItem({element, selectable, value}: Item, index: number) {
-        return selectable ?
-            React.cloneElement(element, {
-                key: index,
-                selected: selectable && value === this.props.list.selectedValue,
-                focused:  selectable && value === this.props.list.focusedValue
-            }) :
-            React.cloneElement(element, {key: index});
     }
 
     private handleClick: React.MouseEventHandler<HTMLElement> = event => {
@@ -85,5 +80,19 @@ export class View extends React.Component<ViewProps, {}> {
         if (!disabled && value !== undefined && value !== this.props.list.selectedValue) {
             this.props.onChange!(value);
         }
+    }
+}
+
+@observer
+class ItemWrapper extends React.Component<{item: Item, list: Model}, {}> {
+    public render() {
+        const {item, list} = this.props;
+        if (item.selectable) {
+            return React.cloneElement(item.element, {
+                selected: expr(() => item.value === list.selectedValue),
+                focused:  expr(() => item.value === list.focusedValue)
+            });
+        }
+        return item.element;
     }
 }

@@ -1,17 +1,19 @@
+import {observable} from 'mobx';
 import React = require('react');
-import {clamp} from '../../utils/clamp';
+import {clamp} from '../../../utils/clamp';
 import {divider, Divider} from './divider';
 import {Option} from './option';
 
 export type DataSourceItem = string | object | symbol;
-export type ItemValue = string;
-export type ItemData = DataSourceItem | React.ReactElement<any>;
 
 export interface OptionList {
     dataSource?: DataSourceItem[];
     dataSchema?: {};
     renderItem?: (item: DataSourceItem) => React.ReactElement<any> | null;
 }
+
+export type ItemValue = string;
+export type ItemData = DataSourceItem | React.ReactElement<any>;
 
 export interface Item {
     data: ItemData;
@@ -57,8 +59,8 @@ function defaultRenderItem(item: DataSourceItemDefaultFormat): React.ReactElemen
 export class Model {
     public items: Item[] = [];
 
-    public selectedValue: ItemValue | undefined = undefined;
-    public focusedValue: ItemValue | undefined = undefined;
+    @observable public selectedValue: ItemValue | undefined = undefined;
+    @observable public focusedValue: ItemValue | undefined = undefined;
 
     private selectableValues: ItemValue[] = [];
 
@@ -117,18 +119,18 @@ export class Model {
         return this.items.find(item => item.value === value);
     }
 
+    private addItem(item: Item) {
+        this.items.push(item);
+        if (item.selectable) {
+            this.selectableValues.push(item.value);
+        }
+    }
+
     private getFocusedIndex() {
         return this.focusedValue === undefined ? -1 : this.selectableValues.indexOf(this.focusedValue);
     }
 
     private focusIndex(index: number) {
         this.focusedValue = this.selectableValues[clamp(index, 0, this.selectableValues.length - 1)];
-    }
-
-    private addItem(item: Item) {
-        this.items.push(item);
-        if (item.selectable) {
-            this.selectableValues.push(item.value);
-        }
     }
 }

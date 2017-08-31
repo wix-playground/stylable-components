@@ -28,6 +28,7 @@
     color: #000000;
     cursor: pointer;
     user-select: none;
+    box-sizing: border-box;
 }
 
 .item:hover {
