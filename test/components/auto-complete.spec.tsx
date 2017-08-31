@@ -156,6 +156,16 @@ describe('<AutoComplete />', () => {
         await waitFor(() => expect(bodySelect(list, 'LIST')!.children[0].innerHTML).to.equal('Wap Wap'));
     });
 
+    it('renders any given children', async () => {
+        clientRenderer.render(
+            <AutoComplete open>
+                <span data-automation-id="DOG">Meow</span>
+            </AutoComplete>
+        );
+
+        await waitFor(() => expect(bodySelect(list, 'DOG')).to.be.present().and.have.text('Meow'));
+    });
+
     it('disables the autocomplete if the prop is passed', async () => {
         const {select, waitForDom} = clientRenderer.render(<AutoComplete disabled />);
 

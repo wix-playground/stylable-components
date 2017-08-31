@@ -17,6 +17,7 @@ export interface AutoCompleteListProps {
     open: boolean;
     items?: string[];
     onChange?: (item: string) => void;
+    children?: any;
 }
 
 export interface AutoCompleteChangeEvent extends React.ChangeEvent<HTMLInputElement> {
@@ -33,6 +34,7 @@ export const AutoCompleteList: React.SFC<AutoCompleteListProps> = SBStateless(pr
                 className="auto-complete-list"
                 dataSource={props.items}
                 onChange={props.onChange!}
+                children={props.children}
             />
         </div>
     );
@@ -68,7 +70,6 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
         maxSearchResults: 0,
         showNoSuggestions: false,
         noSuggestionsNotice: 'No Results',
-        disabled: false
     };
     public state = {input: null, isOpen: this.props.open!};
 
@@ -97,6 +98,7 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
                         open={true}
                         items={this.getFilteredItems()}
                         onChange={this.onClick}
+                        children={this.props.children}
                     />
                 </Popup>
             </div>
@@ -104,7 +106,9 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
     }
 
     private refCallback = (ref: HTMLInputElement) => {
-        this.setState({input: ref});
+        if (!this.state.input) {
+            this.setState({input: ref});
+        }
     }
 
     private onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
