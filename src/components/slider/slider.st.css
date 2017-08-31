@@ -46,7 +46,7 @@
     handleBorderHover: 1px solid value(PR2);
 
     trackSize: 4px;
-    trackRadius: calc(value(trackSize)/2);
+    trackRadius: 2px;
 
     middleOfBar: -6px;
     middleOfHandle: -8px;
@@ -243,7 +243,7 @@
 .tooltip{
     position: absolute;
     text-align: center;
-    left: calc(50%);
+    left: 50%;
     bottom: 20px;
 }
 .tooltip > *{
