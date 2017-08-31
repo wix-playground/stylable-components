@@ -83,7 +83,7 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
             this.addToChildren(this.addNoSuggestionsMsg()) :
             this.props.children;
         return (
-            <div {...rootProps}>
+            <div {...rootProps} role="combobox">
                 <input
                     className="auto-complete-input"
                     data-automation-id="AUTO_COMPLETE_INPUT"
@@ -92,6 +92,7 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
                     value={this.props.value}
                     ref={this.refCallback}
                     disabled={this.props.disabled}
+                    role="textbox"
                 />
                 <CaretDown onClick={this.onCaretClick} className="caret" data-automation-id="AUTO_COMPLETE_CARET"/>
                 <Popup

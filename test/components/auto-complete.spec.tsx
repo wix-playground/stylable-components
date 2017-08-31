@@ -182,4 +182,13 @@ describe('<AutoComplete />', () => {
 
         await waitForDom(() => expect(select(autoCompInput)).to.have.attribute('disabled'));
     });
+
+    it('gives the correct roles to the components', async () => {
+        const {select, waitForDom} = clientRenderer.render(<AutoComplete />);
+
+        await waitForDom(() => {
+            expect(select(autoCompInput)).to.have.attribute('role', 'textbox');
+            expect(select(autoComp)).to.have.attribute('role', 'combobox');
+        });
+    })
 });
