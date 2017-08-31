@@ -48,7 +48,7 @@ export interface AutoCompleteProps extends React.InputHTMLAttributes<HTMLInputEl
     maxCharacters?: number;
     maxSearchResults?: number;
     showNoSuggestions?: boolean;
-    noSuggestionsNotice?: string;
+    noSuggestionsNotice?: string | React.ReactElement<any>;
 }
 
 export interface AutoCompleteState {
@@ -78,6 +78,10 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
             'data-automation-id': 'AUTO_COMPLETE',
             'className': 'auto-complete'
         }) as React.HTMLAttributes<HTMLDivElement>;
+        const items = this.getFilteredItems();
+        const children = !items.length && this.props.showNoSuggestions ?
+            this.addToChildren(this.addNoSuggestionsMsg()) :
+            this.props.children;
         return (
             <div {...rootProps}>
                 <input
@@ -96,9 +100,9 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
                 >
                     <AutoCompleteList
                         open={true}
-                        items={this.getFilteredItems()}
+                        items={items}
                         onChange={this.onClick}
-                        children={this.props.children}
+                        children={children}
                     />
                 </Popup>
             </div>
@@ -127,9 +131,24 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
     private getFilteredItems(): string[] {
         const items = this.props.dataSource!
             .filter((item: string) => this.props.filter!(item, this.props.value!)) as string[];
-        if (!items.length && this.props.showNoSuggestions) {
-            return [this.props.noSuggestionsNotice!];
-        }
         return this.props.maxSearchResults ? items.slice(0, this.props.maxSearchResults) : items;
+    }
+
+    private addToChildren(elem: React.ReactElement<any>) {
+        if (!this.props.children) {
+            return elem;
+        } else {
+            const children = React.Children.toArray(this.props.children);
+            children.unshift(elem);
+            return children;
+        }
+    }
+
+    private addNoSuggestionsMsg(): React.ReactElement<any> {
+        if (typeof this.props.noSuggestionsNotice === 'string') {
+            return <span>{this.props.noSuggestionsNotice}</span>;
+        } else {
+            return this.props.noSuggestionsNotice!;
+        }
     }
 }

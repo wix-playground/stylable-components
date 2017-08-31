@@ -144,7 +144,7 @@ describe('<AutoComplete />', () => {
 
         await waitFor(() => {
             expect(bodySelect(list)).to.be.present();
-            expect(bodySelect(list, 'LIST')!.children[0].innerHTML).to.equal('No Results');
+            expect(bodySelect(list, 'LIST')!.children[0]).to.have.text('No Results');
         });
     });
 
@@ -153,7 +153,18 @@ describe('<AutoComplete />', () => {
             <AutoComplete noSuggestionsNotice={'Wap Wap'} showNoSuggestions open />
         );
 
-        await waitFor(() => expect(bodySelect(list, 'LIST')!.children[0].innerHTML).to.equal('Wap Wap'));
+        await waitFor(() => expect(bodySelect(list, 'LIST')!.children[0]).to.have.text('Wap Wap'));
+    });
+
+    it('renders the no suggestions func if given', async () => {
+        const elem = <span>Wap Wap Waaaap</span>;
+        clientRenderer.render(<AutoComplete noSuggestionsNotice={elem} showNoSuggestions open />);
+
+        await waitFor(() => {
+            const message = bodySelect(list, 'LIST')!.children[0];
+            expect(message).to.have.text('Wap Wap Waaaap');
+            expect(message).to.be.instanceof(HTMLSpanElement);
+        });
     });
 
     it('renders any given children', async () => {
