@@ -1,10 +1,14 @@
-import {Component} from 'react';
+import { Component } from 'react';
 
 export type Props = {
     [EventName in keyof WindowEventMap]?: (event: WindowEventMap[EventName]) => void;
 };
 
 export default class GlobalEvent extends Component<Props> {
+
+    public shouldComponentUpdate() {
+        return false;
+    }
 
     public componentDidMount() {
         this.forEachEvent((name, listener) => this.subscribe(name, listener));
