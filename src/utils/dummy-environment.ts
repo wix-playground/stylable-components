@@ -1,15 +1,13 @@
-type Listener = EventListener;
+const events: {[P: string]: Set<EventListener>} = {};
 
-const events: {[P: string]: Set<Listener>} = {};
-
-function addEventListener(eventName: 'string', listener: Listener) {
+function addEventListener(eventName: 'string', listener: EventListener) {
     if (!events[eventName]) {
         events[eventName] = new Set();
     }
     events[eventName].add(listener);
 }
 
-function removeEventListener(eventName: 'string', listener: Listener) {
+function removeEventListener(eventName: 'string', listener: EventListener) {
     if (!events[eventName]) {
         return;
     }

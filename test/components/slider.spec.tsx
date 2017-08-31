@@ -909,6 +909,28 @@ describe('<Slider />', () => {
             });
         });
 
+        it('on pressing up key with shift', async () => {
+            simulate.keyDown(select('SLIDER-HANDLE'), {
+                shiftKey: true,
+                keyCode: keycode.codes.up
+            });
+
+            return waitFor(() => {
+                expect(onChange).have.been.calledWith(60);
+            });
+        });
+
+        it('on pressing left key with shift', async () => {
+            simulate.keyDown(select('SLIDER-HANDLE'), {
+                shiftKey: true,
+                keyCode: keycode.codes.left
+            });
+
+            return waitFor(() => {
+                expect(onChange).have.been.calledWith(0);
+            });
+        });
+
         it('on pressing left key', async () => {
             simulate.keyDown(select('SLIDER-HANDLE'), {
                 keyCode: keycode.codes.left
@@ -953,6 +975,28 @@ describe('<Slider />', () => {
         it('on pressing right key with ctrl', async () => {
             simulate.keyDown(select('SLIDER-HANDLE'), {
                 ctrlKey: true,
+                keyCode: keycode.codes.right
+            });
+
+            return waitFor(() => {
+                expect(onChange).have.been.calledWith(100);
+            });
+        });
+
+        it('on pressing down key with shift', async () => {
+            simulate.keyDown(select('SLIDER-HANDLE'), {
+                shiftKey: true,
+                keyCode: keycode.codes.down
+            });
+
+            return waitFor(() => {
+                expect(onChange).have.been.calledWith(40);
+            });
+        });
+
+        it('on pressing right key with shift', async () => {
+            simulate.keyDown(select('SLIDER-HANDLE'), {
+                shiftKey: true,
                 keyCode: keycode.codes.right
             });
 
@@ -1067,6 +1111,28 @@ describe('<Slider />', () => {
             });
         });
 
+        it('on pressing up key with shift', async () => {
+            simulate.keyDown(select('SLIDER-HANDLE'), {
+                shiftKey: true,
+                keyCode: keycode.codes.up
+            });
+
+            return waitFor(() => {
+                expect(onChange).have.been.calledWith(80);
+            });
+        });
+
+        it('on pressing left key with shift', async () => {
+            simulate.keyDown(select('SLIDER-HANDLE'), {
+                shiftKey: true,
+                keyCode: keycode.codes.left
+            });
+
+            return waitFor(() => {
+                expect(onChange).have.been.calledWith(0);
+            });
+        });
+
         it('on pressing left key', async () => {
             simulate.keyDown(select('SLIDER-HANDLE'), {
                 keyCode: keycode.codes.left
@@ -1114,6 +1180,28 @@ describe('<Slider />', () => {
         it('on pressing right key with ctrl', async () => {
             simulate.keyDown(select('SLIDER-HANDLE'), {
                 ctrlKey: true,
+                keyCode: keycode.codes.right
+            });
+
+            return waitFor(() => {
+                expect(onChange).have.been.calledWith(100);
+            });
+        });
+
+        it('on pressing down key with shift', async () => {
+            simulate.keyDown(select('SLIDER-HANDLE'), {
+                shiftKey: true,
+                keyCode: keycode.codes.down
+            });
+
+            return waitFor(() => {
+                expect(onChange).have.been.calledWith(40);
+            });
+        });
+
+        it('on pressing right key with shift', async () => {
+            simulate.keyDown(select('SLIDER-HANDLE'), {
+                shiftKey: true,
                 keyCode: keycode.codes.right
             });
 
@@ -1926,6 +2014,28 @@ describe('<Slider />', () => {
                 });
             });
 
+            it('on pressing up key with shift', async () => {
+                simulate.keyDown(select('SLIDER-HANDLE'), {
+                    shiftKey: true,
+                    keyCode: keycode.codes.up
+                });
+
+                return waitFor(() => {
+                    expect(onChange).have.been.calledWith(60);
+                });
+            });
+
+            it('on pressing left key with shift', async () => {
+                simulate.keyDown(select('SLIDER-HANDLE'), {
+                    shiftKey: true,
+                    keyCode: keycode.codes.left
+                });
+
+                return waitFor(() => {
+                    expect(onChange).have.been.calledWith(0);
+                });
+            });
+
             it('on pressing down key', async () => {
                 simulate.keyDown(select('SLIDER-HANDLE'), {
                     keyCode: keycode.codes.down
@@ -1960,6 +2070,28 @@ describe('<Slider />', () => {
             it('on pressing right key with ctrl', async () => {
                 simulate.keyDown(select('SLIDER-HANDLE'), {
                     ctrlKey: true,
+                    keyCode: keycode.codes.right
+                });
+
+                return waitFor(() => {
+                    expect(onChange).have.been.calledWith(100);
+                });
+            });
+
+            it('on pressing down key with shift', async () => {
+                simulate.keyDown(select('SLIDER-HANDLE'), {
+                    shiftKey: true,
+                    keyCode: keycode.codes.down
+                });
+
+                return waitFor(() => {
+                    expect(onChange).have.been.calledWith(40);
+                });
+            });
+
+            it('on pressing right key with shift', async () => {
+                simulate.keyDown(select('SLIDER-HANDLE'), {
+                    shiftKey: true,
                     keyCode: keycode.codes.right
                 });
 
@@ -2587,6 +2719,28 @@ describe('<Slider />', () => {
                 });
             });
 
+            it('on pressing up key with shift', async () => {
+                simulate.keyDown(select('SLIDER-HANDLE'), {
+                    shiftKey: true,
+                    keyCode: keycode.codes.up
+                });
+
+                return waitFor(() => {
+                    expect(onChange).have.been.calledWith(40);
+                });
+            });
+
+            it('on pressing left key with shift', async () => {
+                simulate.keyDown(select('SLIDER-HANDLE'), {
+                    shiftKey: true,
+                    keyCode: keycode.codes.left
+                });
+
+                return waitFor(() => {
+                    expect(onChange).have.been.calledWith(100);
+                });
+            });
+
             it('on pressing down key', async () => {
                 simulate.keyDown(select('SLIDER-HANDLE'), {
                     keyCode: keycode.codes.down
@@ -2621,6 +2775,28 @@ describe('<Slider />', () => {
             it('on pressing right key with ctrl', async () => {
                 simulate.keyDown(select('SLIDER-HANDLE'), {
                     ctrlKey: true,
+                    keyCode: keycode.codes.right
+                });
+
+                return waitFor(() => {
+                    expect(onChange).have.been.calledWith(0);
+                });
+            });
+
+            it('on pressing down key with shift', async () => {
+                simulate.keyDown(select('SLIDER-HANDLE'), {
+                    shiftKey: true,
+                    keyCode: keycode.codes.down
+                });
+
+                return waitFor(() => {
+                    expect(onChange).have.been.calledWith(60);
+                });
+            });
+
+            it('on pressing right key with shift', async () => {
+                simulate.keyDown(select('SLIDER-HANDLE'), {
+                    shiftKey: true,
                     keyCode: keycode.codes.right
                 });
 
@@ -3250,6 +3426,28 @@ describe('<Slider />', () => {
                 });
             });
 
+            it('on pressing up key with shift', async () => {
+                simulate.keyDown(select('SLIDER-HANDLE'), {
+                    shiftKey: true,
+                    keyCode: keycode.codes.up
+                });
+
+                return waitFor(() => {
+                    expect(onChange).have.been.calledWith(40);
+                });
+            });
+
+            it('on pressing left key with shift', async () => {
+                simulate.keyDown(select('SLIDER-HANDLE'), {
+                    shiftKey: true,
+                    keyCode: keycode.codes.left
+                });
+
+                return waitFor(() => {
+                    expect(onChange).have.been.calledWith(100);
+                });
+            });
+
             it('on pressing down key', async () => {
                 simulate.keyDown(select('SLIDER-HANDLE'), {
                     keyCode: keycode.codes.down
@@ -3284,6 +3482,28 @@ describe('<Slider />', () => {
             it('on pressing right key with ctrl', async () => {
                 simulate.keyDown(select('SLIDER-HANDLE'), {
                     ctrlKey: true,
+                    keyCode: keycode.codes.right
+                });
+
+                return waitFor(() => {
+                    expect(onChange).have.been.calledWith(0);
+                });
+            });
+
+            it('on pressing down key with shift', async () => {
+                simulate.keyDown(select('SLIDER-HANDLE'), {
+                    shiftKey: true,
+                    keyCode: keycode.codes.down
+                });
+
+                return waitFor(() => {
+                    expect(onChange).have.been.calledWith(60);
+                });
+            });
+
+            it('on pressing right key with shift', async () => {
+                simulate.keyDown(select('SLIDER-HANDLE'), {
+                    shiftKey: true,
                     keyCode: keycode.codes.right
                 });
 

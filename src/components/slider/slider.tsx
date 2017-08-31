@@ -541,28 +541,29 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         }
 
         const {isReverse} = this.state;
-        const {ctrlKey} = event;
+        const {ctrlKey, shiftKey} = event;
+        const ctrlOrShiftPressed = shiftKey || ctrlKey;
 
         switch (keycode(event.keyCode)) {
             case 'up':
                 isReverse ?
-                    this.decreaseValue(false, ctrlKey ? 10 : 1) :
-                    this.increaseValue(false, ctrlKey ? 10 : 1);
+                    this.decreaseValue(false, ctrlOrShiftPressed ? 10 : 1) :
+                    this.increaseValue(false, ctrlOrShiftPressed ? 10 : 1);
                 break;
             case 'right':
                 isReverse ?
-                    this.decreaseValue(ctrlKey, 1) :
-                    this.increaseValue(ctrlKey, 1);
+                    this.decreaseValue(ctrlOrShiftPressed, 1) :
+                    this.increaseValue(ctrlOrShiftPressed, 1);
                 break;
             case 'down':
                 isReverse ?
-                    this.increaseValue(false, ctrlKey ? 10 : 1) :
-                    this.decreaseValue(false, ctrlKey ? 10 : 1);
+                    this.increaseValue(false, ctrlOrShiftPressed ? 10 : 1) :
+                    this.decreaseValue(false, ctrlOrShiftPressed ? 10 : 1);
                 break;
             case 'left':
                 isReverse ?
-                    this.increaseValue(ctrlKey, 1) :
-                    this.decreaseValue(ctrlKey, 1);
+                    this.increaseValue(ctrlOrShiftPressed, 1) :
+                    this.decreaseValue(ctrlOrShiftPressed, 1);
                 break;
             case 'home':
                 isReverse ?
