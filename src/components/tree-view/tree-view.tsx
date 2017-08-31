@@ -32,7 +32,6 @@ export interface TreeItemProps {
     onItemClick?: TreeItemEventHandler;
     onIconClick?: TreeItemEventHandler;
     stateMap: TreeStateMap;
-    state: TreeItemState;
 }
 
 export interface TreeViewProps {
@@ -56,7 +55,8 @@ export type ParentsMap = Map<TreeItemData, TreeItemData | undefined>;
 const itemIdPrefix = 'TREE_ITEM';
 
 export const TreeItem: React.SFC<TreeItemProps> =
-    SBStateless(({item, itemRenderer, onItemClick, onIconClick, stateMap, state}) => {
+    SBStateless(({item, itemRenderer, onItemClick, onIconClick, stateMap}) => {
+        const state = stateMap.getItemState(item);
         const itemLabel = item.label.replace(' ', '_');
         const TreeNode = itemRenderer;
         const iconProps = {
@@ -93,7 +93,6 @@ export const TreeItem: React.SFC<TreeItemProps> =
                             itemRenderer={itemRenderer}
                             onIconClick={onIconClick}
                             stateMap={stateMap}
-                            state={stateMap.getItemState(child)}
                             key={`${index}`}
                         />
                     )}
@@ -163,7 +162,6 @@ export class TreeView extends React.Component<TreeViewProps, {}> {
                         itemRenderer={this.props.itemRenderer!}
                         onIconClick={this.onToggleItem}
                         stateMap={this.stateMap}
-                        state={this.stateMap.getItemState(item)}
                         key={`${index}`}
                     />
                 )}
