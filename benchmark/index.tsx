@@ -16,7 +16,9 @@ import {
 
 const useMobx = true;
 const itemCount = 10000;
-const benchmark = selectionChangeBenchmark;
+const benchmark = fullRenderBenchmark;
+const benchmarkCycles = 50;
+const benchmarkWarmupCycles = 10;
 
 class Test {
     public cycles: number = 0;
@@ -78,11 +80,11 @@ document.body.appendChild(rootContainer);
 function fullRenderBenchmark() {
     const dataSource = Array(itemCount).fill(0).map((_, i) => i.toString());
     const focusedValue = 0;
-    const test = new Test({cycles: 20, warmupCycles: 5});
+    const test = new Test({cycles: benchmarkCycles, warmupCycles: benchmarkWarmupCycles});
 
     test.setup = async () => {
         ReactDOM.render(<div />, rootContainer);
-        await sleep(500);
+        await sleep(200);
     };
 
     test.run = async () => {
@@ -90,7 +92,7 @@ function fullRenderBenchmark() {
     };
 
     test.cleanup = async () => {
-        await sleep(500);
+        await sleep(200);
     };
 
     test.start();
@@ -99,7 +101,7 @@ function fullRenderBenchmark() {
 function selectionChangeBenchmark() {
     const dataSource = Array(itemCount).fill(0).map((_, i) => i.toString());
     let focusedValue = 0;
-    const test = new Test({cycles: 20, warmupCycles: 5});
+    const test = new Test({cycles: benchmarkCycles, warmupCycles: benchmarkWarmupCycles});
     ReactDOM.render(<List dataSource={dataSource} focusedValue={focusedValue.toString()} />, rootContainer);
 
     test.setup = async () => {

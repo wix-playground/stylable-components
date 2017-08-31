@@ -31,15 +31,19 @@ export class OptionStylable extends React.PureComponent<OptionProps, {}> {
 }
 
 const state = `data-${listStyle.$stylesheet.namespace}-`;
+const stateDisabled = state + 'disabled';
+const stateSelected = state + 'selected';
+const stateFocused  = state + 'focused';
+
 export class OptionNoStylable extends React.PureComponent<OptionProps, {}> {
     public render() {
         return React.createElement('div', {
             'className': listStyle.item,
             'data-value': this.props.value,
             'data-disabled': this.props.disabled || undefined,
-            [state + 'disabled']: this.props.disabled || undefined,
-            [state + 'selected']: this.props.selected || undefined,
-            [state + 'focused']: this.props.focused || undefined
+            [stateDisabled]: this.props.disabled || undefined,
+            [stateSelected]: this.props.selected || undefined,
+            [stateFocused]:  this.props.focused  || undefined
         }, this.props.children);
     }
 }
