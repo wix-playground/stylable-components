@@ -1,8 +1,10 @@
 import {autorun, computed, observable, reaction} from 'mobx';
 import {observer} from 'mobx-react';
 import * as React from 'react';
-import {root} from 'wix-react-tools';
 import {FormInputProps} from '../../types/forms';
+import {SBComponent} from 'stylable-react-component';
+import {root} from 'wix-react-tools';
+import style from './birthday-picker.st.css';
 
 export function dateFromYearMonthDay(
     y: string,
@@ -73,7 +75,7 @@ export interface BirthdayPickerProps extends FormInputProps<Date> {
     maxDate?: Date;
 }
 
-@observer
+@SBComponent(style) @observer
 export class BirthdayPicker extends React.Component<BirthdayPickerProps, {}> {
     public static defaultProps: Partial<BirthdayPickerProps> = {
         maxDate: new Date(),
