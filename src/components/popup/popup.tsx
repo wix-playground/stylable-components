@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {Portal} from '../../../src';
-import {noop} from '../../utils';
 
 export type VerticalPosition =  'top' | 'center' | 'bottom';
 export type HorizontalPosition = 'left' | 'center' | 'right';
