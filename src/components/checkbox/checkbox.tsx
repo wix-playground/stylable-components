@@ -30,7 +30,7 @@ export interface CheckBoxState {
 const DefaultCheckBoxSVG: React.SFC<CheckBoxIconProps> = props => {
     return (
         <svg
-            className={styles.boxIconDefault}
+            className={styles.boxIcon}
             data-automation-id="CHECKBOX_BOX"
             xmlns="http://www.w3.org/2000/svg"
             focusable="false"
