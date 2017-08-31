@@ -395,7 +395,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
             (isVertical ? relativeValue : 100 - relativeValue) :
             (isVertical ? 100 - relativeValue : relativeValue);
 
-        if (typeof relativeStep === 'undefined' || relativeStep === CONTINUOUS_STEP) {
+        if (relativeStep === undefined || relativeStep === CONTINUOUS_STEP) {
             return relativeValue;
         }
         let value = Math.round(relativeValue / relativeStep) * relativeStep;
