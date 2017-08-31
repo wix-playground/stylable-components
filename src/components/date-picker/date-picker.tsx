@@ -29,7 +29,7 @@ export interface DatePickerState {
 @SBComponent(styles)
 export class DatePicker extends React.Component<DatePickerProps, DatePickerState> {
     public static defaultProps: Partial<DatePickerProps> = {
-        openOnFocus: true,
+        openOnFocus: false,
         onChange: () => {}
     };
 
