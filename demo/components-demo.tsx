@@ -16,9 +16,15 @@ export class ComponentsDemo extends React.Component {
     public render() {
         return (
             <div>
-                <ImageDemo />
+                <div>
+                    <h2>Image</h2>
+                     <ImageDemo />
+                </div>
                 <hr />
-                <DropDownDemo />
+                <div>
+                    <h2>DropDown</h2>
+                    <DropDownDemo />
+                </div>
                 <hr />
                 <div>
                     <h2>CheckBox</h2>
