@@ -2,10 +2,10 @@ import * as keycode from 'keycode';
 import * as React from 'react';
 import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react';
 import {observable} from 'mobx';
-import {TreeViewDemo} from '../../demo/components/tree-view-demo';
+import {TreeViewDemo, TreeViewDemoCustom} from '../../demo/components/tree-view-demo';
 import {TreeItem, TreeView} from '../../src';
 import {getLastAvailableItem, getNextItem, getPreviousItem} from '../../src/components/tree-view//tree-util';
-import {ParentsMap, TreeItemData, TreeItemState, TreeStateMap} from '../../src/components/tree-view/tree-view';
+import {ParentsMap, TreeItemData, TreeStateMap} from '../../src/components/tree-view/tree-view';
 
 const treeView = 'TREE_VIEW';
 const treeItem = 'TREE_ITEM';
@@ -110,11 +110,9 @@ describe('<TreeView />', () => {
     const sampleItem = {label: 'label'};
     const nestedItem: TreeItemData = treeData[0].children![1];
 
-    const state: TreeItemState = {isSelected: false, isExpanded: true, isFocused: false};
-
     const allNodesLabels: string[] = getAllNodeLabels(treeData);
 
-    it('renders a tree view with a few children, clicks ones of them to expand and close', async () => {
+    it('renders a tree view with a few children', async () => {
         const {select, waitForDom} = clientRenderer.render(<TreeViewDemo />);
 
         await waitForDom(() => expect(select(treeView + '_DEMO'), 'demo not present').to.be.present());
@@ -132,6 +130,48 @@ describe('<TreeView />', () => {
 
         selectItemWithLabel(select, allNodesLabels[2]);
         return waitForDom(() => expect(elementToSelect).to.have.attr('data-selected', 'true'));
+    });
+
+    it('renders a tree view with custom children', async () => {
+        const {select, waitForDom} = clientRenderer.render(<TreeViewDemoCustom />);
+
+        await waitForDom(() => expect(select(treeView + '_DEMO_CUSTOM'), 'custom demo not present').to.be.present());
+
+        const nodeChildren = treeData[0].children;
+        await waitForDom(() => expect(select(getTreeItem(nodeChildren![1].label))).to.be.absent());
+
+        expandItemWithLabel(select, treeData[0].label);
+        nodeChildren!.forEach(child => expandItemWithLabel(select, child.label));
+
+        await waitForDom(() => allNodesLabels.forEach(item =>
+            expect(select(treeView + '_DEMO_CUSTOM', getTreeItem(item)),
+                `item did not appear: ${item}`).to.be.present()));
+
+        const elementToSelect = select(treeView + '_DEMO_CUSTOM', getTreeItem(allNodesLabels[2]));
+
+        selectItemWithLabel(select, allNodesLabels[2]);
+        return waitForDom(() => expect(elementToSelect).to.have.attr('data-selected', 'true'));
+    });
+
+    it('ends up in expected state after multiple clicks on same tree node', async () => {
+        const {select, waitForDom} = clientRenderer.render(<TreeViewDemo />);
+
+        expandItemWithLabel(select, allNodesLabels[0]);
+
+        const elementToSelect = select(treeView + '_DEMO', getTreeItemIcon(allNodesLabels[1]));
+        let elementToAssert = select(treeView + '_DEMO', getTreeItem(allNodesLabels[2]));
+
+        await waitForDom(() => expect(elementToSelect).to.be.present());
+        await waitForDom(() => expect(elementToAssert).to.be.absent());
+
+        expandItemWithLabel(select, allNodesLabels[1]);
+
+        elementToAssert = select(treeView + '_DEMO', getTreeItem(allNodesLabels[2]));
+        await waitForDom(() => expect(elementToAssert).to.be.present());
+
+        expandItemWithLabel(select, allNodesLabels[1]);
+
+        return waitForDom(() => expect(elementToAssert).to.be.absent());
     });
 
     describe('Using default renderer', () => {
@@ -409,13 +449,13 @@ describe('<TreeView />', () => {
         describe('<TreeItem />', () => {
 
             const stateMap = new TreeStateMap();
+            stateMap.getItemState(nestedItem).isExpanded = true;
 
             it('renders an item', () => {
                 const {select, waitForDom} = clientRenderer.render(
                     <TreeItem
                         item={sampleItem}
                         itemRenderer={TreeItem}
-                        state={state}
                         stateMap={stateMap}
                     />
                 );
@@ -429,7 +469,6 @@ describe('<TreeView />', () => {
                         <TreeItem
                             item={sampleItem}
                             itemRenderer={TreeItem}
-                            state={state}
                             stateMap={stateMap}
                         />
                     );
@@ -443,7 +482,6 @@ describe('<TreeView />', () => {
                     <TreeItem
                         item={treeData[0]}
                         itemRenderer={TreeItem}
-                        state={state}
                         stateMap={stateMap}
                     />
                 );
@@ -456,7 +494,6 @@ describe('<TreeView />', () => {
                     <TreeItem
                         item={nestedItem}
                         itemRenderer={TreeItem}
-                        state={state}
                         stateMap={stateMap}
                     />
                 );
@@ -473,7 +510,6 @@ describe('<TreeView />', () => {
                         item={sampleItem}
                         itemRenderer={TreeItem}
                         onItemClick={onClick}
-                        state={state}
                         stateMap={stateMap}
                     />
                 );
@@ -525,26 +561,5 @@ describe('<TreeView />', () => {
                 expect(last.label).to.eql(treeData[0].children![2].label);
             });
         });
-    });
-
-    it('ends up in expected state after multiple clicks on same tree node', async () => {
-        const {select, waitForDom} = clientRenderer.render(<TreeViewDemo />);
-
-        expandItemWithLabel(select, allNodesLabels[0]);
-
-        const elementToSelect = select(treeView + '_DEMO', getTreeItemIcon(allNodesLabels[1]));
-        let elementToAssert = select(treeView + '_DEMO', getTreeItem(allNodesLabels[2]));
-
-        await waitForDom(() => expect(elementToSelect).to.be.present());
-        await waitForDom(() => expect(elementToAssert).to.be.absent());
-
-        expandItemWithLabel(select, allNodesLabels[1]);
-
-        elementToAssert = select(treeView + '_DEMO', getTreeItem(allNodesLabels[2]));
-        await waitForDom(() => expect(elementToAssert).to.be.present());
-
-        expandItemWithLabel(select, allNodesLabels[1]);
-
-        return waitForDom(() => expect(elementToAssert).to.be.absent());
     });
 });
