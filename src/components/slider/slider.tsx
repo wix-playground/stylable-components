@@ -46,11 +46,11 @@ export interface SliderProps {
     required?: boolean;
     error?: boolean;
 
+    onFocus?: React.FocusEventHandler<HTMLElement>;
+    onBlur?: React.FocusEventHandler<HTMLElement>;
+
     onChange?(value: number): void;
     onInput?(value: string): void;
-
-    onFocus?(event: React.SyntheticEvent<HTMLElement>): void;
-    onBlur?(event: React.SyntheticEvent<HTMLElement>): void;
 
     onDragStart?(event: PointerEvent): void;
     onDrag?(event: PointerEvent): void;
