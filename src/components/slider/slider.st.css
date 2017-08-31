@@ -1,0 +1,309 @@
+@namespace "Slider";
+
+:import {
+    -st-from: "../../style/default-theme/variables.st.css";
+    -st-named:
+        color_Border,
+        M0,
+        M3,
+        STC5,
+        STC10,
+        STC20;
+}
+
+:vars {
+    trackHeight: 4px;
+
+    colorTrack: value(STC5);
+    colorTrack_Hover: value(STC20);
+    colorProgress: value(M3);
+    colorProgress_Hover: value(M3);
+    colorHandle: value(M0);
+    colorHandleBorder: value(STC20);
+    colorHandle_Hover: value(STC10);
+    colorHandle_Active: value(M3);
+
+    handleMargin: -6px;
+    handleWidth: 16px;
+    handleHeight: 16px;
+    handleRadius: 8px;
+    handleBorder: 1px solid value(STC20);
+    handleBorderHover: 1px solid value(M3);
+}
+
+.native-input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    outline: none;
+}
+
+.root {
+    -st-states: active, disabled, error, x, x-reverse, y, y-reverse;
+    position: relative;
+    display: inline-block;
+}
+
+.root:x {
+    width: 100%;
+}
+
+.root:x-reverse {
+    width: 100%;
+}
+
+.root:y {
+    height: 100%;
+}
+
+.root:y-reverse {
+    height: 100%;
+}
+
+.slider {
+    cursor: pointer;
+    outline: none;
+    user-select: none;
+    pointer-events: inherit;
+    touch-action: none;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    -webkit-touch-callout: none;
+}
+
+.root:x .slider{
+    width: 100%;
+    padding: 15px 0;
+}
+
+.root:x-reverse .slider{
+    width: 100%;
+    padding: 15px 0;
+}
+
+.root:y .slider{
+    min-height: 36px;
+    height: 100%;
+    padding: 0 15px;
+}
+
+.root:y-reverse .slider{
+    min-height: 36px;
+    height: 100%;
+    padding: 0 15px;
+}
+
+.track {
+    position: relative;
+    border-radius: 2px;
+    background-color: #adbbc6;
+}
+
+.root:x .track{
+    height: 4px;
+    width: 100%;
+}
+
+.root:x-reverse .track{
+    height: 4px;
+    width: 100%;
+}
+
+.root:y .track{
+    text-align: left;
+    width: 4px;
+    height: 100%;
+    min-height: 36px;
+}
+
+.root:y-reverse .track{
+    text-align: left;
+    width: 4px;
+    height: 100%;
+    min-height: 36px;
+}
+
+.progress {
+    position: absolute;
+    background-color: #4a90e2;
+    border-radius: 2px;
+}
+
+.root:x .progress{
+    left: 0;
+    height: inherit;
+}
+
+.root:x-reverse .progress{
+    right: 0;
+    height: inherit;
+}
+
+.root:y .progress{
+    bottom: 0;
+    width: inherit;
+}
+
+.root:y-reverse .progress{
+    top: 0;
+    width: inherit;
+}
+
+.handle {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border-radius: 8px;
+    background-color: #ffffff;
+    border: solid 1px #7d8c98;
+    box-sizing: border-box;
+    z-index: 1000;
+}
+
+.root:x .handle{
+    margin: -6px 0 0 -8px;
+}
+
+.root:x-reverse .handle{
+    margin: -6px -8px 0px 0px;
+}
+
+.root:y .handle{
+    margin: 0px 0px -8px -6px;
+}
+
+.root:y-reverse .handle{
+    margin: -8px 0px 0px -6px;
+}
+
+.markProgress,
+.markTrack
+{
+    width: 8px;
+    height: 8px;
+    position: absolute;
+    border-radius: 4px;
+}
+.markProgress{
+    background-color: #4a90e2;
+}
+.markTrack{
+    background-color: #adbbc6;
+}
+
+
+.root:x .markProgress,
+.root:x .markTrack
+{
+    margin: -2px 0 0 -4px;
+}
+
+.root:x-reverse .markProgress,
+.root:x-reverse .markTrack
+{
+    margin: -2px -4px 0 0;
+}
+
+.root:y .markProgress,
+.root:y .markTrack
+{
+    margin: 0 0 -4px -2px;
+}
+
+.root:y-reverse .markProgress,
+.root:y-reverse .markTrack
+{
+    margin: -4px 0 0 -2px;
+}
+
+.tooltip{
+    position: absolute;
+    text-align: center;
+    left: calc(50%);
+    bottom: 20px;
+}
+.tooltip > *{
+    display: inline-block;
+    position: relative;
+    left: calc(-50%);
+}
+
+/* Hover state */
+.slider:hover .track {
+    background-color: #7d8c98;
+}
+
+.slider:hover .markTrack {
+    background-color: #7d8c98;
+}
+
+.slider:hover .handle {
+    background-color: #edf7ff;
+    border: solid 1px #4a90e2;
+}
+
+/* Focus state */
+.handle:focus {
+    -webkit-box-shadow: 0 0 0 4px rgba(92, 180, 255, 0.5);
+    box-shadow: 0 0 0 4px rgba(92, 180, 255, 0.5);
+    outline: none;
+}
+
+/* Active state */
+.root:active .handle,
+.root:active .slider:hover .handle {
+    -webkit-box-shadow: 0 0 0 4px rgba(92, 180, 255, 0.5);
+    box-shadow: 0 0 0 4px rgba(92, 180, 255, 0.5);
+    background-color: #4a90e2;
+}
+
+.root:active .track {
+    background-color: #adbbc6;
+}
+
+.root:active .markTrack {
+    background-color: #adbbc6;
+}
+
+.root:active .progress {
+    background-color: #4a90e2;
+}
+
+/* Disabled state */
+.root:disabled .slider {
+    cursor: not-allowed;
+}
+
+.root:disabled .handle ,
+.root:disabled .slider:hover .handle {
+    -webkit-box-shadow: 0 0 0 0px rgba(92, 180, 255, 0.5);
+    box-shadow: 0 0 0 0px rgba(92, 180, 255, 0.5);
+    border-color: #c8c8c8;
+    background-color: #f1f1f1;
+}
+
+.root:disabled .track ,
+.root:disabled .slider:hover .track {
+    background-color: #c8c8c8;
+}
+
+.root:disabled .markTrack ,
+.root:disabled .slider:hover .markTrack {
+    background-color: #c8c8c8;
+}
+
+.root:disabled .progress {
+    background-color: transparent;
+}
+
+/* Error state */
+.root:error .markProgress,
+.root:error .progress
+{
+    background-color: #e24a4a;
+}
+.root:active:error .handle,
+.root:active:error .slider:hover .handle {
+    background-color: #e24a4a;
+    border-color: #e24a4a;
+}

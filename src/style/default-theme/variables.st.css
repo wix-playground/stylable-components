@@ -27,6 +27,7 @@
     B5: #d1d1d1;
     B6: #f1f1f1;
     B7: #adbbc6;
+    B10: #3899ec;
 
     M1: #000000;
     M2: #577083;
@@ -36,16 +37,23 @@
     M6: #c8c8c8;
     M7: #4a90e2;
     M0: #ffffff;
-
     R1: #d0011b;
 
+    /* Stylable components colors */
+    STC0: #b6b6b6;
+    STC5: #adbbc6;
+    STC10: #edf7ff;
+    STC20: #7d8c98;
+
+    /* Basic colors */
     color_MainText: value(M1); /* Base text color  */
     color_MainPlaceholder: value(M2);
     color_MainError: value(M5);
     color_MainDisabled: value(M6);
     color_MainText_Background: value(M0);
+    color_Border: value(B10);
 
-    /* Component Colors */
+    /* Component state colors */
     color_Default: value(B1);
     color_Hover: value(B2);
     color_Active: value(B3);
@@ -57,7 +65,7 @@
     inputHeight: 36px;
     inputWidth: 192px;
 
-    /* Borders */
+  /* Borders */
     borderRadius: 0px;
     borderWidth: 1px;
     borderStyle: solid;
