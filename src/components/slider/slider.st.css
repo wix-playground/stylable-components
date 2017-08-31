@@ -249,7 +249,7 @@
 .tooltip > *{
     display: inline-block;
     position: relative;
-    left: calc(-50%);
+    left: -50%;
 }
 
 /* Hover state */
