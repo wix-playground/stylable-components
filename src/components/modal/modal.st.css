@@ -6,9 +6,12 @@
     position: fixed;
     top: 0;
     left: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background: rgba(0, 0, 0, 0.15);
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.children {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translateY(-50%) translateX(-50%);
 }

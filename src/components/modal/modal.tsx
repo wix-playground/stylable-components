@@ -26,21 +26,20 @@ export class Modal extends React.PureComponent<ModalProps, {}> {
         this.shouldEnableScrolling(!this.props.isOpen);
     }
 
-    public componentWillReceiveProps(nextProps: ModalProps) {
-        this.shouldEnableScrolling(!nextProps.isOpen);
+    public componentDidUpdate() {
+        this.shouldEnableScrolling(!this.props.isOpen);
     }
 
     public render() {
         const rootProps = root(this.props, {
-            'data-automation-id': '',
-            'className': 'root'
+            className: 'root'
         });
 
         return (
             this.props.isOpen ? (
                 <Portal {...rootProps}>
-                    <div className="backdrop" role="backdrop" data-automation-id="MODAL" onClick={this.onClick}>
-                        <div role="children">
+                    <div className="backdrop" data-slot="backdrop" data-automation-id="MODAL" onClick={this.onClick}>
+                        <div data-slot="children" className="children">
                             {this.props.children}
                         </div>
                     </div>
@@ -52,8 +51,12 @@ export class Modal extends React.PureComponent<ModalProps, {}> {
     private onClick: React.EventHandler<React.MouseEvent<HTMLDivElement>> = event => {
         const closeEvent: RequestCloseEvent = Object.create(event);
         const target: Element = event.target as Element;
-        closeEvent.source = target.getAttribute('role') || '';
+        closeEvent.source = this.getDataFromNearestNode(target);
         this.props.onRequestClose!(closeEvent);
+    }
+
+    private getDataFromNearestNode(target: Element): string {
+        return target.getAttribute('data-slot') || this.getDataFromNearestNode(target.parentElement);
     }
 
     private shouldEnableScrolling(shouldScroll: boolean) {

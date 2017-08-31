@@ -106,7 +106,7 @@ describe('<Modal />', () => {
         await waitFor(() => expect(window.getComputedStyle(document.body).overflow).to.equal('hidden'));
     });
 
-    it('appears centered even when the page is scrolled', async function() {
+    it('appears aligned with the viewport even when the page was scrolled', async function() {
         const scroll = document.createElement('div');
         scroll.style.height = '1000vh';
         scroll.style.width = '1000vw';
@@ -136,12 +136,32 @@ describe('<Modal />', () => {
 
         clientRenderer.render(
             <Modal isOpen={true} onRequestClose={onRequestClose}>
-                <p role="children" data-automation-id="CHILD_1">child 1</p>
+                <p data-slot="child" data-automation-id="CHILD_1">child 1</p>
             </Modal>
         );
 
         simulate.click(bodySelect('CHILD_1'));
 
-        await waitFor(() => expect(onRequestClose.getCall(0)).to.have.been.calledWithMatch({source: 'children'}));
+        await waitFor(() => expect(onRequestClose.getCall(0)).to.have.been.calledWithMatch({source: 'child'}));
+    });
+
+    it('renders the modal to the bottom of the DOM', async function() {
+        const {container} = clientRenderer.render(
+            <Modal isOpen={true}>
+                <p data-automation-id="CHILD_1">child 1</p>
+            </Modal>
+        );
+
+        await waitFor(() => {
+            const modal = bodySelect<HTMLElement>('MODAL')!;
+            const children = bodySelect<HTMLElement>('CHILD_1')!;
+
+            /* tslint:disable:no-bitwise */
+            expect(modal.compareDocumentPosition(children) & Node.DOCUMENT_POSITION_CONTAINED_BY,
+                'children contained in portal').to.equal(Node.DOCUMENT_POSITION_CONTAINED_BY);
+            expect(container.compareDocumentPosition(modal) & Node.DOCUMENT_POSITION_FOLLOWING,
+                'portal is following the app container').to.equal(Node.DOCUMENT_POSITION_FOLLOWING);
+            /* tslint:enable:no-bitwise */
+        });
     });
 });
