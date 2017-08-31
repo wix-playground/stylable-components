@@ -78,7 +78,7 @@ describe('<TreeView />', () => {
 
     const allNodesLabels: string[] = getAllNodeLabels(treeData);
 
-    it('renders a tree view with a few children, clicks ones of them to expand and close', async () => {
+    it('renders a tree view with a few children', async () => {
         const {select, waitForDom} = clientRenderer.render(<TreeViewDemo />);
 
         await waitForDom(() => expect(select(treeView + '_DEMO'), 'demo not present').to.be.present());
@@ -98,7 +98,7 @@ describe('<TreeView />', () => {
         return waitForDom(() => expect(elementToSelect).to.have.attr('data-selected', 'true'));
     });
 
-    it('renders a tree view with custom children, clicks ones of them to expand and close', async () => {
+    it('renders a tree view with custom children', async () => {
         const {select, waitForDom} = clientRenderer.render(<TreeViewDemoCustom />);
 
         await waitForDom(() => expect(select(treeView + '_DEMO_CUSTOM'), 'custom demo not present').to.be.present());
