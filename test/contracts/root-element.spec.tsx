@@ -28,7 +28,7 @@ export function assertRootElementContract(Component: React.ComponentType<any>): 
         return {rootNode: findDOMNode(output.result as React.ReactInstance), ...output};
     }
 
-    function isDisplayLegal(rootNode: Element) {
+    function isDisplayInline(rootNode: Element) {
         const display = window.getComputedStyle(rootNode).display;
         return display === 'inline-block' || display === 'inline-flex';
     }
@@ -68,6 +68,6 @@ export function assertRootElementContract(Component: React.ComponentType<any>): 
 
     it('has display values of \'inline-block\' or \'inline-flex\'', function() {
         const {rootNode} = render(<Component />);
-        expect(isDisplayLegal(rootNode), 'element display is not \'inline-block\' or \'inline-flex\'').to.equal(true);
+        expect(isDisplayInline(rootNode), 'element display is not \'inline-block\' or \'inline-flex\'').to.equal(true);
     });
 }
