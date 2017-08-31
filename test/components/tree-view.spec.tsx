@@ -416,8 +416,8 @@ describe('<TreeView />', () => {
             it('renders the additional item when a new data array is passed', async () => {
                 const {select, waitForDom, result} = clientRenderer.render(<TreeViewWrapper />);
 
-                expandItemWithLabel(select, newTreeData[0].label);
-                expandItemWithLabel(select, newTreeData[0].children![2].label);
+                expandItemWithLabel(select, treeData[0].label);
+                expandItemWithLabel(select, treeData[0].children![2].label);
 
                 await waitForDom(() =>
                     expect(select(treeView, getTreeItem('Kaiserschmarrn'))).to.be.absent());
