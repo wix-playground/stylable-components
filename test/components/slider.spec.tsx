@@ -2,14 +2,26 @@ import * as keycode from 'keycode';
 import * as React from 'react';
 import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react';
 import {Slider} from '../../src/components/slider';
+import {isTouch} from '../../src/utils';
+import WindowStub from '../stubs/window.stub';
 import {simulateMouseEvent, simulateTouchEvent} from '../utils';
-const hasTouchSupport = window && ('ontouchstart' in window);
-import {environment} from '../../src/utils/dummy-environment';
 
-describe('<Slider />', () => {
+const describeIfTouch = isTouch ? describe : describe.skip;
+
+describe.only('<Slider />', () => {
     const clientRenderer = new ClientRenderer();
+    let environment: WindowStub;
 
-    afterEach(() => clientRenderer.cleanup());
+    beforeEach(() => {
+        environment = new WindowStub();
+    });
+
+    afterEach(() => {
+        environment.sandbox.restore();
+    });
+    afterEach(() => {
+        clientRenderer.cleanup();
+    });
 
     describe('without any arguments', () => {
         let select: (automationId: string) => HTMLElement | null;
@@ -208,7 +220,6 @@ describe('<Slider />', () => {
                     step={step}
                     onChange={onChange}
                     onInput={onInput}
-                    environment={environment}
                 />
             );
 
@@ -376,7 +387,6 @@ describe('<Slider />', () => {
                     max={max}
                     onChange={onChange}
                     onInput={onInput}
-                    environment={environment}
                 />
             );
             select = rendered.select;
@@ -468,7 +478,6 @@ describe('<Slider />', () => {
                     step={step}
                     onChange={onChange}
                     onInput={onInput}
-                    environment={environment}
                 />
             );
 
@@ -564,7 +573,7 @@ describe('<Slider />', () => {
         });
     });
 
-    describe('when drag things around using touch', () => {
+    describeIfTouch('when drag things around using touch', () => {
         const value = 5;
         const min = 0;
         const max = 10;
@@ -575,10 +584,6 @@ describe('<Slider />', () => {
         let waitForDom: (expectation: () => void) => Promise<void>;
 
         beforeEach(function() {
-            if (!hasTouchSupport) {
-                this.skip();
-            }
-
             onChange = sinon.spy();
             onInput = sinon.spy();
             const rendered = clientRenderer.render(
@@ -588,7 +593,6 @@ describe('<Slider />', () => {
                     max={max}
                     onChange={onChange}
                     onInput={onInput}
-                    environment={environment}
                 />
             );
             select = rendered.select;
@@ -683,7 +687,7 @@ describe('<Slider />', () => {
         });
     });
 
-    describe('touch dragging with step', () => {
+    describeIfTouch('touch dragging with step', () => {
         const value = 5;
         const min = 0;
         const max = 10;
@@ -694,10 +698,6 @@ describe('<Slider />', () => {
         let waitForDom: (expectation: () => void) => Promise<void>;
 
         beforeEach(function() {
-            if (!hasTouchSupport) {
-                this.skip();
-            }
-
             onChange = sinon.spy();
             onInput = sinon.spy();
 
@@ -709,7 +709,6 @@ describe('<Slider />', () => {
                     step={step}
                     onChange={onChange}
                     onInput={onInput}
-                    environment={environment}
                 />
             );
 
@@ -850,7 +849,6 @@ describe('<Slider />', () => {
                     max={max}
                     onChange={onChange}
                     onInput={onInput}
-                    environment={environment}
                 />
             );
             select = rendered.select;
@@ -1049,7 +1047,6 @@ describe('<Slider />', () => {
                     step={step}
                     onChange={onChange}
                     onInput={onInput}
-                    environment={environment}
                 />
             );
             select = rendered.select;
@@ -1493,7 +1490,6 @@ describe('<Slider />', () => {
                         axis="y"
                         onChange={onChange}
                         onInput={onInput}
-                        environment={environment}
                     />
                 );
                 select = rendered.select;
@@ -1586,7 +1582,6 @@ describe('<Slider />', () => {
                         step={step}
                         onChange={onChange}
                         onInput={onInput}
-                        environment={environment}
                     />
                 );
 
@@ -1682,7 +1677,7 @@ describe('<Slider />', () => {
             });
         });
 
-        describe('when drag things around using touch', () => {
+        describeIfTouch('when drag things around using touch', () => {
             const value = 5;
             const min = 0;
             const max = 10;
@@ -1693,10 +1688,6 @@ describe('<Slider />', () => {
             let waitForDom: (expectation: () => void) => Promise<void>;
 
             beforeEach(function() {
-                if (!hasTouchSupport) {
-                    this.skip();
-                }
-
                 onChange = sinon.spy();
                 onInput = sinon.spy();
                 const rendered = clientRenderer.render(
@@ -1707,7 +1698,6 @@ describe('<Slider />', () => {
                         axis="y"
                         onChange={onChange}
                         onInput={onInput}
-                        environment={environment}
                     />
                 );
                 select = rendered.select;
@@ -1799,7 +1789,7 @@ describe('<Slider />', () => {
             });
         });
 
-        describe('touch dragging with step', () => {
+        describeIfTouch('touch dragging with step', () => {
             const value = 5;
             const min = 0;
             const max = 10;
@@ -1810,10 +1800,6 @@ describe('<Slider />', () => {
             let waitForDom: (expectation: () => void) => Promise<void>;
 
             beforeEach(function() {
-                if (!hasTouchSupport) {
-                    this.skip();
-                }
-
                 onChange = sinon.spy();
                 onInput = sinon.spy();
 
@@ -1826,7 +1812,6 @@ describe('<Slider />', () => {
                         step={step}
                         onChange={onChange}
                         onInput={onInput}
-                        environment={environment}
                     />
                 );
 
@@ -1965,7 +1950,6 @@ describe('<Slider />', () => {
                         axis="y"
                         onChange={onChange}
                         onInput={onInput}
-                        environment={environment}
                     />
                 );
                 select = rendered.select;
@@ -2192,7 +2176,6 @@ describe('<Slider />', () => {
                         axis="x-reverse"
                         onChange={onChange}
                         onInput={onInput}
-                        environment={environment}
                     />
                 );
                 select = rendered.select;
@@ -2285,7 +2268,6 @@ describe('<Slider />', () => {
                         step={step}
                         onChange={onChange}
                         onInput={onInput}
-                        environment={environment}
                     />
                 );
 
@@ -2381,7 +2363,7 @@ describe('<Slider />', () => {
             });
         });
 
-        describe('when drag things around using touch', () => {
+        describeIfTouch('when drag things around using touch', () => {
             const value = 5;
             const min = 0;
             const max = 10;
@@ -2392,10 +2374,6 @@ describe('<Slider />', () => {
             let waitForDom: (expectation: () => void) => Promise<void>;
 
             beforeEach(function() {
-                if (!hasTouchSupport) {
-                    this.skip();
-                }
-
                 onChange = sinon.spy();
                 onInput = sinon.spy();
                 const rendered = clientRenderer.render(
@@ -2406,7 +2384,6 @@ describe('<Slider />', () => {
                         axis="x-reverse"
                         onChange={onChange}
                         onInput={onInput}
-                        environment={environment}
                     />
                 );
                 select = rendered.select;
@@ -2501,7 +2478,7 @@ describe('<Slider />', () => {
             });
         });
 
-        describe('touch dragging with step', () => {
+        describeIfTouch('touch dragging with step', () => {
             const value = 5;
             const min = 0;
             const max = 10;
@@ -2512,10 +2489,6 @@ describe('<Slider />', () => {
             let waitForDom: (expectation: () => void) => Promise<void>;
 
             beforeEach(function() {
-                if (!hasTouchSupport) {
-                    this.skip();
-                }
-
                 onChange = sinon.spy();
                 onInput = sinon.spy();
 
@@ -2528,7 +2501,6 @@ describe('<Slider />', () => {
                         step={step}
                         onChange={onChange}
                         onInput={onInput}
-                        environment={environment}
                     />
                 );
 
@@ -2670,7 +2642,6 @@ describe('<Slider />', () => {
                         axis="x-reverse"
                         onChange={onChange}
                         onInput={onInput}
-                        environment={environment}
                     />
                 );
                 select = rendered.select;
@@ -2905,7 +2876,6 @@ describe('<Slider />', () => {
                         axis="y-reverse"
                         onChange={onChange}
                         onInput={onInput}
-                        environment={environment}
                     />
                 );
                 select = rendered.select;
@@ -2998,7 +2968,6 @@ describe('<Slider />', () => {
                         step={step}
                         onChange={onChange}
                         onInput={onInput}
-                        environment={environment}
                     />
                 );
 
@@ -3094,7 +3063,7 @@ describe('<Slider />', () => {
             });
         });
 
-        describe('when drag things around using touch', () => {
+        describeIfTouch('when drag things around using touch', () => {
             const value = 5;
             const min = 0;
             const max = 10;
@@ -3105,10 +3074,6 @@ describe('<Slider />', () => {
             let waitForDom: (expectation: () => void) => Promise<void>;
 
             beforeEach(function() {
-                if (!hasTouchSupport) {
-                    this.skip();
-                }
-
                 onChange = sinon.spy();
                 onInput = sinon.spy();
                 const rendered = clientRenderer.render(
@@ -3119,7 +3084,6 @@ describe('<Slider />', () => {
                         axis="y-reverse"
                         onChange={onChange}
                         onInput={onInput}
-                        environment={environment}
                     />
                 );
                 select = rendered.select;
@@ -3211,7 +3175,7 @@ describe('<Slider />', () => {
             });
         });
 
-        describe('touch dragging with step', () => {
+        describeIfTouch('touch dragging with step', () => {
             const value = 5;
             const min = 0;
             const max = 10;
@@ -3222,10 +3186,6 @@ describe('<Slider />', () => {
             let waitForDom: (expectation: () => void) => Promise<void>;
 
             beforeEach(function() {
-                if (!hasTouchSupport) {
-                    this.skip();
-                }
-
                 onChange = sinon.spy();
                 onInput = sinon.spy();
 
@@ -3238,7 +3198,6 @@ describe('<Slider />', () => {
                         step={step}
                         onChange={onChange}
                         onInput={onInput}
-                        environment={environment}
                     />
                 );
 
@@ -3377,7 +3336,6 @@ describe('<Slider />', () => {
                         axis="y-reverse"
                         onChange={onChange}
                         onInput={onInput}
-                        environment={environment}
                     />
                 );
                 select = rendered.select;

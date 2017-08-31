@@ -2,7 +2,7 @@ import * as keycode from 'keycode';
 import * as React from 'react';
 import {SBComponent} from 'stylable-react-component';
 import {root} from 'wix-react-tools';
-import {environment as dummyEnvironment} from '../../utils/dummy-environment';
+import GlobalEvent from '../../common/global-event';
 
 export type PointerEvent = MouseEvent | TouchEvent;
 export type Step = number | 'any';
@@ -52,8 +52,6 @@ export interface SliderProps {
     required?: boolean;
     error?: boolean;
 
-    environment?: any;
-
     onChange?(value: number): void;
     onInput?(value: string): void;
 
@@ -80,8 +78,6 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         max: DEFAULT_MAX,
         step: DEFAULT_STEP,
         axis: DEFAULT_AXIS,
-
-        environment: typeof window === 'undefined' ? dummyEnvironment : window,
 
         onChange: noop,
         onInput: noop,
@@ -133,6 +129,13 @@ export class Slider extends React.Component<SliderProps, SliderState> {
                     'y-reverse': this.props.axis === AXISES.yReverse
                 }}
             >
+                <GlobalEvent
+                    mousemove={this.onSliderAreaMouseMove}
+                    mouseup={this.onSliderAreaMouseUp}
+                    touchmove={this.onSliderAreaTouchMove}
+                    touchend={this.onSliderAreaTouchEnd}
+                    touchcancel={this.onSliderAreaTouchEnd}
+                />
                 <input
                     className="native-input"
                     value={this.props.value}
@@ -416,9 +419,6 @@ export class Slider extends React.Component<SliderProps, SliderState> {
             return;
         }
 
-        this.props.environment!.addEventListener('mousemove', this.onSliderAreaMouseMove);
-        this.props.environment!.addEventListener('mouseup', this.onSliderAreaMouseUp);
-
         event.preventDefault();
         this.focusableElement.focus();
 
@@ -435,6 +435,9 @@ export class Slider extends React.Component<SliderProps, SliderState> {
     }
 
     private onSliderAreaMouseMove = (event: MouseEvent) => {
+        if (!this.isActive) {
+            return;
+        }
         const relativeValue = this.getValueFromElementAndPointer(this.sliderArea, event);
 
         requestAnimationFrame(() => {
@@ -452,9 +455,9 @@ export class Slider extends React.Component<SliderProps, SliderState> {
     }
 
     private onSliderAreaMouseUp = (event: MouseEvent) => {
-        this.props.environment!.removeEventListener('mousemove', this.onSliderAreaMouseMove);
-        this.props.environment!.removeEventListener('mouseup', this.onSliderAreaMouseUp);
-
+        if (!this.isActive) {
+            return;
+        }
         const relativeValue = this.getValueFromElementAndPointer(this.sliderArea, event);
         const value = this.getAbsoluteValue(relativeValue);
 
@@ -476,11 +479,6 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         const focusableElement = event.currentTarget;
         this.focusableElement = focusableElement;
 
-        this.props.environment!.addEventListener('touchmove', this.onSliderAreaTouchMove);
-        this.props.environment!.addEventListener('touchup', this.onSliderAreaTouchEnd);
-        this.props.environment!.addEventListener('touchend', this.onSliderAreaTouchEnd);
-        this.props.environment!.addEventListener('touchcancel', this.onSliderAreaTouchEnd);
-
         focusableElement.focus();
 
         const relativeValue = this.getValueFromElementAndPointer(this.sliderArea, event.touches[0]);
@@ -498,6 +496,9 @@ export class Slider extends React.Component<SliderProps, SliderState> {
     }
 
     private onSliderAreaTouchMove = (event: TouchEvent) => {
+        if (!this.isActive) {
+            return;
+        }
         const relativeValue = this.getValueFromElementAndPointer(this.sliderArea, event.changedTouches[0]);
         requestAnimationFrame(() => {
             if (!this.isSliderMounted) {
@@ -516,11 +517,9 @@ export class Slider extends React.Component<SliderProps, SliderState> {
     }
 
     private onSliderAreaTouchEnd = (event: TouchEvent) => {
-        this.props.environment!.removeEventListener('touchmove', this.onSliderAreaTouchMove);
-        this.props.environment!.removeEventListener('touchup', this.onSliderAreaTouchEnd);
-        this.props.environment!.removeEventListener('touchend', this.onSliderAreaTouchEnd);
-        this.props.environment!.removeEventListener('touchcancel', this.onSliderAreaTouchEnd);
-
+        if (!this.isActive) {
+            return;
+        }
         const relativeValue = this.getValueFromElementAndPointer(this.sliderArea, event.changedTouches[0]);
         const value = this.getAbsoluteValue(relativeValue);
 
