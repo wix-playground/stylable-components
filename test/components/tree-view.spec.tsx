@@ -1,6 +1,7 @@
 import * as keycode from 'keycode';
 import * as React from 'react';
 import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react';
+import {observable} from 'mobx';
 import {TreeViewDemo, TreeViewDemoCustom} from '../../demo/components/tree-view-demo';
 import {TreeItem, TreeView} from '../../src';
 import {getLastAvailableItem, getNextItem, getPreviousItem} from '../../src/components/tree-view//tree-util';
@@ -46,6 +47,40 @@ const treeData: TreeItemData[] = [
         ]
     }
 ];
+
+// duplicating the data so i can pass a new object to the non-mobx version
+const newTreeData = JSON.parse(JSON.stringify(treeData));
+newTreeData[0].children![2].children!.push({label: 'Kaiserschmarrn'});
+
+export interface TreeViewWrapperState {
+    treeData: object[];
+}
+
+export class TreeViewWrapper extends React.Component<{}, TreeViewWrapperState> {
+    public state = { treeData };
+
+    public render() {
+        return <TreeView dataSource={this.state.treeData}/>;
+    }
+
+    public switchDataSource = () => {
+        this.setState({
+            treeData: newTreeData
+        });
+    }
+}
+
+export class TreeViewMobxWrapper extends React.Component<{}, {}> {
+    @observable private obsTreeData: TreeItemData[] = treeData;
+
+    public render() {
+        return <TreeView dataSource={this.obsTreeData}/>;
+    }
+
+    public modifyMobxDataSource = () => {
+        this.obsTreeData[0].children![2].children!.push({label: 'Kaiserschmarrn'});
+    }
+}
 
 function getLabelsList(data: { label: string, children?: object[] }): string[] {
     return [data.label]
@@ -111,7 +146,7 @@ describe('<TreeView />', () => {
 
         await waitForDom(() => allNodesLabels.forEach(item =>
             expect(select(treeView + '_DEMO_CUSTOM', getTreeItem(item)),
-                    `item did not appear: ${item}`).to.be.present()));
+                `item did not appear: ${item}`).to.be.present()));
 
         const elementToSelect = select(treeView + '_DEMO_CUSTOM', getTreeItem(allNodesLabels[2]));
 
@@ -375,6 +410,40 @@ describe('<TreeView />', () => {
                 return waitForDom(() =>
                     expect(select(rootNode))
                         .to.have.attr('data-focused', 'true'));
+            });
+        });
+
+        describe('Reaction to dataSource changes', () => {
+            it('renders the additional item when a new data array is passed', async () => {
+                const {select, waitForDom, result} = clientRenderer.render(<TreeViewWrapper />);
+
+                expandItemWithLabel(select, treeData[0].label);
+                expandItemWithLabel(select, treeData[0].children![2].label);
+
+                await waitForDom(() =>
+                    expect(select(treeView, getTreeItem('Kaiserschmarrn'))).to.be.absent());
+
+                (result as TreeViewWrapper).switchDataSource();
+                expandItemWithLabel(select, newTreeData[0].label);
+                expandItemWithLabel(select, newTreeData[0].children![2].label);
+
+                return waitForDom(() =>
+                    expect(select(treeView, getTreeItem('Kaiserschmarrn'))).to.be.present());
+            });
+
+            it('renders the additional item when a new data element is added to existing data', async () => {
+                const {select, waitForDom, result} = clientRenderer.render(<TreeViewMobxWrapper />);
+
+                expandItemWithLabel(select, treeData[0].label);
+                expandItemWithLabel(select, treeData[0].children![2].label);
+
+                await waitForDom(() =>
+                    expect(select(treeView, getTreeItem('Kaiserschmarrn'))).to.be.absent());
+
+                (result as TreeViewMobxWrapper).modifyMobxDataSource();
+
+                return waitForDom(() =>
+                    expect(select(treeView, getTreeItem('Kaiserschmarrn'))).to.be.present());
             });
         });
 
