@@ -120,7 +120,7 @@ export class BirthdayPicker extends React.Component<BirthdayPickerProps, {}> {
     }
 
     public render() {
-        const rootProps = root(this.props, {'data-automation-id': 'BIRTHDAY_PICKER', 'className': 'birthday-picker'});
+        const rootProps = root(this.props, {'data-automation-id': 'BIRTHDAY_PICKER', 'className': ''});
 
         return (
             <span {...rootProps}>
