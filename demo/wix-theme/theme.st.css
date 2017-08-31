@@ -17,6 +17,10 @@
 	-st-from: "../../src/components/checkbox/checkbox.st.css";
 	-st-default: CheckBox;
 }
+:import {
+	-st-from: "../../src/components/time-picker/time-picker.st.css";
+	-st-default: TimePicker;
+}
 
 
 /* General */
@@ -62,10 +66,17 @@
 }
 
 
+/* Basic Styles */
+.inputHover {
+	-st-variant: true; /* universal variant */
+	border: 10px solid red;
+	background: red;
+	outline: 10px solid red;
+	color:red;
+}
+
+
 /* Number Input */
-
-
-/* Basic */
 
 NumberInput {
 	border: 1px solid value(primary-color);
@@ -74,14 +85,21 @@ NumberInput {
 }
 
 NumberInput input {
-	font-family: "HelveticaNeue-Regular", sans-serif;
+	-st-extends: inputHover;
+	/* font-family: "HelveticaNeue-Regular", sans-serif;
 	color: value(D10);
-	background: transparent;
+	background: transparent; */
 }
 
 NumberInput input::placeholder {
 	font-family: "HelveticaNeue-Regular", sans-serif;
 	color: value(D40);
+}
+
+NumberInput::prefix {
+	background: red;
+	background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIHdpZHRoPSIxMnB4IiBoZWlnaHQ9IjEycHgiIHZpZXdCb3g9IjAgMCAxMiAxMiIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj4gICAgICAgIDx0aXRsZT5pYy1jaGVja2JveC1vZmY8L3RpdGxlPiAgICA8ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz4gICAgPGRlZnM+PC9kZWZzPiAgICA8ZyBpZD0iU3ltYm9scyIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+ICAgICAgICA8ZyBpZD0iaWMtY2hlY2tib3gtb2ZmIiBmaWxsPSIjREFFRkZFIj4gICAgICAgICAgICA8cmVjdCBpZD0iUmVjdGFuZ2xlLTI2OSIgeD0iMSIgeT0iNSIgd2lkdGg9IjEwIiBoZWlnaHQ9IjIiPjwvcmVjdD4gICAgICAgIDwvZz4gICAgPC9nPjwvc3ZnPg==);
+	background-repeat: no-repeat;
 }
 
 NumberInput:hover {
@@ -91,6 +109,7 @@ NumberInput:hover {
 
 NumberInput::stepper {
 	width: 30px;
+	background: red;
 }
 
 NumberInput::stepper::down, NumberInput::stepper::up {
@@ -102,9 +121,15 @@ NumberInput::stepper::down::control-icon, NumberInput::stepper::up::control-icon
 	color: value(B10);
 }
 
-NumberInput::stepper::up::control-icon {
+/* NumberInput::stepper::up::control-icon {
 	position: relative;
 	top: 2px;
+} */
+
+NumberInput::stepper::up:hover {
+	position: relative;
+	top: 2px;
+	color: green;
 }
 
 NumberInput::stepper::down::control-icon {
@@ -226,4 +251,29 @@ CheckBox::boxIconDefault {
 
 CheckBox::boxIconDefault:hover {
 	background: value(B50);
+}
+
+/* Time */
+TimePicker {
+	background: red;
+	border-radius: 10px;
+	overflow: hidden;
+}
+
+TimePicker:disabled {
+	background: orange;
+	
+}
+
+TimePicker::stepper {
+	background: yellow;
+	overflow: visible;
+}
+
+TimePicker::stepper::up {
+	background: pink;
+}
+
+TimePicker::placeholder {
+	background: yellow;
 }
