@@ -10,7 +10,7 @@ The **Modal** component is a window that opens on top of the application's main 
 
 The modal consists of a header, body and footer. The header usually contains a title and optionally a close button, the body contains the main modal content, and the footer usually contains a primary button and another close button. The modal has a backdrop that blocks interactivity with the rest of the screen.
 
-Interacting with the modal can consist of:  
+Interacting with the modal can consist of:
 - clicking its primary button
 - clicking its backdrop
 - clicking its close/cancel button(s)
@@ -86,7 +86,7 @@ Modal children can have a `role` attribute that allows them to declare which par
 
 ## Style API
 
-Normally, the modal opens in relation to the screen and not its parent component. Because it breaks the flow of the entire page, it needs to be prominent on the entire view-port. 
+Normally, the modal opens in relation to the screen and not its parent component. Because it breaks the flow of the entire page, it needs to be prominent on the entire view-port.
 
 ### Subcomponents (pseudo-elements)
 
@@ -108,6 +108,35 @@ Normally, the modal opens in relation to the screen and not its parent component
 | :open | the open state of the modal |
 | :loading | the loading state of the modal if it takes time to open |
 | :error | modal displaying an error related to its loading |
+
+## Accessibility
+
+### Roles
+
+* Dialog window role - *dialog*
+
+### Aria Attributes
+
+* aria-label, aria-labelledby and aria-describedby should be copied to the dialog itself and not the root element in this component.
+* aria-model=true on the dialog.
+
+### Focus
+
+* When modal is in an open state, focus should reside only on the modal components and not be able to return to other DOM elements.
+
+## Input Behavior
+
+### Keyboard Handling
+
+* <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">Esc</kbd> -> Closes the dialog, focus returns to the previous component.
+
+### Mouse Handling
+
+* Click on the backdrop will close the modal.
+
+### Touch Handling
+
+* Tap on the backdrop will close the modal
 
 ## Design
 

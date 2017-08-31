@@ -1,7 +1,8 @@
 import * as React from 'react';
 import {SBComponent} from 'stylable-react-component';
-import {CheckBox, CheckBoxChangeEvent, CheckBoxIconProps} from '../../src';
+import {CheckBox, CheckBoxIconProps} from '../../src';
 import buttonStyle from '../../src/style/default-theme/controls/button.st.css';
+import {ChangeEvent} from '../../src/types/events';
 import style from './checkbox-demo.st.css';
 
 export const demoCheckBoxText: string = 'Yes, I\'m over 18 years old';
@@ -55,7 +56,7 @@ export class BasicDemo extends React.Component<{}, {value: boolean}> {
             </div>
         );
     }
-    private handleChange = (e: CheckBoxChangeEvent) => { this.setState({value: e.value}); };
+    private handleChange = (e: ChangeEvent<boolean>) => { this.setState({value: e.value}); };
 }
 
 export class DisabledDemo extends React.Component<{}, {value: boolean}> {
@@ -93,7 +94,7 @@ export class DisabledDemo extends React.Component<{}, {value: boolean}> {
         );
     }
 
-    private handleChange = (e: CheckBoxChangeEvent) => { this.setState({value: e.value}); };
+    private handleChange = (e: ChangeEvent<boolean>) => { this.setState({value: e.value}); };
 }
 
 export class IndeterminateDemo extends React.Component<{}, {value1: boolean, value2: boolean}> {
@@ -136,9 +137,9 @@ export class IndeterminateDemo extends React.Component<{}, {value1: boolean, val
         );
     }
 
-    private onChangeParent = (e: CheckBoxChangeEvent) => { this.setState({value1: e.value, value2: e.value}); };
-    private onChangeChild1 = (e: CheckBoxChangeEvent) => { this.setState({value1: e.value}); };
-    private onChangeChild2 = (e: CheckBoxChangeEvent) => { this.setState({value2: e.value}); };
+    private onChangeParent = (e: ChangeEvent<boolean>) => { this.setState({value1: e.value, value2: e.value}); };
+    private onChangeChild1 = (e: ChangeEvent<boolean>) => { this.setState({value1: e.value}); };
+    private onChangeChild2 = (e: ChangeEvent<boolean>) => { this.setState({value2: e.value}); };
 }
 
 class CustomIconsDemo extends React.Component<{}, {value: boolean}> {
@@ -163,7 +164,7 @@ class CustomIconsDemo extends React.Component<{}, {value: boolean}> {
             </div>
         );
     }
-    private handleChange = (e: CheckBoxChangeEvent) => { this.setState({value: e.value}); };
+    private handleChange = (e: ChangeEvent<boolean>) => { this.setState({value: e.value}); };
 }
 
 const TickMarkSVG: React.SFC<CheckBoxIconProps> = props => {
