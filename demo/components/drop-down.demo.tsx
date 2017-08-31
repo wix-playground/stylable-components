@@ -1,9 +1,8 @@
 import * as React from 'react';
 import {DropDown} from '../../src';
-import {DropDownItem} from '../../src/components/drop-down/drop-down';
 
 export interface DropDownDemoState {
-    selectedItem: DropDownItem | undefined;
+    selectedItem: string | undefined;
     open: boolean;
 }
 
@@ -23,7 +22,7 @@ export class DropDownDemo extends React.Component<{}, DropDownDemoState> {
         });
     }
 
-    public onItemClick = (item: DropDownItem) => {
+    public onItemClick = (item: string) => {
         this.setState({
             selectedItem: item
         });
@@ -35,7 +34,7 @@ export class DropDownDemo extends React.Component<{}, DropDownDemoState> {
                 <h2>DropDown</h2>
                 <section data-automation-id="DROP_DOWN_DEMO" style={{width: '250px'}}>
                     <DropDown
-                        selectedItem={this.state.selectedItem}
+                        value={this.state.selectedItem}
                         items={items}
                         onInputClick={this.onInputClick}
                         open={this.state.open}

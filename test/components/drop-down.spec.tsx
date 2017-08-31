@@ -55,13 +55,29 @@ describe('<DropDown />', () => {
     });
 
     it('has correct selected item text', () => {
-        const item = {label: 'Test'};
-        const {select, waitForDom} = clientRenderer.render(<DropDown selectedItem={item}/>);
+        const item = 'Test';
+        const {select, waitForDom} = clientRenderer.render(<DropDown value={item}/>);
 
         return waitForDom(() => {
             expect(select(input)).to.be.present();
-            expect(select(input)).to.have.text(item.label);
+            expect(select(input)).to.have.text(item);
         });
+    });
+
+    it('doesn\'t open the dropdown if disabled', async () => {
+        const {select, waitForDom, container} = clientRenderer.render(<DropDown disabled />);
+
+        await waitForDom(() => expect(bodySelect('LIST')).to.be.absent());
+
+        simulate.click(select(input));
+
+        await waitForDom(() => expect(bodySelect('LIST')).to.be.absent());
+
+        clientRenderer.render(<DropDown />, container);
+
+        simulate.click(select(dropDown));
+
+        await waitForDom(() => expect(bodySelect('LIST')).to.be.present());
     });
 
     it('invokes the onClick when dropdown label is clicked', () => {
@@ -74,7 +90,7 @@ describe('<DropDown />', () => {
 
     it('displays item list to choose from when open is true', () => {
         const {waitForDom} =
-            clientRenderer.render(<DropDown selectedItem={undefined} open={true} items={items} />);
+            clientRenderer.render(<DropDown value={undefined} open={true} items={items} />);
         const dropDownList = bodySelect('LIST');
 
         return waitForDom(() => {
@@ -89,7 +105,7 @@ describe('<DropDown />', () => {
     it('invokes onClick handler when an item is clicked', () => {
         const onClick = sinon.spy();
 
-        clientRenderer.render(<DropDown selectedItem={undefined} open={true} items={items} onItemClick={onClick}/>);
+        clientRenderer.render(<DropDown value={undefined} open={true} items={items} onItemClick={onClick}/>);
         const dropDownList = bodySelect('LIST');
 
         simulate.click(dropDownList!.children[0]);

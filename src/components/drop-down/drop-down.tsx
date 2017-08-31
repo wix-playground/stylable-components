@@ -3,7 +3,8 @@ import * as React from 'react';
 import {SBComponent, SBStateless} from 'stylable-react-component';
 import {root} from 'wix-react-tools';
 import {Popup} from '../../../src';
-import {SelectionList} from '../selection-list';
+import {noop} from '../../utils/noop';
+import {SelectionList, SelectionListProps} from '../selection-list';
 import {CaretDown} from './drop-down-icons';
 import style from './drop-down.st.css';
 
@@ -16,19 +17,14 @@ const KeyCodes: any = {
 };
 
 export interface DropDownInputProps {
-    selectedItem?: DropDownItem;
+    selectedItem?: string;
     onClick?: React.EventHandler<React.MouseEvent<HTMLDivElement>>;
 }
 
 export const DropDownInput: React.SFC<DropDownInputProps> = SBStateless(props => {
     return (
         <div data-automation-id="DROP_DOWN_INPUT" onClick={props.onClick} className="drop-down-input">
-            <span className="label">{
-                props.selectedItem ?
-                    props.selectedItem.label ?
-                    props.selectedItem.label :
-                    props.selectedItem :
-                    'Default Text'}</span>
+            <span className="label">{props.selectedItem ? props.selectedItem : 'Default Text'}</span>
             <CaretDown className="caret" />
         </div>
     );
@@ -38,7 +34,7 @@ export interface DropDownItem {
     label: string;
 }
 
-export interface DropDownProps {
+export interface DropDownProps extends SelectionListProps {
     open?: boolean;
     disabled?: boolean;
     openOnFocus?: boolean;
@@ -47,7 +43,6 @@ export interface DropDownProps {
     // children?: any;
     value?: string;
 
-    selectedItem?: DropDownItem;
     onInputClick?: () => void;
     items?: DropDownItem[];
     onItemClick?: (item: string | DropDownItem) => void;
@@ -65,8 +60,8 @@ export class DropDown extends React.Component<DropDownProps, DropDownState> {
     public static defaultProps: DropDownProps = {
         items: [],
         onChange: noop,
-        onItemClick: () => {},
-        onInputClick: () => {},
+        onItemClick: noop,
+        onInputClick: noop,
         tabIndex: 0
     };
 
@@ -97,14 +92,14 @@ export class DropDown extends React.Component<DropDownProps, DropDownState> {
                     }
                 }}
             >
-                <DropDownInput selectedItem={this.props.selectedItem} onClick={this.props.onInputClick} />
-                <Popup open={!!this.props.open} anchor={this.state.dropdown}>
+                <DropDownInput selectedItem={this.props.value} onClick={this.props.onInputClick} />
+                <Popup open={!!this.props.open && !this.props.disabled} anchor={this.state.dropdown}>
                     <div className="root">
                         <SelectionList
                             data-automation-id="DROP_DOWN_LIST"
                             className="drop-down-list"
                             dataSource={this.props.items!.map((item: DropDownItem) => item.label)}
-                            value={this.props.selectedItem && this.props.selectedItem.label}
+                            value={this.props.value}
                             onChange={this.onItemClick!}
                         />
                     </div>
