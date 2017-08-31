@@ -1,11 +1,10 @@
 import {action, autorun, observable} from 'mobx';
 import {observer} from 'mobx-react';
 import * as React from 'react';
-import {root} from 'wix-react-tools';
+import {properties, stylable} from 'wix-react-tools';
 import {getLastAvailableItem, getNextItem, getPreviousItem} from './tree-util';
 
 import * as keycode from 'keycode';
-import {SBComponent, SBStateless} from 'stylable-react-component';
 import {MinusIcon, PlusIcon} from './tree-view-icons';
 import style from './tree-view.st.css';
 
@@ -34,7 +33,7 @@ export interface TreeItemProps {
     stateMap: TreeStateMap;
 }
 
-export interface TreeViewProps {
+export interface TreeViewProps extends properties.Props {
     dataSource: object[];
     itemRenderer?: React.ComponentType<TreeItemProps>;
     onSelectItem?: React.EventHandler<any>;
@@ -54,52 +53,55 @@ export type ParentsMap = Map<TreeItemData, TreeItemData | undefined>;
 
 const itemIdPrefix = 'TREE_ITEM';
 
-export const TreeItem: React.SFC<TreeItemProps> =
-    SBStateless(({item, itemRenderer, onItemClick, onIconClick, stateMap}) => {
-        const state = stateMap.getItemState(item);
-        const itemLabel = item.label.replace(' ', '_');
-        const TreeNode = itemRenderer;
-        const iconProps = {
-            'data-automation-id': `${itemIdPrefix}_${itemLabel}_ICON`,
-            'onClick': onIconClick && onIconClick.bind(null, item),
-            'className': 'tree-item-icon'
-        };
+export const TreeItem = stylable(style)<React.SFC<TreeItemProps>>((props: TreeItemProps) => {
+    const {item, itemRenderer, onItemClick, onIconClick, stateMap} = props;
+    const state = stateMap.getItemState(item);
+    const itemLabel = item.label.replace(' ', '_');
+    const TreeNode = itemRenderer;
+    const iconProps = {
+        'data-automation-id': `${itemIdPrefix}_${itemLabel}_ICON`,
+        'onClick': onIconClick && onIconClick.bind(null, item),
+        'className': 'tree-item-icon'
+    };
 
-        return (
-            <div>
-                <div
-                    data-automation-id={`${itemIdPrefix}_${itemLabel}`}
-                    className="tree-node"
-                    cssStates={{selected: state!.isSelected, focused: state!.isFocused}}
-                    data-selected={state!.isSelected}
-                    data-focused={state!.isFocused}
-                    onClick={onItemClick && onItemClick.bind(null, item)}
+    return (
+        <div>
+            <div
+                data-automation-id={`${itemIdPrefix}_${itemLabel}`}
+                className="tree-node"
+                style-state={{
+                    selected: state!.isSelected,
+                    focused: state!.isFocused
+                }}
+                data-selected={state!.isSelected}
+                data-focused={state!.isFocused}
+                onClick={onItemClick && onItemClick.bind(null, item)}
+            >
+                {item.children && (state!.isExpanded ?
+                    <MinusIcon {...iconProps} /> : <PlusIcon {...iconProps} />)}
+
+                <span
+                    data-automation-id={`${itemIdPrefix}_${itemLabel}_LABEL`}
+                    className="tree-item-label"
                 >
-                    {item.children && (state!.isExpanded ?
-                        <MinusIcon {...iconProps} /> : <PlusIcon {...iconProps} />)}
-
-                    <span
-                        data-automation-id={`${itemIdPrefix}_${itemLabel}_LABEL`}
-                        className="tree-item-label"
-                    >
-                        {item.label}
-                    </span>
-                </div>
-                <div className="nested-tree">
-                    {state!.isExpanded && (item.children || []).map((child: TreeItemData, index: number) =>
-                        <TreeNode
-                            item={child}
-                            onItemClick={onItemClick}
-                            itemRenderer={itemRenderer}
-                            onIconClick={onIconClick}
-                            stateMap={stateMap}
-                            key={`${index}`}
-                        />
-                    )}
-                </div>
+                    {item.label}
+                </span>
             </div>
-        );
-    }, style);
+            <div className="nested-tree">
+                {state!.isExpanded && (item.children || []).map((child: TreeItemData, index: number) =>
+                    <TreeNode
+                        item={child}
+                        onItemClick={onItemClick}
+                        itemRenderer={itemRenderer}
+                        onIconClick={onIconClick}
+                        stateMap={stateMap}
+                        key={`${index}`}
+                    />
+                )}
+            </div>
+        </div>
+    );
+});
 
 const TreeItemWrapper = observer(TreeItem);
 
@@ -118,8 +120,10 @@ export class TreeStateMap {
     }
 }
 
-@SBComponent(style) @observer
-export class TreeView extends React.Component<TreeViewProps, {}> {
+@observer
+@stylable(style)
+@properties
+export class TreeView extends React.Component<TreeViewProps> {
     public static defaultProps: Partial<TreeViewProps> = {
         itemRenderer: TreeItemWrapper,
         onSelectItem: () => { },
@@ -147,11 +151,10 @@ export class TreeView extends React.Component<TreeViewProps, {}> {
 
     public render() {
         const TreeNode = this.props.itemRenderer!;
-        const rootProps = root(this.props, {'data-automation-id': 'TREE_VIEW', 'className': 'tree-view'});
-
         return (
             <div
-                {...rootProps}
+                data-automation-id="TREE_VIEW"
+                className="tree-view"
                 tabIndex={0}
                 onKeyDown={this.onKeyDown}
             >

@@ -1,14 +1,13 @@
 import * as keycode from 'keycode';
 import * as React from 'react';
-import {SBComponent} from 'stylable-react-component';
-import {root} from 'wix-react-tools';
+import {properties, stylable} from 'wix-react-tools';
 import inputStyles from '../../style/default-theme/controls/input.st.css';
 import {Calendar} from './calendar';
 import styles from './date-picker.st.css';
 
 const invalidDate: string = 'Invalid Date';
 
-export interface DatePickerProps {
+export interface DatePickerProps extends properties.Props {
     value?: Date;
     placeholder?: string;
     openOnFocus?: boolean;
@@ -27,7 +26,8 @@ export interface DatePickerState {
     highlightFocusedDate: boolean;
 }
 
-@SBComponent(styles)
+@properties
+@stylable(styles)
 export class DatePicker extends React.Component<DatePickerProps, DatePickerState> {
     public static defaultProps: DatePickerProps = {
         openOnFocus: true,
@@ -43,13 +43,8 @@ export class DatePicker extends React.Component<DatePickerProps, DatePickerState
     }
 
     public render() {
-        const rootProps = root(this.props, {
-            'data-automation-id': 'DATE_PICKER_ROOT',
-            'className': 'root'
-        }) as React.HTMLAttributes<HTMLDivElement>;
-
         return (
-            <div {...rootProps}>
+            <div data-automation-id="DATE_PICKER_ROOT">
                 <input
                     className={inputStyles.root + ' input'}
                     onKeyDown={this.onKeyDown}

@@ -1,7 +1,7 @@
 import {computed} from 'mobx';
 import {observer} from 'mobx-react';
 import * as React from 'react';
-import {SBComponent} from 'stylable-react-component';
+import {stylable} from 'wix-react-tools';
 import {
     getDayNames,
     getDaysInMonth,
@@ -26,8 +26,8 @@ export interface CalendarProps {
 
 const monthNames = getMonthNames();
 
-@SBComponent(styles)
 @observer
+@stylable(styles)
 export class Calendar extends React.Component<CalendarProps, {}> {
     public render() {
         return (

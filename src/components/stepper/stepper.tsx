@@ -1,5 +1,6 @@
 import * as React from 'react';
-import {SBStateless} from 'stylable-react-component';
+import {stylable} from 'wix-react-tools';
+
 import {ChevronDownIcon, ChevronUpIcon} from '../../icons';
 import buttonStyles from '../../style/default-theme/controls/button.st.css';
 import {noop} from '../../utils';
@@ -12,15 +13,16 @@ export interface StepperProps extends React.HTMLProps<HTMLElement> {
     onDown?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-export const Stepper: React.StatelessComponent<StepperProps> = SBStateless(
-    ({
+export const Stepper = stylable(styles)<React.SFC<StepperProps>>(props => {
+    const {
         onUp = noop,
         onDown = noop,
         disableUp = false,
         disableDown = false,
-        ...props
-    }) => (
-        <div {...props}>
+        ...rest
+    } = props;
+    return (
+        <div {...rest}>
             <button
                 type="button"
                 tabIndex={-1}
@@ -39,9 +41,8 @@ export const Stepper: React.StatelessComponent<StepperProps> = SBStateless(
                 onClick={onDown}
                 disabled={disableDown}
             >
-                <ChevronDownIcon className="control-icon"/>
+                <ChevronDownIcon className="control-icon" />
             </button>
         </div>
-    ),
-    styles
-);
+    );
+});
