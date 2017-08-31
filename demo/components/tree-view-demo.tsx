@@ -98,13 +98,7 @@ const CustomItemWrapper = observer(CustomItem);
 
 export class TreeViewDemo extends React.Component<{}, TreeViewDemoState> {
 
-    constructor() {
-        super();
-        this.state = {
-            selectedItem: undefined,
-            focusedItem: undefined
-        };
-    }
+    public state = {selectedItem: undefined, focusedItem: undefined};
 
     public render() {
         return (
@@ -142,13 +136,7 @@ export class TreeViewDemo extends React.Component<{}, TreeViewDemoState> {
 
 export class TreeViewDemoCustom extends React.Component<{}, TreeViewDemoCustomState> {
 
-    constructor() {
-        super();
-        this.state = {
-            selectedItemCustom: undefined,
-            focusedItemCustom: undefined
-        };
-    }
+    public state = {selectedItemCustom: undefined, focusedItemCustom: undefined};
 
     public render() {
         return (
