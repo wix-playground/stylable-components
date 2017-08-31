@@ -9,7 +9,7 @@ import {PopupDemo} from './components/popup-demo';
 import {SelectionListDemo} from './components/selection-list-demo';
 import {TimePickerDemo} from './components/time-picker-demo';
 import {ToggleDemo} from './components/toggle-demo';
-import {TreeViewDemo} from './components/tree-view-demo';
+import {TreeViewDemo, TreeViewDemoCustom} from './components/tree-view-demo';
 import './style.st.css';
 
 export class ComponentsDemo extends React.Component {
@@ -33,6 +33,8 @@ export class ComponentsDemo extends React.Component {
                 <div>
                     <h2>TreeView</h2>
                     <TreeViewDemo />
+                    <hr />
+                    <TreeViewDemoCustom />
                 </div>
                 <hr />
                 <div>

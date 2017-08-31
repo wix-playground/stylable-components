@@ -1,5 +1,5 @@
 :import{
-    -st-from: "../../style/default-theme/variables.st.css";
+    -st-from: "../../src/style/default-theme/variables.st.css";
     -st-named: color_treeFocused, color_treeSelected;
 }
 
@@ -12,7 +12,6 @@
     outline: 0 solid transparent;
     width: 228px;
     overflow: hidden;
-    display: inline-block;
 }
 
 .tree-node {
@@ -48,4 +47,13 @@
 
 .tree-item-label {
     vertical-align: middle;
+}
+
+.node-tool-tip {
+    opacity: 0;
+}
+
+.tree-item-label:hover .node-tool-tip {
+    opacity: 1;
+    transition: opacity 0.15s linear;
 }
