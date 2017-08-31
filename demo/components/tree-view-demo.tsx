@@ -19,7 +19,7 @@ export const treeData: TreeItemData[] = [
             {label: 'Pancakes'},
             {label: 'Muffin'},
             {label: 'Waffle'},
-            {label: 'Cupcake'}
+            {label: 'Cupcae'}
         ]}
     ]}
 ];
