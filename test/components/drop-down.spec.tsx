@@ -70,6 +70,15 @@ describe('<DropDown />', () => {
         await waitForDom(() => expect(bodySelect('LIST')).to.be.present());
     });
 
+    it('calls onChange when focused and openOnFocus is true', async () => {
+        const onChange = sinon.spy();
+        const {select, waitForDom} = clientRenderer.render(<DropDown openOnFocus onChange={onChange} />);
+
+        simulate.focus(select(dropDown));
+
+        await waitForDom(() => expect(onChange).to.have.been.calledOnce);
+    });
+
     it('invokes the onClick when dropdown label is clicked', () => {
         const onClick = sinon.spy();
         const {select} = clientRenderer.render(<DropDown onChange={onClick}/>);

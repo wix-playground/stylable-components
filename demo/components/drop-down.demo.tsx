@@ -31,7 +31,7 @@ export class DropDownDemo extends React.Component<{}, DropDownDemoState> {
                 <h2>DropDown</h2>
                 <section data-automation-id="DROP_DOWN_DEMO" style={{width: '250px'}}>
                     <DropDown
-                        value={this.state.selectedItem || ''}
+                        value={this.state.selectedItem}
                         open={this.state.open}
                         onChange={this.onItemClick}
                     >
