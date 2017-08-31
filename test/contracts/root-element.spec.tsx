@@ -28,7 +28,7 @@ export function assertRootElementContract(Component: React.ComponentType<any>): 
         return {rootNode: findDOMNode(output.result as React.ReactInstance), ...output};
     }
 
-    function isDisplayInline(rootNode: Element) {
+    function isDisplayInline(rootNode: Element): boolean {
         const display = window.getComputedStyle(rootNode).display;
         return display === 'inline-block' || display === 'inline-flex';
     }
