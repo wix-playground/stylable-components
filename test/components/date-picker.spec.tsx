@@ -93,7 +93,7 @@ describe('The DatePicker Component', () => {
         trigger.change(datePickerInput!, '2017/02/01');
         simulate.blur(datePickerInput);
 
-        await waitForDom(() => expect(onChange).to.have.been.calledWith(FEBRUARY_FIRST));
+        await waitForDom(() => expect(onChange).to.have.been.calledWithMatch({value: FEBRUARY_FIRST}));
     });
 
     it('should use a provided placeholder', async () => {

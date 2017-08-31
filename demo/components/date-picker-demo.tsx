@@ -49,7 +49,7 @@ export class DatePickerDemo extends React.Component<DatePickerProps, Partial<Dat
         this.setState({startingDay: parseInt(target.value, 10)});
     }
 
-    private onChange = (updatedDate: Date): void => {
-        this.setState({value: updatedDate});
+    private onChange = (e: {value: Date}): void => {
+        this.setState({value: e.value});
     }
 }

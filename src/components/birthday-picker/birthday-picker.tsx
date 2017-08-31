@@ -1,6 +1,7 @@
 import {autorun, computed, observable, reaction} from 'mobx';
 import {observer} from 'mobx-react';
 import * as React from 'react';
+import {FormInputProps} from '../../types/forms';
 import {SBComponent} from 'stylable-react-component';
 import {root} from 'wix-react-tools';
 import style from './birthday-picker.st.css';
@@ -69,16 +70,14 @@ const Select: React.SFC<SelectProps> = props => (
     </select>
 );
 
-export interface BirthdayPickerProps {
-    value?: Date;
+export interface BirthdayPickerProps extends FormInputProps<Date> {
     minDate?: Date;
     maxDate?: Date;
-    onChange?: (newValue: Date) => void;
 }
 
 @SBComponent(style) @observer
 export class BirthdayPicker extends React.Component<BirthdayPickerProps, {}> {
-    public static defaultProps: BirthdayPickerProps = {
+    public static defaultProps: Partial<BirthdayPickerProps> = {
         maxDate: new Date(),
         onChange: () => {}
     };
@@ -114,7 +113,7 @@ export class BirthdayPicker extends React.Component<BirthdayPickerProps, {}> {
             () => this.currentValue,
             value => {
                 if (value instanceof Date) {
-                    this.props.onChange!(value);
+                    this.props.onChange!({value});
                 }
             }
         );
