@@ -8,7 +8,7 @@ import {simulateMouseEvent, simulateTouchEvent} from '../utils';
 
 const describeIfTouch = isTouch ? describe : describe.skip;
 
-describe.only('<Slider />', () => {
+describe('<Slider />', () => {
     const clientRenderer = new ClientRenderer();
     let environment: WindowStub;
 
