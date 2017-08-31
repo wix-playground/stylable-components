@@ -1351,37 +1351,6 @@ describe('<Slider />', () => {
         });
     });
 
-    describe('when in error state', () => {
-        const value = 5;
-        const min = 0;
-        const max = 10;
-
-        it('should apply Error custom state', async () => {
-            const rendered = clientRenderer.render(
-                <Slider
-                    value={value}
-                    min={min}
-                    max={max}
-                    error={true}
-                />
-            );
-
-            const select = rendered.select;
-            const waitForDom = rendered.waitForDom;
-
-            await waitForDom(() => {
-                const root = select('SLIDER-CONTAINER') as HTMLElement;
-                const errorAttributeName = Object.keys(root!.dataset)
-                    .filter(
-                        attribute => attribute.match(/error$/i)
-                    )[0];
-                const errorAttributeValue = root!.dataset[errorAttributeName];
-
-                expect(errorAttributeValue).to.equal('true');
-            });
-        });
-    });
-
     describe('tooltip', () => {
         const value = 5;
         const min = 0;

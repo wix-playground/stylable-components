@@ -3,31 +3,15 @@ import * as React from 'react';
 import {SBComponent} from 'stylable-react-component';
 import {root} from 'wix-react-tools';
 import GlobalEvent from '../../common/global-event';
+import {noop} from './../../utils/noop';
+import style from './slider.st.css';
 
-export type PointerEvent = MouseEvent | TouchEvent;
-export type Step = number | 'any';
-
-export interface PointerPosition {
-    clientX: number;
-    clientY: number;
-}
-
-enum ChangeDirrection {
-    ascend,
-    descend
-}
-
-export const AXISES = {
+const AXISES = {
     x: 'x',
     y: 'y',
     xReverse: 'x-reverse',
     yReverse: 'y-reverse'
 };
-
-export type AxisOptions = 'x' | 'y' | 'x-reverse' | 'y-reverse';
-
-import style from './slider.st.css';
-
 const CONTINUOUS_STEP = 'any';
 const DEFAULT_STEP = 1;
 const DEFAULT_MIN = 0;
@@ -35,8 +19,18 @@ const DEFAULT_MAX = 100;
 const DEFAULT_VALUE = DEFAULT_MIN;
 const DEFAULT_AXIS = AXISES.x;
 
-function noop() { }
+enum ChangeDirrection {
+    ascend,
+    descend
+}
 
+export type PointerEvent = MouseEvent | TouchEvent;
+export type Step = number | 'any';
+export type AxisOptions = 'x' | 'y' | 'x-reverse' | 'y-reverse';
+export interface PointerPosition {
+    clientX: number;
+    clientY: number;
+}
 export interface SliderProps {
     value?: number;
     min?: number;
@@ -62,7 +56,6 @@ export interface SliderProps {
     onDrag?(event: PointerEvent): void;
     onDragStop?(event: PointerEvent): void;
 }
-
 export interface SliderState {
     relativeValue: number;
     relativeStep: Step;
@@ -388,14 +381,13 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         return value < min ? min : (value > max ? max : value);
     }
 
-    private getValueFromElementAndPointer(element: HTMLElement, pointerPosition: PointerPosition): number {
+    private getValueFromElementAndPointer(element: HTMLElement, {clientX, clientY}: PointerPosition): number {
         const {relativeStep, isVertical, isReverse} = this.state;
+        const {top, left, height, width} = element.getBoundingClientRect();
 
-        const sliderBounds = element.getBoundingClientRect();
-
-        const sliderOffset = isVertical ? sliderBounds.top : sliderBounds.left;
-        const sliderSize = isVertical ? sliderBounds.height : sliderBounds.width;
-        const sliderCoordinate = isVertical ? pointerPosition.clientY : pointerPosition.clientX;
+        const sliderOffset = isVertical ? top : left;
+        const sliderSize = isVertical ? height : width;
+        const sliderCoordinate = isVertical ? clientY : clientX;
 
         let relativeValue = this.getRelativeValue(sliderCoordinate - sliderOffset, 0, sliderSize);
 
