@@ -7,16 +7,20 @@
 
     /* Colors from styleguide */
     BK1: #000000;
+    BK2: #7d8c98;
     BK3: #adbbc6;
+    DS1: #c8c8c8;
     DS2: #f1f1f1;
+    ER1: #d0011b;
     PR1: #257ade;
     PR2: #4a90e2;
-    WT1: #ffffff;
-    DS1: #c8c8c8;
     PR3: #5cb4ff;
     PR4: #edf7ff;
-    ER1: #d0011b;
-    BK2: #7d8c98;
+    WT1: #ffffff;
+    STC0: #b6b6b6;
+    STC5: #adbbc6;
+    STC10: #edf7ff;
+    STC20: #7d8c98;
 
     /* Other colors */
     /* TODO: we should not use any of them */
@@ -38,12 +42,6 @@
     M7: #4a90e2;
     M0: #ffffff;
     R1: #d0011b;
-
-    /* Stylable components colors */
-    STC0: #b6b6b6;
-    STC5: #adbbc6;
-    STC10: #edf7ff;
-    STC20: #7d8c98;
 
     /* Basic colors */
     color_MainText: value(M1); /* Base text color  */
