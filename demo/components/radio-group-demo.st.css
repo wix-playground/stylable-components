@@ -8,5 +8,5 @@
 }
 
 .rg::radioGroupChild {
-    display: flex;
+    display: block;
 }
