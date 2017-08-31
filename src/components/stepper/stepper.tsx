@@ -29,11 +29,17 @@ interface DragPoint {
 }
 
 const DEFAULTS = {
-    dragStep: 10
+    dragStep: 10,
+    disableUp: false,
+    disableDown: false
 };
 
 @SBComponent(styles)
 export class Stepper extends React.Component<StepperProps, State> {
+    public static defaultProps = {
+        disableUp: DEFAULTS.disableUp,
+        disableDown: DEFAULTS.disableDown
+    };
 
     public state: State = {dragged: false};
 
@@ -47,8 +53,8 @@ export class Stepper extends React.Component<StepperProps, State> {
         const {
             onUp,
             onDown,
-            disableUp = false,
-            disableDown = false,
+            disableUp,
+            disableDown,
             dragStep,
             ...props
         } = this.props;
