@@ -1,15 +1,13 @@
 import * as React from 'react';
 import {SBComponent} from 'stylable-react-component';
 import {RadioButton, RadioGroup} from '../../src';
-import {ChangeEvent} from '../../src/types/events';
-import {noop} from '../../src/utils';
 import styles from './radio-group-demo.st.css';
 
 @SBComponent(styles)
 export class RadioGroupDemo extends React.Component<{}, {}> {
     public state = {
-        myValue1: '',
-        myValue2: ''
+        myValue1: 'Start here',
+        myValue2: 'Checked Radio'
     };
 
     public render() {
@@ -17,11 +15,11 @@ export class RadioGroupDemo extends React.Component<{}, {}> {
             <div data-automation-id="RADIO_GROUP_DEMO">
                 <div data-automation-id="GROUP_1">
                     <h3>Children radio group</h3>
-                    <RadioGroup onChange={this.onChange} name="demo" className="rg">
-                        <RadioButton value="This way!" onChange={noop}/>
-                        <RadioButton value="No, that way!" onChange={noop}/>
-                        <RadioButton value="But not here" disabled={true} onChange={noop}/>
-                        <RadioButton value="Start here" checked={true} disabled={true} onChange={noop}/>
+                    <RadioGroup onChange={this.onChange} name="demo" className="rg" value={this.state.myValue1}>
+                        <RadioButton value="This way!"/>
+                        <RadioButton value="No, that way!"/>
+                        <RadioButton value="But not here" disabled={true}/>
+                        <RadioButton value="Start here" disabled={true}/>
                     </RadioGroup>
                     <br/>
                     <span data-automation-id="RADIO_GROUP_DEMO_VALUE">Value: {this.state.myValue1}</span>
@@ -33,10 +31,11 @@ export class RadioGroupDemo extends React.Component<{}, {}> {
                         labelLocation="left"
                         name="name"
                         className="rg"
+                        value={this.state.myValue2}
                         dataSource={[
-                            {value: 'Default', onChange: noop},
-                            {value: 'Checked', checked: true, onChange: noop},
-                            {value: 'Disabled', disabled: true, onChange: noop}
+                            {value: 'Default Radio'},
+                            {value: 'Checked Radio'},
+                            {value: 'Disabled Radio', disabled: true}
                         ]}
                     />
                     <br/>
@@ -45,11 +44,11 @@ export class RadioGroupDemo extends React.Component<{}, {}> {
             </div>
         );
     }
-    private onChange = (e: ChangeEvent<string>) => {
+    private onChange = (e: {value: string}) => {
         this.setState({myValue1: e.value});
     }
 
-    private onChange2 = (e: ChangeEvent<string>) => {
+    private onChange2 = (e: {value: string}) => {
         this.setState({myValue2: e.value});
     }
 }

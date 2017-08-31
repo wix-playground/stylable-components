@@ -2,7 +2,6 @@ import * as React from 'react';
 import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react';
 import {RadioGroupDemo} from '../../demo/components/radio-group-demo';
 import {RadioButton, RadioGroup} from '../../src';
-import {noop} from '../../src/utils';
 import {sleep} from '../utils';
 
 const radioGroup = 'RADIO_GROUP';
@@ -93,16 +92,33 @@ describe('<RadioGroup />', () => {
         });
     });
 
-    it('renders a checked radio button if the checked prop is true', async () => {
+    it('uses "value" prop to determine checked child', async () => {
         const {select, waitForDom} = clientRenderer.render(
-            <RadioGroup name="kupo">
-                <RadioButton value="Minerva"/>
-                <RadioButton checked value="Kitsune"/>
+            <RadioGroup value="Sleipnir">
+                <RadioButton value="Fafnir"/>
+                <RadioButton value="Sleipnir"/>
+                <RadioButton value="Snepnir"/>
             </RadioGroup>
         );
 
-        const button0 = select(radioGroup, radioButton + '_0', 'NATIVE_INPUT') as HTMLInputElement;
         const button1 = select(radioGroup, radioButton + '_1', 'NATIVE_INPUT') as HTMLInputElement;
+
+        await waitForDom(() => {
+            expect(button1).to.have.property('checked', true);
+        });
+    });
+
+    it('"value" prop on the group overrides "checked"  on child', async () => {
+        const {select, waitForDom} = clientRenderer.render(
+            <RadioGroup value="Sleipnir">
+                <RadioButton value="Fafnir" checked/>
+                <RadioButton value="Sleipnir"/>
+                <RadioButton value="Snepnir"/>
+            </RadioGroup>
+        );
+
+        const button0 = select<HTMLInputElement>(radioGroup, radioButton + '_0', 'NATIVE_INPUT');
+        const button1 = select<HTMLInputElement>(radioGroup, radioButton + '_1', 'NATIVE_INPUT');
 
         await waitForDom(() => {
             expect(button0).to.have.property('checked', false);
@@ -240,18 +256,25 @@ describe('<RadioGroup />', () => {
     it('renders children from the data source prop if given', async () => {
         const {select, waitForDom} = clientRenderer.render(
             <RadioGroup
-                dataSource={[{value: 'Child0'}, {value: 'Child1'}]}
+                value="Child1"
+                dataSource={[{value: 'Child0'}, {value: 'Child1'}, {value: 'Child2'}]}
             />
         );
 
-        const button1 = select(radioGroup, radioButton + '_1', 'NATIVE_INPUT') as HTMLInputElement;
         const button0 = select(radioGroup, radioButton + '_0', 'NATIVE_INPUT') as HTMLInputElement;
+        const button1 = select(radioGroup, radioButton + '_1', 'NATIVE_INPUT') as HTMLInputElement;
+        const button2 = select(radioGroup, radioButton + '_2', 'NATIVE_INPUT') as HTMLInputElement;
 
         await waitForDom(() => {
             expect(button0).to.be.present();
             expect(button0).to.have.value('Child0');
+            expect(button0).to.have.property('checked', false);
             expect(button1).to.be.present();
             expect(button1).to.have.value('Child1');
+            expect(button1).to.have.property('checked', true);
+            expect(button2).to.be.present();
+            expect(button2).to.have.value('Child2');
+            expect(button2).to.have.property('checked', false);
         });
     });
 
@@ -278,9 +301,9 @@ describe('<RadioGroup />', () => {
 
         it('if a child is checked - gives that child tabIndex and the rest get -1', async () => {
             const {select, waitForDom} = clientRenderer.render(
-                <RadioGroup>
+                <RadioGroup value="female">
                     <RadioButton value="male"/>
-                    <RadioButton value="female" checked/>
+                    <RadioButton value="female"/>
                     <RadioButton value="other"/>
                 </RadioGroup>
             );

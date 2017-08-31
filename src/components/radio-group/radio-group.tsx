@@ -4,13 +4,13 @@ import * as React from 'react';
 import {SBComponent} from 'stylable-react-component';
 import {root} from 'wix-react-tools';
 import {ChangeEvent} from '../../types/events';
+import {FormInputProps} from '../../types/forms';
 import {RadioButton, RadioButtonProps} from './radio-button';
 import styles from './radio-group.st.css';
 
-export interface RadioGroupProps {
+export interface RadioGroupProps extends FormInputProps<string> {
     children?: any;
     dataSource?: RadioButtonProps[];
-    onChange?: (e: ChangeEvent<string>) => void;
     labelLocation?: 'right' | 'left';
     name?: string;
     disabled?: boolean;
@@ -78,10 +78,12 @@ export class RadioGroup extends React.Component<RadioGroupProps, {}> {
             if (typeof button === 'object' && isChildren) {
                 button = button.props;
             }
+
+            const isChecked: boolean = !!this.props.value && this.props.value === button.value;
             this.checkedArray.push(
-                observable({checked: noCheckedRadioButton ? button.checked : false})
+                observable({checked: noCheckedRadioButton && isChecked})
             );
-            if (button.checked) {
+            if (isChecked) {
                 noCheckedRadioButton = false;
             }
         }
