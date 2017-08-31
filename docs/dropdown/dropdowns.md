@@ -46,6 +46,7 @@ Common Props (all dropdowns)
 | onChange | (id: string) => void | NOP | no | Triggered when an item is selected in the list |
 | hideSelected | boolean | false | no | Hides selected values so that they do not appear in the selection list |
 | children | any | null | no | Children to be rendered in the list, see SelectionList for further details |
+| toggleIcon | React.SFC | default toggle | no | User can replace the default SVG with another one |
 
 * Dropdown Props
 

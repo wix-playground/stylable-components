@@ -569,6 +569,14 @@ bytes@2.5.0:
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/bytes/-/bytes-2.5.0.tgz#4c9423ea2d252c270c41b2bdefeff9bb6b62c06a"
 
+c3-platform@^1.0.0:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/c3-platform/-/c3-platform-1.0.2.tgz#d91c8a7834ee4b68ac17f02d91336d52ddddd5f1"
+  dependencies:
+    karma-junit-reporter "^1.2.0"
+    karma-webdriver-launcher "^1.0.5"
+    karma-webpack "^2.0.4"
+
 callsite@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/callsite/-/callsite-1.0.0.tgz#280398e5d664bd74038b6f0905153e6e8af1bc20"
@@ -2325,6 +2333,12 @@ karma-sauce-launcher@^1.2.0:
     sauce-connect-launcher "^1.2.2"
     saucelabs "^1.4.0"
     wd "^1.4.0"
+
+karma-webdriver-launcher@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/karma-webdriver-launcher/-/karma-webdriver-launcher-1.0.5.tgz#b1c3cb347f26e786039c15abf7f19a7791e8ddd7"
+  dependencies:
+    wd "^1.0.0"
 
 karma-webdriver-launcher@^1.0.5:
   version "1.0.5"
