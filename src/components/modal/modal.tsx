@@ -3,9 +3,9 @@ import {SBComponent, SBStateless} from 'stylable-react-component';
 import {root} from 'wix-react-tools';
 import {Portal} from '../../../src';
 import {noop} from '../../utils';
+import {isElement} from '../../utils/is-element';
 import {enableScrolling, stopScrolling} from '../../utils/stop-scrolling';
 import styles from './modal.st.css';
-import {isElement} from '../../utils/is-element';
 
 export interface RequestCloseEvent extends React.SyntheticEvent<Element> {
     source: string;
