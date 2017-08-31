@@ -76,7 +76,8 @@ describe('<BirthdayPicker />', function() {
         change(select('BIRTHDAY_PICKER_DAY'), '27');
 
         return waitForDom(() => {
-            expect(onChange).to.have.been.calledOnce.and.calledWith(new Date('1986-04-27T00:00Z'));
+            expect(onChange).to.have.been.calledOnce;
+            expect(onChange).to.have.been.calledWithMatch({value: new Date('1986-04-27T00:00Z')});
         });
     });
 
@@ -129,7 +130,9 @@ describe('<BirthdayPicker />', function() {
         change(select('BIRTHDAY_PICKER_DAY'), '26');
 
         return waitForDom(() => {
-            expect(onChange).to.have.been.calledOnce.and.calledWith(new Date('1986-04-26T00:00Z'));
+            expect(onChange).to.have.been.calledOnce;
+            expect(onChange).to.have.calledWithMatch({value: new Date('1986-04-26T00:00Z')});
+            expect(onChange).to.have.calledWithMatch({value: new Date('1986-04-26T00:00Z')});
         });
     });
 
