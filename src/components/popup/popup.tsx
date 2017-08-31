@@ -10,7 +10,6 @@ export interface PositionPoint {
 }
 
 export interface PopupProps {
-    anchor: Element | null;
     open?: boolean;
     anchorPosition?: PositionPoint;
     popupPosition?: PositionPoint;
@@ -18,8 +17,12 @@ export interface PopupProps {
     maxHeight?: number;
 }
 
-export class Popup extends React.Component<PopupProps, {}> {
-    public static defaultProps: Partial<PopupProps> = {
+export interface PopupCompProps extends PopupProps {
+    anchor: Element | null;
+}
+
+export class Popup extends React.Component<PopupCompProps, {}> {
+    public static defaultProps: Partial<PopupCompProps> = {
         open: false,
         anchorPosition: {vertical: 'bottom', horizontal: 'left'},
         popupPosition: {vertical: 'top', horizontal: 'left'},
