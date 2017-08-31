@@ -48,8 +48,7 @@ const treeData: TreeItemData[] = [
     }
 ];
 
-// duplicating the data so i can pass a new object to the non-mobx version
-const newTreeData = JSON.parse(JSON.stringify(treeData));
+const newTreeData = JSON.parse(JSON.stringify(treeData)); // duplicating the data so i can pass a new object to the non-mobx version
 newTreeData[0].children![2].children!.push({label: 'Kaiserschmarrn'});
 
 export interface TreeViewWrapperState {
