@@ -1,33 +1,23 @@
 import * as React from 'react';
-import {render, unmountComponentAtNode} from 'react-dom';
-import {expect, sinon} from 'test-drive-react';
+import {ClientRenderer, expect, sinon} from 'test-drive-react';
 import GlobalEvent, {Props as GlobalEventProps} from '../../src/common/global-event';
 import WindowStub from '../stubs/window.stub';
 
 describe('<GlobalEvent />', () => {
+    const clientRenderer = new ClientRenderer();
     let windowStub: WindowStub;
-    let container: HTMLElement;
 
     beforeEach(() => windowStub = new WindowStub());
-    beforeEach(() => {
-        container = document.createElement('div');
-        container.setAttribute('style', 'position: fixed; top: 0; left: 0; right: 0;');
-        document.body.appendChild(container);
-    });
 
     afterEach(() => windowStub.sandbox.restore());
-    afterEach(() => {
-        unmountComponentAtNode(container);
-        document.body.removeChild(container);
-    });
+    afterEach(() => clientRenderer.cleanup());
 
     describe('mount', () => {
-        it('should add an event listener on window object when mounted', async () => {
+        it('should add an event listener on window object when mounted', () => {
             const handler = () => {};
 
-            render(
-                <GlobalEvent click={handler} />,
-                container
+            clientRenderer.render(
+                <GlobalEvent click={handler} />
             );
 
             expect(windowStub.addEventListener).to.have.been.calledOnce;
@@ -35,15 +25,14 @@ describe('<GlobalEvent />', () => {
     });
 
     describe('unmount', () => {
-        it('should remove an event listener on window object when unmounted', async () => {
+        it('should remove an event listener on window object when unmounted', () => {
             const handler = () => {};
 
-            render(
-                <GlobalEvent click={handler} />,
-                container
+            clientRenderer.render(
+                <GlobalEvent click={handler} />
             );
 
-            unmountComponentAtNode(container);
+            clientRenderer.cleanup();
 
             expect(windowStub.removeEventListener).to.have.been.calledOnce;
         });
@@ -67,9 +56,9 @@ describe('<GlobalEvent />', () => {
         it('should not call a handler after it was unset', () => {
             const originalListener = sinon.spy();
 
-            const fixture = render(
-                <Fixture listener={originalListener} />, container
-            ) as Fixture;
+            const fixture = clientRenderer.render(
+                <Fixture listener={originalListener} />
+            ).result as Fixture;
             fixture.setState({listener: undefined});
 
             windowStub.simulate('click');
@@ -81,9 +70,9 @@ describe('<GlobalEvent />', () => {
             const originalListener = sinon.spy();
             const newListener = sinon.spy();
 
-            const fixture = render(
-                <Fixture listener={originalListener} />, container
-            ) as Fixture;
+            const fixture = clientRenderer.render(
+                <Fixture listener={originalListener} />
+            ).result as Fixture;
             fixture.setState({listener: newListener});
 
             windowStub.simulate('click');
@@ -100,9 +89,12 @@ describe('<GlobalEvent />', () => {
             const onMouseMove = sinon.spy();
             const onMouseUp = sinon.spy();
 
-            render(
-                <GlobalEvent mousedown={onMouseDown} mousemove={onMouseMove} mouseup={onMouseUp} />,
-                container
+            clientRenderer.render(
+                <GlobalEvent
+                    mousedown={onMouseDown}
+                    mousemove={onMouseMove}
+                    mouseup={onMouseUp}
+                />
             );
 
             windowStub.simulate('mousedown');

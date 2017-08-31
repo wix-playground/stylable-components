@@ -30,5 +30,5 @@ export class BirthdayPickerDemo extends React.Component<{}, {}> {
         );
     }
 
-    private onChange = (newValue: Date) => this.value = newValue;
+    private onChange = (e: {value: Date}) => this.value = e.value;
 }
