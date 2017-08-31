@@ -1,6 +1,7 @@
 import * as keycode from 'keycode';
 import * as React from 'react';
 import {ClientRenderer, expect, simulate, sinon} from 'test-drive-react';
+import {TimePickerDemo} from '../../demo/components/time-picker-demo';
 import {TimePicker} from '../../src';
 import styles from '../../src/components/time-picker/time-picker.st.css';
 import {
@@ -784,6 +785,69 @@ describe('<TimePicker/>', () => {
             });
             it('onChange should be callen with "16:55"', () => {
                 expect(onChange).to.be.calledWithExactly('16:55');
+            });
+        });
+    });
+
+    describeDesktop('Render <TimePickerDemo/>', () => {
+        let renderer: any;
+        let firstInputHH: any;
+        let firstInputMM: any;
+        let firstStepperUp: any;
+        let secondInputHH: any;
+        let secondInputMM: any;
+        let secondStepperUp: any;
+        beforeEach(() => {
+            renderer = clientRenderer.render(<TimePickerDemo/>);
+            firstInputHH = renderer.select('TIME_PICKER_DEMO_CONTROLLED_24', 'TIME_PICKER_INPUT_HH');
+            firstInputMM = renderer.select('TIME_PICKER_DEMO_CONTROLLED_24', 'TIME_PICKER_INPUT_MM');
+            firstStepperUp = renderer.select('TIME_PICKER_DEMO_CONTROLLED_24', 'STEPPER_INCREMENT');
+            secondInputHH = renderer.select('TIME_PICKER_DEMO_CONTROLLED_AMPM', 'TIME_PICKER_INPUT_HH');
+            secondInputMM = renderer.select('TIME_PICKER_DEMO_CONTROLLED_AMPM', 'TIME_PICKER_INPUT_MM');
+            secondStepperUp = renderer.select('TIME_PICKER_DEMO_CONTROLLED_AMPM', 'STEPPER_INCREMENT');
+        });
+
+        describe('focus on hh segment on first input', () => {
+            it('should keep focus on hh segment of first input', () => {
+                simulate.focus(firstInputHH);
+                simulate.click(firstStepperUp);
+                expect(document.activeElement === firstInputHH).to.be.true;
+            });
+        });
+
+        describe('focus on mm segment on first input', () => {
+            it('should keep focus on mm segment on first input', () => {
+                simulate.focus(firstInputMM);
+                simulate.click(firstStepperUp);
+                expect(document.activeElement === firstInputMM).to.be.true;
+            });
+        });
+
+        describe('initial click on stepper inside first input', () => {
+            it('should move focus on hh segment on first input', () => {
+                simulate.click(firstStepperUp);
+                expect(document.activeElement === firstInputHH).to.be.true;
+            });
+        });
+
+        describe('focus on mm segment on first input then on mm segment on second input then', () => {
+            beforeEach(() => {
+                simulate.click(firstInputMM);
+                simulate.focus(firstInputMM);
+            });
+            describe('focus on mm segment on second input', () => {
+                beforeEach(() => {
+                    simulate.blur(firstInputMM);
+                    simulate.click(secondInputMM);
+                    simulate.focus(secondInputMM);
+                });
+                describe('click on stepper in first input', () => {
+                    it('should set focus on hh on first input', () => {
+                        simulate.focus(firstStepperUp);
+                        simulate.click(firstStepperUp);
+                        expect(document.activeElement === firstInputHH).to.be.true;
+                    });
+                });
             });
         });
     });
