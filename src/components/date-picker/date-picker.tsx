@@ -22,7 +22,7 @@ export interface DatePickerProps extends FormInputProps<Date> {
 export interface DatePickerState {
     inputValue: string;
     isDropdownVisible: boolean;
-    dropdownRef: Element | undefined;
+    dropdownRef: HTMLDivElement | null;
     dropdownDate: Date;
     highlightSelectedDate: boolean;
     highlightFocusedDate: boolean;
@@ -52,6 +52,11 @@ export class DatePicker extends React.Component<DatePickerProps, DatePickerState
         return (
             <div
                 {...rootProps}
+                ref={dropdownRef => {
+                    if (!this.state.dropdownRef) {
+                        this.setState({dropdownRef});
+                    }
+                }}
             >
                 <input
                     className={inputStyles.root + ' input'}
@@ -65,7 +70,7 @@ export class DatePicker extends React.Component<DatePickerProps, DatePickerState
                     type="text"
                     data-automation-id="DATE_PICKER_INPUT"
                 />
-                <Popup open={this.state.isDropdownVisible}>
+                <Popup open={this.state.isDropdownVisible} anchor={this.state.dropdownRef}>
                     <Calendar
                         onChange={this.onCalendarInput}
                         updateDropdownDate={this.updateDropdownDate}

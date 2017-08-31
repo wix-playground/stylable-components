@@ -17,7 +17,7 @@ const datePickerDropdownId = 'DATE_PICKER_DROPDOWN';
 
 describe('The DatePicker Component', () => {
     const clientRenderer = new ClientRenderer();
-
+    
     afterEach(() => clientRenderer.cleanup());
 
     const JANUARY_FIRST = new Date(2017, 0, 1);
