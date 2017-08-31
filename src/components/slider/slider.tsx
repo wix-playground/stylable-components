@@ -154,25 +154,13 @@ export class Slider extends React.Component<SliderProps, SliderState> {
                         <div
                             className="progress"
                             data-automation-id="SLIDER-PROGRESS"
-                            style={
-                                this.state.isVertical ?
-                                    {height: `${this.state.relativeValue}%`} :
-                                    {width: `${this.state.relativeValue}%`}
-                            }
+                            style={this.getProgressStyles()}
                         />
                         <a
                             ref={el => this.focusableElement = el as HTMLElement}
                             className="handle"
                             data-automation-id="SLIDER-HANDLE"
-                            style={
-                                this.state.isReverse ?
-                                    (this.state.isVertical ?
-                                        {top: `${this.state.relativeValue}%`} :
-                                        {right: `${this.state.relativeValue}%`}) :
-                                    (this.state.isVertical ?
-                                        {bottom: `${this.state.relativeValue}%`} :
-                                        {left: `${this.state.relativeValue}%`})
-                            }
+                            style={this.getHandleStyles()}
 
                             onKeyDown={this.onSliderAreaKeyDown}
 
@@ -294,6 +282,22 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         }
 
         return markElements;
+    }
+
+    private getProgressStyles() {
+        return this.state.isVertical ?
+            {height: `${this.state.relativeValue}%`} :
+            {width: `${this.state.relativeValue}%`};
+    }
+
+    private getHandleStyles() {
+        return this.state.isReverse ?
+            (this.state.isVertical ?
+                {top: `${this.state.relativeValue}%`} :
+                {right: `${this.state.relativeValue}%`}) :
+            (this.state.isVertical ?
+                {bottom: `${this.state.relativeValue}%`} :
+                {left: `${this.state.relativeValue}%`});
     }
 
     private onSliderFocus: React.FocusEventHandler<HTMLElement> = event => {
