@@ -158,9 +158,9 @@ describe('<Modal />', () => {
 
             /* tslint:disable:no-bitwise */
             expect(modal.compareDocumentPosition(children) & Node.DOCUMENT_POSITION_CONTAINED_BY,
-                'children contained in portal').to.equal(Node.DOCUMENT_POSITION_CONTAINED_BY);
+                'children contained in modal').to.equal(Node.DOCUMENT_POSITION_CONTAINED_BY);
             expect(container.compareDocumentPosition(modal) & Node.DOCUMENT_POSITION_FOLLOWING,
-                'portal is following the app container').to.equal(Node.DOCUMENT_POSITION_FOLLOWING);
+                'modal is following the app container').to.equal(Node.DOCUMENT_POSITION_FOLLOWING);
             /* tslint:enable:no-bitwise */
         });
     });
