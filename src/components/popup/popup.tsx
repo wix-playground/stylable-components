@@ -12,7 +12,6 @@ export interface PositionPoint {
 
 export interface PopupProps {
     open?: boolean;
-    onOpenStateChange?: (open: boolean) => void;
     anchorPosition?: PositionPoint;
     popupPosition?: PositionPoint;
     syncWidth?: boolean;
@@ -26,7 +25,6 @@ export interface PopupCompProps extends PopupProps {
 export class Popup extends React.Component<PopupCompProps, {}> {
     public static defaultProps: Partial<PopupCompProps> = {
         open: false,
-        onOpenStateChange: noop,
         anchorPosition: {vertical: 'bottom', horizontal: 'left'},
         popupPosition: {vertical: 'top', horizontal: 'left'},
         syncWidth: true,

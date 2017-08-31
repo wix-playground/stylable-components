@@ -1,7 +1,7 @@
 import React = require('react');
 import ReactDOM = require('react-dom');
 import {selectDom} from 'test-drive';
-import {ClientRenderer, expect, waitFor, sinon} from 'test-drive-react';
+import {ClientRenderer, expect, waitFor} from 'test-drive-react';
 import {PopupDemo} from '../../demo/components/popup-demo';
 import {Popup, PositionPoint} from '../../src/components/';
 import {sleep} from '../utils';
