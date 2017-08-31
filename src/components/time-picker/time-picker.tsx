@@ -225,7 +225,6 @@ export class TimePicker extends React.Component<Props, State> {
             if (isTimeSegment(name)) {
                 this.select(name);
             }
-            notifyScreenReader(this.getValue());
             this.commit();
         });
     }
@@ -269,7 +268,6 @@ export class TimePicker extends React.Component<Props, State> {
             mm: formatTimeChunk(mm),
             ampm
         }, () => {
-            notifyScreenReader(this.getValue());
             this.select(currentSegment);
             this.commit();
         });
@@ -433,6 +431,7 @@ export class TimePicker extends React.Component<Props, State> {
 
     private commit = () => {
         const value = this.getValue();
+        notifyScreenReader(value);
         if (this.props.onChange && this.lastValue !== value) {
             this.lastValue = value;
             this.props.onChange(value);
