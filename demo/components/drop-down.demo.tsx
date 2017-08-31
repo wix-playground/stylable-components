@@ -6,11 +6,7 @@ export interface DropDownDemoState {
     open: boolean;
 }
 
-const items = [
-    {label: 'Muffins'},
-    {label: 'Pancakes'},
-    {label: 'Waffles'}
-];
+const items = ['Muffins', 'Pancakes', 'Waffles'];
 
 export class DropDownDemo extends React.Component<{}, DropDownDemoState> {
 
@@ -24,6 +20,7 @@ export class DropDownDemo extends React.Component<{}, DropDownDemoState> {
 
     public onItemClick = (item: string) => {
         this.setState({
+            open: !this.state.open,
             selectedItem: item
         });
     }
@@ -34,12 +31,12 @@ export class DropDownDemo extends React.Component<{}, DropDownDemoState> {
                 <h2>DropDown</h2>
                 <section data-automation-id="DROP_DOWN_DEMO" style={{width: '250px'}}>
                     <DropDown
-                        value={this.state.selectedItem}
-                        items={items}
-                        onInputClick={this.onInputClick}
+                        value={this.state.selectedItem || ''}
                         open={this.state.open}
-                        onItemClick={this.onItemClick}
-                    />
+                        onChange={this.onItemClick}
+                    >
+                        {items}
+                    </DropDown>
                 </section>
             </div>
         );

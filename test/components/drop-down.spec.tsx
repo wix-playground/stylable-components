@@ -22,11 +22,7 @@ describe('<DropDown />', () => {
     afterEach(() => clientRenderer.cleanup());
     const bodySelect = selectDom(document.body);
 
-    const items = [
-        {label: 'Muffins'},
-        {label: 'Pancakes'},
-        {label: 'Waffles'}
-    ];
+    const items = ['Muffins', 'Pancakes', 'Waffles'];
 
     it('renders a dropdown, opens it with a click, selects an item', async () => {
         const {select, waitForDom} = clientRenderer.render(<DropDownDemo />);
@@ -41,7 +37,7 @@ describe('<DropDown />', () => {
 
         return waitForDom(() => {
             expect(bodySelect('LIST')).to.be.absent();
-            expect(select(dropDownDemo)).to.have.text(items[0].label);
+            expect(select(dropDownDemo)).to.have.text(items[0]);
         });
     });
 
@@ -56,7 +52,7 @@ describe('<DropDown />', () => {
 
     it('has correct selected item text', () => {
         const item = 'Test';
-        const {select, waitForDom} = clientRenderer.render(<DropDown value={item}/>);
+        const {select, waitForDom} = clientRenderer.render(<DropDown value={item}>{item}</DropDown>);
 
         return waitForDom(() => {
             expect(select(input)).to.be.present();
@@ -65,24 +61,18 @@ describe('<DropDown />', () => {
     });
 
     it('doesn\'t open the dropdown if disabled', async () => {
-        const {select, waitForDom, container} = clientRenderer.render(<DropDown disabled />);
+        const {waitForDom, container} = clientRenderer.render(<DropDown open disabled />);
 
         await waitForDom(() => expect(bodySelect('LIST')).to.be.absent());
 
-        simulate.click(select(input));
-
-        await waitForDom(() => expect(bodySelect('LIST')).to.be.absent());
-
-        clientRenderer.render(<DropDown />, container);
-
-        simulate.click(select(dropDown));
+        clientRenderer.render(<DropDown open />, container);
 
         await waitForDom(() => expect(bodySelect('LIST')).to.be.present());
     });
 
     it('invokes the onClick when dropdown label is clicked', () => {
         const onClick = sinon.spy();
-        const {select} = clientRenderer.render(<DropDown onInputClick={onClick}/>);
+        const {select} = clientRenderer.render(<DropDown onChange={onClick}/>);
         simulate.click(select(dropDown, input));
 
         return waitFor(() => expect(onClick).to.have.been.calledOnce);
@@ -90,14 +80,14 @@ describe('<DropDown />', () => {
 
     it('displays item list to choose from when open is true', () => {
         const {waitForDom} =
-            clientRenderer.render(<DropDown value={undefined} open={true} items={items} />);
+            clientRenderer.render(<DropDown value={undefined} open={true} children={items} />);
         const dropDownList = bodySelect('LIST');
 
         return waitForDom(() => {
             expect(dropDownList).to.be.present();
             items.forEach((elem, idx) => {
                 expect(dropDownList!.children[idx]).to.be.present();
-                expect(dropDownList!.children[idx]).to.have.text(elem.label);
+                expect(dropDownList!.children[idx]).to.have.text(elem);
             });
         });
     });
@@ -105,7 +95,7 @@ describe('<DropDown />', () => {
     it('invokes onClick handler when an item is clicked', () => {
         const onClick = sinon.spy();
 
-        clientRenderer.render(<DropDown value={undefined} open={true} items={items} onItemClick={onClick}/>);
+        clientRenderer.render(<DropDown value={undefined} open={true} children={items} onChange={onClick}/>);
         const dropDownList = bodySelect('LIST');
 
         simulate.click(dropDownList!.children[0]);
