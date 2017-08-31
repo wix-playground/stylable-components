@@ -48,6 +48,7 @@ const treeData: TreeItemData[] = [
     }
 ];
 
+// duplicating the data so i can pass a new object to the non-mobx version
 const newTreeData = JSON.parse(JSON.stringify(treeData));
 newTreeData[0].children![2].children!.push({label: 'Kaiserschmarrn'});
 
