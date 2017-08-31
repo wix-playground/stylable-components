@@ -1,8 +1,7 @@
 import {observer} from 'mobx-react';
 import * as React from 'react';
 import {SBStateless} from 'stylable-react-component';
-import {TreeView} from '../../src';
-import {TreeItemData , TreeItemProps} from '../../src/components/tree-view/tree-view';
+import {TreeItemData , TreeItemProps, TreeView} from '../../src';
 import style from './tree-view-demo.st.css';
 
 export const treeData: TreeItemData[] = [
