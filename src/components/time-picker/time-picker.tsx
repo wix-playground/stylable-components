@@ -1,7 +1,7 @@
 import * as keycode from 'keycode';
 import * as React from 'react';
 import {SBComponent} from 'stylable-react-component';
-import {Stepper} from '../stepper';
+import {Modifiers, Stepper} from '../stepper';
 import styles from './time-picker.st.css';
 import {
     Ampm, ampmLabels, Format,
@@ -273,8 +273,8 @@ export class TimePicker extends React.Component<Props, State> {
         e.preventDefault();
     }
 
-    private onStepperUp = (e: React.MouseEvent<HTMLButtonElement>) => this.changeValue(1, e.shiftKey ? 10 : 1);
-    private onStepperDown = (e: React.MouseEvent<HTMLButtonElement>) => this.changeValue(-1, e.shiftKey ? 10 : 1);
+    private onStepperUp = ({shiftKey}: Modifiers) => this.changeValue(1, shiftKey ? 10 : 1);
+    private onStepperDown = ({shiftKey}: Modifiers) => this.changeValue(-1, shiftKey ? 10 : 1);
 
     private onAmpmMouseDown = (e: React.SyntheticEvent<HTMLDivElement>) => {
         e.stopPropagation();

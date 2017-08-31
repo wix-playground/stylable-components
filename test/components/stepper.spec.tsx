@@ -1,26 +1,42 @@
 import * as React from 'react';
 import {SinonSpy} from 'sinon';
-import { ClientRenderer, expect, simulate, sinon } from 'test-drive-react';
-import { Stepper } from '../../src/components/stepper';
+import {ClientRenderer, expect, simulate, sinon} from 'test-drive-react';
+import {Stepper} from '../../src/components/stepper';
 import WindowStub from '../stubs/window.stub';
 
 describe('<Stepper />', () => {
     const clientRenderer = new ClientRenderer();
+    let windowStub: WindowStub;
+    let onUp: SinonSpy;
+    let onDown: SinonSpy;
 
+    beforeEach(() => {
+        onUp = sinon.spy();
+        onDown = sinon.spy();
+        windowStub = new WindowStub();
+    });
+
+    afterEach(() => windowStub.sandbox.restore());
     afterEach(() => clientRenderer.cleanup());
 
-    describe('draggable', () => {
-        let windowStub: WindowStub;
-        let onUp: SinonSpy;
-        let onDown: SinonSpy;
+    it('onUp and onDown should pass modifiers if any', async () => {
+        const {select, waitForDom} = clientRenderer.render(
+            <Stepper onUp={onUp} onDown={onDown} />
+        );
 
-        beforeEach(() => {
-            onUp = sinon.spy();
-            onDown = sinon.spy();
-            windowStub = new WindowStub();
+        await waitForDom(() => {
+            const up = select('STEPPER_INCREMENT');
+            const down = select('STEPPER_DECREMENT');
+
+            simulate.click(up, {shiftKey: true});
+            simulate.click(down, {altKey: true, ctrlKey: true});
+
+            expect(onUp).to.have.been.calledWithMatch({shiftKey: true});
+            expect(onDown).to.have.been.calledWithMatch({altKey: true, ctrlKey: true});
+        });
         });
 
-        afterEach(() => windowStub.sandbox.restore());
+    describe('draggable', () => {
 
         describe('drag up', () => {
 
@@ -30,7 +46,7 @@ describe('<Stepper />', () => {
                     clientX: 100,
                     clientY: 100
                 };
-                const { waitForDom, select } = clientRenderer.render(
+                const {waitForDom, select} = clientRenderer.render(
                     <Stepper
                         data-automation-id="STEPPER"
                         onUp={onUp}
@@ -43,10 +59,12 @@ describe('<Stepper />', () => {
                     simulate.mouseDown(select('STEPPER'), dragStartPoint);
                     windowStub.simulate('mousemove', {
                         clientX: dragStartPoint.clientX,
-                        clientY: dragStartPoint.clientY - dragStep
+                        clientY: dragStartPoint.clientY - dragStep,
+                        shiftKey: true
                     });
 
                     expect(onUp).to.have.been.calledOnce;
+                    expect(onUp).to.have.been.calledWithMatch({shiftKey: true});
                     expect(onDown).not.to.have.been.called;
                 });
             });
@@ -57,7 +75,7 @@ describe('<Stepper />', () => {
                     clientX: 100,
                     clientY: 100
                 };
-                const { waitForDom, select } = clientRenderer.render(
+                const {waitForDom, select} = clientRenderer.render(
                     <Stepper
                         data-automation-id="STEPPER"
                         onUp={onUp}
@@ -89,7 +107,7 @@ describe('<Stepper />', () => {
                     clientX: 100,
                     clientY: 100
                 };
-                const { waitForDom, select } = clientRenderer.render(
+                const {waitForDom, select} = clientRenderer.render(
                     <Stepper
                         data-automation-id="STEPPER"
                         onUp={onUp}
@@ -102,11 +120,14 @@ describe('<Stepper />', () => {
                     simulate.mouseDown(select('STEPPER'), dragStartPoint);
                     windowStub.simulate('mousemove', {
                         clientX: dragStartPoint.clientX,
-                        clientY: dragStartPoint.clientY + dragStep
+                        clientY: dragStartPoint.clientY + dragStep,
+                        altKey: true,
+                        ctrlKey: true
                     });
 
                     expect(onUp).not.to.have.been.called;
                     expect(onDown).to.have.been.calledOnce;
+                    expect(onDown).to.have.been.calledWithMatch({altKey: true, ctrlKey: true});
                 });
             });
 
@@ -116,7 +137,7 @@ describe('<Stepper />', () => {
                     clientX: 100,
                     clientY: 100
                 };
-                const { waitForDom, select } = clientRenderer.render(
+                const {waitForDom, select} = clientRenderer.render(
                     <Stepper
                         data-automation-id="STEPPER"
                         onUp={onUp}
@@ -147,7 +168,7 @@ describe('<Stepper />', () => {
                     clientX: 100,
                     clientY: 100
                 };
-                const { waitForDom, select } = clientRenderer.render(
+                const {waitForDom, select} = clientRenderer.render(
                     <Stepper
                         data-automation-id="STEPPER"
                         onUp={onUp}
@@ -157,7 +178,7 @@ describe('<Stepper />', () => {
                 );
 
                 await waitForDom(() => {
-                    simulate.mouseDown(select('STEPPER'), { clientX: 100, clientY: 100 });
+                    simulate.mouseDown(select('STEPPER'), {clientX: 100, clientY: 100});
                     windowStub.simulate('mousemove', {
                         clientX: dragStartPoint.clientX,
                         clientY: dragStartPoint.clientY - dragStep
