@@ -49,6 +49,11 @@
     vertical-align: middle;
 }
 
-.tree-item-label:nth-of-type(odd)  {
-    background-color: lightgray;
+.node-tool-tip {
+    opacity: 0;
+}
+
+.tree-item-label:hover .node-tool-tip {
+    opacity: 1;
+    transition: opacity 0.15s linear;
 }

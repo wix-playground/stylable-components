@@ -75,7 +75,7 @@ export const CustomItem: React.SFC<TreeItemProps> =
                         data-automation-id={`${itemIdPrefix}_${itemLabel}_LABEL`}
                         className="tree-item-label"
                     >
-                        {item.label}
+                        {item.label}<span className="node-tool-tip"> ({Math.floor(Math.random() * 100)} kcal)</span>
                     </span>
                 </div>
                 <div className="nested-tree">
@@ -141,7 +141,7 @@ export class TreeViewDemoCustom extends React.Component<{}, TreeViewDemoCustomSt
     public render() {
         return (
             <div>
-                <h3>TreeView with custom item renderer</h3>
+                <h3>TreeView with custom item renderer (try hovering the labels)</h3>
                 <section data-automation-id="TREE_VIEW_DEMO_CUSTOM">
                     <SelectedItem selectedItem={this.state.selectedItemCustom} />
                     <br />
