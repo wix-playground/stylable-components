@@ -47,5 +47,8 @@
 
 .tree-item-label {
     vertical-align: middle;
-    text-decoration: underline wavy red;
+}
+
+.tree-item-label:nth-of-type(odd)  {
+    background-color: lightgray;
 }
