@@ -2,7 +2,7 @@
 
 .root {
     -st-states: checked, disabled, indeterminate, readonly, focused;
-    display: inline;
+    display: inline-block;
     position: relative;
     cursor: pointer;
 }

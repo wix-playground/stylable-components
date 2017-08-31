@@ -28,6 +28,11 @@ export function assertRootElementContract(Component: React.ComponentType<any>): 
         return {rootNode: findDOMNode(output.result as React.ReactInstance), ...output};
     }
 
+    function isDisplayInline(rootNode: Element): boolean {
+        const display = window.getComputedStyle(rootNode).display;
+        return display === 'inline-block' || display === 'inline-flex';
+    }
+
     afterEach(() => {
         clientRenderer.cleanup();
     });
@@ -59,5 +64,10 @@ export function assertRootElementContract(Component: React.ComponentType<any>): 
         const testClassName = 'sample-class-name';
         const {rootNode} = render(<Component className={testClassName}/>);
         expect(rootNode.classList.contains(testClassName), 'className not properly merged').to.equal(true);
+    });
+
+    it('has display values of \'inline-block\' or \'inline-flex\'', function() {
+        const {rootNode} = render(<Component />);
+        expect(isDisplayInline(rootNode), 'element display is not \'inline-block\' or \'inline-flex\'').to.equal(true);
     });
 }
