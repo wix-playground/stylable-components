@@ -1,10 +1,11 @@
 import * as React from 'react';
-import {SBComponent} from 'stylable-react-component';
+import {SBComponent, SBStateless} from 'stylable-react-component';
 import {root} from 'wix-react-tools';
 import {Portal} from '../../../src';
 import {noop} from '../../utils';
 import {enableScrolling, stopScrolling} from '../../utils/stop-scrolling';
 import styles from './modal.st.css';
+import {isElement} from '../../utils/is-element';
 
 export interface RequestCloseEvent extends React.SyntheticEvent<Element> {
     source: string;
@@ -39,7 +40,7 @@ export class Modal extends React.PureComponent<ModalProps, {}> {
             this.props.isOpen ? (
                 <Portal {...rootProps}>
                     <div className="backdrop" data-slot="backdrop" data-automation-id="MODAL" onClick={this.onClick}>
-                        <div data-slot="children" className="children">
+                        <div className="children" data-slot="children">
                             {this.props.children}
                         </div>
                     </div>
@@ -50,13 +51,15 @@ export class Modal extends React.PureComponent<ModalProps, {}> {
 
     private onClick: React.EventHandler<React.MouseEvent<HTMLDivElement>> = event => {
         const closeEvent: RequestCloseEvent = Object.create(event);
-        const target: Element = event.target as Element;
-        closeEvent.source = this.getDataFromNearestNode(target);
-        this.props.onRequestClose!(closeEvent);
+        const {target} = event;
+        if (isElement(target)) {
+            closeEvent.source = this.getDataFromNearestNode(target);
+            this.props.onRequestClose!(closeEvent);
+        }
     }
 
     private getDataFromNearestNode(target: Element): string {
-        return target.getAttribute('data-slot') || this.getDataFromNearestNode(target.parentElement);
+        return target.getAttribute('data-slot') || this.getDataFromNearestNode(target.parentElement!);
     }
 
     private shouldEnableScrolling(shouldScroll: boolean) {
