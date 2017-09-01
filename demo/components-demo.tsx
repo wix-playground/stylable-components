@@ -7,6 +7,7 @@ import {ImageDemo} from './components/image-demo';
 import {NumberInputDemo} from './components/number-input.demo';
 import {PopupDemo} from './components/popup-demo';
 import {SelectionListDemo} from './components/selection-list-demo';
+import {SliderDemo} from './components/slider-demo';
 import {TimePickerDemo} from './components/time-picker-demo';
 import {ToggleDemo} from './components/toggle-demo';
 import {TreeViewDemo, TreeViewDemoCustom} from './components/tree-view-demo';
@@ -45,6 +46,11 @@ export class ComponentsDemo extends React.Component {
                 <div>
                     <h2>Toggle</h2>
                     <ToggleDemo />
+                </div>
+                <hr/>
+                <div>
+                    <h2>Slider</h2>
+                    <SliderDemo />
                 </div>
                 <hr />
                 <div>
