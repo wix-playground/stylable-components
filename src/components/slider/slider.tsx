@@ -254,29 +254,15 @@ export class Slider extends React.Component<SliderProps, SliderState> {
             return markElements;
         }
 
-        const numberOfMarks = range / step;
-
-        for (let i = 0; i <= numberOfMarks; i++) {
+        for (let i = 0; i <= range / step; i++) {
             const position = relativeStep * i;
-            const className = position <= relativeValue ?
-                'markProgress' :
-                'markTrack';
 
             markElements.push((
                 <span
-                    className={className}
-                    key={i}
-                    style={
-                        isReverse ?
-                            (isVertical ?
-                                {top: `${position}%`} :
-                                {right: `${position}%`}) :
-                            (isVertical ?
-                                {bottom: `${position}%`} :
-                                {left: `${position}%`})
-
-                    }
                     data-automation-id={`SLIDER-MARKS-${i}`}
+                    key={i}
+                    className={this.getMarkClass(position)}
+                    style={this.getMarkStyles(position)}
                 />
             ));
         }
@@ -298,6 +284,24 @@ export class Slider extends React.Component<SliderProps, SliderState> {
             (this.state.isVertical ?
                 {bottom: `${this.state.relativeValue}%`} :
                 {left: `${this.state.relativeValue}%`});
+    }
+
+    private getMarkStyles(position: number) {
+        const {isReverse, isVertical} = this.state;
+        return isReverse ?
+            (isVertical ?
+                {top: `${position}%`} :
+                {right: `${position}%`}) :
+            (isVertical ?
+                {bottom: `${position}%`} :
+                {left: `${position}%`});
+    }
+
+    private getMarkClass(position: number) {
+        const {relativeValue} = this.state;
+        return position <= relativeValue ?
+            'markProgress' :
+            'markTrack';
     }
 
     private onSliderFocus: React.FocusEventHandler<HTMLElement> = event => {
