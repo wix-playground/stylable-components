@@ -3,6 +3,7 @@ import * as React from 'react';
 import {SBComponent} from 'stylable-react-component';
 import {notifyScreenReader} from '../../utils';
 import {Stepper} from '../stepper';
+import {LABELS} from './strings';
 import styles from './time-picker.st.css';
 import {
     Ampm, ampmLabels, Format,
@@ -35,11 +36,6 @@ const ampmSwitch = {
     [Ampm.NONE]: Ampm.NONE
 };
 const segments: Segment[] = ['hh', 'mm', 'ampm'];
-const helpLabels = {
-    hh: 'Hours',
-    mm: 'Minutes',
-    ampm: 'AM/PM'
-};
 
 function propsValueToSegments(value?: string, format?: Format): {hh?: string, mm?: string, ampm: Ampm} {
     const isAmpm = format === 'ampm';
@@ -125,7 +121,7 @@ export class TimePicker extends React.Component<Props, State> {
                             name={segment}
 
                             role="spinbutton"
-                            aria-label={helpLabels[segment]}
+                            aria-label={LABELS[segment]}
                             aria-valuetext={this.state[segment]}
 
                             onMouseDown={this.onInputMouseDown}
@@ -145,7 +141,7 @@ export class TimePicker extends React.Component<Props, State> {
                         children={ampmLabels[ampm]}
 
                         role="spinbutton"
-                        aria-label={helpLabels.ampm}
+                        aria-label={LABELS.ampm}
                         aria-valuetext={ampmLabels[ampm]}
 
                         onMouseDown={this.onAmpmMouseDown}
