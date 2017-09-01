@@ -241,7 +241,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
 
     private getMarks(): JSX.Element[] {
         const {marks, min, max, step} = this.props;
-        const {relativeStep, relativeValue, isReverse, isVertical} = this.state;
+        const {relativeStep} = this.state;
         const range = (max! - min!);
         const markElements: JSX.Element[] = [];
         if (
