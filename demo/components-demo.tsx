@@ -17,10 +17,6 @@ export class ComponentsDemo extends React.Component {
     public render() {
         return (
             <div>
-                <div>
-                    <h2>Slider</h2>
-                    <SliderDemo />
-                </div>
                 <ImageDemo />
                 <hr />
                 <DropDownDemo />
@@ -50,6 +46,11 @@ export class ComponentsDemo extends React.Component {
                 <div>
                     <h2>Toggle</h2>
                     <ToggleDemo />
+                </div>
+                <hr/>
+                <div>
+                    <h2>Slider</h2>
+                    <SliderDemo />
                 </div>
                 <hr />
                 <div>
