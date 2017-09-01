@@ -93,6 +93,37 @@ The TreeView implements the OptionList intefarface (dataSource, dataScheme and i
 | expandAll | boolean deep (default) or shallow | Expands all the tree nodes |
 | selectItem | item: Object (required) | Selects an item in the three |
 
+## Accessibility
+
+### Roles
+
+* Root role - tree
+* Child node role - treeitem
+* Group of children under a node - group
+
+    Example:
+
+    ```html
+    <ul role="tree" aria-labelledby="tree_label">
+        <li role="treeitem" aria-expanded="false">
+        <span>Root Node</span>
+        <ul role="group">
+            <li role="treeitem">Sub Node</li>
+            <li role="treeitem">Sub Node</li>
+        </ul>
+    </ul>
+    ```
+
+### Aria Attributes
+
+* The node with tree role supports the text content attributes.
+* Set aria-expanded to false if node is not expanded, otherwise set aria-expanded to true. End nodes do not have this attribute.
+* aria-selected is set to true only on the selected node.
+
+### Focus
+
+Tabindex and aria-activedescendant solution postponed for the moment.
+
 ## Input Handling
 
 ### Keyboard Navigation

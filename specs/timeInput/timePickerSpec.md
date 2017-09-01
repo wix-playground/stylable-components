@@ -75,6 +75,30 @@ For more info see [keyboard](#keyboard),  [mouse](#mouse) & [touch](#touch) sect
 
 
 
+**Roles & Attributes**
+
+There is not Accessibility spec in W3 for time picker.
+
+| Role       | Attribute        | Element | Usage                                    |
+| ---------- | ---------------- | ------- | ---------------------------------------- |
+| spinbutton |                  | `div`   | Idetifies component as a spin button. NOTE: Every component within time picker (`hh`, `mm`, `am/pm`) has a separate span with `role="spinbutton"` |
+|            | `aria-valuetext` | `div`   | A string value that provides a user-friendly name for the current value of the time picker. |
+|            | `aria-valuemin`  | `div`   | Specifies the minimum value of the input (e.g. 00) |
+|            | `aria-valuemax`  | `div`   | Specifies the maximum value of the input (e.g. for 'hh' section  it would be smith like: 12 for 12h format & 23 for 24h format) |
+|            | `aria-help`      | `div`   | A string value that is clearly describes focused part of the control. "Hours", "Minutes", "am/pm" |
+
+
+
+**Screen Reader Behavior:**
+
+Here is what a screenreader should say on focus:
+
+1. **Focus on hours:** current value (if present) -> "stepper" -> "hours"
+2. **Focus on minutes:** current value (if present) -> "stepper" -> "minutes"
+3. **Focus on am/pm:** current value -> "stepper" -> "am/pm"
+
+
+
 ## Behavior
 
 Changing value in the input via keyboard mirrors the behavior of the stepper arrows.
@@ -111,18 +135,18 @@ The component follows the external control pattern (value displayed is defined b
 
 ### Keyboard
 
-| Keys                       | Action                                   |
-| -------------------------- | ---------------------------------------- |
-| type a number              | insert a value without committing it     |
-| up arrow key               | increase & commit value (for focused element) |
-| down arrow key             | decrease & commit value (for focused element) |
-| page up (fn/ctrl + up arrow key)| increase & commit value by 10 (NOTE: works only for 'mm') |
-| page down (fn/ctrl + down arrow key)| decrease & commit value by 10 (NOTE: works only for 'mm') |
-| tab / right arrow key      | moves focus to previous element within component ('hh' -> 'mm' -> 'am/pm') AND then to the next component |
-| shift+tab / left arrow key | moves focus to previous element within component ('am/pm' -> 'mm' -> 'hh') AND then to the previous component |
-| esc                        | removes focus (if on focus)              |
-| enter                      | removes focus (if in focus), discards non-committed new value (if value typed) |
-| space                      | switches between AM / PM (NOTE: space works only for AM/PM and only when it is in focus) |
+| Keys                                 | Action                                   |
+| ------------------------------------ | ---------------------------------------- |
+| type a number                        | insert a value without committing it     |
+| up arrow key                         | increase & commit value (for focused element) |
+| down arrow key                       | decrease & commit value (for focused element) |
+| shift + up arrow key                 | increase & commit value by 10 (NOTE: works only for 'mm') |
+| shift + down arrow key               | decrease & commit value by 10 (NOTE: works only for 'mm') |
+| tab / right arrow key                | moves focus to previous element within component ('hh' -> 'mm' -> 'am/pm') AND then to the next component                  |
+| shift+tab / left arrow key           | moves focus to previous element within component ('am/pm' -> 'mm' -> 'hh') AND then to the previous component |
+| esc                                  | removes focus (if on focus)              |
+| enter                                | removes focus (if in focus), discards non-committed new value (if value typed) |
+| space                                | switches between AM / PM (NOTE: space works only for AM/PM and only when it is in focus) |
 
 **RTL** orientation ( if applicable )
 

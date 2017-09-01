@@ -28,6 +28,7 @@
     font-size: value(fontSize);
     font-weight: value(fontWeight);
     line-height: value(lineHeight);
+    margin: 0;
     padding: 6px 12px;
     height: value(inputHeight);
     width: value(inputWidth);
