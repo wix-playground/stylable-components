@@ -5,8 +5,7 @@ import {Slider} from '../../src/components/slider';
 import {isTouch} from '../../src/utils';
 import WindowStub from '../stubs/window.stub';
 import {simulateMouseEvent, simulateTouchEvent} from '../utils';
-
-const describeIfTouch = isTouch ? describe : describe.skip;
+import {describeIfTouch} from '../utils/skip-describe-if-touch';
 
 describe('<Slider />', () => {
     const clientRenderer = new ClientRenderer();
