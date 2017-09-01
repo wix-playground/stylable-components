@@ -5,6 +5,7 @@
                color_Disabled,
                borderWidth,
                inputHeight,
+               DS1,
                BK3,
                PR3;
 }
@@ -25,18 +26,12 @@
 .control {
     width: 100%;
 
-    display: flex;
-
-    justify-content: center;
-    align-content: center;
-    align-items: center;
-
     position: absolute;
 
     margin: 0;
     padding: 0;
 
-    background-color: value(color_MainText_Background);
+    background: transparent;
     color: value(BK3);
 }
 
@@ -47,13 +42,12 @@
     flex: 1;
 }
 
-.control:hover,
-.control:focus,
 .control:disabled {
-    color: value(color_MainText_Background);
+    color: value(DS1);
 }
+
+.control:focus,
 .control:hover {
-    background: transparent;
     color: value(PR3);
 }
 
