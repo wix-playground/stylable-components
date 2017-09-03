@@ -78,12 +78,20 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
             'data-automation-id': 'AUTO_COMPLETE',
             'className': 'auto-complete'
         }) as React.HTMLAttributes<HTMLDivElement>;
+        const ariaProps = {
+            'aria-haspopup': true,
+            'aria-expanded': this.props.open ? true : false
+        };
         const items = this.getFilteredItems();
         const children = !items.length && this.props.showNoSuggestions ?
             this.addToChildren(this.addNoSuggestionsMsg()) :
             this.props.children;
         return (
-            <div {...rootProps} role="combobox">
+            <div
+                {...rootProps}
+                {...ariaProps}
+                role="combobox"
+            >
                 <input
                     className="auto-complete-input"
                     data-automation-id="AUTO_COMPLETE_INPUT"
@@ -93,6 +101,7 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
                     ref={this.refCallback}
                     disabled={this.props.disabled}
                     role="textbox"
+                    {...{'aria-autocomplete': 'list'}}
                 />
                 <CaretDown onClick={this.onCaretClick} className="caret" data-automation-id="AUTO_COMPLETE_CARET"/>
                 <Popup

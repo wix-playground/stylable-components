@@ -183,12 +183,34 @@ describe('<AutoComplete />', () => {
         await waitForDom(() => expect(select(autoCompInput)).to.have.attribute('disabled'));
     });
 
-    it('gives the correct roles to the components', async () => {
-        const {select, waitForDom} = clientRenderer.render(<AutoComplete />);
+    describe('Accessibility', () => {
 
-        await waitForDom(() => {
-            expect(select(autoCompInput)).to.have.attribute('role', 'textbox');
-            expect(select(autoComp)).to.have.attribute('role', 'combobox');
+
+        it('gives the correct roles to the components', async () => {
+            const {select, waitForDom} = clientRenderer.render(<AutoComplete />);
+
+            await waitForDom(() => {
+                expect(select(autoCompInput)).to.have.attribute('role', 'textbox');
+                expect(select(autoComp)).to.have.attribute('role', 'combobox');
+            });
         });
-    })
+
+        it('gives the correct aria attribues', async () => {
+            const {select, waitForDom} = clientRenderer.render(<AutoComplete />);
+
+            await waitForDom(() => {
+                expect(select(autoCompInput)).to.have.attribute('aria-autocomplete', 'list');
+                expect(select(autoComp)).to.have.attribute('aria-haspopup', 'true');
+                expect(select(autoComp)).to.have.attribute('aria-expanded', 'false');
+            });
+        });
+
+        it('sets the aria-expanded to true when open', async () => {
+            const {select, waitForDom} = clientRenderer.render(<AutoComplete open/>);
+
+            await waitForDom(() => {
+                expect(select(autoComp)).to.have.attribute('aria-expanded', 'true');
+            });
+        });
+    });
 });
