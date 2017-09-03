@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {ClientRenderer, expect, selectDom, simulate, sinon, waitFor } from 'test-drive-react';
+import {ClientRenderer, expect, selectDom, simulate, sinon, trigger, waitFor } from 'test-drive-react';
 import {AutoCompleteDemo} from '../../demo/components/auto-complete.demo';
 import {AutoComplete} from '../../src';
 
@@ -18,15 +18,19 @@ describe('<AutoComplete />', () => {
     describe('The autocomplete user', () => {
         it('types in the input and selects a value', async () => {
             const {select, waitForDom} = clientRenderer.render(<AutoCompleteDemo />);
-            const itemList = bodySelect(list)!;
             const prefix = 'P';
             const filteredItems = items.filter(item => item.startsWith(prefix)).join('');
 
-            await waitFor(() => expect(itemList.textContent).to.eql(items.join('')));
+            simulate.click(select(autoComp + '_CARET'));
 
-            bodySelect<HTMLInputElement>(autoCompInput)!.value = prefix;
-            simulate.change(bodySelect(autoCompInput));
-            await waitFor(() => expect(itemList.textContent).to.eql(filteredItems));
+            const itemList = bodySelect(list)!;
+            await waitFor(() => {
+                expect(itemList).to.be.present();
+                expect(itemList.textContent).to.equal(items.join(''));
+            });
+
+            trigger.change(bodySelect(autoCompInput), prefix);
+            await waitFor(() => expect(itemList.textContent).to.equal(filteredItems));
 
             simulate.click(bodySelect(list, 'LIST')!.children[0]);
             await waitForDom(() => {
@@ -38,14 +42,17 @@ describe('<AutoComplete />', () => {
     it('renders to the screen', () => {
         const {select, waitForDom} = clientRenderer.render(<AutoComplete />);
 
-        return waitForDom(() => expect(select(autoComp)).to.be.present());
+        return waitForDom(() => {
+            expect(select(autoComp)).to.be.present();
+            expect(bodySelect(list)).to.be.absent();
+        });
     });
 
     it('invokes the onChange when text is entered to label', () => {
         const onChange = sinon.spy();
         const {select} = clientRenderer.render(<AutoComplete onChange={onChange}/>);
 
-        (select(autoComp, autoCompInput) as HTMLInputElement).value = 'abc';
+        select<HTMLInputElement>(autoComp, autoCompInput)!.value = 'abc';
         simulate.change(select(autoComp, autoCompInput));
 
         return waitFor(() => {
@@ -63,7 +70,7 @@ describe('<AutoComplete />', () => {
     it('renders the items if given', async () => {
         clientRenderer.render(<AutoComplete open dataSource={items}/>);
 
-        await waitFor(() => expect(bodySelect(list, 'LIST')!.children[0].innerHTML).to.be.equal('Muffins'));
+        await waitFor(() => expect(bodySelect(list, 'LIST')!.children[0]).to.have.text('Muffins'));
     });
 
     it('invokes the onChange when an option is clicked and closes the popup', async () => {
@@ -87,7 +94,7 @@ describe('<AutoComplete />', () => {
         const itemList = bodySelect(list);
 
         await waitFor(() => {
-            expect(itemList!.textContent).to.eql(items.filter(item => item.startsWith(prefix)).join(''));
+            expect(itemList!.textContent).to.equal(items.filter(item => item.startsWith(prefix)).join(''));
         });
     });
 
@@ -109,5 +116,5 @@ describe('<AutoComplete />', () => {
         await waitForDom(() => expect(select(autoComp, autoComp + '_CARET')).to.be.present());
         simulate.click(select(autoComp, autoComp + '_CARET'));
         await waitFor(() => expect(bodySelect(list)).to.be.present());
-    })
+    });
 });

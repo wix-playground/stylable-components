@@ -10,7 +10,7 @@ const items = ['Muffins', 'Pancakes', 'Cupcakes', 'Souffles',
                'Pasta', 'Soup', 'Caramel', 'Avazim', 'Moses'];
 
 export class AutoCompleteDemo extends React.Component<{}, AutoCompleteDemoState> {
-    public state = {open: true, inputText: ''};
+    public state = {open: false, inputText: ''};
 
     public onChange = (e: AutoCompleteChangeEvent) => {
         this.setState({
