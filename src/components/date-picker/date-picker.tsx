@@ -3,20 +3,19 @@ import * as React from 'react';
 import {SBComponent} from 'stylable-react-component';
 import {root} from 'wix-react-tools';
 import inputStyles from '../../style/default-theme/controls/input.st.css';
+import {FormInputProps} from '../../types/forms';
 import {Calendar} from './calendar';
 import styles from './date-picker.st.css';
 
 const invalidDate: string = 'Invalid Date';
 
-export interface DatePickerProps {
-    value?: Date;
+export interface DatePickerProps extends FormInputProps<Date> {
     placeholder?: string;
     openOnFocus?: boolean;
     disabled?: boolean;
     readOnly?: boolean;
     showDropdownOnInit?: boolean;
     startingDay?: number;
-    onChange?(value: Date): void;
 }
 
 export interface DatePickerState {
@@ -29,7 +28,7 @@ export interface DatePickerState {
 
 @SBComponent(styles)
 export class DatePicker extends React.Component<DatePickerProps, DatePickerState> {
-    public static defaultProps: DatePickerProps = {
+    public static defaultProps: Partial<DatePickerProps> = {
         openOnFocus: true,
         onChange: () => {}
     };
@@ -84,7 +83,7 @@ export class DatePicker extends React.Component<DatePickerProps, DatePickerState
             const updatedDate = input ? new Date(input) : new Date();
             this.setState({inputValue: updatedDate.toDateString()});
 
-            this.props.onChange!(updatedDate);
+            this.props.onChange!({value: updatedDate});
         } else {
             this.setState({inputValue: invalidDate});
         }
@@ -100,7 +99,7 @@ export class DatePicker extends React.Component<DatePickerProps, DatePickerState
             dropdownDate: input
         });
 
-        this.props.onChange!(input);
+        this.props.onChange!({value: input});
     }
 
     private updateDropdownDate = (updatedDate: Date): void => {

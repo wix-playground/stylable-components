@@ -6,8 +6,8 @@ import {isReactComponent} from '../utils/is-react-component';
 
 const allComponents = Object.keys(WixReactComponents);
 const failingComponents = [
-    'NumberInput', 'Toggle',
-    'RadioButton', 'RadioGroup', 'Portal', 'Popup', 'TimePicker'
+    'TreeView', 'NumberInput', 'Toggle', 'BirthdayPicker',
+     'Portal', 'Popup', 'TimePicker', 'Modal'
 ];
 
 describe('Root Element contract', function() {
@@ -26,6 +26,11 @@ export function assertRootElementContract(Component: React.ComponentType<any>): 
     function render<P>(element: React.ReactElement<P>): RenderingContext<P> & { rootNode: Element } {
         const output = clientRenderer.render(element);
         return {rootNode: findDOMNode(output.result as React.ReactInstance), ...output};
+    }
+
+    function isDisplayInline(rootNode: Element): boolean {
+        const display = window.getComputedStyle(rootNode).display;
+        return display === 'inline-block' || display === 'inline-flex';
     }
 
     afterEach(() => {
@@ -59,5 +64,10 @@ export function assertRootElementContract(Component: React.ComponentType<any>): 
         const testClassName = 'sample-class-name';
         const {rootNode} = render(<Component className={testClassName}/>);
         expect(rootNode.classList.contains(testClassName), 'className not properly merged').to.equal(true);
+    });
+
+    it('has display values of \'inline-block\' or \'inline-flex\'', function() {
+        const {rootNode} = render(<Component />);
+        expect(isDisplayInline(rootNode), 'element display is not \'inline-block\' or \'inline-flex\'').to.equal(true);
     });
 }

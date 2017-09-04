@@ -3,37 +3,18 @@ import {TimePicker} from '../../src';
 import {is12TimeFormat} from '../../src/components/time-picker/utils';
 
 export class TimePickerDemo extends React.Component<any, any> {
-    public intervalId: any;
     constructor() {
         super();
         this.state = {
-            now: new Date(),
             value1: '01:55',
             value2: null
         };
     }
-    public componentDidMount() {
-        this.intervalId = setInterval(() => {
-            this.setState({now: new Date()});
-        }, 1000) as any;
-    }
-    public componentWillUnmount() {
-        clearInterval(this.intervalId as any);
-    }
     public render() {
-        const currentTime = [
-            this.state.now.getHours(),
-            this.state.now.getMinutes()
-        ].join(':');
         return (
             <div>
                 <div>
                     System time format: <code>{is12TimeFormat ? 'ampm' : '24h'}</code>
-                </div>
-                <h3>Current time (read-only)</h3>
-                <div>
-                    <TimePicker value={currentTime}/>
-                    <span style={{marginLeft: 20}}>{currentTime}</span>
                 </div>
 
                 <h3>Controlled 24 time format</h3>
