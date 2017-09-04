@@ -5,6 +5,7 @@ import {root} from 'wix-react-tools';
 import inputStyles from '../../style/default-theme/controls/input.st.css';
 import {FormInputProps} from '../../types/forms';
 import {Calendar} from './calendar';
+import {CalendarIcon} from './date-picker-icons';
 import styles from './date-picker.st.css';
 
 const invalidDate: string = 'Invalid Date';
@@ -61,6 +62,7 @@ export class DatePicker extends React.Component<DatePickerProps, DatePickerState
                     type="text"
                     data-automation-id="DATE_PICKER_INPUT"
                 />
+                <CalendarIcon className="icon" />
                 {this.state.isDropdownVisible
                     ? <Calendar
                         onChange={this.onCalendarInput}

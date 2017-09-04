@@ -20,6 +20,11 @@
     display: block;
 }
 
+.icon {
+    position: relative;
+    left: -value(inputWidth);
+}
+
 /* The dropdown arrow extends from the input and into the calendar view */
 .dropdownArrowWrapper {
     /* Switch width to the calendar width to center with regards to the calendar */
