@@ -11,40 +11,6 @@
     color: #000000;
     outline: 0 solid transparent;
     overflow: hidden;
-    display: block;
-}
-
-.tree-node {
-    -st-states: selected, focused;
-    cursor: pointer;
-    padding: 3px 7px 5px;
-    border: 1px solid transparent;
-}
-
-.tree-node:hover {
-    background-color: value(color_Keyboard_Focused);
-}
-
-.tree-node:focused {
-    border: 1px solid value(color_Active);
-}
-
-.tree-node:selected {
-    background-color: value(color_Active);
-    color: white;
-}
-
-.nested-tree {
-    margin-left: 25px;
-}
-
-.tree-item-icon {
-    height: 16px;
-    width: 16px;
-    vertical-align: middle;
-    margin-right: 5px;
-}
-
-.tree-item-label {
-    vertical-align: middle;
+    display: inline-block;
+    min-width: 250px;
 }
