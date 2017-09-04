@@ -1,0 +1,104 @@
+:import {
+    -st-from: "../../style/default-theme/variables.st.css";
+    -st-named:
+        WT1,
+        BK1,
+        BK3,
+        PR2,
+        PR3,
+        DS1,
+        DS2,
+        ER1;
+}
+:vars {
+    width: 46px;
+    switchSize: 20px;
+    borderWidth: 1px;
+    padding: 1px;
+}
+.root {
+    -st-states: checked, disabled, focus, error, rtl;
+    display: block;
+    position: relative;
+    width: value(width);
+    border: value(borderWidth) solid value(BK3);
+    padding: value(padding);
+    border-radius: 100px;
+    background-color: value(WT1);
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 200ms linear;
+}
+.input {
+    position: absolute;
+    display: block;
+    position: absolute;
+    opacity: 0;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    width: 0;
+    height: 0;
+}
+.switch-wrap {
+    width: 100%;
+    position: relative;
+}
+
+.switch {
+    height: value(switchSize);
+    width: value(switchSize);
+    background-color: value(BK3);
+    border-radius: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 100ms linear;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjIiIHZpZXdCb3g9IjAgMCA4IDIiPiAgICA8cGF0aCBmaWxsPSIjRkZGIiBmaWxsLXJ1bGU9Im5vbnplcm8iIGQ9Ik0xIDJoNmExIDEgMCAwIDAgMC0ySDFhMSAxIDAgMCAwIDAgMnoiLz48L3N2Zz4=);
+}
+
+.root:checked::switch {
+    margin-left: 100%;
+    transform: translateX(-100%);
+    background-color: value(PR2);
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjYiIHZpZXdCb3g9IjAgMCA4IDYiPiAgICA8cGF0aCBmaWxsPSIjRkZGIiBmaWxsLXJ1bGU9Im5vbnplcm8iIGQ9Ik0xLjY5NiAyLjQ2NEExIDEgMCAxIDAgLjMwNCAzLjlsMS44NzUgMS44MThhMSAxIDAgMCAwIDEuMzkyIDBsNC4xMjUtNEExIDEgMCAxIDAgNi4zMDQuMjgyTDIuODc1IDMuNjA3IDEuNjk2IDIuNDY0eiIvPjwvc3ZnPg==);
+}
+
+.root:not(:disabled):hover {
+    border-color: value(PR3);
+}
+.root:not(:disabled):focus:after {
+    content: '';
+    position: absolute;
+    left: -4px;
+    top: -4px;
+    right: -4px;
+    bottom: -4px;
+    border: 4px solid value(PR3);
+    border-radius: 100px;
+    opacity: 0.5;
+}
+
+.root:error::switch {
+    background-color: value(ER1);
+}
+
+.root:disabled {
+    background-color: value(DS2);
+    border-color: value(DS1);
+    cursor: default;
+}
+.root:disabled::switch {
+    background-color: value(DS1);
+}
+
+.root:rtl::switch {
+    margin-left: 100%;
+    transform: translateX(-100%);
+}
+.root:rtl:checked::switch {
+    margin-left: 0;
+    transform: translateX(0);
+}

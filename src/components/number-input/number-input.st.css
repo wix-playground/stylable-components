@@ -1,0 +1,98 @@
+:import {
+    -st-from: "../../style/default-theme/controls/input.st.css";
+    -st-default: input;
+}
+
+:import {
+    -st-from: "../../style/default-theme/variables.st.css";
+    -st-named: color_MainText,
+               color_MainPlaceholder,
+               color_MainText_Background,
+               borderRadius,
+               color_Disabled,
+               borderDefault,
+               borderHover,
+               borderFocus,
+               inputHeight,
+               inputWidth,
+               borderDisabled,
+               borderError,
+               DS2;
+}
+
+:import {
+    -st-from: "../stepper/stepper.st.css";
+    -st-default: stepper;
+}
+
+.root {
+    -st-states: focus, disabled, error;
+
+    box-sizing: inherit;
+    position: relative;
+    display: inline-flex;
+
+    border: value(borderDefault);
+    border-radius: value(borderRadius);
+    background-color: value(color_MainText_Background);
+    color: value(color_MainText);
+
+    height: value(inputHeight);
+    min-width: value(inputWidth);
+
+    /* preventing window DPI scaling artifacts*/
+    padding: 0.3px;
+}
+
+.root:hover {
+    border: value(borderHover);
+}
+
+.root:focus {
+    border: value(borderFocus);
+}
+
+.root:disabled {
+    background-color: value(DS2);
+    color: value(color_MainPlaceholder);
+    border: value(borderDisabled);
+}
+
+.root:error {
+    border: value(borderError);
+}
+
+.prefix {
+    display: flex;
+    align-items: center;
+}
+
+.suffix {
+    display: flex;
+    align-items: center;
+}
+
+.native-input {
+    -st-extends: input;
+    flex-grow: 1;
+
+    border: none;
+    height: auto;
+    outline: none;
+
+    -moz-appearance: textfield;
+}
+
+.native-input::-webkit-outer-spin-button,
+.native-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+.native-input:disabled {
+    background: inherit;
+}
+
+.stepper {
+    -st-extends: stepper;
+    height: auto;
+}
