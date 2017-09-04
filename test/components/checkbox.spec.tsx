@@ -258,7 +258,7 @@ describe('<Checkbox/>', function() {
     describe('When readonly', function() {
         it('doesn\'t call onChange when clicked', async function() {
             const onChange = sinon.spy();
-            const {select, waitForDom} = clientRenderer.render(<CheckBox readonly={true} onChange={onChange}/>);
+            const {select, waitForDom} = clientRenderer.render(<CheckBox readOnly={true} onChange={onChange}/>);
 
             await waitForDom(() => {
                 expect(select('CHECKBOX_ROOT')).to.be.present();
@@ -274,7 +274,7 @@ describe('<Checkbox/>', function() {
         });
 
         it('displays tickmark if value is true', async function() {
-            const {select, waitForDom} = clientRenderer.render(<CheckBox readonly={true} value={true}/>);
+            const {select, waitForDom} = clientRenderer.render(<CheckBox readOnly={true} value={true}/>);
 
             await waitForDom(() => {
                 expect(select('CHECKBOX_ROOT')).to.be.present();

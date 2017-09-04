@@ -11,7 +11,7 @@ export interface CheckBoxProps extends FormInputProps<boolean> {
     indeterminateIcon?: React.ComponentType<CheckBoxIconProps>;
     children?: React.ReactNode;
     disabled?: boolean;
-    readonly?: boolean;
+    readOnly?: boolean;
     indeterminate?: boolean;
     tabIndex?: number;
     id?: string;
@@ -92,7 +92,7 @@ export class CheckBox extends React.Component<CheckBoxProps, CheckBoxState> {
         const cssStates = {
             checked: this.props.value!,
             disabled: this.props.disabled!,
-            readonly: this.props.readonly!,
+            readOnly: this.props.readOnly!,
             indeterminate: this.props.indeterminate!,
             focused: this.state.isFocused
         };
@@ -146,7 +146,7 @@ export class CheckBox extends React.Component<CheckBoxProps, CheckBoxState> {
     }
 
     private handleChange = (e: React.SyntheticEvent<HTMLElement>) => {
-        if (!this.props.disabled && !this.props.readonly) {
+        if (!this.props.disabled && !this.props.readOnly) {
                 this.props.onChange!({value: this.props.indeterminate ? true : !this.props.value});
         }
     }

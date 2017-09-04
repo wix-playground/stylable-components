@@ -115,7 +115,7 @@ export class ReadonlyDemo extends React.Component<{}, {value: boolean}> {
                     <CheckBox
                         value={this.state.value}
                         onChange={this.handleChange}
-                        readonly
+                        readOnly
                     >
                         <span data-automation-id="DISABLED_LABEL" className={style.label}>Unchecked</span>
                     </CheckBox>
@@ -123,13 +123,13 @@ export class ReadonlyDemo extends React.Component<{}, {value: boolean}> {
                 <span>
                     <CheckBox
                         value={true}
-                        readonly
+                        readOnly
                     >
                         <span className={style.label}>Checked</span>
                     </CheckBox>
                 </span>
                 <span>
-                    <CheckBox value={true} readonly indeterminate >
+                    <CheckBox value={true} readOnly indeterminate >
                         <span className={style.label}>Indeterminate</span>
                     </CheckBox>
                 </span>

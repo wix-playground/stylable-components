@@ -18,7 +18,7 @@ export class RadioGroupDemo extends React.Component<{}, {}> {
                     <RadioGroup onChange={this.onChange} name="demo" className="rg" value={this.state.myValue1}>
                         <RadioButton value="This way!"/>
                         <RadioButton value="No, that way!"/>
-                        <RadioButton value="But not here" disabled={true}/>
+                        <RadioButton value="But not here" readOnly={true}/>
                         <RadioButton value="Start here" disabled={true}/>
                     </RadioGroup>
                     <br/>
