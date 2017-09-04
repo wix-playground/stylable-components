@@ -29,7 +29,7 @@ export interface DatePickerState {
 }
 
 @SBComponent(styles)
-export class DatePicker extends React.Component<DatePickerProps, DatePickerState> {
+export class DatePicker extends React.PureComponent<DatePickerProps, DatePickerState> {
     public static defaultProps: Partial<DatePickerProps> = {
         openOnFocus: true,
         onChange: () => {}
@@ -52,11 +52,7 @@ export class DatePicker extends React.Component<DatePickerProps, DatePickerState
         return (
             <div
                 {...rootProps}
-                ref={dropdownRef => {
-                    if (!this.state.dropdownRef) {
-                        this.setState({dropdownRef});
-                    }
-                }}
+                ref={dropdownRef => this.setState({dropdownRef})}
             >
                 <input
                     className={inputStyles.root + ' input'}
