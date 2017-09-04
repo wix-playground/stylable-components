@@ -1,7 +1,7 @@
 import * as keycode from 'keycode';
 import * as React from 'react';
 import {SBComponent} from 'stylable-react-component';
-import {createScreenReaderNotifier, ScreenReaderNotifier} from '../../utils';
+import {ScreenReaderNotification} from '../screen-reader-notification';
 import {Modifiers, Stepper} from '../stepper';
 import {LABELS} from './strings';
 import styles from './time-picker.st.css';
@@ -28,6 +28,7 @@ export interface State {
     format: Format;
     ampm: Ampm;
     currentSegment: Segment;
+    notification?: string;
 }
 
 const ampmSwitch = {
@@ -66,14 +67,12 @@ export class TimePicker extends React.Component<Props, State> {
         ampm?: HTMLDivElement | null
     };
     private lastValue: string | undefined;
-    private notifier: ScreenReaderNotifier;
 
     constructor(props: Props) {
         super();
         const format = isTouchTimeInputSupported ? '24h' : props.format!;
         this.lastValue = props.value;
         this.segments = {};
-        this.notifier = createScreenReaderNotifier();
         this.state = {
             format,
             focus: false,
@@ -92,12 +91,9 @@ export class TimePicker extends React.Component<Props, State> {
             });
         }
     }
-    public componentWillUnmount() {
-        this.notifier.remove();
-    }
 
     public render() {
-        const {focus, hh, mm, ampm, format} = this.state;
+        const {focus, hh, mm, ampm, format, notification} = this.state;
         const {label, placeholder, disabled, name} = this.props;
         const isValueSet = hh !== undefined || mm !== undefined;
         const timeSegments: TimeSegment[] = ['hh', 'mm'];
@@ -112,6 +108,9 @@ export class TimePicker extends React.Component<Props, State> {
                 }}
                 onMouseDown={this.onRootMouseDown}
             >
+                {notification &&
+                    <ScreenReaderNotification>{notification}</ScreenReaderNotification>
+                }
                 {timeSegments.map(segment =>
                     <div key={segment} className={'input-wrap ' + segment}>
                         <input
@@ -432,7 +431,9 @@ export class TimePicker extends React.Component<Props, State> {
 
     private commit = () => {
         const value = this.getValue();
-        this.notifier.notify(value);
+        this.setState({
+            notification: value
+        });
         if (this.props.onChange && this.lastValue !== value) {
             this.lastValue = value;
             this.props.onChange(value);

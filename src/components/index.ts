@@ -13,3 +13,4 @@ export * from './drop-down';
 export * from './modal';
 export * from './portal';
 export * from './popup';
+export * from './screen-reader-notification';
