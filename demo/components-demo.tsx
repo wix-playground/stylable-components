@@ -130,14 +130,14 @@ export class ComponentsDemo extends React.Component {
                     <h2>anchor</h2>
                     <table>
                         <tbody>
-                        <tr>
-                            <th>
-                                <a href="http://www.wix.com" target="_blank">Normal</a>
-                            </th>
-                            <th>
-                                <a href="http://www.wix.com" target="_blank">Disabled</a>
-                            </th>
-                        </tr>
+                            <tr>
+                                <th>
+                                    <a href="http://www.wix.com" target="_blank">Normal</a>
+                                </th>
+                                <th>
+                                    <a href="http://www.wix.com" target="_blank">Disabled</a>
+                                </th>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -146,14 +146,14 @@ export class ComponentsDemo extends React.Component {
                     <h2>input</h2>
                     <table>
                         <tbody>
-                        <tr>
-                            <th>
-                                <input placeholder="Placeholder" />
-                            </th>
-                            <th>
-                                <input placeholder="Disabled" disabled />
-                            </th>
-                        </tr>
+                            <tr>
+                                <th>
+                                    <input placeholder="Placeholder" />
+                                </th>
+                                <th>
+                                    <input placeholder="Disabled" disabled />
+                                </th>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
