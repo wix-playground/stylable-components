@@ -1,7 +1,9 @@
 import {SinonSandbox, SinonStub} from 'sinon';
 import {sinon} from 'test-drive-react';
 
-type EventListener = (e?: Partial<Event>) => any;
+export type WindowEvent = WindowEventMap[keyof WindowEventMap];
+
+type WindowEventListener = (e?: Partial<WindowEvent>) => any;
 
 function stubWindowMethod(
     sandbox: SinonSandbox,
@@ -17,11 +19,11 @@ export default class WindowStub {
 
     public addEventListener = stubWindowMethod(
         this.sandbox, 'addEventListener',
-        (type: string, listener: EventListener) => {
+        (type: string, listener: WindowEventListener) => {
             const events = this.events;
             if (events.has(type)) {
                 const listeners = events.get(type);
-                (listeners as EventListener[]).push(listener);
+                (listeners as WindowEventListener[]).push(listener);
             } else {
                 const listeners = [listener];
                 events.set(type, listeners);
@@ -31,7 +33,7 @@ export default class WindowStub {
 
     public removeEventListener = stubWindowMethod(
         this.sandbox, 'removeEventListener',
-        (type: string, listener?: EventListener) => {
+        (type: string, listener?: WindowEventListener) => {
             const events = this.events;
 
             if (events.has(type)) {
@@ -54,9 +56,9 @@ export default class WindowStub {
         }
     );
 
-    private events = new Map<string, EventListener[]>();
+    private events = new Map<string, WindowEventListener[]>();
 
-    public simulate(type: string, event?: Partial<Event>) {
+    public simulate(type: string, event?: Partial<WindowEvent>) {
         const events = this.events;
 
         if (events.has(type)) {
