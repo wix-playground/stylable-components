@@ -1,3 +1,8 @@
+:import{
+    -st-from: "./tree-node.st.css";
+    -st-default: TreeNode;
+}
+
 .root {
     font-family: Arial, sans-serif;
     font-size: 16px;
@@ -8,4 +13,12 @@
     overflow: hidden;
     display: inline-block;
     min-width: 250px;
+}
+
+.root {
+    display: inline-block;
+}
+
+.treeNode {
+    -st-extends: TreeNode;
 }
