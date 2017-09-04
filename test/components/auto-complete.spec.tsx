@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {ClientRenderer, expect, selectDom, simulate, sinon, trigger, waitFor } from 'test-drive-react';
+import {ClientRenderer, expect, selectDom, simulate, sinon, trigger, waitFor} from 'test-drive-react';
 import {AutoCompleteDemo} from '../../demo/components/auto-complete.demo';
 import {AutoComplete} from '../../src';
 

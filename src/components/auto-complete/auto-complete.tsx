@@ -2,11 +2,11 @@ import * as React from 'react';
 import {SBComponent, SBStateless} from 'stylable-react-component';
 import {root} from 'wix-react-tools';
 import {Popup} from '../../';
+import {FormInputProps} from '../../types/forms';
 import {noop} from '../../utils';
 import {CaretDown} from '../drop-down/drop-down-icons';
 import {OptionList, SelectionList} from '../selection-list/selection-list';
 import style from './auto-complete.st.css';
-import {FormInputProps} from "../../types/forms";
 
 // Selected item is a string because of selection list's constraints
 // i would love to implement it like the TreeView where the reference to an object
@@ -61,7 +61,7 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
     public render() {
         const rootProps = root(this.props, {
             'data-automation-id': 'AUTO_COMPLETE',
-            'className': 'auto-complete'
+            'className': ''
         }) as React.HTMLAttributes<HTMLDivElement>;
         const filteredItems = this.props.value ?
             this.props.dataSource!.filter((item: string) => this.props.filter!(item, this.props.value!)) :

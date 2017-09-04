@@ -2,8 +2,13 @@
     width: auto;
     font-size: 16px;
     position: relative;
+    display: inline-block;
 }
 
+.acc {
+    background-color: red;
+
+}
 .auto-complete-input {
     border: 1px solid #adbac5;
     font-family: ArialMT;
@@ -14,17 +19,13 @@
 }
 
 .auto-complete-list {
-    -st-extends: List;
+    width: 100%;
     background: #FFFFFF;
 }
 
 .auto-complete-input:hover {
     cursor: pointer;
     border: 1px solid #5cb4ff;
-}
-
-.auto-complete-list {
-    width: 100%;
 }
 
 .caret {
