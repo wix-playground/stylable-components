@@ -34,12 +34,10 @@ describe('<Popup />', function() {
                 expect(select(demoContainer)).to.be.present();
                 expect(select(demoContainer, portalId)).to.be.absent();
             });
-            (select(demoContainer) as HTMLDivElement).click();
-            await waitForDom(() => {
-                expect(bodySelect(portalId)).to.be.present();
-            });
-            (select(demoContainer) as HTMLDivElement).click();
-            return waitForDom(() => {expect(bodySelect(portalId)).to.be.absent(); });
+            select<HTMLDivElement>(demoContainer)!.click();
+            await waitForDom(() => expect(bodySelect(portalId)).to.be.present());
+            select<HTMLDivElement>(demoContainer)!.click();
+            return waitForDom(() => expect(bodySelect(portalId)).to.be.absent());
         });
     });
 
