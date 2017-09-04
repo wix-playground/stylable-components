@@ -16,7 +16,8 @@
                inputHeight,
                inputWidth,
                borderDisabled,
-               borderError;
+               borderError,
+               DS2;
 }
 
 :import {
@@ -52,7 +53,7 @@
 }
 
 .root:disabled {
-    background-color: value(color_Disabled);
+    background-color: value(DS2);
     color: value(color_MainPlaceholder);
     border: value(borderDisabled);
 }
@@ -86,6 +87,9 @@
 .native-input::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
+}
+.native-input:disabled {
+    background: inherit;
 }
 
 .stepper {

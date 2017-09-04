@@ -1,7 +1,7 @@
 import * as keycode from 'keycode';
+import {observable} from 'mobx';
 import * as React from 'react';
 import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react';
-import {observable} from 'mobx';
 import {TreeViewDemo, TreeViewDemoCustom} from '../../demo/components/tree-view-demo';
 import {TreeItem, TreeView} from '../../src';
 import {getLastAvailableItem, getNextItem, getPreviousItem} from '../../src/components/tree-view//tree-util';
@@ -59,7 +59,7 @@ export interface TreeViewWrapperState {
 }
 
 export class TreeViewWrapper extends React.Component<{}, TreeViewWrapperState> {
-    public state = { treeData };
+    public state = {treeData};
 
     public render() {
         return <TreeView dataSource={this.state.treeData}/>;
