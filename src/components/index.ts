@@ -3,7 +3,6 @@ export * from './tree-view';
 export * from './slider';
 export * from './number-input';
 export * from './toggle';
-export * from './birthday-picker';
 export * from './checkbox';
 export * from './image';
 export * from './radio-group';
