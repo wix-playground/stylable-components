@@ -15,10 +15,6 @@
     min-width: 250px;
 }
 
-.root {
-    display: inline-block;
-}
-
 .treeNode {
     -st-extends: TreeNode;
 }
