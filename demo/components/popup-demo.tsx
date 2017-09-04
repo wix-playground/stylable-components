@@ -1,86 +1,73 @@
 import React = require('react');
-import { HorizontalPosition, Popup, PositionPoint, RadioButton, RadioGroup, VerticalPosition } from '../../src/';
+import {SBComponent} from 'stylable-react-component';
+import {Popup, PopupHorizontalPosition, PopupPositionPoint, PopupVerticalPosition, RadioGroup} from '../../src/';
 import {ChangeEvent} from '../../src/types/events';
+import styles from './popup-demo.st.css';
 
 export interface DemoState {
     div: HTMLElement | null;
     isOpen: boolean;
-    pVertical: string;
-    pHorizontal: string;
-    aVertical: string;
-    aHorizontal: string;
+    pVertical: PopupVerticalPosition;
+    pHorizontal: PopupHorizontalPosition;
+    aVertical: PopupVerticalPosition;
+    aHorizontal: PopupHorizontalPosition;
 }
 
+@SBComponent(styles)
 export class PopupDemo extends React.Component<{}, DemoState> {
     public state = {
         div: null,
         isOpen: false,
-        pVertical: 'top',
-        pHorizontal: 'left',
-        aVertical: 'bottom',
-        aHorizontal: 'left'
+        pVertical: 'top' as PopupVerticalPosition,
+        pHorizontal: 'left' as PopupHorizontalPosition,
+        aVertical: 'bottom' as PopupVerticalPosition,
+        aHorizontal: 'left' as PopupHorizontalPosition
     };
 
     public render() {
-        const divDim: React.CSSProperties = {marginLeft: '100px', width: '100px'};
-        const flexStyle: React.CSSProperties = {padding: '10px'};
-        const popupPos: PositionPoint = {
-            vertical: this.state.pVertical as VerticalPosition, horizontal: this.state.pHorizontal as HorizontalPosition
+        const popupPos: PopupPositionPoint = {
+            vertical: this.state.pVertical, horizontal: this.state.pHorizontal
         };
-        const anchorPos: PositionPoint = {
-            vertical: this.state.aVertical as VerticalPosition, horizontal: this.state.aHorizontal as HorizontalPosition
+        const anchorPos: PopupPositionPoint = {
+            vertical: this.state.aVertical, horizontal: this.state.aHorizontal
         };
+
+        const vPos = [{value: 'top'}, {value: 'center'}, {value: 'bottom'}];
+        const hPos = [{value: 'left'}, {value: 'center'}, {value: 'right'}];
         return (
             <div>
                 <button
                     ref={this.updateState}
                     onClick={this.onClick}
-                    style={divDim}
+                    className="anchor"
                     data-automation-id="POPUP_DEMO_DIV"
                 >
-                    Click me!
+                    {this.state.isOpen ? 'Hide Popup' : 'Show Popup'}
                 </button>
                 <Popup
                     anchor={this.state.div}
                     popupPosition={popupPos}
-                    syncWidth={false}
                     anchorPosition={anchorPos}
                     open={this.state.isOpen}
                 >
-                    <div style={{backgroundColor: 'black', color: 'white'}}>Hello!</div>
+                    <div style={{color: 'white', backgroundColor: 'black'}}>Hello!</div>
                 </Popup>
-                <div style={{display: 'flex'}}>
-                    <div style={flexStyle}>
+                <div className="position">
+                    <div>
                         <h3>Popup position - vertical</h3>
-                        <RadioGroup value="top" onChange={this.changePVertical}>
-                            <RadioButton value="top"/>
-                            <RadioButton value="center"/>
-                            <RadioButton value="bottom"/>
-                        </RadioGroup>
+                        <RadioGroup dataSource={vPos} className="radio" value="top" onChange={this.changePVertical}/>
                     </div>
-                    <div style={flexStyle}>
+                    <div>
                         <h3>Popup position - horizontal</h3>
-                        <RadioGroup value="left" onChange={this.changePHorizontal}>
-                            <RadioButton value="left"/>
-                            <RadioButton value="center"/>
-                            <RadioButton value="right"/>
-                        </RadioGroup>
+                        <RadioGroup className="radio" value="left" onChange={this.changePHorizontal} dataSource={hPos}/>
                     </div>
-                    <div style={flexStyle}>
+                    <div>
                         <h3>Anchor position - vertical</h3>
-                        <RadioGroup value="bottom" onChange={this.changeAVertical}>
-                            <RadioButton value="top"/>
-                            <RadioButton value="center"/>
-                            <RadioButton value="bottom"/>
-                        </RadioGroup>
+                        <RadioGroup className="radio" value="bottom" onChange={this.changeAVertical} dataSource={vPos}/>
                     </div>
-                    <div style={flexStyle}>
+                    <div>
                         <h3>Anchor position - horizontal</h3>
-                        <RadioGroup value="left" onChange={this.changeAHorizontal}>
-                            <RadioButton value="left"/>
-                            <RadioButton value="center"/>
-                            <RadioButton value="right"/>
-                        </RadioGroup>
+                        <RadioGroup className="radio" value="left" onChange={this.changeAHorizontal} dataSource={hPos}/>
                     </div>
                 </div>
             </div>
@@ -96,19 +83,19 @@ export class PopupDemo extends React.Component<{}, DemoState> {
     }
 
     private changePVertical = (e: ChangeEvent<string>) => {
-        this.setState({div: this.state.div, pVertical: e.value as VerticalPosition});
+        this.setState({pVertical: e.value as PopupVerticalPosition});
     }
 
     private changePHorizontal = (e: ChangeEvent<string>) => {
-        this.setState({div: this.state.div, pHorizontal: e.value as HorizontalPosition});
+        this.setState({pHorizontal: e.value as PopupHorizontalPosition});
     }
 
     private changeAVertical = (e: ChangeEvent<string>) => {
-        this.setState({div: this.state.div, aVertical: e.value as VerticalPosition});
+        this.setState({aVertical: e.value as PopupVerticalPosition});
     }
 
     private changeAHorizontal = (e: ChangeEvent<string>) => {
-        this.setState({div: this.state.div, aHorizontal: e.value as HorizontalPosition});
+        this.setState({aHorizontal: e.value as PopupHorizontalPosition});
     }
 
 }

@@ -3,7 +3,7 @@ import ReactDOM = require('react-dom');
 import {selectDom} from 'test-drive';
 import {ClientRenderer, expect, waitFor} from 'test-drive-react';
 import {PopupDemo} from '../../demo/components/popup-demo';
-import {Popup, PositionPoint} from '../../src/components/';
+import {Popup, PopupPositionPoint} from '../../src/components/';
 import {sleep} from '../utils';
 
 const portalId = 'PORTAL';
@@ -250,7 +250,7 @@ function getLayoutTest(axis: 'vertical' | 'horizontal') {
     };
 }
 
-function runTest(popup: HTMLElement, anchor: HTMLElement, popupPos: PositionPoint, anchorPos: PositionPoint) {
+function runTest(popup: HTMLElement, anchor: HTMLElement, popupPos: PopupPositionPoint, anchorPos: PopupPositionPoint) {
     const topTests = getLayoutTest('vertical');
     const leftTests = getLayoutTest('horizontal');
 
@@ -258,7 +258,7 @@ function runTest(popup: HTMLElement, anchor: HTMLElement, popupPos: PositionPoin
     leftTests[popupPos.horizontal][anchorPos.horizontal](anchor, popup);
 }
 
-function getFixture(): PositionPoint[] {
+function getFixture(): PopupPositionPoint[] {
     return [{vertical: 'top', horizontal: 'left'},
         {vertical: 'top', horizontal: 'center'},
         {vertical: 'top', horizontal: 'right'},
