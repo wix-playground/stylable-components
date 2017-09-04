@@ -4,7 +4,10 @@
                color_MainText_Background,
                color_Disabled,
                borderWidth,
-               inputHeight;
+               inputHeight,
+               DS1,
+               BK3,
+               PR3;
 }
 
 :import {
@@ -16,38 +19,36 @@
 
     position: relative;
 
-    width: value(inputHeight);
+    width: 30px;
     height: value(inputHeight);
 }
 
 .control {
     width: 100%;
 
-    display: flex;
-
-    justify-content: center;
-    align-content: center;
-    align-items: center;
-
     position: absolute;
 
     margin: 0;
     padding: 0;
 
-    background-color: value(color_MainText_Background);
-    color: value(color_MainText);
+    background: transparent;
+    color: value(BK3);
 }
 
 .control-icon {
-    color: value(color_MainText);
+    color: currentColor;
     width: 16px;
     height: 16px;
+    flex: 1;
 }
 
-.control:hover .control-icon,
-.control:focus .control-icon,
-.control:disabled .control-icon {
-    color: value(color_MainText_Background);
+.control:disabled {
+    color: value(DS1);
+}
+
+.control:focus,
+.control:hover {
+    color: value(PR3);
 }
 
 .up {

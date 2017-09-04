@@ -1,7 +1,7 @@
 import React = require('react');
 import ReactDOM = require('react-dom');
 import {selectDom} from 'test-drive';
-import { ClientRenderer, expect, waitFor } from 'test-drive-react';
+import {ClientRenderer, expect, waitFor} from 'test-drive-react';
 import {PopupDemo} from '../../demo/components/popup-demo';
 import {Popup, PositionPoint} from '../../src/components/';
 import {sleep} from '../utils';
@@ -34,12 +34,10 @@ describe('<Popup />', function() {
                 expect(select(demoContainer)).to.be.present();
                 expect(select(demoContainer, portalId)).to.be.absent();
             });
-            (select(demoContainer) as HTMLDivElement).click();
-            await waitForDom(() => {
-                expect(bodySelect(portalId)).to.be.present();
-            });
-            (select(demoContainer) as HTMLDivElement).click();
-            return waitForDom(() => {expect(bodySelect(portalId)).to.be.absent(); });
+            select<HTMLDivElement>(demoContainer)!.click();
+            await waitForDom(() => expect(bodySelect(portalId)).to.be.present());
+            select<HTMLDivElement>(demoContainer)!.click();
+            return waitForDom(() => expect(bodySelect(portalId)).to.be.absent());
         });
     });
 
@@ -151,7 +149,7 @@ describe('<Popup />', function() {
 
         it('renders the popup in the right location when it is out of view', async function() {
             let div: HTMLDivElement;
-            const { waitForDom} = clientRenderer.render(
+            const {waitForDom} = clientRenderer.render(
                 <div>
                     <div style={{height: '1000px'}}>Filler</div>
                     <div ref={(elem: HTMLDivElement) => div = elem}>Anchor</div>

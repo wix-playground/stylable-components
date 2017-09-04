@@ -1,10 +1,11 @@
 import * as keycode from 'keycode';
+import {observable} from 'mobx';
 import * as React from 'react';
 import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react';
-import {TreeViewDemo} from '../../demo/components/tree-view-demo';
+import {TreeViewDemo, TreeViewDemoCustom} from '../../demo/components/tree-view-demo';
 import {TreeItem, TreeView} from '../../src';
 import {getLastAvailableItem, getNextItem, getPreviousItem} from '../../src/components/tree-view//tree-util';
-import {ParentsMap, TreeItemData, TreeItemState, TreeStateMap} from '../../src/components/tree-view/tree-view';
+import {ParentsMap, TreeItemData, TreeStateMap} from '../../src/components/tree-view/tree-view';
 
 const treeView = 'TREE_VIEW';
 const treeItem = 'TREE_ITEM';
@@ -47,6 +48,40 @@ const treeData: TreeItemData[] = [
     }
 ];
 
+// duplicating the data so i can pass a new object to the non-mobx version
+const newTreeData = JSON.parse(JSON.stringify(treeData));
+newTreeData[0].children![2].children!.push({label: 'Kaiserschmarrn'});
+
+export interface TreeViewWrapperState {
+    treeData: object[];
+}
+
+export class TreeViewWrapper extends React.Component<{}, TreeViewWrapperState> {
+    public state = {treeData};
+
+    public render() {
+        return <TreeView dataSource={this.state.treeData}/>;
+    }
+
+    public switchDataSource = () => {
+        this.setState({
+            treeData: newTreeData
+        });
+    }
+}
+
+export class TreeViewMobxWrapper extends React.Component<{}, {}> {
+    @observable private obsTreeData: TreeItemData[] = treeData;
+
+    public render() {
+        return <TreeView dataSource={this.obsTreeData}/>;
+    }
+
+    public modifyMobxDataSource = () => {
+        this.obsTreeData[0].children![2].children!.push({label: 'Kaiserschmarrn'});
+    }
+}
+
 function getLabelsList(data: { label: string, children?: object[] }): string[] {
     return [data.label]
         .concat(...(data.children || [])
@@ -76,11 +111,9 @@ describe('<TreeView />', () => {
     const sampleItem = {label: 'label'};
     const nestedItem: TreeItemData = treeData[0].children![1];
 
-    const state: TreeItemState = {isSelected: false, isExpanded: true, isFocused: false};
-
     const allNodesLabels: string[] = getAllNodeLabels(treeData);
 
-    it('renders a tree view with a few children, clicks ones of them to expand and close', async () => {
+    it('renders a tree view with a few children', async () => {
         const {select, waitForDom} = clientRenderer.render(<TreeViewDemo />);
 
         await waitForDom(() => expect(select(treeView + '_DEMO'), 'demo not present').to.be.present());
@@ -95,6 +128,27 @@ describe('<TreeView />', () => {
             expect(select(treeView + '_DEMO', getTreeItem(item)), `item did not appear: ${item}`).to.be.present()));
 
         const elementToSelect = select(treeView + '_DEMO', getTreeItem(allNodesLabels[2]));
+
+        selectItemWithLabel(select, allNodesLabels[2]);
+        return waitForDom(() => expect(elementToSelect).to.have.attr('data-selected', 'true'));
+    });
+
+    it('renders a tree view with custom children', async () => {
+        const {select, waitForDom} = clientRenderer.render(<TreeViewDemoCustom />);
+
+        await waitForDom(() => expect(select(treeView + '_DEMO_CUSTOM'), 'custom demo not present').to.be.present());
+
+        const nodeChildren = treeData[0].children;
+        await waitForDom(() => expect(select(getTreeItem(nodeChildren![1].label))).to.be.absent());
+
+        expandItemWithLabel(select, treeData[0].label);
+        nodeChildren!.forEach(child => expandItemWithLabel(select, child.label));
+
+        await waitForDom(() => allNodesLabels.forEach(item =>
+            expect(select(treeView + '_DEMO_CUSTOM', getTreeItem(item)),
+                `item did not appear: ${item}`).to.be.present()));
+
+        const elementToSelect = select(treeView + '_DEMO_CUSTOM', getTreeItem(allNodesLabels[2]));
 
         selectItemWithLabel(select, allNodesLabels[2]);
         return waitForDom(() => expect(elementToSelect).to.have.attr('data-selected', 'true'));
@@ -359,16 +413,50 @@ describe('<TreeView />', () => {
             });
         });
 
+        describe('Reaction to dataSource changes', () => {
+            it('renders the additional item when a new data array is passed', async () => {
+                const {select, waitForDom, result} = clientRenderer.render(<TreeViewWrapper />);
+
+                expandItemWithLabel(select, treeData[0].label);
+                expandItemWithLabel(select, treeData[0].children![2].label);
+
+                await waitForDom(() =>
+                    expect(select(treeView, getTreeItem('Kaiserschmarrn'))).to.be.absent());
+
+                (result as TreeViewWrapper).switchDataSource();
+                expandItemWithLabel(select, newTreeData[0].label);
+                expandItemWithLabel(select, newTreeData[0].children![2].label);
+
+                return waitForDom(() =>
+                    expect(select(treeView, getTreeItem('Kaiserschmarrn'))).to.be.present());
+            });
+
+            it('renders the additional item when a new data element is added to existing data', async () => {
+                const {select, waitForDom, result} = clientRenderer.render(<TreeViewMobxWrapper />);
+
+                expandItemWithLabel(select, treeData[0].label);
+                expandItemWithLabel(select, treeData[0].children![2].label);
+
+                await waitForDom(() =>
+                    expect(select(treeView, getTreeItem('Kaiserschmarrn'))).to.be.absent());
+
+                (result as TreeViewMobxWrapper).modifyMobxDataSource();
+
+                return waitForDom(() =>
+                    expect(select(treeView, getTreeItem('Kaiserschmarrn'))).to.be.present());
+            });
+        });
+
         describe('<TreeItem />', () => {
 
             const stateMap = new TreeStateMap();
+            stateMap.getItemState(nestedItem).isExpanded = true;
 
             it('renders an item', () => {
                 const {select, waitForDom} = clientRenderer.render(
                     <TreeItem
                         item={sampleItem}
                         itemRenderer={TreeItem}
-                        state={state}
                         stateMap={stateMap}
                     />
                 );
@@ -382,7 +470,6 @@ describe('<TreeView />', () => {
                         <TreeItem
                             item={sampleItem}
                             itemRenderer={TreeItem}
-                            state={state}
                             stateMap={stateMap}
                         />
                     );
@@ -396,7 +483,6 @@ describe('<TreeView />', () => {
                     <TreeItem
                         item={treeData[0]}
                         itemRenderer={TreeItem}
-                        state={state}
                         stateMap={stateMap}
                     />
                 );
@@ -409,7 +495,6 @@ describe('<TreeView />', () => {
                     <TreeItem
                         item={nestedItem}
                         itemRenderer={TreeItem}
-                        state={state}
                         stateMap={stateMap}
                     />
                 );
@@ -426,7 +511,6 @@ describe('<TreeView />', () => {
                         item={sampleItem}
                         itemRenderer={TreeItem}
                         onItemClick={onClick}
-                        state={state}
                         stateMap={stateMap}
                     />
                 );

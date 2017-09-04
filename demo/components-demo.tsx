@@ -4,21 +4,23 @@ import {CheckBoxDemo} from './components/checkbox-demo';
 import {DatePickerDemo} from './components/date-picker-demo';
 import {DropDownDemo} from './components/drop-down.demo';
 import {ImageDemo} from './components/image-demo';
+import {ModalDemo} from './components/modal-demo';
 import {NumberInputDemo} from './components/number-input.demo';
-import { PopupDemo } from './components/popup-demo';
+import {PopupDemo} from './components/popup-demo';
+import {RadioGroupDemo} from './components/radio-group-demo';
 import {SelectionListDemo} from './components/selection-list-demo';
+import {SliderDemo} from './components/slider-demo';
+import {TimePickerDemo} from './components/time-picker-demo';
 import {ToggleDemo} from './components/toggle-demo';
-import {TreeViewDemo} from './components/tree-view-demo';
+import {TreeViewDemo, TreeViewDemoCustom} from './components/tree-view-demo';
 import './style.st.css';
 
-export class ComponentsDemo extends React.Component<{}, {}> {
+export class ComponentsDemo extends React.Component {
     public render() {
         return (
             <div>
-                <div>
-                    <h2>Image</h2>
-                    <ImageDemo />
-                </div>
+                <ImageDemo />
+                <hr />
                 <DropDownDemo />
                 <hr />
                 <div>
@@ -30,14 +32,27 @@ export class ComponentsDemo extends React.Component<{}, {}> {
                     <h2>Birthday picker</h2>
                     <BirthdayPickerDemo />
                 </div>
+                <hr />
                 <div>
                     <h2>TreeView</h2>
                     <TreeViewDemo />
+                    <hr />
+                    <TreeViewDemoCustom />
                 </div>
                 <hr />
                 <div>
+                    <h2>TimePicker</h2>
+                    <TimePickerDemo/>
+                </div>
+                <hr/>
+                <div>
                     <h2>Toggle</h2>
                     <ToggleDemo />
+                </div>
+                <hr/>
+                <div>
+                    <h2>Slider</h2>
+                    <SliderDemo />
                 </div>
                 <hr />
                 <div>
@@ -48,6 +63,11 @@ export class ComponentsDemo extends React.Component<{}, {}> {
                 <div>
                     <h2>SelectionList</h2>
                     <SelectionListDemo />
+                </div>
+                <hr />
+                <div>
+                    <h2>Radio Group</h2>
+                    <RadioGroupDemo />
                 </div>
                 <hr />
                 <div>
@@ -147,6 +167,12 @@ export class ComponentsDemo extends React.Component<{}, {}> {
                     <h2>NumberInput</h2>
                     <NumberInputDemo />
                 </div>
-            </div>);
+                <hr />
+                <div>
+                    <h2>Modal</h2>
+                    <ModalDemo />
+                </div>
+            </div>
+        );
     }
 }
