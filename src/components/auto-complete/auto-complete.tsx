@@ -6,6 +6,7 @@ import {noop} from '../../utils';
 import {CaretDown} from '../drop-down/drop-down-icons';
 import {OptionList, SelectionList} from '../selection-list/selection-list';
 import style from './auto-complete.st.css';
+import {FormInputProps} from "../../types/forms";
 
 // Selected item is a string because of selection list's constraints
 // i would love to implement it like the TreeView where the reference to an object
@@ -38,10 +39,8 @@ export const AutoCompleteList: React.SFC<AutoCompleteListProps> = SBStateless(pr
     );
 }, style);
 
-export interface AutoCompleteProps extends React.InputHTMLAttributes<HTMLInputElement>, Partial<OptionList> {
+export interface AutoCompleteProps extends FormInputProps<string>, Partial<OptionList> {
     open?: boolean;
-    value?: string;
-    onChange?: (event: Partial<AutoCompleteChangeEvent>) => void;
     filter?: FilterPredicate;
 }
 
