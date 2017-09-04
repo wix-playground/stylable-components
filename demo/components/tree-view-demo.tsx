@@ -98,7 +98,7 @@ const CustomItemWrapper = observer(CustomItem);
 @SBComponent(style)
 export class TreeViewDemo extends React.Component<{}, TreeViewDemoState> {
 
-    public state = {selectedItem: undefined, focusedItem: undefined};
+    public state = {selectedItem: undefined, focusedItem: undefined, checkBoxMap: {}};
 
     public render() {
         return (

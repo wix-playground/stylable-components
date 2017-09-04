@@ -19,7 +19,6 @@
 }
 
 .custom-tree-node:selected {
-    background-color: #f442df;
     color: white;
 }
 
