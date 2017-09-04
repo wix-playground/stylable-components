@@ -15,15 +15,11 @@ import style from './auto-complete.st.css';
 export type FilterPredicate = (item: string, filterString: string) => boolean;
 
 export interface AutoCompleteListProps {
-    open: boolean;
     items?: string[];
     onChange?: (item: string) => void;
 }
 
 export const AutoCompleteList: React.SFC<AutoCompleteListProps> = SBStateless(props => {
-    if (!props.open) {
-        return null;
-    }
     return (
         <div data-automation-id="AUTO_COMPLETE_LIST">
             <SelectionList
@@ -79,7 +75,6 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
                 <CaretDown onClick={this.onCaretClick} className="caret" data-automation-id="AUTO_COMPLETE_CARET"/>
                 <Popup anchor={this.state.input} open={this.state.isOpen}>
                     <AutoCompleteList
-                        open={true}
                         items={filteredItems as string[]}
                         onChange={this.onClick}
                     />
