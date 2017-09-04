@@ -1,12 +1,75 @@
 import * as keycode from 'keycode';
 import * as React from 'react';
 import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react';
-import {Slider} from '../../src/components/slider';
+import {Slider, SliderProps} from '../../src/components/slider';
 import WindowStub from '../stubs/window.stub';
 import {simulateMouseEvent, simulateTouchEvent} from '../utils';
 import {describeIfTouch} from '../utils/skip-describe-if-touch';
 
-describe('<Slider />', () => {
+function withValueMinMax(
+    clientRenderer: ClientRenderer,
+    positionProp: string,
+    sizeProp: string,
+    orientation: 'vertical' | 'horizontal',
+    options?: Partial<SliderProps>
+) {
+    describe('with value, min and max', () => {
+        const value = 5;
+        const min = -10;
+        const max = 10;
+
+        let select: (automationId: string) => HTMLElement | null;
+        let waitForDom: (expectation: () => void) => Promise<void>;
+
+        beforeEach(() => {
+            const rendered = clientRenderer.render(
+                <Slider
+                    value={value}
+                    min={min}
+                    max={max}
+                    {...options}
+                />
+            );
+            select = rendered.select;
+            waitForDom = rendered.waitForDom;
+        });
+
+        it('renders handle on the right place', async () => {
+            await waitForDom(() => {
+                const element = select('SLIDER-HANDLE');
+
+                expect(element!.style[positionProp as any]).to.equal('75%');
+            });
+        });
+
+        it('renders progress bar with the right width', async () => {
+            await waitForDom(() => {
+                const element = select('SLIDER-PROGRESS');
+
+                expect(element).to.be.present();
+                expect(element!.style[sizeProp as any]).to.equal('75%');
+            });
+        });
+
+        it('renders invisible native input with right value', async () => {
+            await waitForDom(() => {
+                const element = select('SLIDER-NATIVE-INPUT');
+
+                expect(element).to.has.value(String(value));
+            });
+        });
+
+        it('renders with proper aria-orientation', async () => {
+            await waitForDom(() => {
+                const element = select('SLIDER-HANDLE');
+
+                expect(element!.getAttribute('aria-orientation')).to.equal(orientation);
+            });
+        });
+    });
+}
+
+describe.only('<Slider />', () => {
     const clientRenderer = new ClientRenderer();
     let environment: WindowStub;
 
@@ -101,51 +164,7 @@ describe('<Slider />', () => {
         });
     });
 
-    describe('with value, min and max', () => {
-        const value = 5;
-        const min = -10;
-        const max = 10;
-
-        let select: (automationId: string) => HTMLElement | null;
-        let waitForDom: (expectation: () => void) => Promise<void>;
-
-        beforeEach(() => {
-            const rendered = clientRenderer.render(
-                <Slider
-                    value={value}
-                    min={min}
-                    max={max}
-                />
-            );
-            select = rendered.select;
-            waitForDom = rendered.waitForDom;
-        });
-
-        it('renders handle on the right place', async () => {
-            await waitForDom(() => {
-                const element = select('SLIDER-HANDLE');
-
-                expect(element!.style.left).to.equal('75%');
-            });
-        });
-
-        it('renders progress bar with the right width', async () => {
-            await waitForDom(() => {
-                const element = select('SLIDER-PROGRESS');
-
-                expect(element).to.be.present();
-                expect(element!.style.width).to.equal('75%');
-            });
-        });
-
-        it('renders invisible native input with right value', async () => {
-            await waitForDom(() => {
-                const element = select('SLIDER-NATIVE-INPUT');
-
-                expect(element).to.has.value(String(value));
-            });
-        });
-    });
+    withValueMinMax(clientRenderer, 'left', 'width', 'horizontal', {});
 
     describe('when value is out of range', () => {
         const valueLessThenMin = -1;
@@ -1381,60 +1400,15 @@ describe('<Slider />', () => {
     });
 
     describe('vertical Slider', () => {
-        describe('with value, min and max', () => {
-            const value = 5;
-            const min = -10;
-            const max = 10;
-
-            let select: (automationId: string) => HTMLElement | null;
-            let waitForDom: (expectation: () => void) => Promise<void>;
-
-            beforeEach(() => {
-                const rendered = clientRenderer.render(
-                    <Slider
-                        value={value}
-                        min={min}
-                        max={max}
-                        axis="y"
-                    />
-                );
-                select = rendered.select;
-                waitForDom = rendered.waitForDom;
-            });
-
-            it('renders handle on the right place', async () => {
-                await waitForDom(() => {
-                    const element = select('SLIDER-HANDLE');
-
-                    expect(element!.style.bottom).to.equal('75%');
-                });
-            });
-
-            it('renders progress bar with the right width', async () => {
-                await waitForDom(() => {
-                    const element = select('SLIDER-PROGRESS');
-
-                    expect(element).to.be.present();
-                    expect(element!.style.height).to.equal('75%');
-                });
-            });
-
-            it('renders invisible native input with right value', async () => {
-                await waitForDom(() => {
-                    const element = select('SLIDER-NATIVE-INPUT');
-
-                    expect(element).to.has.value(String(value));
-                });
-            });
-
-            it('renders with proper aria-orientation', async () => {
-                await waitForDom(() => {
-                    const element = select('SLIDER-HANDLE');
-
-                    expect(element!.getAttribute('aria-orientation')).to.equal('vertical');
-                });
-            });
-        });
+        withValueMinMax(
+            clientRenderer,
+            'bottom',
+            'height',
+            'vertical',
+            {
+                axis: 'y'
+            }
+        );
 
         describe('when drag things around', () => {
             const value = 5;
@@ -2075,52 +2049,15 @@ describe('<Slider />', () => {
     });
 
     describe('reverse Slider', () => {
-        describe('with value, min and max', () => {
-            const value = 5;
-            const min = -10;
-            const max = 10;
-
-            let select: (automationId: string) => HTMLElement | null;
-            let waitForDom: (expectation: () => void) => Promise<void>;
-
-            beforeEach(() => {
-                const rendered = clientRenderer.render(
-                    <Slider
-                        value={value}
-                        min={min}
-                        max={max}
-                        axis="x-reverse"
-                    />
-                );
-                select = rendered.select;
-                waitForDom = rendered.waitForDom;
-            });
-
-            it('renders handle on the right place', async () => {
-                await waitForDom(() => {
-                    const element = select('SLIDER-HANDLE');
-
-                    expect(element!.style.right).to.equal('75%');
-                });
-            });
-
-            it('renders progress bar with the right width', async () => {
-                await waitForDom(() => {
-                    const element = select('SLIDER-PROGRESS');
-
-                    expect(element).to.be.present();
-                    expect(element!.style.width).to.equal('75%');
-                });
-            });
-
-            it('renders invisible native input with right value', async () => {
-                await waitForDom(() => {
-                    const element = select('SLIDER-NATIVE-INPUT');
-
-                    expect(element).to.has.value(String(value));
-                });
-            });
-        });
+        withValueMinMax(
+            clientRenderer,
+            'right',
+            'width',
+            'horizontal',
+            {
+                axis: 'x-reverse'
+            }
+        );
 
         describe('when drag things around', () => {
             const value = 5;
@@ -2767,60 +2704,15 @@ describe('<Slider />', () => {
     });
 
     describe('vertical reverse Slider', () => {
-        describe('with value, min and max', () => {
-            const value = 5;
-            const min = -10;
-            const max = 10;
-
-            let select: (automationId: string) => HTMLElement | null;
-            let waitForDom: (expectation: () => void) => Promise<void>;
-
-            beforeEach(() => {
-                const rendered = clientRenderer.render(
-                    <Slider
-                        value={value}
-                        min={min}
-                        max={max}
-                        axis="y-reverse"
-                    />
-                );
-                select = rendered.select;
-                waitForDom = rendered.waitForDom;
-            });
-
-            it('renders handle on the right place', async () => {
-                await waitForDom(() => {
-                    const element = select('SLIDER-HANDLE');
-
-                    expect(element!.style.top).to.equal('75%');
-                });
-            });
-
-            it('renders progress bar with the right width', async () => {
-                await waitForDom(() => {
-                    const element = select('SLIDER-PROGRESS');
-
-                    expect(element).to.be.present();
-                    expect(element!.style.height).to.equal('75%');
-                });
-            });
-
-            it('renders invisible native input with right value', async () => {
-                await waitForDom(() => {
-                    const element = select('SLIDER-NATIVE-INPUT');
-
-                    expect(element).to.has.value(String(value));
-                });
-            });
-
-            it('renders with proper aria-orientation', async () => {
-                await waitForDom(() => {
-                    const element = select('SLIDER-HANDLE');
-
-                    expect(element!.getAttribute('aria-orientation')).to.equal('vertical');
-                });
-            });
-        });
+        withValueMinMax(
+            clientRenderer,
+            'top',
+            'height',
+            'vertical',
+            {
+                axis: 'y-reverse'
+            }
+        );
 
         describe('when drag things around', () => {
             const value = 5;
