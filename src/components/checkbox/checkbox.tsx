@@ -126,18 +126,18 @@ export class CheckBox extends React.Component<CheckBoxProps, CheckBoxState> {
                 />
 
                 {this.props.indeterminate &&
-                <IndeterminateIcon
-                    value={this.props.value}
-                    indeterminate={this.props.indeterminate}
-                    disabled={this.props.disabled}
-                />
+                    <IndeterminateIcon
+                        value={this.props.value}
+                        indeterminate={this.props.indeterminate}
+                        disabled={this.props.disabled}
+                    />
                 }
                 {!this.props.indeterminate && this.props.value &&
-                <TickIcon
-                    value={this.props.value}
-                    indeterminate={this.props.indeterminate}
-                    disabled={this.props.disabled}
-                />
+                    <TickIcon
+                        value={this.props.value}
+                        indeterminate={this.props.indeterminate}
+                        disabled={this.props.disabled}
+                    />
                 }
 
                 {this.props.children}
@@ -147,7 +147,7 @@ export class CheckBox extends React.Component<CheckBoxProps, CheckBoxState> {
 
     private handleChange = (e: React.SyntheticEvent<HTMLElement>) => {
         if (!this.props.disabled && !this.props.readonly) {
-            this.props.onChange!({value: this.props.indeterminate ? true : !this.props.value});
+                this.props.onChange!({value: this.props.indeterminate ? true : !this.props.value});
         }
     }
 
