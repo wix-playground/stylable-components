@@ -135,7 +135,7 @@ export class TreeViewDemo extends React.Component<{}, TreeViewDemoState> {
 
 }
 
-
+@SBComponent(style)
 export class TreeViewDemoCustom extends React.Component<{}, TreeViewDemoCustomState> {
 
     public state = {selectedItemCustom: undefined, focusedItemCustom: undefined};
