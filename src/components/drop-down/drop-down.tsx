@@ -33,7 +33,7 @@ export interface DropDownState {
 }
 
 @SBComponent(style)
-export class DropDown extends React.Component<DropDownProps, DropDownState> {
+export class DropDown extends React.PureComponent<DropDownProps, DropDownState> {
     public static defaultProps: DropDownProps = {
         value: 'Default Text',
         children: [],
@@ -67,11 +67,7 @@ export class DropDown extends React.Component<DropDownProps, DropDownState> {
                 onKeyDown={this.onKeyDown}
                 onFocus={this.onFocus}
                 tabIndex={this.props.tabIndex}
-                ref={dropdown => {
-                    if (!this.state.dropdown) {
-                        this.setState({dropdown});
-                    }
-                }}
+                ref={dropdown => this.setState({dropdown})}
             >
                 <div data-automation-id="DROP_DOWN_INPUT" onClick={this.onInputClick} className="drop-down-input">
                     <span className="label">{this.props.value!}</span>
