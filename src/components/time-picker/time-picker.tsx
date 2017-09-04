@@ -1,7 +1,7 @@
 import * as keycode from 'keycode';
 import * as React from 'react';
 import {SBComponent} from 'stylable-react-component';
-import {notifyScreenReader} from '../../utils';
+import {createScreenReaderNotifier, ScreenReaderNotifier} from '../../utils';
 import {Modifiers, Stepper} from '../stepper';
 import {LABELS} from './strings';
 import styles from './time-picker.st.css';
@@ -66,12 +66,14 @@ export class TimePicker extends React.Component<Props, State> {
         ampm?: HTMLDivElement | null
     };
     private lastValue: string | undefined;
+    private notifier: ScreenReaderNotifier;
 
     constructor(props: Props) {
         super();
         const format = isTouchTimeInputSupported ? '24h' : props.format!;
         this.lastValue = props.value;
         this.segments = {};
+        this.notifier = createScreenReaderNotifier();
         this.state = {
             format,
             focus: false,
@@ -89,6 +91,9 @@ export class TimePicker extends React.Component<Props, State> {
                 }
             });
         }
+    }
+    public componentWillUnmount() {
+        this.notifier.remove();
     }
 
     public render() {
@@ -427,7 +432,7 @@ export class TimePicker extends React.Component<Props, State> {
 
     private commit = () => {
         const value = this.getValue();
-        notifyScreenReader(value);
+        this.notifier.notify(value);
         if (this.props.onChange && this.lastValue !== value) {
             this.lastValue = value;
             this.props.onChange(value);
