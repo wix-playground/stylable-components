@@ -3,7 +3,10 @@ import {SBComponent} from 'stylable-react-component';
 import {root} from 'wix-react-tools';
 import {FormInputProps} from '../../types/forms';
 import {noop} from '../../utils';
+import AAA from '../../style/project.st.css';    // an unfortunate need to make stylable composition work
 import styles from './checkbox.st.css';
+
+AAA;    // an unfortunate need to make stylable composition work
 
 export interface CheckBoxProps extends FormInputProps<boolean> {
     boxIcon?: React.ComponentType<CheckBoxIconProps>;

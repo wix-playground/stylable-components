@@ -1,7 +1,14 @@
 @namespace "CheckBox";
 
+:import {
+    -st-from: '../../style/project.st.css';
+    -st-named: invisible-element;
+    -st-default: PRJ;
+}
+
 .root {
     -st-states: checked, disabled, indeterminate, readonly, focused;
+    -st-compose: PRJ;
     display: inline-block;
     position: relative;
     cursor: pointer;
@@ -50,12 +57,5 @@
 }
 
 .nativeCheckbox {
-    position: absolute;
-    overflow: hidden;
-    height: 1px;
-    width: 1px;
-    margin: -1px;
-    padding: 0;
-    border: 0;
-    opacity: 0;
+    -st-compose: invisible-element;
 }
