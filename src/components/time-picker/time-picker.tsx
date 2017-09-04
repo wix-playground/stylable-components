@@ -1,7 +1,9 @@
 import * as keycode from 'keycode';
 import * as React from 'react';
 import {SBComponent} from 'stylable-react-component';
+import {notifyScreenReader} from '../../utils';
 import {Stepper} from '../stepper';
+import {LABELS} from './strings';
 import styles from './time-picker.st.css';
 import {
     Ampm, ampmLabels, Format,
@@ -117,6 +119,11 @@ export class TimePicker extends React.Component<Props, State> {
                             placeholder={this.state[segment] ? '' : '00'}
                             disabled={disabled}
                             name={segment}
+
+                            role="spinbutton"
+                            aria-label={LABELS[segment]}
+                            aria-valuetext={this.state[segment]}
+
                             onMouseDown={this.onInputMouseDown}
                             onChange={this.onInputChange}
                             onFocus={this.onInputFocus}
@@ -132,6 +139,11 @@ export class TimePicker extends React.Component<Props, State> {
                         ref={elem => this.segments.ampm = elem}
                         tabIndex={disabled || isTouchTimeInputSupported ? -1 : 0}
                         children={ampmLabels[ampm]}
+
+                        role="spinbutton"
+                        aria-label={LABELS.ampm}
+                        aria-valuetext={ampmLabels[ampm]}
+
                         onMouseDown={this.onAmpmMouseDown}
                         onFocus={this.onAmpmFocus}
                         onBlur={this.onBlur}
@@ -415,6 +427,7 @@ export class TimePicker extends React.Component<Props, State> {
 
     private commit = () => {
         const value = this.getValue();
+        notifyScreenReader(value);
         if (this.props.onChange && this.lastValue !== value) {
             this.lastValue = value;
             this.props.onChange(value);
