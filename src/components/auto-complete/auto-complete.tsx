@@ -20,10 +20,6 @@ export interface AutoCompleteListProps {
     onChange?: (item: string) => void;
 }
 
-export interface AutoCompleteChangeEvent extends React.ChangeEvent<HTMLInputElement> {
-    value: string;
-}
-
 export const AutoCompleteList: React.SFC<AutoCompleteListProps> = SBStateless(props => {
     if (!props.open) {
         return null;
