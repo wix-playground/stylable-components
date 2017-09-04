@@ -22,7 +22,9 @@
 
 .icon {
     position: relative;
-    left: -value(inputWidth);
+    left: 160px;
+    top: -30px;
+    cursor: pointer;
 }
 
 /* The dropdown arrow extends from the input and into the calendar view */

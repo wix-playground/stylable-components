@@ -2,6 +2,7 @@ import * as keycode from 'keycode';
 import * as React from 'react';
 import {SBComponent} from 'stylable-react-component';
 import {root} from 'wix-react-tools';
+import {Popup} from '../../../src';
 import inputStyles from '../../style/default-theme/controls/input.st.css';
 import {FormInputProps} from '../../types/forms';
 import {Calendar} from './calendar';
@@ -17,18 +18,20 @@ export interface DatePickerProps extends FormInputProps<Date> {
     readOnly?: boolean;
     showDropdownOnInit?: boolean;
     startingDay?: number;
+    calendarIcon?: React.SFC;
 }
 
 export interface DatePickerState {
     inputValue: string;
     isDropdownVisible: boolean;
+    dropdownRef: HTMLDivElement | null;
     dropdownDate: Date;
     highlightSelectedDate: boolean;
     highlightFocusedDate: boolean;
 }
 
 @SBComponent(styles)
-export class DatePicker extends React.Component<DatePickerProps, DatePickerState> {
+export class DatePicker extends React.PureComponent<DatePickerProps, DatePickerState> {
     public static defaultProps: Partial<DatePickerProps> = {
         openOnFocus: true,
         onChange: () => {}
@@ -49,7 +52,10 @@ export class DatePicker extends React.Component<DatePickerProps, DatePickerState
         }) as React.HTMLAttributes<HTMLDivElement>;
 
         return (
-            <div {...rootProps}>
+            <div
+                {...rootProps}
+                ref={dropdownRef => this.setState({dropdownRef})}
+            >
                 <input
                     className={inputStyles.root + ' input'}
                     onKeyDown={this.onKeyDown}
@@ -62,9 +68,16 @@ export class DatePicker extends React.Component<DatePickerProps, DatePickerState
                     type="text"
                     data-automation-id="DATE_PICKER_INPUT"
                 />
-                <CalendarIcon className="icon" />
-                {this.state.isDropdownVisible
-                    ? <Calendar
+                {this.props.calendarIcon
+                    ? this.props.calendarIcon
+                    : <CalendarIcon
+                        className="icon"
+                        data-automation-id="CALENDAR_ICON"
+                        onMouseDown={this.toggleDropdown}
+                    />
+                }
+                <Popup open={this.state.isDropdownVisible} anchor={this.state.dropdownRef}>
+                    <Calendar
                         onChange={this.onCalendarInput}
                         updateDropdownDate={this.updateDropdownDate}
                         value={this.state.dropdownDate}
@@ -73,8 +86,7 @@ export class DatePicker extends React.Component<DatePickerProps, DatePickerState
                         highlightSelectedDate={this.state.highlightSelectedDate}
                         highlightFocusedDate={this.state.highlightFocusedDate}
                     />
-                    : null
-                }
+                </Popup>
             </div>
         );
     }
@@ -111,6 +123,12 @@ export class DatePicker extends React.Component<DatePickerProps, DatePickerState
         });
     }
 
+    private toggleDropdown = (): void => {
+        if (!this.props.disabled && !this.props.readOnly) {
+            this.setState({isDropdownVisible: !this.state.isDropdownVisible});
+        }
+    }
+
     private onInputChange: React.EventHandler<React.SyntheticEvent<HTMLInputElement>> = (event): void => {
         const eventTarget = event.target as HTMLInputElement;
         this.setState({inputValue: eventTarget.value});
@@ -123,7 +141,7 @@ export class DatePicker extends React.Component<DatePickerProps, DatePickerState
     }
 
     private onMouseDown: React.EventHandler<React.SyntheticEvent<HTMLInputElement>> = (): void => {
-        this.setState({isDropdownVisible: !this.state.isDropdownVisible});
+        this.toggleDropdown();
     }
 
     private onBlur: React.EventHandler<React.SyntheticEvent<HTMLInputElement>> = (event): void => {
@@ -138,6 +156,7 @@ export class DatePicker extends React.Component<DatePickerProps, DatePickerState
             this.state.dropdownDate.getMonth(),
             this.state.dropdownDate.getDate()
         );
+
         shiftedDate.setDate(this.state.dropdownDate.getDate() + daysToShift);
         this.setState({
            highlightFocusedDate: true,
@@ -155,12 +174,12 @@ export class DatePicker extends React.Component<DatePickerProps, DatePickerState
                     this.state.highlightFocusedDate
                         ? this.onCalendarInput(this.state.dropdownDate)
                         : this.onUserInput(eventTarget.value);
-                    this.setState({isDropdownVisible: !this.state.isDropdownVisible});
+                    this.toggleDropdown();
                     event.preventDefault();
                     break;
 
                 case keycode('space'):
-                    this.setState({isDropdownVisible: !this.state.isDropdownVisible});
+                    this.toggleDropdown();
                     event.preventDefault();
                     break;
 
@@ -187,9 +206,9 @@ export class DatePicker extends React.Component<DatePickerProps, DatePickerState
 
                 case keycode('down'):
                     if (this.props.openOnFocus === false && !this.state.isDropdownVisible) {
-                        this.setState({isDropdownVisible: !this.state.isDropdownVisible});
+                        this.toggleDropdown();
                     } else if (!this.state.isDropdownVisible) {
-                        this.setState({isDropdownVisible: !this.state.isDropdownVisible});
+                        this.toggleDropdown();
                     } else {
                         this.shiftDate(7);
                     }
