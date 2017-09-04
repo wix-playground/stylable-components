@@ -31,15 +31,18 @@ export class DropDownDemo extends React.Component<{}, DropDownDemoState> {
 
     public render() {
         return (
-            <section data-automation-id="DROP_DOWN_DEMO" style={{width: '250px'}}>
-                <DropDown
-                    selectedItem={this.state.selectedItem}
-                    items={items}
-                    onInputClick={this.onInputClick}
-                    open={this.state.open}
-                    onItemClick={this.onItemClick}
-                />
-            </section>
+            <div>
+                <h2>DropDown</h2>
+                <section data-automation-id="DROP_DOWN_DEMO" style={{width: '250px'}}>
+                    <DropDown
+                        selectedItem={this.state.selectedItem}
+                        items={items}
+                        onInputClick={this.onInputClick}
+                        open={this.state.open}
+                        onItemClick={this.onItemClick}
+                    />
+                </section>
+            </div>
         );
     }
 }

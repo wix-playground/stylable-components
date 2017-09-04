@@ -11,7 +11,7 @@ export interface CheckBoxProps extends FormInputProps<boolean> {
     indeterminateIcon?: React.ComponentType<CheckBoxIconProps>;
     children?: React.ReactNode;
     disabled?: boolean;
-    readOnly?: boolean;
+    readonly?: boolean;
     indeterminate?: boolean;
     tabIndex?: number;
     id?: string;
@@ -30,7 +30,7 @@ export interface CheckBoxState {
 const DefaultCheckBoxSVG: React.SFC<CheckBoxIconProps> = props => {
     return (
         <svg
-            className={styles.boxIcon}
+            className={styles.boxIconDefault}
             data-automation-id="CHECKBOX_BOX"
             xmlns="http://www.w3.org/2000/svg"
             focusable="false"
@@ -92,7 +92,7 @@ export class CheckBox extends React.Component<CheckBoxProps, CheckBoxState> {
         const cssStates = {
             checked: this.props.value!,
             disabled: this.props.disabled!,
-            readOnly: this.props.readOnly!,
+            readonly: this.props.readonly!,
             indeterminate: this.props.indeterminate!,
             focused: this.state.isFocused
         };
@@ -126,18 +126,18 @@ export class CheckBox extends React.Component<CheckBoxProps, CheckBoxState> {
                 />
 
                 {this.props.indeterminate &&
-                    <IndeterminateIcon
-                        value={this.props.value}
-                        indeterminate={this.props.indeterminate}
-                        disabled={this.props.disabled}
-                    />
+                <IndeterminateIcon
+                    value={this.props.value}
+                    indeterminate={this.props.indeterminate}
+                    disabled={this.props.disabled}
+                />
                 }
                 {!this.props.indeterminate && this.props.value &&
-                    <TickIcon
-                        value={this.props.value}
-                        indeterminate={this.props.indeterminate}
-                        disabled={this.props.disabled}
-                    />
+                <TickIcon
+                    value={this.props.value}
+                    indeterminate={this.props.indeterminate}
+                    disabled={this.props.disabled}
+                />
                 }
 
                 {this.props.children}
@@ -146,8 +146,8 @@ export class CheckBox extends React.Component<CheckBoxProps, CheckBoxState> {
     }
 
     private handleChange = (e: React.SyntheticEvent<HTMLElement>) => {
-        if (!this.props.disabled && !this.props.readOnly) {
-                this.props.onChange!({value: this.props.indeterminate ? true : !this.props.value});
+        if (!this.props.disabled && !this.props.readonly) {
+            this.props.onChange!({value: this.props.indeterminate ? true : !this.props.value});
         }
     }
 

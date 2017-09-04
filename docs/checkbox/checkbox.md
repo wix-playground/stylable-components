@@ -7,9 +7,9 @@ Support a similar to native checkbox implementation.
 | Name | Type | Default | Required | Description |
 | -- | -- | -- | -- | -- |
 | value | boolean | false | no | The value chosen in the checkbox |
-| boxIcon | React.SFC<CheckBoxIconProps> | boxIcon | no | SVG representing the outline of an empty state |
-| indeterminateIcon | React.SFC<CheckBoxIconProps> | indeterminateIcon | no | SVG representing an indeterminate state in the outline|
-| tickIcon | React.SFC<CheckBoxIconProps> | tickIcon | no | SVG representing a checked state in the outline|
+| boxIcon | React.SFC<CheckBoxIconProps> | boxIcon | no | SVG representing an empty state |
+| indeterminateIcon | React.SFC<CheckBoxIconProps> | indeterminateIcon | no | SVG representing an indeterminate state|
+| tickIcon | React.SFC<CheckBoxIconProps> | tickIcon | no | SVG representing a checked state |
 | onChange | func | NOOP | no | Event triggered by changing the value |
 | children | Array<Node> | null | no | children | Any further nodes will be rendered, although the use case for this is suspicious |
 | indeterminate | boolean | false | no | indicates that the checkbox is neither on nor off. Changes the appearance to resemble a third state. Does not affect the value of the checked attribute, and clicking the checkbox will set the value to false. |
@@ -24,13 +24,13 @@ Support a similar to native checkbox implementation.
 
 | Name | Description |
 | -- | -- |
-| boxIcon | sets ths style for the empty checkbox
+| boxIconDefault | sets ths style for the empty checkbox
 | tickIcon | Sets the style for the checked state |
 | indeterminateIcon | Sets the style for the indeterminate state |
 
 ## Accessibility
 
-The checkbox will implement a native HTML input element in order to support the HTML for attribute. Should be hidden
+The checkbox will implement a native HTML input element in order to support the HTML for attribute. The element should have both ```display:none``` and ```visibility:hidden``` styles implemented. The visibility is needed since some accessibility tools do not support display.
 
 ### Roles
 

@@ -15,7 +15,6 @@
     display: inline-block;
     position: relative;
     cursor: pointer;
-    user-select: none;
 }
 
 .root:disabled {
@@ -92,12 +91,10 @@
 
 .radioLabel {
     margin-left: 10px;
-    user-select: text;
 }
 
 .root:isLeftLabel .radioLabel {
     margin-left: 0;
     margin-right: 10px;
 }
-
 

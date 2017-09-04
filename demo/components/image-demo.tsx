@@ -16,6 +16,7 @@ export class ImageDemo extends React.Component<{}, ImageDemoState> {
     public render() {
         return (
             <div>
+                <h2>Image</h2>
                 <div>
                     <label>src:
                         <input type="text" value={this.state.src} onChange={this.onSrcChange} />
