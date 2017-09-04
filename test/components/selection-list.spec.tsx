@@ -175,20 +175,6 @@ describe('<SelectionList />', () => {
         });
     });
 
-    it(`Doesn't discard text nodes in the child list`, async () => {
-        const {select, waitForDom} = clientRenderer.render(
-            <SelectionList>
-                <div />
-                Hello, World
-                <div />
-            </SelectionList>
-        );
-
-        return waitForDom(() => {
-            expect(select('LIST')).to.contain.text('Hello, World');
-        });
-    });
-
     it('Renders dataSource below children when both are provided', async () => {
         const {select, waitForDom} = clientRenderer.render(
             <SelectionList dataSource={['ham', 'spam']}>
@@ -217,7 +203,7 @@ describe('<SelectionList />', () => {
             await waitForDom(() => expect(select('LIST')).to.be.present());
 
             const list = select('LIST') as HTMLElement;
-            list.focus();
+            simulate.focus(list);
             simulateKeyDown(list, 'down');
             simulateKeyDown(list, 'enter');
             await waitForDom(() => {
@@ -235,7 +221,7 @@ describe('<SelectionList />', () => {
             await waitForDom(() => expect(select('LIST')).to.be.present());
 
             const list = select('LIST') as HTMLElement;
-            list.focus();
+            simulate.focus(list);
             simulateKeyDown(list, 'up');
             simulateKeyDown(list, 'enter');
 
@@ -254,7 +240,7 @@ describe('<SelectionList />', () => {
             await waitForDom(() => expect(select('LIST')).to.be.present());
 
             const list = select('LIST') as HTMLElement;
-            list.focus();
+            simulate.focus(list);
             simulateKeyDown(list, 'home');
             simulateKeyDown(list, 'enter');
 
@@ -273,7 +259,7 @@ describe('<SelectionList />', () => {
             await waitForDom(() => expect(select('LIST')).to.be.present());
 
             const list = select('LIST') as HTMLElement;
-            list.focus();
+            simulate.focus(list);
             simulateKeyDown(list, 'end');
             simulateKeyDown(list, 'enter');
 
@@ -292,7 +278,7 @@ describe('<SelectionList />', () => {
             await waitForDom(() => expect(select('LIST')).to.be.present());
 
             const list = select('LIST') as HTMLElement;
-            list.focus();
+            simulate.focus(list);
             simulateKeyDown(list, 'down');
             simulateKeyDown(list, 'enter');
 
@@ -311,7 +297,7 @@ describe('<SelectionList />', () => {
             await waitForDom(() => expect(select('LIST')).to.be.present());
 
             const list = select('LIST') as HTMLElement;
-            list.focus();
+            simulate.focus(list);
             simulateKeyDown(list, 'up');
             simulateKeyDown(list, 'enter');
 
@@ -330,7 +316,7 @@ describe('<SelectionList />', () => {
             await waitForDom(() => expect(select('LIST')).to.be.present());
 
             const list = select('LIST') as HTMLElement;
-            list.focus();
+            simulate.focus(list);
             simulateKeyDown(list, 'down');
             simulateKeyDown(list, 'enter');
 
@@ -349,7 +335,7 @@ describe('<SelectionList />', () => {
             await waitForDom(() => expect(select('LIST')).to.be.present());
 
             const list = select('LIST') as HTMLElement;
-            list.focus();
+            simulate.focus(list);
             simulateKeyDown(list, 'down');
             simulateKeyDown(list, 'space');
 
@@ -369,7 +355,7 @@ describe('<SelectionList />', () => {
             await waitForDom(() => expect(select('LIST')).to.be.present());
             const list = select('LIST') as HTMLElement;
             expect(hasState(list, 'focused')).to.be.false;
-            list.focus();
+            simulate.focus(list);
             await waitForDom(() => {
                 expect(hasState(list, 'focused')).to.be.true;
             });
@@ -396,7 +382,7 @@ describe('<SelectionList />', () => {
             const list = select('LIST') as HTMLElement;
             const item = getListItems(list)[1];
             expect(hasState(item, 'focused')).to.be.false;
-            list.focus();
+            simulate.focus(list);
             simulateKeyDown(list, 'down');
 
             await waitForDom(() => {
