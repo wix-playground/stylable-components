@@ -7,11 +7,11 @@ Support a similar to native radiogroup implementations.
 |------|------|---------|----------|-------------
 | name | string |  | no | the name of the group. sets the _name_ property on each child |
 | disabled | boolean | false | no | Whether all the radio buttons are disabled |
-| readonly | boolean | false | no | Whether the group value cannot be changed |
+| readOnly | boolean | false | no | Whether the group value cannot be changed |
 | labelLocation | 'right' or 'left' | 'right' | no | Whether each child's value appears as text to the right or left of the radio button  |
 | onChange | (e: RadioChangeEvent) => void | NOOP | no | Triggered by changing a radio button state |
 | dataSource | Array\<RadioButtonProps> | [] | no | Array of dataSchema objects |
-    
+
 
 ## Styling
 
