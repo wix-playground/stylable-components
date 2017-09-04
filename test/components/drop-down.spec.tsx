@@ -89,7 +89,7 @@ describe('<DropDown />', () => {
 
     it('displays item list to choose from when open is true', () => {
         const {waitForDom} =
-            clientRenderer.render(<DropDown value={undefined} open={true} children={items} />);
+            clientRenderer.render(<DropDown open={true} dataSource={items} />);
         const dropDownList = bodySelect('LIST');
 
         return waitForDom(() => {
@@ -104,7 +104,7 @@ describe('<DropDown />', () => {
     it('invokes onClick handler when an item is clicked', () => {
         const onClick = sinon.spy();
 
-        clientRenderer.render(<DropDown value={undefined} open={true} children={items} onChange={onClick}/>);
+        clientRenderer.render(<DropDown open={true} dataSource={items} onChange={onClick}/>);
         const dropDownList = bodySelect('LIST');
 
         simulate.click(dropDownList!.children[0]);

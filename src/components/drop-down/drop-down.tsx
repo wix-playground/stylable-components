@@ -5,7 +5,7 @@ import {root} from 'wix-react-tools';
 import {Popup} from '../../../src';
 import {noop} from '../../utils/noop';
 import {PopupProps} from '../popup';
-import {OptionProps, SelectionList} from '../selection-list';
+import {OptionList, SelectionList} from '../selection-list';
 import {CaretDown} from './drop-down-icons';
 import style from './drop-down.st.css';
 
@@ -17,13 +17,13 @@ const KeyCodes: any = {
     ESC: keycode('escape')
 };
 
-export interface DropDownProps extends OptionProps {
+export interface DropDownProps extends OptionList {
     open?: boolean;
     value?: string;
     onChange?: (id: string) => void;
     disabled?: boolean;
     openOnFocus?: boolean;
-    children?: any;
+    children?: React.ReactNode;
     toggleIcon?: React.SFC;
     tabIndex?: number;
 }
@@ -81,15 +81,15 @@ export class DropDown extends React.Component<DropDownProps, DropDownState> {
                     }
                 </div>
                 <Popup open={!!this.props.open && !this.props.disabled} anchor={this.state.dropdown}>
-                    <div className="root">
-                        <SelectionList
-                            data-automation-id="DROP_DOWN_LIST"
-                            className="drop-down-list"
-                            value={this.props.value}
-                            onChange={this.onItemClick!}
-                            dataSource={this.props.children}
-                        />
-                    </div>
+                    <SelectionList
+                        data-automation-id="DROP_DOWN_LIST"
+                        className="drop-down-list"
+                        value={this.props.value}
+                        onChange={this.onItemClick!}
+                        dataSource={this.props.dataSource}
+                    >
+                        {this.props.children}
+                    </SelectionList>
                 </Popup>
             </div>
         );
