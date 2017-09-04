@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import {Component} from 'react';
 
 export type Props = {
     [EventName in keyof WindowEventMap]?: (event: WindowEventMap[EventName]) => void;
