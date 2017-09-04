@@ -1,20 +1,17 @@
 # RadioGroup Component Specifications
 
-Support a similar to native radiogroup implementations. Please see SelectionList implementation to view the new pattern.
+Support a similar to native radiogroup implementations.
 
 ## Properties
-
 | Name | Type | Default | Required | Description |
-| -- | -- | -- | -- | -- |
-| value | ?R&D? | false | no | The value chosen in the checkbox |
-| onChange | ?R&D? | NOOP | no | Triggered by changing a radio button state |
-| children | Array<Node> | null | no | children | radio buttons and/or other nodes which will just be rendered |
-| dataSource | Array\<Object> | [] | no | There are a few options accepted as a datasource (see below for explanation) |
-| dataSchema | object | { id: 'id', displayText: 'displayText' } | no | Maps the object properties to the relevant properties required by the ItemRenderer |
-| itemRenderer | Component | default itemRenderer | no | Renders a Radio Button per item in the list |
+|------|------|---------|----------|-------------
+| name | string |  | no | the name of the group. sets the _name_ property on each child |
 | disabled | boolean | false | no | Whether all the radio buttons are disabled |
 | readonly | boolean | false | no | Whether the group value cannot be changed |
-
+| labelLocation | 'right' or 'left' | 'right' | no | Whether each child's value appears as text to the right or left of the radio button  |
+| onChange | (e: RadioChangeEvent) => void | NOOP | no | Triggered by changing a radio button state |
+| dataSource | Array\<RadioButtonProps> | [] | no | Array of dataSchema objects |
+    
 
 ## Styling
 

@@ -1,0 +1,12 @@
+:import {
+    -st-from: "../../src/components/radio-group/radio-group.st.css";
+    -st-default: RG;
+}
+
+.rg {
+    -st-extends: RG;
+}
+
+.rg::radioGroupChild {
+    display: block;
+}
