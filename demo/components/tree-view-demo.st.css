@@ -6,7 +6,7 @@
 .custom-tree-node {
     -st-states: selected, focused;
     cursor: pointer;
-    padding: 3px 2rem 5px;
+    padding: 3px 7px 5px;
     border: 1px solid transparent;
 }
 
