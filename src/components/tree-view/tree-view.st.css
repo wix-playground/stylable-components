@@ -1,6 +1,6 @@
 :import{
     -st-from: "../../style/default-theme/variables.st.css";
-    -st-named: color_treeFocused, color_treeSelected;
+    -st-named: color_Keyboard_Focused, color_Active;
 }
 
 .root {
@@ -10,9 +10,8 @@
     text-align: left;
     color: #000000;
     outline: 0 solid transparent;
-    width: 228px;
     overflow: hidden;
-    display: inline-block;
+    display: block;
 }
 
 .tree-node {
@@ -23,15 +22,15 @@
 }
 
 .tree-node:hover {
-    border: 1px solid value(color_treeFocused);
+    background-color: value(color_Keyboard_Focused);
 }
 
 .tree-node:focused {
-    background-color: value(color_treeFocused);
+    border: 1px solid value(color_Active);
 }
 
 .tree-node:selected {
-    background-color: value(color_treeSelected);
+    background-color: value(color_Active);
     color: white;
 }
 
