@@ -42,6 +42,7 @@ export interface TreeViewProps {
     onFocusItem?: React.EventHandler<any>;
     selectedItem?: TreeItemData;
     focusedItem?: TreeItemData;
+    className?: string;
 }
 
 export interface TreeItemState {

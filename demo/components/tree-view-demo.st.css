@@ -1,16 +1,17 @@
 :import{
     -st-from: "../../src/style/default-theme/variables.st.css";
-    -st-named: color_treeFocused, color_treeSelected;
+    -st-named: color_Keyboard_Focused, color_Active;
 }
 
-.root {
+
+.tree-view {
     font-family: Arial, sans-serif;
     font-size: 16px;
     line-height: 1.5;
     text-align: left;
     color: #000000;
     outline: 0 solid transparent;
-    width: 228px;
+    width: 300px;
     overflow: hidden;
 }
 
@@ -22,15 +23,15 @@
 }
 
 .tree-node:hover {
-    border: 1px solid value(color_treeFocused);
+    border: 1px solid value(color_Keyboard_Focused);
 }
 
 .tree-node:focused {
-    background-color: value(color_treeFocused);
+    background-color: value(color_Keyboard_Focused);
 }
 
 .tree-node:selected {
-    background-color: value(color_treeSelected);
+    background-color: value(color_Active);
     color: white;
 }
 

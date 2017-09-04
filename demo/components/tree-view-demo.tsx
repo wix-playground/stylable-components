@@ -1,6 +1,6 @@
 import {observer} from 'mobx-react';
 import * as React from 'react';
-import {SBStateless} from 'stylable-react-component';
+import {SBComponent, SBStateless} from 'stylable-react-component';
 import {TreeItemData , TreeItemProps, TreeView} from '../../src';
 import style from './tree-view-demo.st.css';
 
@@ -95,6 +95,7 @@ export const CustomItem: React.SFC<TreeItemProps> =
 
 const CustomItemWrapper = observer(CustomItem);
 
+@SBComponent(style)
 export class TreeViewDemo extends React.Component<{}, TreeViewDemoState> {
 
     public state = {selectedItem: undefined, focusedItem: undefined};
@@ -107,6 +108,7 @@ export class TreeViewDemo extends React.Component<{}, TreeViewDemoState> {
                     <SelectedItem selectedItem={this.state.selectedItem} />
                     <br />
                     <TreeView
+                        className="tree-view"
                         dataSource={treeData}
                         onFocusItem={this.onFocusItem}
                         focusedItem={this.state.focusedItem}
@@ -133,6 +135,7 @@ export class TreeViewDemo extends React.Component<{}, TreeViewDemoState> {
 
 }
 
+
 export class TreeViewDemoCustom extends React.Component<{}, TreeViewDemoCustomState> {
 
     public state = {selectedItemCustom: undefined, focusedItemCustom: undefined};
@@ -145,6 +148,7 @@ export class TreeViewDemoCustom extends React.Component<{}, TreeViewDemoCustomSt
                     <SelectedItem selectedItem={this.state.selectedItemCustom} />
                     <br />
                     <TreeView
+                        className="tree-view"
                         dataSource={treeData}
                         itemRenderer={CustomItemWrapper}
                         onFocusItem={this.onFocusItemCustom}
