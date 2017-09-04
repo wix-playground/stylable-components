@@ -53,15 +53,15 @@ export class PopupDemo extends React.Component<{}, DemoState> {
                     <div style={{color: 'white', backgroundColor: 'black'}}>Hello!</div>
                 </Popup>
                 <div className="position">
-                    <div>
+                    <div className="category">
                         <h3>Popup position - vertical</h3>
                         <RadioGroup dataSource={vPos} className="radio" value="top" onChange={this.changePVertical}/>
                     </div>
-                    <div>
+                    <div className="category">
                         <h3>Popup position - horizontal</h3>
                         <RadioGroup className="radio" value="left" onChange={this.changePHorizontal} dataSource={hPos}/>
                     </div>
-                    <div>
+                    <div className="category">
                         <h3>Anchor position - vertical</h3>
                         <RadioGroup className="radio" value="bottom" onChange={this.changeAVertical} dataSource={vPos}/>
                     </div>
@@ -82,20 +82,20 @@ export class PopupDemo extends React.Component<{}, DemoState> {
         this.setState({div: ref, isOpen: this.state.isOpen});
     }
 
-    private changePVertical = (e: ChangeEvent<string>) => {
-        this.setState({pVertical: e.value as PopupVerticalPosition});
+    private changePVertical = (e: ChangeEvent<PopupVerticalPosition>) => {
+        this.setState({pVertical: e.value});
     }
 
-    private changePHorizontal = (e: ChangeEvent<string>) => {
-        this.setState({pHorizontal: e.value as PopupHorizontalPosition});
+    private changePHorizontal = (e: ChangeEvent<PopupHorizontalPosition>) => {
+        this.setState({pHorizontal: e.value});
     }
 
-    private changeAVertical = (e: ChangeEvent<string>) => {
-        this.setState({aVertical: e.value as PopupVerticalPosition});
+    private changeAVertical = (e: ChangeEvent<PopupVerticalPosition>) => {
+        this.setState({aVertical: e.value});
     }
 
-    private changeAHorizontal = (e: ChangeEvent<string>) => {
-        this.setState({aHorizontal: e.value as PopupHorizontalPosition});
+    private changeAHorizontal = (e: ChangeEvent<PopupHorizontalPosition>) => {
+        this.setState({aHorizontal: e.value});
     }
 
 }

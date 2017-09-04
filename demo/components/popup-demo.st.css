@@ -16,6 +16,10 @@
     width: 100px;
 }
 
+.category {
+    margin-right: 1rem;
+}
+
 .radio::radioGroupChild {
     display: block;
 }
