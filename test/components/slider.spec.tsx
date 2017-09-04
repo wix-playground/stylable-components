@@ -2,7 +2,6 @@ import * as keycode from 'keycode';
 import * as React from 'react';
 import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react';
 import {Slider} from '../../src/components/slider';
-import {isTouch} from '../../src/utils';
 import WindowStub from '../stubs/window.stub';
 import {simulateMouseEvent, simulateTouchEvent} from '../utils';
 import {describeIfTouch} from '../utils/skip-describe-if-touch';

@@ -4,6 +4,7 @@ import {CheckBoxDemo} from './components/checkbox-demo';
 import {DatePickerDemo} from './components/date-picker-demo';
 import {DropDownDemo} from './components/drop-down.demo';
 import {ImageDemo} from './components/image-demo';
+import {ModalDemo} from './components/modal-demo';
 import {NumberInputDemo} from './components/number-input.demo';
 import {PopupDemo} from './components/popup-demo';
 import {RadioGroupDemo} from './components/radio-group-demo';
@@ -165,6 +166,11 @@ export class ComponentsDemo extends React.Component {
                 <div>
                     <h2>NumberInput</h2>
                     <NumberInputDemo />
+                </div>
+                <hr />
+                <div>
+                    <h2>Modal</h2>
+                    <ModalDemo />
                 </div>
             </div>
         );
