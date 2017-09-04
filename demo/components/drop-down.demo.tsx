@@ -34,9 +34,8 @@ export class DropDownDemo extends React.Component<{}, DropDownDemoState> {
                         value={this.state.selectedItem}
                         open={this.state.open}
                         onChange={this.onItemClick}
-                    >
-                        {items}
-                    </DropDown>
+                        dataSource={items}
+                    />
                 </section>
             </div>
         );
