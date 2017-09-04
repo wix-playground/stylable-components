@@ -28,7 +28,7 @@
     border: 1px solid #5cb4ff;
 }
 
-
 .drop-down-list {
-  width: 100%;
+    width: 100%;
+    background-color: white;
 }
