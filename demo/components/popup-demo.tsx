@@ -1,5 +1,6 @@
 import React = require('react');
 import { HorizontalPosition, Popup, PositionPoint, RadioButton, RadioGroup, VerticalPosition } from '../../src/';
+import {ChangeEvent} from '../../src/types/events';
 
 export interface DemoState {
     div: HTMLElement | null;
@@ -21,7 +22,7 @@ export class PopupDemo extends React.Component<{}, DemoState> {
     };
 
     public render() {
-        const divDim: React.CSSProperties = {marginLeft: '100px', width: '100px', border: '1px solid blue'};
+        const divDim: React.CSSProperties = {marginLeft: '100px', width: '100px'};
         const flexStyle: React.CSSProperties = {padding: '10px'};
         const popupPos: PositionPoint = {
             vertical: this.state.pVertical as VerticalPosition, horizontal: this.state.pHorizontal as HorizontalPosition
@@ -31,14 +32,14 @@ export class PopupDemo extends React.Component<{}, DemoState> {
         };
         return (
             <div>
-                <div
+                <button
                     ref={this.updateState}
                     onClick={this.onClick}
                     style={divDim}
                     data-automation-id="POPUP_DEMO_DIV"
                 >
                     Click me!
-                </div>
+                </button>
                 <Popup
                     anchor={this.state.div}
                     popupPosition={popupPos}
@@ -46,40 +47,37 @@ export class PopupDemo extends React.Component<{}, DemoState> {
                     anchorPosition={anchorPos}
                     open={this.state.isOpen}
                 >
-                    <div style={{background: 'green', color: 'white'}}>
-                        <span>Popup Header</span>
-                        <div>Popup Body</div>
-                    </div>
+                    <div style={{backgroundColor: 'black', color: 'white'}}>Hello!</div>
                 </Popup>
                 <div style={{display: 'flex'}}>
                     <div style={flexStyle}>
                         <h3>Popup position - vertical</h3>
-                        <RadioGroup onChange={this.changePVertical}>
-                            <RadioButton checked value="top"/>
+                        <RadioGroup value="top" onChange={this.changePVertical}>
+                            <RadioButton value="top"/>
                             <RadioButton value="center"/>
                             <RadioButton value="bottom"/>
                         </RadioGroup>
                     </div>
                     <div style={flexStyle}>
                         <h3>Popup position - horizontal</h3>
-                        <RadioGroup onChange={this.changePHorizontal}>
-                            <RadioButton checked value="left"/>
+                        <RadioGroup value="left" onChange={this.changePHorizontal}>
+                            <RadioButton value="left"/>
                             <RadioButton value="center"/>
                             <RadioButton value="right"/>
                         </RadioGroup>
                     </div>
                     <div style={flexStyle}>
                         <h3>Anchor position - vertical</h3>
-                        <RadioGroup onChange={this.changeAVertical}>
+                        <RadioGroup value="bottom" onChange={this.changeAVertical}>
                             <RadioButton value="top"/>
                             <RadioButton value="center"/>
-                            <RadioButton checked value="bottom"/>
+                            <RadioButton value="bottom"/>
                         </RadioGroup>
                     </div>
                     <div style={flexStyle}>
                         <h3>Anchor position - horizontal</h3>
-                        <RadioGroup onChange={this.changeAHorizontal}>
-                            <RadioButton checked value="left"/>
+                        <RadioGroup value="left" onChange={this.changeAHorizontal}>
+                            <RadioButton value="left"/>
                             <RadioButton value="center"/>
                             <RadioButton value="right"/>
                         </RadioGroup>
@@ -97,20 +95,20 @@ export class PopupDemo extends React.Component<{}, DemoState> {
         this.setState({div: ref, isOpen: this.state.isOpen});
     }
 
-    private changePVertical = (e: string) => {
-        this.setState({div: this.state.div, pVertical: e as VerticalPosition});
+    private changePVertical = (e: ChangeEvent<string>) => {
+        this.setState({div: this.state.div, pVertical: e.value as VerticalPosition});
     }
 
-    private changePHorizontal = (e: string) => {
-        this.setState({div: this.state.div, pHorizontal: e as HorizontalPosition});
+    private changePHorizontal = (e: ChangeEvent<string>) => {
+        this.setState({div: this.state.div, pHorizontal: e.value as HorizontalPosition});
     }
 
-    private changeAVertical = (e: string) => {
-        this.setState({div: this.state.div, aVertical: e as VerticalPosition});
+    private changeAVertical = (e: ChangeEvent<string>) => {
+        this.setState({div: this.state.div, aVertical: e.value as VerticalPosition});
     }
 
-    private changeAHorizontal = (e: string) => {
-        this.setState({div: this.state.div, aHorizontal: e as HorizontalPosition});
+    private changeAHorizontal = (e: ChangeEvent<string>) => {
+        this.setState({div: this.state.div, aHorizontal: e.value as HorizontalPosition});
     }
 
 }

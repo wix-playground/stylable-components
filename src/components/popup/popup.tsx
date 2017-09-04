@@ -15,6 +15,7 @@ export interface PopupProps {
     popupPosition?: PositionPoint;
     syncWidth?: boolean;
     maxHeight?: number;
+    children?: React.ReactNode;
 }
 
 export interface PopupCompProps extends PopupProps {
