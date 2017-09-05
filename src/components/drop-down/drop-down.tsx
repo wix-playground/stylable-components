@@ -41,7 +41,7 @@ export class DropDown extends React.PureComponent<DropDownProps, DropDownState> 
         tabIndex: 0
     };
 
-    public state = {dropdown: null};
+    public state: DropDownState = {dropdown: null};
 
     public onItemClick = (item: string) => {
         this.toggleDropDown();
