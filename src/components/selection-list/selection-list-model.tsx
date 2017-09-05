@@ -17,11 +17,11 @@ export type SelectionListItemData = DataSourceItem | React.ReactElement<any>;
 
 export interface SelectionListItem {
     data: SelectionListItemData;
-    value: SelectionListItemValue;
     disabled: boolean;
     element: React.ReactElement<any>;
-    selectable: boolean;
     isOption: boolean;
+    selectable: boolean;
+    value: SelectionListItemValue;
 }
 
 type DataSourceItemDefaultFormat = string | {
@@ -69,14 +69,7 @@ export class SelectionListModel {
             const element = renderItem(dataSchema && typeof data === 'object' ? renameKeys(data, dataSchema) : data);
             if (element) {
                 const {value, disabled} = element.props;
-                this.addItem({
-                    data,
-                    disabled: Boolean(disabled),
-                    element,
-                    isOption: value !== undefined,
-                    selectable: value !== undefined && !disabled,
-                    value
-                });
+                this.addItem(data, element);
             }
         });
     }
@@ -84,15 +77,7 @@ export class SelectionListModel {
     public addChildren(children: React.ReactNode) {
         React.Children.forEach(children, element => {
             if (typeof element === 'object') {
-                const {value, disabled} = element.props;
-                this.addItem({
-                    data: element,
-                    disabled: Boolean(disabled),
-                    element,
-                    isOption: value !== undefined,
-                    selectable: value !== undefined && !disabled,
-                    value
-                });
+                this.addItem(element, element);
             }
         });
     }
@@ -119,7 +104,18 @@ export class SelectionListModel {
         return this.items.find(item => item.value === value);
     }
 
-    private addItem(item: SelectionListItem) {
+    private addItem(data: SelectionListItemData, element: React.ReactElement<any>) {
+        const value = element.props.value;
+        const disabled = Boolean(element.props.disabled);
+        const item = {
+            data,
+            disabled,
+            element,
+            isOption: value !== undefined,
+            selectable: value !== undefined && !disabled,
+            value
+        };
+
         this.items.push(item);
         if (item.selectable) {
             this.selectableValues.push(item.value);
