@@ -40,7 +40,7 @@ export class Modal extends React.PureComponent<ModalProps, {}> {
             this.props.isOpen ? (
                 <Portal {...rootProps}>
                     <div className="backdrop" data-slot="backdrop" data-automation-id="MODAL" onClick={this.onClick}>
-                        <div className="children" data-slot="children">
+                        <div className="children" data-slot="body">
                             {this.props.children}
                         </div>
                     </div>
