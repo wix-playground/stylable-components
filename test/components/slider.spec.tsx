@@ -331,6 +331,231 @@ function whenDragThingsAround(
     });
 }
 
+function whenDragThingsAroundStep(
+    clientRenderer: ClientRenderer,
+    positionProp: string,
+    sizeProp: string,
+    options?: Partial<SliderProps>
+) {
+    describe('when drag things around', () => {
+        const value = 5;
+        const min = 0;
+        const max = 10;
+
+        let onChange: (value: number) => void;
+        let onInput: (value: string) => void;
+        let select: (automationId: string) => HTMLElement | null;
+        let waitForDom: (expectation: () => void) => Promise<void>;
+        let eventMock: EventCoordinates;
+
+        beforeEach(() => {
+            onChange = sinon.spy();
+            onInput = sinon.spy();
+            const rendered = clientRenderer.render(
+                <Slider
+                    value={value}
+                    min={min}
+                    max={max}
+                    onChange={onChange}
+                    onInput={onInput}
+                    {...options}
+                />
+            );
+            select = rendered.select;
+            waitForDom = rendered.waitForDom;
+
+            const bounds = select('SLIDER')!.getBoundingClientRect();
+            eventMock = getEventMock(bounds, options && options.axis);
+        });
+
+        it('should change value', async () => {
+            await waitFor(() => {
+                const element = select('SLIDER');
+                const handle = select('SLIDER-HANDLE');
+                const progress = select('SLIDER-PROGRESS');
+
+                simulate.mouseDown(element, {
+                    currentTarget: element!,
+                    clientX: eventMock.clientX,
+                    clientY: eventMock.clientY
+                });
+
+                expect(handle!.style[positionProp as any]).to.equal('70%');
+                expect(progress!.style[sizeProp as any]).to.equal('70%');
+            });
+        });
+
+        it('should call onChange', async () => {
+            await waitFor(() => {
+                const element = select('SLIDER');
+
+                simulate.mouseDown(element, {
+                    currentTarget: element!,
+                    clientX: eventMock.clientX,
+                    clientY: eventMock.clientY
+                });
+                simulateMouseEvent(
+                    environment,
+                    'mouseup',
+                    {
+                        clientX: eventMock.clientX,
+                        clientY: eventMock.clientY
+                    }
+                );
+
+                expect(onChange).to.be.calledWith(7);
+            });
+        });
+
+        it('should call onInput', async () => {
+            await waitFor(() => {
+                const element = select('SLIDER');
+
+                simulate.mouseDown(element, {
+                    currentTarget: element!,
+                    clientX: eventMock.clientX,
+                    clientY: eventMock.clientY
+                });
+                simulateMouseEvent(
+                    environment,
+                    'mousemove',
+                    {
+                        clientX: eventMock.clientX,
+                        clientY: eventMock.clientY
+                    }
+                );
+                simulateMouseEvent(
+                    environment,
+                    'mouseup',
+                    {
+                        clientX: eventMock.clientX,
+                        clientY: eventMock.clientY
+                    }
+                );
+
+                expect(onInput).to.be.calledWith('7');
+                expect(onChange).to.be.calledWith(7);
+            });
+        });
+    });
+
+    describeIfTouch('when drag things around using touch', () => {
+        const value = 5;
+        const min = 0;
+        const max = 10;
+
+        let onChange: (value: number) => void;
+        let onInput: (value: string) => void;
+        let select: (automationId: string) => HTMLElement | null;
+        let waitForDom: (expectation: () => void) => Promise<void>;
+        let eventMock: EventCoordinates;
+
+        beforeEach(function() {
+            onChange = sinon.spy();
+            onInput = sinon.spy();
+            const rendered = clientRenderer.render(
+                <Slider
+                    value={value}
+                    min={min}
+                    max={max}
+                    onChange={onChange}
+                    onInput={onInput}
+                    {...options}
+                />
+            );
+            select = rendered.select;
+            waitForDom = rendered.waitForDom;
+
+            const bounds = select('SLIDER')!.getBoundingClientRect();
+            eventMock = getEventMock(bounds, options && options.axis);
+        });
+
+        it('should change value', async () => {
+            await waitFor(() => {
+                const element = select('SLIDER');
+                const handle = select('SLIDER-HANDLE');
+                const progress = select('SLIDER-PROGRESS');
+
+                simulate.touchStart(element, {
+                    currentTarget: element!,
+                    touches: {
+                        0: {
+                            clientX: eventMock.clientX,
+                            clientY: eventMock.clientY
+                        }
+                    } as any as TouchList
+                });
+
+                expect(handle!.style[positionProp as any]).to.equal('70%');
+                expect(progress!.style[sizeProp as any]).to.equal('70%');
+            });
+        });
+
+        it('should call onChange', async () => {
+            await waitFor(() => {
+                const element = select('SLIDER');
+
+                simulate.touchStart(element, {
+                    currentTarget: element!,
+                    touches: {
+                        0: {
+                            clientX: eventMock.clientX,
+                            clientY: eventMock.clientY
+                        }
+                    } as any as TouchList
+                });
+
+                simulateTouchEvent(
+                    environment,
+                    'touchend',
+                    {
+                        clientX: eventMock.clientX,
+                        clientY: eventMock.clientY
+                    }
+                );
+
+                expect(onChange).to.be.calledWith(7);
+            });
+        });
+
+        it('should call onInput', async () => {
+            await waitFor(() => {
+                const element = select('SLIDER');
+
+                simulate.touchStart(element, {
+                    currentTarget: element!,
+                    touches: {
+                        0: {
+                            clientX: eventMock.clientX,
+                            clientY: eventMock.clientY
+                        }
+                    } as any as TouchList
+                });
+                simulateTouchEvent(
+                    environment,
+                    'touchmove',
+                    {
+                        clientX: eventMock.clientX,
+                        clientY: eventMock.clientY
+                    }
+                );
+
+                simulateTouchEvent(
+                    environment,
+                    'touchend',
+                    {
+                        clientX: eventMock.clientX,
+                        clientY: eventMock.clientY
+                    }
+                );
+
+                expect(onInput).to.be.calledWith('7');
+                expect(onChange).to.be.calledWith(7);
+            });
+        });
+    });
+}
+
 describe.only('<Slider />', () => {
     const clientRenderer = new ClientRenderer();
 
