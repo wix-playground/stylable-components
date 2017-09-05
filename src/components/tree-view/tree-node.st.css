@@ -8,6 +8,7 @@
     cursor: pointer;
     padding: 3px 7px 5px;
     border: 1px solid transparent;
+    list-style: none;
 }
 
 .tree-node:hover {
@@ -25,6 +26,8 @@
 
 .nested-tree {
     margin-left: 2rem;
+    list-style: none;
+    padding-left: 0;
 }
 
 .tree-item-icon {

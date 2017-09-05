@@ -35,7 +35,7 @@ export interface TreeItemProps {
     stateMap: TreeStateMap;
 }
 
-export interface TreeViewProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface TreeViewProps extends React.HTMLAttributes<HTMLUListElement> {
     dataSource: object[];
     itemRenderer?: React.ComponentType<TreeItemProps>;
     onSelectItem?: React.EventHandler<any>;
@@ -68,7 +68,7 @@ export const TreeItem: React.SFC<TreeItemProps> =
         };
 
         return (
-            <div>
+            <li>
                 <div
                     data-automation-id={`${itemIdPrefix}_${itemLabel}`}
                     className="tree-node"
@@ -77,7 +77,8 @@ export const TreeItem: React.SFC<TreeItemProps> =
                     data-focused={state!.isFocused}
                     onClick={onItemClick && onItemClick.bind(null, item)}
                     role="treeitem"
-                    aria-expanded={item.children ? state!.isExpanded : ''}
+                    aria-expanded={item.children ? !!state!.isExpanded : ''}
+                    aria-selected={state!.isSelected ? true : ''}
                 >
                     {item.children && (state!.isExpanded ?
                         <MinusIcon {...iconProps} /> : <PlusIcon {...iconProps} />)}
@@ -89,7 +90,7 @@ export const TreeItem: React.SFC<TreeItemProps> =
                         {item.label}
                     </span>
                 </div>
-                <div className="nested-tree" role="group">
+                <ul className="nested-tree" role="group">
                     {state!.isExpanded && (item.children || []).map((child: TreeItemData, index: number) =>
                         <TreeNode
                             item={child}
@@ -100,8 +101,8 @@ export const TreeItem: React.SFC<TreeItemProps> =
                             key={`${index}`}
                         />
                     )}
-                </div>
-            </div>
+                </ul>
+            </li>
         );
     }, nodeStyle);
 
@@ -154,7 +155,7 @@ export class TreeView extends React.Component<TreeViewProps, {}> {
         const rootProps = root(this.props, {'data-automation-id': 'TREE_VIEW', 'className': ''});
 
         return (
-            <div
+            <ul
                 {...rootProps}
                 tabIndex={0}
                 onKeyDown={this.onKeyDown}
@@ -170,7 +171,7 @@ export class TreeView extends React.Component<TreeViewProps, {}> {
                         key={`${index}`}
                     />
                 )}
-            </div>
+            </ul>
         );
     }
 
