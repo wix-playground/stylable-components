@@ -54,14 +54,17 @@ export class BasicDemo extends React.Component<{}, {value: boolean}> {
 ```
 
 ## Style API
+#### CSS States (pseudo-classes)
 
-### Subcomponents (pseudo elements)
+| state | description |
+|-------|--------------|
+| :checked | Used to style component when checked |
+| :disabled | Used to style component when disabled |
+| :indeterminate | Used to style component when indeterminate |
+| :readonly | Used to style component when in readonly mode |
+| :focused | Used to style component it gains focus |
 
-selector   | description
---- | ---
-boxIconDefault | Sets the style for the empty checkbox.
-tickIcon | Sets the style for the checked state.
-indeterminateIcon | Sets the style for the indeterminate state.
+
 
 ### Style Code Example
 
