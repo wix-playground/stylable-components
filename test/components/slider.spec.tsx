@@ -1,13 +1,47 @@
 import * as keycode from 'keycode';
 import * as React from 'react';
-import {ClientRenderer, EventSimulator, expect, simulate, sinon, waitFor} from 'test-drive-react';
+import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react';
 import {Slider, SliderProps} from '../../src/components/slider';
 import WindowStub from '../stubs/window.stub';
 import {simulateMouseEvent, simulateTouchEvent} from '../utils';
 import {describeIfTouch} from '../utils/skip-describe-if-touch';
 
-type PoiterOptions = Partial<MouseEvent> |  Partial<TouchEvent>;
 let environment: WindowStub;
+
+interface EventCoordinates {
+    clientX: number;
+    clientY: number;
+}
+
+function getEventMock(bounds: any, direction: string | undefined): EventCoordinates {
+    switch (direction) {
+        case 'x':
+            return {
+                clientX: Math.round(bounds.left + bounds.width * 0.7),
+                clientY: bounds.top + bounds.height / 3
+            };
+        case 'y':
+            return {
+                clientX: bounds.left + bounds.width / 3,
+                clientY: Math.round(bounds.bottom - bounds.height * 0.7)
+            };
+        case 'x-reverse':
+            return {
+                clientX: Math.round(bounds.left + bounds.width * 0.3),
+                clientY: bounds.top + bounds.height / 3
+            };
+        case 'y-reverse':
+            return {
+                clientX: bounds.left + bounds.width / 3,
+                clientY: Math.round(bounds.bottom - bounds.height * 0.3)
+            };
+        default:
+            return {
+                clientX: Math.round(bounds.left + bounds.width * 0.7),
+                clientY: bounds.top + bounds.height / 3
+            };
+    }
+}
 
 function withValueMinMax(
     clientRenderer: ClientRenderer,
@@ -87,6 +121,7 @@ function whenDragThingsAround(
         let onInput: (value: string) => void;
         let select: (automationId: string) => HTMLElement | null;
         let waitForDom: (expectation: () => void) => Promise<void>;
+        let eventMock: EventCoordinates;
 
         beforeEach(() => {
             onChange = sinon.spy();
@@ -103,6 +138,9 @@ function whenDragThingsAround(
             );
             select = rendered.select;
             waitForDom = rendered.waitForDom;
+
+            const bounds = select('SLIDER')!.getBoundingClientRect();
+            eventMock = getEventMock(bounds, options && options.axis);
         });
 
         it('should change value', async () => {
@@ -110,12 +148,11 @@ function whenDragThingsAround(
                 const element = select('SLIDER');
                 const handle = select('SLIDER-HANDLE');
                 const progress = select('SLIDER-PROGRESS');
-                const bounds = element!.getBoundingClientRect();
 
                 simulate.mouseDown(element, {
                     currentTarget: element!,
-                    clientY: bounds.top + bounds.height / 3,
-                    clientX: Math.round(bounds.left + bounds.width * 0.7)
+                    clientX: eventMock.clientX,
+                    clientY: eventMock.clientY
                 });
 
                 expect(handle!.style[positionProp as any]).to.equal('70%');
@@ -126,16 +163,19 @@ function whenDragThingsAround(
         it('should call onChange', async () => {
             await waitFor(() => {
                 const element = select('SLIDER');
-                const bounds = element!.getBoundingClientRect();
 
                 simulate.mouseDown(element, {
                     currentTarget: element!,
-                    clientX: Math.round(bounds.left + bounds.width * 0.5)
+                    clientX: eventMock.clientX,
+                    clientY: eventMock.clientY
                 });
                 simulateMouseEvent(
                     environment,
                     'mouseup',
-                    {clientX: Math.round(bounds.left + bounds.width * 0.7)}
+                    {
+                        clientX: eventMock.clientX,
+                        clientY: eventMock.clientY
+                    }
                 );
 
                 expect(onChange).to.be.calledWith(7);
@@ -145,24 +185,30 @@ function whenDragThingsAround(
         it('should call onInput', async () => {
             await waitFor(() => {
                 const element = select('SLIDER');
-                const bounds = element!.getBoundingClientRect();
 
                 simulate.mouseDown(element, {
                     currentTarget: element!,
-                    clientX: Math.round(bounds.left + bounds.width * 0.5)
+                    clientX: eventMock.clientX,
+                    clientY: eventMock.clientY
                 });
                 simulateMouseEvent(
                     environment,
                     'mousemove',
-                    {clientX: Math.round(bounds.left + bounds.width * 0.6)}
+                    {
+                        clientX: eventMock.clientX,
+                        clientY: eventMock.clientY
+                    }
                 );
                 simulateMouseEvent(
                     environment,
                     'mouseup',
-                    {clientX: Math.round(bounds.left + bounds.width * 0.7)}
+                    {
+                        clientX: eventMock.clientX,
+                        clientY: eventMock.clientY
+                    }
                 );
 
-                expect(onInput).to.be.calledWith('6');
+                expect(onInput).to.be.calledWith('7');
                 expect(onChange).to.be.calledWith(7);
             });
         });
@@ -177,6 +223,7 @@ function whenDragThingsAround(
         let onInput: (value: string) => void;
         let select: (automationId: string) => HTMLElement | null;
         let waitForDom: (expectation: () => void) => Promise<void>;
+        let eventMock: EventCoordinates;
 
         beforeEach(function() {
             onChange = sinon.spy();
@@ -188,10 +235,14 @@ function whenDragThingsAround(
                     max={max}
                     onChange={onChange}
                     onInput={onInput}
+                    {...options}
                 />
             );
             select = rendered.select;
             waitForDom = rendered.waitForDom;
+
+            const bounds = select('SLIDER')!.getBoundingClientRect();
+            eventMock = getEventMock(bounds, options && options.axis);
         });
 
         it('should change value', async () => {
@@ -199,14 +250,13 @@ function whenDragThingsAround(
                 const element = select('SLIDER');
                 const handle = select('SLIDER-HANDLE');
                 const progress = select('SLIDER-PROGRESS');
-                const bounds = element!.getBoundingClientRect();
 
                 simulate.touchStart(element, {
                     currentTarget: element!,
                     touches: {
                         0: {
-                            clientY: bounds.top + bounds.height / 3,
-                            clientX: Math.round(bounds.left + bounds.width * 0.7)
+                            clientX: eventMock.clientX,
+                            clientY: eventMock.clientY
                         }
                     } as any as TouchList
                 });
@@ -219,14 +269,13 @@ function whenDragThingsAround(
         it('should call onChange', async () => {
             await waitFor(() => {
                 const element = select('SLIDER');
-                const bounds = element!.getBoundingClientRect();
 
                 simulate.touchStart(element, {
                     currentTarget: element!,
                     touches: {
                         0: {
-                            clientY: bounds.top + bounds.height / 3,
-                            clientX: Math.round(bounds.left + bounds.width * 0.7)
+                            clientX: eventMock.clientX,
+                            clientY: eventMock.clientY
                         }
                     } as any as TouchList
                 });
@@ -235,8 +284,8 @@ function whenDragThingsAround(
                     environment,
                     'touchend',
                     {
-                        y: bounds.top + bounds.height / 3,
-                        x: Math.round(bounds.left + bounds.width * 0.7)
+                        clientX: eventMock.clientX,
+                        clientY: eventMock.clientY
                     }
                 );
 
@@ -247,14 +296,13 @@ function whenDragThingsAround(
         it('should call onInput', async () => {
             await waitFor(() => {
                 const element = select('SLIDER');
-                const bounds = element!.getBoundingClientRect();
 
                 simulate.touchStart(element, {
                     currentTarget: element!,
                     touches: {
                         0: {
-                            clientY: bounds.top + bounds.height / 3,
-                            clientX: Math.round(bounds.left + bounds.width * 0.7)
+                            clientX: eventMock.clientX,
+                            clientY: eventMock.clientY
                         }
                     } as any as TouchList
                 });
@@ -262,8 +310,8 @@ function whenDragThingsAround(
                     environment,
                     'touchmove',
                     {
-                        y: bounds.top + bounds.height / 3,
-                        x: Math.round(bounds.left + bounds.width * 0.7)
+                        clientX: eventMock.clientX,
+                        clientY: eventMock.clientY
                     }
                 );
 
@@ -271,8 +319,8 @@ function whenDragThingsAround(
                     environment,
                     'touchend',
                     {
-                        y: bounds.top + bounds.height / 3,
-                        x: Math.round(bounds.left + bounds.width * 0.7)
+                        clientX: eventMock.clientX,
+                        clientY: eventMock.clientY
                     }
                 );
 
@@ -597,11 +645,7 @@ describe.only('<Slider />', () => {
         });
     });
 
-    whenDragThingsAround(
-        clientRenderer,
-        'left',
-        'width'
-    );
+    whenDragThingsAround(clientRenderer, 'left', 'width');
 
     describe('dragging with step', () => {
         const value = 5;
@@ -815,8 +859,8 @@ describe.only('<Slider />', () => {
                     environment,
                     'touchend',
                     {
-                        y: bounds.top + bounds.height / 3,
-                        x: Math.round(bounds.left + bounds.width * 0.77)
+                        clientY: bounds.top + bounds.height / 3,
+                        clientX: Math.round(bounds.left + bounds.width * 0.77)
                     }
                 );
 
@@ -842,8 +886,8 @@ describe.only('<Slider />', () => {
                     environment,
                     'touchmove',
                     {
-                        y: bounds.top + bounds.height / 3,
-                        x: Math.round(bounds.left + bounds.width * 0.56)
+                        clientY: bounds.top + bounds.height / 3,
+                        clientX: Math.round(bounds.left + bounds.width * 0.56)
                     }
                 );
 
@@ -851,8 +895,8 @@ describe.only('<Slider />', () => {
                     environment,
                     'touchend',
                     {
-                        y: bounds.top + bounds.height / 3,
-                        x: Math.round(bounds.left + bounds.width * 0.67)
+                        clientY: bounds.top + bounds.height / 3,
+                        clientX: Math.round(bounds.left + bounds.width * 0.67)
                     }
                 );
 
@@ -1426,95 +1470,14 @@ describe.only('<Slider />', () => {
             }
         );
 
-        describe('when drag things around', () => {
-            const value = 5;
-            const min = 0;
-            const max = 10;
-
-            let onChange: (value: number) => void;
-            let onInput: (value: string) => void;
-            let select: (automationId: string) => HTMLElement | null;
-            let waitForDom: (expectation: () => void) => Promise<void>;
-
-            beforeEach(() => {
-                onChange = sinon.spy();
-                onInput = sinon.spy();
-                const rendered = clientRenderer.render(
-                    <Slider
-                        value={value}
-                        min={min}
-                        max={max}
-                        axis="y"
-                        onChange={onChange}
-                        onInput={onInput}
-                    />
-                );
-                select = rendered.select;
-                waitForDom = rendered.waitForDom;
-            });
-
-            it('should change value', async () => {
-                await waitFor(() => {
-                    const element = select('SLIDER');
-                    const handle = select('SLIDER-HANDLE');
-                    const progress = select('SLIDER-PROGRESS');
-                    const bounds = element!.getBoundingClientRect();
-
-                    simulate.mouseDown(element, {
-                        currentTarget: element!,
-                        clientX: bounds.left + bounds.width / 3,
-                        clientY: Math.round(bounds.top + bounds.height * 0.7)
-                    });
-
-                    expect(handle!.style.bottom).to.equal('30%');
-                    expect(progress!.style.height).to.equal('30%');
-                });
-            });
-
-            it('should call onChange', async () => {
-                await waitFor(() => {
-                    const element = select('SLIDER');
-                    const bounds = element!.getBoundingClientRect();
-
-                    simulate.mouseDown(element, {
-                        currentTarget: element!,
-                        clientX: Math.round(bounds.left + bounds.width * 0.5)
-                    });
-                    simulateMouseEvent(
-                        environment,
-                        'mouseup',
-                        {clientY: Math.round(bounds.top + bounds.height * 0.7)}
-                    );
-
-                    expect(onChange).to.be.calledWith(3);
-                });
-            });
-
-            it('should call onInput', async () => {
-                await waitFor(() => {
-                    const element = select('SLIDER');
-                    const bounds = element!.getBoundingClientRect();
-
-                    simulate.mouseDown(element, {
-                        currentTarget: element!,
-                        clientY: Math.round(bounds.top + bounds.height * 0.7)
-                    });
-                    simulateMouseEvent(
-                        environment,
-                        'mousemove',
-                        {clientY: Math.round(bounds.top + bounds.height * 0.7)}
-                    );
-                    simulateMouseEvent(
-                        environment,
-                        'mouseup',
-                        {clientY: Math.round(bounds.top + bounds.height * 0.7)}
-                    );
-
-                    expect(onInput).to.be.calledWith('3');
-                    expect(onChange).to.be.calledWith(3);
-                });
-            });
-        });
+        whenDragThingsAround(
+            clientRenderer,
+            'bottom',
+            'height',
+            {
+                axis: 'y'
+            }
+        );
 
         describe('dragging with step', () => {
             const value = 5;
@@ -1634,118 +1597,6 @@ describe.only('<Slider />', () => {
             });
         });
 
-        describeIfTouch('when drag things around using touch', () => {
-            const value = 5;
-            const min = 0;
-            const max = 10;
-
-            let onChange: (value: number) => void;
-            let onInput: (value: string) => void;
-            let select: (automationId: string) => HTMLElement | null;
-            let waitForDom: (expectation: () => void) => Promise<void>;
-
-            beforeEach(function() {
-                onChange = sinon.spy();
-                onInput = sinon.spy();
-                const rendered = clientRenderer.render(
-                    <Slider
-                        value={value}
-                        min={min}
-                        max={max}
-                        axis="y"
-                        onChange={onChange}
-                        onInput={onInput}
-                    />
-                );
-                select = rendered.select;
-                waitForDom = rendered.waitForDom;
-            });
-
-            it('should change value', async () => {
-                await waitFor(() => {
-                    const element = select('SLIDER');
-                    const handle = select('SLIDER-HANDLE');
-                    const progress = select('SLIDER-PROGRESS');
-                    const bounds = element!.getBoundingClientRect();
-
-                    simulate.touchStart(element, {
-                        currentTarget: element!,
-                        touches: {
-                            0: {
-                                clientY: Math.round(bounds.bottom - bounds.height * 0.7)
-                            }
-                        } as any as TouchList
-                    });
-
-                    expect(handle!.style.bottom).to.equal('70%');
-                    expect(progress!.style.height).to.equal('70%');
-                });
-            });
-
-            it('should call onChange', async () => {
-                await waitFor(() => {
-                    const element = select('SLIDER');
-                    const bounds = element!.getBoundingClientRect();
-
-                    simulate.touchStart(element, {
-                        currentTarget: element!,
-                        touches: {
-                            0: {
-                                clientY: Math.round(bounds.bottom - bounds.height * 0.7)
-                            }
-                        } as any as TouchList
-                    });
-
-                    simulateTouchEvent(
-                        environment,
-                        'touchend',
-                        {
-                            x: bounds.left + bounds.height / 3,
-                            y: Math.round(bounds.bottom - bounds.height * 0.7)
-                        }
-                    );
-
-                    expect(onChange).to.be.calledWith(7);
-                });
-            });
-
-            it('should call onInput', async () => {
-                await waitFor(() => {
-                    const element = select('SLIDER');
-                    const bounds = element!.getBoundingClientRect();
-
-                    simulate.touchStart(element, {
-                        currentTarget: element!,
-                        touches: {
-                            0: {
-                                clientY: Math.round(bounds.bottom - bounds.height * 0.7)
-                            }
-                        } as any as TouchList
-                    });
-                    simulateTouchEvent(
-                        environment,
-                        'touchmove',
-                        {
-                            x: bounds.left + bounds.height / 3,
-                            y: Math.round(bounds.bottom - bounds.height * 0.7)
-                        }
-                    );
-
-                    simulateTouchEvent(
-                        environment,
-                        'touchend',
-                        {
-                            x: bounds.left + bounds.height / 3,
-                            y: Math.round(bounds.bottom - bounds.height * 0.7)
-                        }
-                    );
-
-                    expect(onInput).to.be.calledWith('7');
-                    expect(onChange).to.be.calledWith(7);
-                });
-            });
-        });
-
         describeIfTouch('touch dragging with step', () => {
             const value = 5;
             const min = 0;
@@ -1840,8 +1691,8 @@ describe.only('<Slider />', () => {
                         environment,
                         'touchend',
                         {
-                            y: Math.round(bounds.bottom - bounds.height * 0.77),
-                            x: Math.round(bounds.left + bounds.width * 0.5)
+                            clientY: Math.round(bounds.bottom - bounds.height * 0.77),
+                            clientX: Math.round(bounds.left + bounds.width * 0.5)
                         }
                     );
 
@@ -1866,8 +1717,8 @@ describe.only('<Slider />', () => {
                         environment,
                         'touchmove',
                         {
-                            y: Math.round(bounds.bottom - bounds.height * 0.77),
-                            x: Math.round(bounds.left + bounds.width * 0.5)
+                            clientY: Math.round(bounds.bottom - bounds.height * 0.77),
+                            clientX: Math.round(bounds.left + bounds.width * 0.5)
                         }
                     );
 
@@ -1875,8 +1726,8 @@ describe.only('<Slider />', () => {
                         environment,
                         'touchend',
                         {
-                            y: Math.round(bounds.bottom - bounds.height * 0.77),
-                            x: Math.round(bounds.left + bounds.width * 0.5)
+                            clientY: Math.round(bounds.bottom - bounds.height * 0.77),
+                            clientX: Math.round(bounds.left + bounds.width * 0.5)
                         }
                     );
 
@@ -2075,95 +1926,14 @@ describe.only('<Slider />', () => {
             }
         );
 
-        describe('when drag things around', () => {
-            const value = 5;
-            const min = 0;
-            const max = 10;
-
-            let onChange: (value: number) => void;
-            let onInput: (value: string) => void;
-            let select: (automationId: string) => HTMLElement | null;
-            let waitForDom: (expectation: () => void) => Promise<void>;
-
-            beforeEach(() => {
-                onChange = sinon.spy();
-                onInput = sinon.spy();
-                const rendered = clientRenderer.render(
-                    <Slider
-                        value={value}
-                        min={min}
-                        max={max}
-                        axis="x-reverse"
-                        onChange={onChange}
-                        onInput={onInput}
-                    />
-                );
-                select = rendered.select;
-                waitForDom = rendered.waitForDom;
-            });
-
-            it('should change value', async () => {
-                await waitFor(() => {
-                    const element = select('SLIDER');
-                    const handle = select('SLIDER-HANDLE');
-                    const progress = select('SLIDER-PROGRESS');
-                    const bounds = element!.getBoundingClientRect();
-
-                    simulate.mouseDown(element, {
-                        currentTarget: element!,
-                        clientY: bounds.top + bounds.height / 3,
-                        clientX: Math.round(bounds.left + bounds.width * 0.7)
-                    });
-
-                    expect(handle!.style.right).to.equal('30%');
-                    expect(progress!.style.width).to.equal('30%');
-                });
-            });
-
-            it('should call onChange', async () => {
-                await waitFor(() => {
-                    const element = select('SLIDER');
-                    const bounds = element!.getBoundingClientRect();
-
-                    simulate.mouseDown(element, {
-                        currentTarget: element!,
-                        clientX: Math.round(bounds.left + bounds.width * 0.5)
-                    });
-                    simulateMouseEvent(
-                        environment,
-                        'mouseup',
-                        {clientX: Math.round(bounds.left + bounds.width * 0.7)}
-                    );
-
-                    expect(onChange).to.be.calledWith(3);
-                });
-            });
-
-            it('should call onInput', async () => {
-                await waitFor(() => {
-                    const element = select('SLIDER');
-                    const bounds = element!.getBoundingClientRect();
-
-                    simulate.mouseDown(element, {
-                        currentTarget: element!,
-                        clientX: Math.round(bounds.left + bounds.width * 0.5)
-                    });
-                    simulateMouseEvent(
-                        environment,
-                        'mousemove',
-                        {clientX: Math.round(bounds.left + bounds.width * 0.6)}
-                    );
-                    simulateMouseEvent(
-                        environment,
-                        'mouseup',
-                        {clientX: Math.round(bounds.left + bounds.width * 0.7)}
-                    );
-
-                    expect(onInput).to.be.calledWith('4');
-                    expect(onChange).to.be.calledWith(3);
-                });
-            });
-        });
+        whenDragThingsAround(
+            clientRenderer,
+            'right',
+            'width',
+            {
+                axis: 'x-reverse'
+            }
+        );
 
         describe('dragging with step', () => {
             const value = 5;
@@ -2283,121 +2053,6 @@ describe.only('<Slider />', () => {
             });
         });
 
-        describeIfTouch('when drag things around using touch', () => {
-            const value = 5;
-            const min = 0;
-            const max = 10;
-
-            let onChange: (value: number) => void;
-            let onInput: (value: string) => void;
-            let select: (automationId: string) => HTMLElement | null;
-            let waitForDom: (expectation: () => void) => Promise<void>;
-
-            beforeEach(function() {
-                onChange = sinon.spy();
-                onInput = sinon.spy();
-                const rendered = clientRenderer.render(
-                    <Slider
-                        value={value}
-                        min={min}
-                        max={max}
-                        axis="x-reverse"
-                        onChange={onChange}
-                        onInput={onInput}
-                    />
-                );
-                select = rendered.select;
-                waitForDom = rendered.waitForDom;
-            });
-
-            it('should change value', async () => {
-                await waitFor(() => {
-                    const element = select('SLIDER');
-                    const handle = select('SLIDER-HANDLE');
-                    const progress = select('SLIDER-PROGRESS');
-                    const bounds = element!.getBoundingClientRect();
-
-                    simulate.touchStart(element, {
-                        currentTarget: element!,
-                        touches: {
-                            0: {
-                                clientY: bounds.top + bounds.height / 3,
-                                clientX: Math.round(bounds.left + bounds.width * 0.7)
-                            }
-                        } as any as TouchList
-                    });
-
-                    expect(handle!.style.right).to.equal('30%');
-                    expect(progress!.style.width).to.equal('30%');
-                });
-            });
-
-            it('should call onChange', async () => {
-                await waitFor(() => {
-                    const element = select('SLIDER');
-                    const bounds = element!.getBoundingClientRect();
-
-                    simulate.touchStart(element, {
-                        currentTarget: element!,
-                        touches: {
-                            0: {
-                                clientY: bounds.top + bounds.height / 3,
-                                clientX: Math.round(bounds.left + bounds.width * 0.7)
-                            }
-                        } as any as TouchList
-                    });
-
-                    simulateTouchEvent(
-                        environment,
-                        'touchend',
-                        {
-                            y: bounds.top + bounds.height / 3,
-                            x: Math.round(bounds.left + bounds.width * 0.7)
-                        }
-                    );
-
-                    expect(onChange).to.be.calledWith(3);
-                });
-            });
-
-            it('should call onInput', async () => {
-                await waitFor(() => {
-                    const element = select('SLIDER');
-                    const bounds = element!.getBoundingClientRect();
-
-                    simulate.touchStart(element, {
-                        currentTarget: element!,
-                        touches: {
-                            0: {
-                                clientY: bounds.top + bounds.height / 3,
-                                clientX: Math.round(bounds.left + bounds.width * 0.7)
-                            }
-                        } as any as TouchList
-                    });
-                    simulateTouchEvent(
-                        environment,
-                        'touchmove',
-                        {
-                            y: bounds.top + bounds.height / 3,
-                            x: Math.round(bounds.left + bounds.width * 0.7)
-                        }
-                    );
-
-                    simulateTouchEvent(
-                        environment,
-                        'touchend',
-                        {
-                            y: bounds.top + bounds.height / 3,
-                            x: Math.round(bounds.left + bounds.width * 0.7)
-                        }
-                    );
-
-                    expect(onInput).to.be.calledWith('3');
-                    expect(onChange).to.be.calledWith(3);
-                });
-            });
-        });
-
         describeIfTouch('touch dragging with step', () => {
             const value = 5;
             const min = 0;
@@ -2494,8 +2149,8 @@ describe.only('<Slider />', () => {
                         environment,
                         'touchend',
                         {
-                            y: bounds.top + bounds.height / 3,
-                            x: Math.round(bounds.left + bounds.width * 0.77)
+                            clientY: bounds.top + bounds.height / 3,
+                            clientX: Math.round(bounds.left + bounds.width * 0.77)
                         }
                     );
 
@@ -2521,8 +2176,8 @@ describe.only('<Slider />', () => {
                         environment,
                         'touchmove',
                         {
-                            y: bounds.top + bounds.height / 3,
-                            x: Math.round(bounds.left + bounds.width * 0.56)
+                            clientY: bounds.top + bounds.height / 3,
+                            clientX: Math.round(bounds.left + bounds.width * 0.56)
                         }
                     );
 
@@ -2530,8 +2185,8 @@ describe.only('<Slider />', () => {
                         environment,
                         'touchend',
                         {
-                            y: bounds.top + bounds.height / 3,
-                            x: Math.round(bounds.left + bounds.width * 0.67)
+                            clientY: bounds.top + bounds.height / 3,
+                            clientX: Math.round(bounds.left + bounds.width * 0.67)
                         }
                     );
 
@@ -2730,95 +2385,14 @@ describe.only('<Slider />', () => {
             }
         );
 
-        describe('when drag things around', () => {
-            const value = 5;
-            const min = 0;
-            const max = 10;
-
-            let onChange: (value: number) => void;
-            let onInput: (value: string) => void;
-            let select: (automationId: string) => HTMLElement | null;
-            let waitForDom: (expectation: () => void) => Promise<void>;
-
-            beforeEach(() => {
-                onChange = sinon.spy();
-                onInput = sinon.spy();
-                const rendered = clientRenderer.render(
-                    <Slider
-                        value={value}
-                        min={min}
-                        max={max}
-                        axis="y-reverse"
-                        onChange={onChange}
-                        onInput={onInput}
-                    />
-                );
-                select = rendered.select;
-                waitForDom = rendered.waitForDom;
-            });
-
-            it('should change value', async () => {
-                await waitFor(() => {
-                    const element = select('SLIDER');
-                    const handle = select('SLIDER-HANDLE');
-                    const progress = select('SLIDER-PROGRESS');
-                    const bounds = element!.getBoundingClientRect();
-
-                    simulate.mouseDown(element, {
-                        currentTarget: element!,
-                        clientX: bounds.left + bounds.width / 3,
-                        clientY: Math.round(bounds.top + bounds.height * 0.7)
-                    });
-
-                    expect(handle!.style.top).to.equal('70%');
-                    expect(progress!.style.height).to.equal('70%');
-                });
-            });
-
-            it('should call onChange', async () => {
-                await waitFor(() => {
-                    const element = select('SLIDER');
-                    const bounds = element!.getBoundingClientRect();
-
-                    simulate.mouseDown(element, {
-                        currentTarget: element!,
-                        clientX: Math.round(bounds.left + bounds.width * 0.5)
-                    });
-                    simulateMouseEvent(
-                        environment,
-                        'mouseup',
-                        {clientY: Math.round(bounds.top + bounds.height * 0.7)}
-                    );
-
-                    expect(onChange).to.be.calledWith(7);
-                });
-            });
-
-            it('should call onInput', async () => {
-                await waitFor(() => {
-                    const element = select('SLIDER');
-                    const bounds = element!.getBoundingClientRect();
-
-                    simulate.mouseDown(element, {
-                        currentTarget: element!,
-                        clientY: Math.round(bounds.top + bounds.height * 0.7)
-                    });
-                    simulateMouseEvent(
-                        environment,
-                        'mousemove',
-                        {clientY: Math.round(bounds.top + bounds.height * 0.7)}
-                    );
-                    simulateMouseEvent(
-                        environment,
-                        'mouseup',
-                        {clientY: Math.round(bounds.top + bounds.height * 0.7)}
-                    );
-
-                    expect(onInput).to.be.calledWith('7');
-                    expect(onChange).to.be.calledWith(7);
-                });
-            });
-        });
+        whenDragThingsAround(
+            clientRenderer,
+            'top',
+            'height',
+            {
+                axis: 'y-reverse'
+            }
+        );
 
         describe('dragging with step', () => {
             const value = 5;
@@ -2938,118 +2512,6 @@ describe.only('<Slider />', () => {
             });
         });
 
-        describeIfTouch('when drag things around using touch', () => {
-            const value = 5;
-            const min = 0;
-            const max = 10;
-
-            let onChange: (value: number) => void;
-            let onInput: (value: string) => void;
-            let select: (automationId: string) => HTMLElement | null;
-            let waitForDom: (expectation: () => void) => Promise<void>;
-
-            beforeEach(function() {
-                onChange = sinon.spy();
-                onInput = sinon.spy();
-                const rendered = clientRenderer.render(
-                    <Slider
-                        value={value}
-                        min={min}
-                        max={max}
-                        axis="y-reverse"
-                        onChange={onChange}
-                        onInput={onInput}
-                    />
-                );
-                select = rendered.select;
-                waitForDom = rendered.waitForDom;
-            });
-
-            it('should change value', async () => {
-                await waitFor(() => {
-                    const element = select('SLIDER');
-                    const handle = select('SLIDER-HANDLE');
-                    const progress = select('SLIDER-PROGRESS');
-                    const bounds = element!.getBoundingClientRect();
-
-                    simulate.touchStart(element, {
-                        currentTarget: element!,
-                        touches: {
-                            0: {
-                                clientY: Math.round(bounds.bottom - bounds.height * 0.7)
-                            }
-                        } as any as TouchList
-                    });
-
-                    expect(handle!.style.top).to.equal('30%');
-                    expect(progress!.style.height).to.equal('30%');
-                });
-            });
-
-            it('should call onChange', async () => {
-                await waitFor(() => {
-                    const element = select('SLIDER');
-                    const bounds = element!.getBoundingClientRect();
-
-                    simulate.touchStart(element, {
-                        currentTarget: element!,
-                        touches: {
-                            0: {
-                                clientY: Math.round(bounds.bottom - bounds.height * 0.7)
-                            }
-                        } as any as TouchList
-                    });
-
-                    simulateTouchEvent(
-                        environment,
-                        'touchend',
-                        {
-                            x: bounds.left + bounds.height / 3,
-                            y: Math.round(bounds.bottom - bounds.height * 0.7)
-                        }
-                    );
-
-                    expect(onChange).to.be.calledWith(3);
-                });
-            });
-
-            it('should call onInput', async () => {
-                await waitFor(() => {
-                    const element = select('SLIDER');
-                    const bounds = element!.getBoundingClientRect();
-
-                    simulate.touchStart(element, {
-                        currentTarget: element!,
-                        touches: {
-                            0: {
-                                clientY: Math.round(bounds.bottom - bounds.height * 0.7)
-                            }
-                        } as any as TouchList
-                    });
-                    simulateTouchEvent(
-                        environment,
-                        'touchmove',
-                        {
-                            x: bounds.left + bounds.height / 3,
-                            y: Math.round(bounds.bottom - bounds.height * 0.7)
-                        }
-                    );
-
-                    simulateTouchEvent(
-                        environment,
-                        'touchend',
-                        {
-                            x: bounds.left + bounds.height / 3,
-                            y: Math.round(bounds.bottom - bounds.height * 0.7)
-                        }
-                    );
-
-                    expect(onInput).to.be.calledWith('3');
-                    expect(onChange).to.be.calledWith(3);
-                });
-            });
-        });
-
         describeIfTouch('touch dragging with step', () => {
             const value = 5;
             const min = 0;
@@ -3144,8 +2606,8 @@ describe.only('<Slider />', () => {
                         environment,
                         'touchend',
                         {
-                            y: Math.round(bounds.bottom - bounds.height * 0.77),
-                            x: Math.round(bounds.left + bounds.width * 0.5)
+                            clientY: Math.round(bounds.bottom - bounds.height * 0.77),
+                            clientX: Math.round(bounds.left + bounds.width * 0.5)
                         }
                     );
 
@@ -3170,8 +2632,8 @@ describe.only('<Slider />', () => {
                         environment,
                         'touchmove',
                         {
-                            y: Math.round(bounds.bottom - bounds.height * 0.77),
-                            x: Math.round(bounds.left + bounds.width * 0.5)
+                            clientY: Math.round(bounds.bottom - bounds.height * 0.77),
+                            clientX: Math.round(bounds.left + bounds.width * 0.5)
                         }
                     );
 
@@ -3179,8 +2641,8 @@ describe.only('<Slider />', () => {
                         environment,
                         'touchend',
                         {
-                            y: Math.round(bounds.bottom - bounds.height * 0.77),
-                            x: Math.round(bounds.left + bounds.width * 0.5)
+                            clientY: Math.round(bounds.bottom - bounds.height * 0.77),
+                            clientX: Math.round(bounds.left + bounds.width * 0.5)
                         }
                     );
 

@@ -423,7 +423,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         this.focusableElement.focus();
 
         const relativeValue = this.getValueFromElementAndPointer(this.sliderArea, event);
-
+        console.log('relativeValue', relativeValue, event.clientX);
         this.setState({
             relativeValue,
             isActive: true
