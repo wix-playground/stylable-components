@@ -68,7 +68,11 @@ export const TreeItem: React.SFC<TreeItemProps> =
         };
 
         return (
-            <li>
+            <li
+                aria-expanded={item.children ? !!state!.isExpanded : undefined}
+                aria-selected={state!.isSelected ? true : undefined}
+                role="treeitem"
+            >
                 <div
                     data-automation-id={`${itemIdPrefix}_${itemLabel}`}
                     className="tree-node"
@@ -76,9 +80,6 @@ export const TreeItem: React.SFC<TreeItemProps> =
                     data-selected={state!.isSelected}
                     data-focused={state!.isFocused}
                     onClick={onItemClick && onItemClick.bind(null, item)}
-                    role="treeitem"
-                    aria-expanded={item.children ? !!state!.isExpanded : undefined}
-                    aria-selected={state!.isSelected ? true : undefined}
                 >
                     {item.children && (state!.isExpanded ?
                         <MinusIcon {...iconProps} /> : <PlusIcon {...iconProps} />)}
@@ -90,7 +91,7 @@ export const TreeItem: React.SFC<TreeItemProps> =
                         {item.label}
                     </span>
                 </div>
-                <ul className="nested-tree" role="group">
+                {item.children && <ul className="nested-tree" role="group">
                     {state!.isExpanded && (item.children || []).map((child: TreeItemData, index: number) =>
                         <TreeNode
                             item={child}
@@ -101,7 +102,7 @@ export const TreeItem: React.SFC<TreeItemProps> =
                             key={`${index}`}
                         />
                     )}
-                </ul>
+                </ul>}
             </li>
         );
     }, nodeStyle);
@@ -157,7 +158,6 @@ export class TreeView extends React.Component<TreeViewProps, {}> {
         return (
             <ul
                 {...rootProps}
-                tabIndex={0}
                 onKeyDown={this.onKeyDown}
                 role="tree"
             >
