@@ -565,24 +565,39 @@ describe('<TreeView />', () => {
 
         describe('TreeView methods', () => {
             it('collapses a node and its subtree when \'collapse\' method is used', async () => {
-                const {result} = clientRenderer.render(<TreeView dataSource={treeData} />);
+                const {select, waitForDom, result} = clientRenderer.render(<TreeView dataSource={treeData} />);
+                const treeRoot = select(treeView, getTreeItemIcon('Food Menu'));
+                const firstChild = treeData[0].children![0];
+                simulate.click(treeRoot);
+                await waitForDom(() =>
+                    expect(select(treeView, getTreeItemLabel(firstChild.label))).to.be.present());
 
+                simulate.click(select(treeView, getTreeItemIcon(firstChild.label)));
+                await waitForDom(() => expect(select(treeView,
+                    getTreeItemLabel(firstChild.children![0].label))).to.be.present());
+
+                (result as TreeView).collapse(treeData[0]);
+
+                return waitForDom(() => {
+                    expect(select(treeView, getTreeItemLabel(firstChild.label))).to.be.absent();
+                    expect(select(treeView, getTreeItemLabel(firstChild.children![0].label))).to.be.absent();
+                });
             });
 
             it('collapses the whole tree when \'collapseAll\' method is used', async () => {
-
+                throw new Error('To be implemented');
             });
 
             it('expands a node and its subtree when \'expand\' method is used', async () => {
-
+                throw new Error('To be implemented');
             });
 
             it('expands the whole tree when \'expandAll\' method is used', async () => {
-
+                throw new Error('To be implemented');
             });
 
             it('selects the provided item when \'selectItem\' method is used', async () => {
-
+                throw new Error('To be implemented');
             });
         });
     });
