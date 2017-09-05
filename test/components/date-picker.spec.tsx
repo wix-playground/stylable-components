@@ -119,15 +119,15 @@ describe('The DatePicker Component', () => {
 
     it('should show and hide the dropdown when the calendar icon is clicked', async () => {
         const {select, waitForDom} = clientRenderer.render(<DatePicker />);
-        const datePickerInput = select('CALENDAR_ICON');
+        const calendarIcon = select('CALENDAR_ICON');
 
         await waitForDom(() => expect(bodySelect(datePickerDropdownId)).to.be.absent());
 
-        simulate.mouseDown(datePickerInput);
+        simulate.click(calendarIcon);
 
         await waitForDom(() => expect(bodySelect(datePickerDropdownId)).to.be.present());
 
-        simulate.mouseDown(datePickerInput);
+        simulate.click(calendarIcon);
 
         await waitForDom(() => expect(bodySelect(datePickerDropdownId)).to.be.absent());
     });

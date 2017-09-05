@@ -74,7 +74,7 @@ export class DatePicker extends React.PureComponent<DatePickerProps, DatePickerS
                 <Icon
                     className="icon"
                     data-automation-id="CALENDAR_ICON"
-                    onMouseDown={this.toggleDropdown}
+                    onClick={this.toggleDropdown}
                 />
                 <Popup open={this.state.isDropdownVisible} anchor={this.state.dropdownRef}>
                     <Calendar
