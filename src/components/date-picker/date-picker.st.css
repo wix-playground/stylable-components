@@ -28,6 +28,8 @@
 /* The DatePicker Input */
 .input {
     -st-extends: input;
+    width: value(inputWidth);
+    display: block;
 }
 
 /* The dropdown arrow extends from the input and into the calendar view */
@@ -194,4 +196,9 @@
 .day:inactive:hover {
     color: #d8d8d8;
     background-color: value(color_MainText_Background);
+}
+
+/* root */
+.root {
+    display: inline-block;
 }

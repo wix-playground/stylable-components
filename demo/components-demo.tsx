@@ -4,17 +4,19 @@ import anchorStyle from '../src/style/default-theme/anchor.st.css';
 import buttonStyle from '../src/style/default-theme/controls/button.st.css';
 import inputStyle from '../src/style/default-theme/controls/input.st.css';
 import typographyStyle from '../src/style/default-theme/typography.st.css';
-import {BirthdayPickerDemo} from './components/birthday-picker-demo';
 import {CheckBoxDemo} from './components/checkbox-demo';
 import {DatePickerDemo} from './components/date-picker-demo';
 import {DropDownDemo} from './components/drop-down.demo';
 import {ImageDemo} from './components/image-demo';
+import {ModalDemo} from './components/modal-demo';
 import {NumberInputDemo} from './components/number-input.demo';
 import {PopupDemo} from './components/popup-demo';
+import {RadioGroupDemo} from './components/radio-group-demo';
 import {SelectionListDemo} from './components/selection-list-demo';
+import {SliderDemo} from './components/slider-demo';
 import {TimePickerDemo} from './components/time-picker-demo';
 import {ToggleDemo} from './components/toggle-demo';
-import {TreeViewDemo} from './components/tree-view-demo';
+import {TreeViewDemo, TreeViewDemoCustom} from './components/tree-view-demo';
 import style from './style.st.css';
 
 @SBComponent(style)
@@ -32,12 +34,10 @@ export class ComponentsDemo extends React.Component {
                 </div>
                 <hr />
                 <div>
-                    <h2>Birthday picker</h2>
-                    <BirthdayPickerDemo />
-                </div>
-                <div>
                     <h2>TreeView</h2>
                     <TreeViewDemo />
+                    <hr />
+                    <TreeViewDemoCustom />
                 </div>
                 <hr />
                 <div>
@@ -49,6 +49,11 @@ export class ComponentsDemo extends React.Component {
                     <h2>Toggle</h2>
                     <ToggleDemo />
                 </div>
+                <hr/>
+                <div>
+                    <h2>Slider</h2>
+                    <SliderDemo />
+                </div>
                 <hr />
                 <div>
                     <h2>DatePicker</h2>
@@ -58,6 +63,11 @@ export class ComponentsDemo extends React.Component {
                 <div>
                     <h2>SelectionList</h2>
                     <SelectionListDemo />
+                </div>
+                <hr />
+                <div>
+                    <h2>Radio Group</h2>
+                    <RadioGroupDemo />
                 </div>
                 <hr />
                 <div>
@@ -175,6 +185,12 @@ export class ComponentsDemo extends React.Component {
                     <h2>NumberInput</h2>
                     <NumberInputDemo />
                 </div>
-            </div>);
+                <hr />
+                <div>
+                    <h2>Modal</h2>
+                    <ModalDemo />
+                </div>
+            </div>
+        );
     }
 }
