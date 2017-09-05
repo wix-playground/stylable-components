@@ -8,6 +8,7 @@ import * as keycode from 'keycode';
 import {SBComponent, SBStateless} from 'stylable-react-component';
 import {MinusIcon, PlusIcon} from './tree-view-icons';
 import style from './tree-view.st.css';
+import nodeStyle from './tree-node.st.css';
 
 const KeyCodes: any = {
     ENTER: keycode('enter'),
@@ -41,6 +42,7 @@ export interface TreeViewProps {
     onFocusItem?: React.EventHandler<any>;
     selectedItem?: TreeItemData;
     focusedItem?: TreeItemData;
+    className?: string;
 }
 
 export interface TreeItemState {
@@ -99,7 +101,7 @@ export const TreeItem: React.SFC<TreeItemProps> =
                 </div>
             </div>
         );
-    }, style);
+    }, nodeStyle);
 
 const TreeItemWrapper = observer(TreeItem);
 
@@ -147,7 +149,7 @@ export class TreeView extends React.Component<TreeViewProps, {}> {
 
     public render() {
         const TreeNode = this.props.itemRenderer!;
-        const rootProps = root(this.props, {'data-automation-id': 'TREE_VIEW', 'className': 'tree-view'});
+        const rootProps = root(this.props, {'data-automation-id': 'TREE_VIEW', 'className': ''});
 
         return (
             <div
