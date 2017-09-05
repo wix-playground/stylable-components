@@ -35,7 +35,7 @@ export interface TreeItemProps {
     stateMap: TreeStateMap;
 }
 
-export interface TreeViewProps {
+export interface TreeViewProps extends React.HTMLAttributes<HTMLDivElement> {
     dataSource: object[];
     itemRenderer?: React.ComponentType<TreeItemProps>;
     onSelectItem?: React.EventHandler<any>;
@@ -76,6 +76,8 @@ export const TreeItem: React.SFC<TreeItemProps> =
                     data-selected={state!.isSelected}
                     data-focused={state!.isFocused}
                     onClick={onItemClick && onItemClick.bind(null, item)}
+                    role="treeitem"
+                    aria-expanded={item.children ? state!.isExpanded : ''}
                 >
                     {item.children && (state!.isExpanded ?
                         <MinusIcon {...iconProps} /> : <PlusIcon {...iconProps} />)}
@@ -87,7 +89,7 @@ export const TreeItem: React.SFC<TreeItemProps> =
                         {item.label}
                     </span>
                 </div>
-                <div className="nested-tree">
+                <div className="nested-tree" role="group">
                     {state!.isExpanded && (item.children || []).map((child: TreeItemData, index: number) =>
                         <TreeNode
                             item={child}
@@ -156,6 +158,7 @@ export class TreeView extends React.Component<TreeViewProps, {}> {
                 {...rootProps}
                 tabIndex={0}
                 onKeyDown={this.onKeyDown}
+                role="tree"
             >
                 {(this.props.dataSource || []).map((item: TreeItemData, index: number) =>
                     <TreeNode
