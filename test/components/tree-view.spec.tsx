@@ -630,13 +630,11 @@ describe('<TreeView />', () => {
 
             it('selects the provided item when \'selectItem\' method is used', async () => {
                 const onSelectItem = sinon.spy();
-                const {select, result} =
-                    clientRenderer.render(<TreeView dataSource={treeData} onSelectItem={onSelectItem}/>);
+                const {result} = clientRenderer.render(<TreeView dataSource={treeData} onSelectItem={onSelectItem}/>);
 
                 (result as TreeView).selectItem(treeData[0]);
 
-                return waitFor(() => expect(select(treeView, getTreeItem(treeData[0].label)))
-                    .to.have.attribute('data-selected', 'true'));
+                return waitFor(() => expect(onSelectItem).to.have.been.calledWithMatch(treeData[0]));
             });
         });
     });
