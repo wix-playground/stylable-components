@@ -7,6 +7,7 @@ import {noop} from '../../utils';
 import {CaretDown} from '../drop-down/drop-down-icons';
 import {OptionList, SelectionList} from '../selection-list/selection-list';
 import style from './auto-complete.st.css';
+import {ChangeEvent} from "../../types/events";
 
 // Selected item is a string because of selection list's constraints
 // i would love to implement it like the TreeView where the reference to an object
@@ -34,10 +35,10 @@ export const AutoCompleteList: React.SFC<AutoCompleteListProps> = SBStateless(pr
 export interface AutoCompleteProps extends FormInputProps<string>, Partial<OptionList> {
     open?: boolean;
     filter?: FilterPredicate;
+    onCaretClick?: (e: ChangeEvent<boolean>) => void;
 }
 
 export interface AutoCompleteState {
-    isOpen: boolean;
     input: HTMLInputElement | null;
 }
 
@@ -50,7 +51,8 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
         dataSource: [],
         value: '',
         filter: prefixFilter,
-        onChange: noop
+        onChange: noop,
+        onCaretClick: noop
     };
     public state = {input: null, isOpen: this.props.open!};
 
@@ -73,7 +75,7 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
                     ref={this.refCallback}
                 />
                 <CaretDown onClick={this.onCaretClick} className="caret" data-automation-id="AUTO_COMPLETE_CARET"/>
-                <Popup anchor={this.state.input} open={this.state.isOpen}>
+                <Popup anchor={this.state.input} open={this.props.open}>
                     <AutoCompleteList
                         items={filteredItems as string[]}
                         onChange={this.onClick}
@@ -92,11 +94,10 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
     }
 
     private onClick = (item: string) => {
-        this.setState({isOpen: false});
         this.props.onChange!({value: item});
     }
 
     private onCaretClick = () => {
-        this.setState({isOpen: !this.state.isOpen});
+        this.props.onCaretClick!({value: this.props.open!});
     }
 }

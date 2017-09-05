@@ -19,6 +19,10 @@ export class AutoCompleteDemo extends React.Component<{}, AutoCompleteDemoState>
         });
     }
 
+    public toggleOpen = (e: ChangeEvent<boolean>) => {
+        this.setState({open: !e.value});
+    }
+
     public render() {
         return (
             <div>
@@ -27,6 +31,7 @@ export class AutoCompleteDemo extends React.Component<{}, AutoCompleteDemoState>
                     <AutoComplete
                         dataSource={items}
                         onChange={this.onChange}
+                        onCaretClick={this.toggleOpen}
                         open={this.state.open}
                         value={this.state.inputText}
                     />
