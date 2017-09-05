@@ -18,7 +18,7 @@ export interface DatePickerProps extends FormInputProps<Date> {
     readOnly?: boolean;
     showDropdownOnInit?: boolean;
     startingDay?: number;
-    calendarIcon?: React.ComponentType;
+    calendarIcon?: React.ComponentType<any>;
 }
 
 export interface DatePickerState {
@@ -34,7 +34,8 @@ export interface DatePickerState {
 export class DatePicker extends React.PureComponent<DatePickerProps, DatePickerState> {
     public static defaultProps: Partial<DatePickerProps> = {
         openOnFocus: true,
-        onChange: () => {}
+        onChange: () => {},
+        calendarIcon: CalendarIcon
     };
 
     public componentWillMount() {
@@ -50,6 +51,8 @@ export class DatePicker extends React.PureComponent<DatePickerProps, DatePickerS
             'data-automation-id': 'DATE_PICKER_ROOT',
             'className': 'root'
         }) as React.HTMLAttributes<HTMLDivElement>;
+
+        const Icon = this.props.calendarIcon;
 
         return (
             <div
@@ -68,14 +71,11 @@ export class DatePicker extends React.PureComponent<DatePickerProps, DatePickerS
                     type="text"
                     data-automation-id="DATE_PICKER_INPUT"
                 />
-                {this.props.calendarIcon
-                    ? this.props.calendarIcon
-                    : <CalendarIcon
-                        className="icon"
-                        data-automation-id="CALENDAR_ICON"
-                        onMouseDown={this.toggleDropdown}
-                    />
-                }
+                <Icon
+                    className="icon"
+                    data-automation-id="CALENDAR_ICON"
+                    onMouseDown={this.toggleDropdown}
+                />
                 <Popup open={this.state.isDropdownVisible} anchor={this.state.dropdownRef}>
                     <Calendar
                         onChange={this.onCalendarInput}
