@@ -16,8 +16,7 @@ export class Option extends React.Component<OptionProps, {}> {
         return (
             <div
                 className="item"
-                data-value={this.props.value}
-                data-disabled={this.props.disabled || undefined}
+                data-value={this.props.disabled ? undefined : this.props.value}
                 cssStates={{
                     disabled: Boolean(this.props.disabled),
                     selected: Boolean(this.props.selected),

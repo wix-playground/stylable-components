@@ -1,4 +1,4 @@
-import {extendShallowObservable, observable} from 'mobx';
+import {extendShallowObservable} from 'mobx';
 import React = require('react');
 import {clamp} from '../../utils/clamp';
 import {divider, Divider} from './divider';
@@ -140,7 +140,8 @@ export class SelectionListModel {
             }, {
                 focused: false,
                 selected: false
-            });
+            }
+        );
 
         this.items.push(item);
         if (item.selectable) {

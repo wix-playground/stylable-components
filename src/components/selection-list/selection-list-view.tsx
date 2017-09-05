@@ -67,8 +67,7 @@ export class SelectionListView extends React.Component<ViewProps, {}> {
             return;
         }
         const value = item.dataset.value;
-        const disabled = item.dataset.disabled;
-        if (!disabled && value !== undefined && value !== this.props.list.getSelectedValue()) {
+        if (value !== undefined && value !== this.props.list.getSelectedValue()) {
             this.props.onChange!(value);
         }
     }
