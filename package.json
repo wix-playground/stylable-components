@@ -50,7 +50,7 @@
     "react-dom": "^15.6.1",
     "stylable": "^4.0.8",
     "stylable-integration": "^5.0.1",
-    "test-drive-react": "^0.5.1",
+    "test-drive-react": "^0.6.0",
     "ts-loader": "^2.3.4",
     "ts-node": "^3.3.0",
     "tslint": "^5.7.0",
