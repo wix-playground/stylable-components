@@ -25,6 +25,9 @@
     left: 160px;
     top: -30px;
     cursor: pointer;
+    width: 24px;
+    height: 24px;
+    fill: none;
 }
 
 /* The dropdown arrow extends from the input and into the calendar view */
