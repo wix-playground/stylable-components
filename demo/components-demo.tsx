@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {BirthdayPickerDemo} from './components/birthday-picker-demo';
 import {CheckBoxDemo} from './components/checkbox-demo';
 import {DatePickerDemo} from './components/date-picker-demo';
 import {DropDownDemo} from './components/drop-down.demo';
@@ -26,11 +25,6 @@ export class ComponentsDemo extends React.Component {
                 <div>
                     <h2>CheckBox</h2>
                     <CheckBoxDemo />
-                </div>
-                <hr />
-                <div>
-                    <h2>Birthday picker</h2>
-                    <BirthdayPickerDemo />
                 </div>
                 <hr />
                 <div>
