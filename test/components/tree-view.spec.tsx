@@ -564,17 +564,25 @@ describe('<TreeView />', () => {
         });
 
         describe('TreeView methods', () => {
-            it('collapses a node and its subtree when \'collapse\' method is used', async () => {
-                const {select, waitForDom, result} = clientRenderer.render(<TreeView dataSource={treeData} />);
-                const treeRoot = select(treeView, getTreeItemIcon('Food Menu'));
-                const firstChild = treeData[0].children![0];
-                simulate.click(treeRoot);
+            const firstChild = treeData[0].children![0];
+            const secondChild = treeData[0].children![1];
+
+            // trying to put the type of waitForDom that contained type 'Function' gives
+            // a lint error so i used any for now
+            async function expandPartsOfTree(select: any, waitForDom: any) {
+                const treeRootIcon = select(treeView, getTreeItemIcon('Food Menu'));
+                simulate.click(treeRootIcon);
                 await waitForDom(() =>
                     expect(select(treeView, getTreeItemLabel(firstChild.label))).to.be.present());
 
                 simulate.click(select(treeView, getTreeItemIcon(firstChild.label)));
                 await waitForDom(() => expect(select(treeView,
                     getTreeItemLabel(firstChild.children![0].label))).to.be.present());
+            }
+
+            it('collapses a node and its subtree when \'collapse\' method is used', async () => {
+                const {select, waitForDom, result} = clientRenderer.render(<TreeView dataSource={treeData} />);
+                await expandPartsOfTree(select, waitForDom);
 
                 (result as TreeView).collapse(treeData[0]);
 
@@ -585,11 +593,30 @@ describe('<TreeView />', () => {
             });
 
             it('collapses the whole tree when \'collapseAll\' method is used', async () => {
-                throw new Error('To be implemented');
+                const {select, waitForDom, result} = clientRenderer.render(<TreeView dataSource={treeData} />);
+                await expandPartsOfTree(select, waitForDom);
+
+                (result as TreeView).collapseAll();
+
+                return waitForDom(() => {
+                    expect(select(treeView, getTreeItemLabel(firstChild.label))).to.be.absent();
+                    expect(select(treeView, getTreeItemLabel(firstChild.children![0].label))).to.be.absent();
+                });
             });
 
             it('expands a node and its subtree when \'expand\' method is used', async () => {
-                throw new Error('To be implemented');
+                const {select, waitForDom, result} = clientRenderer.render(<TreeView dataSource={treeData} />);
+                const treeRootIcon = select(treeView, getTreeItemIcon('Food Menu'));
+                simulate.click(treeRootIcon);
+
+                await waitForDom(() => expect(select(treeView, getTreeItemLabel(firstChild.label))).to.be.present());
+
+                (result as TreeView).expand(firstChild);
+
+                return waitForDom(() => {
+                    expect(select(treeView, getTreeItemLabel(firstChild.children![0].label))).to.be.present();
+                    expect(select(treeView, getTreeItemLabel(secondChild.children![0].label))).to.be.absent();
+                });
             });
 
             it('expands the whole tree when \'expandAll\' method is used', async () => {

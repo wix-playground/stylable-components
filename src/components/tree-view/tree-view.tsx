@@ -171,8 +171,22 @@ export class TreeView extends React.Component<TreeViewProps, {}> {
         );
     }
 
-    public collapse(item: TreeItemData) {
+    public collapse = (item: TreeItemData): void => {
         this.collapseItem(item);
+        if (item.children) {
+            item.children.forEach(this.collapse);
+        }
+    }
+
+    public collapseAll = (): void => {
+        this.collapse(this.props.dataSource[0] as TreeItemData);
+    }
+
+    public expand = (item: TreeItemData): void => {
+        this.expandItem(item);
+        if (item.children) {
+            item.children.forEach(this.expand);
+        }
     }
 
     private initParentsMap(data: TreeItemData[] = [], parent: TreeItemData | undefined) {
