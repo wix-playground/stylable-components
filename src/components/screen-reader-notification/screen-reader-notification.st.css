@@ -1,5 +1,5 @@
 .root {
-	position: 'fixed';
+	position: fixed;
 	bottom: 100%;
 	left: 100%;
 }
