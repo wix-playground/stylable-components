@@ -1,10 +1,9 @@
 import * as keycode from 'keycode';
 import * as React from 'react';
-import {SBComponent, SBStateless} from 'stylable-react-component';
+import {SBComponent} from 'stylable-react-component';
 import {root} from 'wix-react-tools';
 import {Popup} from '../../../src';
 import {noop} from '../../utils/noop';
-import {PopupProps} from '../popup';
 import {OptionList, SelectionList} from '../selection-list';
 import {CaretDown} from './drop-down-icons';
 import style from './drop-down.st.css';
