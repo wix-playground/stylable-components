@@ -1,51 +1,40 @@
 :import{
     -st-from: "../../src/style/default-theme/variables.st.css";
-    -st-named: color_treeFocused, color_treeSelected;
+    -st-named: color_Keyboard_Focused, color_Active;
 }
 
-.root {
-    font-family: Arial, sans-serif;
-    font-size: 16px;
-    line-height: 1.5;
-    text-align: left;
-    color: #000000;
-    outline: 0 solid transparent;
-    width: 228px;
-    overflow: hidden;
-}
-
-.tree-node {
+.custom-tree-node {
     -st-states: selected, focused;
     cursor: pointer;
     padding: 3px 7px 5px;
     border: 1px solid transparent;
 }
 
-.tree-node:hover {
-    border: 1px solid value(color_treeFocused);
+.custom-tree-node:hover {
+    border: 1px solid value(color_Keyboard_Focused);
 }
 
-.tree-node:focused {
-    background-color: value(color_treeFocused);
+.custom-tree-node:focused {
+    background-color: value(color_Keyboard_Focused);
 }
 
-.tree-node:selected {
-    background-color: value(color_treeSelected);
+.custom-tree-node:selected {
+    background-color: #f442df;
     color: white;
 }
 
-.nested-tree {
-    margin-left: 25px;
+.custom-nested-tree {
+    margin-left: 3rem;
 }
 
-.tree-item-icon {
-    height: 16px;
-    width: 16px;
+.custom-tree-item-icon {
+    height: 1rem;
+    width: 1rem;
     vertical-align: middle;
     margin-right: 5px;
 }
 
-.tree-item-label {
+.custom-tree-item-label {
     vertical-align: middle;
 }
 
@@ -53,7 +42,7 @@
     opacity: 0;
 }
 
-.tree-item-label:hover .node-tool-tip {
+.custom-tree-item-label:hover .node-tool-tip {
     opacity: 1;
     transition: opacity 0.15s linear;
 }
