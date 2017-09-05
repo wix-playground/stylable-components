@@ -193,6 +193,10 @@ export class TreeView extends React.Component<TreeViewProps, {}> {
         this.expand(this.props.dataSource[0] as TreeItemData);
     }
 
+    public selectItem = (item: TreeItemData): void => {
+        this.selectItemProvided(item);
+    }
+
     private initParentsMap(data: TreeItemData[] = [], parent: TreeItemData | undefined) {
         data.forEach((item: TreeItemData) => {
             this.parentsMap.set(item, parent);
@@ -204,7 +208,7 @@ export class TreeView extends React.Component<TreeViewProps, {}> {
         this.stateMap.getItemState(item).isExpanded = !this.stateMap.getItemState(item).isExpanded;
     }
 
-    private selectItem(item: TreeItemData) {
+    private selectItemProvided(item: TreeItemData) {
         if (this.props.selectedItem) {
             if (this.props.selectedItem !== item) {
                 this.stateMap.getItemState(this.props.selectedItem).isSelected = false;
@@ -218,7 +222,7 @@ export class TreeView extends React.Component<TreeViewProps, {}> {
     @action
     private onSelectItem = (item: TreeItemData, e: React.MouseEvent<HTMLElement>) => {
         e.stopPropagation();
-        this.selectItem(item);
+        this.selectItemProvided(item);
         if (this.props.focusedItem) { this.stateMap.getItemState(this.props.focusedItem).isFocused = false; }
     }
 
@@ -281,7 +285,7 @@ export class TreeView extends React.Component<TreeViewProps, {}> {
             case KeyCodes.DOWN:
                 e.preventDefault(); this.focusNext(this.props.focusedItem); break;
             case KeyCodes.ENTER:
-                e.preventDefault(); this.selectItem(this.props.focusedItem); break;
+                e.preventDefault(); this.selectItemProvided(this.props.focusedItem); break;
             case KeyCodes.HOME:
                 this.stateMap.getItemState(this.props.focusedItem).isFocused = false;
                 e.preventDefault(); this.focusFirst(); break;
