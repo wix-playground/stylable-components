@@ -1,6 +1,6 @@
-# &lt;Image /&gt; component
+# \<Image /> component
 
-The Image component represents an image on the DOM.
+The **Image** component represents an image on the DOM.
 
 It accepts all native `<img />` attributes, with several additional features listed below.
 
@@ -8,24 +8,15 @@ It accepts all native `<img />` attributes, with several additional features lis
  
 ### Resize Modes
 
-`<Image>` allows specifying a resizing behavior via the **resizeMode** prop.
+`<Image>` allows specifying a `resizeMode` prop with these possible values: `fill`, `contain`, and `cover`. The behavior of `resizeMode` is the same as that of the CSS [`object-fit`](https://developer.mozilla.org/en-US/docs/Web/CSS/object-fit) prop, except that `resizeMode` supports older browsers that don't support `object-fit`.
 
-Possible values:
-
-- `fill`
-- `contain`
-- `cover`
-
-The behavior of each value is the same as CSS's [`object-fit`](https://developer.mozilla.org/en-US/docs/Web/CSS/object-fit), yet it supports older browsers by employing the `background-image` and `background-size` .
-
-> It should be noted that, similar to `object-fit`, these modes only affect images with both axes provided (e.g. `width: 200px; height: 200px;`).
-
+> Note: Just as in `object-fit`, `resizeMode` only affects images with both width and height axes provided (e.g. `width: 200px; height: 200px;`).
 
 ### Avoiding user-agent "broken image" outline
 
-When an `<img />` has no `src` or fails loading one, some web browsers show a "broken image" placeholder or an outline around the element. These typically do not conform to the page design, causing the page to appear broken.
+When an `<img />` has no `src` prop, or it fails to load the specified image, some web browsers show a "broken image" placeholder or an outline around the element. These typically do not conform to the page design causing the page to appear broken.
 
-The `<Image />` component normalizes this behavior by implementing a source fall-back mechanism:
+The `<Image />` component normalizes this behavior by implementing an image source fall-back mechanism:
 
 ```
 src -> defaultImage -> one empty pixel
