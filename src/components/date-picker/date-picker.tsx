@@ -5,6 +5,7 @@ import {root} from 'wix-react-tools';
 import {Popup} from '../../../src';
 import inputStyles from '../../style/default-theme/controls/input.st.css';
 import {FormInputProps} from '../../types/forms';
+import {noop} from '../../utils';
 import {Calendar} from './calendar';
 import {CalendarIcon} from './date-picker-icons';
 import styles from './date-picker.st.css';
@@ -18,7 +19,7 @@ export interface DatePickerProps extends FormInputProps<Date> {
     readOnly?: boolean;
     showDropdownOnInit?: boolean;
     startingDay?: number;
-    calendarIcon?: React.ComponentType<any>;
+    calendarIcon?: React.ComponentType;
 }
 
 export interface DatePickerState {
@@ -34,7 +35,7 @@ export interface DatePickerState {
 export class DatePicker extends React.PureComponent<DatePickerProps, DatePickerState> {
     public static defaultProps: Partial<DatePickerProps> = {
         openOnFocus: true,
-        onChange: () => {},
+        onChange: noop,
         calendarIcon: CalendarIcon
     };
 
@@ -52,7 +53,7 @@ export class DatePicker extends React.PureComponent<DatePickerProps, DatePickerS
             'className': 'root'
         }) as React.HTMLAttributes<HTMLDivElement>;
 
-        const Icon = this.props.calendarIcon;
+        const Icon = this.props.calendarIcon!;
 
         return (
             <div
@@ -71,11 +72,9 @@ export class DatePicker extends React.PureComponent<DatePickerProps, DatePickerS
                     type="text"
                     data-automation-id="DATE_PICKER_INPUT"
                 />
-                <Icon
-                    className="icon"
-                    data-automation-id="CALENDAR_ICON"
-                    onClick={this.toggleDropdown}
-                />
+                <div className="icon" data-automation-id="CALENDAR_ICON" onClick={this.toggleDropdown}>
+                    <Icon />
+                </div>
                 <Popup open={this.state.isDropdownVisible} anchor={this.state.dropdownRef}>
                     <Calendar
                         onChange={this.onCalendarInput}
