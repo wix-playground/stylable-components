@@ -123,6 +123,7 @@ export class CheckBox extends React.Component<CheckBoxProps, CheckBoxState> {
                     value={this.props.value}
                     indeterminate={this.props.indeterminate}
                     disabled={this.props.disabled}
+                    data-automation-id="BOX_ICON"
                 />
 
                 {this.props.indeterminate &&
