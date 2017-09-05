@@ -31,7 +31,7 @@ export class AutoCompleteDemo extends React.Component<{}, AutoCompleteDemoState>
                     <AutoComplete
                         dataSource={items}
                         onChange={this.onChange}
-                        onCaretClick={this.toggleOpen}
+                        onOpenStateChange={this.toggleOpen}
                         open={this.state.open}
                         value={this.state.inputText}
                     />

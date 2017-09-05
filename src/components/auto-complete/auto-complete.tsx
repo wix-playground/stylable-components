@@ -18,6 +18,7 @@ export type FilterPredicate = (item: string, filterString: string) => boolean;
 export interface AutoCompleteListProps {
     items?: string[];
     onChange?: (item: string) => void;
+    className?: string;
 }
 
 export const AutoCompleteList: React.SFC<AutoCompleteListProps> = SBStateless(props => {
@@ -35,7 +36,7 @@ export const AutoCompleteList: React.SFC<AutoCompleteListProps> = SBStateless(pr
 export interface AutoCompleteProps extends FormInputProps<string>, Partial<OptionList> {
     open?: boolean;
     filter?: FilterPredicate;
-    onCaretClick?: (e: ChangeEvent<boolean>) => void;
+    onOpenStateChange?: (e: ChangeEvent<boolean>) => void;
 }
 
 export interface AutoCompleteState {
@@ -52,7 +53,7 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
         value: '',
         filter: prefixFilter,
         onChange: noop,
-        onCaretClick: noop
+        onOpenStateChange: noop
     };
     public state = {input: null, isOpen: this.props.open!};
 
@@ -79,6 +80,7 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
                     <AutoCompleteList
                         items={filteredItems as string[]}
                         onChange={this.onClick}
+                        className="test"
                     />
                 </Popup>
             </div>
@@ -91,13 +93,17 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
 
     private onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         this.props.onChange!({value: e.target.value || ''});
+        if (!this.props.value && !this.props.open) {
+            this.props.onOpenStateChange!({value: this.props.open!});
+        }
     }
 
     private onClick = (item: string) => {
         this.props.onChange!({value: item});
+        this.props.onOpenStateChange!({value: this.props.open!});
     }
 
     private onCaretClick = () => {
-        this.props.onCaretClick!({value: this.props.open!});
+        this.props.onOpenStateChange!({value: this.props.open!});
     }
 }

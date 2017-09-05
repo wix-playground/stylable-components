@@ -1,5 +1,4 @@
 .root {
-    width: auto;
     font-size: 16px;
     position: relative;
     display: inline-block;
@@ -31,7 +30,11 @@
     cursor: pointer;
     position:absolute;
     top:50%;
-    left: 90%;
+    left: calc(100% - 24px);
     transform:translateY(-50%);
     -webkit-transform:translateY(-50%);
+}
+
+.test {
+    background-color: red;
 }

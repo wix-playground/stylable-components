@@ -110,12 +110,41 @@ describe('<AutoComplete />', () => {
         });
     });
 
-    it('calls the caretClick event when clicking on the caret', async () => {
-        const onCaret = sinon.spy();
-        const {select, waitForDom} = clientRenderer.render(<AutoComplete onCaretClick={onCaret}/>);
+    it('calls the onOpenStateChange event when clicking on the caret', async () => {
+        const onOpenStateChange = sinon.spy();
+        const {select, waitForDom} = clientRenderer.render(<AutoComplete onOpenStateChange={onOpenStateChange}/>);
 
         await waitForDom(() => expect(select(autoComp, autoComp + '_CARET')).to.be.present());
         simulate.click(select(autoComp, autoComp + '_CARET'));
-        await bodyWaitForDom(() => expect(onCaret).to.have.been.calledOnce);
+        await bodyWaitForDom(() => {
+            expect(onOpenStateChange).to.have.been.calledOnce;
+            expect(onOpenStateChange).to.have.been.calledWithMatch({value: false});
+        });
+    });
+
+    it('calls the onOpenStateChange event when selecting an item', async () => {
+        const onOpenStateChange = sinon.spy();
+        const {select, waitForDom} = clientRenderer.render(
+            <AutoComplete dataSource={items} open onOpenStateChange={onOpenStateChange}/>
+        );
+
+        await waitForDom(() => expect(select(autoComp)).to.be.present());
+        simulate.click(bodySelect(list, 'LIST')!.children[0]);
+        await bodyWaitForDom(() => {
+            expect(onOpenStateChange).to.have.been.calledOnce;
+            expect(onOpenStateChange).to.have.been.calledWithMatch({value: true});
+        });
+    });
+
+    it('calls the onOpenStateChange event when first entering a value', async () => {
+        const onOpenStateChange = sinon.spy();
+        const {select, waitForDom} = clientRenderer.render(<AutoComplete onOpenStateChange={onOpenStateChange}/>);
+
+        await waitForDom(() => expect(select(autoComp)).to.be.present());
+        trigger.change(bodySelect(autoCompInput), 'M');
+        await bodyWaitForDom(() => {
+            expect(onOpenStateChange).to.have.been.calledOnce;
+            expect(onOpenStateChange).to.have.been.calledWithMatch({value: false});
+        });
     });
 });
