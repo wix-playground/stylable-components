@@ -620,7 +620,12 @@ describe('<TreeView />', () => {
             });
 
             it('expands the whole tree when \'expandAll\' method is used', async () => {
-                throw new Error('To be implemented');
+                const {select, waitForDom, result} = clientRenderer.render(<TreeView dataSource={treeData} />);
+
+                (result as TreeView).expandAll();
+
+                return waitForDom(() => allNodesLabels.forEach(item =>
+                    expect(select(treeView, getTreeItem(item)), `item did not appear: ${item}`).to.be.present()));
             });
 
             it('selects the provided item when \'selectItem\' method is used', async () => {

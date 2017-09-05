@@ -6,9 +6,9 @@ import {getLastAvailableItem, getNextItem, getPreviousItem} from './tree-util';
 
 import * as keycode from 'keycode';
 import {SBComponent, SBStateless} from 'stylable-react-component';
+import nodeStyle from './tree-node.st.css';
 import {MinusIcon, PlusIcon} from './tree-view-icons';
 import style from './tree-view.st.css';
-import nodeStyle from './tree-node.st.css';
 
 const KeyCodes: any = {
     ENTER: keycode('enter'),
@@ -187,6 +187,10 @@ export class TreeView extends React.Component<TreeViewProps, {}> {
         if (item.children) {
             item.children.forEach(this.expand);
         }
+    }
+
+    public expandAll = (): void => {
+        this.expand(this.props.dataSource[0] as TreeItemData);
     }
 
     private initParentsMap(data: TreeItemData[] = [], parent: TreeItemData | undefined) {
