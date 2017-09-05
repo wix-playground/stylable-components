@@ -562,5 +562,28 @@ describe('<TreeView />', () => {
                 expect(last.label).to.eql(treeData[0].children![2].label);
             });
         });
+
+        describe('TreeView methods', () => {
+            it('collapses a node and its subtree when \'collapse\' method is used', async () => {
+                const {result} = clientRenderer.render(<TreeView dataSource={treeData} />);
+
+            });
+
+            it('collapses the whole tree when \'collapseAll\' method is used', async () => {
+
+            });
+
+            it('expands a node and its subtree when \'expand\' method is used', async () => {
+
+            });
+
+            it('expands the whole tree when \'expandAll\' method is used', async () => {
+
+            });
+
+            it('selects the provided item when \'selectItem\' method is used', async () => {
+
+            });
+        });
     });
 });
