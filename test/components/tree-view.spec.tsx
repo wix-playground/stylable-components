@@ -6,11 +6,23 @@ import {TreeViewDemo, TreeViewDemoCustom} from '../../demo/components/tree-view-
 import {TreeItem, TreeView} from '../../src';
 import {getLastAvailableItem, getNextItem, getPreviousItem} from '../../src/components/tree-view//tree-util';
 import {ParentsMap, TreeItemData, TreeStateMap} from '../../src/components/tree-view/tree-view';
-import {TreeViewDemoCustomDriver, TreeViewDemoDriver} from "../../test-kit/demo/tree-view.demo.driver";
 import {TreeViewDriver} from "../../test-kit/components/tree-view.driver";
 
 const treeView = 'TREE_VIEW';
 const treeItem = 'TREE_ITEM';
+
+import {DriverBase} from "test-drive-react";
+
+class TreeViewDemoDriver extends DriverBase {
+    static ComponentClass = TreeViewDemo;
+    public demoComponent: TreeViewDriver = new TreeViewDriver(() => this.select('TREE_VIEW_DEMO'));
+}
+
+class TreeViewDemoCustomDriver extends DriverBase {
+    static ComponentClass = TreeViewDemoCustom;
+    public demoComponent: TreeViewDriver = new TreeViewDriver(() => this.select('TREE_VIEW_DEMO_CUSTOM'));
+}
+
 
 const KeyCodes: any = {
     ENTER: keycode('enter'),
