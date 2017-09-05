@@ -13,7 +13,7 @@ interface EventCoordinates {
     clientY: number;
 }
 
-function getEventMock(bounds: any, direction: string | undefined, value: number = 0.7): EventCoordinates {
+function getEventCoordinates(bounds: any, direction: string | undefined, value: number = 0.7): EventCoordinates {
     switch (direction) {
         case 'x':
             return {
@@ -140,7 +140,7 @@ function whenDragThingsAround(
             waitForDom = rendered.waitForDom;
 
             const bounds = select('SLIDER')!.getBoundingClientRect();
-            eventMock = getEventMock(bounds, options && options.axis);
+            eventMock = getEventCoordinates(bounds, options && options.axis);
         });
 
         it('should change value', async () => {
@@ -242,7 +242,7 @@ function whenDragThingsAround(
             waitForDom = rendered.waitForDom;
 
             const bounds = select('SLIDER')!.getBoundingClientRect();
-            eventMock = getEventMock(bounds, options && options.axis);
+            eventMock = getEventCoordinates(bounds, options && options.axis);
         });
 
         it('should change value', async () => {
@@ -367,7 +367,7 @@ function whenDragThingsAroundWithStep(
             waitForDom = rendered.waitForDom;
 
             const bounds = select('SLIDER')!.getBoundingClientRect();
-            eventMock = getEventMock(bounds, options && options.axis, 0.75);
+            eventMock = getEventCoordinates(bounds, options && options.axis, 0.75);
         });
 
         it('renders handle on the right place', async () => {
@@ -496,7 +496,7 @@ function whenDragThingsAroundWithStep(
             waitForDom = rendered.waitForDom;
 
             const bounds = select('SLIDER')!.getBoundingClientRect();
-            eventMock = getEventMock(bounds, options && options.axis);
+            eventMock = getEventCoordinates(bounds, options && options.axis);
         });
 
         it('should change value', async () => {
