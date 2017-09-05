@@ -68,7 +68,7 @@ export const TreeItem: React.SFC<TreeItemProps> =
         };
 
         return (
-            <ul>
+            <li>
                 <div
                     data-automation-id={`${itemIdPrefix}_${itemLabel}`}
                     className="tree-node"
@@ -102,7 +102,7 @@ export const TreeItem: React.SFC<TreeItemProps> =
                         />
                     )}
                 </ul>
-            </ul>
+            </li>
         );
     }, nodeStyle);
 
