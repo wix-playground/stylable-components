@@ -1,4 +1,3 @@
-import {expr} from 'mobx';
 import {observer} from 'mobx-react';
 import React = require('react');
 import {SBComponent} from 'stylable-react-component';
@@ -53,7 +52,7 @@ export class SelectionListView extends React.Component<ViewProps, {}> {
                 tabIndex={this.props.tabIndex}
             >
                 {this.props.list.items.map((item, index) =>
-                    <ItemWrapper key={index} list={this.props.list} item={item} />
+                    <ItemWrapper key={index} item={item} />
                 )}
             </div>
         );
@@ -69,20 +68,20 @@ export class SelectionListView extends React.Component<ViewProps, {}> {
         }
         const value = item.dataset.value;
         const disabled = item.dataset.disabled;
-        if (!disabled && value !== undefined && value !== this.props.list.selectedValue) {
+        if (!disabled && value !== undefined && value !== this.props.list.getSelectedValue()) {
             this.props.onChange!(value);
         }
     }
 }
 
 @observer
-class ItemWrapper extends React.Component<{item: SelectionListItem, list: SelectionListModel}, {}> {
+class ItemWrapper extends React.Component<{item: SelectionListItem}> {
     public render() {
-        const {item, list} = this.props;
+        const item = this.props.item;
         if (item.isOption) {
             return React.cloneElement(item.element, {
-                selected: expr(() => item.value === list.selectedValue),
-                focused:  expr(() => item.value === list.focusedValue)
+                focused:  item.focused,
+                selected: item.selected
             });
         }
         return item.element;

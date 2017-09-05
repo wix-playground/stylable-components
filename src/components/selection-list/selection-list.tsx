@@ -39,9 +39,9 @@ export class SelectionList extends React.Component<Props, {}> {
             this.list = list;
         });
 
-        autorun(() => this.list.selectedValue = this.value);
+        autorun(() => this.list.selectValue(this.value));
 
-        autorun(() => this.list.focusedValue = this.focused ? this.value : undefined);
+        autorun(() => this.list.focusValue(this.focused ? this.value : undefined));
     }
 
     public render() {
@@ -73,8 +73,9 @@ export class SelectionList extends React.Component<Props, {}> {
             case keycode('enter'):
             case keycode('space'):
                 event.preventDefault();
-                if (this.list.focusedValue !== undefined) {
-                    this.props.onChange!(this.list.focusedValue);
+                const focusedValue = this.list.getFocusedValue();
+                if (focusedValue !== undefined) {
+                    this.props.onChange!(focusedValue);
                 }
                 break;
 

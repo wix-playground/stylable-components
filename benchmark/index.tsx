@@ -7,15 +7,15 @@ import {sleep} from '../test/utils';
 import {benchmark} from './benchmark';
 
 class List extends React.PureComponent<{dataSource: string[], focusedValue: string}> {
-    private list: any = new SelectionListModel();
+    private list: SelectionListModel = new SelectionListModel();
 
     public componentWillMount() {
         this.list.addDataSource({dataSource: this.props.dataSource});
-        this.list.focusedValue = '0';
+        this.list.selectValue('0');
     }
 
     public render() {
-        this.list.focusedValue = this.props.focusedValue;
+        this.list.selectValue(this.props.focusedValue);
         return <SelectionListView list={this.list} focused={true} />;
     }
 }

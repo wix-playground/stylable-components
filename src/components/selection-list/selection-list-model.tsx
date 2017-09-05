@@ -1,4 +1,4 @@
-import {observable} from 'mobx';
+import {extendShallowObservable, observable} from 'mobx';
 import React = require('react');
 import {clamp} from '../../utils/clamp';
 import {divider, Divider} from './divider';
@@ -19,8 +19,10 @@ export interface SelectionListItem {
     data: SelectionListItemData;
     disabled: boolean;
     element: React.ReactElement<any>;
+    focused: boolean;
     isOption: boolean;
     selectable: boolean;
+    selected: boolean;
     value: SelectionListItemValue;
 }
 
@@ -59,16 +61,14 @@ function defaultRenderItem(item: DataSourceItemDefaultFormat): React.ReactElemen
 export class SelectionListModel {
     public items: SelectionListItem[] = [];
 
-    @observable public selectedValue: SelectionListItemValue | undefined = undefined;
-    @observable public focusedValue: SelectionListItemValue | undefined = undefined;
-
     private selectableValues: SelectionListItemValue[] = [];
+    private selectedValue: SelectionListItemValue | undefined = undefined;
+    private focusedValue: SelectionListItemValue | undefined = undefined;
 
     public addDataSource({dataSource = [], dataSchema, renderItem = defaultRenderItem}: OptionList) {
         dataSource.forEach(data => {
             const element = renderItem(dataSchema && typeof data === 'object' ? renameKeys(data, dataSchema) : data);
             if (element) {
-                const {value, disabled} = element.props;
                 this.addItem(data, element);
             }
         });
@@ -104,17 +104,43 @@ export class SelectionListModel {
         return this.items.find(item => item.value === value);
     }
 
+    public getSelectedValue(): SelectionListItemValue | undefined {
+        return this.selectedValue;
+    }
+
+    public getFocusedValue(): SelectionListItemValue | undefined {
+        return this.focusedValue;
+    }
+
+    public selectValue(value: SelectionListItemValue | undefined) {
+        this.selectedValue = value;
+        for (const item of this.items) {
+            item.selected = (value !== undefined && item.value === value);
+        }
+    }
+
+    public focusValue(value: SelectionListItemValue | undefined) {
+        this.focusedValue = value;
+        for (const item of this.items) {
+            item.focused = (value !== undefined && item.value === value);
+        }
+    }
+
     private addItem(data: SelectionListItemData, element: React.ReactElement<any>) {
         const value = element.props.value;
         const disabled = Boolean(element.props.disabled);
-        const item = {
-            data,
-            disabled,
-            element,
-            isOption: value !== undefined,
-            selectable: value !== undefined && !disabled,
-            value
-        };
+        const item = extendShallowObservable(
+            {
+                data,
+                disabled,
+                element,
+                isOption: value !== undefined,
+                selectable: value !== undefined && !disabled,
+                value
+            }, {
+                focused: false,
+                selected: false
+            });
 
         this.items.push(item);
         if (item.selectable) {
@@ -127,6 +153,6 @@ export class SelectionListModel {
     }
 
     private focusIndex(index: number) {
-        this.focusedValue = this.selectableValues[clamp(index, 0, this.selectableValues.length - 1)];
+        this.focusValue(this.selectableValues[clamp(index, 0, this.selectableValues.length - 1)]);
     }
 }
