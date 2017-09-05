@@ -56,11 +56,6 @@ export type ParentsMap = Map<TreeItemData, TreeItemData | undefined>;
 
 const itemIdPrefix = 'TREE_ITEM';
 
-export interface AriaItemProps {
-    ['aria-expanded']?: boolean;
-    ['aria-selected']?: boolean;
-}
-
 export const TreeItem: React.SFC<TreeItemProps> =
     SBStateless(({item, itemRenderer, onItemClick, onIconClick, stateMap}) => {
         const state = stateMap.getItemState(item);
@@ -72,16 +67,8 @@ export const TreeItem: React.SFC<TreeItemProps> =
             'className': 'tree-item-icon'
         };
 
-        const aria: AriaItemProps = {};
-        if (item.children) {
-            aria['aria-expanded'] = !!state!.isExpanded;
-        }
-        if (state!.isSelected) {
-            aria['aria-selected'] = true;
-        }
-
         return (
-            <li>
+            <ul>
                 <div
                     data-automation-id={`${itemIdPrefix}_${itemLabel}`}
                     className="tree-node"
@@ -90,7 +77,8 @@ export const TreeItem: React.SFC<TreeItemProps> =
                     data-focused={state!.isFocused}
                     onClick={onItemClick && onItemClick.bind(null, item)}
                     role="treeitem"
-                    {...aria}
+                    aria-expanded={item.children ? !!state!.isExpanded : undefined}
+                    aria-selected={state!.isSelected ? true : undefined}
                 >
                     {item.children && (state!.isExpanded ?
                         <MinusIcon {...iconProps} /> : <PlusIcon {...iconProps} />)}
@@ -114,7 +102,7 @@ export const TreeItem: React.SFC<TreeItemProps> =
                         />
                     )}
                 </ul>
-            </li>
+            </ul>
         );
     }, nodeStyle);
 
