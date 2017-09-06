@@ -4,7 +4,7 @@ import listStyle from './selection-list.st.css';
 
 export const divider = Symbol('divider');
 
-export const Divider: React.SFC<{}> = SBStateless(
+export const Divider: React.SFC = SBStateless(
     () => <div className="divider" data-automation-id="DIVIDER" />,
     listStyle
 );

@@ -15,7 +15,7 @@ export interface Props extends OptionList {
 }
 
 @observer
-export class SelectionList extends React.Component<Props, {}> {
+export class SelectionList extends React.Component<Props> {
     public static defaultProps: Props = {
         onChange: noop,
         tabIndex: -1

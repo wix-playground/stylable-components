@@ -11,7 +11,7 @@ export interface OptionProps {
 }
 
 @SBComponent(listStyle)
-export class Option extends React.Component<OptionProps, {}> {
+export class Option extends React.Component<OptionProps> {
     public render() {
         return (
             <div

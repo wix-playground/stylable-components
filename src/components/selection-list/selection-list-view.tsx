@@ -31,7 +31,7 @@ export interface ViewProps {
 
 @observer
 @SBComponent(listStyle)
-export class SelectionListView extends React.Component<ViewProps, {}> {
+export class SelectionListView extends React.Component<ViewProps> {
     public static defaultProps = {
         onChange: noop,
         onBlur: noop,
