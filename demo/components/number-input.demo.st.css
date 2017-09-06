@@ -1,0 +1,15 @@
+:import {
+    -st-from: "../../src/components/number-input/number-input.st.css";
+    -st-default: NumberInput;
+}
+
+:import {
+    -st-from: "../../src/style/default-theme/variables.st.css";
+    -st-named: BK3;
+}
+
+NumberInput::prefix,
+NumberInput::suffix {
+    padding: 6px;
+    color: value(BK3);
+}
