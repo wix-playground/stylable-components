@@ -92,7 +92,7 @@ export class CheckBox extends React.Component<CheckBoxProps, CheckBoxState> {
             disabled: this.props.disabled!,
             readonly: this.props.readonly!,
             indeterminate: this.props.indeterminate!,
-            focused: this.state.isFocused
+            focus: this.state.isFocused
         };
 
         return (

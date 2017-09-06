@@ -16,7 +16,7 @@ CB:checked .customBoxIcon {
     fill: goldenrod;
 }
 
-CB:focused .customBoxIcon {
+CB:focus .customBoxIcon {
     outline: none;
 }
 
