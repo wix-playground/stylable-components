@@ -45,6 +45,7 @@ export class BasicDemo extends React.Component<{}, {value: boolean}> {
         return (
             <div data-automation-id="BASIC_DEMO">
                 <CheckBox
+                    data-automation-id="BASIC_DEMO_CHECKBOX"
                     value={this.state.value}
                     onChange={this.handleChange}
                 >
@@ -70,6 +71,7 @@ export class DisabledDemo extends React.Component<{}, {value: boolean}> {
             <div>
                 <span data-automation-id="DISABLED_DEMO">
                     <CheckBox
+                        data-automation-id="DISABLED_DEMO_CHECKBOX"
                         value={this.state.value}
                         onChange={this.handleChange}
                         disabled
