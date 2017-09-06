@@ -7,17 +7,17 @@
     lineHeight: 1.5;
 
     /* Colors from styleguide */
-    BK1: color(black, #FFFFFF);
+    BK1: #000000;
+    BK2: #7d8c98;
     BK3: #adbbc6;
+    DS1: #c8c8c8;
     DS2: #f1f1f1;
+    ER1: #d0011b;
     PR1: #257ade;
     PR2: #4a90e2;
-    WT1: #ffffff;
-    DS1: #c8c8c8;
     PR3: #5cb4ff;
     PR4: #edf7ff;
-    ER1: #d0011b;
-    BK2: #7d8c98;
+    WT1: #ffffff;
 
     /* Other colors - TODO: we should not use any of them  */
     B1: #4990e2;
@@ -27,6 +27,7 @@
     B5: #d1d1d1;
     B6: #f1f1f1;
     B7: #adbbc6;
+    B10: #3899ec;
 
     M1: #000000;
     M2: #577083;
@@ -36,16 +37,17 @@
     M6: #c8c8c8;
     M7: #4a90e2;
     M0: #ffffff;
-
     R1: #d0011b;
 
+    /* Basic colors */
     color_MainText: value(M1); /* Base text color  */
     color_MainPlaceholder: value(M2);
     color_MainError: value(M5);
     color_MainDisabled: value(M6);
     color_MainText_Background: value(M0);
+    color_Border: value(B10);
 
-    /* Component Colors */
+    /* Component state colors */
     color_Default: value(B1);
     color_Hover: value(B2);
     color_Active: value(B3);
@@ -57,7 +59,7 @@
     inputHeight: 36px;
     inputWidth: 192px;
 
-    /* Borders */
+  /* Borders */
     borderRadius: 0px;
     borderWidth: 1px;
     borderStyle: solid;
@@ -67,9 +69,6 @@
     borderDisabled: value(borderStyle) value(borderWidth) value(B5);
     borderError: value(borderStyle) value(borderWidth) value(R1);
 
-    /* TreeView */
-    color_treeFocused: value(M4);
-    color_treeSelected: value(B3);
 }
 
 /* Typography */

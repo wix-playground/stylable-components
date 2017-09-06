@@ -7,6 +7,8 @@
     width: auto;
     font-family: Arial, sans-serif;
     font-size: 16px;
+    display: inline-block;
+    min-width: 150px;
 }
 
 .drop-down-input {

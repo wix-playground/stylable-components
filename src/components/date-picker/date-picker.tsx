@@ -2,33 +2,35 @@ import * as keycode from 'keycode';
 import * as React from 'react';
 import {SBComponent} from 'stylable-react-component';
 import {root} from 'wix-react-tools';
+import {Popup} from '../../../src';
+import inputStyles from '../../style/default-theme/controls/input.st.css';
+import {FormInputProps} from '../../types/forms';
 import {Calendar} from './calendar';
 import styles from './date-picker.st.css';
 
 const invalidDate: string = 'Invalid Date';
 
-export interface DatePickerProps {
-    value?: Date;
+export interface DatePickerProps extends FormInputProps<Date> {
     placeholder?: string;
     openOnFocus?: boolean;
     disabled?: boolean;
     readOnly?: boolean;
     showDropdownOnInit?: boolean;
     startingDay?: number;
-    onChange?(value: Date): void;
 }
 
 export interface DatePickerState {
     inputValue: string;
     isDropdownVisible: boolean;
+    dropdownRef: HTMLDivElement | null;
     dropdownDate: Date;
     highlightSelectedDate: boolean;
     highlightFocusedDate: boolean;
 }
 
 @SBComponent(styles)
-export class DatePicker extends React.Component<DatePickerProps, DatePickerState> {
-    public static defaultProps: DatePickerProps = {
+export class DatePicker extends React.PureComponent<DatePickerProps, DatePickerState> {
+    public static defaultProps: Partial<DatePickerProps> = {
         openOnFocus: true,
         onChange: () => {}
     };
@@ -48,7 +50,10 @@ export class DatePicker extends React.Component<DatePickerProps, DatePickerState
         }) as React.HTMLAttributes<HTMLDivElement>;
 
         return (
-            <div {...rootProps}>
+            <div
+                {...rootProps}
+                ref={dropdownRef => this.setState({dropdownRef})}
+            >
                 <input
                     className="input"
                     onKeyDown={this.onKeyDown}
@@ -61,8 +66,8 @@ export class DatePicker extends React.Component<DatePickerProps, DatePickerState
                     type="text"
                     data-automation-id="DATE_PICKER_INPUT"
                 />
-                {this.state.isDropdownVisible
-                    ? <Calendar
+                <Popup open={this.state.isDropdownVisible} anchor={this.state.dropdownRef}>
+                    <Calendar
                         onChange={this.onCalendarInput}
                         updateDropdownDate={this.updateDropdownDate}
                         value={this.state.dropdownDate}
@@ -71,8 +76,7 @@ export class DatePicker extends React.Component<DatePickerProps, DatePickerState
                         highlightSelectedDate={this.state.highlightSelectedDate}
                         highlightFocusedDate={this.state.highlightFocusedDate}
                     />
-                    : null
-                }
+                </Popup>
             </div>
         );
     }
@@ -83,7 +87,7 @@ export class DatePicker extends React.Component<DatePickerProps, DatePickerState
             const updatedDate = input ? new Date(input) : new Date();
             this.setState({inputValue: updatedDate.toDateString()});
 
-            this.props.onChange!(updatedDate);
+            this.props.onChange!({value: updatedDate});
         } else {
             this.setState({inputValue: invalidDate});
         }
@@ -99,7 +103,7 @@ export class DatePicker extends React.Component<DatePickerProps, DatePickerState
             dropdownDate: input
         });
 
-        this.props.onChange!(input);
+        this.props.onChange!({value: input});
     }
 
     private updateDropdownDate = (updatedDate: Date): void => {

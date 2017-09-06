@@ -1,29 +1,27 @@
 import * as React from 'react';
 import {SBComponent} from 'stylable-react-component';
 import {root} from 'wix-react-tools';
+import {FormInputProps} from '../../types/forms';
 import {noop} from '../../utils';
 import styles from './checkbox.st.css';
 
-export interface CheckBoxChangeEvent extends React.ChangeEvent<HTMLInputElement> {
-    value: boolean;
-}
-
-export interface CheckBoxProps extends React.HTMLAttributes<HTMLInputElement> {
-    value: boolean;
-    boxIcon: React.ComponentType<CheckBoxIconProps>;
-    tickIcon: React.ComponentType<CheckBoxIconProps>;
-    indeterminateIcon: React.ComponentType<CheckBoxIconProps>;
-    onChange: (event: CheckBoxChangeEvent) => void;
+export interface CheckBoxProps extends FormInputProps<boolean> {
+    boxIcon?: React.ComponentType<CheckBoxIconProps>;
+    tickIcon?: React.ComponentType<CheckBoxIconProps>;
+    indeterminateIcon?: React.ComponentType<CheckBoxIconProps>;
     children?: React.ReactNode;
-    disabled: boolean;
-    readonly: boolean;
-    indeterminate: boolean;
+    disabled?: boolean;
+    readonly?: boolean;
+    indeterminate?: boolean;
+    tabIndex?: number;
+    id?: string;
 }
 
 export interface CheckBoxIconProps {
     value?: boolean;
     indeterminate?: boolean;
     disabled?: boolean;
+    className?: string;
 }
 
 export interface CheckBoxState {
@@ -33,8 +31,7 @@ export interface CheckBoxState {
 const DefaultCheckBoxSVG: React.SFC<CheckBoxIconProps> = props => {
     return (
         <svg
-            className={styles.boxIconDefault}
-            data-automation-id="CHECKBOX_BOX"
+            {...root(props, {className: ''})}
             xmlns="http://www.w3.org/2000/svg"
             focusable="false"
         >
@@ -46,8 +43,7 @@ const DefaultCheckBoxSVG: React.SFC<CheckBoxIconProps> = props => {
 const DefaultTickMarkSVG: React.SFC<CheckBoxIconProps> = props => {
     return (
         <svg
-            className={styles.tickIcon}
-            data-automation-id="CHECKBOX_TICKMARK"
+            {...root(props, {className: ''})}
             xmlns="http://www.w3.org/2000/svg"
             focusable="false"
         >
@@ -59,8 +55,7 @@ const DefaultTickMarkSVG: React.SFC<CheckBoxIconProps> = props => {
 const DefaultIndeterminateSVG: React.SFC<CheckBoxIconProps> = props => {
     return (
         <svg
-            className={styles.indeterminateIcon}
-            data-automation-id="CHECKBOX_INDETERMINATE"
+            {...root(props, {className: ''})}
             xmlns="http://www.w3.org/2000/svg"
             width="15"
             height="15"
@@ -72,7 +67,7 @@ const DefaultIndeterminateSVG: React.SFC<CheckBoxIconProps> = props => {
 };
 
 @SBComponent(styles)
-export class CheckBox extends React.Component<Partial<CheckBoxProps>, CheckBoxState> {
+export class CheckBox extends React.Component<CheckBoxProps, CheckBoxState> {
     public static defaultProps: Partial<CheckBoxProps> = {
         boxIcon: DefaultCheckBoxSVG,
         tickIcon: DefaultTickMarkSVG,
@@ -84,82 +79,70 @@ export class CheckBox extends React.Component<Partial<CheckBoxProps>, CheckBoxSt
 
     public state: CheckBoxState = {isFocused: false};
 
-    private inputRef: HTMLInputElement | null = null;
-
     public render() {
-        const {value, boxIcon, indeterminate, indeterminateIcon, tickIcon,
-               onChange, children, disabled, readonly, ...rest} = this.props;
-
-        const BoxIcon = boxIcon!;
-        const IndeterminateIcon = indeterminateIcon!;
-        const TickIcon = tickIcon!;
+        const BoxIcon = this.props.boxIcon!;
+        const IndeterminateIcon = this.props.indeterminateIcon!;
+        const TickIcon = this.props.tickIcon!;
         const rootProps = root(this.props, {
             'data-automation-id': 'CHECKBOX_ROOT',
             'className': 'root'
         });
         const cssStates = {
-            checked: value!,
-            disabled: disabled!,
-            readonly: readonly!,
-            indeterminate: indeterminate!,
-            focused: this.state.isFocused
+            checked: this.props.value!,
+            disabled: this.props.disabled!,
+            readonly: this.props.readonly!,
+            indeterminate: this.props.indeterminate!,
+            focus: this.state.isFocused
         };
 
         return (
             <div
-                {...rootProps as React.HTMLAttributes<HTMLDivElement>}
-                onClick={this.handleRootClick}
+                {...rootProps}
+                onClick={this.handleChange}
                 cssStates={cssStates}
                 role="checkbox"
-                aria-checked={indeterminate ? 'mixed' : value}
+                aria-checked={this.props.indeterminate ? 'mixed' : this.props.value}
             >
 
                 <input
-                    {...rest}
                     data-automation-id="NATIVE_CHECKBOX"
                     type="checkbox"
                     className="nativeCheckbox"
-                    checked={value}
-                    disabled={disabled}
-                    onChange={this.handleInputChange}
-                    ref={this.handleInputRef}
+                    checked={this.props.value}
+                    disabled={this.props.disabled}
+                    onChange={this.handleChange}
                     onFocus={this.handleInputFocus}
                     onBlur={this.handleInputBlur}
+                    id={this.props.id}
+                    tabIndex={this.props.tabIndex}
                 />
 
                 <BoxIcon
-                    value={value}
-                    indeterminate={indeterminate}
-                    disabled={disabled}
+                    className="boxIcon"
+                    data-automation-id="CHECKBOX_BOX"
                 />
 
-                {indeterminate &&
+                {this.props.indeterminate &&
                     <IndeterminateIcon
-                        value={value}
-                        indeterminate={indeterminate}
-                        disabled={disabled}
+                        className="indeterminateIcon"
+                        data-automation-id="CHECKBOX_INDETERMINATE"
                     />
                 }
-                {!indeterminate && value &&
+                {!this.props.indeterminate && this.props.value &&
                     <TickIcon
-                        value={value}
-                        indeterminate={indeterminate}
-                        disabled={disabled}
+                        className="tickIcon"
+                        data-automation-id="CHECKBOX_TICKMARK"
                     />
                 }
 
-                {children}
+                {this.props.children}
             </div>
         );
     }
 
-    private handleRootClick = (e: React.SyntheticEvent<HTMLDivElement>) => {
-        this.inputRef && this.inputRef.click();
-    }
-
-    private handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    private handleChange = (e: React.SyntheticEvent<HTMLElement>) => {
         if (!this.props.disabled && !this.props.readonly) {
-                this.props.onChange!({...e, value: this.props.indeterminate ? true : !this.props.value});
+                this.props.onChange!({value: this.props.indeterminate ? true : !this.props.value});
         }
     }
 
@@ -169,9 +152,5 @@ export class CheckBox extends React.Component<Partial<CheckBoxProps>, CheckBoxSt
 
     private handleInputBlur = () => {
         this.setState({isFocused: false});
-    }
-
-    private handleInputRef = (ref: HTMLInputElement | null) => {
-        this.inputRef = ref;
     }
 }

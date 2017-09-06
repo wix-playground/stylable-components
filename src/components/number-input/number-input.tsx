@@ -3,7 +3,7 @@ import * as React from 'react';
 import {SBComponent} from 'stylable-react-component';
 import {isNumber, noop} from '../../utils';
 import styles from './number-input.st.css';
-import {Stepper} from '../stepper';
+import {Stepper, Modifiers} from '../stepper';
 
 export interface NumberInputProps {
     className?: string;
@@ -246,9 +246,11 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
         this.commit(next);
     }
 
-    private handleIncrement = () => this.stepValue(Direction.Increase);
+    private handleIncrement = ({shiftKey}: Modifiers) =>
+        this.stepValue(Direction.Increase, shiftKey ? 10 : 1)
 
-    private handleDecrement = () => this.stepValue(Direction.Decrease);
+    private handleDecrement = ({shiftKey}: Modifiers) =>
+        this.stepValue(Direction.Decrease, shiftKey ? 10 : 1)
 
     private handleFocus: React.FocusEventHandler<HTMLElement> =
         e => this.setState({focus: true})

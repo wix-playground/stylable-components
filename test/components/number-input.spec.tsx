@@ -143,6 +143,24 @@ describe('<NumberInput />', () => {
                 });
             });
 
+            it('should increase the value by a large step when shift key is held', async () => {
+                const value = 0;
+                const step = 2;
+                const onChange = sinon.spy();
+                const {select, waitForDom} = clientRenderer.render(
+                    <NumberInput value={value} step={step} onChange={onChange} />
+                );
+
+                await waitForDom(() => {
+                    const increment = select('STEPPER_INCREMENT');
+                    const input = select('NATIVE_INPUT_NUMBER');
+
+                    simulate.click(increment, {shiftKey: true});
+
+                    assertCommit(input, onChange, value + 10 * step);
+                });
+            });
+
             it('should be disabled when value >= max', async () => {
                 const value = 2;
                 const max = 2;
@@ -192,6 +210,24 @@ describe('<NumberInput />', () => {
                     simulate.click(decrement);
 
                     assertCommit(input, onChange, value - step);
+                });
+            });
+
+            it('should decrease the value by a large step when shift key is held', async () => {
+                const value = 0;
+                const step = 2;
+                const onChange = sinon.spy();
+                const {select, waitForDom} = clientRenderer.render(
+                    <NumberInput value={value} step={step} onChange={onChange} />
+                );
+
+                await waitForDom(() => {
+                    const decrement = select('STEPPER_DECREMENT');
+                    const input = select('NATIVE_INPUT_NUMBER');
+
+                    simulate.click(decrement, {shiftKey: true});
+
+                    assertCommit(input, onChange, value - 10 * step);
                 });
             });
 

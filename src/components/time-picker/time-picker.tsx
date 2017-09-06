@@ -1,11 +1,13 @@
 import * as keycode from 'keycode';
 import * as React from 'react';
 import {SBComponent} from 'stylable-react-component';
-import {Stepper} from '../stepper';
+import {ScreenReaderNotification} from '../screen-reader-notification';
+import {Modifiers, Stepper} from '../stepper';
+import {LABELS} from './strings';
 import styles from './time-picker.st.css';
 import {
     Ampm, ampmLabels, Format,
-    formatTimeChunk, getCircularValue, is12TimeFormat, isTimeSegment,
+    formatTimeChunk, is12TimeFormat, isTimeSegment,
     isTouchTimeInputSupported, isValidValue, Segment, TimeSegment, to24, toAmpm
 } from './utils';
 
@@ -26,6 +28,7 @@ export interface State {
     format: Format;
     ampm: Ampm;
     currentSegment: Segment;
+    notification?: string;
 }
 
 const ampmSwitch = {
@@ -90,7 +93,7 @@ export class TimePicker extends React.Component<Props, State> {
     }
 
     public render() {
-        const {focus, hh, mm, ampm, format} = this.state;
+        const {focus, hh, mm, ampm, format, notification} = this.state;
         const {label, placeholder, disabled, name} = this.props;
         const isValueSet = hh !== undefined || mm !== undefined;
         const timeSegments: TimeSegment[] = ['hh', 'mm'];
@@ -103,7 +106,11 @@ export class TimePicker extends React.Component<Props, State> {
                     disabled: disabled!,
                     empty: !isValueSet
                 }}
+                onMouseDown={this.onRootMouseDown}
             >
+                {notification &&
+                    <ScreenReaderNotification>{notification}</ScreenReaderNotification>
+                }
                 {timeSegments.map(segment =>
                     <div key={segment} className={'input-wrap ' + segment}>
                         <input
@@ -116,6 +123,11 @@ export class TimePicker extends React.Component<Props, State> {
                             placeholder={this.state[segment] ? '' : '00'}
                             disabled={disabled}
                             name={segment}
+
+                            role="spinbutton"
+                            aria-label={LABELS[segment]}
+                            aria-valuetext={this.state[segment]}
+
                             onMouseDown={this.onInputMouseDown}
                             onChange={this.onInputChange}
                             onFocus={this.onInputFocus}
@@ -125,31 +137,35 @@ export class TimePicker extends React.Component<Props, State> {
                     </div>
                 )}
                 {format === 'ampm' &&
-                    <div className="ampm-wrap">
-                        <div
-                            data-automation-id="TIME_PICKER_AMPM"
-                            className="ampm"
-                            ref={elem => this.segments.ampm = elem}
-                            tabIndex={disabled || isTouchTimeInputSupported ? -1 : 0}
-                            children={ampmLabels[ampm]}
-                            onMouseDown={this.onAmpmMouseDown}
-                            onFocus={this.onAmpmFocus}
-                            onBlur={this.onBlur}
-                            onKeyDown={this.onKeyDown}
-                        />
-                    </div>
+                    <div
+                        data-automation-id="TIME_PICKER_AMPM"
+                        className="ampm"
+                        ref={elem => this.segments.ampm = elem}
+                        tabIndex={disabled || isTouchTimeInputSupported ? -1 : 0}
+                        children={ampmLabels[ampm]}
+
+                        role="spinbutton"
+                        aria-label={LABELS.ampm}
+                        aria-valuetext={ampmLabels[ampm]}
+
+                        onMouseDown={this.onAmpmMouseDown}
+                        onFocus={this.onAmpmFocus}
+                        onBlur={this.onBlur}
+                        onKeyDown={this.onKeyDown}
+                    />
                 }
                 {placeholder && !isValueSet &&
                     <div
                         data-automation-id="TIME_PICKER_PLACEHOLDER"
                         className="placeholder"
                         children={placeholder}
-                        onClick={this.onPlaceholderClick}
+                        onMouseDown={this.onRootMouseDown}
                     />
                 }
                 {!isTouchTimeInputSupported && !disabled && isValueSet &&
                     <Stepper
                         className="stepper"
+                        onMouseDown={this.onStepperMouseDown}
                         onUp={this.onStepperUp}
                         onDown={this.onStepperDown}
                     />
@@ -222,26 +238,59 @@ export class TimePicker extends React.Component<Props, State> {
         }
     }
 
-    private changeValue(step: number): void {
-        const {currentSegment, ampm} = this.state;
+    private changeValue(step: number, multiplier: number = 1): void {
+        const {currentSegment} = this.state;
         if (!isTimeSegment(currentSegment)) {
             return this.toggleAmpm(true);
         }
-        let newValue: any = Number(this.state[currentSegment] || 0) + step;
-        newValue = getCircularValue(currentSegment, newValue, ampm);
-        newValue = formatTimeChunk(newValue);
-        this.updateSegmentValue(currentSegment, newValue);
+
+        let ampm = this.state.ampm;
+        let hh = to24(Number(this.state.hh || 0), ampm);
+        let mm = Number(this.state.mm || 0);
+
+        if (currentSegment === 'mm') {
+            mm += step * multiplier;
+        } else {
+            hh += step;
+        }
+
+        const totalMinutes: number = hh * 60 + mm;
+        mm = (totalMinutes + 60) % 60;
+        hh = Math.floor(totalMinutes / 60 + 24) % 24;
+        if (ampm !== Ampm.NONE) {
+            const hhAmpm = toAmpm(hh);
+            hh = hhAmpm.hh;
+            ampm = hhAmpm.ampm;
+        }
+
+        this.setState({
+            hh: formatTimeChunk(hh),
+            mm: formatTimeChunk(mm),
+            ampm
+        }, () => {
+            this.select(currentSegment);
+            this.commit();
+        });
     }
 
-    private onPlaceholderClick = () => {
+    private onRootMouseDown = (e: React.SyntheticEvent<HTMLDivElement>) => {
+        if (e.target !== e.currentTarget) {
+            return;
+        }
+        e.preventDefault();
         if (isTouchTimeInputSupported) {
             this.nativeInput!.focus();
         } else {
             this.segments.hh!.focus();
         }
     }
-    private onStepperUp = () => this.changeValue(1);
-    private onStepperDown = () => this.changeValue(-1);
+
+    private onStepperMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+        e.preventDefault();
+    }
+
+    private onStepperUp = ({shiftKey}: Modifiers) => this.changeValue(1, shiftKey ? 10 : 1);
+    private onStepperDown = ({shiftKey}: Modifiers) => this.changeValue(-1, shiftKey ? 10 : 1);
 
     private onAmpmMouseDown = (e: React.SyntheticEvent<HTMLDivElement>) => {
         e.stopPropagation();
@@ -259,6 +308,7 @@ export class TimePicker extends React.Component<Props, State> {
         e.stopPropagation();
         e.preventDefault();
         e.currentTarget.focus();
+        e.currentTarget.select();
     }
 
     private onInputChange = (e: React.SyntheticEvent<HTMLInputElement>): void => {
@@ -309,8 +359,9 @@ export class TimePicker extends React.Component<Props, State> {
     }
     private onBlur = (e: React.SyntheticEvent<HTMLElement>) => {
         const name = e.currentTarget instanceof HTMLInputElement && e.currentTarget.name;
-        const update: Pick<State, TimeSegment | 'focus'> = {
-            focus: false
+        const update: Pick<State, TimeSegment | 'focus' | 'currentSegment'> = {
+            focus: false,
+            currentSegment: 'hh'
         };
         if (isTimeSegment(name)) {
             update[name] = formatTimeChunk(this.state[name]!);
@@ -344,23 +395,19 @@ export class TimePicker extends React.Component<Props, State> {
                 break;
             case 'up':
                 e.preventDefault();
-                this.changeValue(1);
+                this.changeValue(1, e.shiftKey ? 10 : 1);
                 break;
             case 'down':
                 e.preventDefault();
-                this.changeValue(-1);
+                this.changeValue(-1, e.shiftKey ? 10 : 1);
                 break;
             case 'page up':
                 e.preventDefault();
-                if (currentSegment === 'mm') {
-                    this.changeValue(10);
-                }
+                this.changeValue(1, 10);
                 break;
             case 'page down':
                 e.preventDefault();
-                if (currentSegment === 'mm') {
-                    this.changeValue(-10);
-                }
+                this.changeValue(-1, 10);
                 break;
             case 'backspace':
                 e.preventDefault();
@@ -384,6 +431,9 @@ export class TimePicker extends React.Component<Props, State> {
 
     private commit = () => {
         const value = this.getValue();
+        this.setState({
+            notification: value
+        });
         if (this.props.onChange && this.lastValue !== value) {
             this.lastValue = value;
             this.props.onChange(value);
