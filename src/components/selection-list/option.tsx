@@ -1,30 +1,29 @@
 import React = require('react');
-import {SBComponent} from 'stylable-react-component';
+import {SBStateless} from 'stylable-react-component';
 import {SelectionListItemValue} from './selection-list-model';
 import listStyle from './selection-list.st.css';
 
 export interface OptionProps {
-    value?: SelectionListItemValue;
+    children?: React.ReactNode;
     disabled?: boolean;
-    selected?: boolean;
     focused?: boolean;
+    selected?: boolean;
+    value?: SelectionListItemValue;
 }
 
-@SBComponent(listStyle)
-export class Option extends React.Component<OptionProps> {
-    public render() {
-        return (
-            <div
-                className="item"
-                data-value={this.props.disabled ? undefined : this.props.value}
-                cssStates={{
-                    disabled: Boolean(this.props.disabled),
-                    selected: Boolean(this.props.selected),
-                    focused:  Boolean(this.props.focused)
-                }}
-            >
-                {this.props.children}
-            </div>
-        );
-    }
-}
+export const Option: React.SFC<OptionProps> = SBStateless(
+    props => (
+        <div
+            className="item"
+            data-value={props.disabled ? undefined : props.value}
+            cssStates={{
+                disabled: Boolean(props.disabled),
+                selected: Boolean(props.selected),
+                focused:  Boolean(props.focused)
+            }}
+        >
+            {props.children}
+        </div>
+    ),
+    listStyle
+);

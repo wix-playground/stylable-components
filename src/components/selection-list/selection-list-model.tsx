@@ -9,16 +9,16 @@ export type DataSourceItem = string | object | symbol;
 export interface OptionList {
     dataSource?: DataSourceItem[];
     dataSchema?: {};
-    renderItem?: (item: DataSourceItem) => React.ReactElement<any> | null;
+    renderItem?: (item: DataSourceItem) => JSX.Element | null;
 }
 
 export type SelectionListItemValue = string;
-export type SelectionListItemData = DataSourceItem | React.ReactElement<any>;
+export type SelectionListItemData = DataSourceItem | JSX.Element;
 
 export interface SelectionListItem {
     data: SelectionListItemData;
     disabled: boolean;
-    element: React.ReactElement<any>;
+    element: JSX.Element;
     focused: boolean;
     isOption: boolean;
     selectable: boolean;
@@ -28,7 +28,7 @@ export interface SelectionListItem {
 
 type DataSourceItemDefaultFormat = string | {
     value?: SelectionListItemValue;
-    label?: string | React.ReactElement<any>;
+    label?: string | JSX.Element;
     disabled?: boolean;
     hidden?: boolean;
 };
@@ -45,7 +45,7 @@ function renameKeys(data: Dict<any>, schema: Dict<string>): Dict<any> {
     return result;
 }
 
-function defaultRenderItem(item: DataSourceItemDefaultFormat): React.ReactElement<any> | null {
+function defaultRenderItem(item: DataSourceItemDefaultFormat): JSX.Element | null {
     if (typeof item === 'string') {
         item = {value: item, label: item};
     }
@@ -126,7 +126,7 @@ export class SelectionListModel {
         }
     }
 
-    private addItem(data: SelectionListItemData, element: React.ReactElement<any>) {
+    private addItem(data: SelectionListItemData, element: JSX.Element) {
         const value = element.props.value;
         const disabled = Boolean(element.props.disabled);
         const item = extendShallowObservable(

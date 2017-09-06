@@ -60,11 +60,11 @@ export class SelectionList extends React.Component<Props> {
         );
     }
 
-    private handleFocus: React.FocusEventHandler<HTMLElement> = event => {
+    private handleFocus: React.FocusEventHandler<HTMLElement> = () => {
         this.focused = true;
     }
 
-    private handleBlur: React.FocusEventHandler<HTMLElement> = event => {
+    private handleBlur: React.FocusEventHandler<HTMLElement> = () => {
         this.focused = false;
     }
 
