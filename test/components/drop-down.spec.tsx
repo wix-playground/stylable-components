@@ -109,7 +109,7 @@ describe('<DropDown />', () => {
 
         simulate.click(dropDownList!.children[0]);
 
-        return waitFor(() => expect(onClick).to.have.been.calledWithMatch(items[0]));
+        return waitFor(() => expect(onClick).to.have.been.calledWithMatch({value: items[0]}));
     });
 
     describe('Keyboard Navigation', () => {
