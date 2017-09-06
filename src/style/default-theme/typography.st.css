@@ -1,0 +1,59 @@
+:import {
+    -st-from: "./variables.st.css";
+    -st-named: color_MainText,
+               color_MainPlaceholder,
+               color_MainText_Background;
+}
+
+.h1 {
+    color: value(color_MainText);
+    font-size: 32px;
+    line-height: 48px;
+}
+
+.h2 {
+    color: value(color_MainText);
+    font-size: 24px;
+    line-height: 36px;
+}
+
+.h3 {
+    color: value(color_MainText);
+    font-size: 19px;
+    line-height: 28px;
+}
+
+.h4 {
+    color: value(color_MainText);
+    font-size: 16px;
+    line-height: 24px;
+}
+
+.h5 {
+    color: value(color_MainText);
+    font-size: 14px;
+    line-height: 20px;
+}
+
+.h6 {
+    color: value(color_MainText);
+    font-size: 12px;
+    line-height: 18px;
+}
+
+.p {
+    color: value(color_MainText);
+    font-size: 16px;
+    line-height: 24px;
+}
+
+.label {
+    color: value(color_MainPlaceholder);
+    font-size: 16px;
+    line-height: 24px;
+}
+
+.img {
+    display: inline-block;
+    vertical-align: middle;
+}

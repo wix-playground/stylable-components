@@ -1,4 +1,9 @@
 import * as React from 'react';
+import {SBComponent} from 'stylable-react-component';
+import anchorStyle from '../src/style/default-theme/anchor.st.css';
+import buttonStyle from '../src/style/default-theme/controls/button.st.css';
+import inputStyle from '../src/style/default-theme/controls/input.st.css';
+import typographyStyle from '../src/style/default-theme/typography.st.css';
 import {CheckBoxDemo} from './components/checkbox-demo';
 import {DatePickerDemo} from './components/date-picker-demo';
 import {DropDownDemo} from './components/drop-down.demo';
@@ -12,8 +17,9 @@ import {SliderDemo} from './components/slider-demo';
 import {TimePickerDemo} from './components/time-picker-demo';
 import {ToggleDemo} from './components/toggle-demo';
 import {TreeViewDemo, TreeViewDemoCustom} from './components/tree-view-demo';
-import './style.st.css';
+import style from './style.st.css';
 
+@SBComponent(style)
 export class ComponentsDemo extends React.Component {
     public render() {
         return (
@@ -70,28 +76,28 @@ export class ComponentsDemo extends React.Component {
                         <tbody>
                             <tr>
                                 <th>
-                                    <h1>H1</h1>
+                                    <h1 className={typographyStyle.h1}>H1</h1>
                                 </th>
                                 <th>
-                                    <h2>H2</h2>
+                                    <h2 className={typographyStyle.h2}>H2</h2>
                                 </th>
                                 <th>
-                                    <h3>H3</h3>
+                                    <h3 className={typographyStyle.h3}>H3</h3>
                                 </th>
                                 <th>
-                                    <h4>H4</h4>
+                                    <h4 className={typographyStyle.h4}>H4</h4>
                                 </th>
                                 <th>
-                                    <h5>H5</h5>
+                                    <h5 className={typographyStyle.h5}>H5</h5>
                                 </th>
                                 <th>
-                                    <h6>H6</h6>
+                                    <h6 className={typographyStyle.h6}>H6</h6>
                                 </th>
                                 <th>
-                                    <label>Label</label>
+                                    <label className={typographyStyle.label}>Label</label>
                                 </th>
                                 <th>
-                                    <p>paragraph</p>
+                                    <p className={typographyStyle.p}>paragraph</p>
                                 </th>
                             </tr>
                         </tbody>
@@ -104,16 +110,22 @@ export class ComponentsDemo extends React.Component {
                         <tbody>
                             <tr>
                                 <th>
-                                    <button>Normal</button>
+                                    <button className={buttonStyle.root}>Normal</button>
                                 </th>
                                 <th>
-                                    <button disabled >Disabled</button>
+                                    <button className={buttonStyle.root} disabled >Disabled</button>
                                 </th>
                                 <th>
-                                    <a className="button" href="http://www.wix.com" target="_blank">Link</a>
+                                    <a className={buttonStyle.root} href="http://www.wix.com" target="_blank">Link</a>
                                 </th>
                                 <th>
-                                    <a className="button" href="http://www.wix.com" target="_blank">Disabled link</a>
+                                    <a
+                                        className={`${buttonStyle.root} ${buttonStyle.disabled}`}
+                                        href="http://www.wix.com"
+                                        target="_blank"
+                                    >
+                                        Disabled link
+                                    </a>
                                 </th>
                             </tr>
                         </tbody>
@@ -126,10 +138,22 @@ export class ComponentsDemo extends React.Component {
                         <tbody>
                             <tr>
                                 <th>
-                                    <a href="http://www.wix.com" target="_blank">Normal</a>
+                                    <a
+                                        className="a"
+                                        href="http://www.wix.com"
+                                        target="_blank"
+                                    >
+                                        Normal
+                                    </a>
                                 </th>
                                 <th>
-                                    <a href="http://www.wix.com" target="_blank">Disabled</a>
+                                    <a
+                                        className="a disabled"
+                                        href="http://www.wix.com"
+                                        target="_blank"
+                                    >
+                                        Disabled
+                                    </a>
                                 </th>
                             </tr>
                         </tbody>
@@ -142,10 +166,10 @@ export class ComponentsDemo extends React.Component {
                         <tbody>
                             <tr>
                                 <th>
-                                    <input placeholder="Placeholder" />
+                                    <input className={inputStyle.root} placeholder="Placeholder"/>
                                 </th>
                                 <th>
-                                    <input placeholder="Disabled" disabled />
+                                    <input className={inputStyle.root} placeholder="Disabled" disabled/>
                                 </th>
                             </tr>
                         </tbody>

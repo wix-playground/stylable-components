@@ -1,3 +1,12 @@
+:import {
+  -st-from: "../src/style/default-theme/anchor.st.css";
+  -st-default: anchor;
+}
+
+.a {
+  -st-compose: anchor;
+}
+
 :global(html) {
   box-sizing: border-box;
   font-size: 100%; }

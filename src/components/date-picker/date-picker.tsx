@@ -7,7 +7,6 @@ import inputStyles from '../../style/default-theme/controls/input.st.css';
 import {FormInputProps} from '../../types/forms';
 import {Calendar} from './calendar';
 import styles from './date-picker.st.css';
-
 const invalidDate: string = 'Invalid Date';
 
 export interface DatePickerProps extends FormInputProps<Date> {
@@ -55,7 +54,7 @@ export class DatePicker extends React.PureComponent<DatePickerProps, DatePickerS
                 ref={dropdownRef => this.setState({dropdownRef})}
             >
                 <input
-                    className={inputStyles.root + ' input'}
+                    className={`${styles.input} ${inputStyles.root}`}
                     onKeyDown={this.onKeyDown}
                     onMouseDown={this.onMouseDown}
                     onBlur={this.onBlur}

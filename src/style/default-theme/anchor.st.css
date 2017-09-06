@@ -1,0 +1,31 @@
+:import {
+    -st-from: "./variables.st.css";
+    -st-named: color_Default,
+               color_MainText,
+               color_Focus,
+               color_Hover,
+               color_Disabled;
+}
+
+.root {
+    text-decoration: none;
+    user-select: none;
+    color: value(color_Default);
+    outline: 0;
+}
+
+.root:focus {
+    color: value(color_Default);
+}
+
+.root:visited:not(.button):not(root[disabled]) {
+    color: value(color_Focus);
+}
+
+.root:hover {
+    color: value(color_Hover);
+}
+
+.root.disabled, .root[disabled] {
+    color: value(color_Disabled);
+}
