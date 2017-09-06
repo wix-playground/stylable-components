@@ -842,8 +842,9 @@ describe('<TimePicker/>', () => {
                     simulate.focus(secondInputMM);
                 });
                 describe('click on stepper in first input', () => {
-                    it('should set focus on hh on first input', () => {
+                    it('should set focus on hh on first input', async () => {
                         simulate.blur(secondInputMM);
+                        await new Promise(resolve => setTimeout(resolve, 100));
                         simulate.focus(firstStepperUp);
                         simulate.click(firstStepperUp);
                         expect(document.activeElement === firstInputHH).to.be.true;
