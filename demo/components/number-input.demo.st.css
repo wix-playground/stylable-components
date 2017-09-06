@@ -3,6 +3,13 @@
     -st-default: NumberInput;
 }
 
-NumberInput::prefix {
-    padding-left: 6px;
+:import {
+    -st-from: "../../src/style/default-theme/variables.st.css";
+    -st-named: BK3;
+}
+
+NumberInput::prefix,
+NumberInput::suffix {
+    padding: 6px;
+    color: value(BK3);
 }
