@@ -106,6 +106,76 @@ function withValueMinMax(
     });
 }
 
+function rangeWithValueMinMax(
+    clientRenderer: ClientRenderer,
+    positionProp: string,
+    sizeProp: string,
+    orientation: 'vertical' | 'horizontal',
+    options?: Partial<SliderProps>
+) {
+    describe('with value, min and max', () => {
+        const value = [-5, 5];
+        const min = -10;
+        const max = 10;
+
+        let select: (automationId: string) => HTMLElement | null;
+        let waitForDom: (expectation: () => void) => Promise<void>;
+
+        beforeEach(() => {
+            const rendered = clientRenderer.render(
+                <Slider
+                    value={value}
+                    min={min}
+                    max={max}
+                    {...options}
+                />
+            );
+            select = rendered.select;
+            waitForDom = rendered.waitForDom;
+        });
+
+        it('renders handle on the right place', async () => {
+            await waitForDom(() => {
+                const handle0 = select('SLIDER-HANDLE-0');
+                const handle1 = select('SLIDER-HANDLE-1');
+
+                expect(handle0!.style[positionProp as any]).to.equal('25%');
+                expect(handle1!.style[positionProp as any]).to.equal('75%');
+            });
+        });
+
+        it('renders progress bar with the right width', async () => {
+            await waitForDom(() => {
+                const element = select('SLIDER-PROGRESS');
+
+                expect(element).to.be.present();
+                expect(element!.style[positionProp as any]).to.equal('25%');
+                expect(element!.style[sizeProp as any]).to.equal('50%');
+            });
+        });
+
+        it('renders invisible native input with right value', async () => {
+            await waitForDom(() => {
+                const input0 = select('SLIDER-NATIVE-INPUT-0');
+                const input1 = select('SLIDER-NATIVE-INPUT-1');
+
+                expect(input0).to.has.value(String(value[0]));
+                expect(input1).to.has.value(String(value[1]));
+            });
+        });
+
+        it('renders with proper aria-orientation', async () => {
+            await waitForDom(() => {
+                const handle0 = select('SLIDER-HANDLE-0');
+                const handle1 = select('SLIDER-HANDLE-1');
+
+                expect(handle0!.getAttribute('aria-orientation')).to.equal(orientation);
+                expect(handle1!.getAttribute('aria-orientation')).to.equal(orientation);
+            });
+        });
+    });
+}
+
 function whenDragThingsAround(
     clientRenderer: ClientRenderer,
     positionProp: string,
@@ -1376,4 +1446,21 @@ describe('<Slider />', () => {
 
         keyboard(clientRenderer, {axis: 'y-reverse', step: 2});
     });
+});
+
+describe('<Slider /> type Range', () => {
+    const clientRenderer = new ClientRenderer();
+
+    beforeEach(() => {
+        environment = new WindowStub();
+    });
+
+    afterEach(() => {
+        environment.sandbox.restore();
+    });
+    afterEach(() => {
+        clientRenderer.cleanup();
+    });
+
+    withValueMinMax(clientRenderer, 'left', 'width', 'horizontal', {});
 });
