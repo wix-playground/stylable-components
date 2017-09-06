@@ -71,6 +71,7 @@ export const TreeItem: React.SFC<TreeItemProps> =
             <li
                 aria-expanded={item.children ? !!state!.isExpanded : undefined}
                 aria-selected={state!.isSelected ? true : undefined}
+                id={item.label}
                 role="treeitem"
             >
                 <div
@@ -160,6 +161,8 @@ export class TreeView extends React.Component<TreeViewProps, {}> {
                 {...rootProps}
                 onKeyDown={this.onKeyDown}
                 role="tree"
+                tabIndex={0}
+                aria-activedescendant={this.props.focusedItem && this.props.focusedItem!.label}
             >
                 {(this.props.dataSource || []).map((item: TreeItemData, index: number) =>
                     <TreeNode
