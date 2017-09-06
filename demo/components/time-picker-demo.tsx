@@ -1,7 +1,10 @@
 import * as React from 'react';
+import {SBComponent} from 'stylable-react-component';
 import {TimePicker} from '../../src';
 import {is12TimeFormat} from '../../src/components/time-picker/utils';
+import styles from './time-picker-demo.st.css';
 
+@SBComponent(styles)
 export class TimePickerDemo extends React.Component<any, any> {
     constructor() {
         super();
@@ -30,6 +33,17 @@ export class TimePickerDemo extends React.Component<any, any> {
                 <h3>Controlled 12 time format</h3>
                 <div data-automation-id="TIME_PICKER_DEMO_CONTROLLED_AMPM">
                     <TimePicker
+                        format="ampm"
+                        value={this.state.value1}
+                        onChange={this.createOnChange('value1')}
+                    />
+                    <span style={{marginLeft: 20}}>{this.state.value1}</span>
+                </div>
+
+                <h3>Controlled 12 time format error</h3>
+                <div data-automation-id="TIME_PICKER_DEMO_CONTROLLED_AMPM">
+                    <TimePicker
+                        error
                         format="ampm"
                         value={this.state.value1}
                         onChange={this.createOnChange('value1')}

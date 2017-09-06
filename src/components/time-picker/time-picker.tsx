@@ -19,6 +19,9 @@ export interface Props {
     disabled?: boolean;
     label?: string;
     name?: string;
+    required?: boolean;
+    error?: boolean;
+    rtl?: boolean;
 }
 
 export interface State {
@@ -58,7 +61,10 @@ function propsValueToSegments(value?: string, format?: Format): {hh?: string, mm
 export class TimePicker extends React.Component<Props, State> {
     public static defaultProps: Partial<Props> = {
         format: is12TimeFormat ? 'ampm' : '24h',
-        disabled: false
+        disabled: false,
+        error: false,
+        rtl: false,
+        required: false
     };
     private nativeInput: HTMLInputElement | null;
     private segments: {
@@ -94,7 +100,7 @@ export class TimePicker extends React.Component<Props, State> {
 
     public render() {
         const {focus, hh, mm, ampm, format, notification} = this.state;
-        const {label, placeholder, disabled, name} = this.props;
+        const {label, placeholder, disabled, error, required, rtl, name} = this.props;
         const isValueSet = hh !== undefined || mm !== undefined;
         const timeSegments: TimeSegment[] = ['hh', 'mm'];
 
@@ -103,8 +109,11 @@ export class TimePicker extends React.Component<Props, State> {
                 data-automation-id="TIME_PICKER"
                 cssStates={{
                     focus,
-                    disabled: disabled!,
-                    empty: !isValueSet
+                    'error': error!,
+                    'disabled': disabled!,
+                    'empty': !isValueSet,
+                    'rtl': rtl!,
+                    'has-placeholder': Boolean(placeholder)
                 }}
                 onMouseDown={this.onRootMouseDown}
             >
@@ -177,6 +186,7 @@ export class TimePicker extends React.Component<Props, State> {
                         tabIndex={isTouchTimeInputSupported ? 0 : -1}
                         ref={elem => this.nativeInput = elem}
                         name={name}
+                        required={required}
                         aria-label={label}
                         value={this.getValue()}
                         disabled={disabled}

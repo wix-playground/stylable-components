@@ -8,6 +8,7 @@
 :import {
     -st-from: "../../style/default-theme/variables.st.css";
     -st-named:
+        ER1,
         DS1,
         DS2,
         BK2,
@@ -20,7 +21,7 @@
     width: 7.5em;
 }
 .root {
-    -st-states: focus, disabled, empty;
+    -st-states: focus, disabled, empty, has-placeholder, error, rtl;
     font-family: arial;
     font-size: 16px;
     position: relative;
@@ -30,8 +31,10 @@
     display: inline-block;
     user-select: none;
     -webkit-user-select: none;
+    background-color: white;
 
     padding-left: 9px;
+    overflow: hidden;
 }
 
 .root:not(:disabled):hover {
@@ -53,6 +56,13 @@
 }
 .root:empty {
     color: value(BK2);
+}
+.root:empty:has-placeholder .input-wrap,
+.root:empty:has-placeholder .ampm {
+    opacity: 0;
+}
+.root:error {
+    border-color: value(ER1);
 }
 
 .input-wrap {
@@ -134,7 +144,6 @@
     padding: 0 12px;
     display: flex;
     align-items: center;
-    background: white;
 }
 
 .ampm {
