@@ -6,7 +6,7 @@
   "types": "./lib/index.d.ts",
   "scripts": {
     "clean": "rimraf ./lib",
-    "build": "tsc -d --p tsconfig.publish.json && stc --srcDir=src --outDir=lib",
+    "build": "tsc -d --p tsconfig.publish.json && stc --srcDir=src --outDir=lib --diagnostics",
     "prepublish": "npm run lint && npm run build",
     "lint": "npm run lint:src && npm run lint:demo && npm run lint:test",
     "lint:src": "tslint \"src/**/*.ts?(x)\" -c tslint.json --type-check -p tsconfig.json --fix",
@@ -49,7 +49,7 @@
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "stylable": "^4.0.12",
-    "stylable-integration": "^5.1.2",
+    "stylable-integration": "^5.1.3",
     "test-drive-react": "^0.6.0",
     "ts-loader": "^2.3.4",
     "ts-node": "^3.3.0",
