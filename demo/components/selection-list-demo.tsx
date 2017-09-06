@@ -1,9 +1,8 @@
-import * as React from 'react';
+import {observable} from 'mobx';
+import React = require('react');
 import {SBComponent} from 'stylable-react-component';
 import {divider, Option, SelectionList} from '../../src/components/selection-list';
 import demoStyle from './selection-list-demo.st.css';
-
-import {observable} from 'mobx';
 
 export class SelectionListDemo extends React.Component<{}, {}> {
     public render() {
