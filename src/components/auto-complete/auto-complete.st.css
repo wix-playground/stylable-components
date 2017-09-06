@@ -1,7 +1,9 @@
+@namespace "AutoComplete";
+
 .root {
-    width: auto;
     font-size: 16px;
     position: relative;
+    display: inline-block;
 }
 
 .auto-complete-input {
@@ -14,24 +16,24 @@
 }
 
 .auto-complete-list {
-    -st-extends: List;
+    width: 100%;
     background: #FFFFFF;
 }
 
 .auto-complete-input:hover {
-    cursor: pointer;
     border: 1px solid #5cb4ff;
-}
-
-.auto-complete-list {
-    width: 100%;
 }
 
 .caret {
     cursor: pointer;
     position:absolute;
     top:50%;
-    left: 90%;
+    left: calc(100% - 24px);
     transform:translateY(-50%);
     -webkit-transform:translateY(-50%);
+}
+
+.auto-complete-container {
+    -st-extends: root;
+    width: 100%;
 }

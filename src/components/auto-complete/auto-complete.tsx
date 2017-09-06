@@ -2,6 +2,8 @@ import * as React from 'react';
 import {SBComponent, SBStateless} from 'stylable-react-component';
 import {root} from 'wix-react-tools';
 import {Popup} from '../../';
+import {ChangeEvent} from '../../types/events';
+import {FormInputProps} from '../../types/forms';
 import {noop} from '../../utils';
 import {CaretDown} from '../drop-down/drop-down-icons';
 import {OptionList, SelectionList} from '../selection-list/selection-list';
@@ -14,22 +16,15 @@ import style from './auto-complete.st.css';
 export type FilterPredicate = (item: string, filterString: string) => boolean;
 
 export interface AutoCompleteListProps {
-    open: boolean;
     items?: string[];
     onChange?: (item: string) => void;
     children?: any;
-}
-
-export interface AutoCompleteChangeEvent extends React.ChangeEvent<HTMLInputElement> {
-    value: string;
+    className?: string;
 }
 
 export const AutoCompleteList: React.SFC<AutoCompleteListProps> = SBStateless(props => {
-    if (!props.open) {
-        return null;
-    }
     return (
-        <div data-automation-id="AUTO_COMPLETE_LIST">
+        <div data-automation-id="AUTO_COMPLETE_LIST" className="auto-complete-container">
             <SelectionList
                 className="auto-complete-list"
                 dataSource={props.items}
@@ -40,19 +35,18 @@ export const AutoCompleteList: React.SFC<AutoCompleteListProps> = SBStateless(pr
     );
 }, style);
 
-export interface AutoCompleteProps extends React.InputHTMLAttributes<HTMLInputElement>, Partial<OptionList> {
+export interface AutoCompleteProps extends FormInputProps<string>, Partial<OptionList> {
     open?: boolean;
-    value?: string;
-    onChange?: (event: Partial<AutoCompleteChangeEvent>) => void;
     filter?: FilterPredicate;
+    onOpenStateChange?: (e: ChangeEvent<boolean>) => void;
     maxCharacters?: number;
     maxSearchResults?: number;
     showNoSuggestions?: boolean;
     noSuggestionsNotice?: string | React.ReactElement<any>;
+    disabled?: boolean;
 }
 
 export interface AutoCompleteState {
-    isOpen: boolean;
     input: HTMLInputElement | null;
 }
 
@@ -66,17 +60,19 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
         value: '',
         filter: prefixFilter,
         onChange: noop,
+        onOpenStateChange: noop,
         maxCharacters: 0,
         maxSearchResults: 0,
         showNoSuggestions: false,
         noSuggestionsNotice: 'No Results',
+        disabled: false
     };
     public state = {input: null, isOpen: this.props.open!};
 
     public render() {
         const rootProps = root(this.props, {
             'data-automation-id': 'AUTO_COMPLETE',
-            'className': 'auto-complete'
+            'className': ''
         }) as React.HTMLAttributes<HTMLDivElement>;
         const ariaProps = {
             'aria-haspopup': true,
@@ -106,10 +102,9 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
                 <CaretDown onClick={this.onCaretClick} className="caret" data-automation-id="AUTO_COMPLETE_CARET"/>
                 <Popup
                     anchor={this.state.input}
-                    open={this.state.isOpen && this.props.value!.length >= this.props.maxCharacters!}
+                    open={this.props.open && this.props.value!.length >= this.props.maxCharacters!}
                 >
                     <AutoCompleteList
-                        open={true}
                         items={items}
                         onChange={this.onClick}
                         children={children}
@@ -127,15 +122,18 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
 
     private onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         this.props.onChange!({value: e.target.value || ''});
+        if (!this.props.value && !this.props.open) {
+            this.props.onOpenStateChange!({value: this.props.open!});
+        }
     }
 
     private onClick = (item: string) => {
-        this.setState({isOpen: false});
         this.props.onChange!({value: item});
+        this.props.onOpenStateChange!({value: this.props.open!});
     }
 
     private onCaretClick = () => {
-        this.setState({isOpen: !this.state.isOpen});
+        this.props.onOpenStateChange!({value: this.props.open!});
     }
 
     private getFilteredItems(): string[] {

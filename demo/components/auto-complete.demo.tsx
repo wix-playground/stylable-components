@@ -1,5 +1,6 @@
 import * as React from 'react';
-import {AutoComplete, AutoCompleteChangeEvent} from '../../src';
+import {AutoComplete} from '../../src';
+import {ChangeEvent} from '../../src/types/events';
 
 export interface AutoCompleteDemoState {
     open: boolean;
@@ -10,12 +11,16 @@ const items = ['Muffins', 'Pancakes', 'Cupcakes', 'Souffles',
                'Pasta', 'Soup', 'Caramel', 'Avazim', 'Moses'];
 
 export class AutoCompleteDemo extends React.Component<{}, AutoCompleteDemoState> {
-    public state = {open: true, inputText: ''};
+    public state = {open: false, inputText: ''};
 
-    public onChange = (e: AutoCompleteChangeEvent) => {
+    public onChange = (e: ChangeEvent<string>) => {
         this.setState({
             inputText: e.value
         });
+    }
+
+    public toggleOpen = (e: ChangeEvent<boolean>) => {
+        this.setState({open: !e.value});
     }
 
     public render() {
@@ -26,6 +31,7 @@ export class AutoCompleteDemo extends React.Component<{}, AutoCompleteDemoState>
                     <AutoComplete
                         dataSource={items}
                         onChange={this.onChange}
+                        onOpenStateChange={this.toggleOpen}
                         open={this.state.open}
                         value={this.state.inputText}
                     />
