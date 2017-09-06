@@ -39,8 +39,15 @@ export class Modal extends React.PureComponent<ModalProps, {}> {
         return (
             this.props.isOpen ? (
                 <Portal {...rootProps}>
-                    <div className="backdrop" data-slot="backdrop" data-automation-id="MODAL" onClick={this.onClick}>
-                        <div className="children" data-slot="body">
+                    <div
+                        className="backdrop"
+                        role="dialog"
+                        aria-modal="true"
+                        data-slot="backdrop"
+                        data-automation-id="MODAL"
+                        onClick={this.onClick}
+                    >
+                        <div className="body" data-slot="body">
                             {this.props.children}
                         </div>
                     </div>
