@@ -80,6 +80,8 @@
     height: auto;
     outline: none;
 
+    background: none;
+
     -moz-appearance: textfield;
 }
 
