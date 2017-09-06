@@ -76,8 +76,9 @@
     -st-extends: input;
     flex-grow: 1;
 
-    border: none;
     height: auto;
+    border: none;
+    box-shadow: none;
     outline: none;
 
     background: none;
