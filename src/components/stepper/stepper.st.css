@@ -1,5 +1,5 @@
 :import {
-    -st-from: "../../style/default-theme/variables.st.css";
+    -st-from: "../../style/project.st.css";
     -st-named: color_MainText,
                color_MainText_Background,
                color_Disabled,
@@ -8,10 +8,6 @@
                DS1,
                BK3,
                PR3;
-}
-
-:import {
-    -st-from: "../../style/default-theme/controls/button.st.css";
 }
 
 .root {

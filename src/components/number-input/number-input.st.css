@@ -1,10 +1,5 @@
 :import {
-    -st-from: "../../style/default-theme/controls/input.st.css";
-    -st-default: input;
-}
-
-:import {
-    -st-from: "../../style/default-theme/variables.st.css";
+    -st-from: "../../style/project.st.css";
     -st-named: color_MainText,
                color_MainPlaceholder,
                color_MainText_Background,
@@ -70,7 +65,6 @@
 }
 
 .native-input {
-    -st-extends: input;
     flex-grow: 1;
 
     height: auto;

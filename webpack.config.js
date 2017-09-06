@@ -3,7 +3,7 @@ const glob = require('glob');
 const { testGlob } = require('./package.json');
 const StylablePlugin = require('stylable-integration/webpack-plugin');
 const testFiles = glob.sync(testGlob);
-
+const stylableOptions = { injectBundleCss: true, nsDelimiter:'--' };
 module.exports = {
     devtool: 'source-map',
     entry: {
@@ -24,7 +24,7 @@ module.exports = {
             {
                 test: /\.css$/,
                 loader: 'stylable-integration/webpack-loader',
-                options: { injectFileCss: true }
+                options: stylableOptions
             }
         ]
     },
@@ -39,6 +39,6 @@ module.exports = {
         disableHostCheck: true
     },
     plugins: [
-        new StylablePlugin({ injectFileCss: true })
+        new StylablePlugin(stylableOptions)
     ]
 }

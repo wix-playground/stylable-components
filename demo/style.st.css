@@ -1,3 +1,9 @@
+@namespace "demos";
+:import {
+  -st-theme: true;
+  -st-from: "../src/style/default-theme/default.st.css";
+}
+
 :global(html) {
   box-sizing: border-box;
   font-size: 100%; }
