@@ -193,8 +193,15 @@ export class TreeView extends React.Component<TreeViewProps, {}> {
         this.expand(this.props.dataSource[0] as TreeItemData);
     }
 
-    public selectItem = (item: TreeItemData): void => {
-        this.selectItemProvided(item);
+    public selectItem(item: TreeItemData) {
+        if (this.props.selectedItem) {
+            if (this.props.selectedItem !== item) {
+                this.stateMap.getItemState(this.props.selectedItem).isSelected = false;
+                this.props.onSelectItem!(this.props.selectedItem !== item ? item : undefined);
+            }
+        } else {
+            this.props.onSelectItem!(item);
+        }
     }
 
     private initParentsMap(data: TreeItemData[] = [], parent: TreeItemData | undefined) {
@@ -208,21 +215,10 @@ export class TreeView extends React.Component<TreeViewProps, {}> {
         this.stateMap.getItemState(item).isExpanded = !this.stateMap.getItemState(item).isExpanded;
     }
 
-    private selectItemProvided(item: TreeItemData) {
-        if (this.props.selectedItem) {
-            if (this.props.selectedItem !== item) {
-                this.stateMap.getItemState(this.props.selectedItem).isSelected = false;
-                this.props.onSelectItem!(this.props.selectedItem !== item ? item : undefined);
-            }
-        } else {
-            this.props.onSelectItem!(item);
-        }
-    }
-
     @action
     private onSelectItem = (item: TreeItemData, e: React.MouseEvent<HTMLElement>) => {
         e.stopPropagation();
-        this.selectItemProvided(item);
+        this.selectItem(item);
         if (this.props.focusedItem) { this.stateMap.getItemState(this.props.focusedItem).isFocused = false; }
     }
 
@@ -285,7 +281,7 @@ export class TreeView extends React.Component<TreeViewProps, {}> {
             case KeyCodes.DOWN:
                 e.preventDefault(); this.focusNext(this.props.focusedItem); break;
             case KeyCodes.ENTER:
-                e.preventDefault(); this.selectItemProvided(this.props.focusedItem); break;
+                e.preventDefault(); this.selectItem(this.props.focusedItem); break;
             case KeyCodes.HOME:
                 this.stateMap.getItemState(this.props.focusedItem).isFocused = false;
                 e.preventDefault(); this.focusFirst(); break;
