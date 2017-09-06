@@ -1,9 +1,9 @@
 import * as React from 'react';
 import {SBComponent, SBStateless} from 'stylable-react-component';
 import {root} from 'wix-react-tools';
-import style from './drop-down.st.css';
 import {SelectionList} from '../selection-list';
 import {CaretDown} from './drop-down-icons';
+import style from './drop-down.st.css';
 
 export interface DropDownInputProps {
     selectedItem?: DropDownItem;

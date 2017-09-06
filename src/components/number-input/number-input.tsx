@@ -2,8 +2,8 @@ import {codes as KeyCodes} from 'keycode';
 import * as React from 'react';
 import {SBComponent} from 'stylable-react-component';
 import {isNumber, noop} from '../../utils';
+import {Modifiers, Stepper} from '../stepper';
 import styles from './number-input.st.css';
-import {Stepper, Modifiers} from '../stepper';
 
 export interface NumberInputProps {
     className?: string;

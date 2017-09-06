@@ -2,9 +2,6 @@
 :import {
   -st-theme: true;
   -st-from: "../src/style/default-theme/default.st.css";
-  BK3: royalblue;
-
-  M0: purple;
 }
 
 :global(html) {

@@ -3,7 +3,6 @@ import * as React from 'react';
 import {SBComponent} from 'stylable-react-component';
 import {root} from 'wix-react-tools';
 import {Popup} from '../../../src';
-import inputStyles from '../../style/default-theme/controls/input.st.css';
 import {FormInputProps} from '../../types/forms';
 import {Calendar} from './calendar';
 import styles from './date-picker.st.css';

@@ -3,7 +3,6 @@ import {SBComponent, SBStateless} from 'stylable-react-component';
 import style from './checkbox-demo.st.css';
 
 import {CheckBox, CheckBoxIconProps} from '../../src';
-import buttonStyle from '../../src/style/default-theme/controls/button.st.css';
 import {ChangeEvent} from '../../src/types/events';
 
 export const demoCheckBoxText: string = 'Yes, I\'m over 18 years old';
