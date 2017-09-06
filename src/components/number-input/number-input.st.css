@@ -39,9 +39,6 @@
 
     height: value(inputHeight);
     min-width: value(inputWidth);
-
-    /* preventing window DPI scaling artifacts*/
-    padding: 0.3px;
 }
 
 .root:hover {

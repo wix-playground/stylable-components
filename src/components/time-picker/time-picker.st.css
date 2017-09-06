@@ -8,6 +8,7 @@
 :import {
     -st-from: "../../style/default-theme/variables.st.css";
     -st-named:
+        ER1,
         DS1,
         DS2,
         BK2,
@@ -20,18 +21,21 @@
     width: 7.5em;
 }
 .root {
-    -st-states: focus, disabled, empty;
+    -st-states: focus, disabled, empty, has-placeholder, error, rtl;
     font-family: arial;
     font-size: 16px;
     position: relative;
     border: 1px solid value(BK3);
     height: value(height);
     min-width: value(width);
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
     user-select: none;
     -webkit-user-select: none;
+    background-color: white;
 
     padding-left: 9px;
+    overflow: hidden;
 }
 
 .root:not(:disabled):hover {
@@ -54,22 +58,35 @@
 .root:empty {
     color: value(BK2);
 }
-
-.input-wrap {
-    position: relative;
-    display: inline-block;
-    height: 100%;
+.root:empty .stepper,
+.root:empty:has-placeholder .time,
+.root:empty:has-placeholder .ampm {
+    visibility: hidden;
 }
-.input-wrap.mm:before {
+.root:error {
+    border-color: value(ER1);
+}
+
+.time {
+    display: inline-block;
+    flex: 1;
+    position: relative;
+}
+.time:after {
     content: ':';
     position: absolute;
     top: 0;
-    width: 10px;
-    left: -5px;
+    left: 1.4em;
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.root:rtl {
+    padding-right: 9px;
+    padding-left: 0;
+    flex-direction: row-reverse;
 }
 
 .input {
@@ -134,14 +151,12 @@
     padding: 0 12px;
     display: flex;
     align-items: center;
-    background: white;
 }
 
 .ampm {
     display: inline-block;
     background-color: inherit;
     cursor: pointer;
-    vertical-align: baseline;
 }
 .ampm:hover {
     color: value(PR3);
@@ -189,12 +204,7 @@
     height: 100%;
     transition: opacity 100ms ease;
     float: right;
-    opacity: 0;
 }
 .stepper::control {
     background: transparent;
-}
-.root:focus .stepper,
-.root:hover .stepper {
-    opacity: 1;
 }
