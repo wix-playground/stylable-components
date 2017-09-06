@@ -2,12 +2,12 @@ import * as React from 'react';
 import {SBComponent, SBStateless} from 'stylable-react-component';
 import {root} from 'wix-react-tools';
 import {Popup} from '../../';
+import {ChangeEvent} from '../../types/events';
 import {FormInputProps} from '../../types/forms';
 import {noop} from '../../utils';
 import {CaretDown} from '../drop-down/drop-down-icons';
 import {OptionList, SelectionList} from '../selection-list/selection-list';
 import style from './auto-complete.st.css';
-import {ChangeEvent} from "../../types/events";
 
 // Selected item is a string because of selection list's constraints
 // i would love to implement it like the TreeView where the reference to an object
@@ -23,7 +23,7 @@ export interface AutoCompleteListProps {
 
 export const AutoCompleteList: React.SFC<AutoCompleteListProps> = SBStateless(props => {
     return (
-        <div data-automation-id="AUTO_COMPLETE_LIST">
+        <div data-automation-id="AUTO_COMPLETE_LIST" className="auto-complete-container">
             <SelectionList
                 className="auto-complete-list"
                 dataSource={props.items}
@@ -80,7 +80,6 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
                     <AutoCompleteList
                         items={filteredItems as string[]}
                         onChange={this.onClick}
-                        className="test"
                     />
                 </Popup>
             </div>
