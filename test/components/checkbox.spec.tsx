@@ -1,8 +1,8 @@
 import * as React from 'react';
 import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react';
-import {BasicDemo, demoCheckBoxText, DisabledDemo, IndeterminateDemo} from '../../../demo/components/checkbox-demo';
-import {CheckBox, CheckBoxIconProps} from '../../../src';
-import {CheckBoxTestDriver as Driver} from './checkbox-driver';
+import {BasicDemo, demoCheckBoxText, DisabledDemo, IndeterminateDemo} from '../../demo/components/checkbox-demo';
+import {CheckBox, CheckBoxIconProps} from '../../src';
+import {CheckBoxTestDriver as Driver} from '../../test-kit/components/checkbox-driver';
 
 const boxSVG: React.SFC<CheckBoxIconProps> = props => {
     return (
@@ -153,12 +153,10 @@ describe('<Checkbox/>', function () {
         ).withDriver(Driver);
 
         await waitForDom(() => {
-            // expect(select('CHECKBOX_ROOT')).to.be.present();
-            expect(driver.isReady(), 'checkbox doesn\'t exist').to.be.true;
+            expect(driver.root).to.be.present();
         });
 
-        // simulate.click(select('CHECKBOX_ROOT'));
-
+        driver.click();
 
         await waitFor(() => {
             expect(onChange).to.have.been.calledOnce;

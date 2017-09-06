@@ -1,9 +1,9 @@
 import {DriverBase, simulate} from 'test-drive-react';
-import {CheckBox} from '../../../src/';
+import {CheckBox} from '../../src';
 
 export class CheckBoxTestDriver extends DriverBase {
 
-    static ComponentClass = CheckBox;
+    static ComponentClass = CheckBox;// tslint:disable-line
 
     public isReady(): boolean {
         return (
@@ -20,9 +20,9 @@ export class CheckBoxTestDriver extends DriverBase {
         simulate.click(this.root);
     }
 
-    public get childList(): NodeList {
-        // return
-    }
+    // public get childList(): NodeList {
+    //     // return
+    // }
 
     // public getElement(...selectors: string[]): Element {
     //     return this.select(...selectors);
