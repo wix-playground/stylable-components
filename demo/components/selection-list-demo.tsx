@@ -1,7 +1,6 @@
 import React = require('react');
 import {SBComponent} from 'stylable-react-component';
-import {divider, SelectionList} from '../../src/components/selection-list';
-import {Option} from '../../src/components/selection-list/option';
+import {divider, Option, SelectionList} from '../../src/components/selection-list';
 import demoStyle from './selection-list-demo.st.css';
 
 export class SelectionListDemo extends React.Component<{}, {}> {
