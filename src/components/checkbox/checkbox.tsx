@@ -21,6 +21,7 @@ export interface CheckBoxIconProps {
     value?: boolean;
     indeterminate?: boolean;
     disabled?: boolean;
+    className?: string;
 }
 
 export interface CheckBoxState {
@@ -30,7 +31,7 @@ export interface CheckBoxState {
 const DefaultCheckBoxSVG: React.SFC<CheckBoxIconProps> = props => {
     return (
         <svg
-            className={styles.boxIconDefault}
+            className={props.className}
             data-automation-id="CHECKBOX_BOX"
             xmlns="http://www.w3.org/2000/svg"
             focusable="false"
@@ -43,7 +44,7 @@ const DefaultCheckBoxSVG: React.SFC<CheckBoxIconProps> = props => {
 const DefaultTickMarkSVG: React.SFC<CheckBoxIconProps> = props => {
     return (
         <svg
-            className={styles.tickIcon}
+            className={props.className}
             data-automation-id="CHECKBOX_TICKMARK"
             xmlns="http://www.w3.org/2000/svg"
             focusable="false"
@@ -56,7 +57,7 @@ const DefaultTickMarkSVG: React.SFC<CheckBoxIconProps> = props => {
 const DefaultIndeterminateSVG: React.SFC<CheckBoxIconProps> = props => {
     return (
         <svg
-            className={styles.indeterminateIcon}
+            className={props.className}
             data-automation-id="CHECKBOX_INDETERMINATE"
             xmlns="http://www.w3.org/2000/svg"
             width="15"
@@ -123,6 +124,7 @@ export class CheckBox extends React.Component<CheckBoxProps, CheckBoxState> {
                     value={this.props.value}
                     indeterminate={this.props.indeterminate}
                     disabled={this.props.disabled}
+                    className="boxIcon"
                 />
 
                 {this.props.indeterminate &&
@@ -130,6 +132,7 @@ export class CheckBox extends React.Component<CheckBoxProps, CheckBoxState> {
                         value={this.props.value}
                         indeterminate={this.props.indeterminate}
                         disabled={this.props.disabled}
+                        className="indeterminateIcon"
                     />
                 }
                 {!this.props.indeterminate && this.props.value &&
@@ -137,6 +140,7 @@ export class CheckBox extends React.Component<CheckBoxProps, CheckBoxState> {
                         value={this.props.value}
                         indeterminate={this.props.indeterminate}
                         disabled={this.props.disabled}
+                        className="tickIcon"
                     />
                 }
 
