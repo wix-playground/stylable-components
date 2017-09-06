@@ -28,9 +28,9 @@
     height: value(height);
     min-width: value(width);
     display: inline-block;
+    user-select: none;
+    -webkit-user-select: none;
 
-    /* preventing window DPI scaling artifacts*/
-    padding: 0.3px;
     padding-left: 9px;
 }
 
@@ -137,15 +137,11 @@
     background: white;
 }
 
-.ampm-wrap {
-    display: inline-flex;
+.ampm {
+    display: inline-block;
     background-color: inherit;
     cursor: pointer;
-
-    height: 100%;
-    vertical-align: bottom;
-    align-items: center;
-
+    vertical-align: baseline;
 }
 .ampm:hover {
     color: value(PR3);

@@ -1,8 +1,8 @@
 export * from './date-picker';
 export * from './tree-view';
+export * from './slider';
 export * from './number-input';
 export * from './toggle';
-export * from './birthday-picker';
 export * from './checkbox';
 export * from './image';
 export * from './radio-group';
@@ -10,5 +10,7 @@ export * from './time-picker';
 export * from './tree-view';
 export * from './drop-down';
 export * from './auto-complete';
+export * from './modal';
 export * from './portal';
 export * from './popup';
+export * from './screen-reader-notification';
