@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {SBComponent} from 'stylable-react-component';
+import {SBComponent, SBStateless} from 'stylable-react-component';
 import {CheckBox, CheckBoxIconProps} from '../../src';
 import buttonStyle from '../../src/style/default-theme/controls/button.st.css';
 import {ChangeEvent} from '../../src/types/events';
@@ -167,10 +167,10 @@ class CustomIconsDemo extends React.Component<{}, {value: boolean}> {
     private handleChange = (e: ChangeEvent<boolean>) => { this.setState({value: e.value}); };
 }
 
-const TickMarkSVG: React.SFC<CheckBoxIconProps> = props => {
+const TickMarkSVG: React.SFC<CheckBoxIconProps> = SBStateless(props => {
     return (
         <svg
-            className={style.tickIcon}
+            className="customTickIcon"
             data-automation-id="CHECKBOX_TICKMARK"
             xmlns="http://www.w3.org/2000/svg"
             height="16"
@@ -180,12 +180,12 @@ const TickMarkSVG: React.SFC<CheckBoxIconProps> = props => {
             <circle cx="10" cy="14" r="4"/>
         </svg>
     );
-};
+}, style);
 
-const CheckBoxSVG: React.SFC<CheckBoxIconProps> = props => {
+const CheckBoxSVG: React.SFC<CheckBoxIconProps> = SBStateless(props => {
     return (
         <svg
-            className={style.boxIcon + (props.value ? ' ' + style.boxIconChecked : '')}
+            className="customBoxIcon"
             data-automation-id="CHECKBOX_BOX"
             xmlns="http://www.w3.org/2000/svg"
             focusable="false"
@@ -193,4 +193,4 @@ const CheckBoxSVG: React.SFC<CheckBoxIconProps> = props => {
             <path d="M 10,1 20,20 1,20 z"/>
         </svg>
     );
-};
+}, style);
