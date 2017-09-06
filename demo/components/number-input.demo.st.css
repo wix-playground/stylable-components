@@ -1,0 +1,8 @@
+:import {
+    -st-from: "../../src/components/number-input/number-input.st.css";
+    -st-default: NumberInput;
+}
+
+NumberInput::prefix {
+    padding-left: 6px;
+}
