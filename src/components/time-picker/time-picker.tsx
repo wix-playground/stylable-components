@@ -120,9 +120,10 @@ export class TimePicker extends React.Component<Props, State> {
                 {notification &&
                     <ScreenReaderNotification>{notification}</ScreenReaderNotification>
                 }
-                {timeSegments.map(segment =>
-                    <div key={segment} className={'input-wrap ' + segment}>
+                <div className="time">
+                    {timeSegments.map(segment =>
                         <input
+                            key={segment}
                             data-automation-id={'TIME_PICKER_INPUT_' + segment.toUpperCase()}
                             className="input"
                             type="text"
@@ -143,8 +144,8 @@ export class TimePicker extends React.Component<Props, State> {
                             onBlur={this.onBlur}
                             onKeyDown={this.onKeyDown}
                         />
-                    </div>
-                )}
+                    )}
+                </div>
                 {format === 'ampm' &&
                     <div
                         data-automation-id="TIME_PICKER_AMPM"
@@ -171,7 +172,7 @@ export class TimePicker extends React.Component<Props, State> {
                         onMouseDown={this.onRootMouseDown}
                     />
                 }
-                {!isTouchTimeInputSupported && !disabled && isValueSet &&
+                {!isTouchTimeInputSupported &&
                     <Stepper
                         className="stepper"
                         onMouseDown={this.onStepperMouseDown}

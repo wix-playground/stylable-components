@@ -40,10 +40,21 @@ export class TimePickerDemo extends React.Component<any, any> {
                     <span style={{marginLeft: 20}}>{this.state.value1}</span>
                 </div>
 
-                <h3>Controlled 12 time format error</h3>
-                <div data-automation-id="TIME_PICKER_DEMO_CONTROLLED_AMPM">
+                <h3>Controlled 12 time format with error</h3>
+                <div>
                     <TimePicker
                         error
+                        format="ampm"
+                        value={this.state.value1}
+                        onChange={this.createOnChange('value1')}
+                    />
+                    <span style={{marginLeft: 20}}>{this.state.value1}</span>
+                </div>
+
+                <h3>Controlled 12 time format with RTL</h3>
+                <div>
+                    <TimePicker
+                        rtl
                         format="ampm"
                         value={this.state.value1}
                         onChange={this.createOnChange('value1')}

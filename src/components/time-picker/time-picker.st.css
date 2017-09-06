@@ -28,7 +28,8 @@
     border: 1px solid value(BK3);
     height: value(height);
     min-width: value(width);
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
     user-select: none;
     -webkit-user-select: none;
     background-color: white;
@@ -57,29 +58,35 @@
 .root:empty {
     color: value(BK2);
 }
-.root:empty:has-placeholder .input-wrap,
+.root:empty .stepper,
+.root:empty:has-placeholder .time,
 .root:empty:has-placeholder .ampm {
-    opacity: 0;
+    visibility: hidden;
 }
 .root:error {
     border-color: value(ER1);
 }
 
-.input-wrap {
-    position: relative;
+.time {
     display: inline-block;
-    height: 100%;
+    flex: 1;
+    position: relative;
 }
-.input-wrap.mm:before {
+.time:after {
     content: ':';
     position: absolute;
     top: 0;
-    width: 10px;
-    left: -5px;
+    left: 1.4em;
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.root:rtl {
+    padding-right: 9px;
+    padding-left: 0;
+    flex-direction: row-reverse;
 }
 
 .input {
@@ -150,7 +157,6 @@
     display: inline-block;
     background-color: inherit;
     cursor: pointer;
-    vertical-align: baseline;
 }
 .ampm:hover {
     color: value(PR3);
@@ -198,12 +204,7 @@
     height: 100%;
     transition: opacity 100ms ease;
     float: right;
-    opacity: 0;
 }
 .stepper::control {
     background: transparent;
-}
-.root:focus .stepper,
-.root:hover .stepper {
-    opacity: 1;
 }
