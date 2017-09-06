@@ -562,5 +562,19 @@ describe('<TreeView />', () => {
                 expect(last.label).to.eql(treeData[0].children![2].label);
             });
         });
+
+        describe('Accessibility', () => {
+            it('puts correct aria values on different parts of the tree', () => {
+                const {select, waitForDom} = clientRenderer.render(<TreeView dataSource={treeData} />);
+
+                const firstChild = treeData[0].children![0];
+                expandItemWithLabel(select, treeData[0].label);
+
+                return waitForDom(() => {
+                    expect(select(treeView)).to.have.attribute('role', 'tree');
+                    expect(select(treeView, getTreeItem(firstChild.label) + '_NODE')).to.have.attr('role', 'treeitem');
+                });
+            });
+        });
     });
 });

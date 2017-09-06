@@ -78,6 +78,7 @@ export const TreeItem: React.SFC<TreeItemProps> =
                 aria-expanded={item.children ? !!state!.isExpanded : undefined}
                 aria-selected={state!.isSelected ? true : undefined}
                 id={getFocusedItemKey(item)}
+                data-automation-id={`${itemIdPrefix}_${itemLabel}_NODE`}
                 role="treeitem"
             >
                 <div
@@ -99,7 +100,7 @@ export const TreeItem: React.SFC<TreeItemProps> =
                     </span>
                 </div>
                 {item.children && <ul className="nested-tree" role="group">
-                    {state!.isExpanded && (item.children || []).map((child: TreeItemData, index: number) =>
+                    {state!.isExpanded && item.children.map((child: TreeItemData, index: number) =>
                         <TreeNode
                             item={child}
                             onItemClick={onItemClick}
