@@ -43,6 +43,7 @@ export interface AutoCompleteProps extends FormInputProps<string>, Partial<Optio
     maxSearchResults?: number;
     showNoSuggestions?: boolean;
     noSuggestionsNotice?: string | React.ReactElement<any>;
+    allowFreeText?: boolean;
     disabled?: boolean;
 }
 
@@ -65,6 +66,7 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
         maxSearchResults: 0,
         showNoSuggestions: false,
         noSuggestionsNotice: 'No Results',
+        allowFreeText: true,
         disabled: false
     };
     public state = {input: null, isOpen: this.props.open!};
@@ -78,7 +80,7 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
             'aria-haspopup': true,
             'aria-expanded': this.props.open ? true : false
         };
-        const items = this.getFilteredItems();
+        const items = this.getItems();
         const children = !items.length && this.props.showNoSuggestions ?
             this.addToChildren(this.addNoSuggestionsMsg()) :
             this.props.children;
@@ -121,6 +123,9 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
     }
 
     private onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (!this.props.allowFreeText && !this.getFilteredItems(e.target.value).length) {
+            return;
+        }
         this.props.onChange!({value: e.target.value || ''});
         if (!this.props.value && !this.props.open) {
             this.props.onOpenStateChange!({value: this.props.open!});
@@ -136,9 +141,14 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
         this.props.onOpenStateChange!({value: this.props.open!});
     }
 
-    private getFilteredItems(): string[] {
+    private getFilteredItems(value: string): string[] {
         const items = this.props.dataSource!
-            .filter((item: string) => this.props.filter!(item, this.props.value!)) as string[];
+            .filter((item: string) => this.props.filter!(item, value)) as string[];
+        return this.props.maxSearchResults ? items.slice(0, this.props.maxSearchResults) : items;
+    }
+
+    private getItems(): string [] {
+        const items = this.getFilteredItems(this.props.value!);
         return this.props.maxSearchResults ? items.slice(0, this.props.maxSearchResults) : items;
     }
 

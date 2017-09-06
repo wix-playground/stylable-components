@@ -2,6 +2,7 @@ import * as React from 'react';
 import {ClientRenderer, expect, selectDom, simulate, sinon, trigger, waitForDom as gWaitForDom} from 'test-drive-react';
 import {AutoCompleteDemo} from '../../demo/components/auto-complete.demo';
 import {AutoComplete} from '../../src';
+import {sleep} from '../utils';
 
 const autoComp = 'AUTO_COMPLETE';
 const autoCompDemo = autoComp + '_DEMO';
@@ -218,6 +219,32 @@ describe('<AutoComplete />', () => {
         const {select, waitForDom} = clientRenderer.render(<AutoComplete disabled />);
 
         await waitForDom(() => expect(select(autoCompInput)).to.have.attribute('disabled'));
+    });
+
+    it('allows non existing values by default', async () => {
+        const onChange = sinon.spy();
+        const {select, waitForDom} = clientRenderer.render(
+            <AutoComplete open dataSource={items} onChange={onChange}/>
+        );
+
+        await waitForDom(() => expect(select(autoComp)).to.be.present());
+        trigger.change(bodySelect(autoCompInput), 'z');
+        await bodyWaitForDom(() => {
+            expect(onChange).to.have.been.calledOnce;
+            expect(onChange).to.have.been.calledWithMatch({value:'z'});
+        });
+    });
+
+    it('does not allow non existing values if allowFreeText is false', async () => {
+        const onChange = sinon.spy();
+        const {select, waitForDom} = clientRenderer.render(
+            <AutoComplete open dataSource={items} allowFreeText={false} onChange={onChange}/>
+        );
+
+        await waitForDom(() => expect(select(autoComp)).to.be.present());
+        trigger.change(bodySelect(autoCompInput), 'z');
+        sleep(10);
+        expect(onChange).to.not.have.been.calledOnce;
     });
 
     describe('Accessibility', () => {
