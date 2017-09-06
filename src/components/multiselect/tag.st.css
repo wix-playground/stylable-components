@@ -1,0 +1,34 @@
+.root {
+    align-items: center;
+    background-color: #edf7ff;
+    color: #000;
+    cursor: default;
+    display: inline-flex;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    height: 24px;
+    padding: 0 6px;
+    text-align: left;
+}
+
+.label {
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.delete {
+    cursor: pointer;
+    height: 8px;
+    margin: 0 0 0 6px;
+    stroke-linecap: square;
+    stroke-width: 1px;
+    stroke: #4A90E2;
+    visibility: hidden;
+    min-width: 8px;
+}
+
+.root:hover .delete {
+    visibility: visible;
+}

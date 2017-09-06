@@ -8,6 +8,7 @@ import {DatePickerDemo} from './components/date-picker-demo';
 import {DropDownDemo} from './components/drop-down.demo';
 import {ImageDemo} from './components/image-demo';
 import {ModalDemo} from './components/modal-demo';
+import {MultiselectDemo} from './components/multiselect';
 import {NumberInputDemo} from './components/number-input.demo';
 import {PopupDemo} from './components/popup-demo';
 import {RadioGroupDemo} from './components/radio-group-demo';
@@ -23,7 +24,7 @@ setGlobalConfig({devMode: true});
 @stylable(styles)
 export class ComponentsDemo extends React.Component {
     public render() {
-        return (
+        return <MultiselectDemo /> || (
             <div>
                 <ImageDemo />
                 <hr />

@@ -1,0 +1,51 @@
+:import {
+    -st-from: './tag.st.css';
+    -st-default: Tag;
+}
+
+:import {
+    -st-from: "../selection-list/selection-list.st.css";
+    -st-default: SelectionList;
+}
+
+.root {
+    -st-states: focused;
+    border: 1px solid #adbac5;
+    box-sizing: border-box;
+    display: inline-flex;
+    flex-wrap: wrap;
+    width: 282px;
+    padding: 5px 0 0 5px;
+}
+
+.root:focused {
+    border-color: #4a90e2 !important;
+}
+
+.root > Tag {
+    margin: 0 5px 5px 0;
+    max-width: calc(100% - 5px);
+}
+
+.input {
+    border: 0;
+    box-sizing: border-box;
+    flex-grow: 1;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    height: 24px;
+    line-height: 24px;
+    outline: none;
+    margin: 0 5px 5px 0;
+    width: 0;
+}
+
+/* Awaiting a fix in stylable. There should be a way to apply styles to an element outside of the root. */
+:global(.fixme-multiselect-portal) .drop-down-list {
+    width: 100%;
+    box-sizing: border-box;
+    border-top: none;
+    background-color: #fff;
+    max-height: 145px;
+    overflow: auto;
+}

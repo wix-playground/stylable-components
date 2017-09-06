@@ -1,5 +1,6 @@
 import {observer} from 'mobx-react';
 import React = require('react');
+import ReactDOM = require('react-dom');
 import {properties, stylable} from 'wix-react-tools';
 import {ChangeEvent} from '../../types/events';
 import {FormInputProps} from '../../types/forms';
@@ -49,6 +50,7 @@ export class SelectionListView extends React.Component<ViewProps> {
                 style-state={{focused: Boolean(this.props.focused)}}
                 onBlur={this.props.onBlur}
                 onClick={this.handleClick}
+                onMouseDown={this.handleMouseDown}
                 onFocus={this.props.onFocus}
                 onKeyDown={this.props.onKeyDown}
                 tabIndex={this.props.tabIndex}
@@ -58,6 +60,11 @@ export class SelectionListView extends React.Component<ViewProps> {
                 )}
             </div>
         );
+    }
+
+    private handleMouseDown: React.MouseEventHandler<HTMLElement> = event => {
+        // Don't steal focus from dropdown/autocomplete.
+        event.preventDefault();
     }
 
     private handleClick: React.MouseEventHandler<HTMLElement> = event => {
@@ -77,6 +84,13 @@ export class SelectionListView extends React.Component<ViewProps> {
 
 @observer
 class ItemWrapper extends React.Component<{item: SelectionListItem}> {
+    public componentDidUpdate() {
+        if (this.props.item.focused) {
+            const node = ReactDOM.findDOMNode(this);
+            node.scrollIntoView({behavior: 'instant', block: 'nearest', inline: 'nearest'});
+        }
+    }
+
     public render() {
         const item = this.props.item;
         if (item.isOption) {
