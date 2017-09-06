@@ -56,6 +56,12 @@ export type ParentsMap = Map<TreeItemData, TreeItemData | undefined>;
 
 const itemIdPrefix = 'TREE_ITEM';
 
+// This function is not perfect but for now this is
+// a solution that will be changed later
+function getFocusedItemKey(item: TreeItemData) {
+    return item.label;
+}
+
 export const TreeItem: React.SFC<TreeItemProps> =
     SBStateless(({item, itemRenderer, onItemClick, onIconClick, stateMap}) => {
         const state = stateMap.getItemState(item);
@@ -71,7 +77,7 @@ export const TreeItem: React.SFC<TreeItemProps> =
             <li
                 aria-expanded={item.children ? !!state!.isExpanded : undefined}
                 aria-selected={state!.isSelected ? true : undefined}
-                id={item.label}
+                id={getFocusedItemKey(item)}
                 role="treeitem"
             >
                 <div
@@ -162,7 +168,7 @@ export class TreeView extends React.Component<TreeViewProps, {}> {
                 onKeyDown={this.onKeyDown}
                 role="tree"
                 tabIndex={0}
-                aria-activedescendant={this.props.focusedItem && this.props.focusedItem!.label}
+                aria-activedescendant={this.props.focusedItem && getFocusedItemKey(this.props.focusedItem)}
             >
                 {(this.props.dataSource || []).map((item: TreeItemData, index: number) =>
                     <TreeNode
