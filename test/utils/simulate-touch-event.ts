@@ -4,15 +4,15 @@ export function simulateTouchEvent(
     element: any,
     eventType: string,
     options: {
-        x: number,
-        y: number,
+        clientX: number,
+        clientY: number,
         shiftKey?: boolean
     }
 ): void {
     const touchObj = {
         target: element,
-        clientX: options.x,
-        clientY: options.y
+        clientX: options.clientX,
+        clientY: options.clientY
     };
 
     const touchEventInit: any = {
