@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {DropDown} from '../../src';
+import {ChangeEvent} from '../../src/types/events';
 
 export interface DropDownDemoState {
     selectedItem: string | undefined;
@@ -18,10 +19,10 @@ export class DropDownDemo extends React.Component<{}, DropDownDemoState> {
         });
     }
 
-    public onItemClick = (item: string) => {
+    public onItemClick = (e: ChangeEvent<string>) => {
         this.setState({
             open: !this.state.open,
-            selectedItem: item
+            selectedItem: e.value
         });
     }
 

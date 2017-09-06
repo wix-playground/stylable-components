@@ -12,15 +12,15 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
 
-    .caret {
-        margin-right: 5px;
-        vertical-align: middle;
-    }
+.caret {
+    margin-right: 5px;
+    vertical-align: middle;
+}
 
-    .label {
-        margin-left: 5px;
-    }
+.label {
+    margin-left: 5px;
 }
 
 .drop-down-input:hover {

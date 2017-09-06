@@ -3,6 +3,7 @@ import * as React from 'react';
 import {SBComponent} from 'stylable-react-component';
 import {root} from 'wix-react-tools';
 import {Popup} from '../../../src';
+import {FormInputProps} from '../../types/forms';
 import {noop} from '../../utils/noop';
 import {OptionList, SelectionList} from '../selection-list';
 import {CaretDown} from './drop-down-icons';
@@ -16,10 +17,8 @@ const KeyCodes: any = {
     ESC: keycode('escape')
 };
 
-export interface DropDownProps extends OptionList {
+export interface DropDownProps extends OptionList, FormInputProps<string> {
     open?: boolean;
-    value?: string;
-    onChange?: (id: string) => void;
     disabled?: boolean;
     openOnFocus?: boolean;
     children?: React.ReactNode;
@@ -37,18 +36,19 @@ export class DropDown extends React.PureComponent<DropDownProps, DropDownState> 
         value: 'Default Text',
         children: [],
         onChange: noop,
-        tabIndex: 0
+        tabIndex: 0,
+        toggleIcon: CaretDown
     };
 
     public state: DropDownState = {dropdown: null};
 
     public onItemClick = (item: string) => {
         this.toggleDropDown();
-        this.props.onChange!(item);
+        this.props.onChange!({value: item});
     }
 
     public onInputClick: React.EventHandler<React.MouseEvent<HTMLDivElement>> = event => {
-        this.props.onChange!(this.props.value!);
+        this.props.onChange!({value: this.props.value!});
     }
 
     public render() {
@@ -56,6 +56,8 @@ export class DropDown extends React.PureComponent<DropDownProps, DropDownState> 
             'data-automation-id': 'DROP_DOWN',
             'className': 'drop-down'
         });
+
+        const ToggleIcon = this.props.toggleIcon!;
 
         return (
             <div
@@ -67,10 +69,9 @@ export class DropDown extends React.PureComponent<DropDownProps, DropDownState> 
             >
                 <div data-automation-id="DROP_DOWN_INPUT" onClick={this.onInputClick} className="drop-down-input">
                     <span className="label">{this.props.value!}</span>
-                    {this.props.toggleIcon
-                        ? this.props.toggleIcon
-                        : <CaretDown className="caret" />
-                    }
+                    <div className="caret" data-automation-id="ICON">
+                        <ToggleIcon />
+                    </div>
                 </div>
                 <Popup open={!!this.props.open && !this.props.disabled} anchor={this.state.dropdown}>
                     <SelectionList
@@ -93,7 +94,7 @@ export class DropDown extends React.PureComponent<DropDownProps, DropDownState> 
 
     private toggleDropDown() {
         if (this.props.open) { this.state.dropdown!.focus(); }
-        if (!this.props.disabled) { this.props.onChange!(this.props.value!); }
+        if (!this.props.disabled) { this.props.onChange!({value: this.props.value!}); }
     }
 
     private onKeyDown = (e: any) => {
