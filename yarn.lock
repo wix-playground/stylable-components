@@ -569,14 +569,6 @@ bytes@2.5.0:
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/bytes/-/bytes-2.5.0.tgz#4c9423ea2d252c270c41b2bdefeff9bb6b62c06a"
 
-c3-platform@^1.0.0:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/c3-platform/-/c3-platform-1.0.2.tgz#d91c8a7834ee4b68ac17f02d91336d52ddddd5f1"
-  dependencies:
-    karma-junit-reporter "^1.2.0"
-    karma-webdriver-launcher "^1.0.5"
-    karma-webpack "^2.0.4"
-
 callsite@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/callsite/-/callsite-1.0.0.tgz#280398e5d664bd74038b6f0905153e6e8af1bc20"
@@ -2340,12 +2332,6 @@ karma-webdriver-launcher@^1.0.5:
   dependencies:
     wd "^1.0.0"
 
-karma-webdriver-launcher@^1.0.5:
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/karma-webdriver-launcher/-/karma-webdriver-launcher-1.0.5.tgz#b1c3cb347f26e786039c15abf7f19a7791e8ddd7"
-  dependencies:
-    wd "^1.0.0"
-
 karma-webpack@^2.0.4:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/karma-webpack/-/karma-webpack-2.0.4.tgz#3e2d4f48ba94a878e1c66bb8e1ae6128987a175b"
@@ -2387,10 +2373,6 @@ karma@^1.7.0:
     source-map "^0.5.3"
     tmp "0.0.31"
     useragent "^2.1.12"
-
-kebab-case@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/kebab-case/-/kebab-case-1.0.0.tgz#3f9e4990adcad0c686c0e701f7645868f75f91eb"
 
 keycode@^2.1.9:
   version "2.1.9"
@@ -2822,7 +2804,7 @@ multicast-dns@^6.0.1:
     dns-packet "^1.0.1"
     thunky "^0.1.0"
 
-murmurhash@0.0.2, murmurhash@^0.0.2:
+murmurhash@^0.0.2:
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/murmurhash/-/murmurhash-0.0.2.tgz#6f07bd8a1105e709c26fc89420cb5930c24585fe"
 
@@ -4268,47 +4250,41 @@ strip-json-comments@^2.0.0, strip-json-comments@~2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-2.0.1.tgz#3c531942e908c2697c0ec344858c286c7ca0a60a"
 
-stylable-integration@^5.0.1:
-  version "5.0.1"
-  resolved "https://registry.yarnpkg.com/stylable-integration/-/stylable-integration-5.0.1.tgz#f7da8bdace10c0fced3283d7da37ab4343ebbff5"
+stylable-integration@^5.1.3:
+  version "5.1.3"
+  resolved "https://registry.yarnpkg.com/stylable-integration/-/stylable-integration-5.1.3.tgz#8b6204d7ae957a10c5f537f80b344314601cf1bc"
   dependencies:
     deindent "^0.1.0"
-    enhanced-resolve "^3.4.1"
     htap "^1.0.2"
     loader-utils "^1.1.0"
     murmurhash "^0.0.2"
+    webpack-sources "^1.0.1"
     yargs "^8.0.2"
 
 stylable-react-component@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/stylable-react-component/-/stylable-react-component-1.0.3.tgz#8dd58b352f3b57c0991487e6d00a9dde2109f317"
 
-stylable@^4.0.8:
-  version "4.0.8"
-  resolved "https://registry.yarnpkg.com/stylable/-/stylable-4.0.8.tgz#64ddc1e888144463ad2ce2f18ae074d6caf66e92"
+stylable@^4.0.12:
+  version "4.0.12"
+  resolved "https://registry.yarnpkg.com/stylable/-/stylable-4.0.12.tgz#a17926e8cc49b5079572fbc0b4c063a4d9de31b8"
   dependencies:
-    camelcase-css "^1.0.1"
     css-selector-tokenizer "^0.7.0"
     deindent "^0.1.0"
-    kebab-case "^1.0.0"
+    enhanced-resolve "^3.4.1"
     lodash.clonedeep "^4.5.0"
-    murmurhash "0.0.2"
+    murmurhash "^0.0.2"
     postcss "^6.0.3"
     postcss-js "^1.0.0"
     postcss-nested "^2.0.2"
     postcss-safe-parser "^3.0.1"
     postcss-value-parser "^3.3.0"
-    stylis "^3.2.3"
 
 style-loader@~0.13.1:
   version "0.13.2"
   resolved "https://registry.yarnpkg.com/style-loader/-/style-loader-0.13.2.tgz#74533384cf698c7104c7951150b49717adc2f3bb"
   dependencies:
     loader-utils "^1.0.2"
-
-stylis@^3.2.3:
-  version "3.2.13"
-  resolved "https://registry.yarnpkg.com/stylis/-/stylis-3.2.13.tgz#1a5d2ff5ab09f362d6d8065186d526740e9f4f24"
 
 supports-color@3.1.2, supports-color@^3.1.1:
   version "3.1.2"
@@ -4378,9 +4354,9 @@ tar@^2.2.1:
     fstream "^1.0.2"
     inherits "2"
 
-test-drive-react@^0.5.1:
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/test-drive-react/-/test-drive-react-0.5.1.tgz#a01372610f6c031b10a33564679ccee0fe814cb0"
+test-drive-react@^0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/test-drive-react/-/test-drive-react-0.6.0.tgz#d2d156a860f65c75f0f6318bb0c09deb95a1d5b8"
   dependencies:
     test-drive "^0.5.3"
 

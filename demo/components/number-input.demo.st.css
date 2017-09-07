@@ -4,7 +4,7 @@
 }
 
 :import {
-    -st-from: "../../src/style/default-theme/variables.st.css";
+    -st-from: "../../src/style/project.st.css";
     -st-named: BK3;
 }
 
