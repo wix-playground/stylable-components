@@ -35,7 +35,7 @@ export interface TreeItemProps {
     stateMap: TreeStateMap;
 }
 
-export interface TreeViewProps {
+export interface TreeViewProps extends React.HTMLAttributes<HTMLUListElement> {
     dataSource: object[];
     itemRenderer?: React.ComponentType<TreeItemProps>;
     onSelectItem?: React.EventHandler<any>;
@@ -56,6 +56,12 @@ export type ParentsMap = Map<TreeItemData, TreeItemData | undefined>;
 
 const itemIdPrefix = 'TREE_ITEM';
 
+// This function is not perfect but for now this is
+// a solution that will be changed later
+function getFocusedItemKey(item: TreeItemData) {
+    return item.label;
+}
+
 export const TreeItem: React.SFC<TreeItemProps> =
     SBStateless(({item, itemRenderer, onItemClick, onIconClick, stateMap}) => {
         const state = stateMap.getItemState(item);
@@ -64,11 +70,18 @@ export const TreeItem: React.SFC<TreeItemProps> =
         const iconProps = {
             'data-automation-id': `${itemIdPrefix}_${itemLabel}_ICON`,
             'onClick': onIconClick && onIconClick.bind(null, item),
-            'className': 'tree-item-icon'
+            'className': 'tree-item-icon',
+            'aria-hidden': 'true'
         };
 
         return (
-            <div>
+            <li
+                aria-expanded={item.children ? !!state!.isExpanded : undefined}
+                aria-selected={state!.isSelected ? true : undefined}
+                id={getFocusedItemKey(item)}
+                data-automation-id={`${itemIdPrefix}_${itemLabel}_NODE`}
+                role="treeitem"
+            >
                 <div
                     data-automation-id={`${itemIdPrefix}_${itemLabel}`}
                     className="tree-node"
@@ -87,8 +100,8 @@ export const TreeItem: React.SFC<TreeItemProps> =
                         {item.label}
                     </span>
                 </div>
-                <div className="nested-tree">
-                    {state!.isExpanded && (item.children || []).map((child: TreeItemData, index: number) =>
+                {item.children && <ul className="nested-tree" role="group">
+                    {state!.isExpanded && item.children.map((child: TreeItemData, index: number) =>
                         <TreeNode
                             item={child}
                             onItemClick={onItemClick}
@@ -98,8 +111,8 @@ export const TreeItem: React.SFC<TreeItemProps> =
                             key={`${index}`}
                         />
                     )}
-                </div>
-            </div>
+                </ul>}
+            </li>
         );
     }, nodeStyle);
 
@@ -152,10 +165,12 @@ export class TreeView extends React.Component<TreeViewProps, {}> {
         const rootProps = root(this.props, {'data-automation-id': 'TREE_VIEW', 'className': ''});
 
         return (
-            <div
+            <ul
                 {...rootProps}
-                tabIndex={0}
                 onKeyDown={this.onKeyDown}
+                role="tree"
+                tabIndex={0}
+                aria-activedescendant={this.props.focusedItem && getFocusedItemKey(this.props.focusedItem)}
             >
                 {(this.props.dataSource || []).map((item: TreeItemData, index: number) =>
                     <TreeNode
@@ -167,7 +182,7 @@ export class TreeView extends React.Component<TreeViewProps, {}> {
                         key={`${index}`}
                     />
                 )}
-            </div>
+            </ul>
         );
     }
 
