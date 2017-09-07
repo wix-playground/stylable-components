@@ -100,10 +100,20 @@ export class ComponentsDemo extends React.Component<{}, {}>{
 
 ### Subcomponents (pseudo-elements)
 
-| selector  | description                            | type                                     |
-| :-------- | -------------------------------------- | ---------------------------------------- |
-| ::stepper | Allows you to style the stepper arrows | Style the internal `<Stepper/>` component. This component exposes some internal styles. Consult the (Link to Documentation) to see which subcomponents and states are available |
+| selector      | description                            | type                                     |
+| :-------------| -------------------------------------- | ---------------------------------------- |
+| ::stepper     | Allows you to style the stepper arrows | Style the internal `<Stepper/>` component. This component exposes some internal styles. Consult the (Link to Documentation) to see which subcomponents and states are available |
+| ::placeholder | Allows you to style the placeholder    | HTML Element. This subcomponents has no subcomponents of its own* |
 
+**if a subcomponent is a COMPONENT, it might have subcomponents -> then we will link here to its documentation*
+
+You can change color of `::placeholder` subcomponent by changing `color` property.
+
+```css
+TimePicker::placeholder {
+	color: red;
+}
+```
 
 
 ### Custom CSS States (pseudo-classes)

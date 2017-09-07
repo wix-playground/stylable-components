@@ -1,7 +1,6 @@
 import {codes as KeyCodes} from 'keycode';
 import * as React from 'react';
 import {SBComponent} from 'stylable-react-component';
-import inputStyles from '../../style/default-theme/controls/input.st.css';
 import {isNumber, noop} from '../../utils';
 import {Modifiers, Stepper} from '../stepper';
 import styles from './number-input.st.css';
@@ -167,7 +166,7 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
                 }
                 <input
                     ref={input => this.inputRef = input}
-                    className={`${inputStyles.root} native-input`}
+                    className="native-input"
                     data-automation-id="NATIVE_INPUT_NUMBER"
                     type="number"
                     name={name}
