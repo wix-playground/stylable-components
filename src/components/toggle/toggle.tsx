@@ -10,6 +10,8 @@ export interface Props {
     onChange?: (selected: boolean) => void;
     label?: string;
     tabIndex?: number;
+    required?: boolean;
+    name?: string;
     rtl?: boolean;
 }
 export interface State {
@@ -22,7 +24,8 @@ export default class Toggle extends React.Component<Props, State> {
         checked: false,
         disabled: false,
         error: false,
-        rtl: false
+        rtl: false,
+        required: false
     };
 
     public state = {
@@ -38,6 +41,8 @@ export default class Toggle extends React.Component<Props, State> {
             error,
             rtl,
             label,
+            name,
+            required,
             tabIndex
         } = this.props;
         const {focus} = this.state;
@@ -59,8 +64,10 @@ export default class Toggle extends React.Component<Props, State> {
                         data-automation-id="TOGGLE_INPUT"
                         className="input"
                         type="checkbox"
+                        name={name}
                         aria-label={label}
                         checked={checked}
+                        required={required}
                         onChange={this.toggle}
                         tabIndex={tabIndex}
                         onFocus={this.onInputFocus}
