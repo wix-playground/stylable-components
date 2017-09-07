@@ -179,7 +179,7 @@ export class TreeView extends React.Component<TreeViewProps, {}> {
     }
 
     public collapseAll = (): void => {
-        this.collapse(this.props.dataSource[0] as TreeItemData);
+        this.props.dataSource.forEach(this.collapse);
     }
 
     public expand = (item: TreeItemData): void => {
@@ -190,7 +190,7 @@ export class TreeView extends React.Component<TreeViewProps, {}> {
     }
 
     public expandAll = (): void => {
-        this.expand(this.props.dataSource[0] as TreeItemData);
+        this.props.dataSource.forEach(this.expand);
     }
 
     public selectItem(item: TreeItemData) {
