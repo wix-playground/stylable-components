@@ -1,38 +1,75 @@
 import React = require('react');
-import {Popup} from '../../src/';
+import {SBComponent} from 'stylable-react-component';
+import {Popup, PopupHorizontalPosition, PopupPositionPoint, PopupVerticalPosition, RadioGroup} from '../../src/';
+import {ChangeEvent} from '../../src/types/events';
+import styles from './popup-demo.st.css';
 
 export interface DemoState {
     div: HTMLElement | null;
     isOpen: boolean;
+    pVertical: PopupVerticalPosition;
+    pHorizontal: PopupHorizontalPosition;
+    aVertical: PopupVerticalPosition;
+    aHorizontal: PopupHorizontalPosition;
 }
 
+@SBComponent(styles)
 export class PopupDemo extends React.Component<{}, DemoState> {
-    public state = {div: null, isOpen: false};
+    public state = {
+        div: null,
+        isOpen: false,
+        pVertical: 'top' as PopupVerticalPosition,
+        pHorizontal: 'left' as PopupHorizontalPosition,
+        aVertical: 'bottom' as PopupVerticalPosition,
+        aHorizontal: 'left' as PopupHorizontalPosition
+    };
 
     public render() {
-        const divDim: React.CSSProperties = {width: '50px', border: '1px solid blue'};
+        const popupPos: PopupPositionPoint = {
+            vertical: this.state.pVertical, horizontal: this.state.pHorizontal
+        };
+        const anchorPos: PopupPositionPoint = {
+            vertical: this.state.aVertical, horizontal: this.state.aHorizontal
+        };
+
+        const vPos = [{value: 'top'}, {value: 'center'}, {value: 'bottom'}];
+        const hPos = [{value: 'left'}, {value: 'center'}, {value: 'right'}];
         return (
             <div>
-                <div
+                <button
                     ref={this.updateState}
                     onClick={this.onClick}
-                    style={divDim}
+                    className="anchor"
                     data-automation-id="POPUP_DEMO_DIV"
                 >
-                    Anchor
-                </div>
+                    {this.state.isOpen ? 'Hide Popup' : 'Show Popup'}
+                </button>
                 <Popup
                     anchor={this.state.div}
-                    popupPosition={{vertical: 'bottom', horizontal: 'left'}}
-                    syncWidth={false}
-                    anchorPosition={{vertical: 'top', horizontal: 'right'}}
+                    popupPosition={popupPos}
+                    anchorPosition={anchorPos}
                     open={this.state.isOpen}
                 >
-                    <div style={{background: 'green', color: 'white'}}>
-                        <span>Popup Header</span>
-                        <div>Popup Body</div>
-                    </div>
+                    <div style={{color: 'white', backgroundColor: 'black'}}>Hello!</div>
                 </Popup>
+                <div className="position">
+                    <div className="category">
+                        <h3>Popup position - vertical</h3>
+                        <RadioGroup dataSource={vPos} className="radio" value="top" onChange={this.changePVertical}/>
+                    </div>
+                    <div className="category">
+                        <h3>Popup position - horizontal</h3>
+                        <RadioGroup className="radio" value="left" onChange={this.changePHorizontal} dataSource={hPos}/>
+                    </div>
+                    <div className="category">
+                        <h3>Anchor position - vertical</h3>
+                        <RadioGroup className="radio" value="bottom" onChange={this.changeAVertical} dataSource={vPos}/>
+                    </div>
+                    <div>
+                        <h3>Anchor position - horizontal</h3>
+                        <RadioGroup className="radio" value="left" onChange={this.changeAHorizontal} dataSource={hPos}/>
+                    </div>
+                </div>
             </div>
         );
     }
@@ -43,6 +80,22 @@ export class PopupDemo extends React.Component<{}, DemoState> {
 
     private updateState = (ref: HTMLElement | null) => {
         this.setState({div: ref, isOpen: this.state.isOpen});
+    }
+
+    private changePVertical = (e: ChangeEvent<PopupVerticalPosition>) => {
+        this.setState({pVertical: e.value});
+    }
+
+    private changePHorizontal = (e: ChangeEvent<PopupHorizontalPosition>) => {
+        this.setState({pHorizontal: e.value});
+    }
+
+    private changeAVertical = (e: ChangeEvent<PopupVerticalPosition>) => {
+        this.setState({aVertical: e.value});
+    }
+
+    private changeAHorizontal = (e: ChangeEvent<PopupHorizontalPosition>) => {
+        this.setState({aHorizontal: e.value});
     }
 
 }
