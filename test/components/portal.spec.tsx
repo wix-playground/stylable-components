@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {ClientRenderer, expect, selectDom, waitFor} from 'test-drive-react';
 import {Portal} from '../../src';
+import {PortalTestDriver} from '../../test-kit/components/portal-driver';
 
 const portalId = 'PORTAL';
 
@@ -12,14 +13,18 @@ describe('<Portal />', function() {
     afterEach(function() {clientRenderer.cleanup(); });
 
     it('displays the portal and renders its children', async function() {
-        clientRenderer.render(
+        const {result} = clientRenderer.render(
             <Portal>
                 <span data-automation-id="SPAN">Portal Body</span>
             </Portal>);
 
+        debugger;
+
+        const driver = new PortalTestDriver(result as Portal);
+
         await waitFor(() => {
-            expect(bodySelect(portalId)).to.be.present();
-            expect(bodySelect(portalId, 'SPAN')).to.be.present();
+            expect(driver.portal).to.be.present();
+            expect(driver.content).to.be.present();
         });
     });
 
