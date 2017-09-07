@@ -1,10 +1,9 @@
 import {DriverBase, simulate} from 'test-drive-react';
 import {CheckBox} from '../../src';
-import HTML = Mocha.reporters.HTML;
 
 export class CheckBoxTestDriver extends DriverBase {
 
-    static ComponentClass = CheckBox;// tslint:disable-line
+    public static ComponentClass = CheckBox;
 
     public isChecked(): boolean {
         return !!this.select('CHECKBOX_TICKMARK');
