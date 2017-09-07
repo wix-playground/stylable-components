@@ -5,7 +5,13 @@ import {CheckBox, CheckBoxIconProps} from '../../src';
 
 const boxSVG: React.SFC<CheckBoxIconProps> = props => {
     return (
-        <svg data-automation-id="CHECKBOX_BOX_TEST" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+        <svg
+            data-automation-id="CHECKBOX_BOX"
+            data-name="custom-box"
+            height="1em"
+            width="1em"
+            xmlns="http://www.w3.org/2000/svg"
+        >
             <path fill="none" stroke="black" d="M.5.5h15v15H.5z"/>
         </svg>
     );
@@ -13,7 +19,13 @@ const boxSVG: React.SFC<CheckBoxIconProps> = props => {
 
 const tickSVG: React.SFC<CheckBoxIconProps> = props => {
     return (
-        <svg data-automation-id="CHECKBOX_TICKMARK_TEST" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+        <svg
+            data-automation-id="CHECKBOX_TICKMARK"
+            data-name="custom-tickmark"
+            height="1em"
+            width="1em"
+            xmlns="http://www.w3.org/2000/svg"
+        >
             <path stroke="black" strokeLinecap="square" strokeWidth="1.5" d="M5 8.685l2.496 1.664M8 10.685L11.748 6"/>
         </svg>
     );
@@ -21,7 +33,11 @@ const tickSVG: React.SFC<CheckBoxIconProps> = props => {
 
 const IndeterminateSVG: React.SFC<CheckBoxIconProps> = props => {
     return (
-        <svg data-automation-id="CHECKBOX_INDETERMINATE_TEST" xmlns="http://www.w3.org/2000/svg">
+        <svg
+            data-automation-id="CHECKBOX_INDETERMINATE"
+            data-name="custom-indeterminate"
+            xmlns="http://www.w3.org/2000/svg"
+        >
             <path d="M5 0h8v2H0z"/>
         </svg>
     );
@@ -119,9 +135,10 @@ describe('<Checkbox/>', function() {
         );
 
         await waitForDom(() => {
-            expect(select('CHECKBOX_BOX_TEST')).to.be.present();
+            expect(select('CHECKBOX_BOX')).to.be.present();
+            expect(select('CHECKBOX_BOX')).to.have.attribute('data-name', 'custom-box');
             expect(select('CHECKBOX_LABEL')).to.have.text('yoyo');
-            expect([select('CHECKBOX_BOX_TEST'), select('CHECKBOX_LABEL')]).to.be.verticallyAligned('bottom', 5);
+            expect([select('CHECKBOX_BOX'), select('CHECKBOX_LABEL')]).to.be.verticallyAligned('bottom', 5);
         });
     });
 
@@ -135,8 +152,10 @@ describe('<Checkbox/>', function() {
         );
 
         await waitForDom(() => {
-            expect(select('CHECKBOX_BOX_TEST')).to.be.present();
-            expect(select('CHECKBOX_TICKMARK_TEST')).to.be.present();
+            expect(select('CHECKBOX_BOX')).to.be.present();
+            expect(select('CHECKBOX_BOX')).to.have.attribute('data-name', 'custom-box');
+            expect(select('CHECKBOX_TICKMARK')).to.be.present();
+            expect(select('CHECKBOX_TICKMARK')).to.have.attribute('data-name', 'custom-tickmark');
         });
     });
 
@@ -334,7 +353,8 @@ describe('<Checkbox/>', function() {
             );
 
             await waitForDom(() => {
-                expect(select('CHECKBOX_INDETERMINATE_TEST')).to.be.present();
+                expect(select('CHECKBOX_INDETERMINATE')).to.be.present();
+                expect(select('CHECKBOX_INDETERMINATE')).to.have.attribute('data-name', 'custom-indeterminate');
             });
         });
 

@@ -88,7 +88,7 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                             value={this.state.value}
                             min={min}
                             max={max}
-                            label={`It's simple slider.`}
+                            label="It's simple slider."
                             onChange={this.onSliderChange}
                         />
                     </td>

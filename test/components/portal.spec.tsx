@@ -98,4 +98,14 @@ describe('<Portal />', function() {
             /* tslint:enable:no-bitwise */
         });
     });
+
+    it('renders with a className passed as a prop', async function() {
+        clientRenderer.render(
+            <Portal className="test-class">
+                <span data-automation-id="SPAN">Portal Body</span>
+            </Portal>
+        );
+
+        await waitFor(() => expect(bodySelect(portalId)!.className).to.contain('test-class'));
+    });
 });

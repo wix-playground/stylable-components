@@ -1,0 +1,100 @@
+@namespace "RadioButton";
+
+:vars {
+    defaultStroke: #adbbc6;
+    checkedStroke: #4A90E2;
+    checkedFill: #4A90E2;
+    disabledStroke: #d1d1d1;
+    disabledFill: #f1f1f1;
+    disabledCheckedFill: #d1d1d1;
+    focusOutline: rgba(92, 180, 255, 0.5);
+}
+
+.root {
+    -st-states: disabled, isLeftLabel, focused, checked;
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+}
+
+.root:disabled {
+    cursor: default;
+}
+
+.contentContainer {
+    display: flex;
+    align-items: center;
+}
+
+.root:isLeftLabel .contentContainer {
+    flex-direction: row-reverse;
+}
+
+.radioInput {
+    position: absolute;
+    overflow: hidden;
+    height: 1px;
+    width: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+    opacity: 0;
+}
+
+.iconContainer {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.radioSVG {
+    cursor: inherit;
+    align-self: center;
+    width: 16px;
+    height: 16px;
+    fillRule: evenodd;
+    stroke: value(defaultStroke);
+    border-radius: 50%;
+    box-sizing: content-box;
+    fill: none;
+}
+
+.root:checked:not(:disabled) .radioSVG {
+    stroke: value(checkedStroke);
+}
+
+.root:hover:not(:disabled) .radioSVG{
+    stroke: value(checkedStroke)
+}
+
+.root:disabled .radioSVG {
+    stroke: value(disabledStroke);
+}
+
+.root:disabled:not(:checked) .radioSVG {
+    fill: value(disabledFill);
+}
+
+.root:focused .radioSVG {
+    border: 4px solid  value(focusOutline);
+}
+
+.checkMark {
+    fill: value(checkedFill);
+}
+
+.root:disabled .checkMark {
+    fill: value(disabledCheckedFill);
+}
+
+.radioLabel {
+    margin-left: 10px;
+}
+
+.root:isLeftLabel .radioLabel {
+    margin-left: 0;
+    margin-right: 10px;
+}
+

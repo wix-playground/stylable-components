@@ -1,9 +1,8 @@
 import {codes as KeyCodes} from 'keycode';
 import * as React from 'react';
 import {SBComponent} from 'stylable-react-component';
-import inputStyles from '../../style/default-theme/controls/input.st.css';
 import {isNumber, noop} from '../../utils';
-import {Stepper} from '../stepper';
+import {Modifiers, Stepper} from '../stepper';
 import styles from './number-input.st.css';
 
 export interface NumberInputProps {
@@ -167,7 +166,7 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
                 }
                 <input
                     ref={input => this.inputRef = input}
-                    className={`${inputStyles.root} native-input`}
+                    className="native-input"
                     data-automation-id="NATIVE_INPUT_NUMBER"
                     type="number"
                     name={name}
@@ -247,9 +246,11 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
         this.commit(next);
     }
 
-    private handleIncrement = () => this.stepValue(Direction.Increase);
+    private handleIncrement = ({shiftKey}: Modifiers) =>
+        this.stepValue(Direction.Increase, shiftKey ? 10 : 1)
 
-    private handleDecrement = () => this.stepValue(Direction.Decrease);
+    private handleDecrement = ({shiftKey}: Modifiers) =>
+        this.stepValue(Direction.Decrease, shiftKey ? 10 : 1)
 
     private handleFocus: React.FocusEventHandler<HTMLElement> =
         e => this.setState({focus: true})

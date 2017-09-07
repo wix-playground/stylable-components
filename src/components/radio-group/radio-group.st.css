@@ -1,37 +1,14 @@
-.radio-container {
-    display: flex;
-    display: -ms-flexbox;
-    position: relative;
+@namespace "RadioGroup";
+
+:import{
+    -st-from: "./radio-button.st.css";
+    -st-default: Radio;
 }
 
-.enabled {
-    cursor: pointer;
+.root {
+    display: inline-block;
 }
 
-.disabled {
-    cursor: default;
-}
-
-.radio-input {
-    cursor: inherit;
-    opacity: 0;
-    position: absolute;
-    top: 0;
-    left: 0;
-    margin: 0;
-}
-
-.radio-svg {
-    cursor: inherit;
-    align-self: center;
-    width: 16px;
-    height: 16px;
-}
-
-.leftLabel {
-    margin-right: 10px;
-}
-
-.rightLabel {
-    margin-left: 10px;
+.radioGroupChild {
+    -st-extends: Radio;
 }

@@ -1,20 +1,19 @@
 :import {
-    -st-from: "../../style/default-theme/variables.st.css";
+    -st-from: "../../style/project.st.css";
     -st-named: color_MainText,
                color_MainText_Background,
                color_Disabled,
                borderWidth,
                inputHeight,
+               DS1,
                BK3,
                PR3;
 }
 
-:import {
-    -st-from: "../../style/default-theme/controls/button.st.css";
-}
-
 .root {
-    display: inline-block;
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: space-between;
 
     position: relative;
 
@@ -23,14 +22,14 @@
 }
 
 .control {
+    display: flex;
     width: 100%;
-
-    position: absolute;
 
     margin: 0;
     padding: 0;
+    border: 0;
 
-    background-color: value(color_MainText_Background);
+    background: transparent;
     color: value(BK3);
 }
 
@@ -41,26 +40,13 @@
     flex: 1;
 }
 
-.control:hover,
-.control:focus,
 .control:disabled {
-    color: value(color_MainText_Background);
+    color: value(DS1);
 }
+
+.control:focus,
 .control:hover {
-    background: transparent;
     color: value(PR3);
 }
-
-.up {
-    top: 0;
-    right: 0;
-    bottom: 50%;
-    left: 0;
-}
-
-.down {
-    top: 50%;
-    right: 0;
-    bottom: 0;
-    left: 0;
-}
+.up {}
+.down {}

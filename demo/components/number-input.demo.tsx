@@ -1,7 +1,15 @@
 import * as React from 'react';
+import {SBComponent} from 'stylable-react-component';
 import {NumberInput} from '../../src/components/number-input';
+import styles from './number-input.demo.st.css';
 
-export class NumberInputDemo extends React.Component<{}, {value?: number}> {
+export interface State {
+    sharedValue?: number;
+    basicValue?: number;
+}
+
+@SBComponent(styles)
+export class NumberInputDemo extends React.Component<{}, State> {
 
     constructor() {
         super();
@@ -9,43 +17,49 @@ export class NumberInputDemo extends React.Component<{}, {value?: number}> {
     }
 
     public render() {
+        const {basicValue, sharedValue} = this.state;
         return (
             <div>
                 <div>
                     <h3>Basic</h3>
                     <NumberInput
-                        value={this.state.value}
+                        value={basicValue}
+                        step={1}
+                        max={100}
+                        onChange={this.handleBasicValueChange}
+                        placeholder="How Many?"
+                    >
+                        <TrendingUp data-slot="prefix" />
+                        <span data-slot="suffix">USD</span>
+                    </NumberInput>
+                </div>
+                <div>
+                    <h3>With min/max/step</h3>
+                    <NumberInput
+                        value={sharedValue}
                         step={2}
                         min={-5}
                         max={5}
-                        onChange={this.handleValueChange}
+                        onChange={this.handleSharedValueChange}
                         placeholder="How Many?"
-                    >
-                        <span data-slot="prefix">prefix</span>
-                        <span data-slot="suffix">suffix</span>
-                    </NumberInput>
+                    />
                 </div>
                 <div>
                     <h3>Disabled</h3>
                     <NumberInput
                         disabled
-                        value={this.state.value}
+                        value={sharedValue}
                         placeholder="Always Disabled!"
-                    >
-                        <span data-slot="prefix">prefix</span>
-                        <span data-slot="suffix">suffix</span>
-                    </NumberInput>
+                    />
                 </div>
                 <div>
                     <h3>Error</h3>
                     <NumberInput
                         error
-                        value={this.state.value}
+                        value={sharedValue}
+                        onChange={this.handleSharedValueChange}
                         placeholder="Always wrong!"
-                    >
-                        <span data-slot="prefix">prefix</span>
-                        <span data-slot="suffix">suffix</span>
-                    </NumberInput>
+                    />
                 </div>
                 <div>
                     <h3>Uncontrolled</h3>
@@ -55,14 +69,31 @@ export class NumberInputDemo extends React.Component<{}, {value?: number}> {
                         min={-5}
                         max={5}
                         placeholder="Is Uncontrolled"
-                    >
-                        <span data-slot="prefix">prefix</span>
-                        <span data-slot="suffix">suffix</span>
-                    </NumberInput>
+                    />
                 </div>
             </div>
         );
     }
 
-    private handleValueChange = (value?: number) => this.setState({value});
+    private handleSharedValueChange = (value?: number) => this.setState({sharedValue: value});
+    private handleBasicValueChange = (value?: number) => this.setState({basicValue: value});
+
 }
+
+const TrendingUp = (props?: React.SVGAttributes<SVGElement>) => (
+    <svg
+        {...props}
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+    >
+        <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+        <polyline points="17 6 23 6 23 12"/>
+    </svg>
+);

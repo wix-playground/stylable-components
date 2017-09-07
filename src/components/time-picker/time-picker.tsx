@@ -1,7 +1,9 @@
 import * as keycode from 'keycode';
 import * as React from 'react';
 import {SBComponent} from 'stylable-react-component';
-import {Stepper} from '../stepper';
+import {ScreenReaderNotification} from '../screen-reader-notification';
+import {Modifiers, Stepper} from '../stepper';
+import {LABELS} from './strings';
 import styles from './time-picker.st.css';
 import {
     Ampm, ampmLabels, Format,
@@ -17,6 +19,9 @@ export interface Props {
     disabled?: boolean;
     label?: string;
     name?: string;
+    required?: boolean;
+    error?: boolean;
+    rtl?: boolean;
 }
 
 export interface State {
@@ -26,6 +31,7 @@ export interface State {
     format: Format;
     ampm: Ampm;
     currentSegment: Segment;
+    notification?: string;
 }
 
 const ampmSwitch = {
@@ -55,7 +61,10 @@ function propsValueToSegments(value?: string, format?: Format): {hh?: string, mm
 export class TimePicker extends React.Component<Props, State> {
     public static defaultProps: Partial<Props> = {
         format: is12TimeFormat ? 'ampm' : '24h',
-        disabled: false
+        disabled: false,
+        error: false,
+        rtl: false,
+        required: false
     };
     private nativeInput: HTMLInputElement | null;
     private segments: {
@@ -90,8 +99,8 @@ export class TimePicker extends React.Component<Props, State> {
     }
 
     public render() {
-        const {focus, hh, mm, ampm, format} = this.state;
-        const {label, placeholder, disabled, name} = this.props;
+        const {focus, hh, mm, ampm, format, notification} = this.state;
+        const {label, placeholder, disabled, error, required, rtl, name} = this.props;
         const isValueSet = hh !== undefined || mm !== undefined;
         const timeSegments: TimeSegment[] = ['hh', 'mm'];
 
@@ -100,14 +109,21 @@ export class TimePicker extends React.Component<Props, State> {
                 data-automation-id="TIME_PICKER"
                 cssStates={{
                     focus,
-                    disabled: disabled!,
-                    empty: !isValueSet
+                    'error': error!,
+                    'disabled': disabled!,
+                    'empty': !isValueSet,
+                    'rtl': rtl!,
+                    'has-placeholder': Boolean(placeholder)
                 }}
                 onMouseDown={this.onRootMouseDown}
             >
-                {timeSegments.map(segment =>
-                    <div key={segment} className={'input-wrap ' + segment}>
+                {notification &&
+                    <ScreenReaderNotification>{notification}</ScreenReaderNotification>
+                }
+                <div className="time">
+                    {timeSegments.map(segment =>
                         <input
+                            key={segment}
                             data-automation-id={'TIME_PICKER_INPUT_' + segment.toUpperCase()}
                             className="input"
                             type="text"
@@ -117,14 +133,19 @@ export class TimePicker extends React.Component<Props, State> {
                             placeholder={this.state[segment] ? '' : '00'}
                             disabled={disabled}
                             name={segment}
+
+                            role="spinbutton"
+                            aria-label={LABELS[segment]}
+                            aria-valuetext={this.state[segment]}
+
                             onMouseDown={this.onInputMouseDown}
                             onChange={this.onInputChange}
                             onFocus={this.onInputFocus}
                             onBlur={this.onBlur}
                             onKeyDown={this.onKeyDown}
                         />
-                    </div>
-                )}
+                    )}
+                </div>
                 {format === 'ampm' &&
                     <div
                         data-automation-id="TIME_PICKER_AMPM"
@@ -132,6 +153,11 @@ export class TimePicker extends React.Component<Props, State> {
                         ref={elem => this.segments.ampm = elem}
                         tabIndex={disabled || isTouchTimeInputSupported ? -1 : 0}
                         children={ampmLabels[ampm]}
+
+                        role="spinbutton"
+                        aria-label={LABELS.ampm}
+                        aria-valuetext={ampmLabels[ampm]}
+
                         onMouseDown={this.onAmpmMouseDown}
                         onFocus={this.onAmpmFocus}
                         onBlur={this.onBlur}
@@ -146,7 +172,7 @@ export class TimePicker extends React.Component<Props, State> {
                         onMouseDown={this.onRootMouseDown}
                     />
                 }
-                {!isTouchTimeInputSupported && !disabled && isValueSet &&
+                {!isTouchTimeInputSupported &&
                     <Stepper
                         className="stepper"
                         onMouseDown={this.onStepperMouseDown}
@@ -161,6 +187,7 @@ export class TimePicker extends React.Component<Props, State> {
                         tabIndex={isTouchTimeInputSupported ? 0 : -1}
                         ref={elem => this.nativeInput = elem}
                         name={name}
+                        required={required}
                         aria-label={label}
                         value={this.getValue()}
                         disabled={disabled}
@@ -273,8 +300,8 @@ export class TimePicker extends React.Component<Props, State> {
         e.preventDefault();
     }
 
-    private onStepperUp = (e: React.MouseEvent<HTMLButtonElement>) => this.changeValue(1, e.shiftKey ? 10 : 1);
-    private onStepperDown = (e: React.MouseEvent<HTMLButtonElement>) => this.changeValue(-1, e.shiftKey ? 10 : 1);
+    private onStepperUp = ({shiftKey}: Modifiers) => this.changeValue(1, shiftKey ? 10 : 1);
+    private onStepperDown = ({shiftKey}: Modifiers) => this.changeValue(-1, shiftKey ? 10 : 1);
 
     private onAmpmMouseDown = (e: React.SyntheticEvent<HTMLDivElement>) => {
         e.stopPropagation();
@@ -415,6 +442,9 @@ export class TimePicker extends React.Component<Props, State> {
 
     private commit = () => {
         const value = this.getValue();
+        this.setState({
+            notification: value
+        });
         if (this.props.onChange && this.lastValue !== value) {
             this.lastValue = value;
             this.props.onChange(value);
