@@ -6,7 +6,7 @@
 .tree-node {
     -st-states: selected, focused;
     cursor: pointer;
-    padding: 3px 7px 5px;
+    padding: 5px 7px;
     border: 1px solid transparent;
     list-style: none;
 }

@@ -108,7 +108,6 @@ export class TreeViewDemo extends React.Component<{}, TreeViewDemoState> {
                     <SelectedItem selectedItem={this.state.selectedItem} />
                     <br />
                     <TreeView
-                        className="tree-view"
                         dataSource={treeData}
                         onFocusItem={this.onFocusItem}
                         focusedItem={this.state.focusedItem}
