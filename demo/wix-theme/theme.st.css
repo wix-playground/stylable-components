@@ -20,12 +20,18 @@
 :import {
 	-st-from: "../../src/components/time-picker/time-picker.st.css";
 	-st-default: TimePicker;
+}
 
+:import {
+	-st-from: "../../src/components/stepper/stepper.st.css";
+	-st-default: Stepper;
 }
 
 
 /* General */
-
+.root {
+	background: value(D70);
+}
 /* Fonts */
 
 
@@ -63,14 +69,6 @@
 
 
 /* Basic Styles */
-.inputHover {
-	-st-variant: true; /* universal variant */
-	border: 10px solid red;
-	background: red;
-	outline: 10px solid red;
-	color:red;
-}
-
 
 /* Number Input */
 
@@ -81,10 +79,9 @@ NumberInput {
 }
 
 NumberInput input {
-	-st-extends: inputHover;
-	/* font-family: "HelveticaNeue-Regular", sans-serif;
+	font-family: "HelveticaNeue-Regular", sans-serif;
 	color: value(D10);
-	background: transparent; */
+	background: transparent;
 }
 
 NumberInput input::placeholder {
@@ -92,11 +89,11 @@ NumberInput input::placeholder {
 	color: value(D40);
 }
 
-NumberInput::prefix {
+/* NumberInput::prefix {
 	background: red;
 	background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIHdpZHRoPSIxMnB4IiBoZWlnaHQ9IjEycHgiIHZpZXdCb3g9IjAgMCAxMiAxMiIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj4gICAgICAgIDx0aXRsZT5pYy1jaGVja2JveC1vZmY8L3RpdGxlPiAgICA8ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz4gICAgPGRlZnM+PC9kZWZzPiAgICA8ZyBpZD0iU3ltYm9scyIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+ICAgICAgICA8ZyBpZD0iaWMtY2hlY2tib3gtb2ZmIiBmaWxsPSIjREFFRkZFIj4gICAgICAgICAgICA8cmVjdCBpZD0iUmVjdGFuZ2xlLTI2OSIgeD0iMSIgeT0iNSIgd2lkdGg9IjEwIiBoZWlnaHQ9IjIiPjwvcmVjdD4gICAgICAgIDwvZz4gICAgPC9nPjwvc3ZnPg==);
 	background-repeat: no-repeat;
-}
+} */
 
 NumberInput:hover {
 	background: value(B60);
@@ -105,7 +102,7 @@ NumberInput:hover {
 
 NumberInput::stepper {
 	width: 30px;
-	background: red;
+	background: transparent;
 }
 
 NumberInput::stepper::down, NumberInput::stepper::up {
@@ -115,22 +112,6 @@ NumberInput::stepper::down, NumberInput::stepper::up {
 NumberInput::stepper::down::control-icon, NumberInput::stepper::up::control-icon {
 	border: none;
 	color: value(B10);
-}
-
-/* NumberInput::stepper::up::control-icon {
-	position: relative;
-	top: 2px;
-} */
-
-NumberInput::stepper::up:hover {
-	position: relative;
-	top: 2px;
-	color: green;
-}
-
-NumberInput::stepper::down::control-icon {
-	position: relative;
-	bottom: 2px;
 }
 
 NumberInput::stepper::down::control-icon:hover, NumberInput::stepper::up::control-icon:hover {
@@ -175,13 +156,14 @@ Toggle:checked {
 
 Toggle:checked::switch {
 	background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIHdpZHRoPSIxMnB4IiBoZWlnaHQ9IjEycHgiIHZpZXdCb3g9IjAgMCAxMiAxMiIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj4gICAgICAgIDx0aXRsZT5pYy1jaGVja2JveC1vbjwvdGl0bGU+ICAgIDxkZXNjPkNyZWF0ZWQgd2l0aCBTa2V0Y2guPC9kZXNjPiAgICA8ZGVmcz48L2RlZnM+ICAgIDxnIGlkPSJTeW1ib2xzIiBzdHJva2U9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4gICAgICAgIDxnIGlkPSJpYy1jaGVja2JveC1vbiIgZmlsbC1ydWxlPSJub256ZXJvIiBmaWxsPSIjMzg5OUVDIj4gICAgICAgICAgICA8ZyBpZD0iMTJ4MTIiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEuMDAwMDAwLCAyLjAwMDAwMCkiPiAgICAgICAgICAgICAgICA8cG9seWdvbiBpZD0iU2hhcGUiIHBvaW50cz0iOC44IDAgMy44IDUgMS4yIDIuNSAwIDMuNyAzLjggNy41IDEwIDEuMiI+PC9wb2x5Z29uPiAgICAgICAgICAgIDwvZz4gICAgICAgIDwvZz4gICAgPC9nPjwvc3ZnPg==);
+	background-color: white;
 }
 
 Toggle::switch {
 	width: 22px;
 	height: 22px;
 	box-shadow: 0 2px 1px 0 rgba(32, 69, 94, 0.50);
-	background-color: value(D80);
+	background-color: white;
 	background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIHdpZHRoPSIxMnB4IiBoZWlnaHQ9IjEycHgiIHZpZXdCb3g9IjAgMCAxMiAxMiIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj4gICAgICAgIDx0aXRsZT5pYy1jaGVja2JveC1vZmY8L3RpdGxlPiAgICA8ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz4gICAgPGRlZnM+PC9kZWZzPiAgICA8ZyBpZD0iU3ltYm9scyIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+ICAgICAgICA8ZyBpZD0iaWMtY2hlY2tib3gtb2ZmIiBmaWxsPSIjREFFRkZFIj4gICAgICAgICAgICA8cmVjdCBpZD0iUmVjdGFuZ2xlLTI2OSIgeD0iMSIgeT0iNSIgd2lkdGg9IjEwIiBoZWlnaHQ9IjIiPjwvcmVjdD4gICAgICAgIDwvZz4gICAgPC9nPjwvc3ZnPg==);
 }
 
@@ -251,25 +233,65 @@ CheckBox::boxIconDefault:hover {
 
 /* Time */
 TimePicker {
-	background: red;
-	border-radius: 10px;
+	background: #FFFFFF;
+	border: 1px solid #C1E4FE;
+	border-radius: 6px;
 	overflow: hidden;
 }
 
+TimePicker:hover {
+	background: #EAF7FF;
+	border: 1px solid #C6E2F7;
+}
+
+TimePicker:focus:hover {
+	background: white;
+}
+
+TimePicker:error {
+	border: 1px solid #EE5951;
+}
+
 TimePicker:disabled {
-	background: orange;
-	
+	background: white;
+	border: 1px solid #DFE5EB;
+	color: #CBD3DC;
+	cursor: not-allowed;
 }
 
-TimePicker::stepper {
-	background: yellow;
-	overflow: visible;
+TimePicker:disabled::stepper {
+	opacity: 0;
 }
 
-TimePicker::stepper::up {
-	background: pink;
+TimePicker::input::selection {
+	background: #C1E4FE;
+	color:value(D10);
+}
+TimePicker::input::selection:hover {
+	background: #DAEFFE;
 }
 
-TimePicker::placeholder {
-	background: yellow;
+
+
+
+
+/* Stepper */
+Stepper::up {
+	position: relative;
+	top:1px;
+	color:#3899EC;
+}
+
+Stepper::down {
+	position: relative;
+	bottom:1px;
+	color:#3899EC;
+}
+
+Stepper::up:hover {
+	color:#4EB7F5;
+}
+
+Stepper::down:hover {
+	color:#4EB7F5;
 }

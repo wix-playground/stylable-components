@@ -1,20 +1,20 @@
 import * as React from 'react';
-import {SBComponent} from 'stylable-react-component';
+import { SBComponent } from 'stylable-react-component';
 import ComponentsDemoCSS from './style.st.css';
 
-import {CheckBoxDemo} from './components/checkbox-demo';
-import {DatePickerDemo} from './components/date-picker-demo';
-import {DropDownDemo} from './components/drop-down.demo';
-import {ImageDemo} from './components/image-demo';
-import {ModalDemo} from './components/modal-demo';
-import {NumberInputDemo} from './components/number-input.demo';
-import {PopupDemo} from './components/popup-demo';
-import {RadioGroupDemo} from './components/radio-group-demo';
-import {SelectionListDemo} from './components/selection-list-demo';
-import {SliderDemo} from './components/slider-demo';
-import {TimePickerDemo} from './components/time-picker-demo';
-import {ToggleDemo} from './components/toggle-demo';
-import {TreeViewDemo, TreeViewDemoCustom} from './components/tree-view-demo';
+import { CheckBoxDemo } from './components/checkbox-demo';
+import { DatePickerDemo } from './components/date-picker-demo';
+import { DropDownDemo } from './components/drop-down.demo';
+import { ImageDemo } from './components/image-demo';
+import { ModalDemo } from './components/modal-demo';
+import { NumberInputDemo } from './components/number-input.demo';
+import { PopupDemo } from './components/popup-demo';
+import { RadioGroupDemo } from './components/radio-group-demo';
+import { SelectionListDemo } from './components/selection-list-demo';
+import { SliderDemo } from './components/slider-demo';
+import { TimePickerDemo } from './components/time-picker-demo';
+import { ToggleDemo } from './components/toggle-demo';
+import { TreeViewDemo, TreeViewDemoCustom } from './components/tree-view-demo';
 import './style.st.css';
 import styles from './wix-theme/theme.st.css';
 
@@ -23,10 +23,6 @@ export class ComponentsDemo extends React.Component {
     public render() {
         return (
             <div>
-                <div>
-                    <h2>Slider</h2>
-                    <SliderDemo />
-                </div>
                 <ImageDemo />
                 <hr />
                 <DropDownDemo />
@@ -45,14 +41,14 @@ export class ComponentsDemo extends React.Component {
                 <hr />
                 <div>
                     <h2>TimePicker</h2>
-                    <TimePickerDemo/>
+                    <TimePickerDemo />
                 </div>
-                <hr/>
+                <hr />
                 <div>
                     <h2>Toggle</h2>
                     <ToggleDemo />
                 </div>
-                <hr/>
+                <hr />
                 <div>
                     <h2>Slider</h2>
                     <SliderDemo />
@@ -163,7 +159,7 @@ export class ComponentsDemo extends React.Component {
                 <hr />
                 <div>
                     <h2>Popup</h2>
-                    <PopupDemo/>
+                    <PopupDemo />
                 </div>
                 <hr />
                 <div>
