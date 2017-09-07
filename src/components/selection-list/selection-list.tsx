@@ -1,268 +1,105 @@
 import keycode = require('keycode');
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import {SBComponent} from 'stylable-react-component';
+import {autorun, computed, observable} from 'mobx';
+import {observer} from 'mobx-react';
+import React = require('react');
 import {root} from 'wix-react-tools';
-import {clamp} from '../../utils';
-import listStyle from './selection-list.st.css';
+import {ChangeEvent} from '../../types/events';
+import {FormInputProps} from '../../types/forms';
+import {noop} from '../../utils';
+import {OptionList, SelectionListItemValue, SelectionListModel} from './selection-list-model';
+import {SelectionListView} from './selection-list-view';
 
-export const divider = {};
-
-function renameKeys(data: {[index: string]: any}, schema: {[index: string]: string}): {[index: string]: any} {
-    const result: {[index: string]: any} = {};
-    for (const key in schema) {
-        if (schema.hasOwnProperty(key)) {
-            result[key] = data[schema[key]];
-        }
-    }
-    return result;
-}
-
-function closestElementMatching(
-    predicate: (element: HTMLElement) => boolean,
-    startAt: HTMLElement
-): HTMLElement | null {
-    let current: HTMLElement | null = startAt;
-    while (current && !predicate(current)) {
-        current = current.parentElement;
-    }
-    return current;
-}
-
-export interface OptionProps {
-    value?: string;
-    disabled?: boolean;
-    selected?: boolean;
-    focused?: boolean;
-}
-
-@SBComponent(listStyle)
-export class Option extends React.Component<OptionProps, {}> {
-    public render() {
-        const props = {
-            cssStates: {
-                disabled: this.props.disabled,
-                selected: this.props.selected,
-                focused:  this.props.focused
-            }
-        };
-
-        return (
-            <div
-                className="item"
-                data-value={this.props.value}
-                data-disabled={this.props.disabled || undefined}
-                {...props as React.HtmlHTMLAttributes<HTMLDivElement>}
-            >
-                {this.props.children}
-            </div>
-        );
-    }
-}
-
-export type SelectionItem = string | object;
-
-export type SelectionItemDefaultFormat = string | {
-    value?: string;
-    label?: React.ReactNode;
-    disabled?: boolean;
-    hidden?: boolean;
-};
-
-const renderItem = (item: SelectionItemDefaultFormat): React.ReactNode => {
-    if (item === divider) {
-        return <div className="divider" data-automation-id="DIVIDER" />;
-    }
-
-    if (typeof item === 'string') {
-        item = {value: item, label: item};
-    }
-
-    return item.hidden ?
-        null :
-        <Option value={item.value} disabled={item.disabled}>{item.label}</Option>;
-};
-
-export interface OptionList {
-    dataSource?: SelectionItem[];
-    dataSchema?: {};
-    renderItem?: (item: SelectionItem) => React.ReactNode;
-}
-
-export interface SelectionListProps extends OptionList {
-    value?: string;
-    onChange?: (value: string) => void;
-    style?: any;
+export interface Props extends OptionList, FormInputProps<SelectionListItemValue> {
     className?: string;
+    onChange?: (event: ChangeEvent<SelectionListItemValue>) => void;
+    style?: React.CSSProperties;
     tabIndex?: number;
+    value?: SelectionListItemValue;
 }
 
-export interface SelectionListState {
-    focused: boolean;
-    focusedValue?: string;
-}
-
-@SBComponent(listStyle)
-export class SelectionList extends React.Component<SelectionListProps, SelectionListState> {
-    public static defaultProps: SelectionListProps = {
-        tabIndex: -1,
-        dataSource: [],
-        renderItem,
-        onChange: () => {}
+@observer
+export class SelectionList extends React.Component<Props> {
+    public static defaultProps: Props = {
+        onChange: noop,
+        tabIndex: -1
     };
 
-    public state: SelectionListState = {
-        focused: false,
-        focusedValue: undefined
-    };
+    // Wrapping props with @computed allows autorun() to ignore changes in the properties it's not using.
+    @computed public get children()   { return this.props.children; }
+    @computed public get dataSource() { return this.props.dataSource; }
+    @computed public get dataSchema() { return this.props.dataSchema; }
+    @computed public get renderItem() { return this.props.renderItem; }
+    @computed public get value()      { return this.props.value; }
 
-    private focusableItemValues: string[] = [];
+    @observable private focused: boolean = false;
+    @observable private list: SelectionListModel;
 
-    public componentWillReceiveProps(nextProps: SelectionListProps) {
-        if (this.state.focused) {
-            this.setState({focusedValue: nextProps.value});
-        }
+    public componentWillMount() {
+        autorun(() => {
+            const list = new SelectionListModel();
+            list.addChildren(this.children);
+            list.addDataSource(this);
+            this.list = list;
+        });
+
+        autorun(() => this.list.selectValue(this.value));
+
+        autorun(() => this.list.focusValue(this.focused ? this.value : undefined));
     }
 
     public render() {
-        const children = React.Children.map(
-            [this.props.children, this.renderDataSource()],
-            child => this.augmentChild(child)
-        );
-
-        this.focusableItemValues = this.getFocusableItemValuesFromChildren(children);
-
-        const rootProps = root(this.props, {
-            className: 'list',
-            cssStates: {
-                focused: this.state.focused
-            }
-        }) as React.HtmlHTMLAttributes<HTMLDivElement>;
-
         return (
-            <div
-                {...rootProps}
-                data-automation-id="LIST"
-                onClick={this.handleClick}
-                onKeyDown={this.handleKeyDown}
-                onFocus={this.handleFocus}
+            <SelectionListView
+                {...root(this.props, {className: ''})}
+                focused={this.focused}
+                list={this.list}
                 onBlur={this.handleBlur}
+                onChange={this.props.onChange}
+                onFocus={this.handleFocus}
+                onKeyDown={this.handleKeyDown}
+                style={this.props.style}
                 tabIndex={this.props.tabIndex}
-            >
-                {children}
-            </div>
+            />
         );
     }
 
-    private renderDataSource(): React.ReactNode[] {
-        const schema = this.props.dataSchema;
-        const render = this.props.renderItem!;
-        return this.props.dataSource!.map(item =>
-            render(schema && typeof item === 'object' ? renameKeys(item, schema) : item)
-        );
+    private handleFocus: React.FocusEventHandler<HTMLElement> = () => {
+        this.focused = true;
     }
 
-    private augmentChild(node: React.ReactNode): React.ReactNode {
-        if (node && typeof node === 'object') {
-            const element = node as React.ReactElement<any>;
-            const value = element.props.value;
-            if (value !== undefined) {
-                const selected = value === this.props.value;
-                const focused = value === this.state.focusedValue;
-                if (focused || selected) {
-                    return React.cloneElement(element, {selected, focused});
-                }
-            }
-        }
-        return node;
-    }
-
-    private getFocusableItemValuesFromChildren(nodes: React.ReactNode[]): any[] {
-        const result = [];
-        for (const node of nodes) {
-            if (node && typeof node === 'object') {
-                const element = node as React.ReactElement<any>;
-                const value = element.props.value;
-                const disabled = element.props.disabled;
-                if (value !== undefined && !disabled) {
-                    result.push(value);
-                }
-            }
-        }
-        return result;
-    }
-
-    private selectValue = (value: string) => {
-        this.props.onChange!(value);
-    }
-
-    private handleClick: React.MouseEventHandler<HTMLElement> = event => {
-        const rootNode = ReactDOM.findDOMNode(this);
-        const item = closestElementMatching(
-            el => el.parentElement === rootNode,
-            event.target as HTMLElement
-        );
-        if (!item) {
-            return;
-        }
-        const value = item.dataset.value;
-        const disabled = item.dataset.disabled;
-        if (!disabled && value !== undefined && value !== this.props.value) {
-            this.selectValue(value);
-        }
-    }
-
-    private handleFocus: React.FocusEventHandler<HTMLElement> = event => {
-        this.setState({focused: true, focusedValue: this.props.value});
-    }
-
-    private handleBlur: React.FocusEventHandler<HTMLElement> = event => {
-        this.setState({focused: false, focusedValue: undefined});
+    private handleBlur: React.FocusEventHandler<HTMLElement> = () => {
+        this.focused = false;
     }
 
     private handleKeyDown: React.KeyboardEventHandler<HTMLElement> = event => {
-        const values = this.focusableItemValues;
-        const focusedValue = this.state.focusedValue || this.props.value;
-        const focusedIndex = (focusedValue === undefined) ? -1 : values.indexOf(focusedValue);
-        const maxIndex = values.length - 1;
-
         switch (event.keyCode) {
             case keycode('enter'):
             case keycode('space'):
                 event.preventDefault();
+                const focusedValue = this.list.getFocusedValue();
                 if (focusedValue !== undefined) {
-                    this.selectValue(focusedValue);
+                    this.props.onChange!({value: focusedValue});
                 }
                 break;
 
             case keycode('up'):
                 event.preventDefault();
-                this.setState({
-                    focusedValue:
-                        focusedIndex > -1 ?
-                            values[clamp(focusedIndex - 1, 0, maxIndex)] :
-                            values[maxIndex]
-                });
+                this.list.focusPrevious();
                 break;
 
             case keycode('down'):
                 event.preventDefault();
-                this.setState({
-                    focusedValue:
-                        focusedIndex > -1 ?
-                            values[clamp(focusedIndex + 1, 0, maxIndex)] :
-                            values[0]
-                });
+                this.list.focusNext();
                 break;
 
             case keycode('home'):
                 event.preventDefault();
-                this.setState({focusedValue: values[0]});
+                this.list.focusFirst();
                 break;
 
             case keycode('end'):
                 event.preventDefault();
-                this.setState({focusedValue: values[maxIndex]});
+                this.list.focusLast();
                 break;
         }
     }

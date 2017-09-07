@@ -30,6 +30,11 @@
     line-height: unset;
 }
 
+.emoji-list::item:focused {
+    border: unset;
+    background-color: #edf7ff;
+}
+
 .emoji-list::item:selected {
     width: 56px;
     height: 56px;
