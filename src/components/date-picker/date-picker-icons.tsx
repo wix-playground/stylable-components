@@ -8,7 +8,7 @@ export const CalendarIcon: React.SFC<React.HTMLAttributes<SVGElement>> = props =
             viewBox="0 0 16 16"
             {...props}
         >
-            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+            <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
                 <g transform="translate(-459.000000, -443.000000)" fill="#3899EC">
                     <g transform="translate(183.000000, 189.000000)">
                         <g>
