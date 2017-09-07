@@ -41,6 +41,10 @@ export class Portal extends React.PureComponent<PortalProps, {}> {
         }
     }
 
+    public getPortalContainer() {
+        return this.container;
+    }
+
     private renderPortal() {
         ReactDOM.unstable_renderSubtreeIntoContainer(this, this.portalContent, this.getContainer());
     }

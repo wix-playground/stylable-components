@@ -18,13 +18,11 @@ describe('<Portal />', function() {
                 <span data-automation-id="SPAN">Portal Body</span>
             </Portal>);
 
-        debugger;
-
         const driver = new PortalTestDriver(result as Portal);
 
         await waitFor(() => {
             expect(driver.portal).to.be.present();
-            expect(driver.content).to.be.present();
+            expect(driver.content[0]).to.be.present();
         });
     });
 
