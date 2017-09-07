@@ -1,6 +1,7 @@
 import * as keycode from 'keycode';
 import * as React from 'react';
 import {SBComponent} from 'stylable-react-component';
+import {FormInputProps} from '../../types/forms';
 import {ScreenReaderNotification} from '../screen-reader-notification';
 import {Modifiers, Stepper} from '../stepper';
 import {LABELS} from './strings';
@@ -11,9 +12,7 @@ import {
     isTouchTimeInputSupported, isValidValue, Segment, TimeSegment, to24, toAmpm
 } from './utils';
 
-export interface Props {
-    value?: string;
-    onChange?: (value: string) => void;
+export interface Props extends FormInputProps<string> {
     format?: Format;
     placeholder?: string;
     disabled?: boolean;
@@ -445,9 +444,14 @@ export class TimePicker extends React.Component<Props, State> {
         this.setState({
             notification: value
         });
-        if (this.props.onChange && this.lastValue !== value) {
+        if (this.lastValue !== value) {
             this.lastValue = value;
-            this.props.onChange(value);
+            if (this.props.onInput) {
+                this.props.onInput({value});
+            }
+            if (this.props.onChange) {
+                this.props.onChange({value});
+            }
         }
     }
 
