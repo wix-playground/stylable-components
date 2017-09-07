@@ -1,7 +1,7 @@
 @namespace "Slider";
 
 :import {
-    -st-from: "../../style/default-theme/variables.st.css";
+    -st-from: "../../style/project.st.css";
     -st-named:
         color_Border,
         M0,
@@ -46,12 +46,12 @@
     handleBorderHover: 1px solid value(PR2);
 
     trackSize: 4px;
-    trackRadius: 2px;
+    trackRadius: 0px;
 
     middleOfBar: -6px;
     middleOfHandle: -8px;
 
-    minVerticalSliderHeight: 36px;
+    minVerticalSliderHeight: 44px;
 }
 
 .native-input {
@@ -279,6 +279,7 @@
     -webkit-box-shadow: 0 0 0 value(focusSize) value(colorHandle_Focus);
     box-shadow: 0 0 0 value(focusSize) value(colorHandle_Focus);
     background-color: value(colorHandle_Active);
+    border-color: value(colorHandle_Active);
 }
 
 .root:active .track {
