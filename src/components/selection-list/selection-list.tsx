@@ -2,13 +2,16 @@ import keycode = require('keycode');
 import {autorun, computed, observable} from 'mobx';
 import {observer} from 'mobx-react';
 import React = require('react');
+import {root} from 'wix-react-tools';
+import {ChangeEvent} from '../../types/events';
+import {FormInputProps} from '../../types/forms';
 import {noop} from '../../utils';
 import {OptionList, SelectionListItemValue, SelectionListModel} from './selection-list-model';
 import {SelectionListView} from './selection-list-view';
 
-export interface Props extends OptionList {
+export interface Props extends OptionList, FormInputProps<SelectionListItemValue> {
     className?: string;
-    onChange?: (value: SelectionListItemValue) => void;
+    onChange?: (event: ChangeEvent<SelectionListItemValue>) => void;
     style?: React.CSSProperties;
     tabIndex?: number;
     value?: SelectionListItemValue;
@@ -47,7 +50,7 @@ export class SelectionList extends React.Component<Props> {
     public render() {
         return (
             <SelectionListView
-                className={this.props.className}
+                {...root(this.props, {className: ''})}
                 focused={this.focused}
                 list={this.list}
                 onBlur={this.handleBlur}
@@ -75,7 +78,7 @@ export class SelectionList extends React.Component<Props> {
                 event.preventDefault();
                 const focusedValue = this.list.getFocusedValue();
                 if (focusedValue !== undefined) {
-                    this.props.onChange!(focusedValue);
+                    this.props.onChange!({value: focusedValue});
                 }
                 break;
 

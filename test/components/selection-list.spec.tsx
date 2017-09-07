@@ -111,10 +111,7 @@ describe('<SelectionList />', () => {
 
         await sleep(100);
 
-        return waitFor(() => {
-            expect(onChange).to.have.been.calledOnce;
-            expect(onChange).to.have.been.calledWithExactly('Two');
-        });
+        expect(onChange).to.have.been.calledOnce.calledWithExactly({value: 'Two'});
     });
 
     it(
@@ -143,9 +140,7 @@ describe('<SelectionList />', () => {
 
             await sleep(100);
 
-            return waitFor(() => {
-                expect(onChange).to.have.not.been.called;
-            });
+            expect(onChange).to.have.not.been.called;
         }
     );
 
@@ -207,8 +202,7 @@ describe('<SelectionList />', () => {
             simulateKeyDown(list, 'down');
             simulateKeyDown(list, 'enter');
             await waitForDom(() => {
-                expect(onChange).to.have.been.calledOnce;
-                expect(onChange).to.have.been.calledWithExactly('4');
+                expect(onChange).to.have.been.calledOnce.calledWithExactly({value: '4'});
             });
         });
 
@@ -226,8 +220,7 @@ describe('<SelectionList />', () => {
             simulateKeyDown(list, 'enter');
 
             await waitForDom(() => {
-                expect(onChange).to.have.been.calledOnce;
-                expect(onChange).to.have.been.calledWithExactly('2');
+                expect(onChange).to.have.been.calledOnce.calledWithExactly({value: '2'});
             });
         });
 
@@ -245,8 +238,7 @@ describe('<SelectionList />', () => {
             simulateKeyDown(list, 'enter');
 
             await waitForDom(() => {
-                expect(onChange).to.have.been.calledOnce;
-                expect(onChange).to.have.been.calledWithExactly('1');
+                expect(onChange).to.have.been.calledOnce.calledWithExactly({value: '1'});
             });
         });
 
@@ -264,8 +256,7 @@ describe('<SelectionList />', () => {
             simulateKeyDown(list, 'enter');
 
             await waitForDom(() => {
-                expect(onChange).to.have.been.calledOnce;
-                expect(onChange).to.have.been.calledWithExactly('5');
+                expect(onChange).to.have.been.calledOnce.calledWithExactly({value: '5'});
             });
         });
 
@@ -283,8 +274,7 @@ describe('<SelectionList />', () => {
             simulateKeyDown(list, 'enter');
 
             await waitForDom(() => {
-                expect(onChange).to.have.been.calledOnce;
-                expect(onChange).to.have.been.calledWithExactly('1');
+                expect(onChange).to.have.been.calledOnce.calledWithExactly({value: '1'});
             });
         });
 
@@ -302,8 +292,7 @@ describe('<SelectionList />', () => {
             simulateKeyDown(list, 'enter');
 
             await waitForDom(() => {
-                expect(onChange).to.have.been.calledOnce;
-                expect(onChange).to.have.been.calledWithExactly('5');
+                expect(onChange).to.have.been.calledOnce.calledWithExactly({value: '5'});
             });
         });
 
@@ -321,8 +310,7 @@ describe('<SelectionList />', () => {
             simulateKeyDown(list, 'enter');
 
             await waitForDom(() => {
-                expect(onChange).to.have.been.calledOnce;
-                expect(onChange).to.have.been.calledWithExactly('4');
+                expect(onChange).to.have.been.calledOnce.calledWithExactly({value: '4'});
             });
         });
 
@@ -340,8 +328,7 @@ describe('<SelectionList />', () => {
             simulateKeyDown(list, 'space');
 
             await waitForDom(() => {
-                expect(onChange).to.have.been.calledOnce;
-                expect(onChange).to.have.been.calledWithExactly('4');
+                expect(onChange).to.have.been.calledOnce.calledWithExactly({value: '4'});
             });
         });
     });

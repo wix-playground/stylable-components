@@ -2,6 +2,8 @@ import {observer} from 'mobx-react';
 import React = require('react');
 import {SBComponent} from 'stylable-react-component';
 import {root} from 'wix-react-tools';
+import {ChangeEvent} from '../../types/events';
+import {FormInputProps} from '../../types/forms';
 import {noop} from '../../utils';
 import {SelectionListItem, SelectionListItemValue, SelectionListModel} from './selection-list-model';
 import listStyle from './selection-list.st.css';
@@ -17,12 +19,12 @@ function closestElementMatching(
     return current;
 }
 
-export interface ViewProps {
+export interface ViewProps extends FormInputProps<SelectionListItemValue> {
     className?: string;
     focused?: boolean;
     list: SelectionListModel;
     onBlur?: React.FocusEventHandler<HTMLElement>;
-    onChange?: (value: SelectionListItemValue) => void;
+    onChange?: (event: ChangeEvent<SelectionListItemValue>) => void;
     onFocus?: React.FocusEventHandler<HTMLElement>;
     onKeyDown?: React.KeyboardEventHandler<HTMLElement>;
     style?: React.CSSProperties;
@@ -42,9 +44,8 @@ export class SelectionListView extends React.Component<ViewProps> {
     public render() {
         return (
             <div
-                {...root(this.props, {className: 'list'})}
+                {...root(this.props, {'className': 'list', 'data-automation-id': 'LIST'})}
                 cssStates={{focused: Boolean(this.props.focused)}}
-                data-automation-id="LIST"
                 onBlur={this.props.onBlur}
                 onClick={this.handleClick}
                 onFocus={this.props.onFocus}
@@ -68,7 +69,7 @@ export class SelectionListView extends React.Component<ViewProps> {
         }
         const value = item.dataset.value;
         if (value !== undefined && value !== this.props.list.getSelectedValue()) {
-            this.props.onChange!(value);
+            this.props.onChange!({value});
         }
     }
 }
