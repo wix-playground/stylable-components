@@ -2,6 +2,7 @@ import * as React from 'react';
 import {SBComponent, SBStateless} from 'stylable-react-component';
 import {root} from 'wix-react-tools';
 import {ChangeEvent} from '../../types/events';
+import {FormInputProps} from '../../types/forms';
 import {SelectionList, SelectionListItemValue} from '../selection-list';
 import {CaretDown} from './drop-down-icons';
 import style from './drop-down.st.css';
@@ -20,11 +21,10 @@ export const DropDownInput: React.SFC<DropDownInputProps> = SBStateless(props =>
     );
 }, style);
 
-export interface DropDownListProps {
+export interface DropDownListProps extends FormInputProps<SelectionListItemValue> {
     open: boolean;
     items?: DropDownItem[];
     selectedItem?: DropDownItem;
-    onItemClick?: (event: ChangeEvent<SelectionListItemValue>) => void;
 }
 
 export const DropDownList: React.SFC<DropDownListProps> = SBStateless(props => {
@@ -36,7 +36,7 @@ export const DropDownList: React.SFC<DropDownListProps> = SBStateless(props => {
                 className="drop-down-list"
                 dataSource={props.items!.map((item: DropDownItem) => item.label)}
                 value={props.selectedItem && props.selectedItem.label}
-                onChange={props.onItemClick!}
+                onChange={props.onChange}
             />
         </div>
     );
@@ -77,7 +77,7 @@ export class DropDown extends React.Component<DropDownProps, {}> {
                     selectedItem={this.props.selectedItem}
                     items={this.props.items}
                     open={!!this.props.open}
-                    onItemClick={this.onItemClick}
+                    onChange={this.onItemClick}
                 />
             </div>
         );
