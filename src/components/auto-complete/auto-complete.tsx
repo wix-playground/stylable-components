@@ -91,7 +91,7 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
                 role="combobox"
             >
                 <input
-                    className="auto-complete-input"
+                    className="input"
                     data-automation-id="AUTO_COMPLETE_INPUT"
                     type="text"
                     onChange={this.onChange}
@@ -123,12 +123,11 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
     }
 
     private onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (!this.props.allowFreeText && !this.getFilteredItems(e.target.value).length) {
-            return;
-        }
-        this.props.onChange!({value: e.target.value || ''});
-        if (!this.props.value && !this.props.open) {
-            this.props.onOpenStateChange!({value: this.props.open!});
+        if (this.props.allowFreeText || this.getFilteredItems(e.target.value).length) {
+            this.props.onChange!({value: e.target.value || ''});
+            if (!this.props.value && !this.props.open) {
+                this.props.onOpenStateChange!({value: this.props.open!});
+            }
         }
     }
 

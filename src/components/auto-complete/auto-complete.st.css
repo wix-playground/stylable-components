@@ -6,7 +6,7 @@
     display: inline-block;
 }
 
-.auto-complete-input {
+.input {
     border: 1px solid #adbac5;
     font-family: ArialMT;
     font-size: 16px;
@@ -20,7 +20,7 @@
     background: #FFFFFF;
 }
 
-.auto-complete-input:hover {
+.input:hover {
     border: 1px solid #5cb4ff;
 }
 
