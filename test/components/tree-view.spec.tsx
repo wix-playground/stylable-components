@@ -5,7 +5,7 @@ import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react
 import {TreeViewDemo, TreeViewDemoCustom} from '../../demo/components/tree-view-demo';
 import {TreeItem, TreeView} from '../../src';
 import {getLastAvailableItem, getNextItem, getPreviousItem} from '../../src/components/tree-view//tree-util';
-import {ParentsMap, TreeItemData, TreeStateMap} from '../../src/components/tree-view/tree-view';
+import {initParentsMap, ParentsMap, TreeItemData, TreeStateMap} from '../../src/components/tree-view/tree-view';
 
 const treeView = 'TREE_VIEW';
 const treeItem = 'TREE_ITEM';
@@ -527,15 +527,8 @@ describe('<TreeView />', () => {
             treeState.getItemState(treeData[0]).isExpanded = true;
             treeState.getItemState(treeData[0].children![1]).isExpanded = true;
 
-            function initParentsMap(data: TreeItemData[] = [], parent: TreeItemData | undefined) {
-                data.forEach((item: TreeItemData) => {
-                    parentsMap.set(item, parent);
-                    initParentsMap(item.children || [], item);
-                });
-            }
-
             const parentsMap: ParentsMap = new Map<TreeItemData, TreeItemData | undefined>();
-            initParentsMap(treeData, undefined);
+            initParentsMap(parentsMap, treeData, undefined);
 
             it('gets previous item when its a sibling', async () => {
                 const previous = getPreviousItem(treeData, treeData[0].children![1], treeState, parentsMap);
@@ -567,9 +560,10 @@ describe('<TreeView />', () => {
             const firstChild = treeData[0].children![0];
             const secondChild = treeData[0].children![1];
 
-            // trying to put the type of waitForDom that contained type 'Function' gives
-            // a lint error so i used any for now
-            async function expandPartsOfTree(select: any, waitForDom: any) {
+            async function renderAndExpandPartsOfTree() {
+                const renderResult = clientRenderer.render(<TreeView dataSource={treeData} />);
+                const {select, waitForDom} = renderResult;
+
                 const treeRootIcon = select(treeView, getTreeItemIcon('Food Menu'));
                 simulate.click(treeRootIcon);
                 await waitForDom(() =>
@@ -578,11 +572,12 @@ describe('<TreeView />', () => {
                 simulate.click(select(treeView, getTreeItemIcon(firstChild.label)));
                 await waitForDom(() => expect(select(treeView,
                     getTreeItemLabel(firstChild.children![0].label))).to.be.present());
+
+                return renderResult;
             }
 
             it('collapses a node and its subtree when \'collapse\' method is used', async () => {
-                const {select, waitForDom, result} = clientRenderer.render(<TreeView dataSource={treeData} />);
-                await expandPartsOfTree(select, waitForDom);
+                const {select, waitForDom, result} = await renderAndExpandPartsOfTree();
 
                 (result as TreeView).collapse(treeData[0]);
 
@@ -593,8 +588,7 @@ describe('<TreeView />', () => {
             });
 
             it('collapses the whole tree when \'collapseAll\' method is used', async () => {
-                const {select, waitForDom, result} = clientRenderer.render(<TreeView dataSource={treeData} />);
-                await expandPartsOfTree(select, waitForDom);
+                const {select, waitForDom, result} = await renderAndExpandPartsOfTree();
 
                 (result as TreeView).collapseAll();
 

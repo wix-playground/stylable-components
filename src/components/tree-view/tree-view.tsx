@@ -54,6 +54,13 @@ export interface TreeItemState {
 export type StateMap = Map<TreeItemData, TreeItemState>;
 export type ParentsMap = Map<TreeItemData, TreeItemData | undefined>;
 
+export function initParentsMap(parentsMap: ParentsMap, data: TreeItemData[] = [], parent: TreeItemData | undefined) {
+    data.forEach((item: TreeItemData) => {
+        parentsMap.set(item, parent);
+        initParentsMap(parentsMap, item.children || [], item);
+    });
+}
+
 const itemIdPrefix = 'TREE_ITEM';
 
 export const TreeItem: React.SFC<TreeItemProps> =
@@ -133,7 +140,7 @@ export class TreeView extends React.Component<TreeViewProps, {}> {
 
     constructor(props: TreeViewProps) {
         super(props);
-        this.initParentsMap(props.dataSource as TreeItemData[], undefined);
+        initParentsMap(this.parentsMap, props.dataSource as TreeItemData[], undefined);
     }
 
     public componentDidMount() {
@@ -202,13 +209,6 @@ export class TreeView extends React.Component<TreeViewProps, {}> {
         } else {
             this.props.onSelectItem!(item);
         }
-    }
-
-    private initParentsMap(data: TreeItemData[] = [], parent: TreeItemData | undefined) {
-        data.forEach((item: TreeItemData) => {
-            this.parentsMap.set(item, parent);
-            this.initParentsMap(item.children || [], item);
-        });
     }
 
     private toggleItem(item: TreeItemData) {
