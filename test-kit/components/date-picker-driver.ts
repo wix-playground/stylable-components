@@ -2,6 +2,7 @@ import {DriverBase, selectDom, simulate, trigger} from 'test-drive-react';
 import {DatePicker} from '../../src';
 
 const bodySelect = selectDom(document.body);
+const datePickerDropdown = 'DATE_PICKER_DROPDOWN';
 
 export class DatePickerTestDriver extends DriverBase {
     public static ComponentClass = DatePicker;
@@ -15,16 +16,23 @@ export class DatePickerTestDriver extends DriverBase {
         simulate.blur(this.input);
     }
 
-    public clickInput(): void {
-        simulate.mouseDown(this.input);
+    public nextMonth(): void {
+        simulate.mouseDown(bodySelect('NEXT_MONTH_BUTTON'));
+    }
+
+    public previousMonth(): void {
+        simulate.mouseDown(bodySelect('PREV_MONTH_BUTTON'));
     }
 
     public get dropDown() {
-        return bodySelect('DATE_PICKER_DROPDOWN');
+        return bodySelect(datePickerDropdown);
     }
 
-    public get year() {
-        return bodySelect('DATE_PICKER_DROPDOWN', 'YEAR');
+    public get yearLabel() {
+        return bodySelect(datePickerDropdown, 'YEAR');
     }
 
+    public get monthLabel() {
+        return bodySelect(datePickerDropdown, 'MONTH_NAME');
+    }
 }
