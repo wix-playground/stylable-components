@@ -54,6 +54,13 @@ export interface TreeItemState {
 export type StateMap = Map<TreeItemData, TreeItemState>;
 export type ParentsMap = Map<TreeItemData, TreeItemData | undefined>;
 
+export function initParentsMap(parentsMap: ParentsMap, data: TreeItemData[] = [], parent: TreeItemData | undefined) {
+    data.forEach((item: TreeItemData) => {
+        parentsMap.set(item, parent);
+        initParentsMap(parentsMap, item.children || [], item);
+    });
+}
+
 const itemIdPrefix = 'TREE_ITEM';
 
 // This function is not perfect but for now this is
@@ -146,7 +153,7 @@ export class TreeView extends React.Component<TreeViewProps, {}> {
 
     constructor(props: TreeViewProps) {
         super(props);
-        this.initParentsMap(props.dataSource as TreeItemData[], undefined);
+        initParentsMap(this.parentsMap, props.dataSource as TreeItemData[], undefined);
     }
 
     public componentDidMount() {
@@ -186,18 +193,29 @@ export class TreeView extends React.Component<TreeViewProps, {}> {
         );
     }
 
-    private initParentsMap(data: TreeItemData[] = [], parent: TreeItemData | undefined) {
-        data.forEach((item: TreeItemData) => {
-            this.parentsMap.set(item, parent);
-            this.initParentsMap(item.children || [], item);
-        });
+    public collapse = (item: TreeItemData): void => {
+        this.collapseItem(item);
+        if (item.children) {
+            item.children.forEach(this.collapse);
+        }
     }
 
-    private toggleItem(item: TreeItemData) {
-        this.stateMap.getItemState(item).isExpanded = !this.stateMap.getItemState(item).isExpanded;
+    public collapseAll = (): void => {
+        this.props.dataSource.forEach(this.collapse);
     }
 
-    private selectItem(item: TreeItemData) {
+    public expand = (item: TreeItemData): void => {
+        this.expandItem(item);
+        if (item.children) {
+            item.children.forEach(this.expand);
+        }
+    }
+
+    public expandAll = (): void => {
+        this.props.dataSource.forEach(this.expand);
+    }
+
+    public selectItem(item: TreeItemData) {
         if (this.props.selectedItem) {
             if (this.props.selectedItem !== item) {
                 this.stateMap.getItemState(this.props.selectedItem).isSelected = false;
@@ -206,6 +224,10 @@ export class TreeView extends React.Component<TreeViewProps, {}> {
         } else {
             this.props.onSelectItem!(item);
         }
+    }
+
+    private toggleItem(item: TreeItemData) {
+        this.stateMap.getItemState(item).isExpanded = !this.stateMap.getItemState(item).isExpanded;
     }
 
     @action
