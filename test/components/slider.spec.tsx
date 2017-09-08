@@ -1258,9 +1258,8 @@ describe('<Slider />', () => {
                     min={min}
                     max={max}
                     label={label}
-                >
-                    <div data-slot="tooltip" data-automation-id="TOOLTIP-CUSTOM-CONTENT">{label}</div>
-                </Slider>
+                    tooltip={<div data-slot="tooltip" data-automation-id="TOOLTIP-CUSTOM-CONTENT">{label}</div>}
+                />
             );
             const select: (automationId: string) => HTMLElement | null = rendered.select;
             const waitForDom: (expectation: () => void) => Promise<void> = rendered.waitForDom;
