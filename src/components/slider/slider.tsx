@@ -33,6 +33,8 @@ export interface PointerPosition {
     clientY: number;
 }
 export interface SliderProps extends FormInputProps<number, string> {
+    tooltip?: number | string | React.ReactElement<any>;
+
     min?: number;
     max?: number;
     step?: Step;
@@ -52,6 +54,7 @@ export interface SliderProps extends FormInputProps<number, string> {
     onDragStart?(event: PointerEvent): void;
     onDrag?(event: PointerEvent): void;
     onDragStop?(event: PointerEvent): void;
+
 }
 export interface SliderState {
     relativeValue: number;
@@ -227,13 +230,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
     }
 
     private getTooltip(): number | string | React.ReactElement<any> | undefined {
-        return React.Children
-            .toArray(this.props.children)
-            .find(
-                item => typeof item === 'object' ?
-                    item.props['data-slot'] === 'tooltip' :
-                    false
-            );
+        return this.props.tooltip;
     }
 
     private getMarks(): JSX.Element[] {

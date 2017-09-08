@@ -100,9 +100,8 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                             max={max}
                             onChange={this.onSliderChange}
                             onInput={this.onSliderInput}
-                        >
-                            <div data-slot="tooltip" className="tooltip">{this.state.rawValue}</div>
-                        </Slider>
+                            tooltip={<div className="tooltip">{this.state.rawValue}</div>}
+                        />
                     </td>
                 </tr>
                 </tbody>
