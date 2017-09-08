@@ -54,7 +54,6 @@ export interface SliderProps extends FormInputProps<number, string> {
     onDragStart?(event: PointerEvent): void;
     onDrag?(event: PointerEvent): void;
     onDragStop?(event: PointerEvent): void;
-
 }
 export interface SliderState {
     relativeValue: number;
