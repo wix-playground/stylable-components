@@ -52,7 +52,7 @@ export class SelectionListView extends React.Component<ViewProps> {
                 onKeyDown={this.props.onKeyDown}
                 tabIndex={this.props.tabIndex}
             >
-                {this.props.list.items.map((item, index) =>
+                {this.props.list && this.props.list.items.map((item, index) =>
                     <ItemWrapper key={index} item={item} />
                 )}
             </div>
