@@ -22,12 +22,12 @@ describe('<Toggle/>', function() {
         });
     });
 
-    describe('render with checked={true}', function() {
+    describe('render with value={true}', function() {
         let onChange: any;
         let renderer: any;
         beforeEach(() => {
             onChange = sinon.spy();
-            renderer = clientRenderer.render(<Toggle onChange={onChange} checked/>);
+            renderer = clientRenderer.render(<Toggle onChange={onChange} value={true}/>);
         });
         it('should have input', function() {
             expect(renderer.select('TOGGLE_INPUT')).to.not.null;
@@ -47,7 +47,7 @@ describe('<Toggle/>', function() {
             simulate.focus(input);
             simulate.change(input);
             expect(onChange).to.have.been.calledOnce;
-            expect(onChange).to.have.been.calledWithExactly(true);
+            expect(onChange).to.have.been.calledWithExactly({value: true});
         });
     });
 
