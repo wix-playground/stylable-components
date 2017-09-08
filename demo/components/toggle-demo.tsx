@@ -2,6 +2,7 @@ import * as React from 'react';
 import {Toggle} from '../../src';
 import {SBComponent} from 'stylable-react-component';
 import styles from '../wix-theme/theme.st.css';
+import {ChangeEvent} from '../../src/types/events';
 
 export interface State {
     checked: boolean;
@@ -14,7 +15,7 @@ export class ToggleDemo extends React.Component<{}, State> {
     };
 
     public render() {
-        const onChange = (checked: boolean) => this.setState({checked});
+        const onChange = (e: ChangeEvent<boolean>) => this.setState({checked: e.value});
         return (
             <table>
             <tbody>
@@ -23,7 +24,7 @@ export class ToggleDemo extends React.Component<{}, State> {
                         Controlled
                         <Toggle
                             label="with icons"
-                            checked={this.state.checked}
+                            value={this.state.checked}
                             onChange={onChange}
                         />
                     </th>
@@ -32,7 +33,7 @@ export class ToggleDemo extends React.Component<{}, State> {
                         <Toggle
                             label="with icons"
                             rtl
-                            checked={this.state.checked}
+                            value={this.state.checked}
                             onChange={onChange}
                         />
                     </th>
@@ -42,7 +43,7 @@ export class ToggleDemo extends React.Component<{}, State> {
                     </th>
                     <th>
                         On
-                        <Toggle checked/>
+                        <Toggle value={true}/>
                     </th>
                     <th>
                         Disabled and off
@@ -50,7 +51,7 @@ export class ToggleDemo extends React.Component<{}, State> {
                     </th>
                     <th>
                         Disabled and on
-                        <Toggle disabled checked/>
+                        <Toggle disabled value={true}/>
                     </th>
                     <th>
                         Error and off
@@ -58,7 +59,7 @@ export class ToggleDemo extends React.Component<{}, State> {
                     </th>
                     <th>
                         Error and on
-                        <Toggle error checked/>
+                        <Toggle error value={true}/>
                     </th>
                 </tr>
                 <tr>

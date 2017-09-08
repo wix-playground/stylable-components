@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {SBComponent} from 'stylable-react-component';
 import {Slider} from '../../src';
+import {ChangeEvent} from '../../src/types/events';
 import style from './slider-demo.st.css';
 
 export interface SliderDemoState {
@@ -190,14 +191,16 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
         );
     }
 
-    private onSliderChange = (value: number) => {
+    private onSliderChange = ({value}: ChangeEvent<number>) => {
         this.setState({
             value,
             rawValue: String(value)
         });
     }
 
-    private onSliderInput = (rawValue: string) => {
-        this.setState({rawValue});
+    private onSliderInput = ({value}: ChangeEvent<string>) => {
+        this.setState({
+            rawValue: value
+        });
     }
 }
