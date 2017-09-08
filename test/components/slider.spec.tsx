@@ -2,6 +2,7 @@ import * as keycode from 'keycode';
 import * as React from 'react';
 import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react';
 import {Slider, SliderProps} from '../../src/components/slider';
+import {ChangeEvent} from '../../src/types/events';
 import WindowStub from '../stubs/window.stub';
 import {simulateMouseEvent, simulateTouchEvent} from '../utils';
 import {describeIfTouch} from '../utils/skip-describe-if-touch';
@@ -117,8 +118,8 @@ function whenDragThingsAround(
         const min = 0;
         const max = 10;
 
-        let onChange: (value: number) => void;
-        let onInput: (value: string) => void;
+        let onChange: (data: ChangeEvent<number>) => void;
+        let onInput: (data: ChangeEvent<string>) => void;
         let select: (automationId: string) => HTMLElement | null;
         let waitForDom: (expectation: () => void) => Promise<void>;
         let eventMock: EventCoordinates;
@@ -178,7 +179,7 @@ function whenDragThingsAround(
                     }
                 );
 
-                expect(onChange).to.be.calledWith(7);
+                expect(onChange).to.be.calledWithMatch({value: 7});
             });
         });
 
@@ -208,8 +209,8 @@ function whenDragThingsAround(
                     }
                 );
 
-                expect(onInput).to.be.calledWith('7');
-                expect(onChange).to.be.calledWith(7);
+                expect(onInput).to.be.calledWithMatch({value: '7'});
+                expect(onChange).to.be.calledWithMatch({value: 7});
             });
         });
     });
@@ -219,8 +220,8 @@ function whenDragThingsAround(
         const min = 0;
         const max = 10;
 
-        let onChange: (value: number) => void;
-        let onInput: (value: string) => void;
+        let onChange: (data: ChangeEvent<number>) => void;
+        let onInput: (data: ChangeEvent<string>) => void;
         let select: (automationId: string) => HTMLElement | null;
         let waitForDom: (expectation: () => void) => Promise<void>;
         let eventMock: EventCoordinates;
@@ -289,7 +290,7 @@ function whenDragThingsAround(
                     }
                 );
 
-                expect(onChange).to.be.calledWith(7);
+                expect(onChange).to.be.calledWithMatch({value: 7});
             });
         });
 
@@ -324,8 +325,8 @@ function whenDragThingsAround(
                     }
                 );
 
-                expect(onInput).to.be.calledWith('7');
-                expect(onChange).to.be.calledWith(7);
+                expect(onInput).to.be.calledWithMatch({value: '7'});
+                expect(onChange).to.be.calledWithMatch({value: 7});
             });
         });
     });
@@ -343,8 +344,8 @@ function whenDragThingsAroundWithStep(
         const max = 10;
         const step = 2;
 
-        let onChange: (value: number) => void;
-        let onInput: (value: string) => void;
+        let onChange: (data: ChangeEvent<number>) => void;
+        let onInput: (data: ChangeEvent<string>) => void;
         let select: (automationId: string) => HTMLElement | null;
         let waitForDom: (expectation: () => void) => Promise<void>;
         let eventMock: EventCoordinates;
@@ -430,7 +431,7 @@ function whenDragThingsAroundWithStep(
                     }
                 );
 
-                expect(onChange).to.be.calledWith(8);
+                expect(onChange).to.be.calledWithMatch({value: 8});
             });
         });
 
@@ -460,8 +461,8 @@ function whenDragThingsAroundWithStep(
                     }
                 );
 
-                expect(onInput).to.be.calledWith('8');
-                expect(onChange).to.be.calledWith(8);
+                expect(onInput).to.be.calledWithMatch({value: '8'});
+                expect(onChange).to.be.calledWithMatch({value: 8});
             });
         });
     });
@@ -472,8 +473,8 @@ function whenDragThingsAroundWithStep(
         const max = 10;
         const step = 2;
 
-        let onChange: (value: number) => void;
-        let onInput: (value: string) => void;
+        let onChange: (data: ChangeEvent<number>) => void;
+        let onInput: (data: ChangeEvent<string>) => void;
         let select: (automationId: string) => HTMLElement | null;
         let waitForDom: (expectation: () => void) => Promise<void>;
         let eventMock: EventCoordinates;
@@ -543,7 +544,7 @@ function whenDragThingsAroundWithStep(
                     }
                 );
 
-                expect(onChange).to.be.calledWith(8);
+                expect(onChange).to.be.calledWithMatch({value: 8});
             });
         });
 
@@ -578,8 +579,8 @@ function whenDragThingsAroundWithStep(
                     }
                 );
 
-                expect(onInput).to.be.calledWith('8');
-                expect(onChange).to.be.calledWith(8);
+                expect(onInput).to.be.calledWithMatch({value: '8'});
+                expect(onChange).to.be.calledWithMatch({value: 8});
             });
         });
     });
@@ -595,8 +596,8 @@ function keyboard(
         const min = 0;
         const max = 100;
 
-        let onChange: (value: number) => void;
-        let onInput: (value: string) => void;
+        let onChange: (data: ChangeEvent<number>) => void;
+        let onInput: (data: ChangeEvent<string>) => void;
         let select: (automationId: string) => HTMLElement | null;
         let waitForDom: (expectation: () => void) => Promise<void>;
         let deviation: number = step;
@@ -634,7 +635,7 @@ function keyboard(
             });
 
             return waitFor(() => {
-                expect(onChange).have.been.calledWith(value + deviation);
+                expect(onChange).to.be.calledWithMatch({value: value + deviation});
             });
         });
 
@@ -644,7 +645,7 @@ function keyboard(
             });
 
             return waitFor(() => {
-                expect(onChange).have.been.calledWith(value + deviation);
+                expect(onChange).to.be.calledWithMatch({value: value + deviation});
             });
         });
 
@@ -654,7 +655,7 @@ function keyboard(
             });
 
             return waitFor(() => {
-                expect(onChange).have.been.calledWith(value + Math.abs(deviation * 10));
+                expect(onChange).have.been.calledWithMatch({value: value + Math.abs(deviation * 10)});
             });
         });
 
@@ -665,7 +666,7 @@ function keyboard(
             });
 
             return waitFor(() => {
-                expect(onChange).have.been.calledWith(value + (deviation * 10));
+                expect(onChange).have.been.calledWithMatch({value: value + (deviation * 10)});
             });
         });
 
@@ -676,7 +677,7 @@ function keyboard(
             });
 
             return waitFor(() => {
-                expect(onChange).have.been.calledWith(home);
+                expect(onChange).have.been.calledWithMatch({value: home});
             });
         });
 
@@ -687,7 +688,7 @@ function keyboard(
             });
 
             return waitFor(() => {
-                expect(onChange).have.been.calledWith(value + (deviation * 10));
+                expect(onChange).have.been.calledWithMatch({value: value + (deviation * 10)});
             });
         });
 
@@ -698,7 +699,7 @@ function keyboard(
             });
 
             return waitFor(() => {
-                expect(onChange).have.been.calledWith(home);
+                expect(onChange).have.been.calledWithMatch({value: home});
             });
         });
 
@@ -708,7 +709,7 @@ function keyboard(
             });
 
             return waitFor(() => {
-                expect(onChange).have.been.calledWith(value - deviation);
+                expect(onChange).have.been.calledWithMatch({value: value - deviation});
             });
         });
 
@@ -718,7 +719,7 @@ function keyboard(
             });
 
             return waitFor(() => {
-                expect(onChange).have.been.calledWith(value - deviation);
+                expect(onChange).have.been.calledWithMatch({value: value - deviation});
             });
         });
 
@@ -728,7 +729,7 @@ function keyboard(
             });
 
             return waitFor(() => {
-                expect(onChange).have.been.calledWith(value - Math.abs(deviation * 10));
+                expect(onChange).have.been.calledWithMatch({value: value - Math.abs(deviation * 10)});
             });
         });
 
@@ -739,7 +740,7 @@ function keyboard(
             });
 
             return waitFor(() => {
-                expect(onChange).have.been.calledWith(value - (deviation * 10));
+                expect(onChange).have.been.calledWithMatch({value: value - (deviation * 10)});
             });
         });
 
@@ -750,7 +751,7 @@ function keyboard(
             });
 
             return waitFor(() => {
-                expect(onChange).have.been.calledWith(end);
+                expect(onChange).have.been.calledWithMatch({value: end});
             });
         });
 
@@ -761,7 +762,7 @@ function keyboard(
             });
 
             return waitFor(() => {
-                expect(onChange).have.been.calledWith(value - (deviation * 10));
+                expect(onChange).have.been.calledWithMatch({value: value - (deviation * 10)});
             });
         });
 
@@ -772,7 +773,7 @@ function keyboard(
             });
 
             return waitFor(() => {
-                expect(onChange).have.been.calledWith(end);
+                expect(onChange).have.been.calledWithMatch({value: end});
             });
         });
 
@@ -782,7 +783,7 @@ function keyboard(
             });
 
             return waitFor(() => {
-                expect(onChange).have.been.calledWith(home);
+                expect(onChange).have.been.calledWithMatch({value: home});
             });
         });
 
@@ -793,7 +794,7 @@ function keyboard(
             });
 
             return waitFor(() => {
-                expect(onChange).have.been.calledWith(end);
+                expect(onChange).have.been.calledWithMatch({value: end});
             });
         });
     });
@@ -950,8 +951,8 @@ describe('<Slider />', () => {
         const min = 0;
         const max = 10;
         const step = 5;
-        let onChange: (value: number) => void;
-        let onInput: (value: string) => void;
+        let onChange: (data: ChangeEvent<number>) => void;
+        let onInput: (data: ChangeEvent<string>) => void;
         let select: (automationId: string) => HTMLElement | null;
         let waitForDom: (expectation: () => void) => Promise<void>;
 
@@ -1032,7 +1033,7 @@ describe('<Slider />', () => {
                     {clientX: Math.round(bounds.left + bounds.width * 0.8)}
                 );
 
-                expect(onChange).to.be.calledWith(10);
+                expect(onChange).to.be.calledWithMatch({value: 10});
             });
         });
 
@@ -1056,8 +1057,8 @@ describe('<Slider />', () => {
                     {clientX: Math.round(bounds.left + bounds.width * 0.6)}
                 );
 
-                expect(onInput).to.be.calledWith('5');
-                expect(onChange).to.be.calledWith(5);
+                expect(onInput).to.be.calledWithMatch({value: '5'});
+                expect(onChange).to.be.calledWithMatch({value: 5});
             });
         });
     });
@@ -1127,7 +1128,7 @@ describe('<Slider />', () => {
         const min = 0;
         const max = 10;
 
-        let onChange: (value: number) => void;
+        let onChange: (data: ChangeEvent<number>) => void;
         let select: (automationId: string) => HTMLElement | null;
         let waitForDom: (expectation: () => void) => Promise<void>;
 
