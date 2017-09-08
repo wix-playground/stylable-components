@@ -33,7 +33,7 @@ export interface PointerPosition {
     clientY: number;
 }
 export interface SliderProps extends FormInputProps<number, string> {
-    tooltip?: number | string | React.ReactElement<any>;
+    tooltip?: React.ReactNode;
 
     min?: number;
     max?: number;
@@ -228,7 +228,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
             value;
     }
 
-    private getTooltip(): number | string | React.ReactElement<any> | undefined {
+    private getTooltip(): React.ReactNode {
         return this.props.tooltip;
     }
 
