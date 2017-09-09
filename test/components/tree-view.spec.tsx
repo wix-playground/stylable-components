@@ -1,14 +1,11 @@
 import * as keycode from 'keycode';
 import {observable} from 'mobx';
 import * as React from 'react';
-import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react';
+import {ClientRenderer, DriverBase, expect, simulate, sinon, waitFor} from 'test-drive-react';
 import {TreeViewDemo, TreeViewDemoCustom} from '../../demo/components/tree-view-demo';
-import {TreeItem, TreeView} from '../../src';
+import {TreeItem, TreeView, TreeViewDriver} from '../../src';
 import {getLastAvailableItem, getNextItem, getPreviousItem} from '../../src/components/tree-view//tree-util';
 import {initParentsMap, ParentsMap, TreeItemData, TreeStateMap} from '../../src/components/tree-view/tree-view';
-
-const treeView = 'TREE_VIEW';
-const treeItem = 'TREE_ITEM';
 
 const KeyCodes: any = {
     ENTER: keycode('enter'),
@@ -48,57 +45,9 @@ const treeData: TreeItemData[] = [
     }
 ];
 
-// duplicating the data so i can pass a new object to the non-mobx version
-const newTreeData = JSON.parse(JSON.stringify(treeData));
-newTreeData[0].children![2].children!.push({label: 'Kaiserschmarrn'});
-
-export interface TreeViewWrapperState {
-    treeData: object[];
-}
-
-export class TreeViewWrapper extends React.Component<{}, TreeViewWrapperState> {
-    public state = {treeData};
-
-    public render() {
-        return <TreeView dataSource={this.state.treeData}/>;
-    }
-
-    public switchDataSource = () => {
-        this.setState({
-            treeData: newTreeData
-        });
-    }
-}
-
-export class TreeViewMobxWrapper extends React.Component<{}, {}> {
-    @observable private obsTreeData: TreeItemData[] = treeData;
-
-    public render() {
-        return <TreeView dataSource={this.obsTreeData}/>;
-    }
-
-    public modifyMobxDataSource = () => {
-        this.obsTreeData[0].children![2].children!.push({label: 'Kaiserschmarrn'});
-    }
-}
-
-function getLabelsList(data: { label: string, children?: object[] }): string[] {
-    return [data.label]
-        .concat(...(data.children || [])
-            .map(getLabelsList));
-}
-
-function getAllNodeLabels(data: object[]): string[] {
-    return data.map(getLabelsList).reduce((prev, next) => [...prev, ...next]);
-}
-
 describe('<TreeView />', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
-
-    const getTreeItem = (id: string) => `${treeItem}_${id.replace(' ', '_')}`;
-    const getTreeItemIcon = (id: string) => `${getTreeItem(id)}_ICON`;
-    const getTreeItemLabel = (id: string) => `${getTreeItem(id)}_LABEL`;
 
     function expandItemWithLabel(select: (...selectors: string[]) => Element | null, id: string) {
         simulate.click(select(getTreeItemIcon(id)));
