@@ -53,11 +53,6 @@ export class DropDown extends React.PureComponent<DropDownProps, DropDownState> 
         this.props.onChange!({value: e.value});
     }
 
-    public onInputClick: React.EventHandler<React.MouseEvent<HTMLDivElement>> = event => {
-        this.toggleDropdown();
-        this.props.onChange!({value: this.props.value!});
-    }
-
     public render() {
         const rootProps = root(this.props, {
             'data-automation-id': 'DROP_DOWN',
@@ -74,7 +69,7 @@ export class DropDown extends React.PureComponent<DropDownProps, DropDownState> 
                 tabIndex={this.props.tabIndex}
                 ref={dropdown => this.setState({dropdown})}
             >
-                <div data-automation-id="DROP_DOWN_INPUT" onClick={this.onInputClick} className="drop-down-input">
+                <div data-automation-id="DROP_DOWN_INPUT" onClick={this.toggleDropdown} className="drop-down-input">
                     <span className="label">{this.props.value!}</span>
                     <div className="caret" data-automation-id="ICON">
                         <ToggleIcon />

@@ -9,14 +9,6 @@ const dropDown = 'DROP_DOWN';
 const dropDownDemo = dropDown + '_DEMO';
 const input = dropDown + '_INPUT';
 
-const KeyCodes: any = {
-    ENTER: keycode('enter'),
-    UP: keycode('up'),
-    DOWN: keycode('down'),
-    SPACE: keycode('space'),
-    ESC: keycode('escape')
-};
-
 describe('<DropDown />', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
@@ -35,26 +27,26 @@ describe('<DropDown />', () => {
 
         simulate.click(bodySelect('LIST')!.children![0]);
 
-        return waitForDom(() => {
+        await waitForDom(() => {
             expect(bodySelect('LIST')).to.be.absent();
             expect(select(dropDownDemo)).to.have.text(items[0]);
         });
     });
 
-    it('renders to the screen', () => {
+    it('renders to the screen', async () => {
         const {select, waitForDom} = clientRenderer.render(<DropDown />);
 
-        return waitForDom(() => {
+        await waitForDom(() => {
             expect(select(dropDown)).to.be.present();
             expect(select(dropDown)).to.have.text('Default Text');
         });
     });
 
-    it('has correct selected item text', () => {
+    it('has correct selected item text', async () => {
         const item = 'Test';
         const {select, waitForDom} = clientRenderer.render(<DropDown value={item}>{item}</DropDown>);
 
-        return waitForDom(() => {
+        await waitForDom(() => {
             expect(select(input)).to.be.present();
             expect(select(input)).to.have.text(item);
         });
@@ -79,20 +71,20 @@ describe('<DropDown />', () => {
         await waitForDom(() => expect(bodySelect('LIST')).to.be.present());
     });
 
-    it('invokes the onClick when dropdown label is clicked', () => {
+    it('invokes the onClick when dropdown label is clicked', async () => {
         const onClick = sinon.spy();
         const {select} = clientRenderer.render(<DropDown onChange={onClick}/>);
         simulate.click(select(dropDown, input));
 
-        return waitFor(() => expect(onClick).to.have.been.calledOnce);
+        await waitFor(() => expect(onClick).to.have.been.calledOnce);
     });
 
-    it('displays item list to choose from when open is true', () => {
+    it('displays item list to choose from when open is true', async () => {
         const {waitForDom} =
             clientRenderer.render(<DropDown open={true} dataSource={items} />);
         const dropDownList = bodySelect('LIST');
 
-        return waitForDom(() => {
+        await waitForDom(() => {
             expect(dropDownList).to.be.present();
             items.forEach((elem, idx) => {
                 expect(dropDownList!.children[idx]).to.be.present();
@@ -101,7 +93,7 @@ describe('<DropDown />', () => {
         });
     });
 
-    it('invokes onClick handler when an item is clicked', () => {
+    it('invokes onClick handler when an item is clicked', async () => {
         const onClick = sinon.spy();
 
         clientRenderer.render(<DropDown open={true} dataSource={items} onChange={onClick}/>);
@@ -109,7 +101,7 @@ describe('<DropDown />', () => {
 
         simulate.click(dropDownList!.children[0]);
 
-        return waitFor(() => expect(onClick).to.have.been.calledWithMatch({value: items[0]}));
+        await waitFor(() => expect(onClick).to.have.been.calledWithMatch({value: items[0]}));
     });
 
     describe('Keyboard Navigation', () => {
@@ -119,13 +111,13 @@ describe('<DropDown />', () => {
             await waitForDom(() => expect(bodySelect('LIST')).to.be.absent());
 
             simulate.focus(select(dropDownDemo, dropDown));
-            simulate.keyDown(select(dropDownDemo, dropDown), {keyCode: KeyCodes.SPACE});
+            simulate.keyDown(select(dropDownDemo, dropDown), {keyCode: keycode('space')});
 
             await waitForDom(() => expect(bodySelect('LIST')).to.be.present());
 
-            simulate.keyDown(select(dropDownDemo, dropDown), {keyCode: KeyCodes.SPACE});
+            simulate.keyDown(select(dropDownDemo, dropDown), {keyCode: keycode('space')});
 
-            return waitForDom(() => expect(bodySelect('LIST')).to.be.absent());
+            await waitForDom(() => expect(bodySelect('LIST')).to.be.absent());
         });
 
         it('closes selection list when ESC is clicked', async () => {
@@ -137,9 +129,9 @@ describe('<DropDown />', () => {
 
             await waitForDom(() => expect(bodySelect('LIST')).to.be.present());
 
-            simulate.keyDown(select(dropDownDemo, dropDown), {keyCode: KeyCodes.ESC});
+            simulate.keyDown(select(dropDownDemo, dropDown), {keyCode: keycode('escape')});
 
-            return waitForDom(() => expect(bodySelect('LIST')).to.be.absent());
+            await waitForDom(() => expect(bodySelect('LIST')).to.be.absent());
         });
 
         it('opens selection list when DOWN is clicked and it is closed', async () => {
@@ -148,9 +140,9 @@ describe('<DropDown />', () => {
             await waitForDom(() => expect(bodySelect('LIST')).to.be.absent());
 
             simulate.focus(select(dropDownDemo, dropDown));
-            simulate.keyDown(select(dropDownDemo, dropDown), {keyCode: KeyCodes.DOWN});
+            simulate.keyDown(select(dropDownDemo, dropDown), {keyCode: keycode('down')});
 
-            return waitForDom(() => expect(bodySelect('LIST')).to.be.present());
+            await waitForDom(() => expect(bodySelect('LIST')).to.be.present());
         });
     });
 });
