@@ -2,6 +2,10 @@ import * as ReactDOM from 'react-dom';
 import {Portal} from '../../src';
 import {DriverBase} from 'test-drive-react';
 
+const nullContainerExceptionMessage =
+    'Error: tried to get the container of the portal when \'root()\' function was called, but got \'null\'.' +
+    'Consider using \'isPresent()\' method to make sure the container exists.';
+
 export class PortalTestDriver extends DriverBase {
     public static ComponentClass = Portal;
     private ref: Portal;
@@ -11,11 +15,18 @@ export class PortalTestDriver extends DriverBase {
         this.ref = instance;
     }
 
-    public get portal() {
-        return this.ref && this.ref.getPortalContainer()! && this.ref.getPortalContainer()!.firstChild;
+    public get root(): Element {
+        if (!this.ref || !this.ref.getPortalContainer()) {
+            throw new Error(nullContainerExceptionMessage);
+        }
+        return this.ref.getPortalContainer()!.children[0];
     }
 
-    public get content(): NodeList {
-        return this.ref && this.ref.getPortalContainer()! && this.ref.getPortalContainer()!.firstChild!.childNodes;
+    public get content(): HTMLCollection {
+        return this.ref.getPortalContainer()!.children[0].children;
+    }
+
+    public get isPresent(): boolean {
+        return !!this.ref && !!this.ref.getPortalContainer();
     }
 }

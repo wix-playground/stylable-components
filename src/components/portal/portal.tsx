@@ -7,7 +7,7 @@ export interface PortalProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export class Portal extends React.PureComponent<PortalProps, {}> {
-    private container: Element | null;
+    private container: HTMLDivElement | null;
     private portalContent: React.ReactElement<React.HTMLAttributes<HTMLDivElement>>;
 
     public render() {
@@ -41,7 +41,7 @@ export class Portal extends React.PureComponent<PortalProps, {}> {
         }
     }
 
-    public getPortalContainer() {
+    public getPortalContainer(): HTMLDivElement | null {
         return this.container;
     }
 

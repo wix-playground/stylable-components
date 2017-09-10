@@ -1,6 +1,6 @@
-import * as React from 'react';
+import React = require('react');
 import {SBComponent} from 'stylable-react-component';
-import {divider, Option, SelectionList} from '../../src/components/selection-list';
+import {divider, Option, SelectionList, SelectionListItemValue} from '../../src/components/selection-list';
 import demoStyle from './selection-list-demo.st.css';
 
 export class SelectionListDemo extends React.Component<{}, {}> {
@@ -34,7 +34,7 @@ export class FoodList extends React.Component {
                 <SelectionList
                     dataSource={this.dataSource}
                     value={this.state.value}
-                    onChange={this.onChange}
+                    onChange={this.handleChange}
                 />
                 <p data-automation-id="RESULT">
                     {this.state.value}, great choice!
@@ -43,7 +43,7 @@ export class FoodList extends React.Component {
         );
     }
 
-    private onChange = (value: string) => this.setState({value});
+    private handleChange = ({value}: {value: SelectionListItemValue}) => this.setState({value});
 }
 
 @SBComponent(demoStyle)
@@ -69,7 +69,7 @@ class EmojiList extends React.Component {
                     dataSource={this.dataSource}
                     renderItem={this.renderItem}
                     value={this.state.value}
-                    onChange={this.onChange}
+                    onChange={this.handleChange}
                 />
                 <p data-automation-id="RESULT">
                     Your spirit animal is {this.state.value.toLowerCase()}.
@@ -82,7 +82,7 @@ class EmojiList extends React.Component {
         return <Option value={value}>{label}</Option>;
     }
 
-    private onChange = (value: string) => this.setState({value});
+    private handleChange = ({value}: {value: SelectionListItemValue}) => this.setState({value});
 }
 
 @SBComponent(demoStyle)
@@ -96,7 +96,7 @@ class TextStyleList extends React.Component {
                 <SelectionList
                     className="text-style-list"
                     value={this.state.value}
-                    onChange={this.onChange}
+                    onChange={this.handleChange}
                 >
                     <Option value="title">
                         <span className="text-style-title">Title</span>
@@ -126,5 +126,5 @@ class TextStyleList extends React.Component {
         );
     }
 
-    private onChange = (value: string) => this.setState({value});
+    private handleChange = ({value}: {value: SelectionListItemValue}) => this.setState({value});
 }

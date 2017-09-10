@@ -26,6 +26,10 @@ export class PopupDemoTestDriver extends DriverBase {
     public get content(): NodeList {
         return this.popupDriver.content;
     }
+
+    public get isPopupPresent(): boolean {
+        return this.popupDriver.isPresent;
+    }
 }
 
 describe('<Popup />', function() {
@@ -52,7 +56,7 @@ describe('<Popup />', function() {
 
             await waitForDom(() => {
                 expect(driver.container).to.be.present();
-                expect(driver.portal).to.be.absent();
+                expect(driver.isPopupPresent).to.be.false;
             });
 
             (driver.container as HTMLDivElement).click();
@@ -61,7 +65,7 @@ describe('<Popup />', function() {
 
             (driver.container as HTMLDivElement).click();
             driver = new PopupDemoTestDriver(result as PopupDemo);
-            return waitForDom(() => expect(driver.portal).to.be.absent());
+            return waitForDom(() => expect(driver.isPopupPresent).to.be.false);
         });
     });
 
@@ -89,7 +93,7 @@ describe('<Popup />', function() {
         await sleep(100);
 
         const driver = new PopupTestDriver(result as Popup);
-        await waitFor(() => expect(driver.portal).to.be.absent());
+        await waitFor(() => expect(driver.isPresent).to.be.false);
     });
 
     it('does not reder the popup if the open prop is false', async function() {
@@ -101,7 +105,7 @@ describe('<Popup />', function() {
         await sleep(100);
 
         const driver = new PopupTestDriver(result as Popup);
-        await waitFor(() => expect(driver.portal).to.be.absent());
+        await waitFor(() => expect(driver.isPresent).to.be.false);
     });
 
     it('removes the component when unmounting', async function() {

@@ -13,10 +13,14 @@ export class PopupTestDriver extends DriverBase {
     }
 
     public get portal() {
-        return this.portalDriver.portal;
+        return this.portalDriver.root;
     }
 
     public get content(): NodeList {
         return this.portalDriver.content;
+    }
+
+    public get isPresent(): boolean {
+        return this.portalDriver.isPresent;
     }
 }
