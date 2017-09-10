@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {ClientRenderer, expect, sinon, waitFor} from 'test-drive-react';
 import {TreeView} from '../../src';
-import {TreeItemData} from '../../src/components/tree-view/tree-view';
+import {ParentsMap, TreeItemData, TreeStateMap} from '../../src/components/tree-view/tree-view';
 import {TreeViewDriver} from '../../test-kit';
 
 // const KeyCodes: any = {
@@ -400,7 +400,7 @@ describe('<TreeView />', () => {
         describe('<TreeItem />', () => {
 
             const stateMap = new TreeStateMap();
-            stateMap.getItemState(nestedItem).isExpanded = true;
+            // stateMap.getItemState(nestedItem).isExpanded = true;
 
     //         it('renders an item', () => {
     //             const {select, waitForDom} = clientRenderer.render(
@@ -471,40 +471,40 @@ describe('<TreeView />', () => {
     //         });
         });
 
-    //     describe('Tree Traversal Utils', () => {
-    //         const treeState: TreeStateMap = new TreeStateMap();
+        describe('Tree Traversal Utils', () => {
+            const treeState: TreeStateMap = new TreeStateMap();
 
-    //         treeState.getItemState(treeData[0]).isExpanded = true;
-    //         treeState.getItemState(treeData[0].children![1]).isExpanded = true;
+            treeState.getItemState(treeData[0]).isExpanded = true;
+            treeState.getItemState(treeData[0].children![1]).isExpanded = true;
 
-    //         const parentsMap: ParentsMap = new Map<TreeItemData, TreeItemData | undefined>();
-    //         initParentsMap(parentsMap, treeData, undefined);
+            const parentsMap: ParentsMap = new Map<TreeItemData, TreeItemData | undefined>();
+            initParentsMap(parentsMap, treeData, undefined);
 
-    //         it('gets previous item when its a sibling', async () => {
-    //             const previous = getPreviousItem(treeData, treeData[0].children![1], treeState, parentsMap);
-    //             expect(previous.label).to.eql(treeData[0].children![0].label);
-    //         });
+            it('gets previous item when its a sibling', async () => {
+                const previous = getPreviousItem(treeData, treeData[0].children![1], treeState, parentsMap);
+                expect(previous.label).to.eql(treeData[0].children![0].label);
+            });
 
-    //         it('gets previous item when its a parent', async () => {
-    //             const previous = getPreviousItem(treeData, treeData[0].children![0], treeState, parentsMap);
-    //             expect(previous.label).to.eql(treeData[0].label);
-    //         });
+            it('gets previous item when its a parent', async () => {
+                const previous = getPreviousItem(treeData, treeData[0].children![0], treeState, parentsMap);
+                expect(previous.label).to.eql(treeData[0].label);
+            });
 
-    //         it('gets next item when its a sibling', async () => {
-    //             const next = getNextItem(treeData, treeData[0].children![1].children![0], treeState, parentsMap);
-    //             expect(next.label).to.eql(treeData[0].children![1].children![1].label);
-    //         });
+            it('gets next item when its a sibling', async () => {
+                const next = getNextItem(treeData, treeData[0].children![1].children![0], treeState, parentsMap);
+                expect(next.label).to.eql(treeData[0].children![1].children![1].label);
+            });
 
-    //         it('gets next item when its a parent', async () => {
-    //             const next = getNextItem(treeData, treeData[0].children![1].children![1], treeState, parentsMap);
-    //             expect(next.label).to.eql(treeData[0].children![2].label);
-    //         });
+            it('gets next item when its a parent', async () => {
+                const next = getNextItem(treeData, treeData[0].children![1].children![1], treeState, parentsMap);
+                expect(next.label).to.eql(treeData[0].children![2].label);
+            });
 
-    //         it('selects last available item', async () => {
-    //             const last = getLastAvailableItem(treeData[0], treeState);
-    //             expect(last.label).to.eql(treeData[0].children![2].label);
-    //         });
-    //     });
+            it('selects last available item', async () => {
+                const last = getLastAvailableItem(treeData[0], treeState);
+                expect(last.label).to.eql(treeData[0].children![2].label);
+            });
+        });
 
         describe('Accessibility', () => {
             it('puts correct aria values on different parts of the tree', () => {

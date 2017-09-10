@@ -1,5 +1,5 @@
 import keycode = require('keycode');
-import {autorun, computed, observable} from 'mobx';
+import {autorun, computed, IReactionDisposer, observable, untracked} from 'mobx';
 import {observer} from 'mobx-react';
 import React = require('react');
 import {root} from 'wix-react-tools';
@@ -24,27 +24,36 @@ export class SelectionList extends React.Component<Props> {
         tabIndex: -1
     };
 
-    // Wrapping props with @computed allows autorun() to ignore changes in the properties it's not using.
+    private reactionDisposers: IReactionDisposer[] = [];
+    @observable private focused: boolean = false;
+
+    // Wrapping props with @computed allows to observe them independently from other props.
     @computed public get children()   { return this.props.children; }
     @computed public get dataSource() { return this.props.dataSource; }
     @computed public get dataSchema() { return this.props.dataSchema; }
     @computed public get renderItem() { return this.props.renderItem; }
     @computed public get value()      { return this.props.value; }
 
-    @observable private focused: boolean = false;
-    @observable private list: SelectionListModel;
+    @computed private get list(): SelectionListModel {
+        const list = new SelectionListModel();
+        list.addChildren(this.children);
+        list.addDataSource(this);
+        list.selectValue(untracked(() => this.value));
+        return list;
+    }
 
     public componentWillMount() {
-        autorun(() => {
-            const list = new SelectionListModel();
-            list.addChildren(this.children);
-            list.addDataSource(this);
-            this.list = list;
-        });
+        this.reactionDisposers.push(autorun(() => {
+            this.list.selectValue(this.value);
+        }));
 
-        autorun(() => this.list.selectValue(this.value));
+        this.reactionDisposers.push(autorun(() => {
+            this.list.focusValue(this.focused ? this.value : undefined);
+        }));
+    }
 
-        autorun(() => this.list.focusValue(this.focused ? this.value : undefined));
+    public componentWillUnmount() {
+        this.reactionDisposers.forEach(dispose => dispose());
     }
 
     public render() {
