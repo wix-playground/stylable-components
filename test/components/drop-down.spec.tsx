@@ -83,7 +83,7 @@ describe('<DropDown />', () => {
 
         simulate.click(select(dropDown, input));
 
-        await waitForDom(() => expect(bodySelect('LIST')).to.be.absent());\
+        await waitForDom(() => expect(bodySelect('LIST')).to.be.absent());
     });
 
     it('displays item list to choose from when open is true', async () => {
