@@ -1,6 +1,6 @@
 import * as keycode from 'keycode';
 import * as React from 'react';
-import {ClientRenderer, expect, selectDom, simulate, sinon} from 'test-drive-react';
+import {ClientRenderer, DriverBase, expect, simulate, sinon} from 'test-drive-react';
 import {DatePickerDemo} from '../../demo/components/date-picker-demo';
 import {DatePicker} from '../../src';
 import {DatePickerTestDriver} from '../../test-kit';
@@ -12,11 +12,20 @@ import {
     getNumOfPreviousDays
 } from '../../src/utils';
 
-const currentDate = 'CURRENT_DATE';
+class DatePickerDemoDriver extends DriverBase {
+    public static ComponentClass = DatePickerDemo;
+
+    public get datePicker() {
+        return new DatePickerTestDriver(() => this.select('DATE_PICKER_DEMO', 'DATE_PICKER'))
+    }
+
+    public get date() {
+        return this.select('DATE_PICKER_DEMO', 'CURRENT_DATE');
+    }
+}
 
 describe('The DatePicker Component', () => {
     const clientRenderer = new ClientRenderer();
-    const bodySelect = selectDom(document.body);
     afterEach(() => clientRenderer.cleanup());
 
     const JANUARY_FIRST = new Date(2017, 0, 1);
@@ -24,37 +33,36 @@ describe('The DatePicker Component', () => {
     const MARCH_FIRST  = new Date(2017, 2, 1);
     const DECEMBER_FIRST = new Date(2017, 11, 1);
 
-    // describe('A Typical User', () => {
-    //     it('writes into the date picker input field, presses enter, ' +
-    //         'and expects the date picker input to have the proper value', async () => {
-    //         const {select, waitForDom} = clientRenderer.render(<DatePickerDemo />);
-    //
-    //         const datePickerInput = select(datePickerInputId);
-    //         trigger.change(datePickerInput!, '2017/02/01');
-    //         simulate.keyDown(datePickerInput, {keyCode: keycode('enter')});
-    //
-    //         await waitForDom(() => expect(select(currentDate)).to.have.text('Wed Feb 01 2017'));
-    //     });
-    //
-    //     it('clicks on the input, picks a date from the dropdown, ' +
-    //         'and then expects the dropdown to close and the date to appear in the input', async () => {
-    //         const {select, waitForDom} = clientRenderer.render(<DatePickerDemo value={JANUARY_FIRST} />);
-    //         const datePickerInput = select(datePickerInputId);
-    //
-    //         await waitForDom(() => expect(driver.dropDown).to.be.absent());
-    //
-    //         simulate.focus(datePickerInput);
-    //
-    //         await waitForDom(() => expect(driver.dropDown).to.be.present());
-    //
-    //         simulate.mouseDown(bodySelect('DAY_4'));
-    //
-    //         await waitForDom(() => {
-    //             expect(driver.dropDown).to.be.absent();
-    //             expect(select(currentDate)).to.have.text('Wed Jan 04 2017');
-    //         });
-    //     });
-    // });
+    describe('A Typical User', () => {
+        it('writes into the date picker input field, presses enter, ' +
+            'and expects the date picker input to have the proper value', async () => {
+            const {driver, waitForDom} = clientRenderer.render(<DatePickerDemo />)
+                .withDriver(DatePickerDemoDriver);
+
+            driver.datePicker.changeDate('2017/02/01');
+
+            await waitForDom(() => expect(driver.date).to.have.text('Wed Feb 01 2017'));
+        });
+
+        it('clicks on the input, picks a date from the dropdown, ' +
+            'and then expects the dropdown to close and the date to appear in the input', async () => {
+            const {driver, waitForDom} = clientRenderer.render(<DatePickerDemo value={JANUARY_FIRST} />)
+                .withDriver(DatePickerDemoDriver);
+
+            await waitForDom(() => expect(driver.datePicker.dropDown).to.be.absent());
+
+            simulate.focus(driver.datePicker.input);
+
+            await waitForDom(() => expect(driver.datePicker.dropDown).to.be.present());
+
+            driver.datePicker.click(driver.datePicker.getDay(4)!);
+
+            await waitForDom(() => {
+                expect(driver.datePicker.dropDown).to.be.absent();
+                expect(driver.date).to.have.text('Wed Jan 04 2017');
+            });
+        });
+    });
 
     it('should only call onChange once', async () => {
         const onChange = sinon.spy();
@@ -106,11 +114,11 @@ describe('The DatePicker Component', () => {
 
         await waitForDom(() => expect(driver.dropDown).to.be.absent());
 
-        simulate.mouseDown(driver.input);
+        driver.click(driver.input!);
 
         await waitForDom(() => expect(driver.dropDown).to.be.present());
 
-        simulate.mouseDown(driver.input);
+        driver.click(driver.input!);
 
         await waitForDom(() => expect(driver.dropDown).to.be.absent());
     });
@@ -148,7 +156,7 @@ describe('The DatePicker Component', () => {
     });
 
     describe('The Dropdown', () => {
-        const dayNames: string[] = getDayNames();
+        const dayNames = getDayNames();
         const days: string[] = [
             '1', '2', '3', '4', '5', '6', '7', '8', '9', '10',
             '11', '12', '13', '14', '15', '16', '17', '18', '19',
@@ -156,17 +164,17 @@ describe('The DatePicker Component', () => {
         ];
 
         it('should display the days for a fixed month', async () => {
-            const {waitForDom} = clientRenderer.render(
+            const {driver, waitForDom} = clientRenderer.render(
                 <DatePicker
                     showDropdownOnInit={true}
                     value={FEBRUARY_FIRST}
                 />
-            );
+            ).withDriver(DatePickerTestDriver);
 
             await waitForDom(() => {
                 dayNames.forEach(
-                    dayName => expect(bodySelect(`DAY_NAME_${dayName.toUpperCase()}`)).to.have.text(dayName));
-                days.forEach(dayNumeric => expect(bodySelect(`DAY_${dayNumeric}`)).to.have.text(dayNumeric));
+                    (dayName, index) => expect(driver.getDayName(index)).to.have.text(dayName));
+                days.forEach(day => expect(driver.getDay(day)).to.have.text(day));
             });
         });
 
@@ -190,20 +198,16 @@ describe('The DatePicker Component', () => {
         });
 
         it('should display the day names in horizontal sequence, and vertically aligned', async () => {
-            const {waitForDom} = clientRenderer.render(
+            const {driver, waitForDom} = clientRenderer.render(
                 <DatePicker
                     showDropdownOnInit={true}
                     value={JANUARY_FIRST}
                 />
-            );
-
-            const dayNameIds = dayNames.map(name => 'DAY_NAME_' + name.toUpperCase());
+            ).withDriver(DatePickerTestDriver);
 
             await waitForDom(() => {
-                const dayNameElements = dayNameIds.map((name, index) => {
-                    const element: Element = bodySelect(name)!;
-                    expect(element).to.have.text(dayNames[index]);
-                    return element;
+                const dayNameElements = dayNames.map((name, index) => {
+                    return driver.getDayName(index);
                 });
 
                 expect(dayNameElements).to.be.inHorizontalSequence();
@@ -211,71 +215,62 @@ describe('The DatePicker Component', () => {
             });
         });
 
-        function elementsInRow(row: number) {
-            const rowElements = [];
-
-            for (let i = 1; i < 7; i++) {
-                rowElements.push(bodySelect('DAY_' + (((row - 1) * 7) + i)));
-            }
-
-            return rowElements;
-        }
-
-        function elementsInColumn(column: number) {
-            const columnElements = [];
-
-            for (let i = 1; i <= 5; i++) {
-                columnElements.push(bodySelect('DAY_' + ((7 * (i - 1)) + column)));
-            }
-
-            return columnElements;
-        }
-
         it('should display the days in a grid', async () => {
-            const {waitForDom} = clientRenderer.render(
+            const {driver, waitForDom} = clientRenderer.render(
                 <DatePicker
                     value={JANUARY_FIRST}
                     showDropdownOnInit={true}
                 />
-            );
+            ).withDriver(DatePickerTestDriver);
 
             await waitForDom(() => {
+                const firstRow = [];
+                const firstColumn = [];
+
+                for (let i = 1; i < 7; i++) {
+                    firstRow.push(driver.getDay(i));
+                }
+
+                for (let i = 1; i <= 5; i++) {
+                    firstColumn.push(driver.getDay((7 * (i - 1)) + 1));
+                }
+
                 // Check that the days are displayed in rows (checking that each row is in horizontal sequence
-                expect(elementsInRow(1)).to.be.inHorizontalSequence();
-                expect(elementsInRow(1)).to.be.verticallyAligned('center');
+                expect(firstRow).to.be.inHorizontalSequence();
+                expect(firstRow).to.be.verticallyAligned('center');
 
                 // Check that the days are displayed in columns
-                expect(elementsInColumn(1)).to.be.inVerticalSequence();
-                expect(elementsInColumn(1)).to.be.horizontallyAligned('center');
+                expect(firstColumn).to.be.inVerticalSequence();
+                expect(firstColumn).to.be.horizontallyAligned('center');
             });
         });
 
         it('should show the days starting on the correct day of the week', async () => {
-            const {waitForDom} = clientRenderer.render(
+            const {driver, waitForDom} = clientRenderer.render(
                 <DatePicker
                     value={MARCH_FIRST}
                     showDropdownOnInit={true}
                 />
-            );
+            ).withDriver(DatePickerTestDriver);
 
             await waitForDom(() => expect([
-                bodySelect('DAY_1'),
-                bodySelect('DAY_NAME_WED')
+                driver.getDay(1),
+                driver.getDayName(3)
             ]).to.be.horizontallyAligned('center'));
         });
 
         it('should show the trailing days from the last and next months', function() {
-            clientRenderer.render(
+            const {driver} = clientRenderer.render(
                 <DatePicker
                     value={MARCH_FIRST}
                     showDropdownOnInit={true}
                 />
-            );
+            ).withDriver(DatePickerTestDriver);
 
-            expect(bodySelect('PREV_DAY_26')).to.be.present();
-            expect(bodySelect('PREV_DAY_27')).to.be.present();
-            expect(bodySelect('PREV_DAY_28')).to.be.present();
-            expect(bodySelect('NEXT_DAY_1')).to.be.present();
+            expect(driver.getPrevDay(26)).to.be.present();
+            expect(driver.getPrevDay(27)).to.be.present();
+            expect(driver.getPrevDay(28)).to.be.present();
+            expect(driver.getNextDay(1)).to.be.present();
 
         });
 
@@ -301,23 +296,6 @@ describe('The DatePicker Component', () => {
             await waitForDom(() => expect(driver.monthLabel).to.have.text('January'));
         });
 
-        it('displays the days of the week', async () => {
-            const daysOfTheWeek = getDayNames();
-            const {waitForDom} = clientRenderer.render(
-                <DatePicker
-                    showDropdownOnInit={true}
-                    value={JANUARY_FIRST}
-                />
-            );
-
-            await waitForDom(() => {
-                for (const day of daysOfTheWeek) {
-                    expect(bodySelect('DAY_NAME_' + day.toUpperCase())).to.have.text(day);
-
-                }
-            });
-        });
-
         it('has a button which steps forward a month', async () => {
             const {driver, waitForDom} = clientRenderer.render(
                 <DatePicker
@@ -328,7 +306,7 @@ describe('The DatePicker Component', () => {
 
             expect(driver.yearLabel).to.have.text('2017');
             expect(driver.monthLabel).to.have.text('December');
-            simulate.mouseDown(driver.nextMonthLabel);
+            driver.click(driver.nextMonthLabel!);
 
             await waitForDom(() => {
                 expect(driver.yearLabel).to.have.text('2018');
@@ -346,7 +324,7 @@ describe('The DatePicker Component', () => {
 
             expect(driver.yearLabel).to.have.text('2017');
             expect(driver.monthLabel).to.have.text('January');
-            simulate.mouseDown(driver.prevMonthLabel);
+            driver.click(driver.prevMonthLabel!);
 
             await waitForDom(() => {
                 expect(driver.yearLabel).to.have.text('2016');
@@ -360,11 +338,11 @@ describe('The DatePicker Component', () => {
 
             await waitForDom(() => expect(driver.dropDown).to.be.present());
 
-            simulate.mouseDown(driver.prevMonthLabel);
+            driver.click(driver.prevMonthLabel!);
 
             await waitForDom(() => expect(driver.dropDown).to.be.present());
 
-            simulate.mouseDown(driver.nextMonthLabel);
+            driver.click(driver.nextMonthLabel!);
 
             await waitForDom(() => expect(driver.dropDown).to.be.present());
         });
