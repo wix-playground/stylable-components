@@ -21,6 +21,14 @@ export class DatePickerTestDriver extends DriverBase {
         simulate.mouseDown(elem);
     }
 
+    public openCalender(): void {
+        simulate.focus(this.input);
+    }
+
+    public keyPress(keyCode: number) {
+        simulate.keyDown(this.input, {keyCode});
+    }
+
     public get nextMonthLabel() {
         return bodySelect('NEXT_MONTH_BUTTON');
     }

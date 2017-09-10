@@ -1,9 +1,10 @@
 import * as keycode from 'keycode';
 import * as React from 'react';
-import {ClientRenderer, DriverBase, expect, simulate, sinon} from 'test-drive-react';
+import {ClientRenderer, DriverBase, expect, sinon} from 'test-drive-react';
 import {DatePickerDemo} from '../../demo/components/date-picker-demo';
 import {DatePicker} from '../../src';
 import {DatePickerTestDriver} from '../../test-kit';
+import {sleep} from '../utils';
 import {
     getDayNames,
     getDaysInMonth,
@@ -16,7 +17,7 @@ class DatePickerDemoDriver extends DriverBase {
     public static ComponentClass = DatePickerDemo;
 
     public get datePicker() {
-        return new DatePickerTestDriver(() => this.select('DATE_PICKER_DEMO', 'DATE_PICKER'))
+        return new DatePickerTestDriver(() => this.select('DATE_PICKER_DEMO', 'DATE_PICKER'));
     }
 
     public get date() {
@@ -51,7 +52,7 @@ describe('The DatePicker Component', () => {
 
             await waitForDom(() => expect(driver.datePicker.dropDown).to.be.absent());
 
-            simulate.focus(driver.datePicker.input);
+            driver.datePicker.openCalender();
 
             await waitForDom(() => expect(driver.datePicker.dropDown).to.be.present());
 
@@ -83,12 +84,12 @@ describe('The DatePicker Component', () => {
 
     it('should not call onChange with an invalid date', async () => {
         const onChange = sinon.spy();
-        const {driver, waitForDom} = clientRenderer.render(<DatePicker onChange={onChange} />)
+        const {driver} = clientRenderer.render(<DatePicker onChange={onChange} />)
             .withDriver(DatePickerTestDriver);
 
         driver.changeDate('2sgsdfsdfw223');
-
-        await waitForDom(() => expect(onChange).to.have.not.been.calledOnce);
+        sleep(20);
+        expect(onChange).to.have.not.been.called;
     });
 
     it('should call onChange with the current input value when blurred', async () => {
@@ -129,9 +130,9 @@ describe('The DatePicker Component', () => {
         const datePickerInput = driver.input;
 
         function simulateKeyPress(keyToPress: string) {
-            simulate.focus(datePickerInput);
-            simulate.keyDown(datePickerInput, {keyCode: keycode(keyToPress)});
-            simulate.keyDown(datePickerInput, {keyCode: keycode('enter')});
+            driver.openCalender();
+            driver.keyPress(keycode(keyToPress));
+            driver.keyPress(keycode('enter'));
         }
 
         // Advance one week
@@ -172,19 +173,14 @@ describe('The DatePicker Component', () => {
             ).withDriver(DatePickerTestDriver);
 
             await waitForDom(() => {
-                dayNames.forEach(
-                    (dayName, index) => expect(driver.getDayName(index)).to.have.text(dayName));
+                dayNames.forEach((dayName, index) => expect(driver.getDayName(index)).to.have.text(dayName));
                 days.forEach(day => expect(driver.getDay(day)).to.have.text(day));
             });
         });
 
         it('should show the next and previous month buttons horizontally aligned with the month and year', async () => {
-            const {driver, waitForDom} = clientRenderer.render(
-                <DatePicker
-                    showDropdownOnInit={true}
-                    value={JANUARY_FIRST}
-                />
-            ).withDriver(DatePickerTestDriver);
+            const {driver, waitForDom} = clientRenderer.render(<DatePicker showDropdownOnInit value={JANUARY_FIRST}/>)
+                .withDriver(DatePickerTestDriver);
 
             await waitForDom(() => {
                 const headerContents = [
@@ -198,12 +194,8 @@ describe('The DatePicker Component', () => {
         });
 
         it('should display the day names in horizontal sequence, and vertically aligned', async () => {
-            const {driver, waitForDom} = clientRenderer.render(
-                <DatePicker
-                    showDropdownOnInit={true}
-                    value={JANUARY_FIRST}
-                />
-            ).withDriver(DatePickerTestDriver);
+            const {driver, waitForDom} = clientRenderer.render(<DatePicker showDropdownOnInit value={JANUARY_FIRST}/>)
+                .withDriver(DatePickerTestDriver);
 
             await waitForDom(() => {
                 const dayNameElements = dayNames.map((name, index) => {
@@ -216,12 +208,8 @@ describe('The DatePicker Component', () => {
         });
 
         it('should display the days in a grid', async () => {
-            const {driver, waitForDom} = clientRenderer.render(
-                <DatePicker
-                    value={JANUARY_FIRST}
-                    showDropdownOnInit={true}
-                />
-            ).withDriver(DatePickerTestDriver);
+            const {driver, waitForDom} = clientRenderer.render(<DatePicker value={JANUARY_FIRST} showDropdownOnInit/>)
+                .withDriver(DatePickerTestDriver);
 
             await waitForDom(() => {
                 const firstRow = [];
@@ -246,12 +234,8 @@ describe('The DatePicker Component', () => {
         });
 
         it('should show the days starting on the correct day of the week', async () => {
-            const {driver, waitForDom} = clientRenderer.render(
-                <DatePicker
-                    value={MARCH_FIRST}
-                    showDropdownOnInit={true}
-                />
-            ).withDriver(DatePickerTestDriver);
+            const {driver, waitForDom} = clientRenderer.render(<DatePicker value={MARCH_FIRST} showDropdownOnInit/>)
+                .withDriver(DatePickerTestDriver);
 
             await waitForDom(() => expect([
                 driver.getDay(1),
@@ -260,12 +244,8 @@ describe('The DatePicker Component', () => {
         });
 
         it('should show the trailing days from the last and next months', function() {
-            const {driver} = clientRenderer.render(
-                <DatePicker
-                    value={MARCH_FIRST}
-                    showDropdownOnInit={true}
-                />
-            ).withDriver(DatePickerTestDriver);
+            const {driver} = clientRenderer.render(<DatePicker value={MARCH_FIRST} showDropdownOnInit/>)
+                .withDriver(DatePickerTestDriver);
 
             expect(driver.getPrevDay(26)).to.be.present();
             expect(driver.getPrevDay(27)).to.be.present();
@@ -275,12 +255,8 @@ describe('The DatePicker Component', () => {
         });
 
         it('displays the year', async () => {
-            const {driver, waitForDom} = clientRenderer.render(
-                <DatePicker
-                    showDropdownOnInit={true}
-                    value={JANUARY_FIRST}
-                />
-            ).withDriver(DatePickerTestDriver);
+            const {driver, waitForDom} = clientRenderer.render(<DatePicker showDropdownOnInit value={JANUARY_FIRST}/>)
+                .withDriver(DatePickerTestDriver);
 
             await waitForDom(() => expect(driver.yearLabel).to.have.text('2017'));
         });
@@ -353,7 +329,7 @@ describe('The DatePicker Component', () => {
 
             await waitForDom(() => expect(driver.dropDown).to.be.absent());
 
-            simulate.keyDown(driver.input, {keyCode: keycode('enter')});
+            driver.keyPress(keycode('enter'));
 
             await waitForDom(() => expect(driver.dropDown).to.be.present());
         });
@@ -364,7 +340,7 @@ describe('The DatePicker Component', () => {
 
             await waitForDom(() => expect(driver.dropDown).to.be.absent());
 
-            simulate.keyDown(driver.input, {keyCode: keycode('space')});
+            driver.keyPress(keycode('space'));
 
             await waitForDom(() => expect(driver.dropDown).to.be.present());
         });
