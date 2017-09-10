@@ -116,7 +116,7 @@ describe('The DatePicker Component', () => {
     });
 
     it('can be changed with the arrow keys', async function() {
-        const {driver, waitForDom} = clientRenderer.render(<DatePicker value={JANUARY_FIRST} openOnFocus={true} />)
+        const {driver, waitForDom} = clientRenderer.render(<DatePicker value={JANUARY_FIRST} openOnFocus/>)
             .withDriver(DatePickerTestDriver);
         const datePickerInput = driver.input;
 
@@ -180,10 +180,10 @@ describe('The DatePicker Component', () => {
 
             await waitForDom(() => {
                 const headerContents = [
-                    bodySelect('PREV_MONTH_BUTTON'),
+                    driver.prevMonthLabel,
                     driver.monthLabel,
                     driver.yearLabel,
-                    bodySelect('NEXT_MONTH_BUTTON')
+                    driver.nextMonthLabel
                 ];
                 expect(headerContents).to.be.verticallyAligned('center', 1);
             });
@@ -328,7 +328,7 @@ describe('The DatePicker Component', () => {
 
             expect(driver.yearLabel).to.have.text('2017');
             expect(driver.monthLabel).to.have.text('December');
-            driver.nextMonth();
+            simulate.mouseDown(driver.nextMonthLabel);
 
             await waitForDom(() => {
                 expect(driver.yearLabel).to.have.text('2018');
@@ -346,7 +346,7 @@ describe('The DatePicker Component', () => {
 
             expect(driver.yearLabel).to.have.text('2017');
             expect(driver.monthLabel).to.have.text('January');
-            driver.previousMonth();
+            simulate.mouseDown(driver.prevMonthLabel);
 
             await waitForDom(() => {
                 expect(driver.yearLabel).to.have.text('2016');
@@ -360,11 +360,11 @@ describe('The DatePicker Component', () => {
 
             await waitForDom(() => expect(driver.dropDown).to.be.present());
 
-            driver.previousMonth();
+            simulate.mouseDown(driver.prevMonthLabel);
 
             await waitForDom(() => expect(driver.dropDown).to.be.present());
 
-            driver.nextMonth();
+            simulate.mouseDown(driver.nextMonthLabel);
 
             await waitForDom(() => expect(driver.dropDown).to.be.present());
         });

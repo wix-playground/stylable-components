@@ -16,12 +16,12 @@ export class DatePickerTestDriver extends DriverBase {
         simulate.blur(this.input);
     }
 
-    public nextMonth(): void {
-        simulate.mouseDown(bodySelect('NEXT_MONTH_BUTTON'));
+    public get nextMonthLabel() {
+        return bodySelect('NEXT_MONTH_BUTTON');
     }
 
-    public previousMonth(): void {
-        simulate.mouseDown(bodySelect('PREV_MONTH_BUTTON'));
+    public get prevMonthLabel() {
+        return bodySelect('PREV_MONTH_BUTTON');
     }
 
     public get dropDown() {
