@@ -3,7 +3,8 @@ import {Portal} from '../../src';
 import {DriverBase} from 'test-drive-react';
 
 const nullContainerExceptionMessage =
-    'Error: tried to get the container of the portal when \'root()\' function was called, but got \'null\'.' +
+    'Portal Test Driver Error: tried to get the container of the portal when \'root()\'' +
+    'function was called, but got \'null\'.' +
     'Consider using \'isPresent()\' method to make sure the container exists.';
 
 export class PortalTestDriver extends DriverBase {
