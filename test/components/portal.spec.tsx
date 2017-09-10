@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {ClientRenderer, expect, waitFor} from 'test-drive-react';
 import {Portal} from '../../src';
-import {PortalTestDriver} from '../../test-kit/components/portal-driver';
+import {PortalTestDriver} from '../../test-kit';
 
 describe('<Portal />', function() {
     const clientRenderer = new ClientRenderer();
@@ -15,11 +15,11 @@ describe('<Portal />', function() {
                 <span data-automation-id="SPAN">Portal Body</span>
             </Portal>);
 
-        const driver = new PortalTestDriver(result as Portal);
+        const portal = new PortalTestDriver(result as Portal);
 
         await waitFor(() => {
-            expect(driver.portal).to.be.present();
-            expect(driver.content[0]).to.be.present();
+            expect(portal.root).to.be.present();
+            expect(portal.content[0]).to.be.present();
         });
     });
 
@@ -30,9 +30,9 @@ describe('<Portal />', function() {
             </Portal>
         );
 
-        const driver = new PortalTestDriver(result as Portal);
+        const portal = new PortalTestDriver(result as Portal);
 
-        await waitFor(() => expect(driver.portal).to.have.nested.property('style.position', 'absolute'));
+        await waitFor(() => expect(portal.root).to.have.nested.property('style.position', 'absolute'));
 
         clientRenderer.render(
             <Portal style={{position: 'fixed'}}>
@@ -41,7 +41,7 @@ describe('<Portal />', function() {
             container
         );
 
-        await waitFor(() => expect(driver.portal).to.have.nested.property('style.position', 'fixed'));
+        await waitFor(() => expect(portal.root).to.have.nested.property('style.position', 'fixed'));
     });
 
     it('removes the component when unmounting', async function() {
@@ -51,17 +51,14 @@ describe('<Portal />', function() {
                 <span data-automation-id="SPAN">Popup Body</span>
             </Portal>, container);
 
-        const driver = new PortalTestDriver(result as Portal);
+        const portal = new PortalTestDriver(result as Portal);
 
-        await waitFor(() => expect(driver.portal).to.be.present());
+        await waitFor(() => expect(portal.root).to.be.present());
 
         ReactDOM.unmountComponentAtNode(container);
         document.body.removeChild(container);
 
-        await waitFor(() => {
-            expect(driver.portal).to.be.absent();
-            expect(driver.content).to.be.absent();
-        });
+        await waitFor(() => expect(portal.isPresent).to.be.false);
     });
 
     it('updates the portal content if the children are changed', async function() {
@@ -71,9 +68,9 @@ describe('<Portal />', function() {
             </Portal>
         );
 
-        const driver = new PortalTestDriver(result as Portal);
+        const portal = new PortalTestDriver(result as Portal);
 
-        await waitFor(() => expect(driver.content[0]).to.be.present());
+        await waitFor(() => expect(portal.content[0]).to.be.present());
 
         clientRenderer.render(
             <Portal>
@@ -82,7 +79,7 @@ describe('<Portal />', function() {
             container
         );
 
-        await waitFor(() => expect(driver.content[0]).to.be.present());
+        await waitFor(() => expect(portal.content[0]).to.be.present());
     });
 
     it('renders the portal in the bottom of the DOM', async function() {
@@ -92,16 +89,16 @@ describe('<Portal />', function() {
             </Portal>
         );
 
-        const driver = new PortalTestDriver(result as Portal);
+        const portal = new PortalTestDriver(result as Portal);
 
         await waitFor(() => {
-            const portal = driver.portal!;
-            const children = driver.content[0];
+            const portalRoot = portal.root!;
+            const children = portal.content[0];
 
             /* tslint:disable:no-bitwise */
-            expect(portal.compareDocumentPosition(children) & Node.DOCUMENT_POSITION_CONTAINED_BY,
+            expect(portalRoot.compareDocumentPosition(children) & Node.DOCUMENT_POSITION_CONTAINED_BY,
                 'children contained in portal').to.equal(Node.DOCUMENT_POSITION_CONTAINED_BY);
-            expect(container.compareDocumentPosition(portal) & Node.DOCUMENT_POSITION_FOLLOWING,
+            expect(container.compareDocumentPosition(portalRoot) & Node.DOCUMENT_POSITION_FOLLOWING,
                 'portal is following the app container').to.equal(Node.DOCUMENT_POSITION_FOLLOWING);
             /* tslint:enable:no-bitwise */
         });
@@ -114,8 +111,8 @@ describe('<Portal />', function() {
             </Portal>
         );
 
-        const driver = new PortalTestDriver(result as Portal);
+        const portal = new PortalTestDriver(result as Portal);
 
-        await waitFor(() => expect((driver.portal as Element).className).to.contain('test-class'));
+        await waitFor(() => expect((portal.root as Element).className).to.contain('test-class'));
     });
 });

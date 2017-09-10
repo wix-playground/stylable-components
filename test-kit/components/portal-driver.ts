@@ -11,11 +11,15 @@ export class PortalTestDriver extends DriverBase {
         this.ref = instance;
     }
 
-    public get portal() {
-        return this.ref.getPortalContainer()! && this.ref.getPortalContainer()!.firstChild;
+    public get root() {
+        return this.ref.getPortalContainer()!.firstChild as Element;
     }
 
     public get content(): NodeList {
-        return this.ref.getPortalContainer()! && this.ref.getPortalContainer()!.firstChild!.childNodes;
+        return this.ref.getPortalContainer()!.firstChild!.childNodes;
+    }
+
+    public get isPresent() {
+        return !!this.ref.getPortalContainer();
     }
 }
