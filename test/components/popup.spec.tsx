@@ -4,6 +4,7 @@ import {selectDom} from 'test-drive';
 import {ClientRenderer, expect, waitFor} from 'test-drive-react';
 import {PopupDemo} from '../../demo/components/popup-demo';
 import {Popup, PopupPositionPoint} from '../../src/components/';
+import {PopupTestDriver} from '../../test-kit/components/popup-driver';
 import {sleep} from '../utils';
 
 const portalId = 'PORTAL';
@@ -42,15 +43,17 @@ describe('<Popup />', function() {
     });
 
     it('displays the popup and renders its children if the open prop is given', function() {
-        clientRenderer.render(
+        const {result} = clientRenderer.render(
             <Popup anchor={anchor} open>
                 <span data-automation-id="SPAN">Popup Body</span>
             </Popup>
         );
 
+        const driver = new PopupTestDriver(result as Popup);
+
         return waitFor(() => {
-            expect(bodySelect(portalId)).to.be.present();
-            expect(bodySelect(portalId, 'SPAN')).to.be.present();
+            expect(driver.portal).to.be.present();
+            expect(driver.content[0]).to.be.present();
         });
     });
 
