@@ -11,7 +11,7 @@ export class PortalTestDriver extends DriverBase {
         this.ref = instance;
     }
 
-    public get root() {
+    public get root(): Element {
         return this.ref.getPortalContainer()!.firstChild as Element;
     }
 
@@ -19,7 +19,7 @@ export class PortalTestDriver extends DriverBase {
         return this.ref.getPortalContainer()!.firstChild!.childNodes;
     }
 
-    public get isPresent() {
+    public get isPresent(): boolean {
         return !!this.ref.getPortalContainer();
     }
 }
