@@ -35,7 +35,7 @@
 }
 
 .drop-down-list {
-  -st-extends: SelectionList;
+    -st-extends: SelectionList;
     width: 100%;
     background-color: white;
 }
