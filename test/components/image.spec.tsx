@@ -71,15 +71,15 @@ describe('<Image />', () => {
     });
 
     it('updates src if a new one is provided', async () => {
-        const {select, waitForDom, container} = clientRenderer.render(
+        const {driver: image, waitForDom, container} = clientRenderer.render(
             <Image src={onePixelBlack} />
-        );
+        ).withDriver(ImageDriver);
 
-        await waitForDom(() => expect(select(nativeImage)).to.have.attribute('src', onePixelBlack));
+        await waitForDom(() => expect(image.nativeElement).to.have.attribute('src', onePixelBlack));
 
         clientRenderer.render(<Image src={onePixelBlue} />, container);
 
-        await waitForDom(() => expect(select(nativeImage)).to.have.attribute('src', onePixelBlue));
+        await waitForDom(() => expect(image.nativeElement).to.have.attribute('src', onePixelBlue));
     });
 
     it('calls onLoad when image has loaded', async () => {
@@ -111,20 +111,19 @@ describe('<Image />', () => {
 
     describe('resize mode', () => {
         it('sets image as background with size: contain, when resizeMode="contain"', async () => {
-            const {select, waitForDom, container} = clientRenderer.render(
+            const {driver: image, waitForDom, container} = clientRenderer.render(
                 <Image resizeMode="contain" src={onePixelBlack} />
-            );
+            ).withDriver(ImageDriver);
 
             await waitForDom(() => {
-                const domImgElement = select(nativeImage);
-                expect(domImgElement).to.be.present();
-                expect(domImgElement).to.have.attribute('src', onePixelBlack);
-                expect(domImgElement).to.have.nested.property('style.visibility', 'hidden');
-                expect(domImgElement).to.have.nested.property('style.display', 'block');
-                expect(domImgElement).to.have.nested.property('style.maxWidth', '100%');
-                expect(domImgElement).to.have.nested.property('style.height', '100%');
+                expect(image.nativeElement).to.be.present();
+                expect(image.nativeElement).to.have.attribute('src', onePixelBlack);
+                expect(image.style).to.have.property('visibility', 'hidden');
+                expect(image.style).to.have.property('display', 'block');
+                expect(image.style).to.have.property('maxWidth', '100%');
+                expect(image.style).to.have.property('height', '100%');
 
-                const {parentElement: sizingWrapper} = domImgElement!;
+                const {parentElement: sizingWrapper} = image.nativeElement;
                 expect(sizingWrapper, 'verify image is wrapped for sizing').to.not.equal(container);
                 expect(sizingWrapper).to.have.nested.property('style.backgroundSize', 'contain');
                 expect(sizingWrapper).to.have.nested.property('style.backgroundRepeat', 'no-repeat');
@@ -138,7 +137,7 @@ describe('<Image />', () => {
         });
 
         it('sets image as background with size: cover, when resizeMode="cover"', async () => {
-            const {driver: image, waitForDom} = clientRenderer.render(
+            const {driver: image, waitForDom, container} = clientRenderer.render(
                 <Image resizeMode="cover" src={onePixelBlack} />
             ).withDriver(ImageDriver);
 
@@ -150,10 +149,10 @@ describe('<Image />', () => {
                 expect(image.style).to.have.property('maxWidth', '100%');
                 expect(image.style).to.have.property('height', '100%');
 
-    // const {parentElement: sizingWrapper} = domImgElement!;
-    // expect(sizingWrapper, 'verify image is wrapped for sizing').to.not.equal(container);
-    // expect(sizingWrapper).to.have.nested.property('style.backgroundSize', 'cover');
-    // expect(sizingWrapper).to.have.nested.property('style.backgroundRepeat', 'no-repeat');
+                const {parentElement: sizingWrapper} = image.nativeElement;
+                expect(sizingWrapper, 'verify image is wrapped for sizing').to.not.equal(container);
+                expect(sizingWrapper).to.have.nested.property('style.backgroundSize', 'cover');
+                expect(sizingWrapper).to.have.nested.property('style.backgroundRepeat', 'no-repeat');
 
                 // chrome normalizes to url("http://domain/file"), while safari normalizes to url(http://domain/file)
                 // expect(sizingWrapper).to.have.nested.property('style.backgroundImage', `url("${onePixelBlack}")`);
@@ -164,16 +163,15 @@ describe('<Image />', () => {
         });
 
         it('leaves image as-is when resizeMode="fill"', async () => {
-            const {select, waitForDom, container} = clientRenderer.render(
+            const {driver: image, waitForDom, container} = clientRenderer.render(
                 <Image resizeMode="fill" src={onePixelBlack} />
-            );
+            ).withDriver(ImageDriver);
 
             await waitForDom(() => {
-                const domImgElement = select(nativeImage);
-                expect(domImgElement).to.be.present();
-                expect(domImgElement).to.have.attribute('src', onePixelBlack);
-                expect(domImgElement).to.not.have.nested.property('style.visibility', 'hidden');
-                expect(domImgElement!.parentElement, 'verify image is not wrapped').to.equal(container);
+                expect(image.nativeElement).to.be.present();
+                expect(image.nativeElement).to.have.attribute('src', onePixelBlack);
+                expect(image.style).to.not.have.property('visibility', 'hidden');
+                expect(image.nativeElement.parentElement, 'verify image is not wrapped').to.equal(container);
             });
         });
     });
