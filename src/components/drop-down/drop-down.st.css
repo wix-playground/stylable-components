@@ -1,3 +1,8 @@
+:import {
+    -st-from: "../selection-list/selection-list.st.css";
+    -st-default: SelectionList;
+}
+
 .root {
     width: auto;
     font-family: Arial, sans-serif;
@@ -15,12 +20,12 @@
     justify-content: space-between;
 }
 
-.caret {
+.drop-down-input .caret {
     margin-right: 5px;
     vertical-align: middle;
 }
 
-.label {
+.drop-down-input .label {
     margin-left: 5px;
 }
 
@@ -30,6 +35,7 @@
 }
 
 .drop-down-list {
+  -st-extends: SelectionList;
     width: 100%;
     background-color: white;
 }
