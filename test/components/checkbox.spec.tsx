@@ -92,7 +92,7 @@ describe('<Checkbox/>', function() {
             checkbox.click();
 
             await waitFor(() => {
-                expect(checkbox.isChecked(), 'expected checkbox to be checked').to.be.true;
+                expect(checkbox.isChecked(), 'expected checkbox to be checked').to.equal(true);
                 expect(checkbox.tickMark).to.be.insideOf(checkbox.box);
                 expect(button, 'submit button was expected to be enabled').to.not.have.attribute('disabled');
             });
@@ -123,17 +123,17 @@ describe('<Checkbox/>', function() {
             const {topCheckbox, option1Checkbox, option2Checkbox} = driver.indeterminateDemo;
 
             await waitForDom(() => {
-                expect(option1Checkbox.isChecked(), 'option 1 should be checked').to.be.true;
+                expect(option1Checkbox.isChecked(), 'option 1 should be checked').to.equal(true);
                 expect(option2Checkbox.isChecked(), 'option 2 should be unchecked').to.equal(false);
                 expect(topCheckbox.isChecked(), 'top checkbox should be unchecked').to.equal(false);
-                expect(topCheckbox.isIndeterminate(), 'top checkbox should be indeterminate').to.be.true;
+                expect(topCheckbox.isIndeterminate(), 'top checkbox should be indeterminate').to.equal(true);
             });
 
             topCheckbox.click();
 
             await waitFor(() => {
-                expect(option1Checkbox.isChecked(), 'option 1 should be checked').to.be.true;
-                expect(option2Checkbox.isChecked(), 'option 2 should be checked').to.be.true;
+                expect(option1Checkbox.isChecked(), 'option 1 should be checked').to.equal(true);
+                expect(option2Checkbox.isChecked(), 'option 2 should be checked').to.equal(true);
             });
         });
     });

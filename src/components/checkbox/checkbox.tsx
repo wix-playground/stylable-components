@@ -135,10 +135,10 @@ export class CheckBox extends React.Component<CheckBoxProps, CheckBoxState> {
                     />
                 }
                 {
-                    this.props.children &&
+                    this.props.children ?
                     <div data-automation-id="CHECKBOX_CHILD_CONTAINER" className="childContainer">
                         {this.props.children}
-                    </div>
+                    </div> : null
                 }
             </div>
         );
