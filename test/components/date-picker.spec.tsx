@@ -273,12 +273,8 @@ describe('The DatePicker Component', () => {
         });
 
         it('has a button which steps forward a month', async () => {
-            const {driver, waitForDom} = clientRenderer.render(
-                <DatePicker
-                    showDropdownOnInit={true}
-                    value={DECEMBER_FIRST}
-                />
-            ).withDriver(DatePickerTestDriver);
+            const {driver, waitForDom} = clientRenderer.render(<DatePicker showDropdownOnInit value={DECEMBER_FIRST}/>)
+                .withDriver(DatePickerTestDriver);
 
             expect(driver.yearLabel).to.have.text('2017');
             expect(driver.monthLabel).to.have.text('December');
@@ -291,12 +287,8 @@ describe('The DatePicker Component', () => {
         });
 
         it('has a button which steps back a month', async () => {
-            const {driver, waitForDom} = clientRenderer.render(
-                <DatePicker
-                    showDropdownOnInit={true}
-                    value={JANUARY_FIRST}
-                />
-            ).withDriver(DatePickerTestDriver);
+            const {driver, waitForDom} = clientRenderer.render(<DatePicker showDropdownOnInit value={JANUARY_FIRST}/>)
+                .withDriver(DatePickerTestDriver);
 
             expect(driver.yearLabel).to.have.text('2017');
             expect(driver.monthLabel).to.have.text('January');
