@@ -71,12 +71,19 @@ describe('<DropDown />', () => {
         await waitForDom(() => expect(bodySelect('LIST')).to.be.present());
     });
 
-    it('invokes the onClick when dropdown label is clicked', async () => {
+    it('toggles between dropdown visibility when the input is clicked', async () => {
         const onClick = sinon.spy();
-        const {select} = clientRenderer.render(<DropDown onChange={onClick}/>);
+        const {select, waitForDom} = clientRenderer.render(<DropDown />);
+
+        await waitForDom(() => expect(bodySelect('LIST')).to.be.absent());
+
         simulate.click(select(dropDown, input));
 
-        await waitFor(() => expect(onClick).to.have.been.calledOnce);
+        await waitForDom(() => expect(bodySelect('LIST')).to.be.present());
+
+        simulate.click(select(dropDown, input));
+
+        await waitForDom(() => expect(bodySelect('LIST')).to.be.absent());\
     });
 
     it('displays item list to choose from when open is true', async () => {
@@ -129,7 +136,7 @@ describe('<DropDown />', () => {
 
             await waitForDom(() => expect(bodySelect('LIST')).to.be.present());
 
-            simulate.keyDown(select(dropDownDemo, dropDown), {keyCode: keycode('escape')});
+            simulate.keyDown(select(dropDownDemo, dropDown), {keyCode: keycode('esc')});
 
             await waitForDom(() => expect(bodySelect('LIST')).to.be.absent());
         });

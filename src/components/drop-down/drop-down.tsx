@@ -40,7 +40,8 @@ export class DropDown extends React.PureComponent<DropDownProps, DropDownState> 
         children: [],
         onChange: noop,
         tabIndex: 0,
-        toggleIcon: CaretDown
+        toggleIcon: CaretDown,
+        disabled: false
     };
 
     public state: DropDownState = {
@@ -98,7 +99,7 @@ export class DropDown extends React.PureComponent<DropDownProps, DropDownState> 
         }
     }
 
-    private toggleDropdown() {
+    private toggleDropdown = () => {
         if (!this.props.disabled) {
             this.setState({open: !this.state.open});
         }
