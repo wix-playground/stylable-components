@@ -1,14 +1,11 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import {ClientRenderer, expect, selectDom, waitFor} from 'test-drive-react';
+import {ClientRenderer, expect, waitFor} from 'test-drive-react';
 import {Portal} from '../../src';
 import {PortalTestDriver} from '../../test-kit/components/portal-driver';
 
-const portalId = 'PORTAL';
-
 describe('<Portal />', function() {
     const clientRenderer = new ClientRenderer();
-    const bodySelect = selectDom(document.body);
 
     afterEach(function() {clientRenderer.cleanup(); });
 
