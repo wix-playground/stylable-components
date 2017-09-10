@@ -72,7 +72,6 @@ describe('<DropDown />', () => {
     });
 
     it('toggles between dropdown visibility when the input is clicked', async () => {
-        const onClick = sinon.spy();
         const {select, waitForDom} = clientRenderer.render(<DropDown />);
 
         await waitForDom(() => expect(bodySelect('LIST')).to.be.absent());
