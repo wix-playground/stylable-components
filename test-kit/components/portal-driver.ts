@@ -22,8 +22,8 @@ export class PortalTestDriver extends DriverBase {
         return this.ref.getPortalContainer()!.children[0];
     }
 
-    public get content(): NodeList {
-        return this.ref.getPortalContainer()!.firstChild!.childNodes;
+    public get content(): HTMLCollection {
+        return this.ref.getPortalContainer()!.children[0].children;
     }
 
     public get isPresent(): boolean {

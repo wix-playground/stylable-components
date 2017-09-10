@@ -92,13 +92,10 @@ describe('<Portal />', function() {
         const portal = new PortalTestDriver(result as Portal);
 
         await waitFor(() => {
-            const portalRoot = portal.root!;
-            const children = portal.content[0];
-
             /* tslint:disable:no-bitwise */
-            expect(portalRoot.compareDocumentPosition(children) & Node.DOCUMENT_POSITION_CONTAINED_BY,
+            expect(portal.root.compareDocumentPosition(portal.content[0]) & Node.DOCUMENT_POSITION_CONTAINED_BY,
                 'children contained in portal').to.equal(Node.DOCUMENT_POSITION_CONTAINED_BY);
-            expect(container.compareDocumentPosition(portalRoot) & Node.DOCUMENT_POSITION_FOLLOWING,
+            expect(container.compareDocumentPosition(portal.root) & Node.DOCUMENT_POSITION_FOLLOWING,
                 'portal is following the app container').to.equal(Node.DOCUMENT_POSITION_FOLLOWING);
             /* tslint:enable:no-bitwise */
         });
