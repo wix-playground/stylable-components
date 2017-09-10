@@ -24,27 +24,30 @@ export class SelectionList extends React.Component<Props> {
         tabIndex: -1
     };
 
-    // Wrapping props with @computed allows autorun() to ignore changes in the properties it's not using.
+    // Wrapping props with @computed allows to observe them independently from other props.
     @computed public get children()   { return this.props.children; }
     @computed public get dataSource() { return this.props.dataSource; }
     @computed public get dataSchema() { return this.props.dataSchema; }
     @computed public get renderItem() { return this.props.renderItem; }
     @computed public get value()      { return this.props.value; }
 
-    @observable private focused: boolean = false;
-    @observable private list: SelectionListModel;
+    @computed public get list(): SelectionListModel {
+        const list = new SelectionListModel();
+        list.addChildren(this.children);
+        list.addDataSource(this);
+        return list;
+    }
 
-    public componentWillMount() {
-        autorun(() => {
-            const list = new SelectionListModel();
-            list.addChildren(this.children);
-            list.addDataSource(this);
-            this.list = list;
-        });
+    @observable public focused: boolean = false;
 
-        autorun(() => this.list.selectValue(this.value));
+    public componentDidMount() {
+        this.list.selectValue(this.value);
+        this.list.focusValue(this.focused ? this.value : undefined);
+    }
 
-        autorun(() => this.list.focusValue(this.focused ? this.value : undefined));
+    public componentDidUpdate() {
+        this.list.selectValue(this.value);
+        this.list.focusValue(this.focused ? this.value : undefined);
     }
 
     public render() {
