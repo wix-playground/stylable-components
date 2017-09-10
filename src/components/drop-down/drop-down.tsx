@@ -74,15 +74,17 @@ export class DropDown extends React.PureComponent<DropDownProps, DropDownState> 
                     </div>
                 </div>
                 <Popup open={!!this.props.open && !this.props.disabled} anchor={this.state.dropdown}>
-                    <SelectionList
-                        data-automation-id="DROP_DOWN_LIST"
-                        className="drop-down-list"
-                        value={this.props.value}
-                        onChange={this.onItemClick!}
-                        dataSource={this.props.dataSource}
-                    >
-                        {this.props.children}
-                    </SelectionList>
+                    <div className="root">
+                        <SelectionList
+                            data-automation-id="DROP_DOWN_LIST"
+                            className="drop-down-list"
+                            value={this.props.value}
+                            onChange={this.onItemClick!}
+                            dataSource={this.props.dataSource}
+                        >
+                            {this.props.children}
+                        </SelectionList>
+                    </div>
                 </Popup>
             </div>
         );
