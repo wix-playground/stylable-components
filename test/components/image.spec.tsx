@@ -2,10 +2,8 @@ import * as React from 'react';
 import {ClientRenderer, expect, sinon, waitFor} from 'test-drive-react';
 import {Image} from '../../src';
 import {transparentImage} from '../../src/utils';
-import {brokenSrc, onePixelBlack, onePixelBlue} from '../fixtures/sample-images';
 import {ImageDriver} from '../../test-kit';
-
-const nativeImage = 'NATIVE_IMAGE';
+import {brokenSrc, onePixelBlack, onePixelBlue} from '../fixtures/sample-images';
 
 describe('<Image />', () => {
     const clientRenderer = new ClientRenderer();

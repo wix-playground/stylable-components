@@ -1,5 +1,5 @@
 import keycode = require('keycode');
-import {autorun, computed, observable} from 'mobx';
+import {computed, observable} from 'mobx';
 import {observer} from 'mobx-react';
 import React = require('react');
 import {root} from 'wix-react-tools';
