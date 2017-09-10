@@ -4354,9 +4354,9 @@ tar@^2.2.1:
     fstream "^1.0.2"
     inherits "2"
 
-test-drive-react@^0.6.0:
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/test-drive-react/-/test-drive-react-0.6.0.tgz#d2d156a860f65c75f0f6318bb0c09deb95a1d5b8"
+test-drive-react@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/test-drive-react/-/test-drive-react-0.7.0.tgz#dd3effaaceab91916d4065c05080d4c703f0accb"
   dependencies:
     test-drive "^0.5.3"
 
