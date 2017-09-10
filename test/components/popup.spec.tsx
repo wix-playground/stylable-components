@@ -58,27 +58,31 @@ describe('<Popup />', function() {
     });
 
     it('does not render the popup if there is no anchor', async function() {
-        clientRenderer.render(
+        const {result} = clientRenderer.render(
             <Popup anchor={null} open={true}>
                 <span data-automation-id="SPAN">Popup Body</span>
             </Popup>
         );
         await sleep(100);
-        await waitFor(() => expect(bodySelect(portalId)).to.be.absent());
+
+        const driver = new PopupTestDriver(result as Popup);
+        await waitFor(() => expect(driver.portal).to.be.absent());
     });
 
     it('does not reder the popup if the open prop is false', async function() {
-        clientRenderer.render(
+        const {result} = clientRenderer.render(
             <Popup anchor={anchor} open={false}>
                 <span data-automation-id="SPAN">Popup Body</span>
             </Popup>
         );
         await sleep(100);
-        await waitFor(() => expect(bodySelect(portalId)).to.be.absent());
+
+        const driver = new PopupTestDriver(result as Popup);
+        await waitFor(() => expect(driver.portal).to.be.absent());
     });
 
     it('removes the component when unmounting', async function() {
-        clientRenderer.render(
+        const {result} = clientRenderer.render(
             <Popup
                 anchor={anchor}
                 open={true}
@@ -86,13 +90,15 @@ describe('<Popup />', function() {
                 <span data-automation-id="SPAN">Popup Body</span>
             </Popup>);
 
-        await waitFor(() => {expect(bodySelect(portalId)).to.be.present(); });
+        const driver = new PopupTestDriver(result as Popup);
+
+        await waitFor(() => {expect(driver.portal).to.be.present(); });
         ReactDOM.unmountComponentAtNode(bodySelect(portalId)!.parentElement!);
-        return waitFor(() => {expect(bodySelect(portalId)).to.not.exist; });
+        return waitFor(() => {expect(driver.portal).to.not.exist; });
     });
 
     it('syncs the popup width', function() {
-        clientRenderer.render(
+        const {result} = clientRenderer.render(
             <Popup
                 anchor={anchor}
                 syncWidth={true}
@@ -101,14 +107,15 @@ describe('<Popup />', function() {
                 <span data-automation-id="SPAN">Popup Body</span>
             </Popup>);
 
+        const driver = new PopupTestDriver(result as Popup);
         return waitFor(() => {
-            expect(bodySelect(portalId)!.getBoundingClientRect().width)
+            expect((driver.portal! as Element).getBoundingClientRect().width)
                 .to.equal(anchor.getBoundingClientRect().width);
         });
     });
 
     it('sets the default maxHeight', function() {
-        clientRenderer.render(
+        const {result} = clientRenderer.render(
             <Popup
                 anchor={anchor}
                 open={true}
@@ -116,13 +123,14 @@ describe('<Popup />', function() {
                 <span data-automation-id="SPAN">Popup Body</span>
             </Popup>);
 
+        const driver = new PopupTestDriver(result as Popup);
         return waitFor(() => {
-            expect(bodySelect<HTMLElement>(portalId)!.style.maxHeight).to.equal('500px');
+            expect((driver.portal as HTMLElement).style.maxHeight).to.equal('500px');
         });
     });
 
     it('sets and enforces the maxHeight', function() {
-        clientRenderer.render(
+        const {result} = clientRenderer.render(
             <Popup
                 anchor={anchor}
                 maxHeight={5}
@@ -131,9 +139,10 @@ describe('<Popup />', function() {
                 <span data-automation-id="SPAN">Popup Body</span>
             </Popup>);
 
+        const driver = new PopupTestDriver(result as Popup);
         return waitFor(() => {
-            expect(bodySelect<HTMLElement>(portalId)!.style.maxHeight).to.equal('5px');
-            expect(bodySelect<HTMLElement>(portalId)!.getBoundingClientRect().height).to.equal(5);
+            expect((driver.portal as HTMLElement).style.maxHeight).to.equal('5px');
+            expect((driver.portal as HTMLElement).getBoundingClientRect().height).to.equal(5);
         });
     });
 
