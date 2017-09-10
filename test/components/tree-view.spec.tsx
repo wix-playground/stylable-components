@@ -1,18 +1,9 @@
 import * as React from 'react';
 import {ClientRenderer, expect, sinon, waitFor} from 'test-drive-react';
 import {TreeView} from '../../src';
-import {ParentsMap, TreeItemData, TreeStateMap} from '../../src/components/tree-view/tree-view';
+import {getLastAvailableItem, getNextItem, getPreviousItem} from '../../src/components/tree-view//tree-util';
+import {initParentsMap, ParentsMap, TreeItemData, TreeStateMap} from '../../src/components/tree-view/tree-view';
 import {TreeViewDriver} from '../../test-kit';
-
-// const KeyCodes: any = {
-//     ENTER: keycode('enter'),
-//     HOME: keycode('home'),
-//     END: keycode('end'),
-//     UP: keycode('up'),
-//     DOWN: keycode('down'),
-//     LEFT: keycode('left'),
-//     RIGHT: keycode('right')
-// };
 
 const treeData: TreeItemData[] = [
     {
@@ -523,7 +514,7 @@ describe('<TreeView />', () => {
             });
         });
 
-    //     describe('TreeView methods', () => {
+        describe('TreeView methods', () => {
     //         const firstChild = treeData[0].children![0];
     //         const secondChild = treeData[0].children![1];
 
@@ -580,25 +571,27 @@ describe('<TreeView />', () => {
     //             });
     //         });
 
-    //         it('expands the whole tree when \'expandAll\' method is used', async () => {
-    //             const {select, waitForDom, result} = clientRenderer.render(<TreeView dataSource={treeData} />);
+            it('expands the whole tree when \'expandAll\' method is used', async () => {
+                const {driver: treeView, waitForDom, result} = clientRenderer.render(
+                    <TreeView dataSource={treeData} />
+                ).withDriver(TreeViewDriver);
 
-    //             (result as TreeView).expandAll();
+                (result as TreeView).expandAll();
 
-    //             return waitForDom(() => allNodesLabels.forEach(item =>
-    //                 expect(select(treeView, getTreeItem(item)), `item did not appear: ${item}`).to.be.present()));
-    //         });
+                await waitForDom(() => allNodesLabels.forEach(item =>
+                    expect(treeView.getItem(item)), `item did not appear: ${item}`).to.be.present()));
+            });
 
-            // it('selects the provided item when \'selectItem\' method is used', async () => {
-            //     const onSelectItem = sinon.spy();
-            //     const {result} = clientRenderer.render(
-            //         <TreeView dataSource={treeData} onSelectItem={onSelectItem}/>
-            //     );
+            it('selects the provided item when \'selectItem\' method is used', async () => {
+                const onSelectItem = sinon.spy();
+                const {result} = clientRenderer.render(
+                    <TreeView dataSource={treeData} onSelectItem={onSelectItem}/>
+                );
 
-            //     (result as TreeView).selectItem(treeData[0]);
+                (result as TreeView).selectItem(treeData[0]);
 
-            //     return waitFor(() => expect(onSelectItem).to.have.been.calledWithMatch(treeData[0]));
-            // });
-    //     });
+                await waitFor(() => expect(onSelectItem).to.have.been.calledWithMatch(treeData[0]));
+            });
+        });
     });
 });
