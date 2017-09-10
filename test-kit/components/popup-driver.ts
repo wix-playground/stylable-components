@@ -12,11 +12,11 @@ export class PopupTestDriver extends DriverBase {
         this.portalDriver = new PortalTestDriver(instance.getPortal()!);
     }
 
-    public get portal() {
+    public get root(): Element {
         return this.portalDriver.root;
     }
 
-    public get content(): NodeList {
+    public get content(): HTMLCollection {
         return this.portalDriver.content;
     }
 

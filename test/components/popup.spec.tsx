@@ -15,15 +15,15 @@ export class PopupDemoTestDriver extends DriverBase {
         this.popupDriver = new PopupTestDriver(instance.getPopup()!);
     }
 
-    public get container() {
+    public get container(): HTMLDivElement {
         return this.select('POPUP_DEMO_DIV');
     }
 
-    public get portal() {
-        return this.popupDriver.portal;
+    public get portal(): Element {
+        return this.popupDriver.root;
     }
 
-    public get content(): NodeList {
+    public get content(): HTMLCollection {
         return this.popupDriver.content;
     }
 
@@ -52,20 +52,20 @@ describe('<Popup />', function() {
         it('clicks on the parent and the popup opens and closes after another click', async function() {
             const {result, waitForDom} = clientRenderer.render(<PopupDemo />);
 
-            let driver = new PopupDemoTestDriver(result as PopupDemo);
+            let popupDemo = new PopupDemoTestDriver(result as PopupDemo);
 
             await waitForDom(() => {
-                expect(driver.container).to.be.present();
-                expect(driver.isPopupPresent).to.be.false;
+                expect(popupDemo.container).to.be.present();
+                expect(popupDemo.isPopupPresent).to.be.false;
             });
 
-            (driver.container as HTMLDivElement).click();
-            driver = new PopupDemoTestDriver(result as PopupDemo);
-            await waitForDom(() => expect(driver.portal).to.be.present());
+            (popupDemo.container as HTMLDivElement).click();
+            popupDemo = new PopupDemoTestDriver(result as PopupDemo);
+            await waitForDom(() => expect(popupDemo.portal).to.be.present());
 
-            (driver.container as HTMLDivElement).click();
-            driver = new PopupDemoTestDriver(result as PopupDemo);
-            return waitForDom(() => expect(driver.isPopupPresent).to.be.false);
+            (popupDemo.container as HTMLDivElement).click();
+            popupDemo = new PopupDemoTestDriver(result as PopupDemo);
+            return waitForDom(() => expect(popupDemo.isPopupPresent).to.be.false);
         });
     });
 
@@ -76,11 +76,11 @@ describe('<Popup />', function() {
             </Popup>
         );
 
-        const driver = new PopupTestDriver(result as Popup);
+        const popup = new PopupTestDriver(result as Popup);
 
         return waitFor(() => {
-            expect(driver.portal).to.be.present();
-            expect(driver.content[0]).to.be.present();
+            expect(popup.root).to.be.present();
+            expect(popup.content[0]).to.be.present();
         });
     });
 
@@ -92,8 +92,8 @@ describe('<Popup />', function() {
         );
         await sleep(100);
 
-        const driver = new PopupTestDriver(result as Popup);
-        await waitFor(() => expect(driver.isPresent).to.be.false);
+        const popup = new PopupTestDriver(result as Popup);
+        await waitFor(() => expect(popup.isPresent).to.be.false);
     });
 
     it('does not reder the popup if the open prop is false', async function() {
@@ -104,8 +104,8 @@ describe('<Popup />', function() {
         );
         await sleep(100);
 
-        const driver = new PopupTestDriver(result as Popup);
-        await waitFor(() => expect(driver.isPresent).to.be.false);
+        const popup = new PopupTestDriver(result as Popup);
+        await waitFor(() => expect(popup.isPresent).to.be.false);
     });
 
     it('removes the component when unmounting', async function() {
@@ -117,11 +117,11 @@ describe('<Popup />', function() {
                 <span data-automation-id="SPAN">Popup Body</span>
             </Popup>);
 
-        const driver = new PopupTestDriver(result as Popup);
+        const popup = new PopupTestDriver(result as Popup);
 
-        await waitFor(() => {expect(driver.portal).to.be.present(); });
-        ReactDOM.unmountComponentAtNode(driver.portal!.parentElement!);
-        return waitFor(() => {expect(driver.portal).to.not.exist; });
+        await waitFor(() => {expect(popup.root).to.be.present(); });
+        ReactDOM.unmountComponentAtNode(popup.root!.parentElement!);
+        return waitFor(() => {expect(popup.root).to.not.exist; });
     });
 
     it('syncs the popup width', function() {
@@ -134,9 +134,9 @@ describe('<Popup />', function() {
                 <span data-automation-id="SPAN">Popup Body</span>
             </Popup>);
 
-        const driver = new PopupTestDriver(result as Popup);
+        const popup = new PopupTestDriver(result as Popup);
         return waitFor(() => {
-            expect((driver.portal! as Element).getBoundingClientRect().width)
+            expect((popup.root! as Element).getBoundingClientRect().width)
                 .to.equal(anchor.getBoundingClientRect().width);
         });
     });
@@ -150,9 +150,9 @@ describe('<Popup />', function() {
                 <span data-automation-id="SPAN">Popup Body</span>
             </Popup>);
 
-        const driver = new PopupTestDriver(result as Popup);
+        const popup = new PopupTestDriver(result as Popup);
         return waitFor(() => {
-            expect((driver.portal as HTMLElement).style.maxHeight).to.equal('500px');
+            expect((popup.root as HTMLElement).style.maxHeight).to.equal('500px');
         });
     });
 
@@ -166,10 +166,10 @@ describe('<Popup />', function() {
                 <span data-automation-id="SPAN">Popup Body</span>
             </Popup>);
 
-        const driver = new PopupTestDriver(result as Popup);
+        const popup = new PopupTestDriver(result as Popup);
         return waitFor(() => {
-            expect((driver.portal as HTMLElement).style.maxHeight).to.equal('5px');
-            expect((driver.portal as HTMLElement).getBoundingClientRect().height).to.equal(5);
+            expect((popup.root as HTMLElement).style.maxHeight).to.equal('5px');
+            expect((popup.root as HTMLElement).getBoundingClientRect().height).to.equal(5);
         });
     });
 
@@ -208,9 +208,9 @@ describe('<Popup />', function() {
                     <span data-automation-id="SPAN">Popup Body</span>
                 </Popup>);
 
-            const driver = new PopupTestDriver(result as Popup);
+            const popup = new PopupTestDriver(result as Popup);
             return waitForDom(() => {
-                expect([div, driver.portal]).to.be.inVerticalSequence();
+                expect([div, popup.root]).to.be.inVerticalSequence();
             });
         });
     });
@@ -232,11 +232,11 @@ describe('<Popup />', function() {
                             </div>
                         </Popup>);
 
-                    const driver = new PopupTestDriver(result as Popup);
+                    const popup = new PopupTestDriver(result as Popup);
                     return waitFor(() => {
-                        const popup = driver.portal as HTMLElement;
+                        const portal = popup.root as HTMLElement;
 
-                        runTest(popup, anchor, popupPos, anchorPos);
+                        runTest(portal, anchor, popupPos, anchorPos);
                     });
                 });
             }
