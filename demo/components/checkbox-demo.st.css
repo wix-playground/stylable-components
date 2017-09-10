@@ -1,17 +1,26 @@
 @namespace "CheckBoxDemo";
 
-.boxIcon {
+:import {
+    -st-from: '../../src/components/checkbox/checkbox.st.css';
+    -st-default: CB;
+}
+
+.customBoxIcon {
     height: 20px;
     width: 20px;
     fill: none;
     stroke: #D1D1D1;
 }
 
-.boxIconChecked {
-    fill: #4A90E2;
+CB:checked .customBoxIcon {
+    fill: goldenrod;
 }
 
-.tickIcon {
+CB:focus .customBoxIcon {
+    outline: none;
+}
+
+.customTickIcon {
     height: 20px;
     width: 20px;
     position: relative;
@@ -22,5 +31,7 @@
 .label {
     margin-left: 5px;
     margin-right: 20px;
-    vertical-align: top
+    vertical-align: top;
+    color: black;
+    cursor: pointer;
 }

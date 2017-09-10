@@ -1,13 +1,14 @@
 const glob = require('glob');
 
 const { testGlob } = require('./package.json');
+const StylablePlugin = require('stylable-integration/webpack-plugin');
 const testFiles = glob.sync(testGlob);
-
+const stylableOptions = { injectBundleCss: true, nsDelimiter:'--' };
 module.exports = {
     devtool: 'source-map',
     entry: {
-        demos: './demo/index.tsx',
-        tests: ['core-js/shim', ...testFiles.map(fileName => `mocha-loader!${fileName}`)]
+        demos: ['core-js/shim', './demo/index.tsx'],
+        tests: ['core-js/shim', './test/utils/mobx.config.ts', ...testFiles.map(fileName => `mocha-loader!${fileName}`)]
     },
     module: {
         rules: [
@@ -22,8 +23,8 @@ module.exports = {
             },
             {
                 test: /\.css$/,
-                loader: 'stylable-integration/webpack',
-                options: { standalone: true }
+                loader: 'stylable-integration/webpack-loader',
+                options: stylableOptions
             }
         ]
     },
@@ -33,5 +34,11 @@ module.exports = {
     output: {
         filename: '[name].js',
         pathinfo: true
-    }
+    },
+    devServer: {
+        disableHostCheck: true
+    },
+    plugins: [
+        new StylablePlugin(stylableOptions)
+    ]
 }

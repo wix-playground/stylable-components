@@ -1,83 +1,100 @@
 import * as React from 'react';
-import {findDOMNode} from 'react-dom';
 import {SBComponent} from 'stylable-react-component';
+import {FormInputProps} from '../../types/forms';
 import style from './toggle.st.css';
 
-export interface Props {
-    checked?: boolean,
-    error?: boolean,
-    disabled?: boolean,
-    onChange?: (selected: boolean) => void,
-    label?: string,
-    tabIndex?: number,
-    rtl?: boolean
+export interface Props extends FormInputProps<boolean> {
+    className?: string;
+    error?: boolean;
+    disabled?: boolean;
+    label?: string;
+    tabIndex?: number;
+    required?: boolean;
+    name?: string;
+    rtl?: boolean;
 }
 export interface State {
-    focus: boolean
+    focus: boolean;
 }
 
 @SBComponent(style)
 export default class Toggle extends React.Component<Props, State> {
-    static defaultProps = {
-        checked: false,
+    public static defaultProps = {
+        value: false,
         disabled: false,
         error: false,
-        rtl: false
-    }
-    state = {
+        rtl: false,
+        required: false
+    };
+
+    public state = {
         focus: false
+    };
+
+    private shouldResetFocus: boolean = false;
+
+    public render() {
+        const {
+            value,
+            disabled,
+            error,
+            rtl,
+            label,
+            name,
+            required,
+            tabIndex
+        } = this.props;
+        const {focus} = this.state;
+
+        return (
+            <label
+                data-automation-id="TOGGLE"
+                onMouseDown={this.onMouseDown}
+                cssStates={{
+                    checked: value!,
+                    disabled: disabled!,
+                    focus: focus!,
+                    error: error!,
+                    rtl: rtl!
+                }}
+            >
+                {!disabled &&
+                    <input
+                        data-automation-id="TOGGLE_INPUT"
+                        className="input"
+                        type="checkbox"
+                        name={name}
+                        aria-label={label}
+                        checked={value}
+                        required={required}
+                        onChange={this.toggle}
+                        tabIndex={tabIndex}
+                        onFocus={this.onInputFocus}
+                        onBlur={this.onInputBlur}
+                    />
+                }
+                <div className="switch-wrap">
+                    <div className="switch"/>
+                </div>
+            </label>
+        );
     }
-    shouldResetFocus: boolean = false
-    toggle = (e: React.SyntheticEvent<HTMLInputElement>) => {
-        if (!this.props.disabled && this.props.onChange) {
-            this.props.onChange(!this.props.checked)
+
+    private onInputFocus = () => this.setState({focus: true});
+    private onInputBlur = () => this.setState({focus: false});
+
+    private toggle = (e: React.SyntheticEvent<HTMLInputElement>) => {
+        const {disabled, value, onChange} = this.props;
+        if (!disabled && onChange) {
+            onChange({value: !value});
         }
         if (this.shouldResetFocus) {
             this.setState({focus: false});
             this.shouldResetFocus = false;
         }
     }
-    onMouseDown = () => {
-        this.shouldResetFocus = true;
-    }
-    render() {
-        const {
-            checked,
-            disabled,
-            error,
-            rtl,
-            label,
-            tabIndex,
-            onChange
-        } = this.props;
-        const {focus} = this.state;
 
-        return <label
-            data-automation-id='TOGGLE'
-            onMouseDown={this.onMouseDown}
-            cssStates={{
-                checked: checked!,
-                disabled: disabled!,
-                focus: focus!,
-                error: error!,
-                rtl: rtl!
-            }}
-        >
-            {!disabled &&
-                <input
-                    ref='input'
-                    data-automation-id='TOGGLE_INPUT'
-                    className='input'
-                    type='checkbox'
-                    aria-label={label}
-                    checked={checked}
-                    onChange={this.toggle}
-                    tabIndex={tabIndex}
-                    onFocus={() => this.setState({focus: true})}
-                    onBlur={() => this.setState({focus: false})}
-                />
-            }
-            <div className='switch'/>
-        </label>
+    private onMouseDown = () => {
+        this.shouldResetFocus = true;
     }
 }

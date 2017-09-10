@@ -1,42 +1,46 @@
 import * as React from 'react';
 import {Toggle} from '../../src';
+import {ChangeEvent} from '../../src/types/events';
 
 export interface State {
-    checked: boolean,
+    checked: boolean;
 }
 
 export class ToggleDemo extends React.Component<{}, State> {
-    state = {
-        checked: false,
-    }
-    render () {
-        return <table>
+    public state = {
+        checked: false
+    };
+
+    public render() {
+        const onChange = (e: ChangeEvent<boolean>) => this.setState({checked: e.value});
+        return (
+            <table>
             <tbody>
                 <tr>
-                    <th data-automation-id='TOGGLE_DEMO_CONTROLLED'>
+                    <th data-automation-id="TOGGLE_DEMO_CONTROLLED">
                         Controlled
                         <Toggle
-                            label='with icons'
-                            checked={this.state.checked}
-                            onChange={(checked: boolean) => this.setState({checked})}
+                            label="with icons"
+                            value={this.state.checked}
+                            onChange={onChange}
                         />
                     </th>
                     <th>
                         Controlled RTL
                         <Toggle
-                            label='with icons'
+                            label="with icons"
                             rtl
-                            checked={this.state.checked}
-                            onChange={(checked: boolean) => this.setState({checked})}
+                            value={this.state.checked}
+                            onChange={onChange}
                         />
                     </th>
-                    <th data-automation-id='TOGGLE_DEMO_UNCONTROLLED'>
+                    <th data-automation-id="TOGGLE_DEMO_UNCONTROLLED">
                         Off
                         <Toggle/>
                     </th>
                     <th>
                         On
-                        <Toggle checked/>
+                        <Toggle value={true}/>
                     </th>
                     <th>
                         Disabled and off
@@ -44,7 +48,7 @@ export class ToggleDemo extends React.Component<{}, State> {
                     </th>
                     <th>
                         Disabled and on
-                        <Toggle disabled checked/>
+                        <Toggle disabled value={true}/>
                     </th>
                     <th>
                         Error and off
@@ -52,10 +56,11 @@ export class ToggleDemo extends React.Component<{}, State> {
                     </th>
                     <th>
                         Error and on
-                        <Toggle error checked/>
+                        <Toggle error value={true}/>
                     </th>
                 </tr>
             </tbody>
-        </table>
+            </table>
+        );
     }
 }

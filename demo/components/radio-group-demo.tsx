@@ -1,44 +1,54 @@
-import React = require('react');
-import {RadioGroup, RadioButton} from '../../src';
-import {observable, action} from 'mobx';
-import {observer} from 'mobx-react';
+import * as React from 'react';
+import {SBComponent} from 'stylable-react-component';
+import {RadioButton, RadioGroup} from '../../src';
+import styles from './radio-group-demo.st.css';
 
-
-@observer
+@SBComponent(styles)
 export class RadioGroupDemo extends React.Component<{}, {}> {
-    @observable myValue: string = '';
-    @observable myValue2: string = '';
-
-
-    @action
-    onChange = (value: string) => {
-        this.myValue = value;
+    public state = {
+        myValue1: 'Start here',
+        myValue2: 'Checked Radio'
     };
 
-    @action
-    onChange2 = (value: string) => {
-        this.myValue2 = value;
-    };
-
-    render() {
+    public render() {
         return (
             <div data-automation-id="RADIO_GROUP_DEMO">
                 <div data-automation-id="GROUP_1">
                     <h3>Children radio group</h3>
-                    <RadioGroup onChange={this.onChange}>
-                        <RadioButton value="This way!" />
+                    <RadioGroup onChange={this.onChange} name="demo" className="rg" value={this.state.myValue1}>
+                        <RadioButton value="This way!"/>
                         <RadioButton value="No, that way!"/>
-                        <RadioButton value="But not here" disabled={true} />
-                        <RadioButton value="Start here" checked={true} disabled={true} />
+                        <RadioButton value="But not here" disabled={true}/>
+                        <RadioButton value="Start here" disabled={true}/>
                     </RadioGroup>
-                    <span data-automation-id="RADIO_GROUP_DEMO_VALUE">Value: {this.myValue}</span>
+                    <br/>
+                    <span data-automation-id="RADIO_GROUP_DEMO_VALUE">Value: {this.state.myValue1}</span>
                 </div>
                 <div data-automation-id="GROUP_2">
                     <h3>Data source radio group</h3>
-                    <RadioGroup onChange={this.onChange2} location="left" name="name" dataSource={[{value:'Default'}, {value:'Checked', checked:true}, {value:'Disabled', disabled:true}]} />
-                    <span data-automation-id="RADIO_GROUP_DEMO_VALUE">Value: {this.myValue2}</span>
+                    <RadioGroup
+                        onChange={this.onChange2}
+                        labelLocation="left"
+                        name="name"
+                        className="rg"
+                        value={this.state.myValue2}
+                        dataSource={[
+                            {value: 'Default Radio'},
+                            {value: 'Checked Radio'},
+                            {value: 'Disabled Radio', disabled: true}
+                        ]}
+                    />
+                    <br/>
+                    <span data-automation-id="RADIO_GROUP_DEMO_VALUE">Value: {this.state.myValue2}</span>
                 </div>
             </div>
         );
+    }
+    private onChange = (e: {value: string}) => {
+        this.setState({myValue1: e.value});
+    }
+
+    private onChange2 = (e: {value: string}) => {
+        this.setState({myValue2: e.value});
     }
 }

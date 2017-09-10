@@ -1,0 +1,113 @@
+@namespace "SelectionListDemo";
+
+:import {
+    -st-from: '../../src/components/selection-list/selection-list.st.css';
+    -st-default: List;
+}
+
+.emoji-list {
+    -st-extends: List;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 300px;
+    height: 60px;
+    padding: 0 10px;
+    border-radius: 30px;
+}
+
+.emoji-list::item {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    font-size: 20px;
+    transition: all 300ms;
+    cursor: pointer;
+    text-align: center;
+
+    min-height: unset;
+    padding: unset;
+    line-height: unset;
+}
+
+.emoji-list::item:focused {
+    border: unset;
+    background-color: #edf7ff;
+}
+
+.emoji-list::item:selected {
+    width: 56px;
+    height: 56px;
+    font-size: 45px;
+    cursor: default;
+    background-color: unset;
+}
+
+.emoji-list::item:focused,
+.emoji-list::item:hover,
+.emoji-list::item:selected:hover,
+.emoji-list::item:selected:focused {
+    background-color: #edf7ff;
+} 
+
+.text-style-list {
+    -st-extends: List;
+}
+
+.text-style-list::item {
+    padding: 10px 20px;
+    color: #000000;
+    border-top: 1px solid #DDDDDD;
+    cursor: pointer;
+}
+
+.text-style-list::item:first-child {
+    border-top: none;
+}
+
+.text-style-list::item:disabled {
+    cursor: default;
+}
+
+.text-style-list::item:disabled > * {
+    filter: grayscale(100%);
+    opacity: 0.2;
+}
+
+.text-style-title {
+    font-family: Helvetica, sans-serif;
+    font-size: 30pt;
+    font-weight: bold;
+}
+
+.text-style-heading {
+    font-family: Helvetica, sans-serif;
+    font-size: 18pt;
+    font-weight: bold;
+}
+
+.text-style-heading-red {
+    font-family: Helvetica, sans-serif;
+    font-size: 16pt;
+    font-weight: bold;
+    color: #C82506;
+}
+
+.text-style-body {
+    font-family: Helvetica, sans-serif;
+    font-size: 11pt;
+}
+
+.text-style-caption {
+    font-family: Helvetica, sans-serif;
+    font-size: 10pt;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.text-style-label {
+    font-family: Helvetica, sans-serif;
+    background: #C0C0C0;
+    color: #FFFFFF;
+    padding: 2px 3px;
+}

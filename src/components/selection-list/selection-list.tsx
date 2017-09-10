@@ -1,136 +1,115 @@
+import keycode = require('keycode');
+import {autorun, computed, observable, untracked} from 'mobx';
+import {observer} from 'mobx-react';
 import React = require('react');
-import ReactDOM = require('react-dom');
-import {SBComponent, SBStateless} from 'stylable-react-component';
-import {root} from 'wix-react-tools';
-import style from './selection-list.st.css';
+import {Disposers, root} from 'wix-react-tools';
+import {ChangeEvent} from '../../types/events';
+import {FormInputProps} from '../../types/forms';
+import {noop} from '../../utils';
+import {OptionList, SelectionListItemValue, SelectionListModel} from './selection-list-model';
+import {SelectionListView} from './selection-list-view';
 
-export const divider = {};
-
-function renameKeys(data: {[index: string]: any}, schema: {[index: string]: string}) {
-    const result: {[index: string]: any} = {};
-    for (const key in schema) {
-        result[key] = data[schema[key]];
-    }
-    return result;
+export interface Props extends OptionList, FormInputProps<SelectionListItemValue> {
+    className?: string;
+    onChange?: (event: ChangeEvent<SelectionListItemValue>) => void;
+    style?: React.CSSProperties;
+    tabIndex?: number;
+    value?: SelectionListItemValue;
 }
 
-function closestElementMatching(predicate: (element: HTMLElement) => boolean, startAt: HTMLElement) {
-    let current: HTMLElement | null = startAt;
-    while (current && !predicate(current)) {
-        current = current.parentElement;
-    }
-    return current;
-}
-
-export interface ItemRendererProps {
-    focused: boolean;
-    selected: boolean;
-    item: any;
-};
-
-export interface DefaultItemRendererProps extends ItemRendererProps {
-    item: {
-        value?: string;
-        label?: string;
-        hidden?: boolean;
-        disabled?: boolean;
-    }
-}
-
-const DefaultItemRenderer: React.SFC<DefaultItemRendererProps> = SBStateless(props => {
-    if (props.item === divider) {
-        return <div className="divider" data-automation-id="DIVIDER"></div>;
-    }
-
-    if (props.item.hidden) {
-        return null;
-    }
-
-    return (
-        <div
-            className="list-item"
-            data-value={props.item.disabled! ? null : props.item.value}
-            cssStates={{
-                focused: props.focused,
-                selected: props.selected,
-                disabled: props.item.disabled!
-            }}>
-            {props.item.label}
-        </div>
-    );
-}, style);
-
-export type SelectionItem = string | object;
-
-export interface OptionList {
-    dataSource?: SelectionItem[],
-    dataSchema?: {},
-    itemRenderer?: React.ComponentType<ItemRendererProps>
-}
-
-export interface SelectionListProps extends OptionList {
-    value?: string;
-    onChange?: (value: string) => void;
-    style?: any;
-    children?: any
-}
-
-@SBComponent(style)
-export class SelectionList extends React.Component<SelectionListProps, {}> {
-    static defaultProps: SelectionListProps = {
-        dataSource: [],
-        itemRenderer: DefaultItemRenderer,
-        onChange: () => {}
+@observer
+export class SelectionList extends React.Component<Props> {
+    public static defaultProps: Props = {
+        onChange: noop,
+        tabIndex: -1
     };
 
-    normalizeItem(item: SelectionItem): {[index: string]: any} {
-        if (item === divider) {
-            return divider;
-        }
+    private disposers = new Disposers();
+    @observable private focused: boolean = false;
 
-        if (typeof item === 'string') {
-            item = {value: item, label: item};
-        }
+    // Wrapping props with @computed allows to observe them independently from other props.
+    @computed public get children()   { return this.props.children; }
+    @computed public get dataSource() { return this.props.dataSource; }
+    @computed public get dataSchema() { return this.props.dataSchema; }
+    @computed public get renderItem() { return this.props.renderItem; }
+    @computed public get value()      { return this.props.value; }
 
-        return this.props.dataSchema ?
-            renameKeys(item, this.props.dataSchema) : item;
+    @computed private get list(): SelectionListModel {
+        const list = new SelectionListModel();
+        list.addChildren(this.children);
+        list.addDataSource(this);
+        list.selectValue(untracked(() => this.value));
+        return list;
     }
 
-    renderItem(item: SelectionItem, index: number) {
-        const ItemRenderer = this.props.itemRenderer!;
-        const normalized = this.normalizeItem(item);
-        return <ItemRenderer
-            key={index}
-            focused={false}
-            selected={normalized.value === this.props.value}
-            item={normalized} />;
+    public componentWillMount() {
+        this.disposers.set(autorun(() => {
+            this.list.selectValue(this.value);
+        }));
+
+        this.disposers.set(autorun(() => {
+            this.list.focusValue(this.focused ? this.value : undefined);
+        }));
     }
 
-    handleClick: React.EventHandler<React.MouseEvent<HTMLElement>> = (event) => {
-        const root = ReactDOM.findDOMNode(this);
-        const item = closestElementMatching(
-            (el) => el.parentElement === root,
-            event.target as HTMLElement
+    public componentWillUnmount() {
+        this.disposers.disposeAll();
+    }
+
+    public render() {
+        return (
+            <SelectionListView
+                {...root(this.props, {className: ''})}
+                focused={this.focused}
+                list={this.list}
+                onBlur={this.handleBlur}
+                onChange={this.props.onChange}
+                onFocus={this.handleFocus}
+                onKeyDown={this.handleKeyDown}
+                style={this.props.style}
+                tabIndex={this.props.tabIndex}
+            />
         );
-        if (!item) {
-            return;
-        }
-        const value = item.dataset.value;
-        if (value === undefined || value === this.props.value) {
-            return;
-        }
-        this.props.onChange!(value);
-    };
+    }
 
-    render() {
-        const rootProps = root(this.props, {
-            'data-automation-id': 'LIST',
-            className: 'list',
-            onClick: this.handleClick
-        });
+    private handleFocus: React.FocusEventHandler<HTMLElement> = () => {
+        this.focused = true;
+    }
 
-        return <div {...rootProps}>
-            {this.props.dataSource!.map((item, index) => this.renderItem(item, index))}
-        </div>;
+    private handleBlur: React.FocusEventHandler<HTMLElement> = () => {
+        this.focused = false;
+    }
+
+    private handleKeyDown: React.KeyboardEventHandler<HTMLElement> = event => {
+        switch (event.keyCode) {
+            case keycode('enter'):
+            case keycode('space'):
+                event.preventDefault();
+                const focusedValue = this.list.getFocusedValue();
+                if (focusedValue !== undefined) {
+                    this.props.onChange!({value: focusedValue});
+                }
+                break;
+
+            case keycode('up'):
+                event.preventDefault();
+                this.list.focusPrevious();
+                break;
+
+            case keycode('down'):
+                event.preventDefault();
+                this.list.focusNext();
+                break;
+
+            case keycode('home'):
+                event.preventDefault();
+                this.list.focusFirst();
+                break;
+
+            case keycode('end'):
+                event.preventDefault();
+                this.list.focusLast();
+                break;
+        }
     }
 }

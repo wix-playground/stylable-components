@@ -1,19 +1,22 @@
+:import{
+    -st-from: "./tree-node.st.css";
+    -st-default: TreeNode;
+}
+
 .root {
-  font-size: 18px;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    text-align: left;
+    color: #000000;
+    outline: 0 solid transparent;
+    overflow: hidden;
+    display: inline-block;
+    min-width: 250px;
+    list-style: none;
+    padding-left: 0;
 }
 
-.tree-node {
-  -st-states: selected;
-  cursor: pointer;
-  display: inline;
-  padding: 2px 5px;
-}
-
-.tree-node:selected {
-  background-color: lightblue;
-}
-
-.nested-tree {
-  margin-left: 25px;
+.treeNode {
+    -st-extends: TreeNode;
 }
