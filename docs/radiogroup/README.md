@@ -8,9 +8,9 @@ The **RadioGroup** component is used to group together children and provide them
 
 | Name | Type | Default | Required | Description |
 |------|------|---------|----------|-------------
-| name | string |  | no | The name of the group. Sets the _name_ property on each child. |
+| name | string | none | no | The name of the group. Sets the _name_ property on each child. |
 | disabled | boolean | false | no | Whether all the radio buttons are disabled. |
-| readonly | boolean | false | no | Whether the group value cannot be changed. |
+| readOnly | boolean | false | no | Whether the group value cannot be changed. |
 | labelLocation | 'right' or 'left' | 'right' | no | Whether each child's value appears as text to the right or left of the radio button.  |
 | onChange | function | NOOP | no | `(e: RadioChangeEvent) => void`<br>Triggered by changing a radio button state. |
 | dataSource | Array\<RadioButtonProps> | [] | no | Array of dataSchema objects. |
@@ -23,7 +23,7 @@ The **RadioGroup** component is used to group together children and provide them
 | checked | boolean |  | no | Whether the button appears checked. |
 | name | string |  | no | The name of the group that this button is part of. |
 | disabled | boolean | false | no | Whether this button appears as disabled. |
-| readonly | boolean | false | no | Whether this button's value can be changed. |
+| readOnly | boolean | false | no | Whether this button's value can be changed. |
 | labelLocation | 'right' or 'left' | 'right' | no | Whether the text supplied in the value property appears to the right or left of the button itself.  |
 | onChange | function | NOOP | no | `(e: RadioChangeEvent) => void`<br>Triggered by changing the button's state. |
 
@@ -97,13 +97,13 @@ export class Example2 extends React.Component<{}, {}>{
 
 ### RadioGroup Subcomponents (pseudo-elements)
 
-| selector | description  | type | children pseudo-states |
-|----------|--------------|------|------------------------|
-| ::radioGroupChild | Allows styling the children under the **RadioGroup** | **RadioButton** | :error - allows styling the error state of the internal switch |
+| Selector | Description  |
+|----------|--------------|
+| ::radioGroupChild | Allows styling the children under the *RadioGroup* |
 
 ### RadioButton Custom CSS States (pseudo-classes)
 
-| state | description |
+| State | Description |
 | ----- | ----------- |
 | :disabled | Style the button when it is disabled. |
 | :focused | Style the component when it gets document focus. |
@@ -112,4 +112,17 @@ export class Example2 extends React.Component<{}, {}>{
 
 ### Style Code Example
 
-> TBD
+```css
+:import {
+    -st-from: "../../src/components/radio-group/radio-group.st.css";
+    -st-default: RG;
+}
+
+.rg {
+    -st-extends: RG;
+}
+
+.rg::radioGroupChild {
+    display: block;
+}
+```
