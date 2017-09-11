@@ -12,7 +12,7 @@ export class DatePickerTestDriver extends DriverBase {
         return this.select<HTMLInputElement>('DATE_PICKER_INPUT');
     }
 
-    public get currentDate(): string {
+    public get selectedDate(): string {
         return this.select<HTMLInputElement>('DATE_PICKER_INPUT').value;
     }
 
@@ -21,8 +21,12 @@ export class DatePickerTestDriver extends DriverBase {
         simulate.blur(this.input);
     }
 
-    public click(elem: Element): void {
-        simulate.mouseDown(elem);
+    public click(elem?: Element): void {
+        if (!elem) {
+            simulate.mouseDown(this.input);
+        } else {
+            simulate.mouseDown(elem);
+        }
     }
 
     public openCalender(): void {

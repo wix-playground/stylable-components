@@ -78,7 +78,7 @@ describe('The DatePicker Component', () => {
         const {driver: datePicker, waitForDom} = clientRenderer.render(<DatePicker value={JANUARY_FIRST} />)
             .withDriver(DatePickerTestDriver);
 
-        await waitForDom(() => expect(datePicker.currentDate).to.equal(JANUARY_FIRST.toDateString()));
+        await waitForDom(() => expect(datePicker.selectedDate).to.equal(JANUARY_FIRST.toDateString()));
     });
 
     it('should not call onChange with an invalid date', async () => {
@@ -115,11 +115,11 @@ describe('The DatePicker Component', () => {
 
         await waitForDom(() => expect(datePicker.isOpen()).to.be.false);
 
-        datePicker.click(datePicker.input!);
+        datePicker.click();
 
         await waitForDom(() => expect(datePicker.isOpen()).to.be.true);
 
-        datePicker.click(datePicker.input!);
+        datePicker.click();
 
         await waitForDom(() => expect(datePicker.isOpen()).to.be.false);
     });
@@ -137,22 +137,22 @@ describe('The DatePicker Component', () => {
         // Advance one week
         simulateKeyPress('down');
 
-        await waitForDom(() => expect(datePicker.currentDate).to.equal('Sun Jan 08 2017'));
+        await waitForDom(() => expect(datePicker.selectedDate).to.equal('Sun Jan 08 2017'));
 
         // Go back one week
         simulateKeyPress('up');
 
-        await waitForDom(() => expect(datePicker.currentDate).to.equal('Sun Jan 01 2017'));
+        await waitForDom(() => expect(datePicker.selectedDate).to.equal('Sun Jan 01 2017'));
 
         // Go forward one day
         simulateKeyPress('right');
 
-        await waitForDom(() => expect(datePicker.currentDate).to.equal('Mon Jan 02 2017'));
+        await waitForDom(() => expect(datePicker.selectedDate).to.equal('Mon Jan 02 2017'));
 
         // Go back one day
         simulateKeyPress('left');
 
-        await waitForDom(() => expect(datePicker.currentDate).to.equal('Sun Jan 01 2017'));
+        await waitForDom(() => expect(datePicker.selectedDate).to.equal('Sun Jan 01 2017'));
     });
 
     describe('The Dropdown', () => {
