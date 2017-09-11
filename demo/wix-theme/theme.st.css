@@ -27,6 +27,10 @@
 	-st-default: Stepper;
 }
 
+:import {
+	-st-from: "../../src/components/slider/slider.st.css";
+	-st-default: Slider;
+}
 
 /* General */
 .root {
@@ -294,4 +298,9 @@ Stepper::up:hover {
 
 Stepper::down:hover {
 	color:#4EB7F5;
+}
+
+/* Slider */
+Slider {
+	background: red;
 }
