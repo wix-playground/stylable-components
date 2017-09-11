@@ -1,8 +1,8 @@
 import * as React from 'react';
-import {Toggle} from '../../src';
 import {SBComponent} from 'stylable-react-component';
-import styles from '../wix-theme/theme.st.css';
+import {Toggle} from '../../src';
 import {ChangeEvent} from '../../src/types/events';
+import styles from '../wix-theme/theme.st.css';
 
 export interface State {
     checked: boolean;
@@ -65,8 +65,11 @@ export class ToggleDemo extends React.Component<{}, State> {
                 <tr>
                     <td>
                         Small Toggle
-                        <Toggle className="toggle-small" checked={this.state.checked}
-                            onChange={onChange}/>
+                        <Toggle
+                            className="toggle-small"
+                            value={this.state.checked}
+                            onChange={onChange}
+                        />
                     </td>
                     <td>
                         Small Toggle
