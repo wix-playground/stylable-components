@@ -1,6 +1,6 @@
 {
   "name": "stylable-components",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "Fully-tested & strictly-typed component library based on React, using optional Wix styling.",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
