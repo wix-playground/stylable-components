@@ -14,10 +14,13 @@
     inputWidth: 192px;
 }
 
+:root {
+    display: inline-block;
+}
+
 /* The DatePicker Input */
 .input {
     width: value(inputWidth);
-    display: block;
 }
 
 /* The dropdown arrow extends from the input and into the calendar view */
