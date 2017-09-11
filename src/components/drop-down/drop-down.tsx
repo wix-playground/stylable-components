@@ -1,67 +1,57 @@
+import * as keycode from 'keycode';
 import * as React from 'react';
-import {SBComponent, SBStateless} from 'stylable-react-component';
+import {SBComponent} from 'stylable-react-component';
 import {root} from 'wix-react-tools';
+import {Popup} from '../../../src';
 import {ChangeEvent} from '../../types/events';
 import {FormInputProps} from '../../types/forms';
-import {SelectionList, SelectionListItemValue} from '../selection-list';
+import {noop} from '../../utils/noop';
+import {OptionList, SelectionList} from '../selection-list';
 import {CaretDown} from './drop-down-icons';
 import style from './drop-down.st.css';
 
-export interface DropDownInputProps {
-    selectedItem?: DropDownItem;
-    onClick?: React.EventHandler<React.MouseEvent<HTMLDivElement>>;
-}
+const KeyCodes: any = {
+    ENTER: keycode('enter'),
+    UP: keycode('up'),
+    DOWN: keycode('down'),
+    SPACE: keycode('space'),
+    ESC: keycode('escape')
+};
 
-export const DropDownInput: React.SFC<DropDownInputProps> = SBStateless(props => {
-    return (
-        <div data-automation-id="DROP_DOWN_INPUT" onClick={props.onClick} className="drop-down-input">
-            <span className="label">{props.selectedItem ? props.selectedItem.label : 'Default Text'}</span>
-            <CaretDown className="caret" />
-        </div>
-    );
-}, style);
-
-export interface DropDownListProps extends FormInputProps<SelectionListItemValue> {
-    open: boolean;
-    items?: DropDownItem[];
-    selectedItem?: DropDownItem;
-}
-
-export const DropDownList: React.SFC<DropDownListProps> = SBStateless(props => {
-    if (!props.open) { return null; }
-
-    return (
-        <div data-automation-id="DROP_DOWN_LIST">
-            <SelectionList
-                className="drop-down-list"
-                dataSource={props.items!.map((item: DropDownItem) => item.label)}
-                value={props.selectedItem && props.selectedItem.label}
-                onChange={props.onChange}
-            />
-        </div>
-    );
-}, style);
-
-export interface DropDownItem {
-    label: string;
-}
-
-export interface DropDownProps extends React.HTMLAttributes<HTMLDivElement> {
-    selectedItem?: DropDownItem;
-    onInputClick?: () => void;
+export interface DropDownProps extends OptionList, FormInputProps<string> {
     open?: boolean;
-    items?: DropDownItem[];
-    onItemClick?: (item: DropDownItem) => void;
+    disabled?: boolean;
+    openOnFocus?: boolean;
+    children?: React.ReactNode;
+    toggleIcon?: React.ComponentType;
+    tabIndex?: number;
+}
+
+export interface DropDownState {
+    dropdown: HTMLDivElement | null;
+    open: boolean;
 }
 
 @SBComponent(style)
-export class DropDown extends React.Component<DropDownProps, {}> {
+export class DropDown extends React.PureComponent<DropDownProps, DropDownState> {
+    public static defaultProps: DropDownProps = {
+        open: false,
+        value: 'Default Text',
+        children: [],
+        onChange: noop,
+        tabIndex: 0,
+        toggleIcon: CaretDown,
+        disabled: false
+    };
 
-    public static defaultProps: DropDownProps = {items: [], onItemClick: () => {}, onInputClick: () => {}};
+    public state: DropDownState = {
+        dropdown: null,
+        open: this.props.open!
+    };
 
-    public onItemClick = (event: ChangeEvent<SelectionListItemValue>) => {
-        this.props.onInputClick!();
-        this.props.onItemClick!(this.props.items!.filter((elem: DropDownItem) => elem.label === event.value)[0]);
+    public onItemClick = (e: ChangeEvent<string>) => {
+        this.closeDropdown();
+        this.props.onChange!({value: e.value});
     }
 
     public render() {
@@ -70,16 +60,77 @@ export class DropDown extends React.Component<DropDownProps, {}> {
             'className': 'drop-down'
         });
 
+        const ToggleIcon = this.props.toggleIcon!;
+
         return (
-            <div data-automation-id="DROP_DOWN" {...rootProps}>
-                <DropDownInput selectedItem={this.props.selectedItem} onClick={this.props.onInputClick} />
-                <DropDownList
-                    selectedItem={this.props.selectedItem}
-                    items={this.props.items}
-                    open={!!this.props.open}
-                    onChange={this.onItemClick}
-                />
+            <div
+                {...rootProps}
+                onKeyDown={this.onKeyDown}
+                onFocus={this.onFocus}
+                tabIndex={this.props.tabIndex}
+                ref={dropdown => this.setState({dropdown})}
+            >
+                <div data-automation-id="DROP_DOWN_INPUT" onClick={this.toggleDropdown} className="drop-down-input">
+                    <span className="label">{this.props.value!}</span>
+                    <div className="caret" data-automation-id="ICON">
+                        <ToggleIcon />
+                    </div>
+                </div>
+                <Popup open={this.state.open && !this.props.disabled} anchor={this.state.dropdown}>
+                    <div className="root">
+                        <SelectionList
+                            data-automation-id="DROP_DOWN_LIST"
+                            className="drop-down-list"
+                            value={this.props.value}
+                            onChange={this.onItemClick!}
+                            dataSource={this.props.dataSource}
+                        >
+                            {this.props.children}
+                        </SelectionList>
+                    </div>
+                </Popup>
             </div>
         );
+    }
+
+    private onFocus = () => {
+        if (this.props.openOnFocus) {
+            this.openDropdown();
+        }
+    }
+
+    private toggleDropdown = () => {
+        if (!this.props.disabled) {
+            this.setState({open: !this.state.open});
+        }
+    }
+
+    private openDropdown() {
+        if (!this.props.disabled) {
+            this.setState({open: true});
+        }
+    }
+
+    private closeDropdown() {
+        if (!this.props.disabled) {
+            this.setState({open: false});
+        }
+    }
+
+    private onKeyDown: React.EventHandler<React.KeyboardEvent<HTMLDivElement>> = e => {
+        switch (e.keyCode) {
+            case KeyCodes.SPACE:
+                e.preventDefault();
+                this.toggleDropdown();
+                break;
+            case KeyCodes.ESC:
+                e.preventDefault();
+                this.state.open && this.closeDropdown();
+                break;
+            case KeyCodes.DOWN:
+                e.preventDefault();
+                !this.state.open && this.openDropdown();
+                break;
+        }
     }
 }
