@@ -12,7 +12,7 @@ describe('<Portal />', function() {
     it('displays the portal and renders its children', async function() {
         const {result} = clientRenderer.render(
             <Portal>
-                <span data-automation-id="SPAN">Portal Body</span>
+                <span>Portal Body</span>
             </Portal>);
 
         const portal = new PortalTestDriver(result as Portal);
@@ -26,7 +26,7 @@ describe('<Portal />', function() {
     it('applies supplied styles to the popup and updates them if changed', async function() {
         const {container, result} = clientRenderer.render(
             <Portal style={{position: 'absolute'}}>
-                <span data-automation-id="SPAN">Portal Body</span>
+                <span>Portal Body</span>
             </Portal>
         );
 
@@ -36,7 +36,7 @@ describe('<Portal />', function() {
 
         clientRenderer.render(
             <Portal style={{position: 'fixed'}}>
-                <span data-automation-id="SPAN">Portal Body</span>
+                <span>Portal Body</span>
             </Portal>,
             container
         );
@@ -48,7 +48,7 @@ describe('<Portal />', function() {
         const container = document.body.appendChild(document.createElement('div'));
         const {result} = clientRenderer.render(
             <Portal>
-                <span data-automation-id="SPAN">Popup Body</span>
+                <span>Popup Body</span>
             </Portal>, container);
 
         const portal = new PortalTestDriver(result as Portal);
@@ -64,7 +64,7 @@ describe('<Portal />', function() {
     it('updates the portal content if the children are changed', async function() {
         const {container, result} = clientRenderer.render(
             <Portal>
-                <span data-automation-id="SPAN">Portal Body</span>
+                <span>Portal Body</span>
             </Portal>
         );
 
@@ -74,7 +74,7 @@ describe('<Portal />', function() {
 
         clientRenderer.render(
             <Portal>
-                <span data-automation-id="UPDATED_SPAN">Portal Body</span>
+                <span>Portal Body Updated</span>
             </Portal>,
             container
         );
@@ -85,7 +85,7 @@ describe('<Portal />', function() {
     it('renders the portal in the bottom of the DOM', async function() {
         const {container, result} = clientRenderer.render(
             <Portal>
-                <span data-automation-id="SPAN">Portal Body</span>
+                <span>Portal Body</span>
             </Portal>
         );
 
@@ -104,7 +104,7 @@ describe('<Portal />', function() {
     it('renders with a className passed as a prop', async function() {
         const {result} = clientRenderer.render(
             <Portal className="test-class">
-                <span data-automation-id="SPAN">Portal Body</span>
+                <span>Portal Body</span>
             </Portal>
         );
 
