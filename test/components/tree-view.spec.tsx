@@ -91,9 +91,9 @@ describe('<TreeView />', () => {
     // }
 
     // const sampleItem = {label: 'label'};
-    // const nestedItem: TreeItemData = treeData[0].children![1];
+    const nestedItem: TreeItemData = treeData[0].children![1];
 
-    // const allNodesLabels: string[] = getAllNodeLabels(treeData);
+    const allNodesLabels: string[] = getAllNodeLabels(treeData);
 
     // it('renders a tree view with a few children', async () => {
     //     const {select, waitForDom} = clientRenderer.render(<TreeViewDemo />);
@@ -616,27 +616,26 @@ describe('<TreeView />', () => {
     //             });
     //         });
 
-            it('expands the whole tree when \'expandAll\' method is used', async () => {
-                const {driver: treeView, waitForDom, result} = clientRenderer.render(
-                    <TreeView dataSource={treeData} />
-                ).withDriver(TreeViewDriver);
+        it('expands the whole tree when \'expandAll\' method is used', async () => {
+            const {driver: treeView, waitForDom, result} = clientRenderer.render(
+                <TreeView dataSource={treeData} />
+            ).withDriver(TreeViewDriver);
 
-                (result as TreeView).expandAll();
+            (result as TreeView).expandAll();
 
-                await waitForDom(() => allNodesLabels.forEach(item =>
-                    expect(treeView.getItem(item)), `item did not appear: ${item}`).to.be.present()));
-            });
+            await waitForDom(() => allNodesLabels.forEach(item =>
+                expect(treeView.getItem(item), `item did not appear: ${item}`).to.be.present()));
+        });
 
-            it('selects the provided item when \'selectItem\' method is used', async () => {
-                const onSelectItem = sinon.spy();
-                const {result} = clientRenderer.render(
-                    <TreeView dataSource={treeData} onSelectItem={onSelectItem}/>
-                );
+        it('selects the provided item when \'selectItem\' method is used', async () => {
+            const onSelectItem = sinon.spy();
+            const {result} = clientRenderer.render(
+                <TreeView dataSource={treeData} onSelectItem={onSelectItem}/>
+            );
 
-                (result as TreeView).selectItem(treeData[0]);
+            (result as TreeView).selectItem(treeData[0]);
 
-                await waitFor(() => expect(onSelectItem).to.have.been.calledWithMatch(treeData[0]));
-            });
+            await waitFor(() => expect(onSelectItem).to.have.been.calledWithMatch(treeData[0]));
         });
     });
 });
