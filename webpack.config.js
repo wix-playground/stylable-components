@@ -29,8 +29,7 @@ module.exports = {
         ]
     },
     resolve: {
-        extensions: ['.ts', '.tsx', '.js'],
-        modules: ['src', 'node_modules']
+        extensions: ['.ts', '.tsx', '.js']
     },
     output: {
         filename: '[name].js',
