@@ -72,7 +72,7 @@ describe('<Popup />', function() {
     it('displays the popup and renders its children if the open prop is given', function() {
         const {result} = clientRenderer.render(
             <Popup anchor={anchor} open>
-                <span data-automation-id="SPAN">Popup Body</span>
+                <span>Popup Body</span>
             </Popup>
         );
 
@@ -87,7 +87,7 @@ describe('<Popup />', function() {
     it('does not render the popup if there is no anchor', async function() {
         const {result} = clientRenderer.render(
             <Popup anchor={null} open={true}>
-                <span data-automation-id="SPAN">Popup Body</span>
+                <span>Popup Body</span>
             </Popup>
         );
         await sleep(100);
