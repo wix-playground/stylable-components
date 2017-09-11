@@ -9,6 +9,7 @@
     font-size: 16px;
     display: inline-block;
     min-width: 150px;
+    outline: none;
 }
 
 .drop-down-input {
@@ -36,4 +37,5 @@
 .drop-down-list {
     -st-extends: SelectionList;
     width: 100%;
+    background-color: white;
 }
