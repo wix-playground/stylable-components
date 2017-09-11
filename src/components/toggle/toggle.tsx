@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {SBComponent} from 'stylable-react-component';
+import {warn, warnOnce} from '../../utils/warn';
 import style from './toggle.st.css';
 
 export interface Props {
@@ -17,6 +18,8 @@ export interface Props {
 export interface State {
     focus: boolean;
 }
+
+
 
 @SBComponent(style)
 export default class Toggle extends React.Component<Props, State> {
@@ -46,6 +49,7 @@ export default class Toggle extends React.Component<Props, State> {
             tabIndex
         } = this.props;
         const {focus} = this.state;
+        warn(false, 'a = "%s", b = "%s"', 123, 555);
 
         return (
             <label

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {setGlobalConfig} from 'wix-react-tools';
 import {SBComponent} from 'stylable-react-component';
 import ComponentsDemoCSS from './style.st.css';
 
@@ -15,6 +16,8 @@ import {SliderDemo} from './components/slider-demo';
 import {TimePickerDemo} from './components/time-picker-demo';
 import {ToggleDemo} from './components/toggle-demo';
 import {TreeViewDemo, TreeViewDemoCustom} from './components/tree-view-demo';
+
+setGlobalConfig({devMode: true});
 
 @SBComponent(ComponentsDemoCSS)
 export class ComponentsDemo extends React.Component {
