@@ -8,15 +8,15 @@ const createLogFunction = (method: Method): Log => (condition, message, ...args)
     if (condition || !getGlobalConfig().devMode) {
         return;
     }
-    message = args.reduce((message, item) => message.replace(/%s/, item), message);
-    console[method](new Error(message));
-}
+    const formated = args.reduce((str, item) => str.replace(/%s/, item), message);
+    console[method](new Error(formated));
+};
 const once = (fn: Log): Log => (condition, message, ...args) => {
     if (!condition && !map.has(message)) {
         map.set(message, true);
         fn(condition, message, ...args);
     }
-}
+};
 
 export const warn = createLogFunction('warn');
 export const error = createLogFunction('error');
