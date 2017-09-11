@@ -20,11 +20,11 @@ export class DropDownDriver extends DriverBase {
         }
     }
 
-    public get list(): HTMLDivElement | null {
+    public get list(): HTMLDivElement | null {  // refactor when selectionList driver is available
         return bodySelect('LIST');
     }
 
-    public get items(): HTMLCollection | null {
+    public get items(): HTMLCollection | null { // refactor when selectionList driver is available
         return this.list ? this.list.children : null;
     }
 
