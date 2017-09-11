@@ -25,35 +25,35 @@ export class DatePickerTestDriver extends DriverBase {
         simulate.focus(this.input);
     }
 
-    public keyPress(keyCode: number) {
+    public keyPress(keyCode: number): void {
         simulate.keyDown(this.input, {keyCode});
     }
 
-    public get nextMonthLabel() {
+    public get nextMonthLabel(): HTMLSpanElement | null {
         return bodySelect('NEXT_MONTH_BUTTON');
     }
 
-    public get prevMonthLabel() {
+    public get prevMonthLabel(): HTMLSpanElement | null {
         return bodySelect('PREV_MONTH_BUTTON');
     }
 
-    public get dropDown() {
+    public get dropDown(): HTMLDivElement | null {
         return bodySelect(datePickerDropdown);
     }
 
-    public getDay(day: number | string) {
+    public getDay(day: number | string): HTMLSpanElement | null {
         return bodySelect(datePickerDropdown, `DAY_${day}`);
     }
 
-    public getPrevDay(day: number | string) {
+    public getPrevDay(day: number | string): HTMLSpanElement | null {
         return bodySelect(datePickerDropdown, `PREV_DAY_${day}`);
     }
 
-    public getNextDay(day: number | string) {
+    public getNextDay(day: number | string): HTMLSpanElement | null {
         return bodySelect(datePickerDropdown, `NEXT_DAY_${day}`);
     }
 
-    public getDayName(dayName: number) {
+    public getDayName(dayName: number): HTMLSpanElement | null {
         if (dayName < 0 || dayName > 6) {
             return null;
         }
@@ -61,11 +61,11 @@ export class DatePickerTestDriver extends DriverBase {
         return bodySelect(datePickerDropdown, `DAY_NAME_${dayNames[dayName].toUpperCase()}`);
     }
 
-    public get yearLabel() {
+    public get yearLabel(): HTMLSpanElement | null {
         return bodySelect(datePickerDropdown, 'YEAR');
     }
 
-    public get monthLabel() {
+    public get monthLabel(): HTMLSpanElement | null {
         return bodySelect(datePickerDropdown, 'MONTH_NAME');
     }
 }

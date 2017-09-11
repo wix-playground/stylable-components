@@ -3,8 +3,6 @@ import * as React from 'react';
 import {ClientRenderer, DriverBase, expect, sinon} from 'test-drive-react';
 import {DatePickerDemo} from '../../demo/components/date-picker-demo';
 import {DatePicker} from '../../src';
-import {DatePickerTestDriver} from '../../test-kit';
-import {sleep} from '../utils';
 import {
     getDayNames,
     getDaysInMonth,
@@ -12,6 +10,8 @@ import {
     getNumOfFollowingDays,
     getNumOfPreviousDays
 } from '../../src/utils';
+import {DatePickerTestDriver} from '../../test-kit';
+import {sleep} from '../utils';
 
 class DatePickerDemoDriver extends DriverBase {
     public static ComponentClass = DatePickerDemo;
