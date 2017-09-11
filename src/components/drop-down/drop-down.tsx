@@ -23,7 +23,7 @@ export interface DropDownProps extends OptionList, FormInputProps<string> {
     disabled?: boolean;
     openOnFocus?: boolean;
     children?: React.ReactNode;
-    toggleIcon?: React.SFC;
+    toggleIcon?: React.ComponentType;
     tabIndex?: number;
 }
 
@@ -117,7 +117,7 @@ export class DropDown extends React.PureComponent<DropDownProps, DropDownState> 
         }
     }
 
-    private onKeyDown = (e: any) => {
+    private onKeyDown: React.EventHandler<React.KeyboardEvent<HTMLDivElement>> = e => {
         switch (e.keyCode) {
             case KeyCodes.SPACE:
                 e.preventDefault();
