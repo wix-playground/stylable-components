@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {SBComponent} from 'stylable-react-component';
 import {root} from 'wix-react-tools';
-import {Portal} from '../../../src';
+import {Portal} from '../../../src/components/portal';
 import {noop} from '../../utils';
 import {isElement} from '../../utils/is-element';
 import {enableScrolling, stopScrolling} from '../../utils/stop-scrolling';

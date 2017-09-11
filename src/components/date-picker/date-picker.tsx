@@ -2,7 +2,7 @@ import * as keycode from 'keycode';
 import * as React from 'react';
 import {SBComponent} from 'stylable-react-component';
 import {root} from 'wix-react-tools';
-import {Popup} from '../../../src';
+import {Popup} from '../../../src/components/popup';
 import {FormInputProps} from '../../types/forms';
 import {noop} from '../../utils';
 import {Calendar} from './calendar';
