@@ -25,10 +25,13 @@
     iconWidth: 36px;
 }
 
+:root {
+    display: inline-block;
+}
+
 /* The DatePicker Input */
 .input {
     width: value(inputWidth);
-    display: block;
 }
 
 .icon {
