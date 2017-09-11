@@ -134,8 +134,12 @@ export class CheckBox extends React.Component<CheckBoxProps, CheckBoxState> {
                         data-automation-id="CHECKBOX_TICKMARK"
                     />
                 }
-
-                {this.props.children}
+                {
+                    this.props.children ?
+                    <div data-automation-id="CHECKBOX_CHILD_CONTAINER" className="childContainer">
+                        {this.props.children}
+                    </div> : null
+                }
             </div>
         );
     }

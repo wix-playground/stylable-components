@@ -5,7 +5,7 @@ import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react
 import {TreeViewDemo, TreeViewDemoCustom} from '../../demo/components/tree-view-demo';
 import {TreeItem, TreeView} from '../../src';
 import {getLastAvailableItem, getNextItem, getPreviousItem} from '../../src/components/tree-view//tree-util';
-import {ParentsMap, TreeItemData, TreeStateMap} from '../../src/components/tree-view/tree-view';
+import {initParentsMap, ParentsMap, TreeItemData, TreeStateMap} from '../../src/components/tree-view/tree-view';
 
 const treeView = 'TREE_VIEW';
 const treeItem = 'TREE_ITEM';
@@ -527,15 +527,8 @@ describe('<TreeView />', () => {
             treeState.getItemState(treeData[0]).isExpanded = true;
             treeState.getItemState(treeData[0].children![1]).isExpanded = true;
 
-            function initParentsMap(data: TreeItemData[] = [], parent: TreeItemData | undefined) {
-                data.forEach((item: TreeItemData) => {
-                    parentsMap.set(item, parent);
-                    initParentsMap(item.children || [], item);
-                });
-            }
-
             const parentsMap: ParentsMap = new Map<TreeItemData, TreeItemData | undefined>();
-            initParentsMap(treeData, undefined);
+            initParentsMap(parentsMap, treeData, undefined);
 
             it('gets previous item when its a sibling', async () => {
                 const previous = getPreviousItem(treeData, treeData[0].children![1], treeState, parentsMap);
@@ -560,6 +553,96 @@ describe('<TreeView />', () => {
             it('selects last available item', async () => {
                 const last = getLastAvailableItem(treeData[0], treeState);
                 expect(last.label).to.eql(treeData[0].children![2].label);
+            });
+        });
+
+        describe('Accessibility', () => {
+            it('puts correct aria values on different parts of the tree', () => {
+                const {select, waitForDom} = clientRenderer.render(<TreeView dataSource={treeData} />);
+
+                const firstChild = treeData[0].children![0];
+                expandItemWithLabel(select, treeData[0].label);
+
+                return waitForDom(() => {
+                    expect(select(treeView)).to.have.attribute('role', 'tree');
+                    expect(select(treeView, getTreeItem(firstChild.label) + '_NODE')).to.have.attr('role', 'treeitem');
+                });
+            });
+        });
+
+        describe('TreeView methods', () => {
+            const firstChild = treeData[0].children![0];
+            const secondChild = treeData[0].children![1];
+
+            async function renderAndExpandPartsOfTree() {
+                const renderResult = clientRenderer.render(<TreeView dataSource={treeData} />);
+                const {select, waitForDom} = renderResult;
+
+                const treeRootIcon = select(treeView, getTreeItemIcon('Food Menu'));
+                simulate.click(treeRootIcon);
+                await waitForDom(() =>
+                    expect(select(treeView, getTreeItemLabel(firstChild.label))).to.be.present());
+
+                simulate.click(select(treeView, getTreeItemIcon(firstChild.label)));
+                await waitForDom(() => expect(select(treeView,
+                    getTreeItemLabel(firstChild.children![0].label))).to.be.present());
+
+                return renderResult;
+            }
+
+            it('collapses a node and its subtree when \'collapse\' method is used', async () => {
+                const {select, waitForDom, result} = await renderAndExpandPartsOfTree();
+
+                (result as TreeView).collapse(treeData[0]);
+
+                return waitForDom(() => {
+                    expect(select(treeView, getTreeItemLabel(firstChild.label))).to.be.absent();
+                    expect(select(treeView, getTreeItemLabel(firstChild.children![0].label))).to.be.absent();
+                });
+            });
+
+            it('collapses the whole tree when \'collapseAll\' method is used', async () => {
+                const {select, waitForDom, result} = await renderAndExpandPartsOfTree();
+
+                (result as TreeView).collapseAll();
+
+                return waitForDom(() => {
+                    expect(select(treeView, getTreeItemLabel(firstChild.label))).to.be.absent();
+                    expect(select(treeView, getTreeItemLabel(firstChild.children![0].label))).to.be.absent();
+                });
+            });
+
+            it('expands a node and its subtree when \'expand\' method is used', async () => {
+                const {select, waitForDom, result} = clientRenderer.render(<TreeView dataSource={treeData} />);
+                const treeRootIcon = select(treeView, getTreeItemIcon('Food Menu'));
+                simulate.click(treeRootIcon);
+
+                await waitForDom(() => expect(select(treeView, getTreeItemLabel(firstChild.label))).to.be.present());
+
+                (result as TreeView).expand(firstChild);
+
+                return waitForDom(() => {
+                    expect(select(treeView, getTreeItemLabel(firstChild.children![0].label))).to.be.present();
+                    expect(select(treeView, getTreeItemLabel(secondChild.children![0].label))).to.be.absent();
+                });
+            });
+
+            it('expands the whole tree when \'expandAll\' method is used', async () => {
+                const {select, waitForDom, result} = clientRenderer.render(<TreeView dataSource={treeData} />);
+
+                (result as TreeView).expandAll();
+
+                return waitForDom(() => allNodesLabels.forEach(item =>
+                    expect(select(treeView, getTreeItem(item)), `item did not appear: ${item}`).to.be.present()));
+            });
+
+            it('selects the provided item when \'selectItem\' method is used', async () => {
+                const onSelectItem = sinon.spy();
+                const {result} = clientRenderer.render(<TreeView dataSource={treeData} onSelectItem={onSelectItem}/>);
+
+                (result as TreeView).selectItem(treeData[0]);
+
+                return waitFor(() => expect(onSelectItem).to.have.been.calledWithMatch(treeData[0]));
             });
         });
     });

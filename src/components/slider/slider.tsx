@@ -2,7 +2,8 @@ import * as keycode from 'keycode';
 import * as React from 'react';
 import {SBComponent} from 'stylable-react-component';
 import {root} from 'wix-react-tools';
-import GlobalEvent from '../../common/global-event';
+import {GlobalEvent} from '../global-event';
+import {FormInputProps} from './../../types/forms';
 import {noop} from './../../utils/noop';
 import style from './slider.st.css';
 
@@ -31,8 +32,9 @@ export interface PointerPosition {
     clientX: number;
     clientY: number;
 }
-export interface SliderProps {
-    value?: number;
+export interface SliderProps extends FormInputProps<number, string> {
+    tooltip?: React.ReactNode;
+
     min?: number;
     max?: number;
     step?: Step;
@@ -48,9 +50,6 @@ export interface SliderProps {
 
     onFocus?: React.FocusEventHandler<HTMLElement>;
     onBlur?: React.FocusEventHandler<HTMLElement>;
-
-    onChange?(value: number): void;
-    onInput?(value: string): void;
 
     onDragStart?(event: PointerEvent): void;
     onDrag?(event: PointerEvent): void;
@@ -229,14 +228,8 @@ export class Slider extends React.Component<SliderProps, SliderState> {
             value;
     }
 
-    private getTooltip(): number | string | React.ReactElement<any> | undefined {
-        return React.Children
-            .toArray(this.props.children)
-            .find(
-                item => typeof item === 'object' ?
-                    item.props['data-slot'] === 'tooltip' :
-                    false
-            );
+    private getTooltip(): React.ReactNode {
+        return this.props.tooltip;
     }
 
     private getMarks(): JSX.Element[] {
@@ -357,10 +350,21 @@ export class Slider extends React.Component<SliderProps, SliderState> {
             });
         }
 
-        this.props.onInput!(String(newAbsoluteValue));
+        this.callInput(newAbsoluteValue);
         if (newAbsoluteValue !== this.props.value) {
-            this.props.onChange!(newAbsoluteValue);
+            this.callChange(newAbsoluteValue);
         }
+    }
+
+    private callInput(value: number | string): void {
+        if (typeof value !== 'string') {
+            value = String(value);
+        }
+        this.props.onInput!({value});
+    }
+
+    private callChange(value: number): void {
+        this.props.onChange!({value});
     }
 
     private getRelativeStep(step: Step | undefined, min: number, max: number): Step {
@@ -431,7 +435,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         this.isActive = true;
 
         this.onDragStart(event.nativeEvent);
-        this.props.onInput!(String(this.getAbsoluteValue(relativeValue)));
+        this.callInput(this.getAbsoluteValue(relativeValue));
     }
 
     private onSliderAreaMouseMove = (event: MouseEvent) => {
@@ -451,7 +455,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         });
 
         this.onDrag(event);
-        this.props.onInput!(String(this.getAbsoluteValue(relativeValue)));
+        this.callInput(this.getAbsoluteValue(relativeValue));
     }
 
     private onSliderAreaMouseUp = (event: MouseEvent) => {
@@ -469,7 +473,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
 
         this.focusableElement.focus();
         this.onDragStop(event);
-        this.props.onChange!(value);
+        this.callChange(value);
     }
 
     private onSliderAreaTouchStart = (event: React.TouchEvent<HTMLElement>) => {
@@ -492,7 +496,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         event.preventDefault();
 
         this.onDragStart(event.nativeEvent);
-        this.props.onInput!(String(this.getAbsoluteValue(relativeValue)));
+        this.callInput(this.getAbsoluteValue(relativeValue));
     }
 
     private onSliderAreaTouchMove = (event: TouchEvent) => {
@@ -513,7 +517,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         event.preventDefault();
 
         this.onDrag(event);
-        this.props.onInput!(String(this.getAbsoluteValue(relativeValue)));
+        this.callInput(this.getAbsoluteValue(relativeValue));
     }
 
     private onSliderAreaTouchEnd = (event: TouchEvent) => {
@@ -530,7 +534,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         this.isActive = false;
 
         this.onDragStop(event);
-        this.props.onChange!(value);
+        this.callChange(value);
     }
 
     private onSliderAreaKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
