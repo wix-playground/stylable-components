@@ -9,6 +9,11 @@ export interface PopupPositionPoint {
     horizontal: PopupHorizontalPosition;
 }
 
+export interface PopupPoint {
+    top: number;
+    left: number;
+}
+
 export interface PopupProps {
     open?: boolean;
     anchorPosition?: PopupPositionPoint;
@@ -19,7 +24,7 @@ export interface PopupProps {
 }
 
 export interface PopupCompProps extends PopupProps {
-    anchor: Element | null;
+    anchor: Element | PopupPoint | null;
 }
 
 export class Popup extends React.Component<PopupCompProps, {}> {
@@ -46,18 +51,25 @@ export class Popup extends React.Component<PopupCompProps, {}> {
         if (!this.props.anchor) {
             return {};
         }
+
         const newStyle: React.CSSProperties = {position: 'absolute'};
-        const anchorRect = this.props.anchor!.getBoundingClientRect();
 
         newStyle.maxHeight = this.props.maxHeight;
         newStyle.transform = '';
         newStyle.WebkitTransform = '';
-        if (this.props.syncWidth) {
-            newStyle.width = anchorRect.width;
-        }
+        if (isPoint(this.props.anchor)) {
+            newStyle.top = this.props.anchor.top;
+            newStyle.left = this.props.anchor.left;
 
-        newStyle.top = getVerticalReference(anchorRect, this.props.anchorPosition!.vertical);
-        newStyle.left = getHorizontalReference(anchorRect, this.props.anchorPosition!.horizontal);
+        } else {
+            const anchorRect = this.props.anchor!.getBoundingClientRect();
+            if (this.props.syncWidth) {
+                newStyle.width = anchorRect.width;
+            }
+
+            newStyle.top = getVerticalReference(anchorRect, this.props.anchorPosition!.vertical);
+            newStyle.left = getHorizontalReference(anchorRect, this.props.anchorPosition!.horizontal);
+        }
         switch (this.props.popupPosition!.vertical) {
             case 'center':
                 addTransform(newStyle, 'translateY(-50%)');
@@ -98,4 +110,8 @@ function getHorizontalReference(rect: ClientRect, anchorPosition: PopupHorizonta
 function addTransform(style: React.CSSProperties, transformation: string) {
     style.transform += transformation;
     style.WebkitTransform += transformation;
+}
+
+function isPoint(elem: Element | PopupPoint): elem is PopupPoint {
+    return elem.hasOwnProperty('top') && elem.hasOwnProperty('left');
 }

@@ -74,6 +74,21 @@ describe('<Popup />', function() {
         await waitFor(() => expect(bodySelect(portalId)).to.be.absent());
     });
 
+    it('renders the popup using a point as anchor', async () => {
+        const point = {top: 100, left: 100};
+        clientRenderer.render(
+            <Popup anchor={point} open>
+                <span data-automation-id="SPAN">Popup Body</span>
+            </Popup>
+        );
+
+        await waitFor(() => {
+            const portalRect = bodySelect<HTMLDivElement>(portalId)!.getBoundingClientRect();
+            expect(portalRect.top).to.equal(100);
+            expect(portalRect.left).to.equal(100);
+        });
+    });
+
     it('removes the component when unmounting', async function() {
         clientRenderer.render(
             <Popup
