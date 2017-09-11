@@ -36,7 +36,6 @@ export interface DropDownState {
 export class DropDown extends React.PureComponent<DropDownProps, DropDownState> {
     public static defaultProps: DropDownProps = {
         open: false,
-        value: 'Default Text',
         children: [],
         onChange: noop,
         tabIndex: 0,
