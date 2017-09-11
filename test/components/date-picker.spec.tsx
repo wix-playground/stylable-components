@@ -78,7 +78,7 @@ describe('The DatePicker Component', () => {
         const {driver: datePicker, waitForDom} = clientRenderer.render(<DatePicker value={JANUARY_FIRST} />)
             .withDriver(DatePickerTestDriver);
 
-        await waitForDom(() => expect(datePicker.input).to.have.value(JANUARY_FIRST.toDateString()));
+        await waitForDom(() => expect(datePicker.currentDate).to.equal(JANUARY_FIRST.toDateString()));
     });
 
     it('should not call onChange with an invalid date', async () => {
@@ -113,21 +113,20 @@ describe('The DatePicker Component', () => {
         const {driver: datePicker, waitForDom} = clientRenderer.render(<DatePicker />)
             .withDriver(DatePickerTestDriver);
 
-        await waitForDom(() => expect(datePicker.dropDown).to.be.absent());
+        await waitForDom(() => expect(datePicker.isOpen()).to.be.false);
 
         datePicker.click(datePicker.input!);
 
-        await waitForDom(() => expect(datePicker.dropDown).to.be.present());
+        await waitForDom(() => expect(datePicker.isOpen()).to.be.true);
 
         datePicker.click(datePicker.input!);
 
-        await waitForDom(() => expect(datePicker.dropDown).to.be.absent());
+        await waitForDom(() => expect(datePicker.isOpen()).to.be.false);
     });
 
     it('can be changed with the arrow keys', async function() {
         const {driver: datePicker, waitForDom} = clientRenderer.render(<DatePicker value={JANUARY_FIRST} openOnFocus/>)
             .withDriver(DatePickerTestDriver);
-        const datePickerInput = datePicker.input;
 
         function simulateKeyPress(keyToPress: string) {
             datePicker.openCalender();
@@ -138,22 +137,22 @@ describe('The DatePicker Component', () => {
         // Advance one week
         simulateKeyPress('down');
 
-        await waitForDom(() => expect(datePickerInput).to.have.value('Sun Jan 08 2017'));
+        await waitForDom(() => expect(datePicker.currentDate).to.equal('Sun Jan 08 2017'));
 
         // Go back one week
         simulateKeyPress('up');
 
-        await waitForDom(() => expect(datePickerInput).to.have.value('Sun Jan 01 2017'));
+        await waitForDom(() => expect(datePicker.currentDate).to.equal('Sun Jan 01 2017'));
 
         // Go forward one day
         simulateKeyPress('right');
 
-        await waitForDom(() => expect(datePickerInput).to.have.value('Mon Jan 02 2017'));
+        await waitForDom(() => expect(datePicker.currentDate).to.equal('Mon Jan 02 2017'));
 
         // Go back one day
         simulateKeyPress('left');
 
-        await waitForDom(() => expect(datePickerInput).to.have.value('Sun Jan 01 2017'));
+        await waitForDom(() => expect(datePicker.currentDate).to.equal('Sun Jan 01 2017'));
     });
 
     describe('The Dropdown', () => {
