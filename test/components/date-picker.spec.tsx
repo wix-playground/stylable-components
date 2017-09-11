@@ -15,12 +15,9 @@ import {sleep} from '../utils';
 
 class DatePickerDemoDriver extends DriverBase {
     public static ComponentClass = DatePickerDemo;
+    public datePicker = new DatePickerTestDriver(() => this.select('DATE_PICKER_DEMO', 'DATE_PICKER'));
 
-    public get datePicker() {
-        return new DatePickerTestDriver(() => this.select('DATE_PICKER_DEMO', 'DATE_PICKER'));
-    }
-
-    public get date() {
+    public get date(): HTMLSpanElement {
         return this.select('DATE_PICKER_DEMO', 'CURRENT_DATE');
     }
 }
@@ -37,102 +34,105 @@ describe('The DatePicker Component', () => {
     describe('A Typical User', () => {
         it('writes into the date picker input field, presses enter, ' +
             'and expects the date picker input to have the proper value', async () => {
-            const {driver, waitForDom} = clientRenderer.render(<DatePickerDemo />)
+            const {driver: datePickerDemo , waitForDom} = clientRenderer.render(<DatePickerDemo />)
                 .withDriver(DatePickerDemoDriver);
 
-            driver.datePicker.changeDate('2017/02/01');
+            datePickerDemo.datePicker.changeDate('2017/02/01');
 
-            await waitForDom(() => expect(driver.date).to.have.text('Wed Feb 01 2017'));
+            await waitForDom(() => expect(datePickerDemo.date).to.have.text('Wed Feb 01 2017'));
         });
 
         it('clicks on the input, picks a date from the dropdown, ' +
             'and then expects the dropdown to close and the date to appear in the input', async () => {
-            const {driver, waitForDom} = clientRenderer.render(<DatePickerDemo value={JANUARY_FIRST} />)
+            const {driver: datePickerDemo, waitForDom} = clientRenderer.render(<DatePickerDemo value={JANUARY_FIRST} />)
                 .withDriver(DatePickerDemoDriver);
 
-            await waitForDom(() => expect(driver.datePicker.dropDown).to.be.absent());
+            const datePicker = datePickerDemo.datePicker;
 
-            driver.datePicker.openCalender();
+            await waitForDom(() => expect(datePicker.dropDown).to.be.absent());
 
-            await waitForDom(() => expect(driver.datePicker.dropDown).to.be.present());
+            datePicker.openCalender();
 
-            driver.datePicker.click(driver.datePicker.getDay(4)!);
+            await waitForDom(() => expect(datePicker.dropDown).to.be.present());
+
+            datePicker.click(datePicker.getDay(4)!);
 
             await waitForDom(() => {
-                expect(driver.datePicker.dropDown).to.be.absent();
-                expect(driver.date).to.have.text('Wed Jan 04 2017');
+                expect(datePicker.dropDown).to.be.absent();
+                expect(datePickerDemo.date).to.have.text('Wed Jan 04 2017');
             });
         });
     });
 
     it('should only call onChange once', async () => {
         const onChange = sinon.spy();
-        const {driver, waitForDom} = clientRenderer.render(<DatePicker onChange={onChange} />)
+        const {driver: datePicker, waitForDom} = clientRenderer.render(<DatePicker onChange={onChange} />)
             .withDriver(DatePickerTestDriver);
 
-        driver.changeDate('2017/02/01');
+        datePicker.changeDate('2017/02/01');
 
         await waitForDom(() => expect(onChange).to.have.been.calledOnce);
     });
 
     it('should use a provided value', async () => {
-        const {driver, waitForDom} = clientRenderer.render(<DatePicker value={JANUARY_FIRST} />)
+        const {driver: datePicker, waitForDom} = clientRenderer.render(<DatePicker value={JANUARY_FIRST} />)
             .withDriver(DatePickerTestDriver);
 
-        await waitForDom(() => expect(driver.input).to.have.value(JANUARY_FIRST.toDateString()));
+        await waitForDom(() => expect(datePicker.input).to.have.value(JANUARY_FIRST.toDateString()));
     });
 
     it('should not call onChange with an invalid date', async () => {
         const onChange = sinon.spy();
-        const {driver} = clientRenderer.render(<DatePicker onChange={onChange} />)
+        const {driver: datePicker} = clientRenderer.render(<DatePicker onChange={onChange} />)
             .withDriver(DatePickerTestDriver);
 
-        driver.changeDate('2sgsdfsdfw223');
+        datePicker.changeDate('2sgsdfsdfw223');
         sleep(20);
         expect(onChange).to.have.not.been.called;
     });
 
     it('should call onChange with the current input value when blurred', async () => {
         const onChange = sinon.spy();
-        const {driver, waitForDom} = clientRenderer.render(<DatePicker value={JANUARY_FIRST} onChange={onChange} />)
-            .withDriver(DatePickerTestDriver);
+        const {driver: datePicker, waitForDom} = clientRenderer.render(
+            <DatePicker value={JANUARY_FIRST} onChange={onChange} />
+        ).withDriver(DatePickerTestDriver);
 
-        driver.changeDate('2017/02/01');
+        datePicker.changeDate('2017/02/01');
 
         await waitForDom(() => expect(onChange).to.have.been.calledWithMatch({value: FEBRUARY_FIRST}));
     });
 
     it('should use a provided placeholder', async () => {
-        const {driver, waitForDom} = clientRenderer.render(<DatePicker placeholder="mm/dd/yyyy" />)
+        const {driver: datePicker, waitForDom} = clientRenderer.render(<DatePicker placeholder="mm/dd/yyyy" />)
             .withDriver(DatePickerTestDriver);
 
-        await waitForDom(() => expect(driver.input).to.have.attribute('placeholder', 'mm/dd/yyyy'));
+        await waitForDom(() => expect(datePicker.input).to.have.attribute('placeholder', 'mm/dd/yyyy'));
     });
 
     it('should show and hide the dropdown when the input is clicked', async () => {
-        const {driver, waitForDom} = clientRenderer.render(<DatePicker />)
+        const {driver: datePicker, waitForDom} = clientRenderer.render(<DatePicker />)
             .withDriver(DatePickerTestDriver);
 
-        await waitForDom(() => expect(driver.dropDown).to.be.absent());
+        await waitForDom(() => expect(datePicker.dropDown).to.be.absent());
 
-        driver.click(driver.input!);
+        datePicker.click(datePicker.input!);
 
-        await waitForDom(() => expect(driver.dropDown).to.be.present());
+        await waitForDom(() => expect(datePicker.dropDown).to.be.present());
 
-        driver.click(driver.input!);
+        datePicker.click(datePicker.input!);
 
-        await waitForDom(() => expect(driver.dropDown).to.be.absent());
+        await waitForDom(() => expect(datePicker.dropDown).to.be.absent());
     });
 
     it('can be changed with the arrow keys', async function() {
-        const {driver, waitForDom} = clientRenderer.render(<DatePicker value={JANUARY_FIRST} openOnFocus/>)
+        const {driver: datePicker, waitForDom} = clientRenderer.render(<DatePicker value={JANUARY_FIRST} openOnFocus/>)
             .withDriver(DatePickerTestDriver);
-        const datePickerInput = driver.input;
+        const datePickerInput = datePicker.input;
 
         function simulateKeyPress(keyToPress: string) {
-            driver.openCalender();
-            driver.keyPress(keycode(keyToPress));
-            driver.keyPress(keycode('enter'));
+            datePicker.openCalender();
+            datePicker.keyPress(keycode(keyToPress));
+            datePicker.keyPress(keycode('enter'));
         }
 
         // Advance one week
@@ -165,7 +165,7 @@ describe('The DatePicker Component', () => {
         ];
 
         it('should display the days for a fixed month', async () => {
-            const {driver, waitForDom} = clientRenderer.render(
+            const {driver: datePicker, waitForDom} = clientRenderer.render(
                 <DatePicker
                     showDropdownOnInit={true}
                     value={FEBRUARY_FIRST}
@@ -173,33 +173,35 @@ describe('The DatePicker Component', () => {
             ).withDriver(DatePickerTestDriver);
 
             await waitForDom(() => {
-                dayNames.forEach((dayName, index) => expect(driver.getDayName(index)).to.have.text(dayName));
-                days.forEach(day => expect(driver.getDay(day)).to.have.text(day));
+                dayNames.forEach((dayName, index) => expect(datePicker.getDayName(index)).to.have.text(dayName));
+                days.forEach(day => expect(datePicker.getDay(day)).to.have.text(day));
             });
         });
 
         it('should show the next and previous month buttons horizontally aligned with the month and year', async () => {
-            const {driver, waitForDom} = clientRenderer.render(<DatePicker showDropdownOnInit value={JANUARY_FIRST}/>)
-                .withDriver(DatePickerTestDriver);
+            const {driver: datePicker, waitForDom} = clientRenderer.render(
+                <DatePicker showDropdownOnInit value={JANUARY_FIRST}/>
+            ).withDriver(DatePickerTestDriver);
 
             await waitForDom(() => {
                 const headerContents = [
-                    driver.prevMonthLabel,
-                    driver.monthLabel,
-                    driver.yearLabel,
-                    driver.nextMonthLabel
+                    datePicker.prevMonthLabel,
+                    datePicker.monthLabel,
+                    datePicker.yearLabel,
+                    datePicker.nextMonthLabel
                 ];
                 expect(headerContents).to.be.verticallyAligned('center', 1);
             });
         });
 
         it('should display the day names in horizontal sequence, and vertically aligned', async () => {
-            const {driver, waitForDom} = clientRenderer.render(<DatePicker showDropdownOnInit value={JANUARY_FIRST}/>)
-                .withDriver(DatePickerTestDriver);
+            const {driver: datePicker, waitForDom} = clientRenderer.render(
+                <DatePicker showDropdownOnInit value={JANUARY_FIRST}/>
+            ).withDriver(DatePickerTestDriver);
 
             await waitForDom(() => {
                 const dayNameElements = dayNames.map((name, index) => {
-                    return driver.getDayName(index);
+                    return datePicker.getDayName(index);
                 });
 
                 expect(dayNameElements).to.be.inHorizontalSequence();
@@ -208,19 +210,20 @@ describe('The DatePicker Component', () => {
         });
 
         it('should display the days in a grid', async () => {
-            const {driver, waitForDom} = clientRenderer.render(<DatePicker value={JANUARY_FIRST} showDropdownOnInit/>)
-                .withDriver(DatePickerTestDriver);
+            const {driver: datePicker, waitForDom} = clientRenderer.render(
+                <DatePicker value={JANUARY_FIRST} showDropdownOnInit/>
+            ).withDriver(DatePickerTestDriver);
 
             await waitForDom(() => {
                 const firstRow = [];
                 const firstColumn = [];
 
                 for (let i = 1; i < 7; i++) {
-                    firstRow.push(driver.getDay(i));
+                    firstRow.push(datePicker.getDay(i));
                 }
 
                 for (let i = 1; i <= 5; i++) {
-                    firstColumn.push(driver.getDay((7 * (i - 1)) + 1));
+                    firstColumn.push(datePicker.getDay((7 * (i - 1)) + 1));
                 }
 
                 // Check that the days are displayed in rows (checking that each row is in horizontal sequence
@@ -234,107 +237,111 @@ describe('The DatePicker Component', () => {
         });
 
         it('should show the days starting on the correct day of the week', async () => {
-            const {driver, waitForDom} = clientRenderer.render(<DatePicker value={MARCH_FIRST} showDropdownOnInit/>)
-                .withDriver(DatePickerTestDriver);
+            const {driver: datePicker, waitForDom} = clientRenderer.render(
+                <DatePicker value={MARCH_FIRST} showDropdownOnInit/>
+            ).withDriver(DatePickerTestDriver);
 
             await waitForDom(() => expect([
-                driver.getDay(1),
-                driver.getDayName(3)
+                datePicker.getDay(1),
+                datePicker.getDayName(3)
             ]).to.be.horizontallyAligned('center'));
         });
 
         it('should show the trailing days from the last and next months', function() {
-            const {driver} = clientRenderer.render(<DatePicker value={MARCH_FIRST} showDropdownOnInit/>)
+            const {driver: datePicker} = clientRenderer.render(<DatePicker value={MARCH_FIRST} showDropdownOnInit/>)
                 .withDriver(DatePickerTestDriver);
 
-            expect(driver.getPrevDay(26)).to.be.present();
-            expect(driver.getPrevDay(27)).to.be.present();
-            expect(driver.getPrevDay(28)).to.be.present();
-            expect(driver.getNextDay(1)).to.be.present();
+            expect(datePicker.getPrevDay(26)).to.be.present();
+            expect(datePicker.getPrevDay(27)).to.be.present();
+            expect(datePicker.getPrevDay(28)).to.be.present();
+            expect(datePicker.getNextDay(1)).to.be.present();
 
         });
 
         it('displays the year', async () => {
-            const {driver, waitForDom} = clientRenderer.render(<DatePicker showDropdownOnInit value={JANUARY_FIRST}/>)
-                .withDriver(DatePickerTestDriver);
+            const {driver: datePicker, waitForDom} = clientRenderer.render(
+                <DatePicker showDropdownOnInit value={JANUARY_FIRST}/>
+            ).withDriver(DatePickerTestDriver);
 
-            await waitForDom(() => expect(driver.yearLabel).to.have.text('2017'));
+            await waitForDom(() => expect(datePicker.yearLabel).to.have.text('2017'));
         });
 
         it('displays the name of the month', async () => {
-            const {driver, waitForDom} = clientRenderer.render(
+            const {driver: datePicker, waitForDom} = clientRenderer.render(
                 <DatePicker
                     showDropdownOnInit={true}
                     value={JANUARY_FIRST}
                 />
             ).withDriver(DatePickerTestDriver);
 
-            await waitForDom(() => expect(driver.monthLabel).to.have.text('January'));
+            await waitForDom(() => expect(datePicker.monthLabel).to.have.text('January'));
         });
 
         it('has a button which steps forward a month', async () => {
-            const {driver, waitForDom} = clientRenderer.render(<DatePicker showDropdownOnInit value={DECEMBER_FIRST}/>)
-                .withDriver(DatePickerTestDriver);
+            const {driver: datePicker, waitForDom} = clientRenderer.render(
+                <DatePicker showDropdownOnInit value={DECEMBER_FIRST}/>
+            ).withDriver(DatePickerTestDriver);
 
-            expect(driver.yearLabel).to.have.text('2017');
-            expect(driver.monthLabel).to.have.text('December');
-            driver.click(driver.nextMonthLabel!);
+            expect(datePicker.yearLabel).to.have.text('2017');
+            expect(datePicker.monthLabel).to.have.text('December');
+            datePicker.click(datePicker.nextMonthLabel!);
 
             await waitForDom(() => {
-                expect(driver.yearLabel).to.have.text('2018');
-                expect(driver.monthLabel).to.have.text('January');
+                expect(datePicker.yearLabel).to.have.text('2018');
+                expect(datePicker.monthLabel).to.have.text('January');
             });
         });
 
         it('has a button which steps back a month', async () => {
-            const {driver, waitForDom} = clientRenderer.render(<DatePicker showDropdownOnInit value={JANUARY_FIRST}/>)
-                .withDriver(DatePickerTestDriver);
+            const {driver: datePicker, waitForDom} = clientRenderer.render(
+                <DatePicker showDropdownOnInit value={JANUARY_FIRST}/>
+            ).withDriver(DatePickerTestDriver);
 
-            expect(driver.yearLabel).to.have.text('2017');
-            expect(driver.monthLabel).to.have.text('January');
-            driver.click(driver.prevMonthLabel!);
+            expect(datePicker.yearLabel).to.have.text('2017');
+            expect(datePicker.monthLabel).to.have.text('January');
+            datePicker.click(datePicker.prevMonthLabel!);
 
             await waitForDom(() => {
-                expect(driver.yearLabel).to.have.text('2016');
-                expect(driver.monthLabel).to.have.text('December');
+                expect(datePicker.yearLabel).to.have.text('2016');
+                expect(datePicker.monthLabel).to.have.text('December');
             });
         });
 
         it('should stay open when the next or previous month buttons are clicked', async () => {
-            const {driver, waitForDom} = clientRenderer.render(<DatePicker showDropdownOnInit={true} />)
+            const {driver: datePicker, waitForDom} = clientRenderer.render(<DatePicker showDropdownOnInit/>)
                 .withDriver(DatePickerTestDriver);
 
-            await waitForDom(() => expect(driver.dropDown).to.be.present());
+            await waitForDom(() => expect(datePicker.dropDown).to.be.present());
 
-            driver.click(driver.prevMonthLabel!);
+            datePicker.click(datePicker.prevMonthLabel!);
 
-            await waitForDom(() => expect(driver.dropDown).to.be.present());
+            await waitForDom(() => expect(datePicker.dropDown).to.be.present());
 
-            driver.click(driver.nextMonthLabel!);
+            datePicker.click(datePicker.nextMonthLabel!);
 
-            await waitForDom(() => expect(driver.dropDown).to.be.present());
+            await waitForDom(() => expect(datePicker.dropDown).to.be.present());
         });
 
         it('should appear when the Enter key is pressed and the openOnFocus property is set to false', async () => {
-            const {driver, waitForDom} = clientRenderer.render(<DatePicker openOnFocus={false} />)
+            const {driver: datePicker, waitForDom} = clientRenderer.render(<DatePicker openOnFocus={false} />)
                 .withDriver(DatePickerTestDriver);
 
-            await waitForDom(() => expect(driver.dropDown).to.be.absent());
+            await waitForDom(() => expect(datePicker.dropDown).to.be.absent());
 
-            driver.keyPress(keycode('enter'));
+            datePicker.keyPress(keycode('enter'));
 
-            await waitForDom(() => expect(driver.dropDown).to.be.present());
+            await waitForDom(() => expect(datePicker.dropDown).to.be.present());
         });
 
         it('should appear when the Spacebar is pressed and the openOnFocus property is set to false', async () => {
-            const {driver, waitForDom} = clientRenderer.render(<DatePicker openOnFocus={false} />)
+            const {driver: datePicker, waitForDom} = clientRenderer.render(<DatePicker openOnFocus={false} />)
                 .withDriver(DatePickerTestDriver);
 
-            await waitForDom(() => expect(driver.dropDown).to.be.absent());
+            await waitForDom(() => expect(datePicker.dropDown).to.be.absent());
 
-            driver.keyPress(keycode('space'));
+            datePicker.keyPress(keycode('space'));
 
-            await waitForDom(() => expect(driver.dropDown).to.be.present());
+            await waitForDom(() => expect(datePicker.dropDown).to.be.present());
         });
     });
 
