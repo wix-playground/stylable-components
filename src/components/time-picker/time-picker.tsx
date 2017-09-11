@@ -173,12 +173,13 @@ export class TimePicker extends React.Component<Props, State> {
                     />
                 }
                 {!isTouchTimeInputSupported &&
-                    <Stepper
-                        className="stepper"
-                        onMouseDown={this.onStepperMouseDown}
-                        onUp={this.onStepperUp}
-                        onDown={this.onStepperDown}
-                    />
+                    <div onMouseDown={this.onStepperMouseDown}>
+                        <Stepper
+                            className="stepper"
+                            onUp={this.onStepperUp}
+                            onDown={this.onStepperDown}
+                        />
+                    </div>
                 }
                 <label className="label" cssStates={{visible: isTouchTimeInputSupported}}>
                     <input
