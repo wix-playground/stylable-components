@@ -2,7 +2,18 @@
 
 :import {
     -st-from: "../../style/project.st.css";
-    -st-named: color_Default, color_MainText_Background, color_MainText, color_Active, color_Hover, color_Keyboard_Focused, fontFamily;
+    -st-named:  color_Default,
+                color_MainText_Background,
+                color_MainText,
+                color_Active,
+                color_Hover,
+                color_Disabled,
+                color_Keyboard_Focused,
+                fontFamily,
+                inputHeight,
+                inputWidth,
+                borderDefault,
+                borderHover;
 }
 
 :vars {
@@ -11,16 +22,46 @@
     dropdownWidth: 330px;
     dropdownArrowWidth: 11px;
     dropdownArrowHeight: 12px;
-    inputWidth: 192px;
+    iconSize: 16px;
+    inputHeight: 36px;
 }
 
-:root {
+.root {
     display: inline-block;
+    height: value(inputHeight);
 }
 
 /* The DatePicker Input */
 .input {
     width: value(inputWidth);
+    height: value(inputHeight);
+}
+
+.icon {
+    position: relative;
+    display: inline-block;
+    /* left: calc(value(inputWidth) - value(iconSize));
+    top: -value(iconSize); */
+    padding: 10px;
+    text-align: center;
+    vertical-align: middle;
+    height: value(inputHeight);
+    width: value(inputHeight);
+    cursor: pointer;
+    fill: #3899EC;
+    border-left: value(borderDefault);
+}
+
+.icon:hover {
+    background-color: rgb(240, 240, 240);
+    outline: value(borderDefault);
+    /* outline-offset: -1px; */
+}
+
+.icon-svg {
+    display: inline;
+    width: value(iconSize);
+    height: value(iconSize);
 }
 
 /* The dropdown arrow extends from the input and into the calendar view */
@@ -187,9 +228,4 @@
 .day:inactive:hover {
     color: #d8d8d8;
     background-color: value(color_MainText_Background);
-}
-
-/* root */
-.root {
-    display: inline-block;
 }
