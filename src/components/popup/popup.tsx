@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Portal} from '../../../src/components/portal';
+import {Portal} from '../portal';
 
 export type PopupVerticalPosition =  'top' | 'center' | 'bottom';
 export type PopupHorizontalPosition = 'left' | 'center' | 'right';
