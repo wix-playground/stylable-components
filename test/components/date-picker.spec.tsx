@@ -38,9 +38,8 @@ describe('The DatePicker Component', () => {
         });
 
         it('clicks on the icon, picks a date from the dropdown, ' +
-            'and then expects the dropdown to close and the date to appear in the input', async () => {
+            'and then expects the dropdown to close and the date to have been selected', async () => {
             const {select, waitForDom} = clientRenderer.render(<DatePickerDemo value={JANUARY_FIRST} />);
-            const datePickerInput = select(datePickerInputId);
 
             await waitForDom(() => expect(bodySelect(datePickerDropdownId)).to.be.absent());
 
