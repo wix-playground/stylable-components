@@ -74,13 +74,13 @@ describe('<TimePicker/>', () => {
         });
     });
 
-    describe('render with value="4:36" format="ampm"', () => {
+    describe.only('render with value="4:36" format="ampm"', () => {
         let renderer: any;
         let hh: any;
         let mm: any;
         let ampm: any;
         beforeEach(() => {
-            renderer = clientRenderer.render(<TimePicker value="4:36"/>);
+            renderer = clientRenderer.render(<TimePicker value="4:36" format="ampm" />);
             hh = renderer.select('TIME_PICKER_INPUT_HH');
             mm = renderer.select('TIME_PICKER_INPUT_MM');
             ampm = renderer.select('TIME_PICKER_AMPM');

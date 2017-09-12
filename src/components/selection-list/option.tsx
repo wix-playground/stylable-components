@@ -1,5 +1,5 @@
 import React = require('react');
-import {SBStateless} from 'stylable-react-component';
+import {stylable} from 'wix-react-tools';
 import {SelectionListItemValue} from './selection-list-model';
 import listStyle from './selection-list.st.css';
 
@@ -11,12 +11,12 @@ export interface OptionProps {
     value?: SelectionListItemValue;
 }
 
-export const Option: React.SFC<OptionProps> = SBStateless(
+export const Option: React.SFC<OptionProps> = stylable(listStyle)(
     props => (
         <div
             className="item"
             data-value={props.disabled ? undefined : props.value}
-            cssStates={{
+            style-state={{
                 disabled: Boolean(props.disabled),
                 selected: Boolean(props.selected),
                 focused:  Boolean(props.focused)
@@ -24,6 +24,5 @@ export const Option: React.SFC<OptionProps> = SBStateless(
         >
             {props.children}
         </div>
-    ),
-    listStyle
+    )
 );
