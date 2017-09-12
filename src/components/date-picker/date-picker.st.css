@@ -23,6 +23,7 @@
     dropdownArrowWidth: 11px;
     dropdownArrowHeight: 12px;
     iconSize: 16px;
+    iconOffset: 36px;
     inputHeight: 36px;
 }
 
@@ -40,8 +41,8 @@
 .icon {
     position: relative;
     display: inline-block;
-    /* left: calc(value(inputWidth) - value(iconSize));
-    top: -value(iconSize); */
+    left: calc((value(iconOffset) * -1));
+    /* top: -value(iconSize); */
     padding: 10px;
     text-align: center;
     vertical-align: middle;
