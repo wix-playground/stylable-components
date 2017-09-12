@@ -300,12 +300,12 @@ function getPointLayoutTests(axis: 'vertical' | 'horizontal') {
     }
 
     return {
-        [start]: (popup: HTMLElement, p: PopupPoint) => createExpect(popup.getBoundingClientRect()[start], p[start]),
+        [start]: (popup: HTMLElement, p: PopupPoint) => createExpect(popup.getBoundingClientRect()[start], p[start], 0.1),
         center: (popup: HTMLElement, p: PopupPoint) => {
             const popupRect = popup.getBoundingClientRect();
-            createExpect(popupRect[start], p[start] - (popupRect[length] / 2));
+            createExpect(popupRect[start], p[start] - (popupRect[length] / 2), 0.1);
         },
-        [end]: (popup: HTMLElement, p: PopupPoint) => createExpect(popup.getBoundingClientRect()[end], p[start])
+        [end]: (popup: HTMLElement, p: PopupPoint) => createExpect(popup.getBoundingClientRect()[end], p[start], 0.1)
     };
 }
 
@@ -329,6 +329,6 @@ function getFixture(): PopupPositionPoint[] {
         {vertical: 'bottom', horizontal: 'right'}];
 }
 
-function createExpect(pValue: number, aValue: number) {
-    expect(pValue, `popup value: ${pValue} anchor value: ${aValue}`).to.be.closeTo(aValue, 0.01);
+function createExpect(pValue: number, aValue: number, resulotion: number = 0.01) {
+    expect(pValue, `popup value: ${pValue} anchor value: ${aValue}`).to.be.closeTo(aValue, resulotion);
 }
