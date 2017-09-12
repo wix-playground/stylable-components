@@ -1,11 +1,10 @@
 import * as React from 'react';
-import {SBComponent} from 'stylable-react-component';
-import {root} from 'wix-react-tools';
+import {properties, stylable} from 'wix-react-tools';
 import {FormInputProps} from '../../types/forms';
 import {noop} from '../../utils';
 import styles from './checkbox.st.css';
 
-export interface CheckBoxProps extends FormInputProps<boolean> {
+export interface CheckBoxProps extends FormInputProps<boolean>, properties.Props {
     boxIcon?: React.ComponentType<CheckBoxIconProps>;
     tickIcon?: React.ComponentType<CheckBoxIconProps>;
     indeterminateIcon?: React.ComponentType<CheckBoxIconProps>;
@@ -28,34 +27,31 @@ export interface CheckBoxState {
     isFocused: boolean;
 }
 
-const DefaultCheckBoxSVG: React.SFC<CheckBoxIconProps> = props => {
+const DefaultCheckBoxSVG: React.SFC<CheckBoxIconProps> = properties(props => {
     return (
         <svg
-            {...root(props, {className: ''})}
             xmlns="http://www.w3.org/2000/svg"
             focusable="false"
         >
             <path d="M.5.5h15v15H.5z" />
         </svg>
     );
-};
+});
 
-const DefaultTickMarkSVG: React.SFC<CheckBoxIconProps> = props => {
+const DefaultTickMarkSVG: React.SFC<CheckBoxIconProps> = properties(props => {
     return (
         <svg
-            {...root(props, {className: ''})}
             xmlns="http://www.w3.org/2000/svg"
             focusable="false"
         >
             <path d="M5 8.685l2.496 1.664M8 10.685L11.748 6" />
         </svg>
     );
-};
+});
 
-const DefaultIndeterminateSVG: React.SFC<CheckBoxIconProps> = props => {
+const DefaultIndeterminateSVG: React.SFC<CheckBoxIconProps> = properties(props => {
     return (
         <svg
-            {...root(props, {className: ''})}
             xmlns="http://www.w3.org/2000/svg"
             width="15"
             height="15"
@@ -64,9 +60,10 @@ const DefaultIndeterminateSVG: React.SFC<CheckBoxIconProps> = props => {
             <line x1="4" y1="8" x2="12" y2="8" />
         </svg>
     );
-};
+});
 
-@SBComponent(styles)
+@stylable(styles)
+@properties
 export class CheckBox extends React.Component<CheckBoxProps, CheckBoxState> {
     public static defaultProps: Partial<CheckBoxProps> = {
         boxIcon: DefaultCheckBoxSVG,
@@ -83,11 +80,7 @@ export class CheckBox extends React.Component<CheckBoxProps, CheckBoxState> {
         const BoxIcon = this.props.boxIcon!;
         const IndeterminateIcon = this.props.indeterminateIcon!;
         const TickIcon = this.props.tickIcon!;
-        const rootProps = root(this.props, {
-            'data-automation-id': 'CHECKBOX_ROOT',
-            'className': 'root'
-        });
-        const cssStates = {
+        const styleState = {
             checked: this.props.value!,
             disabled: this.props.disabled!,
             readonly: this.props.readonly!,
@@ -97,9 +90,9 @@ export class CheckBox extends React.Component<CheckBoxProps, CheckBoxState> {
 
         return (
             <div
-                {...rootProps}
+                data-automation-id="CHECKBOX_ROOT"
                 onClick={this.handleChange}
-                cssStates={cssStates}
+                style-state={styleState}
                 role="checkbox"
                 aria-checked={this.props.indeterminate ? 'mixed' : this.props.value}
             >

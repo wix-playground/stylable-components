@@ -1,5 +1,5 @@
 import React = require('react');
-import {SBComponent} from 'stylable-react-component';
+import {stylable} from 'wix-react-tools';
 import {divider, Option, SelectionList, SelectionListItemValue} from '../../src/components/selection-list';
 import demoStyle from './selection-list-demo.st.css';
 
@@ -46,7 +46,7 @@ export class FoodList extends React.Component {
     private handleChange = ({value}: {value: SelectionListItemValue}) => this.setState({value});
 }
 
-@SBComponent(demoStyle)
+@stylable(demoStyle)
 class EmojiList extends React.Component {
     public state = {value: 'Crocodile'};
     private dataSchema = {value: 'name', label: 'icon'};
@@ -85,7 +85,7 @@ class EmojiList extends React.Component {
     private handleChange = ({value}: {value: SelectionListItemValue}) => this.setState({value});
 }
 
-@SBComponent(demoStyle)
+@stylable(demoStyle)
 class TextStyleList extends React.Component {
     public state = {value: 'heading'};
 

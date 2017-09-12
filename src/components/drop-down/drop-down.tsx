@@ -1,7 +1,6 @@
 import * as keycode from 'keycode';
 import * as React from 'react';
-import {SBComponent} from 'stylable-react-component';
-import {root} from 'wix-react-tools';
+import {properties, stylable} from 'wix-react-tools';
 import {ChangeEvent} from '../../types/events';
 import {FormInputProps} from '../../types/forms';
 import {noop} from '../../utils/noop';
@@ -18,7 +17,7 @@ const KeyCodes: any = {
     ESC: keycode('escape')
 };
 
-export interface DropDownProps extends OptionList, FormInputProps<string> {
+export interface DropDownProps extends OptionList, FormInputProps<string>, properties.Props {
     open?: boolean;
     disabled?: boolean;
     openOnFocus?: boolean;
@@ -32,7 +31,8 @@ export interface DropDownState {
     open: boolean;
 }
 
-@SBComponent(style)
+@stylable(style)
+@properties
 export class DropDown extends React.PureComponent<DropDownProps, DropDownState> {
     public static defaultProps: DropDownProps = {
         open: false,
@@ -54,16 +54,12 @@ export class DropDown extends React.PureComponent<DropDownProps, DropDownState> 
     }
 
     public render() {
-        const rootProps = root(this.props, {
-            'data-automation-id': 'DROP_DOWN',
-            'className': 'drop-down'
-        });
-
         const ToggleIcon = this.props.toggleIcon!;
 
         return (
             <div
-                {...rootProps}
+                data-automation-id="DROP_DOWN"
+                className="drop-down"
                 onKeyDown={this.onKeyDown}
                 onFocus={this.onFocus}
                 tabIndex={this.props.tabIndex}
