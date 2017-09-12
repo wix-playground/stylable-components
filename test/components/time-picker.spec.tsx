@@ -74,7 +74,7 @@ describe('<TimePicker/>', () => {
         });
     });
 
-    describe.only('render with value="4:36" format="ampm"', () => {
+    describe('render with value="4:36" format="ampm"', () => {
         let renderer: any;
         let hh: any;
         let mm: any;
