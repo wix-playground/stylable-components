@@ -25,7 +25,7 @@ describe('<Image />', () => {
             <Image />
         ).withDriver(ImageDriver);
 
-        await waitForDom(() => expect(image.nativeElement).to.have.attribute('src', transparentImage));
+        await waitForDom(() => expect(image.source).to.equal(transparentImage));
     });
 
     it('sets the provided src', async () => {
@@ -33,7 +33,7 @@ describe('<Image />', () => {
             <Image src={onePixelBlack} />
         ).withDriver(ImageDriver);
 
-        await waitForDom(() => expect(image.nativeElement).to.have.attribute('src', onePixelBlack));
+        await waitForDom(() => expect(image.source).to.equal(onePixelBlack));
     });
 
     it('uses provided defaultImage as default source', async () => {
@@ -41,7 +41,7 @@ describe('<Image />', () => {
             <Image defaultImage={onePixelBlue} />
         ).withDriver(ImageDriver);
 
-        await waitForDom(() => expect(image.nativeElement).to.have.attribute('src', onePixelBlue));
+        await waitForDom(() => expect(image.source).to.equal(onePixelBlue));
     });
 
     it('sets the provided alt attribute', async () => {
@@ -65,7 +65,7 @@ describe('<Image />', () => {
             <Image src="" defaultImage={onePixelBlack} />
         ).withDriver(ImageDriver);
 
-        await waitForDom(() => expect(image.nativeElement).to.have.attribute('src', onePixelBlack));
+        await waitForDom(() => expect(image.source).to.equal(onePixelBlack));
     });
 
     it('updates src if a new one is provided', async () => {
@@ -73,11 +73,11 @@ describe('<Image />', () => {
             <Image src={onePixelBlack} />
         ).withDriver(ImageDriver);
 
-        await waitForDom(() => expect(image.nativeElement).to.have.attribute('src', onePixelBlack));
+        await waitForDom(() => expect(image.source).to.equal(onePixelBlack));
 
         clientRenderer.render(<Image src={onePixelBlue} />, container);
 
-        await waitForDom(() => expect(image.nativeElement).to.have.attribute('src', onePixelBlue));
+        await waitForDom(() => expect(image.source).to.equal(onePixelBlue));
     });
 
     it('calls onLoad when image has loaded', async () => {
@@ -94,7 +94,7 @@ describe('<Image />', () => {
         ).withDriver(ImageDriver);
 
         await waitFor(() => expect(onError).to.have.been.calledWithMatch({src: brokenSrc}));
-        await waitForDom(() => expect(image.nativeElement).to.have.attribute('src', onePixelBlue));
+        await waitForDom(() => expect(image.source).to.equal(onePixelBlue));
     });
 
     it('calls onError when cannot load the default image, and falls back to `transparentImage`', async () => {
@@ -104,7 +104,7 @@ describe('<Image />', () => {
         ).withDriver(ImageDriver);
 
         await waitFor(() => expect(onError).to.have.been.calledWithMatch({src: brokenSrc}));
-        await waitForDom(() => expect(image.nativeElement).to.have.attribute('src', transparentImage));
+        await waitForDom(() => expect(image.source).to.equal(transparentImage));
     });
 
     describe('resize mode', () => {
@@ -115,7 +115,7 @@ describe('<Image />', () => {
 
             await waitForDom(() => {
                 expect(image.nativeElement).to.be.present();
-                expect(image.nativeElement).to.have.attribute('src', onePixelBlack);
+                expect(image.source).to.equal(onePixelBlack);
                 expect(image.style).to.have.property('visibility', 'hidden');
                 expect(image.style).to.have.property('display', 'block');
                 expect(image.style).to.have.property('maxWidth', '100%');
@@ -141,7 +141,7 @@ describe('<Image />', () => {
 
             await waitForDom(() => {
                 expect(image.nativeElement).to.be.present();
-                expect(image.nativeElement).to.have.attribute('src', onePixelBlack);
+                expect(image.source).to.equal(onePixelBlack);
                 expect(image.style).to.have.property('visibility', 'hidden');
                 expect(image.style).to.have.property('display', 'block');
                 expect(image.style).to.have.property('maxWidth', '100%');
@@ -167,7 +167,7 @@ describe('<Image />', () => {
 
             await waitForDom(() => {
                 expect(image.nativeElement).to.be.present();
-                expect(image.nativeElement).to.have.attribute('src', onePixelBlack);
+                expect(image.source).to.equal(onePixelBlack);
                 expect(image.style).to.not.have.property('visibility', 'hidden');
                 expect(image.nativeElement.parentElement, 'verify image is not wrapped').to.equal(container);
             });
