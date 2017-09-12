@@ -30,11 +30,11 @@ describe('<DropDown />', () => {
 
         await waitForDom(() => expect(dropdown.isOpen(), 'expected list to be closed').to.equal(false));
 
-        dropdown.click();
+        dropdown.clickOnDropDown();
 
         await waitForDom(() => expect(dropdown.isOpen(), 'expected list to be open').to.equal(true));
 
-        dropdown.selectItem(0);
+        dropdown.clickOnItem(0);
 
         await waitForDom(() => {
             expect(dropdown.list).to.be.absent();
@@ -92,11 +92,11 @@ describe('<DropDown />', () => {
 
         await waitForDom(() => expect(dropdown.isOpen(), 'expected list to be closed').to.equal(false));
 
-        dropdown.click();
+        dropdown.clickOnDropDown();
 
         await waitForDom(() => expect(dropdown.isOpen(), 'expected list to be open').to.equal(true));
 
-        dropdown.click();
+        dropdown.clickOnDropDown();
 
         await waitForDom(() => expect(dropdown.isOpen(), 'expected list to be closed').to.equal(false));
     });
@@ -123,7 +123,7 @@ describe('<DropDown />', () => {
             <DropDown open dataSource={items} onChange={onClick}/>
         ).withDriver(DropDownDriver);
 
-        dropdown.click(dropdown.items![0]);
+        dropdown.clickOnItem(0);
 
         await waitFor(() => expect(onClick).to.have.been.calledWithMatch({value: items[0]}));
     });
@@ -149,7 +149,7 @@ describe('<DropDown />', () => {
 
             await waitForDom(() => expect(dropdown.isOpen(), 'expected list to be closed').to.equal(false));
 
-            dropdown.click();
+            dropdown.clickOnDropDown();
 
             await waitForDom(() => expect(dropdown.isOpen(), 'expected list to be open').to.equal(true));
 

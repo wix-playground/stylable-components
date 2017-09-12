@@ -14,9 +14,9 @@ export class DropDownDriver extends DriverBase {
         return !!this.list;
     }
 
-    public selectItem(idx: number): void {
+    public clickOnItem(idx: number): void {
         if (this.items) {
-            this.items[idx] && this.click(this.items![idx]);
+            this.items[idx] && simulate.click(this.items![idx]);
         }
     }
 
@@ -32,8 +32,8 @@ export class DropDownDriver extends DriverBase {
         return simulate.focus(this.root);
     }
 
-    public click(element?: Element): void {
-        element ? simulate.click(element) : simulate.click(this.select('DROP_DOWN_INPUT'));
+    public clickOnDropDown(): void {
+        simulate.click(this.select('DROP_DOWN_INPUT'));
     }
 
     public keyDown(keyCode: number): void {
