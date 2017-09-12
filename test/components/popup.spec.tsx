@@ -301,13 +301,13 @@ function getPointLayoutTests(axis: 'vertical' | 'horizontal') {
 
     return {
         [start]: (popup: HTMLElement, p: PopupPoint) => {
-            createExpect(popup.getBoundingClientRect()[start], p[start], 0.1);
+            createExpect(popup.getBoundingClientRect()[start], p[start], 0.5);
         },
         center: (popup: HTMLElement, p: PopupPoint) => {
             const popupRect = popup.getBoundingClientRect();
-            createExpect(popupRect[start], p[start] - (popupRect[length] / 2), 0.1);
+            createExpect(popupRect[start], p[start] - (popupRect[length] / 2), 0.5);
         },
-        [end]: (popup: HTMLElement, p: PopupPoint) => createExpect(popup.getBoundingClientRect()[end], p[start], 0.1)
+        [end]: (popup: HTMLElement, p: PopupPoint) => createExpect(popup.getBoundingClientRect()[end], p[start], 0.5)
     };
 }
 
