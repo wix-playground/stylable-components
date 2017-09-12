@@ -1,7 +1,7 @@
 @namespace "CheckBox";
 
 .root {
-    -st-states: checked, disabled, indeterminate, readonly, focused;
+    -st-states: checked, disabled, indeterminate, readonly, focus;
     display: inline-block;
     position: relative;
     cursor: pointer;
@@ -22,7 +22,7 @@
     fill: #f1f1f1;
 }
 
-.root:focused .boxIcon {
+.root:focus .boxIcon {
     outline: 4px solid #add9ff;
 }
 
@@ -58,4 +58,8 @@
     padding: 0;
     border: 0;
     opacity: 0;
+}
+
+.childContainer {
+    display: inline;
 }

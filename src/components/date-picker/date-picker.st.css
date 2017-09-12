@@ -1,8 +1,19 @@
 @namespace "DatePicker";
 
 :import {
-    -st-from: "../../style/default-theme/variables.st.css";
-    -st-named: color_Default, color_MainText_Background, color_MainText, color_Active, color_Hover, color_Keyboard_Focused, fontFamily;
+    -st-from: "../../style/project.st.css";
+    -st-named:  color_Default,
+                color_MainText_Background,
+                color_MainText,
+                color_Active,
+                color_Hover,
+                color_Disabled,
+                color_Keyboard_Focused,
+                fontFamily,
+                inputHeight,
+                inputWidth,
+                borderDefault,
+                borderHover;
 }
 
 :vars {
@@ -11,13 +22,30 @@
     dropdownWidth: 330px;
     dropdownArrowWidth: 11px;
     dropdownArrowHeight: 12px;
-    inputWidth: 192px;
+    iconWidth: 36px;
 }
 
 /* The DatePicker Input */
 .input {
     width: value(inputWidth);
-    display: block;
+}
+
+.icon {
+    position: relative;
+    left: calc(value(inputWidth) - value(iconWidth));
+    top: -value(iconWidth);
+    padding: 10px;
+    cursor: pointer;
+    width: value(iconWidth);
+    height: value(inputHeight);
+    fill: #3899EC;
+    border-left: value(borderDefault);
+}
+
+.icon:hover {
+    background-color: rgb(240, 240, 240);
+    outline: value(borderDefault);
+    outline-offset: -1px;
 }
 
 /* The dropdown arrow extends from the input and into the calendar view */

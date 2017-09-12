@@ -31,8 +31,7 @@ export interface CheckBoxState {
 const DefaultCheckBoxSVG: React.SFC<CheckBoxIconProps> = props => {
     return (
         <svg
-            className={props.className}
-            data-automation-id="CHECKBOX_BOX"
+            {...root(props, {className: ''})}
             xmlns="http://www.w3.org/2000/svg"
             focusable="false"
         >
@@ -44,8 +43,7 @@ const DefaultCheckBoxSVG: React.SFC<CheckBoxIconProps> = props => {
 const DefaultTickMarkSVG: React.SFC<CheckBoxIconProps> = props => {
     return (
         <svg
-            className={props.className}
-            data-automation-id="CHECKBOX_TICKMARK"
+            {...root(props, {className: ''})}
             xmlns="http://www.w3.org/2000/svg"
             focusable="false"
         >
@@ -57,8 +55,7 @@ const DefaultTickMarkSVG: React.SFC<CheckBoxIconProps> = props => {
 const DefaultIndeterminateSVG: React.SFC<CheckBoxIconProps> = props => {
     return (
         <svg
-            className={props.className}
-            data-automation-id="CHECKBOX_INDETERMINATE"
+            {...root(props, {className: ''})}
             xmlns="http://www.w3.org/2000/svg"
             width="15"
             height="15"
@@ -95,7 +92,7 @@ export class CheckBox extends React.Component<CheckBoxProps, CheckBoxState> {
             disabled: this.props.disabled!,
             readonly: this.props.readonly!,
             indeterminate: this.props.indeterminate!,
-            focused: this.state.isFocused
+            focus: this.state.isFocused
         };
 
         return (
@@ -121,30 +118,28 @@ export class CheckBox extends React.Component<CheckBoxProps, CheckBoxState> {
                 />
 
                 <BoxIcon
-                    value={this.props.value}
-                    indeterminate={this.props.indeterminate}
-                    disabled={this.props.disabled}
                     className="boxIcon"
+                    data-automation-id="CHECKBOX_BOX"
                 />
 
                 {this.props.indeterminate &&
                     <IndeterminateIcon
-                        value={this.props.value}
-                        indeterminate={this.props.indeterminate}
-                        disabled={this.props.disabled}
                         className="indeterminateIcon"
+                        data-automation-id="CHECKBOX_INDETERMINATE"
                     />
                 }
                 {!this.props.indeterminate && this.props.value &&
                     <TickIcon
-                        value={this.props.value}
-                        indeterminate={this.props.indeterminate}
-                        disabled={this.props.disabled}
                         className="tickIcon"
+                        data-automation-id="CHECKBOX_TICKMARK"
                     />
                 }
-
-                {this.props.children}
+                {
+                    this.props.children ?
+                    <div data-automation-id="CHECKBOX_CHILD_CONTAINER" className="childContainer">
+                        {this.props.children}
+                    </div> : null
+                }
             </div>
         );
     }

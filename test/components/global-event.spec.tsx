@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {ClientRenderer, expect, sinon} from 'test-drive-react';
-import GlobalEvent, {Props as GlobalEventProps} from '../../src/common/global-event';
+import {GlobalEvent, Props as GlobalEventProps} from '../../src/components/global-event';
 import WindowStub from '../stubs/window.stub';
 
 describe('<GlobalEvent />', () => {

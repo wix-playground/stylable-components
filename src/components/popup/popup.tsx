@@ -1,20 +1,21 @@
 import * as React from 'react';
-import {Portal} from '../../../src';
+import {Portal} from '../portal';
 
-export type VerticalPosition =  'top' | 'center' | 'bottom';
-export type HorizontalPosition = 'left' | 'center' | 'right';
+export type PopupVerticalPosition =  'top' | 'center' | 'bottom';
+export type PopupHorizontalPosition = 'left' | 'center' | 'right';
 
-export interface PositionPoint {
-    vertical: VerticalPosition;
-    horizontal: HorizontalPosition;
+export interface PopupPositionPoint {
+    vertical: PopupVerticalPosition;
+    horizontal: PopupHorizontalPosition;
 }
 
 export interface PopupProps {
     open?: boolean;
-    anchorPosition?: PositionPoint;
-    popupPosition?: PositionPoint;
+    anchorPosition?: PopupPositionPoint;
+    popupPosition?: PopupPositionPoint;
     syncWidth?: boolean;
     maxHeight?: number;
+    children?: React.ReactNode;
 }
 
 export interface PopupCompProps extends PopupProps {
@@ -78,7 +79,7 @@ export class Popup extends React.Component<PopupCompProps, {}> {
     }
 }
 
-function getVerticalReference(rect: ClientRect, anchorPosition: VerticalPosition): number {
+function getVerticalReference(rect: ClientRect, anchorPosition: PopupVerticalPosition): number {
     if (anchorPosition === 'center') {
         return window.pageYOffset + rect.top + (rect.height / 2);
     } else {
@@ -86,7 +87,7 @@ function getVerticalReference(rect: ClientRect, anchorPosition: VerticalPosition
     }
 }
 
-function getHorizontalReference(rect: ClientRect, anchorPosition: HorizontalPosition): number {
+function getHorizontalReference(rect: ClientRect, anchorPosition: PopupHorizontalPosition): number {
     if (anchorPosition === 'center') {
         return window.pageXOffset + rect.left + (rect.width / 2);
     } else {
