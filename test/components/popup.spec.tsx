@@ -4,8 +4,8 @@ import {selectDom} from 'test-drive';
 import {ClientRenderer, expect, waitFor} from 'test-drive-react';
 import {PopupDemo} from '../../demo/components/popup-demo';
 import {Popup, PopupPositionPoint} from '../../src/components/';
+import {PopupPoint} from '../../src/components/popup/popup';
 import {sleep} from '../utils';
-import {PopupPoint} from "../../src/components/popup/popup";
 
 const portalId = 'PORTAL';
 const demoContainer = 'POPUP_DEMO_DIV';
@@ -300,7 +300,9 @@ function getPointLayoutTests(axis: 'vertical' | 'horizontal') {
     }
 
     return {
-        [start]: (popup: HTMLElement, p: PopupPoint) => createExpect(popup.getBoundingClientRect()[start], p[start], 0.1),
+        [start]: (popup: HTMLElement, p: PopupPoint) => {
+            createExpect(popup.getBoundingClientRect()[start], p[start], 0.1);
+        },
         center: (popup: HTMLElement, p: PopupPoint) => {
             const popupRect = popup.getBoundingClientRect();
             createExpect(popupRect[start], p[start] - (popupRect[length] / 2), 0.1);
