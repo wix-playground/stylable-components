@@ -1,23 +1,17 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import {root} from 'wix-react-tools';
 
 export interface PortalProps extends React.HTMLAttributes<HTMLDivElement> {
     children: React.ReactNode;
 }
 
 export class Portal extends React.PureComponent<PortalProps, {}> {
-    private container: Element | null;
+    private container: HTMLDivElement | null;
     private portalContent: React.ReactElement<React.HTMLAttributes<HTMLDivElement>>;
 
     public render() {
-        const rootProps = root(this.props, {
-            'data-automation-id': 'PORTAL',
-            'className': ''
-        });
-
         this.portalContent = (
-            <div {...rootProps}>
+            <div data-automation-id="PORTAL" className={this.props.className} style={this.props.style}>
                 {this.props.children}
             </div>
         );
@@ -39,6 +33,10 @@ export class Portal extends React.PureComponent<PortalProps, {}> {
             document.body.removeChild(this.container);
             this.container = null;
         }
+    }
+
+    public getPortalContainer(): HTMLDivElement | null {
+        return this.container;
     }
 
     private renderPortal() {

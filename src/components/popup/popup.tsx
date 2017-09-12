@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Portal} from '../../../src';
+import {Portal} from '../portal';
 
 export type PopupVerticalPosition =  'top' | 'center' | 'bottom';
 export type PopupHorizontalPosition = 'left' | 'center' | 'right';
@@ -22,7 +22,7 @@ export interface PopupCompProps extends PopupProps {
     anchor: Element | null;
 }
 
-export class Popup extends React.Component<PopupCompProps, {}> {
+export class Popup extends React.Component<PopupCompProps> {
     public static defaultProps: Partial<PopupCompProps> = {
         open: false,
         anchorPosition: {vertical: 'bottom', horizontal: 'left'},

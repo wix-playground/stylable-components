@@ -117,6 +117,21 @@ describe('The DatePicker Component', () => {
         await waitForDom(() => expect(bodySelect(datePickerDropdownId)).to.be.absent());
     });
 
+    it('should show and hide the dropdown when the calendar icon is clicked', async () => {
+        const {select, waitForDom} = clientRenderer.render(<DatePicker />);
+        const calendarIcon = select('CALENDAR_ICON');
+
+        await waitForDom(() => expect(bodySelect(datePickerDropdownId)).to.be.absent());
+
+        simulate.click(calendarIcon);
+
+        await waitForDom(() => expect(bodySelect(datePickerDropdownId)).to.be.present());
+
+        simulate.click(calendarIcon);
+
+        await waitForDom(() => expect(bodySelect(datePickerDropdownId)).to.be.absent());
+    });
+
     it('can be changed with the arrow keys', async function() {
         const {select, waitForDom} = clientRenderer.render(<DatePicker value={JANUARY_FIRST} openOnFocus={true} />);
         const datePickerInput = select(datePickerInputId);

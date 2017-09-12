@@ -26,10 +26,10 @@
 
 ```
 import {CheckBox} from 'stylable-components';
-import {SBComponent} from 'stylable-react-component';
+import {stylable} from 'wix-react-tools';
 import style from './checkbox-demo.st.css';
 
-@SBComponent(style)
+@stylable(style)
 export class BasicDemo extends React.Component<{}, {value: boolean}> {
     public state = {
         value: false
