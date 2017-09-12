@@ -1,8 +1,8 @@
 import keycode = require('keycode');
-import {computed, observable} from 'mobx';
+import {autorun, computed, observable, untracked} from 'mobx';
 import {observer} from 'mobx-react';
 import React = require('react');
-import {root} from 'wix-react-tools';
+import {Disposers, root} from 'wix-react-tools';
 import {ChangeEvent} from '../../types/events';
 import {FormInputProps} from '../../types/forms';
 import {noop} from '../../utils';
@@ -24,6 +24,9 @@ export class SelectionList extends React.Component<Props> {
         tabIndex: -1
     };
 
+    private disposers = new Disposers();
+    @observable private focused: boolean = false;
+
     // Wrapping props with @computed allows to observe them independently from other props.
     @computed public get children()   { return this.props.children; }
     @computed public get dataSource() { return this.props.dataSource; }
@@ -31,23 +34,26 @@ export class SelectionList extends React.Component<Props> {
     @computed public get renderItem() { return this.props.renderItem; }
     @computed public get value()      { return this.props.value; }
 
-    @computed public get list(): SelectionListModel {
+    @computed private get list(): SelectionListModel {
         const list = new SelectionListModel();
         list.addChildren(this.children);
         list.addDataSource(this);
+        list.selectValue(untracked(() => this.value));
         return list;
     }
 
-    @observable public focused: boolean = false;
+    public componentWillMount() {
+        this.disposers.set(autorun(() => {
+            this.list.selectValue(this.value);
+        }));
 
-    public componentDidMount() {
-        this.list.selectValue(this.value);
-        this.list.focusValue(this.focused ? this.value : undefined);
+        this.disposers.set(autorun(() => {
+            this.list.focusValue(this.focused ? this.value : undefined);
+        }));
     }
 
-    public componentDidUpdate() {
-        this.list.selectValue(this.value);
-        this.list.focusValue(this.focused ? this.value : undefined);
+    public componentWillUnmount() {
+        this.disposers.disposeAll();
     }
 
     public render() {

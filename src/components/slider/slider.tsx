@@ -2,7 +2,7 @@ import * as keycode from 'keycode';
 import * as React from 'react';
 import {SBComponent} from 'stylable-react-component';
 import {root} from 'wix-react-tools';
-import GlobalEvent from '../../common/global-event';
+import {GlobalEvent} from '../global-event';
 import {FormInputProps} from './../../types/forms';
 import {noop} from './../../utils/noop';
 import style from './slider.st.css';
