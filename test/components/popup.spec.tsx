@@ -5,6 +5,7 @@ import {ClientRenderer, expect, waitFor} from 'test-drive-react';
 import {PopupDemo} from '../../demo/components/popup-demo';
 import {Popup, PopupPositionPoint} from '../../src/components/';
 import {sleep} from '../utils';
+import {PopupPoint} from "../../src/components/popup/popup";
 
 const portalId = 'PORTAL';
 const demoContainer = 'POPUP_DEMO_DIV';
@@ -82,11 +83,7 @@ describe('<Popup />', function() {
             </Popup>
         );
 
-        await waitFor(() => {
-            const portalRect = bodySelect<HTMLDivElement>(portalId)!.getBoundingClientRect();
-            expect(portalRect.top).to.equal(100);
-            expect(portalRect.left).to.equal(100);
-        });
+        await waitFor(() => expect(bodySelect(portalId)).to.be.present());
     });
 
     it('removes the component when unmounting', async function() {
@@ -193,32 +190,58 @@ describe('<Popup />', function() {
     describe('Layout tests', function() {
         const fixture = getFixture();
 
-        for (const popupPos of fixture) {
-            for (const anchorPos of fixture) {
-                it(`Popup position: V: ${popupPos.vertical} H: ${popupPos.horizontal};
+        describe('Popup with anchor', () => {
+            for (const popupPos of fixture) {
+                for (const anchorPos of fixture) {
+                    it(`Popup position: V: ${popupPos.vertical} H: ${popupPos.horizontal};
                  Anchor position: V: ${anchorPos.vertical} H: ${anchorPos.horizontal}`, function() {
-                    clientRenderer.render(
-                        <Popup anchor={anchor} anchorPosition={anchorPos} popupPosition={popupPos} open={true}>
-                            <div style={{background: 'green', color: 'white'}}>
+                        clientRenderer.render(
+                            <Popup anchor={anchor} anchorPosition={anchorPos} popupPosition={popupPos} open={true}>
+                                <div style={{background: 'green', color: 'white'}}>
                                     <span data-automation-id="SPAN">
                                         Popup Body
                                     </span>
-                                <div>some more stuff</div>
+                                    <div>some more stuff</div>
+                                </div>
+                            </Popup>);
+
+                        return waitFor(() => {
+                            const popup = bodySelect<HTMLElement>(portalId)!;
+
+                            runTest(popup, anchor, popupPos, anchorPos);
+                        });
+                    });
+                }
+            }
+        });
+
+        describe('Popup with point', () => {
+            const point = {top: 100, left: 100};
+            const verticalTests = getPointLayoutTests('vertical');
+            const horizontalTests = getPointLayoutTests('horizontal');
+
+            for (const popupPos of fixture) {
+                it(`Popup position: V: ${popupPos.vertical} H: ${popupPos.horizontal}`, async () => {
+                    clientRenderer.render(
+                        <Popup anchor={point} popupPosition={popupPos} open>
+                            <div style={{background: 'green', color: 'white'}}>
+                                <span data-automation-id="SPAN">Popup Body</span>
                             </div>
                         </Popup>);
 
-                    return waitFor(() => {
+                    await waitFor(() => {
                         const popup = bodySelect<HTMLElement>(portalId)!;
 
-                        runTest(popup, anchor, popupPos, anchorPos);
+                        verticalTests[popupPos.vertical](popup, point);
+                        horizontalTests[popupPos.horizontal](popup, point);
                     });
                 });
             }
-        }
+        });
     });
 });
 
-function getLayoutTest(axis: 'vertical' | 'horizontal') {
+function getAnchorLayoutTests(axis: 'vertical' | 'horizontal') {
     let start: 'left' | 'top' = 'top';
     let end: 'bottom' | 'right' = 'bottom';
     let length: 'height' | 'width' = 'height';
@@ -265,9 +288,30 @@ function getLayoutTest(axis: 'vertical' | 'horizontal') {
     };
 }
 
+function getPointLayoutTests(axis: 'vertical' | 'horizontal') {
+    let start: 'left' | 'top' = 'top';
+    let end: 'bottom' | 'right' = 'bottom';
+    let length: 'height' | 'width' = 'height';
+
+    if (axis === 'horizontal') {
+        start = 'left';
+        end = 'right';
+        length = 'width';
+    }
+
+    return {
+        [start]: (popup: HTMLElement, p: PopupPoint) => createExpect(popup.getBoundingClientRect()[start], p[start]),
+        center: (popup: HTMLElement, p: PopupPoint) => {
+            const popupRect = popup.getBoundingClientRect();
+            createExpect(popupRect[start], p[start] - (popupRect[length] / 2));
+        },
+        [end]: (popup: HTMLElement, p: PopupPoint) => createExpect(popup.getBoundingClientRect()[end], p[start])
+    };
+}
+
 function runTest(popup: HTMLElement, anchor: HTMLElement, popupPos: PopupPositionPoint, anchorPos: PopupPositionPoint) {
-    const topTests = getLayoutTest('vertical');
-    const leftTests = getLayoutTest('horizontal');
+    const topTests = getAnchorLayoutTests('vertical');
+    const leftTests = getAnchorLayoutTests('horizontal');
 
     topTests[popupPos.vertical][anchorPos.vertical](anchor, popup);
     leftTests[popupPos.horizontal][anchorPos.horizontal](anchor, popup);
