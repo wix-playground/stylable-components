@@ -1,5 +1,5 @@
 :import {
-    -st-from: "../../style/default-theme/variables.st.css";
+    -st-from: "../../style/project.st.css";
     -st-named: color_MainText,
                color_MainText_Background,
                color_Disabled,
@@ -10,12 +10,10 @@
                PR3;
 }
 
-:import {
-    -st-from: "../../style/default-theme/controls/button.st.css";
-}
-
 .root {
-    display: inline-block;
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: space-between;
 
     position: relative;
 
@@ -24,12 +22,12 @@
 }
 
 .control {
+    display: flex;
     width: 100%;
-
-    position: absolute;
 
     margin: 0;
     padding: 0;
+    border: 0;
 
     background: transparent;
     color: value(BK3);
@@ -50,17 +48,5 @@
 .control:hover {
     color: value(PR3);
 }
-
-.up {
-    top: 0;
-    right: 0;
-    bottom: 50%;
-    left: 0;
-}
-
-.down {
-    top: 50%;
-    right: 0;
-    bottom: 0;
-    left: 0;
-}
+.up {}
+.down {}

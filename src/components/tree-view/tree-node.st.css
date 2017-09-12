@@ -1,0 +1,42 @@
+:import{
+    -st-from: "../../style/project.st.css";
+    -st-named: color_Keyboard_Focused, color_Active;
+}
+
+.tree-node {
+    -st-states: selected, focused;
+    cursor: pointer;
+    padding: 5px 7px;
+    border: 1px solid transparent;
+    list-style: none;
+}
+
+.tree-node:hover {
+    background-color: value(color_Keyboard_Focused);
+}
+
+.tree-node:focused {
+    border: 1px solid value(color_Active);
+}
+
+.tree-node:selected {
+    background-color: value(color_Active);
+    color: white;
+}
+
+.nested-tree {
+    margin-left: 2rem;
+    list-style: none;
+    padding-left: 0;
+}
+
+.tree-item-icon {
+    height: 1rem;
+    width: 1rem;
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
+.tree-item-label {
+    vertical-align: middle;
+}

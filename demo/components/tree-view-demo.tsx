@@ -1,6 +1,6 @@
 import {observer} from 'mobx-react';
 import * as React from 'react';
-import {SBStateless} from 'stylable-react-component';
+import {SBComponent, SBStateless} from 'stylable-react-component';
 import {TreeItemData , TreeItemProps, TreeView} from '../../src';
 import style from './tree-view-demo.st.css';
 
@@ -56,12 +56,12 @@ export const CustomItem: React.SFC<TreeItemProps> =
         const iconProps = {
             ['data-automation-id']: `${itemIdPrefix}_${itemLabel}_ICON`,
             onClick: onIconClick && onIconClick.bind(null, item),
-            className: 'tree-item-icon'
+            className: 'custom-tree-item-icon'
         };
         return (
             <div>
                 <div
-                    className="tree-node"
+                    className="custom-tree-node"
                     cssStates={{selected: state!.isSelected, focused: state!.isFocused}}
                     data-selected={state!.isSelected}
                     data-focused={state!.isFocused}
@@ -72,12 +72,12 @@ export const CustomItem: React.SFC<TreeItemProps> =
                         <span {...iconProps}>{state!.isExpanded ? '[Close] ' : '[Open] '}</span>}
                     <span
                         data-automation-id={`${itemIdPrefix}_${itemLabel}_LABEL`}
-                        className="tree-item-label"
+                        className="custom-tree-item-label"
                     >
                         {item.label}<span className="node-tool-tip"> ({Math.floor(Math.random() * 100)} kcal)</span>
                     </span>
                 </div>
-                <div className="nested-tree">
+                <div className="custom-nested-tree">
                     {state!.isExpanded && (item.children || []).map((child: TreeItemData, index: number) =>
                         <TreeNode
                             item={child}
@@ -95,9 +95,10 @@ export const CustomItem: React.SFC<TreeItemProps> =
 
 const CustomItemWrapper = observer(CustomItem);
 
+@SBComponent(style)
 export class TreeViewDemo extends React.Component<{}, TreeViewDemoState> {
 
-    public state = {selectedItem: undefined, focusedItem: undefined};
+    public state = {selectedItem: undefined, focusedItem: undefined, checkBoxMap: {}};
 
     public render() {
         return (
@@ -133,6 +134,7 @@ export class TreeViewDemo extends React.Component<{}, TreeViewDemoState> {
 
 }
 
+@SBComponent(style)
 export class TreeViewDemoCustom extends React.Component<{}, TreeViewDemoCustomState> {
 
     public state = {selectedItemCustom: undefined, focusedItemCustom: undefined};
@@ -145,6 +147,7 @@ export class TreeViewDemoCustom extends React.Component<{}, TreeViewDemoCustomSt
                     <SelectedItem selectedItem={this.state.selectedItemCustom} />
                     <br />
                     <TreeView
+                        className="tree-view"
                         dataSource={treeData}
                         itemRenderer={CustomItemWrapper}
                         onFocusItem={this.onFocusItemCustom}

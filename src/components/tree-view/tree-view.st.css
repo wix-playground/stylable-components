@@ -1,6 +1,6 @@
 :import{
-    -st-from: "../../style/default-theme/variables.st.css";
-    -st-named: color_treeFocused, color_treeSelected;
+    -st-from: "./tree-node.st.css";
+    -st-default: TreeNode;
 }
 
 .root {
@@ -10,42 +10,13 @@
     text-align: left;
     color: #000000;
     outline: 0 solid transparent;
-    width: 228px;
     overflow: hidden;
     display: inline-block;
+    min-width: 250px;
+    list-style: none;
+    padding-left: 0;
 }
 
-.tree-node {
-    -st-states: selected, focused;
-    cursor: pointer;
-    padding: 3px 7px 5px;
-    border: 1px solid transparent;
-}
-
-.tree-node:hover {
-    border: 1px solid value(color_treeFocused);
-}
-
-.tree-node:focused {
-    background-color: value(color_treeFocused);
-}
-
-.tree-node:selected {
-    background-color: value(color_treeSelected);
-    color: white;
-}
-
-.nested-tree {
-    margin-left: 25px;
-}
-
-.tree-item-icon {
-    height: 16px;
-    width: 16px;
-    vertical-align: middle;
-    margin-right: 5px;
-}
-
-.tree-item-label {
-    vertical-align: middle;
+.treeNode {
+    -st-extends: TreeNode;
 }

@@ -1,7 +1,7 @@
 import * as keycode from 'keycode';
 import * as React from 'react';
 import {SBComponent} from 'stylable-react-component';
-import {notifyScreenReader} from '../../utils';
+import {ScreenReaderNotification} from '../screen-reader-notification';
 import {Modifiers, Stepper} from '../stepper';
 import {LABELS} from './strings';
 import styles from './time-picker.st.css';
@@ -19,6 +19,9 @@ export interface Props {
     disabled?: boolean;
     label?: string;
     name?: string;
+    required?: boolean;
+    error?: boolean;
+    rtl?: boolean;
 }
 
 export interface State {
@@ -28,6 +31,7 @@ export interface State {
     format: Format;
     ampm: Ampm;
     currentSegment: Segment;
+    notification?: string;
 }
 
 const ampmSwitch = {
@@ -57,7 +61,10 @@ function propsValueToSegments(value?: string, format?: Format): {hh?: string, mm
 export class TimePicker extends React.Component<Props, State> {
     public static defaultProps: Partial<Props> = {
         format: is12TimeFormat ? 'ampm' : '24h',
-        disabled: false
+        disabled: false,
+        error: false,
+        rtl: false,
+        required: false
     };
     private nativeInput: HTMLInputElement | null;
     private segments: {
@@ -92,8 +99,8 @@ export class TimePicker extends React.Component<Props, State> {
     }
 
     public render() {
-        const {focus, hh, mm, ampm, format} = this.state;
-        const {label, placeholder, disabled, name} = this.props;
+        const {focus, hh, mm, ampm, format, notification} = this.state;
+        const {label, placeholder, disabled, error, required, rtl, name} = this.props;
         const isValueSet = hh !== undefined || mm !== undefined;
         const timeSegments: TimeSegment[] = ['hh', 'mm'];
 
@@ -102,14 +109,21 @@ export class TimePicker extends React.Component<Props, State> {
                 data-automation-id="TIME_PICKER"
                 cssStates={{
                     focus,
-                    disabled: disabled!,
-                    empty: !isValueSet
+                    'error': error!,
+                    'disabled': disabled!,
+                    'empty': !isValueSet,
+                    'rtl': rtl!,
+                    'has-placeholder': Boolean(placeholder)
                 }}
                 onMouseDown={this.onRootMouseDown}
             >
-                {timeSegments.map(segment =>
-                    <div key={segment} className={'input-wrap ' + segment}>
+                {notification &&
+                    <ScreenReaderNotification>{notification}</ScreenReaderNotification>
+                }
+                <div className="time">
+                    {timeSegments.map(segment =>
                         <input
+                            key={segment}
                             data-automation-id={'TIME_PICKER_INPUT_' + segment.toUpperCase()}
                             className="input"
                             type="text"
@@ -130,8 +144,8 @@ export class TimePicker extends React.Component<Props, State> {
                             onBlur={this.onBlur}
                             onKeyDown={this.onKeyDown}
                         />
-                    </div>
-                )}
+                    )}
+                </div>
                 {format === 'ampm' &&
                     <div
                         data-automation-id="TIME_PICKER_AMPM"
@@ -158,13 +172,14 @@ export class TimePicker extends React.Component<Props, State> {
                         onMouseDown={this.onRootMouseDown}
                     />
                 }
-                {!isTouchTimeInputSupported && !disabled && isValueSet &&
-                    <Stepper
-                        className="stepper"
-                        onMouseDown={this.onStepperMouseDown}
-                        onUp={this.onStepperUp}
-                        onDown={this.onStepperDown}
-                    />
+                {!isTouchTimeInputSupported &&
+                    <div onMouseDown={this.onStepperMouseDown}>
+                        <Stepper
+                            className="stepper"
+                            onUp={this.onStepperUp}
+                            onDown={this.onStepperDown}
+                        />
+                    </div>
                 }
                 <label className="label" cssStates={{visible: isTouchTimeInputSupported}}>
                     <input
@@ -173,6 +188,7 @@ export class TimePicker extends React.Component<Props, State> {
                         tabIndex={isTouchTimeInputSupported ? 0 : -1}
                         ref={elem => this.nativeInput = elem}
                         name={name}
+                        required={required}
                         aria-label={label}
                         value={this.getValue()}
                         disabled={disabled}
@@ -427,7 +443,9 @@ export class TimePicker extends React.Component<Props, State> {
 
     private commit = () => {
         const value = this.getValue();
-        notifyScreenReader(value);
+        this.setState({
+            notification: value
+        });
         if (this.props.onChange && this.lastValue !== value) {
             this.lastValue = value;
             this.props.onChange(value);

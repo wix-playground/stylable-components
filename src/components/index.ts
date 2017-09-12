@@ -12,3 +12,12 @@ export * from './drop-down';
 export * from './modal';
 export * from './portal';
 export * from './popup';
+export * from './screen-reader-notification';
+export {
+    Divider as SelectionListDivider,
+    divider as SelectionListDividerSymbol,
+    Option as SelectionListOption,
+    OptionList,
+    SelectionList,
+    SelectionListItemValue
+} from './selection-list';
