@@ -2,7 +2,7 @@ import keycode = require('keycode');
 import {autorun, computed, observable, untracked} from 'mobx';
 import {observer} from 'mobx-react';
 import React = require('react');
-import {Disposers, root} from 'wix-react-tools';
+import {Disposers, properties} from 'wix-react-tools';
 import {ChangeEvent} from '../../types/events';
 import {FormInputProps} from '../../types/forms';
 import {noop} from '../../utils';
@@ -18,6 +18,7 @@ export interface Props extends OptionList, FormInputProps<SelectionListItemValue
 }
 
 @observer
+@properties
 export class SelectionList extends React.Component<Props> {
     public static defaultProps: Props = {
         onChange: noop,
@@ -59,7 +60,6 @@ export class SelectionList extends React.Component<Props> {
     public render() {
         return (
             <SelectionListView
-                {...root(this.props, {className: ''})}
                 focused={this.focused}
                 list={this.list}
                 onBlur={this.handleBlur}

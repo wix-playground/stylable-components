@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {SBComponent} from 'stylable-react-component';
+import {stylable} from 'wix-react-tools';
 import {Slider} from '../../src';
 import {ChangeEvent} from '../../src/types/events';
 import style from './slider-demo.st.css';
@@ -9,7 +9,7 @@ export interface SliderDemoState {
     rawValue: string;
 }
 
-@SBComponent(style)
+@stylable(style)
 export class SliderDemo extends React.Component<{}, SliderDemoState> {
     constructor(props: {}) {
         super(props);

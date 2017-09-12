@@ -1,6 +1,5 @@
 import * as React from 'react';
-import {SBComponent} from 'stylable-react-component';
-import {root} from 'wix-react-tools';
+import {properties, stylable} from 'wix-react-tools';
 import {noop} from '../../utils';
 import {isElement} from '../../utils/is-element';
 import {enableScrolling, stopScrolling} from '../../utils/stop-scrolling';
@@ -16,8 +15,9 @@ export interface ModalProps extends React.HTMLAttributes<HTMLDivElement> {
     onRequestClose?(event: RequestCloseEvent): void;
 }
 
-@SBComponent(styles)
-export class Modal extends React.PureComponent<ModalProps, {}> {
+@stylable(styles)
+@properties
+export class Modal extends React.PureComponent<ModalProps> {
     public static defaultProps: ModalProps = {
         isOpen: false,
         onRequestClose: noop
@@ -32,13 +32,9 @@ export class Modal extends React.PureComponent<ModalProps, {}> {
     }
 
     public render() {
-        const rootProps = root(this.props, {
-            className: 'root'
-        });
-
         return (
             this.props.isOpen ? (
-                <Portal {...rootProps}>
+                <Portal>
                     <div className="backdrop" data-slot="backdrop" data-automation-id="MODAL" onClick={this.onClick}>
                         <div className="children" data-slot="children">
                             {this.props.children}
