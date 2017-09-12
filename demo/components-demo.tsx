@@ -1,6 +1,5 @@
 import * as React from 'react';
-import {SBComponent} from 'stylable-react-component';
-import {setGlobalConfig} from 'wix-react-tools';
+import {stylable, setGlobalConfig} from 'wix-react-tools';
 import ComponentsDemoCSS from './style.st.css';
 
 import {CheckBoxDemo} from './components/checkbox-demo';
@@ -19,7 +18,7 @@ import {TreeViewDemo, TreeViewDemoCustom} from './components/tree-view-demo';
 
 setGlobalConfig({devMode: true});
 
-@SBComponent(ComponentsDemoCSS)
+@stylable(ComponentsDemoCSS)
 export class ComponentsDemo extends React.Component {
     public render() {
         return (

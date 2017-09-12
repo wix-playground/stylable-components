@@ -1,12 +1,11 @@
+import * as keycode from 'keycode';
 import {action, autorun, observable} from 'mobx';
 import {observer} from 'mobx-react';
 import * as React from 'react';
-import {root} from 'wix-react-tools';
-import {getLastAvailableItem, getNextItem, getPreviousItem} from './tree-util';
+import {properties, stylable} from 'wix-react-tools';
 
-import * as keycode from 'keycode';
-import {SBComponent, SBStateless} from 'stylable-react-component';
 import nodeStyle from './tree-node.st.css';
+import {getLastAvailableItem, getNextItem, getPreviousItem} from './tree-util';
 import {MinusIcon, PlusIcon} from './tree-view-icons';
 import style from './tree-view.st.css';
 
@@ -70,7 +69,7 @@ function getFocusedItemKey(item: TreeItemData) {
 }
 
 export const TreeItem: React.SFC<TreeItemProps> =
-    SBStateless(({item, itemRenderer, onItemClick, onIconClick, stateMap}) => {
+    stylable(nodeStyle)(({item, itemRenderer, onItemClick, onIconClick, stateMap}) => {
         const state = stateMap.getItemState(item);
         const itemLabel = item.label.replace(' ', '_');
         const TreeNode = itemRenderer;
@@ -92,7 +91,7 @@ export const TreeItem: React.SFC<TreeItemProps> =
                 <div
                     data-automation-id={`${itemIdPrefix}_${itemLabel}`}
                     className="tree-node"
-                    cssStates={{selected: state!.isSelected, focused: state!.isFocused}}
+                    style-state={{selected: state!.isSelected, focused: state!.isFocused}}
                     data-selected={state!.isSelected}
                     data-focused={state!.isFocused}
                     onClick={onItemClick && onItemClick.bind(null, item)}
@@ -121,7 +120,7 @@ export const TreeItem: React.SFC<TreeItemProps> =
                 </ul>}
             </li>
         );
-    }, nodeStyle);
+    });
 
 const TreeItemWrapper = observer(TreeItem);
 
@@ -140,8 +139,10 @@ export class TreeStateMap {
     }
 }
 
-@SBComponent(style) @observer
-export class TreeView extends React.Component<TreeViewProps, {}> {
+@observer
+@stylable(style)
+@properties
+export class TreeView extends React.Component<TreeViewProps> {
     public static defaultProps: Partial<TreeViewProps> = {
         itemRenderer: TreeItemWrapper,
         onSelectItem: () => { },
@@ -169,11 +170,10 @@ export class TreeView extends React.Component<TreeViewProps, {}> {
 
     public render() {
         const TreeNode = this.props.itemRenderer!;
-        const rootProps = root(this.props, {'data-automation-id': 'TREE_VIEW', 'className': ''});
 
         return (
             <ul
-                {...rootProps}
+                data-automation-id="TREE_VIEW"
                 onKeyDown={this.onKeyDown}
                 role="tree"
                 tabIndex={0}

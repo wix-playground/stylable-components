@@ -1,7 +1,6 @@
 import {observer} from 'mobx-react';
 import React = require('react');
-import {SBComponent} from 'stylable-react-component';
-import {root} from 'wix-react-tools';
+import {properties, stylable} from 'wix-react-tools';
 import {ChangeEvent} from '../../types/events';
 import {FormInputProps} from '../../types/forms';
 import {noop} from '../../utils';
@@ -32,9 +31,10 @@ export interface ViewProps extends FormInputProps<SelectionListItemValue> {
 }
 
 @observer
-@SBComponent(listStyle)
+@stylable(listStyle)
+@properties
 export class SelectionListView extends React.Component<ViewProps> {
-    public static defaultProps = {
+    public static defaultProps: Partial<ViewProps> = {
         onChange: noop,
         onBlur: noop,
         onFocus: noop,
@@ -44,8 +44,9 @@ export class SelectionListView extends React.Component<ViewProps> {
     public render() {
         return (
             <div
-                {...root(this.props, {'className': 'list', 'data-automation-id': 'LIST'})}
-                cssStates={{focused: Boolean(this.props.focused)}}
+                className="list"
+                data-automation-id="LIST"
+                style-state={{focused: Boolean(this.props.focused)}}
                 onBlur={this.props.onBlur}
                 onClick={this.handleClick}
                 onFocus={this.props.onFocus}
