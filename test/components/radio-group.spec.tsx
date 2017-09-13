@@ -3,6 +3,7 @@ import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react
 import {RadioGroupDemo} from '../../demo/components/radio-group-demo';
 import {RadioButton, RadioGroup} from '../../src';
 import {sleep} from '../utils';
+import {RadioButtonDriver, RadioGroupDriver} from "../../test-kit/components/radio-group-driver";
 
 const radioGroup = 'RADIO_GROUP';
 const radioButton = 'RADIO_BUTTON';
@@ -35,94 +36,84 @@ describe('<RadioGroup />', () => {
     });
 
     it('renders to the screen with unselected radio buttons as children', async () => {
-        const {select, waitForDom} = clientRenderer.render(
+        const {driver: group, waitForDom} = clientRenderer.render(
             <RadioGroup>
                 <RadioButton value="Ifrit"/>
                 <RadioButton value="Titan"/>
             </RadioGroup>
-        );
+        ).withDriver(RadioGroupDriver);
 
-        const button0 = select(radioGroup, radioButton + '_0', 'NATIVE_INPUT') as HTMLInputElement;
-        const button1 = select(radioGroup, radioButton + '_1', 'NATIVE_INPUT') as HTMLInputElement;
+        const button0 = group.getRadioButton(0);
+        const button1 = group.getRadioButton(1);
 
         await waitForDom(() => {
-            expect(button0).to.be.present();
-            expect(button0).to.have.property('checked', false);
-            expect(button0).to.have.value('Ifrit');
-            expect(button0).to.have.attribute('name', button1.name);
-            expect(button1).to.be.present();
-            expect(button1).to.have.property('checked', false);
-            expect(button1).to.have.value('Titan');
+            expect(button0.root).to.be.present();
+            expect(button0.isChecked(), 'expected radio to be unchecked').to.equal(false);
+            expect(button0.value).to.equal('Ifrit');
+            expect(button0.nativeElement).to.have.attribute('name', button1.nativeElement.name);
+            expect(button1.root).to.be.present();
+            expect(button1.isChecked(), 'expected radio to be unchecked').to.equal(false);
+            expect(button1.value).to.equal('Titan');
 
         });
     });
 
     it('renders non RadioButton components as children', async () => {
-        const {select, waitForDom} = clientRenderer.render(
+        const {driver: group, waitForDom} = clientRenderer.render(
             <RadioGroup>
                 <RadioButton value="1"/>
                 <span>Surprise!</span>
                 <RadioButton value="2"/>
             </RadioGroup>
-        );
-
-        const container = select(radioGroup) as HTMLDivElement;
+        ).withDriver(RadioGroupDriver);
 
         await waitForDom(() => {
-            expect(container.children.length, 'expected RadioGroup to have 3 children').to.equal(3);
-            expect(container.children[1]).to.be.instanceOf(HTMLSpanElement);
+            expect(group.items, 'expected RadioGroup to have 3 children').to.have.length(3);
+            expect(group.items[1]).to.be.instanceOf(HTMLSpanElement);
         });
 
     });
 
     it('renders the children with the given name value', async () => {
-        const {select, waitForDom} = clientRenderer.render(
+        const {driver: group, waitForDom} = clientRenderer.render(
             <RadioGroup name="kupo">
                 <RadioButton value="Ultima"/>
                 <RadioButton value="Hades"/>
             </RadioGroup>
-        );
-
-        const button0 = select(radioGroup, radioButton + '_0', 'NATIVE_INPUT') as HTMLInputElement;
-        const button1 = select(radioGroup, radioButton + '_1', 'NATIVE_INPUT') as HTMLInputElement;
+        ).withDriver(RadioGroupDriver);
 
         await waitForDom(() => {
-            expect(button0).to.have.attribute('name', 'kupo');
-            expect(button1).to.have.attribute('name', 'kupo');
+            expect(group.getRadioButton(0).name).to.equal('kupo');
+            expect(group.getRadioButton(1).name).to.equal('kupo');
         });
     });
 
     it('uses "value" prop to determine checked child', async () => {
-        const {select, waitForDom} = clientRenderer.render(
+        const {driver: group, waitForDom} = clientRenderer.render(
             <RadioGroup value="Sleipnir">
                 <RadioButton value="Fafnir"/>
                 <RadioButton value="Sleipnir"/>
                 <RadioButton value="Snepnir"/>
             </RadioGroup>
-        );
-
-        const button1 = select(radioGroup, radioButton + '_1', 'NATIVE_INPUT') as HTMLInputElement;
+        ).withDriver(RadioGroupDriver);
 
         await waitForDom(() => {
-            expect(button1).to.have.property('checked', true);
+            expect(group.getRadioButton(1).isChecked()).to.equal(true);
         });
     });
 
     it('"value" prop on the group overrides "checked"  on child', async () => {
-        const {select, waitForDom} = clientRenderer.render(
+        const {driver: group, waitForDom} = clientRenderer.render(
             <RadioGroup value="Sleipnir">
                 <RadioButton value="Fafnir" checked/>
                 <RadioButton value="Sleipnir"/>
                 <RadioButton value="Snepnir"/>
             </RadioGroup>
-        );
-
-        const button0 = select<HTMLInputElement>(radioGroup, radioButton + '_0', 'NATIVE_INPUT');
-        const button1 = select<HTMLInputElement>(radioGroup, radioButton + '_1', 'NATIVE_INPUT');
+        ).withDriver(RadioGroupDriver);
 
         await waitForDom(() => {
-            expect(button0).to.have.property('checked', false);
-            expect(button1).to.have.property('checked', true);
+            expect(group.getRadioButton(0).isChecked()).to.equal(false);
+            expect(group.getRadioButton(1).isChecked()).to.equal(true);
         });
     });
 
@@ -342,76 +333,65 @@ describe('<RadioGroup />', () => {
 
     describe('<RadioButton />', () => {
         it('renders a radio button to the screen', async () => {
-            const {select, waitForDom} = clientRenderer.render(
-                <RadioButton value="Shiva" data-automation-id={radioButton + '_0'} name=""/>
-            );
+            const {driver: radio, waitForDom} = clientRenderer.render(
+                <RadioButton value="Shiva" />
+            ).withDriver(RadioButtonDriver);
 
             await waitForDom(() => {
-                expect(select(radioButton + '_0', 'NATIVE_INPUT')).to.be.present();
-                expect(select(radioButton + '_0', 'NATIVE_INPUT')).to.have.attribute('type', 'radio');
-                expect(select(radioButton + '_0', 'NATIVE_INPUT')).to.have.value('Shiva');
-                expect(select(radioButton + '_0', 'UNCHECKED_RADIO_ICON')).to.be.present();
+                expect(radio.root).to.be.present();
+                expect(radio.nativeElement).to.have.attribute('type', 'radio');
+                expect(radio.value).to.equal('Shiva');
+                expect(radio.isChecked()).to.equal(false);
             });
         });
 
         it('renders the label next to the radio button (right by default)', async () => {
-            const {select, waitForDom} = clientRenderer.render(
-                <RadioButton value="Omega" data-automation-id={radioButton + '_0'}/>
-            );
-
-            const label = select(radioButton + '_0', 'LABEL');
-            const button = select(radioButton + '_0', 'INPUT_CONTAINER');
+            const {driver: radio, waitForDom} = clientRenderer.render(
+                <RadioButton value="Omega"/>
+            ).withDriver(RadioButtonDriver);
 
             await waitForDom(() => {
-                expect(label).to.have.text('Omega');
-                expect([button, label]).to.be.horizontallyAligned;
-                expect([button, label]).to.be.inHorizontalSequence({distance: 10});
+                expect(radio.label).to.have.text('Omega');
+                expect([radio.icon, radio.label]).to.be.horizontallyAligned;
+                expect([radio.icon, radio.label]).to.be.inHorizontalSequence({distance: 15});
             });
         });
 
         it('renders a checked button if the checked value is passed', async () => {
-            const {select, waitForDom} = clientRenderer.render(
+            const {driver: radio, waitForDom} = clientRenderer.render(
                 <RadioButton
                     value="Chocobo"
-                    checked={true}
-                    data-automation-id={radioButton + '_0'}
-                    name=""
+                    checked
                 />
-            );
-
-            const button = select(radioButton + '_0', 'NATIVE_INPUT') as HTMLInputElement;
+            ).withDriver(RadioButtonDriver);
 
             await waitForDom(() => {
-                expect(button).to.have.property('checked', true);
-                expect(select(radioButton + '_0', 'CHECKED_RADIO_ICON')).to.be.present();
+                expect(radio.nativeElement).to.have.property('checked', true);
+                expect(radio.isChecked()).to.equal(true);
             });
         });
 
         it('set the radio buttons name to the given name', () => {
-            const {select, waitForDom} = clientRenderer.render(
-                <RadioButton value="Moogle" data-automation-id={radioButton + '_0'} name="name"/>
-            );
-
-            const button = select(radioButton + '_0', 'NATIVE_INPUT') as HTMLInputElement;
+            const {driver: radio, waitForDom} = clientRenderer.render(
+                <RadioButton value="Moogle" name="mog"/>
+            ).withDriver(RadioButtonDriver);
 
             return waitForDom(() => {
-                expect(button).to.have.attribute('name', 'name');
+                expect(radio.name).to.equal('mog');
             });
         });
 
         it('calls the onClick function when clicked', async () => {
             const onChange = sinon.spy();
-            const {select, waitForDom} = clientRenderer.render(
-                <RadioButton value="Tonberry" onChange={onChange} data-automation-id={radioButton + '_0'}/>
-            );
-
-            const button = select(radioButton + '_0');
+            const {driver: radio, waitForDom} = clientRenderer.render(
+                <RadioButton value="Tonberry" onChange={onChange}/>
+            ).withDriver(RadioButtonDriver);
 
             await waitForDom(() => {
-                expect(button).to.be.present();
+                expect(radio.root).to.be.present();
             });
 
-            simulate.click(button);
+            radio.click();
 
             return waitFor(() => {
                 expect(onChange).to.have.been.calledWithMatch({value: 'Tonberry'});
@@ -419,105 +399,95 @@ describe('<RadioGroup />', () => {
         });
 
         it('renders a disabled radio button', async () => {
-            const {select, waitForDom} = clientRenderer.render(
-                <RadioButton value="Tonberry" disabled data-automation-id={radioButton + '_0'}/>
-            );
-
-            const button = select(radioButton + '_0', 'NATIVE_INPUT');
+            const {driver: radio, waitForDom} = clientRenderer.render(
+                <RadioButton value="Tonberry" disabled />
+            ).withDriver(RadioButtonDriver);
 
             await waitForDom(() => {
-                expect(button).to.have.attribute('disabled');
-                expect(select(radioButton + '_0', 'UNCHECKED_RADIO_ICON')).to.be.present();
+                expect(radio.isDisabled()).to.equal(true);
+                expect(radio.isChecked()).to.equal(false);
             });
         });
 
         it('does not call onChange when clicking disabled radio', async () => {
             const onChange = sinon.spy();
-            const {select, waitForDom} = clientRenderer.render(
-                <RadioButton value="Tonberry" disabled data-automation-id={radioButton + '_0'} onChange={onChange}/>
-            );
-
-            const button = select(radioButton + '_0', 'NATIVE_INPUT');
+            const {driver: radio, waitForDom} = clientRenderer.render(
+                <RadioButton value="Tonberry" disabled onChange={onChange}/>
+            ).withDriver(RadioButtonDriver);
 
             await waitForDom(() => {
-                expect(button).to.have.attribute('disabled');
-                expect(select(radioButton + '_0', 'UNCHECKED_RADIO_ICON')).to.be.present();
+                expect(radio.isDisabled()).to.equal(true);
+                expect(radio.isChecked()).to.equal(false);
             });
 
-            simulate.click(select(radioButton + '_0'));
+            radio.click();
 
-            await sleep(500);
+            await sleep(10);
+
             expect(onChange).to.have.not.been.called;
+            expect(radio.isChecked()).to.equal(false);
         });
 
         it('renders a checked disabled radio button', async () => {
-            const {select, waitForDom} = clientRenderer.render(
-                <RadioButton value="Tonberry" disabled checked data-automation-id={radioButton + '_0'}/>
-            );
-
-            const button = select(radioButton + '_0', 'NATIVE_INPUT');
+            const {driver: radio, waitForDom} = clientRenderer.render(
+                <RadioButton value="Tonberry" disabled checked/>
+            ).withDriver(RadioButtonDriver);
 
             await waitForDom(() => {
-                expect(button).to.have.attribute('disabled');
-                expect(button).to.have.property('checked', true);
-                expect(select(radioButton + '_0', 'CHECKED_RADIO_ICON')).to.be.present();
+                expect(radio.isDisabled()).to.equal(true);
+                expect(radio.isChecked()).to.equal(true);
             });
         });
 
         it('renders a readOnly radio button', async () => {
-            const {select, waitForDom} = clientRenderer.render(
-                <RadioButton value="Tonberry" readOnly data-automation-id={radioButton + '_0'}/>
-            );
-
-            const button = select(radioButton + '_0', 'NATIVE_INPUT');
+            const {driver: radio, waitForDom} = clientRenderer.render(
+                <RadioButton value="Tonberry" readOnly/>
+            ).withDriver(RadioButtonDriver);
 
             await waitForDom(() => {
-                expect(button).to.have.attribute('readOnly');
-                expect(select(radioButton + '_0', 'UNCHECKED_RADIO_ICON')).to.be.present();
+                expect(radio.isReadOnly()).to.equal(true);
+                expect(radio.isChecked()).to.equal(false);
             });
         });
 
         it('does not call onChange when clicking readOnly radio', async () => {
             const onChange = sinon.spy();
-            const {select, waitForDom} = clientRenderer.render(
-                <RadioButton value="Tonberry" readOnly data-automation-id={radioButton + '_0'} onChange={onChange}/>
-            );
-
-            const button = select(radioButton + '_0', 'NATIVE_INPUT');
+            const {driver: radio, waitForDom} = clientRenderer.render(
+                <RadioButton value="Tonberry" readOnly onChange={onChange}/>
+            ).withDriver(RadioButtonDriver);
 
             await waitForDom(() => {
-                expect(button).to.have.attribute('readOnly');
-                expect(select(radioButton + '_0', 'UNCHECKED_RADIO_ICON')).to.be.present();
+                expect(radio.isReadOnly()).to.equal(true);
+                expect(radio.isChecked()).to.equal(false);
             });
 
-            simulate.click(select(radioButton + '_0'));
+            radio.click();
 
-            await sleep(500);
+            await sleep(10);
+
             expect(onChange).to.have.not.been.called;
+            expect(radio.isChecked()).to.equal(false);
         });
 
         it('renders a checked readOnly radio button', async () => {
-            const {select, waitForDom} = clientRenderer.render(
-                <RadioButton value="Tonberry" readOnly checked data-automation-id={radioButton + '_0'}/>
-            );
-
-            const button = select(radioButton + '_0', 'NATIVE_INPUT');
+            const {driver: radio, waitForDom} = clientRenderer.render(
+                <RadioButton value="Tonberry" readOnly checked/>
+            ).withDriver(RadioButtonDriver);
 
             await waitForDom(() => {
-                expect(button).to.have.attribute('readOnly');
-                expect(button).to.have.property('checked', true);
-                expect(select(radioButton + '_0', 'CHECKED_RADIO_ICON')).to.be.present();
+                expect(radio.isReadOnly()).to.equal(true);
+                expect(radio.isChecked()).to.equal(true);
             });
         });
 
         it('renders any children given to the component', async () => {
             const {select, waitForDom} = clientRenderer.render(
-                <RadioButton value="" data-automation-id={radioButton + '_0'}>
+                <RadioButton value="">
                     <span data-automation-id="CHILD">Offspring</span>
                 </RadioButton>
             );
 
-            const child = select(radioButton + '_0', 'CHILD') as HTMLElement;
+            const child = select('CHILD') as HTMLSpanElement;
 
             await waitForDom(() => {
                 expect(child).to.be.present();
@@ -528,36 +498,42 @@ describe('<RadioGroup />', () => {
 
         describe('Accessibility', () => {
             it('has tabIndex 0 by default', async () => {
-                const {select, waitForDom} = clientRenderer.render(<RadioButton value="yaya"/>);
+                const {driver: radio, waitForDom} = clientRenderer.render(
+                    <RadioButton value="yaya"/>
+                ).withDriver(RadioButtonDriver);
 
                 await waitForDom(() => {
-                    expect(select('NATIVE_INPUT')).to.have.attribute('tabIndex', '0');
+                    expect(radio.nativeElement).to.have.attribute('tabIndex', '0');
                 });
             });
 
             it('gets tabIndex from the user', async () => {
-                const {select, waitForDom} = clientRenderer.render(
+                const {driver: radio, waitForDom} = clientRenderer.render(
                     <RadioButton value="yaya" tabIndex={666}/>
-                );
+                ).withDriver(RadioButtonDriver);
 
                 await waitForDom(() => {
-                    expect(select('NATIVE_INPUT')).to.have.attribute('tabIndex', '666');
+                    expect(radio.nativeElement).to.have.attribute('tabIndex', '666');
                 });
             });
 
             it('has aria-checked property when checked', async () => {
-                const {select, waitForDom} = clientRenderer.render(<RadioButton value="yaya" checked/>);
+                const {driver: radio, waitForDom} = clientRenderer.render(
+                    <RadioButton value="yaya" checked/>
+                ).withDriver(RadioButtonDriver);
 
                 await waitForDom(() => {
-                    expect(select('RADIO_BUTTON_ROOT')).to.have.attribute('aria-checked', 'true');
+                    expect(radio.root).to.have.attribute('aria-checked', 'true');
                 });
             });
 
             it('root has role - radio', async () => {
-                const {select, waitForDom} = clientRenderer.render(<RadioButton value="yaya" checked/>);
+                const {driver: radio, waitForDom} = clientRenderer.render(
+                    <RadioButton value="yaya" checked/>
+                ).withDriver(RadioButtonDriver);
 
                 await waitForDom(() => {
-                    expect(select('RADIO_BUTTON_ROOT')).to.have.attribute('role', 'radio');
+                    expect(radio.root).to.have.attribute('role', 'radio');
                 });
             });
         });
