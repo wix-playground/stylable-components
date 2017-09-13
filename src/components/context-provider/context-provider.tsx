@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {omit} from '../../utils';
 
 export interface CPProps {
     dir?: string;
@@ -12,15 +13,6 @@ export interface CPProps {
 const fakeChildContextTypes = new Proxy({}, {
     has() {return true; }
 });
-
-function omit<T extends {[key: string]: any}>(obj: T, ...skip: string[]): Partial<T> {
-    return Object.keys(obj).reduce<Partial<T>>((acc, key) => {
-        if (skip.indexOf(key) === -1) {
-            acc[key] = obj[key];
-        }
-        return acc;
-    }, {});
-}
 
 export class ContextProvider extends React.Component<CPProps> {
     public static defaultProps = {
