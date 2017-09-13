@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {SBComponent} from 'stylable-react-component';
+import {stylable} from 'wix-react-tools';
 import {Image, Modal} from '../../src';
 import {RequestCloseEvent} from '../../src/components/modal/modal';
 import styles from './modal-demo.st.css';
@@ -8,7 +8,7 @@ export interface ModalDemoState {
     isOpen: boolean;
 }
 
-@SBComponent(styles)
+@stylable(styles)
 export class ModalDemo extends React.Component<{}, ModalDemoState> {
     public state: ModalDemoState = {
         isOpen: false
@@ -19,7 +19,7 @@ export class ModalDemo extends React.Component<{}, ModalDemoState> {
             <div>
                 <button data-automation-id="MODAL_BUTTON" onClick={this.toggleOpen}>Open The Modal!</button>
                 <Modal className="root" isOpen={this.state.isOpen} onRequestClose={this.onModalClick}>
-                    <Image role="children" className="image" />
+                    <div role="children" className="content">🌌</div>
                 </Modal>
             </div>
         );

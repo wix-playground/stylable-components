@@ -369,25 +369,6 @@ describe('<RadioGroup />', () => {
             });
         });
 
-        it('renders the label on the left side', async () => {
-            const {select, waitForDom} = clientRenderer.render(
-                <RadioButton
-                    value="Tiamat"
-                    labelLocation="left"
-                    data-automation-id={radioButton + '_0'}
-                    name=""
-                />
-            );
-
-            const label = select(radioButton + '_0', 'LABEL');
-            const button = select(radioButton + '_0', 'INPUT_CONTAINER');
-
-            await waitForDom(() => {
-                expect([label, button]).to.be.horizontallyAligned;
-                expect([label, button]).to.be.inHorizontalSequence({distance: 10});
-            });
-        });
-
         it('renders a checked button if the checked value is passed', async () => {
             const {select, waitForDom} = clientRenderer.render(
                 <RadioButton

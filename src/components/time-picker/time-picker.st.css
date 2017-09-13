@@ -54,7 +54,18 @@
 .root:disabled {
     background-color: value(DS2);
     color: value(DS1);
+    position: relative;
 }
+.root:disabled:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    cursor: not-allowed;
+}
+
 .root:empty {
     color: value(BK2);
 }

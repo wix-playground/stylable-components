@@ -1,13 +1,12 @@
 import * as React from 'react';
-import {SBComponent} from 'stylable-react-component';
+import {stylable} from 'wix-react-tools';
+import {FormInputProps} from '../../types/forms';
 import style from './toggle.st.css';
 
-export interface Props {
+export interface Props extends FormInputProps<boolean> {
     className?: string;
-    checked?: boolean;
     error?: boolean;
     disabled?: boolean;
-    onChange?: (selected: boolean) => void;
     label?: string;
     tabIndex?: number;
     required?: boolean;
@@ -18,10 +17,10 @@ export interface State {
     focus: boolean;
 }
 
-@SBComponent(style)
+@stylable(style)
 export default class Toggle extends React.Component<Props, State> {
     public static defaultProps = {
-        checked: false,
+        value: false,
         disabled: false,
         error: false,
         rtl: false,
@@ -36,7 +35,7 @@ export default class Toggle extends React.Component<Props, State> {
 
     public render() {
         const {
-            checked,
+            value,
             disabled,
             error,
             rtl,
@@ -51,8 +50,8 @@ export default class Toggle extends React.Component<Props, State> {
             <label
                 data-automation-id="TOGGLE"
                 onMouseDown={this.onMouseDown}
-                cssStates={{
-                    checked: checked!,
+                style-state={{
+                    checked: value!,
                     disabled: disabled!,
                     focus: focus!,
                     error: error!,
@@ -66,7 +65,7 @@ export default class Toggle extends React.Component<Props, State> {
                         type="checkbox"
                         name={name}
                         aria-label={label}
-                        checked={checked}
+                        checked={value}
                         required={required}
                         onChange={this.toggle}
                         tabIndex={tabIndex}
@@ -85,8 +84,9 @@ export default class Toggle extends React.Component<Props, State> {
     private onInputBlur = () => this.setState({focus: false});
 
     private toggle = (e: React.SyntheticEvent<HTMLInputElement>) => {
-        if (!this.props.disabled && this.props.onChange) {
-            this.props.onChange(!this.props.checked);
+        const {disabled, value, onChange} = this.props;
+        if (!disabled && onChange) {
+            onChange({value: !value});
         }
         if (this.shouldResetFocus) {
             this.setState({focus: false});

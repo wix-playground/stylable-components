@@ -1,9 +1,9 @@
 import * as React from 'react';
-import {SBComponent} from 'stylable-react-component';
+import {stylable} from 'wix-react-tools';
 import {RadioButton, RadioGroup} from '../../src';
 import styles from './radio-group-demo.st.css';
 
-@SBComponent(styles)
+@stylable(styles)
 export class RadioGroupDemo extends React.Component<{}, {}> {
     public state = {
         myValue1: 'Start here',
@@ -28,7 +28,6 @@ export class RadioGroupDemo extends React.Component<{}, {}> {
                     <h3>Data source radio group</h3>
                     <RadioGroup
                         onChange={this.onChange2}
-                        labelLocation="left"
                         name="name"
                         className="rg"
                         value={this.state.myValue2}

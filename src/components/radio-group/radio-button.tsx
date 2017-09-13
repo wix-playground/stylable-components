@@ -1,6 +1,5 @@
 import * as React from 'react';
-import {SBComponent} from 'stylable-react-component';
-import {root} from 'wix-react-tools';
+import {properties, stylable} from 'wix-react-tools';
 import {FormInputProps} from '../../types/forms';
 import {noop} from '../../utils';
 import style from './radio-button.st.css';
@@ -10,7 +9,6 @@ export interface RadioButtonProps extends FormInputProps<string> {
     name?: string;
     disabled?: boolean;
     readOnly?: boolean;
-    labelLocation?: 'right' | 'left';
     tabIndex?: number;
     className?: string;
 }
@@ -19,11 +17,11 @@ export interface RadioButtonState {
     isFocused: boolean;
 }
 
-@SBComponent(style)
+@stylable(style)
+@properties
 export class RadioButton extends React.Component<RadioButtonProps, RadioButtonState> {
     public static defaultProps: Partial<RadioButtonProps> = {
         onChange: noop,
-        labelLocation: 'right',
         checked: false, // required for a bug in firefox
         tabIndex: 0
     };
@@ -31,23 +29,17 @@ export class RadioButton extends React.Component<RadioButtonProps, RadioButtonSt
     public state: RadioButtonState = {isFocused: false};
 
     public render() {
-        const rootProps = root(this.props, {
-            className: '',
-            ['data-automation-id']: 'RADIO_BUTTON_ROOT'
-        });
-
-        const cssStates = {
+        const styleState = {
             checked: this.props.checked,
             disabled: this.props.disabled,
-            isLeftLabel: this.props.labelLocation === 'left',
             focused: this.state.isFocused
         };
 
         return (
             <div
-                {...rootProps}
+                data-automation-id="RADIO_BUTTON_ROOT"
                 onClick={this.onChange}
-                cssStates={cssStates}
+                style-state={styleState}
                 role="radio"
                 aria-checked={this.props.checked}
             >
@@ -79,7 +71,7 @@ export class RadioButton extends React.Component<RadioButtonProps, RadioButtonSt
         );
     }
 
-    private onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    private onChange = (e: React.SyntheticEvent<HTMLElement>) => {
         if (!this.props.disabled && !this.props.readOnly) {
             this.props.onChange!({value: this.props.value!});
         }

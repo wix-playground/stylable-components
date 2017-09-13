@@ -1,6 +1,6 @@
 import * as keycode from 'keycode';
 import * as React from 'react';
-import {SBComponent} from 'stylable-react-component';
+import {stylable} from 'wix-react-tools';
 import {FormInputProps} from '../../types/forms';
 import {ScreenReaderNotification} from '../screen-reader-notification';
 import {Modifiers, Stepper} from '../stepper';
@@ -56,7 +56,7 @@ function propsValueToSegments(value?: string, format?: Format): {hh?: string, mm
     };
 }
 
-@SBComponent(styles)
+@stylable(styles)
 export class TimePicker extends React.Component<Props, State> {
     public static defaultProps: Partial<Props> = {
         format: is12TimeFormat ? 'ampm' : '24h',
@@ -106,13 +106,13 @@ export class TimePicker extends React.Component<Props, State> {
         return (
             <div
                 data-automation-id="TIME_PICKER"
-                cssStates={{
+                style-state={{
                     focus,
                     'error': error!,
                     'disabled': disabled!,
                     'empty': !isValueSet,
                     'rtl': rtl!,
-                    'has-placeholder': Boolean(placeholder)
+                    'has-placeholder': !!placeholder
                 }}
                 onMouseDown={this.onRootMouseDown}
             >
@@ -172,14 +172,15 @@ export class TimePicker extends React.Component<Props, State> {
                     />
                 }
                 {!isTouchTimeInputSupported &&
-                    <Stepper
-                        className="stepper"
-                        onMouseDown={this.onStepperMouseDown}
-                        onUp={this.onStepperUp}
-                        onDown={this.onStepperDown}
-                    />
+                    <div onMouseDown={this.onStepperMouseDown}>
+                        <Stepper
+                            className="stepper"
+                            onUp={this.onStepperUp}
+                            onDown={this.onStepperDown}
+                        />
+                    </div>
                 }
-                <label className="label" cssStates={{visible: isTouchTimeInputSupported}}>
+                <label className="label" style-state={{visible: isTouchTimeInputSupported}}>
                     <input
                         className="native-input"
                         type="time"
