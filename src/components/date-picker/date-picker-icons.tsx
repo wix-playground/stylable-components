@@ -1,8 +1,7 @@
 import * as React from 'react';
-import {SBStateless} from 'stylable-react-component';
 import styles from './date-picker.st.css';
 
-export const CalendarIcon: React.SFC<React.HTMLAttributes<SVGElement>> = SBStateless(props => {
+export const CalendarIcon: React.SFC<React.HTMLAttributes<SVGElement>> = props(props => {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"
