@@ -2,7 +2,11 @@ import keycode = require('keycode');
 import * as React from 'react';
 import {ClientRenderer, DriverBase, expect, sinon} from 'test-drive-react';
 import {SelectionListDemo} from '../../demo/components/selection-list-demo';
-import {divider, Option, SelectionList} from '../../src/components/selection-list';
+import {
+    SelectionList,
+    SelectionListDividerSymbol as divider,
+    SelectionListOption as Option
+} from '../../src';
 import {SelectionListTestDriver} from '../../test-kit';
 import {sleep} from '../utils';
 

@@ -6,27 +6,27 @@ import {elementHasStylableClassName, elementHasStylableState} from '../../test/u
 export class SelectionListTestDriver extends DriverBase {
     public static ComponentClass = SelectionList;
 
-    public focus() {
+    public focus(): void {
         simulate.focus(this.root);
     }
 
-    public blur() {
+    public blur(): void {
         simulate.blur(this.root);
     }
 
-    public get items() {
+    public get items(): Element[] {
         return Array.from(this.root.children);
     }
 
-    public keyDown(keyCode: number) {
+    public keyDown(keyCode: number): void {
         simulate.keyDown(this.root, {keyCode});
     }
 
-    public click(element: Element) {
+    public click(element: Element): void {
         simulate.click(element);
     }
 
-    public elementHasStylableState(element: Element, stateName: string) {
+    public elementHasStylableState(element: Element, stateName: string): boolean {
         return elementHasStylableState(element, listBaseStyle, stateName);
     }
 
