@@ -22,7 +22,7 @@ export interface PopupCompProps extends PopupProps {
     anchor: Element | null;
 }
 
-export class Popup extends React.Component<PopupCompProps, {}> {
+export class Popup extends React.Component<PopupCompProps> {
     public static defaultProps: Partial<PopupCompProps> = {
         open: false,
         anchorPosition: {vertical: 'bottom', horizontal: 'left'},
