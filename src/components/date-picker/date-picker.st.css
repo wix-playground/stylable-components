@@ -23,7 +23,7 @@
     dropdownArrowWidth: 11px;
     dropdownArrowHeight: 12px;
     iconSize: 16px;
-    iconOffset: 36px;
+    iconOffset: 37px;
     inputHeight: 36px;
 }
 
@@ -41,12 +41,12 @@
 .icon {
     position: relative;
     display: inline-block;
-    left: calc((value(iconOffset) * -1));
-    /* top: -value(iconSize); */
-    padding: 10px;
+    top: -1px;
+    right: value(iconOffset);
+    padding: 8px;
     text-align: center;
     vertical-align: middle;
-    height: value(inputHeight);
+    height: calc(value(inputHeight) - 2px);
     width: value(inputHeight);
     cursor: pointer;
     fill: #3899EC;
@@ -55,8 +55,6 @@
 
 .icon:hover {
     background-color: rgb(240, 240, 240);
-    outline: value(borderDefault);
-    /* outline-offset: -1px; */
 }
 
 .icon-svg {
