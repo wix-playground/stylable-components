@@ -118,6 +118,10 @@ describe('<TreeView />', () => {
         return elementHasStylableState(element, style, 'selected');
     }
 
+    function isElementFocused(element: Element, style: {$stylesheet: Stylesheet}) {
+        return elementHasStylableState(element, style, 'focused');
+    }
+
     const sampleItem = {label: 'label'};
     const nestedItem: TreeItemData = treeData[0].children![1];
 
@@ -235,13 +239,13 @@ describe('<TreeView />', () => {
 
                     selectItemWithLabel(select, nodeChildren![1].label);
 
-                    await waitForDom(() =>
-                        expect(select(getTreeItem(nodeChildren![1].label))).to.have.attr('data-focused', 'true'));
+                    await waitForDom(() => expect(
+                        isElementFocused(select(getTreeItem(nodeChildren![1].label))!, treeNodeStyle)).to.equal(true));
 
                     simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), {keyCode: KeyCodes.LEFT});
 
-                    return waitForDom(() =>
-                        expect(select(getTreeItem(treeData[0].label))).to.have.attr('data-focused', 'true'));
+                    return waitForDom(() => expect(
+                        isElementFocused(select(getTreeItem(treeData[0].label))!, treeNodeStyle)).to.equal(true));
                 });
 
             it('moves to child to if there is one after expanding the element if possible when right is clicked',
@@ -334,13 +338,13 @@ describe('<TreeView />', () => {
 
                 simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), {keyCode: KeyCodes.DOWN});
 
-                await waitForDom(() =>
-                    expect(select(getTreeItem(nodeChildren![0].label))).to.have.attr('data-selected', 'false'));
+                await waitForDom(() => expect(
+                    isElementSelected(select(getTreeItem(nodeChildren![0].label))!, treeNodeStyle)).to.equal(false));
 
                 simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), {keyCode: KeyCodes.ENTER});
 
-                return waitForDom(() =>
-                    expect(select(getTreeItem(nodeChildren![0].label))).to.have.attr('data-selected', 'true'));
+                return waitForDom(() => expect(
+                    isElementSelected(select(getTreeItem(nodeChildren![0].label))!, treeNodeStyle)).to.equal(true));
             });
 
             it('focuses first item when HOME is clicked', async () => {
