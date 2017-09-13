@@ -19,7 +19,7 @@ export class ModalDemo extends React.Component<{}, ModalDemoState> {
             <div>
                 <button data-automation-id="MODAL_BUTTON" onClick={this.toggleOpen}>Open The Modal!</button>
                 <Modal className="root" isOpen={this.state.isOpen} onRequestClose={this.onModalClick}>
-                    <Image role="children" className="image" />
+                    <div role="children" className="content">🌌</div>
                 </Modal>
             </div>
         );
