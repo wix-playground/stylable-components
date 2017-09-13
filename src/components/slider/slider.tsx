@@ -1,13 +1,12 @@
 import * as keycode from 'keycode';
 import * as React from 'react';
-import {SBComponent} from 'stylable-react-component';
-import {root} from 'wix-react-tools';
-import GlobalEvent from '../../common/global-event';
+import {properties, stylable} from 'wix-react-tools';
+import {GlobalEvent} from '../global-event';
 import {FormInputProps} from './../../types/forms';
 import {noop} from './../../utils/noop';
 import style from './slider.st.css';
 
-const AXISES = {
+const AXISES: {[name: string]: AxisOptions} = {
     x: 'x',
     y: 'y',
     xReverse: 'x-reverse',
@@ -32,7 +31,7 @@ export interface PointerPosition {
     clientX: number;
     clientY: number;
 }
-export interface SliderProps extends FormInputProps<number, string> {
+export interface SliderProps extends FormInputProps<number, string>, properties.Props {
     tooltip?: React.ReactNode;
 
     min?: number;
@@ -63,9 +62,10 @@ export interface SliderState {
     isReverse: boolean;
 }
 
-@SBComponent(style)
+@stylable(style)
+@properties
 export class Slider extends React.Component<SliderProps, SliderState> {
-    public static defaultProps = {
+    public static defaultProps: Partial<SliderProps> = {
         min: DEFAULT_MIN,
         max: DEFAULT_MAX,
         step: DEFAULT_STEP,
@@ -107,11 +107,9 @@ export class Slider extends React.Component<SliderProps, SliderState> {
     public render() {
         return (
             <div
-                {...root(this.props, {
-                    'data-automation-id': 'SLIDER-CONTAINER',
-                    'className': 'container'
-                })}
-                cssStates={{
+                data-automation-id="SLIDER-CONTAINER"
+                className="container"
+                style-state={{
                     'active': this.state.isActive,
                     'disabled': Boolean(this.props.disabled),
                     'error': Boolean(this.props.error),

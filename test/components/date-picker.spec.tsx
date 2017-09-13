@@ -37,14 +37,13 @@ describe('The DatePicker Component', () => {
             await waitForDom(() => expect(select(currentDate)).to.have.text('Wed Feb 01 2017'));
         });
 
-        it('clicks on the input, picks a date from the dropdown, ' +
-            'and then expects the dropdown to close and the date to appear in the input', async () => {
+        it('clicks on the icon, picks a date from the dropdown, ' +
+            'and then expects the dropdown to close and the date to have been selected', async () => {
             const {select, waitForDom} = clientRenderer.render(<DatePickerDemo value={JANUARY_FIRST} />);
-            const datePickerInput = select(datePickerInputId);
 
             await waitForDom(() => expect(bodySelect(datePickerDropdownId)).to.be.absent());
 
-            simulate.focus(datePickerInput);
+            simulate.click(select('CALENDAR_ICON'));
 
             await waitForDom(() => expect(bodySelect(datePickerDropdownId)).to.be.present());
 
@@ -115,6 +114,32 @@ describe('The DatePicker Component', () => {
         simulate.mouseDown(datePickerInput);
 
         await waitForDom(() => expect(bodySelect(datePickerDropdownId)).to.be.absent());
+    });
+
+    it('should show and hide the dropdown when the calendar icon is clicked', async () => {
+        const {select, waitForDom} = clientRenderer.render(<DatePicker />);
+        const calendarIcon = select('CALENDAR_ICON');
+
+        await waitForDom(() => expect(bodySelect(datePickerDropdownId)).to.be.absent());
+
+        simulate.click(calendarIcon);
+
+        await waitForDom(() => expect(bodySelect(datePickerDropdownId)).to.be.present());
+
+        simulate.click(calendarIcon);
+
+        await waitForDom(() => expect(bodySelect(datePickerDropdownId)).to.be.absent());
+    });
+
+    it('should show and hide the dropdown when focused and openOnFocus is true', async () => {
+        const {select, waitForDom} = clientRenderer.render(<DatePicker openOnFocus />);
+        const datePickerInput = select(datePickerInputId);
+
+        await waitForDom(() => expect(bodySelect(datePickerDropdownId)).to.be.absent());
+
+        simulate.focus(datePickerInput);
+
+        await waitForDom(() => expect(bodySelect(datePickerDropdownId)).to.be.present());
     });
 
     it('can be changed with the arrow keys', async function() {

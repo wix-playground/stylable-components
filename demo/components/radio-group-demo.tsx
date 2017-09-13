@@ -1,9 +1,9 @@
 import * as React from 'react';
-import {SBComponent} from 'stylable-react-component';
+import {stylable} from 'wix-react-tools';
 import {RadioButton, RadioGroup} from '../../src';
 import styles from './radio-group-demo.st.css';
 
-@SBComponent(styles)
+@stylable(styles)
 export class RadioGroupDemo extends React.Component<{}, {}> {
     public state = {
         myValue1: 'Start here',

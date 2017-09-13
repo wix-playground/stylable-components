@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {SBComponent} from 'stylable-react-component';
+import {stylable} from 'wix-react-tools';
 import {NumberInput} from '../../src/components/number-input';
 import styles from './number-input.demo.st.css';
 
@@ -8,7 +8,7 @@ export interface State {
     basicValue?: number;
 }
 
-@SBComponent(styles)
+@stylable(styles)
 export class NumberInputDemo extends React.Component<{}, State> {
 
     constructor() {

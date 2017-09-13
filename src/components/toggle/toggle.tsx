@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {SBComponent} from 'stylable-react-component';
+import {stylable} from 'wix-react-tools';
 import {FormInputProps} from '../../types/forms';
 import style from './toggle.st.css';
 
@@ -17,7 +17,7 @@ export interface State {
     focus: boolean;
 }
 
-@SBComponent(style)
+@stylable(style)
 export default class Toggle extends React.Component<Props, State> {
     public static defaultProps = {
         value: false,
@@ -50,7 +50,7 @@ export default class Toggle extends React.Component<Props, State> {
             <label
                 data-automation-id="TOGGLE"
                 onMouseDown={this.onMouseDown}
-                cssStates={{
+                style-state={{
                     checked: value!,
                     disabled: disabled!,
                     focus: focus!,
