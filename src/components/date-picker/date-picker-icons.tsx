@@ -1,13 +1,12 @@
 import * as React from 'react';
-import styles from './date-picker.st.css';
+import {properties} from 'wix-react-tools';
 
-export const CalendarIcon: React.SFC<React.HTMLAttributes<SVGElement>> = props(props => {
+export const CalendarIcon: React.SFC<React.HTMLAttributes<SVGElement>> = properties((props: any) => {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"
             focusable="false"
             viewBox="0 0 16 16"
-            className="icon-svg"
             {...props}
         >
             <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
@@ -34,4 +33,4 @@ export const CalendarIcon: React.SFC<React.HTMLAttributes<SVGElement>> = props(p
             </g>
         </svg>
     );
-}, styles);
+});
