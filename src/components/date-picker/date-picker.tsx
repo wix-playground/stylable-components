@@ -17,7 +17,7 @@ export interface DatePickerProps extends FormInputProps<Date>, properties.Props 
     readOnly?: boolean;
     showDropdownOnInit?: boolean;
     startingDay?: number;
-    calendarIcon?: React.ComponentType;
+    calendarIcon?: React.ComponentType<properties.Props>;
 }
 
 export interface DatePickerState {
