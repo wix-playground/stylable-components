@@ -10,7 +10,6 @@ import styles from './radio-group.st.css';
 export interface RadioGroupProps extends FormInputProps<string>, properties.Props {
     children?: any;
     dataSource?: RadioButtonProps[];
-    labelLocation?: 'right' | 'left';
     name?: string;
     disabled?: boolean;
     readOnly?: boolean;
@@ -30,7 +29,6 @@ export interface RadioState {
 export class RadioGroup extends React.Component<RadioGroupProps> {
     public static defaultProps: Partial<RadioGroupProps> = {
         dataSource: [],
-        labelLocation: 'right',
         tabIndex: 0
     };
 
@@ -107,7 +105,6 @@ export class RadioGroup extends React.Component<RadioGroupProps> {
                 onChange={this.childrenOnClick(index)}
                 disabled={this.props.disabled || props.disabled}
                 readOnly={this.props.readOnly || props.readOnly}
-                labelLocation={this.props.labelLocation}
                 name={this.name}
                 className="radioGroupChild"
                 tabIndex={this.getChildTabIndex(index, this.isGroupChecked)}
@@ -128,7 +125,6 @@ export class RadioGroup extends React.Component<RadioGroupProps> {
                             onChange={this.childrenOnClick(index)}
                             disabled={this.props.disabled || child.props.disabled}
                             readOnly={this.props.readOnly || child.props.readOnly}
-                            labelLocation={this.props.labelLocation}
                             name={this.name}
                             className="radioGroupChild"
                             tabIndex={this.getChildTabIndex(index, this.isGroupChecked)}
