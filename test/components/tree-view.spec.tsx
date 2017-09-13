@@ -258,13 +258,13 @@ describe('<TreeView />', () => {
 
                     await waitForDom(() => expect(select(getTreeItem(nodeChildren![0].label))).to.be.present());
 
-                    await waitForDom(() =>
-                        expect(select(getTreeItem(treeData[0].label))).to.have.attr('data-focused', 'true'));
+                    await waitForDom(() => expect(
+                        isElementFocused(select(getTreeItem(treeData[0].label))!, treeNodeStyle)).to.equal(true));
 
                     simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), {keyCode: KeyCodes.RIGHT});
 
-                    return waitForDom(() =>
-                        expect(select(getTreeItem(nodeChildren![0].label))).to.have.attr('data-focused', 'true'));
+                    return waitForDom(() => expect(
+                        isElementFocused(select(getTreeItem(nodeChildren![0].label))!, treeNodeStyle)).to.equal(true));
                 });
 
             it('focuses next and previous when down and up arrows are clicked', async () => {
@@ -277,24 +277,22 @@ describe('<TreeView />', () => {
                 expandItemWithLabel(select, treeData[0].label);
 
                 // this should assert first child of root is not focused
-                await waitForDom(() =>
-                    expect(select(getTreeItem(nodeChildren![0].label))).to.have.attr('data-focused', 'false'));
+                await waitForDom(() => expect(
+                    isElementFocused(select(getTreeItem(nodeChildren![0].label))!, treeNodeStyle)).to.equal(false));
 
                 simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), {keyCode: KeyCodes.DOWN});
 
                 // this should assert first child of root is focused
-                await waitForDom(() => {
-                    const item = getTreeItem(nodeChildren![0].label);
-                    expect(select(item), 'down didnt work').to.have.attr('data-focused', 'true');
-                });
+                await waitForDom(() => expect(
+                    isElementFocused(select(getTreeItem(nodeChildren![0].label))!, treeNodeStyle)).to.equal(true));
 
                 simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), {keyCode: KeyCodes.UP});
 
                 // this should assert first child of root is not focused
                 return waitForDom(() => {
                     const item = getTreeItem(nodeChildren![0].label);
-                    expect(select(item), 'up didnt work').to.have.attr('data-focused', 'false');
-                    expect(select(rootNode)).to.have.attr('data-focused', 'true');
+                    expect(isElementFocused(select(item)!, treeNodeStyle)).to.equal(false);
+                    expect(isElementFocused(select(rootNode)!, treeNodeStyle)).to.equal(true);
                 });
             });
 
