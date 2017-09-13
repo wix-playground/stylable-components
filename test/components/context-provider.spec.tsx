@@ -1,10 +1,10 @@
-import * as React from 'react';
 import * as PropTypes from 'prop-types';
+import * as React from 'react';
 import {findDOMNode} from 'react-dom';
-import {ClientRenderer, expect, sinon, waitFor} from 'test-drive-react';
+import {ClientRenderer, expect} from 'test-drive-react';
 import {ContextProvider} from '../../src';
 
-describe.only('<ContextProvider/>', () => {
+describe('<ContextProvider/>', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
 
@@ -17,7 +17,7 @@ describe.only('<ContextProvider/>', () => {
         it('should render div', () => {
             expect(root).instanceof(HTMLDivElement);
         });
-    })
+    });
 
     describe('render with tagName="p" ', () => {
         let root: any;
@@ -52,7 +52,7 @@ describe.only('<ContextProvider/>', () => {
         beforeEach(() => {
             renderer = clientRenderer.render(
                 <ContextProvider
-                    className='context-div'
+                    className="context-div"
                     style={{width: 10}}
                 />
             );
@@ -62,16 +62,16 @@ describe.only('<ContextProvider/>', () => {
             expect(root).to.have.class('context-div');
         });
         it('should have inline styles', () => {
-            expect(root).attr('style', 'width:10px');
+            expect(root).attr('style', 'width: 10px;');
         });
     });
 
     describe('render with dir="rtl" ', () => {
         class Inner extends React.Component {
-            static contextTypes = {
+            public static contextTypes = {
                 'context-provider-dir': PropTypes.string
-            }
-            render() {
+            };
+            public render() {
                 return <div data-automation-id="TEST_DIV" dir={this.context['context-provider-dir']}/>;
             }
         }
@@ -95,11 +95,11 @@ describe.only('<ContextProvider/>', () => {
 
     describe('render with context-foo="bar"', () => {
         class Inner extends React.Component {
-            static contextTypes = {
+            public static contextTypes = {
                 foo: PropTypes.string
-            }
-            render() {
-                return <div data-automation-id="TEST_DIV">{this.context.foo}</div>
+            };
+            public render() {
+                return <div data-automation-id="TEST_DIV">{this.context.foo}</div>;
             }
         }
 
@@ -121,15 +121,17 @@ describe.only('<ContextProvider/>', () => {
 
     });
 
-    describe('render with Symbol property', () => {
+    // this could not be done since react does not allow to pass Symbol properties
+    // @see https://codepen.io/anon/pen/WZNmNX?editors=0010
+    describe.skip('render with Symbol property', () => {
         const prop = Symbol();
 
         class Inner extends React.Component {
-            static contextTypes = {
-                [props]: PropTypes.string
-            }
-            render() {
-                return <div data-automation-id="TEST_DIV">{this.context[prop]}</div>
+            public static contextTypes = {
+                [prop]: PropTypes.string
+            };
+            public render() {
+                return <div data-automation-id="TEST_DIV">{this.context[prop]}</div>;
             }
         }
 
@@ -137,8 +139,12 @@ describe.only('<ContextProvider/>', () => {
         let root: any;
 
         beforeEach(() => {
+            const props = {
+                [prop]: 'baz',
+                qwe: 123
+            };
             renderer = clientRenderer.render(
-                <ContextProvider {...{[prop]: 'baz'}}>
+                <ContextProvider {...props}>
                     <Inner/>
                 </ContextProvider>
             );
