@@ -6,6 +6,12 @@ import {TreeViewDemo, TreeViewDemoCustom} from '../../demo/components/tree-view-
 import {TreeItem, TreeView} from '../../src';
 import {getLastAvailableItem, getNextItem, getPreviousItem} from '../../src/components/tree-view//tree-util';
 import {initParentsMap, ParentsMap, TreeItemData, TreeStateMap} from '../../src/components/tree-view/tree-view';
+import {elementHasStylableState} from '../utils/inspect-stylable';
+
+// this can be removed once encapsulated in the driver
+import treeNodeStyle from '../../src/components/tree-view/tree-node.st.css';
+import treeViewDemoStyle from '../../demo/components/tree-view-demo.st.css';
+import {Stylesheet} from 'stylable';
 
 const treeView = 'TREE_VIEW';
 const treeItem = 'TREE_ITEM';
@@ -108,6 +114,10 @@ describe('<TreeView />', () => {
         simulate.click(select(getTreeItemLabel(id)));
     }
 
+    function isElementSelected(element: Element, style: {$stylesheet: Stylesheet}) {
+        return elementHasStylableState(element, style, 'selected');
+    }
+
     const sampleItem = {label: 'label'};
     const nestedItem: TreeItemData = treeData[0].children![1];
 
@@ -130,7 +140,7 @@ describe('<TreeView />', () => {
         const elementToSelect = select(treeView + '_DEMO', getTreeItem(allNodesLabels[2]));
 
         selectItemWithLabel(select, allNodesLabels[2]);
-        return waitForDom(() => expect(elementToSelect).to.have.attr('data-selected', 'true'));
+        return waitForDom(() => expect(isElementSelected(elementToSelect!, treeNodeStyle)).to.equal(true));
     });
 
     it('renders a tree view with custom children', async () => {
@@ -151,7 +161,7 @@ describe('<TreeView />', () => {
         const elementToSelect = select(treeView + '_DEMO_CUSTOM', getTreeItem(allNodesLabels[2]));
 
         selectItemWithLabel(select, allNodesLabels[2]);
-        return waitForDom(() => expect(elementToSelect).to.have.attr('data-selected', 'true'));
+        return waitForDom(() => expect(isElementSelected(elementToSelect!, treeViewDemoStyle)).to.equal(true));
     });
 
     it('ends up in expected state after multiple clicks on same tree node', async () => {
