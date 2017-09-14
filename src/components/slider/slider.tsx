@@ -6,7 +6,7 @@ import {FormInputProps} from './../../types/forms';
 import {noop} from './../../utils/noop';
 import style from './slider.st.css';
 
-const AXISES: {[name: string]: AxisOptions} = {
+export const AXISES: {[name in string]: AxisOptions} = {
     x: 'x',
     y: 'y',
     xReverse: 'x-reverse',
@@ -46,6 +46,7 @@ export interface SliderProps extends FormInputProps<number, string>, properties.
     disabled?: boolean;
     required?: boolean;
     error?: boolean;
+    RTL?: boolean;
 
     onFocus?: React.FocusEventHandler<HTMLElement>;
     onBlur?: React.FocusEventHandler<HTMLElement>;
@@ -100,7 +101,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
             relativeStep: this.getRelativeStep(step, min!, max!),
             isActive: false,
             isVertical: this.isVertical(axis!),
-            isReverse: this.isReverse(axis!)
+            isReverse: this.isReverse(axis!) !== this.isRTL()
         };
     }
 
@@ -113,9 +114,9 @@ export class Slider extends React.Component<SliderProps, SliderState> {
                     'active': this.state.isActive,
                     'disabled': Boolean(this.props.disabled),
                     'error': Boolean(this.props.error),
-                    'x': this.props.axis === AXISES.x,
+                    'x': this.props.axis === AXISES.x !== this.isRTL(),
                     'y': this.props.axis === AXISES.y,
-                    'x-reverse': this.props.axis === AXISES.xReverse,
+                    'x-reverse': this.props.axis === AXISES.xReverse !== this.isRTL(),
                     'y-reverse': this.props.axis === AXISES.yReverse
                 }}
             >
@@ -215,7 +216,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
             relativeValue: this.getRelativeValue(value!, min!, max!, step),
             relativeStep: this.getRelativeStep(step, min!, max!),
             isVertical: this.isVertical(nextProps.axis || this.props.axis!),
-            isReverse: this.isReverse(nextProps.axis || this.props.axis!)
+            isReverse: this.isReverse(nextProps.axis || this.props.axis!) !== this.isRTL()
         });
     }
 
@@ -268,12 +269,12 @@ export class Slider extends React.Component<SliderProps, SliderState> {
     }
 
     private getHandleStyles() {
-        return this.state.isReverse ?
-            (this.state.isVertical ?
+        return this.state.isVertical ?
+            (this.state.isReverse ?
                 {top: `${this.state.relativeValue}%`} :
-                {right: `${this.state.relativeValue}%`}) :
-            (this.state.isVertical ?
-                {bottom: `${this.state.relativeValue}%`} :
+                {bottom: `${this.state.relativeValue}%`}) :
+            (this.state.isReverse?
+                {right: `${this.state.relativeValue}%`} :
                 {left: `${this.state.relativeValue}%`});
     }
 
@@ -309,6 +310,10 @@ export class Slider extends React.Component<SliderProps, SliderState> {
 
     private isReverse(axis: AxisOptions): boolean {
         return axis === AXISES.xReverse || axis === AXISES.yReverse;
+    }
+
+    private isRTL(): boolean {
+        return Boolean(this.props.RTL);
     }
 
     private increaseValue(toEdge: boolean = false, multiplier: number = 1) {

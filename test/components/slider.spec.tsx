@@ -1,11 +1,11 @@
 import * as keycode from 'keycode';
 import * as React from 'react';
 import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react';
-import {Slider, SliderProps} from '../../src/components/slider';
+import {AXISES, AxisOptions, Slider, SliderProps} from '../../src/components/slider';
 import {ChangeEvent} from '../../src/types/events';
 import WindowStub from '../stubs/window.stub';
 import {simulateMouseEvent, simulateTouchEvent} from '../utils';
-import {describeIfTouch} from '../utils/skip-describe-if-touch';
+import {describeIfTouch, wrapWithContext} from '../utils/';
 
 let environment: WindowStub;
 
@@ -14,24 +14,39 @@ interface EventCoordinates {
     clientY: number;
 }
 
-function getEventCoordinates(bounds: any, direction: string | undefined, value: number = 0.7): EventCoordinates {
+function getEventCoordinates(
+    bounds: any,
+    direction: string | undefined,
+    value: number = 0.7,
+    options?: any
+): EventCoordinates {
     switch (direction) {
-        case 'x':
-            return {
-                clientX: Math.round(bounds.left + bounds.width * value),
-                clientY: bounds.top + bounds.height / 3
-            };
-        case 'y':
+        case AXISES.x:
+            return options && options.RTL ?
+                {
+                    clientX: Math.round(bounds.left + bounds.width * (1 - value)),
+                    clientY: bounds.top + bounds.height / 3
+                } :
+                {
+                    clientX: Math.round(bounds.left + bounds.width * value),
+                    clientY: bounds.top + bounds.height / 3
+                };
+        case AXISES.y:
             return {
                 clientX: bounds.left + bounds.width / 3,
                 clientY: Math.round(bounds.bottom - bounds.height * value)
             };
-        case 'x-reverse':
-            return {
-                clientX: Math.round(bounds.left + bounds.width * (1 - value)),
-                clientY: bounds.top + bounds.height / 3
-            };
-        case 'y-reverse':
+        case AXISES.xReverse:
+            return options && options.RTL ?
+                {
+                    clientX: Math.round(bounds.left + bounds.width * value),
+                    clientY: bounds.top + bounds.height / 3
+                } :
+                {
+                    clientX: Math.round(bounds.left + bounds.width * (1 - value)),
+                    clientY: bounds.top + bounds.height / 3
+                };
+        case AXISES.yReverse:
             return {
                 clientX: bounds.left + bounds.width / 3,
                 clientY: Math.round(bounds.bottom - bounds.height * (1 - value))
@@ -49,7 +64,8 @@ function withValueMinMax(
     positionProp: string,
     sizeProp: string,
     orientation: 'vertical' | 'horizontal',
-    options?: Partial<SliderProps>
+    options?: Partial<SliderProps>,
+    context?: any
 ) {
     describe('with value, min and max', () => {
         const value = 5;
@@ -60,7 +76,7 @@ function withValueMinMax(
         let waitForDom: (expectation: () => void) => Promise<void>;
 
         beforeEach(() => {
-            const rendered = clientRenderer.render(
+            const slider = (
                 <Slider
                     value={value}
                     min={min}
@@ -68,11 +84,16 @@ function withValueMinMax(
                     {...options}
                 />
             );
+            const rendered = clientRenderer.render(
+                context ?
+                    wrapWithContext(context, slider) :
+                    slider
+            );
             select = rendered.select;
             waitForDom = rendered.waitForDom;
         });
 
-        it('renders handle on the right place', async () => {
+        it('renders handle on the right place', async () =>  {
             await waitForDom(() => {
                 const element = select('SLIDER-HANDLE');
 
@@ -111,7 +132,8 @@ function whenDragThingsAround(
     clientRenderer: ClientRenderer,
     positionProp: string,
     sizeProp: string,
-    options?: Partial<SliderProps>
+    options?: Partial<SliderProps>,
+    context?: any
 ) {
     describe('when drag things around', () => {
         const value = 5;
@@ -123,11 +145,12 @@ function whenDragThingsAround(
         let select: (automationId: string) => HTMLElement | null;
         let waitForDom: (expectation: () => void) => Promise<void>;
         let eventMock: EventCoordinates;
+        let axis: AxisOptions | undefined;
 
         beforeEach(() => {
             onChange = sinon.spy();
             onInput = sinon.spy();
-            const rendered = clientRenderer.render(
+            const slider = (
                 <Slider
                     value={value}
                     min={min}
@@ -137,11 +160,26 @@ function whenDragThingsAround(
                     {...options}
                 />
             );
+            const rendered = clientRenderer.render(
+                context ?
+                    wrapWithContext(context, slider) :
+                    slider
+            );
             select = rendered.select;
             waitForDom = rendered.waitForDom;
 
             const bounds = select('SLIDER')!.getBoundingClientRect();
-            eventMock = getEventCoordinates(bounds, options && options.axis);
+            if (options) {
+                axis = options.axis;
+                if (options.RTL) {
+                    axis = axis === AXISES.x ?
+                        AXISES.xReverse :
+                        axis === AXISES.xReverse ?
+                            AXISES.x :
+                            axis;
+                }
+            }
+            eventMock = getEventCoordinates(bounds, axis, 0.7, options);
         });
 
         it('should change value', async () => {
@@ -229,7 +267,7 @@ function whenDragThingsAround(
         beforeEach(function() {
             onChange = sinon.spy();
             onInput = sinon.spy();
-            const rendered = clientRenderer.render(
+            const slider = (
                 <Slider
                     value={value}
                     min={min}
@@ -238,6 +276,11 @@ function whenDragThingsAround(
                     onInput={onInput}
                     {...options}
                 />
+            );
+            const rendered = clientRenderer.render(
+                context ?
+                    wrapWithContext(context, slider) :
+                    slider
             );
             select = rendered.select;
             waitForDom = rendered.waitForDom;
@@ -261,6 +304,10 @@ function whenDragThingsAround(
                         }
                     } as any as TouchList
                 });
+
+                if (options && options.RTL) {
+                    debugger
+                }
 
                 expect(handle!.style[positionProp as any]).to.equal('70%');
                 expect(progress!.style[sizeProp as any]).to.equal('70%');
@@ -336,7 +383,8 @@ function whenDragThingsAroundWithStep(
     clientRenderer: ClientRenderer,
     positionProp: string,
     sizeProp: string,
-    options?: Partial<SliderProps>
+    options?: Partial<SliderProps>,
+    context?: any
 ) {
     describe('when drag things around with step', () => {
         const value = 5;
@@ -353,7 +401,7 @@ function whenDragThingsAroundWithStep(
         beforeEach(() => {
             onChange = sinon.spy();
             onInput = sinon.spy();
-            const rendered = clientRenderer.render(
+            const slider = (
                 <Slider
                     value={value}
                     min={min}
@@ -363,6 +411,11 @@ function whenDragThingsAroundWithStep(
                     onInput={onInput}
                     {...options}
                 />
+            );
+            const rendered = clientRenderer.render(
+                context ?
+                    wrapWithContext(context, slider) :
+                    slider
             );
             select = rendered.select;
             waitForDom = rendered.waitForDom;
@@ -482,7 +535,7 @@ function whenDragThingsAroundWithStep(
         beforeEach(function() {
             onChange = sinon.spy();
             onInput = sinon.spy();
-            const rendered = clientRenderer.render(
+            const slider = (
                 <Slider
                     value={value}
                     min={min}
@@ -492,6 +545,11 @@ function whenDragThingsAroundWithStep(
                     onInput={onInput}
                     {...options}
                 />
+            );
+            const rendered = clientRenderer.render(
+                context ?
+                    wrapWithContext(context, slider) :
+                    slider
             );
             select = rendered.select;
             waitForDom = rendered.waitForDom;
@@ -588,7 +646,8 @@ function whenDragThingsAroundWithStep(
 
 function keyboard(
     clientRenderer: ClientRenderer,
-    options?: Partial<SliderProps>
+    options?: Partial<SliderProps>,
+    context?: any
 ) {
     const step = Number(options && options.step || 1);
     describe(step === 1 ? 'keyboard control' : 'keyboard control with step', () => {
@@ -605,8 +664,8 @@ function keyboard(
         let end: number = 100;
 
         switch (options && options.axis) {
-            case 'x-reverse':
-            case 'y-reverse':
+            case AXISES.xReverse:
+            case AXISES.yReverse:
                 deviation = -1 * step;
                 home = 100;
                 end = 0;
@@ -615,7 +674,7 @@ function keyboard(
         beforeEach(() => {
             onChange = sinon.spy();
             onInput = sinon.spy();
-            const rendered = clientRenderer.render(
+            const slider = (
                 <Slider
                     value={value}
                     min={min}
@@ -624,6 +683,11 @@ function keyboard(
                     onInput={onInput}
                     {...options}
                 />
+            );
+            const rendered = clientRenderer.render(
+                context ?
+                    wrapWithContext(context, slider) :
+                    slider
             );
             select = rendered.select;
             waitForDom = rendered.waitForDom;
@@ -798,10 +862,9 @@ function keyboard(
             });
         });
     });
-
 }
 
-describe('<Slider />', () => {
+describe.only('<Slider />', () => {
     const clientRenderer = new ClientRenderer();
 
     beforeEach(() => {
@@ -1282,7 +1345,7 @@ describe('<Slider />', () => {
             'height',
             'vertical',
             {
-                axis: 'y'
+                axis: AXISES.y
             }
         );
 
@@ -1291,7 +1354,7 @@ describe('<Slider />', () => {
             'bottom',
             'height',
             {
-                axis: 'y'
+                axis: AXISES.y
             }
         );
 
@@ -1300,13 +1363,13 @@ describe('<Slider />', () => {
             'bottom',
             'height',
             {
-                axis: 'y'
+                axis: AXISES.y
             }
         );
 
-        keyboard(clientRenderer, {axis: 'y'});
+        keyboard(clientRenderer, {axis: AXISES.y});
 
-        keyboard(clientRenderer, {axis: 'y', step: 2});
+        keyboard(clientRenderer, {axis: AXISES.y, step: 2});
     });
 
     describe('reverse Slider', () => {
@@ -1316,7 +1379,7 @@ describe('<Slider />', () => {
             'width',
             'horizontal',
             {
-                axis: 'x-reverse'
+                axis: AXISES.xReverse
             }
         );
 
@@ -1325,7 +1388,7 @@ describe('<Slider />', () => {
             'right',
             'width',
             {
-                axis: 'x-reverse'
+                axis: AXISES.xReverse
             }
         );
 
@@ -1334,13 +1397,13 @@ describe('<Slider />', () => {
             'right',
             'width',
             {
-                axis: 'x-reverse'
+                axis: AXISES.xReverse
             }
         );
 
-        keyboard(clientRenderer, {axis: 'x-reverse'});
+        keyboard(clientRenderer, {axis: AXISES.xReverse});
 
-        keyboard(clientRenderer, {axis: 'x-reverse', step: 2});
+        keyboard(clientRenderer, {axis: AXISES.xReverse, step: 2});
     });
 
     describe('vertical reverse Slider', () => {
@@ -1350,7 +1413,7 @@ describe('<Slider />', () => {
             'height',
             'vertical',
             {
-                axis: 'y-reverse'
+                axis: AXISES.yReverse
             }
         );
 
@@ -1359,7 +1422,7 @@ describe('<Slider />', () => {
             'top',
             'height',
             {
-                axis: 'y-reverse'
+                axis: AXISES.yReverse
             }
         );
 
@@ -1368,12 +1431,43 @@ describe('<Slider />', () => {
             'top',
             'height',
             {
-                axis: 'y-reverse'
+                axis: AXISES.yReverse
             }
         );
 
-        keyboard(clientRenderer, {axis: 'y-reverse'});
+        keyboard(clientRenderer, {axis: AXISES.yReverse});
 
-        keyboard(clientRenderer, {axis: 'y-reverse', step: 2});
+        keyboard(clientRenderer, {axis: AXISES.yReverse, step: 2});
+    });
+
+    describe('RTL', () => {
+        withValueMinMax(
+            clientRenderer,
+            'right',
+            'width',
+            'horizontal',
+            {RTL: true},
+            {RTL: true}
+        );
+
+        whenDragThingsAround(
+            clientRenderer,
+            'right',
+            'width',
+            {RTL: true},
+            {RTL: true}
+        );
+
+        whenDragThingsAroundWithStep(
+            clientRenderer,
+            'right',
+            'width',
+            {RTL: true},
+            {RTL: true}
+        );
+
+        keyboard(clientRenderer, {RTL: true}, {RTL: true});
+
+        keyboard(clientRenderer, {step: 2, RTL: true}, {RTL: true});
     });
 });
