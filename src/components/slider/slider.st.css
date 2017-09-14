@@ -67,25 +67,6 @@
 
     position: relative;
     display: inline-block;
-}
-
-.root:x {
-    width: 100%;
-}
-
-.root:x-reverse {
-    width: 100%;
-}
-
-.root:y {
-    height: 100%;
-}
-
-.root:y-reverse {
-    height: 100%;
-}
-
-.slider {
     cursor: pointer;
     outline: none;
     user-select: none;
@@ -95,23 +76,23 @@
     -webkit-touch-callout: none;
 }
 
-.root:x .slider{
+.root:x {
     width: 100%;
     padding: 15px 0;
 }
 
-.root:x-reverse .slider{
+.root:x-reverse {
     width: 100%;
     padding: 15px 0;
 }
 
-.root:y .slider{
+.root:y {
     min-height: value(minVerticalSliderHeight);
     height: 100%;
     padding: 0 15px;
 }
 
-.root:y-reverse .slider{
+.root:y-reverse {
     min-height: value(minVerticalSliderHeight);
     height: 100%;
     padding: 0 15px;
@@ -254,15 +235,15 @@
 }
 
 /* Hover state */
-.slider:hover .track {
+.root:hover .track {
     background-color: value(colorTrack_Hover);
 }
 
-.slider:hover .markTrack {
+.root:hover .markTrack {
     background-color: value(colorTrack_Hover);
 }
 
-.slider:hover .handle {
+.root:hover .handle {
     background-color: value(colorHandle_Hover);
     border-color: value(colorHandle_Active);
 }
@@ -276,7 +257,7 @@
 
 /* Active state */
 .root:active .handle,
-.root:active .slider:hover .handle {
+.root:active:hover .handle {
     -webkit-box-shadow: 0 0 0 value(focusSize) value(colorHandle_Focus);
     box-shadow: 0 0 0 value(focusSize) value(colorHandle_Focus);
     background-color: value(colorHandle_Active);
@@ -325,7 +306,7 @@
     background-color: value(color_Error);
 }
 .root:active:error .handle,
-.root:active:error .slider:hover .handle {
+.root:active:error:hover .handle {
     background-color: value(color_Error);
     border-color: value(color_Error);
 }
