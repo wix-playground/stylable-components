@@ -5,17 +5,15 @@ export interface PortalProps extends React.HTMLAttributes<HTMLDivElement> {
     children: React.ReactNode;
 }
 
-export class Portal extends React.PureComponent<PortalProps, {}> {
+export class Portal extends React.PureComponent<PortalProps> {
     private container: HTMLDivElement | null;
     private portalContent: React.ReactElement<React.HTMLAttributes<HTMLDivElement>>;
 
     public render() {
+        const {children, ...rest} = this.props;
         this.portalContent = (
-            <div data-automation-id="PORTAL" className={this.props.className} style={this.props.style}>
-                {this.props.children}
-            </div>
+            <div {...rest} data-automation-id="PORTAL">{children}</div>
         );
-
         return null;
     }
 
