@@ -6,7 +6,6 @@ import {isReactComponent} from '../utils/is-react-component';
 
 const allComponents = Object.keys(WixReactComponents);
 const failingComponents = [
-    'TreeView', 'NumberInput', 'Toggle', 'BirthdayPicker',
     'NumberInput', 'Toggle', 'Portal', 'Popup', 'TimePicker', 'Modal', 'ContextProvider'
 ];
 
