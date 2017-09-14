@@ -32,7 +32,7 @@
     color_Disabled: value(DS1);
 
     markSize: 8px;
-    markRadius: 4px;
+    markRadius: 50%;
     markMiddleOfBar: -2px;
     markMiddleOfDot: -4px;
 
@@ -41,7 +41,7 @@
     handleSize: 16px;
     handleWidth: value(handleSize);
     handleHeight: value(handleSize);
-    handleRadius: 8px;
+    handleRadius: 50%;
     handleBorder: 1px solid value(BK2);
     handleBorderHover: 1px solid value(PR2);
 
@@ -64,6 +64,7 @@
 
 .root {
     -st-states: active, disabled, error, x, x-reverse, y, y-reverse;
+
     position: relative;
     display: inline-block;
 }
@@ -295,25 +296,21 @@
 }
 
 /* Disabled state */
-.root:disabled .slider {
+.root:disabled {
+    pointer-events: none;
     cursor: not-allowed;
 }
 
-.root:disabled .handle ,
-.root:disabled .slider:hover .handle {
-    -webkit-box-shadow: 0 0 0 0px value(colorHandle_Focus);
-    box-shadow: 0 0 0 0px value(colorHandle_Focus);
+.root:disabled .handle {
     border-color: value(color_Disabled);
     background-color: value(colorHandle_Disabled);
 }
 
-.root:disabled .track ,
-.root:disabled .slider:hover .track {
+.root:disabled .track {
     background-color: value(color_Disabled);
 }
 
-.root:disabled .markTrack ,
-.root:disabled .slider:hover .markTrack {
+.root:disabled .markTrack {
     background-color: value(color_Disabled);
 }
 
