@@ -816,7 +816,7 @@ function keyboard(
     });
 }
 
-describe.only('<Slider />', () => {
+describe('<Slider />', () => {
     const clientRenderer = new ClientRenderer();
 
     beforeEach(() => {
