@@ -8,9 +8,7 @@ import {sleep} from '../utils';
 class RadioGroupDemoTestDriver extends DriverBase {
     public static ComponentClass = RadioGroupDemo;
 
-    public get group(): RadioGroupDriver {
-        return new RadioGroupDriver(() => this.select('GROUP_1_GROUP'));
-    }
+    public group: RadioGroupDriver = new RadioGroupDriver(() => this.select('GROUP_1_GROUP'));
 
     public get result(): string | null {
         return this.select('GROUP_1_RESULT').textContent;
