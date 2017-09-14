@@ -9,8 +9,8 @@ import {initParentsMap, ParentsMap, TreeItemData, TreeStateMap} from '../../src/
 import {elementHasStylableState} from '../utils/inspect-stylable';
 
 // this can be removed once encapsulated in the driver
-import treeViewDemoStyle from '../../demo/components/tree-view-demo.st.css';
 import treeNodeStyle from '../../src/components/tree-view/tree-node.st.css';
+import treeViewDemoStyle from '../../demo/components/tree-view-demo.st.css';
 import {Stylesheet} from 'stylable';
 
 const treeView = 'TREE_VIEW';
