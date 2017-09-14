@@ -3,8 +3,6 @@ import {stylable} from 'wix-react-tools';
 import {RadioButton, RadioGroup} from '../../src';
 import styles from './radio-group-demo.st.css';
 
-
-
 @stylable(styles)
 export class RadioGroupDemo extends React.Component<{}, {}> {
     public state = {
@@ -15,16 +13,22 @@ export class RadioGroupDemo extends React.Component<{}, {}> {
     public render() {
         return (
             <div data-automation-id="RADIO_GROUP_DEMO">
-                <div data-automation-id="GROUP_1">
+                <div>
                     <h3>Children radio group</h3>
-                    <RadioGroup onChange={this.onChange} name="demo" className="rg" value={this.state.myValue1}>
+                    <RadioGroup
+                        data-automation-id="GROUP_1_GROUP"
+                        onChange={this.onChange}
+                        name="demo"
+                        className="rg"
+                        value={this.state.myValue1}
+                    >
                         <RadioButton value="This way!"/>
                         <RadioButton value="No, that way!"/>
-                        <RadioButton value="But not here" disabled={true}/>
-                        <RadioButton value="Start here" disabled={true}/>
+                        <RadioButton value="But not here" disabled/>
+                        <RadioButton value="Start here" disabled/>
                     </RadioGroup>
                     <br/>
-                    <span data-automation-id="RADIO_GROUP_DEMO_VALUE">Value: {this.state.myValue1}</span>
+                    <span data-automation-id="GROUP_1_RESULT">Value: {this.state.myValue1}</span>
                 </div>
                 <div data-automation-id="GROUP_2">
                     <h3>Data source radio group</h3>
