@@ -11,7 +11,7 @@ function assetError(fn: sinon.SinonSpy, err: Error) {
 type Method = 'log' | 'warn' | 'error';
 const methods: Method[] = ['log', 'warn', 'error'];
 
-describe('logger', () => {
+describe.only('logger', () => {
     let spies: {
         [key: string]: sinon.SinonSpy
     } = {};
@@ -41,26 +41,22 @@ describe('logger', () => {
         });
         methods.forEach(method => {
             describe(method, () => {
-                it('trully condition', () => {
-                    logger[method](true, 'Warning message');
-                    expect(spies[method]).to.not.be.called;
-                });
                 it('no formating', () => {
-                    logger[method](false, 'Warning message');
+                    logger[method]('Warning message');
                     assetError(spies[method], new Error('Warning message'));
                 });
                 it('formaring', () => {
-                    logger[method](false, 'Warning message, a=%s, b=%s', 11, 12);
+                    logger[method]('Warning message, a=%s, b=%s', 11, 12);
                     assetError(spies[method], new Error('Warning message, a=11, b=12'));
                 });
                 it('call x 2', () => {
-                    logger[method](false, 'Warning message');
-                    logger[method](false, 'Warning message');
+                    logger[method]('Warning message');
+                    logger[method]('Warning message');
                     expect(spies[method]).to.calledTwice;
                 });
                 it('call once x 2', () => {
-                    logger[method + 'Once'](false, 'Warning message');
-                    logger[method + 'Once'](false, 'Warning message');
+                    logger[method + 'Once']('Warning message');
+                    logger[method + 'Once']('Warning message');
                     expect(spies[method]).to.calledOnce;
                 });
             });
@@ -77,15 +73,15 @@ describe('logger', () => {
         methods.forEach(method => {
             describe(method, () => {
                 it('trully condition', () => {
-                    logger[method](true, 'Warning message');
+                    logger[method]('Warning message');
                     expect(spies[method]).to.not.be.called;
                 });
                 it('no formating', () => {
-                    logger[method](false, 'Warning message');
+                    logger[method]('Warning message');
                     expect(spies[method]).to.not.be.called;
                 });
                 it('formaring', () => {
-                    logger[method](false, 'Warning message, a=%s, b=%s', 11, 12);
+                    logger[method]('Warning message, a=%s, b=%s', 11, 12);
                     expect(spies[method]).to.not.be.called;
                 });
             });
@@ -96,15 +92,15 @@ describe('logger', () => {
         methods.forEach(method => {
             describe(method, () => {
                 it('trully condition', () => {
-                    logger[method](true, 'Warning message');
+                    logger[method]('Warning message');
                     expect(spies[method]).to.not.be.called;
                 });
                 it('no formating', () => {
-                    logger[method](false, 'Warning message');
+                    logger[method]('Warning message');
                     expect(spies[method]).to.not.be.called;
                 });
                 it('formaring', () => {
-                    logger[method](false, 'Warning message, a=%s, b=%s', 11, 12);
+                    logger[method]('Warning message, a=%s, b=%s', 11, 12);
                     expect(spies[method]).to.not.be.called;
                 });
             });

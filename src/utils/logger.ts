@@ -1,18 +1,18 @@
 import {getGlobalConfig} from 'wix-react-tools';
-export type Log = (condition: any, message: string, ...args: any[]) => void;
+export type Log = (message: string, ...args: any[]) => void;
 type Method = 'log' | 'warn' | 'error';
 
-const createLogFunction = (method: Method): Log => (condition, message, ...args) => {
-    if (condition || !getGlobalConfig().devMode) {
+const createLogFunction = (method: Method): Log => (message, ...args) => {
+    if (!getGlobalConfig().devMode) {
         return;
     }
     const formated = args.reduce((str, item) => str.replace(/%s/, item), message);
     console[method](new Error(formated));
 };
-const once = (fn: Log, set: Set<string>): Log => (condition, message, ...args) => {
-    if (!condition && !set.has(message)) {
+const once = (fn: Log, set: Set<string>): Log => (message, ...args) => {
+    if (!set.has(message)) {
         set.add(message);
-        fn(condition, message, ...args);
+        fn(message, ...args);
     }
 };
 

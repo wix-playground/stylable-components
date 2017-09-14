@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {stylable, setGlobalConfig} from 'wix-react-tools';
+import {setGlobalConfig, stylable} from 'wix-react-tools';
 import ComponentsDemoCSS from './style.st.css';
 
 import {CheckBoxDemo} from './components/checkbox-demo';
