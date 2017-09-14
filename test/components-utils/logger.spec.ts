@@ -11,7 +11,7 @@ function assetError(fn: sinon.SinonSpy, err: Error) {
 type Method = 'log' | 'warn' | 'error';
 const methods: Method[] = ['log', 'warn', 'error'];
 
-describe.only('logger', () => {
+describe('logger', () => {
     let spies: {
         [key: string]: sinon.SinonSpy
     } = {};
