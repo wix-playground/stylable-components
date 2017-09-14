@@ -273,7 +273,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
             (this.state.isReverse ?
                 {top: `${this.state.relativeValue}%`} :
                 {bottom: `${this.state.relativeValue}%`}) :
-            (this.state.isReverse?
+            (this.state.isReverse ?
                 {right: `${this.state.relativeValue}%`} :
                 {left: `${this.state.relativeValue}%`});
     }

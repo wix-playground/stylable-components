@@ -5,7 +5,7 @@ import {AXISES, AxisOptions, Slider, SliderProps} from '../../src/components/sli
 import {ChangeEvent} from '../../src/types/events';
 import WindowStub from '../stubs/window.stub';
 import {simulateMouseEvent, simulateTouchEvent} from '../utils';
-import {describeIfTouch, wrapWithContext} from '../utils/';
+import {describeIfTouch} from '../utils/skip-describe-if-touch';
 
 let environment: WindowStub;
 
@@ -14,38 +14,39 @@ interface EventCoordinates {
     clientY: number;
 }
 
-function getEventCoordinates(
-    bounds: any,
-    direction: string | undefined,
-    value: number = 0.7,
-    options?: any
-): EventCoordinates {
+function getAxis(options?: Partial<{axis: AxisOptions, RTL: boolean}>) {
+    let axis;
+    if (!options) {
+        return;
+    }
+    axis = options.axis;
+    if (options.RTL) {
+        axis = axis === AXISES.x ?
+            AXISES.xReverse :
+            axis === AXISES.xReverse ?
+                AXISES.x :
+                axis || AXISES.xReverse;
+    }
+    return axis;
+}
+
+function getEventCoordinates(bounds: any, direction: string | undefined, value: number = 0.7): EventCoordinates {
     switch (direction) {
         case AXISES.x:
-            return options && options.RTL ?
-                {
-                    clientX: Math.round(bounds.left + bounds.width * (1 - value)),
-                    clientY: bounds.top + bounds.height / 3
-                } :
-                {
-                    clientX: Math.round(bounds.left + bounds.width * value),
-                    clientY: bounds.top + bounds.height / 3
-                };
+            return {
+                clientX: Math.round(bounds.left + bounds.width * value),
+                clientY: bounds.top + bounds.height / 3
+            };
         case AXISES.y:
             return {
                 clientX: bounds.left + bounds.width / 3,
                 clientY: Math.round(bounds.bottom - bounds.height * value)
             };
         case AXISES.xReverse:
-            return options && options.RTL ?
-                {
-                    clientX: Math.round(bounds.left + bounds.width * value),
-                    clientY: bounds.top + bounds.height / 3
-                } :
-                {
-                    clientX: Math.round(bounds.left + bounds.width * (1 - value)),
-                    clientY: bounds.top + bounds.height / 3
-                };
+            return {
+                clientX: Math.round(bounds.left + bounds.width * (1 - value)),
+                clientY: bounds.top + bounds.height / 3
+            };
         case AXISES.yReverse:
             return {
                 clientX: bounds.left + bounds.width / 3,
@@ -64,8 +65,7 @@ function withValueMinMax(
     positionProp: string,
     sizeProp: string,
     orientation: 'vertical' | 'horizontal',
-    options?: Partial<SliderProps>,
-    context?: any
+    options?: Partial<SliderProps>
 ) {
     describe('with value, min and max', () => {
         const value = 5;
@@ -76,7 +76,7 @@ function withValueMinMax(
         let waitForDom: (expectation: () => void) => Promise<void>;
 
         beforeEach(() => {
-            const slider = (
+            const rendered = clientRenderer.render(
                 <Slider
                     value={value}
                     min={min}
@@ -84,16 +84,11 @@ function withValueMinMax(
                     {...options}
                 />
             );
-            const rendered = clientRenderer.render(
-                context ?
-                    wrapWithContext(context, slider) :
-                    slider
-            );
             select = rendered.select;
             waitForDom = rendered.waitForDom;
         });
 
-        it('renders handle on the right place', async () =>  {
+        it('renders handle on the right place', async () => {
             await waitForDom(() => {
                 const element = select('SLIDER-HANDLE');
 
@@ -132,8 +127,7 @@ function whenDragThingsAround(
     clientRenderer: ClientRenderer,
     positionProp: string,
     sizeProp: string,
-    options?: Partial<SliderProps>,
-    context?: any
+    options?: Partial<SliderProps>
 ) {
     describe('when drag things around', () => {
         const value = 5;
@@ -145,12 +139,11 @@ function whenDragThingsAround(
         let select: (automationId: string) => HTMLElement | null;
         let waitForDom: (expectation: () => void) => Promise<void>;
         let eventMock: EventCoordinates;
-        let axis: AxisOptions | undefined;
 
         beforeEach(() => {
             onChange = sinon.spy();
             onInput = sinon.spy();
-            const slider = (
+            const rendered = clientRenderer.render(
                 <Slider
                     value={value}
                     min={min}
@@ -160,26 +153,11 @@ function whenDragThingsAround(
                     {...options}
                 />
             );
-            const rendered = clientRenderer.render(
-                context ?
-                    wrapWithContext(context, slider) :
-                    slider
-            );
             select = rendered.select;
             waitForDom = rendered.waitForDom;
 
             const bounds = select('SLIDER')!.getBoundingClientRect();
-            if (options) {
-                axis = options.axis;
-                if (options.RTL) {
-                    axis = axis === AXISES.x ?
-                        AXISES.xReverse :
-                        axis === AXISES.xReverse ?
-                            AXISES.x :
-                            axis;
-                }
-            }
-            eventMock = getEventCoordinates(bounds, axis, 0.7, options);
+            eventMock = getEventCoordinates(bounds, getAxis(options));
         });
 
         it('should change value', async () => {
@@ -267,7 +245,7 @@ function whenDragThingsAround(
         beforeEach(function() {
             onChange = sinon.spy();
             onInput = sinon.spy();
-            const slider = (
+            const rendered = clientRenderer.render(
                 <Slider
                     value={value}
                     min={min}
@@ -277,16 +255,11 @@ function whenDragThingsAround(
                     {...options}
                 />
             );
-            const rendered = clientRenderer.render(
-                context ?
-                    wrapWithContext(context, slider) :
-                    slider
-            );
             select = rendered.select;
             waitForDom = rendered.waitForDom;
 
             const bounds = select('SLIDER')!.getBoundingClientRect();
-            eventMock = getEventCoordinates(bounds, options && options.axis);
+            eventMock = getEventCoordinates(bounds, getAxis(options));
         });
 
         it('should change value', async () => {
@@ -304,10 +277,6 @@ function whenDragThingsAround(
                         }
                     } as any as TouchList
                 });
-
-                if (options && options.RTL) {
-                    debugger
-                }
 
                 expect(handle!.style[positionProp as any]).to.equal('70%');
                 expect(progress!.style[sizeProp as any]).to.equal('70%');
@@ -383,8 +352,7 @@ function whenDragThingsAroundWithStep(
     clientRenderer: ClientRenderer,
     positionProp: string,
     sizeProp: string,
-    options?: Partial<SliderProps>,
-    context?: any
+    options?: Partial<SliderProps>
 ) {
     describe('when drag things around with step', () => {
         const value = 5;
@@ -401,7 +369,7 @@ function whenDragThingsAroundWithStep(
         beforeEach(() => {
             onChange = sinon.spy();
             onInput = sinon.spy();
-            const slider = (
+            const rendered = clientRenderer.render(
                 <Slider
                     value={value}
                     min={min}
@@ -412,16 +380,11 @@ function whenDragThingsAroundWithStep(
                     {...options}
                 />
             );
-            const rendered = clientRenderer.render(
-                context ?
-                    wrapWithContext(context, slider) :
-                    slider
-            );
             select = rendered.select;
             waitForDom = rendered.waitForDom;
 
             const bounds = select('SLIDER')!.getBoundingClientRect();
-            eventMock = getEventCoordinates(bounds, options && options.axis, 0.75);
+            eventMock = getEventCoordinates(bounds, getAxis(options), 0.75);
         });
 
         it('renders handle on the right place', async () => {
@@ -535,7 +498,7 @@ function whenDragThingsAroundWithStep(
         beforeEach(function() {
             onChange = sinon.spy();
             onInput = sinon.spy();
-            const slider = (
+            const rendered = clientRenderer.render(
                 <Slider
                     value={value}
                     min={min}
@@ -546,16 +509,11 @@ function whenDragThingsAroundWithStep(
                     {...options}
                 />
             );
-            const rendered = clientRenderer.render(
-                context ?
-                    wrapWithContext(context, slider) :
-                    slider
-            );
             select = rendered.select;
             waitForDom = rendered.waitForDom;
 
             const bounds = select('SLIDER')!.getBoundingClientRect();
-            eventMock = getEventCoordinates(bounds, options && options.axis);
+            eventMock = getEventCoordinates(bounds, getAxis(options));
         });
 
         it('should change value', async () => {
@@ -646,8 +604,7 @@ function whenDragThingsAroundWithStep(
 
 function keyboard(
     clientRenderer: ClientRenderer,
-    options?: Partial<SliderProps>,
-    context?: any
+    options?: Partial<SliderProps>
 ) {
     const step = Number(options && options.step || 1);
     describe(step === 1 ? 'keyboard control' : 'keyboard control with step', () => {
@@ -663,7 +620,7 @@ function keyboard(
         let home: number = 0;
         let end: number = 100;
 
-        switch (options && options.axis) {
+        switch (getAxis(options)) {
             case AXISES.xReverse:
             case AXISES.yReverse:
                 deviation = -1 * step;
@@ -674,7 +631,7 @@ function keyboard(
         beforeEach(() => {
             onChange = sinon.spy();
             onInput = sinon.spy();
-            const slider = (
+            const rendered = clientRenderer.render(
                 <Slider
                     value={value}
                     min={min}
@@ -683,11 +640,6 @@ function keyboard(
                     onInput={onInput}
                     {...options}
                 />
-            );
-            const rendered = clientRenderer.render(
-                context ?
-                    wrapWithContext(context, slider) :
-                    slider
             );
             select = rendered.select;
             waitForDom = rendered.waitForDom;
@@ -1440,34 +1392,37 @@ describe.only('<Slider />', () => {
         keyboard(clientRenderer, {axis: AXISES.yReverse, step: 2});
     });
 
-    describe('RTL', () => {
+    describe('RTL Slider', () => {
         withValueMinMax(
             clientRenderer,
             'right',
             'width',
             'horizontal',
-            {RTL: true},
-            {RTL: true}
+            {
+                RTL: true
+            }
         );
 
         whenDragThingsAround(
             clientRenderer,
             'right',
             'width',
-            {RTL: true},
-            {RTL: true}
+            {
+                RTL: true
+            }
         );
 
         whenDragThingsAroundWithStep(
             clientRenderer,
             'right',
             'width',
-            {RTL: true},
-            {RTL: true}
+            {
+                RTL: true
+            }
         );
 
-        keyboard(clientRenderer, {RTL: true}, {RTL: true});
+        keyboard(clientRenderer, {RTL: true});
 
-        keyboard(clientRenderer, {step: 2, RTL: true}, {RTL: true});
+        keyboard(clientRenderer, {RTL: true, step: 2});
     });
 });
