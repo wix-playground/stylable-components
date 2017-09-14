@@ -1,6 +1,6 @@
 import {expect, sinon} from 'test-drive-react';
 import {overrideGlobalConfig, setGlobalConfig} from 'wix-react-tools';
-import {createLogger} from '../../src/utils/logger';
+import {createLogger, error, errorOnce, warn, warnOnce} from '../../src/utils/logger';
 
 function assetError(fn: sinon.SinonSpy, err: Error) {
     expect(fn).to.calledOnce;
@@ -8,8 +8,8 @@ function assetError(fn: sinon.SinonSpy, err: Error) {
     expect(fn.firstCall.args[0]).property('message', err.message);
 }
 
-type Method = 'log' | 'warn' | 'error';
-const methods: Method[] = ['log', 'warn', 'error'];
+type Method = 'warn' | 'error';
+const methods: Method[] = ['warn', 'error'];
 
 describe('logger', () => {
     let spies: {
@@ -30,6 +30,21 @@ describe('logger', () => {
             (console[method] as sinon.SinonExpectation).restore();
         });
         spies = {};
+    });
+
+    describe('check exported functions', () => {
+        it('warn() should be a function', () => {
+            expect(warn).to.instanceof(Function);
+        });
+        it('warnOnce() should be a function', () => {
+            expect(warnOnce).to.instanceof(Function);
+        });
+        it('error() should be a function', () => {
+            expect(error).to.instanceof(Function);
+        });
+        it('errorOnce() should be a function', () => {
+            expect(errorOnce).to.instanceof(Function);
+        });
     });
 
     describe('setGlobalConfig({devMode: true})', () => {

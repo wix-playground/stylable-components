@@ -21,12 +21,12 @@ export const createLogger = () => {
     const result: {
         [key: string]: Log
     } = {};
-    return ['log', 'warn', 'error'].reduce((obj, method: Method) => {
+    return ['warn', 'error'].reduce((obj, method: Method) => {
         const fn = createLogFunction(method);
         obj[method] = fn;
-        obj[method + 'Once'] = once(fn, set);
+        obj[`${method}Once`] = once(fn, set);
         return obj;
     }, result);
 };
 
-export const {log, warn, error, logOnce, warnOnce, errorOnce} = createLogger();
+export const {warn, error, warnOnce, errorOnce} = createLogger();
