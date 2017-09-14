@@ -4,4 +4,3 @@ export * from './simulate-mouse-event';
 export * from './simulate-touch-event';
 export * from './skip-describe-if-touch';
 export * from './sleep';
-export * from './wrap-with-context';
