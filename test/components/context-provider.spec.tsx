@@ -69,10 +69,12 @@ describe('<ContextProvider/>', () => {
     describe('render with dir="rtl" ', () => {
         class Inner extends React.Component {
             public static contextTypes = {
-                'context-provider-dir': PropTypes.string
+                contextProvider: PropTypes.shape({
+                    dir: PropTypes.string
+                })
             };
             public render() {
-                return <div data-automation-id="TEST_DIV" dir={this.context['context-provider-dir']}/>;
+                return <div data-automation-id="TEST_DIV" dir={this.context.contextProvider.dir}/>;
             }
         }
         let renderer: any;
@@ -88,50 +90,24 @@ describe('<ContextProvider/>', () => {
         it('should render component with div="rtl"', () => {
             expect(root).attr('dir', 'rtl');
         });
-        it('should pass "dir" as "context-provider-dir" context property', () => {
+        it('should pass "dir" as "contextProvider.dir" context property', () => {
             expect(renderer.select('TEST_DIV')).attr('dir', 'rtl');
         });
     });
 
-    describe('render with context-foo="bar"', () => {
-        class Inner extends React.Component {
-            public static contextTypes = {
-                foo: PropTypes.string
-            };
-            public render() {
-                return <div data-automation-id="TEST_DIV">{this.context.foo}</div>;
-            }
-        }
-
-        let renderer: any;
-        let root: any;
-
-        beforeEach(() => {
-            renderer = clientRenderer.render(
-                <ContextProvider context-foo="bar">
-                    <Inner/>
-                </ContextProvider>
-            );
-            root = findDOMNode(renderer.result as React.ReactInstance);
-        });
-
-        it('should pass the contenxt {foo: "bar"}', () => {
-            expect(renderer.select('TEST_DIV')).text('bar');
-        });
-
-    });
-
     // this could not be done since react does not allow to pass Symbol properties
-    // @see https://codepen.io/anon/pen/WZNmNX?editors=0010
+    // @see https://github.com/facebook/react/issues/7552
     describe.skip('render with Symbol property', () => {
         const prop = Symbol();
 
         class Inner extends React.Component {
             public static contextTypes = {
-                [prop]: PropTypes.string
+                contextProvider: PropTypes.shape({
+                    [prop]: PropTypes.any
+                })
             };
             public render() {
-                return <div data-automation-id="TEST_DIV">{this.context[prop]}</div>;
+                return <div data-automation-id="TEST_DIV">{this.context.contextProvider[prop]}</div>;
             }
         }
 
@@ -151,7 +127,7 @@ describe('<ContextProvider/>', () => {
             root = findDOMNode(renderer.result as React.ReactInstance);
         });
 
-        it('should pass the contenxt {[Symbol]: "baz"}', () => {
+        it('should pass the contenxt {contextProvider: {[Symbol]: "baz"}}', () => {
             expect(renderer.select('TEST_DIV')).text('baz');
         });
 
