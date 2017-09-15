@@ -5,13 +5,13 @@ Use `ContextProvider` component to pass information down the rendering tree and 
 When you render `<ContextProvider>...</ContextProvider>`, a default div HTML element is created in its place and any properties set on ContextProvider are routed to the rendered HTML element.
 
 ### API
-| property    	| type                     | default value| description
-|-------------	|--------------------------|--------------|---------------------------
-| tagName		| keyof ReactHTML          | 'div'		  | Override HTML tag used for rendering the component
-| dir    		| 'left' | 'right' | 'auto'|     		  | HTML `dir` property. Goes to `contextProvider.dir` context property
-| className   	| string                   |     		  | HTML `class` property
-| styles     	| object                   |     		  | Inline styles
-| *         	| any                      |     		  | Goes to `contextProvider.*` context property
+| property    	| type                               | default value| description
+|-------------	|------------------------------------|--------------|---------------------------
+| tagName		| keyof ReactHTML                    | 'div'	    | Override HTML tag used for rendering the component
+| dir    		| 'ltr' &#124; 'rtl' &#124; 'auto'   |              | HTML `dir` property. Goes to `contextProvider.dir` context property
+| className   	| string                             |     		    | HTML `class` property
+| styles     	| object                             |     		    | Inline styles
+| *         	| any                                |     		    | Goes to `contextProvider.*` context property
 
 ### Usage
 
