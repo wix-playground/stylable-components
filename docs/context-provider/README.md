@@ -1,31 +1,44 @@
-## ContextProvider
+# Context Provider
 
 Use `ContextProvider` component to pass information down the rendering tree and DOM.
 
-When you render `<ContextProvider>...</ContextProvider>`, a default div HTML element is created.
+When you render `<ContextProvider>{...}</ContextProvider>`, a default `div` HTML element is created in its place and specific properties set on `ContextProvider` are routed to the rendered HTML element, while other are passed to the special `contextProvider` object in context.
 
-### API
-| property    	| type                               | default value| description
-|-------------	|------------------------------------|--------------|---------------------------
-| tagName		| keyof ReactHTML                    | 'div'	    | Override HTML tag used for rendering the component
-| dir    		| 'ltr' &#124; 'rtl' &#124; 'auto'   |              | HTML `dir` property. Goes to `contextProvider.dir` context property
-| className   	| string                             |     		    | HTML `class` property
-| style     	| object                             |     		    | Inline styles
-| *         	| any                                |     		    | Goes to `contextProvider.*` context property
+## Special Properties
 
-### Usage
+Some properties are meant to be used for rendering context or HTML output config:
 
-```tsx
-<ContextProvider tagName="ul" dir="ltr" style={{color:'red'}} x={valueX}>
+| property    	    | value              	| rendered to DOM          	| Available in react context
+|-------------	    |--------------------	|--------------------------	|---------------------------
+| tagName     	    | `string`           	| modify the HTML tag name 	| -
+| style         	| `object`          	| inline styles             | -
+| className         | `string`          	| class attribute           | -
+| dir         	    | `rtl / ltr / auto` 	| dir attribute         	| `contextProvider.dir`
+| myProp *any name* | any                	| -                        	| `contextProvider.myProp`
+
+## Usage
+
+```jsx
+<ContextProvider tagName="ul" className="list" dir="ltr" style={{color:'red'}} x={valueX}>
     <header>
         <h1>Cheeses of Nazareth: Middle-Eastern Dairy Product Suppliers</h1>
     </header>
 </ContextProvider>
 ```
 
-### Sub Context Provider
+The context object `{contextProvider: {dir: 'ltr', x: valueX}` will be past down the render and the following HTML will output:
 
-```tsx
+```html
+<ul dir="ltr" class="list" style="color:red">
+    <header>
+        <h1>Cheeses of Nazareth: Middle-Eastern Dairy Product Suppliers</h1>
+    </header>
+</ul>
+```
+
+### Sub Context Providers
+
+```jsx
 <ContextProvider dir="ltr" x={valueX}>
     <header>
         <h1>Cheeses of Nazareth: Middle-Eastern Dairy Product Suppliers</h1>
@@ -34,4 +47,17 @@ When you render `<ContextProvider>...</ContextProvider>`, a default div HTML ele
         <p>טקסט בעברית שמיושר לימין כנראה...</p>
     </ContextProvider>
 </ContextProvider>
+```
+
+The context object `{contextProvider: {dir: 'ltr', x: valueX}}` will be past down the render to the `header` and `h1` while the context object `{contextProvider: {dir: 'rtl', x: valueZ}}` will be past to the `p` element and the following HTML will output:
+
+```html
+<div dir="ltr">
+    <header>
+        <h1>Cheeses of Nazareth: Middle-Eastern Dairy Product Suppliers</h1>
+    </header>
+    <div dir="rtl">
+        <p>טקסט בעברית שמיושר לימין כנראה...</p>
+    </div>
+</div>
 ```
