@@ -4,7 +4,7 @@ export type Props = {
     [EventName in keyof WindowEventMap]?: (event: WindowEventMap[EventName]) => void;
 };
 
-export default class GlobalEvent extends Component<Props> {
+export class GlobalEvent extends Component<Props> {
 
     public shouldComponentUpdate() {
         return false;

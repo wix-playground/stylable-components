@@ -44,6 +44,29 @@ describe('<Portal />', function() {
         await waitFor(() => expect(portal.root).to.have.nested.property('style.position', 'fixed'));
     });
 
+    it('applies supplied className and id to the popup and updates them if changed', async function() {
+        const {container, result} = clientRenderer.render(
+            <Portal className="my-test-class" id="my-test-id">
+                <span>Portal Body</span>
+            </Portal>
+        );
+
+        const portal = new PortalTestDriver(result as Portal);
+
+        await waitFor(() => expect(portal.root).to.have.nested.property('className', 'my-test-class'));
+        await waitFor(() => expect(portal.root).to.have.nested.property('id', 'my-test-id'));
+
+        clientRenderer.render(
+            <Portal className="another-test-class" id="another-test-id">
+                <span>Portal Body</span>
+            </Portal>,
+            container
+        );
+
+        await waitFor(() => expect(portal.root).to.have.nested.property('className', 'another-test-class'));
+        await waitFor(() => expect(portal.root).to.have.nested.property('id', 'another-test-id'));
+    });
+
     it('removes the component when unmounting', async function() {
         const container = document.body.appendChild(document.createElement('div'));
         const {result} = clientRenderer.render(
@@ -62,24 +85,26 @@ describe('<Portal />', function() {
     });
 
     it('updates the portal content if the children are changed', async function() {
+        const initialText = 'Portal Body';
+        const updatedText = 'Portal Body Updated';
         const {container, result} = clientRenderer.render(
             <Portal>
-                <span>Portal Body</span>
+                <span>{initialText}</span>
             </Portal>
         );
 
         const portal = new PortalTestDriver(result as Portal);
 
-        await waitFor(() => expect(portal.content[0]).to.be.present());
+        await waitFor(() => expect(portal.content[0]).to.have.text(initialText));
 
         clientRenderer.render(
             <Portal>
-                <span>Portal Body Updated</span>
+                <span>{updatedText}</span>
             </Portal>,
             container
         );
 
-        await waitFor(() => expect(portal.content[0]).to.be.present());
+        await waitFor(() => expect(portal.content[0]).to.have.text(updatedText));
     });
 
     it('renders the portal in the bottom of the DOM', async function() {

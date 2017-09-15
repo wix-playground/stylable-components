@@ -1,6 +1,5 @@
 import * as React from 'react';
-import {SBComponent} from 'stylable-react-component';
-import {Toggle} from '../../src';
+import {ContextProvider, Toggle} from '../../src';
 import {ChangeEvent} from '../../src/types/events';
 import styles from '../wix-theme/theme.st.css';
 
@@ -30,12 +29,13 @@ export class ToggleDemo extends React.Component<{}, State> {
                     </th>
                     <th>
                         Controlled RTL
-                        <Toggle
-                            label="with icons"
-                            rtl
-                            value={this.state.checked}
-                            onChange={onChange}
-                        />
+                        <ContextProvider dir="rtl">
+                            <Toggle
+                                label="with icons"
+                                value={this.state.checked}
+                                onChange={onChange}
+                            />
+                        </ContextProvider>
                     </th>
                     <th data-automation-id="TOGGLE_DEMO_UNCONTROLLED">
                         Off

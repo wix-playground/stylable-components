@@ -1,17 +1,16 @@
 import * as keycode from 'keycode';
 import * as React from 'react';
-import {SBComponent} from 'stylable-react-component';
-import {root} from 'wix-react-tools';
-import {Popup} from '../../../src/components/popup';
+import {properties, stylable} from 'wix-react-tools';
 import {FormInputProps} from '../../types/forms';
 import {noop} from '../../utils';
+import {Popup} from '../popup';
 import {Calendar} from './calendar';
 import {CalendarIcon} from './date-picker-icons';
 import styles from './date-picker.st.css';
 
 const invalidDate: string = 'Invalid Date';
 
-export interface DatePickerProps extends FormInputProps<Date> {
+export interface DatePickerProps extends FormInputProps<Date>, properties.Props {
     placeholder?: string;
     openOnFocus?: boolean;
     disabled?: boolean;
@@ -30,10 +29,11 @@ export interface DatePickerState {
     highlightFocusedDate: boolean;
 }
 
-@SBComponent(styles)
+@stylable(styles)
+@properties
 export class DatePicker extends React.PureComponent<DatePickerProps, DatePickerState> {
     public static defaultProps: Partial<DatePickerProps> = {
-        openOnFocus: true,
+        openOnFocus: false,
         onChange: noop,
         calendarIcon: CalendarIcon
     };
@@ -47,16 +47,11 @@ export class DatePicker extends React.PureComponent<DatePickerProps, DatePickerS
     }
 
     public render() {
-        const rootProps = root(this.props, {
-            'data-automation-id': 'DATE_PICKER_ROOT',
-            'className': 'root'
-        }) as React.HTMLAttributes<HTMLDivElement>;
-
         const Icon = this.props.calendarIcon!;
 
         return (
             <div
-                {...rootProps}
+                data-automation-id="DATE_PICKER_ROOT"
                 ref={dropdownRef => this.setState({dropdownRef})}
             >
                 <input

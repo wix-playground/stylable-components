@@ -1,5 +1,7 @@
 import * as React from 'react';
-import {SBComponent} from 'stylable-react-component';
+import {stylable} from 'wix-react-tools';
+
+import ComponentsDemoCSS from './style.st.css';
 
 import {CheckBoxDemo} from './components/checkbox-demo';
 import {DatePickerDemo} from './components/date-picker-demo';
@@ -17,7 +19,7 @@ import {TreeViewDemo, TreeViewDemoCustom} from './components/tree-view-demo';
 import './style.st.css';
 import styles from './wix-theme/theme.st.css';
 
-@SBComponent(styles)
+@stylable(ComponentsDemoCSS)
 export class ComponentsDemo extends React.Component {
     public render() {
         return (

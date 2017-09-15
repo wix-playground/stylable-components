@@ -15,7 +15,6 @@ The **RadioGroup** component is used to group together children and provide them
 | name | string |  | no | The name of the group. sets the _name_ property on each child |
 | disabled | boolean | false | no | Whether all the radio buttons are disabled |
 | readonly | boolean | false | no | Whether the group value cannot be changed |
-| labelLocation | 'right' or 'left' | 'right' | no | Whether each child's value appears as text to the right or left of the radio button  |
 | onChange | (e: RadioChangeEvent) => void | NOOP | no | Triggered by changing a radio button state |
 | dataSource | Array\<RadioButtonProps> | [] | no | Array of dataSchema objects |
 
@@ -28,7 +27,6 @@ The **RadioGroup** component is used to group together children and provide them
 | name | string |  | no | The name of the group that this button is part of |
 | disabled | boolean | false | no | Whether this button appears as disabled |
 | readonly | boolean | false | no | Whether this button's value can be changed |
-| labelLocation | 'right' or 'left' | 'right' | no | Whether the text supplied in the value property appears to the right or left of the button itself  |
 | onChange | (e: RadioChangeEvent) => void | NOOP | no | Triggered by changing the button's state |
 
 
@@ -83,7 +81,6 @@ export class Example2 extends React.Component<{}, {}>{
         return (
             <RadioGroup
                  onChange={this.onChange}
-                 labelLocation="left"
                  name="example2"
                  className="rg2"
                  dataSource={[
@@ -114,7 +111,6 @@ export class Example2 extends React.Component<{}, {}>{
 | :disabled | Style the button when it is disabled |
 | :focused | Style the component when it gets document focus |
 | :checked |  Style the button when it is checked |
-| :isLeftLabel | Style the component when the label is the left side (by default label is on the right) |
 
 
 
