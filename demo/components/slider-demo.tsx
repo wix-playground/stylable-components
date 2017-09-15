@@ -15,8 +15,8 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
         super(props);
 
         this.state = {
-            value: 70,
-            rawValue: '70'
+            value: 50,
+            rawValue: '50'
         };
     }
 
@@ -190,7 +190,7 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                     <tr>
                         <th className="table-head-cell">Slider with RTL</th>
                         <th className="table-head-cell">Reverse Slider with RTL</th>
-                        <th className="table-head-cell" />
+                        <th className="table-head-cell">Slider with RTL and marks</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -220,7 +220,20 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                                 />
                             </ContextProvider>
                         </td>
-                        <td />
+                        <td>
+                            <ContextProvider
+                                dir="rtl"
+                            >
+                                <Slider
+                                    value={this.state.value}
+                                    min={min}
+                                    max={max}
+                                    step={10}
+                                    marks={true}
+                                    onChange={this.onSliderChange}
+                                />
+                            </ContextProvider>
+                        </td>
                     </tr>
                 </tbody>
             </table>

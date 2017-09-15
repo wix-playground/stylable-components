@@ -660,7 +660,7 @@ function keyboard(
         let home: number = 0;
         let end: number = 100;
 
-        switch (getAxis(options)) {
+        switch (getAxis(options, context)) {
             case AXISES.xReverse:
             case AXISES.yReverse:
                 deviation = -1 * step;
@@ -1462,8 +1462,8 @@ describe.only('<Slider />', () => {
             {dir: 'rtl'}
         );
 
-        keyboard(clientRenderer, {RTL: true});
+        keyboard(clientRenderer, {}, {dir: 'rtl'});
 
-        keyboard(clientRenderer, {RTL: true, step: 2});
+        keyboard(clientRenderer, {step: 2}, {dir: 'rtl'});
     });
 });
