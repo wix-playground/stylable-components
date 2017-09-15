@@ -52,6 +52,7 @@
     middleOfHandle: -8px;
 
     minVerticalSliderHeight: 44px;
+    clickableAreaRadius: 15px;
 }
 
 .native-input {
@@ -78,24 +79,24 @@
 
 .root:x {
     width: 100%;
-    padding: 15px 0;
+    padding: value(clickableAreaRadius) 0;
 }
 
 .root:x-reverse {
     width: 100%;
-    padding: 15px 0;
+    padding: value(clickableAreaRadius) 0;
 }
 
 .root:y {
     min-height: value(minVerticalSliderHeight);
     height: 100%;
-    padding: 0 15px;
+    padding: 0 value(clickableAreaRadius);
 }
 
 .root:y-reverse {
     min-height: value(minVerticalSliderHeight);
     height: 100%;
-    padding: 0 15px;
+    padding: 0 value(clickableAreaRadius);
 }
 
 .track {
