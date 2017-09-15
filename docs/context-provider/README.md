@@ -2,7 +2,7 @@
 
 Use `ContextProvider` component to pass information down the rendering tree and DOM.
 
-When you render `<ContextProvider>...</ContextProvider>`, a default div HTML element is created in its place and any properties set on ContextProvider are routed to the rendered HTML element.
+When you render `<ContextProvider>...</ContextProvider>`, a default div HTML element is created.
 
 ### API
 | property    	| type                               | default value| description
