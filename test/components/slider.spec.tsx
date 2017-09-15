@@ -1,11 +1,11 @@
 import * as keycode from 'keycode';
 import * as React from 'react';
 import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react';
+import {ContextProvider} from '../../src';
 import {AXISES, AxisOptions, Slider, SliderProps} from '../../src/components/slider';
 import {ChangeEvent} from '../../src/types/events';
 import WindowStub from '../stubs/window.stub';
-import {simulateMouseEvent, simulateTouchEvent} from '../utils';
-import {describeIfTouch} from '../utils/skip-describe-if-touch';
+import {simulateMouseEvent, simulateTouchEvent, skipItIfTouch} from '../utils';
 
 let environment: WindowStub;
 
@@ -14,19 +14,23 @@ interface EventCoordinates {
     clientY: number;
 }
 
-function getAxis(options?: Partial<{axis: AxisOptions, RTL: boolean}>) {
+function getAxis(
+    options?: Partial<{axis: AxisOptions, RTL: boolean}>,
+    context?: any
+) {
     let axis;
     if (!options) {
         return;
     }
     axis = options.axis;
-    if (options.RTL) {
+    if (context && context.dir === 'rtl') {
         axis = axis === AXISES.x ?
             AXISES.xReverse :
             axis === AXISES.xReverse ?
                 AXISES.x :
                 axis || AXISES.xReverse;
     }
+
     return axis;
 }
 
@@ -60,12 +64,34 @@ function getEventCoordinates(bounds: any, direction: string | undefined, value: 
     }
 }
 
+function getRenderedSlider(
+    clientRenderer: ClientRenderer,
+    props?: Partial<SliderProps>,
+    context?: any
+) {
+    const slider = context ?
+        (
+            <ContextProvider {...context}>
+                <Slider
+                    {...props}
+                />
+            </ContextProvider>
+        ) :
+        (
+            <Slider
+                {...props}
+            />
+        );
+    return clientRenderer.render(slider);
+}
+
 function withValueMinMax(
     clientRenderer: ClientRenderer,
     positionProp: string,
     sizeProp: string,
     orientation: 'vertical' | 'horizontal',
-    options?: Partial<SliderProps>
+    options?: Partial<SliderProps>,
+    context?: any
 ) {
     describe('with value, min and max', () => {
         const value = 5;
@@ -76,14 +102,17 @@ function withValueMinMax(
         let waitForDom: (expectation: () => void) => Promise<void>;
 
         beforeEach(() => {
-            const rendered = clientRenderer.render(
-                <Slider
-                    value={value}
-                    min={min}
-                    max={max}
-                    {...options}
-                />
+            const rendered = getRenderedSlider(
+                clientRenderer,
+                {
+                    value,
+                    min,
+                    max,
+                    ...options
+                },
+                context
             );
+
             select = rendered.select;
             waitForDom = rendered.waitForDom;
         });
@@ -127,7 +156,8 @@ function whenDragThingsAround(
     clientRenderer: ClientRenderer,
     positionProp: string,
     sizeProp: string,
-    options?: Partial<SliderProps>
+    options?: Partial<SliderProps>,
+    context?: any
 ) {
     describe('when drag things around', () => {
         const value = 5;
@@ -143,21 +173,23 @@ function whenDragThingsAround(
         beforeEach(() => {
             onChange = sinon.spy();
             onInput = sinon.spy();
-            const rendered = clientRenderer.render(
-                <Slider
-                    value={value}
-                    min={min}
-                    max={max}
-                    onChange={onChange}
-                    onInput={onInput}
-                    {...options}
-                />
+            const rendered = getRenderedSlider(
+                clientRenderer,
+                {
+                    value,
+                    min,
+                    max,
+                    onChange,
+                    onInput,
+                    ...options
+                },
+                context
             );
             select = rendered.select;
             waitForDom = rendered.waitForDom;
 
             const bounds = select('SLIDER')!.getBoundingClientRect();
-            eventMock = getEventCoordinates(bounds, getAxis(options));
+            eventMock = getEventCoordinates(bounds, getAxis(options, context));
         });
 
         it('should change value', async () => {
@@ -231,7 +263,7 @@ function whenDragThingsAround(
         });
     });
 
-    describeIfTouch('when drag things around using touch', () => {
+    describe('when drag things around using touch', () => {
         const value = 5;
         const min = 0;
         const max = 10;
@@ -245,24 +277,26 @@ function whenDragThingsAround(
         beforeEach(function() {
             onChange = sinon.spy();
             onInput = sinon.spy();
-            const rendered = clientRenderer.render(
-                <Slider
-                    value={value}
-                    min={min}
-                    max={max}
-                    onChange={onChange}
-                    onInput={onInput}
-                    {...options}
-                />
+            const rendered = getRenderedSlider(
+                clientRenderer,
+                {
+                    value,
+                    min,
+                    max,
+                    onChange,
+                    onInput,
+                    ...options
+                },
+                context
             );
             select = rendered.select;
             waitForDom = rendered.waitForDom;
 
             const bounds = select('SLIDER')!.getBoundingClientRect();
-            eventMock = getEventCoordinates(bounds, getAxis(options));
+            eventMock = getEventCoordinates(bounds, getAxis(options, context));
         });
 
-        it('should change value', async () => {
+        skipItIfTouch('should change value', async () => {
             await waitFor(() => {
                 const element = select('SLIDER');
                 const handle = select('SLIDER-HANDLE');
@@ -283,7 +317,7 @@ function whenDragThingsAround(
             });
         });
 
-        it('should call onChange', async () => {
+        skipItIfTouch('should call onChange', async () => {
             await waitFor(() => {
                 const element = select('SLIDER');
 
@@ -310,7 +344,7 @@ function whenDragThingsAround(
             });
         });
 
-        it('should call onInput', async () => {
+        skipItIfTouch('should call onInput', async () => {
             await waitFor(() => {
                 const element = select('SLIDER');
 
@@ -352,7 +386,8 @@ function whenDragThingsAroundWithStep(
     clientRenderer: ClientRenderer,
     positionProp: string,
     sizeProp: string,
-    options?: Partial<SliderProps>
+    options?: Partial<SliderProps>,
+    context?: any
 ) {
     describe('when drag things around with step', () => {
         const value = 5;
@@ -369,22 +404,24 @@ function whenDragThingsAroundWithStep(
         beforeEach(() => {
             onChange = sinon.spy();
             onInput = sinon.spy();
-            const rendered = clientRenderer.render(
-                <Slider
-                    value={value}
-                    min={min}
-                    max={max}
-                    step={step}
-                    onChange={onChange}
-                    onInput={onInput}
-                    {...options}
-                />
+            const rendered = getRenderedSlider(
+                clientRenderer,
+                {
+                    value,
+                    min,
+                    max,
+                    step,
+                    onChange,
+                    onInput,
+                    ...options
+                },
+                context
             );
             select = rendered.select;
             waitForDom = rendered.waitForDom;
 
             const bounds = select('SLIDER')!.getBoundingClientRect();
-            eventMock = getEventCoordinates(bounds, getAxis(options), 0.75);
+            eventMock = getEventCoordinates(bounds, getAxis(options, context));
         });
 
         it('renders handle on the right place', async () => {
@@ -483,7 +520,7 @@ function whenDragThingsAroundWithStep(
         });
     });
 
-    describeIfTouch('when drag things around with step using touch', () => {
+    describe('when drag things around with step using touch', () => {
         const value = 5;
         const min = 0;
         const max = 10;
@@ -498,25 +535,27 @@ function whenDragThingsAroundWithStep(
         beforeEach(function() {
             onChange = sinon.spy();
             onInput = sinon.spy();
-            const rendered = clientRenderer.render(
-                <Slider
-                    value={value}
-                    min={min}
-                    max={max}
-                    step={step}
-                    onChange={onChange}
-                    onInput={onInput}
-                    {...options}
-                />
+            const rendered = getRenderedSlider(
+                clientRenderer,
+                {
+                    value,
+                    min,
+                    max,
+                    step,
+                    onChange,
+                    onInput,
+                    ...options
+                },
+                context
             );
             select = rendered.select;
             waitForDom = rendered.waitForDom;
 
             const bounds = select('SLIDER')!.getBoundingClientRect();
-            eventMock = getEventCoordinates(bounds, getAxis(options));
+            eventMock = getEventCoordinates(bounds, getAxis(options, context));
         });
 
-        it('should change value', async () => {
+        skipItIfTouch('should change value', async () => {
             await waitFor(() => {
                 const element = select('SLIDER');
                 const handle = select('SLIDER-HANDLE');
@@ -537,7 +576,7 @@ function whenDragThingsAroundWithStep(
             });
         });
 
-        it('should call onChange', async () => {
+        skipItIfTouch('should call onChange', async () => {
             await waitFor(() => {
                 const element = select('SLIDER');
 
@@ -564,7 +603,7 @@ function whenDragThingsAroundWithStep(
             });
         });
 
-        it('should call onInput', async () => {
+        skipItIfTouch('should call onInput', async () => {
             await waitFor(() => {
                 const element = select('SLIDER');
 
@@ -604,7 +643,8 @@ function whenDragThingsAroundWithStep(
 
 function keyboard(
     clientRenderer: ClientRenderer,
-    options?: Partial<SliderProps>
+    options?: Partial<SliderProps>,
+    context?: any
 ) {
     const step = Number(options && options.step || 1);
     describe(step === 1 ? 'keyboard control' : 'keyboard control with step', () => {
@@ -631,15 +671,17 @@ function keyboard(
         beforeEach(() => {
             onChange = sinon.spy();
             onInput = sinon.spy();
-            const rendered = clientRenderer.render(
-                <Slider
-                    value={value}
-                    min={min}
-                    max={max}
-                    onChange={onChange}
-                    onInput={onInput}
-                    {...options}
-                />
+            const rendered = getRenderedSlider(
+                clientRenderer,
+                {
+                    value,
+                    min,
+                    max,
+                    onChange,
+                    onInput,
+                    ...options
+                },
+                context
             );
             select = rendered.select;
             waitForDom = rendered.waitForDom;
@@ -816,7 +858,7 @@ function keyboard(
     });
 }
 
-describe('<Slider />', () => {
+describe.only('<Slider />', () => {
     const clientRenderer = new ClientRenderer();
 
     beforeEach(() => {
@@ -1398,18 +1440,16 @@ describe('<Slider />', () => {
             'right',
             'width',
             'horizontal',
-            {
-                RTL: true
-            }
+            {},
+            {dir: 'rtl'}
         );
 
         whenDragThingsAround(
             clientRenderer,
             'right',
             'width',
-            {
-                RTL: true
-            }
+            {},
+            {dir: 'rtl'}
         );
 
         whenDragThingsAroundWithStep(
@@ -1418,7 +1458,8 @@ describe('<Slider />', () => {
             'width',
             {
                 RTL: true
-            }
+            },
+            {dir: 'rtl'}
         );
 
         keyboard(clientRenderer, {RTL: true});

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {stylable} from 'wix-react-tools';
-import {Slider} from '../../src';
+import {ContextProvider, Slider} from '../../src';
 import {ChangeEvent} from '../../src/types/events';
 import style from './slider-demo.st.css';
 
@@ -15,8 +15,8 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
         super(props);
 
         this.state = {
-            value: 50,
-            rawValue: '50'
+            value: 70,
+            rawValue: '70'
         };
     }
 
@@ -196,23 +196,29 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                 <tbody>
                     <tr>
                         <td>
-                            <Slider
-                                value={this.state.value}
-                                min={min}
-                                max={max}
-                                RTL={true}
-                                onChange={this.onSliderChange}
-                            />
+                            <ContextProvider
+                                dir="rtl"
+                            >
+                                <Slider
+                                    value={this.state.value}
+                                    min={min}
+                                    max={max}
+                                    onChange={this.onSliderChange}
+                                />
+                            </ContextProvider>
                         </td>
                         <td>
-                            <Slider
-                                value={this.state.value}
-                                min={min}
-                                max={max}
-                                RTL={true}
-                                axis="x-reverse"
-                                onChange={this.onSliderChange}
-                            />
+                            <ContextProvider
+                                dir="rtl"
+                            >
+                                <Slider
+                                    value={this.state.value}
+                                    min={min}
+                                    max={max}
+                                    axis="x-reverse"
+                                    onChange={this.onSliderChange}
+                                />
+                            </ContextProvider>
                         </td>
                         <td />
                     </tr>

@@ -83,6 +83,12 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         onDragStop: noop
     };
 
+    public static contextTypes = {
+        contextProvider: React.PropTypes.shape({
+            dir: React.PropTypes.string
+        })
+    };
+
     private focusableElement: HTMLElement;
 
     private sliderArea: HTMLElement;
@@ -96,6 +102,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
 
         const {min, max, step, axis} = this.props;
 
+        // console.log('CONSTRUCTOR', this.isReverse(axis!), this.isRTL(), this.isReverse(axis!) !== this.isRTL());
         this.state = {
             relativeValue: this.getRelativeValue(this.getDefaultValue(), min!, max!, step),
             relativeStep: this.getRelativeStep(step, min!, max!),
@@ -309,7 +316,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
     }
 
     private isRTL(): boolean {
-        return Boolean(this.props.RTL);
+        return Boolean(this.context.contextProvider && this.context.contextProvider.dir === 'rtl');
     }
 
     private increaseValue(toEdge: boolean = false, multiplier: number = 1) {
