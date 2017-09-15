@@ -34,7 +34,7 @@ function getAxis(
     return axis;
 }
 
-function getEventCoordinates(bounds: any, direction: string | undefined, value: number = 0.7): EventCoordinates {
+function getEventCoordinates(bounds: any, direction: string | undefined, value: number = 0.702): EventCoordinates {
     switch (direction) {
         case AXISES.x:
             return {
