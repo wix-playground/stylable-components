@@ -94,11 +94,7 @@
     background-color: value(DS1);
 }
 
-.root:rtl::switch {
-    margin-left: 100%;
-    transform: translateX(-100%);
-}
 .root:rtl:checked::switch {
-    margin-left: 0;
-    transform: translateX(0);
+    margin-right: 100%;
+    transform: translateX(100%);
 }
