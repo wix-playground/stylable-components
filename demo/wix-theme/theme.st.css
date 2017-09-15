@@ -356,13 +356,13 @@ Slider {
 	width:288px;
 }
 
-Slider::track {
+Slider:x::track {
 	height: 6px;
 	background: #DAEFFE;
 	border-radius: 3px;
 }
 
-Slider::progress {
+Slider:x::progress {
 	height: 6px;
 	background: #3899EC;
 	border-radius: 3px;
