@@ -2,7 +2,7 @@ import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import {omit} from '../../utils';
 
-export interface CPProps {
+export interface ContextProviderProps {
     dir?: string;
     tagName?: string;
     className?: string;
@@ -11,7 +11,7 @@ export interface CPProps {
     [key: string]: any;
 }
 
-export class ContextProvider extends React.PureComponent<CPProps> {
+export class ContextProvider extends React.PureComponent<ContextProviderProps> {
     public static childContextTypes = {
         contextProvider: PropTypes.object
     };
