@@ -3,7 +3,7 @@ import * as React from 'react';
 import {omit} from '../../utils';
 
 export interface ContextProviderProps {
-    dir?: string;
+    dir?: 'ltr' | 'rtl' | 'auto';
     tagName?: string;
     className?: string;
     style?: object;
