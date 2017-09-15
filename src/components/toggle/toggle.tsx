@@ -1,3 +1,4 @@
+import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import {stylable} from 'wix-react-tools';
 import {FormInputProps} from '../../types/forms';
@@ -11,7 +12,6 @@ export interface Props extends FormInputProps<boolean> {
     tabIndex?: number;
     required?: boolean;
     name?: string;
-    rtl?: boolean;
 }
 export interface State {
     focus: boolean;
@@ -23,8 +23,12 @@ export default class Toggle extends React.Component<Props, State> {
         value: false,
         disabled: false,
         error: false,
-        rtl: false,
         required: false
+    };
+    public static contextTypes = {
+        contextProvider: PropTypes.shape({
+            dir: PropTypes.string
+        })
     };
 
     public state = {
@@ -38,7 +42,6 @@ export default class Toggle extends React.Component<Props, State> {
             value,
             disabled,
             error,
-            rtl,
             label,
             name,
             required,
@@ -55,7 +58,8 @@ export default class Toggle extends React.Component<Props, State> {
                     disabled: disabled!,
                     focus: focus!,
                     error: error!,
-                    rtl: rtl!
+                    rtl: this.context.contextProvider &&
+                        this.context.contextProvider.dir === 'rtl'
                 }}
             >
                 {!disabled &&
