@@ -251,7 +251,6 @@
 
 /* Focus state */
 .handle:focus {
-    -webkit-box-shadow: 0 0 0 value(focusSize) value(colorHandle_Focus);
     box-shadow: 0 0 0 value(focusSize) value(colorHandle_Focus);
     outline: none;
 }
@@ -259,8 +258,7 @@
 /* Active state */
 .root:active .handle,
 .root:active:hover .handle {
-    -webkit-box-shadow: 0 0 0 0 value(colorHandle_Focus);
-    box-shadow: 0 0 0 0 value(colorHandle_Focus);
+    box-shadow: none;
     background-color: value(colorHandle_Active);
     border-color: value(colorHandle_Active);
 }
