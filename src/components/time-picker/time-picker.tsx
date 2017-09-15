@@ -1,4 +1,5 @@
 import * as keycode from 'keycode';
+import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import {stylable} from 'wix-react-tools';
 import {FormInputProps} from '../../types/forms';
@@ -62,8 +63,12 @@ export class TimePicker extends React.Component<Props, State> {
         format: is12TimeFormat ? 'ampm' : '24h',
         disabled: false,
         error: false,
-        rtl: false,
         required: false
+    };
+    public static contextTypes = {
+        contextProvider: PropTypes.shape({
+            dir: PropTypes.string
+        })
     };
     private nativeInput: HTMLInputElement | null;
     private segments: {
@@ -99,7 +104,7 @@ export class TimePicker extends React.Component<Props, State> {
 
     public render() {
         const {focus, hh, mm, ampm, format, notification} = this.state;
-        const {label, placeholder, disabled, error, required, rtl, name} = this.props;
+        const {label, placeholder, disabled, error, required, name} = this.props;
         const isValueSet = hh !== undefined || mm !== undefined;
         const timeSegments: TimeSegment[] = ['hh', 'mm'];
 
@@ -111,8 +116,9 @@ export class TimePicker extends React.Component<Props, State> {
                     'error': error!,
                     'disabled': disabled!,
                     'empty': !isValueSet,
-                    'rtl': rtl!,
-                    'has-placeholder': !!placeholder
+                    'has-placeholder': !!placeholder,
+                    'rtl': this.context.contextProvider &&
+                        this.context.contextProvider.dir === 'rtl'
                 }}
                 onMouseDown={this.onRootMouseDown}
             >

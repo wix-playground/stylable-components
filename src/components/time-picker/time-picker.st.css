@@ -97,7 +97,10 @@
 .root:rtl {
     padding-right: 9px;
     padding-left: 0;
-    flex-direction: row-reverse;
+}
+.root:rtl::time:after {
+    right: 1.4em;
+    left: auto;
 }
 
 .input {
@@ -148,9 +151,11 @@
     border: 0;
     outline: 0;
 }
-/* reset ios safari disabled opacity */
 .input:disabled {
     opacity: 1;
+    background-color: inherit;
+    border: none;
+    color: inherit;
 }
 
 .placeholder {
