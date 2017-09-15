@@ -858,7 +858,7 @@ function keyboard(
     });
 }
 
-describe.only('<Slider />', () => {
+describe('<Slider />', () => {
     const clientRenderer = new ClientRenderer();
 
     beforeEach(() => {
@@ -1456,9 +1456,7 @@ describe.only('<Slider />', () => {
             clientRenderer,
             'right',
             'width',
-            {
-                RTL: true
-            },
+            {},
             {dir: 'rtl'}
         );
 
