@@ -132,4 +132,54 @@ describe('<ContextProvider/>', () => {
         });
 
     });
+
+    describe('nested contextProvider', () => {
+        class Inner extends React.Component<{id: string}> {
+            public static contextTypes = {
+                contextProvider: PropTypes.shape({
+                    dir: PropTypes.string,
+                    x: PropTypes.number
+                })
+            };
+            public render() {
+                return (
+                    <div
+                        data-automation-id={this.props.id}
+                        dir={this.context.contextProvider.dir}
+                        children={this.context.contextProvider.x}
+                    />
+                );
+            }
+        }
+
+        let inner1: any;
+        let inner2: any;
+
+        beforeEach(() => {
+            const renderer = clientRenderer.render((
+                <ContextProvider dir="ltr" x={10}>
+                    <Inner id="TEST_DIV_1"/>
+                    <ContextProvider dir="rtl" x={20}>
+                        <Inner id="TEST_DIV_2"/>
+                    </ContextProvider>
+                </ContextProvider>
+            ));
+            inner1 = renderer.select('TEST_DIV_1');
+            inner2 = renderer.select('TEST_DIV_2');
+        });
+
+        it('first Inner component should have dir="ltr', () => {
+            expect(inner1).attr('dir', 'ltr');
+        });
+        it('first Inner component should have contnt "10"', () => {
+            expect(inner1).text('10');
+        });
+        it('second Inner component should have dir="rtl', () => {
+            expect(inner2).attr('dir', 'rtl');
+        });
+        it('second Inner component should have contnt "20"', () => {
+            expect(inner2).text('20');
+        });
+
+    });
 });
