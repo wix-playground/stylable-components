@@ -258,13 +258,17 @@
 /* Active state */
 .root:active .handle,
 .root:active:hover .handle {
-    -webkit-box-shadow: 0 0 0 value(focusSize) value(colorHandle_Focus);
-    box-shadow: 0 0 0 value(focusSize) value(colorHandle_Focus);
+    -webkit-box-shadow: 0 0 0 0 value(colorHandle_Focus);
+    box-shadow: 0 0 0 0 value(colorHandle_Focus);
     background-color: value(colorHandle_Active);
     border-color: value(colorHandle_Active);
 }
 
 .root:active .track {
+    background-color: value(colorTrack);
+}
+
+.root:active:hover .track {
     background-color: value(colorTrack);
 }
 
