@@ -171,13 +171,13 @@ describe('<ContextProvider/>', () => {
         it('first Inner component should have dir="ltr', () => {
             expect(inner1).attr('dir', 'ltr');
         });
-        it('first Inner component should have contnt "10"', () => {
+        it('first Inner component should have content "10"', () => {
             expect(inner1).text('10');
         });
         it('second Inner component should have dir="rtl', () => {
             expect(inner2).attr('dir', 'rtl');
         });
-        it('second Inner component should have contnt "20"', () => {
+        it('second Inner component should have content "20"', () => {
             expect(inner2).text('20');
         });
 
