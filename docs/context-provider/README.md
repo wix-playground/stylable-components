@@ -10,7 +10,7 @@ When you render `<ContextProvider>...</ContextProvider>`, a default div HTML ele
 | tagName		| keyof ReactHTML                    | 'div'	    | Override HTML tag used for rendering the component
 | dir    		| 'ltr' &#124; 'rtl' &#124; 'auto'   |              | HTML `dir` property. Goes to `contextProvider.dir` context property
 | className   	| string                             |     		    | HTML `class` property
-| styles     	| object                             |     		    | Inline styles
+| style     	| object                             |     		    | Inline styles
 | *         	| any                                |     		    | Goes to `contextProvider.*` context property
 
 ### Usage
