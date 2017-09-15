@@ -32,7 +32,7 @@
     color_Disabled: value(DS1);
 
     markSize: 8px;
-    markRadius: 4px;
+    markRadius: 50%;
     markMiddleOfBar: -2px;
     markMiddleOfDot: -4px;
 
@@ -41,7 +41,7 @@
     handleSize: 16px;
     handleWidth: value(handleSize);
     handleHeight: value(handleSize);
-    handleRadius: 8px;
+    handleRadius: 50%;
     handleBorder: 1px solid value(BK2);
     handleBorderHover: 1px solid value(PR2);
 
@@ -52,6 +52,7 @@
     middleOfHandle: -8px;
 
     minVerticalSliderHeight: 44px;
+    clickableAreaRadius: 15px;
 }
 
 .native-input {
@@ -64,27 +65,9 @@
 
 .root {
     -st-states: active, disabled, error, x, x-reverse, y, y-reverse;
+
     position: relative;
     display: inline-block;
-}
-
-.root:x {
-    width: 100%;
-}
-
-.root:x-reverse {
-    width: 100%;
-}
-
-.root:y {
-    height: 100%;
-}
-
-.root:y-reverse {
-    height: 100%;
-}
-
-.slider {
     cursor: pointer;
     outline: none;
     user-select: none;
@@ -94,26 +77,26 @@
     -webkit-touch-callout: none;
 }
 
-.root:x .slider{
+.root:x {
     width: 100%;
-    padding: 15px 0;
+    padding: value(clickableAreaRadius) 0;
 }
 
-.root:x-reverse .slider{
+.root:x-reverse {
     width: 100%;
-    padding: 15px 0;
+    padding: value(clickableAreaRadius) 0;
 }
 
-.root:y .slider{
+.root:y {
     min-height: value(minVerticalSliderHeight);
     height: 100%;
-    padding: 0 15px;
+    padding: 0 value(clickableAreaRadius);
 }
 
-.root:y-reverse .slider{
+.root:y-reverse {
     min-height: value(minVerticalSliderHeight);
     height: 100%;
-    padding: 0 15px;
+    padding: 0 value(clickableAreaRadius);
 }
 
 .track {
@@ -253,36 +236,38 @@
 }
 
 /* Hover state */
-.slider:hover .track {
+.root:hover .track {
     background-color: value(colorTrack_Hover);
 }
 
-.slider:hover .markTrack {
+.root:hover .markTrack {
     background-color: value(colorTrack_Hover);
 }
 
-.slider:hover .handle {
+.root:hover .handle {
     background-color: value(colorHandle_Hover);
     border-color: value(colorHandle_Active);
 }
 
 /* Focus state */
 .handle:focus {
-    -webkit-box-shadow: 0 0 0 value(focusSize) value(colorHandle_Focus);
     box-shadow: 0 0 0 value(focusSize) value(colorHandle_Focus);
     outline: none;
 }
 
 /* Active state */
 .root:active .handle,
-.root:active .slider:hover .handle {
-    -webkit-box-shadow: 0 0 0 value(focusSize) value(colorHandle_Focus);
-    box-shadow: 0 0 0 value(focusSize) value(colorHandle_Focus);
+.root:active:hover .handle {
+    box-shadow: none;
     background-color: value(colorHandle_Active);
     border-color: value(colorHandle_Active);
 }
 
 .root:active .track {
+    background-color: value(colorTrack);
+}
+
+.root:active:hover .track {
     background-color: value(colorTrack);
 }
 
@@ -295,25 +280,21 @@
 }
 
 /* Disabled state */
-.root:disabled .slider {
+.root:disabled {
+    pointer-events: none;
     cursor: not-allowed;
 }
 
-.root:disabled .handle ,
-.root:disabled .slider:hover .handle {
-    -webkit-box-shadow: 0 0 0 0px value(colorHandle_Focus);
-    box-shadow: 0 0 0 0px value(colorHandle_Focus);
+.root:disabled .handle {
     border-color: value(color_Disabled);
     background-color: value(colorHandle_Disabled);
 }
 
-.root:disabled .track ,
-.root:disabled .slider:hover .track {
+.root:disabled .track {
     background-color: value(color_Disabled);
 }
 
-.root:disabled .markTrack ,
-.root:disabled .slider:hover .markTrack {
+.root:disabled .markTrack {
     background-color: value(color_Disabled);
 }
 
@@ -328,7 +309,7 @@
     background-color: value(color_Error);
 }
 .root:active:error .handle,
-.root:active:error .slider:hover .handle {
+.root:active:error:hover .handle {
     background-color: value(color_Error);
     border-color: value(color_Error);
 }
