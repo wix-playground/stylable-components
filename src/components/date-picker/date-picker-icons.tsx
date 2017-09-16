@@ -1,7 +1,6 @@
 import * as React from 'react';
-import {properties, stylable} from 'wix-react-tools';
 
-export const CalendarIcon: React.SFC = props => {
+export const CalendarIcon: React.SFC<React.HTMLAttributes<SVGElement>> = props => {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"

@@ -11,6 +11,7 @@
                 color_Keyboard_Focused,
                 fontFamily,
                 inputWidth,
+                inputHeight,
                 borderDefault,
                 borderHover;
 }
@@ -23,12 +24,11 @@
     dropdownArrowHeight: 12px;
     iconSize: 16px;
     iconOffset: 37px;
-    inputHeight: 36px;
+    iconArrowOffset: 36px;
 }
 
 .root {
     display: inline-block;
-    height: value(inputHeight);
 }
 
 /* The DatePicker Input */
@@ -65,7 +65,7 @@
 /* The dropdown arrow extends from the input and into the calendar view */
 .dropdownArrowWrapper {
     /* Switch width to the calendar width to center with regards to the calendar */
-    width: calc(value(inputWidth) - value(inputHeight));
+    width: calc(value(inputWidth) - value(iconArrowOffset));
 }
 
 .dropdownArrow {
