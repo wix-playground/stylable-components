@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {stylable} from 'wix-react-tools';
-import {Image, Modal} from '../../src';
+import {Modal} from '../../src';
 import {RequestCloseEvent} from '../../src/components/modal/modal';
 import styles from './modal-demo.st.css';
 
@@ -19,7 +19,7 @@ export class ModalDemo extends React.Component<{}, ModalDemoState> {
             <div>
                 <button data-automation-id="MODAL_BUTTON" onClick={this.toggleOpen}>Open The Modal!</button>
                 <Modal className="root" isOpen={this.state.isOpen} onRequestClose={this.onModalClick}>
-                    <Image data-slot="children" className="image" />
+                    <div data-slot="children" className="content">🌌</div>
                 </Modal>
             </div>
         );

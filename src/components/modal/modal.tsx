@@ -50,11 +50,10 @@ export class Modal extends React.PureComponent<ModalProps> {
         );
     }
 
-    private onClick: React.EventHandler<React.MouseEvent<HTMLDivElement>> = event => {
-        const closeEvent: RequestCloseEvent = Object.create(event);
+    private onClick: React.EventHandler<React.SyntheticEvent<Element>> = event => {
         const {target} = event;
         if (isElement(target)) {
-            closeEvent.source = this.getDataFromNearestNode(target);
+            const closeEvent: RequestCloseEvent = {...event, source: this.getDataFromNearestNode(target)};
             this.props.onRequestClose!(closeEvent);
         }
     }

@@ -33,7 +33,7 @@ export interface DatePickerState {
 @properties
 export class DatePicker extends React.PureComponent<DatePickerProps, DatePickerState> {
     public static defaultProps: Partial<DatePickerProps> = {
-        openOnFocus: true,
+        openOnFocus: false,
         onChange: noop,
         calendarIcon: CalendarIcon
     };
