@@ -6,7 +6,26 @@ import {TreeViewDemo, TreeViewDemoCustom} from '../../demo/components/tree-view-
 import {TreeView} from '../../src';
 import {getLastAvailableItem, getNextItem, getPreviousItem} from '../../src/components/tree-view//tree-util';
 import {initParentsMap, ParentsMap, TreeItemData, TreeStateMap} from '../../src/components/tree-view/tree-view';
+import {elementHasStylableState} from '../utils/inspect-stylable';
 import {TreeViewDriver} from '../../test-kit';
+
+// this can be removed once encapsulated in the driver
+import {Stylesheet} from 'stylable';
+import treeViewDemoStyle from '../../demo/components/tree-view-demo.st.css';
+import treeNodeStyle from '../../src/components/tree-view/tree-node.st.css';
+
+const treeView = 'TREE_VIEW';
+const treeItem = 'TREE_ITEM';
+
+const KeyCodes: any = {
+    ENTER: keycode('enter'),
+    HOME: keycode('home'),
+    END: keycode('end'),
+    UP: keycode('up'),
+    DOWN: keycode('down'),
+    LEFT: keycode('left'),
+    RIGHT: keycode('right')
+};
 
 const treeData: TreeItemData[] = [
     {
@@ -104,7 +123,19 @@ describe('<TreeView />', () => {
     //     simulate.click(select(getTreeItemLabel(id)));
     // }
 
-    // const sampleItem = {label: 'label'};
+    // function selectItemWithLabel(select: (...selectors: string[]) => Element | null, id: string) {
+    //     simulate.click(select(getTreeItemLabel(id)));
+    // }
+
+    function isElementSelected(element: Element, style: {$stylesheet: Stylesheet}) {
+        return elementHasStylableState(element, style, 'selected');
+    }
+
+    function isElementFocused(element: Element, style: {$stylesheet: Stylesheet}) {
+        return elementHasStylableState(element, style, 'focused');
+    }
+
+    const sampleItem = {label: 'label'};
     const nestedItem: TreeItemData = treeData[0].children![1];
 
     const allNodesLabels: string[] = getAllNodeLabels(treeData);
@@ -130,7 +161,7 @@ describe('<TreeView />', () => {
         const elementToSelect = treeView.getItem(allNodesLabels[2]);
 
         treeView.selectItem(allNodesLabels[2]);
-        await waitForDom(() => expect(elementToSelect).to.have.attr('data-selected', 'true'));
+        await waitForDom(() => expect(isElementSelected(elementToSelect!, treeNodeStyle)).to.equal(true));
     });
 
     it('renders a tree view with custom children', async () => {
@@ -155,7 +186,7 @@ describe('<TreeView />', () => {
         const elementToSelect = customTreeView.getItem(allNodesLabels[2]);
 
         customTreeView.selectItem(allNodesLabels[2]);
-        return waitForDom(() => expect(elementToSelect).to.have.attr('data-selected', 'true'));
+        return waitForDom(() => expect(isElementSelected(elementToSelect!, treeViewDemoStyle)).to.equal(true));
     });
 
     it('ends up in expected state after multiple clicks on same tree node', async () => {
@@ -246,13 +277,13 @@ describe('<TreeView />', () => {
 
                     treeView.selectItem(nodeChildren![1].label);
 
-                    await waitForDom(() =>
-                        expect(treeView.getItem(nodeChildren![1].label)).to.have.attr('data-focused', 'true'));
+                    await waitForDom(() => expect(
+                        isElementFocused(treeView.getItem(nodeChildren![1].label)!, treeNodeStyle)).to.equal(true));
 
                     treeView.pressKey(keycode('left'));
 
-                    return waitForDom(() =>
-                        expect(treeView.getItem(treeData[0].label)).to.have.attr('data-focused', 'true'));
+                    return waitForDom(() => expect(
+                        isElementFocused(treeView.getItem(treeData[0].label)!, treeNodeStyle)).to.equal(true));
                 });
 
             it('moves to child to if there is one after expanding the element if possible when right is clicked',
@@ -269,13 +300,13 @@ describe('<TreeView />', () => {
 
                     await waitForDom(() => expect(treeView.getItem(nodeChildren![0].label)).to.be.present());
 
-                    await waitForDom(() =>
-                        expect(treeView.getItem(treeData[0].label)).to.have.attr('data-focused', 'true'));
+                    await waitForDom(() => expect(
+                        isElementFocused(treeView.getItem(treeData[0].label)!, treeNodeStyle)).to.equal(true));
 
                     treeView.pressKey(keycode('right'));
 
-                    return waitForDom(() =>
-                        expect(treeView.getItem(nodeChildren![0].label)).to.have.attr('data-focused', 'true'));
+                    return waitForDom(() => expect(
+                        isElementFocused(treeView.getItem(nodeChildren![0].label)!, treeNodeStyle)).to.equal(true));
                 });
 
             it('focuses next and previous when down and up arrows are clicked', async () => {
@@ -292,24 +323,22 @@ describe('<TreeView />', () => {
                 treeView.toggleItem(treeData[0].label);
 
                 // this should assert first child of root is not focused
-                await waitForDom(() =>
-                    expect(treeView.getItem(nodeChildren![0].label)).to.have.attr('data-focused', 'false'));
+                await waitForDom(() => expect(
+                    isElementFocused(treeView.getItem(nodeChildren![0].label)!, treeNodeStyle)).to.equal(false));
 
                 treeView.pressKey(keycode('down'));
 
                 // this should assert first child of root is focused
-                await waitForDom(() => {
-                    const item = treeView.getItem(nodeChildren![0].label);
-                    expect(item, 'down didnt work').to.have.attr('data-focused', 'true');
-                });
+                await waitForDom(() => expect(
+                    isElementFocused(treeView.getItem(nodeChildren![0].label)!, treeNodeStyle)).to.equal(true));
 
                 treeView.pressKey(keycode('up'));
 
                 // this should assert first child of root is not focused
                 return waitForDom(() => {
                     const item = treeView.getItem(nodeChildren![0].label);
-                    expect(item, 'up didnt work').to.have.attr('data-focused', 'false');
-                    expect(rootNode).to.have.attr('data-focused', 'true');
+                    expect(isElementFocused(item!, treeNodeStyle)).to.equal(false);
+                    expect(isElementFocused(rootNode!, treeNodeStyle)).to.equal(true);
                 });
             });
 
@@ -328,8 +357,8 @@ describe('<TreeView />', () => {
                 treeView.pressKey(keycode('down'));
                 treeView.pressKey(keycode('right'));
 
-                await waitForDom(() =>
-                    expect(treeView.getItem(nodeChildren![0].label)).to.have.attr('data-focused', 'true'));
+                await waitForDom(() => expect(
+                    isElementFocused(treeView.getItem(nodeChildren![0].label)!, treeNodeStyle)).to.equal(true));
 
                 nodeChildren![0].children!.forEach(
                     () => treeView.pressKey(keycode('down'))
@@ -337,14 +366,13 @@ describe('<TreeView />', () => {
 
                 const firstSubtreeChildren = nodeChildren![0].children!;
 
-                await waitForDom(() =>
-                    expect(treeView.getItem(firstSubtreeChildren[firstSubtreeChildren.length - 1].label))
-                        .to.have.attr('data-focused', 'true'));
+                await waitForDom(() => expect(isElementFocused(treeView.getItem(
+                    firstSubtreeChildren[firstSubtreeChildren.length - 1].label)!, treeNodeStyle)).to.equal(true));
 
                 treeView.pressKey(keycode('down'));
 
-                return waitForDom(() =>
-                    expect(treeView.getItem(nodeChildren![1].label)).to.have.attr('data-focused', 'true'));
+                return waitForDom(() => expect(
+                    isElementFocused(treeView.getItem(nodeChildren![1].label)!, treeNodeStyle)).to.equal(true));
             });
 
             it('selects currently focused node on Enter click', async () => {
@@ -361,13 +389,13 @@ describe('<TreeView />', () => {
 
                 treeView.pressKey(keycode('down'));
 
-                await waitForDom(() =>
-                    expect(treeView.getItem(nodeChildren![0].label)).to.have.attr('data-selected', 'false'));
+                await waitForDom(() => expect(
+                    isElementSelected(treeView.getItem(nodeChildren![0].label)!, treeNodeStyle)).to.equal(false));
 
                 treeView.pressKey(keycode('enter'));
 
-                return waitForDom(() =>
-                    expect(treeView.getItem(nodeChildren![0].label)).to.have.attr('data-selected', 'true'));
+                return waitForDom(() => expect(
+                    isElementSelected(treeView.getItem(nodeChildren![0].label)!, treeNodeStyle)).to.equal(true));
             });
 
             it('focuses first item when HOME is clicked', async () => {
@@ -382,14 +410,11 @@ describe('<TreeView />', () => {
                 treeView.selectItem(treeData[0].label);
                 treeView.toggleItem(treeData[0].label);
 
-                treeView.pressKey(keycode('down'));
-                treeView.pressKey(keycode('down'));
+                await waitForDom(() => expect(isElementFocused(rootNode!, treeNodeStyle)).to.equal(false));
 
                 await waitForDom(() => expect(rootNode).to.have.attr('data-focused', 'false'));
 
-                treeView.pressKey(keycode('home'));
-
-                return waitForDom(() => expect(rootNode).to.have.attr('data-focused', 'true'));
+                return waitForDom(() => expect(isElementFocused(rootNode!, treeNodeStyle)).to.equal(true));
             });
 
             it('focuses last item available when END is clicked', async () => {
@@ -410,14 +435,14 @@ describe('<TreeView />', () => {
                 treeView.toggleItem(lastRootNode.label);
 
                 await waitForDom(() =>
-                    expect(treeView.getItem(lastChildren[lastChildren.length - 1].label))
-                        .to.have.attr('data-focused', 'false'));
+                    expect(isElementFocused(treeView.getItem(
+                        lastChildren[lastChildren.length - 1].label)!, treeNodeStyle)).to.equal(false));
 
                 treeView.pressKey(keycode('end'));
 
                 return waitForDom(() =>
-                    expect(treeView.getItem(lastChildren[lastChildren.length - 1].label))
-                        .to.have.attr('data-focused', 'true'));
+                    expect(isElementFocused(treeView.getItem(
+                        lastChildren[lastChildren.length - 1].label)!, treeNodeStyle)).to.equal(true));
             });
 
             it('cannot focus past first and last elements when clicking up and down respectively', async () => {
@@ -440,26 +465,22 @@ describe('<TreeView />', () => {
                 treeView.pressKey(keycode('end'));
 
                 await waitForDom(() =>
-                    expect(treeView.getItem(lastChildren[lastChildren.length - 1].label))
-                        .to.have.attr('data-focused', 'true'));
+                    expect(isElementFocused(treeView.getItem(
+                        lastChildren[lastChildren.length - 1].label)!, treeNodeStyle)).to.equal(true));
 
                 treeView.pressKey(keycode('down'));
 
                 await waitForDom(() =>
-                    expect(treeView.getItem(lastChildren[lastChildren.length - 1].label))
-                        .to.have.attr('data-focused', 'true'));
+                    expect(isElementFocused(treeView.getItem(
+                        lastChildren[lastChildren.length - 1].label)!, treeNodeStyle)).to.equal(true));
 
                 treeView.pressKey(keycode('home'));
 
-                await waitForDom(() =>
-                    expect(rootNode)
-                        .to.have.attr('data-focused', 'true'));
+                await expect(isElementFocused(rootNode!, treeNodeStyle)).to.equal(true);
 
                 treeView.pressKey(keycode('up'));
 
-                return waitForDom(() =>
-                    expect(rootNode)
-                        .to.have.attr('data-focused', 'true'));
+                return expect(isElementFocused(rootNode!, treeNodeStyle)).to.equal(true);
             });
         });
 
