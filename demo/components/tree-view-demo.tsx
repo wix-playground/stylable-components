@@ -63,8 +63,6 @@ export const CustomItem: React.SFC<TreeItemProps> =
                 <div
                     className="custom-tree-node"
                     style-state={{selected: state!.isSelected, focused: state!.isFocused}}
-                    data-selected={state!.isSelected}
-                    data-focused={state!.isFocused}
                     onClick={onItemClick && onItemClick.bind(null, item)}
                     data-automation-id={`${itemIdPrefix}_${itemLabel}`}
                 >

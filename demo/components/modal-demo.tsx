@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {stylable} from 'wix-react-tools';
-import {Image, Modal} from '../../src';
+import {Modal} from '../../src';
 import {RequestCloseEvent} from '../../src/components/modal/modal';
 import styles from './modal-demo.st.css';
 
