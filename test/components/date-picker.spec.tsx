@@ -56,7 +56,7 @@ describe('The DatePicker Component', () => {
 
             await waitForDom(() => expect(datePicker.dropDown).to.be.present());
 
-            datePicker.click(datePicker.getDay(4)!);
+            datePicker.clickOnDay(4);
 
             await waitForDom(() => {
                 expect(datePicker.dropDown).to.be.absent();
@@ -88,7 +88,7 @@ describe('The DatePicker Component', () => {
             .withDriver(DatePickerTestDriver);
 
         datePicker.changeDate('2sgsdfsdfw223');
-        sleep(20);
+        await sleep(20);
         expect(onChange).to.have.not.been.called;
     });
 
@@ -116,11 +116,11 @@ describe('The DatePicker Component', () => {
 
         await waitForDom(() => expect(datePicker.isOpen()).to.be.false);
 
-        datePicker.click();
+        datePicker.clickOnDatePicker();
 
         await waitForDom(() => expect(datePicker.isOpen()).to.be.true);
 
-        datePicker.click();
+        datePicker.clickOnDatePicker();
 
         await waitForDom(() => expect(datePicker.isOpen()).to.be.false);
     });
@@ -296,7 +296,7 @@ describe('The DatePicker Component', () => {
 
             expect(datePicker.yearLabel).to.have.text('2017');
             expect(datePicker.monthLabel).to.have.text('December');
-            datePicker.click(datePicker.nextMonthLabel!);
+            datePicker.clickOnNextMonth();
 
             await waitForDom(() => {
                 expect(datePicker.yearLabel).to.have.text('2018');
@@ -311,7 +311,7 @@ describe('The DatePicker Component', () => {
 
             expect(datePicker.yearLabel).to.have.text('2017');
             expect(datePicker.monthLabel).to.have.text('January');
-            datePicker.click(datePicker.prevMonthLabel!);
+            datePicker.clickOnPrevMonth();
 
             await waitForDom(() => {
                 expect(datePicker.yearLabel).to.have.text('2016');
@@ -325,11 +325,11 @@ describe('The DatePicker Component', () => {
 
             await waitForDom(() => expect(datePicker.dropDown).to.be.present());
 
-            datePicker.click(datePicker.prevMonthLabel!);
+            datePicker.clickOnPrevMonth();
 
             await waitForDom(() => expect(datePicker.dropDown).to.be.present());
 
-            datePicker.click(datePicker.nextMonthLabel!);
+            datePicker.clickOnNextMonth();
 
             await waitForDom(() => expect(datePicker.dropDown).to.be.present());
         });
