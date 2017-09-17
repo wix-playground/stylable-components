@@ -9,14 +9,11 @@ import {sleep} from '../utils';
 export class PopupDemoTestDriver extends DriverBase {
     public static ComponentClass = PopupDemo;
     public popup: PopupTestDriver;
+    public container: HTMLButtonElement = this.select('POPUP_DEMO_BTN');
 
     constructor(public readonly instance: PopupDemo) {
         super(() => ReactDOM.findDOMNode(instance));
         this.popup = new PopupTestDriver(instance.getPopup()!);
-    }
-
-    public get container(): HTMLDivElement {
-        return this.select('POPUP_DEMO_DIV');
     }
 }
 

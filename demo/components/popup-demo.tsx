@@ -42,7 +42,7 @@ export class PopupDemo extends React.Component<{}, DemoState> {
                     ref={this.updateState}
                     onClick={this.onClick}
                     className="anchor"
-                    data-automation-id="POPUP_DEMO_DIV"
+                    data-automation-id="POPUP_DEMO_BTN"
                 >
                     {this.state.isOpen ? 'Hide Popup' : 'Show Popup'}
                 </button>
