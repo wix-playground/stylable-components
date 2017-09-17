@@ -131,8 +131,7 @@ describe('The DatePicker Component', () => {
 
         await waitForDom(() => expect(datePicker.dropDown).to.be.absent());
 
-        datePicker.input.focus();
-        // simulate.focus(datePickerInput);
+        datePicker.focus();
 
         await waitForDom(() => expect(datePicker.dropDown).to.be.present());
     });

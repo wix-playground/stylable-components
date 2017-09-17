@@ -21,6 +21,10 @@ export class DatePickerTestDriver extends DriverBase {
         simulate.blur(this.input);
     }
 
+    public focus(): void {
+        simulate.focus(this.input);
+    }
+
     public clickOnDatePicker(): void {
         simulate.mouseDown(this.input);
     }
