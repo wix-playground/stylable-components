@@ -18,6 +18,6 @@ export class PortalTestDriver extends DriverBase {
     }
 
     public get isPresent(): boolean {
-        return !!this.instance.getPortalContainer();
+        return !!this.instance && !!this.instance.getPortalContainer();
     }
 }
