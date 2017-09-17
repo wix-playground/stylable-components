@@ -108,6 +108,7 @@ export class RadioGroup extends React.Component<RadioGroupProps> {
                 name={this.name}
                 className="radioGroupChild"
                 tabIndex={this.getChildTabIndex(index, this.isGroupChecked)}
+                children={props.children}
             />
         ));
     }
@@ -128,6 +129,7 @@ export class RadioGroup extends React.Component<RadioGroupProps> {
                             name={this.name}
                             className="radioGroupChild"
                             tabIndex={this.getChildTabIndex(index, this.isGroupChecked)}
+                            children={child.props.children}
                         />
                     );
                 } else {
@@ -139,7 +141,8 @@ export class RadioGroup extends React.Component<RadioGroupProps> {
                                 onChange: action(this.childrenOnClick(index)),
                                 className: 'radioGroupChild',
                                 tabIndex: this.getChildTabIndex(index, this.isGroupChecked)
-                            }
+                            },
+                            child.props.children
                         )
                     );
                 }

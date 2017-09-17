@@ -10,3 +10,7 @@
 .rg::radioGroupChild {
     display: block;
 }
+
+.label {
+    margin-left: 10px;
+}
