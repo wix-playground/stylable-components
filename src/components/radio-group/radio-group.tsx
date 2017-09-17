@@ -1,17 +1,15 @@
 import {action, computed, observable} from 'mobx';
 import {observer} from 'mobx-react';
 import * as React from 'react';
-import {SBComponent} from 'stylable-react-component';
-import {root} from 'wix-react-tools';
+import {properties, stylable} from 'wix-react-tools';
 import {ChangeEvent} from '../../types/events';
 import {FormInputProps} from '../../types/forms';
 import {RadioButton, RadioButtonProps} from './radio-button';
 import styles from './radio-group.st.css';
 
-export interface RadioGroupProps extends FormInputProps<string> {
+export interface RadioGroupProps extends FormInputProps<string>, properties.Props {
     children?: any;
     dataSource?: RadioButtonProps[];
-    labelLocation?: 'right' | 'left';
     name?: string;
     disabled?: boolean;
     readOnly?: boolean;
@@ -25,11 +23,12 @@ export interface RadioState {
     checked: boolean;
 }
 
-@SBComponent(styles) @observer
-export class RadioGroup extends React.Component<RadioGroupProps, {}> {
-    public static defaultProps = {
+@stylable(styles)
+@properties
+@observer
+export class RadioGroup extends React.Component<RadioGroupProps> {
+    public static defaultProps: Partial<RadioGroupProps> = {
         dataSource: [],
-        location: 'right',
         tabIndex: 0
     };
 
@@ -60,13 +59,8 @@ export class RadioGroup extends React.Component<RadioGroupProps, {}> {
             childArray = this.createChildrenFromDataSource();
         }
 
-        const rootProps = root(this.props, {
-            'className': 'root',
-            'data-automation-id': 'RADIO_GROUP'
-        });
-
         return (
-            <div {...rootProps} role="radiogroup">
+            <div data-automation-id="RADIO_GROUP" role="radiogroup">
                 {childArray}
             </div>
         );
@@ -111,7 +105,6 @@ export class RadioGroup extends React.Component<RadioGroupProps, {}> {
                 onChange={this.childrenOnClick(index)}
                 disabled={this.props.disabled || props.disabled}
                 readOnly={this.props.readOnly || props.readOnly}
-                labelLocation={this.props.labelLocation}
                 name={this.name}
                 className="radioGroupChild"
                 tabIndex={this.getChildTabIndex(index, this.isGroupChecked)}
@@ -132,7 +125,6 @@ export class RadioGroup extends React.Component<RadioGroupProps, {}> {
                             onChange={this.childrenOnClick(index)}
                             disabled={this.props.disabled || child.props.disabled}
                             readOnly={this.props.readOnly || child.props.readOnly}
-                            labelLocation={this.props.labelLocation}
                             name={this.name}
                             className="radioGroupChild"
                             tabIndex={this.getChildTabIndex(index, this.isGroupChecked)}

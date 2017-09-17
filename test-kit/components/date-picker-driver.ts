@@ -30,7 +30,7 @@ export class DatePickerTestDriver extends DriverBase {
     }
 
     public openCalender(): void {
-        simulate.focus(this.input);
+        simulate.click(this.select('CALENDAR_ICON'));
     }
 
     public isOpen(): boolean {

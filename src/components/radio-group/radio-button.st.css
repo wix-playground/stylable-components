@@ -11,7 +11,7 @@
 }
 
 .root {
-    -st-states: disabled, isLeftLabel, focused, checked;
+    -st-states: disabled, focused, checked;
     display: inline-block;
     position: relative;
     cursor: pointer;
@@ -24,10 +24,6 @@
 .contentContainer {
     display: flex;
     align-items: center;
-}
-
-.root:isLeftLabel .contentContainer {
-    flex-direction: row-reverse;
 }
 
 .radioInput {
@@ -92,9 +88,3 @@
 .radioLabel {
     margin-left: 10px;
 }
-
-.root:isLeftLabel .radioLabel {
-    margin-left: 0;
-    margin-right: 10px;
-}
-

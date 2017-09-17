@@ -1,6 +1,7 @@
 import * as keycode from 'keycode';
 import * as React from 'react';
-import {SBComponent} from 'stylable-react-component';
+import {stylable} from 'wix-react-tools';
+import {FormInputProps} from '../../types/forms';
 import {ScreenReaderNotification} from '../screen-reader-notification';
 import {Modifiers, Stepper} from '../stepper';
 import {LABELS} from './strings';
@@ -11,9 +12,7 @@ import {
     isTouchTimeInputSupported, isValidValue, Segment, TimeSegment, to24, toAmpm
 } from './utils';
 
-export interface Props {
-    value?: string;
-    onChange?: (value: string) => void;
+export interface Props extends FormInputProps<string> {
     format?: Format;
     placeholder?: string;
     disabled?: boolean;
@@ -57,7 +56,7 @@ function propsValueToSegments(value?: string, format?: Format): {hh?: string, mm
     };
 }
 
-@SBComponent(styles)
+@stylable(styles)
 export class TimePicker extends React.Component<Props, State> {
     public static defaultProps: Partial<Props> = {
         format: is12TimeFormat ? 'ampm' : '24h',
@@ -107,13 +106,13 @@ export class TimePicker extends React.Component<Props, State> {
         return (
             <div
                 data-automation-id="TIME_PICKER"
-                cssStates={{
+                style-state={{
                     focus,
                     'error': error!,
                     'disabled': disabled!,
                     'empty': !isValueSet,
                     'rtl': rtl!,
-                    'has-placeholder': Boolean(placeholder)
+                    'has-placeholder': !!placeholder
                 }}
                 onMouseDown={this.onRootMouseDown}
             >
@@ -181,7 +180,7 @@ export class TimePicker extends React.Component<Props, State> {
                         />
                     </div>
                 }
-                <label className="label" cssStates={{visible: isTouchTimeInputSupported}}>
+                <label className="label" style-state={{visible: isTouchTimeInputSupported}}>
                     <input
                         className="native-input"
                         type="time"
@@ -446,9 +445,14 @@ export class TimePicker extends React.Component<Props, State> {
         this.setState({
             notification: value
         });
-        if (this.props.onChange && this.lastValue !== value) {
+        if (this.lastValue !== value) {
             this.lastValue = value;
-            this.props.onChange(value);
+            if (this.props.onInput) {
+                this.props.onInput({value});
+            }
+            if (this.props.onChange) {
+                this.props.onChange({value});
+            }
         }
     }
 

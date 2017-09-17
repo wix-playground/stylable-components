@@ -42,14 +42,15 @@ describe('The DatePicker Component', () => {
             await waitForDom(() => expect(datePickerDemo.date).to.have.text('Wed Feb 01 2017'));
         });
 
-        it('clicks on the input, picks a date from the dropdown, ' +
-            'and then expects the dropdown to close and the date to appear in the input', async () => {
-            const {driver: datePickerDemo, waitForDom} = clientRenderer.render(<DatePickerDemo value={JANUARY_FIRST} />)
-                .withDriver(DatePickerDemoDriver);
+        it('clicks on the icon, picks a date from the dropdown, ' +
+            'and then expects the dropdown to close and the date to have been selected', async () => {
+            const {driver: datePickerDemo, waitForDom} = clientRenderer.render(
+                <DatePickerDemo value={JANUARY_FIRST} />).withDriver(DatePickerDemoDriver);
 
             const datePicker = datePickerDemo.datePicker;
 
             await waitForDom(() => expect(datePicker.dropDown).to.be.absent());
+            // simulate.click(select('CALENDAR_ICON'));
 
             datePicker.openCalender();
 
@@ -122,6 +123,18 @@ describe('The DatePicker Component', () => {
         datePicker.click();
 
         await waitForDom(() => expect(datePicker.isOpen()).to.be.false);
+    });
+
+    it('should show and hide the dropdown when focused and openOnFocus is true', async () => {
+        const {driver: datePicker, waitForDom} = clientRenderer.render(<DatePicker openOnFocus />)
+            .withDriver(DatePickerTestDriver);
+
+        await waitForDom(() => expect(datePicker.dropDown).to.be.absent());
+
+        datePicker.input.focus();
+        // simulate.focus(datePickerInput);
+
+        await waitForDom(() => expect(datePicker.dropDown).to.be.present());
     });
 
     it('can be changed with the arrow keys', async function() {
