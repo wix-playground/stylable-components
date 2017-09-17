@@ -8,27 +8,11 @@ import {sleep} from '../utils';
 
 export class PopupDemoTestDriver extends DriverBase {
     public static ComponentClass = PopupDemo;
-    private popupDriver: PopupTestDriver;
+    public popupDriver: PopupTestDriver;
 
     constructor(public readonly instance: PopupDemo) {
         super(() => ReactDOM.findDOMNode(instance));
         this.popupDriver = new PopupTestDriver(instance.getPopup()!);
-    }
-
-    public get container(): HTMLDivElement {
-        return this.select('POPUP_DEMO_DIV');
-    }
-
-    public get portal(): Element {
-        return this.popupDriver.root;
-    }
-
-    public get content(): HTMLCollection {
-        return this.popupDriver.content;
-    }
-
-    public get isPopupPresent(): boolean {
-        return this.popupDriver.isPresent;
     }
 }
 
@@ -55,16 +39,16 @@ describe('<Popup />', function() {
             let popupDemo = new PopupDemoTestDriver(result as PopupDemo);
 
             await waitForDom(() => {
-                expect(popupDemo.container).to.be.present();
-                expect(popupDemo.isPopupPresent).to.equal(false);
+                expect(popupDemo.popupDriver.root).to.be.present();
+                expect(popupDemo.popupDriver.isPresent).to.equal(false);
             });
 
-            popupDemo.container.click();
+            popupDemo.popupDriver.root.click();
             popupDemo = new PopupDemoTestDriver(result as PopupDemo);
-            await waitForDom(() => expect(popupDemo.portal).to.be.present());
+            await waitForDom(() => expect(popupDemo.popupDriver.isPresent).to.be.present());
 
-            popupDemo.container.click();
-            return waitForDom(() => expect(popupDemo.isPopupPresent).to.equal(false));
+            popupDemo.popupDriver.root.click();
+            return waitForDom(() => expect(popupDemo.popupDriver.isPresent).to.equal(false));
         });
     });
 
@@ -95,7 +79,7 @@ describe('<Popup />', function() {
         await waitFor(() => expect(popup.isPresent).to.equal(false));
     });
 
-    it('does not reder the popup if the open prop is false', async function() {
+    it('does not render the popup if the open prop is false', async function() {
         const {result} = clientRenderer.render(
             <Popup anchor={anchor}>
                 <span data-automation-id="SPAN">Popup Body</span>
