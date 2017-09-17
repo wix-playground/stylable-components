@@ -10,8 +10,8 @@
                 color_Disabled,
                 color_Keyboard_Focused,
                 fontFamily,
-                inputHeight,
                 inputWidth,
+                inputHeight,
                 borderDefault,
                 borderHover;
 }
@@ -22,36 +22,50 @@
     dropdownWidth: 330px;
     dropdownArrowWidth: 11px;
     dropdownArrowHeight: 12px;
-    iconWidth: 36px;
+    iconSize: 16px;
+    iconOffset: 37px;
+    iconArrowOffset: 36px;
+}
+
+.root {
+    display: inline-block;
 }
 
 /* The DatePicker Input */
 .input {
     width: value(inputWidth);
+    height: value(inputHeight);
 }
 
 .icon {
     position: relative;
-    left: calc(value(inputWidth) - value(iconWidth));
-    top: -value(iconWidth);
-    padding: 10px;
+    display: inline-block;
+    top: -1px;
+    right: value(iconOffset);
+    padding: 8px;
+    text-align: center;
+    vertical-align: middle;
+    height: calc(value(inputHeight) - 2px);
+    width: value(inputHeight);
     cursor: pointer;
-    width: value(iconWidth);
-    height: value(inputHeight);
     fill: #3899EC;
     border-left: value(borderDefault);
 }
 
 .icon:hover {
     background-color: rgb(240, 240, 240);
-    outline: value(borderDefault);
-    outline-offset: -1px;
+}
+
+.icon-svg {
+    display: inline;
+    width: value(iconSize);
+    height: value(iconSize);
 }
 
 /* The dropdown arrow extends from the input and into the calendar view */
 .dropdownArrowWrapper {
     /* Switch width to the calendar width to center with regards to the calendar */
-    width: value(inputWidth);
+    width: calc(value(inputWidth) - value(iconArrowOffset));
 }
 
 .dropdownArrow {
@@ -212,9 +226,4 @@
 .day:inactive:hover {
     color: #d8d8d8;
     background-color: value(color_MainText_Background);
-}
-
-/* root */
-.root {
-    display: inline-block;
 }

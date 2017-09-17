@@ -17,7 +17,7 @@ export interface DatePickerProps extends FormInputProps<Date>, properties.Props 
     readOnly?: boolean;
     showDropdownOnInit?: boolean;
     startingDay?: number;
-    calendarIcon?: React.ComponentType;
+    calendarIcon?: React.ComponentType<{className: string}>;
 }
 
 export interface DatePickerState {
@@ -67,7 +67,7 @@ export class DatePicker extends React.PureComponent<DatePickerProps, DatePickerS
                     data-automation-id="DATE_PICKER_INPUT"
                 />
                 <div className="icon" data-automation-id="CALENDAR_ICON" onClick={this.toggleDropdown}>
-                    <Icon />
+                    <Icon className="icon-svg" />
                 </div>
                 <Popup open={this.state.isDropdownVisible} anchor={this.state.dropdownRef}>
                     <Calendar
