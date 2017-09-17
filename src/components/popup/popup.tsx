@@ -1,5 +1,6 @@
 import * as React from 'react';
-import {Portal} from '../../../src/components/portal';
+import {properties} from 'wix-react-tools';
+import {Portal} from '../portal';
 
 export type PopupVerticalPosition =  'top' | 'center' | 'bottom';
 export type PopupHorizontalPosition = 'left' | 'center' | 'right';
@@ -9,7 +10,7 @@ export interface PopupPositionPoint {
     horizontal: PopupHorizontalPosition;
 }
 
-export interface PopupProps {
+export interface PopupProps extends properties.Props {
     open?: boolean;
     anchorPosition?: PopupPositionPoint;
     popupPosition?: PopupPositionPoint;
@@ -22,7 +23,8 @@ export interface PopupCompProps extends PopupProps {
     anchor: Element | null;
 }
 
-export class Popup extends React.Component<PopupCompProps, {}> {
+@properties
+export class Popup extends React.Component<PopupCompProps> {
     public static defaultProps: Partial<PopupCompProps> = {
         open: false,
         anchorPosition: {vertical: 'bottom', horizontal: 'left'},

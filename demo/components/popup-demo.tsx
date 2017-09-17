@@ -1,5 +1,5 @@
 import React = require('react');
-import {SBComponent} from 'stylable-react-component';
+import {stylable} from 'wix-react-tools';
 import {Popup, PopupHorizontalPosition, PopupPositionPoint, PopupVerticalPosition, RadioGroup} from '../../src/';
 import {ChangeEvent} from '../../src/types/events';
 import styles from './popup-demo.st.css';
@@ -13,7 +13,7 @@ export interface DemoState {
     aHorizontal: PopupHorizontalPosition;
 }
 
-@SBComponent(styles)
+@stylable(styles)
 export class PopupDemo extends React.Component<{}, DemoState> {
     public state = {
         div: null,
