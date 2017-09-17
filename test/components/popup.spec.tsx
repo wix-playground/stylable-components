@@ -76,7 +76,7 @@ describe('<Popup />', function() {
     });
 
     it('renders the popup using a point as anchor', async () => {
-        const point: Point = {X: 100, Y: 100};
+        const point: Point = {x: 100, y: 100};
         clientRenderer.render(
             <Popup anchor={point} open>
                 <span data-automation-id="SPAN">Popup Body</span>
@@ -216,7 +216,7 @@ describe('<Popup />', function() {
         });
 
         describe('Popup with point', () => {
-            const point: Point = {X: 90, Y: 100};
+            const point: Point = {x: 90, y: 100};
             const verticalTests = getPointLayoutTests('vertical');
             const horizontalTests = getPointLayoutTests('horizontal');
 
@@ -292,13 +292,13 @@ function getPointLayoutTests(axis: 'vertical' | 'horizontal') {
     let start: 'left' | 'top' = 'top';
     let end: 'bottom' | 'right' = 'bottom';
     let length: 'height' | 'width' = 'height';
-    let pointAxis: 'X' | 'Y' = 'Y';
+    let pointAxis: 'x' | 'y' = 'y';
 
     if (axis === 'horizontal') {
         start = 'left';
         end = 'right';
         length = 'width';
-        pointAxis = 'X';
+        pointAxis = 'x';
     }
 
     return {

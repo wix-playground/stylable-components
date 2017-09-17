@@ -55,8 +55,8 @@ export class Popup extends React.Component<PopupCompProps> {
         newStyle.transform = '';
         newStyle.WebkitTransform = '';
         if (isPoint(this.props.anchor)) {
-            newStyle.top = this.props.anchor.Y;
-            newStyle.left = this.props.anchor.X;
+            newStyle.top = this.props.anchor.y;
+            newStyle.left = this.props.anchor.x;
 
         } else {
             const anchorRect = this.props.anchor!.getBoundingClientRect();
@@ -110,5 +110,5 @@ function addTransform(style: React.CSSProperties, transformation: string) {
 }
 
 function isPoint(elem: Element | Point): elem is Point {
-    return elem.hasOwnProperty('X') && elem.hasOwnProperty('Y');
+    return elem.hasOwnProperty('x') && elem.hasOwnProperty('y');
 }
