@@ -12,8 +12,8 @@ export class PopupTestDriver extends DriverBase {
         this.portalDriver = new PortalTestDriver(instance.getPortal()!);
     }
 
-    public get root(): Element {
-        return this.portalDriver.root;
+    public get root(): HTMLElement {
+        return this.portalDriver.root as HTMLElement;
     }
 
     public get content(): HTMLCollection {
