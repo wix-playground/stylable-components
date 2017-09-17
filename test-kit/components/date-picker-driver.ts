@@ -21,14 +21,6 @@ export class DatePickerTestDriver extends DriverBase {
         simulate.blur(this.input);
     }
 
-    // public click(elem?: Element): void {
-    //     if (!elem) {
-    //         simulate.mouseDown(this.input);
-    //     } else {
-    //         simulate.mouseDown(elem);
-    //     }
-    // }
-
     public clickOnDatePicker(): void {
         simulate.mouseDown(this.input);
     }
