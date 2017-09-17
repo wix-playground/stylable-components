@@ -1,5 +1,6 @@
+import * as ReactDOM from 'react-dom';
 import {DriverBase, simulate} from 'test-drive-react';
-import {TreeView} from '../../src';
+import {TreeItem, TreeItemProps, TreeView} from '../../src';
 
 const treeView = 'TREE_VIEW';
 const treeItem = 'TREE_ITEM';
@@ -31,5 +32,21 @@ export class TreeViewDriver extends DriverBase {
 
     public pressKey(keyCode: number): void {
         simulate.keyDown(this.select(treeView), {keyCode});
+    }
+}
+
+export class TreeViewInstanceDriver extends TreeViewDriver {
+    public static ComponentClass = TreeView;
+
+    constructor(public readonly instance: TreeView) {
+        super(() => ReactDOM.findDOMNode(instance));
+    }
+}
+
+export class TreeItemDriver extends DriverBase {
+    public static ComponentClass: React.SFC<TreeItemProps> = TreeItem;
+
+    public getItem(id: string): HTMLDivElement {
+        return this.select(getTreeItem(id));
     }
 }

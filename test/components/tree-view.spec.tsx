@@ -1,31 +1,18 @@
 import * as keycode from 'keycode';
 import {observable} from 'mobx';
 import * as React from 'react';
-import {ClientRenderer, DriverBase, expect, sinon, waitFor} from 'test-drive-react';
+import {ClientRenderer, DriverBase, expect, simulate, sinon, waitFor} from 'test-drive-react';
 import {TreeViewDemo, TreeViewDemoCustom} from '../../demo/components/tree-view-demo';
-import {TreeView} from '../../src';
+import {TreeItem, TreeView} from '../../src';
 import {getLastAvailableItem, getNextItem, getPreviousItem} from '../../src/components/tree-view//tree-util';
 import {initParentsMap, ParentsMap, TreeItemData, TreeStateMap} from '../../src/components/tree-view/tree-view';
+import {TreeItemDriver, TreeViewDriver, TreeViewInstanceDriver} from '../../test-kit';
 import {elementHasStylableState} from '../utils/inspect-stylable';
-import {TreeViewDriver} from '../../test-kit';
 
 // this can be removed once encapsulated in the driver
 import {Stylesheet} from 'stylable';
 import treeViewDemoStyle from '../../demo/components/tree-view-demo.st.css';
 import treeNodeStyle from '../../src/components/tree-view/tree-node.st.css';
-
-const treeView = 'TREE_VIEW';
-const treeItem = 'TREE_ITEM';
-
-const KeyCodes: any = {
-    ENTER: keycode('enter'),
-    HOME: keycode('home'),
-    END: keycode('end'),
-    UP: keycode('up'),
-    DOWN: keycode('down'),
-    LEFT: keycode('left'),
-    RIGHT: keycode('right')
-};
 
 const treeData: TreeItemData[] = [
     {
@@ -55,26 +42,6 @@ const treeData: TreeItemData[] = [
     }
 ];
 
-class TreeViewDemoDriver extends DriverBase {
-    public static ComponentClass = TreeViewDemo;
-
-    public treeView = new TreeViewDriver(() => this.select('TREE_VIEW_DEMO', 'TREE_VIEW'));
-}
-
-class TreeViewDemoCustomDriver extends DriverBase {
-    public static ComponentClass = TreeViewDemoCustom;
-
-    public customTreeView = new TreeViewDriver(() => this.select('TREE_VIEW_DEMO_CUSTOM', 'TREE_VIEW'));
-}
-
-// duplicating the data so i can pass a new object to the non-mobx version
-const newTreeData = JSON.parse(JSON.stringify(treeData));
-newTreeData[0].children![2].children!.push({label: 'Kaiserschmarrn'});
-
-export interface TreeViewWrapperState {
-    treeData: object[];
-}
-
 export class TreeViewWrapper extends React.Component<{}, TreeViewWrapperState> {
     public state = {treeData};
 
@@ -101,6 +68,35 @@ export class TreeViewMobxWrapper extends React.Component<{}, {}> {
     }
 }
 
+class TreeViewDemoDriver extends DriverBase {
+    public static ComponentClass = TreeViewDemo;
+
+    public treeView = new TreeViewDriver(() => this.select('TREE_VIEW_DEMO', 'TREE_VIEW'));
+}
+
+class TreeViewDemoCustomDriver extends DriverBase {
+    public static ComponentClass = TreeViewDemoCustom;
+
+    public customTreeView = new TreeViewDriver(() => this.select('TREE_VIEW_DEMO_CUSTOM', 'TREE_VIEW'));
+}
+
+// class TreeViewWrapperDriver extends DriverBase {
+//     public static ComponentClass = TreeViewWrapper;
+
+//     constructor(treeViewElement: Element) {
+//         super(() => treeViewElement);
+//         const treeView = new TreeViewInstanceDriver(treeViewElement);
+//     }
+// }
+
+// duplicating the data so i can pass a new object to the non-mobx version
+const newTreeData = JSON.parse(JSON.stringify(treeData));
+newTreeData[0].children![2].children!.push({label: 'Kaiserschmarrn'});
+
+export interface TreeViewWrapperState {
+    treeData: object[];
+}
+
 function getLabelsList(data: { label: string, children?: object[] }): string[] {
     return [data.label]
         .concat(...(data.children || [])
@@ -114,18 +110,6 @@ function getAllNodeLabels(data: object[]): string[] {
 describe('<TreeView />', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
-
-    // function expandItemWithLabel(select: (...selectors: string[]) => Element | null, id: string) {
-    //     simulate.click(select(getTreeItemIcon(id)));
-    // }
-
-    // function selectItemWithLabel(select: (...selectors: string[]) => Element | null, id: string) {
-    //     simulate.click(select(getTreeItemLabel(id)));
-    // }
-
-    // function selectItemWithLabel(select: (...selectors: string[]) => Element | null, id: string) {
-    //     simulate.click(select(getTreeItemLabel(id)));
-    // }
 
     function isElementSelected(element: Element, style: {$stylesheet: Stylesheet}) {
         return elementHasStylableState(element, style, 'selected');
@@ -484,23 +468,25 @@ describe('<TreeView />', () => {
             });
         });
 
-    //     describe('Reaction to dataSource changes', () => {
-    //         it('renders the additional item when a new data array is passed', async () => {
-    //             const {select, waitForDom, result} = clientRenderer.render(<TreeViewWrapper />);
+        describe('Reaction to dataSource changes', () => {
+            it('renders the additional item when a new data array is passed', async () => {
+                // const {waitForDom, result} = clientRenderer.render(<TreeViewWrapper />);
 
-    //             expandItemWithLabel(select, treeData[0].label);
-    //             expandItemWithLabel(select, treeData[0].children![2].label);
+                // const treeView = new TreeViewInstanceDriver(result as TreeView);
 
-    //             await waitForDom(() =>
-    //                 expect(select(treeView, getTreeItem('Kaiserschmarrn'))).to.be.absent());
+                // treeView.toggleItem(treeData[0].label);
+                // treeView.toggleItem(treeData[0].children![2].label);
 
-    //             (result as TreeViewWrapper).switchDataSource();
-    //             expandItemWithLabel(select, newTreeData[0].label);
-    //             expandItemWithLabel(select, newTreeData[0].children![2].label);
+                // await waitForDom(() =>
+                //     expect(treeView.getItem('Kaiserschmarrn')).to.be.absent());
 
-    //             return waitForDom(() =>
-    //                 expect(select(treeView, getTreeItem('Kaiserschmarrn'))).to.be.present());
-    //         });
+                // treeView.instance.switchDataSource();
+                // expandItemWithLabel(select, newTreeData[0].label);
+                // expandItemWithLabel(select, newTreeData[0].children![2].label);
+
+                // return waitForDom(() =>
+                //     expect(select(treeView, getTreeItem('Kaiserschmarrn'))).to.be.present());
+            });
 
     //         it('renders the additional item when a new data element is added to existing data', async () => {
     //             const {select, waitForDom, result} = clientRenderer.render(<TreeViewMobxWrapper />);
@@ -516,80 +502,79 @@ describe('<TreeView />', () => {
     //             return waitForDom(() =>
     //                 expect(select(treeView, getTreeItem('Kaiserschmarrn'))).to.be.present());
     //         });
-    //     });
+        });
 
         describe('<TreeItem />', () => {
 
             const stateMap = new TreeStateMap();
-            // stateMap.getItemState(nestedItem).isExpanded = true;
+            stateMap.getItemState(nestedItem).isExpanded = true;
 
-    //         it('renders an item', () => {
-    //             const {select, waitForDom} = clientRenderer.render(
-    //                 <TreeItem
-    //                     item={sampleItem}
-    //                     itemRenderer={TreeItem}
-    //                     stateMap={stateMap}
-    //                 />
-    //             );
+            it('renders an item', () => {
+                const {driver: treeItem, waitForDom} = clientRenderer.render(
+                    <TreeItem
+                        item={sampleItem}
+                        itemRenderer={TreeItem}
+                        stateMap={stateMap}
+                    />
+                ).withDriver(TreeItemDriver);
 
-    //             return waitForDom(() => expect(select(getTreeItem(sampleItem.label))).to.be.present());
-    //         });
+                return waitForDom(() => expect(treeItem.getItem(sampleItem.label)).to.be.present());
+            });
 
-    //         it('renders with provided label', () => {
-    //             const {select, waitForDom} =
-    //                 clientRenderer.render(
-    //                     <TreeItem
-    //                         item={sampleItem}
-    //                         itemRenderer={TreeItem}
-    //                         stateMap={stateMap}
-    //                     />
-    //                 );
+            it('renders with provided label', () => {
+                const {driver: treeItem, waitForDom} = clientRenderer.render(
+                    <TreeItem
+                        item={sampleItem}
+                        itemRenderer={TreeItem}
+                        stateMap={stateMap}
+                    />
+                ).withDriver(TreeItemDriver);
 
-    //             return waitForDom(() =>
-    //                 expect(select(getTreeItem(sampleItem.label) + '_LABEL')).to.have.text(sampleItem.label));
-    //         });
+                return waitForDom(() =>
+                    expect(treeItem.getItem(sampleItem.label) + '_LABEL').to.have.text(sampleItem.label));
+            });
 
-    //         it('renders with an icon', () => {
-    //             const {select, waitForDom} = clientRenderer.render(
-    //                 <TreeItem
-    //                     item={treeData[0]}
-    //                     itemRenderer={TreeItem}
-    //                     stateMap={stateMap}
-    //                 />
-    //             );
+            it('renders with an icon', () => {
+                const {driver: treeItem, waitForDom} = clientRenderer.render(
+                    <TreeItem
+                        item={treeData[0]}
+                        itemRenderer={TreeItem}
+                        stateMap={stateMap}
+                    />
+                ).withDriver(TreeItemDriver);
 
-    //             return waitForDom(() => expect(select(getTreeItem(treeData[0].label) + '_ICON')).to.be.present());
-    //         });
+                return waitForDom(() => expect(treeItem.getItem(treeData[0].label) + '_ICON').to.be.present());
+            });
 
-    //         it('renders correct children', () => {
-    //             const {select, waitForDom} = clientRenderer.render(
-    //                 <TreeItem
-    //                     item={nestedItem}
-    //                     itemRenderer={TreeItem}
-    //                     stateMap={stateMap}
-    //                 />
-    //             );
+            it('renders correct children', () => {
+                const {driver: treeItem, waitForDom} = clientRenderer.render(
+                    <TreeItem
+                        item={nestedItem}
+                        itemRenderer={TreeItem}
+                        stateMap={stateMap}
+                    />
+                ).withDriver(TreeItemDriver);
 
-    //             return waitForDom(() =>
-    //                 nestedItem.children!.forEach((item: TreeItemData) =>
-    //                     expect(select(getTreeItem(item.label)), `${item.label} was not present`).to.be.present()));
-    //         });
+                return waitForDom(() =>
+                    nestedItem.children!.forEach((item: TreeItemData) =>
+                        expect(treeItem.getItem(item.label), `${item.label} was not present`).to.be.present()));
+            });
 
-    //         it('invokes onClick when clicked', () => {
-    //             const onClick = sinon.spy();
-    //             const {select} = clientRenderer.render(
-    //                 <TreeItem
-    //                     item={sampleItem}
-    //                     itemRenderer={TreeItem}
-    //                     onItemClick={onClick}
-    //                     stateMap={stateMap}
-    //                 />
-    //             );
+            it('invokes onClick when clicked', () => {
+                const onClick = sinon.spy();
+                const {driver: treeItem, waitForDom} = clientRenderer.render(
+                    <TreeItem
+                        item={sampleItem}
+                        itemRenderer={TreeItem}
+                        onItemClick={onClick}
+                        stateMap={stateMap}
+                    />
+                ).withDriver(TreeItemDriver);
 
-    //             simulate.click(select(getTreeItemLabel(sampleItem.label)));
+                simulate.click(treeItem.getItem(sampleItem.label));
 
-    //             return waitFor(() => expect(onClick).to.have.been.calledOnce);
-    //         });
+                return waitFor(() => expect(onClick).to.have.been.calledOnce);
+            });
         });
 
         describe('Tree Traversal Utils', () => {
@@ -648,80 +633,85 @@ describe('<TreeView />', () => {
             const firstChild = treeData[0].children![0];
             const secondChild = treeData[0].children![1];
 
-            // async function renderAndExpandPartsOfTree() {
-            //     const {driver: treeView, result} = clientRenderer.render(
-            //         <TreeView dataSource={treeData} />
-            //     ).withDriver(TreeViewDriver);
+            async function renderAndExpandPartsOfTree() {
+                const {result, waitForDom} = clientRenderer.render(<TreeView dataSource={treeData} />);
 
-            //     const treeRootIcon = select(treeView, getTreeItemIcon('Food Menu'));
-            //     simulate.click(treeRootIcon);
-            //     await waitForDom(() =>
-            //         expect(select(treeView, getTreeItemLabel(firstChild.label))).to.be.present());
+                const treeView = new TreeViewInstanceDriver(result as TreeView);
 
-            //     simulate.click(select(treeView, getTreeItemIcon(firstChild.label)));
-            //     await waitForDom(() => expect(select(treeView,
-            //         getTreeItemLabel(firstChild.children![0].label))).to.be.present());
+                const treeRootIcon = treeView.getItem('Food Menu');
+                simulate.click(treeRootIcon);
+                await waitForDom(() =>
+                    expect(treeView.getItem(firstChild.label)).to.be.present());
 
-            //     return renderResult;
-            // }
+                simulate.click(treeView.getItem(firstChild.label));
+                await waitForDom(() => expect(treeView.getItem(firstChild.children![0].label)).to.be.present());
 
-    //         it('collapses a node and its subtree when \'collapse\' method is used', async () => {
-    //             const {select, waitForDom, result} = await renderAndExpandPartsOfTree();
+                return {treeView, waitForDom};
+            }
 
-    //             (result as TreeView).collapse(treeData[0]);
+            it('collapses a node and its subtree when \'collapse\' method is used', async () => {
+                const {treeView, waitForDom} = await renderAndExpandPartsOfTree();
 
-    //             return waitForDom(() => {
-    //                 expect(select(treeView, getTreeItemLabel(firstChild.label))).to.be.absent();
-    //                 expect(select(treeView, getTreeItemLabel(firstChild.children![0].label))).to.be.absent();
-    //             });
-    //         });
+                treeView.instance.collapse(treeData[0]);
 
-    //         it('collapses the whole tree when \'collapseAll\' method is used', async () => {
-    //             const {select, waitForDom, result} = await renderAndExpandPartsOfTree();
+                return waitForDom(() => {
+                    expect(treeView.getItem(firstChild.label)).to.be.absent();
+                    expect(treeView.getItem(firstChild.children![0].label)).to.be.absent();
+                });
+            });
 
-    //             (result as TreeView).collapseAll();
+            it('collapses the whole tree when \'collapseAll\' method is used', async () => {
+                const {treeView, waitForDom} = await renderAndExpandPartsOfTree();
 
-    //             return waitForDom(() => {
-    //                 expect(select(treeView, getTreeItemLabel(firstChild.label))).to.be.absent();
-    //                 expect(select(treeView, getTreeItemLabel(firstChild.children![0].label))).to.be.absent();
-    //             });
-    //         });
+                treeView.instance.collapseAll();
 
-    //         it('expands a node and its subtree when \'expand\' method is used', async () => {
-    //             const {select, waitForDom, result} = clientRenderer.render(<TreeView dataSource={treeData} />);
-    //             const treeRootIcon = select(treeView, getTreeItemIcon('Food Menu'));
-    //             simulate.click(treeRootIcon);
+                return waitForDom(() => {
+                    expect(treeView.getItem(firstChild.label)).to.be.absent();
+                    expect(treeView.getItem(firstChild.children![0].label)).to.be.absent();
+                });
+            });
 
-    //             await waitForDom(() => expect(select(treeView, getTreeItemLabel(firstChild.label))).to.be.present());
+            it('expands a node and its subtree when \'expand\' method is used', async () => {
+                const {waitForDom, result} = clientRenderer.render(<TreeView dataSource={treeData} />);
 
-    //             (result as TreeView).expand(firstChild);
+                const treeView = new TreeViewInstanceDriver(result as TreeView);
 
-    //             return waitForDom(() => {
-    //                 expect(select(treeView, getTreeItemLabel(firstChild.children![0].label))).to.be.present();
-    //                 expect(select(treeView, getTreeItemLabel(secondChild.children![0].label))).to.be.absent();
-    //             });
-    //         });
+                const treeRootIcon = treeView.getItem('Food Menu');
+                simulate.click(treeRootIcon);
 
-        // it('expands the whole tree when \'expandAll\' method is used', async () => {
-        //     const {driver: treeView, waitForDom, result} = clientRenderer.render(
-        //         <TreeView dataSource={treeData} />
-        //     ).withDriver(TreeViewDriver);
+                await waitForDom(() => expect(treeView.getItem(firstChild.label)).to.be.present());
 
-        //     (result as TreeView).expandAll();
+                treeView.instance.expand(firstChild);
 
-        //     await waitForDom(() => allNodesLabels.forEach(item =>
-        //         expect(treeView.getItem(item), `item did not appear: ${item}`).to.be.present()));
-        // });
+                return waitForDom(() => {
+                    expect(treeView.getItem(firstChild.children![0].label)).to.be.present();
+                    expect(treeView.getItem(secondChild.children![0].label)).to.be.absent();
+                });
+            });
 
-        // it('selects the provided item when \'selectItem\' method is used', async () => {
-        //     const onSelectItem = sinon.spy();
-        //     const {result} = clientRenderer.render(
-        //         <TreeView dataSource={treeData} onSelectItem={onSelectItem}/>
-        //     );
+            it('expands the whole tree when \'expandAll\' method is used', async () => {
+                const {waitForDom, result} = clientRenderer.render(<TreeView dataSource={treeData} />);
 
-        //     (result as TreeView).selectItem(treeData[0]);
+                const treeView = new TreeViewInstanceDriver(result as TreeView);
 
-        //     await waitFor(() => expect(onSelectItem).to.have.been.calledWithMatch(treeData[0]));
+                treeView.instance.expandAll();
+
+                await waitForDom(() => allNodesLabels.forEach(item =>
+                    expect(treeView.getItem(item), `item did not appear: ${item}`).to.be.present()));
+            });
+
+            it('selects the provided item when \'selectItem\' method is used', async () => {
+                const onSelectItem = sinon.spy();
+                const {result} = clientRenderer.render(
+                    <TreeView dataSource={treeData} onSelectItem={onSelectItem}/>
+                );
+
+                const treeView = new TreeViewInstanceDriver(result as TreeView);
+
+                treeView.instance.selectItem(treeData[0]);
+
+                await waitFor(() => expect(onSelectItem).to.have.been.calledWithMatch(treeData[0]));
+            });
         });
     });
 });
