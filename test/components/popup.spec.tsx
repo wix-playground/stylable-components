@@ -4,8 +4,8 @@ import {selectDom} from 'test-drive';
 import {ClientRenderer, expect, waitFor} from 'test-drive-react';
 import {PopupDemo} from '../../demo/components/popup-demo';
 import {Popup, PopupPositionPoint} from '../../src/components/';
-import {PopupPoint} from '../../src/components/popup/popup';
 import {sleep} from '../utils';
+import {Point} from '../../src/types';
 
 const portalId = 'PORTAL';
 const demoContainer = 'POPUP_DEMO_DIV';
@@ -76,7 +76,7 @@ describe('<Popup />', function() {
     });
 
     it('renders the popup using a point as anchor', async () => {
-        const point = {top: 100, left: 100};
+        const point: Point = {X: 100, Y: 100};
         clientRenderer.render(
             <Popup anchor={point} open>
                 <span data-automation-id="SPAN">Popup Body</span>
@@ -216,7 +216,7 @@ describe('<Popup />', function() {
         });
 
         describe('Popup with point', () => {
-            const point = {top: 100, left: 100};
+            const point: Point = {X: 90, Y: 100};
             const verticalTests = getPointLayoutTests('vertical');
             const horizontalTests = getPointLayoutTests('horizontal');
 
@@ -292,22 +292,24 @@ function getPointLayoutTests(axis: 'vertical' | 'horizontal') {
     let start: 'left' | 'top' = 'top';
     let end: 'bottom' | 'right' = 'bottom';
     let length: 'height' | 'width' = 'height';
+    let pointAxis: 'X' | 'Y' = 'Y';
 
     if (axis === 'horizontal') {
         start = 'left';
         end = 'right';
         length = 'width';
+        pointAxis = 'X';
     }
 
     return {
-        [start]: (popup: HTMLElement, p: PopupPoint) => {
-            createExpect(popup.getBoundingClientRect()[start], p[start], 0.5);
+        [start]: (popup: HTMLElement, p: Point) => {
+            createExpect(popup.getBoundingClientRect()[start], p[pointAxis], 0.5);
         },
-        center: (popup: HTMLElement, p: PopupPoint) => {
+        center: (popup: HTMLElement, p: Point) => {
             const popupRect = popup.getBoundingClientRect();
-            createExpect(popupRect[start], p[start] - (popupRect[length] / 2), 0.5);
+            createExpect(popupRect[start], p[pointAxis] - (popupRect[length] / 2), 0.5);
         },
-        [end]: (popup: HTMLElement, p: PopupPoint) => createExpect(popup.getBoundingClientRect()[end], p[start], 0.5)
+        [end]: (popup: HTMLElement, p: Point) => createExpect(popup.getBoundingClientRect()[end], p[pointAxis], 0.5)
     };
 }
 

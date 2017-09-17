@@ -1,5 +1,7 @@
 import * as React from 'react';
+import {properties} from 'wix-react-tools';
 import {Portal} from '../portal';
+import {Point} from '../../types';
 
 export type PopupVerticalPosition =  'top' | 'center' | 'bottom';
 export type PopupHorizontalPosition = 'left' | 'center' | 'right';
@@ -9,12 +11,7 @@ export interface PopupPositionPoint {
     horizontal: PopupHorizontalPosition;
 }
 
-export interface PopupPoint {
-    top: number;
-    left: number;
-}
-
-export interface PopupProps {
+export interface PopupProps extends properties.Props {
     open?: boolean;
     anchorPosition?: PopupPositionPoint;
     popupPosition?: PopupPositionPoint;
@@ -24,10 +21,11 @@ export interface PopupProps {
 }
 
 export interface PopupCompProps extends PopupProps {
-    anchor: Element | PopupPoint | null;
+    anchor: Element | Point | null;
 }
 
-export class Popup extends React.Component<PopupCompProps, {}> {
+@properties
+export class Popup extends React.Component<PopupCompProps> {
     public static defaultProps: Partial<PopupCompProps> = {
         open: false,
         anchorPosition: {vertical: 'bottom', horizontal: 'left'},
@@ -51,15 +49,14 @@ export class Popup extends React.Component<PopupCompProps, {}> {
         if (!this.props.anchor) {
             return {};
         }
-
         const newStyle: React.CSSProperties = {position: 'absolute'};
 
         newStyle.maxHeight = this.props.maxHeight;
         newStyle.transform = '';
         newStyle.WebkitTransform = '';
         if (isPoint(this.props.anchor)) {
-            newStyle.top = this.props.anchor.top;
-            newStyle.left = this.props.anchor.left;
+            newStyle.top = this.props.anchor.Y;
+            newStyle.left = this.props.anchor.X;
 
         } else {
             const anchorRect = this.props.anchor!.getBoundingClientRect();
@@ -112,6 +109,6 @@ function addTransform(style: React.CSSProperties, transformation: string) {
     style.WebkitTransform += transformation;
 }
 
-function isPoint(elem: Element | PopupPoint): elem is PopupPoint {
-    return elem.hasOwnProperty('top') && elem.hasOwnProperty('left');
+function isPoint(elem: Element | Point): elem is Point {
+    return elem.hasOwnProperty('X') && elem.hasOwnProperty('Y');
 }
