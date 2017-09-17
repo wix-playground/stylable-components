@@ -10,12 +10,10 @@ describe('<Portal />', function() {
     afterEach(function() {clientRenderer.cleanup(); });
 
     it('displays the portal and renders its children', async function() {
-        const {result} = clientRenderer.render(
+        const {portal} = clientRenderer.render(
             <Portal>
                 <span>Portal Body</span>
-            </Portal>);
-
-        const portal = new PortalTestDriver(result as Portal);
+            </Portal>).withDriver(PortalTestDriver);
 
         await waitFor(() => {
             expect(portal.root).to.be.present();
