@@ -8,11 +8,15 @@ import {sleep} from '../utils';
 
 export class PopupDemoTestDriver extends DriverBase {
     public static ComponentClass = PopupDemo;
-    public popupDriver: PopupTestDriver;
+    public popup: PopupTestDriver;
 
     constructor(public readonly instance: PopupDemo) {
         super(() => ReactDOM.findDOMNode(instance));
-        this.popupDriver = new PopupTestDriver(instance.getPopup()!);
+        this.popup = new PopupTestDriver(instance.getPopup()!);
+    }
+
+    public get container(): HTMLDivElement {
+        return this.select('POPUP_DEMO_DIV');
     }
 }
 
@@ -39,16 +43,16 @@ describe('<Popup />', function() {
             let popupDemo = new PopupDemoTestDriver(result as PopupDemo);
 
             await waitForDom(() => {
-                expect(popupDemo.popupDriver.root).to.be.present();
-                expect(popupDemo.popupDriver.isPresent).to.equal(false);
+                expect(popupDemo.container).to.be.present();
+                expect(popupDemo.popup.isPresent).to.equal(false);
             });
 
-            popupDemo.popupDriver.root.click();
+            popupDemo.container.click();
             popupDemo = new PopupDemoTestDriver(result as PopupDemo);
-            await waitForDom(() => expect(popupDemo.popupDriver.isPresent).to.be.present());
+            await waitForDom(() => expect(popupDemo.popup.root).to.be.present());
 
-            popupDemo.popupDriver.root.click();
-            return waitForDom(() => expect(popupDemo.popupDriver.isPresent).to.equal(false));
+            popupDemo.container.click();
+            return waitForDom(() => expect(popupDemo.popup.isPresent).to.equal(false));
         });
     });
 
