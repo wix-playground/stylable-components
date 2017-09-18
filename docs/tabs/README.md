@@ -21,14 +21,16 @@ When a tab interface is initialized, one tab panel is displayed and its associat
 
 #### Component Props
 
-| name     | type                              | defaultValue | isRequired | description                              |
-| -------- | --------------------------------- | ------------ | ---------- | ---------------------------------------- |
-| onChange | func                              |              | yes        | Callback function that is fired when the tab value changed |
-| value    | number                            |              |            | Displays value that represents active tab |
-| position | enum                              | up           |            | Controls the location of tabs relative to the tab panel. Accepted values are: up/down/left/right |
-| tabList  | string [array], component [array] |              |            | Allows to pass simple strings (e.g. "tab one", "1") OR components (e.g. string with an icon) |
-| disabled | bool                              | false        |            | If true, tabs are not actionable         |
-| rtl      | bool                              | false        |            | Makes the component RTL                  |
+| name             | type                           | defaultValue | isRequired | description                              |
+| ---------------- | ------------------------------ | ------------ | ---------- | ---------------------------------------- |
+| onChange         | func                           |              | yes        | Callback function that is fired when the tab value changes |
+| tabList          | array of strings /  components |              |            | Allows to pass simple strings (e.g. "tab one", "1") OR components (e.g. string with an icon) |
+| activeTabId      | number                         |              |            | Controls which tab is active             |
+| defaultTabId     | number                         |              |            | Controls tab that is active by default (e.g. when component is mounted) |
+| killInactiveTabs | function / bool?               | false        |            | Allows to unload inactive tabs           |
+| position         | enum                           | up           |            | Controls the location of tabs relative to the tab panel. Accepted values are: up/down/left/right |
+| disabled         | bool                           | false        |            | If true, tabs are not actionable         |
+| rtl              | bool                           | false        |            | Makes the component RTL                  |
 
 
 

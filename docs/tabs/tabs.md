@@ -115,8 +115,6 @@ When focus is on a tab in a tab list with either **horizontal** or **vertical** 
 
 NOTE:
 
-It is recommended that tabs activate automatically when they receive focus as long as their associated tab panels are displayed without noticeable latency. This typically requires tab panel content to be preloaded. Otherwise, automatic activation slows focus movement, which significantly hampers users' ability to navigate efficiently across the tab list.
-
 Horizontal tab list does not listen for "Down/Up Arrow Key" so those keys can provide their normal browser scrolling functions even when focus is inside the tab list.
 
 See [ARIA docs](https://www.w3.org/TR/wai-aria-practices/#tabpanel) for reference.
@@ -132,6 +130,7 @@ See [ARIA docs](https://www.w3.org/TR/wai-aria-practices/#tabpanel) for referenc
 |            | `aria-selected=false`      | `button` | Indicates the tab control that is not active and its associated panel is **NOT** displayed. Set for all tab elements in the tab except for the focused tab. |
 |            | `tabindex=-1`              | `button` | Removes the element from the page Tabsequence. Set when a tab is not selected so that only the selected tab is in the page Tabsequence. |
 |            | `aria-controls=IDREF`      | `button` | Refers to the `tabpanel` element associated with the tab. |
+|            | `id=1,2,3...`              | `button` | Refers to the particular tab. Tab ID serves as additional selector. |
 | `tabpanel` |                            | `div`    | Indicates the element serves as a container for tab panel content. Is hidden unless its associated `tab` control is activated. |
 |            | `aria-labelledby=IDREF`    | `div`    | Refers to the `tab` element that controls the panel. Provides an accessible name for the tab panel. |
 |            | `tabindex=0`               | `div`    | Puts the tab panel in the page Tabsequence. Facilitates movement to panel content for assistive technology users. Especially helpful if there are panels that do not contain a focusable element. |
