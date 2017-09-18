@@ -24,11 +24,12 @@ export interface AutoCompleteListProps {
 export const AutoCompleteList: React.SFC<AutoCompleteListProps> = SBStateless(props => {
     return (
         <div data-automation-id="AUTO_COMPLETE_LIST" className="auto-complete-container">
-            <SelectionList
-                className="auto-complete-list"
-                dataSource={props.items}
-                onChange={props.onChange!}
-            />
+            {props.items && props.items.length ?
+                <SelectionList
+                    className="auto-complete-list"
+                    dataSource={props.items}
+                    onChange={props.onChange!}
+                /> : null}
         </div>
     );
 }, style);
@@ -95,16 +96,16 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
     private onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         this.props.onChange!({value: e.target.value || ''});
         if (!this.props.value && !this.props.open) {
-            this.props.onOpenStateChange!({value: this.props.open!});
+            this.props.onOpenStateChange!({value: !this.props.open});
         }
     }
 
     private onClick = (item: string) => {
         this.props.onChange!({value: item});
-        this.props.onOpenStateChange!({value: this.props.open!});
+        this.props.onOpenStateChange!({value: !this.props.open});
     }
 
     private onCaretClick = () => {
-        this.props.onOpenStateChange!({value: this.props.open!});
+        this.props.onOpenStateChange!({value: !this.props.open});
     }
 }

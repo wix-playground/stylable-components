@@ -63,7 +63,7 @@ describe('<AutoComplete />', () => {
     });
 
     it('renders the item list if open is given', async () => {
-        clientRenderer.render(<AutoComplete open/>);
+        clientRenderer.render(<AutoComplete dataSource={items} open/>);
 
         await bodyWaitForDom(() => expect(bodySelect(list)).to.be.present());
     });
@@ -130,7 +130,7 @@ describe('<AutoComplete />', () => {
         simulate.click(select(autoComp, autoComp + '_CARET'));
         await bodyWaitForDom(() => {
             expect(onOpenStateChange).to.have.been.calledOnce;
-            expect(onOpenStateChange).to.have.been.calledWithMatch({value: false});
+            expect(onOpenStateChange).to.have.been.calledWithMatch({value: true});
         });
     });
 
@@ -144,7 +144,7 @@ describe('<AutoComplete />', () => {
         simulate.click(bodySelect(list, 'LIST')!.children[0]);
         await bodyWaitForDom(() => {
             expect(onOpenStateChange).to.have.been.calledOnce;
-            expect(onOpenStateChange).to.have.been.calledWithMatch({value: true});
+            expect(onOpenStateChange).to.have.been.calledWithMatch({value: false});
         });
     });
 
@@ -156,7 +156,7 @@ describe('<AutoComplete />', () => {
         trigger.change(bodySelect(autoCompInput), 'M');
         await bodyWaitForDom(() => {
             expect(onOpenStateChange).to.have.been.calledOnce;
-            expect(onOpenStateChange).to.have.been.calledWithMatch({value: false});
+            expect(onOpenStateChange).to.have.been.calledWithMatch({value: true});
         });
     });
 });

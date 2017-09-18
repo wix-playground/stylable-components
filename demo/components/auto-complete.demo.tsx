@@ -20,7 +20,7 @@ export class AutoCompleteDemo extends React.Component<{}, AutoCompleteDemoState>
     }
 
     public toggleOpen = (e: ChangeEvent<boolean>) => {
-        this.setState({open: !e.value});
+        this.setState({open: e.value});
     }
 
     public render() {
