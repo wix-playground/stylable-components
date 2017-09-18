@@ -1,6 +1,7 @@
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import {stylable} from 'wix-react-tools';
+import {isRTLContext} from '../../utils';
 import {FormInputProps} from '../../types/forms';
 import style from './toggle.st.css';
 
@@ -58,8 +59,7 @@ export default class Toggle extends React.Component<Props, State> {
                     disabled: disabled!,
                     focus: focus!,
                     error: error!,
-                    rtl: this.context.contextProvider &&
-                        this.context.contextProvider.dir === 'rtl'
+                    rtl: isRTLContext(this.context)
                 }}
             >
                 {!disabled &&
