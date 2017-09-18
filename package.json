@@ -67,7 +67,7 @@
     "dist/test-kit",
     "src",
     "test-kit",
-    "typings"
+    "custom-typings"
   ],
   "repository": {
     "type": "git",
