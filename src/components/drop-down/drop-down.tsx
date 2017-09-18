@@ -29,14 +29,12 @@ export interface DropDownProps extends OptionList, FormInputProps<string>, prope
 
 export interface DropDownState {
     dropdown: HTMLDivElement | null;
-    open: boolean;
 }
 
 @stylable(style)
 @properties
 export class DropDown extends React.PureComponent<DropDownProps, DropDownState> {
     public static defaultProps: DropDownProps = {
-        open: false,
         children: [],
         onChange: noop,
         tabIndex: 0,
@@ -45,8 +43,7 @@ export class DropDown extends React.PureComponent<DropDownProps, DropDownState> 
     };
 
     public state: DropDownState = {
-        dropdown: null,
-        open: this.props.open!
+        dropdown: null
     };
 
     public onItemClick = (e: ChangeEvent<string>) => {
@@ -72,7 +69,7 @@ export class DropDown extends React.PureComponent<DropDownProps, DropDownState> 
                         <ToggleIcon />
                     </div>
                 </div>
-                <Popup open={this.state.open && !this.props.disabled} anchor={this.state.dropdown}>
+                <Popup open={this.props.open && !this.props.disabled} anchor={this.state.dropdown}>
                     <div className="root">
                         <SelectionList
                             data-automation-id="DROP_DOWN_LIST"
@@ -97,20 +94,19 @@ export class DropDown extends React.PureComponent<DropDownProps, DropDownState> 
 
     private toggleDropdown = () => {
         if (!this.props.disabled) {
-            this.setState({open: !this.state.open});
-            this.props.onOpenStateChange && this.props.onOpenStateChange({value: !this.state.open});
+            this.props.onOpenStateChange && this.props.onOpenStateChange({value: !this.props.open});
         }
     }
 
     private openDropdown() {
-        if (!this.props.disabled) {
-            this.setState({open: true});
+        if (!this.props.disabled && !this.props.open) {
+            this.toggleDropdown();
         }
     }
 
     private closeDropdown() {
-        if (!this.props.disabled) {
-            this.setState({open: false});
+        if (!this.props.disabled && this.props.open) {
+            this.toggleDropdown();
         }
     }
 
@@ -122,11 +118,11 @@ export class DropDown extends React.PureComponent<DropDownProps, DropDownState> 
                 break;
             case KeyCodes.ESC:
                 e.preventDefault();
-                this.state.open && this.closeDropdown();
+                this.closeDropdown();
                 break;
             case KeyCodes.DOWN:
                 e.preventDefault();
-                !this.state.open && this.openDropdown();
+                this.openDropdown();
                 break;
         }
     }
