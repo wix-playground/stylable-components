@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {properties} from 'wix-react-tools';
-import {Portal} from '../portal';
 import {Point} from '../../types';
+import {Portal} from '../portal';
 
 export type PopupVerticalPosition =  'top' | 'center' | 'bottom';
 export type PopupHorizontalPosition = 'left' | 'center' | 'right';
