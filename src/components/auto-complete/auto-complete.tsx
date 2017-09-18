@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {SBComponent, SBStateless} from 'stylable-react-component';
+import {SBComponent} from 'stylable-react-component';
 import {root} from 'wix-react-tools';
 import {Popup} from '../../';
 import {ChangeEvent} from '../../types/events';
