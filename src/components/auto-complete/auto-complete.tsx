@@ -23,7 +23,7 @@ export interface AutoCompleteState {
 
 const prefixFilter: FilterPredicate = (item: string, prefix: string) => {
     return item.toLowerCase().startsWith(prefix.toLowerCase());
-}
+};
 
 @SBComponent(style)
 export class AutoComplete extends React.Component<AutoCompleteProps, AutoCompleteState> {
