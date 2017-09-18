@@ -1,6 +1,7 @@
 import * as keycode from 'keycode';
 import * as React from 'react';
 import {properties, stylable} from 'wix-react-tools';
+import {isRTLContext} from '../../utils';
 import {GlobalEvent} from '../global-event';
 import {FormInputProps} from './../../types/forms';
 import {noop} from './../../utils/noop';
@@ -315,7 +316,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
     }
 
     private isRTL(): boolean {
-        return Boolean(this.context.contextProvider && this.context.contextProvider.dir === 'rtl');
+        return isRTLContext(this.context);
     }
 
     private increaseValue(toEdge: boolean = false, multiplier: number = 1) {
