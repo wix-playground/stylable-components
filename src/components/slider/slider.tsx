@@ -6,7 +6,7 @@ import {FormInputProps} from './../../types/forms';
 import {noop} from './../../utils/noop';
 import style from './slider.st.css';
 
-export const AXISES: {[name in string]: AxisOptions} = {
+export const AXISES: {[name: string]: AxisOptions} = {
     x: 'x',
     y: 'y',
     xReverse: 'x-reverse',
