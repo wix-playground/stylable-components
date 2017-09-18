@@ -59,16 +59,19 @@ export class SelectionList extends React.Component<Props> {
 
     public render() {
         return (
-            <SelectionListView
-                focused={this.focused}
-                list={this.list}
-                onBlur={this.handleBlur}
-                onChange={this.props.onChange}
-                onFocus={this.handleFocus}
-                onKeyDown={this.handleKeyDown}
-                style={this.props.style}
-                tabIndex={this.props.tabIndex}
-            />
+            <div>
+                <input type="hidden" value={this.props.value} name={this.props.name}/>
+                <SelectionListView
+                    focused={this.focused}
+                    list={this.list}
+                    onBlur={this.handleBlur}
+                    onChange={this.props.onChange}
+                    onFocus={this.handleFocus}
+                    onKeyDown={this.handleKeyDown}
+                    style={this.props.style}
+                    tabIndex={this.props.tabIndex}
+                />
+            </div>
         );
     }
 
