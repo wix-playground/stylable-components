@@ -32,39 +32,12 @@ When a tab interface is initialized, one tab panel is displayed and its associat
 
 
 
-#### Accepted Children?
-
-> 
-> This component accepts children with the following `data-slot` attribute, in order to *tell why do we need data-slot in current component*
->
-> | data-slot | description                              | example                                  |
-> | --------- | ---------------------------------------- | ---------------------------------------- |
-> | tooltip   | Allows you to insert a component (or components) above the input | `<div data-slot="tooltip">hello world</div>` |
-
-
-
 ### React Code Example
 
 **Example 1:**
 
 ```jsx
 //code example goes here
-import * as React from 'react';
-import { Tabs } from './components/tabs';
-import style from './style.st.css'; // link to Style file - see examples of style files below
-
-export class ComponentsDemo extends React.Component<{}, {}>{
-    constructor() {
-        super();
-    }
-
-    render() {
-        return <Tabs
-        		 value="{this.state.tabs}"
-                 onChange={/* something */}
-                 />;
-    }
-}
 ```
 
 *Comments to example 1*
@@ -73,7 +46,7 @@ export class ComponentsDemo extends React.Component<{}, {}>{
 **Example 2:**
 
 ```jsx
-
+//code example goes here
 ```
 
 *Comments to example 2*
@@ -102,12 +75,5 @@ export class ComponentsDemo extends React.Component<{}, {}>{
 ### Style Code Example
 
 ```css
-:import {
-    -st-from: './components/element'; 
-    -st-default: Element;
-}
-
-Element {
-  background-color: grey; /* comment goes here q*/
-}
+//code example goes here
 ```

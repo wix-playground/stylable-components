@@ -37,6 +37,12 @@ Tabs are a set of layered sections of content, known as tab panels, that display
 
 When a tab interface is initialized, one tab panel is displayed and its associated tab is styled to indicate that it is active. When the user activates one of the other tab elements, the previously displayed tab panel is hidden, the tab panel associated with the activated tab becomes visible, and the tab is considered "active".
 
+> NOTE: we decided to include tap panel into the scope for several reasons:
+>
+> 1. This is required for Accessibility 
+> 2. Makes it simple to position tabs relatively to the content that they are connected to
+> 3. Makes component complete (in terms of functionality)
+
 ### Elements
 
 ![elements](./assets/elements.png)
@@ -143,15 +149,15 @@ When user places focus over TAB component, focus is set to active tab OR if ther
 
 User can switch between tabs with mouse or arrow buttons. 
 
-When a tab interface is initialized, tab panel displays content that is associated with active tab OR it can display placeholder/empty panel if there is no active tab (NEED TO DECIDE IS SUCH CASES CAN EXIST). When the user activates another tab elements, the previously displayed tab panel is hidden, the tab panel associated with the activated tab becomes visible, and the tab is considered "active". 
+When a tab interface is initialized, tab panel displays content that is associated with active tab OR it can display placeholder/empty panel if there is no active tab (NEED TO DECIDE IF SUCH CASES CAN EXIST). When the user activates another tab elements, the previously displayed tab panel is hidden, the tab panel associated with the activated tab becomes visible, and the tab is considered "active". 
 
-By default Tab List is displayed on top of the Tab Panel. But it can be changed with `position`  prop that accepts the following values: "left / right / up / down". When `position` prop is set `left / right` tabs are displayed in vertical position. 
+By default Tab List is displayed on top of the Tab Panel. But it can be changed with `position`  prop that accepts the following values: `left / right / up / down`. When `position` prop is set `left / right` tabs are displayed in vertical position. 
 
 
 
 #### Validation 
 
-IS THERE ANY CASE?
+We do not have anything here for now. 
 
 
 
@@ -183,10 +189,10 @@ IS THERE ANY CASE?
 
 #### Mouse
 
-| Event            | Action                   | NOTE |
-| ---------------- | ------------------------ | ---- |
-| hover (over tab) | highlight tab            |      |
-| click (on tab)   | sets tab to active state |      |
+| Event            | Action                   |
+| ---------------- | ------------------------ |
+| hover (over tab) | highlight tab            |
+| click (on tab)   | sets tab to active state |
 
 
 
@@ -216,4 +222,4 @@ In addition, a link to Zeplin or a similar system is optional.
 
 ## Design
 
-Link to [assets](link goes here)
+Link to [assets](link goes here) (assets will be provided later)
