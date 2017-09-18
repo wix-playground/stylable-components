@@ -41,8 +41,7 @@ export class DropDown extends React.PureComponent<DropDownProps, DropDownState> 
         onChange: noop,
         tabIndex: 0,
         toggleIcon: CaretDown,
-        disabled: false,
-        onOpenStateChange: noop
+        disabled: false
     };
 
     public state: DropDownState = {
