@@ -4,12 +4,19 @@ import * as React from 'react';
 import {properties, stylable} from 'wix-react-tools';
 import {ChangeEvent} from '../../types/events';
 import {FormInputProps} from '../../types/forms';
-import {RadioButton, RadioButtonProps} from './radio-button';
+import {RadioButton} from './radio-button';
 import styles from './radio-group.st.css';
+
+export interface RadioGroupDataSchemaProps {
+    disabled?: boolean;
+    readOnly?: boolean;
+    value: string;
+    labelText?: string;
+}
 
 export interface RadioGroupProps extends FormInputProps<string>, properties.Props {
     children?: any;
-    dataSource?: RadioButtonProps[];
+    dataSource?: RadioGroupDataSchemaProps[];
     name?: string;
     disabled?: boolean;
     readOnly?: boolean;
@@ -108,8 +115,9 @@ export class RadioGroup extends React.Component<RadioGroupProps> {
                 name={this.name}
                 className="radioGroupChild"
                 tabIndex={this.getChildTabIndex(index, this.isGroupChecked)}
-                children={props.children}
-            />
+            >
+                {props.labelText ? <label className="label">{props.labelText}</label> : null}
+            </RadioButton>
         ));
     }
 

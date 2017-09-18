@@ -12,3 +12,8 @@
 .radioGroupChild {
     -st-extends: Radio;
 }
+
+.label {
+    color: black;
+    margin-left: 0.5rem;
+}

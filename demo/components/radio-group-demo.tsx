@@ -46,12 +46,12 @@ export class RadioGroupDemo extends React.Component<{}, {}> {
                         className="rg"
                         value={this.state.myValue2}
                         dataSource={[
-                            {value: 'Default Radio', children: <span className="label">Default Radio</span>},
-                            {value: 'Checked Radio', children: <span className="label">Checked Radio</span>},
+                            {value: 'Default Radio', labelText: 'Default Radio'},
+                            {value: 'Checked Radio', labelText: 'Checked Radio'},
                             {
                                 value: 'Disabled Radio',
                                 disabled: true,
-                                children: <span className="label">Disabled Radio</span>
+                                labelText: 'Disabled Radio'
                             }
                         ]}
                     />

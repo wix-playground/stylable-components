@@ -259,10 +259,10 @@ describe('<RadioGroup />', () => {
         const button1 = group.getRadioButton(1);
 
         await waitForDom(() => {
-            expect(button0.children[0]!.textContent).to.equal('YO');
-            expect(button0.children[1]!.textContent).to.equal('IMA SPAN');
+            expect(button0.children[0]!).to.have.text('YO');
+            expect(button0.children[1]!).to.have.text('IMA SPAN');
             expect(button0.children[1]!).to.be.instanceOf(HTMLSpanElement);
-            expect(button1.children[0]!.textContent).to.equal('MO');
+            expect(button1.children[0]!).to.have.text('MO');
         });
     });
 
@@ -291,18 +291,23 @@ describe('<RadioGroup />', () => {
         });
     });
 
-    it('renders data source item children (supplied in prop)', async () => {
+    it('renders data source item labels (supplied in prop)', async () => {
         const {driver: group, waitForDom} = clientRenderer.render(
             <RadioGroup
                 value="Child1"
-                dataSource={[{value: 'BTN0'}, {value: 'BTN1', children: <span>IMA SPAN</span>}]}
+                dataSource={[{value: 'BTN0', labelText: 'button0'}, {value: 'BTN1', labelText: 'button1'}]}
             />
         ).withDriver(RadioGroupDriver);
 
+        const button0 = group.getRadioButton(0);
+        const button1 = group.getRadioButton(1);
+
         await waitForDom(() => {
-            expect(group.getRadioButton(1).children[0]!.textContent).to.equal('IMA SPAN');
+            expect(button0.children[0]!).to.be.instanceOf(HTMLLabelElement);
+            expect(button0.children[0]!).to.have.text('button0');
+            expect(button1.children[0]!).to.have.text('button1');
         });
-    })
+    });
 
     describe('Accessibility', () => {
         it('if no child is checked - gives tabindex to the first one and the rest get -1', async () => {

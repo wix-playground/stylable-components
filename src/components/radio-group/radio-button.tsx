@@ -11,7 +11,6 @@ export interface RadioButtonProps extends FormInputProps<string> {
     readOnly?: boolean;
     tabIndex?: number;
     className?: string;
-    children?: React.ReactNode;
 }
 
 export interface RadioButtonState {
