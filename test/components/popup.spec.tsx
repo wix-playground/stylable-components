@@ -5,6 +5,7 @@ import {ClientRenderer, expect, waitFor} from 'test-drive-react';
 import {PopupDemo} from '../../demo/components/popup-demo';
 import {Popup, PopupPositionPoint} from '../../src/components/';
 import {sleep} from '../utils';
+import {Point} from '../../src/types';
 
 const portalId = 'PORTAL';
 const demoContainer = 'POPUP_DEMO_DIV';
@@ -72,6 +73,17 @@ describe('<Popup />', function() {
         );
         await sleep(100);
         await waitFor(() => expect(bodySelect(portalId)).to.be.absent());
+    });
+
+    it('renders the popup using a point as anchor', async () => {
+        const point: Point = {x: 100, y: 100};
+        clientRenderer.render(
+            <Popup anchor={point} open>
+                <span data-automation-id="SPAN">Popup Body</span>
+            </Popup>
+        );
+
+        await waitFor(() => expect(bodySelect(portalId)).to.be.present());
     });
 
     it('removes the component when unmounting', async function() {
@@ -178,32 +190,58 @@ describe('<Popup />', function() {
     describe('Layout tests', function() {
         const fixture = getFixture();
 
-        for (const popupPos of fixture) {
-            for (const anchorPos of fixture) {
-                it(`Popup position: V: ${popupPos.vertical} H: ${popupPos.horizontal};
+        describe('Popup with anchor', () => {
+            for (const popupPos of fixture) {
+                for (const anchorPos of fixture) {
+                    it(`Popup position: V: ${popupPos.vertical} H: ${popupPos.horizontal};
                  Anchor position: V: ${anchorPos.vertical} H: ${anchorPos.horizontal}`, function() {
-                    clientRenderer.render(
-                        <Popup anchor={anchor} anchorPosition={anchorPos} popupPosition={popupPos} open={true}>
-                            <div style={{background: 'green', color: 'white'}}>
+                        clientRenderer.render(
+                            <Popup anchor={anchor} anchorPosition={anchorPos} popupPosition={popupPos} open={true}>
+                                <div style={{background: 'green', color: 'white'}}>
                                     <span data-automation-id="SPAN">
                                         Popup Body
                                     </span>
-                                <div>some more stuff</div>
+                                    <div>some more stuff</div>
+                                </div>
+                            </Popup>);
+
+                        return waitFor(() => {
+                            const popup = bodySelect<HTMLElement>(portalId)!;
+
+                            runTest(popup, anchor, popupPos, anchorPos);
+                        });
+                    });
+                }
+            }
+        });
+
+        describe('Popup with point', () => {
+            const point: Point = {x: 90, y: 100};
+            const verticalTests = getPointLayoutTests('vertical');
+            const horizontalTests = getPointLayoutTests('horizontal');
+
+            for (const popupPos of fixture) {
+                it(`Popup position: V: ${popupPos.vertical} H: ${popupPos.horizontal}`, async () => {
+                    clientRenderer.render(
+                        <Popup anchor={point} popupPosition={popupPos} open>
+                            <div style={{background: 'green', color: 'white'}}>
+                                <span data-automation-id="SPAN">Popup Body</span>
                             </div>
                         </Popup>);
 
-                    return waitFor(() => {
+                    await waitFor(() => {
                         const popup = bodySelect<HTMLElement>(portalId)!;
 
-                        runTest(popup, anchor, popupPos, anchorPos);
+                        verticalTests[popupPos.vertical](popup, point);
+                        horizontalTests[popupPos.horizontal](popup, point);
                     });
                 });
             }
-        }
+        });
     });
 });
 
-function getLayoutTest(axis: 'vertical' | 'horizontal') {
+function getAnchorLayoutTests(axis: 'vertical' | 'horizontal') {
     let start: 'left' | 'top' = 'top';
     let end: 'bottom' | 'right' = 'bottom';
     let length: 'height' | 'width' = 'height';
@@ -250,9 +288,34 @@ function getLayoutTest(axis: 'vertical' | 'horizontal') {
     };
 }
 
+function getPointLayoutTests(axis: 'vertical' | 'horizontal') {
+    let start: 'left' | 'top' = 'top';
+    let end: 'bottom' | 'right' = 'bottom';
+    let length: 'height' | 'width' = 'height';
+    let pointAxis: 'x' | 'y' = 'y';
+
+    if (axis === 'horizontal') {
+        start = 'left';
+        end = 'right';
+        length = 'width';
+        pointAxis = 'x';
+    }
+
+    return {
+        [start]: (popup: HTMLElement, p: Point) => {
+            createExpect(popup.getBoundingClientRect()[start], p[pointAxis], 0.5);
+        },
+        center: (popup: HTMLElement, p: Point) => {
+            const popupRect = popup.getBoundingClientRect();
+            createExpect(popupRect[start], p[pointAxis] - (popupRect[length] / 2), 0.5);
+        },
+        [end]: (popup: HTMLElement, p: Point) => createExpect(popup.getBoundingClientRect()[end], p[pointAxis], 0.5)
+    };
+}
+
 function runTest(popup: HTMLElement, anchor: HTMLElement, popupPos: PopupPositionPoint, anchorPos: PopupPositionPoint) {
-    const topTests = getLayoutTest('vertical');
-    const leftTests = getLayoutTest('horizontal');
+    const topTests = getAnchorLayoutTests('vertical');
+    const leftTests = getAnchorLayoutTests('horizontal');
 
     topTests[popupPos.vertical][anchorPos.vertical](anchor, popup);
     leftTests[popupPos.horizontal][anchorPos.horizontal](anchor, popup);
@@ -270,6 +333,6 @@ function getFixture(): PopupPositionPoint[] {
         {vertical: 'bottom', horizontal: 'right'}];
 }
 
-function createExpect(pValue: number, aValue: number) {
-    expect(pValue, `popup value: ${pValue} anchor value: ${aValue}`).to.be.closeTo(aValue, 0.01);
+function createExpect(pValue: number, aValue: number, resulotion: number = 0.01) {
+    expect(pValue, `popup value: ${pValue} anchor value: ${aValue}`).to.be.closeTo(aValue, resulotion);
 }
