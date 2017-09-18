@@ -102,7 +102,6 @@ export class Slider extends React.Component<SliderProps, SliderState> {
 
         const {min, max, step, axis} = this.props;
 
-        // console.log('CONSTRUCTOR', this.isReverse(axis!), this.isRTL(), this.isReverse(axis!) !== this.isRTL());
         this.state = {
             relativeValue: this.getRelativeValue(this.getDefaultValue(), min!, max!, step),
             relativeStep: this.getRelativeStep(step, min!, max!),
