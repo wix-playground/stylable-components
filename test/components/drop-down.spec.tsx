@@ -139,6 +139,7 @@ describe('<DropDown />', () => {
 
         await waitForDom(() => {
             expect(dropdown.isOpen()).to.equal(true);
+            expect(onOpenStateChange).to.have.been.calledOnce;
             expect(onOpenStateChange.getCall(0)).to.have.been.calledWithMatch({value: true});
         });
 
