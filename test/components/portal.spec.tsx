@@ -22,13 +22,11 @@ describe('<Portal />', function() {
     });
 
     it('applies supplied styles to the popup and updates them if changed', async function() {
-        const {container, result} = clientRenderer.render(
+        const {container, portal} = clientRenderer.render(
             <Portal style={{position: 'absolute'}}>
                 <span>Portal Body</span>
             </Portal>
-        );
-
-        const portal = new PortalTestDriver(result as Portal);
+        ).withDriver(PortalTestDriver);
 
         await waitFor(() => expect(portal.root).to.have.nested.property('style.position', 'absolute'));
 
@@ -67,12 +65,10 @@ describe('<Portal />', function() {
 
     it('removes the component when unmounting', async function() {
         const container = document.body.appendChild(document.createElement('div'));
-        const {result} = clientRenderer.render(
+        const {portal} = clientRenderer.render(
             <Portal>
                 <span>Popup Body</span>
-            </Portal>, container);
-
-        const portal = new PortalTestDriver(result as Portal);
+            </Portal>, container).withDriver(PortalTestDriver);
 
         await waitFor(() => expect(portal.root).to.be.present());
 
@@ -106,13 +102,11 @@ describe('<Portal />', function() {
     });
 
     it('renders the portal in the bottom of the DOM', async function() {
-        const {container, result} = clientRenderer.render(
+        const {container, portal} = clientRenderer.render(
             <Portal>
                 <span>Portal Body</span>
             </Portal>
-        );
-
-        const portal = new PortalTestDriver(result as Portal);
+        ).withDriver(PortalTestDriver);
 
         await waitFor(() => {
             /* tslint:disable:no-bitwise */
@@ -125,13 +119,11 @@ describe('<Portal />', function() {
     });
 
     it('renders with a className passed as a prop', async function() {
-        const {result} = clientRenderer.render(
+        const {portal} = clientRenderer.render(
             <Portal className="test-class">
                 <span>Portal Body</span>
             </Portal>
-        );
-
-        const portal = new PortalTestDriver(result as Portal);
+        ).withDriver(PortalTestDriver);
 
         await waitFor(() => expect((portal.root as Element).className).to.contain('test-class'));
     });

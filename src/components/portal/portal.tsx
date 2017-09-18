@@ -1,5 +1,8 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import {globalId} from 'wix-react-tools';
+
+const {getRootId} = globalId;
 
 export interface PortalProps extends React.HTMLAttributes<HTMLDivElement> {
     children: React.ReactNode;
@@ -11,10 +14,11 @@ export class Portal extends React.PureComponent<PortalProps> {
 
     public render() {
         const {children, ...rest} = this.props;
+        const id = getRootId(this);
         this.portalContent = (
-            <div {...rest} data-automation-id="PORTAL">{children}</div>
+            <div id={id} {...rest} data-automation-id="PORTAL">{children}</div>
         );
-        return null;
+        return <span data-id={id} data-automation-id="ID_SPAN"/>;
     }
 
     public componentDidMount() {
@@ -31,10 +35,6 @@ export class Portal extends React.PureComponent<PortalProps> {
             document.body.removeChild(this.container);
             this.container = null;
         }
-    }
-
-    public getPortalContainer(): HTMLDivElement | null {
-        return this.container;
     }
 
     private renderPortal() {
