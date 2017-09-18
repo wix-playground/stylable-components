@@ -43,7 +43,9 @@ export interface AutoCompleteState {
     input: HTMLInputElement | null;
 }
 
-const prefixFilter: FilterPredicate = (item: string, prefix: string) => item.startsWith(prefix);
+const prefixFilter: FilterPredicate = (item: string, prefix: string) => {
+    return item.toLowerCase().startsWith(prefix.toLowerCase());
+}
 
 @SBComponent(style)
 export class AutoComplete extends React.Component<AutoCompleteProps, AutoCompleteState> {

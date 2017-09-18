@@ -90,11 +90,23 @@ describe('<AutoComplete />', () => {
 
     it('displays filtered results according to given value', async () => {
         const prefix = 'P';
+        const filteredItems = ['Pancakes', 'Pasta'];
         clientRenderer.render(<AutoComplete open dataSource={items} value={prefix}/>);
         const itemList = bodySelect(list);
 
         await bodyWaitForDom(() => {
-            expect(itemList!.textContent).to.equal(items.filter(item => item.startsWith(prefix)).join(''));
+            expect(itemList!.textContent).to.equal(filteredItems.join(''));
+        });
+    });
+
+    it('ignores case when filtering according to the default filter', async () => {
+        const prefix = 'm';
+        const filteredItems = ['Muffins', 'Moses'];
+        clientRenderer.render(<AutoComplete open dataSource={items} value={prefix}/>);
+        const itemList = bodySelect(list);
+
+        await bodyWaitForDom(() => {
+            expect(itemList!.textContent).to.equal(filteredItems.join(''));
         });
     });
 
