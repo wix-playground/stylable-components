@@ -108,6 +108,7 @@ export class CheckBox extends React.Component<CheckBoxProps, CheckBoxState> {
                     onBlur={this.handleInputBlur}
                     id={this.props.id}
                     tabIndex={this.props.tabIndex}
+                    name={this.props.name}
                 />
 
                 <BoxIcon
