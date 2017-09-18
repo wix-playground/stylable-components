@@ -10,7 +10,8 @@ describe('Form contract of', function() {
         clientRenderer.cleanup();
     });
 
-    async function testFormContract(componentElement: React.ReactElement<any>, testValue: any, expectedValue: string = testValue) {
+    async function testFormContract(componentElement: React.ReactElement<any>, testValue: any,
+                                    expectedValue: string = testValue) {
         const testName = 'testInput';
         let formElement: HTMLFormElement;
         const testedElement = React.cloneElement(componentElement, {
@@ -35,7 +36,7 @@ describe('Form contract of', function() {
         await testFormContract(<CheckBox formValue="custom"/>, true, 'custom');
     });
 
-    it('DatePicker', async function () {
+    it('DatePicker', async function() {
         const sampleDate = '2017-02-01';
         await testFormContract(<DatePicker/>, new Date(sampleDate), sampleDate);
     });
@@ -48,10 +49,23 @@ describe('Form contract of', function() {
 
     // RadioGroup - wait for Marton
 
-    it('SelectionList', async function () {
+    it('SelectionList', async function() {
         await testFormContract(<SelectionList dataSource={['A', 'B', 'C']} />, 'B');
-    })
+        await testFormContract(
+            <SelectionList>
+                <div data-value="A">Adalbert</div>
+                <div data-value="B">Bombino</div>
+                <div data-value="C">Cicciolina</div>
+            </SelectionList>
+        , 'B');
+    });
 
+    // Slider
 
+    // Stepper
+
+    // TimePicker
+
+    // Toggle
 
 });

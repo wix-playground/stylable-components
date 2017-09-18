@@ -30,7 +30,7 @@ export interface DatePickerState {
 }
 
 function dateToDateInputFormat(date: Date): string {
-    return date.toISOString().slice(0,10);
+    return date.toISOString().slice(0, 10);
 }
 
 @stylable(styles)
@@ -220,5 +220,3 @@ export class DatePicker extends React.PureComponent<DatePickerProps, DatePickerS
         return new Date(stringToValidate).toDateString() !== invalidDate;
     }
 }
-
-
