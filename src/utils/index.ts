@@ -5,3 +5,5 @@ export * from './transparent-image';
 export * from './date-helpers';
 export * from './stop-scrolling';
 export * from './is-touch';
+export * from './omit';
+export * from './is-rtl-context';

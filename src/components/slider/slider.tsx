@@ -1,12 +1,13 @@
 import * as keycode from 'keycode';
 import * as React from 'react';
-import {SBComponent} from 'stylable-react-component';
-import {root} from 'wix-react-tools';
-import GlobalEvent from '../../common/global-event';
+import {properties, stylable} from 'wix-react-tools';
+import {isRTLContext} from '../../utils';
+import {GlobalEvent} from '../global-event';
+import {FormInputProps} from './../../types/forms';
 import {noop} from './../../utils/noop';
 import style from './slider.st.css';
 
-const AXISES = {
+export const AXISES: {[name: string]: AxisOptions} = {
     x: 'x',
     y: 'y',
     xReverse: 'x-reverse',
@@ -31,8 +32,9 @@ export interface PointerPosition {
     clientX: number;
     clientY: number;
 }
-export interface SliderProps {
-    value?: number;
+export interface SliderProps extends FormInputProps<number, string>, properties.Props {
+    tooltip?: React.ReactNode;
+
     min?: number;
     max?: number;
     step?: Step;
@@ -45,12 +47,10 @@ export interface SliderProps {
     disabled?: boolean;
     required?: boolean;
     error?: boolean;
+    RTL?: boolean;
 
     onFocus?: React.FocusEventHandler<HTMLElement>;
     onBlur?: React.FocusEventHandler<HTMLElement>;
-
-    onChange?(value: number): void;
-    onInput?(value: string): void;
 
     onDragStart?(event: PointerEvent): void;
     onDrag?(event: PointerEvent): void;
@@ -64,9 +64,10 @@ export interface SliderState {
     isReverse: boolean;
 }
 
-@SBComponent(style)
+@stylable(style)
+@properties
 export class Slider extends React.Component<SliderProps, SliderState> {
-    public static defaultProps = {
+    public static defaultProps: Partial<SliderProps> = {
         min: DEFAULT_MIN,
         max: DEFAULT_MAX,
         step: DEFAULT_STEP,
@@ -81,6 +82,12 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         onDragStart: noop,
         onDrag: noop,
         onDragStop: noop
+    };
+
+    public static contextTypes = {
+        contextProvider: React.PropTypes.shape({
+            dir: React.PropTypes.string
+        })
     };
 
     private focusableElement: HTMLElement;
@@ -101,24 +108,28 @@ export class Slider extends React.Component<SliderProps, SliderState> {
             relativeStep: this.getRelativeStep(step, min!, max!),
             isActive: false,
             isVertical: this.isVertical(axis!),
-            isReverse: this.isReverse(axis!)
+            isReverse: this.isReverse(axis!) !== this.isRTL()
         };
     }
 
     public render() {
         return (
             <div
-                {...root(this.props, {
-                    'data-automation-id': 'SLIDER-CONTAINER',
-                    'className': 'container'
-                })}
-                cssStates={{
+                data-automation-id="SLIDER"
+                ref={el => this.sliderArea = el as HTMLElement}
+                className="container"
+                title={this.props.label}
+
+                onMouseDown={this.onSliderAreaMouseDown}
+                onTouchStart={this.onSliderAreaTouchStart}
+
+                style-state={{
                     'active': this.state.isActive,
                     'disabled': Boolean(this.props.disabled),
                     'error': Boolean(this.props.error),
-                    'x': this.props.axis === AXISES.x,
+                    'x': this.props.axis === AXISES.x !== this.isRTL(),
                     'y': this.props.axis === AXISES.y,
-                    'x-reverse': this.props.axis === AXISES.xReverse,
+                    'x-reverse': this.props.axis === AXISES.xReverse !== this.isRTL(),
                     'y-reverse': this.props.axis === AXISES.yReverse
                 }}
             >
@@ -139,51 +150,41 @@ export class Slider extends React.Component<SliderProps, SliderState> {
                     disabled={this.props.disabled}
                 />
                 <div
-                    ref={el => this.sliderArea = el as HTMLElement}
-                    className="slider"
-                    data-automation-id="SLIDER"
-                    title={this.props.label}
-
-                    onMouseDown={this.onSliderAreaMouseDown}
-                    onTouchStart={this.onSliderAreaTouchStart}
+                    className="track"
+                    data-automation-id="SLIDER-TRACK"
                 >
                     <div
-                        className="track"
-                        data-automation-id="SLIDER-TRACK"
+                        className="progress"
+                        data-automation-id="SLIDER-PROGRESS"
+                        style={this.getProgressStyles()}
+                    />
+                    <a
+                        ref={el => this.focusableElement = el as HTMLElement}
+                        className="handle"
+                        data-automation-id="SLIDER-HANDLE"
+                        style={this.getHandleStyles()}
+
+                        onKeyDown={this.onSliderAreaKeyDown}
+
+                        onFocus={this.onSliderFocus}
+                        onBlur={this.onSliderBlur}
+
+                        role="slider"
+                        aria-label={this.props.label}
+                        aria-orientation={this.state.isVertical ? 'vertical' : 'horizontal'}
+                        aria-valuemin={`${this.props.min}`}
+                        aria-valuemax={`${this.props.max}`}
+                        aria-valuenow={`${this.props.value}`}
+                        tabIndex={this.props.disabled ? -1 : 0}
                     >
                         <div
-                            className="progress"
-                            data-automation-id="SLIDER-PROGRESS"
-                            style={this.getProgressStyles()}
-                        />
-                        <a
-                            ref={el => this.focusableElement = el as HTMLElement}
-                            className="handle"
-                            data-automation-id="SLIDER-HANDLE"
-                            style={this.getHandleStyles()}
-
-                            onKeyDown={this.onSliderAreaKeyDown}
-
-                            onFocus={this.onSliderFocus}
-                            onBlur={this.onSliderBlur}
-
-                            role="slider"
-                            aria-label={this.props.label}
-                            aria-orientation={this.state.isVertical ? 'vertical' : 'horizontal'}
-                            aria-valuemin={`${this.props.min}`}
-                            aria-valuemax={`${this.props.max}`}
-                            aria-valuenow={`${this.props.value}`}
-                            tabIndex={this.props.disabled ? -1 : 0}
+                            className="tooltip"
+                            data-automation-id="SLIDER-TOOLTIP"
                         >
-                            <div
-                                className="tooltip"
-                                data-automation-id="SLIDER-TOOLTIP"
-                            >
-                                {this.getTooltip()}
-                            </div>
-                        </a>
-                        {this.getMarks()}
-                    </div>
+                            {this.getTooltip()}
+                        </div>
+                    </a>
+                    {this.getMarks()}
                 </div>
             </div>
         );
@@ -218,7 +219,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
             relativeValue: this.getRelativeValue(value!, min!, max!, step),
             relativeStep: this.getRelativeStep(step, min!, max!),
             isVertical: this.isVertical(nextProps.axis || this.props.axis!),
-            isReverse: this.isReverse(nextProps.axis || this.props.axis!)
+            isReverse: this.isReverse(nextProps.axis || this.props.axis!) !== this.isRTL()
         });
     }
 
@@ -229,14 +230,8 @@ export class Slider extends React.Component<SliderProps, SliderState> {
             value;
     }
 
-    private getTooltip(): number | string | React.ReactElement<any> | undefined {
-        return React.Children
-            .toArray(this.props.children)
-            .find(
-                item => typeof item === 'object' ?
-                    item.props['data-slot'] === 'tooltip' :
-                    false
-            );
+    private getTooltip(): React.ReactNode {
+        return this.props.tooltip;
     }
 
     private getMarks(): JSX.Element[] {
@@ -277,12 +272,12 @@ export class Slider extends React.Component<SliderProps, SliderState> {
     }
 
     private getHandleStyles() {
-        return this.state.isReverse ?
-            (this.state.isVertical ?
+        return this.state.isVertical ?
+            (this.state.isReverse ?
                 {top: `${this.state.relativeValue}%`} :
-                {right: `${this.state.relativeValue}%`}) :
-            (this.state.isVertical ?
-                {bottom: `${this.state.relativeValue}%`} :
+                {bottom: `${this.state.relativeValue}%`}) :
+            (this.state.isReverse ?
+                {right: `${this.state.relativeValue}%`} :
                 {left: `${this.state.relativeValue}%`});
     }
 
@@ -318,6 +313,10 @@ export class Slider extends React.Component<SliderProps, SliderState> {
 
     private isReverse(axis: AxisOptions): boolean {
         return axis === AXISES.xReverse || axis === AXISES.yReverse;
+    }
+
+    private isRTL(): boolean {
+        return isRTLContext(this.context);
     }
 
     private increaseValue(toEdge: boolean = false, multiplier: number = 1) {
@@ -357,10 +356,21 @@ export class Slider extends React.Component<SliderProps, SliderState> {
             });
         }
 
-        this.props.onInput!(String(newAbsoluteValue));
+        this.callInput(newAbsoluteValue);
         if (newAbsoluteValue !== this.props.value) {
-            this.props.onChange!(newAbsoluteValue);
+            this.callChange(newAbsoluteValue);
         }
+    }
+
+    private callInput(value: number | string): void {
+        if (typeof value !== 'string') {
+            value = String(value);
+        }
+        this.props.onInput!({value});
+    }
+
+    private callChange(value: number): void {
+        this.props.onChange!({value});
     }
 
     private getRelativeStep(step: Step | undefined, min: number, max: number): Step {
@@ -431,7 +441,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         this.isActive = true;
 
         this.onDragStart(event.nativeEvent);
-        this.props.onInput!(String(this.getAbsoluteValue(relativeValue)));
+        this.callInput(this.getAbsoluteValue(relativeValue));
     }
 
     private onSliderAreaMouseMove = (event: MouseEvent) => {
@@ -451,7 +461,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         });
 
         this.onDrag(event);
-        this.props.onInput!(String(this.getAbsoluteValue(relativeValue)));
+        this.callInput(this.getAbsoluteValue(relativeValue));
     }
 
     private onSliderAreaMouseUp = (event: MouseEvent) => {
@@ -469,7 +479,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
 
         this.focusableElement.focus();
         this.onDragStop(event);
-        this.props.onChange!(value);
+        this.callChange(value);
     }
 
     private onSliderAreaTouchStart = (event: React.TouchEvent<HTMLElement>) => {
@@ -492,7 +502,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         event.preventDefault();
 
         this.onDragStart(event.nativeEvent);
-        this.props.onInput!(String(this.getAbsoluteValue(relativeValue)));
+        this.callInput(this.getAbsoluteValue(relativeValue));
     }
 
     private onSliderAreaTouchMove = (event: TouchEvent) => {
@@ -513,7 +523,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         event.preventDefault();
 
         this.onDrag(event);
-        this.props.onInput!(String(this.getAbsoluteValue(relativeValue)));
+        this.callInput(this.getAbsoluteValue(relativeValue));
     }
 
     private onSliderAreaTouchEnd = (event: TouchEvent) => {
@@ -530,7 +540,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         this.isActive = false;
 
         this.onDragStop(event);
-        this.props.onChange!(value);
+        this.callChange(value);
     }
 
     private onSliderAreaKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {

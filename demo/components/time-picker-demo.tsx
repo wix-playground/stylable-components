@@ -1,7 +1,11 @@
 import * as React from 'react';
+import {stylable} from 'wix-react-tools';
 import {TimePicker} from '../../src';
 import {is12TimeFormat} from '../../src/components/time-picker/utils';
+import {ChangeEvent} from '../../src/types/events';
+import styles from './time-picker-demo.st.css';
 
+@stylable(styles)
 export class TimePickerDemo extends React.Component<any, any> {
     constructor() {
         super();
@@ -37,6 +41,28 @@ export class TimePickerDemo extends React.Component<any, any> {
                     <span style={{marginLeft: 20}}>{this.state.value1}</span>
                 </div>
 
+                <h3>Controlled 12 time format with error</h3>
+                <div>
+                    <TimePicker
+                        error
+                        format="ampm"
+                        value={this.state.value1}
+                        onChange={this.createOnChange('value1')}
+                    />
+                    <span style={{marginLeft: 20}}>{this.state.value1}</span>
+                </div>
+
+                <h3>Controlled 12 time format with RTL</h3>
+                <div>
+                    <TimePicker
+                        rtl
+                        format="ampm"
+                        value={this.state.value1}
+                        onChange={this.createOnChange('value1')}
+                    />
+                    <span style={{marginLeft: 20}}>{this.state.value1}</span>
+                </div>
+
                 <h3>Placeholder (read-only)</h3>
                 <div>
                     <TimePicker
@@ -60,5 +86,5 @@ export class TimePickerDemo extends React.Component<any, any> {
             </div>
         );
     }
-    private createOnChange = (name: string) => (value: string) => this.setState({[name]: value});
+    private createOnChange = (name: string) => (e: ChangeEvent<string>) => this.setState({[name]: e.value});
 }

@@ -1,5 +1,5 @@
 :import {
-    -st-from: "../variables.st.css";
+    -st-from: "../../project.st.css";
     -st-named: fontFamily,
                fontSize,
                fontWeight,
@@ -18,7 +18,7 @@
                borderError;
 }
 
-.root {
+input {
     box-sizing: inherit;
     border: value(borderDefault);
     border-radius: value(borderRadius);
@@ -35,24 +35,24 @@
     outline: 0;
 }
 
-.root::placeholder {
+input::placeholder {
     color: value(color_MainPlaceholder);
 }
 
-.root:hover {
+input:hover {
     border: value(borderHover);
 }
 
-.root:focus {
+input:focus {
     border: value(borderFocus);
 }
 
-.root.disabled, .root[disabled] {
+input.disabled, input[disabled] {
     background-color: value(color_Disabled);
     color: value(color_MainPlaceholder);
     border: value(borderDisabled);
 }
 
-.root:error {
+input:error {
     border: value(borderError);
 }
