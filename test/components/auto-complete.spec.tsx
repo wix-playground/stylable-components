@@ -6,7 +6,6 @@ import {AutoComplete} from '../../src';
 const autoComp = 'AUTO_COMPLETE';
 const autoCompDemo = autoComp + '_DEMO';
 const autoCompInput = autoComp + '_INPUT';
-const list = autoComp + '_LIST';
 
 const items = ['Muffins', 'Pancakes', 'Cupcakes', 'Souffles', 'Pasta', 'Soup', 'Caramel', 'Avazim', 'Moses'];
 const bodySelect = selectDom(document.body);
@@ -24,7 +23,7 @@ describe('<AutoComplete />', () => {
 
             simulate.click(select(autoComp + '_CARET'));
 
-            const itemList = bodySelect(list)!;
+            const itemList = bodySelect('LIST')!;
             await bodyWaitForDom(() => {
                 expect(itemList).to.be.present();
                 expect(itemList.textContent).to.equal(items.join(''));
@@ -33,7 +32,7 @@ describe('<AutoComplete />', () => {
             trigger.change(bodySelect(autoCompInput), prefix);
             await bodyWaitForDom(() => expect(itemList.textContent).to.equal(filteredItems));
 
-            simulate.click(bodySelect(list, 'LIST')!.children[0]);
+            simulate.click(bodySelect('LIST')!.children[0]);
             await waitForDom(() => {
                 expect(select(autoCompDemo + '_TEXT')).to.have.text('You picked: Pancakes');
             });
@@ -45,7 +44,7 @@ describe('<AutoComplete />', () => {
 
         return waitForDom(() => {
             expect(select(autoComp)).to.be.present();
-            expect(bodySelect(list)).to.be.absent();
+            expect(bodySelect('LIST')).to.be.absent();
         });
     });
 
@@ -65,13 +64,13 @@ describe('<AutoComplete />', () => {
     it('renders the item list if open is given', async () => {
         clientRenderer.render(<AutoComplete dataSource={items} open/>);
 
-        await bodyWaitForDom(() => expect(bodySelect(list)).to.be.present());
+        await bodyWaitForDom(() => expect(bodySelect('LIST')).to.be.present());
     });
 
     it('renders the items if given', async () => {
         clientRenderer.render(<AutoComplete open dataSource={items}/>);
 
-        await bodyWaitForDom(() => expect(bodySelect(list, 'LIST')!.children[0]).to.have.text('Muffins'));
+        await bodyWaitForDom(() => expect(bodySelect('LIST')!.children[0]).to.have.text('Muffins'));
     });
 
     it('invokes the onChange when an option is clicked', async () => {
@@ -80,7 +79,7 @@ describe('<AutoComplete />', () => {
             <AutoComplete open dataSource={['Cat', 'Dog']} onChange={onChange}/>
         );
 
-        simulate.click(bodySelect(list, 'LIST')!.children[0]);
+        simulate.click(bodySelect('LIST')!.children[0]);
 
         await bodyWaitForDom(() => {
             expect(onChange).to.have.been.calledOnce;
@@ -92,7 +91,7 @@ describe('<AutoComplete />', () => {
         const prefix = 'P';
         const filteredItems = ['Pancakes', 'Pasta'];
         clientRenderer.render(<AutoComplete open dataSource={items} value={prefix}/>);
-        const itemList = bodySelect(list);
+        const itemList = bodySelect('LIST');
 
         await bodyWaitForDom(() => {
             expect(itemList!.textContent).to.equal(filteredItems.join(''));
@@ -103,7 +102,7 @@ describe('<AutoComplete />', () => {
         const prefix = 'm';
         const filteredItems = ['Muffins', 'Moses'];
         clientRenderer.render(<AutoComplete open dataSource={items} value={prefix}/>);
-        const itemList = bodySelect(list);
+        const itemList = bodySelect('LIST');
 
         await bodyWaitForDom(() => {
             expect(itemList!.textContent).to.equal(filteredItems.join(''));
@@ -141,7 +140,7 @@ describe('<AutoComplete />', () => {
         );
 
         await waitForDom(() => expect(select(autoComp)).to.be.present());
-        simulate.click(bodySelect(list, 'LIST')!.children[0]);
+        simulate.click(bodySelect('LIST')!.children[0]);
         await bodyWaitForDom(() => {
             expect(onOpenStateChange).to.have.been.calledOnce;
             expect(onOpenStateChange).to.have.been.calledWithMatch({value: false});
