@@ -1,6 +1,7 @@
 :import {
     -st-from: "../../src/components/radio-group/radio-group.st.css";
     -st-default: RG;
+    -st-named: data-label;
 }
 
 .rg {
@@ -12,5 +13,9 @@
 }
 
 .label {
-    margin-left: 10px;
+    margin-left: 0.5rem;
+}
+
+.data-label {
+    color: #4A90E2;
 }

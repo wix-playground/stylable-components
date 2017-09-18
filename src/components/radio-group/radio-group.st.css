@@ -13,7 +13,7 @@
     -st-extends: RB;
 }
 
-.label {
+.data-label {
     color: black;
     margin-left: 0.5rem;
     cursor: pointer;
