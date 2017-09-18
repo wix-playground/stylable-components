@@ -14,7 +14,7 @@ export class DatePickerDemo extends React.Component<DatePickerProps, Partial<Dat
 
     public render() {
         return (
-            <div>
+            <div data-automation-id="DATE_PICKER_DEMO">
                 <h2>Try changing which day of the week the calendar starts on!</h2>
                 <span>
                     <select
@@ -34,6 +34,7 @@ export class DatePickerDemo extends React.Component<DatePickerProps, Partial<Dat
                     {this.state.value!.toDateString()}
                 </span>
                 <DatePicker
+                    data-automation-id="DATE_PICKER"
                     placeholder="mm/dd/yyyy"
                     startingDay={this.state.startingDay!}
                     value={this.state.value!}
