@@ -1550,5 +1550,5 @@ describe('<Slider /> type Range', () => {
         clientRenderer.cleanup();
     });
 
-    withValueMinMax(clientRenderer, 'left', 'width', 'horizontal', {});
+    rangeWithValueMinMax(clientRenderer, 'left', 'width', 'horizontal', {});
 });
