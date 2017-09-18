@@ -1,7 +1,7 @@
 import * as keycode from 'keycode';
 import * as React from 'react';
 import {properties, stylable} from 'wix-react-tools';
-import {ChangeEvent, ChangeStateEvent} from '../../types/events';
+import {ChangeEvent} from '../../types/events';
 import {FormInputProps} from '../../types/forms';
 import {noop} from '../../utils/noop';
 import {Popup} from '../popup/';
@@ -24,7 +24,7 @@ export interface DropDownProps extends OptionList, FormInputProps<string>, prope
     children?: React.ReactNode;
     toggleIcon?: React.ComponentType;
     tabIndex?: number;
-    onOpenStateChange?: (e: ChangeStateEvent<boolean>) => void;
+    onOpenStateChange?: (e: ChangeEvent<boolean>) => void;
 }
 
 export interface DropDownState {
