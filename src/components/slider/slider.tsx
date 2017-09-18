@@ -1,5 +1,6 @@
 import * as keycode from 'keycode';
 import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import {properties, stylable} from 'wix-react-tools';
 import {isRTLContext} from '../../utils';
 import {GlobalEvent} from '../global-event';
@@ -85,8 +86,8 @@ export class Slider extends React.Component<SliderProps, SliderState> {
     };
 
     public static contextTypes = {
-        contextProvider: React.PropTypes.shape({
-            dir: React.PropTypes.string
+        contextProvider: PropTypes.shape({
+            dir: PropTypes.string
         })
     };
 
