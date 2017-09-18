@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {stylable} from 'wix-react-tools';
 import {NumberInput} from '../../src/components/number-input';
+import {ChangeEvent} from '../../src/types';
 import styles from './number-input.demo.st.css';
 
 export interface State {
@@ -75,8 +76,8 @@ export class NumberInputDemo extends React.Component<{}, State> {
         );
     }
 
-    private handleSharedValueChange = (value?: number) => this.setState({sharedValue: value});
-    private handleBasicValueChange = (value?: number) => this.setState({basicValue: value});
+    private handleSharedValueChange = ({value}: ChangeEvent<number | undefined>) => this.setState({sharedValue: value});
+    private handleBasicValueChange = ({value}: ChangeEvent<number | undefined>) => this.setState({basicValue: value});
 
 }
 
