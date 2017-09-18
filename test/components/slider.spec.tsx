@@ -4,7 +4,6 @@ import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react
 import {ContextProvider} from '../../src';
 import {AXISES, AxisOptions, Slider, SliderProps} from '../../src/components/slider';
 import {ChangeEvent} from '../../src/types/events';
-import {isRTLContext} from '../../src/utils';
 import WindowStub from '../stubs/window.stub';
 import {simulateMouseEvent, simulateTouchEvent, skipItIfTouch} from '../utils';
 
@@ -24,7 +23,7 @@ function getAxis(
         return;
     }
     axis = options.axis;
-    if (isRTLContext(context)) {
+    if (context && context.dir === 'rtl') {
         axis = axis === AXISES.x ?
             AXISES.xReverse :
             axis === AXISES.xReverse ?
