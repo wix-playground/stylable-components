@@ -1,12 +1,13 @@
 import * as React from 'react';
-import {SBComponent} from 'stylable-react-component';
+import {stylable} from 'wix-react-tools';
 import {root} from 'wix-react-tools';
 import {Popup} from '../../';
 import {ChangeEvent} from '../../types/events';
 import {FormInputProps} from '../../types/forms';
 import {noop} from '../../utils';
 import {CaretDown} from '../drop-down/drop-down-icons';
-import {OptionList, SelectionList} from '../selection-list/selection-list';
+import {SelectionListView} from '../selection-list/selection-list-view';
+import {OptionList, SelectionListItemValue, SelectionListModel} from '../selection-list/selection-list-model';
 import style from './auto-complete.st.css';
 
 export type FilterPredicate = (item: string, filterString: string) => boolean;
@@ -25,7 +26,7 @@ const prefixFilter: FilterPredicate = (item: string, prefix: string) => {
     return item.toLowerCase().startsWith(prefix.toLowerCase());
 };
 
-@SBComponent(style)
+@stylable(style)
 export class AutoComplete extends React.Component<AutoCompleteProps, AutoCompleteState> {
     public static defaultProps: AutoCompleteProps = {
         open: false,
@@ -45,6 +46,8 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
         const filteredItems = this.props.value ?
             this.props.dataSource!.filter((item: string) => this.props.filter!(item, this.props.value!)) :
             this.props.dataSource;
+        const list = new SelectionListModel();
+        list.addDataSource({dataSource: filteredItems});
         return (
             <div {...rootProps}>
                 <input
@@ -57,9 +60,9 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
                 />
                 <CaretDown onClick={this.onCaretClick} className="caret" data-automation-id="AUTO_COMPLETE_CARET"/>
                 <Popup anchor={this.state.input} open={this.props.open && filteredItems!.length > 0}>
-                    <SelectionList
+                    <SelectionListView
                         className="root auto-complete-list"
-                        dataSource={filteredItems}
+                        list={list}
                         onChange={this.onClick}
                     />
                 </Popup>
@@ -78,8 +81,8 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
         }
     }
 
-    private onClick = (item: string) => {
-        this.props.onChange!({value: item});
+    private onClick = (e: ChangeEvent<SelectionListItemValue>) => {
+        this.props.onChange!(e);
         this.props.onOpenStateChange!({value: !this.props.open});
     }
 
