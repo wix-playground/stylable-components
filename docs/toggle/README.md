@@ -17,7 +17,6 @@ A toggle switch is used as an on/off control
 | disabled | bool   | FALSE        |            | If `true`, the toggle will not be interactive |
 | label    | string |              |            | Text to display in accessibility mode    |
 | error    | bool   | FALSE        |            | Sets the `:error` CSS state on the `<toggle/>` |
-| rtl      | bool   | FALSE        |            | Makes the component RTL                  |
 
 #### Accepted Children
 
