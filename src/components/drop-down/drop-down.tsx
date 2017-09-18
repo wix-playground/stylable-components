@@ -24,6 +24,7 @@ export interface DropDownProps extends OptionList, FormInputProps<string>, prope
     children?: React.ReactNode;
     toggleIcon?: React.ComponentType;
     tabIndex?: number;
+    onOpenStateChange?: () => void;
 }
 
 export interface DropDownState {
@@ -40,7 +41,8 @@ export class DropDown extends React.PureComponent<DropDownProps, DropDownState> 
         onChange: noop,
         tabIndex: 0,
         toggleIcon: CaretDown,
-        disabled: false
+        disabled: false,
+        onOpenStateChange: noop
     };
 
     public state: DropDownState = {
@@ -97,6 +99,7 @@ export class DropDown extends React.PureComponent<DropDownProps, DropDownState> 
     private toggleDropdown = () => {
         if (!this.props.disabled) {
             this.setState({open: !this.state.open});
+            this.props.onOpenStateChange && this.props.onOpenStateChange();
         }
     }
 

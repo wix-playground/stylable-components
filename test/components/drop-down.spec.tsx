@@ -128,6 +128,28 @@ describe('<DropDown />', () => {
         await waitFor(() => expect(onClick).to.have.been.calledWithMatch({value: items[0]}));
     });
 
+    it('invokes onOpenStateChange event when the open state changes (closed -> opened and vice versa)', async () => {
+        const onOpenStateChange = sinon.spy();
+        const {driver: dropdown, waitForDom} =
+            clientRenderer.render(<DropDown onOpenStateChange={onOpenStateChange}/>).withDriver(DropDownDriver);
+
+        await waitForDom(() => expect(dropdown.isOpen()).to.equal(false));
+
+        dropdown.clickOnDropDown();
+
+        await waitForDom(() => {
+            expect(dropdown.isOpen()).to.equal(true);
+            expect(onOpenStateChange).to.have.been.calledOnce;
+        });
+
+        dropdown.clickOnDropDown();
+
+        return waitForDom(() => {
+            expect(dropdown.isOpen()).to.equal(false);
+            expect(onOpenStateChange).to.have.been.calledTwice;
+        });
+    });
+
     describe('Keyboard Navigation', () => {
         it('toggles visibility of selection list when SPACE is clicked', async () => {
             const {driver: dropdown, waitForDom} = clientRenderer.render(<DropDown />).withDriver(DropDownDriver);
