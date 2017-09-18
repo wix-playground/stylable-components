@@ -139,7 +139,7 @@ describe('<DropDown />', () => {
 
         await waitForDom(() => {
             expect(dropdown.isOpen()).to.equal(true);
-            expect(onOpenStateChange).to.have.been.calledOnce;
+            expect(onOpenStateChange.getCall(0)).to.have.been.calledWithMatch({value: true});
         });
 
         dropdown.clickOnDropDown();
@@ -147,6 +147,7 @@ describe('<DropDown />', () => {
         return waitForDom(() => {
             expect(dropdown.isOpen()).to.equal(false);
             expect(onOpenStateChange).to.have.been.calledTwice;
+            expect(onOpenStateChange.getCall(1)).to.have.been.calledWithMatch({value: false});
         });
     });
 
