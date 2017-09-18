@@ -1,7 +1,9 @@
 import * as React from 'react';
-import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react';
-import {BasicDemo, demoCheckBoxText, DisabledDemo, IndeterminateDemo} from '../../demo/components/checkbox-demo';
+import {ClientRenderer, DriverBase, expect, sinon, waitFor} from 'test-drive-react';
+import {CheckBoxDemo, demoCheckBoxText} from '../../demo/components/checkbox-demo';
 import {CheckBox, CheckBoxIconProps} from '../../src';
+import {CheckBoxTestDriver} from '../../test-kit/components/checkbox-driver';
+import {sleep} from '../utils/sleep';
 
 const boxSVG: React.SFC<CheckBoxIconProps> = props => {
     return (
@@ -43,6 +45,29 @@ const IndeterminateSVG: React.SFC<CheckBoxIconProps> = props => {
     );
 };
 
+class CheckBoxDemoDriver extends DriverBase {
+    public static ComponentClass = CheckBoxDemo;
+
+    public readonly basicDemo: {checkbox: CheckBoxTestDriver, button: HTMLButtonElement} = {
+        checkbox: new CheckBoxTestDriver(() => this.select('BASIC_DEMO', 'BASIC_DEMO_CHECKBOX')),
+        button: this.select('BASIC_DEMO', 'BUTTON_SUBMIT')
+    };
+
+    public readonly disabledDemo: {checkbox: CheckBoxTestDriver} = {
+        checkbox: new CheckBoxTestDriver(() => this.select('DISABLED_DEMO', 'DISABLED_DEMO_CHECKBOX'))
+    };
+
+    public readonly indeterminateDemo: {
+        topCheckbox: CheckBoxTestDriver,
+        option1Checkbox: CheckBoxTestDriver,
+        option2Checkbox: CheckBoxTestDriver
+    } = {
+        topCheckbox: new CheckBoxTestDriver(() => this.select('INDETERMINATE_DEMO_TOP_LEVEL')),
+        option1Checkbox: new CheckBoxTestDriver(() => this.select('INDETERMINATE_DEMO_OPTION1')),
+        option2Checkbox: new CheckBoxTestDriver(() => this.select('INDETERMINATE_DEMO_OPTION2'))
+    };
+}
+
 describe('<Checkbox/>', function() {
     const clientRenderer = new ClientRenderer();
 
@@ -52,130 +77,146 @@ describe('<Checkbox/>', function() {
 
     describe('Component / Demo test', function() {
         it('Basic demo', async function() {
-            const {select, waitForDom} = clientRenderer.render(<BasicDemo/>);
+            const {driver, waitForDom} = clientRenderer.render(<CheckBoxDemo/>).withDriver(CheckBoxDemoDriver);
+
+            const checkbox = driver.basicDemo.checkbox;
+            const button = driver.basicDemo.button;
 
             await waitForDom(() => {
-                expect(select('CHECKBOX_ROOT'), 'basic root').to.be.present();
-                expect(select('CHECKBOX_BOX'), 'basic box').to.be.present();
-                expect(select('CHECKBOX_TICKMARK'), 'basic tickmark').to.be.absent();
-                expect(select('BASIC_LABEL'), 'basic label').to.have.text(demoCheckBoxText);
-                expect(select('BUTTON_SUBMIT'), 'basic submit').to.be.present().and.to.have.attribute('disabled');
+                expect(checkbox.root, 'basic root').to.be.present();
+                expect(checkbox.isChecked(), 'expected checkbox to be unchecked').to.equal(false);
+                expect(checkbox.children[0], 'basic label').to.have.text(demoCheckBoxText);
+                expect(button, 'submit button was expected to be diabled').to.have.attribute('disabled');
             });
 
-            simulate.click(select('CHECKBOX_ROOT'));
+            checkbox.click();
 
             await waitFor(() => {
-                expect(select('CHECKBOX_TICKMARK'), 'basic tickmark').to.be.present();
-                expect(select('CHECKBOX_TICKMARK')).to.be.insideOf(select('CHECKBOX_BOX') as HTMLElement);
-                expect(select('BUTTON_SUBMIT'), 'basic submit').to.not.have.attribute('disabled');
+                expect(checkbox.isChecked(), 'expected checkbox to be checked').to.equal(true);
+                expect(checkbox.tickMark).to.be.insideOf(checkbox.box);
+                expect(button, 'submit button was expected to be enabled').to.not.have.attribute('disabled');
             });
         });
 
         it('Disabled Demo', async function() {
-            const {select, waitForDom} = clientRenderer.render(<DisabledDemo/>);
+            const {driver, waitForDom} = clientRenderer.render(<CheckBoxDemo/>).withDriver(CheckBoxDemoDriver);
+
+            const checkbox = driver.disabledDemo.checkbox;
 
             await waitForDom(() => {
-                expect(select('DISABLED_DEMO', 'CHECKBOX_ROOT'), 'disabled root').to.be.present();
-                expect(select('DISABLED_DEMO', 'CHECKBOX_BOX'), 'disabled box').to.be.present();
+                expect(checkbox.root, 'disabled root').to.be.present();
+                expect(checkbox.box, 'disabled box').to.be.present();
+                expect(checkbox.isChecked(), 'disabled checkbox should not be checked').to.equal(false);
             });
 
-            simulate.click(select('DISABLED_DEMO', 'CHECKBOX_ROOT'));
+            checkbox.click();
 
             await waitFor(() => {
-                expect(select('DISABLED_DEMO', 'CHECKBOX_BOX'), 'disabled box').to.be.present();
-                expect(select('DISABLED_DEMO', 'CHECKBOX_TICKMARK'), 'disabled tickmark').to.be.absent();
+                expect(checkbox.box, 'disabled box').to.be.present();
+                expect(checkbox.isChecked(), 'disabled checkbox should not be checked').to.equal(false);
             });
         });
 
         it('Indeterminate Demo', async function() {
-            const {select, waitForDom} = clientRenderer.render(<IndeterminateDemo/>);
+            const {driver, waitForDom} = clientRenderer.render(<CheckBoxDemo/>).withDriver(CheckBoxDemoDriver);
+
+            const {topCheckbox, option1Checkbox, option2Checkbox} = driver.indeterminateDemo;
 
             await waitForDom(() => {
-                expect(select('INDETERMINATE_DEMO_OPTION1', 'CHECKBOX_TICKMARK')).to.be.present();
-                expect(select('INDETERMINATE_DEMO_OPTION2', 'CHECKBOX_TICKMARK')).to.be.absent();
-                expect(select('INDETERMINATE_DEMO_TOP_LEVEL', 'CHECKBOX_INDETERMINATE')).to.be.present();
+                expect(option1Checkbox.isChecked(), 'option 1 should be checked').to.equal(true);
+                expect(option2Checkbox.isChecked(), 'option 2 should be unchecked').to.equal(false);
+                expect(topCheckbox.isChecked(), 'top checkbox should be unchecked').to.equal(false);
+                expect(topCheckbox.isIndeterminate(), 'top checkbox should be indeterminate').to.equal(true);
             });
 
-            simulate.click(select('INDETERMINATE_DEMO_TOP_LEVEL', 'CHECKBOX_ROOT'));
+            topCheckbox.click();
 
             await waitFor(() => {
-                expect(select('INDETERMINATE_DEMO_OPTION1', 'CHECKBOX_TICKMARK')).to.be.present();
-                expect(select('INDETERMINATE_DEMO_OPTION2', 'CHECKBOX_TICKMARK')).to.be.present();
+                expect(option1Checkbox.isChecked(), 'option 1 should be checked').to.equal(true);
+                expect(option2Checkbox.isChecked(), 'option 2 should be checked').to.equal(true);
             });
         });
     });
 
     it('Renders with default values', async function() {
-        const {select, waitForDom} = clientRenderer.render(<CheckBox/>);
+        const {driver: checkbox, waitForDom} = clientRenderer.render(<CheckBox/>).withDriver(CheckBoxTestDriver);
 
         await waitForDom(() => {
-            expect(select('CHECKBOX_ROOT')).to.be.present();
-            expect(select('CHECKBOX_BOX')).to.be.present();
-            expect(select('CHECKBOX_TICKMARK')).to.be.absent();
+            expect(checkbox.root).to.be.present();
+            expect(checkbox.isChecked(), 'checkbox was expected to be unchecked').to.equal(false);
         });
     });
 
     it('Displays children', async function() {
-        const {select, waitForDom} = clientRenderer.render(
+        const {driver: checkbox, waitForDom} = clientRenderer.render(
             <CheckBox>
-                <span data-automation-id="CHECKBOX_LABEL">covfefe</span>
+                <span>covfefe</span>
             </CheckBox>
-        );
+        ).withDriver(CheckBoxTestDriver);
 
         await waitForDom(() => {
-            expect(select('CHECKBOX_LABEL')).to.have.text('covfefe');
+            expect(checkbox.children[0]).to.have.text('covfefe');
         });
     });
 
     it('Displays a box icon', async function() {
-        const {select, waitForDom} = clientRenderer.render(
-            <CheckBox boxIcon={boxSVG}>
-                <span data-automation-id="CHECKBOX_LABEL">yoyo</span>
-            </CheckBox>
-        );
+        const {driver: checkbox, waitForDom} = clientRenderer.render(
+            <CheckBox boxIcon={boxSVG} />
+        ).withDriver(CheckBoxTestDriver);
 
         await waitForDom(() => {
-            expect(select('CHECKBOX_BOX')).to.be.present();
-            expect(select('CHECKBOX_BOX')).to.have.attribute('data-name', 'custom-box');
-            expect(select('CHECKBOX_LABEL')).to.have.text('yoyo');
-            expect([select('CHECKBOX_BOX'), select('CHECKBOX_LABEL')]).to.be.verticallyAligned('bottom', 5);
+            expect(checkbox.box).to.be.present();
+            expect(checkbox.box).to.have.attribute('data-name', 'custom-box');
         });
     });
 
-    it('Displays tick mark when value is true', async function() {
-        const {select, waitForDom} = clientRenderer.render(
+    it('Aligns children and box icon', async function() {
+        const {driver: checkbox, waitForDom} = clientRenderer.render(
+            <CheckBox boxIcon={boxSVG}>
+                <span>yoyo</span>
+            </CheckBox>
+        ).withDriver(CheckBoxTestDriver);
+
+        await waitForDom(() => {
+            expect(checkbox.children[0]).to.have.text('yoyo');
+            expect([checkbox.box, checkbox.children[0]]).to.be.verticallyAligned('bottom', 5);
+        });
+    });
+
+    it('Displays custom tick mark when value is true', async function() {
+        const {driver: checkbox, waitForDom} = clientRenderer.render(
             <CheckBox
                 boxIcon={boxSVG}
                 tickIcon={tickSVG}
                 value={true}
             />
-        );
+        ).withDriver(CheckBoxTestDriver);
 
         await waitForDom(() => {
-            expect(select('CHECKBOX_BOX')).to.be.present();
-            expect(select('CHECKBOX_BOX')).to.have.attribute('data-name', 'custom-box');
-            expect(select('CHECKBOX_TICKMARK')).to.be.present();
-            expect(select('CHECKBOX_TICKMARK')).to.have.attribute('data-name', 'custom-tickmark');
+            expect(checkbox.box).to.be.present();
+            expect(checkbox.box).to.have.attribute('data-name', 'custom-box');
+            expect(checkbox.tickMark).to.be.present();
+            expect(checkbox.tickMark).to.have.attribute('data-name', 'custom-tickmark');
         });
     });
 
     it('Calls onChange when clicked', async function() {
         const onChange = sinon.spy();
 
-        const {select, waitForDom} = clientRenderer.render(
+        const {driver: checkbox, waitForDom} = clientRenderer.render(
             <CheckBox
                 boxIcon={boxSVG}
                 tickIcon={tickSVG}
                 value={true}
                 onChange={onChange}
             />
-        );
+        ).withDriver(CheckBoxTestDriver);
 
         await waitForDom(() => {
-            expect(select('CHECKBOX_ROOT')).to.be.present();
+            expect(checkbox.root).to.be.present();
         });
 
-        simulate.click(select('CHECKBOX_ROOT'));
+        checkbox.click();
 
         await waitFor(() => {
             expect(onChange).to.have.been.calledOnce;
@@ -185,10 +226,11 @@ describe('<Checkbox/>', function() {
 
     describe('Accessibility features', function() {
         it('Renders a native input and pass on checked state', async function() {
-            const {select, waitForDom} = clientRenderer.render(
+            const {driver: checkbox, waitForDom} = clientRenderer.render(
                 <CheckBox value={true}/>
-            );
-            const nativeInput = select('NATIVE_CHECKBOX') as HTMLInputElement;
+            ).withDriver(CheckBoxTestDriver);
+
+            const nativeInput = checkbox.nativeInput;
 
             await waitForDom(() => {
                 expect(nativeInput, 'native input not found in DOM').to.be.present();
@@ -199,40 +241,44 @@ describe('<Checkbox/>', function() {
         });
 
         it('native input gets disabled state', async function() {
-            const {select, waitForDom} = clientRenderer.render(
+            const {driver: checkbox, waitForDom} = clientRenderer.render(
                 <CheckBox disabled/>
-            );
-            const nativeInput = select('NATIVE_CHECKBOX') as HTMLInputElement;
+            ).withDriver(CheckBoxTestDriver);
+
+            const nativeInput = checkbox.nativeInput;
+
             await waitForDom(() => {
                 expect(nativeInput, 'native checkbox should be disabled').to.have.attribute('disabled');
             });
         });
 
         it('native input gets id prop if supplied by user', async function() {
-            const {select, waitForDom} = clientRenderer.render(
+            const {driver: checkbox, waitForDom} = clientRenderer.render(
                 <CheckBox id="covfefe"/>
-            );
-            const nativeInput = select('NATIVE_CHECKBOX') as HTMLInputElement;
+            ).withDriver(CheckBoxTestDriver);
+
+            const nativeInput = checkbox.nativeInput;
+
             await waitForDom(() => {
-                expect(nativeInput.id, 'native checkbox should have id').to.equal('covfefe');
+                expect(nativeInput, 'native checkbox should have id').to.have.attribute('id', 'covfefe');
             });
         });
 
         it('component gets tabIndex 0 by default', async function() {
-            const {select, waitForDom} = clientRenderer.render(
-                <CheckBox />
-            );
+            const {driver: checkbox, waitForDom} = clientRenderer.render(<CheckBox/>).withDriver(CheckBoxTestDriver);
+
             await waitForDom(() => {
-                expect(select('NATIVE_CHECKBOX')).to.have.attribute('tabIndex', '0');
+                expect(checkbox.nativeInput).to.have.attribute('tabIndex', '0');
             });
         });
 
         it('component gets tabIndex supplied by the user', async function() {
-            const {select, waitForDom} = clientRenderer.render(
+            const {driver: checkbox, waitForDom} = clientRenderer.render(
                 <CheckBox tabIndex={99998}/>
-            );
+            ).withDriver(CheckBoxTestDriver);
+
             await waitForDom(() => {
-                expect(select('NATIVE_CHECKBOX')).to.have.attribute('tabIndex', '99998');
+                expect(checkbox.nativeInput).to.have.attribute('tabIndex', '99998');
             });
         });
     });
@@ -240,36 +286,36 @@ describe('<Checkbox/>', function() {
     describe('When disabled', function() {
         it('doesn\'t call onChange when clicked', async function() {
             const onChange = sinon.spy();
-            const {select, waitForDom} = clientRenderer.render(<CheckBox disabled={true} onChange={onChange}/>);
+            const {driver: checkbox, waitForDom} = clientRenderer.render(
+                <CheckBox disabled onChange={onChange}/>
+            ).withDriver(CheckBoxTestDriver);
 
             await waitForDom(() => {
-                expect(select('CHECKBOX_ROOT')).to.be.present();
+                expect(checkbox.root).to.be.present();
             });
 
-            simulate.click(select('CHECKBOX_ROOT'));
-
-            await new Promise(resolve => setTimeout(resolve, 500));
-
-            await waitFor(() => {
-                expect(onChange).to.not.have.been.called;
-            });
+            checkbox.click();
+            await sleep(10);
+            expect(onChange).to.not.have.been.called;
         });
 
         it('displays tickmark if value is true', async function() {
-            const {select, waitForDom} = clientRenderer.render(<CheckBox disabled={true} value={true}/>);
+            const {driver: checkbox, waitForDom} = clientRenderer.render(
+                <CheckBox disabled value={true}/>
+            ).withDriver(CheckBoxTestDriver);
 
             await waitForDom(() => {
-                expect(select('CHECKBOX_ROOT')).to.be.present();
-                expect(select('CHECKBOX_TICKMARK')).to.be.present();
+                expect(checkbox.isChecked()).to.equal(true);
             });
         });
 
         it('displays indeterminate icon', async function() {
-            const {select, waitForDom} = clientRenderer.render(<CheckBox disabled={true} value={true} indeterminate/>);
+            const {driver: checkbox, waitForDom} = clientRenderer.render(
+                <CheckBox disabled value={true} indeterminate/>
+            ).withDriver(CheckBoxTestDriver);
 
             await waitForDom(() => {
-                expect(select('CHECKBOX_ROOT')).to.be.present();
-                expect(select('CHECKBOX_INDETERMINATE')).to.be.present();
+                expect(checkbox.isIndeterminate()).to.equal(true);
             });
         });
     });
@@ -277,66 +323,69 @@ describe('<Checkbox/>', function() {
     describe('When readonly', function() {
         it('doesn\'t call onChange when clicked', async function() {
             const onChange = sinon.spy();
-            const {select, waitForDom} = clientRenderer.render(<CheckBox readonly={true} onChange={onChange}/>);
+            const {driver: checkbox, waitForDom} = clientRenderer.render(
+                <CheckBox readonly onChange={onChange}/>
+            ).withDriver(CheckBoxTestDriver);
 
             await waitForDom(() => {
-                expect(select('CHECKBOX_ROOT')).to.be.present();
+                expect(checkbox.root).to.be.present();
             });
 
-            simulate.click(select('CHECKBOX_ROOT'));
-
-            await new Promise(resolve => setTimeout(resolve, 500));
-
-            await waitFor(() => {
-                expect(onChange).to.not.have.been.called;
-            });
+            checkbox.click();
+            await sleep(10);
+            expect(onChange).to.not.have.been.called;
         });
 
         it('displays tickmark if value is true', async function() {
-            const {select, waitForDom} = clientRenderer.render(<CheckBox readonly={true} value={true}/>);
+            const {driver: checkbox, waitForDom} = clientRenderer.render(
+                <CheckBox readonly value={true}/>
+            ).withDriver(CheckBoxTestDriver);
 
             await waitForDom(() => {
-                expect(select('CHECKBOX_ROOT')).to.be.present();
-                expect(select('CHECKBOX_TICKMARK')).to.be.present();
+                expect(checkbox.isChecked()).to.equal(true);
             });
         });
     });
 
     describe('When indeterminate', function() {
         it('renders indeterminate icon when value is true', async function() {
-            const {select, waitForDom} = clientRenderer.render(<CheckBox value={true} indeterminate/>);
+            const {driver: checkbox, waitForDom} = clientRenderer.render(
+                <CheckBox value={true} indeterminate/>
+            ).withDriver(CheckBoxTestDriver);
 
             await waitForDom(() => {
-                expect(select('CHECKBOX_BOX')).to.be.present();
-                expect(select('CHECKBOX_INDETERMINATE')).to.be.present();
-                expect(select('CHECKBOX_TICKMARK')).to.be.absent();
+                expect(checkbox.box).to.be.present();
+                expect(checkbox.isIndeterminate()).to.equal(true);
+                expect(checkbox.isChecked()).to.equal(false);
             });
         });
 
         it('renders indeterminate icon when value is false', async function() {
-            const {select, waitForDom} = clientRenderer.render(<CheckBox value={false} indeterminate/>);
+            const {driver: checkbox, waitForDom} = clientRenderer.render(
+                <CheckBox value={false} indeterminate/>
+            ).withDriver(CheckBoxTestDriver);
 
             await waitForDom(() => {
-                expect(select('CHECKBOX_BOX')).to.be.present();
-                expect(select('CHECKBOX_INDETERMINATE')).to.be.present();
+                expect(checkbox.box).to.be.present();
+                expect(checkbox.isIndeterminate()).to.equal(true);
             });
         });
 
         it('click calls onChange with value true', async function() {
             const onChange = sinon.spy();
-            const {select, waitForDom} = clientRenderer.render(
+            const {driver: checkbox, waitForDom} = clientRenderer.render(
                 <CheckBox
                     value={true}
                     onChange={onChange}
                     indeterminate
                 />
-            );
+            ).withDriver(CheckBoxTestDriver);
 
             await waitForDom(() => {
-                expect(select('CHECKBOX_ROOT')).to.be.present();
+                expect(checkbox.root).to.be.present();
             });
 
-            simulate.click(select('CHECKBOX_ROOT'));
+            checkbox.click();
 
             await waitFor(() => {
                 expect(onChange).to.have.been.calledOnce;
@@ -345,34 +394,32 @@ describe('<Checkbox/>', function() {
         });
 
         it('renders custom indeterminate icon', async function() {
-            const {select, waitForDom} = clientRenderer.render(
+            const {driver: checkbox, waitForDom} = clientRenderer.render(
                 <CheckBox
                     indeterminateIcon={IndeterminateSVG}
                     indeterminate
                 />
-            );
+            ).withDriver(CheckBoxTestDriver);
 
             await waitForDom(() => {
-                expect(select('CHECKBOX_INDETERMINATE')).to.be.present();
-                expect(select('CHECKBOX_INDETERMINATE')).to.have.attribute('data-name', 'custom-indeterminate');
+                expect(checkbox.isIndeterminate()).to.equal(true);
+                expect(checkbox.indeterminateMark).to.have.attribute('data-name', 'custom-indeterminate');
             });
         });
 
         it('does not call onChange when disabled', async function() {
             const onChange = sinon.spy();
-            const {select, waitForDom} = clientRenderer.render(<CheckBox disabled onChange={onChange} indeterminate/>);
+            const {driver: checkbox, waitForDom} = clientRenderer.render(
+                <CheckBox disabled onChange={onChange} indeterminate/>
+            ).withDriver(CheckBoxTestDriver);
 
             await waitForDom(() => {
-                expect(select('CHECKBOX_ROOT')).to.be.present();
+                expect(checkbox.root).to.be.present();
             });
 
-            simulate.click(select('CHECKBOX_ROOT'));
-
-            await new Promise(resolve => setTimeout(resolve, 500));
-
-            await waitFor(() => {
-                expect(onChange).to.not.have.been.called;
-            });
+            checkbox.click();
+            await sleep(10);
+            expect(onChange).to.not.have.been.called;
         });
     });
 });

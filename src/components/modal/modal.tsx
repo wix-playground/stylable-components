@@ -1,10 +1,9 @@
 import * as React from 'react';
-import {SBComponent} from 'stylable-react-component';
-import {root} from 'wix-react-tools';
-import {Portal} from '../../../src';
+import {properties, stylable} from 'wix-react-tools';
 import {noop} from '../../utils';
 import {isElement} from '../../utils/is-element';
 import {enableScrolling, stopScrolling} from '../../utils/stop-scrolling';
+import {Portal} from '../portal';
 import styles from './modal.st.css';
 
 export interface RequestCloseEvent extends React.SyntheticEvent<Element> {
@@ -16,8 +15,9 @@ export interface ModalProps extends React.HTMLAttributes<HTMLDivElement> {
     onRequestClose?(event: RequestCloseEvent): void;
 }
 
-@SBComponent(styles)
-export class Modal extends React.PureComponent<ModalProps, {}> {
+@stylable(styles)
+@properties
+export class Modal extends React.PureComponent<ModalProps> {
     public static defaultProps: ModalProps = {
         isOpen: false,
         onRequestClose: noop
@@ -32,13 +32,9 @@ export class Modal extends React.PureComponent<ModalProps, {}> {
     }
 
     public render() {
-        const rootProps = root(this.props, {
-            className: 'root'
-        });
-
         return (
             this.props.isOpen ? (
-                <Portal {...rootProps}>
+                <Portal>
                     <div className="backdrop" data-slot="backdrop" data-automation-id="MODAL" onClick={this.onClick}>
                         <div className="children" data-slot="children">
                             {this.props.children}
@@ -49,11 +45,10 @@ export class Modal extends React.PureComponent<ModalProps, {}> {
         );
     }
 
-    private onClick: React.EventHandler<React.MouseEvent<HTMLDivElement>> = event => {
-        const closeEvent: RequestCloseEvent = Object.create(event);
+    private onClick: React.EventHandler<React.SyntheticEvent<Element>> = event => {
         const {target} = event;
         if (isElement(target)) {
-            closeEvent.source = this.getDataFromNearestNode(target);
+            const closeEvent: RequestCloseEvent = {...event, source: this.getDataFromNearestNode(target)};
             this.props.onRequestClose!(closeEvent);
         }
     }

@@ -1,10 +1,11 @@
 import * as React from 'react';
-import {SBComponent} from 'stylable-react-component';
+import {stylable} from 'wix-react-tools';
 import {TimePicker} from '../../src';
 import {is12TimeFormat} from '../../src/components/time-picker/utils';
+import {ChangeEvent} from '../../src/types/events';
 import styles from './time-picker-demo.st.css';
 
-@SBComponent(styles)
+@stylable(styles)
 export class TimePickerDemo extends React.Component<any, any> {
     constructor() {
         super();
@@ -85,5 +86,5 @@ export class TimePickerDemo extends React.Component<any, any> {
             </div>
         );
     }
-    private createOnChange = (name: string) => (value: string) => this.setState({[name]: value});
+    private createOnChange = (name: string) => (e: ChangeEvent<string>) => this.setState({[name]: e.value});
 }

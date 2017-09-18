@@ -1,6 +1,7 @@
 import * as React from 'react';
-import {SBComponent} from 'stylable-react-component';
+import {stylable} from 'wix-react-tools';
 import {Slider} from '../../src';
+import {ChangeEvent} from '../../src/types/events';
 import style from './slider-demo.st.css';
 
 export interface SliderDemoState {
@@ -8,7 +9,7 @@ export interface SliderDemoState {
     rawValue: string;
 }
 
-@SBComponent(style)
+@stylable(style)
 export class SliderDemo extends React.Component<{}, SliderDemoState> {
     constructor(props: {}) {
         super(props);
@@ -99,9 +100,8 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                             max={max}
                             onChange={this.onSliderChange}
                             onInput={this.onSliderInput}
-                        >
-                            <div data-slot="tooltip" className="tooltip">{this.state.rawValue}</div>
-                        </Slider>
+                            tooltip={<div className="tooltip">{this.state.rawValue}</div>}
+                        />
                     </td>
                 </tr>
                 </tbody>
@@ -190,14 +190,16 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
         );
     }
 
-    private onSliderChange = (value: number) => {
+    private onSliderChange = ({value}: ChangeEvent<number>) => {
         this.setState({
             value,
             rawValue: String(value)
         });
     }
 
-    private onSliderInput = (rawValue: string) => {
-        this.setState({rawValue});
+    private onSliderInput = ({value}: ChangeEvent<string>) => {
+        this.setState({
+            rawValue: value
+        });
     }
 }
