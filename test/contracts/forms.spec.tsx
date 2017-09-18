@@ -1,6 +1,6 @@
 import React = require('react');
 import {ClientRenderer, expect} from 'test-drive-react';
-import {DropDown, CheckBox} from '../../src';
+import {CheckBox, DropDown, DatePicker} from '../../src';
 
 describe('Form contract of', function() {
 
@@ -10,7 +10,7 @@ describe('Form contract of', function() {
         clientRenderer.cleanup();
     });
 
-    async function testFormContract(componentElement: React.ReactElement<any>, testValue: any) {
+    async function testFormContract(componentElement: React.ReactElement<any>, testValue: any, expectedValue: string = testValue) {
         const testName = 'testInput';
         let formElement: HTMLFormElement;
         const testedElement = React.cloneElement(componentElement, {
@@ -26,16 +26,22 @@ describe('Form contract of', function() {
         await waitForDom(() => {
             const formInput = formElement![testName] as HTMLInputElement;
             expect(formInput).to.be.an.instanceOf(HTMLInputElement);
-            expect(formInput.value).to.equal(testValue);
+            expect(formInput.value).to.equal(expectedValue);
         });
     }
 
-    it('CheckBox', async function () {
-        await testFormContract(<CheckBox />, true);
+    it('CheckBox', async function() {
+        await testFormContract(<CheckBox />, true, 'on');
+        await testFormContract(<CheckBox formValue="custom"/>, true, 'custom');
     });
 
-    it('DropDown', async function () {
+    it('DropDown', async function() {
         await testFormContract(<DropDown dataSource={['A', 'B', 'C']} />, 'B');
+    });
+
+    it('DatePicker', async function () {
+        const sampleDate = '2017-02-01';
+        await testFormContract(<DatePicker/>, new Date(sampleDate), sampleDate);
     });
 
 });

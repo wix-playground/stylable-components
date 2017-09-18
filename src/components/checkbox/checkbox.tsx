@@ -14,6 +14,7 @@ export interface CheckBoxProps extends FormInputProps<boolean>, properties.Props
     indeterminate?: boolean;
     tabIndex?: number;
     id?: string;
+    formValue?: string;
 }
 
 export interface CheckBoxIconProps {
@@ -109,6 +110,7 @@ export class CheckBox extends React.Component<CheckBoxProps, CheckBoxState> {
                     id={this.props.id}
                     tabIndex={this.props.tabIndex}
                     name={this.props.name}
+                    value={this.props.formValue}
                 />
 
                 <BoxIcon

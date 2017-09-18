@@ -29,6 +29,10 @@ export interface DatePickerState {
     highlightFocusedDate: boolean;
 }
 
+function dateToDateInputFormat(date: Date): string {
+    return date.toISOString().slice(0,10);
+}
+
 @stylable(styles)
 @properties
 export class DatePicker extends React.PureComponent<DatePickerProps, DatePickerState> {
@@ -66,8 +70,9 @@ export class DatePicker extends React.PureComponent<DatePickerProps, DatePickerS
                     type="text"
                     data-automation-id="DATE_PICKER_INPUT"
                 />
+                <input type="hidden" value={dateToDateInputFormat(this.props.value!)} name={this.props.name}/>
                 <div className="icon" data-automation-id="CALENDAR_ICON" onClick={this.toggleDropdown}>
-                    <Icon />
+                    <Icon/>
                 </div>
                 <Popup open={this.state.isDropdownVisible} anchor={this.state.dropdownRef}>
                     <Calendar
@@ -99,7 +104,7 @@ export class DatePicker extends React.PureComponent<DatePickerProps, DatePickerS
     // Should only be called with valid date from the dropdown
     private onCalendarInput = (input: Date): void => {
         this.setState({
-            inputValue: input.toDateString() ,
+            inputValue: input.toDateString(),
             isDropdownVisible: false,
             highlightSelectedDate: true,
             highlightFocusedDate: false,
@@ -111,8 +116,8 @@ export class DatePicker extends React.PureComponent<DatePickerProps, DatePickerS
 
     private updateDropdownDate = (updatedDate: Date): void => {
         this.setState({
-           highlightFocusedDate: false,
-           dropdownDate: updatedDate
+            highlightFocusedDate: false,
+            dropdownDate: updatedDate
         });
     }
 
@@ -152,8 +157,8 @@ export class DatePicker extends React.PureComponent<DatePickerProps, DatePickerS
 
         shiftedDate.setDate(this.state.dropdownDate.getDate() + daysToShift);
         this.setState({
-           highlightFocusedDate: true,
-           dropdownDate: shiftedDate
+            highlightFocusedDate: true,
+            dropdownDate: shiftedDate
         });
     }
 
@@ -215,3 +220,5 @@ export class DatePicker extends React.PureComponent<DatePickerProps, DatePickerS
         return new Date(stringToValidate).toDateString() !== invalidDate;
     }
 }
+
+
