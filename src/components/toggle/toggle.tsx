@@ -1,8 +1,8 @@
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import {stylable} from 'wix-react-tools';
-import {isRTLContext} from '../../utils';
 import {FormInputProps} from '../../types/forms';
+import {isRTLContext} from '../../utils';
 import style from './toggle.st.css';
 
 export interface Props extends FormInputProps<boolean> {
