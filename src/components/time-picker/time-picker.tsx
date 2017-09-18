@@ -3,6 +3,7 @@ import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import {stylable} from 'wix-react-tools';
 import {FormInputProps} from '../../types/forms';
+import {isRTLContext} from '../../utils';
 import {ScreenReaderNotification} from '../screen-reader-notification';
 import {Modifiers, Stepper} from '../stepper';
 import {LABELS} from './strings';
@@ -117,8 +118,7 @@ export class TimePicker extends React.Component<Props, State> {
                     'disabled': disabled!,
                     'empty': !isValueSet,
                     'has-placeholder': !!placeholder,
-                    'rtl': this.context.contextProvider &&
-                        this.context.contextProvider.dir === 'rtl'
+                    'rtl': isRTLContext(this.context)
                 }}
                 onMouseDown={this.onRootMouseDown}
             >
