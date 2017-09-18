@@ -1,6 +1,6 @@
 import * as keycode from 'keycode';
-import * as React from 'react';
 import * as PropTypes from 'prop-types';
+import * as React from 'react';
 import {properties, stylable} from 'wix-react-tools';
 import {isRTLContext} from '../../utils';
 import {GlobalEvent} from '../global-event';
