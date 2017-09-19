@@ -152,6 +152,7 @@ When a tab interface is initialized, tab panel displays content that is associat
 
 By default Tab List is displayed on top of the Tab Panel. But it can be changed with `position`  prop that accepts the following values: `left / right / up / down`. When `position` prop is set `left / right` tabs are displayed in vertical position. 
 
+Add suff related to "kill inactive tab"...
 
 
 #### Validation 
