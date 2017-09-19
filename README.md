@@ -8,31 +8,38 @@
 Fully-tested & strictly-typed component library based on React, using optional Wix styling.
 
 ### Components
-- Under construction...
+- &lt;CheckBox /&gt;
+- &lt;DatePicker /&gt;
+- &lt;DropDown /&gt;
+- &lt;Image /&gt;
+- &lt;Modal /&gt;
+- &lt;NumberInput /&gt;
+- &lt;Popup /&gt;
+- &lt;Portal /&gt;
+- &lt;RadioButton /&gt;
+- &lt;RadioGroup /&gt;
+- &lt;ScreenReaderNotification /&gt;
+- &lt;SelectionList /&gt;
+- &lt;SelectionListDivider /&gt;
+- &lt;SelectionListDividerSymbol /&gt;
+- &lt;SelectionListOption /&gt;
+- &lt;Slider /&gt;
+- &lt;TimePicker /&gt;
+- &lt;Toggle /&gt;
+- &lt;TreeItem /&gt;
+- &lt;TreeView /&gt;
 
 ### Components to be created:
 - &lt;AutoComplete /&gt;
-- &lt;CheckBox /&gt;
-- &lt;Color Picker /&gt;
+- &lt;ColorPicker /&gt;
 - &lt;DataGrid /&gt;
-- &lt;Date Picker /&gt;
-- &lt;Dropdown /&gt;
-- &lt;Image /&gt;
+- &lt;FilePicker /&gt;
 - &lt;Menu /&gt;
-- &lt;Modal /&gt;
 - &lt;MultiSelect /&gt;
-- &lt;NumberInput /&gt;
-- &lt;PopUp /&gt;
-- &lt;RadioGroup /&gt;
 - &lt;RichTextInput /&gt;
 - &lt;ScrollView /&gt;
-- &lt;Slider /&gt;
-- &lt;Time Picker /&gt;
-- &lt;Toggle /&gt;
 - &lt;Tooltip /&gt;
 - &lt;TopBar /&gt;
-- &lt;TreeList /&gt;
-- &lt;Upload /&gt;
 - &lt;Video /&gt;
 
 ## Library structure
