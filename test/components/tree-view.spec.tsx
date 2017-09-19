@@ -467,40 +467,38 @@ describe('<TreeView />', () => {
         });
 
         describe('Reaction to dataSource changes', () => {
+
+
             it('renders the additional item when a new data array is passed', async () => {
-                const {waitForDom, result} = clientRenderer.render(<TreeViewWrapper />);
+                const {select, waitForDom, result} = clientRenderer.render(<TreeViewWrapper />);
 
-                const treeView = new TreeViewWrapperDriver(result as TreeViewWrapper);
-
-                treeView.toggleItem(treeData[0].label);
-                treeView.toggleItem(treeData[0].children![2].label);
+                expandItemWithLabel(select, treeData[0].label);
+                expandItemWithLabel(select, treeData[0].children![2].label);
 
                 await waitForDom(() =>
-                    expect(treeView.getItem('Kaiserschmarrn')).to.be.absent());
+                    expect(select('TREE_VIEW', getTreeItem('Kaiserschmarrn'))).to.be.absent());
 
-                treeView.instance.switchDataSource();
-                treeView.toggleItem(newTreeData[0].label);
-                treeView.toggleItem(newTreeData[0].children![2].label);
+                (result as TreeViewWrapper).switchDataSource();
+                expandItemWithLabel(select, newTreeData[0].label);
+                expandItemWithLabel(select, newTreeData[0].children![2].label);
 
-                await waitForDom(() =>
-                    expect(treeView.getItem('Kaiserschmarrn')).to.be.present());
+                return waitForDom(() =>
+                    expect(select('TREE_VIEW', getTreeItem('Kaiserschmarrn'))).to.be.present());
             });
 
             it('renders the additional item when a new data element is added to existing data', async () => {
-                const {waitForDom, result} = clientRenderer.render(<TreeViewMobxWrapper />);
+                const {select, waitForDom, result} = clientRenderer.render(<TreeViewMobxWrapper />);
 
-                const treeView = new TreeViewMobxWrapperDriver(result as TreeViewMobxWrapper);
-
-                treeView.toggleItem(treeData[0].label);
-                treeView.toggleItem(treeData[0].children![2].label);
+                expandItemWithLabel(select, treeData[0].label);
+                expandItemWithLabel(select, treeData[0].children![2].label);
 
                 await waitForDom(() =>
-                    expect(treeView.getItem('Kaiserschmarrn')).to.be.absent());
+                    expect(select('TREE_VIEW', getTreeItem('Kaiserschmarrn'))).to.be.absent());
 
-                treeView.instance.modifyMobxDataSource();
+                (result as TreeViewMobxWrapper).modifyMobxDataSource();
 
-                await waitForDom(() =>
-                    expect(treeView.getItem('Kaiserschmarrn')).to.be.present());
+                return waitForDom(() =>
+                    expect(select('TREE_VIEW', getTreeItem('Kaiserschmarrn'))).to.be.present());
             });
         });
 
