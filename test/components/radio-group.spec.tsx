@@ -244,6 +244,28 @@ describe('<RadioGroup />', () => {
         });
     });
 
+    it('Displays radio button children', async () => {
+        const {driver: group, waitForDom} = clientRenderer.render(
+            <RadioGroup>
+                <RadioButton value="Fafnir">
+                    YO
+                    <span>IMA SPAN</span>
+                </RadioButton>
+                <RadioButton value="Sleipnir">MO</RadioButton>
+            </RadioGroup>
+        ).withDriver(RadioGroupDriver);
+
+        const button0 = group.getRadioButton(0);
+        const button1 = group.getRadioButton(1);
+
+        await waitForDom(() => {
+            expect(button0.children[0]!).to.have.text('YO');
+            expect(button0.children[1]!).to.have.text('IMA SPAN');
+            expect(button0.children[1]!).to.be.instanceOf(HTMLSpanElement);
+            expect(button1.children[0]!).to.have.text('MO');
+        });
+    });
+
     it('renders children from the data source prop if given', async () => {
         const {driver: group, waitForDom} = clientRenderer.render(
             <RadioGroup
@@ -266,6 +288,24 @@ describe('<RadioGroup />', () => {
             expect(button2.root).to.be.present();
             expect(button2.value).to.equal('Child2');
             expect(button2.isChecked(), 'expected radio to be unchecked').to.equal(false);
+        });
+    });
+
+    it('renders data source item labels (supplied in prop)', async () => {
+        const {driver: group, waitForDom} = clientRenderer.render(
+            <RadioGroup
+                value="Child1"
+                dataSource={[{value: 'BTN0', labelText: 'button0'}, {value: 'BTN1', labelText: 'button1'}]}
+            />
+        ).withDriver(RadioGroupDriver);
+
+        const button0 = group.getRadioButton(0);
+        const button1 = group.getRadioButton(1);
+
+        await waitForDom(() => {
+            expect(button0.children[0]!).to.be.instanceOf(HTMLLabelElement);
+            expect(button0.children[0]!).to.have.text('button0');
+            expect(button1.children[0]!).to.have.text('button1');
         });
     });
 
@@ -362,13 +402,16 @@ describe('<RadioGroup />', () => {
 
         it('renders the label next to the radio button (right by default)', async () => {
             const {driver: radio, waitForDom} = clientRenderer.render(
-                <RadioButton value="Omega"/>
+                <RadioButton><span>Omega</span></RadioButton>
             ).withDriver(RadioButtonDriver);
 
+            const child = radio.children[0];
+
             await waitForDom(() => {
-                expect(radio.label).to.have.text('Omega');
-                expect([radio.icon, radio.label]).to.be.horizontallyAligned;
-                expect([radio.icon, radio.label]).to.be.inHorizontalSequence({distance: 15});
+                expect(child).to.to.be.instanceOf(HTMLSpanElement);
+                expect(child).to.have.text('Omega');
+                expect([radio.icon, child]).to.be.horizontallyAligned;
+                expect([radio.icon, child]).to.be.inHorizontalSequence({distance: 5});
             });
         });
 
