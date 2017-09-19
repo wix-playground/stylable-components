@@ -19,6 +19,8 @@ export interface NumberInputProps extends FormInputProps<number | undefined, str
     label?: string;
     name?: string;
     error?: boolean;
+    prefix?: React.ReactNode;
+    suffix?: React.ReactNode;
 }
 
 interface DefaultProps {
@@ -27,13 +29,6 @@ interface DefaultProps {
     max: number;
     onChange(value?: number): void;
     onInput(value: string): void;
-}
-
-export type SlotElement = React.ReactElement<{'data-slot': string}>;
-
-export interface Affix {
-    prefix: SlotElement[];
-    suffix: SlotElement[];
 }
 
 export interface NumberInputState {
@@ -50,31 +45,6 @@ enum Slot {
 enum Direction {
     Increase = 'increase',
     Decrease = 'decrease'
-}
-
-function getAffix(children: React.ReactNode): Affix {
-    return React.Children
-        .toArray(children)
-        .reduce((affix: Affix, child) => {
-            if (typeof child === 'object') {
-                child as React.ReactElement<{}>;
-
-                switch (child.props['data-slot']) {
-                    case Slot.Prefix:
-                        affix.prefix.push(child);
-                        break;
-                    case Slot.Suffix:
-                        affix.suffix.push(child);
-                        break;
-                }
-            }
-
-            return affix;
-        },
-        {
-            prefix: [],
-            suffix: []
-        });
 }
 
 const DEFAULTS: DefaultProps = {
@@ -142,11 +112,11 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
             step, min, max,
             placeholder, name,
             disabled, required,
-            children, error
+            children, error,
+            prefix, suffix
         } = this.props;
         const disableIncrement = disabled || (isNumber(value) && value >= max!);
         const disableDecrement = disabled || (isNumber(value) && value <= min!);
-        const {prefix, suffix} = getAffix(children);
 
         return (
             <div
@@ -158,7 +128,7 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
                 onFocus={this.handleFocus}
                 onBlur={this.handleBlur}
             >
-                {prefix.length > 0 ?
+                {prefix ?
                     <div className="prefix">
                         {prefix}
                     </div> : null
@@ -180,7 +150,7 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
                     onKeyDown={this.handleInputKeyDown}
                     onBlur={this.handleInputBlur}
                 />
-                {suffix.length > 0 ?
+                {suffix ?
                     <div className="suffix">
                         {suffix}
                     </div> : null
