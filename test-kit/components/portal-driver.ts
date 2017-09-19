@@ -4,9 +4,11 @@ import {DriverBase} from 'test-drive-react';
 export class PortalTestDriver extends DriverBase {
     public static ComponentClass = Portal;
 
-    private get portal(): HTMLElement | null {
-        return this.select('ID_SPAN') &&
-               document.getElementById(this.select('ID_SPAN').getAttribute('data-id')!);
+    private get portal(): Element | null {
+        if (!this.select('ID_SPAN')) return null;
+        const portalDomUniqueId =
+            `[data-automation-id="${this.select('ID_SPAN').getAttribute('data-id')!}"]`;
+        return document.querySelector(portalDomUniqueId);
     }
 
     public get portalRoot(): Element {
@@ -15,9 +17,5 @@ export class PortalTestDriver extends DriverBase {
 
     public get content(): HTMLCollection {
         return this.portal!.children;
-    }
-
-    public get isPresent(): boolean {
-        return !!this.portal;
     }
 }

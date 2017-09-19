@@ -73,7 +73,8 @@ describe('<Portal />', function() {
         ReactDOM.unmountComponentAtNode(container);
         document.body.removeChild(container);
 
-        await waitFor(() => expect(portal.isPresent).to.be.false);
+        debugger;
+        await waitFor(() => expect(portal.portalRoot).to.be.absent());
     });
 
     it('updates the portal content if the children are changed', async function() {
