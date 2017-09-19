@@ -6,7 +6,11 @@ import {TreeViewDemo, TreeViewDemoCustom} from '../../demo/components/tree-view-
 import {TreeItem, TreeView} from '../../src';
 import {getLastAvailableItem, getNextItem, getPreviousItem} from '../../src/components/tree-view//tree-util';
 import {initParentsMap, ParentsMap, TreeItemData, TreeStateMap} from '../../src/components/tree-view/tree-view';
-import {TreeItemDriver, TreeViewDriver, TreeViewInstanceDriver} from '../../test-kit';
+import {TreeItemDriver,
+        TreeViewDriver,
+        TreeViewInstanceDriver,
+        TreeViewMobxWrapperDriver,
+        TreeViewWrapperDriver} from '../../test-kit';
 import {elementHasStylableState} from '../utils/inspect-stylable';
 
 // this can be removed once encapsulated in the driver
@@ -79,15 +83,6 @@ class TreeViewDemoCustomDriver extends DriverBase {
 
     public customTreeView = new TreeViewDriver(() => this.select('TREE_VIEW_DEMO_CUSTOM', 'TREE_VIEW'));
 }
-
-// class TreeViewWrapperDriver extends DriverBase {
-//     public static ComponentClass = TreeViewWrapper;
-
-//     constructor(treeViewElement: Element) {
-//         super(() => treeViewElement);
-//         const treeView = new TreeViewInstanceDriver(treeViewElement);
-//     }
-// }
 
 // duplicating the data so i can pass a new object to the non-mobx version
 const newTreeData = JSON.parse(JSON.stringify(treeData));
@@ -170,7 +165,7 @@ describe('<TreeView />', () => {
         const elementToSelect = customTreeView.getItem(allNodesLabels[2]);
 
         customTreeView.selectItem(allNodesLabels[2]);
-        return waitForDom(() => expect(isElementSelected(elementToSelect!, treeViewDemoStyle)).to.equal(true));
+        await waitForDom(() => expect(isElementSelected(elementToSelect!, treeViewDemoStyle)).to.equal(true));
     });
 
     it('ends up in expected state after multiple clicks on same tree node', async () => {
@@ -195,7 +190,7 @@ describe('<TreeView />', () => {
 
         treeView.toggleItem(allNodesLabels[1]);
 
-        return waitForDom(() => expect(elementToAssert).to.be.absent());
+        await waitForDom(() => expect(elementToAssert).to.be.absent());
     });
 
     describe('Using default renderer', () => {
@@ -242,7 +237,7 @@ describe('<TreeView />', () => {
 
                 treeView.pressKey(keycode('right'));
 
-                return waitForDom(() => expect(treeView.getItem(nodeChildren![1].label)).to.be.present());
+                await waitForDom(() => expect(treeView.getItem(nodeChildren![1].label)).to.be.present());
             });
 
             it('returns to parent if there is after collapsing the element if possible when left is clicked',
@@ -266,7 +261,7 @@ describe('<TreeView />', () => {
 
                     treeView.pressKey(keycode('left'));
 
-                    return waitForDom(() => expect(
+                    await waitForDom(() => expect(
                         isElementFocused(treeView.getItem(treeData[0].label)!, treeNodeStyle)).to.equal(true));
                 });
 
@@ -289,7 +284,7 @@ describe('<TreeView />', () => {
 
                     treeView.pressKey(keycode('right'));
 
-                    return waitForDom(() => expect(
+                    await waitForDom(() => expect(
                         isElementFocused(treeView.getItem(nodeChildren![0].label)!, treeNodeStyle)).to.equal(true));
                 });
 
@@ -319,7 +314,7 @@ describe('<TreeView />', () => {
                 treeView.pressKey(keycode('up'));
 
                 // this should assert first child of root is not focused
-                return waitForDom(() => {
+                await waitForDom(() => {
                     const item = treeView.getItem(nodeChildren![0].label);
                     expect(isElementFocused(item!, treeNodeStyle)).to.equal(false);
                     expect(isElementFocused(rootNode!, treeNodeStyle)).to.equal(true);
@@ -355,7 +350,7 @@ describe('<TreeView />', () => {
 
                 treeView.pressKey(keycode('down'));
 
-                return waitForDom(() => expect(
+                await waitForDom(() => expect(
                     isElementFocused(treeView.getItem(nodeChildren![1].label)!, treeNodeStyle)).to.equal(true));
             });
 
@@ -378,7 +373,7 @@ describe('<TreeView />', () => {
 
                 treeView.pressKey(keycode('enter'));
 
-                return waitForDom(() => expect(
+                await waitForDom(() => expect(
                     isElementSelected(treeView.getItem(nodeChildren![0].label)!, treeNodeStyle)).to.equal(true));
             });
 
@@ -398,7 +393,7 @@ describe('<TreeView />', () => {
 
                 await waitForDom(() => expect(rootNode).to.have.attr('data-focused', 'false'));
 
-                return waitForDom(() => expect(isElementFocused(rootNode!, treeNodeStyle)).to.equal(true));
+                await waitForDom(() => expect(isElementFocused(rootNode!, treeNodeStyle)).to.equal(true));
             });
 
             it('focuses last item available when END is clicked', async () => {
@@ -424,7 +419,7 @@ describe('<TreeView />', () => {
 
                 treeView.pressKey(keycode('end'));
 
-                return waitForDom(() =>
+                await waitForDom(() =>
                     expect(isElementFocused(treeView.getItem(
                         lastChildren[lastChildren.length - 1].label)!, treeNodeStyle)).to.equal(true));
             });
@@ -464,44 +459,46 @@ describe('<TreeView />', () => {
 
                 treeView.pressKey(keycode('up'));
 
-                return expect(isElementFocused(rootNode!, treeNodeStyle)).to.equal(true);
+                await expect(isElementFocused(rootNode!, treeNodeStyle)).to.equal(true);
             });
         });
 
         describe('Reaction to dataSource changes', () => {
             it('renders the additional item when a new data array is passed', async () => {
-                // const {waitForDom, result} = clientRenderer.render(<TreeViewWrapper />);
+                const {waitForDom, result} = clientRenderer.render(<TreeViewWrapper />);
 
-                // const treeView = new TreeViewInstanceDriver(result as TreeView);
+                const treeView = new TreeViewWrapperDriver(result as TreeViewWrapper);
 
-                // treeView.toggleItem(treeData[0].label);
-                // treeView.toggleItem(treeData[0].children![2].label);
+                treeView.toggleItem(treeData[0].label);
+                treeView.toggleItem(treeData[0].children![2].label);
 
-                // await waitForDom(() =>
-                //     expect(treeView.getItem('Kaiserschmarrn')).to.be.absent());
+                await waitForDom(() =>
+                    expect(treeView.getItem('Kaiserschmarrn')).to.be.absent());
 
-                // treeView.instance.switchDataSource();
-                // expandItemWithLabel(select, newTreeData[0].label);
-                // expandItemWithLabel(select, newTreeData[0].children![2].label);
+                treeView.instance.switchDataSource();
+                treeView.toggleItem(newTreeData[0].label);
+                treeView.toggleItem(newTreeData[0].children![2].label);
 
-                // return waitForDom(() =>
-                //     expect(select(treeView, getTreeItem('Kaiserschmarrn'))).to.be.present());
+                await waitForDom(() =>
+                    expect(treeView.getItem('Kaiserschmarrn')).to.be.present());
             });
 
-    //         it('renders the additional item when a new data element is added to existing data', async () => {
-    //             const {select, waitForDom, result} = clientRenderer.render(<TreeViewMobxWrapper />);
+            it('renders the additional item when a new data element is added to existing data', async () => {
+                const {waitForDom, result} = clientRenderer.render(<TreeViewMobxWrapper />);
 
-    //             expandItemWithLabel(select, treeData[0].label);
-    //             expandItemWithLabel(select, treeData[0].children![2].label);
+                const treeView = new TreeViewMobxWrapperDriver(result as TreeViewMobxWrapper);
 
-    //             await waitForDom(() =>
-    //                 expect(select(treeView, getTreeItem('Kaiserschmarrn'))).to.be.absent());
+                treeView.toggleItem(treeData[0].label);
+                treeView.toggleItem(treeData[0].children![2].label);
 
-    //             (result as TreeViewMobxWrapper).modifyMobxDataSource();
+                await waitForDom(() =>
+                    expect(treeView.getItem('Kaiserschmarrn')).to.be.absent());
 
-    //             return waitForDom(() =>
-    //                 expect(select(treeView, getTreeItem('Kaiserschmarrn'))).to.be.present());
-    //         });
+                treeView.instance.modifyMobxDataSource();
+
+                await waitForDom(() =>
+                    expect(treeView.getItem('Kaiserschmarrn')).to.be.present());
+            });
         });
 
         describe('<TreeItem />', () => {
@@ -509,7 +506,7 @@ describe('<TreeView />', () => {
             const stateMap = new TreeStateMap();
             stateMap.getItemState(nestedItem).isExpanded = true;
 
-            it('renders an item', () => {
+            it('renders an item', async () => {
                 const {driver: treeItem, waitForDom} = clientRenderer.render(
                     <TreeItem
                         item={sampleItem}
@@ -518,10 +515,10 @@ describe('<TreeView />', () => {
                     />
                 ).withDriver(TreeItemDriver);
 
-                return waitForDom(() => expect(treeItem.getItem(sampleItem.label)).to.be.present());
+                await waitForDom(() => expect(treeItem.getItem(sampleItem.label)).to.be.present());
             });
 
-            it('renders with provided label', () => {
+            it('renders with provided label', async () => {
                 const {driver: treeItem, waitForDom} = clientRenderer.render(
                     <TreeItem
                         item={sampleItem}
@@ -530,11 +527,11 @@ describe('<TreeView />', () => {
                     />
                 ).withDriver(TreeItemDriver);
 
-                return waitForDom(() =>
+                await waitForDom(() =>
                     expect(treeItem.getItem(sampleItem.label) + '_LABEL').to.have.text(sampleItem.label));
             });
 
-            it('renders with an icon', () => {
+            it('renders with an icon', async () => {
                 const {driver: treeItem, waitForDom} = clientRenderer.render(
                     <TreeItem
                         item={treeData[0]}
@@ -543,10 +540,10 @@ describe('<TreeView />', () => {
                     />
                 ).withDriver(TreeItemDriver);
 
-                return waitForDom(() => expect(treeItem.getItem(treeData[0].label) + '_ICON').to.be.present());
+                await waitForDom(() => expect(treeItem.getItem(treeData[0].label) + '_ICON').to.be.present());
             });
 
-            it('renders correct children', () => {
+            it('renders correct children', async () => {
                 const {driver: treeItem, waitForDom} = clientRenderer.render(
                     <TreeItem
                         item={nestedItem}
@@ -555,12 +552,12 @@ describe('<TreeView />', () => {
                     />
                 ).withDriver(TreeItemDriver);
 
-                return waitForDom(() =>
+                await waitForDom(() =>
                     nestedItem.children!.forEach((item: TreeItemData) =>
                         expect(treeItem.getItem(item.label), `${item.label} was not present`).to.be.present()));
             });
 
-            it('invokes onClick when clicked', () => {
+            it('invokes onClick when clicked', async () => {
                 const onClick = sinon.spy();
                 const {driver: treeItem, waitForDom} = clientRenderer.render(
                     <TreeItem
@@ -573,7 +570,7 @@ describe('<TreeView />', () => {
 
                 simulate.click(treeItem.getItem(sampleItem.label));
 
-                return waitFor(() => expect(onClick).to.have.been.calledOnce);
+                await waitFor(() => expect(onClick).to.have.been.calledOnce);
             });
         });
 
@@ -613,7 +610,7 @@ describe('<TreeView />', () => {
         });
 
         describe('Accessibility', () => {
-            it('puts correct aria values on different parts of the tree', () => {
+            it('puts correct aria values on different parts of the tree', async () => {
                 const {driver: treeView, waitForDom} = clientRenderer.render(
                     <TreeView dataSource={treeData} />
                 ).withDriver(TreeViewDriver);
@@ -621,7 +618,7 @@ describe('<TreeView />', () => {
                 const firstChild = treeData[0].children![0];
                 treeView.toggleItem(treeData[0].label);
 
-                return waitForDom(() => {
+                await waitForDom(() => {
                     expect(treeView.root).to.have.attribute('role', 'tree');
                     expect(treeView.getItem(firstChild.label + '_NODE'))
                     .to.have.attr('role', 'treeitem');
@@ -654,7 +651,7 @@ describe('<TreeView />', () => {
 
                 treeView.instance.collapse(treeData[0]);
 
-                return waitForDom(() => {
+                await waitForDom(() => {
                     expect(treeView.getItem(firstChild.label)).to.be.absent();
                     expect(treeView.getItem(firstChild.children![0].label)).to.be.absent();
                 });
@@ -665,7 +662,7 @@ describe('<TreeView />', () => {
 
                 treeView.instance.collapseAll();
 
-                return waitForDom(() => {
+                await waitForDom(() => {
                     expect(treeView.getItem(firstChild.label)).to.be.absent();
                     expect(treeView.getItem(firstChild.children![0].label)).to.be.absent();
                 });
@@ -683,7 +680,7 @@ describe('<TreeView />', () => {
 
                 treeView.instance.expand(firstChild);
 
-                return waitForDom(() => {
+                await waitForDom(() => {
                     expect(treeView.getItem(firstChild.children![0].label)).to.be.present();
                     expect(treeView.getItem(secondChild.children![0].label)).to.be.absent();
                 });

@@ -1,6 +1,7 @@
 import * as ReactDOM from 'react-dom';
 import {DriverBase, simulate} from 'test-drive-react';
 import {TreeItem, TreeItemProps, TreeView} from '../../src';
+import {TreeViewMobxWrapper, TreeViewWrapper} from '../../test/components/tree-view.spec';
 
 const treeView = 'TREE_VIEW';
 const treeItem = 'TREE_ITEM';
@@ -48,5 +49,45 @@ export class TreeItemDriver extends DriverBase {
 
     public getItem(id: string): HTMLDivElement {
         return this.select(getTreeItem(id));
+    }
+}
+
+export class TreeViewWrapperDriver extends DriverBase {
+    public static ComponentClass = TreeViewWrapper;
+
+    constructor(public readonly instance: TreeViewWrapper) {
+        super(() => ReactDOM.findDOMNode(instance));
+    }
+
+    public getItem(id: string): HTMLDivElement {
+        return this.select(getTreeItem(id));
+    }
+
+    public toggleItem(id: string): void {
+        simulate.click(this.getItemIcon(id));
+    }
+
+    public getItemIcon(id: string): Element {
+        return this.select(`${getTreeItem(id)}_ICON`);
+    }
+}
+
+export class TreeViewMobxWrapperDriver extends DriverBase {
+    public static ComponentClass = TreeViewMobxWrapper;
+
+    constructor(public readonly instance: TreeViewMobxWrapper) {
+        super(() => ReactDOM.findDOMNode(instance));
+    }
+
+    public getItem(id: string): HTMLDivElement {
+        return this.select(getTreeItem(id));
+    }
+
+    public toggleItem(id: string): void {
+        simulate.click(this.getItemIcon(id));
+    }
+
+    public getItemIcon(id: string): Element {
+        return this.select(`${getTreeItem(id)}_ICON`);
     }
 }
