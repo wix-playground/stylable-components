@@ -467,7 +467,11 @@ describe('<TreeView />', () => {
         });
 
         describe('Reaction to dataSource changes', () => {
+            const getTreeItem = (id: string) => `'TREE_ITEM'_${id.replace(' ', '_')}`;
 
+            function expandItemWithLabel(select: (...selectors: string[]) => Element | null, id: string) {
+                simulate.click(select(getTreeItemIcon(id)));
+            }
 
             it('renders the additional item when a new data array is passed', async () => {
                 const {select, waitForDom, result} = clientRenderer.render(<TreeViewWrapper />);
