@@ -5,15 +5,16 @@ export class PortalTestDriver extends DriverBase {
     public static ComponentClass = Portal;
 
     private get portal(): HTMLElement | null {
-        return document.getElementById(this.select('ID_SPAN').getAttribute('data-id')!);
+        return this.select('ID_SPAN') &&
+               document.getElementById(this.select('ID_SPAN').getAttribute('data-id')!);
     }
 
-    public get root(): Element {
-        return this.portal!.children[0];
+    public get portalRoot(): Element {
+        return this.portal!;
     }
 
     public get content(): HTMLCollection {
-        return this.portal!.children[0].children;
+        return this.portal!.children;
     }
 
     public get isPresent(): boolean {
