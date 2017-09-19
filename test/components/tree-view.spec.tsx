@@ -6,11 +6,7 @@ import {TreeViewDemo, TreeViewDemoCustom} from '../../demo/components/tree-view-
 import {TreeItem, TreeView} from '../../src';
 import {getLastAvailableItem, getNextItem, getPreviousItem} from '../../src/components/tree-view//tree-util';
 import {initParentsMap, ParentsMap, TreeItemData, TreeStateMap} from '../../src/components/tree-view/tree-view';
-import {TreeItemDriver,
-        TreeViewDriver,
-        TreeViewInstanceDriver,
-        TreeViewMobxWrapperDriver,
-        TreeViewWrapperDriver} from '../../test-kit';
+import {TreeItemDriver, TreeViewDriver, TreeViewInstanceDriver} from '../../test-kit';
 import {elementHasStylableState} from '../utils/inspect-stylable';
 
 // this can be removed once encapsulated in the driver
@@ -468,6 +464,7 @@ describe('<TreeView />', () => {
 
         describe('Reaction to dataSource changes', () => {
             const getTreeItem = (id: string) => `'TREE_ITEM'_${id.replace(' ', '_')}`;
+            const getTreeItemIcon = (id: string) => `${getTreeItem(id)}_ICON`;
 
             function expandItemWithLabel(select: (...selectors: string[]) => Element | null, id: string) {
                 simulate.click(select(getTreeItemIcon(id)));
