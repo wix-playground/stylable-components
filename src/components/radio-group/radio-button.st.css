@@ -84,7 +84,3 @@
 .root:disabled .checkMark {
     fill: value(disabledCheckedFill);
 }
-
-.radioLabel {
-    margin-left: 10px;
-}
