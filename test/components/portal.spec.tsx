@@ -40,28 +40,26 @@ describe('<Portal />', function() {
         await waitFor(() => expect(portal.portalRoot).to.have.nested.property('style.position', 'fixed'));
     });
 
-    // it('applies supplied className and id to the popup and updates them if changed', async function() {
-    //     const {container, result} = clientRenderer.render(
-    //         <Portal className="my-test-class" id="my-test-id">
-    //             <span>Portal Body</span>
-    //         </Portal>
-    //     );
-    //
-    //     const portal = new PortalTestDriver(result as Portal);
-    //
-    //     await waitFor(() => expect(portal.portalRoot).to.have.nested.property('className', 'my-test-class'));
-    //     await waitFor(() => expect(portal.portalRoot).to.have.nested.property('id', 'my-test-id'));
-    //
-    //     clientRenderer.render(
-    //         <Portal className="another-test-class" id="another-test-id">
-    //             <span>Portal Body</span>
-    //         </Portal>,
-    //         container
-    //     );
-    //
-    //     await waitFor(() => expect(portal.portalRoot).to.have.nested.property('className', 'another-test-class'));
-    //     await waitFor(() => expect(portal.portalRoot).to.have.nested.property('id', 'another-test-id'));
-    // });
+    it('applies supplied className and id to the popup and updates them if changed', async function() {
+        const {container, driver: portal} = clientRenderer.render(
+            <Portal className="my-test-class" id="my-test-id">
+                <span>Portal Body</span>
+            </Portal>
+        ).withDriver(PortalTestDriver);
+
+        await waitFor(() => expect(portal.portalRoot).to.have.nested.property('className', 'my-test-class'));
+        await waitFor(() => expect(portal.portalRoot).to.have.nested.property('id', 'my-test-id'));
+
+        clientRenderer.render(
+            <Portal className="another-test-class" id="another-test-id">
+                <span>Portal Body</span>
+            </Portal>,
+            container
+        );
+
+        await waitFor(() => expect(portal.portalRoot).to.have.nested.property('className', 'another-test-class'));
+        await waitFor(() => expect(portal.portalRoot).to.have.nested.property('id', 'another-test-id'));
+    });
 
     it('removes the component when unmounting', async function() {
         const container = document.body.appendChild(document.createElement('div'));
@@ -78,28 +76,26 @@ describe('<Portal />', function() {
         await waitFor(() => expect(portal.isPresent).to.be.false);
     });
 
-    // it('updates the portal content if the children are changed', async function() {
-    //     const initialText = 'Portal Body';
-    //     const updatedText = 'Portal Body Updated';
-    //     const {container, result} = clientRenderer.render(
-    //         <Portal>
-    //             <span>{initialText}</span>
-    //         </Portal>
-    //     );
-    //
-    //     const portal = new PortalTestDriver(result as Portal);
-    //
-    //     await waitFor(() => expect(portal.content[0]).to.have.text(initialText));
-    //
-    //     clientRenderer.render(
-    //         <Portal>
-    //             <span>{updatedText}</span>
-    //         </Portal>,
-    //         container
-    //     );
-    //
-    //     await waitFor(() => expect(portal.content[0]).to.have.text(updatedText));
-    // });
+    it('updates the portal content if the children are changed', async function() {
+        const initialText = 'Portal Body';
+        const updatedText = 'Portal Body Updated';
+        const {container, driver: portal} = clientRenderer.render(
+            <Portal>
+                <span>{initialText}</span>
+            </Portal>
+        ).withDriver(PortalTestDriver);
+
+        await waitFor(() => expect(portal.content[0]).to.have.text(initialText));
+
+        clientRenderer.render(
+            <Portal>
+                <span>{updatedText}</span>
+            </Portal>,
+            container
+        );
+
+        await waitFor(() => expect(portal.content[0]).to.have.text(updatedText));
+    });
 
     it('renders the portal in the bottom of the DOM', async function() {
         const {container, driver: portal} = clientRenderer.render(
