@@ -40,8 +40,10 @@ export class RadioButtonDriver extends DriverBase {
         return this.nativeElement.name;
     }
 
-    public get label(): HTMLSpanElement {
-        return this.select('LABEL');
+    public get children(): Array<Node | null> {
+        return Array.from(
+            this.select('CONTENT_CONTAINER').childNodes
+        ).filter((e, idx) => e.nodeType !== Node.COMMENT_NODE && idx !== 0);
     }
 
     public get icon(): SVGElement {
