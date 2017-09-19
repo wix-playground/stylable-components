@@ -1,11 +1,12 @@
 import {codes as KeyCodes} from 'keycode';
 import * as React from 'react';
 import {stylable} from 'wix-react-tools';
+import {FormInputProps} from '../../types';
 import {isNumber, noop} from '../../utils';
 import {Modifiers, Stepper} from '../stepper';
 import styles from './number-input.st.css';
 
-export interface NumberInputProps {
+export interface NumberInputProps extends FormInputProps<number | undefined, string> {
     className?: string;
     value?: number;
     defaultValue?: number;
@@ -18,8 +19,6 @@ export interface NumberInputProps {
     label?: string;
     name?: string;
     error?: boolean;
-    onChange?(value?: number): void;
-    onInput?(value: string): void;
 }
 
 interface DefaultProps {
@@ -213,7 +212,7 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
         this.updateValue(valueInRange);
 
         if (!this.committed) {
-            onChange!(valueInRange);
+            onChange!({value: valueInRange});
             this.committed = true;
         }
     }
@@ -291,6 +290,6 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
                 undefined;
 
             this.updateValue(next);
-            onInput!(value);
+            onInput!({value});
         }
 }
