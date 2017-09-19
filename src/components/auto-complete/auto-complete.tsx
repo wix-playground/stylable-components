@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {root, stylable} from 'wix-react-tools';
+import {properties, stylable} from 'wix-react-tools';
 import {Popup} from '../../';
 import {ChangeEvent} from '../../types/events';
 import {FormInputProps} from '../../types/forms';
@@ -11,7 +11,7 @@ import style from './auto-complete.st.css';
 
 export type FilterPredicate = (item: string, filterString: string) => boolean;
 
-export interface AutoCompleteProps extends FormInputProps<string>, Partial<OptionList> {
+export interface AutoCompleteProps extends FormInputProps<string>, Partial<OptionList>, properties.Props {
     open?: boolean;
     filter?: FilterPredicate;
     onOpenStateChange?: (e: ChangeEvent<boolean>) => void;
@@ -26,6 +26,7 @@ const prefixFilter: FilterPredicate = (item: string, prefix: string) => {
 };
 
 @stylable(style)
+@properties
 export class AutoComplete extends React.Component<AutoCompleteProps, AutoCompleteState> {
     public static defaultProps: AutoCompleteProps = {
         open: false,
@@ -38,17 +39,13 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
     public state = {input: null, isOpen: this.props.open!};
 
     public render() {
-        const rootProps = root(this.props, {
-            'data-automation-id': 'AUTO_COMPLETE',
-            'className': ''
-        }) as React.HTMLAttributes<HTMLDivElement>;
         const filteredItems = this.props.value ?
             this.props.dataSource!.filter((item: string) => this.props.filter!(item, this.props.value!)) :
             this.props.dataSource;
         const list = new SelectionListModel();
         list.addDataSource({dataSource: filteredItems});
         return (
-            <div {...rootProps}>
+            <div data-automation-id="AUTO_COMPLETE">
                 <input
                     className="auto-complete-input"
                     data-automation-id="AUTO_COMPLETE_INPUT"
