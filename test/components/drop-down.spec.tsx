@@ -85,7 +85,10 @@ describe('<DropDown />', () => {
 
         dropdown.focus();
 
-        await waitForDom(() => expect(onOpenStateChange).to.have.been.calledWithMatch({value: true}));
+        await waitForDom(() => {
+            expect(onOpenStateChange).to.have.been.calledOnce;
+            expect(onOpenStateChange).to.have.been.calledWithMatch({value: true});
+        });
     });
 
     it('displays item list to choose from when open is true', async () => {
