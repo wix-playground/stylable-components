@@ -36,11 +36,19 @@ export class TreeViewDriver extends DriverBase {
     }
 }
 
-export class TreeViewInstanceDriver extends TreeViewDriver {
+export class TreeViewInstanceDriver extends DriverBase {
     public static ComponentClass = TreeView;
 
     constructor(public readonly instance: TreeView) {
         super(() => ReactDOM.findDOMNode(instance));
+    }
+
+    public getItem(id: string): HTMLDivElement {
+        return this.select(getTreeItem(id));
+    }
+
+    public getItemIcon(id: string): Element {
+        return this.select(`${getTreeItem(id)}_ICON`);
     }
 }
 
@@ -49,6 +57,14 @@ export class TreeItemDriver extends DriverBase {
 
     public getItem(id: string): HTMLDivElement {
         return this.select(getTreeItem(id));
+    }
+
+    public getItemLabel(id: string): HTMLElement {
+        return this.select<HTMLElement>(`${getTreeItem(id)}_LABEL`);
+    }
+
+    public getItemIcon(id: string): Element {
+        return this.select(`${getTreeItem(id)}_ICON`);
     }
 }
 

@@ -389,9 +389,12 @@ describe('<TreeView />', () => {
                 treeView.selectItem(treeData[0].label);
                 treeView.toggleItem(treeData[0].label);
 
+                treeView.pressKey(keycode('down'));
+                treeView.pressKey(keycode('down'));
+
                 await waitForDom(() => expect(isElementFocused(rootNode!, treeNodeStyle)).to.equal(false));
 
-                await waitForDom(() => expect(rootNode).to.have.attr('data-focused', 'false'));
+                treeView.pressKey(keycode('home'));
 
                 await waitForDom(() => expect(isElementFocused(rootNode!, treeNodeStyle)).to.equal(true));
             });
@@ -528,7 +531,7 @@ describe('<TreeView />', () => {
                 ).withDriver(TreeItemDriver);
 
                 await waitForDom(() =>
-                    expect(treeItem.getItem(sampleItem.label) + '_LABEL').to.have.text(sampleItem.label));
+                    expect(treeItem.getItemLabel(sampleItem.label)).to.have.text(sampleItem.label));
             });
 
             it('renders with an icon', async () => {
@@ -540,7 +543,7 @@ describe('<TreeView />', () => {
                     />
                 ).withDriver(TreeItemDriver);
 
-                await waitForDom(() => expect(treeItem.getItem(treeData[0].label) + '_ICON').to.be.present());
+                await waitForDom(() => expect(treeItem.getItemIcon(treeData[0].label)).to.be.present());
             });
 
             it('renders correct children', async () => {
@@ -635,13 +638,17 @@ describe('<TreeView />', () => {
 
                 const treeView = new TreeViewInstanceDriver(result as TreeView);
 
-                const treeRootIcon = treeView.getItem('Food Menu');
+                const treeRootIcon = treeView.getItemIcon('Food Menu');
                 simulate.click(treeRootIcon);
-                await waitForDom(() =>
-                    expect(treeView.getItem(firstChild.label)).to.be.present());
 
-                simulate.click(treeView.getItem(firstChild.label));
-                await waitForDom(() => expect(treeView.getItem(firstChild.children![0].label)).to.be.present());
+                await waitForDom(() =>
+                    expect(treeView.getItem(firstChild.label), `${firstChild.label} was not present`).to.be.present());
+
+                simulate.click(treeView.getItemIcon(firstChild.label));
+
+                await waitForDom(() =>
+                    expect(treeView.getItem(firstChild.children![0].label),
+                    `${firstChild.children![0].label} was not present`).to.be.present());
 
                 return {treeView, waitForDom};
             }
@@ -673,7 +680,7 @@ describe('<TreeView />', () => {
 
                 const treeView = new TreeViewInstanceDriver(result as TreeView);
 
-                const treeRootIcon = treeView.getItem('Food Menu');
+                const treeRootIcon = treeView.getItemIcon('Food Menu');
                 simulate.click(treeRootIcon);
 
                 await waitForDom(() => expect(treeView.getItem(firstChild.label)).to.be.present());
