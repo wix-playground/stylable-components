@@ -162,17 +162,17 @@ describe('<AutoComplete />', () => {
 
     it('does not show suggestions if the number of characters is smaller than maxCharacters', async () => {
         const prefix = 'P';
-        const {select, waitForDom} = clientRenderer.render(
-            <AutoComplete open dataSource={items} maxCharacters={2} value={prefix}/>
+        const {waitForDom} = clientRenderer.render(
+            <AutoComplete open dataSource={items} minCharacters={2} value={prefix}/>
         );
 
-        await waitForDom(() => expect(select('LIST')).to.be.absent());
+        await waitForDom(() => expect(bodySelect('LIST')).to.be.absent());
     });
 
     it('shows suggestions if the number of characters is larger than maxCharacters', async () => {
         const prefix = 'Pa';
         clientRenderer.render(
-            <AutoComplete open dataSource={items} maxCharacters={2} value={prefix}/>
+            <AutoComplete open dataSource={items} minCharacters={2} value={prefix}/>
         );
 
         await bodyWaitForDom(() => expect(bodySelect('LIST')).to.be.present());

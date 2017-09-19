@@ -15,7 +15,7 @@ export interface AutoCompleteProps extends FormInputProps<string>, Partial<Optio
     open?: boolean;
     filter?: FilterPredicate;
     onOpenStateChange?: (e: ChangeEvent<boolean>) => void;
-    maxCharacters?: number;
+    minCharacters?: number;
     maxSearchResults?: number;
     showNoSuggestions?: boolean;
     noSuggestionsNotice?: string | React.ReactElement<any>;
@@ -41,7 +41,7 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
         filter: prefixFilter,
         onChange: noop,
         onOpenStateChange: noop,
-        maxCharacters: 0,
+        minCharacters: 0,
         maxSearchResults: 0,
         showNoSuggestions: false,
         noSuggestionsNotice: 'No Results',
@@ -76,7 +76,10 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
                     {...{'aria-autocomplete': 'list'}}
                 />
                 <CaretDown onClick={this.onCaretClick} className="caret" data-automation-id="AUTO_COMPLETE_CARET"/>
-                <Popup anchor={this.state.input} open={this.props.open}>
+                <Popup
+                    anchor={this.state.input}
+                    open={this.props.open && this.props.value!.length >= this.props.minCharacters!}
+                >
                     {this.addSelectionList(list)}
                     {this.props.children}
                 </Popup>
