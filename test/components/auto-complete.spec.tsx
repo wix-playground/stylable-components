@@ -160,7 +160,7 @@ describe('<AutoComplete />', () => {
         });
     });
 
-    it('does not show suggestions if the number of characters is smaller than maxCharacters', async () => {
+    it('does not show suggestions if the number of characters is smaller than minCharacters', async () => {
         const prefix = 'P';
         const {waitForDom} = clientRenderer.render(
             <AutoComplete open dataSource={items} minCharacters={2} value={prefix}/>
@@ -169,7 +169,7 @@ describe('<AutoComplete />', () => {
         await waitForDom(() => expect(bodySelect('LIST')).to.be.absent());
     });
 
-    it('shows suggestions if the number of characters is larger than maxCharacters', async () => {
+    it('shows suggestions if the number of characters is larger than minCharacters', async () => {
         const prefix = 'Pa';
         clientRenderer.render(
             <AutoComplete open dataSource={items} minCharacters={2} value={prefix}/>
