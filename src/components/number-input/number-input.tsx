@@ -37,11 +37,6 @@ export interface NumberInputState {
     error: boolean;
 }
 
-enum Slot {
-    Prefix = 'prefix',
-    Suffix = 'suffix'
-}
-
 enum Direction {
     Increase = 'increase',
     Decrease = 'decrease'
@@ -111,8 +106,7 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
         const {
             step, min, max,
             placeholder, name,
-            disabled, required,
-            children, error,
+            disabled, required, error,
             prefix, suffix
         } = this.props;
         const disableIncrement = disabled || (isNumber(value) && value >= max!);
