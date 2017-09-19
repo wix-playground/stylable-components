@@ -463,7 +463,8 @@ describe('<TreeView />', () => {
         });
 
         describe('Reaction to dataSource changes', () => {
-            const getTreeItem = (id: string) => `'TREE_ITEM'_${id.replace(' ', '_')}`;
+            const treeItem = 'TREE_ITEM';
+            const getTreeItem = (id: string) => `${treeItem}_${id.replace(' ', '_')}`;
             const getTreeItemIcon = (id: string) => `${getTreeItem(id)}_ICON`;
 
             function expandItemWithLabel(select: (...selectors: string[]) => Element | null, id: string) {
