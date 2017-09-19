@@ -559,7 +559,7 @@ describe('<TreeView />', () => {
 
             it('invokes onClick when clicked', async () => {
                 const onClick = sinon.spy();
-                const {driver: treeItem, waitForDom} = clientRenderer.render(
+                const {driver: treeItem} = clientRenderer.render(
                     <TreeItem
                         item={sampleItem}
                         itemRenderer={TreeItem}
