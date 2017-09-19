@@ -10,7 +10,7 @@ function assertCommit(
     expectedValue: number | undefined
 ): void {
     expect(onChange).to.have.been.calledOnce;
-    expect(onChange.lastCall.args[0]).to.equal(expectedValue);
+    expect(onChange.lastCall.args[0]).to.deep.eq({value: expectedValue});
     expect(input).to.have.value(String(expectedValue));
 }
 
@@ -461,7 +461,7 @@ describe('<NumberInput />', () => {
                     simulateKeyInput(input, '3');
 
                     expect(onInput).to.have.been.calledThrice;
-                    expect(onInput).to.have.been.calledWith('123');
+                    expect(onInput).to.have.been.calledWith({value: '123'});
                     expect(input).to.have.value('123');
                 });
             });

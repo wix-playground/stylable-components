@@ -1,12 +1,12 @@
 {
   "name": "stylable-components",
-  "version": "0.2.0-0",
+  "version": "0.2.0",
   "description": "Fully-tested & strictly-typed component library based on React, using optional Wix styling.",
-  "main": "./lib/index.js",
-  "types": "./lib/index.d.ts",
+  "main": "./dist/src/index.js",
+  "types": "./dist/src/index.d.ts",
   "scripts": {
-    "clean": "rimraf ./lib",
-    "build": "tsc -d --p tsconfig.publish.json && stc --srcDir=src --outDir=lib --diagnostics",
+    "clean": "rimraf ./dist ./lib",
+    "build": "tsc && stc --srcDir=src --outDir=dist/src --diagnostics",
     "prepublish": "npm run lint && npm run build",
     "lint": "npm run lint:src && npm run lint:demo && npm run lint:test",
     "lint:src": "tslint \"src/**/*.ts?(x)\" -c tslint.json --type-check -p tsconfig.json --fix",
@@ -63,9 +63,9 @@
   "testGlob": "./test/**/*.spec.ts?(x)",
   "license": "MIT",
   "files": [
-    "lib",
-    "src",
-    "typings"
+    "dist/src",
+    "dist/test-kit",
+    "custom-typings"
   ],
   "repository": {
     "type": "git",

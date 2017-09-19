@@ -4,8 +4,8 @@ import {selectDom} from 'test-drive';
 import {ClientRenderer, expect, waitFor} from 'test-drive-react';
 import {PopupDemo} from '../../demo/components/popup-demo';
 import {Popup, PopupPositionPoint} from '../../src/components/';
-import {sleep} from '../utils';
 import {Point} from '../../src/types';
+import {sleep} from '../utils';
 
 const portalId = 'PORTAL';
 const demoContainer = 'POPUP_DEMO_DIV';
