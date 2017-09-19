@@ -55,13 +55,9 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
             'aria-haspopup': true,
             'aria-expanded': this.props.open ? true : false
         };
-        const items = this.getItems();
-        const children = !items.length && this.props.showNoSuggestions ?
-            this.addToChildren(this.addNoSuggestionsMsg()) :
-            this.props.children;
         const list = new SelectionListModel();
-        list.addChildren(children);
-        list.addDataSource({dataSource: items});
+        list.addDataSource({dataSource: this.getFilteredItems(this.props.value!)});
+
         return (
             <div
                 {...ariaProps}
@@ -80,12 +76,9 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
                     {...{'aria-autocomplete': 'list'}}
                 />
                 <CaretDown onClick={this.onCaretClick} className="caret" data-automation-id="AUTO_COMPLETE_CARET"/>
-                <Popup anchor={this.state.input} open={this.props.open && items!.length > 0}>
-                    <SelectionListView
-                        className="root auto-complete-list"
-                        list={list}
-                        onChange={this.onClick}
-                    />
+                <Popup anchor={this.state.input} open={this.props.open}>
+                    {this.addSelectionList(list)}
+                    {this.props.children}
                 </Popup>
             </div>
         );
@@ -121,26 +114,20 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
         return this.props.maxSearchResults ? items.slice(0, this.props.maxSearchResults) : items;
     }
 
-    private getItems(): string [] {
-        const items = this.getFilteredItems(this.props.value!);
-        return this.props.maxSearchResults ? items.slice(0, this.props.maxSearchResults) : items;
-    }
-
-    private addToChildren(elem: React.ReactElement<any>) {
-        if (!this.props.children) {
-            return elem;
-        } else {
-            const children = React.Children.toArray(this.props.children);
-            children.unshift(elem);
-            return children;
+    private addSelectionList(list: SelectionListModel) {
+        if (!list.items.length) {
+            if (typeof this.props.noSuggestionsNotice === 'string') {
+                list.addDataSource({dataSource: [this.props.noSuggestionsNotice]});
+            } else {
+                return this.props.noSuggestionsNotice;
+            }
         }
-    }
-
-    private addNoSuggestionsMsg(): React.ReactElement<any> {
-        if (typeof this.props.noSuggestionsNotice === 'string') {
-            return <span>{this.props.noSuggestionsNotice}</span>;
-        } else {
-            return this.props.noSuggestionsNotice!;
-        }
+        return (
+            <SelectionListView
+                className="root auto-complete-list"
+                list={list}
+                onChange={this.onClick}
+            />
+        );
     }
 }

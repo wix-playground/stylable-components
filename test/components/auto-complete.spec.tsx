@@ -188,12 +188,12 @@ describe('<AutoComplete />', () => {
 
     it('shows the default no suggestions message', async () => {
         clientRenderer.render(
-            <AutoComplete showNoSuggestions open />
+            <AutoComplete dataSource={items} value="d" showNoSuggestions open />
         );
 
         await bodyWaitForDom(() => {
-            expect(bodySelect('LIST')).to.be.present();
-            expect(bodySelect('LIST')!.children[0]).to.have.text('No Results');
+            expect(bodySelect('PORTAL')).to.be.present();
+            expect(bodySelect('PORTAL')!.children[0]).to.have.text('No Results');
         });
     });
 
@@ -202,7 +202,7 @@ describe('<AutoComplete />', () => {
             <AutoComplete noSuggestionsNotice={'Wap Wap'} showNoSuggestions open />
         );
 
-        await bodyWaitForDom(() => expect(bodySelect('LIST')!.children[0]).to.have.text('Wap Wap'));
+        await bodyWaitForDom(() => expect(bodySelect('PORTAL')!.children[0]).to.have.text('Wap Wap'));
     });
 
     it('renders the no suggestions func if given', async () => {
@@ -210,7 +210,7 @@ describe('<AutoComplete />', () => {
         clientRenderer.render(<AutoComplete noSuggestionsNotice={elem} showNoSuggestions open />);
 
         await bodyWaitForDom(() => {
-            const message = bodySelect('LIST')!.children[0];
+            const message = bodySelect('PORTAL')!.children[0];
             expect(message).to.have.text('Wap Wap Waaaap');
             expect(message).to.be.instanceof(HTMLSpanElement);
         });
@@ -223,7 +223,7 @@ describe('<AutoComplete />', () => {
             </AutoComplete>
         );
 
-        await bodyWaitForDom(() => expect(bodySelect('LIST', 'DOG')).to.be.present().and.have.text('Meow'));
+        await bodyWaitForDom(() => expect(bodySelect('PORTAL', 'DOG')).to.be.present().and.have.text('Meow'));
     });
 
     it('disables the autocomplete if the prop is passed', async () => {

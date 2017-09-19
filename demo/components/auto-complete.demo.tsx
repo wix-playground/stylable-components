@@ -34,6 +34,7 @@ export class AutoCompleteDemo extends React.Component<{}, AutoCompleteDemoState>
                         onOpenStateChange={this.updateOpenState}
                         open={this.state.open}
                         value={this.state.inputText}
+                        showNoSuggestions
                     />
                 </section>
                 <span data-automation-id="AUTO_COMPLETE_DEMO_TEXT">You picked: {this.state.inputText}</span>
