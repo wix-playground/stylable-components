@@ -80,7 +80,7 @@ describe('<TimePicker/>', () => {
         let mm: any;
         let ampm: any;
         beforeEach(() => {
-            renderer = clientRenderer.render(<TimePicker value="4:36"/>);
+            renderer = clientRenderer.render(<TimePicker value="4:36" format="ampm" />);
             hh = renderer.select('TIME_PICKER_INPUT_HH');
             mm = renderer.select('TIME_PICKER_INPUT_MM');
             ampm = renderer.select('TIME_PICKER_AMPM');
@@ -201,7 +201,7 @@ describe('<TimePicker/>', () => {
                 expect(document.activeElement).to.equal(mm);
             });
             it('onChange should be callend with "03:55"', () => {
-                expect(onChange).to.be.calledWithExactly('03:55');
+                expect(onChange).to.be.calledWithExactly({value: '03:55'});
             });
         });
 
@@ -245,7 +245,7 @@ describe('<TimePicker/>', () => {
                 expect(document.activeElement).to.equal(mm);
             });
             it('onChange should be callen with "13:07"', async () => {
-                expect(onChange).to.be.calledWithExactly('13:07');
+                expect(onChange).to.be.calledWithExactly({value: '13:07'});
             });
         });
 
@@ -314,7 +314,7 @@ describe('<TimePicker/>', () => {
                 expect(hh).attr('value', '12');
             });
             it('onChange should be callen with "12:55"', async () => {
-                expect(onChange).to.be.calledWithExactly('12:55');
+                expect(onChange).to.be.calledWithExactly({value: '12:55'});
             });
         });
 
@@ -328,7 +328,7 @@ describe('<TimePicker/>', () => {
                 expect(hh).attr('value', '14');
             });
             it('onChange should be callen with "14:55"', async () => {
-                expect(onChange).to.be.calledWithExactly('14:55');
+                expect(onChange).to.be.calledWithExactly({value: '14:55'});
             });
         });
 
@@ -342,7 +342,7 @@ describe('<TimePicker/>', () => {
                 expect(mm).attr('value', '54');
             });
             it('onChange should be callen with "13:54"', async () => {
-                expect(onChange).to.be.calledWithExactly('13:54');
+                expect(onChange).to.be.calledWithExactly({value: '13:54'});
             });
         });
 
@@ -356,10 +356,39 @@ describe('<TimePicker/>', () => {
                 expect(mm).attr('value', '56');
             });
             it('onChange should be callen with "13:56"', async () => {
-                expect(onChange).to.be.calledWithExactly('13:56');
+                expect(onChange).to.be.calledWithExactly({value: '13:56'});
             });
         });
 
+    });
+
+    describe('render with onChange={onChange} onInput={onInput} format="24h" value="13:55"', () => {
+        let onChange: any;
+        let onInput: any;
+        let renderer: any;
+        let hh: any;
+        beforeEach(() => {
+            onChange = sinon.spy();
+            onInput = sinon.spy();
+            renderer = clientRenderer.render(
+                <TimePicker format="24h" value="13:55" onChange={onChange} onInput={onInput}/>
+            );
+            hh = renderer.select('TIME_PICKER_INPUT_HH');
+        });
+
+        describe('entering "3" into hh segment', () => {
+            beforeEach(() => {
+                simulate.focus(hh);
+                hh.value = '3';
+                simulate.change(hh);
+            });
+            it('onChange should be callend with "03:55"', () => {
+                expect(onChange).to.be.calledWithExactly({value: '03:55'});
+            });
+            it('onInput should be callend with "03:55"', () => {
+                expect(onInput).to.be.calledWithExactly({value: '03:55'});
+            });
+        });
     });
 
     describe('render with onChange={onChange} format="24h" value="13:59"', () => {
@@ -395,7 +424,7 @@ describe('<TimePicker/>', () => {
                 expect([mm.selectionStart, mm.selectionEnd]).to.deep.equal([0, 2]);
             });
             it('onChange should be callen with "14:00"', async () => {
-                expect(onChange).to.be.calledWithExactly('14:00');
+                expect(onChange).to.be.calledWithExactly({value: '14:00'});
             });
         });
 
@@ -412,7 +441,7 @@ describe('<TimePicker/>', () => {
                 expect(mm).attr('value', '09');
             });
             it('onChange should be callen with "14:09"', async () => {
-                expect(onChange).to.be.calledWithExactly('14:09');
+                expect(onChange).to.be.calledWithExactly({value: '14:09'});
             });
         });
 
@@ -426,7 +455,7 @@ describe('<TimePicker/>', () => {
                 expect(mm).attr('value', '49');
             });
             it('onChange should be callen with "13:49"', async () => {
-                expect(onChange).to.be.calledWithExactly('13:49');
+                expect(onChange).to.be.calledWithExactly({value: '13:49'});
             });
         });
 
@@ -440,7 +469,7 @@ describe('<TimePicker/>', () => {
                 expect(hh).attr('value', '14');
             });
             it('onChange should be callen with "14:59"', async () => {
-                expect(onChange).to.be.calledWithExactly('14:59');
+                expect(onChange).to.be.calledWithExactly({value: '14:59'});
             });
         });
 
@@ -454,7 +483,7 @@ describe('<TimePicker/>', () => {
                 expect(hh).attr('value', '12');
             });
             it('onChange should be callen with "12:59"', async () => {
-                expect(onChange).to.be.calledWithExactly('12:59');
+                expect(onChange).to.be.calledWithExactly({value: '12:59'});
             });
         });
 
@@ -474,7 +503,7 @@ describe('<TimePicker/>', () => {
                 expect([mm.selectionStart, mm.selectionEnd]).to.deep.equal([0, 2]);
             });
             it('onChange should be callen with "14:09"', async () => {
-                expect(onChange).to.be.calledWithExactly('14:09');
+                expect(onChange).to.be.calledWithExactly({value: '14:09'});
             });
         });
 
@@ -488,7 +517,7 @@ describe('<TimePicker/>', () => {
                 expect(mm).attr('value', '49');
             });
             it('onChange should be callen with "13:49"', async () => {
-                expect(onChange).to.be.calledWithExactly('13:49');
+                expect(onChange).to.be.calledWithExactly({value: '13:49'});
             });
         });
 
@@ -505,7 +534,7 @@ describe('<TimePicker/>', () => {
                 expect([hh.selectionStart, hh.selectionEnd]).to.deep.equal([0, 2]);
             });
             it('onChange should be callen with "14:59"', async () => {
-                expect(onChange).to.be.calledWithExactly('14:59');
+                expect(onChange).to.be.calledWithExactly({value: '14:59'});
             });
         });
 
@@ -522,7 +551,7 @@ describe('<TimePicker/>', () => {
                 expect([hh.selectionStart, hh.selectionEnd]).to.deep.equal([0, 2]);
             });
             it('onChange should be callen with "12:59"', async () => {
-                expect(onChange).to.be.calledWithExactly('12:59');
+                expect(onChange).to.be.calledWithExactly({value: '12:59'});
             });
         });
 
@@ -539,7 +568,7 @@ describe('<TimePicker/>', () => {
                 expect(mm).attr('value', '00');
             });
             it('onChange should be callen with "14:00"', async () => {
-                expect(onChange).to.be.calledWithExactly('14:00');
+                expect(onChange).to.be.calledWithExactly({value: '14:00'});
             });
         });
 
@@ -576,7 +605,7 @@ describe('<TimePicker/>', () => {
                 expect(ampm).text('PM');
             });
             it('onChange should be callen with "12:00"', async () => {
-                expect(onChange).to.be.calledWithExactly('12:00');
+                expect(onChange).to.be.calledWithExactly({value: '12:00'});
             });
         });
     });
@@ -615,7 +644,7 @@ describe('<TimePicker/>', () => {
                 expect(ampm).text('AM');
             });
             it('onChange should be callen with "00:59"', async () => {
-                expect(onChange).to.be.calledWithExactly('00:59');
+                expect(onChange).to.be.calledWithExactly({value: '00:59'});
             });
         });
     });
@@ -654,7 +683,7 @@ describe('<TimePicker/>', () => {
                 expect(ampm).text('PM');
             });
             it('onChange should be callen with "23:59"', async () => {
-                expect(onChange).to.be.calledWithExactly('23:59');
+                expect(onChange).to.be.calledWithExactly({value: '23:59'});
             });
         });
     });
@@ -774,7 +803,7 @@ describe('<TimePicker/>', () => {
                 expect(document.activeElement).to.equal(ampm);
             });
             it('onChange should be callen with "04:07"', async () => {
-                expect(onChange).to.be.calledWithExactly('04:07');
+                expect(onChange).to.be.calledWithExactly({value: '04:07'});
             });
         });
 
@@ -784,7 +813,7 @@ describe('<TimePicker/>', () => {
                 simulate.keyDown(ampm, {keyCode: keycode('space')});
             });
             it('onChange should be callen with "16:55"', () => {
-                expect(onChange).to.be.calledWithExactly('16:55');
+                expect(onChange).to.be.calledWithExactly({value: '16:55'});
             });
         });
     });

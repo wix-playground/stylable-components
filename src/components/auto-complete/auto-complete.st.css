@@ -16,6 +16,7 @@
 }
 
 .auto-complete-list {
+    -st-extends: root;
     width: 100%;
     background: #FFFFFF;
 }
@@ -31,9 +32,4 @@
     left: calc(100% - 24px);
     transform:translateY(-50%);
     -webkit-transform:translateY(-50%);
-}
-
-.auto-complete-container {
-    -st-extends: root;
-    width: 100%;
 }

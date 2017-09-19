@@ -14,3 +14,12 @@ export * from './auto-complete';
 export * from './portal';
 export * from './popup';
 export * from './screen-reader-notification';
+export {
+    Divider as SelectionListDivider,
+    divider as SelectionListDividerSymbol,
+    Option as SelectionListOption,
+    OptionList,
+    SelectionList,
+    SelectionListItemValue
+} from './selection-list';
+export * from './context-provider';

@@ -1,41 +1,17 @@
 import * as React from 'react';
-import {SBComponent, SBStateless} from 'stylable-react-component';
-import {root} from 'wix-react-tools';
+import {properties, stylable} from 'wix-react-tools';
 import {Popup} from '../../';
 import {ChangeEvent} from '../../types/events';
 import {FormInputProps} from '../../types/forms';
 import {noop} from '../../utils';
 import {CaretDown} from '../drop-down/drop-down-icons';
-import {OptionList, SelectionList} from '../selection-list/selection-list';
+import {OptionList, SelectionListItemValue, SelectionListModel} from '../selection-list/selection-list-model';
+import {SelectionListView} from '../selection-list/selection-list-view';
 import style from './auto-complete.st.css';
-
-// Selected item is a string because of selection list's constraints
-// i would love to implement it like the TreeView where the reference to an object
-// was the way to point at the selected item
 
 export type FilterPredicate = (item: string, filterString: string) => boolean;
 
-export interface AutoCompleteListProps {
-    items?: string[];
-    onChange?: (item: string) => void;
-    children?: any;
-    className?: string;
-}
-
-export const AutoCompleteList: React.SFC<AutoCompleteListProps> = SBStateless(props => {
-    return (
-        <div data-automation-id="AUTO_COMPLETE_LIST" className="auto-complete-container">
-            <SelectionList
-                className="auto-complete-list"
-                dataSource={props.items}
-                onChange={props.onChange!}
-                children={props.children}
-            />
-        </div>
-    );
-}, style);
-
-export interface AutoCompleteProps extends FormInputProps<string>, Partial<OptionList> {
+export interface AutoCompleteProps extends FormInputProps<string>, Partial<OptionList>, properties.Props {
     open?: boolean;
     filter?: FilterPredicate;
     onOpenStateChange?: (e: ChangeEvent<boolean>) => void;
@@ -51,9 +27,12 @@ export interface AutoCompleteState {
     input: HTMLInputElement | null;
 }
 
-const prefixFilter: FilterPredicate = (item: string, prefix: string) => item.startsWith(prefix);
+const prefixFilter: FilterPredicate = (item: string, prefix: string) => {
+    return item.toLowerCase().startsWith(prefix.toLowerCase());
+};
 
-@SBComponent(style)
+@stylable(style)
+@properties
 export class AutoComplete extends React.Component<AutoCompleteProps, AutoCompleteState> {
     public static defaultProps: AutoCompleteProps = {
         open: false,
@@ -72,10 +51,6 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
     public state = {input: null, isOpen: this.props.open!};
 
     public render() {
-        const rootProps = root(this.props, {
-            'data-automation-id': 'AUTO_COMPLETE',
-            'className': ''
-        }) as React.HTMLAttributes<HTMLDivElement>;
         const ariaProps = {
             'aria-haspopup': true,
             'aria-expanded': this.props.open ? true : false
@@ -84,10 +59,13 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
         const children = !items.length && this.props.showNoSuggestions ?
             this.addToChildren(this.addNoSuggestionsMsg()) :
             this.props.children;
+        const list = new SelectionListModel();
+        list.addChildren(children);
+        list.addDataSource({dataSource: items});
         return (
             <div
-                {...rootProps}
                 {...ariaProps}
+                data-automation-id="AUTO_COMPLETE"
                 role="combobox"
             >
                 <input
@@ -102,14 +80,11 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
                     {...{'aria-autocomplete': 'list'}}
                 />
                 <CaretDown onClick={this.onCaretClick} className="caret" data-automation-id="AUTO_COMPLETE_CARET"/>
-                <Popup
-                    anchor={this.state.input}
-                    open={this.props.open && this.props.value!.length >= this.props.maxCharacters!}
-                >
-                    <AutoCompleteList
-                        items={items}
+                <Popup anchor={this.state.input} open={this.props.open && items!.length > 0}>
+                    <SelectionListView
+                        className="root auto-complete-list"
+                        list={list}
                         onChange={this.onClick}
-                        children={children}
                     />
                 </Popup>
             </div>
@@ -126,18 +101,18 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
         if (this.props.allowFreeText || this.getFilteredItems(e.target.value).length) {
             this.props.onChange!({value: e.target.value || ''});
             if (!this.props.value && !this.props.open) {
-                this.props.onOpenStateChange!({value: this.props.open!});
+                this.props.onOpenStateChange!({value: !this.props.open!});
             }
         }
     }
 
-    private onClick = (item: string) => {
-        this.props.onChange!({value: item});
-        this.props.onOpenStateChange!({value: this.props.open!});
+    private onClick = (e: ChangeEvent<SelectionListItemValue>) => {
+        this.props.onChange!(e);
+        this.props.onOpenStateChange!({value: !this.props.open});
     }
 
     private onCaretClick = () => {
-        this.props.onOpenStateChange!({value: this.props.open!});
+        this.props.onOpenStateChange!({value: !this.props.open});
     }
 
     private getFilteredItems(value: string): string[] {

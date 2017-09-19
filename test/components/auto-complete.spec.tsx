@@ -7,7 +7,6 @@ import {sleep} from '../utils';
 const autoComp = 'AUTO_COMPLETE';
 const autoCompDemo = autoComp + '_DEMO';
 const autoCompInput = autoComp + '_INPUT';
-const list = autoComp + '_LIST';
 
 const items = ['Muffins', 'Pancakes', 'Cupcakes', 'Souffles', 'Pasta', 'Soup', 'Caramel', 'Avazim', 'Moses'];
 const bodySelect = selectDom(document.body);
@@ -25,7 +24,7 @@ describe('<AutoComplete />', () => {
 
             simulate.click(select(autoComp + '_CARET'));
 
-            const itemList = bodySelect(list)!;
+            const itemList = bodySelect('LIST')!;
             await bodyWaitForDom(() => {
                 expect(itemList).to.be.present();
                 expect(itemList.textContent).to.equal(items.join(''));
@@ -34,7 +33,7 @@ describe('<AutoComplete />', () => {
             trigger.change(bodySelect(autoCompInput), prefix);
             await bodyWaitForDom(() => expect(itemList.textContent).to.equal(filteredItems));
 
-            simulate.click(bodySelect(list, 'LIST')!.children[0]);
+            simulate.click(bodySelect('LIST')!.children[0]);
             await waitForDom(() => {
                 expect(select(autoCompDemo + '_TEXT')).to.have.text('You picked: Pancakes');
             });
@@ -46,7 +45,7 @@ describe('<AutoComplete />', () => {
 
         return waitForDom(() => {
             expect(select(autoComp)).to.be.present();
-            expect(bodySelect(list)).to.be.absent();
+            expect(bodySelect('LIST')).to.be.absent();
         });
     });
 
@@ -64,15 +63,15 @@ describe('<AutoComplete />', () => {
     });
 
     it('renders the item list if open is given', async () => {
-        clientRenderer.render(<AutoComplete open/>);
+        clientRenderer.render(<AutoComplete dataSource={items} open/>);
 
-        await bodyWaitForDom(() => expect(bodySelect(list)).to.be.present());
+        await bodyWaitForDom(() => expect(bodySelect('LIST')).to.be.present());
     });
 
     it('renders the items if given', async () => {
         clientRenderer.render(<AutoComplete open dataSource={items}/>);
 
-        await bodyWaitForDom(() => expect(bodySelect(list, 'LIST')!.children[0]).to.have.text('Muffins'));
+        await bodyWaitForDom(() => expect(bodySelect('LIST')!.children[0]).to.have.text('Muffins'));
     });
 
     it('invokes the onChange when an option is clicked', async () => {
@@ -81,7 +80,7 @@ describe('<AutoComplete />', () => {
             <AutoComplete open dataSource={['Cat', 'Dog']} onChange={onChange}/>
         );
 
-        simulate.click(bodySelect(list, 'LIST')!.children[0]);
+        simulate.click(bodySelect('LIST')!.children[0]);
 
         await bodyWaitForDom(() => {
             expect(onChange).to.have.been.calledOnce;
@@ -91,11 +90,23 @@ describe('<AutoComplete />', () => {
 
     it('displays filtered results according to given value', async () => {
         const prefix = 'P';
+        const filteredItems = ['Pancakes', 'Pasta'];
         clientRenderer.render(<AutoComplete open dataSource={items} value={prefix}/>);
-        const itemList = bodySelect(list);
+        const itemList = bodySelect('LIST');
 
         await bodyWaitForDom(() => {
-            expect(itemList!.textContent).to.equal(items.filter(item => item.startsWith(prefix)).join(''));
+            expect(itemList!.textContent).to.equal(filteredItems.join(''));
+        });
+    });
+
+    it('ignores case when filtering according to the default filter', async () => {
+        const prefix = 'm';
+        const filteredItems = ['Muffins', 'Moses'];
+        clientRenderer.render(<AutoComplete open dataSource={items} value={prefix}/>);
+        const itemList = bodySelect('LIST');
+
+        await bodyWaitForDom(() => {
+            expect(itemList!.textContent).to.equal(filteredItems.join(''));
         });
     });
 
@@ -119,7 +130,7 @@ describe('<AutoComplete />', () => {
         simulate.click(select(autoComp, autoComp + '_CARET'));
         await bodyWaitForDom(() => {
             expect(onOpenStateChange).to.have.been.calledOnce;
-            expect(onOpenStateChange).to.have.been.calledWithMatch({value: false});
+            expect(onOpenStateChange).to.have.been.calledWithMatch({value: true});
         });
     });
 
@@ -130,10 +141,10 @@ describe('<AutoComplete />', () => {
         );
 
         await waitForDom(() => expect(select(autoComp)).to.be.present());
-        simulate.click(bodySelect(list, 'LIST')!.children[0]);
+        simulate.click(bodySelect('LIST')!.children[0]);
         await bodyWaitForDom(() => {
             expect(onOpenStateChange).to.have.been.calledOnce;
-            expect(onOpenStateChange).to.have.been.calledWithMatch({value: true});
+            expect(onOpenStateChange).to.have.been.calledWithMatch({value: false});
         });
     });
 
@@ -145,7 +156,7 @@ describe('<AutoComplete />', () => {
         trigger.change(bodySelect(autoCompInput), 'M');
         await bodyWaitForDom(() => {
             expect(onOpenStateChange).to.have.been.calledOnce;
-            expect(onOpenStateChange).to.have.been.calledWithMatch({value: false});
+            expect(onOpenStateChange).to.have.been.calledWithMatch({value: true});
         });
     });
 
@@ -155,7 +166,7 @@ describe('<AutoComplete />', () => {
             <AutoComplete open dataSource={items} maxCharacters={2} value={prefix}/>
         );
 
-        await waitForDom(() => expect(select(list)).to.be.absent());
+        await waitForDom(() => expect(select('LIST')).to.be.absent());
     });
 
     it('shows suggestions if the number of characters is larger than maxCharacters', async () => {
@@ -164,7 +175,7 @@ describe('<AutoComplete />', () => {
             <AutoComplete open dataSource={items} maxCharacters={2} value={prefix}/>
         );
 
-        await bodyWaitForDom(() => expect(bodySelect(list)).to.be.present());
+        await bodyWaitForDom(() => expect(bodySelect('LIST')).to.be.present());
     });
 
     it('shows the correct amount of results according to maxSearchResults', async () => {
@@ -172,7 +183,7 @@ describe('<AutoComplete />', () => {
             <AutoComplete open dataSource={items} maxSearchResults={2} />
         );
 
-        await bodyWaitForDom(() => expect(bodySelect(list, 'LIST')!.children.length).to.equal(2));
+        await bodyWaitForDom(() => expect(bodySelect('LIST')!.children.length).to.equal(2));
     });
 
     it('shows the default no suggestions message', async () => {
@@ -181,8 +192,8 @@ describe('<AutoComplete />', () => {
         );
 
         await bodyWaitForDom(() => {
-            expect(bodySelect(list)).to.be.present();
-            expect(bodySelect(list, 'LIST')!.children[0]).to.have.text('No Results');
+            expect(bodySelect('LIST')).to.be.present();
+            expect(bodySelect('LIST')!.children[0]).to.have.text('No Results');
         });
     });
 
@@ -191,7 +202,7 @@ describe('<AutoComplete />', () => {
             <AutoComplete noSuggestionsNotice={'Wap Wap'} showNoSuggestions open />
         );
 
-        await bodyWaitForDom(() => expect(bodySelect(list, 'LIST')!.children[0]).to.have.text('Wap Wap'));
+        await bodyWaitForDom(() => expect(bodySelect('LIST')!.children[0]).to.have.text('Wap Wap'));
     });
 
     it('renders the no suggestions func if given', async () => {
@@ -199,7 +210,7 @@ describe('<AutoComplete />', () => {
         clientRenderer.render(<AutoComplete noSuggestionsNotice={elem} showNoSuggestions open />);
 
         await bodyWaitForDom(() => {
-            const message = bodySelect(list, 'LIST')!.children[0];
+            const message = bodySelect('LIST')!.children[0];
             expect(message).to.have.text('Wap Wap Waaaap');
             expect(message).to.be.instanceof(HTMLSpanElement);
         });
@@ -212,7 +223,7 @@ describe('<AutoComplete />', () => {
             </AutoComplete>
         );
 
-        await bodyWaitForDom(() => expect(bodySelect(list, 'DOG')).to.be.present().and.have.text('Meow'));
+        await bodyWaitForDom(() => expect(bodySelect('LIST', 'DOG')).to.be.present().and.have.text('Meow'));
     });
 
     it('disables the autocomplete if the prop is passed', async () => {
@@ -231,7 +242,7 @@ describe('<AutoComplete />', () => {
         trigger.change(bodySelect(autoCompInput), 'z');
         await bodyWaitForDom(() => {
             expect(onChange).to.have.been.calledOnce;
-            expect(onChange).to.have.been.calledWithMatch({value:'z'});
+            expect(onChange).to.have.been.calledWithMatch({value: 'z'});
         });
     });
 

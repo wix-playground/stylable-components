@@ -1,8 +1,8 @@
 import * as React from 'react';
-import {SBComponent} from 'stylable-react-component';
-import GlobalEvent from '../../common/global-event';
+import {stylable} from 'wix-react-tools';
 import {ChevronDownIcon, ChevronUpIcon} from '../../icons';
 import buttonStyles from '../../style/default-theme/controls/button.st.css';
+import {GlobalEvent} from '../global-event';
 import styles from './stepper.st.css';
 
 export interface StepperProps extends React.HTMLProps<HTMLElement> {
@@ -34,7 +34,7 @@ const DEFAULTS = {
     disableDown: false
 };
 
-@SBComponent(styles)
+@stylable(styles)
 export class Stepper extends React.Component<StepperProps, State> {
     public static defaultProps = {
         disableUp: DEFAULTS.disableUp,
