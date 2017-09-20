@@ -2,7 +2,7 @@ import {codes as KeyCodes} from 'keycode';
 import * as React from 'react';
 import {ClientRenderer, expect, simulate, sinon} from 'test-drive-react';
 import {NumberInput} from '../../src';
-import {simulateKeyInput} from '../utils';
+import {NumberInputDriver} from '../../test-kit';
 
 function assertCommit(
     input: Element | null,
@@ -24,7 +24,7 @@ describe('<NumberInput />', () => {
         const max = 5;
         const step = 2;
         const name = 'input-name';
-        const {select, waitForDom} = clientRenderer.render(
+        const {driver, waitForDom} = clientRenderer.render(
             <NumberInput
                 value={value}
                 min={min}
@@ -33,10 +33,10 @@ describe('<NumberInput />', () => {
                 name={name}
                 required
             />
-        );
+        ).withDriver(NumberInputDriver);
 
         await waitForDom(() => {
-            const numberInput = select('NATIVE_INPUT_NUMBER');
+            const numberInput = driver.nativeInput;
 
             expect(numberInput).to.be.present();
             expect(numberInput).to.have.property('tagName', 'INPUT');
@@ -55,12 +55,12 @@ describe('<NumberInput />', () => {
 
     it('should only set appropriate attributes on native input', async () => {
         const value = 0;
-        const {select, waitForDom} = clientRenderer.render(
+        const {driver, waitForDom} = clientRenderer.render(
             <NumberInput value={value} />
-        );
+        ).withDriver(NumberInputDriver);
 
         await waitForDom(() => {
-            const numberInput = select('NATIVE_INPUT_NUMBER');
+            const numberInput = driver.nativeInput;
 
             expect(numberInput).to.be.present();
             expect(numberInput).to.have.property('tagName', 'INPUT');
@@ -78,17 +78,17 @@ describe('<NumberInput />', () => {
 
     it('can be disabled', async () => {
         const value = 0;
-        const {select, waitForDom} = clientRenderer.render(
+        const {driver, waitForDom} = clientRenderer.render(
             <NumberInput
                 value={value}
                 disabled
             />
-        );
+        ).withDriver(NumberInputDriver);
 
         await waitForDom(() => {
-            const numberInput = select('NATIVE_INPUT_NUMBER');
-            const increment = select('STEPPER_INCREMENT');
-            const decrement = select('STEPPER_DECREMENT');
+            const numberInput = driver.nativeInput;
+            const increment = driver.increment;
+            const decrement = driver.decrement;
 
             expect(numberInput).to.have.attribute('disabled');
             expect(increment).to.have.attribute('disabled');
@@ -97,12 +97,12 @@ describe('<NumberInput />', () => {
     });
 
     it('should render a stepper', async () => {
-        const {select, waitForDom} = clientRenderer.render(
+        const {driver, waitForDom} = clientRenderer.render(
             <NumberInput value={0} />
-        );
+        ).withDriver(NumberInputDriver);
 
         await waitForDom(() => {
-            const stepper = select('NUMBER_INPUT_STEPPER');
+            const stepper = driver.stepper;
 
             expect(stepper).to.be.present();
         });
@@ -110,13 +110,13 @@ describe('<NumberInput />', () => {
 
     describe('<Stepper />', () => {
         it('should render increment and decrement controls', async () => {
-            const {select, waitForDom} = clientRenderer.render(
+            const {driver, waitForDom} = clientRenderer.render(
                 <NumberInput value={0} />
-            );
+            ).withDriver(NumberInputDriver);
 
             await waitForDom(() => {
-                const increment = select('STEPPER_INCREMENT');
-                const decrement = select('STEPPER_DECREMENT');
+                const increment = driver.increment;
+                const decrement = driver.decrement;
 
                 expect(increment).to.be.present();
                 expect(decrement).to.be.present();
@@ -129,17 +129,14 @@ describe('<NumberInput />', () => {
                 const value = 0;
                 const step = 2;
                 const onChange = sinon.spy();
-                const {select, waitForDom} = clientRenderer.render(
+                const {driver, waitForDom} = clientRenderer.render(
                     <NumberInput value={value} step={step} onChange={onChange} />
-                );
+                ).withDriver(NumberInputDriver);
 
                 await waitForDom(() => {
-                    const increment = select('STEPPER_INCREMENT');
-                    const input = select('NATIVE_INPUT_NUMBER');
+                    driver.clickIncrement();
 
-                    simulate.click(increment);
-
-                    assertCommit(input, onChange, value + step);
+                    assertCommit(driver.nativeInput, onChange, value + step);
                 });
             });
 
@@ -147,49 +144,41 @@ describe('<NumberInput />', () => {
                 const value = 0;
                 const step = 2;
                 const onChange = sinon.spy();
-                const {select, waitForDom} = clientRenderer.render(
+                const {driver, waitForDom} = clientRenderer.render(
                     <NumberInput value={value} step={step} onChange={onChange} />
-                );
+                ).withDriver(NumberInputDriver);
 
                 await waitForDom(() => {
-                    const increment = select('STEPPER_INCREMENT');
-                    const input = select('NATIVE_INPUT_NUMBER');
+                    driver.clickIncrement({shiftKey: true});
 
-                    simulate.click(increment, {shiftKey: true});
-
-                    assertCommit(input, onChange, value + 10 * step);
+                    assertCommit(driver.nativeInput, onChange, value + 10 * step);
                 });
             });
 
             it('should be disabled when value >= max', async () => {
                 const value = 2;
                 const max = 2;
-                const {select, waitForDom} = clientRenderer.render(
+                const {driver, waitForDom} = clientRenderer.render(
                     <NumberInput value={value} max={max} />
+                ).withDriver(NumberInputDriver);
+
+                await waitForDom(() =>
+                    expect(driver.increment).to.have.attribute('disabled')
                 );
-
-                await waitForDom(() => {
-                    const increment = select('STEPPER_INCREMENT');
-
-                    expect(increment).to.have.attribute('disabled');
-                });
             });
 
             it('should set the value to min when value < min', async () => {
                 const value = -3;
                 const min = 0;
                 const onChange = sinon.spy();
-                const {select, waitForDom} = clientRenderer.render(
+                const {driver, waitForDom} = clientRenderer.render(
                     <NumberInput value={value} min={min} onChange={onChange} />
-                );
+                ).withDriver(NumberInputDriver);
 
                 await waitForDom(() => {
-                    const increment = select('STEPPER_INCREMENT');
-                    const input = select('NATIVE_INPUT_NUMBER');
+                    driver.clickIncrement();
 
-                    simulate.click(increment);
-
-                    assertCommit(input, onChange, min);
+                    assertCommit(driver.nativeInput, onChange, min);
                 });
             });
         });
@@ -199,17 +188,14 @@ describe('<NumberInput />', () => {
                 const value = 0;
                 const step = 2;
                 const onChange = sinon.spy();
-                const {select, waitForDom} = clientRenderer.render(
+                const {driver, waitForDom} = clientRenderer.render(
                     <NumberInput value={value} step={step} onChange={onChange} />
-                );
+                ).withDriver(NumberInputDriver);
 
                 await waitForDom(() => {
-                    const decrement = select('STEPPER_DECREMENT');
-                    const input = select('NATIVE_INPUT_NUMBER');
+                    driver.clickDecrement();
 
-                    simulate.click(decrement);
-
-                    assertCommit(input, onChange, value - step);
+                    assertCommit(driver.nativeInput, onChange, value - step);
                 });
             });
 
@@ -217,49 +203,41 @@ describe('<NumberInput />', () => {
                 const value = 0;
                 const step = 2;
                 const onChange = sinon.spy();
-                const {select, waitForDom} = clientRenderer.render(
+                const {driver, waitForDom} = clientRenderer.render(
                     <NumberInput value={value} step={step} onChange={onChange} />
-                );
+                ).withDriver(NumberInputDriver);
 
                 await waitForDom(() => {
-                    const decrement = select('STEPPER_DECREMENT');
-                    const input = select('NATIVE_INPUT_NUMBER');
+                    driver.clickDecrement({shiftKey: true});
 
-                    simulate.click(decrement, {shiftKey: true});
-
-                    assertCommit(input, onChange, value - 10 * step);
+                    assertCommit(driver.nativeInput, onChange, value - 10 * step);
                 });
             });
 
             it('should be disabled when value <= min', async () => {
                 const value = -1;
                 const min = 0;
-                const {select, waitForDom} = clientRenderer.render(
+                const {driver, waitForDom} = clientRenderer.render(
                     <NumberInput value={value} min={min} />
+                ).withDriver(NumberInputDriver);
+
+                await waitForDom(() =>
+                    expect(driver.decrement).to.have.attribute('disabled')
                 );
-
-                await waitForDom(() => {
-                    const decrement = select('STEPPER_DECREMENT');
-
-                    expect(decrement).to.have.attribute('disabled');
-                });
             });
 
             it('should set the value to max when value > max', async () => {
                 const value = 3;
                 const max = 0;
                 const onChange = sinon.spy();
-                const {select, waitForDom} = clientRenderer.render(
+                const {driver, waitForDom} = clientRenderer.render(
                     <NumberInput value={value} max={max} onChange={onChange} />
-                );
+                ).withDriver(NumberInputDriver);
 
                 await waitForDom(() => {
-                    const decrement = select('STEPPER_DECREMENT');
-                    const input = select('NATIVE_INPUT_NUMBER');
+                    driver.clickDecrement();
 
-                    simulate.click(decrement);
-
-                    assertCommit(input, onChange, max);
+                    assertCommit(driver.nativeInput, onChange, max);
                 });
             });
 
@@ -272,16 +250,14 @@ describe('<NumberInput />', () => {
                 const value = 0;
                 const step = 2;
                 const onChange = sinon.spy();
-                const {select, waitForDom} = clientRenderer.render(
+                const {driver, waitForDom} = clientRenderer.render(
                     <NumberInput value={value} step={step} onChange={onChange} />
-                );
+                ).withDriver(NumberInputDriver);
 
                 await waitForDom(() => {
-                    const input = select('NATIVE_INPUT_NUMBER');
+                    driver.pressUpKey();
 
-                    simulate.keyDown(input, {keyCode: KeyCodes.up});
-
-                    assertCommit(input, onChange, value + step);
+                    assertCommit(driver.nativeInput, onChange, value + step);
                 });
             });
 
@@ -289,16 +265,14 @@ describe('<NumberInput />', () => {
                 const value = 0;
                 const step = 2;
                 const onChange = sinon.spy();
-                const {select, waitForDom} = clientRenderer.render(
+                const {driver, waitForDom} = clientRenderer.render(
                     <NumberInput value={value} step={step} onChange={onChange} />
-                );
+                ).withDriver(NumberInputDriver);
 
                 await waitForDom(() => {
-                    const input = select('NATIVE_INPUT_NUMBER');
+                    driver.pressUpKey({shiftKey: true});
 
-                    simulate.keyDown(input, {keyCode: KeyCodes.up, shiftKey: true});
-
-                    assertCommit(input, onChange, value + 10 * step);
+                    assertCommit(driver.nativeInput, onChange, value + 10 * step);
                 });
             });
 
@@ -306,16 +280,14 @@ describe('<NumberInput />', () => {
                 const value = 1;
                 const max = 0;
                 const onChange = sinon.spy();
-                const {select, waitForDom} = clientRenderer.render(
+                const {driver, waitForDom} = clientRenderer.render(
                     <NumberInput value={value} max={max} onChange={onChange} />
-                );
+                ).withDriver(NumberInputDriver);
 
                 await waitForDom(() => {
-                    const input = select('NATIVE_INPUT_NUMBER');
+                    driver.pressUpKey();
 
-                    simulate.keyDown(input, {keyCode: KeyCodes.up});
-
-                    assertCommit(input, onChange, max);
+                    assertCommit(driver.nativeInput, onChange, max);
                 });
             });
 
@@ -323,16 +295,13 @@ describe('<NumberInput />', () => {
                 const value = 0;
                 const min = 1;
                 const onChange = sinon.spy();
-                const {select, waitForDom} = clientRenderer.render(
+                const {driver, waitForDom} = clientRenderer.render(
                     <NumberInput value={value} min={min} onChange={onChange} />
-                );
+                ).withDriver(NumberInputDriver);
 
                 await waitForDom(() => {
-                    const input = select('NATIVE_INPUT_NUMBER');
-
-                    simulate.keyDown(input, {keyCode: KeyCodes.up});
-
-                    assertCommit(input, onChange, min);
+                    driver.pressUpKey();
+                    assertCommit(driver.nativeInput, onChange, min);
                 });
             });
 
@@ -340,17 +309,15 @@ describe('<NumberInput />', () => {
                 const value = 0;
                 const max = 0;
                 const onChange = sinon.spy();
-                const {select, waitForDom} = clientRenderer.render(
+                const {driver, waitForDom} = clientRenderer.render(
                     <NumberInput value={value} max={max} onChange={onChange} />
-                );
+                ).withDriver(NumberInputDriver);
 
                 await waitForDom(() => {
-                    const input = select('NATIVE_INPUT_NUMBER');
-
-                    simulate.keyDown(input, {keyCode: KeyCodes.up});
+                    driver.pressUpKey();
 
                     expect(onChange).not.to.have.been.called;
-                    expect(input).to.have.value(String(value));
+                    expect(driver.nativeInput).to.have.value(String(value));
                 });
             });
 
@@ -361,16 +328,13 @@ describe('<NumberInput />', () => {
                 const value = 0;
                 const step = 2;
                 const onChange = sinon.spy();
-                const {select, waitForDom} = clientRenderer.render(
+                const {driver, waitForDom} = clientRenderer.render(
                     <NumberInput value={value} step={step} onChange={onChange} />
-                );
+                ).withDriver(NumberInputDriver);
 
                 await waitForDom(() => {
-                    const input = select('NATIVE_INPUT_NUMBER');
-
-                    simulate.keyDown(input, {keyCode: KeyCodes.down});
-
-                    assertCommit(input, onChange, value - step);
+                    driver.pressDownKey();
+                    assertCommit(driver.nativeInput, onChange, value - step);
                 });
             });
 
@@ -378,16 +342,13 @@ describe('<NumberInput />', () => {
                 const value = 0;
                 const step = 2;
                 const onChange = sinon.spy();
-                const {select, waitForDom} = clientRenderer.render(
+                const {driver, waitForDom} = clientRenderer.render(
                     <NumberInput value={value} step={step} onChange={onChange} />
-                );
+                ).withDriver(NumberInputDriver);
 
                 await waitForDom(() => {
-                    const input = select('NATIVE_INPUT_NUMBER');
-
-                    simulate.keyDown(input, {keyCode: KeyCodes.down, shiftKey: true});
-
-                    assertCommit(input, onChange, value - 10 * step);
+                    driver.pressDownKey({shiftKey: true});
+                    assertCommit(driver.nativeInput, onChange, value - 10 * step);
                 });
             });
 
@@ -395,16 +356,13 @@ describe('<NumberInput />', () => {
                 const value = 1;
                 const max = 0;
                 const onChange = sinon.spy();
-                const {select, waitForDom} = clientRenderer.render(
+                const {driver, waitForDom} = clientRenderer.render(
                     <NumberInput value={value} max={max} onChange={onChange} />
-                );
+                ).withDriver(NumberInputDriver);
 
                 await waitForDom(() => {
-                    const input = select('NATIVE_INPUT_NUMBER');
-
-                    simulate.keyDown(input, {keyCode: KeyCodes.down});
-
-                    assertCommit(input, onChange, max);
+                    driver.pressDownKey();
+                    assertCommit(driver.nativeInput, onChange, max);
                 });
             });
 
@@ -412,16 +370,13 @@ describe('<NumberInput />', () => {
                 const value = 0;
                 const min = 1;
                 const onChange = sinon.spy();
-                const {select, waitForDom} = clientRenderer.render(
+                const {driver, waitForDom} = clientRenderer.render(
                     <NumberInput value={value} min={min} onChange={onChange} />
-                );
+                ).withDriver(NumberInputDriver);
 
                 await waitForDom(() => {
-                    const input = select('NATIVE_INPUT_NUMBER');
-
-                    simulate.keyDown(input, {keyCode: KeyCodes.down});
-
-                    assertCommit(input, onChange, min);
+                    driver.pressDownKey();
+                    assertCommit(driver.nativeInput, onChange, min);
                 });
             });
 
@@ -429,17 +384,14 @@ describe('<NumberInput />', () => {
                 const value = 0;
                 const min = 0;
                 const onChange = sinon.spy();
-                const {select, waitForDom} = clientRenderer.render(
+                const {driver, waitForDom} = clientRenderer.render(
                     <NumberInput value={value} min={min} onChange={onChange} />
-                );
+                ).withDriver(NumberInputDriver);
 
                 await waitForDom(() => {
-                    const input = select('NATIVE_INPUT_NUMBER');
-
-                    simulate.keyDown(input, {keyCode: KeyCodes.down});
-
+                    driver.pressDownKey();
                     expect(onChange).not.to.have.been.called;
-                    expect(input).to.have.value(String(value));
+                    expect(driver.nativeInput).to.have.value(String(value));
                 });
             });
 
@@ -449,77 +401,61 @@ describe('<NumberInput />', () => {
 
             it('should call onInput on every keystroke', async () => {
                 const onInput = sinon.spy();
-                const {select, waitForDom} = clientRenderer.render(
+                const {driver, waitForDom} = clientRenderer.render(
                     <NumberInput onInput={onInput} />
-                );
+                ).withDriver(NumberInputDriver);
 
                 await waitForDom(() => {
-                    const input = select('NATIVE_INPUT_NUMBER') as HTMLInputElement;
-
-                    simulateKeyInput(input, '1');
-                    simulateKeyInput(input, '2');
-                    simulateKeyInput(input, '3');
-
+                    driver.typeIn('1');
+                    driver.typeIn('2');
+                    driver.typeIn('3');
                     expect(onInput).to.have.been.calledThrice;
                     expect(onInput).to.have.been.calledWith({value: '123'});
-                    expect(input).to.have.value('123');
+                    expect(driver.nativeInput).to.have.value('123');
                 });
             });
 
             it('should not commit and validate the value', async () => {
                 const onChange = sinon.spy();
-                const {select, waitForDom} = clientRenderer.render(
+                const {driver, waitForDom} = clientRenderer.render(
                     <NumberInput max={10} onChange={onChange} />
-                );
+                ).withDriver(NumberInputDriver);
 
                 await waitForDom(() => {
-                    const input = select('NATIVE_INPUT_NUMBER') as HTMLInputElement;
-
-                    simulateKeyInput(input, '1');
-                    simulateKeyInput(input, '2');
-                    simulateKeyInput(input, '3');
-
+                    driver.typeIn('123');
                     expect(onChange).not.to.have.been.called;
-                    expect(input).to.have.value('123');
+                    expect(driver.nativeInput).to.have.value('123');
                 });
             });
 
             describe('enter', () => {
                 it('should commit the entered value', async () => {
                     const onChange = sinon.spy();
-                    const {select, waitForDom} = clientRenderer.render(
+                    const {driver, waitForDom} = clientRenderer.render(
                         <NumberInput onChange={onChange} />
-                    );
+                    ).withDriver(NumberInputDriver);
 
                     await waitForDom(() => {
-                        const input = select('NATIVE_INPUT_NUMBER') as HTMLInputElement;
+                        driver.typeIn('123');
 
-                        simulateKeyInput(input, '1');
-                        simulateKeyInput(input, '2');
-                        simulateKeyInput(input, '3');
+                        driver.pressEnter();
 
-                        simulate.keyDown(input, {keyCode: KeyCodes.enter});
-
-                        assertCommit(input, onChange, 123);
+                        assertCommit(driver.nativeInput, onChange, 123);
                     });
                 });
                 it('should not commit already committed value', async () => {
                     const onChange = sinon.spy();
-                    const {select, waitForDom} = clientRenderer.render(
+                    const {driver, waitForDom} = clientRenderer.render(
                         <NumberInput onChange={onChange} />
-                    );
+                    ).withDriver(NumberInputDriver);
 
                     await waitForDom(() => {
-                        const input = select('NATIVE_INPUT_NUMBER') as HTMLInputElement;
+                        driver.typeIn('123');
 
-                        simulateKeyInput(input, '1');
-                        simulateKeyInput(input, '2');
-                        simulateKeyInput(input, '3');
+                        driver.pressEnter();
+                        driver.pressEnter();
 
-                        simulate.keyDown(input, {keyCode: KeyCodes.enter});
-                        simulate.keyDown(input, {keyCode: KeyCodes.enter});
-
-                        assertCommit(input, onChange, 123);
+                        assertCommit(driver.nativeInput, onChange, 123);
                     });
                 });
             });
@@ -527,20 +463,16 @@ describe('<NumberInput />', () => {
             describe('focus', () => {
                 it('should commit on blur', async () => {
                     const onChange = sinon.spy();
-                    const {select, waitForDom} = clientRenderer.render(
+                    const {driver, waitForDom} = clientRenderer.render(
                         <NumberInput onChange={onChange} />
-                    );
+                    ).withDriver(NumberInputDriver);
 
                     await waitForDom(() => {
-                        const input = select('NATIVE_INPUT_NUMBER') as HTMLInputElement;
+                        driver.typeIn('123');
 
-                        simulateKeyInput(input, '1');
-                        simulateKeyInput(input, '2');
-                        simulateKeyInput(input, '3');
+                        driver.blur();
 
-                        simulate.blur(input);
-
-                        assertCommit(input, onChange, 123);
+                        assertCommit(driver.nativeInput, onChange, 123);
                     });
                 });
             });
@@ -549,21 +481,17 @@ describe('<NumberInput />', () => {
                 it('should discard uncommitted changes', async () => {
                     const initialValue = 3;
                     const onChange = sinon.spy();
-                    const {select, waitForDom} = clientRenderer.render(
+                    const {driver, waitForDom} = clientRenderer.render(
                         <NumberInput value={initialValue} onChange={onChange} />
-                    );
+                    ).withDriver(NumberInputDriver);
 
                     await waitForDom(() => {
-                        const input = select('NATIVE_INPUT_NUMBER') as HTMLInputElement;
+                        driver.typeIn('123');
 
-                        simulateKeyInput(input, '1');
-                        simulateKeyInput(input, '2');
-                        simulateKeyInput(input, '3');
-
-                        simulate.keyDown(input, {keyCode: KeyCodes.esc});
+                        driver.pressEsc();
 
                         expect(onChange).not.to.have.been.called;
-                        expect(input).to.have.value(String(initialValue));
+                        expect(driver.nativeInput).to.have.value(String(initialValue));
                     });
                 });
             });
@@ -572,19 +500,16 @@ describe('<NumberInput />', () => {
 
     describe('children', () => {
         it('should render an elements provided by prefix suffix props', async () => {
-            const {select, waitForDom} = clientRenderer.render(
+            const {driver, waitForDom} = clientRenderer.render(
                 <NumberInput
                     prefix={<span data-slot="prefix" data-automation-id="PREFIX">prefix</span>}
                     suffix={<span data-slot="suffix" data-automation-id="SUFFIX">suffix</span>}
                 />
-            );
+            ).withDriver(NumberInputDriver);
 
             await waitForDom(() => {
-                const prefix = select('PREFIX');
-                const suffix = select('SUFFIX');
-
-                expect(prefix).to.be.present();
-                expect(suffix).to.be.present();
+                expect(driver.prefix).to.be.present();
+                expect(driver.suffix).to.be.present();
             });
         });
     });
@@ -595,15 +520,13 @@ describe('<NumberInput />', () => {
 
             it('should set the value of input', async () => {
                 const value = 11;
-                const {select, waitForDom} = clientRenderer.render(
+                const {driver, waitForDom} = clientRenderer.render(
                     <NumberInput defaultValue={value} />
+                ).withDriver(NumberInputDriver);
+
+                await waitForDom(() =>
+                    expect(driver.nativeInput).to.have.value(String(value))
                 );
-
-                await waitForDom(() => {
-                    const numberInput = select('NATIVE_INPUT_NUMBER');
-
-                    expect(numberInput).to.have.value(String(value));
-                });
             });
 
             it('should only set the value of the input once', async () => {
@@ -643,37 +566,29 @@ describe('<NumberInput />', () => {
 
             it('should allow the user to enter values', async () => {
                 const initialValue = 1;
-                const {select, waitForDom} = clientRenderer.render(
+                const {driver, waitForDom} = clientRenderer.render(
                     <NumberInput defaultValue={initialValue} />
-                );
+                ).withDriver(NumberInputDriver);
 
                 await waitForDom(() => {
-                    const input = select('NATIVE_INPUT_NUMBER') as HTMLInputElement;
-
-                    simulateKeyInput(input, '2');
-                    simulateKeyInput(input, '3');
-
-                    expect(input).to.have.value(String(123));
+                    driver.typeIn('23');
+                    expect(driver.nativeInput).to.have.value(String(123));
                 });
             });
 
             it('should be controlled by stepper correctly', async () => {
                 const initialValue = 1;
                 const newValue = 3;
-                const {select, waitForDom} = clientRenderer.render(
+                const {driver, waitForDom} = clientRenderer.render(
                     <NumberInput defaultValue={initialValue} />
-                );
+                ).withDriver(NumberInputDriver);
 
                 await waitForDom(() => {
-                    const input = select('NATIVE_INPUT_NUMBER') as HTMLInputElement;
-                    const increment = select('STEPPER_INCREMENT');
+                    (driver.nativeInput as HTMLInputElement).value = String(newValue);
 
-                    input.value = String(newValue);
+                    driver.clickIncrement();
 
-                    simulate.click(increment);
-
-                    expect(input).to.have.value(String(newValue + 1));
-
+                    expect(driver.nativeInput).to.have.value(String(newValue + 1));
                 });
             });
 
