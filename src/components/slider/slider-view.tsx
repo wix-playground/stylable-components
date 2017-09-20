@@ -6,7 +6,7 @@ import {isRTLContext} from '../../utils';
 import {GlobalEvent} from '../global-event';
 import {FormInputProps} from './../../types/forms';
 import {noop} from './../../utils/noop';
-import style from './slider.st.css';
+import style from './SliderView.st.css';
 
 export const AXISES: {[name: string]: AxisOptions} = {
     x: 'x',
@@ -66,7 +66,7 @@ export interface SliderViewState {
 
 @stylable(style)
 @properties
-export class Slider extends React.Component<SliderViewProps, SliderViewState> {
+export class SliderView extends React.Component<SliderViewProps, SliderViewState> {
     public static defaultProps: Partial<SliderViewProps> = {
         min: DEFAULT_MIN,
         max: DEFAULT_MAX,
@@ -115,7 +115,7 @@ export class Slider extends React.Component<SliderViewProps, SliderViewState> {
     public render() {
         return (
             <div
-                data-automation-id="SLIDER"
+                data-automation-id="SliderView"
                 ref={el => this.sliderArea = el as HTMLElement}
                 className="container"
                 title={this.props.label}
@@ -144,24 +144,24 @@ export class Slider extends React.Component<SliderViewProps, SliderViewState> {
                     className="native-input"
                     value={this.props.value}
                     type="hidden"
-                    data-automation-id="SLIDER-NATIVE-INPUT"
+                    data-automation-id="SliderView-NATIVE-INPUT"
                     name={this.props.name}
                     required={this.props.required}
                     disabled={this.props.disabled}
                 />
                 <div
                     className="track"
-                    data-automation-id="SLIDER-TRACK"
+                    data-automation-id="SliderView-TRACK"
                 >
                     <div
                         className="progress"
-                        data-automation-id="SLIDER-PROGRESS"
+                        data-automation-id="SliderView-PROGRESS"
                         style={this.getProgressStyles()}
                     />
                     <a
                         ref={el => this.focusableElement = el as HTMLElement}
                         className="handle"
-                        data-automation-id="SLIDER-HANDLE"
+                        data-automation-id="SliderView-HANDLE"
                         style={this.getHandleStyles()}
 
                         onKeyDown={this.onSliderAreaKeyDown}
@@ -169,7 +169,7 @@ export class Slider extends React.Component<SliderViewProps, SliderViewState> {
                         onFocus={this.onSliderFocus}
                         onBlur={this.onSliderBlur}
 
-                        role="slider"
+                        role="SliderView"
                         aria-label={this.props.label}
                         aria-orientation={this.state.isVertical ? 'vertical' : 'horizontal'}
                         aria-valuemin={`${this.props.min}`}
@@ -179,7 +179,7 @@ export class Slider extends React.Component<SliderViewProps, SliderViewState> {
                     >
                         <div
                             className="tooltip"
-                            data-automation-id="SLIDER-TOOLTIP"
+                            data-automation-id="SliderView-TOOLTIP"
                         >
                             {this.getTooltip()}
                         </div>
@@ -254,7 +254,7 @@ export class Slider extends React.Component<SliderViewProps, SliderViewState> {
 
             markElements.push((
                 <span
-                    data-automation-id={`SLIDER-MARKS-${i}`}
+                    data-automation-id={`SliderView-MARKS-${i}`}
                     key={i}
                     className={this.getMarkClass(position)}
                     style={this.getMarkStyles(position)}
