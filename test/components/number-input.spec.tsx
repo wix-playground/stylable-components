@@ -1,8 +1,11 @@
-import {codes as KeyCodes} from 'keycode';
 import * as React from 'react';
-import {ClientRenderer, expect, simulate, sinon} from 'test-drive-react';
+import {ClientRenderer, expect, sinon} from 'test-drive-react';
 import {NumberInput} from '../../src';
-import {NumberInputDriver} from '../../test-kit';
+import {
+    NumberInputDriver,
+    StatefulUncontrolledNumberInput,
+    StatefulUnctontrolledNumberInputDriver
+} from '../../test-kit';
 
 function assertCommit(
     input: Element | null,
@@ -531,30 +534,17 @@ describe('<NumberInput />', () => {
 
             it('should only set the value of the input once', async () => {
                 const initialValue = 11;
-                class Fixture extends React.Component<{}, { defaultValue: number }> {
 
-                    public state = {defaultValue: initialValue};
-
-                    public render() {
-                        return (
-                            <div data-automation-id="FIXTURE" onClick={this.handleClick}>
-                                <NumberInput defaultValue={this.state.defaultValue} />
-                            </div>
-                        );
-                    }
-
-                    private handleClick = () => this.setState({defaultValue: this.state.defaultValue + 1});
-                }
-
-                const {select, waitForDom} = clientRenderer.render(<Fixture />);
+                const {driver, waitForDom} = clientRenderer.render(
+                    <StatefulUncontrolledNumberInput initialValue={initialValue} />
+                ).withDriver(StatefulUnctontrolledNumberInputDriver);
 
                 await waitForDom(() => {
-                    const fixture = select('FIXTURE');
-                    const numberInput = select('NATIVE_INPUT_NUMBER');
+                    const numberInput = driver.input;
 
-                    simulate.click(fixture);
-                    simulate.click(fixture);
-                    simulate.click(fixture);
+                    driver.click();
+                    driver.click();
+                    driver.click();
 
                     expect(numberInput).to.have.value(String(initialValue));
                 });
