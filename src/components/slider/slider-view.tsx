@@ -1,8 +1,11 @@
+import * as keycode from 'keycode';
+import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import {properties, stylable} from 'wix-react-tools';
-import {FormInputProps} from '../../types/forms';
 import {isRTLContext} from '../../utils';
 import {GlobalEvent} from '../global-event';
+import {FormInputProps} from './../../types/forms';
+import {noop} from './../../utils/noop';
 import style from './slider.st.css';
 
 export const AXISES: {[name: string]: AxisOptions} = {
@@ -18,34 +21,41 @@ const DEFAULT_MAX = 100;
 const DEFAULT_VALUE = DEFAULT_MIN;
 const DEFAULT_AXIS = AXISES.x;
 
+enum ChangeDirrection {
+    ascend,
+    descend
+}
+
+export type PointerEvent = MouseEvent | TouchEvent;
 export type Step = number | 'any';
 export type AxisOptions = 'x' | 'y' | 'x-reverse' | 'y-reverse';
-
 export interface PointerPosition {
     clientX: number;
     clientY: number;
 }
-
 export interface SliderViewProps extends FormInputProps<number, string>, properties.Props {
-    name?: string;
-    label?: string;
+    tooltip?: React.ReactNode;
 
     min?: number;
     max?: number;
-
-    active?: boolean;
-    error?: boolean;
-    disabled?: boolean;
-    marks?: boolean;
-    required?: boolean;
-    rtl?: boolean;
-
+    step?: Step;
     axis?: AxisOptions;
 
-    step?: Step;
-    tooltip?: React.ReactNode;
-}
+    name?: string;
+    label?: string;
 
+    marks?: boolean;
+    disabled?: boolean;
+    required?: boolean;
+    error?: boolean;
+
+    onFocus?: React.FocusEventHandler<HTMLElement>;
+    onBlur?: React.FocusEventHandler<HTMLElement>;
+
+    onDragStart?(event: PointerEvent): void;
+    onDrag?(event: PointerEvent): void;
+    onDragStop?(event: PointerEvent): void;
+}
 export interface SliderViewState {
     relativeValue: number;
     relativeStep: Step;
@@ -55,7 +65,31 @@ export interface SliderViewState {
 }
 
 @stylable(style)
-export class SliderView extends React.Component<SliderViewProps, SliderViewState> {
+@properties
+export class Slider extends React.Component<SliderViewProps, SliderViewState> {
+    public static defaultProps: Partial<SliderViewProps> = {
+        min: DEFAULT_MIN,
+        max: DEFAULT_MAX,
+        step: DEFAULT_STEP,
+        axis: DEFAULT_AXIS,
+
+        onChange: noop,
+        onInput: noop,
+
+        onFocus: noop,
+        onBlur: noop,
+
+        onDragStart: noop,
+        onDrag: noop,
+        onDragStop: noop
+    };
+
+    public static contextTypes = {
+        contextProvider: PropTypes.shape({
+            dir: PropTypes.string
+        })
+    };
+
     private focusableElement: HTMLElement;
 
     private sliderArea: HTMLElement;
@@ -63,6 +97,20 @@ export class SliderView extends React.Component<SliderViewProps, SliderViewState
     private isSliderMounted: boolean = false;
 
     private isActive: boolean = false;
+
+    constructor(props: SliderViewProps, context?: any) {
+        super(props, context);
+
+        const {min, max, step, axis} = this.props;
+
+        this.state = {
+            relativeValue: this.getRelativeValue(this.getDefaultValue(), min!, max!, step),
+            relativeStep: this.getRelativeStep(step, min!, max!),
+            isActive: false,
+            isVertical: this.isVertical(axis!),
+            isReverse: this.isReverse(axis!) !== this.isRTL()
+        };
+    }
 
     public render() {
         return (
@@ -76,7 +124,7 @@ export class SliderView extends React.Component<SliderViewProps, SliderViewState
                 onTouchStart={this.onSliderAreaTouchStart}
 
                 style-state={{
-                    'active': this.props.active,
+                    'active': this.state.isActive,
                     'disabled': Boolean(this.props.disabled),
                     'error': Boolean(this.props.error),
                     'x': this.props.axis === AXISES.x !== this.isRTL(),
@@ -142,8 +190,44 @@ export class SliderView extends React.Component<SliderViewProps, SliderViewState
         );
     }
 
-    private isRTL(): boolean {
-        return Boolean(this.props.rtl);
+    public componentDidMount() {
+        this.isSliderMounted = true;
+    }
+
+    public componentWillUnmount() {
+        this.isSliderMounted = false;
+    }
+
+    public componentWillReceiveProps(nextProps: SliderViewProps) {
+        if (this.isActive) {
+            return;
+        }
+
+        let value = nextProps.value === undefined ? this.props.value : nextProps.value;
+        const min = nextProps.min === undefined ? this.props.min : nextProps.min;
+        const max = nextProps.max === undefined ? this.props.max : nextProps.max;
+        const step = nextProps.step === undefined ? this.props.step : nextProps.step;
+
+        if (value && (value > max!)) {
+            value = max;
+        }
+        if (value && (value < min!)) {
+            value = min;
+        }
+
+        this.setState({
+            relativeValue: this.getRelativeValue(value!, min!, max!, step),
+            relativeStep: this.getRelativeStep(step, min!, max!),
+            isVertical: this.isVertical(nextProps.axis || this.props.axis!),
+            isReverse: this.isReverse(nextProps.axis || this.props.axis!) !== this.isRTL()
+        });
+    }
+
+    private getDefaultValue() {
+        const {value, min} = this.props;
+        return typeof value === 'undefined' ?
+            (typeof min !== 'undefined' ? min : DEFAULT_VALUE) :
+            value;
     }
 
     private getTooltip(): React.ReactNode {
@@ -213,6 +297,26 @@ export class SliderView extends React.Component<SliderViewProps, SliderViewState
         return position <= relativeValue ?
             'markProgress' :
             'markTrack';
+    }
+
+    private onSliderFocus: React.FocusEventHandler<HTMLElement> = event => {
+        this.props.onFocus!(event);
+    }
+
+    private onSliderBlur: React.FocusEventHandler<HTMLElement> = event => {
+        this.props.onBlur!(event);
+    }
+
+    private isVertical(axis: AxisOptions): boolean {
+        return axis === AXISES.y || axis === AXISES.yReverse;
+    }
+
+    private isReverse(axis: AxisOptions): boolean {
+        return axis === AXISES.xReverse || axis === AXISES.yReverse;
+    }
+
+    private isRTL(): boolean {
+        return isRTLContext(this.context);
     }
 
     private increaseValue(toEdge: boolean = false, multiplier: number = 1) {
@@ -491,14 +595,6 @@ export class SliderView extends React.Component<SliderViewProps, SliderViewState
         }
 
         event.preventDefault();
-    }
-
-    private onSliderFocus: React.FocusEventHandler<HTMLElement> = event => {
-        this.props.onFocus!(event);
-    }
-
-    private onSliderBlur: React.FocusEventHandler<HTMLElement> = event => {
-        this.props.onBlur!(event);
     }
 
     private onDragStart(event: PointerEvent) {
