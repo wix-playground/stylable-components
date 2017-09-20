@@ -5,3 +5,5 @@ export * from './portal-driver';
 export * from './radio-group-driver';
 export * from './selection-list-driver';
 export * from './date-picker-driver';
+export * from './number-input-driver';
+export * from './stateful-uncontrolled-number-input-driver';
