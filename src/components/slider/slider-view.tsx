@@ -33,6 +33,7 @@ export interface SliderViewProps extends FormInputProps<number, string>, propert
     min?: number;
     max?: number;
 
+    active?: boolean;
     error?: boolean;
     disabled?: boolean;
     marks?: boolean;
@@ -75,7 +76,7 @@ export class SliderView extends React.Component<SliderViewProps, SliderViewState
                 onTouchStart={this.onSliderAreaTouchStart}
 
                 style-state={{
-                    'active': this.state.isActive,
+                    'active': this.props.active,
                     'disabled': Boolean(this.props.disabled),
                     'error': Boolean(this.props.error),
                     'x': this.props.axis === AXISES.x !== this.isRTL(),
