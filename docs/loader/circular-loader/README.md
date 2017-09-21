@@ -1,13 +1,13 @@
 # Circular Loader
 
-Circular Loader is a component that rotates to show the progress of a task or that there is a wait for a task to complete.
+**Circular Loader** is a component that rotates to show the progress of a task or that there is a wait for a task to complete.
 
-When part of the page is waiting for asynchronous data or during a rendering process, an appropriate loading animation can effectively alleviate users' inquietude.
+Loader should be used when part of the page is waiting for asynchronous data or during a rendering process. Appropriate loading animation can effectively set users expectations & warn them about wait time.
 
-Circular Loader can be:
+**Types:**
 
-1. **Indeterminate** - loading indicator animates continuously
-2. **Determinate** - loading indicator adjusts to show the percentage complete, as a ratio of `value`: `max-min`
+1. <u>Indeterminate</u> - loading indicator animates continuously
+2. <u>Determinate</u> - loading indicator adjusts to show the percentage complete, as a ratio of `value`: `max-min`
 
 
 
@@ -26,13 +26,15 @@ Circular Loader can be:
 
 #### Component Props
 
-| name     | type                                | defaultValue    | isRequired | description                              |
-| -------- | ----------------------------------- | --------------- | ---------- | ---------------------------------------- |
-| mode     | enum: `determinate` `indeterminate` | `indeterminate` |            | Determines the type of the component. Indeterminate mode shows loader without no connection to the loading progress. |
-| value    | number                              | 0               |            | The value of progress. NOTE: works only for determinate mode. |
-| showInfo |                                     |                 |            | Displays the progress value of the loading process AND/OR text |
-| delay    | number                              |                 |            | Specifies a delay in milliseconds for loading state |
-| status   | string                              |                 |            | Sets the status of the loading progress. Options: `success` `exception` `active` |
+| name      | type                                | defaultValue    | isRequired | description                              |
+| --------- | ----------------------------------- | --------------- | ---------- | ---------------------------------------- |
+| mode      | enum: `determinate` `indeterminate` | `indeterminate` |            | Determines the type of the component. Indeterminate mode shows loader without no connection to the loading progress. |
+| value     | number                              | 0               |            | The value of progress (works only for determinate mode). |
+| min       | number                              | 0               |            | The min value of progress (works only for determinate mode). |
+| max       | number                              | 100             |            | The max value of progress (works only for determinate mode). |
+| !showInfo |                                     |                 |            | Displays the progress value of the loading process AND/OR text |
+| delay     | number                              | 0               |            | Specifies a delay in milliseconds for loader to appear. If content loads within delay period, loader will not be displayed. |
+|           | string                              |                 |            | Sets the status of the loading progress. Options: `success` `exception` `active` |
 
 
 
@@ -46,13 +48,10 @@ Circular Loader can be:
 
 *Comments to example 1*
 
-
-
 **Example 2:**
 
 ```
 //code example goes here	
-
 ```
 
 *Comments to example 2*
@@ -70,10 +69,10 @@ Circular Loader can be:
 
 #### Custom CSS States (pseudo-classes)
 
-| state                          | description                              |
-| ------------------------------ | ---------------------------------------- |
-| :error                         | Style the component on error, i.e. when the `error` prop is true |
-| :hover, :focus, :disabled, etc | Standard CSS states                      |
+| state      | description                              |
+| ---------- | ---------------------------------------- |
+| :success   | Allows to style the component when loading was successful |
+| :exception | Allows to style the component when loading process is terminated |
 
 ### Style Code Example
 
