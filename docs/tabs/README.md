@@ -10,7 +10,7 @@ Tabs are a set of layered sections of content, known as tab panels, that display
 
 **Tab consist of:** 
 
-1. Tab Interface - set of tab elements and their associated tab panels
+1. Tab Interface - set of tab elements and their associated tab panels (acts as root)
 2. Tab List - set of tab elements contained in a tablist element.
 3. Tab - element in the tab list that serves as a label for one of the tab panels and can be activated to display associated panel.
 4. Tab Panel - element that contains the content associated with a tab.
