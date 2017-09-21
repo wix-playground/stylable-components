@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {stylable} from 'wix-react-tools';
 import {ContextProvider, Slider} from '../../src';
+import {SliderView} from '../../src/components/slider/slider-view';
 import {ChangeEvent} from '../../src/types/events';
 import style from './slider-demo.st.css';
 
@@ -26,6 +27,26 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
 
         return (
             <table cellSpacing="24px">
+                <thead>
+                    <tr>
+                        <th className="table-head-cell">Default Slider View</th>
+                        <th className="table-head-cell">Disabled Slider View</th>
+                        <th className="table-head-cell">Slider with step View</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <SliderView />
+                        </td>
+                        <td>
+                            <SliderView />
+                        </td>
+                        <td>
+                            <SliderView />
+                        </td>
+                    </tr>
+                </tbody>
                 <thead>
                     <tr>
                         <th className="table-head-cell">Default Slider</th>

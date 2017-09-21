@@ -52,6 +52,9 @@ export interface SliderViewProps extends FormInputProps<number, string>, propert
     onFocus?: React.FocusEventHandler<HTMLElement>;
     onBlur?: React.FocusEventHandler<HTMLElement>;
 
+    onMouseDown?: () => {};
+    onTouchStart?: () => {};
+
     onDragStart?(event: PointerEvent): void;
     onDrag?(event: PointerEvent): void;
     onDragStop?(event: PointerEvent): void;
