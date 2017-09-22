@@ -70,8 +70,8 @@ describe('logger', () => {
                     expect(spies[method]).to.calledTwice;
                 });
                 it('call once x 2', () => {
-                    logger[method + 'Once']('Warning message');
-                    logger[method + 'Once']('Warning message');
+                    logger[`${method}Once`]('Warning message');
+                    logger[`${method}Once`]('Warning message');
                     expect(spies[method]).to.calledOnce;
                 });
             });
