@@ -29,7 +29,7 @@
     user-select: none;
     transition: background-color 200ms linear;
 }
-.input {
+.nativeInput {
     position: absolute;
     display: block;
     position: absolute;
@@ -40,7 +40,7 @@
     width: 0;
     height: 0;
 }
-.switch-wrap {
+.switchWrap {
     width: 100%;
     position: relative;
 }
