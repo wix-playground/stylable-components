@@ -9,7 +9,6 @@ export interface RadioButtonProps extends FormInputProps<string> {
     name?: string;
     disabled?: boolean;
     readOnly?: boolean;
-    labelLocation?: 'right' | 'left';
     tabIndex?: number;
     className?: string;
 }
@@ -23,7 +22,6 @@ export interface RadioButtonState {
 export class RadioButton extends React.Component<RadioButtonProps, RadioButtonState> {
     public static defaultProps: Partial<RadioButtonProps> = {
         onChange: noop,
-        labelLocation: 'right',
         checked: false, // required for a bug in firefox
         tabIndex: 0
     };
@@ -34,7 +32,6 @@ export class RadioButton extends React.Component<RadioButtonProps, RadioButtonSt
         const styleState = {
             checked: this.props.checked,
             disabled: this.props.disabled,
-            isLeftLabel: this.props.labelLocation === 'left',
             focused: this.state.isFocused
         };
 
@@ -60,14 +57,13 @@ export class RadioButton extends React.Component<RadioButtonProps, RadioButtonSt
                     readOnly={this.props.readOnly}
                     name={this.props.name}
                 />
-                <div className="contentContainer">
+                <div className="contentContainer" data-automation-id="CONTENT_CONTAINER">
                     <div
                         data-automation-id="INPUT_CONTAINER"
                         className="iconContainer"
                     >
                         {this.props.checked ? checkedRadioSvg() : emptyRadioSvg()}
                     </div>
-                    <span className="radioLabel" data-automation-id="LABEL">{this.props.value}</span>
                     {this.props.children}
                 </div>
             </div>

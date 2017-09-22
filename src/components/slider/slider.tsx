@@ -1,12 +1,14 @@
 import * as keycode from 'keycode';
+import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import {properties, stylable} from 'wix-react-tools';
+import {isRTLContext} from '../../utils';
 import {GlobalEvent} from '../global-event';
 import {FormInputProps} from './../../types/forms';
 import {noop} from './../../utils/noop';
 import style from './slider.st.css';
 
-const AXISES: {[name: string]: AxisOptions} = {
+export const AXISES: {[name: string]: AxisOptions} = {
     x: 'x',
     y: 'y',
     xReverse: 'x-reverse',
@@ -46,6 +48,7 @@ export interface SliderProps extends FormInputProps<number, string>, properties.
     disabled?: boolean;
     required?: boolean;
     error?: boolean;
+    RTL?: boolean;
 
     onFocus?: React.FocusEventHandler<HTMLElement>;
     onBlur?: React.FocusEventHandler<HTMLElement>;
@@ -82,6 +85,12 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         onDragStop: noop
     };
 
+    public static contextTypes = {
+        contextProvider: PropTypes.shape({
+            dir: PropTypes.string
+        })
+    };
+
     private focusableElement: HTMLElement;
 
     private sliderArea: HTMLElement;
@@ -100,22 +109,28 @@ export class Slider extends React.Component<SliderProps, SliderState> {
             relativeStep: this.getRelativeStep(step, min!, max!),
             isActive: false,
             isVertical: this.isVertical(axis!),
-            isReverse: this.isReverse(axis!)
+            isReverse: this.isReverse(axis!) !== this.isRTL()
         };
     }
 
     public render() {
         return (
             <div
-                data-automation-id="SLIDER-CONTAINER"
+                data-automation-id="SLIDER"
+                ref={el => this.sliderArea = el as HTMLElement}
                 className="container"
+                title={this.props.label}
+
+                onMouseDown={this.onSliderAreaMouseDown}
+                onTouchStart={this.onSliderAreaTouchStart}
+
                 style-state={{
                     'active': this.state.isActive,
                     'disabled': Boolean(this.props.disabled),
                     'error': Boolean(this.props.error),
-                    'x': this.props.axis === AXISES.x,
+                    'x': this.props.axis === AXISES.x !== this.isRTL(),
                     'y': this.props.axis === AXISES.y,
-                    'x-reverse': this.props.axis === AXISES.xReverse,
+                    'x-reverse': this.props.axis === AXISES.xReverse !== this.isRTL(),
                     'y-reverse': this.props.axis === AXISES.yReverse
                 }}
             >
@@ -136,51 +151,41 @@ export class Slider extends React.Component<SliderProps, SliderState> {
                     disabled={this.props.disabled}
                 />
                 <div
-                    ref={el => this.sliderArea = el as HTMLElement}
-                    className="slider"
-                    data-automation-id="SLIDER"
-                    title={this.props.label}
-
-                    onMouseDown={this.onSliderAreaMouseDown}
-                    onTouchStart={this.onSliderAreaTouchStart}
+                    className="track"
+                    data-automation-id="SLIDER-TRACK"
                 >
                     <div
-                        className="track"
-                        data-automation-id="SLIDER-TRACK"
+                        className="progress"
+                        data-automation-id="SLIDER-PROGRESS"
+                        style={this.getProgressStyles()}
+                    />
+                    <a
+                        ref={el => this.focusableElement = el as HTMLElement}
+                        className="handle"
+                        data-automation-id="SLIDER-HANDLE"
+                        style={this.getHandleStyles()}
+
+                        onKeyDown={this.onSliderAreaKeyDown}
+
+                        onFocus={this.onSliderFocus}
+                        onBlur={this.onSliderBlur}
+
+                        role="slider"
+                        aria-label={this.props.label}
+                        aria-orientation={this.state.isVertical ? 'vertical' : 'horizontal'}
+                        aria-valuemin={`${this.props.min}`}
+                        aria-valuemax={`${this.props.max}`}
+                        aria-valuenow={`${this.props.value}`}
+                        tabIndex={this.props.disabled ? -1 : 0}
                     >
                         <div
-                            className="progress"
-                            data-automation-id="SLIDER-PROGRESS"
-                            style={this.getProgressStyles()}
-                        />
-                        <a
-                            ref={el => this.focusableElement = el as HTMLElement}
-                            className="handle"
-                            data-automation-id="SLIDER-HANDLE"
-                            style={this.getHandleStyles()}
-
-                            onKeyDown={this.onSliderAreaKeyDown}
-
-                            onFocus={this.onSliderFocus}
-                            onBlur={this.onSliderBlur}
-
-                            role="slider"
-                            aria-label={this.props.label}
-                            aria-orientation={this.state.isVertical ? 'vertical' : 'horizontal'}
-                            aria-valuemin={`${this.props.min}`}
-                            aria-valuemax={`${this.props.max}`}
-                            aria-valuenow={`${this.props.value}`}
-                            tabIndex={this.props.disabled ? -1 : 0}
+                            className="tooltip"
+                            data-automation-id="SLIDER-TOOLTIP"
                         >
-                            <div
-                                className="tooltip"
-                                data-automation-id="SLIDER-TOOLTIP"
-                            >
-                                {this.getTooltip()}
-                            </div>
-                        </a>
-                        {this.getMarks()}
-                    </div>
+                            {this.getTooltip()}
+                        </div>
+                    </a>
+                    {this.getMarks()}
                 </div>
             </div>
         );
@@ -215,7 +220,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
             relativeValue: this.getRelativeValue(value!, min!, max!, step),
             relativeStep: this.getRelativeStep(step, min!, max!),
             isVertical: this.isVertical(nextProps.axis || this.props.axis!),
-            isReverse: this.isReverse(nextProps.axis || this.props.axis!)
+            isReverse: this.isReverse(nextProps.axis || this.props.axis!) !== this.isRTL()
         });
     }
 
@@ -268,12 +273,12 @@ export class Slider extends React.Component<SliderProps, SliderState> {
     }
 
     private getHandleStyles() {
-        return this.state.isReverse ?
-            (this.state.isVertical ?
+        return this.state.isVertical ?
+            (this.state.isReverse ?
                 {top: `${this.state.relativeValue}%`} :
-                {right: `${this.state.relativeValue}%`}) :
-            (this.state.isVertical ?
-                {bottom: `${this.state.relativeValue}%`} :
+                {bottom: `${this.state.relativeValue}%`}) :
+            (this.state.isReverse ?
+                {right: `${this.state.relativeValue}%`} :
                 {left: `${this.state.relativeValue}%`});
     }
 
@@ -309,6 +314,10 @@ export class Slider extends React.Component<SliderProps, SliderState> {
 
     private isReverse(axis: AxisOptions): boolean {
         return axis === AXISES.xReverse || axis === AXISES.yReverse;
+    }
+
+    private isRTL(): boolean {
+        return isRTLContext(this.context);
     }
 
     private increaseValue(toEdge: boolean = false, multiplier: number = 1) {

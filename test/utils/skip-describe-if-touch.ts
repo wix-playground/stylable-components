@@ -1,3 +1,3 @@
 import {isTouch} from '../../src/utils';
 
-export const describeIfTouch = isTouch ? describe : describe.skip;
+export const skipDescribeIfTouch = isTouch ? describe : describe.skip;

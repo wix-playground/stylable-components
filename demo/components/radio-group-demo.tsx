@@ -13,29 +13,46 @@ export class RadioGroupDemo extends React.Component<{}, {}> {
     public render() {
         return (
             <div data-automation-id="RADIO_GROUP_DEMO">
-                <div data-automation-id="GROUP_1">
+                <div>
                     <h3>Children radio group</h3>
-                    <RadioGroup onChange={this.onChange} name="demo" className="rg" value={this.state.myValue1}>
-                        <RadioButton value="This way!"/>
-                        <RadioButton value="No, that way!"/>
-                        <RadioButton value="But not here" disabled={true}/>
-                        <RadioButton value="Start here" disabled={true}/>
+                    <RadioGroup
+                        data-automation-id="GROUP_1_GROUP"
+                        onChange={this.onChange}
+                        name="demo"
+                        className="rg"
+                        value={this.state.myValue1}
+                    >
+                        <RadioButton value="This way!">
+                            <span className="label">Default Radio</span>
+                        </RadioButton>
+                        <RadioButton value="No, that way!">
+                            <span className="label">No, that way!</span>
+                        </RadioButton>
+                        <RadioButton value="But not here" disabled>
+                            <span className="label">But not here</span>
+                        </RadioButton>
+                        <RadioButton value="Start here" disabled>
+                            <span className="label">Start here</span>
+                        </RadioButton>
                     </RadioGroup>
                     <br/>
-                    <span data-automation-id="RADIO_GROUP_DEMO_VALUE">Value: {this.state.myValue1}</span>
+                    <span data-automation-id="GROUP_1_RESULT">Value: {this.state.myValue1}</span>
                 </div>
                 <div data-automation-id="GROUP_2">
                     <h3>Data source radio group</h3>
                     <RadioGroup
                         onChange={this.onChange2}
-                        labelLocation="left"
                         name="name"
                         className="rg"
                         value={this.state.myValue2}
                         dataSource={[
-                            {value: 'Default Radio'},
-                            {value: 'Checked Radio'},
-                            {value: 'Disabled Radio', disabled: true}
+                            {value: 'Default Radio', labelText: 'Default Radio'},
+                            {value: 'Checked Radio', labelText: 'Checked Radio'},
+                            {
+                                value: 'Disabled Radio',
+                                disabled: true,
+                                labelText: 'Disabled Radio'
+                            }
                         ]}
                     />
                     <br/>
