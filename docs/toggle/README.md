@@ -41,7 +41,7 @@ export class ComponentsDemo extends React.Component<{}, State>{
   }
 
   public render() {
-    return <toggle
+    return <Toggle
       value={this.state.toggleValue}
       onChange={e => this.setState({toggleValue: e.value})}
     />;
