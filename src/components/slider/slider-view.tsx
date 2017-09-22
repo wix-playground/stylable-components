@@ -6,7 +6,7 @@ import {isRTLContext} from '../../utils';
 import {GlobalEvent} from '../global-event';
 import {FormInputProps} from './../../types/forms';
 import {noop} from './../../utils/noop';
-import style from './SliderView.st.css';
+import style from './slider-view.st.css';
 
 export const AXISES: {[name: string]: AxisOptions} = {
     x: 'x',
@@ -36,10 +36,14 @@ export interface PointerPosition {
 export interface SliderViewProps extends FormInputProps<number, string>, properties.Props {
     tooltip?: React.ReactNode;
 
-    min?: number;
-    max?: number;
-    step?: Step;
+    relativeValue: number;
+    relativeStep: Step;
+
+    min: number;
+    max: number;
+    step: Step;
     axis?: AxisOptions;
+    orientation?: 'vertical' | 'horizontal';
 
     name?: string;
     label?: string;
@@ -52,16 +56,19 @@ export interface SliderViewProps extends FormInputProps<number, string>, propert
     onFocus?: React.FocusEventHandler<HTMLElement>;
     onBlur?: React.FocusEventHandler<HTMLElement>;
 
-    onMouseDown?: () => {};
-    onTouchStart?: () => {};
+    onSliderAreaMouseDown?: () => void;
+    onSliderAreaMouseMove?: () => void;
+    onSliderAreaMouseUp?: () => void;
+
+    onSliderAreaTouchStart?: () => void;
+    onSliderAreaTouchMove?: () => void;
+    onSliderAreaTouchEnd?: () => void;
 
     onDragStart?(event: PointerEvent): void;
     onDrag?(event: PointerEvent): void;
     onDragStop?(event: PointerEvent): void;
 }
 export interface SliderViewState {
-    relativeValue: number;
-    relativeStep: Step;
     isActive: boolean;
     isVertical: boolean;
     isReverse: boolean;
@@ -71,16 +78,22 @@ export interface SliderViewState {
 @properties
 export class SliderView extends React.Component<SliderViewProps, SliderViewState> {
     public static defaultProps: Partial<SliderViewProps> = {
-        min: DEFAULT_MIN,
-        max: DEFAULT_MAX,
-        step: DEFAULT_STEP,
         axis: DEFAULT_AXIS,
+        orientation: 'horizontal',
 
         onChange: noop,
         onInput: noop,
 
         onFocus: noop,
         onBlur: noop,
+
+        onSliderAreaMouseDown: noop,
+        onSliderAreaMouseMove: noop,
+        onSliderAreaMouseUp: noop,
+
+        onSliderAreaTouchStart: noop,
+        onSliderAreaTouchMove: noop,
+        onSliderAreaTouchEnd: noop,
 
         onDragStart: noop,
         onDrag: noop,
@@ -104,11 +117,9 @@ export class SliderView extends React.Component<SliderViewProps, SliderViewState
     constructor(props: SliderViewProps, context?: any) {
         super(props, context);
 
-        const {min, max, step, axis} = this.props;
+        const {step, axis, relativeStep, relativeValue} = this.props;
 
         this.state = {
-            relativeValue: this.getRelativeValue(this.getDefaultValue(), min!, max!, step),
-            relativeStep: this.getRelativeStep(step, min!, max!),
             isActive: false,
             isVertical: this.isVertical(axis!),
             isReverse: this.isReverse(axis!) !== this.isRTL()
@@ -118,7 +129,7 @@ export class SliderView extends React.Component<SliderViewProps, SliderViewState
     public render() {
         return (
             <div
-                data-automation-id="SliderView"
+                data-automation-id="SLIDER"
                 ref={el => this.sliderArea = el as HTMLElement}
                 className="container"
                 title={this.props.label}
@@ -147,24 +158,24 @@ export class SliderView extends React.Component<SliderViewProps, SliderViewState
                     className="native-input"
                     value={this.props.value}
                     type="hidden"
-                    data-automation-id="SliderView-NATIVE-INPUT"
+                    data-automation-id="NATIVE-INPUT"
                     name={this.props.name}
                     required={this.props.required}
                     disabled={this.props.disabled}
                 />
                 <div
                     className="track"
-                    data-automation-id="SliderView-TRACK"
+                    data-automation-id="SLIDER-TRACK"
                 >
                     <div
                         className="progress"
-                        data-automation-id="SliderView-PROGRESS"
+                        data-automation-id="SLIDER-PROGRESS"
                         style={this.getProgressStyles()}
                     />
                     <a
                         ref={el => this.focusableElement = el as HTMLElement}
                         className="handle"
-                        data-automation-id="SliderView-HANDLE"
+                        data-automation-id="SLIDER-HANDLE"
                         style={this.getHandleStyles()}
 
                         onKeyDown={this.onSliderAreaKeyDown}
@@ -172,9 +183,9 @@ export class SliderView extends React.Component<SliderViewProps, SliderViewState
                         onFocus={this.onSliderFocus}
                         onBlur={this.onSliderBlur}
 
-                        role="SliderView"
+                        role="slider"
                         aria-label={this.props.label}
-                        aria-orientation={this.state.isVertical ? 'vertical' : 'horizontal'}
+                        aria-orientation={this.props.orientation}
                         aria-valuemin={`${this.props.min}`}
                         aria-valuemax={`${this.props.max}`}
                         aria-valuenow={`${this.props.value}`}
@@ -182,7 +193,7 @@ export class SliderView extends React.Component<SliderViewProps, SliderViewState
                     >
                         <div
                             className="tooltip"
-                            data-automation-id="SliderView-TOOLTIP"
+                            data-automation-id="SLIDER-TOOLTIP"
                         >
                             {this.getTooltip()}
                         </div>
@@ -206,30 +217,16 @@ export class SliderView extends React.Component<SliderViewProps, SliderViewState
             return;
         }
 
-        let value = nextProps.value === undefined ? this.props.value : nextProps.value;
-        const min = nextProps.min === undefined ? this.props.min : nextProps.min;
-        const max = nextProps.max === undefined ? this.props.max : nextProps.max;
-        const step = nextProps.step === undefined ? this.props.step : nextProps.step;
-
-        if (value && (value > max!)) {
-            value = max;
-        }
-        if (value && (value < min!)) {
-            value = min;
-        }
-
         this.setState({
-            relativeValue: this.getRelativeValue(value!, min!, max!, step),
-            relativeStep: this.getRelativeStep(step, min!, max!),
             isVertical: this.isVertical(nextProps.axis || this.props.axis!),
             isReverse: this.isReverse(nextProps.axis || this.props.axis!) !== this.isRTL()
         });
     }
 
     private getDefaultValue() {
-        const {value, min} = this.props;
+        const {value} = this.props;
         return typeof value === 'undefined' ?
-            (typeof min !== 'undefined' ? min : DEFAULT_VALUE) :
+            (typeof DEFAULT_MIN !== 'undefined' ? DEFAULT_MIN : DEFAULT_VALUE) :
             value;
     }
 
@@ -238,8 +235,7 @@ export class SliderView extends React.Component<SliderViewProps, SliderViewState
     }
 
     private getMarks(): JSX.Element[] {
-        const {marks, min, max, step} = this.props;
-        const {relativeStep} = this.state;
+        const {marks, min, max, step, relativeStep} = this.props;
         const range = (max! - min!);
         const markElements: JSX.Element[] = [];
         if (
@@ -257,7 +253,7 @@ export class SliderView extends React.Component<SliderViewProps, SliderViewState
 
             markElements.push((
                 <span
-                    data-automation-id={`SliderView-MARKS-${i}`}
+                    data-automation-id={`SLIDER-MARKS-${i}`}
                     key={i}
                     className={this.getMarkClass(position)}
                     style={this.getMarkStyles(position)}
@@ -270,18 +266,18 @@ export class SliderView extends React.Component<SliderViewProps, SliderViewState
 
     private getProgressStyles() {
         return this.state.isVertical ?
-            {height: `${this.state.relativeValue}%`} :
-            {width: `${this.state.relativeValue}%`};
+            {height: `${this.props.relativeValue}%`} :
+            {width: `${this.props.relativeValue}%`};
     }
 
     private getHandleStyles() {
         return this.state.isVertical ?
             (this.state.isReverse ?
-                {top: `${this.state.relativeValue}%`} :
-                {bottom: `${this.state.relativeValue}%`}) :
+                {top: `${this.props.relativeValue}%`} :
+                {bottom: `${this.props.relativeValue}%`}) :
             (this.state.isReverse ?
-                {right: `${this.state.relativeValue}%`} :
-                {left: `${this.state.relativeValue}%`});
+                {right: `${this.props.relativeValue}%`} :
+                {left: `${this.props.relativeValue}%`});
     }
 
     private getMarkStyles(position: number) {
@@ -296,7 +292,7 @@ export class SliderView extends React.Component<SliderViewProps, SliderViewState
     }
 
     private getMarkClass(position: number) {
-        const {relativeValue} = this.state;
+        const {relativeValue} = this.props;
         return position <= relativeValue ?
             'markProgress' :
             'markTrack';
@@ -331,12 +327,12 @@ export class SliderView extends React.Component<SliderViewProps, SliderViewState
     }
 
     private changeValue(dirrection: ChangeDirrection, multiplier: number = 1, toEdge: boolean = false) {
-        const {relativeValue} = this.state;
+        const {relativeValue} = this.props;
         let newRelativeValue: number;
 
-        const relativeStep = this.state.relativeStep === CONTINUOUS_STEP ?
+        const relativeStep = this.props.relativeStep === CONTINUOUS_STEP ?
             1 :
-            this.state.relativeStep;
+            this.props.relativeStep;
 
         if (toEdge) {
             newRelativeValue = dirrection === ChangeDirrection.ascend ?
@@ -353,13 +349,10 @@ export class SliderView extends React.Component<SliderViewProps, SliderViewState
 
         const newAbsoluteValue = this.getAbsoluteValue(newRelativeValue);
 
-        if (newRelativeValue !== this.state.relativeValue) {
-            this.setState({
-                relativeValue: newRelativeValue
-            });
+        if (newRelativeValue !== this.props.relativeValue) {
+            this.callInput(newAbsoluteValue);
         }
 
-        this.callInput(newAbsoluteValue);
         if (newAbsoluteValue !== this.props.value) {
             this.callChange(newAbsoluteValue);
         }
@@ -380,7 +373,7 @@ export class SliderView extends React.Component<SliderViewProps, SliderViewState
         if (typeof step === 'undefined' || step === CONTINUOUS_STEP) {
             return CONTINUOUS_STEP;
         }
-        return 100 * step / (max - min);
+        return step;
     }
 
     private getRelativeValue(value: number, min: number, max: number, step?: Step): number {
@@ -403,7 +396,8 @@ export class SliderView extends React.Component<SliderViewProps, SliderViewState
     }
 
     private getValueFromElementAndPointer(element: HTMLElement, {clientX, clientY}: PointerPosition): number {
-        const {relativeStep, isVertical, isReverse} = this.state;
+        const {relativeStep} = this.props;
+        const {isVertical, isReverse} = this.state;
         const {top, left, height, width} = element.getBoundingClientRect();
 
         const sliderOffset = isVertical ? top : left;
@@ -438,7 +432,6 @@ export class SliderView extends React.Component<SliderViewProps, SliderViewState
         const relativeValue = this.getValueFromElementAndPointer(this.sliderArea, event);
 
         this.setState({
-            relativeValue,
             isActive: true
         });
         this.isActive = true;
@@ -457,10 +450,6 @@ export class SliderView extends React.Component<SliderViewProps, SliderViewState
             if (!this.isSliderMounted) {
                 return;
             }
-
-            this.setState({
-                relativeValue
-            });
         });
 
         this.onDrag(event);
@@ -475,7 +464,6 @@ export class SliderView extends React.Component<SliderViewProps, SliderViewState
         const value = this.getAbsoluteValue(relativeValue);
 
         this.setState({
-            relativeValue,
             isActive: false
         });
         this.isActive = false;
@@ -497,7 +485,6 @@ export class SliderView extends React.Component<SliderViewProps, SliderViewState
         const relativeValue = this.getValueFromElementAndPointer(this.sliderArea, event.touches[0]);
 
         this.setState({
-            relativeValue,
             isActive: true
         });
         this.isActive = true;
@@ -517,10 +504,6 @@ export class SliderView extends React.Component<SliderViewProps, SliderViewState
             if (!this.isSliderMounted) {
                 return;
             }
-
-            this.setState({
-                relativeValue
-            });
         });
 
         event.preventDefault();
@@ -537,7 +520,6 @@ export class SliderView extends React.Component<SliderViewProps, SliderViewState
         const value = this.getAbsoluteValue(relativeValue);
 
         this.setState({
-            relativeValue,
             isActive: false
         });
         this.isActive = false;
