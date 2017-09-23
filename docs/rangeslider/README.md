@@ -14,33 +14,32 @@ The handles are dragged across the bar in order to give the slider a desired ran
 
 **Range Slider consists of:** 
 ::bar - represents sliders given range 
-::rangeBar - represents selected range from within a given range
-::handles - are dragged across the bar in order to set/change range
+::rangeBar - represents selected range from within a slider given range
+::handles - are dragged across the bar in order to set / change range
 ::marks - represent step
-::rangeMarks - represent step that it displayed within ::rangeBar	
+::rangeMarks - represents step that it displayed within ::rangeBar	
 
 ### API
 
 #### Props
 
-| name        | type                                  | defaultValue | isRequired | description                              |
-| ----------- | ------------------------------------- | ------------ | ---------- | ---------------------------------------- |
-| value       | array of numbers                      | [2, 5]       |            | Difference between values represent slider's selected range. Each number represents one handle. The more values the more handles. |
-| allowCross  | bool                                  | true         |            | If true, allows ::handles to cross       |
-| axis        | enum: 'x' 'x-reverse' 'y' 'y-reverse' | 'x'          |            | The axis on which the slider will slide  |
-| min         | number                                | 0            |            | The absolute minimum of the slider's range |
-| max         | number                                | 1            |            | The absolute maximum of the slider's range |
-| step        | number OR string "any"                | 1            |            | Set the slider's step. If step = "number" it causes slider to move in discrete increments. If step = "any" sliders moves along a subjective range |
-| required    | bool                                  | fasle        |            | Whether or not the slider is required in a form |
-| disabled    | bool                                  | false        |            | If true, the slider will not be interactive |
-| label       | string                                |              |            | Text to display in accessibility mode    |
-| name        | string                                |              |            | The name of the slider. Behaves like the name attribute of an input element |
-| marks       | bool                                  | false        |            | Controls the visibility of the marks     |
-| onChange    | func                                  |              | yes        | Callback function that is fired when the slider's value changed. Signature: `function(event: object, newValue: number): void` event: KeyDown event targeting the slider. newValue: The new value of the slider. |
-| onDragStart | func                                  |              |            | Callback function that is fired when the slider has begun to move. Signature `function(event: object) : void` event: MouseDown or TouchStart event targeting the slider. |
-| onDragStop  | func                                  |              |            | Callback function that is fired when the slide has stopped moving. Signature `function(event: object) : void` event: MouseEnd or TouchEnd event targeting the slider. |
-| error       | bool                                  | FALSE        |            | Sets the `:error` CSS state on the `<slider>` |
-| rtl         | bool                                  | FALSE        |            | Makes the component RTL                  |
+| name         | type                                  | defaultValue | isRequired | description                              |
+| ------------ | ------------------------------------- | ------------ | ---------- | ---------------------------------------- |
+| value        | array of numbers                      | [2, 5]       |            | Difference between values represent slider's selected range. |
+| disableCross | bool                                  | false        |            | Prevents handles to cross                |
+| axis         | enum: 'x' 'x-reverse' 'y' 'y-reverse' | 'x'          |            | The axis on which the slider will slide  |
+| min          | number                                | 0            |            | The absolute minimum of the slider's range |
+| max          | number                                | 1            |            | The absolute maximum of the slider's range |
+| step         | number OR string "any"                | 1            |            | Set the slider's step. If step = "number" it causes slider to move in discrete increments. If step = "any" sliders moves along a subjective range |
+| disabled     | bool                                  | false        |            | If true, the slider will not be interactive |
+| label        | string                                |              |            | Text to display in accessibility mode    |
+| name         | string                                |              |            | The name of the slider. Behaves like the name attribute of an input element |
+| marks        | bool                                  | false        |            | Controls the visibility of the marks     |
+| onChange     | func                                  |              | yes        | Callback function that is fired when the slider's value changed. Signature: `function(event: object, newValue: number): void` event: KeyDown event targeting the slider. newValue: The new value of the slider. |
+| onDragStart  | func                                  |              |            | Callback function that is fired when the slider has begun to move. Signature `function(event: object) : void` event: MouseDown or TouchStart event targeting the slider. |
+| onDragStop   | func                                  |              |            | Callback function that is fired when the slide has stopped moving. Signature `function(event: object) : void` event: MouseEnd or TouchEnd event targeting the slider. |
+| error        | bool                                  | false        |            | Sets the `:error` CSS state on the `<slider>` |
+| rtl          | bool                                  | false        |            | Makes the component RTL                  |
 
 
 
@@ -161,15 +160,15 @@ RangeSlider::bar {
 /* although the whole look comes from the theme, we override the background color of the range slider bar */
 }
 
-RangeSlider::handle {
+RangeSlider::handles {
   background-color: #0099ff;
 }
 
-RangeSlider::handle:hover {
+RangeSlider::handles:hover {
   background-color: #33ccff;
 }
 
-RangeSlider:disabled::handle {
+RangeSlider:disabled::handles {
   background-color: gray;
 }
 ```
