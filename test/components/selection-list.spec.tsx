@@ -296,10 +296,10 @@ describe('<SelectionList />', () => {
             ).withDriver(SelectionListTestDriver);
 
             await waitForDom(() => expect(list.root).to.be.present);
-            expect(list.elementHasStylableState(list.root, 'focused')).to.equal(false);
+            expect(list.isInFocusedState()).to.equal(false);
             list.focus();
             await waitForDom(() => {
-                expect(list.elementHasStylableState(list.root, 'focused')).to.equal(true);
+                expect(list.isInFocusedState()).to.equal(true);
             });
         });
 
@@ -309,8 +309,8 @@ describe('<SelectionList />', () => {
             ).withDriver(SelectionListTestDriver);
 
             await waitForDom(() => expect(list.root).to.be.present);
-            expect(list.elementHasStylableState(list.items[0], 'selected')).to.equal(true);
-            expect(list.elementHasStylableState(list.items[1], 'selected')).to.equal(false);
+            expect(list.isItemInSelectedState(0)).to.equal(true);
+            expect(list.isItemInSelectedState(1)).to.equal(false);
         });
 
         it(`Puts "focused" state on the item focused via keyboard and removes it on blur`, async () => {
@@ -322,20 +322,20 @@ describe('<SelectionList />', () => {
 
             list.focus();
             await waitForDom(() => {
-                expect(list.elementHasStylableState(list.items[0], 'focused')).to.equal(true);
-                expect(list.elementHasStylableState(list.items[1], 'focused')).to.equal(false);
+                expect(list.isItemInFocusedState(0)).to.equal(true);
+                expect(list.isItemInFocusedState(1)).to.equal(false);
             });
 
             list.keyDown(keycode('down'));
             await waitForDom(() => {
-                expect(list.elementHasStylableState(list.items[0], 'focused')).to.equal(false);
-                expect(list.elementHasStylableState(list.items[1], 'focused')).to.equal(true);
+                expect(list.isItemInFocusedState(0)).to.equal(false);
+                expect(list.isItemInFocusedState(1)).to.equal(true);
             });
 
             list.blur();
             await waitForDom(() => {
-                expect(list.elementHasStylableState(list.items[0], 'focused')).to.equal(false);
-                expect(list.elementHasStylableState(list.items[1], 'focused')).to.equal(false);
+                expect(list.isItemInFocusedState(0)).to.equal(false);
+                expect(list.isItemInFocusedState(1)).to.equal(false);
             });
         });
     });

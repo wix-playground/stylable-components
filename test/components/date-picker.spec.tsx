@@ -10,6 +10,8 @@ import {
     getNumOfFollowingDays,
     getNumOfPreviousDays
 } from '../../src/utils';
+import {func} from "prop-types";
+import {dateToDateInputFormat} from "../../src/utils/date-helpers";
 
 const currentDate = 'CURRENT_DATE';
 const datePickerInputId = 'DATE_PICKER_INPUT';
@@ -542,6 +544,11 @@ describe('The DatePicker Component', () => {
             expect(getNumOfFollowingDays(fourthDateToTest, 4), 'Wrong number of days for Thursday').to.equal(4);
             expect(getNumOfFollowingDays(fourthDateToTest, 5), 'Wrong number of days for Friday').to.equal(5);
             expect(getNumOfFollowingDays(fourthDateToTest, 6), 'Wrong number of days for Saturday').to.equal(6);
+        });
+
+        it('dateToDateInputFormat returns date formatted for native form submit', function () {
+            expect(dateToDateInputFormat(new Date('Feb 18 2017'))).to.equal('2017-02-18');
+            expect(dateToDateInputFormat(null)).to.equal(undefined);
         });
     });
 });

@@ -1,12 +1,15 @@
 @namespace "SelectionList";
 
+.root {
+    display: inline-block;
+}
+
 .list {
     -st-extends: root;
     -st-states: focused;
     width: 276px;
     border: 1px solid #adbbc6;
     outline: none;
-    display: inline-block;
 }
 
 .list:focused {

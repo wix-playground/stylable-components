@@ -1,9 +1,7 @@
 import React = require('react');
+import {SyntheticEvent} from 'react';
 import {ClientRenderer, expect, waitFor} from 'test-drive-react';
-import {CheckBox, DropDown, DatePicker, SelectionList, NumberInput, Slider, Toggle} from '../../src';
-import {sleep} from "../utils/sleep";
-import {func} from "prop-types";
-import {SyntheticEvent} from "react";
+import {CheckBox, DatePicker, DropDown, NumberInput, SelectionList, Slider, Toggle} from '../../src';
 
 describe('Form contract of', function() {
 
@@ -23,8 +21,8 @@ describe('Form contract of', function() {
             loaderLocation = iframe.contentWindow.location;
         }
 
-        function submitForm(form: HTMLFormElement): void {
-            form && form.submit();
+        function submitForm(formElement: HTMLFormElement): void {
+            formElement && formElement.submit();
         }
 
         const testedElement = React.cloneElement(componentElement, {
@@ -54,11 +52,11 @@ describe('Form contract of', function() {
         await testFormContract(<CheckBox />, true, `?${testName}=on`);
     });
 
-    it('CheckBox (unchecked)', async function () {
+    it('CheckBox (unchecked)', async function() {
         await testFormContract(<CheckBox />, false, '');
     });
 
-    it('CheckBox (custom value)', async function () {
+    it('CheckBox (custom value)', async function() {
         await testFormContract(<CheckBox formValue="custom"/>, true, `?${testName}=custom`);
     });
 
@@ -82,7 +80,7 @@ describe('Form contract of', function() {
 
     });
 
-    it('SelectionList (children)', async function () {
+    it('SelectionList (children)', async function() {
         await testFormContract(
             <SelectionList>
                 <div data-value="A">Adalbert</div>
@@ -100,7 +98,7 @@ describe('Form contract of', function() {
         await testFormContract(<Toggle />, true, `?${testName}=on`);
     });
 
-    it('Toggle (unchecked)', async function () {
+    it('Toggle (unchecked)', async function() {
         await testFormContract(<Toggle />, false, '');
     });
 

@@ -7,6 +7,7 @@ import {Popup} from '../popup';
 import {Calendar} from './calendar';
 import {CalendarIcon} from './date-picker-icons';
 import styles from './date-picker.st.css';
+import {dateToDateInputFormat} from "../../utils/date-helpers";
 
 const invalidDate: string = 'Invalid Date';
 
@@ -29,9 +30,6 @@ export interface DatePickerState {
     highlightFocusedDate: boolean;
 }
 
-function dateToDateInputFormat(date: Date): string {
-    return date.toISOString().slice(0, 10);
-}
 
 @stylable(styles)
 @properties
