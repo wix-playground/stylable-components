@@ -3,11 +3,11 @@ import * as React from 'react';
 import {properties, stylable} from 'wix-react-tools';
 import {FormInputProps} from '../../types/forms';
 import {noop} from '../../utils';
+import {dateToDateInputFormat} from '../../utils/date-helpers';
 import {Popup} from '../popup';
 import {Calendar} from './calendar';
 import {CalendarIcon} from './date-picker-icons';
 import styles from './date-picker.st.css';
-import {dateToDateInputFormat} from "../../utils/date-helpers";
 
 const invalidDate: string = 'Invalid Date';
 
@@ -29,7 +29,6 @@ export interface DatePickerState {
     highlightSelectedDate: boolean;
     highlightFocusedDate: boolean;
 }
-
 
 @stylable(styles)
 @properties

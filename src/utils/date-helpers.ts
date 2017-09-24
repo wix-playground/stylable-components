@@ -46,7 +46,7 @@ export function getNumOfFollowingDays(date: Date, startingDay: number = 0): numb
 }
 
 export function dateToDateInputFormat(d: Date | null): string | undefined {
-    if(d) {
+    if (d) {
         // Clears issues with timezone inconsistencies
         const normalizedDate = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
         return normalizedDate.toISOString().slice(0, 10);

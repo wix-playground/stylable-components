@@ -48,7 +48,7 @@
 .emoji-list::item:selected:hover,
 .emoji-list::item:selected:focused {
     background-color: #edf7ff;
-} 
+}
 
 .text-style-list {
     -st-extends: List;

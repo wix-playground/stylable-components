@@ -2,13 +2,12 @@ import keycode = require('keycode');
 import {autorun, computed, observable, untracked} from 'mobx';
 import {observer} from 'mobx-react';
 import React = require('react');
-import {Disposers, properties, stylable} from 'wix-react-tools';
+import {Disposers, properties} from 'wix-react-tools';
 import {ChangeEvent} from '../../types/events';
 import {FormInputProps} from '../../types/forms';
 import {noop} from '../../utils';
 import {OptionList, SelectionListItemValue, SelectionListModel} from './selection-list-model';
 import {SelectionListView} from './selection-list-view';
-import styles from './selection-list.st.css';
 
 export interface Props extends OptionList, FormInputProps<SelectionListItemValue> {
     className?: string;
@@ -19,7 +18,6 @@ export interface Props extends OptionList, FormInputProps<SelectionListItemValue
 }
 
 @observer
-@stylable(styles)
 @properties
 export class SelectionList extends React.Component<Props> {
     public static defaultProps: Props = {
@@ -61,8 +59,6 @@ export class SelectionList extends React.Component<Props> {
 
     public render() {
         return (
-            <div>
-                <input type="hidden" value={this.props.value} name={this.props.name}/>
                 <SelectionListView
                     focused={this.focused}
                     list={this.list}
@@ -72,9 +68,7 @@ export class SelectionList extends React.Component<Props> {
                     onKeyDown={this.handleKeyDown}
                     style={this.props.style}
                     tabIndex={this.props.tabIndex}
-                    data-automation-id="SELECTION_LIST_VIEW"
                 />
-            </div>
         );
     }
 

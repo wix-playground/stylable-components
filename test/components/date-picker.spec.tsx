@@ -10,7 +10,7 @@ import {
     getNumOfFollowingDays,
     getNumOfPreviousDays
 } from '../../src/utils';
-import {dateToDateInputFormat} from "../../src/utils/date-helpers";
+import {dateToDateInputFormat} from '../../src/utils/date-helpers';
 import {DatePickerTestDriver} from '../../test-kit';
 import {sleep} from '../utils';
 
@@ -480,7 +480,7 @@ describe('The DatePicker Component', () => {
             expect(getNumOfFollowingDays(fourthDateToTest, 6), 'Wrong number of days for Saturday').to.equal(6);
         });
 
-        it('dateToDateInputFormat returns date formatted for native form submit', function () {
+        it('dateToDateInputFormat returns date formatted for native form submit', function() {
             expect(dateToDateInputFormat(new Date('Feb 18 2017'))).to.equal('2017-02-18');
             expect(dateToDateInputFormat(null)).to.equal(undefined);
         });

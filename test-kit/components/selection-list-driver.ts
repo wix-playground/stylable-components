@@ -7,42 +7,28 @@ export class SelectionListTestDriver extends DriverBase {
     public static ComponentClass = SelectionList;
 
     public focus(): void {
-        simulate.focus(this.listView);
+        simulate.focus(this.root);
     }
 
     public blur(): void {
-        simulate.blur(this.listView);
+        simulate.blur(this.root);
     }
 
     public get items(): Element[] {
-        return Array.from(this.select('LIST').children);
+        return Array.from(this.root.children);
     }
 
     public keyDown(keyCode: number): void {
-        simulate.keyDown(this.listView, {keyCode});
+        simulate.keyDown(this.root, {keyCode});
     }
 
     public click(element: Element): void {
         simulate.click(element);
     }
 
-    public get listView(): HTMLElement {
-        return this.select('SELECTION_LIST_VIEW');
+    public elementHasStylableState(element: Element, stateName: string): boolean {
+        return elementHasStylableState(element, listBaseStyle, stateName);
     }
-
-    public isInFocusedState(): boolean {
-        return elementHasStylableState(this.listView, listBaseStyle, 'focused')
-    }
-
-    public isItemInFocusedState(itemIndex: number): boolean {
-        return elementHasStylableState(this.items[itemIndex], listBaseStyle, 'focused')
-    }
-
-    public isItemInSelectedState(itemIndex: number): boolean {
-        return elementHasStylableState(this.items[itemIndex], listBaseStyle, 'selected')
-    }
-
-
 
     public elementHasStylableClassName(element: Element, className: string): boolean {
         return elementHasStylableClassName(element, listBaseStyle, className);
