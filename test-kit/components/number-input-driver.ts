@@ -3,7 +3,7 @@ import * as React from 'react';
 import {DriverBase, simulate} from 'test-drive-react';
 import {NumberInput} from '../../src';
 import {Modifiers} from '../../src/components/stepper';
-import {simulateKeyInput} from '../../test/utils';
+import {simulateKeyInput} from '../utils';
 
 export class NumberInputDriver extends DriverBase {
     public static ComponentClass = NumberInput;
