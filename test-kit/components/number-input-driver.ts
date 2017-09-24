@@ -1,5 +1,4 @@
 import {codes as KeyCodes} from 'keycode';
-import * as React from 'react';
 import {DriverBase, simulate} from 'test-drive-react';
 import {NumberInput} from '../../src';
 import {Modifiers} from '../../src/components/stepper';
