@@ -16,8 +16,7 @@
   },
   "peerDependencies": {
     "react": ">15.5.0",
-    "stylable": "^4.0.8",
-    "test-drive-react": "^0.7.0"
+    "stylable": "^4.0.8"
   },
   "dependencies": {
     "keycode": "^2.1.9",
