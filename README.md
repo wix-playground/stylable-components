@@ -68,7 +68,9 @@ Then, component drivers and util functions can be imported:
 
 `import {CheckBoxTestDriver} from 'stylable-components/dist/test-kit';`
 
-Example usage can be found in various component specs in the test folder, as they are using the drivers as well.
+Example usage can be found in various component specs in the test folder, as the drivers are used there as well.
+
+For further information about using the drivers, refer to test-drive-react's [documentation](https://github.com/wix/test-drive-react#component-drivers).
 
 ## Development
 
