@@ -401,8 +401,9 @@ describe('<RadioGroup />', () => {
         });
 
         it('renders the label next to the radio button (right by default)', async () => {
+            const distance = 7;
             const {driver: radio, waitForDom} = clientRenderer.render(
-                <RadioButton><span>Omega</span></RadioButton>
+                <RadioButton><span style={{marginLeft: distance + 'px'}}>Omega</span></RadioButton>
             ).withDriver(RadioButtonDriver);
 
             const child = radio.children[0];
@@ -411,7 +412,7 @@ describe('<RadioGroup />', () => {
                 expect(child).to.to.be.instanceOf(HTMLSpanElement);
                 expect(child).to.have.text('Omega');
                 expect([radio.icon, child]).to.be.horizontallyAligned;
-                expect([radio.icon, child]).to.be.inHorizontalSequence({distance: 5});
+                expect([radio.icon, child]).to.be.inHorizontalSequence({distance});
             });
         });
 
