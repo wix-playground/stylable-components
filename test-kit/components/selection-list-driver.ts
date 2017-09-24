@@ -1,7 +1,7 @@
 import {DriverBase, simulate} from 'test-drive-react';
 import {SelectionList} from '../../src';
 import listBaseStyle from '../../src/components/selection-list/selection-list.st.css';
-import {elementHasStylableClassName, elementHasStylableState} from '../../test/utils/inspect-stylable';
+import {elementHasStylableClassName, elementHasStylableState} from '../utils/inspect-stylable';
 
 export class SelectionListTestDriver extends DriverBase {
     public static ComponentClass = SelectionList;
