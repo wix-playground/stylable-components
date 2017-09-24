@@ -1,4 +1,4 @@
-import { DriverBase, selectDom, simulate} from 'test-drive-react';
+import {DriverBase, selectDom, simulate} from 'test-drive-react';
 import {DropDown} from '../../src/components/drop-down/drop-down';
 
 const bodySelect = selectDom(document.body);

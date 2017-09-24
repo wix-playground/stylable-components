@@ -274,7 +274,7 @@ function whenDragThingsAround(
         let waitForDom: (expectation: () => void) => Promise<void>;
         let eventMock: EventCoordinates;
 
-        beforeEach(function() {
+        beforeEach(() => {
             onChange = sinon.spy();
             onInput = sinon.spy();
             const rendered = getRenderedSlider(
@@ -532,7 +532,7 @@ function whenDragThingsAroundWithStep(
         let waitForDom: (expectation: () => void) => Promise<void>;
         let eventMock: EventCoordinates;
 
-        beforeEach(function() {
+        beforeEach(() => {
             onChange = sinon.spy();
             onInput = sinon.spy();
             const rendered = getRenderedSlider(
