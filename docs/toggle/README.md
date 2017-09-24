@@ -27,9 +27,8 @@ This component has no accepted children.
 #### Example 1:
 
 ```jsx
-//TODO: code guys - fix code example!
 import * as React from 'react';
-import { Toggle } from './components/toggle';
+import {Toggle} from './components/toggle';
 import style from './style.st.css'; // link to Style file - see examples of style files below
 
 type State = {
@@ -37,18 +36,16 @@ type State = {
 }
 
 export class ComponentsDemo extends React.Component<{}, State>{
-  	state: State,
+  public state = {
+    toggleValue: false
+  }
 
-    constructor() {
-        super();
-    },
-
-     public render() {
-        return <toggle
-        		 value="{this.state.toggleValue}"
-                 onChange={newValue => this.setState({toggleValue: newValue})}
-               />;
-    }
+  public render() {
+    return <Toggle
+      value={this.state.toggleValue}
+      onChange={e => this.setState({toggleValue: e.value})}
+    />;
+  }
 }
 ```
 

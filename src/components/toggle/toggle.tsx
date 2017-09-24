@@ -2,6 +2,7 @@ import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import {stylable} from 'wix-react-tools';
 import {FormInputProps} from '../../types/forms';
+import {isRTLContext} from '../../utils';
 import style from './toggle.st.css';
 
 export interface Props extends FormInputProps<boolean> {
@@ -58,14 +59,13 @@ export default class Toggle extends React.Component<Props, State> {
                     disabled: disabled!,
                     focus: focus!,
                     error: error!,
-                    rtl: this.context.contextProvider &&
-                        this.context.contextProvider.dir === 'rtl'
+                    rtl: isRTLContext(this.context)
                 }}
             >
                 {!disabled &&
                     <input
                         data-automation-id="TOGGLE_INPUT"
-                        className="input"
+                        className="nativeInput"
                         type="checkbox"
                         name={name}
                         aria-label={label}
@@ -77,7 +77,7 @@ export default class Toggle extends React.Component<Props, State> {
                         onBlur={this.onInputBlur}
                     />
                 }
-                <div className="switch-wrap">
+                <div className="switchWrap">
                     <div className="switch"/>
                 </div>
             </label>
