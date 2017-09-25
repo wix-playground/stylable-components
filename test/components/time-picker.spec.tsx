@@ -137,7 +137,7 @@ describe('<TimePicker/>', () => {
             it('mm input should have "55" value', () => {
                 expect(mm).attr('value', '55');
             });
-            it('ampm should have input "PM" value', function() {
+            it('ampm should have input "PM" value', () => {
                 expect(ampm).text('PM');
             });
         });
@@ -769,7 +769,7 @@ describe('<TimePicker/>', () => {
             it('mm input should have "3" value', () => {
                 expect(mm).attr('value', '3');
             });
-            itDesktop('ampm should have "AM" value', function() {
+            itDesktop('ampm should have "AM" value', () => {
                 expect(ampm).text('AM');
             });
             it('should keep selection on mm segment', () => {

@@ -10,7 +10,7 @@ import {sleep} from '../utils';
 const portalId = 'PORTAL';
 const demoContainer = 'POPUP_DEMO_DIV';
 
-describe('<Popup />', function() {
+describe('<Popup />', () => {
     const clientRenderer = new ClientRenderer();
     const bodySelect = selectDom(document.body);
     let anchor: HTMLElement;
@@ -24,11 +24,11 @@ describe('<Popup />', function() {
         anchor.style.height = '150px';
         anchor.style.border = '1px solid blue';
     });
-    afterEach(function() {clientRenderer.cleanup(); });
+    afterEach(() => {clientRenderer.cleanup(); });
     after(() => {document.body.removeChild(anchor); });
 
-    describe('The popup user', function() {
-        it('clicks on the parent and the popup opens and closes after another click', async function() {
+    describe('The popup user', () => {
+        it('clicks on the parent and the popup opens and closes after another click', async () => {
             const {select, waitForDom} = clientRenderer.render(<PopupDemo />);
 
             await waitForDom(() => {
@@ -42,7 +42,7 @@ describe('<Popup />', function() {
         });
     });
 
-    it('displays the popup and renders its children if the open prop is given', function() {
+    it('displays the popup and renders its children if the open prop is given', () => {
         clientRenderer.render(
             <Popup anchor={anchor} open>
                 <span data-automation-id="SPAN">Popup Body</span>
@@ -55,7 +55,7 @@ describe('<Popup />', function() {
         });
     });
 
-    it('does not render the popup if there is no anchor', async function() {
+    it('does not render the popup if there is no anchor', async () => {
         clientRenderer.render(
             <Popup anchor={null} open={true}>
                 <span data-automation-id="SPAN">Popup Body</span>
@@ -65,7 +65,7 @@ describe('<Popup />', function() {
         await waitFor(() => expect(bodySelect(portalId)).to.be.absent());
     });
 
-    it('does not reder the popup if the open prop is false', async function() {
+    it('does not reder the popup if the open prop is false', async () => {
         clientRenderer.render(
             <Popup anchor={anchor} open={false}>
                 <span data-automation-id="SPAN">Popup Body</span>
@@ -86,7 +86,7 @@ describe('<Popup />', function() {
         await waitFor(() => expect(bodySelect(portalId)).to.be.present());
     });
 
-    it('removes the component when unmounting', async function() {
+    it('removes the component when unmounting', async () => {
         clientRenderer.render(
             <Popup
                 anchor={anchor}
@@ -100,7 +100,7 @@ describe('<Popup />', function() {
         return waitFor(() => {expect(bodySelect(portalId)).to.not.exist; });
     });
 
-    it('syncs the popup width', function() {
+    it('syncs the popup width', () => {
         clientRenderer.render(
             <Popup
                 anchor={anchor}
@@ -116,7 +116,7 @@ describe('<Popup />', function() {
         });
     });
 
-    it('sets the default maxHeight', function() {
+    it('sets the default maxHeight', () => {
         clientRenderer.render(
             <Popup
                 anchor={anchor}
@@ -130,7 +130,7 @@ describe('<Popup />', function() {
         });
     });
 
-    it('sets and enforces the maxHeight', function() {
+    it('sets and enforces the maxHeight', () => {
         clientRenderer.render(
             <Popup
                 anchor={anchor}
@@ -146,7 +146,7 @@ describe('<Popup />', function() {
         });
     });
 
-    describe('Scrolling tests', function() {
+    describe('Scrolling tests', () => {
         const scroll = document.createElement('div');
         scroll.style.height = '5000px';
         scroll.style.width = '5000px';
@@ -159,7 +159,7 @@ describe('<Popup />', function() {
             document.body.scrollLeft = 0;
         });
 
-        it('renders the popup in the right location when it is out of view', async function() {
+        it('renders the popup in the right location when it is out of view', async () => {
             let div: HTMLDivElement;
             const {waitForDom} = clientRenderer.render(
                 <div>
@@ -187,14 +187,14 @@ describe('<Popup />', function() {
         });
     });
 
-    describe('Layout tests', function() {
+    describe('Layout tests', () => {
         const fixture = getFixture();
 
         describe('Popup with anchor', () => {
             for (const popupPos of fixture) {
                 for (const anchorPos of fixture) {
                     it(`Popup position: V: ${popupPos.vertical} H: ${popupPos.horizontal};
-                 Anchor position: V: ${anchorPos.vertical} H: ${anchorPos.horizontal}`, function() {
+                 Anchor position: V: ${anchorPos.vertical} H: ${anchorPos.horizontal}`, () => {
                         clientRenderer.render(
                             <Popup anchor={anchor} anchorPosition={anchorPos} popupPosition={popupPos} open={true}>
                                 <div style={{background: 'green', color: 'white'}}>
