@@ -36,31 +36,38 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                 </thead>
                 <tbody>
                     <tr>
-                        <td>
+                        <td className="vertical-demo">
                             <SliderView
-                                relativeValue={50}
+                                relativeValue={70}
                                 relativeStep={1}
                                 min={0}
                                 max={100}
                                 step={1}
+
+                                active={false}
                             />
                         </td>
-                        <td>
+                        <td className="vertical-demo">
                             <SliderView
-                                relativeValue={50}
+                                relativeValue={70}
                                 relativeStep={1}
                                 min={0}
                                 max={100}
                                 step={1}
+
+                                active={true}
                             />
                         </td>
-                        <td>
+                        <td className="vertical-demo">
                             <SliderView
-                                relativeValue={50}
+                                relativeValue={70}
                                 relativeStep={1}
                                 min={0}
                                 max={100}
                                 step={1}
+
+                                active={false}
+                                axis={'y'}
                             />
                         </td>
                     </tr>
