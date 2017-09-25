@@ -1,6 +1,5 @@
 import * as React from 'react';
-import {stylable} from 'wix-react-tools';
-
+import {setGlobalConfig, stylable} from 'wix-react-tools';
 import ComponentsDemoCSS from './style.st.css';
 
 import {CheckBoxDemo} from './components/checkbox-demo';
@@ -16,6 +15,8 @@ import {SliderDemo} from './components/slider-demo';
 import {TimePickerDemo} from './components/time-picker-demo';
 import {ToggleDemo} from './components/toggle-demo';
 import {TreeViewDemo, TreeViewDemoCustom} from './components/tree-view-demo';
+
+setGlobalConfig({devMode: true});
 
 @stylable(ComponentsDemoCSS)
 export class ComponentsDemo extends React.Component {
