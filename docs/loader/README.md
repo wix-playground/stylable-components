@@ -52,7 +52,7 @@ Create spinner `Loader` which wait for `2000ms` before bacame visible
 
 **Example 2:**
 
-```
+
 ```jsx
 //code example goes here
 import * as React from 'react';
@@ -66,7 +66,6 @@ ReactDOM.render(
 
 ```
 
-```
 Create custom `Loader` with image instead of content
 
 
