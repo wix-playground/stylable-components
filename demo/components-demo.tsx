@@ -111,15 +111,12 @@ export class ComponentsDemo extends React.Component {
                         <tbody>
                             <tr>
                                 <th>
-                                    <button>Normal</button>
                                     <Button>Normal</Button>
                                 </th>
                                 <th>
-                                    <button disabled >Disabled</button>
                                     <Button disabled>Disabled</Button>
                                 </th>
                                 <th>
-                                    <a className="button" href="http://www.wix.com" target="_blank">Link</a>
                                     <Button href="http://www.wix.com" target="_blank">Link</Button>
                                 </th>
                             </tr>
@@ -149,10 +146,10 @@ export class ComponentsDemo extends React.Component {
                         <tbody>
                             <tr>
                                 <th>
-                                    <input placeholder="Placeholder" />
+                                    <Input placeholder="Placeholder" />
                                 </th>
                                 <th>
-                                    <input placeholder="Disabled" disabled />
+                                    <Input placeholder="Disabled" disabled />
                                 </th>
                             </tr>
                         </tbody>
