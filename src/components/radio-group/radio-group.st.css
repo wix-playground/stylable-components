@@ -2,7 +2,7 @@
 
 :import{
     -st-from: "./radio-button.st.css";
-    -st-default: Radio;
+    -st-default: RB;
 }
 
 .root {
@@ -10,5 +10,15 @@
 }
 
 .radioGroupChild {
-    -st-extends: Radio;
+    -st-extends: RB;
+}
+
+.data-label {
+    color: black;
+    margin-left: 0.5rem;
+    cursor: pointer;
+}
+
+.RB:disabled .label {
+    cursor: default;
 }
