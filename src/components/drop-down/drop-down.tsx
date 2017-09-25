@@ -39,7 +39,8 @@ export class DropDown extends React.PureComponent<DropDownProps, DropDownState> 
         onChange: noop,
         tabIndex: 0,
         toggleIcon: CaretDown,
-        disabled: false
+        disabled: false,
+        onOpenStateChange: noop
     };
 
     public state: DropDownState = {
@@ -94,19 +95,19 @@ export class DropDown extends React.PureComponent<DropDownProps, DropDownState> 
 
     private toggleDropdown = () => {
         if (!this.props.disabled) {
-            this.props.onOpenStateChange && this.props.onOpenStateChange({value: !this.props.open});
+            this.props.onOpenStateChange({value: !this.props.open});
         }
     }
 
     private openDropdown() {
         if (!this.props.disabled && !this.props.open) {
-            this.toggleDropdown();
+            this.props.onOpenStateChange({value: true});
         }
     }
 
     private closeDropdown() {
         if (!this.props.disabled && this.props.open) {
-            this.toggleDropdown();
+            this.props.onOpenStateChange({value: false});
         }
     }
 
