@@ -114,11 +114,11 @@ export class TimePicker extends React.Component<Props, State> {
                 data-automation-id="TIME_PICKER"
                 style-state={{
                     focus,
-                    'error': error!,
-                    'disabled': disabled!,
-                    'empty': !isValueSet,
-                    'has-placeholder': !!placeholder,
-                    'rtl': isRTLContext(this.context)
+                    error: error!,
+                    disabled: disabled!,
+                    empty: !isValueSet,
+                    hasPlaceholder: !!placeholder,
+                    rtl: isRTLContext(this.context)
                 }}
                 onMouseDown={this.onRootMouseDown}
             >
@@ -188,7 +188,7 @@ export class TimePicker extends React.Component<Props, State> {
                 }
                 <label className="label" style-state={{visible: isTouchTimeInputSupported}}>
                     <input
-                        className="native-input"
+                        className="nativeInput"
                         type="time"
                         tabIndex={isTouchTimeInputSupported ? 0 : -1}
                         ref={elem => this.nativeInput = elem}

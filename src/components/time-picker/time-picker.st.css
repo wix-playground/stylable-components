@@ -21,7 +21,7 @@
     width: 7.5em;
 }
 .root {
-    -st-states: focus, disabled, empty, has-placeholder, error, rtl;
+    -st-states: focus, disabled, empty, hasPlaceholder, error, rtl;
     font-family: arial;
     font-size: 16px;
     position: relative;
@@ -69,10 +69,10 @@
 .root:empty {
     color: value(BK2);
 }
-.root:empty .stepper,
-.root:empty:has-placeholder .time,
-.root:empty:has-placeholder .ampm {
-    visibility: hidden;
+.root:empty::stepper,
+.root:empty:hasPlaceholder::time,
+.root:empty:hasPlaceholder::ampm {
+    opacity: 0;
 }
 .root:error {
     border-color: value(ER1);
@@ -202,7 +202,7 @@
 .label:visible {
     display: block;
 }
-.native-input {
+.nativeInput {
     position: absolute;
     opacity: 0;
     padding: 0;
@@ -211,7 +211,7 @@
     width: 0;
     height: 0;
 }
-.native-input:focus {
+.nativeInput:focus {
     border: 0;
 }
 
