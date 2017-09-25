@@ -36,32 +36,38 @@ Add stuff related to using custom loader component.
 ```jsx
 //code example goes here
 import * as React from 'react';
-import { Loader } from './components/loader';
-import style from './style.st.css'; // link to Style file - see examples of style files below
+import {Loader} from './components';
 
 ReactDOM.render(
-  <Spin tip="Loading...">
-    <Alert
-      message="Alert message title"
-      description="Further details about the context of this alert."
-      type="info"
-    />
-  </Spin>
+  <Loader
+    delay={2000}
+    type="spin"
+    text="loading..."
+  />
 , mountNode);
 
 ```
 
-*Comments to example 1*
+Create spinner `Loader` which wait for `2000ms` before bacame visible
 
 **Example 2:**
 
 ```
-//code example goes here	
+```jsx
+//code example goes here
+import * as React from 'react';
+import {Loader} from './components';
+
+ReactDOM.render(
+  <Loader text="loading...">
+    <img src="https://www.shareicon.net/download/2015/09/10/98905_fork.svg" width={100} height={100}/>
+  </Loader>
+, mountNode);
 
 ```
 
-*Comments to example 2*
-
+```
+Create custom `Loader` with image instead of content
 
 
 ## Style API
