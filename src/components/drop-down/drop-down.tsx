@@ -95,19 +95,19 @@ export class DropDown extends React.PureComponent<DropDownProps, DropDownState> 
 
     private toggleDropdown = () => {
         if (!this.props.disabled) {
-            this.props.onOpenStateChange({value: !this.props.open});
+            this.props.onOpenStateChange!({value: !this.props.open});
         }
     }
 
     private openDropdown() {
         if (!this.props.disabled && !this.props.open) {
-            this.props.onOpenStateChange({value: true});
+            this.props.onOpenStateChange!({value: true});
         }
     }
 
     private closeDropdown() {
         if (!this.props.disabled && this.props.open) {
-            this.props.onOpenStateChange({value: false});
+            this.props.onOpenStateChange!({value: false});
         }
     }
 
