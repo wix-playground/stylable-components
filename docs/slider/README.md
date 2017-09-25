@@ -1,19 +1,19 @@
 # Slider
 
-A **slider** an input where the user selects a value from within a given range.
+**Slider** is a component that allows users to input or select a value from a range.
 
+Sliders are great for adjusting settings that reflect intensity levels (volume, brightness, color saturation).
 
 
 ## Elements
 
 ![elements](./assets/elements.png)
 
-**Slider consists of:** "bar", "handle", "progressBar". The "handle" is dragged across the "bar" in order to give the slider a desired value while "progress" shows range from min value to the current value. Marks are representing the step. 
+A **Slider** is composed of the following elements: "bar", "handle", "progressBar", "marks", "progressMarks". The "handle" is dragged across the "bar" in order to give the slider a desired value, while "progress" shows the range from the minimum value to the current value.
 
-> TBD (need to decide on how to implement tooltip)
-> Also, you can display tooltip (e.g. to display current value) by adding child DOM element with relevant data-slot (data-slot="tooltip")
+The value steps are indicated by marks and progressMarks.
 
-
+You can display a tooltip (e.g. to display current value) by adding a child element with the relevant data-slot (data-slot="tooltip").
 
 ### API
 
@@ -21,39 +21,33 @@ A **slider** an input where the user selects a value from within a given range.
 
 | name         | type                                  | defaultValue | isRequired | description                              |
 | ------------ | ------------------------------------- | ------------ | ---------- | ---------------------------------------- |
-| axis         | enum: 'x' 'x-reverse' 'y' 'y-reverse' | 'x'          |            | The axis on which the slider will slide. |
-| value        | number                                | min          |            | Displays default OR actual value of the slider |
-| min          | number                                | 0            |            | The absolute minimum of the slider's range |
-| max          | number                                | 1            |            | The absolute maximum of the slider's range |
-| step         | number OR string "any"                | 1            |            | Set the slider's step. If step = "number" it causes slider to move in discrete increments. If step = "any"  sliders moves along a subjective range. |
-| required     | bool                                  | fasle        |            | Whether or not the slider is required in a form. |
-| disabled     | bool                                  | false        |            | If true, the slider will not be interactive |
-| label        | string                                |              |            | Text to display in accessibility mode    |
-| name         | string                                |              |            | The name of the slider. Behaves like the name attribute of an input element. |
-| displayMarks | bool                                  | false        |            | Controls the visibility of the marks     |
-| onChange     | func                                  |              | yes        | Callback function that is fired when the slider's value changed. Signature: `function(event: object, newValue: number): void` event: KeyDown event targeting the slider. newValue: The new value of the slider. |
-| onDragStart  | func                                  |              |            | Callback function that is fired when the slider has begun to move. Signature `function(event: object) : void` event: MouseDown or TouchStart event targeting the slider. |
-| onDragStop   | func                                  |              |            | Callback function that is fired when the slide has stopped moving. Signature `function(event: object) : void` event: MouseEnd or TouchEnd event targeting the slider. |
-| error        | bool                                  | FALSE        |            | Sets the `:error` CSS state on the `<slider>` |
-| rtl          | bool                                  | FALSE        |            | Makes the component RTL                  |
-
-
+| axis         | enum:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>'x'<br>'x-reverse'<br>'y'<br>'y-reverse' | 'x'          | no          | The axis on which the slider will slide. |
+| value        | number                                | min          | no            | Displays default OR actual value of the slider |
+| min          | number                                | 0            | no            | The absolute minimum of the slider's range |
+| max          | number                                | 1            | no            | The absolute maximum of the slider's range |
+| step         | number OR string "any"                | 1            | no           | Set the slider's step. If step = "number" it causes slider to move in discrete increments. If step = "any"  sliders moves along a subjective range. |
+| required     | boolean                               | false        | no           | Whether or not the slider is required in a form. |
+| disabled     | boolean                               | false        | no           | If true, the slider will not be interactive |
+| label        | string                                |              | no           | Text to display in accessibility mode    |
+| name         | string                                |              | no           | The name of the slider. Behaves like the name attribute of an input element. |
+| displayStopMarks | boolean                               | false        | no           | Controls the visibility of the marks     |
+| onChange     | function                                |              | yes        | Callback function that is fired when the slider's value changed. Signature: `function(newValue: number): void` event: KeyDown event targeting the slider. newValue: The new value of the slider. |
+| onDragStart  | function                                 |              | no           | Callback function that is fired when the slider has begun to move. Signature `function(event: object) : void` event: MouseDown or TouchStart event targeting the slider. |
+| onDragStop   | function                                  |              | no           | Callback function that is fired when the slide has stopped moving. Signature `function(event: object) : void` event: MouseEnd or TouchEnd event targeting the slider. |
 
 #### Accepted Children
 
 > TBD (need to decide on how to implement tooltip)
 
-This component accepts children with the following `data-slot` attribute, in order to be displayed in specific places in its layout ( in this case child position is connected to ::handle)
+**Slider** accepts children with the following `data-slot` attribute, in order to be displayed in a specific places in its layout. For **Slider**, the child position is connected to ::handle.
 
 | data-slot | description                              | example                                  |
 | --------- | ---------------------------------------- | ---------------------------------------- |
-| tooltip   | Allows you to insert a component (or components) above the input | `<div data-slot="tooltip">hello world</div>` |
-
-
+| tooltip   | Allows you to insert a component (or components) and connect it to  the handle element. | `<div data-slot="tooltip">hello world</div>` |
 
 ### Code Examples
 
-#### **Example 1:**
+#### Example 1
 
 ```jsx
 //TODO: code example should be updated when component is done
@@ -81,9 +75,7 @@ export class ComponentsDemo extends React.Component<{}, State>{
 }
 ```
 
-Comments to example 1
-
-**Example 2:**
+#### Example 2
 
 ```jsx
 //TODO: code example should be updated when component is done
@@ -112,36 +104,28 @@ export class ComponentsDemo extends React.Component<{}, State>{
 }
 ```
 
-Comments to example 2
-
-
 ## Style API
 
 ### Subcomponents (pseudo elements)
 
 | selector        | description                              | note                                     |
 | --------------- | ---------------------------------------- | ---------------------------------------- |
-| ::handle        | Allows you to style the handle of the slider |                                          |
-| ::bar           | Allows you to style the bar of the slider |                                          |
-| ::progressBar   | Allows you to style the progress bar of the slider |                                          |
-| ::marks         | Allows to style marks that are shown on the ::bar section of the slider | by default ::marks use the same background color as ::bar |
-| ::progressMarks | Allows to style marks that are shown on the :progressBar section of the slider | by default ::progressMarks use the same background color as ::progressBar |
-
-
+| ::handle        | Allows you to style the handle of the slider. |                                          |
+| ::bar           | Allows you to style the bar of the slider. |                                          |
+| ::progressBar   | Allows you to style the progress bar of the slider. |                                          |
+| ::marks         | Allows to style marks that are shown on the ::bar section of the slider. | by default ::marks use the same background color as ::bar |
+| ::progressMarks | Allows to style marks that are shown on the ::progressBar section of the slider. | By default, ::progressMark elements use the same background color as ::progressBar. |
 
 ### Custom CSS States (pseudo-classes)
 
 | state                          | description                              |
 | ------------------------------ | ---------------------------------------- |
-| :error                         | Style the component on error, i.e. when the `error` prop is true |
-| :hover, :focus, :disabled, etc | standard CSS pseudo state                |
-
-
-
+| :error                         | Style the component on error, i.e. when the `error` prop is true. |
+| :hover, :focus, :disabled, etc | Standard CSS pseudo states.               |
 
 ### Style Code Examples
 
-**Example 1:**
+#### Example 1
 
 ```css
 @import * from './components/slider'; 
@@ -168,10 +152,4 @@ Slider::handle:hover {
 Slider:disabled::handle {
   background-color: gray;
 }
-```
-
-**Example 2:**
-
-```
-/* code example of the basic theme here? */
 ```
