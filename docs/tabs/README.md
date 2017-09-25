@@ -8,7 +8,7 @@ Tabs are a set of layered sections of content, known as tab panels, that display
 
 ![elements](./assets/elements.png)
 
-**Tab consist of:** 
+**Tab consist of:**
 
 1. Tabs - set of tab elements and their associated tab panels (acts as root)
 2. Tab List - set of all tab elements contained in component.
@@ -39,7 +39,20 @@ When a tab interface is initialized, one tab panel is displayed and its associat
 **Example 1:**
 
 ```jsx
-//code example goes here
+<Tabs
+    selectedTabKey="2"
+    onChange={key => handleChange(key)}
+>
+    <Tab key="1" label="Tab One">
+        <p>This is hidden</p>
+    </Tab>
+    <Tab key="2" label="Tab Two">
+        <p>This is selected</p>
+    </Tab>
+    <Tab key="3" label="Tab Three" disabled={true}>
+        <p>This is disabled and cannot be selected</p>
+    </Tab>
+</Tabs>
 ```
 
 *Comments to example 1*
@@ -48,7 +61,20 @@ When a tab interface is initialized, one tab panel is displayed and its associat
 **Example 2:**
 
 ```jsx
-//code example goes here
+<Tabs
+    disabled={true}
+    selectedTabKey="2"
+>
+    <Tab key="1" label="Tab One">
+        <p>This is disabled and cannot be selected</p>
+    </Tab>
+    <Tab key="2" label="Tab Two">
+        <p>This is selected</p>
+    </Tab>
+    <Tab key="3" label="Tab Three">
+        <p>This is disabled and cannot be selected</p>
+    </Tab>
+</Tabs>
 ```
 
 *Comments to example 2*
@@ -63,7 +89,7 @@ When a tab interface is initialized, one tab panel is displayed and its associat
 | ---------- | ---------------------------------------- |
 | ::tabs     | Allows to style the entire tab component |
 | ::tabList  | Allows to style container that stores all tabs |
-| ::tab      | Allows to style specific tab             |
+| ::selectedTab  | Allows to style selected tab         |
 | ::tabPanel | Allows to style tab panel                |
 
 #### Custom CSS States (pseudo-classes)
@@ -79,5 +105,16 @@ When a tab interface is initialized, one tab panel is displayed and its associat
 ### Style Code Example
 
 ```css
-//code example goes here
+Tabs::tabList {
+    border: 1px solid limegreen;
+    /* border around all tabs */
+}
+Tabs::tabs {
+    background: green;
+    /* every tab is green */
+}
+Tabs::selectedTab {
+    background: yellow;
+    /* selected tab is yellow */
+}
 ```
