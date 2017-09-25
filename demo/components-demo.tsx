@@ -16,6 +16,8 @@ import {TimePickerDemo} from './components/time-picker-demo';
 import {ToggleDemo} from './components/toggle-demo';
 import {TreeViewDemo, TreeViewDemoCustom} from './components/tree-view-demo';
 
+import {Button, Input} from '../src';
+
 setGlobalConfig({devMode: true});
 
 @stylable(ComponentsDemoCSS)
@@ -110,15 +112,15 @@ export class ComponentsDemo extends React.Component {
                             <tr>
                                 <th>
                                     <button>Normal</button>
+                                    <Button>Normal</Button>
                                 </th>
                                 <th>
                                     <button disabled >Disabled</button>
+                                    <Button disabled>Disabled</Button>
                                 </th>
                                 <th>
                                     <a className="button" href="http://www.wix.com" target="_blank">Link</a>
-                                </th>
-                                <th>
-                                    <a className="button" href="http://www.wix.com" target="_blank">Disabled link</a>
+                                    <Button href="http://www.wix.com" target="_blank">Link</Button>
                                 </th>
                             </tr>
                         </tbody>
