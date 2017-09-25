@@ -33,12 +33,8 @@ You can also add elements to it by using the tooltip (e.g. to display value) and
 | onDragStart | func                                  |              |            | Callback function that is fired when the slider has begun to move.<br>`function(event: object) : void`<br> ● event: MouseDown or TouchStart event targeting the slider. |
 | onDragStop  | func                                  |              |            | Callback function that is fired when the slide has stopped moving.<br>`function(event: object) : void`<br> ● event: MouseEnd or TouchEnd event targeting the slider. |
 | tooltip     | node                                  | null         |            | You can pass a tooltip component into this prop, and it will be displayed on hover near the handle of the Slider. |
-| error       | node                                  |              |            | NEED TO RESEARCH                         |
-| RTL         | bool                                  | FALSE        |            | NEED TO RESEARCH                         |
 
-### Code Examples
-
-#### **Example 1**
+### Code Example
 
 ```jsx
 //TODO: code guys - fix code example!
@@ -69,16 +65,6 @@ export class ComponentsDemo extends React.Component<{}, State>{
 }
 ```
 
-Comments to example 1 
-
-**Example 2**
-
-```max
-//...example 2: give something interesting
-```
-
-Comments to example 2
-
 ## Style API
 
 ### Subcomponents (pseudo elements)
@@ -99,9 +85,7 @@ Comments to example 2
 | :error                         | Style the component on error, i.e. when the `error` prop is not empty |
 | :hover, :focus, :disabled, etc | standard CSS pseudo state                |
 
-### Style Code Examples
-
-**Example 1**
+### Style Code Example
 
 ```css
 @import * from './components/slider'; /* TODO: fix the correct syntax */
@@ -127,10 +111,4 @@ Slider::handle:hover {
 Slider:disabled::handle {
   background-color: gray;
 }
-```
-
-**Example 2**
-
-```
-/* code example of the basic theme here? */
 ```
