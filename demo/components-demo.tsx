@@ -2,6 +2,7 @@ import * as React from 'react';
 import {setGlobalConfig, stylable} from 'wix-react-tools';
 import ComponentsDemoCSS from './style.st.css';
 
+import {AutoCompleteDemo} from './components/auto-complete.demo';
 import {CheckBoxDemo} from './components/checkbox-demo';
 import {DatePickerDemo} from './components/date-picker-demo';
 import {DropDownDemo} from './components/drop-down.demo';
@@ -26,6 +27,8 @@ export class ComponentsDemo extends React.Component {
                 <ImageDemo />
                 <hr />
                 <DropDownDemo />
+                <hr />
+                <AutoCompleteDemo />
                 <hr />
                 <div>
                     <h2>CheckBox</h2>
