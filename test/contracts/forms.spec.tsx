@@ -1,7 +1,7 @@
 import React = require('react');
 import {SyntheticEvent} from 'react';
 import {ClientRenderer, expect, waitFor} from 'test-drive-react';
-import {CheckBox, DatePicker, DropDown, NumberInput, SelectionList, Slider, Toggle} from '../../src';
+import {CheckBox, DatePicker, DropDown, NumberInput, RadioGroup, Slider, Toggle} from '../../src';
 
 describe('Form contract of', function() {
 
@@ -80,6 +80,19 @@ describe('Form contract of', function() {
 
     it('NumberInput', async function() {
         await testFormContract(<NumberInput />, 666, `?${testName}=666`);
+    });
+
+    it('RadioGroup (dataSource)', async function() {
+        await testFormContract(<RadioGroup dataSource={[{ value: 'A' }, { value: 'B' }, { value: 'C' }]} />, 'B', `?${testName}=B`);
+    });
+
+    it('RadioGroup (children)', async function() {
+        await testFormContract(
+            <RadioGroup>
+                <div data-value="A">Adalbert</div>
+                <div data-value="B">Bombino</div>
+                <div data-value="C">Cicciolina</div>
+            </RadioGroup>, 'B', `?${testName}=B`);
     });
 
     // RadioGroup - wait for Marton
