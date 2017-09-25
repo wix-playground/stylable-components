@@ -4,7 +4,7 @@ import {expect} from 'test-drive-react';
 import * as WixReactComponents from '../../src';
 import {isReactComponent} from '../utils/is-react-component';
 
-describe('SSR compatibility', function() {
+describe('SSR compatibility', () => {
     const libExportNames = Object.keys(WixReactComponents);
 
     libExportNames.forEach(exportName => {

@@ -6,7 +6,7 @@ import {TreeViewDemo, TreeViewDemoCustom} from '../../demo/components/tree-view-
 import {TreeItem, TreeView} from '../../src';
 import {getLastAvailableItem, getNextItem, getPreviousItem} from '../../src/components/tree-view//tree-util';
 import {initParentsMap, ParentsMap, TreeItemData, TreeStateMap} from '../../src/components/tree-view/tree-view';
-import {elementHasStylableState} from '../utils/inspect-stylable';
+import {elementHasStylableState} from '../../test-kit/utils';
 
 // this can be removed once encapsulated in the driver
 import {Stylesheet} from 'stylable';
