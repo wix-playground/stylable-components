@@ -98,9 +98,9 @@
     padding-right: 9px;
     padding-left: 0;
 }
-.root:rtl::time:after {
-    right: 1.4em;
-    left: auto;
+.root:rtl::time {
+    display: inline-flex;
+    flex-direction: row-reverse;
 }
 
 .input {
