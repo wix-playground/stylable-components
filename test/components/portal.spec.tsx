@@ -17,7 +17,7 @@ describe('<Portal />', function() {
 
         await waitFor(() => {
             expect(driver.portal).to.be.present();
-            expect(portal.content[0]).to.be.present();
+            expect(driver.content[0]).to.be.present();
         });
     });
 
@@ -86,7 +86,7 @@ describe('<Portal />', function() {
             </Portal>
         ).withDriver(PortalTestDriver);
 
-        await waitFor(() => expect(portal.content[0]).to.have.text(initialText));
+        await waitFor(() => expect(driver.content[0]).to.have.text(initialText));
 
         clientRenderer.render(
             <Portal>
@@ -95,7 +95,7 @@ describe('<Portal />', function() {
             container
         );
 
-        await waitFor(() => expect(portal.content[0]).to.have.text(updatedText));
+        await waitFor(() => expect(driver.content[0]).to.have.text(updatedText));
     });
 
     it('renders the portal in the bottom of the DOM', async function() {
@@ -107,9 +107,9 @@ describe('<Portal />', function() {
 
         await waitFor(() => {
             /* tslint:disable:no-bitwise */
-            expect(driver.portal.compareDocumentPosition(portal.content[0]) & Node.DOCUMENT_POSITION_CONTAINED_BY,
+            expect(driver.portal!.compareDocumentPosition(driver.content[0]) & Node.DOCUMENT_POSITION_CONTAINED_BY,
                 'children contained in portal').to.equal(Node.DOCUMENT_POSITION_CONTAINED_BY);
-            expect(container.compareDocumentPosition(driver.portal) & Node.DOCUMENT_POSITION_FOLLOWING,
+            expect(container.compareDocumentPosition(driver.portal!) & Node.DOCUMENT_POSITION_FOLLOWING,
                 'portal is following the app container').to.equal(Node.DOCUMENT_POSITION_FOLLOWING);
             /* tslint:enable:no-bitwise */
         });

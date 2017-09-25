@@ -4,7 +4,7 @@ import {DriverBase} from 'test-drive-react';
 export class PortalTestDriver extends DriverBase {
     public static ComponentClass = Portal;
 
-    private get portal(): Element | null {
+    public get portal(): Element | null {
         if (!this.select('PORTAL_REF')) {
             return null;
         }
