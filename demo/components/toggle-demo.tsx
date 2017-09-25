@@ -1,13 +1,11 @@
 import * as React from 'react';
 import {ContextProvider, Toggle} from '../../src';
 import {ChangeEvent} from '../../src/types/events';
-import styles from '../wix-theme/theme.st.css';
 
 export interface State {
     checked: boolean;
 }
 
-@SBComponent(styles)
 export class ToggleDemo extends React.Component<{}, State> {
     public state = {
         checked: false

@@ -1,8 +1,7 @@
 import * as React from 'react';
 import {stylable} from 'wix-react-tools';
 
-import ComponentsDemoCSS from './style.st.css';
-
+import styles from './wix-theme/theme.st.css';
 import {CheckBoxDemo} from './components/checkbox-demo';
 import {DatePickerDemo} from './components/date-picker-demo';
 import {DropDownDemo} from './components/drop-down.demo';
@@ -16,10 +15,8 @@ import {SliderDemo} from './components/slider-demo';
 import {TimePickerDemo} from './components/time-picker-demo';
 import {ToggleDemo} from './components/toggle-demo';
 import {TreeViewDemo, TreeViewDemoCustom} from './components/tree-view-demo';
-import './style.st.css';
-import styles from './wix-theme/theme.st.css';
 
-@stylable(ComponentsDemoCSS)
+@stylable(styles)
 export class ComponentsDemo extends React.Component {
     public render() {
         return (
@@ -42,14 +39,14 @@ export class ComponentsDemo extends React.Component {
                 <hr />
                 <div>
                     <h2>TimePicker</h2>
-                    <TimePickerDemo />
+                    <TimePickerDemo/>
                 </div>
-                <hr />
+                <hr/>
                 <div>
                     <h2>Toggle</h2>
                     <ToggleDemo />
                 </div>
-                <hr />
+                <hr/>
                 <div>
                     <h2>Slider</h2>
                     <SliderDemo />
@@ -110,7 +107,7 @@ export class ComponentsDemo extends React.Component {
                         <tbody>
                             <tr>
                                 <th>
-                                    <button>Normal</button>
+                                    <button className="button fullBlue large">Normal</button>
                                 </th>
                                 <th>
                                     <button disabled >Disabled</button>
@@ -160,7 +157,7 @@ export class ComponentsDemo extends React.Component {
                 <hr />
                 <div>
                     <h2>Popup</h2>
-                    <PopupDemo />
+                    <PopupDemo/>
                 </div>
                 <hr />
                 <div>

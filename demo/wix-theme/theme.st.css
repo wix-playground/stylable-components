@@ -85,6 +85,7 @@ NumberInput {
 NumberInput input {
 	font-family: "HelveticaNeue-Regular", sans-serif;
 	color: value(D10);
+	font-size: 16px;
 	background: transparent;
 }
 
@@ -104,7 +105,7 @@ NumberInput:hover {
 	border: 1px solid value(B30);
 }
 
-NumberInput::stepper {
+/* NumberInput::stepper {
 	width: 30px;
 	background: transparent;
 }
@@ -120,7 +121,7 @@ NumberInput::stepper::down::control-icon, NumberInput::stepper::up::control-icon
 
 NumberInput::stepper::down::control-icon:hover, NumberInput::stepper::up::control-icon:hover {
 	color: value(B00);
-}
+} */
 
 
 /* Disabled */
@@ -146,6 +147,21 @@ NumberInput:error {
 	border-color: value(R00);
 }
 
+
+.button {
+	border-radius: 10px;
+}
+
+.button.fullBlue {
+	background-color: #0099ff;
+	color: white;
+}
+
+.button.large {
+	height: 36px;
+	padding: 0 30px;
+
+}
 
 /* Toggle */
 
@@ -325,10 +341,6 @@ TimePicker::input::selection {
 TimePicker::input::selection:hover {
 	background: #DAEFFE;
 }
-
-
-
-
 
 /* Stepper */
 Stepper::up {
