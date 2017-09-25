@@ -73,14 +73,13 @@ See [README.md](./README.md) for more info.
 
 ## States (if applicable)
 
-| State    | Description                              | Link to design |
-| :------- | :--------------------------------------- | -------------- |
-| Default  | Default component appearance             |                |
-| Hover    | User hovered over bar OR handle          |                |
-| Focus    | User focused on the tab                  |                |
-| Active   | Tab is active                            |                |
-| Disabled | Component is in disabled state & not actionable |                |
-| Error    | Error state for the component (can be set with :error pseudo-class) |                |
+| State    | Description                              |
+| :------- | :--------------------------------------- |
+| Default  | Default component appearance             |
+| Hover    | User hovered over tab                    |
+| Focus    | User focused on the tab                  |
+| Active   | Tab is active                            |
+| Disabled | Tab OR entire component is in disabled state & not actionabl |
 
 Design [assets](https://zpl.io/2kRTvO)
 
@@ -152,13 +151,13 @@ When a tab interface is initialized, tab panel displays content that is associat
 
 User can prevent loading of inactive tabs with `killInactiveTab` prop. When `killInactiveTab` is set to `true` component loads only the content that is related "active" tab & tab panel. When swathing to another tab, content from previously "active" tab unloads and all background activities are terminated.
 
-By default Tab List is displayed on top of the Tab Panel. But it can be changed with `position`  prop that accepts the following values: `left / right / up / down`. When `position` prop is set `left / right` tabs are displayed in vertical position (NOTE: even though tabs are displayed vertically, we keep the text orientation to horizontal. Increasing tab content will push the tab panel to the left / right). 
+By default Tab List is displayed on top of the Tab Panel. But it can be changed with `position`  prop that accepts the following values: `left / right / up / down`. When `position` prop is set `left / right` tabs are displayed in vertical position (NOTE: even though tabs are displayed vertically, we keep the text orientation horizontal. Increasing tab content will push the tab panel to the left / right). 
 
 By default tab takes the size of its content + 18 px margins on sides (so different tabs may have different sizes). 
 
-If tab component can not fit all tabs we display arrows on both sides. User can click on the arrow which will scroll tabs to the corresponding direction revealing 1 new tab. When user scrolls to the end of the tab list (e.g on the right) corresponding arrow disappears (note that in this case arrow on the left should be displayed, so that the user is able to return to the beginning of the tab list).
+If tab component can not fit all tabs, they simply cut. 
 
-Disabled state for tabs can be controlled with `disabled` prop. It is possible to disable one tab OR all tabs except for the active one
+Disabled state for tabs can be controlled with `disabled` prop. It is possible to disable one tab OR all tabs at the same time.
 
 Active tab should always keep its state (e.g. if user entered some information into active tab panel and then left tab component we should preserve the information). Same behavior should be applied inactive tabs if `killInactiveTab` prop is set to `false`.
 
@@ -173,10 +172,9 @@ We do not have anything here for now.
 
 #### Edge case handling
 
-| Case                             | Handling                                 |
-| -------------------------------- | ---------------------------------------- |
-| no active tab                    | Tab Panel remains empty or can display a placeholder (if provided) |
-| active tab is set to be disabled | Nothing happens. Active tab should not be disabled. |
+| Case          | Handling                                 |
+| ------------- | ---------------------------------------- |
+| no active tab | Tab Panel remains empty or can display a placeholder (if provided) |
 
 
 

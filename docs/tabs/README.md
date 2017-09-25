@@ -24,13 +24,12 @@ When a tab interface is initialized, one tab panel is displayed and its associat
 | name             | type               | defaultValue | isRequired | description                              |
 | ---------------- | ------------------ | ------------ | ---------- | ---------------------------------------- |
 | onChange         | func               |              | yes        | Callback function that is fired when the tab value changes |
-| tabList          | components         |              |            | Allows to pass simple strings (e.g. "tab one", "1") OR components (e.g. string with an icon) |
-| activeTabId      | number             |              |            | Controls which tab is active             |
-| defaultTabId     | number             |              |            | Controls tab that is active by default (e.g. when component is mounted) |
+| children         | node               |              |            | Should be used to pass `Tab` components. |
+| selectedTabKey   | string             |              |            | Controls which tab is active             |
+| defaultTabKey    | number             |              |            | Controls tab that is active by default (e.g. when component is mounted) |
 | killInactiveTabs | bool               | false        |            | When `false` component loads all tabs and tab panels content. When `true` component loads content related to active tab only. Switching between tabs unloads all previous content. |
 | position         | enum               | up           |            | Controls the location of tabs relative to the tab panel. Accepted values are: up/down/left/right |
 | disabled         | array (of tab IDs) |              |            | Specifies disabled tabs                  |
-| rtl              | bool               | false        |            | Makes the component RTL                  |
 
 
 
@@ -49,7 +48,7 @@ When a tab interface is initialized, one tab panel is displayed and its associat
     <Tab key="2" label="Tab Two">
         <p>This is selected</p>
     </Tab>
-    <Tab key="3" label="Tab Three" disabled={true}>
+    <Tab key="3" label={component} disabled={true}>
         <p>This is disabled and cannot be selected</p>
     </Tab>
 </Tabs>
@@ -71,7 +70,7 @@ When a tab interface is initialized, one tab panel is displayed and its associat
     <Tab key="2" label="Tab Two">
         <p>This is selected</p>
     </Tab>
-    <Tab key="3" label="Tab Three">
+    <Tab key="3" label={component}>
         <p>This is disabled and cannot be selected</p>
     </Tab>
 </Tabs>
@@ -85,20 +84,17 @@ When a tab interface is initialized, one tab panel is displayed and its associat
 
 #### Subcomponents (pseudo-elements)
 
-| selector   | description                              |
-| ---------- | ---------------------------------------- |
-| ::tabs     | Allows to style the entire tab component |
-| ::tabList  | Allows to style container that stores all tabs |
-| ::selectedTab  | Allows to style selected tab         |
-| ::tabPanel | Allows to style tab panel                |
+| selector      | description                              |
+| ------------- | ---------------------------------------- |
+| ::tabList     | Allows to style container that stores all tabs |
+| ::selectedTab | Allows to style selected tab             |
+| ::tabPanel    | Allows to style tab panel                |
 
 #### Custom CSS States (pseudo-classes)
 
-| state                          | description                              |
-| ------------------------------ | ---------------------------------------- |
-| :active                        | Style the active tab                     |
-| :error                         | Style the component on error, i.e. when the `error` prop is true |
-| :hover, :focus, :disabled, etc | Standard CSS states                      |
+| state                          | description         |
+| ------------------------------ | ------------------- |
+| :hover, :focus, :disabled, etc | Standard CSS states |
 
 
 
