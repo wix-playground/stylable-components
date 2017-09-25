@@ -16,7 +16,7 @@ export class Portal extends React.PureComponent<PortalProps> {
         this.portalContent = (
             <div {...rest} data-automation-id={uniqueId}>{children}</div>
         );
-        return <span data-id={uniqueId} data-automation-id="ID_SPAN" style={{display: 'none'}}/>;
+        return <span data-id={uniqueId} data-automation-id="PORTAL_REF" style={{display: 'none'}}/>;
     }
 
     public componentDidMount() {

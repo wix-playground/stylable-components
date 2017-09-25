@@ -5,14 +5,12 @@ export class PortalTestDriver extends DriverBase {
     public static ComponentClass = Portal;
 
     private get portal(): Element | null {
-        if (!this.select('ID_SPAN')) return null;
-        const portalDomUniqueId =
-            `[data-automation-id="${this.select('ID_SPAN').getAttribute('data-id')!}"]`;
-        return document.querySelector(portalDomUniqueId);
-    }
-
-    public get portalRoot(): Element {
-        return this.portal!;
+        if (!this.select('PORTAL_REF')) {
+            return null;
+        }
+        const portalRefSelector =
+            `[data-automation-id="${this.select('PORTAL_REF').getAttribute('data-id')!}"]`;
+        return document.querySelector(portalRefSelector);
     }
 
     public get content(): HTMLCollection {

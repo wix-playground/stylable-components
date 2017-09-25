@@ -1,7 +1,9 @@
 import * as keycode from 'keycode';
+import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import {stylable} from 'wix-react-tools';
 import {FormInputProps} from '../../types/forms';
+import {isRTLContext} from '../../utils';
 import {ScreenReaderNotification} from '../screen-reader-notification';
 import {Modifiers, Stepper} from '../stepper';
 import {LABELS} from './strings';
@@ -62,8 +64,12 @@ export class TimePicker extends React.Component<Props, State> {
         format: is12TimeFormat ? 'ampm' : '24h',
         disabled: false,
         error: false,
-        rtl: false,
         required: false
+    };
+    public static contextTypes = {
+        contextProvider: PropTypes.shape({
+            dir: PropTypes.string
+        })
     };
     private nativeInput: HTMLInputElement | null;
     private segments: {
@@ -99,7 +105,7 @@ export class TimePicker extends React.Component<Props, State> {
 
     public render() {
         const {focus, hh, mm, ampm, format, notification} = this.state;
-        const {label, placeholder, disabled, error, required, rtl, name} = this.props;
+        const {label, placeholder, disabled, error, required, name} = this.props;
         const isValueSet = hh !== undefined || mm !== undefined;
         const timeSegments: TimeSegment[] = ['hh', 'mm'];
 
@@ -108,11 +114,11 @@ export class TimePicker extends React.Component<Props, State> {
                 data-automation-id="TIME_PICKER"
                 style-state={{
                     focus,
-                    'error': error!,
-                    'disabled': disabled!,
-                    'empty': !isValueSet,
-                    'rtl': rtl!,
-                    'has-placeholder': !!placeholder
+                    error: error!,
+                    disabled: disabled!,
+                    empty: !isValueSet,
+                    hasPlaceholder: !!placeholder,
+                    rtl: isRTLContext(this.context)
                 }}
                 onMouseDown={this.onRootMouseDown}
             >
@@ -182,7 +188,7 @@ export class TimePicker extends React.Component<Props, State> {
                 }
                 <label className="label" style-state={{visible: isTouchTimeInputSupported}}>
                     <input
-                        className="native-input"
+                        className="nativeInput"
                         type="time"
                         tabIndex={isTouchTimeInputSupported ? 0 : -1}
                         ref={elem => this.nativeInput = elem}

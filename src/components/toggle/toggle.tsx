@@ -65,7 +65,7 @@ export default class Toggle extends React.Component<Props, State> {
                 {!disabled &&
                     <input
                         data-automation-id="TOGGLE_INPUT"
-                        className="input"
+                        className="nativeInput"
                         type="checkbox"
                         name={name}
                         aria-label={label}
@@ -77,9 +77,7 @@ export default class Toggle extends React.Component<Props, State> {
                         onBlur={this.onInputBlur}
                     />
                 }
-                <div className="switch-wrap">
-                    <div className="switch"/>
-                </div>
+                <div className="switch"/>
             </label>
         );
     }
