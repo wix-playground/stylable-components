@@ -2,7 +2,7 @@ import {expect, sinon} from 'test-drive-react';
 import {overrideGlobalConfig, setGlobalConfig} from 'wix-react-tools';
 import {createLogger, error, errorOnce, warn, warnOnce} from '../../src/utils/logger';
 
-function assetError(fn: sinon.SinonSpy, err: Error) {
+function assertError(fn: sinon.SinonSpy, err: Error) {
     expect(fn).to.calledOnce;
     expect(fn.firstCall.args[0]).instanceof(Error);
     expect(fn.firstCall.args[0]).property('message', err.message);
@@ -58,11 +58,11 @@ describe('logger', () => {
             describe(method, () => {
                 it('no formating', () => {
                     logger[method]('Warning message');
-                    assetError(spies[method], new Error('Warning message'));
+                    assertError(spies[method], new Error('Warning message'));
                 });
                 it('formaring', () => {
                     logger[method]('Warning message, a=%s, b=%s', 11, 12);
-                    assetError(spies[method], new Error('Warning message, a=11, b=12'));
+                    assertError(spies[method], new Error('Warning message, a=11, b=12'));
                 });
                 it('call x 2', () => {
                     logger[method]('Warning message');
