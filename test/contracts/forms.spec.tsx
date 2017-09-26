@@ -1,14 +1,15 @@
 import React = require('react');
 import {SyntheticEvent} from 'react';
 import {ClientRenderer, expect, waitFor} from 'test-drive-react';
-import {CheckBox, DatePicker, DropDown, NumberInput, RadioGroup, Slider, Toggle} from '../../src';
+import {CheckBox, DatePicker, DropDown, NumberInput, RadioGroup, RadioButton, Slider, Toggle} from '../../src';
+import {TimePicker} from "../../src/components/time-picker/time-picker";
 
-describe('Form contract of', function() {
+describe('Form contract of', () => {
 
     const testName = 'testInput';
     const clientRenderer = new ClientRenderer();
 
-    afterEach(function() {
+    afterEach(() => {
         clientRenderer.cleanup();
     });
 
@@ -48,28 +49,28 @@ describe('Form contract of', function() {
         });
     }
 
-    it('CheckBox (checked)', async function() {
+    it('CheckBox (checked)', async () => {
         await testFormContract(<CheckBox />, true, `?${testName}=on`);
     });
 
-    it('CheckBox (unchecked)', async function() {
+    it('CheckBox (unchecked)', async () => {
         await testFormContract(<CheckBox />, false, '');
     });
 
-    it('CheckBox (custom value)', async function() {
+    it('CheckBox (custom value)', async () => {
         await testFormContract(<CheckBox formValue="custom"/>, true, `?${testName}=custom`);
     });
 
-    it('DatePicker', async function() {
+    it('DatePicker', async () => {
         const sampleDate = '2017-02-01';
         await testFormContract(<DatePicker/>, new Date(sampleDate), `?${testName}=${sampleDate}`);
     });
 
-    it('DropDown (dataSource)', async function() {
+    it('DropDown (dataSource)', async () => {
         await testFormContract(<DropDown dataSource={['A', 'B', 'C']} />, 'B', `?${testName}=B`);
     });
 
-    it('DropDown (children)', async function() {
+    it('DropDown (children)', async () => {
         await testFormContract(
             <DropDown>
                 <div data-value="A">Adalbert</div>
@@ -78,30 +79,34 @@ describe('Form contract of', function() {
             </DropDown>, 'B', `?${testName}=B`);
     });
 
-    it('NumberInput', async function() {
+    it('NumberInput', async () => {
         await testFormContract(<NumberInput />, 666, `?${testName}=666`);
     });
 
-    it('RadioGroup (dataSource)', async function() {
-        await testFormContract(<RadioGroup dataSource={[{ value: 'A' }, { value: 'B' }, { value: 'C' }]} />, 'B', `?${testName}=B`);
+    it('RadioGroup (dataSource)', async () => {
+        await testFormContract(<RadioGroup dataSource={[{value: 'A'}, {value: 'B'}, {value: 'C'}]} />,
+            'B', `?${testName}=B`
+        );
     });
 
-    it('RadioGroup (children)', async function() {
+    it('RadioGroup (children)', async () => {
         await testFormContract(
             <RadioGroup>
-                <div data-value="A">Adalbert</div>
-                <div data-value="B">Bombino</div>
-                <div data-value="C">Cicciolina</div>
+                <RadioButton value="A">Adalbert</RadioButton>
+                <RadioButton value="B">Bombino</RadioButton>
+                <RadioButton value="C">Cicciolina</RadioButton>
             </RadioGroup>, 'B', `?${testName}=B`);
     });
 
-    // RadioGroup - wait for Marton
-
-    it('Slider', async function() {
+    it('Slider', async () => {
         await testFormContract(<Slider />, 666, `?${testName}=666`);
     });
 
-    it('Toggle', async function() {
+    it.skip('TimePicker', async () => {
+        await testFormContract(<TimePicker />, "4:36", `?${testName}=04%3A36`);
+    });
+
+    it('Toggle (on)', async () => {
         await testFormContract(<Toggle />, true, `?${testName}=on`);
     });
 
