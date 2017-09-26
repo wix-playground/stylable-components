@@ -113,8 +113,8 @@ export class DatePicker extends React.PureComponent<DatePickerProps, DatePickerS
 
     private updateDropdownDate = (updatedDate: Date): void => {
         this.setState({
-            highlightFocusedDate: false,
-            dropdownDate: updatedDate
+           highlightFocusedDate: false,
+           dropdownDate: updatedDate
         });
     }
 

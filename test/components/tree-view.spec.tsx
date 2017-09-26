@@ -26,7 +26,7 @@ const KeyCodes: any = {
     RIGHT: keycode('right')
 };
 
-export const treeData: TreeItemData[] = [
+const treeData: TreeItemData[] = [
     {
         label: 'Food Menu', children: [
             {
