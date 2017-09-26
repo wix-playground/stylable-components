@@ -74,7 +74,6 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                                     (event, slider, focused) =>
                                         console.log('onSliderAreaTouchEnd', event, slider, focused)
                                 }
-
                             />
                         </td>
                         <td className="vertical-demo">
@@ -84,8 +83,37 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                                 min={0}
                                 max={100}
                                 step={1}
-
                                 active={false}
+                                onFocus={event => console.log('onFocus', event)}
+                                onBlur={event => console.log('onBlur', event)}
+
+                                onSliderAreaKeyDown={event => console.log('onSliderAreaKeyDown', event)}
+
+                                onSliderAreaMouseDown={
+                                    (event, slider, focused) =>
+                                        console.log('onSliderAreaMouseDown', event, slider, focused)
+                                }
+                                onSliderAreaMouseMove={
+                                    (event, slider, focused) =>
+                                        console.log('onSliderAreaMouseMove', event, slider, focused)
+                                }
+                                onSliderAreaMouseUp={
+                                    (event, slider, focused) =>
+                                        console.log('onSliderAreaMouseUp', event, slider, focused)
+                                }
+
+                                onSliderAreaTouchStart={
+                                    (event, slider, focused) =>
+                                        console.log('onSliderAreaTouchStart', event, slider, focused)
+                                }
+                                onSliderAreaTouchMove={
+                                    (event, slider, focused) =>
+                                        console.log('onSliderAreaTouchMove', event, slider, focused)
+                                }
+                                onSliderAreaTouchEnd={
+                                    (event, slider, focused) =>
+                                        console.log('onSliderAreaTouchEnd', event, slider, focused)
+                                }
                             />
                         </td>
                         <td className="vertical-demo">
@@ -95,8 +123,38 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                                 min={0}
                                 max={100}
                                 step={1}
-
                                 active={false}
+                                onFocus={event => console.log('onFocus', event)}
+                                onBlur={event => console.log('onBlur', event)}
+
+                                onSliderAreaKeyDown={event => console.log('onSliderAreaKeyDown', event)}
+
+                                onSliderAreaMouseDown={
+                                    (event, slider, focused) =>
+                                        console.log('onSliderAreaMouseDown', event, slider, focused)
+                                }
+                                onSliderAreaMouseMove={
+                                    (event, slider, focused) =>
+                                        console.log('onSliderAreaMouseMove', event, slider, focused)
+                                }
+                                onSliderAreaMouseUp={
+                                    (event, slider, focused) =>
+                                        console.log('onSliderAreaMouseUp', event, slider, focused)
+                                }
+
+                                onSliderAreaTouchStart={
+                                    (event, slider, focused) =>
+                                        console.log('onSliderAreaTouchStart', event, slider, focused)
+                                }
+                                onSliderAreaTouchMove={
+                                    (event, slider, focused) =>
+                                        console.log('onSliderAreaTouchMove', event, slider, focused)
+                                }
+                                onSliderAreaTouchEnd={
+                                    (event, slider, focused) =>
+                                        console.log('onSliderAreaTouchEnd', event, slider, focused)
+                                }
+
                                 axis={'y'}
                             />
                         </td>
