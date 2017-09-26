@@ -1,8 +1,9 @@
 import React = require('react');
 import {SyntheticEvent} from 'react';
 import {ClientRenderer, expect, waitFor} from 'test-drive-react';
-import {CheckBox, DatePicker, DropDown, NumberInput, RadioGroup, RadioButton, Slider, Toggle} from '../../src';
-import {TimePicker} from "../../src/components/time-picker/time-picker";
+import {AutoComplete, CheckBox, DatePicker, DropDown, NumberInput, RadioButton, RadioGroup, Slider,
+        Toggle} from '../../src';
+import {TimePicker} from '../../src/components/time-picker/time-picker';
 
 describe('Form contract of', () => {
 
@@ -48,6 +49,10 @@ describe('Form contract of', () => {
             expect(loaderLocation.search).to.equal(expectedQuery);
         });
     }
+
+    it('AutoComplete', async () => {
+        await testFormContract(<AutoComplete dataSource={['A', 'B', 'C']}/>, 'B', `?${testName}=B`);
+    });
 
     it('CheckBox (checked)', async () => {
         await testFormContract(<CheckBox />, true, `?${testName}=on`);
@@ -103,14 +108,14 @@ describe('Form contract of', () => {
     });
 
     it.skip('TimePicker', async () => {
-        await testFormContract(<TimePicker />, "4:36", `?${testName}=04%3A36`);
+        await testFormContract(<TimePicker />, '4:36', `?${testName}=04%3A36`);
     });
 
     it('Toggle (on)', async () => {
         await testFormContract(<Toggle />, true, `?${testName}=on`);
     });
 
-    it('Toggle (unchecked)', async function() {
+    it('Toggle (unchecked)', async () => {
         await testFormContract(<Toggle />, false, '');
     });
 
