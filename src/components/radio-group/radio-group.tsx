@@ -15,7 +15,7 @@ export interface RadioGroupDataSchemaProps {
 }
 
 export interface RadioGroupProps extends FormInputProps<string>, properties.Props {
-    children?: any;
+    children?: React.ReactNode;
     dataSource?: RadioGroupDataSchemaProps[];
     name?: string;
     disabled?: boolean;
@@ -73,20 +73,29 @@ export class RadioGroup extends React.Component<RadioGroupProps> {
         );
     }
 
-    private initCheckedArray(dataArray: any[], isChildren: boolean = false) {
+    private initCheckedArray(dataArray: React.ReactNode | RadioGroupDataSchemaProps[], isChildren: boolean = false) {
         let noCheckedRadioButton = true;
-        for (let button of dataArray) {
-            if (typeof button === 'object' && isChildren) {
-                button = button.props;
-            }
 
-            const isChecked: boolean = !!this.props.value && this.props.value === button.value;
+        const handleChecked = (value: string | null) => {
+            const isChecked: boolean = !!this.props.value && this.props.value === value;
             this.checkedArray.push(
                 observable({checked: noCheckedRadioButton && isChecked})
             );
             if (isChecked) {
                 noCheckedRadioButton = false;
             }
+        };
+
+        if (isReactNode(dataArray)) {
+            React.Children.map(dataArray, child => {
+                handleChecked(typeof child === 'object' ? child.props.value : null);
+            });
+        } else {
+            (dataArray as RadioGroupDataSchemaProps[]).forEach(obj => { handleChecked(obj.value); });
+        }
+
+        function isReactNode(arr: React.ReactNode | RadioGroupDataSchemaProps[]): arr is React.ReactNode {
+            return isChildren;
         }
     }
 
