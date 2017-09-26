@@ -1,7 +1,7 @@
 import * as keycode from 'keycode';
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
-import {properties, stylable} from 'wix-react-tools';
+import {properties} from 'wix-react-tools';
 import {FormInputProps} from '../../types/forms';
 import {isRTLContext as isRTL} from '../../utils';
 import {noop} from '../../utils/noop';
@@ -24,7 +24,6 @@ import {
 } from './slider-constants';
 import {AxisOptions, PointerEvent, Step} from './slider-types';
 import {SliderView} from './slider-view';
-import style from './slider.st.css';
 
 enum ChangeDirection {
     ascend,
@@ -62,7 +61,6 @@ export interface SliderState {
     isReverse: boolean;
 }
 
-@stylable(style)
 @properties
 export class Slider extends React.Component<SliderProps, SliderState> {
     public static defaultProps: Partial<SliderProps> = {

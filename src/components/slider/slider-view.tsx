@@ -4,7 +4,7 @@ import {FormInputProps} from '../../types/forms';
 import {noop} from '../../utils/noop';
 import {GlobalEvent} from '../global-event';
 import {isVertical} from './slider-calculations';
-import style from './slider-view.st.css';
+import style from './slider.st.css';
 
 export const AXISES: {[name: string]: AxisOptions} = {
     x: 'x',
