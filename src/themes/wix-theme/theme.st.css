@@ -219,7 +219,6 @@ Toggle:error::switch {
 
 }
 
-s
 .toggleSmall {
 	-st-extends: Toggle;
 	width:36px;
