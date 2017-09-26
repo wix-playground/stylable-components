@@ -1,11 +1,11 @@
 import * as React from 'react';
-import {stylable} from 'wix-react-tools';
+import {properties, stylable} from 'wix-react-tools';
 import {ChevronDownIcon, ChevronUpIcon} from '../../icons';
 import buttonStyles from '../../style/default-theme/controls/button.st.css';
 import {GlobalEvent} from '../global-event';
 import styles from './stepper.st.css';
 
-export interface StepperProps extends React.HTMLProps<HTMLElement> {
+export interface StepperProps extends properties.Props {
     disableUp?: boolean;
     disableDown?: boolean;
     dragStep?: number;
@@ -35,8 +35,9 @@ const DEFAULTS = {
 };
 
 @stylable(styles)
+@properties
 export class Stepper extends React.Component<StepperProps, State> {
-    public static defaultProps = {
+    public static defaultProps: Partial<StepperProps> = {
         disableUp: DEFAULTS.disableUp,
         disableDown: DEFAULTS.disableDown
     };
