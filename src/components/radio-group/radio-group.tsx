@@ -122,7 +122,7 @@ export class RadioGroup extends React.Component<RadioGroupProps> {
                 disabled={this.props.disabled || props.disabled}
                 readOnly={this.props.readOnly || props.readOnly}
                 name={this.name}
-                className="radioGroupChild"
+                className="option"
                 tabIndex={this.getChildTabIndex(index, this.isGroupChecked)}
             >
                 {props.labelText ? <label className="data-label">{props.labelText}</label> : null}
@@ -133,36 +133,25 @@ export class RadioGroup extends React.Component<RadioGroupProps> {
     private createChildren(dataArray: React.ReactNode): React.ReactNode[] {
         return React.Children.map(dataArray, (child, index) => {
             if (child && typeof child === 'object') {
-                if (child.type === RadioButton) {
-                    return (
-                        <RadioButton
-                            key={index}
-                            value={child.props.value}
-                            data-automation-id={'RADIO_BUTTON_' + index}
-                            checked={this.checkedArray[index].checked}
-                            onChange={this.childrenOnClick(index)}
-                            disabled={this.props.disabled || child.props.disabled}
-                            readOnly={this.props.readOnly || child.props.readOnly}
-                            name={this.name}
-                            className="radioGroupChild"
-                            tabIndex={this.getChildTabIndex(index, this.isGroupChecked)}
-                            children={child.props.children}
-                        />
-                    );
-                } else {
-                    return (
-                        React.cloneElement(child,
-                            {
-                                key: index,
-                                checked: this.checkedArray[index].checked,
-                                onChange: action(this.childrenOnClick(index)),
-                                className: 'radioGroupChild',
-                                tabIndex: this.getChildTabIndex(index, this.isGroupChecked)
-                            },
-                            child.props.children
-                        )
-                    );
-                }
+
+                const childProps = {
+                    ...child.props,
+                    key: index,
+                    ...(child.type === RadioButton ?
+                        {
+                            ['data-automation-id']: 'RADIO_BUTTON_' + index,
+                            name: this.name,
+                            checked: this.checkedArray[index].checked,
+                            onChange: action(this.childrenOnClick(index)),
+                            disabled: this.props.disabled || child.props.disabled,
+                            readOnly: this.props.readOnly || child.props.readOnly,
+                            className: child.props.className + ' ' + styles.option,
+                            tabIndex: this.getChildTabIndex(index, this.isGroupChecked)
+                        } : {})
+                };
+
+                return React.cloneElement(child, childProps, child.props.children);
+
             } else {
                 return child;
             }

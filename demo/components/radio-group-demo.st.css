@@ -8,7 +8,7 @@
     -st-extends: RG;
 }
 
-.rg::radioGroupChild {
+.rg::option {
     display: block;
 }
 
