@@ -93,4 +93,3 @@ export class DatePickerTestDriver extends DriverBase {
         return bodySelect(datePickerDropdown, 'MONTH_NAME');
     }
 }
-

@@ -136,7 +136,7 @@ describe('The DatePicker Component', () => {
         await waitForDom(() => expect(datePicker.dropDown).to.be.present());
     });
 
-    it('can be changed with the arrow keys', async function() {
+    it('can be changed with the arrow keys', async () => {
         const {driver: datePicker, waitForDom} = clientRenderer.render(<DatePicker value={JANUARY_FIRST} openOnFocus/>)
             .withDriver(DatePickerTestDriver);
 
@@ -258,7 +258,7 @@ describe('The DatePicker Component', () => {
             ]).to.be.horizontallyAligned('center'));
         });
 
-        it('should show the trailing days from the last and next months', function() {
+        it('should show the trailing days from the last and next months', () => {
             const {driver: datePicker} = clientRenderer.render(<DatePicker value={MARCH_FIRST} showDropdownOnInit/>)
                 .withDriver(DatePickerTestDriver);
 
@@ -356,7 +356,7 @@ describe('The DatePicker Component', () => {
         });
     });
 
-    describe('The Helper Functions', function() {
+    describe('The Helper Functions', () => {
         it('getMonthFromOffset should return the next month when the second argument is 1', () => {
             const date = new Date('Mar 6 2017');
             const nextMonth = getMonthFromOffset(date, 1);
@@ -364,14 +364,14 @@ describe('The DatePicker Component', () => {
             expect(nextMonth.getMonth()).to.equal(date.getMonth() + 1);
         });
 
-        it('getMonthFromOffset should return the previous month when the second argument is -1', function() {
+        it('getMonthFromOffset should return the previous month when the second argument is -1', () => {
             const date = new Date('Mar 6 2017');
             const nextMonth = getMonthFromOffset(date, -1);
 
             expect(nextMonth.getMonth()).to.equal(date.getMonth() - 1);
         });
 
-        it('getMonthFromOffset should handle the year changing when moving forward a month', function() {
+        it('getMonthFromOffset should handle the year changing when moving forward a month', () => {
             const date = new Date('Dec 6 2016');
             const nextMonth = getMonthFromOffset(date, 1);
 
@@ -379,7 +379,7 @@ describe('The DatePicker Component', () => {
             expect(nextMonth.getMonth()).to.equal(0);
         });
 
-        it('getMonthFromOffset should handle the year changing when moving back a month', function() {
+        it('getMonthFromOffset should handle the year changing when moving back a month', () => {
             const date = new Date('Jan 6 2018');
             const nextMonth = getMonthFromOffset(date, -1);
 

@@ -2,5 +2,6 @@
     -st-from: "../../src/components/time-picker/time-picker.st.css";
     -st-default: TimePicker;
 }
-TimePicker {
+.root {
+    width: 100%;
 }
