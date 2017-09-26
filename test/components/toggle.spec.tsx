@@ -18,7 +18,7 @@ describe('<Toggle/>', () => {
             renderer = clientRenderer.render(<Toggle onChange={onChange}/>);
         });
         it('should have input', () => {
-            expect(renderer.select('TOGGLE_INPUT')).to.not.null;
+            expect(renderer.select('NATIVE_INPUT')).to.not.null;
         });
     });
 
@@ -30,7 +30,7 @@ describe('<Toggle/>', () => {
             renderer = clientRenderer.render(<Toggle onChange={onChange} value={true}/>);
         });
         it('should have input', () => {
-            expect(renderer.select('TOGGLE_INPUT')).to.not.null;
+            expect(renderer.select('NATIVE_INPUT')).to.not.null;
         });
     });
 
@@ -43,7 +43,7 @@ describe('<Toggle/>', () => {
         });
 
         it('pressing space on focused input should trigger onChange', () => {
-            const input = renderer.select('TOGGLE_INPUT');
+            const input = renderer.select('NATIVE_INPUT');
             simulate.focus(input);
             simulate.change(input);
             expect(onChange).to.have.been.calledOnce;
@@ -59,7 +59,7 @@ describe('<Toggle/>', () => {
             renderer = clientRenderer.render(<Toggle onChange={onChange} disabled/>);
         });
         it('should not have input underhood', () => {
-            expect(renderer.select('TOGGLE_INPUT')).to.be.null;
+            expect(renderer.select('NATIVE_INPUT')).to.be.null;
         });
 
         it('click should not trigger onChange', async () => {
