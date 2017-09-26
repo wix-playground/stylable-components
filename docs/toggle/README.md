@@ -11,7 +11,7 @@ A toggle switch is used as an on/off control
 | name     | type   | defaultValue | isRequired | description                              |
 | -------- | ------ | ------------ | :--------- | ---------------------------------------- |
 | value    | bool   | FALSE        |            |                                          |
-| onChange | func   |              |            | Callback function when user changes the value of the component |
+| onChange | (e: {value: boolean}) => void	   |   NOOP           |            | Callback function when user changes the value of the component |
 | required | bool   | FALSE        |            | Whether or not filling the value is required in a form. |
 | name     | string |              |            | The name of the toggle. Behaves like the name attribute of an input element. |
 | disabled | bool   | FALSE        |            | If `true`, the toggle will not be interactive |

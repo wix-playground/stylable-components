@@ -9,9 +9,9 @@ describe('<Modal />', () => {
 
     afterEach(() => clientRenderer.cleanup());
 
-    describe('A typical use case for the modal:', function() {
+    describe('A typical use case for the modal:', () => {
         it('is hidden at first, a user clicks on a button, the modal appears,' +
-            'and then the user clicks on the background and the model closes', async function() {
+            'and then the user clicks on the background and the model closes', async () => {
             clientRenderer.render(<ModalDemo />);
 
             await waitFor(() => expect(bodySelect('MODAL')).to.be.absent());
@@ -26,13 +26,13 @@ describe('<Modal />', () => {
         });
     });
 
-    it('renders to the screen', async function() {
+    it('renders to the screen', async () => {
         clientRenderer.render(<Modal isOpen={true} />);
 
         await waitFor(() => expect(bodySelect('MODAL')!).to.be.present());
     });
 
-    it('renders any children passed as props', async function() {
+    it('renders any children passed as props', async () => {
         clientRenderer.render(
             <Modal isOpen={true}>
                 <p data-automation-id="CHILD_1">child 1</p>
@@ -46,7 +46,7 @@ describe('<Modal />', () => {
         });
     });
 
-    it('takes the full width and height of the viewport and is centered in the viewport', async function() {
+    it('takes the full width and height of the viewport and is centered in the viewport', async () => {
         clientRenderer.render(<Modal isOpen={true} />);
 
         function checkIfAlignedToScreen(element: Element) {
@@ -61,7 +61,7 @@ describe('<Modal />', () => {
         });
     });
 
-    it('renders one child in the center of the viewport', async function() {
+    it('renders one child in the center of the viewport', async () => {
         clientRenderer.render(
             <Modal isOpen={true}>
                 <p data-automation-id="CHILD_1" style={{width: '50px', height: '50px'}}>child 1</p>
@@ -76,7 +76,7 @@ describe('<Modal />', () => {
         });
     });
 
-    it('renders children in horizontal alignment', async function() {
+    it('renders children in horizontal alignment', async () => {
         clientRenderer.render(
             <Modal isOpen={true}>
                 <p data-automation-id="CHILD_1" style={{width: '50px', height: '50px'}}>child 1</p>
@@ -92,7 +92,7 @@ describe('<Modal />', () => {
         });
     });
 
-    it('adds overflow: hidden to the body when opened and removes it when closed', async function() {
+    it('adds overflow: hidden to the body when opened and removes it when closed', async () => {
         const {container} = clientRenderer.render(<Modal isOpen={true} />);
 
         await waitFor(() => expect(window.getComputedStyle(document.body).overflow).to.equal('hidden'));
@@ -106,7 +106,7 @@ describe('<Modal />', () => {
         await waitFor(() => expect(window.getComputedStyle(document.body).overflow).to.equal('hidden'));
     });
 
-    it('appears aligned with the viewport even when the page was scrolled', async function() {
+    it('appears aligned with the viewport even when the page was scrolled', async () => {
         const scroll = document.createElement('div');
         scroll.style.height = '1000vh';
         scroll.style.width = '1000vw';
@@ -122,7 +122,7 @@ describe('<Modal />', () => {
         document.body.removeChild(scroll);
     });
 
-    it('calls onRequestClose with source equal to backdrop when the backdrop is clicked', async function() {
+    it('calls onRequestClose with source equal to backdrop when the backdrop is clicked', async () => {
         const onRequestClose = sinon.spy();
         clientRenderer.render(<Modal isOpen={true} onRequestClose={onRequestClose} />);
 
@@ -131,7 +131,7 @@ describe('<Modal />', () => {
         await waitFor(() => expect(onRequestClose).to.have.been.calledWithMatch({source: 'backdrop'}));
     });
 
-    it('calls onRequestClose with source equal to children when the child is clicked', async function() {
+    it('calls onRequestClose with source equal to children when the child is clicked', async () => {
         const onRequestClose = sinon.spy();
 
         clientRenderer.render(
@@ -145,7 +145,7 @@ describe('<Modal />', () => {
         await waitFor(() => expect(onRequestClose.getCall(0)).to.have.been.calledWithMatch({source: 'child'}));
     });
 
-    it('renders the modal to the bottom of the DOM', async function() {
+    it('renders the modal to the bottom of the DOM', async () => {
         const {container} = clientRenderer.render(
             <Modal isOpen={true}>
                 <p data-automation-id="CHILD_1">child 1</p>
