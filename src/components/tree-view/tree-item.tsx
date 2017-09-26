@@ -14,7 +14,7 @@ export const TreeItem: React.SFC<TreeItemProps> =
         const iconProps = {
             'data-automation-id': `${itemIdPrefix}_${itemLabel}_ICON`,
             'onClick': onIconClick && onIconClick.bind(null, item),
-            'className': 'tree-item-icon',
+            'className': 'item-icon',
             'aria-hidden': 'true'
         };
 
@@ -28,7 +28,7 @@ export const TreeItem: React.SFC<TreeItemProps> =
             >
                 <div
                     data-automation-id={`${itemIdPrefix}_${itemLabel}`}
-                    className="tree-node"
+                    className="node"
                     style-state={{selected: state!.isSelected, focused: state!.isFocused}}
                     onClick={onItemClick && onItemClick.bind(null, item)}
                 >
@@ -37,7 +37,7 @@ export const TreeItem: React.SFC<TreeItemProps> =
 
                     <span
                         data-automation-id={`${itemIdPrefix}_${itemLabel}_LABEL`}
-                        className="tree-item-label"
+                        className="item-label"
                     >
                         {item.label}
                     </span>
