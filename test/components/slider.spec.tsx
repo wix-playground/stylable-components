@@ -960,7 +960,7 @@ describe('<Slider />', () => {
         const min = 0;
         const max = 10;
 
-        it('should normilize value that less than min to min', async () => {
+        it('should normalize value that less than min to min', async () => {
             const rendered = clientRenderer.render(
                 <Slider
                     value={valueLessThenMin}
@@ -981,7 +981,7 @@ describe('<Slider />', () => {
             });
         });
 
-        it('should normilize value that greater than max to max', async () => {
+        it('should normalize value that greater than max to max', async () => {
             const rendered = clientRenderer.render(
                 <Slider
                     value={valueGreaterThenMax}

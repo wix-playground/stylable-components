@@ -3,6 +3,7 @@ import {properties, stylable} from 'wix-react-tools';
 import {FormInputProps} from '../../types/forms';
 import {noop} from '../../utils/noop';
 import {GlobalEvent} from '../global-event';
+import {isVertical} from './slider-calculations';
 import style from './slider-view.st.css';
 
 export const AXISES: {[name: string]: AxisOptions} = {
@@ -208,15 +209,14 @@ export class SliderView extends React.Component<SliderViewProps, {}> {
     }
 
     private getProgressStyles() {
-        return this.isVertical(this.props.axis!) ?
+        return isVertical(this.props.axis!) ?
             {height: `${this.props.relativeValue}%`} :
             {width: `${this.props.relativeValue}%`};
     }
 
     private getHandleStyles() {
-        const isVertical = this.isVertical(this.props.axis!);
-        const isReverse = this.isReverse(this.props.axis!, this.isRTL());
-        return isVertical ?
+        const isReverse = this.isReverse(this.props.axis!);
+        return isVertical(this.props.axis!) ?
             (isReverse ?
                 {top: `${this.props.relativeValue}%`} :
                 {bottom: `${this.props.relativeValue}%`}) :
@@ -226,13 +226,12 @@ export class SliderView extends React.Component<SliderViewProps, {}> {
     }
 
     private getMarkStyles(position: number) {
-        const isVertical = this.isVertical(this.props.axis!);
-        const isReverse = this.isReverse(this.props.axis!, this.isRTL());
-        return isReverse ?
-            (isVertical ?
+        const vertical = isVertical(this.props.axis!);
+        return this.isReverse(this.props.axis!) ?
+            (vertical ?
                 {top: `${position}%`} :
                 {right: `${position}%`}) :
-            (isVertical ?
+            (vertical ?
                 {bottom: `${position}%`} :
                 {left: `${position}%`});
     }
@@ -244,12 +243,8 @@ export class SliderView extends React.Component<SliderViewProps, {}> {
             'markTrack';
     }
 
-    private isVertical(axis: AxisOptions): boolean {
-        return axis === AXISES.y || axis === AXISES.yReverse;
-    }
-
-    private isReverse(axis: AxisOptions, rtl: boolean): boolean {
-        return (axis === AXISES.xReverse || axis === AXISES.yReverse) !== rtl;
+    private isReverse(axis: AxisOptions): boolean {
+        return (axis === AXISES.xReverse || axis === AXISES.yReverse) !== this.isRTL();
     }
 
     private onSliderFocus: React.FocusEventHandler<HTMLElement> = event => {
