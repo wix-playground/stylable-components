@@ -33,7 +33,7 @@ The FilePicker renders the following:
 ```
 
 * Note the following:
-  * The multiple attribute needs to be used when more than one selection is allowed.
+  * The multiple attribute needs to be used when the multiple property is true.
   * User should be able to remove the one or more of the files in the list (files should be a state object)
 
 ## API
@@ -51,7 +51,7 @@ The FilePicker renders the following:
 | onFileSelected | Function(file) | NOOP | no | Called whenever user selects a file. The callback has a file parameter object that contains the filename, mimetype, size in bytes, and source. |
 | maxSize | number | null | no | Maximum size of file to upload specified in bytes |
 | minSize | number | null | no | Minimum size of file to upload specified in bytes |
-| maxFiles | number | 1 | no | Number of files which can be selected in the component |
+| multiple | boolean | false | no | 1 or more files |
 
 
 ## Style API
