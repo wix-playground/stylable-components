@@ -16,7 +16,7 @@ import {SliderDemo} from './components/slider-demo';
 import {TimePickerDemo} from './components/time-picker-demo';
 import {ToggleDemo} from './components/toggle-demo';
 import {TreeViewDemo, TreeViewDemoCustom} from './components/tree-view-demo';
-import styles from './wix-theme/theme.st.css';
+import styles from './style.st.css';
 
 setGlobalConfig({devMode: true});
 

@@ -1,11 +1,14 @@
 import * as React from 'react';
+import {stylable} from 'wix-react-tools';
 import {ContextProvider, Toggle} from '../../src';
 import {ChangeEvent} from '../../src/types/events';
+import styles from './toggle-demo.st.css';
 
 export interface State {
     checked: boolean;
 }
 
+@stylable(styles)
 export class ToggleDemo extends React.Component<{}, State> {
     public state = {
         checked: false
@@ -64,14 +67,14 @@ export class ToggleDemo extends React.Component<{}, State> {
                     <td>
                         Small Toggle
                         <Toggle
-                            className="toggle-small"
+                            className="toggleSmall"
                             value={this.state.checked}
                             onChange={onChange}
                         />
                     </td>
                     <td>
-                        Small Toggle
-                        <Toggle className="toggle-small" disabled />
+                        Small Toggle Disabled
+                        <Toggle className="toggleSmall" disabled />
                     </td>
 
                 </tr>

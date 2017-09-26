@@ -1,41 +1,39 @@
+@namespace "wixTheme";
 :import {
-	-st-from: "../../src/components/number-input/number-input.st.css";
+	-st-from: "../../components/number-input/number-input.st.css";
 	-st-default: NumberInput;
 }
 
 :import {
-	-st-from: "../../src/components/toggle/toggle.st.css";
+	-st-from: "../../components/toggle/toggle.st.css";
 	-st-default: Toggle;
 }
 
 :import {
-	-st-from: "../../src/components/drop-down/drop-down.st.css";
+	-st-from: "../../components/drop-down/drop-down.st.css";
 	-st-default: DropDown;
 }
 
 :import {
-	-st-from: "../../src/components/checkbox/checkbox.st.css";
+	-st-from: "../../components/checkbox/checkbox.st.css";
 	-st-default: CheckBox;
 }
 :import {
-	-st-from: "../../src/components/time-picker/time-picker.st.css";
+	-st-from: "../../components/time-picker/time-picker.st.css";
 	-st-default: TimePicker;
 }
 
 :import {
-	-st-from: "../../src/components/stepper/stepper.st.css";
+	-st-from: "../../components/stepper/stepper.st.css";
 	-st-default: Stepper;
 }
 
 :import {
-	-st-from: "../../src/components/slider/slider.st.css";
+	-st-from: "../../components/slider/slider.st.css";
 	-st-default: Slider;
 }
 
-/* General */
-.root {
-	background: value(D70);
-}
+
 /* Fonts */
 
 
@@ -69,6 +67,11 @@
 	R30: '#ffd7d7';
 	/* Disabled */
 	primary-color: value(B30);
+}
+
+/* General */
+.root {
+	background: value(D70);
 }
 
 
@@ -148,7 +151,7 @@ NumberInput:error {
 }
 
 
-.button {
+/*.button {
 	border-radius: 10px;
 }
 
@@ -161,7 +164,7 @@ NumberInput:error {
 	height: 36px;
 	padding: 0 30px;
 
-}
+}*/
 
 /* Toggle */
 
@@ -216,14 +219,14 @@ Toggle:error::switch {
 
 }
 
-
-.toggle-small {
+s
+.toggleSmall {
 	-st-extends: Toggle;
 	width:36px;
 	height: 20px;
 }
 
-.toggle-small::switch {
+.toggleSmall::switch {
 	width: 18px;
 	height: 18px;
 	background-size: 60% 60%;
