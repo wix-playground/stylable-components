@@ -31,9 +31,9 @@ You can display a tooltip (e.g. to display current value) by adding a child elem
 | label        | string                                |              | no           | Text to display in accessibility mode    |
 | name         | string                                |              | no           | The name of the slider. Behaves like the name attribute of an input element. |
 | displayStopMarks | boolean                               | false        | no           | Controls the visibility of the marks     |
-| onChange     | function                                |              | yes        | Callback function that is fired when the slider's value changed. Signature: `function(newValue: number): void` event: KeyDown event targeting the slider. newValue: The new value of the slider. |
-| onDragStart  | function                                 |              | no           | Callback function that is fired when the slider has begun to move. Signature `function(event: object) : void` event: MouseDown or TouchStart event targeting the slider. |
-| onDragStop   | function                                  |              | no           | Callback function that is fired when the slide has stopped moving. Signature `function(event: object) : void` event: MouseEnd or TouchEnd event targeting the slider. |
+| onChange     | function                                |              | yes        | Callback function that is fired when the slider's value changed.<br>`(event: {value: number}) => void`<br> • event: KeyDown event targeting the slider.<br>• newValue: The new value of the slider. |
+| onDragStart  | function                                 |              | no           | Callback function that is fired when the slider has begun to move.<br>`function(event: object) : void`<br>• event: MouseDown or TouchStart event targeting the slider. |
+| onDragStop   | function                                  |              | no           | Callback function that is fired when the slide has stopped moving.<br>`function(event: object) : void`<br>• event: MouseEnd or TouchEnd event targeting the slider. |
 
 #### Accepted Children
 
