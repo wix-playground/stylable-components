@@ -81,6 +81,8 @@ export class SliderView extends React.Component<SliderViewProps, {}> {
         onFocus: noop,
         onBlur: noop,
 
+        onSliderAreaKeyDown: noop,
+
         onSliderAreaMouseDown: noop,
         onSliderAreaMouseMove: noop,
         onSliderAreaMouseUp: noop,
@@ -93,6 +95,8 @@ export class SliderView extends React.Component<SliderViewProps, {}> {
     private focusableElement: HTMLElement;
 
     private sliderArea: HTMLElement;
+
+    private isActive: boolean = false;
 
     constructor(props: SliderViewProps, context?: any) {
         super(props, context);
@@ -268,26 +272,46 @@ export class SliderView extends React.Component<SliderViewProps, {}> {
     }
 
     private onSliderAreaMouseDown = (event: React.MouseEvent<HTMLElement>) => {
+        this.isActive = true;
+        this.focusableElement.focus();
         this.props.onSliderAreaMouseDown!(event, this.sliderArea, this.focusableElement);
     }
 
     private onSliderAreaMouseMove = (event: MouseEvent) => {
+        if (!this.isActive) {
+            return;
+        }
         this.props.onSliderAreaMouseMove!(event, this.sliderArea, this.focusableElement);
     }
 
     private onSliderAreaMouseUp = (event: MouseEvent) => {
+        if (!this.isActive) {
+            return;
+        }
+        this.isActive = false;
+        this.focusableElement.focus();
         this.props.onSliderAreaMouseUp!(event, this.sliderArea, this.focusableElement);
     }
 
     private onSliderAreaTouchStart = (event: React.TouchEvent<HTMLElement>) => {
+        this.isActive = true;
+        this.focusableElement.focus();
         this.props.onSliderAreaTouchStart!(event, this.sliderArea, this.focusableElement);
     }
 
     private onSliderAreaTouchMove = (event: TouchEvent) => {
+        if (!this.isActive) {
+            return;
+        }
         this.props.onSliderAreaTouchMove!(event, this.sliderArea, this.focusableElement);
     }
 
     private onSliderAreaTouchEnd = (event: TouchEvent) => {
+        if (!this.isActive) {
+            return;
+        }
+        this.isActive = false;
+        this.focusableElement.focus();
         this.props.onSliderAreaTouchEnd!(event, this.sliderArea, this.focusableElement);
     }
 

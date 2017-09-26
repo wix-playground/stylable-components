@@ -486,10 +486,8 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         if (this.props.disabled) {
             return;
         }
-        const focusableElement = event.currentTarget;
-        this.focusableElement = focusableElement;
 
-        focusableElement.focus();
+        this.focusableElement.focus();
 
         const relativeValue = this.getValueFromElementAndPointer(this.sliderArea, event.touches[0]);
 
