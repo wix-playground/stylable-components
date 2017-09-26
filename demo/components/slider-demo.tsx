@@ -15,8 +15,8 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
         super(props);
 
         this.state = {
-            value: 70,
-            rawValue: '70'
+            value: 50,
+            rawValue: '50'
         };
     }
 
