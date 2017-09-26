@@ -40,18 +40,18 @@ export interface SliderViewProps extends FormInputProps<number, string>, propert
     required: boolean;
     rtl: boolean;
 
-    onFocus?: React.FocusEventHandler<HTMLElement>;
-    onBlur?: React.FocusEventHandler<HTMLElement>;
+    onFocus: React.FocusEventHandler<HTMLElement>;
+    onBlur: React.FocusEventHandler<HTMLElement>;
 
-    onSliderAreaKeyDown?: KeyboardHandler;
+    onSliderAreaKeyDown: KeyboardHandler;
 
-    onSliderAreaMouseDown?: MouseHandler;
-    onSliderAreaMouseMove?: MouseHandler;
-    onSliderAreaMouseUp?: MouseHandler;
+    onSliderAreaMouseDown: MouseHandler;
+    onSliderAreaMouseMove: MouseHandler;
+    onSliderAreaMouseUp: MouseHandler;
 
-    onSliderAreaTouchStart?: TouchHandler;
-    onSliderAreaTouchMove?: TouchHandler;
-    onSliderAreaTouchEnd?: TouchHandler;
+    onSliderAreaTouchStart: TouchHandler;
+    onSliderAreaTouchMove: TouchHandler;
+    onSliderAreaTouchEnd: TouchHandler;
 }
 
 @stylable(style)
