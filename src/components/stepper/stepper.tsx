@@ -73,7 +73,7 @@ export class Stepper extends React.Component<StepperProps, State> {
                     onClick={this.handlerClickUp}
                     disabled={disableUp}
                 >
-                    <ChevronUpIcon className="control-icon" />
+                    <ChevronUpIcon className="controlIcon" />
                 </button>
                 <button
                     type="button"
@@ -83,7 +83,7 @@ export class Stepper extends React.Component<StepperProps, State> {
                     onClick={this.handlerClickDown}
                     disabled={disableDown}
                 >
-                    <ChevronDownIcon className="control-icon"/>
+                    <ChevronDownIcon className="controlIcon"/>
                 </button>
                 <GlobalEvent
                     mousemove={dragged ? this.handleDrag : undefined}
