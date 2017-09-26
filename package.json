@@ -47,7 +47,7 @@
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "stylable": "^4.0.14",
-    "stylable-integration": "^5.1.4",
+    "stylable-integration": "^5.1.7",
     "test-drive-react": "^0.7.0",
     "ts-loader": "^2.3.7",
     "ts-node": "^3.3.0",
