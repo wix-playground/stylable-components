@@ -10,8 +10,8 @@
   	:global(100%) {transform: rotate(405deg)}
 }
 
-.root {
-}
+.root {}
+
 .root.circle {
 	display: inline-block;
 	width: 100px;
@@ -32,7 +32,7 @@
 	width: 100px;
   	height: 100px;
   	box-sizing: border-box;
-  	border: 2px solid red;
+  	border: 5px solid red;
   	border-bottom-color: transparent;
   	border-left-color: transparent;
   	border-radius: 100%;
@@ -44,4 +44,26 @@
 }
 .right .track {
 	animation-delay: 1.2s;
+}
+
+
+
+@keyframes circle-svg {
+	:global(0%) {
+    	stroke-dasharray: 188, 0;
+    	stroke-dashoffset: 235px;
+  	}
+  	:global(50%) {
+    	stroke-dasharray: 0, 188;
+     	stroke-dashoffset: 47px;
+  	}
+  	:global(100%) {
+    	stroke-dasharray: 188, 0;
+    	stroke-dashoffset: 47px;
+  	}
+}
+.circleSvg {
+	stroke-dashoffset: 235px;
+	stroke: red;
+  	animation: circle-svg 2s infinite;
 }

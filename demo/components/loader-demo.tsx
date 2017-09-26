@@ -33,7 +33,7 @@ export class LoaderDemo extends React.Component {
                         <td>
                             <Loader
                                 delay={delay}
-                                type="circle"
+                                type="circleSvg"
                             />
                         </td>
                         <td>
