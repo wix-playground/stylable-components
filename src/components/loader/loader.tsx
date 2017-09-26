@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {stylable} from 'wix-react-tools';
+import {circle} from './circle';
 import styles from './loader.st.css';
 
 export interface LoaderProps {
@@ -9,22 +10,25 @@ export interface LoaderProps {
 }
 
 export interface LoaderState {
-    active: boolean
+    active: boolean;
 }
 
+const loaders = {
+    circle
+};
 
 @stylable(styles)
 export class Loader extends React.Component<LoaderProps, LoaderState> {
-    static defaultProps = {
+    public static defaultProps = {
         type: 'circle'
-    }
-    private timer: number
+    };
+    private timer: number;
 
     public constructor(props: LoaderProps) {
         super();
         this.state = {
             active: !props.delay
-        }
+        };
     }
 
     public componentWillMount() {
@@ -46,12 +50,18 @@ export class Loader extends React.Component<LoaderProps, LoaderState> {
             return null;
         }
 
-        return <div>
-            {this[type!]()}
-            {text &&
-                <span className="text">{text}</span>
-            }
-        </div>
+        return (
+            <div data-automation-id="LOADER">
+                {loaders[type!]()}
+                {text &&
+                    <span
+                        data-automation-id="LOADER_TEXT"
+                        className="text"
+                        children={text}
+                    />
+                }
+            </div>
+        );
     }
 
     private setTimer(props: LoaderProps) {
@@ -66,14 +76,4 @@ export class Loader extends React.Component<LoaderProps, LoaderState> {
         }
     }
 
-    private circle() {
-        return <div className='circle'>
-            <div className='left'>
-                <div className='track'></div>
-            </div>
-            <div className='right'>
-                <div className='track'></div>
-            </div>
-        </div>
-    }
 }

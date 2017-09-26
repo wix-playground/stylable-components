@@ -1,11 +1,11 @@
 import * as React from 'react';
-import {Loader, NumberInput, ChangeEvent} from '../../src';
+import {ChangeEvent, Loader, NumberInput} from '../../src';
 
 export class LoaderDemo extends React.Component {
-    state = {
+    public state = {
         delay: 0
-    }
-    render() {
+    };
+    public render() {
         const {delay} = this.state;
         return (
             <table>
@@ -41,5 +41,5 @@ export class LoaderDemo extends React.Component {
             </table>
         );
     }
-    onChangeDelay = (e: ChangeEvent<number>) => this.setState({delay: e.value});
+    public onChangeDelay = (e: ChangeEvent<number>) => this.setState({delay: e.value});
 }
