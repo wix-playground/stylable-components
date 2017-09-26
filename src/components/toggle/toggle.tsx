@@ -77,9 +77,7 @@ export default class Toggle extends React.Component<Props, State> {
                         onBlur={this.onInputBlur}
                     />
                 }
-                <div className="switchWrap">
-                    <div className="switch"/>
-                </div>
+                <div className="switch"/>
             </label>
         );
     }

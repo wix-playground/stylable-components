@@ -40,10 +40,6 @@
     width: 0;
     height: 0;
 }
-.switchWrap {
-    width: 100%;
-    position: relative;
-}
 
 .switch {
     height: value(switchSize);
