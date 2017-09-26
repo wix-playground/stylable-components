@@ -86,6 +86,10 @@ export class TreeViewMobxWrapper extends React.Component<{}, {}> {
     public modifyMobxDataSource = () => {
         this.obsTreeData[0].children![2].children!.push({label: 'Kaiserschmarrn'});
     }
+
+    public renameLabel = () => {
+        this.obsTreeData[0].children![0].label = 'Kaiserschmarrn';
+    }
 }
 
 function getLabelsList(data: { label: string, children?: object[] }): string[] {
@@ -187,6 +191,21 @@ describe('<TreeView />', () => {
         expandItemWithLabel(select, allNodesLabels[1]);
 
         return waitForDom(() => expect(elementToAssert).to.be.absent());
+    });
+
+    it('should rename node label without collapsing tree', async () => {
+        const {select, waitForDom, result} = clientRenderer.render(<TreeViewMobxWrapper />);
+
+        const firstChildLabel = treeData[0].children![0].label;
+
+        expandItemWithLabel(select, treeData[0].label);
+
+        await waitForDom(() => expect(select(getTreeItem(firstChildLabel))).to.have.text(firstChildLabel));
+
+        (result as TreeViewMobxWrapper).renameLabel();
+
+        const changedLabel = 'Kaiserschmarrn';
+        return waitForDom(() => expect(select(getTreeItem(changedLabel))).to.have.text(changedLabel));
     });
 
     describe('Using default renderer', () => {

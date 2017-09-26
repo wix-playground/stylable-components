@@ -68,23 +68,23 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
 
     private refCallback = (ref: HTMLInputElement) => {
         this.setState({input: ref});
-    };
+    }
 
     private onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         this.props.onChange!({value: e.target.value || ''});
         if (!this.props.value) {
             this.openPopup();
         }
-    };
+    }
 
     private onClick = (e: ChangeEvent<SelectionListItemValue>) => {
         this.props.onChange!(e);
         this.togglePopup();
-    };
+    }
 
     private onCaretClick = () => {
         this.togglePopup();
-    };
+    }
 
     private openPopup() {
         this.props.onOpenStateChange!({value: true});
