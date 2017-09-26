@@ -3,6 +3,7 @@ import {stylable} from 'wix-react-tools';
 import {ContextProvider, Slider} from '../../src';
 import {SliderView} from '../../src/components/slider/slider-view';
 import {ChangeEvent} from '../../src/types/events';
+import {noop} from '../../src/utils/noop';
 import style from './slider-demo.st.css';
 
 export interface SliderDemoState {
@@ -16,8 +17,8 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
         super(props);
 
         this.state = {
-            value: 50,
-            rawValue: '50'
+            value: 70,
+            rawValue: '70'
         };
     }
 
@@ -38,124 +39,92 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                     <tr>
                         <td className="vertical-demo">
                             <SliderView
-                                relativeValue={70}
-                                relativeStep={1}
-                                min={0}
-                                max={100}
-                                step={1}
                                 active={false}
-                                onFocus={event => console.log('onFocus', event)}
-                                onBlur={event => console.log('onBlur', event)}
+                                axis={'x'}
+                                disabled={false}
+                                error={false}
+                                label={'Demo Slider View'}
+                                name={'Demo Slider View'}
+                                marks={false}
+                                max={100}
+                                min={0}
+                                relativeStep={1}
+                                relativeValue={50}
+                                required={false}
+                                rtl={false}
+                                step={1}
+                                tooltip={null}
+                                orientation={'horizontal'}
 
-                                onSliderAreaKeyDown={event => console.log('onSliderAreaKeyDown', event)}
+                                onSliderAreaKeyDown={noop}
 
-                                onSliderAreaMouseDown={
-                                    (event, slider, focused) =>
-                                        console.log('onSliderAreaMouseDown', event, slider, focused)
-                                }
-                                onSliderAreaMouseMove={
-                                    (event, slider, focused) =>
-                                        console.log('onSliderAreaMouseMove', event, slider, focused)
-                                }
-                                onSliderAreaMouseUp={
-                                    (event, slider, focused) =>
-                                        console.log('onSliderAreaMouseUp', event, slider, focused)
-                                }
+                                onSliderAreaMouseDown={noop}
+                                onSliderAreaMouseMove={noop}
+                                onSliderAreaMouseUp={noop}
 
-                                onSliderAreaTouchStart={
-                                    (event, slider, focused) =>
-                                        console.log('onSliderAreaTouchStart', event, slider, focused)
-                                }
-                                onSliderAreaTouchMove={
-                                    (event, slider, focused) =>
-                                        console.log('onSliderAreaTouchMove', event, slider, focused)
-                                }
-                                onSliderAreaTouchEnd={
-                                    (event, slider, focused) =>
-                                        console.log('onSliderAreaTouchEnd', event, slider, focused)
-                                }
+                                onSliderAreaTouchStart={noop}
+                                onSliderAreaTouchMove={noop}
+                                onSliderAreaTouchEnd={noop}
                             />
                         </td>
                         <td className="vertical-demo">
                             <SliderView
-                                relativeValue={70}
-                                relativeStep={1}
-                                min={0}
-                                max={100}
-                                step={1}
                                 active={false}
-                                onFocus={event => console.log('onFocus', event)}
-                                onBlur={event => console.log('onBlur', event)}
+                                axis={'x'}
+                                disabled={false}
+                                error={false}
+                                label={'Demo Slider View'}
+                                name={'Demo Slider View'}
+                                marks={true}
+                                max={100}
+                                min={0}
+                                relativeStep={10}
+                                relativeValue={50}
+                                required={false}
+                                rtl={false}
+                                step={10}
+                                tooltip={null}
+                                orientation={'horizontal'}
 
-                                onSliderAreaKeyDown={event => console.log('onSliderAreaKeyDown', event)}
+                                onSliderAreaKeyDown={noop}
 
-                                onSliderAreaMouseDown={
-                                    (event, slider, focused) =>
-                                        console.log('onSliderAreaMouseDown', event, slider, focused)
-                                }
-                                onSliderAreaMouseMove={
-                                    (event, slider, focused) =>
-                                        console.log('onSliderAreaMouseMove', event, slider, focused)
-                                }
-                                onSliderAreaMouseUp={
-                                    (event, slider, focused) =>
-                                        console.log('onSliderAreaMouseUp', event, slider, focused)
-                                }
+                                onSliderAreaMouseDown={noop}
+                                onSliderAreaMouseMove={noop}
+                                onSliderAreaMouseUp={noop}
 
-                                onSliderAreaTouchStart={
-                                    (event, slider, focused) =>
-                                        console.log('onSliderAreaTouchStart', event, slider, focused)
-                                }
-                                onSliderAreaTouchMove={
-                                    (event, slider, focused) =>
-                                        console.log('onSliderAreaTouchMove', event, slider, focused)
-                                }
-                                onSliderAreaTouchEnd={
-                                    (event, slider, focused) =>
-                                        console.log('onSliderAreaTouchEnd', event, slider, focused)
-                                }
+                                onSliderAreaTouchStart={noop}
+                                onSliderAreaTouchMove={noop}
+                                onSliderAreaTouchEnd={noop}
                             />
                         </td>
                         <td className="vertical-demo">
                             <SliderView
-                                relativeValue={70}
-                                relativeStep={1}
-                                min={0}
-                                max={100}
-                                step={1}
                                 active={false}
-                                onFocus={event => console.log('onFocus', event)}
-                                onBlur={event => console.log('onBlur', event)}
-
-                                onSliderAreaKeyDown={event => console.log('onSliderAreaKeyDown', event)}
-
-                                onSliderAreaMouseDown={
-                                    (event, slider, focused) =>
-                                        console.log('onSliderAreaMouseDown', event, slider, focused)
-                                }
-                                onSliderAreaMouseMove={
-                                    (event, slider, focused) =>
-                                        console.log('onSliderAreaMouseMove', event, slider, focused)
-                                }
-                                onSliderAreaMouseUp={
-                                    (event, slider, focused) =>
-                                        console.log('onSliderAreaMouseUp', event, slider, focused)
-                                }
-
-                                onSliderAreaTouchStart={
-                                    (event, slider, focused) =>
-                                        console.log('onSliderAreaTouchStart', event, slider, focused)
-                                }
-                                onSliderAreaTouchMove={
-                                    (event, slider, focused) =>
-                                        console.log('onSliderAreaTouchMove', event, slider, focused)
-                                }
-                                onSliderAreaTouchEnd={
-                                    (event, slider, focused) =>
-                                        console.log('onSliderAreaTouchEnd', event, slider, focused)
-                                }
-
                                 axis={'y'}
+                                disabled={false}
+                                error={false}
+                                label={'Demo Slider View'}
+                                name={'Demo Slider View'}
+                                marks={false}
+                                max={100}
+                                min={0}
+                                relativeStep={1}
+                                relativeValue={50}
+                                required={false}
+                                rtl={false}
+                                step={1}
+                                tooltip={null}
+                                orientation={'horizontal'}
+
+                                onSliderAreaKeyDown={noop}
+
+                                onSliderAreaMouseDown={noop}
+                                onSliderAreaMouseMove={noop}
+                                onSliderAreaMouseUp={noop}
+
+                                onSliderAreaTouchStart={noop}
+                                onSliderAreaTouchMove={noop}
+                                onSliderAreaTouchEnd={noop}
                             />
                         </td>
                     </tr>

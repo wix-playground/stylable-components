@@ -1,8 +1,6 @@
-import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import {properties, stylable} from 'wix-react-tools';
 import {FormInputProps} from '../../types/forms';
-import {isRTLContext} from '../../utils';
 import {noop} from '../../utils/noop';
 import {GlobalEvent} from '../global-event';
 import style from './slider-view.st.css';
@@ -31,7 +29,7 @@ export type TouchHandler = (
 ) => void;
 
 export interface SliderViewProps extends FormInputProps<number, string>, properties.Props {
-    tooltip?: React.ReactNode;
+    tooltip: React.ReactNode;
 
     relativeValue: number;
     relativeStep: Step;
@@ -39,17 +37,18 @@ export interface SliderViewProps extends FormInputProps<number, string>, propert
     min: number;
     max: number;
     step: Step;
-    axis?: AxisOptions;
-    orientation?: 'vertical' | 'horizontal';
+    axis: AxisOptions;
+    orientation: 'vertical' | 'horizontal';
 
-    name?: string;
-    label?: string;
+    name: string;
+    label: string;
 
     active: boolean;
-    disabled?: boolean;
-    error?: boolean;
-    marks?: boolean;
-    required?: boolean;
+    disabled: boolean;
+    error: boolean;
+    marks: boolean;
+    required: boolean;
+    rtl: boolean;
 
     onFocus?: React.FocusEventHandler<HTMLElement>;
     onBlur?: React.FocusEventHandler<HTMLElement>;
@@ -68,12 +67,6 @@ export interface SliderViewProps extends FormInputProps<number, string>, propert
 @stylable(style)
 @properties
 export class SliderView extends React.Component<SliderViewProps, {}> {
-    public static contextTypes = {
-        contextProvider: PropTypes.shape({
-            dir: PropTypes.string
-        })
-    };
-
     public static defaultProps: Partial<SliderViewProps> = {
         axis: DEFAULT_AXIS,
         orientation: 'horizontal',
@@ -222,7 +215,7 @@ export class SliderView extends React.Component<SliderViewProps, {}> {
 
     private getHandleStyles() {
         const isVertical = this.isVertical(this.props.axis!);
-        const isReverse = this.isReverse(this.props.axis!);
+        const isReverse = this.isReverse(this.props.axis!, this.isRTL());
         return isVertical ?
             (isReverse ?
                 {top: `${this.props.relativeValue}%`} :
@@ -234,7 +227,7 @@ export class SliderView extends React.Component<SliderViewProps, {}> {
 
     private getMarkStyles(position: number) {
         const isVertical = this.isVertical(this.props.axis!);
-        const isReverse = this.isReverse(this.props.axis!);
+        const isReverse = this.isReverse(this.props.axis!, this.isRTL());
         return isReverse ?
             (isVertical ?
                 {top: `${position}%`} :
@@ -255,8 +248,8 @@ export class SliderView extends React.Component<SliderViewProps, {}> {
         return axis === AXISES.y || axis === AXISES.yReverse;
     }
 
-    private isReverse(axis: AxisOptions): boolean {
-        return axis === AXISES.xReverse || axis === AXISES.yReverse;
+    private isReverse(axis: AxisOptions, rtl: boolean): boolean {
+        return (axis === AXISES.xReverse || axis === AXISES.yReverse) !== rtl;
     }
 
     private onSliderFocus: React.FocusEventHandler<HTMLElement> = event => {
@@ -268,12 +261,11 @@ export class SliderView extends React.Component<SliderViewProps, {}> {
     }
 
     private isRTL(): boolean {
-        return isRTLContext(this.context);
+        return Boolean(this.props.rtl);
     }
 
     private onSliderAreaMouseDown = (event: React.MouseEvent<HTMLElement>) => {
         this.isActive = true;
-        this.focusableElement.focus();
         this.props.onSliderAreaMouseDown!(event, this.sliderArea, this.focusableElement);
     }
 
@@ -289,13 +281,11 @@ export class SliderView extends React.Component<SliderViewProps, {}> {
             return;
         }
         this.isActive = false;
-        this.focusableElement.focus();
         this.props.onSliderAreaMouseUp!(event, this.sliderArea, this.focusableElement);
     }
 
     private onSliderAreaTouchStart = (event: React.TouchEvent<HTMLElement>) => {
         this.isActive = true;
-        this.focusableElement.focus();
         this.props.onSliderAreaTouchStart!(event, this.sliderArea, this.focusableElement);
     }
 
@@ -311,7 +301,6 @@ export class SliderView extends React.Component<SliderViewProps, {}> {
             return;
         }
         this.isActive = false;
-        this.focusableElement.focus();
         this.props.onSliderAreaTouchEnd!(event, this.sliderArea, this.focusableElement);
     }
 

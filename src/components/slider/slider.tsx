@@ -2,10 +2,10 @@ import * as keycode from 'keycode';
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import {properties, stylable} from 'wix-react-tools';
+import {FormInputProps} from '../../types/forms';
 import {isRTLContext} from '../../utils';
-import {GlobalEvent} from '../global-event';
-import {FormInputProps} from './../../types/forms';
-import {noop} from './../../utils/noop';
+import {noop} from '../../utils/noop';
+import {SliderView} from './slider-view';
 import style from './slider.st.css';
 
 export const AXISES: {[name: string]: AxisOptions} = {
@@ -90,10 +90,6 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         })
     };
 
-    private focusableElement: HTMLElement;
-
-    private sliderArea: HTMLElement;
-
     private isSliderMounted: boolean = false;
 
     private isActive: boolean = false;
@@ -114,79 +110,38 @@ export class Slider extends React.Component<SliderProps, SliderState> {
 
     public render() {
         return (
-            <div
-                data-automation-id="SLIDER"
-                ref={el => this.sliderArea = el as HTMLElement}
-                className="container"
-                title={this.props.label}
+            <SliderView
+                active={this.state.isActive}
+                axis={this.props.axis!}
+                disabled={this.props.disabled!}
+                error={this.props.error!}
+                label={this.props.label!}
+                name={this.props.name!}
+                marks={this.props.marks!}
+                max={this.props.max!}
+                min={this.props.min!}
+                orientation={this.isVertical(this.props.axis!) ? 'vertical' : 'horizontal'}
+                relativeStep={this.state.relativeStep}
+                relativeValue={this.state.relativeValue}
+                required={this.props.required!}
+                rtl={this.isRTL()}
+                step={this.props.step!}
+                tooltip={this.getTooltip()}
+                value={this.props.value}
 
-                onMouseDown={this.onSliderAreaMouseDown}
-                onTouchStart={this.onSliderAreaTouchStart}
+                onFocus={this.onSliderFocus}
+                onBlur={this.onSliderBlur}
 
-                style-state={{
-                    'active': this.state.isActive,
-                    'disabled': Boolean(this.props.disabled),
-                    'error': Boolean(this.props.error),
-                    'x': this.props.axis === AXISES.x !== this.isRTL(),
-                    'y': this.props.axis === AXISES.y,
-                    'x-reverse': this.props.axis === AXISES.xReverse !== this.isRTL(),
-                    'y-reverse': this.props.axis === AXISES.yReverse
-                }}
-            >
-                <GlobalEvent
-                    mousemove={this.onSliderAreaMouseMove}
-                    mouseup={this.onSliderAreaMouseUp}
-                    touchmove={this.onSliderAreaTouchMove}
-                    touchend={this.onSliderAreaTouchEnd}
-                    touchcancel={this.onSliderAreaTouchEnd}
-                />
-                <input
-                    className="native-input"
-                    value={this.props.value}
-                    type="hidden"
-                    data-automation-id="SLIDER-NATIVE-INPUT"
-                    name={this.props.name}
-                    required={this.props.required}
-                    disabled={this.props.disabled}
-                />
-                <div
-                    className="track"
-                    data-automation-id="SLIDER-TRACK"
-                >
-                    <div
-                        className="progress"
-                        data-automation-id="SLIDER-PROGRESS"
-                        style={this.getProgressStyles()}
-                    />
-                    <a
-                        ref={el => this.focusableElement = el as HTMLElement}
-                        className="handle"
-                        data-automation-id="SLIDER-HANDLE"
-                        style={this.getHandleStyles()}
+                onSliderAreaKeyDown={this.onSliderAreaKeyDown}
 
-                        onKeyDown={this.onSliderAreaKeyDown}
+                onSliderAreaMouseDown={this.onSliderAreaMouseDown}
+                onSliderAreaMouseMove={this.onSliderAreaMouseMove}
+                onSliderAreaMouseUp={this.onSliderAreaMouseUp}
 
-                        onFocus={this.onSliderFocus}
-                        onBlur={this.onSliderBlur}
-
-                        role="slider"
-                        aria-label={this.props.label}
-                        aria-orientation={this.state.isVertical ? 'vertical' : 'horizontal'}
-                        aria-valuemin={`${this.props.min}`}
-                        aria-valuemax={`${this.props.max}`}
-                        aria-valuenow={`${this.props.value}`}
-                        tabIndex={this.props.disabled ? -1 : 0}
-                    >
-                        <div
-                            className="tooltip"
-                            data-automation-id="SLIDER-TOOLTIP"
-                        >
-                            {this.getTooltip()}
-                        </div>
-                    </a>
-                    {this.getMarks()}
-                </div>
-            </div>
+                onSliderAreaTouchStart={this.onSliderAreaTouchStart}
+                onSliderAreaTouchMove={this.onSliderAreaTouchMove}
+                onSliderAreaTouchEnd={this.onSliderAreaTouchEnd}
+            />
         );
     }
 
@@ -232,71 +187,6 @@ export class Slider extends React.Component<SliderProps, SliderState> {
 
     private getTooltip(): React.ReactNode {
         return this.props.tooltip;
-    }
-
-    private getMarks(): JSX.Element[] {
-        const {marks, min, max, step} = this.props;
-        const {relativeStep} = this.state;
-        const range = (max! - min!);
-        const markElements: JSX.Element[] = [];
-        if (
-            !marks ||
-            typeof step === 'undefined' ||
-            step === CONTINUOUS_STEP ||
-            relativeStep === CONTINUOUS_STEP ||
-            range % step
-        ) {
-            return markElements;
-        }
-
-        for (let i = 0; i <= range / step; i++) {
-            const position = relativeStep * i;
-
-            markElements.push((
-                <span
-                    data-automation-id={`SLIDER-MARKS-${i}`}
-                    key={i}
-                    className={this.getMarkClass(position)}
-                    style={this.getMarkStyles(position)}
-                />
-            ));
-        }
-
-        return markElements;
-    }
-
-    private getProgressStyles() {
-        return this.state.isVertical ?
-            {height: `${this.state.relativeValue}%`} :
-            {width: `${this.state.relativeValue}%`};
-    }
-
-    private getHandleStyles() {
-        return this.state.isVertical ?
-            (this.state.isReverse ?
-                {top: `${this.state.relativeValue}%`} :
-                {bottom: `${this.state.relativeValue}%`}) :
-            (this.state.isReverse ?
-                {right: `${this.state.relativeValue}%`} :
-                {left: `${this.state.relativeValue}%`});
-    }
-
-    private getMarkStyles(position: number) {
-        const {isReverse, isVertical} = this.state;
-        return isReverse ?
-            (isVertical ?
-                {top: `${position}%`} :
-                {right: `${position}%`}) :
-            (isVertical ?
-                {bottom: `${position}%`} :
-                {left: `${position}%`});
-    }
-
-    private getMarkClass(position: number) {
-        const {relativeValue} = this.state;
-        return position <= relativeValue ?
-            'markProgress' :
-            'markTrack';
     }
 
     private onSliderFocus: React.FocusEventHandler<HTMLElement> = event => {
@@ -424,16 +314,20 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         return value;
     }
 
-    private onSliderAreaMouseDown = (event: React.MouseEvent<HTMLElement>) => {
+    private onSliderAreaMouseDown = (
+        event: React.MouseEvent<HTMLElement>,
+        sliderArea: HTMLElement,
+        focusableElement: HTMLElement
+    ) => {
         if (this.props.disabled) {
             return;
         }
 
         event.preventDefault();
-        this.focusableElement.focus();
 
-        const relativeValue = this.getValueFromElementAndPointer(this.sliderArea, event);
+        const relativeValue = this.getValueFromElementAndPointer(sliderArea, event);
 
+        focusableElement.focus();
         this.setState({
             relativeValue,
             isActive: true
@@ -444,11 +338,14 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         this.callInput(this.getAbsoluteValue(relativeValue));
     }
 
-    private onSliderAreaMouseMove = (event: MouseEvent) => {
+    private onSliderAreaMouseMove = (
+        event: MouseEvent,
+        sliderArea: HTMLElement
+    ) => {
         if (!this.isActive) {
             return;
         }
-        const relativeValue = this.getValueFromElementAndPointer(this.sliderArea, event);
+        const relativeValue = this.getValueFromElementAndPointer(sliderArea, event);
 
         requestAnimationFrame(() => {
             if (!this.isSliderMounted) {
@@ -464,11 +361,15 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         this.callInput(this.getAbsoluteValue(relativeValue));
     }
 
-    private onSliderAreaMouseUp = (event: MouseEvent) => {
+    private onSliderAreaMouseUp = (
+        event: MouseEvent,
+        sliderArea: HTMLElement,
+        focusableElement: HTMLElement
+    ) => {
         if (!this.isActive) {
             return;
         }
-        const relativeValue = this.getValueFromElementAndPointer(this.sliderArea, event);
+        const relativeValue = this.getValueFromElementAndPointer(sliderArea, event);
         const value = this.getAbsoluteValue(relativeValue);
 
         this.setState({
@@ -477,19 +378,23 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         });
         this.isActive = false;
 
-        this.focusableElement.focus();
+        focusableElement.focus();
         this.onDragStop(event);
         this.callChange(value);
     }
 
-    private onSliderAreaTouchStart = (event: React.TouchEvent<HTMLElement>) => {
+    private onSliderAreaTouchStart = (
+        event: React.TouchEvent<HTMLElement>,
+        sliderArea: HTMLElement,
+        focusableElement: HTMLElement
+    ) => {
         if (this.props.disabled) {
             return;
         }
 
-        this.focusableElement.focus();
+        focusableElement.focus();
 
-        const relativeValue = this.getValueFromElementAndPointer(this.sliderArea, event.touches[0]);
+        const relativeValue = this.getValueFromElementAndPointer(sliderArea, event.touches[0]);
 
         this.setState({
             relativeValue,
@@ -503,11 +408,14 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         this.callInput(this.getAbsoluteValue(relativeValue));
     }
 
-    private onSliderAreaTouchMove = (event: TouchEvent) => {
+    private onSliderAreaTouchMove = (
+        event: TouchEvent,
+        sliderArea: HTMLElement
+    ) => {
         if (!this.isActive) {
             return;
         }
-        const relativeValue = this.getValueFromElementAndPointer(this.sliderArea, event.changedTouches[0]);
+        const relativeValue = this.getValueFromElementAndPointer(sliderArea, event.changedTouches[0]);
         requestAnimationFrame(() => {
             if (!this.isSliderMounted) {
                 return;
@@ -524,11 +432,14 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         this.callInput(this.getAbsoluteValue(relativeValue));
     }
 
-    private onSliderAreaTouchEnd = (event: TouchEvent) => {
+    private onSliderAreaTouchEnd = (
+        event: TouchEvent,
+        sliderArea: HTMLElement
+    ) => {
         if (!this.isActive) {
             return;
         }
-        const relativeValue = this.getValueFromElementAndPointer(this.sliderArea, event.changedTouches[0]);
+        const relativeValue = this.getValueFromElementAndPointer(sliderArea, event.changedTouches[0]);
         const value = this.getAbsoluteValue(relativeValue);
 
         this.setState({

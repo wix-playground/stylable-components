@@ -136,7 +136,7 @@ function withValueMinMax(
 
         it('renders invisible native input with right value', async () => {
             await waitForDom(() => {
-                const element = select('SLIDER-NATIVE-INPUT');
+                const element = select('NATIVE-INPUT');
 
                 expect(element).to.has.value(String(value));
             });
@@ -443,7 +443,7 @@ function whenDragThingsAroundWithStep(
 
         it('renders invisible native input with right value', async () => {
             await waitForDom(() => {
-                const element = select('SLIDER-NATIVE-INPUT');
+                const element = select('NATIVE-INPUT');
 
                 expect(element).to.has.value(String(value));
             });
@@ -901,7 +901,7 @@ describe('<Slider />', () => {
 
         it('renders invisible native input with default value', async () => {
             await waitForDom(() => {
-                const element = select('SLIDER-NATIVE-INPUT');
+                const element = select('NATIVE-INPUT');
 
                 expect(element).to.has.value('');
             });
@@ -945,7 +945,7 @@ describe('<Slider />', () => {
 
         it('renders invisible native input with right value', async () => {
             await waitForDom(() => {
-                const element = select('SLIDER-NATIVE-INPUT');
+                const element = select('NATIVE-INPUT');
 
                 expect(element).to.has.value('');
             });
@@ -1051,7 +1051,7 @@ describe('<Slider />', () => {
 
         it('renders invisible native input with passed value', async () => {
             await waitForDom(() => {
-                const element = select('SLIDER-NATIVE-INPUT');
+                const element = select('NATIVE-INPUT');
 
                 expect(element).to.has.value(String(valueOutOfStep));
             });
@@ -1270,7 +1270,7 @@ describe('<Slider />', () => {
             const waitForDom: (expectation: () => void) => Promise<void> = rendered.waitForDom;
 
             await waitForDom(() => {
-                const sliderInput = select('SLIDER-NATIVE-INPUT');
+                const sliderInput = select('NATIVE-INPUT');
 
                 expect(sliderInput!.name).equal(name);
             });
@@ -1295,7 +1295,7 @@ describe('<Slider />', () => {
             const waitForDom: (expectation: () => void) => Promise<void> = rendered.waitForDom;
 
             await waitForDom(() => {
-                const sliderInput = select('SLIDER-NATIVE-INPUT');
+                const sliderInput = select('NATIVE-INPUT');
 
                 expect(sliderInput!.required).to.be.true;
             });
