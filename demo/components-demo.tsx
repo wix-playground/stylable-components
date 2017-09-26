@@ -14,6 +14,7 @@ import {SelectionListDemo} from './components/selection-list-demo';
 import {SliderDemo} from './components/slider-demo';
 import {TimePickerDemo} from './components/time-picker-demo';
 import {ToggleDemo} from './components/toggle-demo';
+import {LoaderDemo} from './components/loader-demo';
 import {TreeViewDemo, TreeViewDemoCustom} from './components/tree-view-demo';
 
 setGlobalConfig({devMode: true});
@@ -67,6 +68,11 @@ export class ComponentsDemo extends React.Component {
                 <div>
                     <h2>Radio Group</h2>
                     <RadioGroupDemo />
+                </div>
+                <hr />
+                <div>
+                    <h2>Loader</h2>
+                    <LoaderDemo/>
                 </div>
                 <hr />
                 <div>

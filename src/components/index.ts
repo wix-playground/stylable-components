@@ -22,3 +22,4 @@ export {
     SelectionListItemValue
 } from './selection-list';
 export * from './context-provider';
+export * from './loader';

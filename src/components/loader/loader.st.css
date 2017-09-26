@@ -1,0 +1,11 @@
+@keyframes spinner-animation {
+	:global(from) {
+		transform: rotate(0);
+	}
+	:global(to) {
+		transform: rotate(360deg);
+	}
+}
+.root {
+	animation: spinner-animation 3s infinite;
+}
