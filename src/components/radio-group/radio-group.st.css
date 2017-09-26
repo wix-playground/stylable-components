@@ -19,6 +19,6 @@
     cursor: pointer;
 }
 
-.RB:disabled .label {
+.RB:disabled .data-label {
     cursor: default;
 }
