@@ -3,13 +3,15 @@ import {stylable} from 'wix-react-tools';
 import styles from './loader.st.css';
 
 export interface LoaderProps {
-    type?: 'circle' | 'circleSvg' | 'dots';
+    type?: 'circle'; // TODO add 'dots' and 'lines'
     delay?: number;
+    text?: string;
 }
 
 export interface LoaderState {
     active: boolean
 }
+
 
 @stylable(styles)
 export class Loader extends React.Component<LoaderProps, LoaderState> {
@@ -38,19 +40,27 @@ export class Loader extends React.Component<LoaderProps, LoaderState> {
     }
 
     public render() {
+        const {type, text} = this.props;
+
         if (!this.state.active) {
             return null;
         }
-        return this[this.props.type!]();
+
+        return <div>
+            {this[type!]()}
+            {text &&
+                <span className="text">{text}</span>
+            }
+        </div>
     }
 
     private setTimer(props: LoaderProps) {
         if (props.delay) {
             clearTimeout(this.timer!);
             this.setState({active: false});
-            this.timer = setTimeout(() => {
+            this.timer = window.setTimeout(() => {
                 this.setState({active: true});
-            }, props.delay) as number;
+            }, props.delay);
         } else if (!this.state.active) {
             this.setState({active: true});
         }
@@ -65,22 +75,5 @@ export class Loader extends React.Component<LoaderProps, LoaderState> {
                 <div className='track'></div>
             </div>
         </div>
-    }
-    private circleSvg() {
-        return <svg height="100" width="100">
-            <circle
-                className='circleSvg'
-                cx="40"
-                cy="40"
-                r="30"
-                fill="none"
-                strokeWidth="5"
-                strokeMiterlimit="20"
-                strokeLinecap="round"
-            />
-        </svg>
-    }
-    private dots() {
-        return <div>dots</div>
     }
 }

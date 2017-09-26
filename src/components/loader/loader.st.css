@@ -1,3 +1,13 @@
+:import {
+    -st-from: "../../style/project.st.css";
+    -st-named:
+		PR2,
+		BK2;
+}
+:vars {
+	size: 100px;
+	trackWidth: 5px;
+}
 @keyframes circle {
   	:global(0%) {transform: rotate(0)}
   	:global(100%) {transform: rotate(360deg)}
@@ -12,10 +22,10 @@
 
 .root {}
 
-.root.circle {
+.circle {
 	display: inline-block;
-	width: 100px;
-	height: 100px;
+	width: value(size);
+	height: value(size);
 	position: relative;
 	animation: circle 2s infinite;
 }
@@ -29,10 +39,10 @@
 }
 
 .track {
-	width: 100px;
-  	height: 100px;
+	width: value(size);
+	height: value(size);
   	box-sizing: border-box;
-  	border: 5px solid red;
+  	border: 5px solid value(PR2);
   	border-bottom-color: transparent;
   	border-left-color: transparent;
   	border-radius: 100%;
@@ -46,24 +56,10 @@
 	animation-delay: 1.2s;
 }
 
-
-
-@keyframes circle-svg {
-	:global(0%) {
-    	stroke-dasharray: 188, 0;
-    	stroke-dashoffset: 235px;
-  	}
-  	:global(50%) {
-    	stroke-dasharray: 0, 188;
-     	stroke-dashoffset: 47px;
-  	}
-  	:global(100%) {
-    	stroke-dasharray: 188, 0;
-    	stroke-dashoffset: 47px;
-  	}
-}
-.circleSvg {
-	stroke-dashoffset: 235px;
-	stroke: red;
-  	animation: circle-svg 2s infinite;
+.text {
+	display: block;
+	text-align: center;
+	color: value(BK2);
+	text-align: center;
+	margin-top: 1.5em;
 }

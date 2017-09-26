@@ -11,15 +11,14 @@ export class LoaderDemo extends React.Component {
             <table>
                 <thead>
                     <tr>
-                        <th colSpan={3}>
+                        <th>
                             Delay:
                             <NumberInput step={1000} value={delay} onChange={this.onChangeDelay}/>
                         </th>
                     </tr>
                     <tr>
                         <th>Circle</th>
-                        <th>Circle SVG</th>
-                        <th>Dots</th>
+                        <th>Circle with text</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -33,13 +32,8 @@ export class LoaderDemo extends React.Component {
                         <td>
                             <Loader
                                 delay={delay}
-                                type="circleSvg"
-                            />
-                        </td>
-                        <td>
-                            <Loader
-                                delay={delay}
-                                type="dots"
+                                type="circle"
+                                text="Loading"
                             />
                         </td>
                     </tr>
