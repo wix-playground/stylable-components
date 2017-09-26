@@ -4,30 +4,19 @@ import {FormInputProps} from '../../types/forms';
 import {noop} from '../../utils/noop';
 import {GlobalEvent} from '../global-event';
 import {isVertical} from './slider-calculations';
+import {
+    AXISES,
+    CONTINUOUS_STEP,
+    DEFAULT_AXIS
+} from './slider-constants';
+import {
+    AxisOptions,
+    KeyboardHandler,
+    MouseHandler,
+    Step,
+    TouchHandler
+} from './slider-types';
 import style from './slider.st.css';
-
-export const AXISES: {[name: string]: AxisOptions} = {
-    x: 'x',
-    y: 'y',
-    xReverse: 'x-reverse',
-    yReverse: 'y-reverse'
-};
-const CONTINUOUS_STEP = 'any';
-const DEFAULT_AXIS = AXISES.x;
-
-export type Step = number | 'any';
-export type AxisOptions = 'x' | 'y' | 'x-reverse' | 'y-reverse';
-export type KeyboardHandler = (event: React.KeyboardEvent<HTMLElement>) => void;
-export type MouseHandler = (
-    event: React.MouseEvent<HTMLElement> | MouseEvent,
-    sliderArea: HTMLElement,
-    focusableElement: HTMLElement
-) => void;
-export type TouchHandler = (
-    event: React.TouchEvent<HTMLElement> | TouchEvent,
-    sliderArea: HTMLElement,
-    focusableElement: HTMLElement
-) => void;
 
 export interface SliderViewProps extends FormInputProps<number, string>, properties.Props {
     tooltip: React.ReactNode;

@@ -1,9 +1,7 @@
 import * as React from 'react';
 import {stylable} from 'wix-react-tools';
 import {ContextProvider, Slider} from '../../src';
-import {SliderView} from '../../src/components/slider/slider-view';
 import {ChangeEvent} from '../../src/types/events';
-import {noop} from '../../src/utils/noop';
 import style from './slider-demo.st.css';
 
 export interface SliderDemoState {
