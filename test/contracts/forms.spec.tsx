@@ -119,6 +119,4 @@ describe('Form contract of', () => {
         await testFormContract(<Toggle />, false, '');
     });
 
-    // TimePicker
-
 });
