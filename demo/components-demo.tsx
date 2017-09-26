@@ -1,10 +1,6 @@
 import * as React from 'react';
 
-import {stylable} from 'wix-react-tools';
-
-import styles from './wix-theme/theme.st.css';
 import {setGlobalConfig, stylable} from 'wix-react-tools';
-import ComponentsDemoCSS from './style.st.css';
 
 import {AutoCompleteDemo} from './components/auto-complete.demo';
 import {CheckBoxDemo} from './components/checkbox-demo';
@@ -20,12 +16,11 @@ import {SliderDemo} from './components/slider-demo';
 import {TimePickerDemo} from './components/time-picker-demo';
 import {ToggleDemo} from './components/toggle-demo';
 import {TreeViewDemo, TreeViewDemoCustom} from './components/tree-view-demo';
+import styles from './wix-theme/theme.st.css';
 
-@stylable(styles)
 setGlobalConfig({devMode: true});
 
-@stylable(ComponentsDemoCSS)
->>>>>>> master
+@stylable(styles)
 export class ComponentsDemo extends React.Component {
     public render() {
         return (
