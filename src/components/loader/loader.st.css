@@ -1,11 +1,47 @@
-@keyframes spinner-animation {
-	:global(from) {
-		transform: rotate(0);
-	}
-	:global(to) {
-		transform: rotate(360deg);
-	}
+@keyframes circle {
+  	:global(0%) {transform: rotate(0)}
+  	:global(100%) {transform: rotate(360deg)}
 }
+@keyframes track {
+  	:global(0%) {transform: rotate(45deg)}
+  	:global(25%) {transform: rotate(45deg)}
+  	:global(50%) {transform: rotate(225deg)}
+  	:global(75%) {transform: rotate(225deg)}
+  	:global(100%) {transform: rotate(405deg)}
+}
+
 .root {
-	animation: spinner-animation 3s infinite;
+}
+.root.circle {
+	display: inline-block;
+	width: 100px;
+	height: 100px;
+	position: relative;
+	animation: circle 2s infinite;
+}
+
+.left, .right {
+  	position: absolute;
+  	width: 50%;
+  	height: 100%;
+  	overflow: hidden;
+  	box-sizing: border-box;
+}
+
+.track {
+	width: 100px;
+  	height: 100px;
+  	box-sizing: border-box;
+  	border: 2px solid red;
+  	border-bottom-color: transparent;
+  	border-left-color: transparent;
+  	border-radius: 100%;
+  	transform: rotate(45deg);
+  	animation: track 4s infinite linear;
+}
+.right {
+  	transform: rotate(180deg) translate(-100%);
+}
+.right .track {
+	animation-delay: 1.2s;
 }

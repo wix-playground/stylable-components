@@ -15,17 +15,19 @@ export class Loader extends React.Component<LoaderProps, LoaderState> {
         type: 'circle'
     }
     circle() {
-        return <div>
-            spinner
+        return <div className='circle'>
+            <div className='left'>
+                <div className='track'></div>
+            </div>
+            <div className='right'>
+                <div className='track'></div>
+            </div>
         </div>
     }
     dots() {
         return <div>dots</div>
     }
     render() {
-        return <div>
-            spinner
-        </div>
-        //return this[this.props.type!]();
+        return this[this.props.type!]();
     }
 }
