@@ -81,10 +81,6 @@ export class SliderView extends React.Component<SliderViewProps, {}> {
 
     private isActive: boolean = false;
 
-    constructor(props: SliderViewProps, context?: any) {
-        super(props, context);
-    }
-
     public render() {
         return (
             <div
@@ -100,9 +96,9 @@ export class SliderView extends React.Component<SliderViewProps, {}> {
                     'active': this.props.active,
                     'disabled': Boolean(this.props.disabled),
                     'error': Boolean(this.props.error),
-                    'x': this.props.axis === AXISES.x !== this.isRTL(),
+                    'x': this.props.axis === AXISES.x !== this.props.rtl,
                     'y': this.props.axis === AXISES.y,
-                    'x-reverse': this.props.axis === AXISES.xReverse !== this.isRTL(),
+                    'x-reverse': this.props.axis === AXISES.xReverse !== this.props.rtl,
                     'y-reverse': this.props.axis === AXISES.yReverse
                 }}
             >
@@ -233,7 +229,7 @@ export class SliderView extends React.Component<SliderViewProps, {}> {
     }
 
     private isReverse(axis: AxisOptions): boolean {
-        return (axis === AXISES.xReverse || axis === AXISES.yReverse) !== this.isRTL();
+        return (axis === AXISES.xReverse || axis === AXISES.yReverse) !== this.props.rtl;
     }
 
     private onSliderFocus: React.FocusEventHandler<HTMLElement> = event => {
@@ -242,10 +238,6 @@ export class SliderView extends React.Component<SliderViewProps, {}> {
 
     private onSliderBlur: React.FocusEventHandler<HTMLElement> = event => {
         this.props.onBlur!(event);
-    }
-
-    private isRTL(): boolean {
-        return Boolean(this.props.rtl);
     }
 
     private onSliderAreaMouseDown = (event: React.MouseEvent<HTMLElement>) => {
