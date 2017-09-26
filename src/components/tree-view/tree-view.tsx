@@ -3,13 +3,11 @@ import {action, autorun, observable} from 'mobx';
 import {observer} from 'mobx-react';
 import * as React from 'react';
 import {properties, stylable} from 'wix-react-tools';
-
-import nodeStyle from './tree-node.st.css';
 import {getLastAvailableItem, getNextItem, getPreviousItem} from './tree-util';
-import {MinusIcon, PlusIcon} from './tree-view-icons';
+import {TreeItem} from './tree-item';
 import style from './tree-view.st.css';
 
-const KeyCodes: any = {
+export const TreeKeyCodes: any = {
     ENTER: keycode('enter'),
     HOME: keycode('home'),
     END: keycode('end'),
@@ -60,65 +58,9 @@ export function initParentsMap(parentsMap: ParentsMap, data: TreeItemData[] = []
     });
 }
 
-const itemIdPrefix = 'TREE_ITEM';
-
-// This function is not perfect but for now this is
-// a solution that will be changed later
-function getFocusedItemKey(item: TreeItemData) {
+export function getFocusedItemKey(item: TreeItemData) {
     return item.label;
 }
-
-export const TreeItem: React.SFC<TreeItemProps> =
-    stylable(nodeStyle)(({item, itemRenderer, onItemClick, onIconClick, stateMap}) => {
-        const state = stateMap.getItemState(item);
-        const itemLabel = item.label.replace(' ', '_');
-        const TreeNode = itemRenderer;
-        const iconProps = {
-            'data-automation-id': `${itemIdPrefix}_${itemLabel}_ICON`,
-            'onClick': onIconClick && onIconClick.bind(null, item),
-            'className': 'tree-item-icon',
-            'aria-hidden': 'true'
-        };
-
-        return (
-            <li
-                aria-expanded={item.children ? !!state!.isExpanded : undefined}
-                aria-selected={state!.isSelected ? true : undefined}
-                id={getFocusedItemKey(item)}
-                data-automation-id={`${itemIdPrefix}_${itemLabel}_NODE`}
-                role="treeitem"
-            >
-                <div
-                    data-automation-id={`${itemIdPrefix}_${itemLabel}`}
-                    className="tree-node"
-                    style-state={{selected: state!.isSelected, focused: state!.isFocused}}
-                    onClick={onItemClick && onItemClick.bind(null, item)}
-                >
-                    {item.children && (state!.isExpanded ?
-                        <MinusIcon {...iconProps} /> : <PlusIcon {...iconProps} />)}
-
-                    <span
-                        data-automation-id={`${itemIdPrefix}_${itemLabel}_LABEL`}
-                        className="tree-item-label"
-                    >
-                        {item.label}
-                    </span>
-                </div>
-                {item.children && <ul className="nested-tree" role="group">
-                    {state!.isExpanded && item.children.map((child: TreeItemData, index: number) =>
-                        <TreeNode
-                            item={child}
-                            onItemClick={onItemClick}
-                            itemRenderer={itemRenderer}
-                            onIconClick={onIconClick}
-                            stateMap={stateMap}
-                            key={`${index}`}
-                        />
-                    )}
-                </ul>}
-            </li>
-        );
-    });
 
 const TreeItemWrapper = observer(TreeItem);
 
@@ -285,20 +227,20 @@ export class TreeView extends React.Component<TreeViewProps> {
         if (!this.props.focusedItem) { return; }
 
         switch (e.keyCode) {
-            case KeyCodes.RIGHT:
+            case TreeKeyCodes.RIGHT:
                 e.preventDefault(); this.expandItem(this.props.focusedItem); break;
-            case KeyCodes.LEFT:
+            case TreeKeyCodes.LEFT:
                 e.preventDefault(); this.collapseItem(this.props.focusedItem); break;
-            case KeyCodes.UP:
+            case TreeKeyCodes.UP:
                 e.preventDefault(); this.focusPrev(this.props.focusedItem); break;
-            case KeyCodes.DOWN:
+            case TreeKeyCodes.DOWN:
                 e.preventDefault(); this.focusNext(this.props.focusedItem); break;
-            case KeyCodes.ENTER:
+            case TreeKeyCodes.ENTER:
                 e.preventDefault(); this.selectItem(this.props.focusedItem); break;
-            case KeyCodes.HOME:
+            case TreeKeyCodes.HOME:
                 this.stateMap.getItemState(this.props.focusedItem).isFocused = false;
                 e.preventDefault(); this.focusFirst(); break;
-            case KeyCodes.END:
+            case TreeKeyCodes.END:
                 this.stateMap.getItemState(this.props.focusedItem).isFocused = false;
                 e.preventDefault(); this.focusLast(); break;
         }

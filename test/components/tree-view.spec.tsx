@@ -1,9 +1,8 @@
-import * as keycode from 'keycode';
 import {observable} from 'mobx';
 import * as React from 'react';
 import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react';
 import {TreeViewDemo, TreeViewDemoCustom} from '../../demo/components/tree-view-demo';
-import {TreeItem, TreeView} from '../../src';
+import {TreeItem, TreeKeyCodes, TreeView} from '../../src';
 import {getLastAvailableItem, getNextItem, getPreviousItem} from '../../src/components/tree-view//tree-util';
 import {initParentsMap, ParentsMap, TreeItemData, TreeStateMap} from '../../src/components/tree-view/tree-view';
 import {elementHasStylableState} from '../../test-kit/utils';
@@ -15,16 +14,6 @@ import treeNodeStyle from '../../src/components/tree-view/tree-node.st.css';
 
 const treeView = 'TREE_VIEW';
 const treeItem = 'TREE_ITEM';
-
-const KeyCodes: any = {
-    ENTER: keycode('enter'),
-    HOME: keycode('home'),
-    END: keycode('end'),
-    UP: keycode('up'),
-    DOWN: keycode('down'),
-    LEFT: keycode('left'),
-    RIGHT: keycode('right')
-};
 
 const treeData: TreeItemData[] = [
     {
@@ -238,10 +227,10 @@ describe('<TreeView />', () => {
 
                 await waitForDom(() => expect(select(getTreeItem(nodeChildren![1].label))).to.be.present());
 
-                simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), {keyCode: KeyCodes.LEFT});
+                simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), {keyCode: TreeKeyCodes.LEFT});
                 await waitForDom(() => expect(select(getTreeItem(nodeChildren![1].label))).to.be.absent());
 
-                simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), {keyCode: KeyCodes.RIGHT});
+                simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), {keyCode: TreeKeyCodes.RIGHT});
 
                 return waitForDom(() => expect(select(getTreeItem(nodeChildren![1].label))).to.be.present());
             });
@@ -261,7 +250,7 @@ describe('<TreeView />', () => {
                     await waitForDom(() => expect(
                         isElementFocused(select(getTreeItem(nodeChildren![1].label))!, treeNodeStyle)).to.equal(true));
 
-                    simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), {keyCode: KeyCodes.LEFT});
+                    simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), {keyCode: TreeKeyCodes.LEFT});
 
                     return waitForDom(() => expect(
                         isElementFocused(select(getTreeItem(treeData[0].label))!, treeNodeStyle)).to.equal(true));
@@ -280,7 +269,7 @@ describe('<TreeView />', () => {
                     await waitForDom(() => expect(
                         isElementFocused(select(getTreeItem(treeData[0].label))!, treeNodeStyle)).to.equal(true));
 
-                    simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), {keyCode: KeyCodes.RIGHT});
+                    simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), {keyCode: TreeKeyCodes.RIGHT});
 
                     return waitForDom(() => expect(
                         isElementFocused(select(getTreeItem(nodeChildren![0].label))!, treeNodeStyle)).to.equal(true));
@@ -299,13 +288,13 @@ describe('<TreeView />', () => {
                 await waitForDom(() => expect(
                     isElementFocused(select(getTreeItem(nodeChildren![0].label))!, treeNodeStyle)).to.equal(false));
 
-                simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), {keyCode: KeyCodes.DOWN});
+                simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), {keyCode: TreeKeyCodes.DOWN});
 
                 // this should assert first child of root is focused
                 await waitForDom(() => expect(
                     isElementFocused(select(getTreeItem(nodeChildren![0].label))!, treeNodeStyle)).to.equal(true));
 
-                simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), {keyCode: KeyCodes.UP});
+                simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), {keyCode: TreeKeyCodes.UP});
 
                 // this should assert first child of root is not focused
                 return waitForDom(() => {
@@ -323,14 +312,14 @@ describe('<TreeView />', () => {
                 selectItemWithLabel(select, treeData[0].label);
                 expandItemWithLabel(select, treeData[0].label);
 
-                simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), {keyCode: KeyCodes.DOWN});
-                simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), {keyCode: KeyCodes.RIGHT});
+                simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), {keyCode: TreeKeyCodes.DOWN});
+                simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), {keyCode: TreeKeyCodes.RIGHT});
 
                 await waitForDom(() => expect(
                     isElementFocused(select(getTreeItem(nodeChildren![0].label))!, treeNodeStyle)).to.equal(true));
 
                 nodeChildren![0].children!.forEach(
-                    () => simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), {keyCode: KeyCodes.DOWN})
+                    () => simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), {keyCode: TreeKeyCodes.DOWN})
                 );
 
                 const firstSubtreeChildren = nodeChildren![0].children!;
@@ -338,7 +327,7 @@ describe('<TreeView />', () => {
                 await waitForDom(() => expect(isElementFocused(select(getTreeItem(
                     firstSubtreeChildren[firstSubtreeChildren.length - 1].label))!, treeNodeStyle)).to.equal(true));
 
-                simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), {keyCode: KeyCodes.DOWN});
+                simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), {keyCode: TreeKeyCodes.DOWN});
 
                 return waitForDom(() => expect(
                     isElementFocused(select(getTreeItem(nodeChildren![1].label))!, treeNodeStyle)).to.equal(true));
@@ -352,12 +341,12 @@ describe('<TreeView />', () => {
                 selectItemWithLabel(select, treeData[0].label);
                 expandItemWithLabel(select, treeData[0].label);
 
-                simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), {keyCode: KeyCodes.DOWN});
+                simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), {keyCode: TreeKeyCodes.DOWN});
 
                 await waitForDom(() => expect(
                     isElementSelected(select(getTreeItem(nodeChildren![0].label))!, treeNodeStyle)).to.equal(false));
 
-                simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), {keyCode: KeyCodes.ENTER});
+                simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), {keyCode: TreeKeyCodes.ENTER});
 
                 return waitForDom(() => expect(
                     isElementSelected(select(getTreeItem(nodeChildren![0].label))!, treeNodeStyle)).to.equal(true));
@@ -371,12 +360,12 @@ describe('<TreeView />', () => {
                 selectItemWithLabel(select, treeData[0].label);
                 expandItemWithLabel(select, treeData[0].label);
 
-                simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), {keyCode: KeyCodes.DOWN});
-                simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), {keyCode: KeyCodes.DOWN});
+                simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), {keyCode: TreeKeyCodes.DOWN});
+                simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), {keyCode: TreeKeyCodes.DOWN});
 
                 await waitForDom(() => expect(isElementFocused(select(rootNode)!, treeNodeStyle)).to.equal(false));
 
-                simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), {keyCode: KeyCodes.HOME});
+                simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), {keyCode: TreeKeyCodes.HOME});
 
                 return waitForDom(() => expect(isElementFocused(select(rootNode)!, treeNodeStyle)).to.equal(true));
             });
@@ -398,7 +387,7 @@ describe('<TreeView />', () => {
                     expect(isElementFocused(select(getTreeItem(
                         lastChildren[lastChildren.length - 1].label))!, treeNodeStyle)).to.equal(false));
 
-                simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), {keyCode: KeyCodes.END});
+                simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), {keyCode: TreeKeyCodes.END});
 
                 return waitForDom(() =>
                     expect(isElementFocused(select(getTreeItem(
@@ -418,22 +407,22 @@ describe('<TreeView />', () => {
 
                 expandItemWithLabel(select, lastRootNode.label);
 
-                simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), {keyCode: KeyCodes.END});
+                simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), {keyCode: TreeKeyCodes.END});
                 await waitForDom(() =>
                     expect(isElementFocused(select(getTreeItem(
                         lastChildren[lastChildren.length - 1].label))!, treeNodeStyle)).to.equal(true));
 
-                simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), {keyCode: KeyCodes.DOWN});
+                simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), {keyCode: TreeKeyCodes.DOWN});
 
                 await waitForDom(() =>
                     expect(isElementFocused(select(getTreeItem(
                         lastChildren[lastChildren.length - 1].label))!, treeNodeStyle)).to.equal(true));
 
-                simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), {keyCode: KeyCodes.HOME});
+                simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), {keyCode: TreeKeyCodes.HOME});
 
                 await expect(isElementFocused(select(rootNode)!, treeNodeStyle)).to.equal(true);
 
-                simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), {keyCode: KeyCodes.UP});
+                simulate.keyDown(select('TREE_VIEW_DEMO', 'TREE_VIEW'), {keyCode: TreeKeyCodes.UP});
 
                 return expect(isElementFocused(select(rootNode)!, treeNodeStyle)).to.equal(true);
             });
