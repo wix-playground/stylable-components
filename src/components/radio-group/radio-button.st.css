@@ -31,7 +31,7 @@
     align-items: center;
 }
 
-.nativeInput {
+.hiddenInput {
     position: absolute;
     overflow: hidden;
     height: 1px;

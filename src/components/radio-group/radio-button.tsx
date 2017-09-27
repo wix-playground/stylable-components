@@ -45,7 +45,7 @@ export class RadioButton extends React.Component<RadioButtonProps, RadioButtonSt
             >
                 <input
                     type="radio"
-                    className="nativeInput"
+                    className="hiddenInput"
                     data-automation-id="NATIVE_INPUT"
                     onChange={this.onChange}
                     onFocus={this.onInputFocus}
