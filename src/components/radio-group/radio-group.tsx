@@ -134,20 +134,22 @@ export class RadioGroup extends React.Component<RadioGroupProps> {
         return React.Children.map(dataArray, (child, index) => {
             if (child && typeof child === 'object') {
 
+                const extraProps = child.type === RadioButton ?
+                    {
+                        ['data-automation-id']: 'RADIO_BUTTON_' + index,
+                        name: this.name,
+                        checked: this.checkedArray[index].checked,
+                        onChange: action(this.childrenOnClick(index)),
+                        disabled: this.props.disabled || child.props.disabled,
+                        readOnly: this.props.readOnly || child.props.readOnly,
+                        className: child.props.className + ' ' + styles.option,
+                        tabIndex: this.getChildTabIndex(index, this.isGroupChecked)
+                    } : {};
+
                 const childProps = {
                     ...child.props,
                     key: index,
-                    ...(child.type === RadioButton ?
-                        {
-                            ['data-automation-id']: 'RADIO_BUTTON_' + index,
-                            name: this.name,
-                            checked: this.checkedArray[index].checked,
-                            onChange: action(this.childrenOnClick(index)),
-                            disabled: this.props.disabled || child.props.disabled,
-                            readOnly: this.props.readOnly || child.props.readOnly,
-                            className: child.props.className + ' ' + styles.option,
-                            tabIndex: this.getChildTabIndex(index, this.isGroupChecked)
-                        } : {})
+                    ...extraProps
                 };
 
                 return React.cloneElement(child, childProps, child.props.children);
