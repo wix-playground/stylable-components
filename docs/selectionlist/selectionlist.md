@@ -18,7 +18,7 @@ A component which allows the user to take action by choosing an item from a list
 | onChange | (event: ChangeEvent<string>) => void | NOP | no | Triggered when an item is selected in the list |
 | multiple | boolean | false | no | Whether the selection list supports a single or multiple selections. When true, adds the aria-multiselectable='true' on the root element.
 | orientation | enum | Vertical | no | The orientation is used mostly for assistive technologies. Changing to Horizontal will change the behavior of keyboard navigation and add an aria-orientation attribute to the root with the 'horizontal' value |
-| typeAhead | boolean | false | no | Enables keyboard type-ahead |
+| typeAhead | boolean | true | no | Enables keyboard type-ahead |
 | children | any | null | no | Children to be rendered in the list |
 
 * The following props should be placed in an OptionList interface since they will need to be passed from higher order components.
