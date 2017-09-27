@@ -137,16 +137,15 @@ export class TimePicker extends React.Component<Props, State> {
                             value={this.state[segment] || ''}
                             placeholder={this.state[segment] ? '' : '00'}
                             disabled={disabled}
-                            name={segment}
 
                             role="spinbutton"
                             aria-label={LABELS[segment]}
                             aria-valuetext={this.state[segment]}
 
                             onMouseDown={this.onInputMouseDown}
-                            onChange={this.onInputChange}
-                            onFocus={this.onInputFocus}
-                            onBlur={this.onBlur}
+                            onChange={this.createOnInputChange(segment)}
+                            onFocus={this.createOnInputFocus(segment)}
+                            onBlur={this.createOnBlur(segment)}
                             onKeyDown={this.onKeyDown}
                         />
                     )}
@@ -165,7 +164,7 @@ export class TimePicker extends React.Component<Props, State> {
 
                         onMouseDown={this.onAmpmMouseDown}
                         onFocus={this.onAmpmFocus}
-                        onBlur={this.onBlur}
+                        onBlur={this.createOnBlur('ampm')}
                         onKeyDown={this.onKeyDown}
                     />
                 }
@@ -190,15 +189,15 @@ export class TimePicker extends React.Component<Props, State> {
                     <input
                         className="nativeInput"
                         type="time"
+                        name={name}
                         tabIndex={isTouchTimeInputSupported ? 0 : -1}
                         ref={elem => this.nativeInput = elem}
-                        name={name}
                         required={required}
                         aria-label={label}
                         value={this.getValue()}
                         disabled={disabled}
                         onFocus={this.onNantiveInputFocus}
-                        onBlur={this.onBlur}
+                        onBlur={this.createOnBlur('nativeInput')}
                         onChange={this.onNativeInputChange}
                     />
                 </label>
@@ -328,10 +327,9 @@ export class TimePicker extends React.Component<Props, State> {
         e.currentTarget.select();
     }
 
-    private onInputChange = (e: React.SyntheticEvent<HTMLInputElement>): void => {
+    private createOnInputChange = (name: TimeSegment) => (e: React.SyntheticEvent<HTMLInputElement>): void => {
         const {ampm} = this.state;
         const {value} = e.currentTarget;
-        const name = e.currentTarget.name as TimeSegment;
         const numValue = Number(value);
         if (!isValidValue(numValue, name, ampm)) {
             return;
@@ -359,12 +357,12 @@ export class TimePicker extends React.Component<Props, State> {
         this.setState({focus: true});
     }
 
-    private onInputFocus = (e: React.SyntheticEvent<HTMLInputElement>) => {
+    private createOnInputFocus = (name: Segment) => (e: React.SyntheticEvent<HTMLInputElement>) => {
         const {hh, mm} = this.state;
         const input = e.currentTarget;
         const update: Pick<State, TimeSegment | 'focus' | 'currentSegment'> = {
             focus: true,
-            currentSegment: e.currentTarget.name as Segment
+            currentSegment: name
         };
         if (!hh && !mm) {
             update.hh = '12';
@@ -374,8 +372,7 @@ export class TimePicker extends React.Component<Props, State> {
             input.select();
         });
     }
-    private onBlur = (e: React.SyntheticEvent<HTMLElement>) => {
-        const name = e.currentTarget instanceof HTMLInputElement && e.currentTarget.name;
+    private createOnBlur = (name: string) => (e: React.SyntheticEvent<HTMLElement>) => {
         const update: Pick<State, TimeSegment | 'focus' | 'currentSegment'> = {
             focus: false,
             currentSegment: 'hh'

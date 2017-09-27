@@ -2,8 +2,7 @@ import React = require('react');
 import {SyntheticEvent} from 'react';
 import {ClientRenderer, expect, waitFor} from 'test-drive-react';
 import {AutoComplete, CheckBox, DatePicker, DropDown, NumberInput, RadioButton, RadioGroup, Slider,
-        Toggle} from '../../src';
-import {TimePicker} from '../../src/components/time-picker/time-picker';
+        TimePicker, Toggle} from '../../src';
 
 describe('Form contract of', () => {
 
@@ -107,7 +106,7 @@ describe('Form contract of', () => {
         await testFormContract(<Slider />, 666, `?${testName}=666`);
     });
 
-    it.skip('TimePicker', async () => {
+    it('TimePicker', async () => {
         await testFormContract(<TimePicker />, '4:36', `?${testName}=04%3A36`);
     });
 
