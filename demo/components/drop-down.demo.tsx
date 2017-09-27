@@ -3,19 +3,14 @@ import {ChangeEvent, DropDown} from '../../src';
 
 export interface DropDownDemoState {
     selectedItem: string | undefined;
+    open: boolean;
 }
 
 const items = ['Muffins', 'Pancakes', 'Waffles'];
 
 export class DropDownDemo extends React.Component<{}, DropDownDemoState> {
 
-    public state = {selectedItem: undefined};
-
-    public onItemClick = (e: ChangeEvent<string>) => {
-        this.setState({
-            selectedItem: e.value
-        });
-    }
+    public state = {selectedItem: undefined, open: false};
 
     public render() {
         return (
@@ -26,9 +21,23 @@ export class DropDownDemo extends React.Component<{}, DropDownDemoState> {
                         value={this.state.selectedItem}
                         onChange={this.onItemClick}
                         dataSource={items}
+                        onOpenStateChange={this.onOpenStateChange}
+                        open={this.state.open}
                     />
                 </section>
             </div>
         );
+    }
+
+    private onItemClick = (e: ChangeEvent<string>) => {
+        this.setState({
+            selectedItem: e.value
+        });
+    }
+
+    private onOpenStateChange = (e: ChangeEvent<boolean>) => {
+        this.setState({
+            open: e.value
+        });
     }
 }
