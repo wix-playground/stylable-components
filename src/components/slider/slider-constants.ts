@@ -1,6 +1,6 @@
-import {AxisOptions} from './slider-types';
+import {AxisOptions, AxisOptionsKey} from './slider-types';
 
-export const AXES: {[name: string]: AxisOptions} = {
+export const AXES: {[name in AxisOptionsKey]: AxisOptions} = {
     x: 'x',
     y: 'y',
     xReverse: 'x-reverse',
