@@ -11,24 +11,16 @@ const getTreeItem = (id: string) => `${treeItem}_${id.replace(' ', '_')}`;
 export class TreeViewDriver extends DriverBase {
     public static ComponentClass = TreeView;
 
-    public getItem(id: string): TreeItemDriver {
-        return new TreeItemDriver(() => this.select(getTreeItem(id)));
+    public getItemDriver(id: string): TreeItemDriver {
+        return new TreeItemDriver(this.select(getTreeItem(id)), id);
     }
 
     public toggleItem(id: string): void {
-        simulate.click(this.getItemIcon(id));
+        simulate.click(this.getItemDriver(id).icon);
     }
 
     public selectItem(id: string): void {
-        simulate.click(this.getItemLabel(id));
-    }
-
-    public getItemIcon(id: string): Element {
-        return this.select(`${getTreeItem(id)}_ICON`);
-    }
-
-    public getItemLabel(id: string): HTMLElement {
-        return this.select<HTMLElement>(`${getTreeItem(id)}_LABEL`);
+        simulate.click(this.getItemDriver(id).label);
     }
 
     public pressKey(keyCode: number): void {
