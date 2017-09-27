@@ -1,6 +1,7 @@
+import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {DriverBase, simulate} from 'test-drive-react';
-import {TreeItem, TreeView} from '../../src';
+import {TreeItem, TreeItemProps, TreeView} from '../../src';
 
 const treeView = 'TREE_VIEW';
 const treeItem = 'TREE_ITEM';
@@ -44,7 +45,7 @@ export class TreeViewInstanceDriver extends DriverBase {
 }
 
 export class TreeItemDriver extends DriverBase {
-    public static ComponentClass = TreeItem;
+    public static ComponentClass: React.SFC<TreeItemProps> = TreeItem;
 
     constructor(public readonly elem: Element, private id: string) {
         super(() => elem);
