@@ -1,5 +1,10 @@
 @namespace "RadioButton";
 
+:import {
+    -st-from: '../../style/project.st.css';
+    -st-named: hiddenElement;
+}
+
 :vars {
     defaultStroke: #adbbc6;
     checkedStroke: #4A90E2;
@@ -27,14 +32,7 @@
 }
 
 .radioInput {
-    position: absolute;
-    overflow: hidden;
-    height: 1px;
-    width: 1px;
-    margin: -1px;
-    padding: 0;
-    border: 0;
-    opacity: 0;
+    -st-compose: hiddenElement;
 }
 
 .iconContainer {

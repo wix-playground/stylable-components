@@ -1,5 +1,10 @@
 @namespace "CheckBox";
 
+:import {
+    -st-from: '../../style/project.st.css';
+    -st-named: hiddenElement;
+}
+
 .root {
     -st-states: checked, disabled, indeterminate, readonly, focus;
     display: inline-block;
@@ -50,14 +55,7 @@
 }
 
 .nativeCheckbox {
-    position: absolute;
-    overflow: hidden;
-    height: 1px;
-    width: 1px;
-    margin: -1px;
-    padding: 0;
-    border: 0;
-    opacity: 0;
+    -st-compose: hiddenElement;
 }
 
 .childContainer {
