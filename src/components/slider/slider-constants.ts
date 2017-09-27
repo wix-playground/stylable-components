@@ -1,6 +1,6 @@
 import {AxisOptions} from './slider-types';
 
-export const AXISES: {[name: string]: AxisOptions} = {
+export const AXES: {[name: string]: AxisOptions} = {
     x: 'x',
     y: 'y',
     xReverse: 'x-reverse',
@@ -11,4 +11,4 @@ export const DEFAULT_STEP = 1;
 export const DEFAULT_MIN = 0;
 export const DEFAULT_MAX = 100;
 export const DEFAULT_VALUE = DEFAULT_MIN;
-export const DEFAULT_AXIS = AXISES.x;
+export const DEFAULT_AXIS = AXES.x;

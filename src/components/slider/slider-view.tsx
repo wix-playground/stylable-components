@@ -5,7 +5,7 @@ import {noop} from '../../utils/noop';
 import {GlobalEvent} from '../global-event';
 import {isVertical} from './slider-calculations';
 import {
-    AXISES,
+    AXES,
     CONTINUOUS_STEP,
     DEFAULT_AXIS
 } from './slider-constants';
@@ -96,10 +96,10 @@ export class SliderView extends React.Component<SliderViewProps, {}> {
                     active: this.props.active,
                     disabled: Boolean(this.props.disabled),
                     error: Boolean(this.props.error),
-                    x: this.props.axis === AXISES.x !== this.props.rtl,
-                    y: this.props.axis === AXISES.y,
-                    xReverse: this.props.axis === AXISES.xReverse !== this.props.rtl,
-                    yReverse: this.props.axis === AXISES.yReverse
+                    x: this.props.axis === AXES.x !== this.props.rtl,
+                    y: this.props.axis === AXES.y,
+                    xReverse: this.props.axis === AXES.xReverse !== this.props.rtl,
+                    yReverse: this.props.axis === AXES.yReverse
                 }}
             >
                 <GlobalEvent
@@ -229,7 +229,7 @@ export class SliderView extends React.Component<SliderViewProps, {}> {
     }
 
     private isReverse(axis: AxisOptions): boolean {
-        return (axis === AXISES.xReverse || axis === AXISES.yReverse) !== this.props.rtl;
+        return (axis === AXES.xReverse || axis === AXES.yReverse) !== this.props.rtl;
     }
 
     private onSliderFocus: React.FocusEventHandler<HTMLElement> = event => {

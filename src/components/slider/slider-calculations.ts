@@ -1,12 +1,12 @@
-import {AXISES, CONTINUOUS_STEP} from './slider-constants';
+import {AXES, CONTINUOUS_STEP} from './slider-constants';
 import {AxisOptions, PointerPosition, Step} from './slider-types';
 
 export function isVertical(axis: AxisOptions): boolean {
-    return axis === AXISES.y || axis === AXISES.yReverse;
+    return axis === AXES.y || axis === AXES.yReverse;
 }
 
 export function isReverse(axis: AxisOptions): boolean {
-    return axis === AXISES.xReverse || axis === AXISES.yReverse;
+    return axis === AXES.xReverse || axis === AXES.yReverse;
 }
 
 export function getRelativeStep(step: Step | undefined, min: number, max: number): Step {
