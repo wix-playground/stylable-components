@@ -9,7 +9,7 @@ const failingComponents = [
     'NumberInput', 'Toggle', 'Portal', 'Popup', 'TimePicker', 'Modal', 'ContextProvider'
 ];
 
-describe.only('Root Element contract', () => {
+describe('Root Element contract', () => {
     allComponents
         .filter(exportName => failingComponents.indexOf(exportName) === -1)
         .forEach(exportName => describe(exportName, () => {
