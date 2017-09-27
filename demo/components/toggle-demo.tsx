@@ -1,6 +1,5 @@
 import * as React from 'react';
-import {ContextProvider, Toggle} from '../../src';
-import {ChangeEvent} from '../../src/types/events';
+import {ChangeEvent, ContextProvider, Toggle} from '../../src';
 
 export interface State {
     checked: boolean;
