@@ -41,7 +41,7 @@ export interface SliderProps extends FormInputProps<number, string>, properties.
     name?: string;
     label?: string;
 
-    marks?: boolean;
+    displayStopMarks?: boolean;
     disabled?: boolean;
     required?: boolean;
     error?: boolean;
@@ -113,7 +113,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
                 error={this.props.error!}
                 label={this.props.label!}
                 name={this.props.name!}
-                marks={this.props.marks!}
+                displayStopMarks={this.props.displayStopMarks!}
                 max={this.props.max!}
                 min={this.props.min!}
                 orientation={isVertical(this.props.axis!) ? 'vertical' : 'horizontal'}

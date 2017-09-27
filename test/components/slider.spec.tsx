@@ -1120,7 +1120,7 @@ describe('<Slider />', () => {
         });
     });
 
-    describe('when marks=true', () => {
+    describe('when displayStopMarks=true', () => {
         it('renders proper number of marks', async () => {
             const value = 5;
             const min = 0;
@@ -1132,7 +1132,7 @@ describe('<Slider />', () => {
                     min={min}
                     max={max}
                     step={step}
-                    marks={true}
+                    displayStopMarks={true}
                 />
             );
             const select: (automationId: string) => HTMLElement | null = rendered.select;
@@ -1157,7 +1157,7 @@ describe('<Slider />', () => {
                     min={min}
                     max={max}
                     step={step}
-                    marks={true}
+                    displayStopMarks={true}
                 />
             );
             const select: (automationId: string) => HTMLElement | null = rendered.select;

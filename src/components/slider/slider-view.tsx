@@ -36,7 +36,7 @@ export interface SliderViewProps extends FormInputProps<number, string>, propert
     active: boolean;
     disabled: boolean;
     error: boolean;
-    marks: boolean;
+    displayStopMarks: boolean;
     required: boolean;
     rtl: boolean;
 
@@ -164,11 +164,11 @@ export class SliderView extends React.Component<SliderViewProps, {}> {
     }
 
     private getMarks(): JSX.Element[] {
-        const {marks, min, max, step, relativeStep} = this.props;
+        const {displayStopMarks, min, max, step, relativeStep} = this.props;
         const range = (max! - min!);
         const markElements: JSX.Element[] = [];
         if (
-            !marks ||
+            !displayStopMarks ||
             typeof step === 'undefined' ||
             step === CONTINUOUS_STEP ||
             relativeStep === CONTINUOUS_STEP ||
