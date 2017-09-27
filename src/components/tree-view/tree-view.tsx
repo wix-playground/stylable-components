@@ -90,7 +90,7 @@ export const TreeItem: React.SFC<TreeItemProps> =
             >
                 <div
                     data-automation-id={`${itemIdPrefix}_${itemLabel}`}
-                    className="tree-node"
+                    className="treeNode"
                     style-state={{selected: state!.isSelected, focused: state!.isFocused}}
                     onClick={onItemClick && onItemClick.bind(null, item)}
                 >
@@ -99,12 +99,12 @@ export const TreeItem: React.SFC<TreeItemProps> =
 
                     <span
                         data-automation-id={`${itemIdPrefix}_${itemLabel}_LABEL`}
-                        className="tree-item-label"
+                        className="treeItemLabel"
                     >
                         {item.label}
                     </span>
                 </div>
-                {item.children && <ul className="nested-tree" role="group">
+                {item.children && <ul className="nestedTree" role="group">
                     {state!.isExpanded && item.children.map((child: TreeItemData, index: number) =>
                         <TreeNode
                             item={child}
