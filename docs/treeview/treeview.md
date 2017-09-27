@@ -36,8 +36,6 @@ The default ItemRenderer supplied with the tree. Draws an arrow icon (if relevan
 
 ![Image of sample tree node]()
 
-The itemRenderer is responsible adding the 3 tree events to each node it renders.
-
 #### Properties
 
 | Name | Type | Default | Required | Description |
