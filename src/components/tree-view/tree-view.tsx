@@ -3,8 +3,8 @@ import {action, autorun, observable} from 'mobx';
 import {observer} from 'mobx-react';
 import * as React from 'react';
 import {properties, stylable} from 'wix-react-tools';
-import {getLastAvailableItem, getNextItem, getPreviousItem} from './tree-util';
 import {TreeItem} from './tree-item';
+import {getLastAvailableItem, getNextItem, getPreviousItem} from './tree-util';
 import style from './tree-view.st.css';
 
 export const TreeKeyCodes: any = {
@@ -58,6 +58,8 @@ export function initParentsMap(parentsMap: ParentsMap, data: TreeItemData[] = []
     });
 }
 
+// This function is not perfect but for now this is
+// a solution that will be changed later
 export function getFocusedItemKey(item: TreeItemData) {
     return item.label;
 }

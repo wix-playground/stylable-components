@@ -1,13 +1,13 @@
 import * as React from 'react';
-import nodeStyle from './tree-node.st.css';
-import {getFocusedItemKey, TreeItemProps, TreeItemData} from './tree-view';
-import {MinusIcon, PlusIcon} from './tree-view-icons';
 import {stylable} from 'wix-react-tools';
+import styles from './tree-item.st.css';
+import {getFocusedItemKey, TreeItemData, TreeItemProps} from './tree-view';
+import {MinusIcon, PlusIcon} from './tree-view-icons';
 
 const itemIdPrefix = 'TREE_ITEM';
 
 export const TreeItem: React.SFC<TreeItemProps> =
-    stylable(nodeStyle)(({item, itemRenderer, onItemClick, onIconClick, stateMap}) => {
+    stylable(styles)(({item, itemRenderer, onItemClick, onIconClick, stateMap}) => {
         const state = stateMap.getItemState(item);
         const itemLabel = item.label.replace(' ', '_');
         const TreeNode = itemRenderer;
@@ -28,7 +28,7 @@ export const TreeItem: React.SFC<TreeItemProps> =
             >
                 <div
                     data-automation-id={`${itemIdPrefix}_${itemLabel}`}
-                    className="node"
+                    className="item"
                     style-state={{selected: state!.isSelected, focused: state!.isFocused}}
                     onClick={onItemClick && onItemClick.bind(null, item)}
                 >
