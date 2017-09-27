@@ -76,7 +76,7 @@ export const TreeItem: React.SFC<TreeItemProps> =
         const iconProps = {
             'data-automation-id': `${itemIdPrefix}_${itemLabel}_ICON`,
             'onClick': onIconClick && onIconClick.bind(null, item),
-            'className': 'tree-item-icon',
+            'className': 'treeItemIcon',
             'aria-hidden': 'true'
         };
 
