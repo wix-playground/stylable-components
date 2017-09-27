@@ -1,6 +1,6 @@
 :import{
-    -st-from: "./tree-node.st.css";
-    -st-default: TreeNode;
+    -st-from: "./tree-item.st.css";
+    -st-default: TreeItem;
 }
 
 .root {
@@ -17,6 +17,6 @@
     padding-left: 0;
 }
 
-.treeNode {
-    -st-extends: TreeNode;
+.treeItem {
+    -st-extends: TreeItem;
 }

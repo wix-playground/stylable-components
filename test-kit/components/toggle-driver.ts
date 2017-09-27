@@ -4,7 +4,7 @@ import {Toggle} from '../../src';
 export class ToggleDriver extends DriverBase {
     public static ComponentClass = Toggle;
     public get nativeInput() {
-        return this.select('TOGGLE_INPUT');
+        return this.select('NATIVE_INPUT');
     }
     public click() {
         const input = this.nativeInput;
