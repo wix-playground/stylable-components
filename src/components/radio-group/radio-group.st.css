@@ -9,7 +9,7 @@
     display: inline-block;
 }
 
-.radioGroupChild {
+.option {
     -st-extends: RB;
 }
 
