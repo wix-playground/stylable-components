@@ -5,6 +5,17 @@ export function isVertical(axis: AxisOptions): boolean {
     return axis === AXES.y || axis === AXES.yReverse;
 }
 
+export function getSizeProperty(axis: AxisOptions): 'width' | 'height' {
+    return isVertical(axis) ? 'height' : 'width';
+}
+
+export function getPositionProperty(axis: AxisOptions, rtl: boolean): 'top' | 'bottom' | 'right' | 'left' {
+    const reversed = isReverse(axis) !== rtl;
+    return isVertical(axis) ?
+        reversed ? 'top' : 'bottom' :
+        reversed ? 'right' : 'left';
+}
+
 export function isReverse(axis: AxisOptions): boolean {
     return axis === AXES.xReverse || axis === AXES.yReverse;
 }

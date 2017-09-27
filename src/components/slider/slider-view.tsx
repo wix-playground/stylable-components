@@ -3,7 +3,10 @@ import {properties, stylable} from 'wix-react-tools';
 import {FormInputProps} from '../../types/forms';
 import {noop} from '../../utils/noop';
 import {GlobalEvent} from '../global-event';
-import {isVertical} from './slider-calculations';
+import {
+    getPositionProperty,
+    getSizeProperty
+} from './slider-calculations';
 import {
     AXES,
     CONTINUOUS_STEP,
@@ -193,43 +196,29 @@ export class SliderView extends React.Component<SliderViewProps, {}> {
         return markElements;
     }
 
-    private getProgressStyles() {
-        return isVertical(this.props.axis!) ?
-            {height: `${this.props.relativeValue}%`} :
-            {width: `${this.props.relativeValue}%`};
+    private getProgressStyles(): {[key in 'width' | 'height']?: string} {
+        return {
+            [getSizeProperty(this.props.axis!)]: `${this.props.relativeValue}%`
+        };
     }
 
-    private getHandleStyles() {
-        const isReverse = this.isReverse(this.props.axis!);
-        return isVertical(this.props.axis!) ?
-            (isReverse ?
-                {top: `${this.props.relativeValue}%`} :
-                {bottom: `${this.props.relativeValue}%`}) :
-            (isReverse ?
-                {right: `${this.props.relativeValue}%`} :
-                {left: `${this.props.relativeValue}%`});
+    private getHandleStyles(): {[key in 'top' | 'bottom' | 'right' | 'left']?: string} {
+        return {
+            [getPositionProperty(this.props.axis!, this.props.rtl)]: `${this.props.relativeValue}%`
+        };
     }
 
-    private getMarkStyles(position: number) {
-        const vertical = isVertical(this.props.axis!);
-        return this.isReverse(this.props.axis!) ?
-            (vertical ?
-                {top: `${position}%`} :
-                {right: `${position}%`}) :
-            (vertical ?
-                {bottom: `${position}%`} :
-                {left: `${position}%`});
+    private getMarkStyles(position: number): {[key in 'top' | 'bottom' | 'right' | 'left']?: string} {
+        return {
+            [getPositionProperty(this.props.axis!, this.props.rtl)]: `${position}%`
+        };
     }
 
-    private getMarkClass(position: number) {
+    private getMarkClass(position: number): 'markProgress' | 'markTrack' {
         const {relativeValue} = this.props;
         return position <= relativeValue ?
             'markProgress' :
             'markTrack';
-    }
-
-    private isReverse(axis: AxisOptions): boolean {
-        return (axis === AXES.xReverse || axis === AXES.yReverse) !== this.props.rtl;
     }
 
     private onSliderFocus: React.FocusEventHandler<HTMLElement> = event => {
