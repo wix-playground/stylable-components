@@ -44,3 +44,14 @@ export function getNumOfFollowingDays(date: Date, startingDay: number = 0): numb
     const followingDays = (6 - getLastDayOfMonth(date)) + startingDay;
     return followingDays > 6 ? followingDays - 7 : followingDays;
 }
+
+export function dateToDateInputFormat(d: Date | null): string | undefined {
+    if (d) {
+        // Clears issues with timezone inconsistencies
+        const normalizedDate = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+        return normalizedDate.toISOString().slice(0, 10);
+    } else {
+        return undefined;
+    }
+
+}

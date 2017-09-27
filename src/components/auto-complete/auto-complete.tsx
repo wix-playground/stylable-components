@@ -46,6 +46,7 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
         list.addDataSource({dataSource: filteredItems});
         return (
             <div data-automation-id="AUTO_COMPLETE">
+                <input type="hidden" name={this.props.name} value={this.props.value}/>
                 <input
                     className="auto-complete-input"
                     data-automation-id="AUTO_COMPLETE_INPUT"
