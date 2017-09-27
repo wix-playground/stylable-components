@@ -24,19 +24,19 @@
     color: white;
 }
 
-.nested-tree {
+.nestedTree {
     margin-left: 2rem;
     list-style: none;
     padding-left: 0;
 }
 
-.item-icon {
+.itemIcon {
     height: 1rem;
     width: 1rem;
     vertical-align: middle;
     margin-right: 5px;
 }
 
-.item-label {
+.itemLabel {
     vertical-align: middle;
 }
