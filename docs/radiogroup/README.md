@@ -16,6 +16,7 @@ The **RadioGroup** component is used to group together children and provide them
 | disabled | boolean | false | no | Whether all the radio buttons are disabled |
 | readonly | boolean | false | no | Whether the group value cannot be changed |
 | labelLocation | 'right' or 'left' | 'right' | no | Whether each child's value appears as text to the right or left of the radio button  |
+| children | React.ReactNode | null | no | Elements in the group, have to be of type RadioButton in order to be used as radio buttons, otherwise rendered according to DOM order |
 | onChange | (e: RadioChangeEvent) => void | NOOP | no | Triggered by changing a radio button state |
 | dataSource | Array\<RadioButtonProps> | [] | no | Array of dataSchema objects |
 
@@ -29,6 +30,7 @@ The **RadioGroup** component is used to group together children and provide them
 | disabled | boolean | false | no | Whether this button appears as disabled |
 | readonly | boolean | false | no | Whether this button's value can be changed |
 | labelLocation | 'right' or 'left' | 'right' | no | Whether the text supplied in the value property appears to the right or left of the button itself  |
+| children | React.ReactNode | null | no | Elements to be rendered according to DOM order |
 | onChange | (e: RadioChangeEvent) => void | NOOP | no | Triggered by changing the button's state |
 
 
