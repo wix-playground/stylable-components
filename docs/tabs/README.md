@@ -21,15 +21,14 @@ When a tab interface is initialized, one tab panel is displayed and its associat
 
 #### Tabs Props
 
-| name             | type               | defaultValue | isRequired | description                              |
-| ---------------- | ------------------ | ------------ | ---------- | ---------------------------------------- |
-| onChange         | func               |              | yes        | Callback function that is fired when the tab value changes |
-| children         | node               |              |            | Should be used to pass `Tab` components. |
-| selectedTabKey   | string             |              |            | Controls which tab is active             |
-| defaultTabKey    | number             |              |            | Controls tab that is active by default (e.g. when component is mounted) |
-| killInactiveTabs | bool               | false        |            | When `false` component loads all tabs and tab panels content. When `true` component loads content related to active tab only. Switching between tabs unloads all previous content. |
-| position         | enum               | up           |            | Controls the location of tabs relative to the tab panel. Accepted values are: up/down/left/right |
-| disabled         | array (of tab IDs) |              |            | Specifies disabled tabs                  |
+| name                | type               | defaultValue | isRequired | description |
+| ------------------- | ------------------ | ------------ | ---------- | ---------------------------------------- |
+| onChange            | func               |              | yes        | Callback function that is fired when the tab value changes |
+| children            | node               |              |            | Should be used to pass `Tab` components. |
+| value               | string             |              |            | Controls which tab is active |
+| defaultValue        | string             |              |            | Controls tab that is active by default (e.g. when component is mounted) |
+| unmountInactiveTabs | bool               | false        |            | When `false` component mounts all tabs and tab panels content. When `true` component mounts content related to active tab only. Switching between tabs unmounts all previous content. |
+| disabled            | array (of tab IDs) |              |            | Specifies disabled tabs |
 
 
 
@@ -39,16 +38,16 @@ When a tab interface is initialized, one tab panel is displayed and its associat
 
 ```jsx
 <Tabs
-    selectedTabKey="2"
-    onChange={key => handleChange(key)}
+    value="2"
+    onChange={({value}) => handleChange(value)}
 >
-    <Tab key="1" label="Tab One">
+    <Tab value="1" label="Tab One">
         <p>This is hidden</p>
     </Tab>
-    <Tab key="2" label="Tab Two">
+    <Tab value="2" label="Tab Two">
         <p>This is selected</p>
     </Tab>
-    <Tab key="3" label={component} disabled={true}>
+    <Tab value="3" label={component} disabled={true}>
         <p>This is disabled and cannot be selected</p>
     </Tab>
 </Tabs>
@@ -56,21 +55,22 @@ When a tab interface is initialized, one tab panel is displayed and its associat
 
 *Comments to example 1*
 
+The 3rd tab is disabled. Clicks on it will not call `Tabs#onChange`
 
 **Example 2:**
 
 ```jsx
 <Tabs
     disabled={true}
-    selectedTabKey="2"
+    value="2"
 >
-    <Tab key="1" label="Tab One">
+    <Tab value="1" label="Tab One">
         <p>This is disabled and cannot be selected</p>
     </Tab>
-    <Tab key="2" label="Tab Two">
+    <Tab value="2" label="Tab Two">
         <p>This is selected</p>
     </Tab>
-    <Tab key="3" label={component}>
+    <Tab value="3" label={component}>
         <p>This is disabled and cannot be selected</p>
     </Tab>
 </Tabs>
@@ -78,7 +78,7 @@ When a tab interface is initialized, one tab panel is displayed and its associat
 
 *Comments to example 2*
 
-
+All tabs arev disabled no clicks will call `Tabs#onChange`
 
 ## Style API
 
