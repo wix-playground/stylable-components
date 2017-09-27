@@ -1,7 +1,6 @@
 import * as ReactDOM from 'react-dom';
 import {DriverBase, simulate} from 'test-drive-react';
 import {TreeItem, TreeItemProps, TreeView} from '../../src';
-import {TreeViewMobxWrapper, TreeViewWrapper} from '../../test/components/tree-view.spec';
 
 const treeView = 'TREE_VIEW';
 const treeItem = 'TREE_ITEM';
