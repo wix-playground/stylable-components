@@ -1,8 +1,7 @@
 import * as React from 'react';
 import {stylable} from 'wix-react-tools';
-import {ContextProvider, TimePicker} from '../../src';
+import {ChangeEvent, ContextProvider, TimePicker} from '../../src';
 import {is12TimeFormat} from '../../src/components/time-picker/utils';
-import {ChangeEvent} from '../../src/types/events';
 import styles from './time-picker-demo.st.css';
 
 @stylable(styles)

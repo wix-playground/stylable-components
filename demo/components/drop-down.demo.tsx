@@ -1,6 +1,5 @@
 import * as React from 'react';
-import {DropDown} from '../../src';
-import {ChangeEvent} from '../../src/types/events';
+import {ChangeEvent, DropDown} from '../../src';
 
 export interface DropDownDemoState {
     selectedItem: string | undefined;
