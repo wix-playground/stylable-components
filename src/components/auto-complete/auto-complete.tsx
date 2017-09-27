@@ -47,7 +47,7 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
         return (
             <div data-automation-id="AUTO_COMPLETE">
                 <input
-                    className="auto-complete-input"
+                    className="autoCompleteInput"
                     data-automation-id="AUTO_COMPLETE_INPUT"
                     type="text"
                     onChange={this.onChange}
@@ -57,7 +57,7 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
                 <CaretDown onClick={this.onCaretClick} className="caret" data-automation-id="AUTO_COMPLETE_CARET"/>
                 <Popup anchor={this.state.input} open={this.props.open && filteredItems!.length > 0}>
                     <SelectionListView
-                        className="root auto-complete-list"
+                        className="root autoCompleteList"
                         list={list}
                         onChange={this.onClick}
                     />
