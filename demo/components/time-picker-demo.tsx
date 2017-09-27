@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {stylable} from 'wix-react-tools';
-import {TimePicker} from '../../src';
+import {ContextProvider, TimePicker} from '../../src';
 import {is12TimeFormat} from '../../src/components/time-picker/utils';
 import {ChangeEvent} from '../../src/types/events';
 import styles from './time-picker-demo.st.css';
@@ -16,74 +16,77 @@ export class TimePickerDemo extends React.Component<any, any> {
     }
     public render() {
         return (
-            <div>
-                <div>
-                    System time format: <code>{is12TimeFormat ? 'ampm' : '24h'}</code>
-                </div>
-
-                <h3>Controlled 24 time format</h3>
-                <div data-automation-id="TIME_PICKER_DEMO_CONTROLLED_24">
-                    <TimePicker
-                        value={this.state.value1}
-                        format="24h"
-                        onChange={this.createOnChange('value1')}
-                    />
-                    <span style={{marginLeft: 20}}>{this.state.value1}</span>
-                </div>
-
-                <h3>Controlled 12 time format</h3>
-                <div data-automation-id="TIME_PICKER_DEMO_CONTROLLED_AMPM">
-                    <TimePicker
-                        format="ampm"
-                        value={this.state.value1}
-                        onChange={this.createOnChange('value1')}
-                    />
-                    <span style={{marginLeft: 20}}>{this.state.value1}</span>
-                </div>
-
-                <h3>Controlled 12 time format with error</h3>
-                <div>
-                    <TimePicker
-                        error
-                        format="ampm"
-                        value={this.state.value1}
-                        onChange={this.createOnChange('value1')}
-                    />
-                    <span style={{marginLeft: 20}}>{this.state.value1}</span>
-                </div>
-
-                <h3>Controlled 12 time format with RTL</h3>
-                <div>
-                    <TimePicker
-                        rtl
-                        format="ampm"
-                        value={this.state.value1}
-                        onChange={this.createOnChange('value1')}
-                    />
-                    <span style={{marginLeft: 20}}>{this.state.value1}</span>
-                </div>
-
-                <h3>Placeholder (read-only)</h3>
-                <div>
-                    <TimePicker
-                        placeholder="Pick the time"
-                        value={this.state.value2}
-                        onChange={this.createOnChange('value2')}
-                    />
-                    <span style={{marginLeft: 20}}>{this.state.value2}</span>
-                </div>
-
-                <h3>No value (read-only)</h3>
-                <div>
-                    <TimePicker format="ampm"/>
-                </div>
-
-                <h3>Disabled</h3>
-                <div>
-                    <TimePicker value="14:55" disabled/>
-                </div>
-
-            </div>
+            <table cellSpacing={24}>
+                <thead>
+                    <tr>
+                        <th colSpan={4}>
+                            System time format: <code>{is12TimeFormat ? 'ampm' : '24h'}</code>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>Controlled 24 time format</th>
+                        <th>Controlled 12 time format</th>
+                        <th>Controlled 12 time format with error</th>
+                        <th>Controlled 12 time format with RTL</th>
+                        <th>Placeholder (read-only)</th>
+                        <th>No value (read-only)</th>
+                        <th>Disabled</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td data-automation-id="TIME_PICKER_DEMO_CONTROLLED_24">
+                            <TimePicker
+                                value={this.state.value1}
+                                format="24h"
+                                onChange={this.createOnChange('value1')}
+                            />
+                            <span style={{marginLeft: 20}}>{this.state.value1}</span>
+                        </td>
+                        <td data-automation-id="TIME_PICKER_DEMO_CONTROLLED_AMPM">
+                            <TimePicker
+                                format="ampm"
+                                value={this.state.value1}
+                                onChange={this.createOnChange('value1')}
+                            />
+                            <span style={{marginLeft: 20}}>{this.state.value1}</span>
+                        </td>
+                        <td>
+                            <TimePicker
+                                error
+                                format="ampm"
+                                value={this.state.value1}
+                                onChange={this.createOnChange('value1')}
+                            />
+                            <span style={{marginLeft: 20}}>{this.state.value1}</span>
+                        </td>
+                        <td>
+                            <ContextProvider dir="rtl">
+                                <TimePicker
+                                    format="ampm"
+                                    value={this.state.value1}
+                                    onChange={this.createOnChange('value1')}
+                                />
+                                <span style={{marginRight: 20}}>{this.state.value1}</span>
+                            </ContextProvider>
+                        </td>
+                        <td>
+                            <TimePicker
+                                placeholder="Pick the time"
+                                value={this.state.value2}
+                                onChange={this.createOnChange('value2')}
+                            />
+                            <span style={{marginLeft: 20}}>{this.state.value2}</span>
+                        </td>
+                        <td>
+                            <TimePicker format="ampm"/>
+                        </td>
+                        <td>
+                            <TimePicker value="14:55" disabled/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         );
     }
     private createOnChange = (name: string) => (e: ChangeEvent<string>) => this.setState({[name]: e.value});
