@@ -67,7 +67,6 @@ export class Loader extends React.Component<LoaderProps, LoaderState> {
     private setTimer(props: LoaderProps) {
         if (props.delay) {
             clearTimeout(this.timer!);
-            this.setState({active: false});
             this.timer = window.setTimeout(() => {
                 this.setState({active: true});
             }, props.delay);
