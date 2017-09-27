@@ -88,13 +88,13 @@ export class TreeViewMobxWrapper extends React.Component<{}, {}> {
 class TreeViewDemoDriver extends DriverBase {
     public static ComponentClass = TreeViewDemo;
 
-    public treeView = new TreeViewDriver(() => this.select('TREE_VIEW_DEMO', 'TREE_VIEW'));
+    public treeView = new TreeViewDriver(() => this.select('TREE_VIEW'));
 }
 
 class TreeViewDemoCustomDriver extends DriverBase {
     public static ComponentClass = TreeViewDemoCustom;
 
-    public customTreeView = new TreeViewDriver(() => this.select('TREE_VIEW_DEMO_CUSTOM', 'TREE_VIEW'));
+    public customTreeView = new TreeViewDriver(() => this.select('TREE_VIEW'));
 }
 
 export interface TreeViewWrapperState {
@@ -544,68 +544,78 @@ describe('<TreeView />', () => {
             stateMap.getItemState(nestedItem).isExpanded = true;
 
             it('renders an item', async () => {
-                const {driver: treeItem, waitForDom} = clientRenderer.render(
+                const {container, waitForDom} = clientRenderer.render(
                     <TreeItem
                         item={sampleItem}
                         itemRenderer={TreeItem}
                         stateMap={stateMap}
                     />
-                ).withDriver(TreeItemDriver);
+                );
 
-                await waitForDom(() => expect(treeItem.getItem(sampleItem.label)).to.be.present());
+                const item = new TreeItemDriver(container.firstElementChild!, sampleItem.label);
+
+                return waitForDom(() => expect(item.root).to.be.present());
             });
 
             it('renders with provided label', async () => {
-                const {driver: treeItem, waitForDom} = clientRenderer.render(
+                const {container, waitForDom} = clientRenderer.render(
                     <TreeItem
                         item={sampleItem}
                         itemRenderer={TreeItem}
                         stateMap={stateMap}
                     />
-                ).withDriver(TreeItemDriver);
+                );
 
-                await waitForDom(() =>
-                    expect(treeItem.getItemLabel(sampleItem.label)).to.have.text(sampleItem.label));
+                const item = new TreeItemDriver(container.firstElementChild!, sampleItem.label);
+
+                return waitForDom(() => expect(item.label).to.have.text(sampleItem.label));
             });
 
             it('renders with an icon', async () => {
-                const {driver: treeItem, waitForDom} = clientRenderer.render(
+                const {container, waitForDom} = clientRenderer.render(
                     <TreeItem
                         item={treeData[0]}
                         itemRenderer={TreeItem}
                         stateMap={stateMap}
                     />
-                ).withDriver(TreeItemDriver);
+                );
 
-                await waitForDom(() => expect(treeItem.getItemIcon(treeData[0].label)).to.be.present());
+                const item = new TreeItemDriver(container.firstElementChild!, sampleItem.label);
+
+                return waitForDom(() => expect(item.icon).to.be.present());
             });
 
             it('renders correct children', async () => {
-                const {driver: treeItem, waitForDom} = clientRenderer.render(
+                const {container, waitForDom} = clientRenderer.render(
                     <TreeItem
                         item={nestedItem}
                         itemRenderer={TreeItem}
                         stateMap={stateMap}
                     />
-                ).withDriver(TreeItemDriver);
+                );
 
-                await waitForDom(() =>
+                const parentItem = new TreeItemDriver(container.firstElementChild!, nestedItem.label);
+
+                return waitForDom(() =>
                     nestedItem.children!.forEach((item: TreeItemData) =>
-                        expect(treeItem.getItem(item.label), `${item.label} was not present`).to.be.present()));
+                        expect(parentItem.getNestedItemDriver(item.label).root,
+                               `${item.label} was not present`).to.be.present()));
             });
 
             it('invokes onClick when clicked', async () => {
                 const onClick = sinon.spy();
-                const {driver: treeItem} = clientRenderer.render(
+                const {container} = clientRenderer.render(
                     <TreeItem
                         item={sampleItem}
                         itemRenderer={TreeItem}
                         onItemClick={onClick}
                         stateMap={stateMap}
                     />
-                ).withDriver(TreeItemDriver);
+                );
 
-                simulate.click(treeItem.getItem(sampleItem.label));
+                const item =  new TreeItemDriver(container.firstElementChild!, sampleItem.label);
+
+                simulate.click(item.root);
 
                 await waitFor(() => expect(onClick).to.have.been.calledOnce);
             });
