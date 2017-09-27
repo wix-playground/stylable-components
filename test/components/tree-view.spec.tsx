@@ -6,8 +6,8 @@ import {TreeItem, TreeKeyCodes, TreeView} from '../../src';
 import {getLastAvailableItem, getNextItem, getPreviousItem} from '../../src/components/tree-view/tree-util';
 import {initParentsMap, TreeItemData,
     TreeViewParentsMap, TreeViewStateMap} from '../../src/components/tree-view/tree-view';
-import {elementHasStylableState} from '../../test-kit/utils';
 import {TreeItemDriver, TreeViewDriver, TreeViewInstanceDriver} from '../../test-kit';
+import {elementHasStylableState} from '../../test-kit/utils';
 
 // this can be removed once encapsulated in the driver
 import {Stylesheet} from 'stylable';
@@ -201,8 +201,8 @@ describe('<TreeView />', () => {
         const getTreeItem = (id: string) => `${treeItem}_${id.replace(' ', '_')}`;
         const getTreeItemIcon = (id: string) => `${getTreeItem(id)}_ICON`;
 
-        function expandItemWithLabel(select: (...selectors: string[]) => Element | null, id: string) {
-            simulate.click(select(getTreeItemIcon(id)));
+        function expandItemWithLabel(selectFn: (...selectors: string[]) => Element | null, id: string) {
+            simulate.click(selectFn(getTreeItemIcon(id)));
         }
 
         const {select, waitForDom, result} = clientRenderer.render(<TreeViewMobxWrapper />);
@@ -503,7 +503,6 @@ describe('<TreeView />', () => {
         });
 
         describe('Reaction to dataSource changes', () => {
-            const treeItem = 'TREE_ITEM';
             const getTreeItem = (id: string) => `${treeItem}_${id.replace(' ', '_')}`;
             const getTreeItemIcon = (id: string) => `${getTreeItem(id)}_ICON`;
 
@@ -586,9 +585,7 @@ describe('<TreeView />', () => {
                     />
                 );
 
-                debugger;
-
-                const item = new TreeItemDriver(container.firstElementChild!, sampleItem.label);
+                const item = new TreeItemDriver(container.firstElementChild!, treeData[0].label);
 
                 return waitForDom(() => expect(item.icon).to.be.present());
             });
@@ -623,7 +620,7 @@ describe('<TreeView />', () => {
 
                 const item =  new TreeItemDriver(container.firstElementChild!, sampleItem.label);
 
-                simulate.click(item.root);
+                simulate.click(item.label);
 
                 await waitFor(() => expect(onClick).to.have.been.calledOnce);
             });
