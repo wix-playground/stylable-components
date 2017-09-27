@@ -1,8 +1,7 @@
 import React = require('react');
 import {stylable} from 'wix-react-tools';
-import {Popup, PopupHorizontalPosition, PopupPositionPoint, PopupVerticalPosition, RadioGroup,
-    RadioGroupDataSchemaProps} from '../../src/';
-import {ChangeEvent} from '../../src/types/events';
+import {ChangeEvent, Popup, PopupHorizontalPosition, PopupPositionPoint, PopupVerticalPosition,
+    RadioGroup, RadioGroupDataSchemaProps} from '../../src/';
 import styles from './popup-demo.st.css';
 
 export interface DemoState {
