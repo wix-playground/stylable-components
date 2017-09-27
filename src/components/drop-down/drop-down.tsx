@@ -65,7 +65,7 @@ export class DropDown extends React.PureComponent<DropDownProps, DropDownState> 
                 tabIndex={this.props.tabIndex}
                 ref={dropdown => this.setState({dropdown})}
             >
-                <div data-automation-id="DROP_DOWN_INPUT" onClick={this.toggleDropdown} className="drop-down-input">
+                <div data-automation-id="DROP_DOWN_INPUT" onClick={this.toggleDropdown} className="dropdownInput">
                     <span className="label">{this.props.value!}</span>
                     <div className="caret" data-automation-id="ICON">
                         <ToggleIcon />
@@ -75,7 +75,7 @@ export class DropDown extends React.PureComponent<DropDownProps, DropDownState> 
                     <div className="root">
                         <SelectionList
                             data-automation-id="DROP_DOWN_LIST"
-                            className="drop-down-list"
+                            className="dropdownList"
                             value={this.props.value}
                             onChange={this.onItemClick!}
                             dataSource={this.props.dataSource}

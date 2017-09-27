@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {stylable} from 'wix-react-tools';
-import {Modal} from '../../src';
-import {RequestCloseEvent} from '../../src/components/modal/modal';
+import {Modal, RequestCloseEvent} from '../../src';
 import styles from './modal-demo.st.css';
 
 export interface ModalDemoState {
