@@ -121,5 +121,30 @@ export class Example2 extends React.Component<{}, {}>{
 ### Style Code Example
 
 ```css
+@namespace "MyAwsomeComp";
 
-```
+:import {
+    -st-from: "stylable-components/dist/src/components/radio-group/radio-group.st.css";
+    -st-default: RG;
+}
+
+/* myRadioGroup class now extends stylable radio group */ 
+.myRadioGroup {
+    -st-extends: RG;
+}
+
+/* style every child of the group*/
+.myRadioGroup::option {
+    display: block;
+}
+
+/* style every child of the group when in hover state*/
+.myRadioGroup::option:hover {
+    border: 1px solid rebeccapurple;
+}
+
+/* style every child's inner class */
+.myRadioGroup::option::radioSVG {
+    width: 20px;
+    height: 20px;
+}
