@@ -7,6 +7,7 @@ export interface LoaderProps {
     type?: 'circle'; // TODO add 'dots' and 'lines'
     delay?: number;
     text?: string;
+    children?: React.ReactNode;
 }
 
 export interface LoaderState {
@@ -44,10 +45,14 @@ export class Loader extends React.Component<LoaderProps, LoaderState> {
     }
 
     public render() {
-        const {type, text} = this.props;
+        const {type, text, children} = this.props;
 
         if (!this.state.active) {
             return null;
+        }
+
+        if (children) {
+            return <div data-automation-id="LOADER" children={children}/>;
         }
 
         return (

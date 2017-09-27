@@ -51,4 +51,24 @@ describe('<Loader/>', () => {
             expect(renderer.select('LOADER_TEXT')).text('loading');
         });
     });
+
+    describe('render with children', () => {
+        let renderer: any;
+        beforeEach(() => {
+            renderer = clientRenderer.render(
+                <Loader>
+                    <div data-automation-id="TEST_DIV"/>
+                </Loader>
+            );
+        });
+
+        it('should render loader', () => {
+            expect(renderer.select('LOADER')).to.not.null;
+        });
+
+        it('should render children', () => {
+            expect(renderer.select('TEST_DIV')).to.not.null;
+        });
+
+    });
 });
