@@ -116,7 +116,7 @@ export class RadioGroup extends React.Component<RadioGroupProps> {
                 className="radioGroupChild"
                 tabIndex={this.getChildTabIndex(index, this.isGroupChecked)}
             >
-                {props.labelText ? <label className="data-label">{props.labelText}</label> : null}
+                {props.labelText ? <label className="dataLabel">{props.labelText}</label> : null}
             </RadioButton>
         ));
     }

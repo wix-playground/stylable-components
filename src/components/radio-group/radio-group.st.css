@@ -13,12 +13,12 @@
     -st-extends: RB;
 }
 
-.data-label {
+.dataLabel {
     color: black;
     margin-left: 0.5rem;
     cursor: pointer;
 }
 
-.RB:disabled .label {
+.RB:disabled .dataLabel {
     cursor: default;
 }
