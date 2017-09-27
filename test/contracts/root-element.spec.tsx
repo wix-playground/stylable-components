@@ -6,10 +6,10 @@ import {isReactComponent} from '../utils/is-react-component';
 
 const allComponents = Object.keys(WixReactComponents);
 const failingComponents = [
-    'NumberInput', 'Toggle', 'Portal', 'Popup', 'TimePicker', 'Modal', 'ContextProvider', 'Loader'
+    'NumberInput', 'Toggle', 'Portal', 'Popup', 'TimePicker', 'Modal', 'ContextProvider'
 ];
 
-describe('Root Element contract', () => {
+describe.only('Root Element contract', () => {
     allComponents
         .filter(exportName => failingComponents.indexOf(exportName) === -1)
         .forEach(exportName => describe(exportName, () => {

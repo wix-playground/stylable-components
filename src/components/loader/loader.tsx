@@ -1,9 +1,9 @@
 import * as React from 'react';
-import {stylable} from 'wix-react-tools';
+import {properties, stylable} from 'wix-react-tools';
 import {circle} from './circle';
 import styles from './loader.st.css';
 
-export interface LoaderProps {
+export interface LoaderProps extends properties.Props {
     type?: 'circle'; // TODO add 'dots' and 'lines'
     delay?: number;
     text?: string;
@@ -19,8 +19,9 @@ const loaders = {
 };
 
 @stylable(styles)
+@properties
 export class Loader extends React.Component<LoaderProps, LoaderState> {
-    public static defaultProps = {
+    public static defaultProps: Partial<LoaderProps> = {
         type: 'circle'
     };
     private timer: number;

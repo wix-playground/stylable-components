@@ -20,10 +20,11 @@
   	:global(100%) {transform: rotate(405deg)}
 }
 
-.root {}
+.root {
+    display: inline-block;
+}
 
 .circle {
-	display: inline-block;
 	width: value(size);
 	height: value(size);
 	position: relative;
