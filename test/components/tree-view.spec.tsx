@@ -4,7 +4,8 @@ import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react
 import {TreeViewDemo, TreeViewDemoCustom} from '../../demo/components/tree-view-demo';
 import {TreeItem, TreeKeyCodes, TreeView} from '../../src';
 import {getLastAvailableItem, getNextItem, getPreviousItem} from '../../src/components/tree-view/tree-util';
-import {initParentsMap, TreeViewParentsMap, TreeItemData, TreeViewStateMap} from '../../src/components/tree-view/tree-view';
+import {initParentsMap, TreeViewParentsMap, TreeItemData, TreeViewStateMap}
+    from '../../src/components/tree-view/tree-view';
 import {elementHasStylableState} from '../../test-kit/utils';
 
 // this can be removed once encapsulated in the driver
