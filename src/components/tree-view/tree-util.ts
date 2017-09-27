@@ -1,10 +1,10 @@
-import {ParentsMap, TreeItemData, TreeStateMap} from './tree-view';
+import {TreeViewParentsMap, TreeItemData, TreeViewStateMap} from './tree-view';
 
 export function getPreviousItem(
     dataSource: object[],
     item: TreeItemData,
-    stateMap: TreeStateMap,
-    parentsMap: ParentsMap): TreeItemData {
+    stateMap: TreeViewStateMap,
+    parentsMap: TreeViewParentsMap): TreeItemData {
     const parent = parentsMap.get(item);
 
     const siblings = parent ? parent.children! : dataSource;
@@ -25,8 +25,8 @@ export function getPreviousItem(
 export function getNextItem(
     dataSource: object[],
     item: TreeItemData,
-    stateMap: TreeStateMap,
-    parentsMap: ParentsMap): TreeItemData {
+    stateMap: TreeViewStateMap,
+    parentsMap: TreeViewParentsMap): TreeItemData {
     const itemState = stateMap.getItemState(item);
 
     if (itemState.isExpanded && item.children) {
@@ -41,7 +41,7 @@ export function getNextItem(
     }
 }
 
-export function getLastAvailableItem(lastChild: TreeItemData, stateMap: TreeStateMap): TreeItemData {
+export function getLastAvailableItem(lastChild: TreeItemData, stateMap: TreeViewStateMap): TreeItemData {
     if (stateMap.getItemState(lastChild).isExpanded && lastChild.children) {
         return getLastAvailableItem(lastChild.children[lastChild.children.length - 1], stateMap);
     } else {
@@ -53,7 +53,7 @@ export function getLastAvailableItem(lastChild: TreeItemData, stateMap: TreeStat
 export function getNextParentSibling(
     item: TreeItemData,
     parent: TreeItemData | undefined,
-    parentsMap: ParentsMap): TreeItemData {
+    parentsMap: TreeViewParentsMap): TreeItemData {
     if (!parent) {
         return item;
     } else {

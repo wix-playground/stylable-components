@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {stylable} from 'wix-react-tools';
 import styles from './tree-item.st.css';
-import {getFocusedItemKey, TreeItemData, TreeItemProps} from './tree-view';
+import {TreeItemData, TreeItemProps} from './tree-view';
 import {MinusIcon, PlusIcon} from './tree-view-icons';
 
 const itemIdPrefix = 'TREE_ITEM';
@@ -22,7 +22,7 @@ export const TreeItem: React.SFC<TreeItemProps> =
             <li
                 aria-expanded={item.children ? !!state!.isExpanded : undefined}
                 aria-selected={state!.isSelected ? true : undefined}
-                id={getFocusedItemKey(item)}
+                id={item.label}
                 data-automation-id={`${itemIdPrefix}_${itemLabel}_NODE`}
                 role="treeitem"
             >

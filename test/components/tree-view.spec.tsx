@@ -3,8 +3,8 @@ import * as React from 'react';
 import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react';
 import {TreeViewDemo, TreeViewDemoCustom} from '../../demo/components/tree-view-demo';
 import {TreeItem, TreeKeyCodes, TreeView} from '../../src';
-import {getLastAvailableItem, getNextItem, getPreviousItem} from '../../src/components/tree-view//tree-util';
-import {initParentsMap, ParentsMap, TreeItemData, TreeStateMap} from '../../src/components/tree-view/tree-view';
+import {getLastAvailableItem, getNextItem, getPreviousItem} from '../../src/components/tree-view/tree-util';
+import {initParentsMap, TreeViewParentsMap, TreeItemData, TreeViewStateMap} from '../../src/components/tree-view/tree-view';
 import {elementHasStylableState} from '../../test-kit/utils';
 
 // this can be removed once encapsulated in the driver
@@ -43,9 +43,11 @@ const treeData: TreeItemData[] = [
     }
 ];
 
+const changedLabel = 'Kaiserschmarrn';
+
 // duplicating the data so i can pass a new object to the non-mobx version
 const newTreeData = JSON.parse(JSON.stringify(treeData));
-newTreeData[0].children![2].children!.push({label: 'Kaiserschmarrn'});
+newTreeData[0].children![2].children!.push({label: changedLabel});
 
 export interface TreeViewWrapperState {
     treeData: object[];
@@ -73,11 +75,11 @@ export class TreeViewMobxWrapper extends React.Component<{}, {}> {
     }
 
     public modifyMobxDataSource = () => {
-        this.obsTreeData[0].children![2].children!.push({label: 'Kaiserschmarrn'});
+        this.obsTreeData[0].children![2].children!.push({label: changedLabel});
     }
 
     public renameLabel = () => {
-        this.obsTreeData[0].children![0].label = 'Kaiserschmarrn';
+        this.obsTreeData[0].children![0].label = changedLabel;
     }
 }
 
@@ -193,7 +195,6 @@ describe('<TreeView />', () => {
 
         (result as TreeViewMobxWrapper).renameLabel();
 
-        const changedLabel = 'Kaiserschmarrn';
         return waitForDom(() => expect(select(getTreeItem(changedLabel))).to.have.text(changedLabel));
     });
 
@@ -464,7 +465,7 @@ describe('<TreeView />', () => {
 
         describe('<TreeItem />', () => {
 
-            const stateMap = new TreeStateMap();
+            const stateMap = new TreeViewStateMap();
             stateMap.getItemState(nestedItem).isExpanded = true;
 
             it('renders an item', () => {
@@ -537,12 +538,12 @@ describe('<TreeView />', () => {
         });
 
         describe('Tree Traversal Utils', () => {
-            const treeState: TreeStateMap = new TreeStateMap();
+            const treeState: TreeViewStateMap = new TreeViewStateMap();
 
             treeState.getItemState(treeData[0]).isExpanded = true;
             treeState.getItemState(treeData[0].children![1]).isExpanded = true;
 
-            const parentsMap: ParentsMap = new Map<TreeItemData, TreeItemData | undefined>();
+            const parentsMap: TreeViewParentsMap = new Map<TreeItemData, TreeItemData | undefined>();
             initParentsMap(parentsMap, treeData, undefined);
 
             it('gets previous item when its a sibling', async () => {

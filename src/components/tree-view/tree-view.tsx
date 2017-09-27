@@ -3,7 +3,7 @@ import {action, autorun, observable} from 'mobx';
 import {observer} from 'mobx-react';
 import * as React from 'react';
 import {properties, stylable} from 'wix-react-tools';
-import {TreeItem} from './tree-item';
+import {TreeItem} from './tree-item-default';
 import {getLastAvailableItem, getNextItem, getPreviousItem} from './tree-util';
 import style from './tree-view.st.css';
 
@@ -29,7 +29,7 @@ export interface TreeItemProps {
     itemRenderer: React.ComponentType<TreeItemProps>;
     onItemClick?: TreeItemEventHandler;
     onIconClick?: TreeItemEventHandler;
-    stateMap: TreeStateMap;
+    stateMap: TreeViewStateMap;
 }
 
 export interface TreeViewProps extends React.HTMLAttributes<HTMLUListElement> {
@@ -49,24 +49,19 @@ export interface TreeItemState {
 }
 
 export type StateMap = Map<TreeItemData, TreeItemState>;
-export type ParentsMap = Map<TreeItemData, TreeItemData | undefined>;
+export type TreeViewParentsMap = Map<TreeItemData, TreeItemData | undefined>;
 
-export function initParentsMap(parentsMap: ParentsMap, data: TreeItemData[] = [], parent: TreeItemData | undefined) {
+export function initParentsMap(parentsMap: TreeViewParentsMap,
+                               data: TreeItemData[] = [], parent: TreeItemData | undefined) {
     data.forEach((item: TreeItemData) => {
         parentsMap.set(item, parent);
         initParentsMap(parentsMap, item.children || [], item);
     });
 }
 
-// This function is not perfect but for now this is
-// a solution that will be changed later
-export function getFocusedItemKey(item: TreeItemData) {
-    return item.label;
-}
-
 const TreeItemWrapper = observer(TreeItem);
 
-export class TreeStateMap {
+export class TreeViewStateMap {
     private stateMap: StateMap = new Map<TreeItemData, TreeItemState>();
 
     public getItemState(item: TreeItemData) {
@@ -91,8 +86,8 @@ export class TreeView extends React.Component<TreeViewProps> {
         onFocusItem: () => { }
     };
 
-    private stateMap: TreeStateMap = new TreeStateMap();
-    private parentsMap: ParentsMap = new Map<TreeItemData, TreeItemData | undefined>();
+    private stateMap: TreeViewStateMap = new TreeViewStateMap();
+    private parentsMap: TreeViewParentsMap = new Map<TreeItemData, TreeItemData | undefined>();
 
     constructor(props: TreeViewProps) {
         super(props);
@@ -119,7 +114,7 @@ export class TreeView extends React.Component<TreeViewProps> {
                 onKeyDown={this.onKeyDown}
                 role="tree"
                 tabIndex={0}
-                aria-activedescendant={this.props.focusedItem && getFocusedItemKey(this.props.focusedItem)}
+                aria-activedescendant={this.props.focusedItem && this.props.focusedItem.label}
             >
                 {(this.props.dataSource || []).map((item: TreeItemData, index: number) =>
                     <TreeNode
