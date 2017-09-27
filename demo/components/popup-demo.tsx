@@ -1,7 +1,7 @@
 import React = require('react');
 import {stylable} from 'wix-react-tools';
 import {ChangeEvent, Popup, PopupHorizontalPosition, PopupPositionPoint, PopupVerticalPosition,
-    RadioGroup} from '../../src/';
+    RadioGroup, RadioGroupDataSchemaProps} from '../../src/';
 import styles from './popup-demo.st.css';
 
 export interface DemoState {
@@ -32,8 +32,16 @@ export class PopupDemo extends React.Component<{}, DemoState> {
             vertical: this.state.aVertical, horizontal: this.state.aHorizontal
         };
 
-        const vPos = [{value: 'top'}, {value: 'center'}, {value: 'bottom'}];
-        const hPos = [{value: 'left'}, {value: 'center'}, {value: 'right'}];
+        const vPos: RadioGroupDataSchemaProps[] = [
+            {value: 'top', labelText: 'top'},
+            {value: 'center', labelText: 'center'},
+            {value: 'bottom', labelText: 'bottom'}
+            ];
+        const hPos: RadioGroupDataSchemaProps[] = [
+            {value: 'left', labelText: 'left'},
+            {value: 'center', labelText: 'center'},
+            {value: 'right', labelText: 'right'}
+            ];
         return (
             <div>
                 <button
