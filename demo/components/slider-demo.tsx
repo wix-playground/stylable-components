@@ -157,7 +157,7 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                                 min={min}
                                 max={max}
                                 step={10}
-                                marks={true}
+                                displayStopMarks={true}
                                 onChange={this.onSliderChange}
                             />
                         </td>
@@ -168,7 +168,7 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                                 min={min}
                                 max={max}
                                 step={10}
-                                marks={true}
+                                displayStopMarks={true}
                                 onChange={this.onSliderChange}
                             />
                         </td>
@@ -179,7 +179,7 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                                 min={min}
                                 max={max}
                                 step={10}
-                                marks={true}
+                                displayStopMarks={true}
                                 onChange={this.onSliderChange}
                             />
                         </td>
@@ -228,7 +228,7 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                                     min={min}
                                     max={max}
                                     step={10}
-                                    marks={true}
+                                    displayStopMarks={true}
                                     onChange={this.onSliderChange}
                                 />
                             </ContextProvider>

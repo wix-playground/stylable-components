@@ -2,7 +2,7 @@ import * as keycode from 'keycode';
 import * as React from 'react';
 import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react';
 import {ContextProvider} from '../../src';
-import {AXISES, AxisOptions, Slider, SliderProps} from '../../src/components/slider';
+import {AXES, AxisOptions, Slider, SliderProps} from '../../src/components/slider';
 import {ChangeEvent} from '../../src/types/events';
 import WindowStub from '../stubs/window.stub';
 import {simulateMouseEvent, simulateTouchEvent, skipItIfTouch} from '../utils';
@@ -24,11 +24,11 @@ function getAxis(
     }
     axis = options.axis;
     if (context && context.dir === 'rtl') {
-        axis = axis === AXISES.x ?
-            AXISES.xReverse :
-            axis === AXISES.xReverse ?
-                AXISES.x :
-                axis || AXISES.xReverse;
+        axis = axis === AXES.x ?
+            AXES.xReverse :
+            axis === AXES.xReverse ?
+                AXES.x :
+                axis || AXES.xReverse;
     }
 
     return axis;
@@ -36,22 +36,22 @@ function getAxis(
 
 function getEventCoordinates(bounds: any, direction: string | undefined, value: number = 0.702): EventCoordinates {
     switch (direction) {
-        case AXISES.x:
+        case AXES.x:
             return {
                 clientX: Math.round(bounds.left + bounds.width * value),
                 clientY: bounds.top + bounds.height / 3
             };
-        case AXISES.y:
+        case AXES.y:
             return {
                 clientX: bounds.left + bounds.width / 3,
                 clientY: Math.round(bounds.bottom - bounds.height * value)
             };
-        case AXISES.xReverse:
+        case AXES.xReverse:
             return {
                 clientX: Math.round(bounds.left + bounds.width * (1 - value)),
                 clientY: bounds.top + bounds.height / 3
             };
-        case AXISES.yReverse:
+        case AXES.yReverse:
             return {
                 clientX: bounds.left + bounds.width / 3,
                 clientY: Math.round(bounds.bottom - bounds.height * (1 - value))
@@ -136,7 +136,7 @@ function withValueMinMax(
 
         it('renders invisible native input with right value', async () => {
             await waitForDom(() => {
-                const element = select('SLIDER-NATIVE-INPUT');
+                const element = select('NATIVE-INPUT');
 
                 expect(element).to.has.value(String(value));
             });
@@ -443,7 +443,7 @@ function whenDragThingsAroundWithStep(
 
         it('renders invisible native input with right value', async () => {
             await waitForDom(() => {
-                const element = select('SLIDER-NATIVE-INPUT');
+                const element = select('NATIVE-INPUT');
 
                 expect(element).to.has.value(String(value));
             });
@@ -661,8 +661,8 @@ function keyboard(
         let end: number = 100;
 
         switch (getAxis(options, context)) {
-            case AXISES.xReverse:
-            case AXISES.yReverse:
+            case AXES.xReverse:
+            case AXES.yReverse:
                 deviation = -1 * step;
                 home = 100;
                 end = 0;
@@ -901,7 +901,7 @@ describe('<Slider />', () => {
 
         it('renders invisible native input with default value', async () => {
             await waitForDom(() => {
-                const element = select('SLIDER-NATIVE-INPUT');
+                const element = select('NATIVE-INPUT');
 
                 expect(element).to.has.value('');
             });
@@ -945,7 +945,7 @@ describe('<Slider />', () => {
 
         it('renders invisible native input with right value', async () => {
             await waitForDom(() => {
-                const element = select('SLIDER-NATIVE-INPUT');
+                const element = select('NATIVE-INPUT');
 
                 expect(element).to.has.value('');
             });
@@ -960,7 +960,7 @@ describe('<Slider />', () => {
         const min = 0;
         const max = 10;
 
-        it('should normilize value that less than min to min', async () => {
+        it('should normalize value that less than min to min', async () => {
             const rendered = clientRenderer.render(
                 <Slider
                     value={valueLessThenMin}
@@ -981,7 +981,7 @@ describe('<Slider />', () => {
             });
         });
 
-        it('should normilize value that greater than max to max', async () => {
+        it('should normalize value that greater than max to max', async () => {
             const rendered = clientRenderer.render(
                 <Slider
                     value={valueGreaterThenMax}
@@ -1051,7 +1051,7 @@ describe('<Slider />', () => {
 
         it('renders invisible native input with passed value', async () => {
             await waitForDom(() => {
-                const element = select('SLIDER-NATIVE-INPUT');
+                const element = select('NATIVE-INPUT');
 
                 expect(element).to.has.value(String(valueOutOfStep));
             });
@@ -1120,7 +1120,7 @@ describe('<Slider />', () => {
         });
     });
 
-    describe('when marks=true', () => {
+    describe('when displayStopMarks=true', () => {
         it('renders proper number of marks', async () => {
             const value = 5;
             const min = 0;
@@ -1132,7 +1132,7 @@ describe('<Slider />', () => {
                     min={min}
                     max={max}
                     step={step}
-                    marks={true}
+                    displayStopMarks={true}
                 />
             );
             const select: (automationId: string) => HTMLElement | null = rendered.select;
@@ -1157,7 +1157,7 @@ describe('<Slider />', () => {
                     min={min}
                     max={max}
                     step={step}
-                    marks={true}
+                    displayStopMarks={true}
                 />
             );
             const select: (automationId: string) => HTMLElement | null = rendered.select;
@@ -1270,7 +1270,7 @@ describe('<Slider />', () => {
             const waitForDom: (expectation: () => void) => Promise<void> = rendered.waitForDom;
 
             await waitForDom(() => {
-                const sliderInput = select('SLIDER-NATIVE-INPUT');
+                const sliderInput = select('NATIVE-INPUT');
 
                 expect(sliderInput!.name).equal(name);
             });
@@ -1295,7 +1295,7 @@ describe('<Slider />', () => {
             const waitForDom: (expectation: () => void) => Promise<void> = rendered.waitForDom;
 
             await waitForDom(() => {
-                const sliderInput = select('SLIDER-NATIVE-INPUT');
+                const sliderInput = select('NATIVE-INPUT');
 
                 expect(sliderInput!.required).to.be.true;
             });
@@ -1339,7 +1339,7 @@ describe('<Slider />', () => {
             'height',
             'vertical',
             {
-                axis: AXISES.y
+                axis: AXES.y
             }
         );
 
@@ -1348,7 +1348,7 @@ describe('<Slider />', () => {
             'bottom',
             'height',
             {
-                axis: AXISES.y
+                axis: AXES.y
             }
         );
 
@@ -1357,13 +1357,13 @@ describe('<Slider />', () => {
             'bottom',
             'height',
             {
-                axis: AXISES.y
+                axis: AXES.y
             }
         );
 
-        keyboard(clientRenderer, {axis: AXISES.y});
+        keyboard(clientRenderer, {axis: AXES.y});
 
-        keyboard(clientRenderer, {axis: AXISES.y, step: 2});
+        keyboard(clientRenderer, {axis: AXES.y, step: 2});
     });
 
     describe('reverse Slider', () => {
@@ -1373,7 +1373,7 @@ describe('<Slider />', () => {
             'width',
             'horizontal',
             {
-                axis: AXISES.xReverse
+                axis: AXES.xReverse
             }
         );
 
@@ -1382,7 +1382,7 @@ describe('<Slider />', () => {
             'right',
             'width',
             {
-                axis: AXISES.xReverse
+                axis: AXES.xReverse
             }
         );
 
@@ -1391,13 +1391,13 @@ describe('<Slider />', () => {
             'right',
             'width',
             {
-                axis: AXISES.xReverse
+                axis: AXES.xReverse
             }
         );
 
-        keyboard(clientRenderer, {axis: AXISES.xReverse});
+        keyboard(clientRenderer, {axis: AXES.xReverse});
 
-        keyboard(clientRenderer, {axis: AXISES.xReverse, step: 2});
+        keyboard(clientRenderer, {axis: AXES.xReverse, step: 2});
     });
 
     describe('vertical reverse Slider', () => {
@@ -1407,7 +1407,7 @@ describe('<Slider />', () => {
             'height',
             'vertical',
             {
-                axis: AXISES.yReverse
+                axis: AXES.yReverse
             }
         );
 
@@ -1416,7 +1416,7 @@ describe('<Slider />', () => {
             'top',
             'height',
             {
-                axis: AXISES.yReverse
+                axis: AXES.yReverse
             }
         );
 
@@ -1425,13 +1425,13 @@ describe('<Slider />', () => {
             'top',
             'height',
             {
-                axis: AXISES.yReverse
+                axis: AXES.yReverse
             }
         );
 
-        keyboard(clientRenderer, {axis: AXISES.yReverse});
+        keyboard(clientRenderer, {axis: AXES.yReverse});
 
-        keyboard(clientRenderer, {axis: AXISES.yReverse, step: 2});
+        keyboard(clientRenderer, {axis: AXES.yReverse, step: 2});
     });
 
     describe('RTL Slider', () => {
