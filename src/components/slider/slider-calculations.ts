@@ -26,9 +26,9 @@ export function getRelativeValue(value: number, min: number, max: number): numbe
 }
 
 export function getAbsoluteValue(relativeValue: number, min: number, max: number): number {
-    const range = max! - min!;
-    const absoluteValue = range * relativeValue / 100 + min!;
-    return getValueInRange(absoluteValue, min!, max!);
+    const range = max - min;
+    const absoluteValue = range * relativeValue / 100 + min;
+    return getValueInRange(absoluteValue, min, max);
 }
 
 export function getValueInRange(value: number, min: number, max: number): number {

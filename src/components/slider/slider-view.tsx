@@ -93,13 +93,13 @@ export class SliderView extends React.Component<SliderViewProps, {}> {
                 onTouchStart={this.onSliderAreaTouchStart}
 
                 style-state={{
-                    'active': this.props.active,
-                    'disabled': Boolean(this.props.disabled),
-                    'error': Boolean(this.props.error),
-                    'x': this.props.axis === AXISES.x !== this.props.rtl,
-                    'y': this.props.axis === AXISES.y,
-                    'x-reverse': this.props.axis === AXISES.xReverse !== this.props.rtl,
-                    'y-reverse': this.props.axis === AXISES.yReverse
+                    active: this.props.active,
+                    disabled: Boolean(this.props.disabled),
+                    error: Boolean(this.props.error),
+                    x: this.props.axis === AXISES.x !== this.props.rtl,
+                    y: this.props.axis === AXISES.y,
+                    xReverse: this.props.axis === AXISES.xReverse !== this.props.rtl,
+                    yReverse: this.props.axis === AXISES.yReverse
                 }}
             >
                 <GlobalEvent
@@ -110,7 +110,7 @@ export class SliderView extends React.Component<SliderViewProps, {}> {
                     touchcancel={this.onSliderAreaTouchEnd}
                 />
                 <input
-                    className="native-input"
+                    className="nativeInput"
                     value={this.props.value}
                     type="hidden"
                     data-automation-id="NATIVE-INPUT"
