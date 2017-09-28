@@ -1,8 +1,8 @@
 import * as keycode from 'keycode';
 import {DriverBase, simulate} from 'test-drive-react';
 import {ContextProvider, Slider} from '../../src';
-import {simulateMouseEvent, simulateTouchEvent} from '../../test/utils';
 import WindowStub from '../../test/stubs/window.stub';
+import {simulateMouseEvent, simulateTouchEvent} from '../../test/utils';
 
 // TODO reuse
 export interface SliderEventCoordinates {

@@ -3,9 +3,9 @@ import {ClientRenderer, expect, sinon, waitFor} from 'test-drive-react';
 import {ContextProvider} from '../../src';
 import {AXES, AxisOptions, Slider, SliderProps} from '../../src/components/slider';
 import {ChangeEvent} from '../../src/types/events';
+import {SliderContextProvierDriver, SliderDriver, SliderEventCoordinates} from '../../test-kit';
 import WindowStub from '../stubs/window.stub';
 import {skipItIfTouch} from '../utils';
-import {SliderContextProvierDriver, SliderDriver, SliderEventCoordinates} from '../../test-kit';
 
 let environment: WindowStub;
 
