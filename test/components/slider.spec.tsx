@@ -5,14 +5,9 @@ import {AXES, AxisOptions, Slider, SliderProps} from '../../src/components/slide
 import {ChangeEvent} from '../../src/types/events';
 import WindowStub from '../stubs/window.stub';
 import {skipItIfTouch} from '../utils';
-import {SliderDriver, SliderContextProvierDriver} from '../../test-kit';
+import {SliderDriver, SliderContextProvierDriver, SliderEventCoordinates} from '../../test-kit';
 
 let environment: WindowStub;
-
-interface EventCoordinates {
-    clientX: number;
-    clientY: number;
-}
 
 function getAxis(
     options?: Partial<{axis: AxisOptions, RTL: boolean}>,
@@ -34,7 +29,7 @@ function getAxis(
     return axis;
 }
 
-function getEventCoordinates(bounds: any, direction: string | undefined, value: number = 0.702): EventCoordinates {
+function getEventCoordinates(bounds: any, direction: string | undefined, value: number = 0.702): SliderEventCoordinates {
     switch (direction) {
         case AXES.x:
             return {
@@ -162,7 +157,7 @@ function whenDragThingsAround(
         let onChange: (data: ChangeEvent<number>) => void;
         let onInput: (data: ChangeEvent<string>) => void;
         let waitForDom: (expectation: () => void) => Promise<void>;
-        let eventMock: EventCoordinates;
+        let eventMock: SliderEventCoordinates;
         let driver: any;
 
         beforeEach(() => {
@@ -183,7 +178,7 @@ function whenDragThingsAround(
             waitForDom = rendered.waitForDom;
             driver = rendered.driver;
 
-            const bounds = driver.slider!.getBoundingClientRect();
+            const bounds = driver.getBounds();
             eventMock = getEventCoordinates(bounds, getAxis(options, context));
         });
 
@@ -223,7 +218,7 @@ function whenDragThingsAround(
         let onChange: (data: ChangeEvent<number>) => void;
         let onInput: (data: ChangeEvent<string>) => void;
         let waitForDom: (expectation: () => void) => Promise<void>;
-        let eventMock: EventCoordinates;
+        let eventMock: SliderEventCoordinates;
         let driver: any;
 
         beforeEach(() => {
@@ -244,7 +239,7 @@ function whenDragThingsAround(
             waitForDom = rendered.waitForDom;
             driver = rendered.driver;
 
-            const bounds = driver.slider!.getBoundingClientRect();
+            const bounds = driver.getBounds();
             eventMock = getEventCoordinates(bounds, getAxis(options, context));
         });
 
@@ -294,7 +289,7 @@ function whenDragThingsAroundWithStep(
         let onInput: (data: ChangeEvent<string>) => void;
         let waitForDom: (expectation: () => void) => Promise<void>;
         let driver: any;
-        let eventMock: EventCoordinates;
+        let eventMock: SliderEventCoordinates;
 
         beforeEach(() => {
             onChange = sinon.spy();
@@ -315,7 +310,7 @@ function whenDragThingsAroundWithStep(
             waitForDom = rendered.waitForDom;
             driver = rendered.driver;
 
-            const bounds = driver.slider!.getBoundingClientRect();
+            const bounds = driver.getBounds();
             eventMock = getEventCoordinates(bounds, getAxis(options, context));
         });
 
@@ -378,7 +373,7 @@ function whenDragThingsAroundWithStep(
         let onChange: (data: ChangeEvent<number>) => void;
         let onInput: (data: ChangeEvent<string>) => void;
         let waitForDom: (expectation: () => void) => Promise<void>;
-        let eventMock: EventCoordinates;
+        let eventMock: SliderEventCoordinates;
         let driver: any;
 
         beforeEach(() => {
@@ -400,7 +395,7 @@ function whenDragThingsAroundWithStep(
             waitForDom = rendered.waitForDom;
             driver = rendered.driver;
 
-            const bounds = driver.slider!.getBoundingClientRect();
+            const bounds = driver.getBounds();
             eventMock = getEventCoordinates(bounds, getAxis(options, context));
         });
 
@@ -794,10 +789,9 @@ describe.only('<Slider />', () => {
 
         it('should change value according to step', async () => {
             await waitFor(() => {
-                const element = driver.slider;
                 const handle = driver.handle;
                 const progress = driver.progress;
-                const bounds = element!.getBoundingClientRect();
+                const bounds = driver.getBounds();
 
                 driver.mouseDown({
                     clientY: bounds.top + bounds.height / 3,
@@ -811,8 +805,7 @@ describe.only('<Slider />', () => {
 
         it('should call onChange with value normalized to step', async () => {
             await waitFor(() => {
-                const element = driver.slider;
-                const bounds = element!.getBoundingClientRect();
+                const bounds = driver.getBounds();
 
                 driver.mouseDown({
                     clientX: Math.round(bounds.left + bounds.width * 0.5)
@@ -828,8 +821,7 @@ describe.only('<Slider />', () => {
 
         it('should call onInput with value normalized to step', async () => {
             await waitFor(() => {
-                const element = driver.slider;
-                const bounds = element!.getBoundingClientRect();
+                const bounds = driver.getBounds();
 
                 driver.mouseDown({
                     clientX: Math.round(bounds.left + bounds.width * 0.5)
@@ -932,10 +924,9 @@ describe.only('<Slider />', () => {
 
         it('should not change value', async () => {
             await waitFor(() => {
-                const element = driver.slider;
                 const handle = driver.handle;
                 const progress = driver.progress;
-                const bounds = element!.getBoundingClientRect();
+                const bounds = driver.getBounds();
 
                 driver.mouseDown({
                     clientY: bounds.top + bounds.height / 3,

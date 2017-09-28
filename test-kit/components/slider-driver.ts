@@ -5,14 +5,12 @@ import {simulateMouseEvent, simulateTouchEvent, skipItIfTouch} from '../../test/
 import WindowStub from '../../test/stubs/window.stub';
 
 // TODO reuse
-interface EventCoordinates {
+export interface SliderEventCoordinates {
     clientX: number;
     clientY: number;
 }
 
-export class SliderDriver extends DriverBase {
-    public static ComponentClass = Slider;
-
+class BaseSliderDriver extends DriverBase {
     public find(selector: string): HTMLElement {
         return this.select(selector);
     }
@@ -34,7 +32,12 @@ export class SliderDriver extends DriverBase {
     public getMark(index: number): HTMLElement {
         return this.select(`SLIDER-MARKS-${index}`);
     }
-    public mouseDown(event: EventCoordinates) {
+
+    public getBounds() {
+        return this.slider.getBoundingClientRect();
+    }
+
+    public mouseDown(event: SliderEventCoordinates) {
         const element = this.slider;
         simulate.mouseDown(element, {
             currentTarget: element!,
@@ -42,14 +45,14 @@ export class SliderDriver extends DriverBase {
             clientY: event.clientY
         });
     }
-    public mouseMove(event: EventCoordinates, environment: WindowStub) {
+    public mouseMove(event: SliderEventCoordinates, environment: WindowStub) {
         this.mouseEvent('mousemove', event, environment);
     }
-    public mouseUp(event: EventCoordinates, environment: WindowStub) {
+    public mouseUp(event: SliderEventCoordinates, environment: WindowStub) {
         this.mouseEvent('mouseup', event, environment);
     }
 
-    public touchStart(event: EventCoordinates) {
+    public touchStart(event: SliderEventCoordinates) {
         const element = this.slider;
         simulate.touchStart(element, {
             currentTarget: element,
@@ -62,10 +65,10 @@ export class SliderDriver extends DriverBase {
         });
     }
 
-    public touchMove(event: EventCoordinates, environment: WindowStub) {
+    public touchMove(event: SliderEventCoordinates, environment: WindowStub) {
         this.touchEvent('touchmove', event, environment);
     }
-    public touchEnd(event: EventCoordinates, environment: WindowStub) {
+    public touchEnd(event: SliderEventCoordinates, environment: WindowStub) {
         this.touchEvent('touchend', event, environment);
     }
 
@@ -76,7 +79,7 @@ export class SliderDriver extends DriverBase {
         });
     }
 
-    private mouseEvent(name: string, event: EventCoordinates, environment: WindowStub) {
+    private mouseEvent(name: string, event: SliderEventCoordinates, environment: WindowStub) {
         simulateMouseEvent(
             environment,
             name,
@@ -86,7 +89,7 @@ export class SliderDriver extends DriverBase {
             }
         );
     }
-    private touchEvent(name: string, event: EventCoordinates, environment: WindowStub) {
+    private touchEvent(name: string, event: SliderEventCoordinates, environment: WindowStub) {
         simulateTouchEvent(
             environment,
             name,
@@ -98,6 +101,9 @@ export class SliderDriver extends DriverBase {
     }
 }
 
-export class SliderContextProvierDriver extends SliderDriver {
+export class SliderDriver extends BaseSliderDriver {
+    public static ComponentClass = Slider;
+}
+export class SliderContextProvierDriver extends BaseSliderDriver {
     public static ComponentClass = ContextProvider;
 }
