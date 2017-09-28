@@ -1,9 +1,9 @@
 import * as React from 'react';
 import {DriverBase, simulate} from 'test-drive-react';
-import {TreeItem, TreeItemProps, TreeView} from '../../src';
+import {TreeItem, TreeItemProps, TreeKeyCodes, TreeView} from '../../src';
 
-const treeView = 'TREE_VIEW';
 const treeItem = 'TREE_ITEM';
+type ValidKeyCodes = 'ENTER' | 'HOME' | 'END' | 'UP' | 'DOWN' | 'LEFT' | 'RIGHT';
 
 const getTreeItem = (id: string) => `${treeItem}_${id.replace(' ', '_')}`;
 
@@ -14,8 +14,8 @@ export class TreeViewDriver extends DriverBase {
         return new TreeItemDriver(() => this.select(getTreeItem(id)), id);
     }
 
-    public pressKey(keyCode: number): void {
-        simulate.keyDown(this.select(treeView), {keyCode});
+    public pressKey(keyCode: ValidKeyCodes): void {
+        simulate.keyDown(this.root, {keyCode: TreeKeyCodes[keyCode]});
     }
 }
 

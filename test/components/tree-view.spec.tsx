@@ -2,7 +2,7 @@ import {observable} from 'mobx';
 import * as React from 'react';
 import {ClientRenderer, DriverBase, expect, simulate, sinon, waitFor} from 'test-drive-react';
 import {TreeViewDemo, TreeViewDemoCustom} from '../../demo/components/tree-view-demo';
-import {TreeItem, TreeKeyCodes, TreeView} from '../../src';
+import {TreeItem, TreeView} from '../../src';
 import {getLastAvailableItem, getNextItem, getPreviousItem} from '../../src/components/tree-view/tree-util';
 import {initParentsMap, TreeItemData,
     TreeViewParentsMap, TreeViewStateMap} from '../../src/components/tree-view/tree-view';
@@ -256,11 +256,11 @@ describe('<TreeView />', () => {
 
                 await waitForDom(() => expect(treeView.getItemDriver(nodeChildren![1].label).root).to.be.present());
 
-                treeView.pressKey(TreeKeyCodes.LEFT);
+                treeView.pressKey('LEFT');
 
                 await waitForDom(() => expect(treeView.getItemDriver(nodeChildren![1].label).root).to.be.absent());
 
-                treeView.pressKey(TreeKeyCodes.RIGHT);
+                treeView.pressKey('RIGHT');
 
                 await waitForDom(() => expect(treeView.getItemDriver(nodeChildren![1].label).root).to.be.present());
             });
@@ -285,7 +285,7 @@ describe('<TreeView />', () => {
                         isElementFocused(treeView.getItemDriver(nodeChildren![1].label).root,
                                          treeItemStyle)).to.equal(true));
 
-                    treeView.pressKey(TreeKeyCodes.LEFT);
+                    treeView.pressKey('LEFT');
 
                     await waitForDom(() => expect(
                         isElementFocused(treeView.getItemDriver(treeData[0].label).root,
@@ -310,7 +310,7 @@ describe('<TreeView />', () => {
                         isElementFocused(treeView.getItemDriver(treeData[0].label).root,
                                          treeItemStyle)).to.equal(true));
 
-                    treeView.pressKey(TreeKeyCodes.RIGHT);
+                    treeView.pressKey('RIGHT');
 
                     await waitForDom(() => expect(
                         isElementFocused(treeView.getItemDriver(nodeChildren![0].label).root,
@@ -335,14 +335,14 @@ describe('<TreeView />', () => {
                     isElementFocused(treeView.getItemDriver(nodeChildren![0].label).root,
                                      treeItemStyle)).to.equal(false));
 
-                treeView.pressKey(TreeKeyCodes.DOWN);
+                treeView.pressKey('DOWN');
 
                 // this should assert first child of root is focused
                 await waitForDom(() =>
                     expect(isElementFocused(treeView.getItemDriver(nodeChildren![0].label).root,
                                             treeItemStyle)).to.equal(true));
 
-                treeView.pressKey(TreeKeyCodes.UP);
+                treeView.pressKey('UP');
 
                 // this should assert first child of root is not focused
                 await waitForDom(() => {
@@ -364,15 +364,15 @@ describe('<TreeView />', () => {
                 treeView.getItemDriver(treeData[0].label).clickLabel();
                 treeView.getItemDriver(treeData[0].label).clickIcon();
 
-                treeView.pressKey(TreeKeyCodes.DOWN);
-                treeView.pressKey(TreeKeyCodes.RIGHT);
+                treeView.pressKey('DOWN');
+                treeView.pressKey('RIGHT');
 
                 await waitForDom(() =>
                         expect(isElementFocused(treeView.getItemDriver(nodeChildren![0].label).root,
                                                 treeItemStyle)).to.equal(true));
 
                 nodeChildren![0].children!.forEach(
-                    () => treeView.pressKey(TreeKeyCodes.DOWN)
+                    () => treeView.pressKey('DOWN')
                 );
 
                 const firstSubtreeChildren = nodeChildren![0].children!;
@@ -381,7 +381,7 @@ describe('<TreeView />', () => {
                         treeView.getItemDriver(firstSubtreeChildren[firstSubtreeChildren.length - 1].label).root,
                         treeItemStyle)).to.equal(true));
 
-                treeView.pressKey(TreeKeyCodes.DOWN);
+                treeView.pressKey('DOWN');
 
                 await waitForDom(() => expect(
                     isElementFocused(treeView.getItemDriver(nodeChildren![1].label).root,
@@ -400,13 +400,13 @@ describe('<TreeView />', () => {
                 treeView.getItemDriver(treeData[0].label).clickLabel();
                 treeView.getItemDriver(treeData[0].label).clickIcon();
 
-                treeView.pressKey(TreeKeyCodes.DOWN);
+                treeView.pressKey('DOWN');
 
                 await waitForDom(() => expect(
                     isElementSelected(treeView.getItemDriver(nodeChildren![0].label).root,
                                       treeItemStyle)).to.equal(false));
 
-                treeView.pressKey(TreeKeyCodes.ENTER);
+                treeView.pressKey('ENTER');
 
                 await waitForDom(() => expect(
                     isElementSelected(treeView.getItemDriver(nodeChildren![0].label).root,
@@ -425,12 +425,12 @@ describe('<TreeView />', () => {
                 treeView.getItemDriver(treeData[0].label).clickLabel();
                 treeView.getItemDriver(treeData[0].label).clickIcon();
 
-                treeView.pressKey(TreeKeyCodes.DOWN);
-                treeView.pressKey(TreeKeyCodes.DOWN);
+                treeView.pressKey('DOWN');
+                treeView.pressKey('DOWN');
 
                 await waitForDom(() => expect(isElementFocused(rootNode!, treeItemStyle)).to.equal(false));
 
-                treeView.pressKey(TreeKeyCodes.HOME);
+                treeView.pressKey('HOME');
 
                 await waitForDom(() => expect(isElementFocused(rootNode!, treeItemStyle)).to.equal(true));
             });
@@ -456,7 +456,7 @@ describe('<TreeView />', () => {
                     expect(isElementFocused(treeView.getItemDriver(
                         lastChildren[lastChildren.length - 1].label).root, treeItemStyle)).to.equal(false));
 
-                treeView.pressKey(TreeKeyCodes.END);
+                treeView.pressKey('END');
 
                 await waitForDom(() =>
                     expect(isElementFocused(treeView.getItemDriver(
@@ -480,23 +480,23 @@ describe('<TreeView />', () => {
 
                 treeView.getItemDriver(lastRootNode.label).clickIcon();
 
-                treeView.pressKey(TreeKeyCodes.END);
+                treeView.pressKey('END');
 
                 await waitForDom(() =>
                     expect(isElementFocused(treeView.getItemDriver(
                         lastChildren[lastChildren.length - 1].label).root, treeItemStyle)).to.equal(true));
 
-                treeView.pressKey(TreeKeyCodes.DOWN);
+                treeView.pressKey('DOWN');
 
                 await waitForDom(() =>
                     expect(isElementFocused(treeView.getItemDriver(
                         lastChildren[lastChildren.length - 1].label).root, treeItemStyle)).to.equal(true));
 
-                treeView.pressKey(TreeKeyCodes.HOME);
+                treeView.pressKey('HOME');
 
                 await expect(isElementFocused(rootNode!, treeItemStyle)).to.equal(true);
 
-                treeView.pressKey(TreeKeyCodes.UP);
+                treeView.pressKey('UP');
 
                 await expect(isElementFocused(rootNode!, treeItemStyle)).to.equal(true);
             });
