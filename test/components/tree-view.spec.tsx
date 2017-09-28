@@ -6,7 +6,7 @@ import {TreeItem, TreeKeyCodes, TreeView} from '../../src';
 import {getLastAvailableItem, getNextItem, getPreviousItem} from '../../src/components/tree-view/tree-util';
 import {initParentsMap, TreeItemData,
     TreeViewParentsMap, TreeViewStateMap} from '../../src/components/tree-view/tree-view';
-import {TreeItemDriver, TreeViewDriver, TreeViewInstanceDriver} from '../../test-kit';
+import {TreeItemDriver, TreeViewDriver} from '../../test-kit';
 import {elementHasStylableState} from '../../test-kit/utils';
 
 // this can be removed once encapsulated in the driver
@@ -683,85 +683,101 @@ describe('<TreeView />', () => {
             const secondChild = treeData[0].children![1];
 
             async function renderAndExpandPartsOfTree() {
-                const {result, waitForDom} = clientRenderer.render(<TreeView dataSource={treeData} />);
+                let treeInstance: TreeView | null = null;
+                const {driver: treeView, waitForDom} =
+                            clientRenderer.render(<TreeView dataSource={treeData} ref={tree => treeInstance = tree}/>)
+                                          .withDriver(TreeViewDriver);
 
-                const treeView = new TreeViewInstanceDriver(result as TreeView);
-
-                const treeRootIcon = treeView.getItemIcon('Food Menu');
+                const treeRootIcon = treeView.getItemDriver('Food Menu').icon;
                 simulate.click(treeRootIcon);
 
                 await waitForDom(() =>
-                    expect(treeView.getItem(firstChild.label), `${firstChild.label} was not present`).to.be.present());
+                    expect(treeView.getItemDriver(firstChild.label).root,
+                            `${firstChild.label} was not present`).to.be.present());
 
-                simulate.click(treeView.getItemIcon(firstChild.label));
+                simulate.click(treeView.getItemDriver(firstChild.label).icon);
 
                 await waitForDom(() =>
-                    expect(treeView.getItem(firstChild.children![0].label),
+                    expect(treeView.getItemDriver(firstChild.children![0].label).root,
                     `${firstChild.children![0].label} was not present`).to.be.present());
 
-                return {treeView, waitForDom};
+                if (treeInstance === null) {
+                    throw new Error('treeInstance was null');
+                }
+
+                return {treeView, treeInstance: treeInstance!, waitForDom};
+            }
+
+            async function renderCollapsedTree() {
+                let treeInstance: TreeView | null = null;
+                const onSelectItem = sinon.spy();
+                const {driver: treeView, waitForDom} =
+                    clientRenderer.render(
+                        <TreeView
+                            dataSource={treeData}
+                            ref={tree => treeInstance = tree}
+                            onSelectItem={onSelectItem}
+                        />
+                    ).withDriver(TreeViewDriver);
+
+                if (treeInstance === null) {
+                    throw new Error('treeInstance was null');
+                }
+
+                return {treeView, treeInstance: treeInstance!, waitForDom, onSelectItem};
             }
 
             it('collapses a node and its subtree when \'collapse\' method is used', async () => {
-                const {treeView, waitForDom} = await renderAndExpandPartsOfTree();
+                const {treeView, treeInstance, waitForDom} = await renderAndExpandPartsOfTree();
 
-                treeView.instance.collapse(treeData[0]);
+                treeInstance.collapse(treeData[0]);
 
                 await waitForDom(() => {
-                    expect(treeView.getItem(firstChild.label)).to.be.absent();
-                    expect(treeView.getItem(firstChild.children![0].label)).to.be.absent();
+                    expect(treeView.getItemDriver(firstChild.label).root).to.be.absent();
+                    expect(treeView.getItemDriver(firstChild.children![0].label).root).to.be.absent();
                 });
             });
 
             it('collapses the whole tree when \'collapseAll\' method is used', async () => {
-                const {treeView, waitForDom} = await renderAndExpandPartsOfTree();
+                const {treeView, treeInstance, waitForDom} = await renderAndExpandPartsOfTree();
 
-                treeView.instance.collapseAll();
+                treeInstance.collapseAll();
 
                 await waitForDom(() => {
-                    expect(treeView.getItem(firstChild.label)).to.be.absent();
-                    expect(treeView.getItem(firstChild.children![0].label)).to.be.absent();
+                    expect(treeView.getItemDriver(firstChild.label).root).to.be.absent();
+                    expect(treeView.getItemDriver(firstChild.children![0].label).root).to.be.absent();
                 });
             });
 
             it('expands a node and its subtree when \'expand\' method is used', async () => {
-                const {waitForDom, result} = clientRenderer.render(<TreeView dataSource={treeData} />);
+                const {treeView, treeInstance, waitForDom} = await renderCollapsedTree();
 
-                const treeView = new TreeViewInstanceDriver(result as TreeView);
-
-                const treeRootIcon = treeView.getItemIcon('Food Menu');
+                const treeRootIcon = treeView.getItemDriver('Food Menu').icon;
                 simulate.click(treeRootIcon);
 
-                await waitForDom(() => expect(treeView.getItem(firstChild.label)).to.be.present());
+                await waitForDom(() => expect(treeView.getItemDriver(firstChild.label).root).to.be.present());
 
-                treeView.instance.expand(firstChild);
+                treeInstance.expand(firstChild);
 
                 await waitForDom(() => {
-                    expect(treeView.getItem(firstChild.children![0].label)).to.be.present();
-                    expect(treeView.getItem(secondChild.children![0].label)).to.be.absent();
+                    expect(treeView.getItemDriver(firstChild.children![0].label).root).to.be.present();
+                    expect(treeView.getItemDriver(secondChild.children![0].label).root).to.be.absent();
                 });
             });
 
             it('expands the whole tree when \'expandAll\' method is used', async () => {
-                const {waitForDom, result} = clientRenderer.render(<TreeView dataSource={treeData} />);
+                const {treeView, treeInstance, waitForDom} = await renderCollapsedTree();
 
-                const treeView = new TreeViewInstanceDriver(result as TreeView);
-
-                treeView.instance.expandAll();
+                treeInstance.expandAll();
 
                 await waitForDom(() => allNodesLabels.forEach(item =>
-                    expect(treeView.getItem(item), `item did not appear: ${item}`).to.be.present()));
+                    expect(treeView.getItemDriver(item).root, `item did not appear: ${item}`).to.be.present()));
             });
 
             it('selects the provided item when \'selectItem\' method is used', async () => {
-                const onSelectItem = sinon.spy();
-                const {result} = clientRenderer.render(
-                    <TreeView dataSource={treeData} onSelectItem={onSelectItem}/>
-                );
+                const {treeInstance, onSelectItem} = await renderCollapsedTree();
 
-                const treeView = new TreeViewInstanceDriver(result as TreeView);
-
-                treeView.instance.selectItem(treeData[0]);
+                treeInstance.selectItem(treeData[0]);
 
                 await waitFor(() => expect(onSelectItem).to.have.been.calledWithMatch(treeData[0]));
             });
