@@ -12,7 +12,7 @@ export class TreeViewDriver extends DriverBase {
     public static ComponentClass = TreeView;
 
     public getItemDriver(id: string): TreeItemDriver {
-        return new TreeItemDriver(this.select(getTreeItem(id)), id);
+        return new TreeItemDriver(() => this.select(getTreeItem(id)), id);
     }
 
     public toggleItem(id: string): void {
@@ -47,8 +47,8 @@ export class TreeViewInstanceDriver extends DriverBase {
 export class TreeItemDriver extends DriverBase {
     public static ComponentClass: React.SFC<TreeItemProps> = TreeItem;
 
-    constructor(public readonly elem: Element, private id: string) {
-        super(() => elem);
+    constructor(getElem: () => Element, private id: string) {
+        super(getElem);
     }
 
     public get label(): Element {
@@ -60,6 +60,6 @@ export class TreeItemDriver extends DriverBase {
     }
 
     public getNestedItemDriver(id: string) {
-        return new TreeItemDriver(this.select(getTreeItem(id)), id);
+        return new TreeItemDriver(() => this.select(getTreeItem(id)), id);
     }
 }

@@ -557,7 +557,7 @@ describe('<TreeView />', () => {
                     />
                 );
 
-                const item = new TreeItemDriver(container.firstElementChild!, sampleItem.label);
+                const item = new TreeItemDriver(() => container.firstElementChild!, sampleItem.label);
 
                 return waitForDom(() => expect(item.root).to.be.present());
             });
@@ -571,7 +571,7 @@ describe('<TreeView />', () => {
                     />
                 );
 
-                const item = new TreeItemDriver(container.firstElementChild!, sampleItem.label);
+                const item = new TreeItemDriver(() => container.firstElementChild!, sampleItem.label);
 
                 return waitForDom(() => expect(item.label).to.have.text(sampleItem.label));
             });
@@ -585,7 +585,7 @@ describe('<TreeView />', () => {
                     />
                 );
 
-                const item = new TreeItemDriver(container.firstElementChild!, treeData[0].label);
+                const item = new TreeItemDriver(() => container.firstElementChild!, treeData[0].label);
 
                 return waitForDom(() => expect(item.icon).to.be.present());
             });
@@ -599,7 +599,7 @@ describe('<TreeView />', () => {
                     />
                 );
 
-                const parentItem = new TreeItemDriver(container.firstElementChild!, nestedItem.label);
+                const parentItem = new TreeItemDriver(() => container.firstElementChild!, nestedItem.label);
 
                 return waitForDom(() =>
                     nestedItem.children!.forEach((item: TreeItemData) =>
@@ -618,7 +618,7 @@ describe('<TreeView />', () => {
                     />
                 );
 
-                const item =  new TreeItemDriver(container.firstElementChild!, sampleItem.label);
+                const item =  new TreeItemDriver(() => container.firstElementChild!, sampleItem.label);
 
                 simulate.click(item.label);
 
