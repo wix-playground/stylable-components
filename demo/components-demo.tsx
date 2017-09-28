@@ -1,8 +1,8 @@
 import * as React from 'react';
-import {stylable} from 'wix-react-tools';
 
-import ComponentsDemoCSS from './style.st.css';
+import {setGlobalConfig, stylable} from 'wix-react-tools';
 
+import {AutoCompleteDemo} from './components/auto-complete.demo';
 import {CheckBoxDemo} from './components/checkbox-demo';
 import {DatePickerDemo} from './components/date-picker-demo';
 import {DropDownDemo} from './components/drop-down.demo';
@@ -16,8 +16,11 @@ import {SliderDemo} from './components/slider-demo';
 import {TimePickerDemo} from './components/time-picker-demo';
 import {ToggleDemo} from './components/toggle-demo';
 import {TreeViewDemo, TreeViewDemoCustom} from './components/tree-view-demo';
+import styles from './style.st.css';
 
-@stylable(ComponentsDemoCSS)
+setGlobalConfig({devMode: true});
+
+@stylable(styles)
 export class ComponentsDemo extends React.Component {
     public render() {
         return (
@@ -25,6 +28,8 @@ export class ComponentsDemo extends React.Component {
                 <ImageDemo />
                 <hr />
                 <DropDownDemo />
+                <hr />
+                <AutoCompleteDemo />
                 <hr />
                 <div>
                     <h2>CheckBox</h2>
@@ -108,7 +113,7 @@ export class ComponentsDemo extends React.Component {
                         <tbody>
                             <tr>
                                 <th>
-                                    <button>Normal</button>
+                                    <button className="button fullBlue large">Normal</button>
                                 </th>
                                 <th>
                                     <button disabled >Disabled</button>

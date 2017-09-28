@@ -20,6 +20,6 @@
     margin-right: 1rem;
 }
 
-.radio::radioGroupChild {
+.radio::option {
     display: block;
 }

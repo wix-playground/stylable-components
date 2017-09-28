@@ -1,17 +1,14 @@
 {
   "name": "stylable-components",
-  "version": "0.2.0-0",
+  "version": "0.2.1-rc.2",
   "description": "Fully-tested & strictly-typed component library based on React, using optional Wix styling.",
-  "main": "./lib/index.js",
-  "types": "./lib/index.d.ts",
+  "main": "./dist/src/index.js",
+  "types": "./dist/src/index.d.ts",
   "scripts": {
-    "clean": "rimraf ./lib",
-    "build": "tsc -d --p tsconfig.publish.json && stc --srcDir=src --outDir=lib --diagnostics",
+    "clean": "rimraf ./dist ./lib",
+    "build": "tsc && stc --srcDir=src --outDir=dist/src --diagnostics",
     "prepublish": "npm run lint && npm run build",
-    "lint": "npm run lint:src && npm run lint:demo && npm run lint:test",
-    "lint:src": "tslint \"src/**/*.ts?(x)\" -c tslint.json --type-check -p tsconfig.json --fix",
-    "lint:demo": "tslint \"demo/**/*.ts?(x)\" -c tslint.json --type-check -p tsconfig.json --fix",
-    "lint:test": "tslint \"test/**/*.ts?(x)\" -c test/tslint.json --type-check -p tsconfig.json --fix",
+    "lint": "tslint \"@(src|demo|test|test-kit)/**/*.ts?(x)\" -c tslint.json --type-check -p tsconfig.json",
     "test": "npm run lint && npm run test:browser && npm run test:node",
     "test:browser": "karma start --single-run",
     "test:node": "mocha --compilers ts:ts-node/register,tsx:ts-node/register,css:stylable-integration/require \"./test/node/**/*.node-spec.ts?(x)\"",
@@ -50,7 +47,7 @@
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "stylable": "^4.0.14",
-    "stylable-integration": "^5.1.4",
+    "stylable-integration": "^5.1.7",
     "test-drive-react": "^0.7.0",
     "ts-loader": "^2.3.7",
     "ts-node": "^3.3.0",
@@ -63,9 +60,9 @@
   "testGlob": "./test/**/*.spec.ts?(x)",
   "license": "MIT",
   "files": [
-    "lib",
-    "src",
-    "typings"
+    "dist/src",
+    "dist/test-kit",
+    "custom-typings"
   ],
   "repository": {
     "type": "git",
