@@ -79,9 +79,9 @@ export class Multiselect extends React.Component<Props, State> {
     }
 
     public render() {
-        if (5 > 1) {
-            return <PopupTest />;
-        }
+        const editable = !this.props.disabled && !this.props.readOnly;
+        const canAddTag = editable && this.props.value!.length < this.props.maxSelected!;
+
         return (
             <div
                 ref={root => this.state.root || this.setState({root})}
@@ -97,36 +97,45 @@ export class Multiselect extends React.Component<Props, State> {
                 )}
 
                 {this.props.value!.map((label, i) =>
-                    <Tag key={i} id={i} className="tag" onRequestDelete={this.handleTagDeleteRequest}>{label}</Tag>
+                    <Tag
+                        key={i}
+                        id={i}
+                        className="tag"
+                        onRequestDelete={editable ? this.handleTagDeleteRequest : noop}
+                    >
+                        {label}
+                    </Tag>
                 )}
 
                 <input
                     ref={input => this.state.input || this.setState({input})}
                     className="input"
                     value={this.state.inputValue}
-                    onChange={this.handleInputChange}
-                    onKeyDown={this.handleInputKeydown}
-                    onFocus={this.props.readOnly ? noop : this.handleFocus}
-                    onBlur={this.props.readOnly ? noop : this.handleBlur}
-                    tabIndex={this.props.tabIndex}
+                    onBlur={editable ? this.handleBlur : noop}
+                    onChange={editable ? this.handleInputChange : noop}
+                    onFocus={editable ? this.handleFocus : noop}
+                    onKeyDown={editable ? this.handleInputKeydown : noop}
+                    autoFocus={this.props.autoFocus}
                     disabled={this.props.disabled}
                     readOnly={this.props.readOnly}
-                    autoFocus={this.props.autoFocus}
+                    tabIndex={this.props.tabIndex}
                 />
 
-                <Popup
-                    ref={popup => this.state.popup || this.setState({popup})}
-                    open={this.state.open}
-                    anchor={this.state.root}
-                    className="fixme-multiselect-portal"
-                >
-                    <SelectionListView
-                        focused={true}
-                        className="drop-down-list"
-                        list={this.state.list}
-                        onChange={this.handleListItemClick}
-                    />
-                </Popup>
+                {canAddTag && this.state.open &&
+                    <Popup
+                        ref={popup => this.state.popup || this.setState({popup})}
+                        open={true}
+                        anchor={this.state.root}
+                        className="fixme-multiselect-portal"
+                    >
+                        <SelectionListView
+                            focused={true}
+                            className="drop-down-list"
+                            list={this.state.list}
+                            onChange={this.handleListItemClick}
+                        />
+                    </Popup>
+                }
             </div>
         );
     }
@@ -237,33 +246,5 @@ export class Multiselect extends React.Component<Props, State> {
     protected handleListItemClick = ({value: itemValue}: {value: string}) => {
         this.state.list.focusValue(undefined);
         this.addTag(itemValue);
-    }
-}
-
-class PopupTest extends React.Component {
-    public state = {
-        root: null,
-        count: 4
-    };
-
-    public render() {
-        return (
-            <div>
-                <div
-                    ref={ref => this.state.root || this.setState({root: ref})}
-                    style={{display: 'inline-block', background: '#29B6F6'}}
-                >
-                    <button onClick={this.expand}>Expand</button>
-                    {Array(this.state.count).fill(0).map((v, i) => <span key={i}>*</span>)}
-                </div>
-                <Popup open={true} anchor={this.state.root}>
-                        <div style={{background: '#ef5350'}}>Popup</div>
-                </Popup>
-            </div>
-        );
-    }
-
-    public expand = () => {
-        this.setState({count: this.state.count + 1});
     }
 }

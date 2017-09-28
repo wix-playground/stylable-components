@@ -23,6 +23,7 @@ export class MultiselectDemo extends React.Component {
                 dataSource={this.dataSource}
                 value={this.state.value}
                 onChange={this.handleSelectChange}
+                maxSelected={2}
             />
         );
     }
