@@ -4,7 +4,6 @@ import {ContextProvider, Slider} from '../../src';
 import WindowStub from '../../test/stubs/window.stub';
 import {simulateMouseEvent, simulateTouchEvent} from '../../test/utils';
 
-// TODO reuse
 export interface SliderEventCoordinates {
     clientX: number;
     clientY: number;
