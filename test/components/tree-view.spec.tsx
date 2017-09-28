@@ -135,15 +135,15 @@ describe('<TreeView />', () => {
         const nodeChildren = treeData[0].children;
         await waitForDom(() => expect(treeView.getItemDriver(nodeChildren![1].label).root).to.be.absent());
 
-        treeView.toggleItem(treeData[0].label);
-        nodeChildren!.forEach(child =>  treeView.toggleItem(child.label));
+        treeView.getItemDriver(treeData[0].label).clickIcon();
+        nodeChildren!.forEach(child =>  treeView.getItemDriver(child.label).clickIcon());
 
         await waitForDom(() => allNodesLabels.forEach(item =>
             expect(treeView.getItemDriver(item).root, `item did not appear: ${item}`).to.be.present()));
 
         const elementToSelect = treeView.getItemDriver(allNodesLabels[2]).root;
 
-        treeView.selectItem(allNodesLabels[2]);
+        treeView.getItemDriver(allNodesLabels[2]).clickLabel();
         await waitForDom(() => expect(isElementSelected(elementToSelect!, treeItemStyle)).to.equal(true));
     });
 
@@ -159,8 +159,8 @@ describe('<TreeView />', () => {
         const nodeChildren = treeData[0].children;
         await waitForDom(() => expect(customTreeView.getItemDriver(nodeChildren![1].label).root).to.be.absent());
 
-        customTreeView.toggleItem(treeData[0].label);
-        nodeChildren!.forEach(child => customTreeView.toggleItem(child.label));
+        customTreeView.getItemDriver(treeData[0].label).clickIcon();
+        nodeChildren!.forEach(child => customTreeView.getItemDriver(child.label).clickIcon());
 
         await waitForDom(() => allNodesLabels.forEach(item =>
             expect(customTreeView.getItemDriver(item).root,
@@ -168,7 +168,7 @@ describe('<TreeView />', () => {
 
         const elementToSelect = customTreeView.getItemDriver(allNodesLabels[2]).root;
 
-        customTreeView.selectItem(allNodesLabels[2]);
+        customTreeView.getItemDriver(allNodesLabels[2]).clickLabel();
         await waitForDom(() => expect(isElementSelected(elementToSelect!, treeViewDemoStyle)).to.equal(true));
     });
 
@@ -179,7 +179,7 @@ describe('<TreeView />', () => {
 
         const {treeView} = treeViewDemo;
 
-        treeView.toggleItem(allNodesLabels[0]);
+        treeView.getItemDriver(allNodesLabels[0]).clickIcon();
 
         const elementToSelect = treeView.getItemDriver(allNodesLabels[1]).icon;
         let elementToAssert = treeView.getItemDriver(allNodesLabels[2]).root;
@@ -187,12 +187,12 @@ describe('<TreeView />', () => {
         await waitForDom(() => expect(elementToSelect).to.be.present());
         await waitForDom(() => expect(elementToAssert).to.be.absent());
 
-        treeView.toggleItem(allNodesLabels[1]);
+        treeView.getItemDriver(allNodesLabels[1]).clickIcon();
 
         elementToAssert = treeView.getItemDriver(allNodesLabels[2]).root;
         await waitForDom(() => expect(elementToAssert).to.be.present());
 
-        treeView.toggleItem(allNodesLabels[1]);
+        treeView.getItemDriver(allNodesLabels[1]).clickIcon();
 
         await waitForDom(() => expect(elementToAssert).to.be.absent());
     });
@@ -236,7 +236,7 @@ describe('<TreeView />', () => {
                 <TreeView dataSource={treeData} onSelectItem={onSelectItem} />
             ).withDriver(TreeViewDriver);
 
-            treeView.selectItem(treeData[0].label);
+            treeView.getItemDriver(treeData[0].label).clickLabel();
 
             await waitFor(() => expect(onSelectItem).to.have.been.calledWithMatch(treeData[0]));
         });
@@ -251,8 +251,8 @@ describe('<TreeView />', () => {
 
                 const nodeChildren = treeData[0].children;
 
-                treeView.selectItem(treeData[0].label);
-                treeView.toggleItem(treeData[0].label);
+                treeView.getItemDriver(treeData[0].label).clickLabel();
+                treeView.getItemDriver(treeData[0].label).clickIcon();
 
                 await waitForDom(() => expect(treeView.getItemDriver(nodeChildren![1].label).root).to.be.present());
 
@@ -275,11 +275,11 @@ describe('<TreeView />', () => {
 
                     const nodeChildren = treeData[0].children;
 
-                    treeView.toggleItem(treeData[0].label);
+                    treeView.getItemDriver(treeData[0].label).clickIcon();
 
                     await waitForDom(() => expect(treeView.getItemDriver(nodeChildren![1].label).root).to.be.present());
 
-                    treeView.selectItem(nodeChildren![1].label);
+                    treeView.getItemDriver(nodeChildren![1].label).clickLabel();
 
                     await waitForDom(() => expect(
                         isElementFocused(treeView.getItemDriver(nodeChildren![1].label).root,
@@ -302,7 +302,7 @@ describe('<TreeView />', () => {
 
                     const nodeChildren = treeData[0].children;
 
-                    treeView.toggleItem(treeData[0].label);
+                    treeView.getItemDriver(treeData[0].label).clickIcon();
 
                     await waitForDom(() => expect(treeView.getItemDriver(nodeChildren![0].label).root).to.be.present());
 
@@ -327,8 +327,8 @@ describe('<TreeView />', () => {
                 const rootNode = treeView.getItemDriver(treeData[0].label).root;
                 const nodeChildren = treeData[0].children;
 
-                treeView.selectItem(treeData[0].label);
-                treeView.toggleItem(treeData[0].label);
+                treeView.getItemDriver(treeData[0].label).clickLabel();
+                treeView.getItemDriver(treeData[0].label).clickIcon();
 
                 // this should assert first child of root is not focused
                 await waitForDom(() => expect(
@@ -361,8 +361,8 @@ describe('<TreeView />', () => {
 
                 const nodeChildren = treeData[0].children;
 
-                treeView.selectItem(treeData[0].label);
-                treeView.toggleItem(treeData[0].label);
+                treeView.getItemDriver(treeData[0].label).clickLabel();
+                treeView.getItemDriver(treeData[0].label).clickIcon();
 
                 treeView.pressKey(TreeKeyCodes.DOWN);
                 treeView.pressKey(TreeKeyCodes.RIGHT);
@@ -397,8 +397,8 @@ describe('<TreeView />', () => {
 
                 const nodeChildren = treeData[0].children;
 
-                treeView.selectItem(treeData[0].label);
-                treeView.toggleItem(treeData[0].label);
+                treeView.getItemDriver(treeData[0].label).clickLabel();
+                treeView.getItemDriver(treeData[0].label).clickIcon();
 
                 treeView.pressKey(TreeKeyCodes.DOWN);
 
@@ -422,8 +422,8 @@ describe('<TreeView />', () => {
 
                 const rootNode = treeView.getItemDriver(treeData[0].label).root;
 
-                treeView.selectItem(treeData[0].label);
-                treeView.toggleItem(treeData[0].label);
+                treeView.getItemDriver(treeData[0].label).clickLabel();
+                treeView.getItemDriver(treeData[0].label).clickIcon();
 
                 treeView.pressKey(TreeKeyCodes.DOWN);
                 treeView.pressKey(TreeKeyCodes.DOWN);
@@ -444,13 +444,13 @@ describe('<TreeView />', () => {
 
                 const nodeChildren = treeData[0].children!;
 
-                treeView.selectItem(treeData[0].label);
-                treeView.toggleItem(treeData[0].label);
+                treeView.getItemDriver(treeData[0].label).clickLabel();
+                treeView.getItemDriver(treeData[0].label).clickIcon();
 
                 const lastRootNode = nodeChildren[2];
                 const lastChildren = lastRootNode.children!;
 
-                treeView.toggleItem(lastRootNode.label);
+                treeView.getItemDriver(lastRootNode.label).clickIcon();
 
                 await waitForDom(() =>
                     expect(isElementFocused(treeView.getItemDriver(
@@ -473,12 +473,12 @@ describe('<TreeView />', () => {
                 const rootNode = treeView.getItemDriver(treeData[0].label).root;
                 const nodeChildren = treeData[0].children!;
 
-                treeView.toggleItem(treeData[0].label);
+                treeView.getItemDriver(treeData[0].label).clickIcon();
 
                 const lastRootNode = nodeChildren[2];
                 const lastChildren = lastRootNode.children!;
 
-                treeView.toggleItem(lastRootNode.label);
+                treeView.getItemDriver(lastRootNode.label).clickIcon();
 
                 treeView.pressKey(TreeKeyCodes.END);
 
@@ -668,7 +668,7 @@ describe('<TreeView />', () => {
                 ).withDriver(TreeViewDriver);
 
                 const firstChild = treeData[0].children![0];
-                treeView.toggleItem(treeData[0].label);
+                treeView.getItemDriver(treeData[0].label).clickIcon();
 
                 await waitForDom(() => {
                     expect(treeView.root).to.have.attribute('role', 'tree');

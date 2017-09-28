@@ -14,14 +14,6 @@ export class TreeViewDriver extends DriverBase {
         return new TreeItemDriver(() => this.select(getTreeItem(id)), id);
     }
 
-    public toggleItem(id: string): void {
-        simulate.click(this.getItemDriver(id).icon);
-    }
-
-    public selectItem(id: string): void {
-        simulate.click(this.getItemDriver(id).label);
-    }
-
     public pressKey(keyCode: number): void {
         simulate.keyDown(this.select(treeView), {keyCode});
     }
@@ -40,6 +32,14 @@ export class TreeItemDriver extends DriverBase {
 
     public get icon(): Element {
         return this.select(`${getTreeItem(this.id)}_ICON`);
+    }
+
+    public clickIcon(): void {
+        simulate.click(this.icon);
+    }
+
+    public clickLabel(): void {
+        simulate.click(this.label);
     }
 
     public getNestedItemDriver(id: string) {
