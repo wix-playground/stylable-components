@@ -1,7 +1,7 @@
-import {DriverBase, simulate} from 'test-drive-react';
 import * as keycode from 'keycode';
-import {Slider, ContextProvider} from '../../src';
-import {simulateMouseEvent, simulateTouchEvent, skipItIfTouch} from '../../test/utils';
+import {DriverBase, simulate} from 'test-drive-react';
+import {ContextProvider, Slider} from '../../src';
+import {simulateMouseEvent, simulateTouchEvent} from '../../test/utils';
 import WindowStub from '../../test/stubs/window.stub';
 
 // TODO reuse
@@ -10,7 +10,7 @@ export interface SliderEventCoordinates {
     clientY: number;
 }
 
-class BaseSliderDriver extends DriverBase {
+export class BaseSliderDriver extends DriverBase {
     public find(selector: string): HTMLElement {
         return this.select(selector);
     }

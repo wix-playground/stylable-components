@@ -5,7 +5,7 @@ import {AXES, AxisOptions, Slider, SliderProps} from '../../src/components/slide
 import {ChangeEvent} from '../../src/types/events';
 import WindowStub from '../stubs/window.stub';
 import {skipItIfTouch} from '../utils';
-import {SliderDriver, SliderContextProvierDriver, SliderEventCoordinates} from '../../test-kit';
+import {SliderContextProvierDriver, SliderDriver, SliderEventCoordinates} from '../../test-kit';
 
 let environment: WindowStub;
 
@@ -29,7 +29,11 @@ function getAxis(
     return axis;
 }
 
-function getEventCoordinates(bounds: any, direction: string | undefined, value: number = 0.702): SliderEventCoordinates {
+function getEventCoordinates(
+    bounds: any,
+    direction: string | undefined,
+    value: number = 0.702
+): SliderEventCoordinates {
     switch (direction) {
         case AXES.x:
             return {
@@ -501,7 +505,7 @@ function keyboard(
         });
 
         it('on pressing up key with ctrl', async () => {
-            driver.keyDown('up', {ctrlKey: true})
+            driver.keyDown('up', {ctrlKey: true});
 
             return waitFor(() => {
                 expect(onChange).have.been.calledWithMatch({value: value + (deviation * 10)});
@@ -509,7 +513,7 @@ function keyboard(
         });
 
         it('on pressing left key with ctrl', async () => {
-            driver.keyDown('left', {ctrlKey: true})
+            driver.keyDown('left', {ctrlKey: true});
 
             return waitFor(() => {
                 expect(onChange).have.been.calledWithMatch({value: home});
@@ -517,7 +521,7 @@ function keyboard(
         });
 
         it('on pressing up key with shift', async () => {
-            driver.keyDown('up', {shiftKey: true})
+            driver.keyDown('up', {shiftKey: true});
 
             return waitFor(() => {
                 expect(onChange).have.been.calledWithMatch({value: value + (deviation * 10)});
@@ -525,7 +529,7 @@ function keyboard(
         });
 
         it('on pressing left key with shift', async () => {
-            driver.keyDown('left', {shiftKey: true})
+            driver.keyDown('left', {shiftKey: true});
 
             return waitFor(() => {
                 expect(onChange).have.been.calledWithMatch({value: home});
@@ -533,7 +537,7 @@ function keyboard(
         });
 
         it('on pressing left key', async () => {
-            driver.keyDown('left')
+            driver.keyDown('left');
 
             return waitFor(() => {
                 expect(onChange).have.been.calledWithMatch({value: value - deviation});
@@ -541,7 +545,7 @@ function keyboard(
         });
 
         it('on pressing down key', async () => {
-            driver.keyDown('down')
+            driver.keyDown('down');
 
             return waitFor(() => {
                 expect(onChange).have.been.calledWithMatch({value: value - deviation});
@@ -549,7 +553,7 @@ function keyboard(
         });
 
         it('on pressing page down key', async () => {
-            driver.keyDown('page down')
+            driver.keyDown('page down');
 
             return waitFor(() => {
                 expect(onChange).have.been.calledWithMatch({value: value - Math.abs(deviation * 10)});
@@ -557,7 +561,7 @@ function keyboard(
         });
 
         it('on pressing down key with ctrl', async () => {
-            driver.keyDown('down', {ctrlKey: true})
+            driver.keyDown('down', {ctrlKey: true});
 
             return waitFor(() => {
                 expect(onChange).have.been.calledWithMatch({value: value - (deviation * 10)});
@@ -565,7 +569,7 @@ function keyboard(
         });
 
         it('on pressing right key with ctrl', async () => {
-            driver.keyDown('right', {ctrlKey: true})
+            driver.keyDown('right', {ctrlKey: true});
 
             return waitFor(() => {
                 expect(onChange).have.been.calledWithMatch({value: end});
@@ -573,7 +577,7 @@ function keyboard(
         });
 
         it('on pressing down key with shift', async () => {
-            driver.keyDown('down', {shiftKey: true})
+            driver.keyDown('down', {shiftKey: true});
 
             return waitFor(() => {
                 expect(onChange).have.been.calledWithMatch({value: value - (deviation * 10)});
@@ -581,7 +585,7 @@ function keyboard(
         });
 
         it('on pressing right key with shift', async () => {
-            driver.keyDown('right', {shiftKey: true})
+            driver.keyDown('right', {shiftKey: true});
 
             return waitFor(() => {
                 expect(onChange).have.been.calledWithMatch({value: end});
@@ -589,7 +593,7 @@ function keyboard(
         });
 
         it('on pressing home key', async () => {
-            driver.keyDown('home')
+            driver.keyDown('home');
 
             return waitFor(() => {
                 expect(onChange).have.been.calledWithMatch({value: home});
@@ -597,7 +601,7 @@ function keyboard(
         });
 
         it('on pressing end key', async () => {
-            driver.keyDown('end', {shiftKey: true})
+            driver.keyDown('end', {shiftKey: true});
 
             return waitFor(() => {
                 expect(onChange).have.been.calledWithMatch({value: end});
@@ -796,7 +800,7 @@ describe.only('<Slider />', () => {
                 driver.mouseDown({
                     clientY: bounds.top + bounds.height / 3,
                     clientX: Math.round(bounds.left + bounds.width * 0.4)
-                })
+                });
 
                 expect(handle!.style.left).to.equal('50%');
                 expect(progress!.style.width).to.equal('50%');
@@ -828,10 +832,10 @@ describe.only('<Slider />', () => {
                 });
                 driver.mouseMove({
                     clientX: Math.round(bounds.left + bounds.width * 0.6)
-                }, environment)
+                }, environment);
                 driver.mouseUp({
                     clientX: Math.round(bounds.left + bounds.width * 0.6)
-                }, environment)
+                }, environment);
 
                 expect(onInput).to.be.calledWithMatch({value: '5'});
                 expect(onChange).to.be.calledWithMatch({value: 5});
