@@ -3,10 +3,10 @@ import * as React from 'react';
 import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react';
 import {ContextProvider} from '../../src';
 import {
-    AXES, AxisOptions, Slider, SliderProps,
-    AxisOptionsKey, CONTINUOUS_STEP,
-    isVertical, getSizeProperty, getPositionProperty, isReverse, getRelativeStep,
-    getRelativeValue, getAbsoluteValue, getValueInRange, getValueFromElementAndPointer
+    AXES, AxisOptions, AxisOptionsKey, CONTINUOUS_STEP,
+    getAbsoluteValue,
+    getRelativeStep, getRelativeValue, getSizeProperty, getValueFromElementAndPointer, getValueInRange,
+    isReverse, isVertical, Slider, SliderProps
 } from '../../src/components/slider';
 import {ChangeEvent} from '../../src/types/events';
 import WindowStub from '../stubs/window.stub';
@@ -1471,14 +1471,13 @@ describe('<Slider />', () => {
     });
 });
 
-
 describe.only('Slider/calculations', () => {
-    function testMethod(fn: Function, results: {[key: string]: any}) {
+    function testMethod(fn: (prop: any) => any, results: {[key: string]: any}) {
         Object.keys(results).forEach(key => {
             it(`${key} => ${results[key]}`, () => {
                 expect(fn(AXES[key as AxisOptionsKey])).to.equal(results[key]);
-            })
-        })
+            });
+        });
     }
 
     describe('isVertical()', () => {
@@ -1538,7 +1537,6 @@ describe.only('Slider/calculations', () => {
         });
     });
 
-
     describe('getAbsoluteValue()', () => {
         it('(value = 25, min = 1, max = 5) => 2', () => {
             expect(getAbsoluteValue(25, 1, 5)).to.equal(2);
@@ -1557,13 +1555,13 @@ describe.only('Slider/calculations', () => {
     describe('getValueInRange()', () => {
         it('(value = 0, min = 10, max = 20) => 10', () => {
             expect(getValueInRange(0, 10, 20)).to.equal(10);
-        })
+        });
         it('(value = 15, min = 10, max = 20) => 15', () => {
             expect(getValueInRange(15, 10, 20)).to.equal(15);
-        })
+        });
         it('(value = 25, min = 10, max = 20) => 20', () => {
             expect(getValueInRange(25, 10, 20)).to.equal(20);
-        })
+        });
     });
 
     describe('getValueFromElementAndPointer()', () => {
@@ -1583,7 +1581,7 @@ describe.only('Slider/calculations', () => {
 
             after(() => {
                 document.body.removeChild(elem);
-            })
+            });
 
             it(name, () => {
                 const event = {
@@ -1596,7 +1594,7 @@ describe.only('Slider/calculations', () => {
                     opts.step,
                     opts.vertically,
                     opts.reversed
-                ]
+                ];
                 expect(getValueFromElementAndPointer.apply(null, args)).to.equal(opts.result);
             });
         }
