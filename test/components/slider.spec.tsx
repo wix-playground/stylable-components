@@ -1471,7 +1471,7 @@ describe('<Slider />', () => {
     });
 });
 
-describe.only('Slider/calculations', () => {
+describe('Slider/calculations', () => {
     function testMethod(fn: (prop: any) => any, results: {[key: string]: any}) {
         Object.keys(results).forEach(key => {
             it(`${key} => ${results[key]}`, () => {
