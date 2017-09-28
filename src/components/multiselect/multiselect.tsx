@@ -6,20 +6,27 @@ import {FormInputProps} from '../../types/forms';
 import {noop} from '../../utils';
 import {Popup} from '../popup';
 import {OptionList, SelectionListItemValue, SelectionListModel, SelectionListView} from '../selection-list';
-import style from './multiselect.st.css';
+import styles from './multiselect.st.css';
 import {Tag} from './tag';
 
 export interface Props extends OptionList, FormInputProps<SelectionListItemValue[]> {
+    // Standard props
+    autoFocus?: boolean;
+    disabled?: boolean;
+    name?: string;
+    onChange?: (event: ChangeEvent<SelectionListItemValue[]>) => void;
+    readOnly?: boolean;
+    tabIndex?: number;
+    value?: SelectionListItemValue[];
+
+    // Component-specific props
     allowFreeText?: boolean;
     filter?: (text: string) => boolean;
     maxSearchResults?: number;
     maxSelected?: number;
     minCharacters?: number;
-    name?: string;
     noSuggestionsNotice?: string | JSX.Element;
-    onChange?: (event: ChangeEvent<SelectionListItemValue[]>) => void;
-    value?: SelectionListItemValue[];
-    tabIndex?: number;
+    openOnFocus?: boolean;
 }
 
 export interface State {
@@ -28,31 +35,35 @@ export interface State {
     inputValue: string;
     list: SelectionListModel;
     open: boolean;
-    root: HTMLElement | null;
     popup: Popup | null;
+    root: HTMLElement | null;
 }
 
-@stylable(style)
+@stylable(styles)
 export class Multiselect extends React.Component<Props, State> {
-    public defaultProps = {
-        value: [],
-        maxSelected: Infinity,
+    public static defaultProps: Props = {
         allowFreeText: true,
-        noSuggestionsNotice: '',
+        autoFocus: false,
+        disabled: false,
         filter: () => true,
-        minCharacters: 0,
         maxSearchResults: Infinity,
-        onChange: noop
+        maxSelected: Infinity,
+        minCharacters: 0,
+        noSuggestionsNotice: '',
+        onChange: noop,
+        openOnFocus: false,
+        readOnly: false,
+        value: []
     };
 
     public state: State = {
         focused: false,
-        open: false,
-        root: null,
         input: null,
-        popup: null,
         inputValue: '',
-        list: new SelectionListModel()
+        list: new SelectionListModel(),
+        open: false,
+        popup: null,
+        root: null
     };
 
     public componentWillMount() {
@@ -60,20 +71,33 @@ export class Multiselect extends React.Component<Props, State> {
     }
 
     public componentDidUpdate() {
+        // FIXME: popup gets outdated dimensions of the anchor because it queries DOM in render() prior
+        // to the DOM update. It should query in componentDidUpdate() instead.
         if (this.state.open && this.state.popup) {
             this.state.popup.forceUpdate();
         }
     }
 
     public render() {
+        if (5 > 1) {
+            return <PopupTest />;
+        }
         return (
-            <div ref={root => this.state.root || this.setState({root})} style-state={{focused: this.state.focused}}>
-                {this.props.value!.map((label, i) =>
-                    <input key={i} type="hidden" value={label} />
+            <div
+                ref={root => this.state.root || this.setState({root})}
+                style-state={{
+                    focused: this.state.focused,
+                    disabled: this.props.disabled,
+                    readOnly: this.props.readOnly
+                }}
+                onMouseDown={this.handleMouseDown}
+            >
+                {this.props.name && this.props.value!.map((label, i) =>
+                    <input key={i} name={this.props.name + '[]'} type="hidden" value={label} />
                 )}
 
                 {this.props.value!.map((label, i) =>
-                    <Tag key={i} id={i} onDelete={this.handleTagDeleteClick}>{label}</Tag>
+                    <Tag key={i} id={i} className="tag" onRequestDelete={this.handleTagDeleteRequest}>{label}</Tag>
                 )}
 
                 <input
@@ -82,8 +106,12 @@ export class Multiselect extends React.Component<Props, State> {
                     value={this.state.inputValue}
                     onChange={this.handleInputChange}
                     onKeyDown={this.handleInputKeydown}
-                    onFocus={this.handleFocus}
-                    onBlur={this.handleBlur}
+                    onFocus={this.props.readOnly ? noop : this.handleFocus}
+                    onBlur={this.props.readOnly ? noop : this.handleBlur}
+                    tabIndex={this.props.tabIndex}
+                    disabled={this.props.disabled}
+                    readOnly={this.props.readOnly}
+                    autoFocus={this.props.autoFocus}
                 />
 
                 <Popup
@@ -139,6 +167,15 @@ export class Multiselect extends React.Component<Props, State> {
         this.setState({focused: false, open: false});
     }
 
+    protected handleMouseDown: React.MouseEventHandler<HTMLElement> = event => {
+        // Clicking on a blank space within the component should definitely focus the input.
+        // Clicking on a tag should probably focus the input.
+        if (event.button === 0 && event.target !== this.state.input) {
+            event.preventDefault();
+            this.focus();
+        }
+    }
+
     protected handleInputChange: React.ChangeEventHandler<HTMLInputElement> = event => {
         const inputValue = event.currentTarget.value;
         this.state.list.focusValue(undefined);
@@ -172,7 +209,7 @@ export class Multiselect extends React.Component<Props, State> {
             }
 
             case keycode('down'): {
-                event.preventDefault(); // Prevent cursor from moving to the beginning
+                event.preventDefault(); // Prevent cursor from jumping to the start
                 this.state.list.focusNext();
                 const itemValue = this.state.list.getFocusedValue();
                 if (itemValue !== undefined) {
@@ -182,7 +219,7 @@ export class Multiselect extends React.Component<Props, State> {
             }
 
             case keycode('up'): {
-                event.preventDefault(); // Prevent cursor from moving to the end
+                event.preventDefault(); // Prevent cursor from jumping to the end
                 this.state.list.focusPrevious();
                 const itemValue = this.state.list.getFocusedValue();
                 if (itemValue !== undefined) {
@@ -193,12 +230,40 @@ export class Multiselect extends React.Component<Props, State> {
         }
     }
 
-    protected handleTagDeleteClick = (i: number) => {
+    protected handleTagDeleteRequest = (i: number) => {
         this.deleteTag(i);
     }
 
     protected handleListItemClick = ({value: itemValue}: {value: string}) => {
         this.state.list.focusValue(undefined);
         this.addTag(itemValue);
+    }
+}
+
+class PopupTest extends React.Component {
+    public state = {
+        root: null,
+        count: 4
+    };
+
+    public render() {
+        return (
+            <div>
+                <div
+                    ref={ref => this.state.root || this.setState({root: ref})}
+                    style={{display: 'inline-block', background: '#29B6F6'}}
+                >
+                    <button onClick={this.expand}>Expand</button>
+                    {Array(this.state.count).fill(0).map((v, i) => <span key={i}>*</span>)}
+                </div>
+                <Popup open={true} anchor={this.state.root}>
+                        <div style={{background: '#ef5350'}}>Popup</div>
+                </Popup>
+            </div>
+        );
+    }
+
+    public expand = () => {
+        this.setState({count: this.state.count + 1});
     }
 }

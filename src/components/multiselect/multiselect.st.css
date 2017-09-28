@@ -9,7 +9,7 @@
 }
 
 .root {
-    -st-states: focused;
+    -st-states: focused, disabled, readOnly;
     border: 1px solid #adbac5;
     box-sizing: border-box;
     display: inline-flex;
@@ -19,15 +19,35 @@
 }
 
 .root:focused {
-    border-color: #4a90e2 !important;
+    border-color: #4a90e2;
 }
 
-.root > Tag {
+.root:disabled {
+    border-color: #c8c8c8;
+    background-color: #f1f1f1;
+}
+
+.tag {
+    -st-extends: Tag;
     margin: 0 5px 5px 0;
     max-width: calc(100% - 5px);
 }
 
+.root:disabled .tag {
+    background: #c8c8c8;
+}
+
+.root:disabled *,
+.root:readOnly * {
+    pointer-events: none;
+}
+
+.root:disabled .tag::label {
+    color: #f1f1f1;
+}
+
 .input {
+    background-color: inherit;
     border: 0;
     box-sizing: border-box;
     flex-grow: 1;
@@ -35,12 +55,12 @@
     font-size: 14px;
     height: 24px;
     line-height: 24px;
-    outline: none;
     margin: 0 5px 5px 0;
+    outline: none;
     width: 0;
 }
 
-/* Awaiting a fix in stylable. There should be a way to apply styles to an element outside of the root. */
+/* FIXME: awaiting a fix in stylable. There should be a way to apply styles to an element outside of the root. */
 :global(.fixme-multiselect-portal) .drop-down-list {
     width: 100%;
     box-sizing: border-box;

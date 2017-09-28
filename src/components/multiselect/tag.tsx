@@ -1,17 +1,16 @@
 import React = require('react');
-import {stylable} from 'wix-react-tools';
+import {properties, stylable} from 'wix-react-tools';
 import {noop} from '../../utils';
-import style from './tag.st.css';
+import styles from './tag.st.css';
 
-export interface Props {
+export interface Props extends React.HTMLAttributes<HTMLDivElement> {
     id: any;
-    onDelete: (id: any) => void;
+    onRequestDelete: (id: any) => void;
 }
 
-@stylable(style)
+@stylable(styles)
+@properties
 export class Tag extends React.Component<Props> {
-    public static defaultProps = {onDelete: noop};
-
     public render() {
         return (
             <div>
@@ -24,5 +23,5 @@ export class Tag extends React.Component<Props> {
         );
     }
 
-    protected handlDeleteClick = () => this.props.onDelete(this.props.id);
+    protected handlDeleteClick = () => this.props.onRequestDelete(this.props.id);
 }

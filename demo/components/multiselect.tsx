@@ -18,7 +18,13 @@ export class MultiselectDemo extends React.Component {
     ];
 
     public render() {
-        return <Multiselect dataSource={this.dataSource} value={this.state.value} onChange={this.handleSelectChange} />;
+        return (
+            <Multiselect
+                dataSource={this.dataSource}
+                value={this.state.value}
+                onChange={this.handleSelectChange}
+            />
+        );
     }
 
     protected handleSelectChange = ({value}: {value: string[]}) => {
