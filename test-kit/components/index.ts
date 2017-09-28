@@ -8,3 +8,4 @@ export * from './date-picker-driver';
 export * from './number-input-driver';
 export * from './stateful-uncontrolled-number-input-driver';
 export * from './toggle-driver';
+export * from './slider-driver';

@@ -6,6 +6,7 @@ import {AXES, AxisOptions, Slider, SliderProps} from '../../src/components/slide
 import {ChangeEvent} from '../../src/types/events';
 import WindowStub from '../stubs/window.stub';
 import {simulateMouseEvent, simulateTouchEvent, skipItIfTouch} from '../utils';
+import {SliderDriver, SliderContextProvierDriver} from '../../test-kit';
 
 let environment: WindowStub;
 
@@ -82,7 +83,8 @@ function getRenderedSlider(
                 {...props}
             />
         );
-    return clientRenderer.render(slider);
+    const driver = context ? SliderContextProvierDriver : SliderDriver;
+    return clientRenderer.render(slider).withDriver(driver);
 }
 
 function withValueMinMax(
@@ -98,8 +100,8 @@ function withValueMinMax(
         const min = -10;
         const max = 10;
 
-        let select: (automationId: string) => HTMLElement | null;
         let waitForDom: (expectation: () => void) => Promise<void>;
+        let driver: any;
 
         beforeEach(() => {
             const rendered = getRenderedSlider(
@@ -113,21 +115,19 @@ function withValueMinMax(
                 context
             );
 
-            select = rendered.select;
             waitForDom = rendered.waitForDom;
+            driver = rendered.driver;
         });
 
         it('renders handle on the right place', async () => {
             await waitForDom(() => {
-                const element = select('SLIDER-HANDLE');
-
-                expect(element!.style[positionProp as any]).to.equal('75%');
+                expect(driver.handle!.style[positionProp as any]).to.equal('75%');
             });
         });
 
         it('renders progress bar with the right width', async () => {
             await waitForDom(() => {
-                const element = select('SLIDER-PROGRESS');
+                const element = driver.progress;
 
                 expect(element).to.be.present();
                 expect(element!.style[sizeProp as any]).to.equal('75%');
@@ -136,17 +136,13 @@ function withValueMinMax(
 
         it('renders invisible native input with right value', async () => {
             await waitForDom(() => {
-                const element = select('NATIVE-INPUT');
-
-                expect(element).to.has.value(String(value));
+                expect(driver.input).to.has.value(String(value));
             });
         });
 
         it('renders with proper aria-orientation', async () => {
             await waitForDom(() => {
-                const element = select('SLIDER-HANDLE');
-
-                expect(element!.getAttribute('aria-orientation')).to.equal(orientation);
+                expect(driver.handle).attr('aria-orientation', orientation);
             });
         });
     });
@@ -166,9 +162,9 @@ function whenDragThingsAround(
 
         let onChange: (data: ChangeEvent<number>) => void;
         let onInput: (data: ChangeEvent<string>) => void;
-        let select: (automationId: string) => HTMLElement | null;
         let waitForDom: (expectation: () => void) => Promise<void>;
         let eventMock: EventCoordinates;
+        let driver: any;
 
         beforeEach(() => {
             onChange = sinon.spy();
@@ -185,18 +181,18 @@ function whenDragThingsAround(
                 },
                 context
             );
-            select = rendered.select;
             waitForDom = rendered.waitForDom;
+            driver = rendered.driver;
 
-            const bounds = select('SLIDER')!.getBoundingClientRect();
+            const bounds = driver.slider!.getBoundingClientRect();
             eventMock = getEventCoordinates(bounds, getAxis(options, context));
         });
 
         it('should change value', async () => {
             await waitFor(() => {
-                const element = select('SLIDER');
-                const handle = select('SLIDER-HANDLE');
-                const progress = select('SLIDER-PROGRESS');
+                const element = driver.slider;
+                const handle = driver.handle;
+                const progress = driver.progress;
 
                 simulate.mouseDown(element, {
                     currentTarget: element!,
@@ -211,7 +207,7 @@ function whenDragThingsAround(
 
         it('should call onChange', async () => {
             await waitFor(() => {
-                const element = select('SLIDER');
+                const element = driver.slider;
 
                 simulate.mouseDown(element, {
                     currentTarget: element!,
@@ -233,7 +229,7 @@ function whenDragThingsAround(
 
         it('should call onInput', async () => {
             await waitFor(() => {
-                const element = select('SLIDER');
+                const element = driver.slider;
 
                 simulate.mouseDown(element, {
                     currentTarget: element!,
@@ -263,16 +259,16 @@ function whenDragThingsAround(
         });
     });
 
-    describe('when drag things around using touch', () => {
+    describe.only('when drag things around using touch', () => {
         const value = 5;
         const min = 0;
         const max = 10;
 
         let onChange: (data: ChangeEvent<number>) => void;
         let onInput: (data: ChangeEvent<string>) => void;
-        let select: (automationId: string) => HTMLElement | null;
         let waitForDom: (expectation: () => void) => Promise<void>;
         let eventMock: EventCoordinates;
+        let driver: any;
 
         beforeEach(() => {
             onChange = sinon.spy();
@@ -289,18 +285,18 @@ function whenDragThingsAround(
                 },
                 context
             );
-            select = rendered.select;
             waitForDom = rendered.waitForDom;
+            driver = rendered.driver;
 
-            const bounds = select('SLIDER')!.getBoundingClientRect();
+            const bounds = driver.slider!.getBoundingClientRect();
             eventMock = getEventCoordinates(bounds, getAxis(options, context));
         });
 
         skipItIfTouch('should change value', async () => {
             await waitFor(() => {
-                const element = select('SLIDER');
-                const handle = select('SLIDER-HANDLE');
-                const progress = select('SLIDER-PROGRESS');
+                const element = driver.slider;
+                const handle = driver.handle;
+                const progress = driver.progress;
 
                 simulate.touchStart(element, {
                     currentTarget: element!,
@@ -319,7 +315,7 @@ function whenDragThingsAround(
 
         skipItIfTouch('should call onChange', async () => {
             await waitFor(() => {
-                const element = select('SLIDER');
+                const element = driver.slider;
 
                 simulate.touchStart(element, {
                     currentTarget: element!,
@@ -346,7 +342,7 @@ function whenDragThingsAround(
 
         skipItIfTouch('should call onInput', async () => {
             await waitFor(() => {
-                const element = select('SLIDER');
+                const element = driver.slider;
 
                 simulate.touchStart(element, {
                     currentTarget: element!,
@@ -389,7 +385,7 @@ function whenDragThingsAroundWithStep(
     options?: Partial<SliderProps>,
     context?: any
 ) {
-    describe('when drag things around with step', () => {
+    describe.only('when drag things around with step', () => {
         const value = 5;
         const min = 0;
         const max = 10;
@@ -397,8 +393,8 @@ function whenDragThingsAroundWithStep(
 
         let onChange: (data: ChangeEvent<number>) => void;
         let onInput: (data: ChangeEvent<string>) => void;
-        let select: (automationId: string) => HTMLElement | null;
         let waitForDom: (expectation: () => void) => Promise<void>;
+        let driver: any;
         let eventMock: EventCoordinates;
 
         beforeEach(() => {
@@ -417,24 +413,22 @@ function whenDragThingsAroundWithStep(
                 },
                 context
             );
-            select = rendered.select;
             waitForDom = rendered.waitForDom;
+            driver = rendered.driver;
 
-            const bounds = select('SLIDER')!.getBoundingClientRect();
+            const bounds = driver.slider!.getBoundingClientRect();
             eventMock = getEventCoordinates(bounds, getAxis(options, context));
         });
 
         it('renders handle on the right place', async () => {
             await waitForDom(() => {
-                const element = select('SLIDER-HANDLE');
-
-                expect(element!.style[positionProp as any]).to.equal('50%');
+                expect(driver.handle!.style[positionProp as any]).to.equal('50%');
             });
         });
 
         it('renders progress bar with the right width', async () => {
             await waitForDom(() => {
-                const element = select('SLIDER-PROGRESS');
+                const element = driver.progress;
 
                 expect(element).to.be.present();
                 expect(element!.style[sizeProp as any]).to.equal('50%');
@@ -443,17 +437,15 @@ function whenDragThingsAroundWithStep(
 
         it('renders invisible native input with right value', async () => {
             await waitForDom(() => {
-                const element = select('NATIVE-INPUT');
-
-                expect(element).to.has.value(String(value));
+                expect(driver.input).to.has.value(String(value));
             });
         });
 
         it('should change value according to step', async () => {
             await waitFor(() => {
-                const element = select('SLIDER');
-                const handle = select('SLIDER-HANDLE');
-                const progress = select('SLIDER-PROGRESS');
+                const element = driver.slider;
+                const handle = driver.handle;
+                const progress = driver.progress;
 
                 simulate.mouseDown(element, {
                     currentTarget: element!,
@@ -468,7 +460,7 @@ function whenDragThingsAroundWithStep(
 
         it('should call onChange with value normalized to step', async () => {
             await waitFor(() => {
-                const element = select('SLIDER');
+                const element = driver.slider;
 
                 simulate.mouseDown(element, {
                     currentTarget: element!,
@@ -490,7 +482,7 @@ function whenDragThingsAroundWithStep(
 
         it('should call onInput with value normalized to step', async () => {
             await waitFor(() => {
-                const element = select('SLIDER');
+                const element = driver.slider;
 
                 simulate.mouseDown(element, {
                     currentTarget: element!,
@@ -873,26 +865,24 @@ describe('<Slider />', () => {
     });
 
     describe('without any arguments', () => {
-        let select: (automationId: string) => HTMLElement | null;
         let waitForDom: (expectation: () => void) => Promise<void>;
+        let driver: any;
 
         beforeEach(() => {
-            const rendered = clientRenderer.render(<Slider />);
-            select = rendered.select;
+            const rendered = clientRenderer.render(<Slider />).withDriver(SliderDriver);
             waitForDom = rendered.waitForDom;
+            driver = rendered.driver;
         });
 
         it('renders default value on the start of the track', async () => {
             await waitForDom(() => {
-                const element = select('SLIDER-HANDLE');
-
-                expect(element!.style.left).to.equal('0%');
+                expect(driver.handle!.style.left).to.equal('0%');
             });
         });
 
         it('renders progress bar', async () => {
             await waitForDom(() => {
-                const element = select('SLIDER-PROGRESS');
+                const element = driver.progress;
 
                 expect(element).not.to.be.null;
                 expect(element!.style.width).to.equal('0%');
@@ -901,9 +891,7 @@ describe('<Slider />', () => {
 
         it('renders invisible native input with default value', async () => {
             await waitForDom(() => {
-                const element = select('NATIVE-INPUT');
-
-                expect(element).to.has.value('');
+                expect(driver.input).to.has.value('');
             });
         });
     });
@@ -912,8 +900,8 @@ describe('<Slider />', () => {
         const min = -10;
         const max = 10;
 
-        let select: (automationId: string) => HTMLElement | null;
         let waitForDom: (expectation: () => void) => Promise<void>;
+        let driver: any;
 
         beforeEach(() => {
             const rendered = clientRenderer.render(
@@ -921,22 +909,20 @@ describe('<Slider />', () => {
                     min={min}
                     max={max}
                 />
-            );
-            select = rendered.select;
+            ).withDriver(SliderDriver);
             waitForDom = rendered.waitForDom;
+            driver = rendered.driver;
         });
 
         it('renders handle on the right place', async () => {
             await waitForDom(() => {
-                const element = select('SLIDER-HANDLE');
-
-                expect(element!.style.left).to.equal('0%');
+                expect(driver.handle!.style.left).to.equal('0%');
             });
         });
 
         it('renders progress bar with the right width', async () => {
             await waitForDom(() => {
-                const element = select('SLIDER-PROGRESS');
+                const element = driver.progress;
 
                 expect(element).not.to.be.present();
                 expect(element!.style.width).to.equal('0%');
@@ -945,9 +931,7 @@ describe('<Slider />', () => {
 
         it('renders invisible native input with right value', async () => {
             await waitForDom(() => {
-                const element = select('NATIVE-INPUT');
-
-                expect(element).to.has.value('');
+                expect(driver.input).to.has.value('');
             });
         });
     });
@@ -967,17 +951,14 @@ describe('<Slider />', () => {
                     min={min}
                     max={max}
                 />
-            );
+            ).withDriver(SliderDriver);
 
-            const select: (automationId: string) => HTMLElement | null = rendered.select;
             const waitForDom = rendered.waitForDom;
+            const driver = rendered.driver;
 
             await waitForDom(() => {
-                const handle = select('SLIDER-HANDLE');
-                const progress = select('SLIDER-PROGRESS');
-
-                expect(handle!.style.left).to.equal('0%');
-                expect(progress!.style.width).to.equal('0%');
+                expect(driver.handle!.style.left).to.equal('0%');
+                expect(driver.progress!.style.width).to.equal('0%');
             });
         });
 
@@ -988,17 +969,14 @@ describe('<Slider />', () => {
                     min={min}
                     max={max}
                 />
-            );
+            ).withDriver(SliderDriver);
 
-            const select: (automationId: string) => HTMLElement | null = rendered.select;
             const waitForDom = rendered.waitForDom;
+            const driver = rendered.driver;
 
             await waitForDom(() => {
-                const handle = select('SLIDER-HANDLE');
-                const progress = select('SLIDER-PROGRESS');
-
-                expect(handle!.style.left).to.equal('100%');
-                expect(progress!.style.width).to.equal('100%');
+                expect(driver.handle!.style.left).to.equal('100%');
+                expect(driver.progress!.style.width).to.equal('100%');
             });
         });
     });
@@ -1010,8 +988,8 @@ describe('<Slider />', () => {
         const step = 5;
         let onChange: (data: ChangeEvent<number>) => void;
         let onInput: (data: ChangeEvent<string>) => void;
-        let select: (automationId: string) => HTMLElement | null;
         let waitForDom: (expectation: () => void) => Promise<void>;
+        let driver: any;
 
         beforeEach(() => {
             onChange = sinon.spy();
@@ -1026,23 +1004,21 @@ describe('<Slider />', () => {
                     onChange={onChange}
                     onInput={onInput}
                 />
-            );
+            ).withDriver(SliderDriver);
 
-            select = rendered.select;
             waitForDom = rendered.waitForDom;
+            driver = rendered.driver;
         });
 
         it('renders handle ignoring step', async () => {
             await waitForDom(() => {
-                const element = select('SLIDER-HANDLE');
-
-                expect(element!.style.left).to.equal('30%');
+                expect(driver.handle!.style.left).to.equal('30%');
             });
         });
 
         it('renders progress bar ignoring step', async () => {
             await waitForDom(() => {
-                const element = select('SLIDER-PROGRESS');
+                const element = driver.progress;
 
                 expect(element).to.be.present();
                 expect(element!.style.width).to.equal('30%');
@@ -1051,17 +1027,15 @@ describe('<Slider />', () => {
 
         it('renders invisible native input with passed value', async () => {
             await waitForDom(() => {
-                const element = select('NATIVE-INPUT');
-
-                expect(element).to.has.value(String(valueOutOfStep));
+                expect(driver.input).to.has.value(String(valueOutOfStep));
             });
         });
 
         it('should change value according to step', async () => {
             await waitFor(() => {
-                const element = select('SLIDER');
-                const handle = select('SLIDER-HANDLE');
-                const progress = select('SLIDER-PROGRESS');
+                const element = driver.slider;
+                const handle = driver.handle;
+                const progress = driver.progress;
                 const bounds = element!.getBoundingClientRect();
 
                 simulate.mouseDown(element, {
@@ -1077,7 +1051,7 @@ describe('<Slider />', () => {
 
         it('should call onChange with value normalized to step', async () => {
             await waitFor(() => {
-                const element = select('SLIDER');
+                const element = driver.slider;
                 const bounds = element!.getBoundingClientRect();
 
                 simulate.mouseDown(element, {
@@ -1096,7 +1070,7 @@ describe('<Slider />', () => {
 
         it('should call onInput with value normalized to step', async () => {
             await waitFor(() => {
-                const element = select('SLIDER');
+                const element = driver.slider;
                 const bounds = element!.getBoundingClientRect();
 
                 simulate.mouseDown(element, {
@@ -1134,15 +1108,15 @@ describe('<Slider />', () => {
                     step={step}
                     displayStopMarks={true}
                 />
-            );
-            const select: (automationId: string) => HTMLElement | null = rendered.select;
+            ).withDriver(SliderDriver);
             const waitForDom: (expectation: () => void) => Promise<void> = rendered.waitForDom;
+            const driver = rendered.driver;
 
             await waitForDom(() => {
-                expect(select(`SLIDER-MARKS-0`)).to.be.present();
-                expect(select(`SLIDER-MARKS-1`)).to.be.present();
-                expect(select(`SLIDER-MARKS-2`)).to.be.present();
-                expect(select(`SLIDER-MARKS-3`)).not.to.be.present();
+                expect(driver.getMark(0)).to.be.present();
+                expect(driver.getMark(1)).to.be.present();
+                expect(driver.getMark(2)).to.be.present();
+                expect(driver.getMark(3)).not.to.be.present();
             });
         });
 
@@ -1159,14 +1133,13 @@ describe('<Slider />', () => {
                     step={step}
                     displayStopMarks={true}
                 />
-            );
-            const select: (automationId: string) => HTMLElement | null = rendered.select;
+            ).withDriver(SliderDriver);
             const waitForDom: (expectation: () => void) => Promise<void> = rendered.waitForDom;
+            const driver = rendered.driver;
 
             await waitForDom(() => {
                 for (let i = 0; i <= 5; i++) {
-                    const mark = select(`SLIDER-MARKS-${i}`);
-                    expect(mark!.style.left).to.equal(`${20 * i}%`);
+                    expect(driver.getMark(i)!.style.left).to.equal(`${20 * i}%`);
                 }
             });
         });
@@ -1186,7 +1159,7 @@ describe('<Slider />', () => {
         const max = 10;
 
         let onChange: (data: ChangeEvent<number>) => void;
-        let select: (automationId: string) => HTMLElement | null;
+        let driver: any;
         let waitForDom: (expectation: () => void) => Promise<void>;
 
         beforeEach(() => {
@@ -1199,16 +1172,16 @@ describe('<Slider />', () => {
                     onChange={onChange}
                     disabled={true}
                 />
-            );
-            select = rendered.select;
+            ).withDriver(SliderDriver);
             waitForDom = rendered.waitForDom;
+            driver = rendered.driver;
         });
 
         it('should not change value', async () => {
             await waitFor(() => {
-                const element = select('SLIDER');
-                const handle = select('SLIDER-HANDLE');
-                const progress = select('SLIDER-PROGRESS');
+                const element = driver.slider;
+                const handle = driver.handle;
+                const progress = driver.progress;
                 const bounds = element!.getBoundingClientRect();
 
                 simulate.mouseDown(element, {
@@ -1237,16 +1210,13 @@ describe('<Slider />', () => {
                     max={max}
                     label={label}
                 />
-            );
-            const select: (automationId: string) => HTMLElement | null = rendered.select;
+            ).withDriver(SliderDriver);
             const waitForDom: (expectation: () => void) => Promise<void> = rendered.waitForDom;
+            const driver = rendered.driver;
 
             await waitForDom(() => {
-                const slider = select('SLIDER');
-                const sliderHandle = select('SLIDER-HANDLE');
-
-                expect(slider!.title).equal(label);
-                expect(sliderHandle!.getAttribute('aria-label')).equal(label);
+                expect(driver.slider).attr('title', label);
+                expect(driver.handle).attr('aria-label', label);
             });
         });
     });
@@ -1265,14 +1235,12 @@ describe('<Slider />', () => {
                     max={max}
                     name={name}
                 />
-            );
-            const select: (automationId: string) => HTMLInputElement | null = rendered.select;
+            ).withDriver(SliderDriver);
             const waitForDom: (expectation: () => void) => Promise<void> = rendered.waitForDom;
+            const driver = rendered.driver;
 
             await waitForDom(() => {
-                const sliderInput = select('NATIVE-INPUT');
-
-                expect(sliderInput!.name).equal(name);
+                expect(driver.input).attr('name', name);
             });
         });
     });
@@ -1290,14 +1258,12 @@ describe('<Slider />', () => {
                     max={max}
                     required={true}
                 />
-            );
-            const select: (automationId: string) => HTMLInputElement | null = rendered.select;
+            ).withDriver(SliderDriver);
             const waitForDom: (expectation: () => void) => Promise<void> = rendered.waitForDom;
+            const driver = rendered.driver;
 
             await waitForDom(() => {
-                const sliderInput = select('NATIVE-INPUT');
-
-                expect(sliderInput!.required).to.be.true;
+                expect(driver.input).attr('required');
             });
         });
     });
@@ -1317,17 +1283,17 @@ describe('<Slider />', () => {
                     label={label}
                     tooltip={<div data-slot="tooltip" data-automation-id="TOOLTIP-CUSTOM-CONTENT">{label}</div>}
                 />
-            );
-            const select: (automationId: string) => HTMLElement | null = rendered.select;
+            ).withDriver(SliderDriver);
             const waitForDom: (expectation: () => void) => Promise<void> = rendered.waitForDom;
+            const driver = rendered.driver;
 
             await waitForDom(() => {
-                const tooltip = select('SLIDER-TOOLTIP');
-                const tooltipContent = select('TOOLTIP-CUSTOM-CONTENT');
+                const tooltip = driver.tooltip;
+                const tooltipContent = driver.find('TOOLTIP-CUSTOM-CONTENT');
 
                 expect(tooltip).to.be.present();
                 expect(tooltipContent).to.be.present();
-                expect(tooltipContent!.innerText).to.equal(label);
+                expect(tooltipContent).text(label);
             });
         });
     });
