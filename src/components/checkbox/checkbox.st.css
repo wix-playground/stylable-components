@@ -1,5 +1,11 @@
 @namespace "CheckBox";
 
+:import {
+    -st-from: "../../style/default-theme/assets/svg-assets";
+    -st-named: boxIconMixin, tickIconMixin, indeterminateIconMixin;
+}
+
+
 .root {
     -st-states: checked, disabled, indeterminate, readonly, focus;
     display: inline-block;
@@ -8,18 +14,23 @@
 }
 
 .boxIcon {
+    -st-mixin: boxIconMixin('none', '#D1D1D1');
+    display: inline-block;
     height: 1rem;
     width: 1rem;
-    fill: none;
-    stroke: #D1D1D1;
+    vertical-align: middle;
 }
 
-.root:checked .boxIcon, .root:indeterminate .boxIcon{
-    fill: #4A90E2;
+.root:checked .boxIcon {
+    -st-mixin: boxIconMixin('#4A90E2', '#D1D1D1');
+}
+
+.root:indeterminate .boxIcon{
+    -st-mixin: boxIconMixin('#4A90E2', '#D1D1D1');
 }
 
 .root:disabled .boxIcon {
-    fill: #f1f1f1;
+    -st-mixin: boxIconMixin('#f1f1f1', '#D1D1D1');
 }
 
 .root:focus .boxIcon {
@@ -27,22 +38,31 @@
 }
 
 .tickIcon {
+    -st-mixin: tickIconMixin('#ffffff', 1.5, 'square');
+    display: inline-block;
     height: 1rem;
     width: 1rem;
+    vertical-align: middle;
     position: relative;
     margin-left: -1rem;
-    stroke: #FFF;
     stroke-linecap: square;
     stroke-width: 1.5;
 }
 
-.root:disabled .tickIcon, .root:disabled .indeterminateIcon {
-    stroke: #c8c8c8;
+.root:disabled .tickIcon {
+    -st-mixin: tickIconMixin('#c8c8c8', 1.5, 'square');
+}
+
+.root:disabled .indeterminateIcon {
+    -st-mixin: indeterminateIconMixin('#c8c8c8', 1.5);
 }
 
 .indeterminateIcon {
+    -st-mixin: indeterminateIconMixin('#ffffff', 1.5);
+    display: inline-block;
     height: 1em;
     width: 1em;
+    vertical-align: middle;
     position: relative;
     margin-left: -1rem;
     stroke: #FFF;
@@ -62,4 +82,5 @@
 
 .childContainer {
     display: inline;
+    vertical-align: middle;
 }

@@ -2,7 +2,7 @@ import * as React from 'react';
 import {stylable} from 'wix-react-tools';
 import style from './checkbox-demo.st.css';
 
-import {CheckBox, CheckBoxIconProps} from '../../src';
+import {CheckBox} from '../../src';
 import {ChangeEvent} from '../../src/types/events';
 
 export const demoCheckBoxText: string = 'Yes, I\'m over 18 years old';
@@ -25,11 +25,6 @@ export class CheckBoxDemo extends React.Component<{}, {}> {
                 <div>
                     <h3>Indeterminate</h3>
                     <IndeterminateDemo/>
-                </div>
-
-                <div>
-                    <h3>Custom Icons</h3>
-                    <CustomIconsDemo/>
                 </div>
             </div>
         );
@@ -143,56 +138,3 @@ export class IndeterminateDemo extends React.Component<{}, {value1: boolean, val
     private onChangeChild1 = (e: ChangeEvent<boolean>) => { this.setState({value1: e.value}); };
     private onChangeChild2 = (e: ChangeEvent<boolean>) => { this.setState({value2: e.value}); };
 }
-
-class CustomIconsDemo extends React.Component<{}, {value: boolean}> {
-    public state = {
-        value: false
-    };
-
-    public render() {
-        return (
-            <div>
-                <CheckBox
-                    value={this.state.value}
-                    onChange={this.handleChange}
-                    boxIcon={CheckBoxSVG}
-                    tickIcon={TickMarkSVG}
-                    id="myCustomCheckbox"
-                    aria-labelledby="customLabel"
-                />
-                <label id="customLabel" htmlFor="myCustomCheckbox">
-                    <span className={style.label} >I choose triangle</span>
-                </label>
-            </div>
-        );
-    }
-    private handleChange = (e: ChangeEvent<boolean>) => { this.setState({value: e.value}); };
-}
-
-const TickMarkSVG: React.SFC<CheckBoxIconProps> = stylable(style)(props => {
-    return (
-        <svg
-            className="customTickIcon"
-            data-automation-id="CHECKBOX_TICKMARK"
-            xmlns="http://www.w3.org/2000/svg"
-            height="16"
-            width="16"
-            focusable="false"
-        >
-            <circle cx="10" cy="14" r="4"/>
-        </svg>
-    );
-});
-
-const CheckBoxSVG: React.SFC<CheckBoxIconProps> = stylable(style)(props => {
-    return (
-        <svg
-            className="customBoxIcon"
-            data-automation-id="CHECKBOX_BOX"
-            xmlns="http://www.w3.org/2000/svg"
-            focusable="false"
-        >
-            <path d="M 10,1 20,20 1,20 z"/>
-        </svg>
-    );
-});

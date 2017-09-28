@@ -31,7 +31,6 @@ CB:focus .customBoxIcon {
 .label {
     margin-left: 5px;
     margin-right: 20px;
-    vertical-align: top;
     color: black;
     cursor: pointer;
 }
