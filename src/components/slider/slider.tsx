@@ -3,10 +3,10 @@ import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import {properties} from 'wix-react-tools';
 import {FormInputProps} from '../../types/forms';
-import {isRTLContext as isRTL} from '../../utils';
-import {noop} from '../../utils/noop';
+import {isRTLContext as isRTL, nearestIndex, noop} from '../../utils';
 import {
     getAbsoluteValue,
+    getNewValue,
     getRelativeStep,
     getRelativeValue,
     getValueFromElementAndPointer,
@@ -22,7 +22,7 @@ import {
     DEFAULT_STEP,
     DEFAULT_VALUE
 } from './slider-constants';
-import {AxisOptions, PointerEvent, Step} from './slider-types';
+import {AxisOptions, PointerEvent, PointerPosition, Step} from './slider-types';
 import {SliderView} from './slider-view';
 
 enum ChangeDirection {
@@ -30,7 +30,7 @@ enum ChangeDirection {
     descend
 }
 
-export interface SliderProps extends FormInputProps<number, string>, properties.Props {
+export interface SliderProps extends FormInputProps<number[], string>, properties.Props {
     tooltip?: React.ReactNode;
 
     min?: number;
@@ -54,7 +54,8 @@ export interface SliderProps extends FormInputProps<number, string>, properties.
     onDragStop?(event: PointerEvent): void;
 }
 export interface SliderState {
-    relativeValue: number;
+    currentHandleIndex: number;
+    relativeValue: number[];
     relativeStep: Step;
     isActive: boolean;
     isVertical: boolean;
@@ -96,7 +97,11 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         const {min, max, step, axis} = this.props;
 
         this.state = {
-            relativeValue: getRelativeValue(this.getDefaultValue(), min!, max!),
+            currentHandleIndex: -1,
+            relativeValue: this.getDefaultValue()
+                .map(
+                    value => getRelativeValue(value, min!, max!)
+                ),
             relativeStep: getRelativeStep(step, min!, max!),
             isActive: false,
             isVertical: isVertical(axis!),
@@ -123,10 +128,10 @@ export class Slider extends React.Component<SliderProps, SliderState> {
                 rtl={isRTL(this.context)}
                 step={this.props.step!}
                 tooltip={this.getTooltip()}
-                value={this.props.value}
+                value={this.getDefaultValue()}
 
-                onFocus={this.onSliderFocus}
-                onBlur={this.onSliderBlur}
+                onSliderFocus={this.onSliderFocus}
+                onSliderBlur={this.onSliderBlur}
 
                 onSliderAreaKeyDown={this.onSliderAreaKeyDown}
 
@@ -154,20 +159,24 @@ export class Slider extends React.Component<SliderProps, SliderState> {
             return;
         }
 
-        let value = nextProps.value === undefined ? this.props.value : nextProps.value;
+        const values = nextProps.value === undefined ? this.props.value : nextProps.value;
         const min = nextProps.min === undefined ? this.props.min : nextProps.min;
         const max = nextProps.max === undefined ? this.props.max : nextProps.max;
         const step = nextProps.step === undefined ? this.props.step : nextProps.step;
 
-        if (value && (value > max!)) {
-            value = max;
-        }
-        if (value && (value < min!)) {
-            value = min;
-        }
+        const relativeValues = values!.map(value => {
+                let normalizedValue = value;
+                if (value && (value > max!)) {
+                    normalizedValue =  max!;
+                }
+                if (value && (value < min!)) {
+                    normalizedValue =  min!;
+                }
+                return getRelativeValue(normalizedValue, min!, max!);
+            });
 
         this.setState({
-            relativeValue: getRelativeValue(value!, min!, max!),
+            relativeValue: relativeValues,
             relativeStep: getRelativeStep(step, min!, max!),
             isVertical: isVertical(nextProps.axis || this.props.axis!),
             isReverse: isReverse(nextProps.axis || this.props.axis!) !== isRTL(this.context)
@@ -176,9 +185,30 @@ export class Slider extends React.Component<SliderProps, SliderState> {
 
     private getDefaultValue() {
         const {value, min} = this.props;
-        return typeof value === 'undefined' ?
-            (typeof min !== 'undefined' ? min : DEFAULT_VALUE) :
+        const defaultValue = typeof min !== 'undefined' ? min : DEFAULT_VALUE;
+        return !value || typeof value![0] === 'undefined' ?
+            [defaultValue] :
             value;
+    }
+
+    private getRelativeValueFromPointerPositionAndArea(
+        position: PointerPosition,
+        sliderArea: HTMLElement
+    ) {
+        const currentHandleValue = getValueFromElementAndPointer(
+            sliderArea,
+            position,
+            this.state.relativeStep,
+            this.state.isVertical,
+            this.state.isReverse
+        );
+        const nearestHandleIndex = nearestIndex(this.state.relativeValue, currentHandleValue);
+
+        return getNewValue(
+            this.state.relativeValue,
+            currentHandleValue,
+            nearestHandleIndex
+        );
     }
 
     private getTooltip(): React.ReactNode {
@@ -194,27 +224,33 @@ export class Slider extends React.Component<SliderProps, SliderState> {
     }
 
     private changeValue(direction: ChangeDirection, multiplier: number = 1, toEdge: boolean = false) {
-        const {relativeValue} = this.state;
-        let newRelativeValue: number;
-
+        const {currentHandleIndex, relativeValue} = this.state;
+        const currentValue = relativeValue[0];
+        const isAscending = direction === ChangeDirection.ascend;
+        const round = isAscending ? Math.floor : Math.ceil;
         const relativeStep = this.state.relativeStep === CONTINUOUS_STEP ?
             1 :
             this.state.relativeStep;
+        const deviation = isAscending ? 1 : -1;
 
-        if (toEdge) {
-            newRelativeValue = direction === ChangeDirection.ascend ?
-                100 :
-                0;
-        } else {
-            newRelativeValue = getValueInRange(
-                direction === ChangeDirection.ascend ?
-                    Math.floor(relativeValue / relativeStep) * relativeStep + relativeStep * multiplier :
-                    Math.ceil(relativeValue / relativeStep) * relativeStep - relativeStep * multiplier,
-                0, 100
-            );
-        }
+        let newRelativeValue: number[];
 
-        const newAbsoluteValue = getAbsoluteValue(newRelativeValue, this.props.min!, this.props.max!);
+        newRelativeValue = getNewValue(
+            relativeValue,
+            toEdge ?
+                isAscending ? 100 : 0 :
+                getValueInRange(
+                    relativeStep * (round(currentValue / relativeStep) + multiplier * deviation),
+                    0, 100
+                ),
+            0
+        );
+
+        const newAbsoluteValue = newRelativeValue.map(
+            value => getAbsoluteValue(value, this.props.min!, this.props.max!)
+        );
+
+        console.log(direction, toEdge, this.state.relativeValue, newRelativeValue);
 
         if (newRelativeValue !== this.state.relativeValue) {
             this.setState({
@@ -222,7 +258,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
             });
         }
 
-        this.callInput(newAbsoluteValue);
+        this.callInput(JSON.stringify(newAbsoluteValue));
         if (newAbsoluteValue !== this.props.value) {
             this.callChange(newAbsoluteValue);
         }
@@ -235,15 +271,17 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         this.props.onInput!({value});
     }
 
-    private callChange(value: number): void {
+    private callChange(value: number[]): void {
         this.props.onChange!({value});
     }
 
-    private onSliderFocus: React.FocusEventHandler<HTMLElement> = event => {
+    private onSliderFocus = (event: React.FocusEvent<HTMLElement>, currentHandleIndex: number) => {
+        this.setState({currentHandleIndex});
         this.props.onFocus!(event);
     }
 
-    private onSliderBlur: React.FocusEventHandler<HTMLElement> = event => {
+    private onSliderBlur = (event: React.FocusEvent<HTMLElement>) => {
+        this.setState({currentHandleIndex: -1});
         this.props.onBlur!(event);
     }
 
@@ -258,15 +296,13 @@ export class Slider extends React.Component<SliderProps, SliderState> {
 
         event.preventDefault();
 
-        const relativeValue = getValueFromElementAndPointer(
-            sliderArea,
+        const relativeValue = this.getRelativeValueFromPointerPositionAndArea(
             event,
-            this.state.relativeStep,
-            this.state.isVertical,
-            this.state.isReverse
+            sliderArea
         );
 
         focusableElement.focus();
+
         this.setState({
             relativeValue,
             isActive: true
@@ -274,7 +310,11 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         this.isActive = true;
 
         this.onDragStart(event.nativeEvent);
-        this.callInput(getAbsoluteValue(relativeValue, this.props.min!, this.props.max!));
+        this.callInput(
+            JSON.stringify(
+                relativeValue.map(value => getAbsoluteValue(value, this.props.min!, this.props.max!))
+            )
+        );
     }
 
     private onSliderAreaMouseMove = (
@@ -284,12 +324,9 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         if (!this.isActive) {
             return;
         }
-        const relativeValue = getValueFromElementAndPointer(
-            sliderArea,
+        const relativeValue = this.getRelativeValueFromPointerPositionAndArea(
             event,
-            this.state.relativeStep,
-            this.state.isVertical,
-            this.state.isReverse
+            sliderArea
         );
 
         requestAnimationFrame(() => {
@@ -303,7 +340,11 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         });
 
         this.onDrag(event);
-        this.callInput(getAbsoluteValue(relativeValue, this.props.min!, this.props.max!));
+        this.callInput(
+            JSON.stringify(
+                relativeValue.map(value => getAbsoluteValue(value, this.props.min!, this.props.max!))
+            )
+        );
     }
 
     private onSliderAreaMouseUp = (
@@ -314,14 +355,10 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         if (!this.isActive) {
             return;
         }
-        const relativeValue = getValueFromElementAndPointer(
-            sliderArea,
+        const relativeValue = this.getRelativeValueFromPointerPositionAndArea(
             event,
-            this.state.relativeStep,
-            this.state.isVertical,
-            this.state.isReverse
+            sliderArea
         );
-        const value = getAbsoluteValue(relativeValue, this.props.min!, this.props.max!);
 
         this.setState({
             relativeValue,
@@ -331,7 +368,9 @@ export class Slider extends React.Component<SliderProps, SliderState> {
 
         focusableElement.focus();
         this.onDragStop(event);
-        this.callChange(value);
+        this.callChange(
+            relativeValue.map(value => getAbsoluteValue(value, this.props.min!, this.props.max!))
+        );
     }
 
     private onSliderAreaTouchStart = (
@@ -345,12 +384,9 @@ export class Slider extends React.Component<SliderProps, SliderState> {
 
         focusableElement.focus();
 
-        const relativeValue = getValueFromElementAndPointer(
-            sliderArea,
-            event.touches[0],
-            this.state.relativeStep,
-            this.state.isVertical,
-            this.state.isReverse
+        const relativeValue = this.getRelativeValueFromPointerPositionAndArea(
+            event.changedTouches[0],
+            sliderArea
         );
 
         this.setState({
@@ -362,7 +398,11 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         event.preventDefault();
 
         this.onDragStart(event.nativeEvent);
-        this.callInput(getAbsoluteValue(relativeValue, this.props.min!, this.props.max!));
+        this.callInput(
+            JSON.stringify(
+                relativeValue.map(value => getAbsoluteValue(value, this.props.min!, this.props.max!))
+            )
+        );
     }
 
     private onSliderAreaTouchMove = (
@@ -372,13 +412,11 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         if (!this.isActive) {
             return;
         }
-        const relativeValue = getValueFromElementAndPointer(
-            sliderArea,
+        const relativeValue = this.getRelativeValueFromPointerPositionAndArea(
             event.changedTouches[0],
-            this.state.relativeStep,
-            this.state.isVertical,
-            this.state.isReverse
+            sliderArea
         );
+
         requestAnimationFrame(() => {
             if (!this.isSliderMounted) {
                 return;
@@ -392,7 +430,11 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         event.preventDefault();
 
         this.onDrag(event);
-        this.callInput(getAbsoluteValue(relativeValue, this.props.min!, this.props.max!));
+        this.callInput(
+            JSON.stringify(
+                relativeValue.map(value => getAbsoluteValue(value, this.props.min!, this.props.max!))
+            )
+        );
     }
 
     private onSliderAreaTouchEnd = (
@@ -402,14 +444,10 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         if (!this.isActive) {
             return;
         }
-        const relativeValue = getValueFromElementAndPointer(
-            sliderArea,
+        const relativeValue = this.getRelativeValueFromPointerPositionAndArea(
             event.changedTouches[0],
-            this.state.relativeStep,
-            this.state.isVertical,
-            this.state.isReverse
+            sliderArea
         );
-        const value = getAbsoluteValue(relativeValue, this.props.min!, this.props.max!);
 
         this.setState({
             relativeValue,
@@ -418,7 +456,9 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         this.isActive = false;
 
         this.onDragStop(event);
-        this.callChange(value);
+        this.callChange(
+            relativeValue.map(value => getAbsoluteValue(value, this.props.min!, this.props.max!))
+        );
     }
 
     private onSliderAreaKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {

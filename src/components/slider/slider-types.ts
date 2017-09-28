@@ -7,6 +7,10 @@ export interface PointerPosition {
     clientY: number;
 }
 export type KeyboardHandler = (event: React.KeyboardEvent<HTMLElement>) => void;
+export type FocusEventHandler = (
+    event: React.FocusEvent<HTMLElement> | MouseEvent,
+    currentIndex: number
+) => void;
 export type MouseHandler = (
     event: React.MouseEvent<HTMLElement> | MouseEvent,
     sliderArea: HTMLElement,

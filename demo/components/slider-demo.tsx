@@ -4,7 +4,7 @@ import {ChangeEvent, ContextProvider, Slider} from '../../src';
 import style from './slider-demo.st.css';
 
 export interface SliderDemoState {
-    value: number;
+    value: number[];
     rawValue: string;
 }
 
@@ -14,7 +14,7 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
         super(props);
 
         this.state = {
-            value: 50,
+            value: [50],
             rawValue: '50'
         };
     }
@@ -239,7 +239,7 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
         );
     }
 
-    private onSliderChange = ({value}: ChangeEvent<number>) => {
+    private onSliderChange = ({value}: ChangeEvent<number[]>) => {
         this.setState({
             value,
             rawValue: String(value)

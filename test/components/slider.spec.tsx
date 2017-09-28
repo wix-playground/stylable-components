@@ -94,7 +94,7 @@ function withValueMinMax(
     context?: any
 ) {
     describe('with value, min and max', () => {
-        const value = 5;
+        const value = [5];
         const min = -10;
         const max = 10;
 
@@ -136,7 +136,7 @@ function withValueMinMax(
 
         it('renders invisible native input with right value', async () => {
             await waitForDom(() => {
-                const element = select('NATIVE-INPUT');
+                const element = select('NATIVE-INPUT-0');
 
                 expect(element).to.has.value(String(value));
             });
@@ -230,11 +230,11 @@ function whenDragThingsAround(
     context?: any
 ) {
     describe('when drag things around', () => {
-        const value = 5;
+        const value = [5];
         const min = 0;
         const max = 10;
 
-        let onChange: (data: ChangeEvent<number>) => void;
+        let onChange: (data: ChangeEvent<number[]>) => void;
         let onInput: (data: ChangeEvent<string>) => void;
         let select: (automationId: string) => HTMLElement | null;
         let waitForDom: (expectation: () => void) => Promise<void>;
@@ -297,7 +297,7 @@ function whenDragThingsAround(
                     }
                 );
 
-                expect(onChange).to.be.calledWithMatch({value: 7});
+                expect(onChange).to.be.calledWithMatch({value: [7]});
             });
         });
 
@@ -327,18 +327,18 @@ function whenDragThingsAround(
                     }
                 );
 
-                expect(onInput).to.be.calledWithMatch({value: '7'});
-                expect(onChange).to.be.calledWithMatch({value: 7});
+                expect(onInput).to.be.calledWithMatch({value: '[7]'});
+                expect(onChange).to.be.calledWithMatch({value: [7]});
             });
         });
     });
 
     describe('when drag things around using touch', () => {
-        const value = 5;
+        const value = [5];
         const min = 0;
         const max = 10;
 
-        let onChange: (data: ChangeEvent<number>) => void;
+        let onChange: (data: ChangeEvent<number[]>) => void;
         let onInput: (data: ChangeEvent<string>) => void;
         let select: (automationId: string) => HTMLElement | null;
         let waitForDom: (expectation: () => void) => Promise<void>;
@@ -410,7 +410,7 @@ function whenDragThingsAround(
                     }
                 );
 
-                expect(onChange).to.be.calledWithMatch({value: 7});
+                expect(onChange).to.be.calledWithMatch({value: [7]});
             });
         });
 
@@ -445,8 +445,8 @@ function whenDragThingsAround(
                     }
                 );
 
-                expect(onInput).to.be.calledWithMatch({value: '7'});
-                expect(onChange).to.be.calledWithMatch({value: 7});
+                expect(onInput).to.be.calledWithMatch({value: '[7]'});
+                expect(onChange).to.be.calledWithMatch({value: [7]});
             });
         });
     });
@@ -460,12 +460,12 @@ function whenDragThingsAroundWithStep(
     context?: any
 ) {
     describe('when drag things around with step', () => {
-        const value = 5;
+        const value = [5];
         const min = 0;
         const max = 10;
         const step = 2;
 
-        let onChange: (data: ChangeEvent<number>) => void;
+        let onChange: (data: ChangeEvent<number[]>) => void;
         let onInput: (data: ChangeEvent<string>) => void;
         let select: (automationId: string) => HTMLElement | null;
         let waitForDom: (expectation: () => void) => Promise<void>;
@@ -513,7 +513,7 @@ function whenDragThingsAroundWithStep(
 
         it('renders invisible native input with right value', async () => {
             await waitForDom(() => {
-                const element = select('NATIVE-INPUT');
+                const element = select('NATIVE-INPUT-0');
 
                 expect(element).to.has.value(String(value));
             });
@@ -554,7 +554,7 @@ function whenDragThingsAroundWithStep(
                     }
                 );
 
-                expect(onChange).to.be.calledWithMatch({value: 8});
+                expect(onChange).to.be.calledWithMatch({value: [8]});
             });
         });
 
@@ -584,19 +584,19 @@ function whenDragThingsAroundWithStep(
                     }
                 );
 
-                expect(onInput).to.be.calledWithMatch({value: '8'});
-                expect(onChange).to.be.calledWithMatch({value: 8});
+                expect(onInput).to.be.calledWithMatch({value: '[8]'});
+                expect(onChange).to.be.calledWithMatch({value: [8]});
             });
         });
     });
 
     describe('when drag things around with step using touch', () => {
-        const value = 5;
+        const value = [5];
         const min = 0;
         const max = 10;
         const step = 2;
 
-        let onChange: (data: ChangeEvent<number>) => void;
+        let onChange: (data: ChangeEvent<number[]>) => void;
         let onInput: (data: ChangeEvent<string>) => void;
         let select: (automationId: string) => HTMLElement | null;
         let waitForDom: (expectation: () => void) => Promise<void>;
@@ -669,7 +669,7 @@ function whenDragThingsAroundWithStep(
                     }
                 );
 
-                expect(onChange).to.be.calledWithMatch({value: 8});
+                expect(onChange).to.be.calledWithMatch({value: [8]});
             });
         });
 
@@ -704,8 +704,8 @@ function whenDragThingsAroundWithStep(
                     }
                 );
 
-                expect(onInput).to.be.calledWithMatch({value: '8'});
-                expect(onChange).to.be.calledWithMatch({value: 8});
+                expect(onInput).to.be.calledWithMatch({value: '[8]'});
+                expect(onChange).to.be.calledWithMatch({value: [8]});
             });
         });
     });
@@ -718,11 +718,11 @@ function keyboard(
 ) {
     const step = Number(options && options.step || 1);
     describe(step === 1 ? 'keyboard control' : 'keyboard control with step', () => {
-        const value = 50;
+        const value = [50];
         const min = 0;
         const max = 100;
 
-        let onChange: (data: ChangeEvent<number>) => void;
+        let onChange: (data: ChangeEvent<number[]>) => void;
         let onInput: (data: ChangeEvent<string>) => void;
         let select: (automationId: string) => HTMLElement | null;
         let waitForDom: (expectation: () => void) => Promise<void>;
@@ -763,7 +763,7 @@ function keyboard(
             });
 
             return waitFor(() => {
-                expect(onChange).to.be.calledWithMatch({value: value + deviation});
+                expect(onChange).to.be.calledWithMatch({value: value.map(item => item + deviation)});
             });
         });
 
@@ -773,7 +773,7 @@ function keyboard(
             });
 
             return waitFor(() => {
-                expect(onChange).to.be.calledWithMatch({value: value + deviation});
+                expect(onChange).to.be.calledWithMatch({value: value.map(item => item + deviation)});
             });
         });
 
@@ -783,7 +783,7 @@ function keyboard(
             });
 
             return waitFor(() => {
-                expect(onChange).have.been.calledWithMatch({value: value + Math.abs(deviation * 10)});
+                expect(onChange).have.been.calledWithMatch({value: value.map(item => item + Math.abs(deviation * 10))});
             });
         });
 
@@ -794,7 +794,7 @@ function keyboard(
             });
 
             return waitFor(() => {
-                expect(onChange).have.been.calledWithMatch({value: value + (deviation * 10)});
+                expect(onChange).have.been.calledWithMatch({value: value.map(item => item + (deviation * 10))});
             });
         });
 
@@ -805,7 +805,7 @@ function keyboard(
             });
 
             return waitFor(() => {
-                expect(onChange).have.been.calledWithMatch({value: home});
+                expect(onChange).have.been.calledWithMatch({value: [home]});
             });
         });
 
@@ -816,7 +816,7 @@ function keyboard(
             });
 
             return waitFor(() => {
-                expect(onChange).have.been.calledWithMatch({value: value + (deviation * 10)});
+                expect(onChange).have.been.calledWithMatch({value: value.map(item => item + (deviation * 10))});
             });
         });
 
@@ -827,7 +827,7 @@ function keyboard(
             });
 
             return waitFor(() => {
-                expect(onChange).have.been.calledWithMatch({value: home});
+                expect(onChange).have.been.calledWithMatch({value: [home]});
             });
         });
 
@@ -837,7 +837,7 @@ function keyboard(
             });
 
             return waitFor(() => {
-                expect(onChange).have.been.calledWithMatch({value: value - deviation});
+                expect(onChange).have.been.calledWithMatch({value: value.map(item => item - deviation)});
             });
         });
 
@@ -847,7 +847,7 @@ function keyboard(
             });
 
             return waitFor(() => {
-                expect(onChange).have.been.calledWithMatch({value: value - deviation});
+                expect(onChange).have.been.calledWithMatch({value: value.map(item => item - deviation)});
             });
         });
 
@@ -857,7 +857,7 @@ function keyboard(
             });
 
             return waitFor(() => {
-                expect(onChange).have.been.calledWithMatch({value: value - Math.abs(deviation * 10)});
+                expect(onChange).have.been.calledWithMatch({value: value.map(item => item - Math.abs(deviation * 10))});
             });
         });
 
@@ -868,7 +868,7 @@ function keyboard(
             });
 
             return waitFor(() => {
-                expect(onChange).have.been.calledWithMatch({value: value - (deviation * 10)});
+                expect(onChange).have.been.calledWithMatch({value: value.map(item => item - (deviation * 10))});
             });
         });
 
@@ -879,7 +879,7 @@ function keyboard(
             });
 
             return waitFor(() => {
-                expect(onChange).have.been.calledWithMatch({value: end});
+                expect(onChange).have.been.calledWithMatch({value: [end]});
             });
         });
 
@@ -890,7 +890,7 @@ function keyboard(
             });
 
             return waitFor(() => {
-                expect(onChange).have.been.calledWithMatch({value: value - (deviation * 10)});
+                expect(onChange).have.been.calledWithMatch({value: value.map(item => item - (deviation * 10))});
             });
         });
 
@@ -901,7 +901,7 @@ function keyboard(
             });
 
             return waitFor(() => {
-                expect(onChange).have.been.calledWithMatch({value: end});
+                expect(onChange).have.been.calledWithMatch({value: [end]});
             });
         });
 
@@ -911,7 +911,7 @@ function keyboard(
             });
 
             return waitFor(() => {
-                expect(onChange).have.been.calledWithMatch({value: home});
+                expect(onChange).have.been.calledWithMatch({value: [home]});
             });
         });
 
@@ -922,13 +922,13 @@ function keyboard(
             });
 
             return waitFor(() => {
-                expect(onChange).have.been.calledWithMatch({value: end});
+                expect(onChange).have.been.calledWithMatch({value: [end]});
             });
         });
     });
 }
 
-describe('<Slider />', () => {
+describe.only('<Slider />', () => {
     const clientRenderer = new ClientRenderer();
 
     beforeEach(() => {
@@ -971,9 +971,9 @@ describe('<Slider />', () => {
 
         it('renders invisible native input with default value', async () => {
             await waitForDom(() => {
-                const element = select('NATIVE-INPUT');
+                const element = select('NATIVE-INPUT-0');
 
-                expect(element).to.has.value('');
+                expect(element).to.has.value('0');
             });
         });
     });
@@ -1015,9 +1015,9 @@ describe('<Slider />', () => {
 
         it('renders invisible native input with right value', async () => {
             await waitForDom(() => {
-                const element = select('NATIVE-INPUT');
+                const element = select('NATIVE-INPUT-0');
 
-                expect(element).to.has.value('');
+                expect(element).to.has.value('-10');
             });
         });
     });
@@ -1025,8 +1025,8 @@ describe('<Slider />', () => {
     withValueMinMax(clientRenderer, 'left', 'width', 'horizontal', {});
 
     describe('when value is out of range', () => {
-        const valueLessThenMin = -1;
-        const valueGreaterThenMax = 11;
+        const valueLessThenMin = [-1];
+        const valueGreaterThenMax = [11];
         const min = 0;
         const max = 10;
 
@@ -1074,11 +1074,11 @@ describe('<Slider />', () => {
     });
 
     describe('when value is out of step', () => {
-        const valueOutOfStep = 3;
+        const valueOutOfStep = [3];
         const min = 0;
         const max = 10;
         const step = 5;
-        let onChange: (data: ChangeEvent<number>) => void;
+        let onChange: (data: ChangeEvent<number[]>) => void;
         let onInput: (data: ChangeEvent<string>) => void;
         let select: (automationId: string) => HTMLElement | null;
         let waitForDom: (expectation: () => void) => Promise<void>;
@@ -1121,7 +1121,7 @@ describe('<Slider />', () => {
 
         it('renders invisible native input with passed value', async () => {
             await waitForDom(() => {
-                const element = select('NATIVE-INPUT');
+                const element = select('NATIVE-INPUT-0');
 
                 expect(element).to.has.value(String(valueOutOfStep));
             });
@@ -1160,7 +1160,7 @@ describe('<Slider />', () => {
                     {clientX: Math.round(bounds.left + bounds.width * 0.8)}
                 );
 
-                expect(onChange).to.be.calledWithMatch({value: 10});
+                expect(onChange).to.be.calledWithMatch({value: [10]});
             });
         });
 
@@ -1184,15 +1184,15 @@ describe('<Slider />', () => {
                     {clientX: Math.round(bounds.left + bounds.width * 0.6)}
                 );
 
-                expect(onInput).to.be.calledWithMatch({value: '5'});
-                expect(onChange).to.be.calledWithMatch({value: 5});
+                expect(onInput).to.be.calledWithMatch({value: '[5]'});
+                expect(onChange).to.be.calledWithMatch({value: [5]});
             });
         });
     });
 
     describe('when displayStopMarks=true', () => {
         it('renders proper number of marks', async () => {
-            const value = 5;
+            const value = [5];
             const min = 0;
             const max = 10;
             const step = 5;
@@ -1217,7 +1217,7 @@ describe('<Slider />', () => {
         });
 
         it('renders marks on proper places', async () => {
-            const value = 5;
+            const value = [5];
             const min = 0;
             const max = 10;
             const step = 2;
@@ -1251,11 +1251,11 @@ describe('<Slider />', () => {
     keyboard(clientRenderer, {step: 2});
 
     describe('when disabled', () => {
-        const value = 5;
+        const value = [5];
         const min = 0;
         const max = 10;
 
-        let onChange: (data: ChangeEvent<number>) => void;
+        let onChange: (data: ChangeEvent<number[]>) => void;
         let select: (automationId: string) => HTMLElement | null;
         let waitForDom: (expectation: () => void) => Promise<void>;
 
@@ -1294,7 +1294,7 @@ describe('<Slider />', () => {
     });
 
     describe('when label provided', () => {
-        const value = 5;
+        const value = [5];
         const min = 0;
         const max = 10;
         const label = 'Simple Slider';
@@ -1322,7 +1322,7 @@ describe('<Slider />', () => {
     });
 
     describe('when name provided', () => {
-        const value = 5;
+        const value = [5];
         const min = 0;
         const max = 10;
         const name = 'Simple Slider';
@@ -1340,7 +1340,7 @@ describe('<Slider />', () => {
             const waitForDom: (expectation: () => void) => Promise<void> = rendered.waitForDom;
 
             await waitForDom(() => {
-                const sliderInput = select('NATIVE-INPUT');
+                const sliderInput = select('NATIVE-INPUT-0');
 
                 expect(sliderInput!.name).equal(name);
             });
@@ -1348,7 +1348,7 @@ describe('<Slider />', () => {
     });
 
     describe('when it is required', () => {
-        const value = 5;
+        const value = [5];
         const min = 0;
         const max = 10;
 
@@ -1365,7 +1365,7 @@ describe('<Slider />', () => {
             const waitForDom: (expectation: () => void) => Promise<void> = rendered.waitForDom;
 
             await waitForDom(() => {
-                const sliderInput = select('NATIVE-INPUT');
+                const sliderInput = select('NATIVE-INPUT-0');
 
                 expect(sliderInput!.required).to.be.true;
             });
@@ -1373,7 +1373,7 @@ describe('<Slider />', () => {
     });
 
     describe('tooltip', () => {
-        const value = 5;
+        const value = [5];
         const min = 0;
         const max = 10;
         const label = 'Simple Slider Tooltip';
@@ -1536,7 +1536,7 @@ describe('<Slider />', () => {
     });
 });
 
-describe('<Slider /> type Range', () => {
+describe.only('<Slider /> type Range', () => {
     const clientRenderer = new ClientRenderer();
 
     beforeEach(() => {

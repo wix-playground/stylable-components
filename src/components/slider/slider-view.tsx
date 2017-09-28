@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {properties, stylable} from 'wix-react-tools';
 import {FormInputProps} from '../../types/forms';
-import {noop} from '../../utils/noop';
+import {last, noop} from '../../utils';
 import {GlobalEvent} from '../global-event';
 import {
     getPositionProperty,
@@ -14,6 +14,7 @@ import {
 } from './slider-constants';
 import {
     AxisOptions,
+    FocusEventHandler,
     KeyboardHandler,
     MouseHandler,
     Step,
@@ -21,10 +22,10 @@ import {
 } from './slider-types';
 import style from './slider.st.css';
 
-export interface SliderViewProps extends FormInputProps<number, string>, properties.Props {
+export interface SliderViewProps extends FormInputProps<number[], string>, properties.Props {
     tooltip: React.ReactNode;
 
-    relativeValue: number;
+    relativeValue: number[];
     relativeStep: Step;
 
     min: number;
@@ -43,8 +44,8 @@ export interface SliderViewProps extends FormInputProps<number, string>, propert
     required: boolean;
     rtl: boolean;
 
-    onFocus: React.FocusEventHandler<HTMLElement>;
-    onBlur: React.FocusEventHandler<HTMLElement>;
+    onSliderFocus: FocusEventHandler;
+    onSliderBlur: FocusEventHandler;
 
     onSliderAreaKeyDown: KeyboardHandler;
 
@@ -64,8 +65,8 @@ export class SliderView extends React.Component<SliderViewProps, {}> {
         axis: DEFAULT_AXIS,
         orientation: 'horizontal',
 
-        onFocus: noop,
-        onBlur: noop,
+        onSliderFocus: noop,
+        onSliderBlur: noop,
 
         onSliderAreaKeyDown: noop,
 
@@ -78,7 +79,7 @@ export class SliderView extends React.Component<SliderViewProps, {}> {
         onSliderAreaTouchEnd: noop
     };
 
-    private focusableElement: HTMLElement;
+    private focusableElements: HTMLElement;
 
     private sliderArea: HTMLElement;
 
@@ -112,15 +113,7 @@ export class SliderView extends React.Component<SliderViewProps, {}> {
                     touchend={this.onSliderAreaTouchEnd}
                     touchcancel={this.onSliderAreaTouchEnd}
                 />
-                <input
-                    className="nativeInput"
-                    value={this.props.value}
-                    type="hidden"
-                    data-automation-id="NATIVE-INPUT"
-                    name={this.props.name}
-                    required={this.props.required}
-                    disabled={this.props.disabled}
-                />
+                {this.getNativeInput()}
                 <div
                     className="track"
                     data-automation-id="SLIDER-TRACK"
@@ -131,7 +124,7 @@ export class SliderView extends React.Component<SliderViewProps, {}> {
                         style={this.getProgressStyles()}
                     />
                     <a
-                        ref={el => this.focusableElement = el as HTMLElement}
+                        ref={el => this.focusableElements = el as HTMLElement}
                         className="handle"
                         data-automation-id="SLIDER-HANDLE"
                         style={this.getHandleStyles()}
@@ -164,6 +157,21 @@ export class SliderView extends React.Component<SliderViewProps, {}> {
 
     private getTooltip(): React.ReactNode {
         return this.props.tooltip;
+    }
+
+    private getNativeInput(): JSX.Element[] {
+        return this.props.value!.map((item, index) => (
+            <input
+                className="nativeInput"
+                value={item}
+                type="hidden"
+                key={index}
+                data-automation-id={`NATIVE-INPUT-${index}`}
+                name={this.props.value!.length > 1 ? this.props.name + index : this.props.name}
+                required={this.props.required}
+                disabled={this.props.disabled}
+            />
+        ));
     }
 
     private getMarks(): JSX.Element[] {
@@ -204,7 +212,7 @@ export class SliderView extends React.Component<SliderViewProps, {}> {
 
     private getHandleStyles(): {[key in 'top' | 'bottom' | 'right' | 'left']?: string} {
         return {
-            [getPositionProperty(this.props.axis!, this.props.rtl)]: `${this.props.relativeValue}%`
+            [getPositionProperty(this.props.axis!, this.props.rtl)]: `${this.props.relativeValue[0]}%`
         };
     }
 
@@ -216,29 +224,30 @@ export class SliderView extends React.Component<SliderViewProps, {}> {
 
     private getMarkClass(position: number): 'markProgress' | 'markTrack' {
         const {relativeValue} = this.props;
-        return position <= relativeValue ?
-            'markProgress' :
-            'markTrack';
+        return !(position < relativeValue[0] && relativeValue.length > 1) &&
+            position <= last(relativeValue) ?
+                'markProgress' :
+                'markTrack';
     }
 
     private onSliderFocus: React.FocusEventHandler<HTMLElement> = event => {
-        this.props.onFocus!(event);
+        this.props.onSliderFocus!(event, 0);
     }
 
     private onSliderBlur: React.FocusEventHandler<HTMLElement> = event => {
-        this.props.onBlur!(event);
+        this.props.onSliderBlur!(event, 0);
     }
 
     private onSliderAreaMouseDown = (event: React.MouseEvent<HTMLElement>) => {
         this.isActive = true;
-        this.props.onSliderAreaMouseDown!(event, this.sliderArea, this.focusableElement);
+        this.props.onSliderAreaMouseDown!(event, this.sliderArea, this.focusableElements);
     }
 
     private onSliderAreaMouseMove = (event: MouseEvent) => {
         if (!this.isActive) {
             return;
         }
-        this.props.onSliderAreaMouseMove!(event, this.sliderArea, this.focusableElement);
+        this.props.onSliderAreaMouseMove!(event, this.sliderArea, this.focusableElements);
     }
 
     private onSliderAreaMouseUp = (event: MouseEvent) => {
@@ -246,19 +255,19 @@ export class SliderView extends React.Component<SliderViewProps, {}> {
             return;
         }
         this.isActive = false;
-        this.props.onSliderAreaMouseUp!(event, this.sliderArea, this.focusableElement);
+        this.props.onSliderAreaMouseUp!(event, this.sliderArea, this.focusableElements);
     }
 
     private onSliderAreaTouchStart = (event: React.TouchEvent<HTMLElement>) => {
         this.isActive = true;
-        this.props.onSliderAreaTouchStart!(event, this.sliderArea, this.focusableElement);
+        this.props.onSliderAreaTouchStart!(event, this.sliderArea, this.focusableElements);
     }
 
     private onSliderAreaTouchMove = (event: TouchEvent) => {
         if (!this.isActive) {
             return;
         }
-        this.props.onSliderAreaTouchMove!(event, this.sliderArea, this.focusableElement);
+        this.props.onSliderAreaTouchMove!(event, this.sliderArea, this.focusableElements);
     }
 
     private onSliderAreaTouchEnd = (event: TouchEvent) => {
@@ -266,7 +275,7 @@ export class SliderView extends React.Component<SliderViewProps, {}> {
             return;
         }
         this.isActive = false;
-        this.props.onSliderAreaTouchEnd!(event, this.sliderArea, this.focusableElement);
+        this.props.onSliderAreaTouchEnd!(event, this.sliderArea, this.focusableElements);
     }
 
     private onSliderAreaKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
