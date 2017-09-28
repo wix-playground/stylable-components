@@ -27,7 +27,7 @@ export class TreeItemDriver extends DriverBase {
     }
 
     public get label(): Element {
-        return this.select<HTMLElement>(`${getTreeItem(this.id)}_LABEL`);
+        return this.select(`${getTreeItem(this.id)}_LABEL`);
     }
 
     public get icon(): Element {
