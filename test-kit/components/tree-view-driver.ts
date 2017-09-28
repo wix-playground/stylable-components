@@ -3,14 +3,14 @@ import {DriverBase, simulate} from 'test-drive-react';
 import {TreeItem, TreeItemProps, TreeKeyCodes, TreeView} from '../../src';
 
 const treeItem = 'TREE_ITEM';
-type ValidKeyCodes = 'ENTER' | 'HOME' | 'END' | 'UP' | 'DOWN' | 'LEFT' | 'RIGHT';
+export type ValidKeyCodes = 'ENTER' | 'HOME' | 'END' | 'UP' | 'DOWN' | 'LEFT' | 'RIGHT';
 
 const getTreeItem = (id: string) => `${treeItem}_${id.replace(' ', '_')}`;
 
 export class TreeViewDriver extends DriverBase {
     public static ComponentClass = TreeView;
 
-    public getItemDriver(id: string): TreeItemDriver {
+    public getItem(id: string): TreeItemDriver {
         return new TreeItemDriver(() => this.select(getTreeItem(id)), id);
     }
 
@@ -42,7 +42,7 @@ export class TreeItemDriver extends DriverBase {
         simulate.click(this.label);
     }
 
-    public getNestedItemDriver(id: string) {
+    public getNestedItem(id: string) {
         return new TreeItemDriver(() => this.select(getTreeItem(id)), id);
     }
 }
