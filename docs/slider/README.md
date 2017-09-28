@@ -19,25 +19,23 @@ You can display a tooltip (e.g. to display current value) by adding a child elem
 
 #### Props
 
-| name         | type                                  | defaultValue | isRequired | description                              |
-| ------------ | ------------------------------------- | ------------ | ---------- | ---------------------------------------- |
-| axis         | enum:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>'x'<br>'x-reverse'<br>'y'<br>'y-reverse' | 'x'          | no          | The axis on which the slider will slide. |
-| value        | number                                | min          | no            | Displays default OR actual value of the slider |
-| min          | number                                | 0            | no            | The absolute minimum of the slider's range |
-| max          | number                                | 1            | no            | The absolute maximum of the slider's range |
-| step         | number OR string "any"                | 1            | no           | Set the slider's step. If step = "number" it causes slider to move in discrete increments. If step = "any"  sliders moves along a subjective range. |
-| required     | boolean                               | false        | no           | Whether or not the slider is required in a form. |
-| disabled     | boolean                               | false        | no           | If true, the slider will not be interactive |
-| label        | string                                |              | no           | Text to display in accessibility mode    |
-| name         | string                                |              | no           | The name of the slider. Behaves like the name attribute of an input element. |
-| displayStopMarks | boolean                               | false        | no           | Controls the visibility of the marks     |
-| onChange     | function                                |              | yes        | Callback function that is fired when the slider's value changed.<br>`(event: {value: number}) => void`<br> • event: KeyDown event targeting the slider.<br>• newValue: The new value of the slider. |
-| onDragStart  | function                                 |              | no           | Callback function that is fired when the slider has begun to move.<br>`function(event: object) : void`<br>• event: MouseDown or TouchStart event targeting the slider. |
-| onDragStop   | function                                  |              | no           | Callback function that is fired when the slide has stopped moving.<br>`function(event: object) : void`<br>• event: MouseEnd or TouchEnd event targeting the slider. |
+| name             | type                                     | defaultValue | isRequired | description                              |
+| ---------------- | ---------------------------------------- | ------------ | ---------- | ---------------------------------------- |
+| axis             | enum:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>'x'<br>'x-reverse'<br>'y'<br>'y-reverse' | 'x'          | no         | The axis on which the slider will slide. |
+| value            | number                                   | min          | no         | Displays default OR actual value of the slider |
+| min              | number                                   | 0            | no         | The absolute minimum of the slider's range |
+| max              | number                                   | 1            | no         | The absolute maximum of the slider's range |
+| step             | number OR string "any"                   | 1            | no         | Set the slider's step. If step = "number" it causes slider to move in discrete increments. If step = "any"  sliders moves along a subjective range. |
+| required         | boolean                                  | false        | no         | Whether or not the slider is required in a form. |
+| disabled         | boolean                                  | false        | no         | If true, the slider will not be interactive |
+| label            | string                                   |              | no         | Text to display in accessibility mode    |
+| name             | string                                   |              | no         | The name of the slider. Behaves like the name attribute of an input element. |
+| displayStopMarks | boolean                                  | false        | no         | Controls the visibility of the marks     |
+| onChange         | function                                 | noop         | yes        | Callback function that is fired when the slider's value changed.<br>`(event: {value: number}) => void`<br> • event: KeyDown event targeting the slider.<br>• newValue: The new value of the slider. |
+| onDragStart      | function                                 |              | no         | Callback function that is fired when the slider has begun to move.<br>`function(event: PointerEvent): void`<br>• event: MouseDown or TouchStart event targeting the slider. |
+| onDragStop       | function                                 |              | no         | Callback function that is fired when the slide has stopped moving.<br>`function(event: PointerEvent): void`<br>• event: MouseEnd or TouchEnd event targeting the slider. |
 
 #### Accepted Children
-
-> TBD (need to decide on how to implement tooltip)
 
 **Slider** accepts children with the following `data-slot` attribute, in order to be displayed in a specific places in its layout. For **Slider**, the child position is connected to ::handle.
 
@@ -121,7 +119,7 @@ export class ComponentsDemo extends React.Component<{}, State>{
 | state                          | description                              |
 | ------------------------------ | ---------------------------------------- |
 | :error                         | Style the component on error, i.e. when the `error` prop is true. |
-| :hover, :focus, :disabled, etc | Standard CSS pseudo states.               |
+| :hover, :focus, :disabled, etc | Standard CSS pseudo states.              |
 
 ### Style Code Examples
 
