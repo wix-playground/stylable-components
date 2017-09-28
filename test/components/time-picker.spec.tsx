@@ -1,14 +1,12 @@
-import * as keycode from 'keycode';
 import * as React from 'react';
 import {ClientRenderer, expect, simulate, sinon} from 'test-drive-react';
 import {TimePickerDemo} from '../../demo/components/time-picker-demo';
 import {TimePicker} from '../../src';
-import styles from '../../src/components/time-picker/time-picker.st.css';
 import {
     Ampm, formatTimeChunk,
     isTouchTimeInputSupported, isValidValue, to24, toAmpm
 } from '../../src/components/time-picker/utils';
-import {hasCssState} from '../utils/has-css-state';
+import {TimePickerDriver} from '../../test-kit';
 
 const describeNative = isTouchTimeInputSupported ? describe : describe.skip;
 const describeDesktop = !isTouchTimeInputSupported ? describe : describe.skip;
@@ -25,10 +23,10 @@ describe('<TimePicker/>', () => {
         let mm: any;
         let placeholder: any;
         beforeEach(() => {
-            renderer = clientRenderer.render(<TimePicker format="ampm"/>);
-            hh = renderer.select('TIME_PICKER_INPUT_HH');
-            mm = renderer.select('TIME_PICKER_INPUT_MM');
-            placeholder = renderer.select('TIME_PICKER_PLACEHOLDER');
+            renderer = clientRenderer.render(<TimePicker format="ampm"/>).withDriver(TimePickerDriver);
+            hh = renderer.driver.hoursInput;
+            mm = renderer.driver.minutesInput;
+            placeholder = renderer.driver.placeholder;
         });
         it('should not render with placeholder', () => {
             expect(placeholder).to.be.null;
@@ -52,10 +50,10 @@ describe('<TimePicker/>', () => {
         let mm: any;
         let placeholder: any;
         beforeEach(() => {
-            renderer = clientRenderer.render(<TimePicker format="24h"/>);
-            hh = renderer.select('TIME_PICKER_INPUT_HH');
-            mm = renderer.select('TIME_PICKER_INPUT_MM');
-            placeholder = renderer.select('TIME_PICKER_PLACEHOLDER');
+            renderer = clientRenderer.render(<TimePicker format="24h"/>).withDriver(TimePickerDriver);
+            hh = renderer.driver.hoursInput;
+            mm = renderer.driver.minutesInput;
+            placeholder = renderer.driver.placeholder;
         });
         it('should not render with placeholder', () => {
             expect(placeholder).to.be.null;
@@ -80,10 +78,10 @@ describe('<TimePicker/>', () => {
         let mm: any;
         let ampm: any;
         beforeEach(() => {
-            renderer = clientRenderer.render(<TimePicker value="4:36" format="ampm" />);
-            hh = renderer.select('TIME_PICKER_INPUT_HH');
-            mm = renderer.select('TIME_PICKER_INPUT_MM');
-            ampm = renderer.select('TIME_PICKER_AMPM');
+            renderer = clientRenderer.render(<TimePicker value="4:36" format="ampm" />).withDriver(TimePickerDriver);
+            hh = renderer.driver.hoursInput;
+            mm = renderer.driver.minutesInput;
+            ampm = renderer.driver.ampm;
         });
         it('hh input should have "04" value', () => {
             expect(hh).attr('value', '04');
@@ -102,10 +100,10 @@ describe('<TimePicker/>', () => {
         let mm: any;
         let placeholder: any;
         beforeEach(() => {
-            renderer = clientRenderer.render(<TimePicker placeholder="Enter Time"/>);
-            hh = renderer.select('TIME_PICKER_INPUT_HH');
-            mm = renderer.select('TIME_PICKER_INPUT_MM');
-            placeholder = renderer.select('TIME_PICKER_PLACEHOLDER');
+            renderer = clientRenderer.render(<TimePicker placeholder="Enter Time"/>).withDriver(TimePickerDriver);
+            hh = renderer.driver.hoursInput;
+            mm = renderer.driver.minutesInput;
+            placeholder = renderer.driver.placeholder;
         });
         it('placeholder should render with "Enter Time"', () => {
             expect(placeholder).text('Enter Time');
@@ -124,10 +122,10 @@ describe('<TimePicker/>', () => {
         let mm: any;
         let ampm: any;
         beforeEach(() => {
-            renderer = clientRenderer.render(<TimePicker format="ampm" value="13:55"/>);
-            hh = renderer.select('TIME_PICKER_INPUT_HH');
-            mm = renderer.select('TIME_PICKER_INPUT_MM');
-            ampm = renderer.select('TIME_PICKER_AMPM');
+            renderer = clientRenderer.render(<TimePicker format="ampm" value="13:55"/>).withDriver(TimePickerDriver);
+            hh = renderer.driver.hoursInput;
+            mm = renderer.driver.minutesInput;
+            ampm = renderer.driver.ampm;
         });
 
         describeDesktop('desktop', () => {
@@ -156,9 +154,9 @@ describe('<TimePicker/>', () => {
         let hh: any;
         let mm: any;
         beforeEach(() => {
-            renderer = clientRenderer.render(<TimePicker format="24h" value="13:55"/>);
-            hh = renderer.select('TIME_PICKER_INPUT_HH');
-            mm = renderer.select('TIME_PICKER_INPUT_MM');
+            renderer = clientRenderer.render(<TimePicker format="24h" value="13:55"/>).withDriver(TimePickerDriver);
+            hh = renderer.driver.hoursInput;
+            mm = renderer.driver.minutesInput;
         });
         it('hh input should have "13" value', () => {
             expect(hh).attr('value', '13');
@@ -171,25 +169,22 @@ describe('<TimePicker/>', () => {
     describe('render with onChange={onChange} format="24h" value="13:55"', () => {
         let onChange: any;
         let renderer: any;
-        let root: any;
         let hh: any;
         let mm: any;
         beforeEach(() => {
             onChange = sinon.spy();
-            renderer = clientRenderer.render(<TimePicker format="24h" value="13:55" onChange={onChange}/>);
-            root = renderer.select('TIME_PICKER');
-            hh = renderer.select('TIME_PICKER_INPUT_HH');
-            mm = renderer.select('TIME_PICKER_INPUT_MM');
+            renderer = clientRenderer.render(<TimePicker format="24h" value="13:55" onChange={onChange}/>)
+                .withDriver(TimePickerDriver);
+            hh = renderer.driver.hoursInput;
+            mm = renderer.driver.minutesInput;
         });
 
         describe('entering "3" into hh segment', () => {
             beforeEach(() => {
-                simulate.focus(hh);
-                hh.value = '3';
-                simulate.change(hh);
+                renderer.driver.changeHours('3');
             });
             it('should set focus state', () => {
-                hasCssState(root, styles, {focus: true});
+                expect(renderer.driver.getCssState('focus')).to.be.true;
             });
             it('hh input should have "03" value', () => {
                 expect(hh).attr('value', '03');
@@ -207,9 +202,7 @@ describe('<TimePicker/>', () => {
 
         describe('entering "2" into hh segment', () => {
             beforeEach(async () => {
-                simulate.focus(hh);
-                hh.value = '2';
-                simulate.change(hh);
+                renderer.driver.changeHours('2');
             });
             it('hh input should have "2" value', () => {
                 expect(hh).attr('value', '2');
@@ -228,12 +221,10 @@ describe('<TimePicker/>', () => {
 
         describe('entering "7" into mm segment', () => {
             beforeEach(() => {
-                simulate.focus(mm);
-                mm.value = '7';
-                simulate.change(mm);
+                renderer.driver.changeMinutes('7');
             });
             it('should set focus state', () => {
-                hasCssState(root, styles, {focus: true});
+                expect(renderer.driver.getCssState('focus')).to.be.true;
             });
             it('hh input should have "13" value', () => {
                 expect(hh).attr('value', '13');
@@ -251,9 +242,7 @@ describe('<TimePicker/>', () => {
 
         describe('entering "5" into mm input', () => {
             beforeEach(() => {
-                simulate.focus(mm);
-                mm.value = '5';
-                simulate.change(mm);
+                renderer.driver.changeMinutes('5');
             });
             it('hh input should have "13" value', () => {
                 expect(hh).attr('value', '13');
@@ -272,9 +261,7 @@ describe('<TimePicker/>', () => {
 
         describe('backspace on mm segment', () => {
             beforeEach(() => {
-                simulate.focus(mm);
-                simulate.click(mm);
-                simulate.keyDown(mm, {keyCode: keycode('backspace')});
+                renderer.driver.keydownMinutes('backspace');
             });
             it('hh input should have "13" value', () => {
                 expect(hh).attr('value', '13');
@@ -288,10 +275,8 @@ describe('<TimePicker/>', () => {
         });
         describe('backspace x 2 on mm segment', () => {
             beforeEach(() => {
-                simulate.focus(mm);
-                simulate.click(mm);
-                simulate.keyDown(mm, {keyCode: keycode('backspace')});
-                simulate.keyDown(mm, {keyCode: keycode('backspace')});
+                renderer.driver.keydownMinutes('backspace');
+                renderer.driver.keydownMinutes('backspace');
             });
             it('hh input should have "13" value', () => {
                 expect(hh).attr('value', '13');
@@ -306,9 +291,7 @@ describe('<TimePicker/>', () => {
 
         describe('arrow down on hh segment', () => {
             beforeEach(() => {
-                simulate.focus(hh);
-                simulate.click(hh);
-                simulate.keyDown(hh, {keyCode: keycode('down')});
+                renderer.driver.keydownHours('down');
             });
             it('hh input should have "12" value', () => {
                 expect(hh).attr('value', '12');
@@ -320,9 +303,7 @@ describe('<TimePicker/>', () => {
 
         describe('arrow up on hh segment', () => {
             beforeEach(() => {
-                simulate.focus(hh);
-                simulate.click(hh);
-                simulate.keyDown(hh, {keyCode: keycode('up')});
+                renderer.driver.keydownHours('up');
             });
             it('hh input should have "14" value', () => {
                 expect(hh).attr('value', '14');
@@ -334,9 +315,7 @@ describe('<TimePicker/>', () => {
 
         describe('arrow down on mm segment', () => {
             beforeEach(() => {
-                simulate.focus(mm);
-                simulate.click(mm);
-                simulate.keyDown(mm, {keyCode: keycode('down')});
+                renderer.driver.keydownMinutes('down');
             });
             it('mm input should have "54" value', () => {
                 expect(mm).attr('value', '54');
@@ -348,9 +327,7 @@ describe('<TimePicker/>', () => {
 
         describe('arrow up on mm segment', () => {
             beforeEach(() => {
-                simulate.focus(mm);
-                simulate.click(mm);
-                simulate.keyDown(mm, {keyCode: keycode('up')});
+                renderer.driver.keydownMinutes('up');
             });
             it('mm input should have "56" value', () => {
                 expect(mm).attr('value', '56');
@@ -372,15 +349,13 @@ describe('<TimePicker/>', () => {
             onInput = sinon.spy();
             renderer = clientRenderer.render(
                 <TimePicker format="24h" value="13:55" onChange={onChange} onInput={onInput}/>
-            );
-            hh = renderer.select('TIME_PICKER_INPUT_HH');
+            ).withDriver(TimePickerDriver);
+            hh = renderer.driver.hoursInput;
         });
 
         describe('entering "3" into hh segment', () => {
             beforeEach(() => {
-                simulate.focus(hh);
-                hh.value = '3';
-                simulate.change(hh);
+                renderer.driver.changeHours('3');
             });
             it('onChange should be callend with "03:55"', () => {
                 expect(onChange).to.be.calledWithExactly({value: '03:55'});
@@ -396,23 +371,18 @@ describe('<TimePicker/>', () => {
         let renderer: any;
         let hh: any;
         let mm: any;
-        let stepperIncrement: any;
-        let stepperDecrement: any;
 
         beforeEach(() => {
             onChange = sinon.spy();
-            renderer = clientRenderer.render(<TimePicker format="24h" value="13:59" onChange={onChange}/>);
-            hh = renderer.select('TIME_PICKER_INPUT_HH');
-            mm = renderer.select('TIME_PICKER_INPUT_MM');
-            stepperIncrement = renderer.select('STEPPER_INCREMENT');
-            stepperDecrement = renderer.select('STEPPER_DECREMENT');
+            renderer = clientRenderer.render(<TimePicker format="24h" value="13:59" onChange={onChange}/>)
+                .withDriver(TimePickerDriver);
+            hh = renderer.driver.hoursInput;
+            mm = renderer.driver.minutesInput;
         });
 
         describe('arrow up on mm segment', () => {
             beforeEach(() => {
-                simulate.focus(mm);
-                simulate.click(mm);
-                simulate.keyDown(mm, {keyCode: keycode('up')});
+                renderer.driver.keydownMinutes('up');
             });
             it('hh input should have "14" value', () => {
                 expect(hh).attr('value', '14');
@@ -430,9 +400,7 @@ describe('<TimePicker/>', () => {
 
         describe('arrow shift + up on mm segment', () => {
             beforeEach(() => {
-                simulate.focus(mm);
-                simulate.click(mm);
-                simulate.keyDown(mm, {keyCode: keycode('up'), shiftKey: true});
+                renderer.driver.keydownMinutes('up', {shiftKey: true});
             });
             it('hh input should have "14" value', () => {
                 expect(hh).attr('value', '14');
@@ -447,9 +415,7 @@ describe('<TimePicker/>', () => {
 
         describe('arrow shift + down on mm segment', () => {
             beforeEach(() => {
-                simulate.focus(mm);
-                simulate.click(mm);
-                simulate.keyDown(mm, {keyCode: keycode('down'), shiftKey: true});
+                renderer.driver.keydownMinutes('down', {shiftKey: true});
             });
             it('mm input should have "49" value', () => {
                 expect(mm).attr('value', '49');
@@ -461,9 +427,7 @@ describe('<TimePicker/>', () => {
 
         describe('arrow shift + up on hh segment', () => {
             beforeEach(() => {
-                simulate.focus(hh);
-                simulate.click(hh);
-                simulate.keyDown(mm, {keyCode: keycode('up'), shiftKey: true});
+                renderer.driver.keydownHours('up', {shiftKey: true});
             });
             it('hh input should have "14" value', () => {
                 expect(hh).attr('value', '14');
@@ -475,9 +439,7 @@ describe('<TimePicker/>', () => {
 
         describe('arrow shift + down on hh segment', () => {
             beforeEach(() => {
-                simulate.focus(hh);
-                simulate.click(hh);
-                simulate.keyDown(mm, {keyCode: keycode('down'), shiftKey: true});
+                renderer.driver.keydownHours('down', {shiftKey: true});
             });
             it('hh input should have "12" value', () => {
                 expect(hh).attr('value', '12');
@@ -489,9 +451,8 @@ describe('<TimePicker/>', () => {
 
         describeDesktop('shift + stepper up (mm focus)', () => {
             beforeEach(() => {
-                simulate.focus(mm);
-                simulate.click(mm);
-                simulate.click(stepperIncrement, {shiftKey: true});
+                renderer.driver.focusMinutes();
+                renderer.driver.clickIncrement({shiftKey: true});
             });
             it('hh input should have "14" value', () => {
                 expect(hh).attr('value', '14');
@@ -509,9 +470,8 @@ describe('<TimePicker/>', () => {
 
         describeDesktop('shift + stepper down (mm focus)', () => {
             beforeEach(() => {
-                simulate.focus(mm);
-                simulate.click(mm);
-                simulate.click(stepperDecrement, {shiftKey: true});
+                renderer.driver.focusMinutes();
+                renderer.driver.clickDecrement({shiftKey: true});
             });
             it('mm input should have "49" value', () => {
                 expect(mm).attr('value', '49');
@@ -523,9 +483,8 @@ describe('<TimePicker/>', () => {
 
         describeDesktop('shift + stepper up (hh focus)', () => {
             beforeEach(() => {
-                simulate.focus(hh);
-                simulate.click(hh);
-                simulate.click(stepperIncrement, {shiftKey: true});
+                renderer.driver.focusHours();
+                renderer.driver.clickIncrement({shiftKey: true});
             });
             it('hh input should have "14" value', () => {
                 expect(hh).attr('value', '14');
@@ -540,9 +499,8 @@ describe('<TimePicker/>', () => {
 
         describeDesktop('shift + stepper down (hh focus)', () => {
             beforeEach(() => {
-                simulate.focus(hh);
-                simulate.click(hh);
-                simulate.click(stepperDecrement, {shiftKey: true});
+                renderer.driver.focusHours();
+                renderer.driver.clickDecrement({shiftKey: true});
             });
             it('hh input should have "12" value', () => {
                 expect(hh).attr('value', '12');
@@ -557,9 +515,7 @@ describe('<TimePicker/>', () => {
 
         describe('arrow up on mm segment', () => {
             beforeEach(() => {
-                simulate.focus(mm);
-                simulate.click(mm);
-                simulate.keyDown(mm, {keyCode: keycode('up')});
+                renderer.driver.keydownMinutes('up');
             });
             it('hh input should have "14" value', () => {
                 expect(hh).attr('value', '14');
@@ -583,17 +539,16 @@ describe('<TimePicker/>', () => {
 
         beforeEach(() => {
             onChange = sinon.spy();
-            renderer = clientRenderer.render(<TimePicker format="ampm" value="11:59" onChange={onChange}/>);
-            hh = renderer.select('TIME_PICKER_INPUT_HH');
-            mm = renderer.select('TIME_PICKER_INPUT_MM');
-            ampm = renderer.select('TIME_PICKER_AMPM');
+            renderer = clientRenderer.render(<TimePicker format="ampm" value="11:59" onChange={onChange}/>)
+                .withDriver(TimePickerDriver);
+            hh = renderer.driver.hoursInput;
+            mm = renderer.driver.minutesInput;
+            ampm = renderer.driver.ampm;
         });
 
         describe('arrow up on mm segment', () => {
             beforeEach(() => {
-                simulate.focus(mm);
-                simulate.click(mm);
-                simulate.keyDown(mm, {keyCode: keycode('up')});
+                renderer.driver.keydownMinutes('up');
             });
             it('hh input should have "12" value', () => {
                 expect(hh).attr('value', '12');
@@ -619,17 +574,16 @@ describe('<TimePicker/>', () => {
 
         beforeEach(() => {
             onChange = sinon.spy();
-            renderer = clientRenderer.render(<TimePicker format="ampm" value="23:59" onChange={onChange}/>);
-            hh = renderer.select('TIME_PICKER_INPUT_HH');
-            mm = renderer.select('TIME_PICKER_INPUT_MM');
-            ampm = renderer.select('TIME_PICKER_AMPM');
+            renderer = clientRenderer.render(<TimePicker format="ampm" value="23:59" onChange={onChange}/>)
+                .withDriver(TimePickerDriver);
+            hh = renderer.driver.hoursInput;
+            mm = renderer.driver.minutesInput;
+            ampm = renderer.driver.ampm;
         });
 
         describe('arrow up on hh segment', () => {
             beforeEach(() => {
-                simulate.focus(hh);
-                simulate.click(hh);
-                simulate.keyDown(hh, {keyCode: keycode('up')});
+                renderer.driver.keydownHours('up');
             });
             itDesktop('hh input should have "12" value', () => {
                 expect(hh).attr('value', '12');
@@ -658,17 +612,16 @@ describe('<TimePicker/>', () => {
 
         beforeEach(() => {
             onChange = sinon.spy();
-            renderer = clientRenderer.render(<TimePicker format="ampm" value="00:00" onChange={onChange}/>);
-            hh = renderer.select('TIME_PICKER_INPUT_HH');
-            mm = renderer.select('TIME_PICKER_INPUT_MM');
-            ampm = renderer.select('TIME_PICKER_AMPM');
+            renderer = clientRenderer.render(<TimePicker format="ampm" value="00:00" onChange={onChange}/>)
+                .withDriver(TimePickerDriver);
+            hh = renderer.driver.hoursInput;
+            mm = renderer.driver.minutesInput;
+            ampm = renderer.driver.ampm;
         });
 
         describe('arrow down on mm segment', () => {
             beforeEach(() => {
-                simulate.focus(mm);
-                simulate.click(mm);
-                simulate.keyDown(mm, {keyCode: keycode('down')});
+                renderer.driver.keydownMinutes('down');
             });
             itDesktop('hh input should have "11" value', () => {
                 expect(hh).attr('value', '11');
@@ -690,24 +643,20 @@ describe('<TimePicker/>', () => {
 
     describe('render with format="24h" value="01:55"', () => {
         let renderer: any;
-        let root: any;
         let hh: any;
         let mm: any;
         beforeEach(() => {
-            renderer = clientRenderer.render(<TimePicker format="24h" value="01:55"/>);
-            root = renderer.select('TIME_PICKER');
-            hh = renderer.select('TIME_PICKER_INPUT_HH');
-            mm = renderer.select('TIME_PICKER_INPUT_MM');
+            renderer = clientRenderer.render(<TimePicker format="24h" value="01:55"/>).withDriver(TimePickerDriver);
+            hh = renderer.driver.hoursInput;
+            mm = renderer.driver.minutesInput;
         });
 
         describe('entering "1" into hh segment', () => {
             beforeEach(() => {
-                simulate.focus(hh);
-                hh.value = '1';
-                simulate.change(hh);
+                renderer.driver.changeHours('1');
             });
             it('should set focus state', () => {
-                hasCssState(root, styles, {focus: true});
+                expect(renderer.driver.getCssState('focus')).to.be.true;
             });
             it('hh input should have "1" value', () => {
                 expect(hh).attr('value', '1');
@@ -723,45 +672,38 @@ describe('<TimePicker/>', () => {
 
     describeNative('render with value="01:59" format="ampm" (touch)', () => {
         let renderer: any;
-        let stepperIncrement: any;
-        let stepperDecrement: any;
 
         beforeEach(() => {
-            renderer = clientRenderer.render(<TimePicker format="ampm" value="01:59"/>);
-            stepperIncrement = renderer.select('STEPPER_INCREMENT');
-            stepperDecrement = renderer.select('STEPPER_DECREMENT');
+            renderer = clientRenderer.render(<TimePicker format="ampm" value="01:59"/>).withDriver(TimePickerDriver);
         });
         it ('should not render stepperIncrement', () => {
-            expect(stepperIncrement).to.be.null;
+            expect(renderer.driver.increment).to.be.null;
         });
         it ('should not render stepperDecrement', () => {
-            expect(stepperDecrement).to.be.null;
+            expect(renderer.driver.decrement).to.be.null;
         });
     });
 
     describe('render with onChange={onChange} format="ampm" value="04:55"', () => {
         let onChange: any;
         let renderer: any;
-        let root: any;
         let hh: any;
         let mm: any;
         let ampm: any;
         beforeEach(() => {
             onChange = sinon.spy();
-            renderer = clientRenderer.render(<TimePicker format="ampm" value="04:55" onChange={onChange}/>);
-            root = renderer.select('TIME_PICKER');
-            hh = renderer.select('TIME_PICKER_INPUT_HH');
-            mm = renderer.select('TIME_PICKER_INPUT_MM');
-            ampm = renderer.select('TIME_PICKER_AMPM');
+            renderer = clientRenderer.render(<TimePicker format="ampm" value="04:55" onChange={onChange}/>)
+                .withDriver(TimePickerDriver);
+            hh = renderer.driver.hoursInput;
+            mm = renderer.driver.minutesInput;
+            ampm = renderer.driver.ampm;
         });
         describe('entering "3" into mm segment', () => {
             beforeEach(() => {
-                simulate.focus(mm);
-                mm.value = '3';
-                simulate.change(mm);
+                renderer.driver.changeMinutes('3');
             });
             it('should set focus state', () => {
-                hasCssState(root, styles, {focus: true});
+                expect(renderer.driver.getCssState('focus')).to.be.true;
             });
             it('hh input should have "04" value', () => {
                 expect(hh).attr('value', '04');
@@ -783,12 +725,10 @@ describe('<TimePicker/>', () => {
 
         describe('entering "7" into mm segment', () => {
             beforeEach(() => {
-                simulate.focus(mm);
-                mm.value = '7';
-                simulate.change(mm);
+                renderer.driver.changeMinutes('7');
             });
             it('should set focus state', () => {
-                hasCssState(root, styles, {focus: true});
+                expect(renderer.driver.getCssState('focus')).to.be.true;
             });
             it('hh input should have "04" value', () => {
                 expect(hh).attr('value', '04');
@@ -809,8 +749,7 @@ describe('<TimePicker/>', () => {
 
         describeDesktop('focus and change ampm input', () => {
             beforeEach(() => {
-                simulate.focus(ampm);
-                simulate.keyDown(ampm, {keyCode: keycode('space')});
+                renderer.driver.keydownAmpm('space');
             });
             it('onChange should be callen with "16:55"', () => {
                 expect(onChange).to.be.calledWithExactly({value: '16:55'});
