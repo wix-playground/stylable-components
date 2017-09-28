@@ -258,7 +258,7 @@ function whenDragThingsAround(
         skipItIfTouch('should call onChange', async () => {
             await waitFor(() => {
                 driver.touchStart(eventMock);
-                driver.touchEnd(eventMock);
+                driver.touchEnd(eventMock, environment);
                 expect(onChange).to.be.calledWithMatch({value: 7});
             });
         });
