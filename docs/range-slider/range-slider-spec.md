@@ -127,13 +127,13 @@ http://ilyabirman.net/meanwhile/all/slider/
 
 In order to change/set range, user can:
 
-1. drag handles over the slider bar 
-2. click on the slider bar, mark OR clickable area to select the value from within the given range
-3. click & drag  (click = click on handle, slider, mark OR clickable area)
+1. drag handles over the slider bar; 
+2. click on the slider bar, mark or clickable area;
+3. click & drag  (click = click on handle, slider, mark or clickable area).
 
 Changing the value is performed **from current value** to the next expected value. 
-E.g. if `min=0`, `max=10`, `step=2`, `value=3.5`, then UP arrow key will give us 4 and Down arrow key will give us 2
-Value can not exceed the min/max limits. If value is > or < than min/max it is automatically set to corresponding min/max.
+E.g. if `min=0`, `max=10`, `step=2`, `value=3.5`, than Up Arrow Key will give us 4 and Down Arrow Key will give us 2.
+Value can not exceed min/max limits. If value is > or < than min/max it is automatically set to corresponding min/max.
 
 If range slider has a `step` prop set to "number", handles should move across the slider bar only according to the step.
 
@@ -146,26 +146,22 @@ E.g.
 
 NOTE: active handle should immediately obtain focus.
 
-**Number of handles**
-
-Number of handles displayed on sliders equals to the number of values in `value` prop. 
-
 **Crossing handles**
-You can allow/forbade handles to cross using `allowCross` prop. Handles can not push each other (they either cross or stop before the next/previous handle).
+You can prevent handles from crossing using `	disableCross` prop. Handles can not push each other (they either cross or stop before the next/previous handle).
 
 If use is trying to set min/max value to one handle, allowed min/max value is determine either by sliders range or by next/previous handle. 
 
 **Alignment & Direction**
 
-You can adjust sliders alignment and direction in which the range is going to change with axis prop.
+You can adjust sliders alignment and direction in which the range is going to change with `axis` prop.
 
-1. `axis="x"` -> horizontal slider, progress is moving from left to right
+1. `axis="x"` -> horizontal slider, progress is moving from left to right;
 
-2. `axis="x-reverse"` -> horizontal slider, progress is moving from right to left
+2. `axis="x-reverse"` -> horizontal slider, progress is moving from right to left;
 
-3. `axis="y"` -> vertical slider, progress is moving from bottom to top
+3. `axis="y"` -> vertical slider, progress is moving from bottom to top;
 
-4. `axis="y-reverse"` -> vertical slider, progress is moving from top to bottom
+4. `axis="y-reverse"` -> vertical slider, progress is moving from top to bottom.
 
    ​
 
@@ -196,10 +192,10 @@ You can adjust sliders alignment and direction in which the range is going to ch
 | ---------------------------------------- | --------------------------- |
 | up / right arrow key                     | increase value              |
 | left / down arrow key                    | decrease value              |
-| home ( fn/ctrl) OR shift + left arrow key | set min value               |
-| end ( fn/ctrl) OR shift + left arrow key | set max value               |
-| page up (fn/ctrl) OR shift + up arrow key | increase value by 10        |
-| page down (fn/ctrl) OR shift + down arrow key | decrease value by 10        |
+| home (fn / ctrl) OR shift + left arrow key | set min value               |
+| end (fn / ctrl) OR shift + left arrow key | set max value               |
+| page up (fn / ctrl) OR shift + up arrow key | increase value by 10        |
+| page down (fn / ctrl) OR shift + down arrow key | decrease value by 10        |
 | tab                                      | moves to next element       |
 | shift + tab                              | moves to previous element   |
 | esc                                      | removes focus (if in focus) |
@@ -226,11 +222,11 @@ You can adjust sliders alignment and direction in which the range is going to ch
 
 #### Touch
 
-| Event                                  | Action                                   | NOTE                                     |
-| -------------------------------------- | ---------------------------------------- | ---------------------------------------- |
-| tap (on handle)                        | highlights handle                        | we need the ability to expand clickable area for mobile devices |
-| tap (on bar / mark / clickable area)   | moves handle to position where user clicked | -                                        |
-| tap & drag (right / left OR up / down) | change value according to direction of movement | -                                        |
+| Event                                 | Action                                   | NOTE                                     |
+| ------------------------------------- | ---------------------------------------- | ---------------------------------------- |
+| tap (on handle)                       | highlights handle                        | we need the ability to expand clickable area for mobile devices |
+| tap (on bar / mark / clickable area)  | moves handle to position where user clicked |                                          |
+| tap & drag (right / left / up / down) | change value according to direction of movement |                                          |
 
 
 ###### Links to sliders (for reference): 

@@ -8,7 +8,7 @@
     "clean": "rimraf ./dist ./lib",
     "build": "tsc && stc --srcDir=src --outDir=dist/src --diagnostics",
     "prepublish": "npm run lint && npm run build",
-    "lint": "tslint \"@(src|demo|test|test-kit)/**/*.ts?(x)\" -c tslint.json --type-check -p tsconfig.json --fix",
+    "lint": "tslint \"@(src|demo|test|test-kit)/**/*.ts?(x)\" -c tslint.json --type-check -p tsconfig.json",
     "test": "npm run lint && npm run test:browser && npm run test:node",
     "test:browser": "karma start --single-run",
     "test:node": "mocha --compilers ts:ts-node/register,tsx:ts-node/register,css:stylable-integration/require \"./test/node/**/*.node-spec.ts?(x)\"",
