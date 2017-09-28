@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 import {DriverBase, simulate} from 'test-drive-react';
 import {TreeItem, TreeItemProps, TreeView} from '../../src';
 
