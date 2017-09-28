@@ -1,11 +1,10 @@
-import * as keycode from 'keycode';
 import * as React from 'react';
-import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react';
+import {ClientRenderer, expect, sinon, waitFor} from 'test-drive-react';
 import {ContextProvider} from '../../src';
 import {AXES, AxisOptions, Slider, SliderProps} from '../../src/components/slider';
 import {ChangeEvent} from '../../src/types/events';
 import WindowStub from '../stubs/window.stub';
-import {simulateMouseEvent, simulateTouchEvent, skipItIfTouch} from '../utils';
+import {skipItIfTouch} from '../utils';
 import {SliderDriver, SliderContextProvierDriver} from '../../test-kit';
 
 let environment: WindowStub;
@@ -190,68 +189,25 @@ function whenDragThingsAround(
 
         it('should change value', async () => {
             await waitFor(() => {
-                const element = driver.slider;
-                const handle = driver.handle;
-                const progress = driver.progress;
-
-                simulate.mouseDown(element, {
-                    currentTarget: element!,
-                    clientX: eventMock.clientX,
-                    clientY: eventMock.clientY
-                });
-
-                expect(handle!.style[positionProp as any]).to.equal('70%');
-                expect(progress!.style[sizeProp as any]).to.equal('70%');
+                driver.mouseDown(eventMock);
+                expect(driver.handle!.style[positionProp as any]).to.equal('70%');
+                expect(driver.progress!.style[sizeProp as any]).to.equal('70%');
             });
         });
 
         it('should call onChange', async () => {
             await waitFor(() => {
-                const element = driver.slider;
-
-                simulate.mouseDown(element, {
-                    currentTarget: element!,
-                    clientX: eventMock.clientX,
-                    clientY: eventMock.clientY
-                });
-                simulateMouseEvent(
-                    environment,
-                    'mouseup',
-                    {
-                        clientX: eventMock.clientX,
-                        clientY: eventMock.clientY
-                    }
-                );
-
+                driver.mouseDown(eventMock);
+                driver.mouseUp(eventMock, environment);
                 expect(onChange).to.be.calledWithMatch({value: 7});
             });
         });
 
         it('should call onInput', async () => {
             await waitFor(() => {
-                const element = driver.slider;
-
-                simulate.mouseDown(element, {
-                    currentTarget: element!,
-                    clientX: eventMock.clientX,
-                    clientY: eventMock.clientY
-                });
-                simulateMouseEvent(
-                    environment,
-                    'mousemove',
-                    {
-                        clientX: eventMock.clientX,
-                        clientY: eventMock.clientY
-                    }
-                );
-                simulateMouseEvent(
-                    environment,
-                    'mouseup',
-                    {
-                        clientX: eventMock.clientX,
-                        clientY: eventMock.clientY
-                    }
-                );
+                driver.mouseDown(eventMock);
+                driver.mouseMove(eventMock, environment);
+                driver.mouseUp(eventMock, environment);
 
                 expect(onInput).to.be.calledWithMatch({value: '7'});
                 expect(onChange).to.be.calledWithMatch({value: 7});
@@ -259,7 +215,7 @@ function whenDragThingsAround(
         });
     });
 
-    describe.only('when drag things around using touch', () => {
+    describe('when drag things around using touch', () => {
         const value = 5;
         const min = 0;
         const max = 10;
@@ -294,82 +250,25 @@ function whenDragThingsAround(
 
         skipItIfTouch('should change value', async () => {
             await waitFor(() => {
-                const element = driver.slider;
-                const handle = driver.handle;
-                const progress = driver.progress;
-
-                simulate.touchStart(element, {
-                    currentTarget: element!,
-                    touches: {
-                        0: {
-                            clientX: eventMock.clientX,
-                            clientY: eventMock.clientY
-                        }
-                    } as any as TouchList
-                });
-
-                expect(handle!.style[positionProp as any]).to.equal('70%');
-                expect(progress!.style[sizeProp as any]).to.equal('70%');
+                driver.touchStart(eventMock);
+                expect(driver.handle!.style[positionProp as any]).to.equal('70%');
+                expect(driver.progress!.style[sizeProp as any]).to.equal('70%');
             });
         });
 
         skipItIfTouch('should call onChange', async () => {
             await waitFor(() => {
-                const element = driver.slider;
-
-                simulate.touchStart(element, {
-                    currentTarget: element!,
-                    touches: {
-                        0: {
-                            clientX: eventMock.clientX,
-                            clientY: eventMock.clientY
-                        }
-                    } as any as TouchList
-                });
-
-                simulateTouchEvent(
-                    environment,
-                    'touchend',
-                    {
-                        clientX: eventMock.clientX,
-                        clientY: eventMock.clientY
-                    }
-                );
-
+                driver.touchStart(eventMock);
+                driver.touchEnd(eventMock);
                 expect(onChange).to.be.calledWithMatch({value: 7});
             });
         });
 
         skipItIfTouch('should call onInput', async () => {
             await waitFor(() => {
-                const element = driver.slider;
-
-                simulate.touchStart(element, {
-                    currentTarget: element!,
-                    touches: {
-                        0: {
-                            clientX: eventMock.clientX,
-                            clientY: eventMock.clientY
-                        }
-                    } as any as TouchList
-                });
-                simulateTouchEvent(
-                    environment,
-                    'touchmove',
-                    {
-                        clientX: eventMock.clientX,
-                        clientY: eventMock.clientY
-                    }
-                );
-
-                simulateTouchEvent(
-                    environment,
-                    'touchend',
-                    {
-                        clientX: eventMock.clientX,
-                        clientY: eventMock.clientY
-                    }
-                );
+                driver.touchStart(eventMock);
+                driver.touchMove(eventMock, environment);
+                driver.touchEnd(eventMock, environment);
 
                 expect(onInput).to.be.calledWithMatch({value: '7'});
                 expect(onChange).to.be.calledWithMatch({value: 7});
@@ -385,7 +284,7 @@ function whenDragThingsAroundWithStep(
     options?: Partial<SliderProps>,
     context?: any
 ) {
-    describe.only('when drag things around with step', () => {
+    describe('when drag things around with step', () => {
         const value = 5;
         const min = 0;
         const max = 10;
@@ -443,38 +342,16 @@ function whenDragThingsAroundWithStep(
 
         it('should change value according to step', async () => {
             await waitFor(() => {
-                const element = driver.slider;
-                const handle = driver.handle;
-                const progress = driver.progress;
-
-                simulate.mouseDown(element, {
-                    currentTarget: element!,
-                    clientX: eventMock.clientX,
-                    clientY: eventMock.clientY
-                });
-
-                expect(handle!.style[positionProp as any]).to.equal('80%');
-                expect(progress!.style[sizeProp as any]).to.equal('80%');
+                driver.mouseDown(eventMock);
+                expect(driver.handle!.style[positionProp as any]).to.equal('80%');
+                expect(driver.progress!.style[sizeProp as any]).to.equal('80%');
             });
         });
 
         it('should call onChange with value normalized to step', async () => {
             await waitFor(() => {
-                const element = driver.slider;
-
-                simulate.mouseDown(element, {
-                    currentTarget: element!,
-                    clientX: eventMock.clientX,
-                    clientY: eventMock.clientY
-                });
-                simulateMouseEvent(
-                    environment,
-                    'mouseup',
-                    {
-                        clientX: eventMock.clientX,
-                        clientY: eventMock.clientY
-                    }
-                );
+                driver.mouseDown(eventMock);
+                driver.mouseUp(eventMock, environment);
 
                 expect(onChange).to.be.calledWithMatch({value: 8});
             });
@@ -482,29 +359,9 @@ function whenDragThingsAroundWithStep(
 
         it('should call onInput with value normalized to step', async () => {
             await waitFor(() => {
-                const element = driver.slider;
-
-                simulate.mouseDown(element, {
-                    currentTarget: element!,
-                    clientX: eventMock.clientX,
-                    clientY: eventMock.clientY
-                });
-                simulateMouseEvent(
-                    environment,
-                    'mousemove',
-                    {
-                        clientX: eventMock.clientX,
-                        clientY: eventMock.clientY
-                    }
-                );
-                simulateMouseEvent(
-                    environment,
-                    'mouseup',
-                    {
-                        clientX: eventMock.clientX,
-                        clientY: eventMock.clientY
-                    }
-                );
+                driver.mouseDown(eventMock);
+                driver.mouseMove(eventMock, environment);
+                driver.mouseUp(eventMock, environment);
 
                 expect(onInput).to.be.calledWithMatch({value: '8'});
                 expect(onChange).to.be.calledWithMatch({value: 8});
@@ -520,9 +377,9 @@ function whenDragThingsAroundWithStep(
 
         let onChange: (data: ChangeEvent<number>) => void;
         let onInput: (data: ChangeEvent<string>) => void;
-        let select: (automationId: string) => HTMLElement | null;
         let waitForDom: (expectation: () => void) => Promise<void>;
         let eventMock: EventCoordinates;
+        let driver: any;
 
         beforeEach(() => {
             onChange = sinon.spy();
@@ -540,56 +397,26 @@ function whenDragThingsAroundWithStep(
                 },
                 context
             );
-            select = rendered.select;
             waitForDom = rendered.waitForDom;
+            driver = rendered.driver;
 
-            const bounds = select('SLIDER')!.getBoundingClientRect();
+            const bounds = driver.slider!.getBoundingClientRect();
             eventMock = getEventCoordinates(bounds, getAxis(options, context));
         });
 
         skipItIfTouch('should change value', async () => {
             await waitFor(() => {
-                const element = select('SLIDER');
-                const handle = select('SLIDER-HANDLE');
-                const progress = select('SLIDER-PROGRESS');
+                driver.touchStart(eventMock);
 
-                simulate.touchStart(element, {
-                    currentTarget: element!,
-                    touches: {
-                        0: {
-                            clientX: eventMock.clientX,
-                            clientY: eventMock.clientY
-                        }
-                    } as any as TouchList
-                });
-
-                expect(handle!.style[positionProp as any]).to.equal('80%');
-                expect(progress!.style[sizeProp as any]).to.equal('80%');
+                expect(driver.handle!.style[positionProp as any]).to.equal('80%');
+                expect(driver.progress!.style[sizeProp as any]).to.equal('80%');
             });
         });
 
         skipItIfTouch('should call onChange', async () => {
             await waitFor(() => {
-                const element = select('SLIDER');
-
-                simulate.touchStart(element, {
-                    currentTarget: element!,
-                    touches: {
-                        0: {
-                            clientX: eventMock.clientX,
-                            clientY: eventMock.clientY
-                        }
-                    } as any as TouchList
-                });
-
-                simulateTouchEvent(
-                    environment,
-                    'touchend',
-                    {
-                        clientX: eventMock.clientX,
-                        clientY: eventMock.clientY
-                    }
-                );
+                driver.touchStart(eventMock);
+                driver.touchEnd(eventMock, environment);
 
                 expect(onChange).to.be.calledWithMatch({value: 8});
             });
@@ -597,34 +424,9 @@ function whenDragThingsAroundWithStep(
 
         skipItIfTouch('should call onInput', async () => {
             await waitFor(() => {
-                const element = select('SLIDER');
-
-                simulate.touchStart(element, {
-                    currentTarget: element!,
-                    touches: {
-                        0: {
-                            clientX: eventMock.clientX,
-                            clientY: eventMock.clientY
-                        }
-                    } as any as TouchList
-                });
-                simulateTouchEvent(
-                    environment,
-                    'touchmove',
-                    {
-                        clientX: eventMock.clientX,
-                        clientY: eventMock.clientY
-                    }
-                );
-
-                simulateTouchEvent(
-                    environment,
-                    'touchend',
-                    {
-                        clientX: eventMock.clientX,
-                        clientY: eventMock.clientY
-                    }
-                );
+                driver.touchStart(eventMock);
+                driver.touchMove(eventMock, environment);
+                driver.touchEnd(eventMock, environment);
 
                 expect(onInput).to.be.calledWithMatch({value: '8'});
                 expect(onChange).to.be.calledWithMatch({value: 8});
@@ -646,11 +448,11 @@ function keyboard(
 
         let onChange: (data: ChangeEvent<number>) => void;
         let onInput: (data: ChangeEvent<string>) => void;
-        let select: (automationId: string) => HTMLElement | null;
         let waitForDom: (expectation: () => void) => Promise<void>;
         let deviation: number = step;
         let home: number = 0;
         let end: number = 100;
+        let driver: any;
 
         switch (getAxis(options, context)) {
             case AXES.xReverse:
@@ -675,14 +477,12 @@ function keyboard(
                 },
                 context
             );
-            select = rendered.select;
+            driver = rendered.driver;
             waitForDom = rendered.waitForDom;
         });
 
         it('on pressing right key', async () => {
-            simulate.keyDown(select('SLIDER-HANDLE'), {
-                keyCode: keycode.codes.right
-            });
+            driver.keyDown('right');
 
             return waitFor(() => {
                 expect(onChange).to.be.calledWithMatch({value: value + deviation});
@@ -690,9 +490,7 @@ function keyboard(
         });
 
         it('on pressing up key', async () => {
-            simulate.keyDown(select('SLIDER-HANDLE'), {
-                keyCode: keycode.codes.up
-            });
+            driver.keyDown('up');
 
             return waitFor(() => {
                 expect(onChange).to.be.calledWithMatch({value: value + deviation});
@@ -700,9 +498,7 @@ function keyboard(
         });
 
         it('on pressing page up key', async () => {
-            simulate.keyDown(select('SLIDER-HANDLE'), {
-                keyCode: keycode.codes['page up']
-            });
+            driver.keyDown('page up');
 
             return waitFor(() => {
                 expect(onChange).have.been.calledWithMatch({value: value + Math.abs(deviation * 10)});
@@ -710,10 +506,7 @@ function keyboard(
         });
 
         it('on pressing up key with ctrl', async () => {
-            simulate.keyDown(select('SLIDER-HANDLE'), {
-                ctrlKey: true,
-                keyCode: keycode.codes.up
-            });
+            driver.keyDown('up', {ctrlKey: true})
 
             return waitFor(() => {
                 expect(onChange).have.been.calledWithMatch({value: value + (deviation * 10)});
@@ -721,10 +514,7 @@ function keyboard(
         });
 
         it('on pressing left key with ctrl', async () => {
-            simulate.keyDown(select('SLIDER-HANDLE'), {
-                ctrlKey: true,
-                keyCode: keycode.codes.left
-            });
+            driver.keyDown('left', {ctrlKey: true})
 
             return waitFor(() => {
                 expect(onChange).have.been.calledWithMatch({value: home});
@@ -732,10 +522,7 @@ function keyboard(
         });
 
         it('on pressing up key with shift', async () => {
-            simulate.keyDown(select('SLIDER-HANDLE'), {
-                shiftKey: true,
-                keyCode: keycode.codes.up
-            });
+            driver.keyDown('up', {shiftKey: true})
 
             return waitFor(() => {
                 expect(onChange).have.been.calledWithMatch({value: value + (deviation * 10)});
@@ -743,10 +530,7 @@ function keyboard(
         });
 
         it('on pressing left key with shift', async () => {
-            simulate.keyDown(select('SLIDER-HANDLE'), {
-                shiftKey: true,
-                keyCode: keycode.codes.left
-            });
+            driver.keyDown('left', {shiftKey: true})
 
             return waitFor(() => {
                 expect(onChange).have.been.calledWithMatch({value: home});
@@ -754,9 +538,7 @@ function keyboard(
         });
 
         it('on pressing left key', async () => {
-            simulate.keyDown(select('SLIDER-HANDLE'), {
-                keyCode: keycode.codes.left
-            });
+            driver.keyDown('left')
 
             return waitFor(() => {
                 expect(onChange).have.been.calledWithMatch({value: value - deviation});
@@ -764,9 +546,7 @@ function keyboard(
         });
 
         it('on pressing down key', async () => {
-            simulate.keyDown(select('SLIDER-HANDLE'), {
-                keyCode: keycode.codes.down
-            });
+            driver.keyDown('down')
 
             return waitFor(() => {
                 expect(onChange).have.been.calledWithMatch({value: value - deviation});
@@ -774,9 +554,7 @@ function keyboard(
         });
 
         it('on pressing page down key', async () => {
-            simulate.keyDown(select('SLIDER-HANDLE'), {
-                keyCode: keycode.codes['page down']
-            });
+            driver.keyDown('page down')
 
             return waitFor(() => {
                 expect(onChange).have.been.calledWithMatch({value: value - Math.abs(deviation * 10)});
@@ -784,10 +562,7 @@ function keyboard(
         });
 
         it('on pressing down key with ctrl', async () => {
-            simulate.keyDown(select('SLIDER-HANDLE'), {
-                ctrlKey: true,
-                keyCode: keycode.codes.down
-            });
+            driver.keyDown('down', {ctrlKey: true})
 
             return waitFor(() => {
                 expect(onChange).have.been.calledWithMatch({value: value - (deviation * 10)});
@@ -795,10 +570,7 @@ function keyboard(
         });
 
         it('on pressing right key with ctrl', async () => {
-            simulate.keyDown(select('SLIDER-HANDLE'), {
-                ctrlKey: true,
-                keyCode: keycode.codes.right
-            });
+            driver.keyDown('right', {ctrlKey: true})
 
             return waitFor(() => {
                 expect(onChange).have.been.calledWithMatch({value: end});
@@ -806,10 +578,7 @@ function keyboard(
         });
 
         it('on pressing down key with shift', async () => {
-            simulate.keyDown(select('SLIDER-HANDLE'), {
-                shiftKey: true,
-                keyCode: keycode.codes.down
-            });
+            driver.keyDown('down', {shiftKey: true})
 
             return waitFor(() => {
                 expect(onChange).have.been.calledWithMatch({value: value - (deviation * 10)});
@@ -817,10 +586,7 @@ function keyboard(
         });
 
         it('on pressing right key with shift', async () => {
-            simulate.keyDown(select('SLIDER-HANDLE'), {
-                shiftKey: true,
-                keyCode: keycode.codes.right
-            });
+            driver.keyDown('right', {shiftKey: true})
 
             return waitFor(() => {
                 expect(onChange).have.been.calledWithMatch({value: end});
@@ -828,9 +594,7 @@ function keyboard(
         });
 
         it('on pressing home key', async () => {
-            simulate.keyDown(select('SLIDER-HANDLE'), {
-                keyCode: keycode.codes.home
-            });
+            driver.keyDown('home')
 
             return waitFor(() => {
                 expect(onChange).have.been.calledWithMatch({value: home});
@@ -838,10 +602,7 @@ function keyboard(
         });
 
         it('on pressing end key', async () => {
-            simulate.keyDown(select('SLIDER-HANDLE'), {
-                shiftKey: true,
-                keyCode: keycode.codes.end
-            });
+            driver.keyDown('end', {shiftKey: true})
 
             return waitFor(() => {
                 expect(onChange).have.been.calledWithMatch({value: end});
@@ -850,7 +611,7 @@ function keyboard(
     });
 }
 
-describe('<Slider />', () => {
+describe.only('<Slider />', () => {
     const clientRenderer = new ClientRenderer();
 
     beforeEach(() => {
@@ -1038,11 +799,10 @@ describe('<Slider />', () => {
                 const progress = driver.progress;
                 const bounds = element!.getBoundingClientRect();
 
-                simulate.mouseDown(element, {
-                    currentTarget: element!,
+                driver.mouseDown({
                     clientY: bounds.top + bounds.height / 3,
                     clientX: Math.round(bounds.left + bounds.width * 0.4)
-                });
+                })
 
                 expect(handle!.style.left).to.equal('50%');
                 expect(progress!.style.width).to.equal('50%');
@@ -1054,15 +814,13 @@ describe('<Slider />', () => {
                 const element = driver.slider;
                 const bounds = element!.getBoundingClientRect();
 
-                simulate.mouseDown(element, {
-                    currentTarget: element!,
+                driver.mouseDown({
                     clientX: Math.round(bounds.left + bounds.width * 0.5)
                 });
-                simulateMouseEvent(
-                    environment,
-                    'mouseup',
-                    {clientX: Math.round(bounds.left + bounds.width * 0.8)}
-                );
+
+                driver.mouseUp({
+                    clientX: Math.round(bounds.left + bounds.width * 0.8)
+                }, environment);
 
                 expect(onChange).to.be.calledWithMatch({value: 10});
             });
@@ -1073,20 +831,15 @@ describe('<Slider />', () => {
                 const element = driver.slider;
                 const bounds = element!.getBoundingClientRect();
 
-                simulate.mouseDown(element, {
-                    currentTarget: element!,
+                driver.mouseDown({
                     clientX: Math.round(bounds.left + bounds.width * 0.5)
                 });
-                simulateMouseEvent(
-                    environment,
-                    'mousemove',
-                    {clientX: Math.round(bounds.left + bounds.width * 0.6)}
-                );
-                simulateMouseEvent(
-                    environment,
-                    'mouseup',
-                    {clientX: Math.round(bounds.left + bounds.width * 0.6)}
-                );
+                driver.mouseMove({
+                    clientX: Math.round(bounds.left + bounds.width * 0.6)
+                }, environment)
+                driver.mouseUp({
+                    clientX: Math.round(bounds.left + bounds.width * 0.6)
+                }, environment)
 
                 expect(onInput).to.be.calledWithMatch({value: '5'});
                 expect(onChange).to.be.calledWithMatch({value: 5});
@@ -1184,8 +937,7 @@ describe('<Slider />', () => {
                 const progress = driver.progress;
                 const bounds = element!.getBoundingClientRect();
 
-                simulate.mouseDown(element, {
-                    currentTarget: element!,
+                driver.mouseDown({
                     clientY: bounds.top + bounds.height / 3,
                     clientX: bounds.left + bounds.width / 4
                 });
