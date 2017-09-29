@@ -12,7 +12,7 @@
     outline: none;
 }
 
-.drop-down-input {
+.dropdownInput {
     border: 1px solid #adbac5;
     height: 36px;
     display: flex;
@@ -20,21 +20,21 @@
     justify-content: space-between;
 }
 
-.drop-down-input .caret {
+.dropdownInput .caret {
     margin-right: 5px;
     vertical-align: middle;
 }
 
-.drop-down-input .label {
+.dropdownInput .label {
     margin-left: 5px;
 }
 
-.drop-down-input:hover {
+.dropdownInput:hover {
     cursor: pointer;
     border: 1px solid #5cb4ff;
 }
 
-.drop-down-list {
+.dropdownList {
     -st-extends: SelectionList;
     width: 100%;
     background-color: white;

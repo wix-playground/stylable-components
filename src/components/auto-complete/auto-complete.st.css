@@ -1,0 +1,35 @@
+@namespace "AutoComplete";
+
+.root {
+    font-size: 16px;
+    position: relative;
+    display: inline-block;
+}
+
+.autoCompleteInput {
+    border: 1px solid #adbac5;
+    font-family: ArialMT;
+    font-size: 16px;
+    height: 36px;
+    width: 100%;
+    padding-left: 5px;
+}
+
+.autoCompleteList {
+    -st-extends: root;
+    width: 100%;
+    background: #FFFFFF;
+}
+
+.autoCompleteInput:hover {
+    border: 1px solid #5cb4ff;
+}
+
+.caret {
+    cursor: pointer;
+    position:absolute;
+    top:50%;
+    left: calc(100% - 24px);
+    transform:translateY(-50%);
+    -webkit-transform:translateY(-50%);
+}

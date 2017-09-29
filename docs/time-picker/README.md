@@ -26,7 +26,6 @@ The **Time Picker** component improves upon the native `<input type="time">` by 
 | label       | string                 |              |            | Text to display in accessibility mode.   |
 | name        | string                 |              |            | The name of the slider. Behaves like the name attribute of an input element. |
 | error       | bool                   | false        |            | Sets the `:error` CSS state on the `<timePicker>` |
-| rtl         | bool                   | false        |            | Makes the component RTL                  |
 
 
 

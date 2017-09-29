@@ -4,6 +4,7 @@ import {ClientRenderer, expect, simulate, sinon} from 'test-drive-react';
 import {ToggleDemo} from '../../demo/components/toggle-demo';
 import {Toggle} from '../../src';
 import styles from '../../src/components/toggle/toggle.st.css';
+import {ToggleDriver} from '../../test-kit';
 import {hasCssState} from '../utils';
 
 describe('<Toggle/>', () => {
@@ -15,10 +16,10 @@ describe('<Toggle/>', () => {
         let renderer: any;
         beforeEach(() => {
             onChange = sinon.spy();
-            renderer = clientRenderer.render(<Toggle onChange={onChange}/>);
+            renderer = clientRenderer.render(<Toggle onChange={onChange}/>).withDriver(ToggleDriver);
         });
         it('should have input', () => {
-            expect(renderer.select('TOGGLE_INPUT')).to.not.null;
+            expect(renderer.driver.nativeInput).to.not.null;
         });
     });
 
@@ -27,10 +28,10 @@ describe('<Toggle/>', () => {
         let renderer: any;
         beforeEach(() => {
             onChange = sinon.spy();
-            renderer = clientRenderer.render(<Toggle onChange={onChange} value={true}/>);
+            renderer = clientRenderer.render(<Toggle onChange={onChange} value={true}/>).withDriver(ToggleDriver);
         });
         it('should have input', () => {
-            expect(renderer.select('TOGGLE_INPUT')).to.not.null;
+            expect(renderer.driver.nativeInput).to.not.null;
         });
     });
 
@@ -39,13 +40,11 @@ describe('<Toggle/>', () => {
         let renderer: any;
         beforeEach(() => {
             onChange = sinon.spy();
-            renderer = clientRenderer.render(<Toggle onChange={onChange}/>);
+            renderer = clientRenderer.render(<Toggle onChange={onChange}/>).withDriver(ToggleDriver);
         });
 
         it('pressing space on focused input should trigger onChange', () => {
-            const input = renderer.select('TOGGLE_INPUT');
-            simulate.focus(input);
-            simulate.change(input);
+            renderer.driver.click();
             expect(onChange).to.have.been.calledOnce;
             expect(onChange).to.have.been.calledWithExactly({value: true});
         });
@@ -56,14 +55,14 @@ describe('<Toggle/>', () => {
         let renderer: any;
         beforeEach(() => {
             onChange = sinon.spy();
-            renderer = clientRenderer.render(<Toggle onChange={onChange} disabled/>);
+            renderer = clientRenderer.render(<Toggle onChange={onChange} disabled/>).withDriver(ToggleDriver);
         });
         it('should not have input underhood', () => {
-            expect(renderer.select('TOGGLE_INPUT')).to.be.null;
+            expect(renderer.driver.nativeInput).to.be.null;
         });
 
         it('click should not trigger onChange', async () => {
-            simulate.click(renderer.select('TOGGLE'));
+            renderer.driver.click();
             await new Promise(resolve => setTimeout(resolve, 500));
             expect(onChange).to.not.have.been.called;
         });

@@ -18,7 +18,7 @@
 }
 .root {
     -st-states: checked, disabled, focus, error, rtl;
-    display: block;
+    display: inline-block;
     position: relative;
     width: value(width);
     border: value(borderWidth) solid value(BK3);
@@ -39,10 +39,6 @@
     border: 0;
     width: 0;
     height: 0;
-}
-.switchWrap {
-    width: 100%;
-    position: relative;
 }
 
 .switch {
