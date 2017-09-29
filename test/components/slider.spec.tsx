@@ -2,6 +2,7 @@ import * as React from 'react';
 import {ClientRenderer, expect, sinon, waitFor} from 'test-drive-react';
 import {ContextProvider} from '../../src';
 import {AXES, AxisOptions, Slider, SliderProps} from '../../src/components/slider';
+import styles from '../../src/components/slider/slider.st.css';
 import {ChangeEvent} from '../../src/types/events';
 import {SliderContextProvierDriver, SliderDriver, SliderEventCoordinates} from '../../test-kit';
 import WindowStub from '../stubs/window.stub';
@@ -1177,4 +1178,232 @@ describe('<Slider />', () => {
 
         keyboard(clientRenderer, {step: 2}, {dir: 'rtl'});
     });
+});
+
+describe.only('Slider/properties', () => {
+    function renderWithProps(props?: SliderProps) {
+        return clientRenderer
+            .render(<Slider {...props}/>)
+            .withDriver(SliderDriver)
+            .driver;
+    }
+
+    const clientRenderer = new ClientRenderer();
+    afterEach(() => clientRenderer.cleanup());
+
+    describe('no properties', () => {
+        let driver: any;
+        beforeEach(() => {
+            driver = renderWithProps();
+        });
+
+        it('handle aria-valuemin should be 0', () => {
+            expect(driver.handle).attr('aria-valuemin', '0');
+        });
+        it('handle aria-valuemax should be 100', () => {
+            expect(driver.handle).attr('aria-valuemax', '100');
+        });
+        it('handle aria-orientation should be "horizontal"', () => {
+            expect(driver.handle).attr('aria-orientation', 'horizontal');
+        });
+        it('handle left should be 0%', () => {
+            expect(driver.handle.style.left).to.equal('0%');
+        });
+        it('input value should be ""', () => {
+            expect(driver.input).attr('value', '');
+        });
+        it('should not render marks', () => {
+            expect(driver.getMark(0)).to.be.null;
+        });
+        it('progress width should be 0%', () => {
+            expect(driver.progress.style.width).to.equal('0%');
+        });
+    });
+
+    describe('min={50} max={100} value={60}', () => {
+        let driver: any;
+        beforeEach(() => {
+            driver = renderWithProps({
+                min: 50,
+                max: 100,
+                value: 60
+            });
+        });
+
+        it('handle aria-valuemin should be 50', () => {
+            expect(driver.handle).attr('aria-valuemin', '50');
+        });
+        it('handle aria-valuemax should be 100', () => {
+            expect(driver.handle).attr('aria-valuemax', '100');
+        });
+        it('handle aria-orientation should be "horizontal"', () => {
+            expect(driver.handle).attr('aria-orientation', 'horizontal');
+        });
+        it('handle left should be 20%', () => {
+            expect(driver.handle.style.left).to.equal('20%');
+        });
+        it('input value should be "60"', () => {
+            expect(driver.input).attr('value', '60');
+        });
+        it('progress width should be 20%', () => {
+            expect(driver.progress.style.width).to.equal('20%');
+        });
+    });
+
+    describe('min={50} max={100} value={60} axis={AXES.xReverse}', () => {
+        let driver: any;
+        beforeEach(() => {
+            driver = renderWithProps({
+                min: 50,
+                max: 100,
+                value: 60,
+                axis: AXES.xReverse
+            });
+        });
+
+        it('handle aria-valuemin should be 50', () => {
+            expect(driver.handle).attr('aria-valuemin', '50');
+        });
+        it('handle aria-valuemax should be 100', () => {
+            expect(driver.handle).attr('aria-valuemax', '100');
+        });
+        it('handle aria-orientation should be "horizontal"', () => {
+            expect(driver.handle).attr('aria-orientation', 'horizontal');
+        });
+        it('handle right should be 20%', () => {
+            expect(driver.handle.style.right).to.equal('20%');
+        });
+        it('input value should be "60"', () => {
+            expect(driver.input).attr('value', '60');
+        });
+        it('progress width should be 20%', () => {
+            expect(driver.progress.style.width).to.equal('20%');
+        });
+    });
+
+    describe('min={50} max={100} value={60} axis={AXES.y}', () => {
+        let driver: any;
+        beforeEach(() => {
+            driver = renderWithProps({
+                min: 50,
+                max: 100,
+                value: 60,
+                axis: AXES.y
+            });
+        });
+
+        it('handle aria-valuemin should be 50', () => {
+            expect(driver.handle).attr('aria-valuemin', '50');
+        });
+        it('handle aria-valuemax should be 100', () => {
+            expect(driver.handle).attr('aria-valuemax', '100');
+        });
+        it('handle aria-orientation should be "vertical"', () => {
+            expect(driver.handle).attr('aria-orientation', 'vertical');
+        });
+        it('handle bottom should be 20%', () => {
+            expect(driver.handle.style.bottom).to.equal('20%');
+        });
+        it('input value should be "60"', () => {
+            expect(driver.input).attr('value', '60');
+        });
+        it('progress height should be 20%', () => {
+            expect(driver.progress.style.height).to.equal('20%');
+        });
+    });
+
+    describe('min={50} max={100} value={60} axis={AXES.yReverse}', () => {
+        let driver: any;
+        beforeEach(() => {
+            driver = renderWithProps({
+                min: 50,
+                max: 100,
+                value: 60,
+                axis: AXES.yReverse
+            });
+        });
+
+        it('handle aria-valuemin should be 50', () => {
+            expect(driver.handle).attr('aria-valuemin', '50');
+        });
+        it('handle aria-valuemax should be 100', () => {
+            expect(driver.handle).attr('aria-valuemax', '100');
+        });
+        it('handle aria-orientation should be "vertical"', () => {
+            expect(driver.handle).attr('aria-orientation', 'vertical');
+        });
+        it('handle top should be 20%', () => {
+            expect(driver.handle.style.top).to.equal('20%');
+        });
+        it('input value should be "60"', () => {
+            expect(driver.input).attr('value', '60');
+        });
+        it('progress height should be 20%', () => {
+            expect(driver.progress.style.height).to.equal('20%');
+        });
+    });
+
+    describe('value={40} displayStopMarks={true} step={20}', () => {
+        let driver: any;
+        beforeEach(() => {
+            driver = renderWithProps({
+                value: 40,
+                step: 20,
+                displayStopMarks: true
+            });
+        });
+        new Array(6).fill(0).forEach((value, index) => {
+            it(`should render ${index} mark`, () => {
+                expect(driver.getMark(index)).to.not.null;
+            });
+        });
+        it(`should not render 6 mark`, () => {
+            expect(driver.getMark(6)).to.be.null;
+        });
+        it('mark 0 should have class "markProgress"', () => {
+            expect(driver.getMark(0)).have.class(styles.markProgress);
+        });
+        it('mark 1 should have left "20%"', () => {
+            expect(driver.getMark(1).style.left).to.equal('20%');
+        });
+        it('mark 5 should have class "markTrack"', () => {
+            expect(driver.getMark(5)).have.class(styles.markTrack);
+        });
+    });
+
+    describe('value={40} displayStopMarks={true} step={20} axis={AXES.y}', () => {
+        let driver: any;
+        beforeEach(() => {
+            driver = renderWithProps({
+                value: 40,
+                step: 20,
+                displayStopMarks: true,
+                axis: AXES.y
+            });
+        });
+        it('mark 1 should have left "20%"', () => {
+            expect(driver.getMark(1).style.bottom).to.equal('20%');
+        });
+    });
+
+    describe('name="slider-name" label="slider-label" disabled={true}', () => {
+        let driver: any;
+        beforeEach(() => {
+            driver = renderWithProps({
+                name: 'slider-name',
+                label: 'slider-label',
+                disabled: true
+            });
+        });
+        it('input name should be "slider-name"', () => {
+            expect(driver.input).attr('name', 'slider-name');
+        });
+        it('handle aria-label should be "slider-label"', () => {
+            expect(driver.handle).attr('aria-label', 'slider-label');
+        });
+        it('should have "disabled" styles', () => {
+            expect(driver.slider).attr(`data-${styles.$stylesheet.namespace.toLowerCase()}-disabled`);
+        });
+    });
+
 });
