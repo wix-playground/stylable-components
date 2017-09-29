@@ -5,7 +5,9 @@ import style from './slider-demo.st.css';
 
 export interface SliderDemoState {
     value: number[];
+    multiValue: number[];
     rawValue: string;
+    rawMultiValue: string;
 }
 
 @stylable(style)
@@ -15,7 +17,9 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
 
         this.state = {
             value: [50],
-            rawValue: '50'
+            multiValue: [20, 80],
+            rawValue: '50',
+            rawMultiValue: '[20, 80]'
         };
     }
 
@@ -25,6 +29,43 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
 
         return (
             <table cellSpacing="24px">
+                <thead>
+                    <tr>
+                        <th className="table-head-cell">Default Range Slider</th>
+                        <th className="table-head-cell">Disabled Range Slider</th>
+                        <th className="table-head-cell">Range Slider with step</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <Slider
+                                value={this.state.multiValue}
+                                min={min}
+                                max={max}
+                                onChange={this.onRangeSliderChange}
+                            />
+                        </td>
+                        <td>
+                            <Slider
+                                value={this.state.multiValue}
+                                min={min}
+                                max={max}
+                                disabled={true}
+                                onChange={this.onRangeSliderChange}
+                            />
+                        </td>
+                        <td>
+                            <Slider
+                                value={this.state.multiValue}
+                                min={min}
+                                max={max}
+                                step={10}
+                                onChange={this.onRangeSliderChange}
+                            />
+                        </td>
+                    </tr>
+                </tbody>
                 <thead>
                     <tr>
                         <th className="table-head-cell">Default Slider</th>
@@ -243,6 +284,14 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
         this.setState({
             value,
             rawValue: String(value)
+        });
+    }
+
+    private onRangeSliderChange = ({value}: ChangeEvent<number[]>) => {
+        console.log(value);
+        this.setState({
+            multiValue: value,
+            rawMultiValue: String(value)
         });
     }
 

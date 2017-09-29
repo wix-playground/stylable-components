@@ -14,10 +14,15 @@ export type FocusEventHandler = (
 export type MouseHandler = (
     event: React.MouseEvent<HTMLElement> | MouseEvent,
     sliderArea: HTMLElement,
-    focusableElement: HTMLElement
+    focusableElement: HTMLElement[]
 ) => void;
 export type TouchHandler = (
     event: React.TouchEvent<HTMLElement> | TouchEvent,
     sliderArea: HTMLElement,
-    focusableElement: HTMLElement
+    focusableElement: HTMLElement[]
 ) => void;
+export interface ValueFromPointer {
+    relativeValue: number[];
+    currentValue: number;
+    currentValueIndex: number;
+}

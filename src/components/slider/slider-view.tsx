@@ -79,7 +79,7 @@ export class SliderView extends React.Component<SliderViewProps, {}> {
         onSliderAreaTouchEnd: noop
     };
 
-    private focusableElements: HTMLElement;
+    private focusableElements: HTMLElement[] = [];
 
     private sliderArea: HTMLElement;
 
@@ -123,32 +123,7 @@ export class SliderView extends React.Component<SliderViewProps, {}> {
                         data-automation-id="SLIDER-PROGRESS"
                         style={this.getProgressStyles()}
                     />
-                    <a
-                        ref={el => this.focusableElements = el as HTMLElement}
-                        className="handle"
-                        data-automation-id="SLIDER-HANDLE"
-                        style={this.getHandleStyles()}
-
-                        onKeyDown={this.onSliderAreaKeyDown}
-
-                        onFocus={this.onSliderFocus}
-                        onBlur={this.onSliderBlur}
-
-                        role="slider"
-                        aria-label={this.props.label}
-                        aria-orientation={this.props.orientation}
-                        aria-valuemin={`${this.props.min}`}
-                        aria-valuemax={`${this.props.max}`}
-                        aria-valuenow={`${this.props.value}`}
-                        tabIndex={this.props.disabled ? -1 : 0}
-                    >
-                        <div
-                            className="tooltip"
-                            data-automation-id="SLIDER-TOOLTIP"
-                        >
-                            {this.getTooltip()}
-                        </div>
-                    </a>
+                    {this.getHandles()}
                     {this.getMarks()}
                 </div>
             </div>
@@ -171,6 +146,40 @@ export class SliderView extends React.Component<SliderViewProps, {}> {
                 required={this.props.required}
                 disabled={this.props.disabled}
             />
+        ));
+    }
+
+    private getHandles(): JSX.Element[] {
+        return this.props.relativeValue!.map((value, index) => (
+            <a
+                ref={el => this.focusableElements[index] = el as HTMLElement}
+                className="handle"
+                data-automation-id={this.props.value!.length > 1 ? `SLIDER-HANDLE-${index}` : 'SLIDER-HANDLE'}
+                style={this.getHandleStyles(value)}
+
+                onKeyDown={this.onSliderAreaKeyDown}
+
+                onFocus={this.onSliderFocus}
+                onBlur={this.onSliderBlur}
+
+                role="slider"
+                aria-label={this.props.label}
+                aria-orientation={this.props.orientation}
+                aria-valuemin={`${this.props.min}`}
+                aria-valuemax={`${this.props.max}`}
+                aria-valuenow={`${this.props.value}`}
+                tabIndex={this.props.disabled ? -1 : 0}
+
+                key={index}
+            >
+                <div
+                    className="tooltip"
+                    data-automation-id="SLIDER-TOOLTIP"
+                >
+                    {this.getTooltip()}
+                </div>
+            </a>
+
         ));
     }
 
@@ -205,14 +214,24 @@ export class SliderView extends React.Component<SliderViewProps, {}> {
     }
 
     private getProgressStyles(): {[key in 'width' | 'height']?: string} {
+        const values = this.props.relativeValue;
+        const firstValue = values[0];
+        const lastValue = last(values);
+        const leftEdge = values.length > 1 ?
+            `${firstValue}%` :
+            '0';
+        const size = values.length > 1 ?
+            `${lastValue - firstValue}%` :
+            `${lastValue}%`;
         return {
-            [getSizeProperty(this.props.axis!)]: `${this.props.relativeValue}%`
+            [getSizeProperty(this.props.axis!)]: size,
+            [getPositionProperty(this.props.axis, this.props.rtl)]: leftEdge
         };
     }
 
-    private getHandleStyles(): {[key in 'top' | 'bottom' | 'right' | 'left']?: string} {
+    private getHandleStyles(value: number): {[key in 'top' | 'bottom' | 'right' | 'left']?: string} {
         return {
-            [getPositionProperty(this.props.axis!, this.props.rtl)]: `${this.props.relativeValue[0]}%`
+            [getPositionProperty(this.props.axis!, this.props.rtl)]: `${value}%`
         };
     }
 

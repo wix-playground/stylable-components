@@ -202,8 +202,8 @@ function rangeWithValueMinMax(
 
         it('renders invisible native input with right value', async () => {
             await waitForDom(() => {
-                const input0 = select('SLIDER-NATIVE-INPUT-0');
-                const input1 = select('SLIDER-NATIVE-INPUT-1');
+                const input0 = select('NATIVE-INPUT-0');
+                const input1 = select('NATIVE-INPUT-1');
 
                 expect(input0).to.has.value(String(value[0]));
                 expect(input1).to.has.value(String(value[1]));
