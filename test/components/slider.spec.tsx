@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {ClientRenderer, expect, sinon, waitFor} from 'test-drive-react';
+import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react';
 import {ContextProvider} from '../../src';
 import {
     AXES, AxisOptions, AxisOptionsKey, CONTINUOUS_STEP,
@@ -1196,6 +1196,14 @@ describe('Slider/properties', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
 
+    beforeEach(() => {
+        environment = new WindowStub();
+    });
+
+    afterEach(() => {
+        environment.sandbox.restore();
+    });
+
     describe('no properties', () => {
         let driver: any;
         beforeEach(() => {
@@ -1408,6 +1416,75 @@ describe('Slider/properties', () => {
         });
         it('should have "disabled" styles', () => {
             expect(driver.slider).attr(`data-${styles.$stylesheet.namespace.toLowerCase()}-disabled`);
+        });
+    });
+
+    describe('render with event listeners', () => {
+        let driver: any;
+        let events: {[key: string]: any};
+
+        beforeEach(() => {
+            events = [
+                'onChange', 'onInput', 'onFocus', 'onBlur',
+                'onDragStart', 'onDrag', 'onDragStop'
+            ].reduce<typeof events>((obj, key) => {
+                obj[key] = sinon.spy();
+                return obj;
+            }, {});
+            driver = renderWithProps(events);
+        });
+        it('should call onChange', () => {
+            const event = {
+                clientX: 0,
+                clientY: 0
+            };
+            driver.mouseDown(event);
+            driver.mouseUp(event, environment);
+            expect(events.onChange).to.be.calledOnce;
+        });
+        it('should call onInput', () => {
+            const event = {
+                clientX: 0,
+                clientY: 0
+            };
+            driver.mouseDown(event);
+            driver.mouseUp(event, environment);
+            expect(events.onInput).to.be.calledOnce;
+        });
+        it('should call onDragStart', () => {
+            const event = {
+                clientX: 0,
+                clientY: 0
+            };
+            driver.mouseDown(event);
+            expect(events.onDragStart).to.be.calledOnce;
+        });
+        it('should call onDragStop', () => {
+            const event = {
+                clientX: 0,
+                clientY: 0
+            };
+            driver.mouseDown(event);
+            driver.mouseUp(event, environment);
+            expect(events.onDragStop).to.be.calledOnce;
+        });
+        it('should call onDrag', () => {
+            const event = {
+                clientX: 0,
+                clientY: 0
+            };
+            driver.mouseDown(event);
+            driver.mouseMove(event, environment);
+            driver.mouseUp(event, environment);
+            expect(events.onDrag).to.be.calledOnce;
+        });
+        it('should call onFocus', () => {
+            simulate.focus(driver.handle);
+            expect(events.onFocus).to.be.calledOnce;
+        });
+        it('should call onBlur', () => {
+            simulate.blur(driver.handle);
+            expect(events.onBlur).to.be.calledOnce;
         });
     });
 
