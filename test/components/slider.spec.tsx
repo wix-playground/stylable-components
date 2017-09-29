@@ -1,7 +1,12 @@
 import * as React from 'react';
 import {ClientRenderer, expect, sinon, waitFor} from 'test-drive-react';
 import {ContextProvider} from '../../src';
-import {AXES, AxisOptions, Slider, SliderProps} from '../../src/components/slider';
+import {
+    AXES, AxisOptions, AxisOptionsKey, CONTINUOUS_STEP,
+    getAbsoluteValue,
+    getRelativeStep, getRelativeValue, getSizeProperty, getValueFromElementAndPointer, getValueInRange,
+    isReverse, isVertical, Slider, SliderProps
+} from '../../src/components/slider';
 import styles from '../../src/components/slider/slider.st.css';
 import {ChangeEvent} from '../../src/types/events';
 import {SliderContextProvierDriver, SliderDriver, SliderEventCoordinates} from '../../test-kit';
@@ -1180,7 +1185,7 @@ describe('<Slider />', () => {
     });
 });
 
-describe.only('Slider/properties', () => {
+describe('Slider/properties', () => {
     function renderWithProps(props?: SliderProps) {
         return clientRenderer
             .render(<Slider {...props}/>)
@@ -1403,6 +1408,220 @@ describe.only('Slider/properties', () => {
         });
         it('should have "disabled" styles', () => {
             expect(driver.slider).attr(`data-${styles.$stylesheet.namespace.toLowerCase()}-disabled`);
+        });
+    });
+
+});
+
+describe('Slider/calculations', () => {
+    function testMethod(fn: (prop: any) => any, results: {[key: string]: any}) {
+        Object.keys(results).forEach(key => {
+            it(`${key} => ${results[key]}`, () => {
+                expect(fn(AXES[key as AxisOptionsKey])).to.equal(results[key]);
+            });
+        });
+    }
+
+    describe('isVertical()', () => {
+        const results = {
+            x: false,
+            xReverse: false,
+            y: true,
+            yReverse: true
+        };
+        testMethod(isVertical, results);
+    });
+
+    describe('getSizeProperty()', () => {
+        const results = {
+            x: 'width',
+            xReverse: 'width',
+            y: 'height',
+            yReverse: 'height'
+        };
+        testMethod(getSizeProperty, results);
+    });
+
+    describe('isReverse()', () => {
+        const results = {
+            x: false,
+            xReverse: true,
+            y: false,
+            yReverse: true
+        };
+        testMethod(isReverse, results);
+    });
+
+    describe('getRelativeStep()', () => {
+        it('no step => CONTINUOUS_STEP', () => {
+            expect(getRelativeStep(undefined, 1, 2)).to.equal(CONTINUOUS_STEP);
+        });
+        it('CONTINUOUS_STEP => CONTINUOUS_STEP', () => {
+            expect(getRelativeStep(CONTINUOUS_STEP, 1, 2)).to.equal(CONTINUOUS_STEP);
+        });
+        it('(step = 1, min = 0, max = 10) => 10', () => {
+            expect(getRelativeStep(1, 0, 10)).to.equal(10);
+        });
+        it('(step = 1, min = 5, max = 10) => 20', () => {
+            expect(getRelativeStep(1, 5, 10)).to.equal(20);
+        });
+    });
+
+    describe('getRelativeValue()', () => {
+        it('(value = 10, min = 5, max = 15) => 50', () => {
+            expect(getRelativeValue(10, 5, 15)).to.equal(50);
+        });
+        it('(value = 0, min = 5, max = 15) => 0', () => {
+            expect(getRelativeValue(0, 5, 15)).to.equal(0);
+        });
+        it('(value = 20, min = 5, max = 15) => 100', () => {
+            expect(getRelativeValue(20, 5, 15)).to.equal(100);
+        });
+    });
+
+    describe('getAbsoluteValue()', () => {
+        it('(value = 25, min = 1, max = 5) => 2', () => {
+            expect(getAbsoluteValue(25, 1, 5)).to.equal(2);
+        });
+        it('(value = 0, min = 1, max = 5) => 1', () => {
+            expect(getAbsoluteValue(0, 1, 5)).to.equal(1);
+        });
+        it('(value = 100, min = 1, max = 5) => 5', () => {
+            expect(getAbsoluteValue(100, 1, 5)).to.equal(5);
+        });
+        it('(value = 150, min = 1, max = 5) => 5', () => {
+            expect(getAbsoluteValue(150, 1, 5)).to.equal(5);
+        });
+    });
+
+    describe('getValueInRange()', () => {
+        it('(value = 0, min = 10, max = 20) => 10', () => {
+            expect(getValueInRange(0, 10, 20)).to.equal(10);
+        });
+        it('(value = 15, min = 10, max = 20) => 15', () => {
+            expect(getValueInRange(15, 10, 20)).to.equal(15);
+        });
+        it('(value = 25, min = 10, max = 20) => 20', () => {
+            expect(getValueInRange(25, 10, 20)).to.equal(20);
+        });
+    });
+
+    describe('getValueFromElementAndPointer()', () => {
+        function testCase(opts: {[key: string]: any}) {
+            const name = Object.keys(opts).map(key => `${key} = ${opts[key]}`).join(', ');
+            let elem: any;
+
+            before(() => {
+                elem = document.createElement('div');
+                elem.style.width = opts.width + 'px';
+                elem.style.height = opts.height + 'px';
+                elem.style.left = 0;
+                elem.style.top = 0;
+                elem.style.position = 'absolute';
+                document.body.appendChild(elem);
+            });
+
+            after(() => {
+                document.body.removeChild(elem);
+            });
+
+            it(name, () => {
+                const event = {
+                    clientX: opts.clientX,
+                    clientY: opts.clientY
+                };
+                const args = [
+                    elem,
+                    event,
+                    opts.step,
+                    opts.vertically,
+                    opts.reversed
+                ];
+                expect(getValueFromElementAndPointer.apply(null, args)).to.equal(opts.result);
+            });
+        }
+
+        testCase({
+            width: 20,
+            height: 10,
+            clientX: 5,
+            clientY: 5,
+            step: 1,
+            vertically: false,
+            reversed: false,
+            result: 25
+        });
+
+        testCase({
+            width: 20,
+            height: 10,
+            clientX: 5,
+            clientY: 2,
+            step: 1,
+            vertically: true,
+            reversed: false,
+            result: 80
+        });
+
+        testCase({
+            width: 20,
+            height: 10,
+            clientX: 5,
+            clientY: 5,
+            step: 1,
+            vertically: false,
+            reversed: true,
+            result: 75
+        });
+        testCase({
+            width: 20,
+            height: 10,
+            clientX: 5,
+            clientY: 2,
+            step: 1,
+            vertically: true,
+            reversed: true,
+            result: 20
+        });
+        testCase({
+            width: 20,
+            height: 10,
+            clientX: 25,
+            clientY: 5,
+            step: 1,
+            vertically: false,
+            reversed: false,
+            result: 100
+        });
+        testCase({
+            width: 20,
+            height: 10,
+            clientX: -1,
+            clientY: 5,
+            step: 1,
+            vertically: false,
+            reversed: false,
+            result: 0
+        });
+        testCase({
+            width: 20,
+            height: 10,
+            clientX: 0,
+            clientY: 100,
+            step: 1,
+            vertically: true,
+            reversed: false,
+            result: 0
+        });
+        testCase({
+            width: 20,
+            height: 10,
+            clientX: 0,
+            clientY: -100,
+            step: 1,
+            vertically: true,
+            reversed: false,
+            result: 100
         });
     });
 
