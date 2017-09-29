@@ -1,57 +1,41 @@
 # Range Slider
 
-A **range slider** is an input where the user selects a range of values from within a given/predefined range.	
-
-
+**Range slider** is a component that allows user to input or selects a range of values from within a given range.	
 
 ### Elements
 
 ![elements](./assets/elements.png)
 
+A **Range Slider** is composed of the following elements: "bar", "handle", "rangeBar", "marks", "rangeMarks", "tooltip". The "handle" is dragged across the "bar" in order to give the range slider a desired value, while "rangeBar" shows the range between values. "Tooltip" is used to show the current value.
+
+The value steps are indicated by marks and rangeMarks.
+
+User can display a tooltip (e.g. to display current value) by setting `displayTooltip` prop to `true`.
 
 
-The handles are dragged across the bar in order to give the slider a desired range. Marks and range marks are representing the step. Clickable area represents the area where user can interact with slider (e.g. drag handles & change range) 
-
-**Range Slider consists of:** 
-::bar - represents sliders given range 
-::rangeBar - represents selected range from within a slider given range
-::handles - are dragged across the bar in order to set / change range
-::marks - represent step
-::rangeMarks - represents step that it displayed within ::rangeBar	
 
 ### API
 
 #### Props
 
-| name         | type                                  | defaultValue | isRequired | description                              |
-| ------------ | ------------------------------------- | ------------ | ---------- | ---------------------------------------- |
-| value        | array of numbers                      | [2, 5]       |            | Difference between values represent slider's selected range. |
-| disableCross | bool                                  | false        |            | Prevents handles to cross                |
-| axis         | enum: 'x' 'x-reverse' 'y' 'y-reverse' | 'x'          |            | The axis on which the slider will slide  |
-| min          | number                                | 0            |            | The absolute minimum of the slider's range |
-| max          | number                                | 1            |            | The absolute maximum of the slider's range |
-| step         | number OR string "any"                | 1            |            | Set the slider's step. If step = "number" it causes slider to move in discrete increments. If step = "any" sliders moves along a subjective range |
-| disabled     | bool                                  | false        |            | If true, the slider will not be interactive |
-| label        | string                                |              |            | Text to display in accessibility mode    |
-| name         | string                                |              |            | The name of the slider. Behaves like the name attribute of an input element |
-| marks        | bool                                  | false        |            | Controls the visibility of the marks     |
-| onChange     | func                                  |              | yes        | Callback function that is fired when the slider's value changed. Signature: `function(event: object, newValue: number): void` event: KeyDown event targeting the slider. newValue: The new value of the slider. |
-| onDragStart  | func                                  |              |            | Callback function that is fired when the slider has begun to move. Signature `function(event: object) : void` event: MouseDown or TouchStart event targeting the slider. |
-| onDragStop   | func                                  |              |            | Callback function that is fired when the slide has stopped moving. Signature `function(event: object) : void` event: MouseEnd or TouchEnd event targeting the slider. |
-| error        | bool                                  | false        |            | Sets the `:error` CSS state on the `<slider>` |
-| rtl          | bool                                  | false        |            | Makes the component RTL                  |
-
-
-
-#### Accepted Children
-
-> TBD (need to decide on how to implement tooltip)
-
-This component accepts children with the following `data-slot` attribute, in order to be displayed in specific places in its layout ( in this case child position is connected to ::handle)
-
-| data-slot | description                              | example                                  |
-| --------- | ---------------------------------------- | ---------------------------------------- |
-| tooltip   | Allows you to insert a component (or components) above the input | `<div data-slot="tooltip">hello world</div>` |
+| name             | type                                     | defaultValue | isRequired | description                              |
+| ---------------- | ---------------------------------------- | ------------ | ---------- | ---------------------------------------- |
+| value            | array of numbers                         | [2, 5]       |            | Difference between values represent slider's selected range. |
+| disableCross     | bool                                     | false        |            | Prevents handles to cross                |
+| axis             | 'x'<br>'x-reverse'<br>'y'<br>'y-reverse' | 'x'          |            | The axis on which the slider will slide  |
+| min              | number                                   | 0            |            | The absolute minimum of the slider's range |
+| max              | number                                   | 1            |            | The absolute maximum of the slider's range |
+| step             | number OR string "any"                   | 1            |            | Set the slider's step. If step = "number" it causes slider to move in discrete increments. If step = "any" sliders moves along a subjective range |
+| disabled         | bool                                     | false        |            | If true, the slider will not be interactive |
+| label            | string                                   |              |            | Text to display in accessibility mode    |
+| name             | string                                   |              |            | The name of the slider. Behaves like the name attribute of an input element |
+| displayStopMarks | bool                                     | false        |            | Controls the visibility of the marks     |
+| displayTooltip   | bool                                     | false        |            | Controls the visibility of the tooltip   |
+| tooltipPosition  | string                                   | top          |            | Controls the position of the tooltip. <br> Supports the following options: `top`, `bottom`, `left`, `right` |
+| onChange         | `(event: {value: number}): void`         |              | yes        | Callback function that is fired when the slider's value changed. |
+| onDragStart      | `(event: PointerEvent): void`            |              |            | Callback function that is fired when the handle has begun to move. |
+| onDragStop       | ` event: PointerEvent): void`            |              |            | Callback function that is fired when the handle has stopped moving. |
+| onDrag           | ` event: PointerEvent): void`            |              |            | Callback function that is fired when the handle is moving. |
 
 
 
@@ -126,18 +110,19 @@ Comments to example 2
 
 | selector     | description                              | note                                     |
 | ------------ | ---------------------------------------- | ---------------------------------------- |
-| ::handles    | Allows to style the handles of the slider | For now there is no way to style each handle separately |
+| ::handle     | Allows to style the handles of the slider | For now there is no way to style each handle separately |
 | ::bar        | Allows to style the bar of the slider    |                                          |
 | ::rangeBar   | Allows to style the section of the bar that represents selected range |                                          |
 | ::marks      | Allows to style marks that are shown on the ::bar section of the slider | by default ::marks use the same background color as ::bar |
 | ::rangeMarks | Allows to style marks that are shown on the :rangeBar section of the slider | by default ::rangeMarks use the same background color as ::rangeBar |
+| ::tooltip    | Allows to style the tooltip              |                                          |
 
 ### Custom CSS States (pseudo-classes)
 
-| state                          | description                              |
-| ------------------------------ | ---------------------------------------- |
-| :error                         | Style the component on error, i.e. when the `error` prop is true |
-| :hover, :focus, :disabled, etc | standard CSS pseudo state                |
+| state                          | description                            |
+| ------------------------------ | -------------------------------------- |
+| :error                         | Style the error state of the component |
+| :hover, :focus, :disabled, etc | Standard CSS pseudo state              |
 
 
 

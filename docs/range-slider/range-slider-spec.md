@@ -29,27 +29,23 @@
 
 ## Definition
 
-A **range slider** is an input where the user selects a range of values from within a given/predefined range.	
-
-
+**Range slider** is a component that allows user to input or selects a range of values from within a given range.
 
 ## Elements
 
 ![elements](./assets/elements.png)
 
-The handles are dragged across the bar in order to give the slider a desired range. Marks and range marks are representing the step. Clickable area represents the area where user can interact with slider (e.g. drag handles & change range) 
+A **Range Slider** is composed of the following elements: "bar", "handle", "rangeBar", "marks", "rangeMarks", "tooltip". The "handle" is dragged across the "bar" in order to give the range slider a desired value, while "rangeBar" shows the range between values. "Tooltip" is used to show the current value.
 
-**Range Slider consists of:** 
-::bar - represents sliders given range 
-::rangeBar - represents selected range from within a given range
-::handles - are dragged across the bar in order to set/change range
-::marks - represent step
-::rangeMarks - represent step that it displayed within ::rangeBar	
+The value steps are indicated by marks and rangeMarks.
 
-> TBD (need to decide on how to implement tooltip)
-> Also, you can display tooltip (e.g. to display current value) by adding child DOM element with relevant data-slot (data-slot="tooltip")
+You can display a tooltip (e.g. to display current value) by adding a child element with the relevant data-slot (data-slot="tooltip").
 
+A **Range Slider** is composed of the following elements: "bar", "handle", "rangeBar", "marks", "rangeMarks", "tooltip". The "handle" is dragged across the "bar" in order to give the range slider a desired value, while "rangeBar" shows the range between values. "Tooltip" is used to show the current value.
 
+The value steps are indicated by marks and rangeMarks.
+
+User can display a tooltip (e.g. to display current value) by setting `displayTooltip` prop to `true`.
 
 ## API
 
@@ -125,45 +121,37 @@ http://ilyabirman.net/meanwhile/all/slider/
 
 ## Behavior
 
-In order to change/set range, user can:
+In order to change the value, user can:
 
-1. drag handles over the slider bar; 
-2. click on the slider bar, mark or clickable area;
-3. click & drag  (click = click on handle, slider, mark or clickable area).
+1. drag handle over the slider bar
+2. click on the slider bar, mark OR clickable area to select the value from the range
+3. click & drag (click = click on handle, slider, mark & clickable area)
 
-Changing the value is performed **from current value** to the next expected value. 
-E.g. if `min=0`, `max=10`, `step=2`, `value=3.5`, than Up Arrow Key will give us 4 and Down Arrow Key will give us 2.
-Value can not exceed min/max limits. If value is > or < than min/max it is automatically set to corresponding min/max.
+Changing the value is performed **from current value** to the next expected value. E.g. if min=0, max=10, step=2, value=3.5, then UP arrow key will give us 4 and Down arrow key will give us 2 Value can not exceed the min/max limits. If value is > or < than min/max it is automatically set to corresponding min/max.
 
-If range slider has a `step` prop set to "number", handles should move across the slider bar only according to the step.
-
-When user clicks/taps on slider bar we move the handle that is closer to selected value OR handle with lower value.  
-
-E.g.
-
-1. If `min=0`, `max=10`, `step=1`, `value=3, 7`, then when user clicks/taps on 8 we move handle that represents value 7 (no matter what handle is in focus right now). 
-2. If `min=0`, `max=10`, `step=1`, `value=3, 7`, then when user clicks/taps on 5 we move handle that represents value 3  (no matter what handle is in focus right now). 
-
-NOTE: active handle should immediately obtain focus.
-
-**Crossing handles**
-You can prevent handles from crossing using `	disableCross` prop. Handles can not push each other (they either cross or stop before the next/previous handle).
-
-If use is trying to set min/max value to one handle, allowed min/max value is determine either by sliders range or by next/previous handle. 
+If slider has a step prop set to "number", handle should move across the slider bar only according to the step.
 
 **Alignment & Direction**
 
-You can adjust sliders alignment and direction in which the range is going to change with `axis` prop.
+You can adjust sliders alignment and direction in which the range is going to change with axis prop.
 
-1. `axis="x"` -> horizontal slider, progress is moving from left to right;
+1. `axis="x"` -> horizontal slider, progress is moving from left to right
+2. `axis="x-reverse"` -> horizontal slider, progress is moving from right to left
+3. `axis="y"` -> vertical slider, progress is moving from bottom to top
+4. `axis="y-reverse"` -> vertical slider, progress is moving from top to bottom
 
-2. `axis="x-reverse"` -> horizontal slider, progress is moving from right to left;
+**Tooltip**
 
-3. `axis="y"` -> vertical slider, progress is moving from bottom to top;
+To enable tooltip, set `displayTooltip` prop to `true`. Tooltip is shown on hover or focus. Tooltip position can be changed with `tooltipPosition` prop that accepts the following values `top`, `bottom`, `left`, `right`. Default position for the tooltip is `top`. NOTE: this is relevant for both horizontal & vertical position.
 
-4. `axis="y-reverse"` -> vertical slider, progress is moving from top to bottom.
+Tooltip is shown on:
 
-   ​
+1. Hover over the "handle"
+2. Focus over the "handle"
+
+See [sample slider](https://ant.design/components/slider/).
+
+
 
 #### Validation
 
