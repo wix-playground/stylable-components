@@ -9,11 +9,11 @@ Sliders are great for adjusting settings that reflect intensity levels (volume, 
 
 ![elements](./assets/elements.png)
 
-A **Slider** is composed of the following elements: "bar", "handle", "progressBar", "marks", "progressMarks". The "handle" is dragged across the "bar" in order to give the slider a desired value, while "progress" shows the range from the minimum value to the current value.
+A **Slider** is composed of the following elements: "bar", "handle", "progressBar", "marks", "progressMarks", "tooltip". The "handle" is dragged across the "bar" in order to give the slider a desired value, while "progress" shows the range from the minimum value to the current value. "Tooltip" is used to show the current value.
 
 The value steps are indicated by marks and progressMarks.
 
-You can display a tooltip (e.g. to display current value) by adding a child element with the relevant data-slot (data-slot="tooltip").
+You can display a tooltip (e.g. to display current value) by setting `displayTooltip` prop to `true`.
 
 ### API
 
@@ -22,26 +22,23 @@ You can display a tooltip (e.g. to display current value) by adding a child elem
 | name             | type                                     | defaultValue | isRequired | description                              |
 | ---------------- | ---------------------------------------- | ------------ | ---------- | ---------------------------------------- |
 | axis             | enum:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>'x'<br>'x-reverse'<br>'y'<br>'y-reverse' | 'x'          | no         | The axis on which the slider will slide. |
-| value            | number                                   | min          | no         | Displays default OR actual value of the slider |
-| min              | number                                   | 0            | no         | The absolute minimum of the slider's range |
-| max              | number                                   | 1            | no         | The absolute maximum of the slider's range |
+| value            | number                                   | min          | no         | Displays default OR actual value of the slider. |
+| min              | number                                   | 0            | no         | The absolute minimum of the slider's range. |
+| max              | number                                   | 1            | no         | The absolute maximum of the slider's range. |
 | step             | number OR string "any"                   | 1            | no         | Set the slider's step. If step = "number" it causes slider to move in discrete increments. If step = "any"  sliders moves along a subjective range. |
 | required         | boolean                                  | false        | no         | Whether or not the slider is required in a form. |
-| disabled         | boolean                                  | false        | no         | If true, the slider will not be interactive |
-| label            | string                                   |              | no         | Text to display in accessibility mode    |
+| disabled         | boolean                                  | false        | no         | If true, the slider will not be interactive. |
+| label            | string                                   |              | no         | Text to display in accessibility mode.   |
 | name             | string                                   |              | no         | The name of the slider. Behaves like the name attribute of an input element. |
-| displayStopMarks | boolean                                  | false        | no         | Controls the visibility of the marks     |
-| onChange         | function                                 | noop         | yes        | Callback function that is fired when the slider's value changed.<br>`(event: {value: number}) => void`<br> • event: KeyDown event targeting the slider.<br>• newValue: The new value of the slider. |
-| onDragStart      | function                                 |              | no         | Callback function that is fired when the slider has begun to move.<br>`function(event: PointerEvent): void`<br>• event: MouseDown or TouchStart event targeting the slider. |
-| onDragStop       | function                                 |              | no         | Callback function that is fired when the slide has stopped moving.<br>`function(event: PointerEvent): void`<br>• event: MouseEnd or TouchEnd event targeting the slider. |
+| displayStopMarks | boolean                                  | false        | no         | Controls the visibility of the marks.    |
+| displayTooltip   | bool                                     | false        | no         | Controls the visibility of the tooltip.  |
+| tooltipPosition  | string                                   | top          | no         | Controls the position of the tooltip. Supports the following options: `top`, `bottom`, `left`, `right`. |
+| onChange         | `(event: {value: number}): void`         |              | yes        | Callback function that is fired when the slider's value changed. |
+| onDragStart      | `(event: PointerEvent): void`            |              | no         | Callback function that is fired when the handle has begun to move. |
+| onDragStop       | `event: PointerEvent): void`             |              | no         | Callback function that is fired when the handle has stopped moving. |
+| onDrag           | `event: PointerEvent): void`             |              | no         | Callback function that is fired when the handle is moving. |
 
-#### Accepted Children
-
-**Slider** accepts children with the following `data-slot` attribute, in order to be displayed in a specific places in its layout. For **Slider**, the child position is connected to ::handle.
-
-| data-slot | description                              | example                                  |
-| --------- | ---------------------------------------- | ---------------------------------------- |
-| tooltip   | Allows you to insert a component (or components) and connect it to  the handle element. | `<div data-slot="tooltip">hello world</div>` |
+#### 
 
 ### Code Examples
 
@@ -111,8 +108,9 @@ export class ComponentsDemo extends React.Component<{}, State>{
 | ::handle        | Allows you to style the handle of the slider. |                                          |
 | ::bar           | Allows you to style the bar of the slider. |                                          |
 | ::progressBar   | Allows you to style the progress bar of the slider. |                                          |
-| ::marks         | Allows to style marks that are shown on the ::bar section of the slider. | by default ::marks use the same background color as ::bar |
+| ::marks         | Allows to style marks that are shown on the ::bar section of the slider. | By default ::marks use the same background color as ::bar. |
 | ::progressMarks | Allows to style marks that are shown on the ::progressBar section of the slider. | By default, ::progressMark elements use the same background color as ::progressBar. |
+| ::tooltip       | Allows to style the tooltip.             |                                          |
 
 ### Custom CSS States (pseudo-classes)
 
