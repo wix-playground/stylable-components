@@ -175,9 +175,6 @@ export class Slider extends React.Component<SliderProps, SliderState> {
                 return getRelativeValue(normalizedValue, min!, max!);
             });
 
-        if (relativeValues.length > 1) {
-            // console.log(relativeValues);
-        }
         this.setState({
             relativeValue: relativeValues,
             relativeStep: getRelativeStep(step, min!, max!),
@@ -212,7 +209,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
             currentHandleValue,
             nearestHandleIndex
         );
-        console.log('LONG NAME: ', JSON.stringify(relativeValue));
+
         return {
             relativeValue,
             currentValue: currentHandleValue,
@@ -258,8 +255,6 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         const newAbsoluteValue = newRelativeValue.map(
             value => getAbsoluteValue(value, this.props.min!, this.props.max!)
         );
-
-        // console.log(direction, toEdge, this.state.relativeValue, newRelativeValue);
 
         if (newRelativeValue !== this.state.relativeValue) {
             this.setState({

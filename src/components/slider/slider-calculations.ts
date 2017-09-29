@@ -76,7 +76,7 @@ export function getValueFromElementAndPointer(
     return value;
 }
 
-export function getNewValue<T>(values: number[], newValue: number, index: number): number[] {
+export function getNewValue(values: number[], newValue: number, index: number): number[] {
     return values
         .map((value, i) => i === index ? newValue : value)
         .sort((a, b) => a - b);
