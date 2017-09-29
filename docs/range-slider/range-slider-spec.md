@@ -29,9 +29,7 @@
 
 ## Definition
 
-A **range slider** is an input where the user selects a range of values from within a given/predefined range.	
-
-
+**Range slider** is a component that allows user to input or selects a range of values from within a given range.
 
 ## Elements
 
@@ -43,7 +41,11 @@ The value steps are indicated by marks and rangeMarks.
 
 You can display a tooltip (e.g. to display current value) by adding a child element with the relevant data-slot (data-slot="tooltip").
 
+A **Range Slider** is composed of the following elements: "bar", "handle", "rangeBar", "marks", "rangeMarks", "tooltip". The "handle" is dragged across the "bar" in order to give the range slider a desired value, while "rangeBar" shows the range between values. "Tooltip" is used to show the current value.
 
+The value steps are indicated by marks and rangeMarks.
+
+User can display a tooltip (e.g. to display current value) by setting `displayTooltip` prop to `true`.
 
 ## API
 
@@ -140,8 +142,7 @@ You can adjust sliders alignment and direction in which the range is going to ch
 
 **Tooltip**
 
-To enable tooltip, set `displayTooltip` prop to `true`. Tooltip position can be changed with `tooltipPosition` prop that accepts the following values `top`, `bottom`, `left`, `right`.
-Default position for the tooltip is `top` NOTE: this is relevant for both horizontal & vertical position.
+To enable tooltip, set `displayTooltip` prop to `true`. Tooltip is shown on hover or focus. Tooltip position can be changed with `tooltipPosition` prop that accepts the following values `top`, `bottom`, `left`, `right`. Default position for the tooltip is `top`. NOTE: this is relevant for both horizontal & vertical position.
 
 Tooltip is shown on:
 
@@ -149,6 +150,8 @@ Tooltip is shown on:
 2. Focus over the "handle"
 
 See [sample slider](https://ant.design/components/slider/).
+
+
 
 #### Validation
 

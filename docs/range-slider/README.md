@@ -1,8 +1,6 @@
 # Range Slider
 
-A **range slider** is an input where the user selects a range of values from within a given/predefined range.	
-
-
+**Range slider** is a component that allows user to input or selects a range of values from within a given range.	
 
 ### Elements
 
@@ -12,7 +10,7 @@ A **Range Slider** is composed of the following elements: "bar", "handle", "rang
 
 The value steps are indicated by marks and rangeMarks.
 
-You can display a tooltip (e.g. to display current value) by adding a child element with the relevant data-slot (data-slot="tooltip").
+User can display a tooltip (e.g. to display current value) by setting `displayTooltip` prop to `true`.
 
 
 
@@ -20,24 +18,24 @@ You can display a tooltip (e.g. to display current value) by adding a child elem
 
 #### Props
 
-| name            | type                                     | defaultValue | isRequired | description                              |
-| --------------- | ---------------------------------------- | ------------ | ---------- | ---------------------------------------- |
-| value           | array of numbers                         | [2, 5]       |            | Difference between values represent slider's selected range. |
-| disableCross    | bool                                     | false        |            | Prevents handles to cross                |
-| axis            | 'x'<br>'x-reverse'<br>'y'<br>'y-reverse' | 'x'          |            | The axis on which the slider will slide  |
-| min             | number                                   | 0            |            | The absolute minimum of the slider's range |
-| max             | number                                   | 1            |            | The absolute maximum of the slider's range |
-| step            | number OR string "any"                   | 1            |            | Set the slider's step. If step = "number" it causes slider to move in discrete increments. If step = "any" sliders moves along a subjective range |
-| disabled        | bool                                     | false        |            | If true, the slider will not be interactive |
-| label           | string                                   |              |            | Text to display in accessibility mode    |
-| name            | string                                   |              |            | The name of the slider. Behaves like the name attribute of an input element |
-| displayMarks    | bool                                     | false        |            | Controls the visibility of the marks     |
-| displayTooltip  | bool                                     | false        |            | Controls the visibility of the tooltip   |
-| tooltipPosition | string                                   | top          |            | Controls the position of the tooltip. <br> Supports the following options: `top`, `bottom`, `left`, `right` |
-| onChange        | `(event: {value: number}): void`         |              | yes        | Callback function that is fired when the slider's value changed. |
-| onDragStart     | `(event: PointerEvent): void`            |              |            | Callback function that is fired when the handle has begun to move. |
-| onDragStop      | ` event: PointerEvent): void`            |              |            | Callback function that is fired when the handle has stopped moving. |
-| onDrag          | ` event: PointerEvent): void`            |              |            | Callback function that is fired when the handle is moving. |
+| name             | type                                     | defaultValue | isRequired | description                              |
+| ---------------- | ---------------------------------------- | ------------ | ---------- | ---------------------------------------- |
+| value            | array of numbers                         | [2, 5]       |            | Difference between values represent slider's selected range. |
+| disableCross     | bool                                     | false        |            | Prevents handles to cross                |
+| axis             | 'x'<br>'x-reverse'<br>'y'<br>'y-reverse' | 'x'          |            | The axis on which the slider will slide  |
+| min              | number                                   | 0            |            | The absolute minimum of the slider's range |
+| max              | number                                   | 1            |            | The absolute maximum of the slider's range |
+| step             | number OR string "any"                   | 1            |            | Set the slider's step. If step = "number" it causes slider to move in discrete increments. If step = "any" sliders moves along a subjective range |
+| disabled         | bool                                     | false        |            | If true, the slider will not be interactive |
+| label            | string                                   |              |            | Text to display in accessibility mode    |
+| name             | string                                   |              |            | The name of the slider. Behaves like the name attribute of an input element |
+| displayStopMarks | bool                                     | false        |            | Controls the visibility of the marks     |
+| displayTooltip   | bool                                     | false        |            | Controls the visibility of the tooltip   |
+| tooltipPosition  | string                                   | top          |            | Controls the position of the tooltip. <br> Supports the following options: `top`, `bottom`, `left`, `right` |
+| onChange         | `(event: {value: number}): void`         |              | yes        | Callback function that is fired when the slider's value changed. |
+| onDragStart      | `(event: PointerEvent): void`            |              |            | Callback function that is fired when the handle has begun to move. |
+| onDragStop       | ` event: PointerEvent): void`            |              |            | Callback function that is fired when the handle has stopped moving. |
+| onDrag           | ` event: PointerEvent): void`            |              |            | Callback function that is fired when the handle is moving. |
 
 
 
@@ -112,7 +110,7 @@ Comments to example 2
 
 | selector     | description                              | note                                     |
 | ------------ | ---------------------------------------- | ---------------------------------------- |
-| ::handles    | Allows to style the handles of the slider | For now there is no way to style each handle separately |
+| ::handle     | Allows to style the handles of the slider | For now there is no way to style each handle separately |
 | ::bar        | Allows to style the bar of the slider    |                                          |
 | ::rangeBar   | Allows to style the section of the bar that represents selected range |                                          |
 | ::marks      | Allows to style marks that are shown on the ::bar section of the slider | by default ::marks use the same background color as ::bar |
