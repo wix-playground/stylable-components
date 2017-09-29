@@ -155,6 +155,7 @@ export class SliderView extends React.Component<SliderViewProps, {}> {
                 ref={el => this.focusableElements[index] = el as HTMLElement}
                 className="handle"
                 data-automation-id={this.props.value!.length > 1 ? `SLIDER-HANDLE-${index}` : 'SLIDER-HANDLE'}
+                data-index={index}
                 style={this.getHandleStyles(value)}
 
                 onKeyDown={this.onSliderAreaKeyDown}
@@ -249,12 +250,18 @@ export class SliderView extends React.Component<SliderViewProps, {}> {
                 'markTrack';
     }
 
+    private getHandleIndex(handle: HTMLElement): number {
+        return Number(handle.dataset.index);
+    }
+
     private onSliderFocus: React.FocusEventHandler<HTMLElement> = event => {
-        this.props.onSliderFocus!(event, 0);
+        const handle: HTMLElement = event.target as any;
+        this.props.onSliderFocus!(event, this.getHandleIndex(handle));
     }
 
     private onSliderBlur: React.FocusEventHandler<HTMLElement> = event => {
-        this.props.onSliderBlur!(event, 0);
+        const handle: HTMLElement = event.target as any;
+        this.props.onSliderBlur!(event, this.getHandleIndex(handle));
     }
 
     private onSliderAreaMouseDown = (event: React.MouseEvent<HTMLElement>) => {

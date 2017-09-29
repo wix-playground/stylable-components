@@ -230,8 +230,8 @@ export class Slider extends React.Component<SliderProps, SliderState> {
     }
 
     private changeValue(direction: ChangeDirection, multiplier: number = 1, toEdge: boolean = false) {
-        const {relativeValue} = this.state;
-        const currentValue = relativeValue[0];
+        const {relativeValue, currentHandleIndex} = this.state;
+        const currentValue = relativeValue[currentHandleIndex];
         const isAscending = direction === ChangeDirection.ascend;
         const round = isAscending ? Math.floor : Math.ceil;
         const relativeStep = this.state.relativeStep === CONTINUOUS_STEP ?
@@ -249,7 +249,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
                     relativeStep * (round(currentValue / relativeStep) + multiplier * deviation),
                     0, 100
                 ),
-            0
+            currentHandleIndex
         );
 
         const newAbsoluteValue = newRelativeValue.map(
