@@ -24,6 +24,7 @@ export class MultiselectDemo extends React.Component {
                 value={this.state.value}
                 onChange={this.handleSelectChange}
                 maxSelected={2}
+                minCharacters={2}
             />
         );
     }
