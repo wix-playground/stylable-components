@@ -8,8 +8,6 @@ import {initParentsMap, TreeItemData,
     TreeViewParentsMap, TreeViewStateMap} from '../../src/components/tree-view/tree-view';
 import {TreeItemDriver, TreeViewDriver} from '../../test-kit';
 
-// this can be removed once encapsulated in the driver
-
 import treeViewDemoStyle from '../../demo/components/tree-view-demo.st.css';
 
 const treeItem = 'TREE_ITEM';
@@ -47,53 +45,6 @@ const changedLabel = 'Kaiserschmarrn';
 // duplicating the data so i can pass a new object to the non-mobx version
 const newTreeData = JSON.parse(JSON.stringify(treeData));
 newTreeData[0].children![2].children!.push({label: changedLabel});
-
-export interface TreeViewWrapperState {
-    treeData: object[];
-}
-
-// make a driver that manually generates TVDriver using this.root of the wrapper
-export class TreeViewWrapper extends React.Component<{}, TreeViewWrapperState> {
-    public state = {treeData};
-
-    public render() {
-        return <TreeView dataSource={this.state.treeData}/>;
-    }
-
-    public switchDataSource = () => {
-        this.setState({
-            treeData: newTreeData
-        });
-    }
-}
-
-export class TreeViewMobxWrapper extends React.Component<{}, {}> {
-    @observable private obsTreeData: TreeItemData[] = treeData;
-
-    public render() {
-        return <TreeView dataSource={this.obsTreeData}/>;
-    }
-
-    public modifyMobxDataSource = () => {
-        this.obsTreeData[0].children![2].children!.push({label: changedLabel});
-    }
-
-    public renameLabel = () => {
-        this.obsTreeData[0].children![0].label = changedLabel;
-    }
-}
-
-export class TreeViewWrapperDriver extends DriverBase {
-    public static ComponentClass = TreeViewWrapper;
-
-    public treeView = new TreeViewDriver(() => this.select('TREE_VIEW'));
-}
-
-export class TreeViewMobxWrapperDriver extends DriverBase {
-    public static ComponentClass = TreeViewMobxWrapper;
-
-    public treeView = new TreeViewDriver(() => this.select('TREE_VIEW'));
-}
 
 class TreeViewDemoDriver extends DriverBase {
     public static ComponentClass = TreeViewDemo;
@@ -199,24 +150,19 @@ describe('<TreeView />', () => {
     });
 
     it('should rename node label without collapsing tree', async () => {
-        const getTreeItem = (id: string) => `${treeItem}_${id.replace(' ', '_')}`;
-        const getTreeItemIcon = (id: string) => `${getTreeItem(id)}_ICON`;
-
-        function expandItemWithLabel(selectFn: (...selectors: string[]) => Element | null, id: string) {
-            simulate.click(selectFn(getTreeItemIcon(id)));
-        }
-
-        const {select, waitForDom, result} = clientRenderer.render(<TreeViewMobxWrapper />);
+        const obsTreeData: TreeItemData[] = observable(treeData);
+        const {waitForDom, driver: treeView} =
+            clientRenderer.render(<TreeView dataSource={obsTreeData} />).withDriver(TreeViewDriver);
 
         const firstChildLabel = treeData[0].children![0].label;
 
-        expandItemWithLabel(select, treeData[0].label);
+        treeView.getItem(treeData[0].label).clickIcon();
 
-        await waitForDom(() => expect(select(getTreeItem(firstChildLabel))).to.have.text(firstChildLabel));
+        await waitForDom(() => expect(treeView.getItem(firstChildLabel).root).to.have.text(firstChildLabel));
 
-        (result as TreeViewMobxWrapper).renameLabel();
+        obsTreeData[0].children![0].label = changedLabel;
 
-        return waitForDom(() => expect(select(getTreeItem(changedLabel))).to.have.text(changedLabel));
+        return waitForDom(() => expect(treeView.getItem(changedLabel).root).to.have.text(changedLabel));
     });
 
     describe('Using default renderer', () => {
