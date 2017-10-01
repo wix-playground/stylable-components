@@ -10,8 +10,6 @@ import {TreeItemDriver, TreeViewDriver} from '../../test-kit';
 
 import treeViewDemoStyle from '../../demo/components/tree-view-demo.st.css';
 
-const treeItem = 'TREE_ITEM';
-
 const treeData: TreeItemData[] = [
     {
         label: 'Food Menu', children: [
@@ -514,7 +512,7 @@ describe('<TreeView />', () => {
 
             it('invokes onClick when clicked', async () => {
                 const onClick = sinon.spy();
-                const {driver: item, container} = clientRenderer.render(
+                const {driver: item} = clientRenderer.render(
                     <TreeItem
                         item={sampleItem}
                         itemRenderer={TreeItem}

@@ -1,9 +1,9 @@
 import * as React from 'react';
+import {Stylesheet} from 'stylable';
 import {DriverBase, simulate} from 'test-drive-react';
 import {TreeItem, TreeItemProps, TreeKeyCodes, TreeView} from '../../src';
-import {elementHasStylableState} from '../../test-kit/utils';
-import {Stylesheet} from 'stylable';
 import treeItemStyle from '../../src/components/tree-view/tree-item.st.css';
+import {elementHasStylableState} from '../../test-kit/utils';
 
 const treeItem = 'TREE_ITEM';
 export type ValidKeyCodes = 'ENTER' | 'HOME' | 'END' | 'UP' | 'DOWN' | 'LEFT' | 'RIGHT';
