@@ -2,10 +2,8 @@ import {observable} from 'mobx';
 import * as React from 'react';
 import {ClientRenderer, DriverBase, expect, simulate, sinon, waitFor} from 'test-drive-react';
 import {TreeViewDemo, TreeViewDemoCustom} from '../../demo/components/tree-view-demo';
-import {TreeItem, TreeView} from '../../src';
+import {initParentsMap, TreeItem, TreeItemData, TreeView, TreeViewParentsMap, TreeViewStateMap} from '../../src';
 import {getLastAvailableItem, getNextItem, getPreviousItem} from '../../src/components/tree-view/tree-util';
-import {initParentsMap, TreeItemData,
-    TreeViewParentsMap, TreeViewStateMap} from '../../src/components/tree-view/tree-view';
 import {TreeItemDriver, TreeViewDriver} from '../../test-kit';
 
 import treeViewDemoStyle from '../../demo/components/tree-view-demo.st.css';
@@ -50,7 +48,7 @@ class TreeViewDemoDriver extends DriverBase {
     public treeView = new TreeViewDriver(() => this.select('TREE_VIEW'));
 }
 
-class TreeViewDemoCustomDriver extends DriverBase {
+class CustomTreeViewDemoDriver extends DriverBase {
     public static ComponentClass = TreeViewDemoCustom;
 
     public customTreeView = new TreeViewDriver(() => this.select('TREE_VIEW'));
@@ -100,7 +98,7 @@ describe('<TreeView />', () => {
     it('renders a tree view with custom children', async () => {
         const {driver: treeViewDemoCustom, waitForDom} = clientRenderer.render(
             <TreeViewDemoCustom />
-        ).withDriver(TreeViewDemoCustomDriver);
+        ).withDriver(CustomTreeViewDemoDriver);
 
         const {customTreeView} = treeViewDemoCustom;
 
