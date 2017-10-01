@@ -1,0 +1,1 @@
+{"version":3,"file":"is-touch.js","sourceRoot":"","sources":["../../../src/utils/is-touch.ts"],"names":[],"mappings":";;AAAa,QAAA,OAAO,GAAY,OAAO,MAAM,KAAK,QAAQ,IAAI,aAAa,IAAI,MAAM,CAAC","sourcesContent":["export const isTouch: boolean = typeof window === 'object' && 'orientation' in window;\n"]}

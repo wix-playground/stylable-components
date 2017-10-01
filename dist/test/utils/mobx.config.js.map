@@ -1,0 +1,1 @@
+{"version":3,"file":"mobx.config.js","sourceRoot":"","sources":["../../../test/utils/mobx.config.ts"],"names":[],"mappings":";;AAAA,6BAA+B;AAE/B,gBAAS,CAAC,KAAK,CAAC,CAAC","sourcesContent":["import {useStrict} from 'mobx';\n\nuseStrict(false);\n"]}

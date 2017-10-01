@@ -1,0 +1,1 @@
+{"version":3,"file":"is-element.js","sourceRoot":"","sources":["../../../src/utils/is-element.ts"],"names":[],"mappings":";;AAAA,mBAA0B,CAAM;IAC5B,MAAM,CAAC,CAAC,YAAY,OAAO,CAAC;AAChC,CAAC;AAFD,8BAEC","sourcesContent":["export function isElement(a: any): a is Element {\n    return a instanceof Element;\n}\n"]}

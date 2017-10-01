@@ -1,0 +1,1 @@
+{"version":3,"file":"strings.js","sourceRoot":"","sources":["../../../../src/components/time-picker/strings.ts"],"names":[],"mappings":";;AAAa,QAAA,MAAM,GAAG;IAClB,EAAE,EAAE,OAAO;IACX,EAAE,EAAE,SAAS;IACb,IAAI,EAAE,OAAO;CAChB,CAAC","sourcesContent":["export const LABELS = {\n    hh: 'Hours',\n    mm: 'Minutes',\n    ampm: 'AM/PM'\n};\n"]}

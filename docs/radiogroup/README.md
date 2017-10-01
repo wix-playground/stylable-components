@@ -1,6 +1,6 @@
 # Radio Group and Radio Button
 
-The **RadioGroup** component is used to group together children and provide them with similar properties. Most common use case is to render **RadioButton** components under the group. 
+The **RadioGroup** component is used to group together children and provide them with similar properties. Most common use case is to render **RadioButton** components under the group.
 
 
 ## Elements
@@ -51,7 +51,7 @@ export class Example1 extends React.Component<{}, {}>{
     private onChange = (e: {value: string}) => {
         this.setState({myValue: e.value});
     }
-    
+
     render() {
         return (
             <RadioGroup onChange={this.onChange} name="example1" className="rg1">
@@ -80,7 +80,7 @@ export class Example2 extends React.Component<{}, {}>{
     private onChange = (e: {value: string}) => {
         this.setState({myValue: e.value});
     }
-    
+
     render() {
         return (
             <RadioGroup
@@ -128,7 +128,7 @@ export class Example2 extends React.Component<{}, {}>{
     -st-default: RG;
 }
 
-/* myRadioGroup class now extends stylable radio group */ 
+/* myRadioGroup class now extends stylable radio group */
 .myRadioGroup {
     -st-extends: RG;
 }

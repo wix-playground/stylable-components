@@ -1,0 +1,1 @@
+{"version":3,"file":"index.js","sourceRoot":"","sources":["../../../../src/components/screen-reader-notification/index.ts"],"names":[],"mappings":";;;;;AAAA,kDAA6C","sourcesContent":["export * from './screen-reader-notification';\n"]}

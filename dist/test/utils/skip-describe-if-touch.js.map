@@ -1,0 +1,1 @@
+{"version":3,"file":"skip-describe-if-touch.js","sourceRoot":"","sources":["../../../test/utils/skip-describe-if-touch.ts"],"names":[],"mappings":";;AAAA,yCAAwC;AAE3B,QAAA,mBAAmB,GAAG,eAAO,GAAG,QAAQ,GAAG,QAAQ,CAAC,IAAI,CAAC","sourcesContent":["import {isTouch} from '../../src/utils';\n\nexport const skipDescribeIfTouch = isTouch ? describe : describe.skip;\n"]}

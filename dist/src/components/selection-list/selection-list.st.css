@@ -1,0 +1,65 @@
+@namespace "SelectionList";
+
+.list {
+    -st-extends: root;
+    -st-states: focused;
+    width: 276px;
+    border: 1px solid #adbbc6;
+    outline: none;
+    display: inline-block;
+}
+
+.list:focused {
+    border-color: #4a90e2;
+}
+
+.divider {
+    height: 1px;
+    background-color: #adbbc6;
+}
+
+.item {
+    -st-states: selected, focused, disabled;
+    width: 100%;
+    min-height: 36px;
+    padding: 5px 23px;
+    border: 1px solid transparent;
+    font-family: ArialMT;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #000000;
+    cursor: pointer;
+    user-select: none;
+    box-sizing: border-box;
+}
+
+.item:hover {
+    background-color: #edf7ff;
+}
+
+.item:selected:not(:hover) {
+    background-color: #f1f1f1;
+}
+
+.item:disabled {
+    color: #c8c8c8;
+    cursor: default;
+}
+
+.item:disabled:hover {
+    background: #ffffff;
+}
+
+.list:focused > .item:selected {
+    background-color: #4990e2;
+    color: #fff;
+}
+
+.list:focused > .item:selected:hover {
+    background-color: #5cb4ff;
+    color: #ffffff;
+}
+
+.list:focused > .item:focused {
+    border-color: #4990e2;
+}
