@@ -7,6 +7,7 @@ export interface ImageDemoState {
     src: string;
     resizeMode: 'cover' | 'contain' | 'fill';
 }
+
 @stylable(styles)
 export class ImageDemo extends React.Component<{}, ImageDemoState> {
     public state: ImageDemoState = {

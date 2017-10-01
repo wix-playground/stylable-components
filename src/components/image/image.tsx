@@ -52,8 +52,8 @@ export class Image extends React.PureComponent<ImageProps, ImageState> {
             return (
                 <div style={wrapperStyle} className="imageWrapper">
                     <img
-                        data-automation-id="NATIVE_IMAGE"
                         {...additionalImageProps}
+                        data-automation-id="NATIVE_IMAGE"
                         className="hiddenImage"
                         src={this.state.src}
                         onLoad={this.onLoad}
@@ -65,8 +65,8 @@ export class Image extends React.PureComponent<ImageProps, ImageState> {
 
         return (
             <img
-                data-automation-id="NATIVE_IMAGE"
                 {...additionalImageProps}
+                data-automation-id="NATIVE_IMAGE"
                 src={this.state.src}
                 onLoad={this.onLoad}
                 onError={this.onError}
