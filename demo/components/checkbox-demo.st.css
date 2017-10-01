@@ -5,27 +5,29 @@
     -st-default: CB;
 }
 
-.customBoxIcon {
-    height: 20px;
-    width: 20px;
-    fill: none;
-    stroke: #D1D1D1;
+:import {
+    -st-from: './checkbox-mixin-demo';
+    -st-named: customBoxIconMixin, customTickIconMixin;
 }
 
-CB:checked .customBoxIcon {
-    fill: goldenrod;
+.customDemo{
+    -st-extends: CB;
 }
 
-CB:focus .customBoxIcon {
+.customDemo::boxIcon   {
+    -st-mixin: customBoxIconMixin('none', '#D1D1D1');
+}
+
+.customDemo::tickIcon {
+    -st-mixin: customTickIconMixin('#f1f1f1');
+}
+
+.customDemo:checked::boxIcon {
+    -st-mixin: customBoxIconMixin('goldenrod', '#D1D1D1');
+}
+
+.customDemo:focus {
     outline: none;
-}
-
-.customTickIcon {
-    height: 20px;
-    width: 20px;
-    position: relative;
-    margin-left: -20px;
-    fill: #f1f1f1;
 }
 
 .label {

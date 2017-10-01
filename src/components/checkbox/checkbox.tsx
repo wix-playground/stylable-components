@@ -54,7 +54,7 @@ export class CheckBox extends React.Component<CheckBoxProps, CheckBoxState> {
                 <input
                     data-automation-id="NATIVE_CHECKBOX"
                     type="checkbox"
-                    className="nativeCheckbox"
+                    className="hiddenInput"
                     checked={this.props.value}
                     disabled={this.props.disabled}
                     onChange={this.handleChange}

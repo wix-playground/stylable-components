@@ -24,6 +24,11 @@ export class CheckBoxDemo extends React.Component<{}, {}> {
                     <h3>Indeterminate</h3>
                     <IndeterminateDemo/>
                 </div>
+
+                <div>
+                    <h3>Custom Checkbox</h3>
+                    <CustomCheckboxDemo/>
+                </div>
             </div>
         );
     }
@@ -135,4 +140,26 @@ export class IndeterminateDemo extends React.Component<{}, {value1: boolean, val
     private onChangeParent = (e: ChangeEvent<boolean>) => { this.setState({value1: e.value, value2: e.value}); };
     private onChangeChild1 = (e: ChangeEvent<boolean>) => { this.setState({value1: e.value}); };
     private onChangeChild2 = (e: ChangeEvent<boolean>) => { this.setState({value2: e.value}); };
+}
+
+export class CustomCheckboxDemo extends React.Component<{}, {value: boolean}> {
+    public state = {
+        value: false
+    };
+
+    public render() {
+        return (
+            <div data-automation-id="CUSTOMCHECKBOX_DEMO">
+                <CheckBox
+                    data-automation-id="CUSTOM_DEMO_CHECKBOX"
+                    value={this.state.value}
+                    onChange={this.handleChange}
+                    className={style.customDemo}
+                >
+                    <span data-automation-id="CUSTOM_LABEL" className={style.label}>I'm a custom checkbox</span>
+                </CheckBox>
+            </div>
+        );
+    }
+    private handleChange = (e: ChangeEvent<boolean>) => { this.setState({value: e.value}); };
 }
