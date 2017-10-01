@@ -186,7 +186,10 @@ describe('<TreeView />', () => {
 
             treeView.getItem(treeData[0].label).clickLabel();
 
-            await waitFor(() => expect(onSelectItem).to.have.been.calledWithMatch(treeData[0]));
+            await waitFor(() => {
+                expect(onSelectItem).to.have.been.calledOnce;
+                expect(onSelectItem).to.have.been.calledWithMatch(treeData[0]);
+            });
         });
 
         describe('Keyboard Navigation', () => {
@@ -686,7 +689,10 @@ describe('<TreeView />', () => {
 
                 treeInstance.selectItem(treeData[0]);
 
-                await waitFor(() => expect(onSelectItem).to.have.been.calledWithMatch(treeData[0]));
+                await waitFor(() => {
+                    expect(onSelectItem).to.have.been.calledOnce;
+                    expect(onSelectItem).to.have.been.calledWithMatch(treeData[0]);
+                });
             });
         });
     });

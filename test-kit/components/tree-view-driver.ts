@@ -4,6 +4,7 @@ import {DriverBase, simulate} from 'test-drive-react';
 import {TreeItem, TreeItemProps, TreeKeyCodes, TreeView} from '../../src';
 import treeItemStyle from '../../src/components/tree-view/tree-item.st.css';
 import {elementHasStylableState} from '../../test-kit/utils';
+import HTML = Mocha.reporters.HTML;
 
 const treeItem = 'TREE_ITEM';
 export type ValidKeyCodes = 'ENTER' | 'HOME' | 'END' | 'UP' | 'DOWN' | 'LEFT' | 'RIGHT';
@@ -29,11 +30,11 @@ export class TreeItemDriver extends DriverBase {
         return this.root.getAttribute('data-automation-id')!;
     }
 
-    public get label(): Element {
+    public get label(): HTMLElement {
         return this.select(`${this.id}_LABEL`);
     }
 
-    public get icon(): Element {
+    public get icon(): HTMLElement {
         return this.select(`${this.id}_ICON`);
     }
 
