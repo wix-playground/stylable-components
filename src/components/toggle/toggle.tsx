@@ -1,9 +1,11 @@
+import * as PropTypes from 'prop-types';
 import * as React from 'react';
-import {SBComponent} from 'stylable-react-component';
+import {properties, stylable} from 'wix-react-tools';
 import {FormInputProps} from '../../types/forms';
+import {isRTLContext} from '../../utils';
 import style from './toggle.st.css';
 
-export interface Props extends FormInputProps<boolean> {
+export interface Props extends FormInputProps<boolean>, properties.Props {
     className?: string;
     error?: boolean;
     disabled?: boolean;
@@ -11,20 +13,24 @@ export interface Props extends FormInputProps<boolean> {
     tabIndex?: number;
     required?: boolean;
     name?: string;
-    rtl?: boolean;
 }
 export interface State {
     focus: boolean;
 }
 
-@SBComponent(style)
+@stylable(style)
+@properties
 export default class Toggle extends React.Component<Props, State> {
-    public static defaultProps = {
+    public static defaultProps: Partial<Props> = {
         value: false,
         disabled: false,
         error: false,
-        rtl: false,
         required: false
+    };
+    public static contextTypes = {
+        contextProvider: PropTypes.shape({
+            dir: PropTypes.string
+        })
     };
 
     public state = {
@@ -38,7 +44,6 @@ export default class Toggle extends React.Component<Props, State> {
             value,
             disabled,
             error,
-            rtl,
             label,
             name,
             required,
@@ -50,18 +55,18 @@ export default class Toggle extends React.Component<Props, State> {
             <label
                 data-automation-id="TOGGLE"
                 onMouseDown={this.onMouseDown}
-                cssStates={{
+                style-state={{
                     checked: value!,
                     disabled: disabled!,
                     focus: focus!,
                     error: error!,
-                    rtl: rtl!
+                    rtl: isRTLContext(this.context)
                 }}
             >
                 {!disabled &&
                     <input
-                        data-automation-id="TOGGLE_INPUT"
-                        className="input"
+                        data-automation-id="NATIVE_INPUT"
+                        className="nativeInput"
                         type="checkbox"
                         name={name}
                         aria-label={label}
@@ -73,9 +78,7 @@ export default class Toggle extends React.Component<Props, State> {
                         onBlur={this.onInputBlur}
                     />
                 }
-                <div className="switch-wrap">
-                    <div className="switch"/>
-                </div>
+                <div className="switch"/>
             </label>
         );
     }

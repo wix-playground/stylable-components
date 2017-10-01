@@ -18,7 +18,7 @@
 }
 .root {
     -st-states: checked, disabled, focus, error, rtl;
-    display: block;
+    display: inline-block;
     position: relative;
     width: value(width);
     border: value(borderWidth) solid value(BK3);
@@ -29,7 +29,7 @@
     user-select: none;
     transition: background-color 200ms linear;
 }
-.input {
+.nativeInput {
     position: absolute;
     display: block;
     position: absolute;
@@ -39,10 +39,6 @@
     border: 0;
     width: 0;
     height: 0;
-}
-.switch-wrap {
-    width: 100%;
-    position: relative;
 }
 
 .switch {
@@ -94,11 +90,7 @@
     background-color: value(DS1);
 }
 
-.root:rtl::switch {
-    margin-left: 100%;
-    transform: translateX(-100%);
-}
 .root:rtl:checked::switch {
-    margin-left: 0;
-    transform: translateX(0);
+    margin-right: 100%;
+    transform: translateX(100%);
 }

@@ -1,13 +1,11 @@
 import * as React from 'react';
-import {SBComponent, SBStateless} from 'stylable-react-component';
+import {stylable} from 'wix-react-tools';
+import {ChangeEvent, CheckBox, CheckBoxIconProps} from '../../src';
 import style from './checkbox-demo.st.css';
-
-import {CheckBox, CheckBoxIconProps} from '../../src';
-import {ChangeEvent} from '../../src/types/events';
 
 export const demoCheckBoxText: string = 'Yes, I\'m over 18 years old';
 
-@SBComponent(style)
+@stylable(style)
 export class CheckBoxDemo extends React.Component<{}, {}> {
     public render() {
         return (
@@ -169,7 +167,7 @@ class CustomIconsDemo extends React.Component<{}, {value: boolean}> {
     private handleChange = (e: ChangeEvent<boolean>) => { this.setState({value: e.value}); };
 }
 
-const TickMarkSVG: React.SFC<CheckBoxIconProps> = SBStateless(props => {
+const TickMarkSVG: React.SFC<CheckBoxIconProps> = stylable(style)(props => {
     return (
         <svg
             className="customTickIcon"
@@ -182,9 +180,9 @@ const TickMarkSVG: React.SFC<CheckBoxIconProps> = SBStateless(props => {
             <circle cx="10" cy="14" r="4"/>
         </svg>
     );
-}, style);
+});
 
-const CheckBoxSVG: React.SFC<CheckBoxIconProps> = SBStateless(props => {
+const CheckBoxSVG: React.SFC<CheckBoxIconProps> = stylable(style)(props => {
     return (
         <svg
             className="customBoxIcon"
@@ -195,4 +193,4 @@ const CheckBoxSVG: React.SFC<CheckBoxIconProps> = SBStateless(props => {
             <path d="M 10,1 20,20 1,20 z"/>
         </svg>
     );
-}, style);
+});

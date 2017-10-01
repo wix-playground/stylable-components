@@ -4,12 +4,12 @@ import {ClientRenderer, expect, waitFor} from 'test-drive-react';
 import {Portal} from '../../src';
 import {PortalTestDriver} from '../../test-kit';
 
-describe('<Portal />', function() {
+describe('<Portal />', () => {
     const clientRenderer = new ClientRenderer();
 
-    afterEach(function() {clientRenderer.cleanup(); });
+    afterEach(() => {clientRenderer.cleanup(); });
 
-    it('displays the portal and renders its children', async function() {
+    it('displays the portal and renders its children', async () => {
         const {result} = clientRenderer.render(
             <Portal>
                 <span>Portal Body</span>
@@ -23,7 +23,7 @@ describe('<Portal />', function() {
         });
     });
 
-    it('applies supplied styles to the popup and updates them if changed', async function() {
+    it('applies supplied styles to the popup and updates them if changed', async () => {
         const {container, result} = clientRenderer.render(
             <Portal style={{position: 'absolute'}}>
                 <span>Portal Body</span>
@@ -44,7 +44,30 @@ describe('<Portal />', function() {
         await waitFor(() => expect(portal.root).to.have.nested.property('style.position', 'fixed'));
     });
 
-    it('removes the component when unmounting', async function() {
+    it('applies supplied className and id to the popup and updates them if changed', async () => {
+        const {container, result} = clientRenderer.render(
+            <Portal className="my-test-class" id="my-test-id">
+                <span>Portal Body</span>
+            </Portal>
+        );
+
+        const portal = new PortalTestDriver(result as Portal);
+
+        await waitFor(() => expect(portal.root).to.have.nested.property('className', 'my-test-class'));
+        await waitFor(() => expect(portal.root).to.have.nested.property('id', 'my-test-id'));
+
+        clientRenderer.render(
+            <Portal className="another-test-class" id="another-test-id">
+                <span>Portal Body</span>
+            </Portal>,
+            container
+        );
+
+        await waitFor(() => expect(portal.root).to.have.nested.property('className', 'another-test-class'));
+        await waitFor(() => expect(portal.root).to.have.nested.property('id', 'another-test-id'));
+    });
+
+    it('removes the component when unmounting', async () => {
         const container = document.body.appendChild(document.createElement('div'));
         const {result} = clientRenderer.render(
             <Portal>
@@ -61,28 +84,30 @@ describe('<Portal />', function() {
         await waitFor(() => expect(portal.isPresent).to.be.false);
     });
 
-    it('updates the portal content if the children are changed', async function() {
+    it('updates the portal content if the children are changed', async () => {
+        const initialText = 'Portal Body';
+        const updatedText = 'Portal Body Updated';
         const {container, result} = clientRenderer.render(
             <Portal>
-                <span>Portal Body</span>
+                <span>{initialText}</span>
             </Portal>
         );
 
         const portal = new PortalTestDriver(result as Portal);
 
-        await waitFor(() => expect(portal.content[0]).to.be.present());
+        await waitFor(() => expect(portal.content[0]).to.have.text(initialText));
 
         clientRenderer.render(
             <Portal>
-                <span>Portal Body Updated</span>
+                <span>{updatedText}</span>
             </Portal>,
             container
         );
 
-        await waitFor(() => expect(portal.content[0]).to.be.present());
+        await waitFor(() => expect(portal.content[0]).to.have.text(updatedText));
     });
 
-    it('renders the portal in the bottom of the DOM', async function() {
+    it('renders the portal in the bottom of the DOM', async () => {
         const {container, result} = clientRenderer.render(
             <Portal>
                 <span>Portal Body</span>
@@ -101,7 +126,7 @@ describe('<Portal />', function() {
         });
     });
 
-    it('renders with a className passed as a prop', async function() {
+    it('renders with a className passed as a prop', async () => {
         const {result} = clientRenderer.render(
             <Portal className="test-class">
                 <span>Portal Body</span>

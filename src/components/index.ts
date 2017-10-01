@@ -10,6 +10,7 @@ export * from './time-picker';
 export * from './tree-view';
 export * from './drop-down';
 export * from './modal';
+export * from './auto-complete';
 export * from './portal';
 export * from './popup';
 export * from './screen-reader-notification';
@@ -21,3 +22,4 @@ export {
     SelectionList,
     SelectionListItemValue
 } from './selection-list';
+export * from './context-provider';

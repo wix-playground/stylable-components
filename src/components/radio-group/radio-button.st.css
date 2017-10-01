@@ -1,17 +1,22 @@
 @namespace "RadioButton";
 
+:import {
+    -st-from: '../../style/project.st.css';
+    -st-named: B5, B6, B7, M3, PR3;
+}
+
 :vars {
-    defaultStroke: #adbbc6;
-    checkedStroke: #4A90E2;
-    checkedFill: #4A90E2;
-    disabledStroke: #d1d1d1;
-    disabledFill: #f1f1f1;
-    disabledCheckedFill: #d1d1d1;
+    defaultStroke: value(B7);
+    checkedStroke: value(M3);
+    checkedFill: value(M3);
+    disabledStroke: value(B5);
+    disabledFill: value(B6);
+    disabledCheckedFill: value(B5);
     focusOutline: rgba(92, 180, 255, 0.5);
 }
 
 .root {
-    -st-states: disabled, isLeftLabel, focused, checked;
+    -st-states: disabled, focused, checked;
     display: inline-block;
     position: relative;
     cursor: pointer;
@@ -26,11 +31,7 @@
     align-items: center;
 }
 
-.root:isLeftLabel .contentContainer {
-    flex-direction: row-reverse;
-}
-
-.radioInput {
+.hiddenInput {
     position: absolute;
     overflow: hidden;
     height: 1px;
@@ -42,8 +43,6 @@
 }
 
 .iconContainer {
-    width: 24px;
-    height: 24px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -88,13 +87,3 @@
 .root:disabled .checkMark {
     fill: value(disabledCheckedFill);
 }
-
-.radioLabel {
-    margin-left: 10px;
-}
-
-.root:isLeftLabel .radioLabel {
-    margin-left: 0;
-    margin-right: 10px;
-}
-

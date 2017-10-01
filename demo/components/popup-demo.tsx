@@ -1,7 +1,7 @@
 import React = require('react');
-import {SBComponent} from 'stylable-react-component';
-import {Popup, PopupHorizontalPosition, PopupPositionPoint, PopupVerticalPosition, RadioGroup} from '../../src/';
-import {ChangeEvent} from '../../src/types/events';
+import {stylable} from 'wix-react-tools';
+import {ChangeEvent, Popup, PopupHorizontalPosition, PopupPositionPoint, PopupVerticalPosition,
+    RadioGroup, RadioGroupDataSchemaProps} from '../../src/';
 import styles from './popup-demo.st.css';
 
 export interface DemoState {
@@ -13,7 +13,7 @@ export interface DemoState {
     aHorizontal: PopupHorizontalPosition;
 }
 
-@SBComponent(styles)
+@stylable(styles)
 export class PopupDemo extends React.Component<{}, DemoState> {
     public state = {
         div: null,
@@ -32,8 +32,16 @@ export class PopupDemo extends React.Component<{}, DemoState> {
             vertical: this.state.aVertical, horizontal: this.state.aHorizontal
         };
 
-        const vPos = [{value: 'top'}, {value: 'center'}, {value: 'bottom'}];
-        const hPos = [{value: 'left'}, {value: 'center'}, {value: 'right'}];
+        const vPos: RadioGroupDataSchemaProps[] = [
+            {value: 'top', labelText: 'top'},
+            {value: 'center', labelText: 'center'},
+            {value: 'bottom', labelText: 'bottom'}
+            ];
+        const hPos: RadioGroupDataSchemaProps[] = [
+            {value: 'left', labelText: 'left'},
+            {value: 'center', labelText: 'center'},
+            {value: 'right', labelText: 'right'}
+            ];
         return (
             <div>
                 <button

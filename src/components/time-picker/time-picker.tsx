@@ -1,6 +1,9 @@
 import * as keycode from 'keycode';
+import * as PropTypes from 'prop-types';
 import * as React from 'react';
-import {SBComponent} from 'stylable-react-component';
+import {stylable} from 'wix-react-tools';
+import {FormInputProps} from '../../types/forms';
+import {isRTLContext} from '../../utils';
 import {ScreenReaderNotification} from '../screen-reader-notification';
 import {Modifiers, Stepper} from '../stepper';
 import {LABELS} from './strings';
@@ -11,9 +14,7 @@ import {
     isTouchTimeInputSupported, isValidValue, Segment, TimeSegment, to24, toAmpm
 } from './utils';
 
-export interface Props {
-    value?: string;
-    onChange?: (value: string) => void;
+export interface Props extends FormInputProps<string> {
     format?: Format;
     placeholder?: string;
     disabled?: boolean;
@@ -57,14 +58,18 @@ function propsValueToSegments(value?: string, format?: Format): {hh?: string, mm
     };
 }
 
-@SBComponent(styles)
+@stylable(styles)
 export class TimePicker extends React.Component<Props, State> {
     public static defaultProps: Partial<Props> = {
         format: is12TimeFormat ? 'ampm' : '24h',
         disabled: false,
         error: false,
-        rtl: false,
         required: false
+    };
+    public static contextTypes = {
+        contextProvider: PropTypes.shape({
+            dir: PropTypes.string
+        })
     };
     private nativeInput: HTMLInputElement | null;
     private segments: {
@@ -100,20 +105,20 @@ export class TimePicker extends React.Component<Props, State> {
 
     public render() {
         const {focus, hh, mm, ampm, format, notification} = this.state;
-        const {label, placeholder, disabled, error, required, rtl, name} = this.props;
+        const {label, placeholder, disabled, error, required, name} = this.props;
         const isValueSet = hh !== undefined || mm !== undefined;
         const timeSegments: TimeSegment[] = ['hh', 'mm'];
 
         return (
             <div
                 data-automation-id="TIME_PICKER"
-                cssStates={{
+                style-state={{
                     focus,
-                    'error': error!,
-                    'disabled': disabled!,
-                    'empty': !isValueSet,
-                    'rtl': rtl!,
-                    'has-placeholder': Boolean(placeholder)
+                    error: error!,
+                    disabled: disabled!,
+                    empty: !isValueSet,
+                    hasPlaceholder: !!placeholder,
+                    rtl: isRTLContext(this.context)
                 }}
                 onMouseDown={this.onRootMouseDown}
             >
@@ -181,9 +186,9 @@ export class TimePicker extends React.Component<Props, State> {
                         />
                     </div>
                 }
-                <label className="label" cssStates={{visible: isTouchTimeInputSupported}}>
+                <label className="label" style-state={{visible: isTouchTimeInputSupported}}>
                     <input
-                        className="native-input"
+                        className="nativeInput"
                         type="time"
                         tabIndex={isTouchTimeInputSupported ? 0 : -1}
                         ref={elem => this.nativeInput = elem}
@@ -446,9 +451,14 @@ export class TimePicker extends React.Component<Props, State> {
         this.setState({
             notification: value
         });
-        if (this.props.onChange && this.lastValue !== value) {
+        if (this.lastValue !== value) {
             this.lastValue = value;
-            this.props.onChange(value);
+            if (this.props.onInput) {
+                this.props.onInput({value});
+            }
+            if (this.props.onChange) {
+                this.props.onChange({value});
+            }
         }
     }
 
