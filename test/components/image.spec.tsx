@@ -118,12 +118,14 @@ describe('<Image />', () => {
                 expect(image.source, 'incorrect image source').to.equal(onePixelBlack);
                 expect(window.getComputedStyle(image.nativeElement)).to.have.property('visibility', 'hidden');
                 expect(window.getComputedStyle(image.nativeElement)).to.have.property('display', 'block');
-                expect(window.getComputedStyle(image.nativeElement)).to.have.property('max-width', '100%');
                 expect(window.getComputedStyle(image.nativeElement)).to.have.property('height', '20px');
 
                 expect(image.root, 'verify image is wrapped for sizing').to.not.equal(image.nativeElement);
                 expect(window.getComputedStyle(image.root).getPropertyValue('background-size')).to.equal('contain');
                 expect(window.getComputedStyle(image.root).getPropertyValue('background-repeat')).to.equal('no-repeat');
+
+                // IE / Edge return max-width '300px' while chrome return '100%'
+                // expect(window.getComputedStyle(image.nativeElement)).to.have.property('max-width', '100%');
 
                 // chrome normalizes to url("http://domain/file"), while safari normalizes to url(http://domain/file)
                 // expect(window.getComputedStyle(image.root).getPropertyValue('background-image'))
@@ -145,12 +147,14 @@ describe('<Image />', () => {
                 expect(image.source, 'incorrect image source').to.equal(onePixelBlack);
                 expect(window.getComputedStyle(image.nativeElement)).to.have.property('visibility', 'hidden');
                 expect(window.getComputedStyle(image.nativeElement)).to.have.property('display', 'block');
-                expect(window.getComputedStyle(image.nativeElement)).to.have.property('max-width', '100%');
                 expect(window.getComputedStyle(image.nativeElement)).to.have.property('height', '20px');
 
                 expect(image.root, 'verify image is wrapped for sizing').to.not.equal(image.nativeElement);
                 expect(window.getComputedStyle(image.root).getPropertyValue('background-size')).to.equal('cover');
                 expect(window.getComputedStyle(image.root).getPropertyValue('background-repeat')).to.equal('no-repeat');
+
+                // IE / Edge return max-width '300px' while chrome return '100%'
+                // expect(window.getComputedStyle(image.nativeElement)).to.have.property('max-width', '100%');
 
                 // chrome normalizes to url("http://domain/file"), while safari normalizes to url(http://domain/file)
                 // expect(window.getComputedStyle(image.root).getPropertyValue('background-image'))
