@@ -1,5 +1,7 @@
 import * as React from 'react';
+import {properties, stylable} from 'wix-react-tools';
 import {noop, transparentImage} from '../../utils';
+import styles from './image.st.css';
 
 export interface ImageEvent extends React.SyntheticEvent<HTMLImageElement> {
     src: string;
@@ -20,19 +22,8 @@ export interface ImageState {
     src: string;
 }
 
-const hiddenImageStyle = {
-    display: 'block',
-    maxWidth: '100%',
-    height: '100%',
-    visibility: 'hidden'
-};
-
-const staticWrapperStyle = {
-    display: 'inline-block',
-    backgroundPosition: 'center',
-    backgroundRepeat: 'no-repeat'
-};
-
+@properties
+@stylable(styles)
 export class Image extends React.PureComponent<ImageProps, ImageState> {
     public static defaultProps: Partial<ImageProps> = {
         defaultImage: transparentImage,
@@ -50,23 +41,20 @@ export class Image extends React.PureComponent<ImageProps, ImageState> {
             defaultImage,
             resizeMode,
 
-            ...rest
+            ...additionalImageProps
         } = this.props;
-
         // 'fill' is the default image behavior, so no need to put it on background
         if (resizeMode === 'contain' || resizeMode === 'cover') {
             const wrapperStyle = {
-                ...staticWrapperStyle,
                 backgroundImage: `url("${this.state.src}")`,
-                backgroundSize: resizeMode,
-                ...style
+                backgroundSize: resizeMode
             };
             return (
-                <div style={wrapperStyle} className={className} >
+                <div style={wrapperStyle} className="imageWrapper">
                     <img
                         data-automation-id="NATIVE_IMAGE"
-                        {...rest}
-                        style={hiddenImageStyle}
+                        {...additionalImageProps}
+                        className="hiddenImage"
                         src={this.state.src}
                         onLoad={this.onLoad}
                         onError={this.onError}
@@ -78,9 +66,7 @@ export class Image extends React.PureComponent<ImageProps, ImageState> {
         return (
             <img
                 data-automation-id="NATIVE_IMAGE"
-                {...rest}
-                style={{display: 'inline-block', ...style}}
-                className={className}
+                {...additionalImageProps}
                 src={this.state.src}
                 onLoad={this.onLoad}
                 onError={this.onError}

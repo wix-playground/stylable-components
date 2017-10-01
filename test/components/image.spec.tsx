@@ -109,54 +109,56 @@ describe('<Image />', () => {
 
     describe('resize mode', () => {
         it('sets image as background with size: contain, when resizeMode="contain"', async () => {
-            const {driver: image, waitForDom, container} = clientRenderer.render(
-                <Image resizeMode="contain" src={onePixelBlack} />
+            const {driver: image, waitForDom} = clientRenderer.render(
+                <Image resizeMode="contain" src={onePixelBlack} style={{width: '300px', height: '20px'}}/>
             ).withDriver(ImageDriver);
 
             await waitForDom(() => {
-                expect(image.nativeElement).to.be.present();
+                expect(image.root).to.be.present();
                 expect(image.source, 'incorrect image source').to.equal(onePixelBlack);
-                expect(image.style).to.have.property('visibility', 'hidden');
-                expect(image.style).to.have.property('display', 'block');
-                expect(image.style).to.have.property('maxWidth', '100%');
-                expect(image.style).to.have.property('height', '100%');
+                expect(image.getComputedStyle('visibility')).to.equal('hidden');
+                expect(image.getComputedStyle('display')).to.equal('block');
+                expect(image.getComputedStyle('max-width')).to.equal('100%');
+                expect(image.getComputedStyle('height')).to.equal('20px');
 
-                const {parentElement: sizingWrapper} = image.nativeElement;
-                expect(sizingWrapper, 'verify image is wrapped for sizing').to.not.equal(container);
-                expect(sizingWrapper).to.have.nested.property('style.backgroundSize', 'contain');
-                expect(sizingWrapper).to.have.nested.property('style.backgroundRepeat', 'no-repeat');
+                expect(image.root, 'verify image is wrapped for sizing').to.not.equal(image.nativeElement);
+                expect(window.getComputedStyle(image.root).getPropertyValue('background-size')).to.equal('contain');
+                expect(window.getComputedStyle(image.root).getPropertyValue('background-repeat')).to.equal('no-repeat');
 
                 // chrome normalizes to url("http://domain/file"), while safari normalizes to url(http://domain/file)
-                // expect(sizingWrapper).to.have.nested.property('style.backgroundImage', `url("${onePixelBlack}")`);
+                // expect(window.getComputedStyle(image.root).getPropertyValue('background-image'))
+                // .to.equal(`url("${onePixelBlack}")`);
 
                 // ie11 normalizes to 'center', while chrome 60 normalizes to 'center center'
-                // expect(sizingWrapper).to.have.nested.property('style.backgroundPosition', 'center');
+                // expect(window.getComputedStyle(image.root).getPropertyValue('background-position'))
+                // .to.equal('center');
             });
         });
 
         it('sets image as background with size: cover, when resizeMode="cover"', async () => {
-            const {driver: image, waitForDom, container} = clientRenderer.render(
-                <Image resizeMode="cover" src={onePixelBlack} />
+            const {driver: image, waitForDom} = clientRenderer.render(
+                <Image resizeMode="cover" src={onePixelBlack} style={{width: '300px', height: '20px'}}/>
             ).withDriver(ImageDriver);
 
             await waitForDom(() => {
                 expect(image.nativeElement).to.be.present();
                 expect(image.source, 'incorrect image source').to.equal(onePixelBlack);
-                expect(image.style).to.have.property('visibility', 'hidden');
-                expect(image.style).to.have.property('display', 'block');
-                expect(image.style).to.have.property('maxWidth', '100%');
-                expect(image.style).to.have.property('height', '100%');
+                expect(image.getComputedStyle('visibility')).to.equal('hidden');
+                expect(image.getComputedStyle('display')).to.equal('block');
+                expect(image.getComputedStyle('max-width')).to.equal('100%');
+                expect(image.getComputedStyle('height')).to.equal('20px');
 
-                const {parentElement: sizingWrapper} = image.nativeElement;
-                expect(sizingWrapper, 'verify image is wrapped for sizing').to.not.equal(container);
-                expect(sizingWrapper).to.have.nested.property('style.backgroundSize', 'cover');
-                expect(sizingWrapper).to.have.nested.property('style.backgroundRepeat', 'no-repeat');
+                expect(image.root, 'verify image is wrapped for sizing').to.not.equal(image.nativeElement);
+                expect(window.getComputedStyle(image.root).getPropertyValue('background-size')).to.equal('cover');
+                expect(window.getComputedStyle(image.root).getPropertyValue('background-repeat')).to.equal('no-repeat');
 
                 // chrome normalizes to url("http://domain/file"), while safari normalizes to url(http://domain/file)
-                // expect(sizingWrapper).to.have.nested.property('style.backgroundImage', `url("${onePixelBlack}")`);
+                // expect(window.getComputedStyle(image.root).getPropertyValue('background-image'))
+                // .to.equal(`url("${onePixelBlack}")`);
 
                 // ie11 normalizes to 'center', while chrome 60 normalizes to 'center center'
-                // expect(sizingWrapper).to.have.nested.property('style.backgroundPosition', 'center');
+                // expect(window.getComputedStyle(image.root).getPropertyValue('background-position'))
+                // .to.equal('center');
             });
         });
 
@@ -167,8 +169,9 @@ describe('<Image />', () => {
 
             await waitForDom(() => {
                 expect(image.nativeElement).to.be.present();
+                expect(image.root, 'verify that native image is the root').to.equal(image.nativeElement);
                 expect(image.source, 'incorrect image source').to.equal(onePixelBlack);
-                expect(image.style).to.not.have.property('visibility', 'hidden');
+                expect(image.getComputedStyle('visibility')).to.not.equal('hidden');
                 expect(image.nativeElement.parentElement, 'verify image is not wrapped').to.equal(container);
             });
         });
