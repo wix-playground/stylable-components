@@ -23,15 +23,13 @@ export const TreeItem: React.SFC<TreeItemProps> =
                 aria-expanded={item.children ? !!state!.isExpanded : undefined}
                 aria-selected={state!.isSelected ? true : undefined}
                 id={item.label}
-                data-automation-id={`${itemIdPrefix}_${itemLabel}_NODE`}
                 role="treeitem"
+                data-automation-id={`${itemIdPrefix}_${itemLabel}`}
+                className="item"
+                style-state={{selected: state!.isSelected, focused: state!.isFocused}}
+                onClick={onItemClick && onItemClick.bind(null, item)}
             >
-                <div
-                    data-automation-id={`${itemIdPrefix}_${itemLabel}`}
-                    className="item"
-                    style-state={{selected: state!.isSelected, focused: state!.isFocused}}
-                    onClick={onItemClick && onItemClick.bind(null, item)}
-                >
+                <div>
                     {item.children && (state!.isExpanded ?
                         <MinusIcon {...iconProps} /> : <PlusIcon {...iconProps} />)}
 

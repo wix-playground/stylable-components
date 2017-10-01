@@ -11,7 +11,7 @@ export class TreeViewDriver extends DriverBase {
     public static ComponentClass = TreeView;
 
     public getItem(id: string): TreeItemDriver {
-        return new TreeItemDriver(() => this.select(getTreeItem(id)), id);
+        return new TreeItemDriver(() => this.select(getTreeItem(id)));
     }
 
     public pressKey(keyCode: ValidKeyCodes): void {
@@ -22,16 +22,16 @@ export class TreeViewDriver extends DriverBase {
 export class TreeItemDriver extends DriverBase {
     public static ComponentClass: React.SFC<TreeItemProps> = TreeItem;
 
-    constructor(getElem: () => Element, private id: string) {
-        super(getElem);
+    private get id(): string {
+        return this.root.getAttribute('data-automation-id')!;
     }
 
     public get label(): Element {
-        return this.select(`${getTreeItem(this.id)}_LABEL`);
+        return this.select(`${this.id}_LABEL`);
     }
 
     public get icon(): Element {
-        return this.select(`${getTreeItem(this.id)}_ICON`);
+        return this.select(`${this.id}_ICON`);
     }
 
     public clickIcon(): void {
@@ -43,6 +43,6 @@ export class TreeItemDriver extends DriverBase {
     }
 
     public getNestedItem(id: string) {
-        return new TreeItemDriver(() => this.select(getTreeItem(id)), id);
+        return new TreeItemDriver(() => this.select(getTreeItem(id)));
     }
 }

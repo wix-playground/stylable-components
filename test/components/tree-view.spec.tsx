@@ -54,6 +54,8 @@ export interface TreeViewWrapperState {
     treeData: object[];
 }
 
+
+// make a driver that manually generates TVDriver using this.root of the wrapper
 export class TreeViewWrapper extends React.Component<{}, TreeViewWrapperState> {
     public state = {treeData};
 
@@ -549,57 +551,49 @@ describe('<TreeView />', () => {
             stateMap.getItemState(nestedItem).isExpanded = true;
 
             it('renders an item', async () => {
-                const {container, waitForDom} = clientRenderer.render(
+                const {driver: item, waitForDom} = clientRenderer.render(
                     <TreeItem
                         item={sampleItem}
                         itemRenderer={TreeItem}
                         stateMap={stateMap}
                     />
-                );
-
-                const item = new TreeItemDriver(() => container.firstElementChild!, sampleItem.label);
+                ).withDriver(TreeItemDriver);
 
                 return waitForDom(() => expect(item.root).to.be.present());
             });
 
             it('renders with provided label', async () => {
-                const {container, waitForDom} = clientRenderer.render(
+                const {driver: item, waitForDom} = clientRenderer.render(
                     <TreeItem
                         item={sampleItem}
                         itemRenderer={TreeItem}
                         stateMap={stateMap}
                     />
-                );
-
-                const item = new TreeItemDriver(() => container.firstElementChild!, sampleItem.label);
+                ).withDriver(TreeItemDriver);
 
                 return waitForDom(() => expect(item.label).to.have.text(sampleItem.label));
             });
 
             it('renders with an icon', async () => {
-                const {container, waitForDom} = clientRenderer.render(
+                const {driver: item, waitForDom} = clientRenderer.render(
                     <TreeItem
                         item={treeData[0]}
                         itemRenderer={TreeItem}
                         stateMap={stateMap}
                     />
-                );
-
-                const item = new TreeItemDriver(() => container.firstElementChild!, treeData[0].label);
+                ).withDriver(TreeItemDriver);
 
                 return waitForDom(() => expect(item.icon).to.be.present());
             });
 
             it('renders correct children', async () => {
-                const {container, waitForDom} = clientRenderer.render(
+                const {driver: parentItem, waitForDom} = clientRenderer.render(
                     <TreeItem
                         item={nestedItem}
                         itemRenderer={TreeItem}
                         stateMap={stateMap}
                     />
-                );
-
-                const parentItem = new TreeItemDriver(() => container.firstElementChild!, nestedItem.label);
+                ).withDriver(TreeItemDriver);
 
                 return waitForDom(() =>
                     nestedItem.children!.forEach((item: TreeItemData) =>
@@ -609,18 +603,16 @@ describe('<TreeView />', () => {
 
             it('invokes onClick when clicked', async () => {
                 const onClick = sinon.spy();
-                const {container} = clientRenderer.render(
+                const {driver: item, container} = clientRenderer.render(
                     <TreeItem
                         item={sampleItem}
                         itemRenderer={TreeItem}
                         onItemClick={onClick}
                         stateMap={stateMap}
                     />
-                );
+                ).withDriver(TreeItemDriver);
 
-                const item =  new TreeItemDriver(() => container.firstElementChild!, sampleItem.label);
-
-                simulate.click(item.label);
+                item.clickLabel();
 
                 await waitFor(() => expect(onClick).to.have.been.calledOnce);
             });
@@ -672,7 +664,7 @@ describe('<TreeView />', () => {
 
                 await waitForDom(() => {
                     expect(treeView.root).to.have.attribute('role', 'tree');
-                    expect(treeView.getItem(firstChild.label + '_NODE').root)
+                    expect(treeView.getItem(firstChild.label).root)
                     .to.have.attr('role', 'treeitem');
                 });
             });
