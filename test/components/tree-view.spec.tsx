@@ -52,7 +52,6 @@ export interface TreeViewWrapperState {
     treeData: object[];
 }
 
-
 // make a driver that manually generates TVDriver using this.root of the wrapper
 export class TreeViewWrapper extends React.Component<{}, TreeViewWrapperState> {
     public state = {treeData};
@@ -82,6 +81,18 @@ export class TreeViewMobxWrapper extends React.Component<{}, {}> {
     public renameLabel = () => {
         this.obsTreeData[0].children![0].label = changedLabel;
     }
+}
+
+export class TreeViewWrapperDriver extends DriverBase {
+    public static ComponentClass = TreeViewWrapper;
+
+    public treeView = new TreeViewDriver(() => this.select('TREE_VIEW'));
+}
+
+export class TreeViewMobxWrapperDriver extends DriverBase {
+    public static ComponentClass = TreeViewMobxWrapper;
+
+    public treeView = new TreeViewDriver(() => this.select('TREE_VIEW'));
 }
 
 class TreeViewDemoDriver extends DriverBase {
@@ -466,43 +477,36 @@ describe('<TreeView />', () => {
         });
 
         describe('Reaction to dataSource changes', () => {
-            const getTreeItem = (id: string) => `${treeItem}_${id.replace(' ', '_')}`;
-            const getTreeItemIcon = (id: string) => `${getTreeItem(id)}_ICON`;
-
-            function expandItemWithLabel(select: (...selectors: string[]) => Element | null, id: string) {
-                simulate.click(select(getTreeItemIcon(id)));
-            }
-
             it('renders the additional item when a new data array is passed', async () => {
-                const {select, waitForDom, result} = clientRenderer.render(<TreeViewWrapper />);
+                const {container, waitForDom, driver: treeView} =
+                    clientRenderer.render(<TreeView dataSource={treeData} />).withDriver(TreeViewDriver);
 
-                expandItemWithLabel(select, treeData[0].label);
-                expandItemWithLabel(select, treeData[0].children![2].label);
+                treeView.getItem(treeData[0].label).clickIcon();
+                treeView.getItem(treeData[0].children![2].label).clickIcon();
 
-                await waitForDom(() =>
-                    expect(select('TREE_VIEW', getTreeItem('Kaiserschmarrn'))).to.be.absent());
+                await waitForDom(() => expect(treeView.getItem('Kaiserschmarrn').root).to.be.absent());
 
-                (result as TreeViewWrapper).switchDataSource();
-                expandItemWithLabel(select, newTreeData[0].label);
-                expandItemWithLabel(select, newTreeData[0].children![2].label);
+                clientRenderer.render(<TreeView dataSource={newTreeData} />, container);
 
-                return waitForDom(() =>
-                    expect(select('TREE_VIEW', getTreeItem('Kaiserschmarrn'))).to.be.present());
+                treeView.getItem(newTreeData[0].label).clickIcon();
+                treeView.getItem(newTreeData[0].children![2].label).clickIcon();
+
+                return waitForDom(() => expect(treeView.getItem('Kaiserschmarrn').root).to.be.present());
             });
 
             it('renders the additional item when a new data element is added to existing data', async () => {
-                const {select, waitForDom, result} = clientRenderer.render(<TreeViewMobxWrapper />);
+                const obsTreeData: TreeItemData[] = observable(treeData);
+                const {waitForDom, driver: treeView} =
+                    clientRenderer.render(<TreeView dataSource={obsTreeData} />).withDriver(TreeViewDriver);
 
-                expandItemWithLabel(select, treeData[0].label);
-                expandItemWithLabel(select, treeData[0].children![2].label);
+                treeView.getItem(treeData[0].label).clickIcon();
+                treeView.getItem(treeData[0].children![2].label).clickIcon();
 
-                await waitForDom(() =>
-                    expect(select('TREE_VIEW', getTreeItem('Kaiserschmarrn'))).to.be.absent());
+                await waitForDom(() => expect(treeView.getItem('Kaiserschmarrn').root).to.be.absent());
 
-                (result as TreeViewMobxWrapper).modifyMobxDataSource();
+                obsTreeData[0].children![2].children!.push({label: changedLabel});
 
-                return waitForDom(() =>
-                    expect(select('TREE_VIEW', getTreeItem('Kaiserschmarrn'))).to.be.present());
+                return waitForDom(() => expect(treeView.getItem('Kaiserschmarrn').root).to.be.present());
             });
         });
 
