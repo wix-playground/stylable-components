@@ -3,11 +3,11 @@ import {findDOMNode} from 'react-dom';
 import {ClientRenderer, expect, RenderingContext} from 'test-drive-react';
 import * as WixReactComponents from '../../src';
 import {isReactComponent} from '../utils/is-react-component';
-import {isDecorated, properties, stylable} from "wix-react-tools";
+import {isDecorated, properties} from "wix-react-tools";
 
 const allComponents = Object.keys(WixReactComponents);
 const failingComponents = [
-    'NumberInput', 'Portal', 'Popup', 'TimePicker', 'Modal', 'ContextProvider'
+    'Portal', 'Popup', 'TimePicker', 'Modal', 'ContextProvider'
 ];
 
 describe('Root Element contract', () => {
@@ -44,10 +44,6 @@ export function assertRootElementContract(Component: React.ComponentType<any>): 
 
     it('detects the "properties" feature decorator', () => {
         expect(isDecorated(Component, properties)).to.equal(true);
-    });
-
-    it('detects the "stylable" feature decorator', () => {
-        expect(isDecorated(Component, stylable)).to.equal(true);
     });
 
     it('has display values of \'inline-block\' or \'inline-flex\'', () => {
