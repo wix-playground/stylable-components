@@ -4,7 +4,6 @@ import {DriverBase, simulate} from 'test-drive-react';
 import {TreeItem, TreeItemProps, TreeKeyCodes, TreeView} from '../../src';
 import treeItemStyle from '../../src/components/tree-view/tree-item.st.css';
 import {elementHasStylableState} from '../../test-kit/utils';
-import HTML = Mocha.reporters.HTML;
 
 const treeItem = 'TREE_ITEM';
 export type ValidKeyCodes = 'ENTER' | 'HOME' | 'END' | 'UP' | 'DOWN' | 'LEFT' | 'RIGHT';
