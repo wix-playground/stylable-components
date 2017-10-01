@@ -1,0 +1,1 @@
+{"version":3,"file":"skip-it-if-touch.js","sourceRoot":"","sources":["../../../test/utils/skip-it-if-touch.ts"],"names":[],"mappings":";;AAAA,yCAAwC;AAE3B,QAAA,aAAa,GAAG,eAAO,GAAG,EAAE,GAAG,EAAE,CAAC,IAAI,CAAC","sourcesContent":["import {isTouch} from '../../src/utils';\n\nexport const skipItIfTouch = isTouch ? it : it.skip;\n"]}

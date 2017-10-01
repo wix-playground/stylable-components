@@ -1,0 +1,77 @@
+@namespace "CheckBox";
+
+:import {
+    -st-from: "../../style/default-theme/assets/svg-assets";
+    -st-named: boxIconMixin, tickIconMixin, indeterminateIconMixin;
+}
+
+
+.root {
+    -st-states: checked, disabled, indeterminate, readonly, focus;
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+}
+
+.boxIcon {
+    -st-mixin: boxIconMixin('none', '#D1D1D1');
+    display: inline-block;
+    height: 1rem;
+    width: 1rem;
+}
+
+.root:checked .boxIcon {
+    fill: #4A90E2;
+}
+
+.root:indeterminate .boxIcon{
+
+}
+
+.root:disabled .boxIcon {
+    fill: #f1f1f1;
+}
+
+.root:focus .boxIcon {
+    outline: 4px solid #add9ff;
+}
+
+.tickIcon {
+
+    height: 1rem;
+    width: 1rem;
+    position: relative;
+    margin-left: -1rem;
+    stroke: #FFF;
+    stroke-linecap: square;
+    stroke-width: 1.5;
+}
+
+.root:disabled .tickIcon, .root:disabled .indeterminateIcon {
+    stroke: #c8c8c8;
+}
+
+.indeterminateIcon {
+
+    height: 1em;
+    width: 1em;
+    position: relative;
+    margin-left: -1rem;
+    stroke: #FFF;
+    stroke-width: 1.5;
+}
+
+.nativeCheckbox {
+    position: absolute;
+    overflow: hidden;
+    height: 1px;
+    width: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+    opacity: 0;
+}
+
+.childContainer {
+    display: inline;
+}

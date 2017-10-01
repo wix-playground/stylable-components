@@ -1,0 +1,21 @@
+:import {
+    -st-from: "../../project.st.css";
+}
+
+:vars {
+    boxIconSVG: 'url("data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" focusable="false"><path d="M.5.5h15v15H.5z" /></svg>)';
+    tickIconSVG: 'url("data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" focusable="false"><path d="M5 8.685l2.496 1.664M8 10.685L11.748 6" /></svg>)';
+    indeterminateIconSVG: 'url("data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" focusable="false"><line x1="4" y1="8" x2="12" y2="8" /></svg>)';
+}
+
+.boxIcon {
+    background-image: value(boxIconSVG);
+}
+
+.tickIcon {
+    background-image: value(tickIconSVG);
+}
+
+.indeterminateIcon {
+    background-image: value(indeterminateIconSVG);
+}

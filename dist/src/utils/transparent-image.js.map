@@ -1,0 +1,1 @@
+{"version":3,"file":"transparent-image.js","sourceRoot":"","sources":["../../../src/utils/transparent-image.ts"],"names":[],"mappings":";;AAAa,QAAA,gBAAgB,GAAG,gFAAgF,CAAC","sourcesContent":["export const transparentImage = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';\n"]}

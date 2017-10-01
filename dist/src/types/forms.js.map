@@ -1,0 +1,1 @@
+{"version":3,"file":"forms.js","sourceRoot":"","sources":["../../../src/types/forms.ts"],"names":[],"mappings":"","sourcesContent":["import {ChangeEvent} from './events';\n\nexport interface FormInputProps<T, S = T> {\n    value?: T;\n    onChange?: (event: ChangeEvent<T>) => void;\n    onInput?: (event: ChangeEvent<S>) => void;\n}\n"]}

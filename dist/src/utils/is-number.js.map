@@ -1,0 +1,1 @@
+{"version":3,"file":"is-number.js","sourceRoot":"","sources":["../../../src/utils/is-number.ts"],"names":[],"mappings":";;AAAA,kBAAyB,KAAU;IAC/B,MAAM,CAAC,OAAO,KAAK,KAAK,QAAQ,CAAC;AACrC,CAAC;AAFD,4BAEC","sourcesContent":["export function isNumber(value: any): value is number {\n    return typeof value === 'number';\n}\n"]}
