@@ -34,15 +34,21 @@ export class Popup extends React.Component<PopupCompProps> {
         maxHeight: 500
     };
 
+    private portal: Portal | null;
+
     public render() {
         if (this.props.anchor && this.props.open) {
             return (
-                <Portal style={this.createStyle()}>
+                <Portal style={this.createStyle()} ref={portal => this.portal = portal}>
                     {this.props.children}
                 </Portal>);
         }
 
         return null;
+    }
+
+    public getPortal() {
+        return this.portal;
     }
 
     private createStyle(): React.CSSProperties {

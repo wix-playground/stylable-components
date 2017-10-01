@@ -24,6 +24,8 @@ export class PopupDemo extends React.Component<{}, DemoState> {
         aHorizontal: 'left' as PopupHorizontalPosition
     };
 
+    private popup: Popup | null;
+
     public render() {
         const popupPos: PopupPositionPoint = {
             vertical: this.state.pVertical, horizontal: this.state.pHorizontal
@@ -48,7 +50,7 @@ export class PopupDemo extends React.Component<{}, DemoState> {
                     ref={this.updateState}
                     onClick={this.onClick}
                     className="anchor"
-                    data-automation-id="POPUP_DEMO_DIV"
+                    data-automation-id="POPUP_DEMO_BTN"
                 >
                     {this.state.isOpen ? 'Hide Popup' : 'Show Popup'}
                 </button>
@@ -57,6 +59,7 @@ export class PopupDemo extends React.Component<{}, DemoState> {
                     popupPosition={popupPos}
                     anchorPosition={anchorPos}
                     open={this.state.isOpen}
+                    ref={popup => this.popup = popup}
                 >
                     <div style={{color: 'white', backgroundColor: 'black'}}>Hello!</div>
                 </Popup>
@@ -80,6 +83,10 @@ export class PopupDemo extends React.Component<{}, DemoState> {
                 </div>
             </div>
         );
+    }
+
+    public getPopup() {
+        return this.popup;
     }
 
     private onClick = () => {
