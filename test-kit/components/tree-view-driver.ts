@@ -30,11 +30,11 @@ export class TreeItemDriver extends DriverBase {
         return this.root.getAttribute('data-automation-id')!;
     }
 
-    public get label(): HTMLElement {
+    public get label(): HTMLSpanElement {
         return this.select(`${this.id}_LABEL`);
     }
 
-    public get icon(): HTMLElement {
+    public get icon(): SVGElement {
         return this.select(`${this.id}_ICON`);
     }
 
