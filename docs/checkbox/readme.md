@@ -11,7 +11,7 @@
 | name        | type       | default | required | description       |
 | ----------- | ---------- | ------- | -------- | ----------------- |
 | value | boolean | false | no | The checked value of the checkbox. |
-| onChange | function | NOOP | no | `({value: boolean}) => void`<br>Event triggered by changing the value. |
+| onChange | (e: ChangeEvent) => void | NOOP | no | Event triggered by changing the value. |
 | children | React Node | null | no | children | Any further nodes will be rendered. |
 | indeterminate | boolean | false | no | Indicates that the checkbox is neither on nor off. Changes the appearance to resemble a third state. Does not affect the value of the checked attribute, and clicking the checkbox will set the value to false. |
 | disabled | boolean | false | no | Whether the checkbox responds to events. |
