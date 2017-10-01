@@ -11,8 +11,4 @@ export class ImageDriver extends DriverBase {
     public get source(): string | null {
         return this.nativeElement.getAttribute('src');
     }
-
-    public getComputedStyle(property: string): string {
-        return window.getComputedStyle(this.nativeElement).getPropertyValue(property);
-    }
 }

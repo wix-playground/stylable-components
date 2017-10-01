@@ -116,10 +116,10 @@ describe('<Image />', () => {
             await waitForDom(() => {
                 expect(image.root).to.be.present();
                 expect(image.source, 'incorrect image source').to.equal(onePixelBlack);
-                expect(image.getComputedStyle('visibility')).to.equal('hidden');
-                expect(image.getComputedStyle('display')).to.equal('block');
-                expect(image.getComputedStyle('max-width')).to.equal('100%');
-                expect(image.getComputedStyle('height')).to.equal('20px');
+                expect(window.getComputedStyle(image.nativeElement)).to.have.property('visibility', 'hidden');
+                expect(window.getComputedStyle(image.nativeElement)).to.have.property('display', 'block');
+                expect(window.getComputedStyle(image.nativeElement)).to.have.property('max-width', '100%');
+                expect(window.getComputedStyle(image.nativeElement)).to.have.property('height', '20px');
 
                 expect(image.root, 'verify image is wrapped for sizing').to.not.equal(image.nativeElement);
                 expect(window.getComputedStyle(image.root).getPropertyValue('background-size')).to.equal('contain');
@@ -143,10 +143,10 @@ describe('<Image />', () => {
             await waitForDom(() => {
                 expect(image.nativeElement).to.be.present();
                 expect(image.source, 'incorrect image source').to.equal(onePixelBlack);
-                expect(image.getComputedStyle('visibility')).to.equal('hidden');
-                expect(image.getComputedStyle('display')).to.equal('block');
-                expect(image.getComputedStyle('max-width')).to.equal('100%');
-                expect(image.getComputedStyle('height')).to.equal('20px');
+                expect(window.getComputedStyle(image.nativeElement)).to.have.property('visibility', 'hidden');
+                expect(window.getComputedStyle(image.nativeElement)).to.have.property('display', 'block');
+                expect(window.getComputedStyle(image.nativeElement)).to.have.property('max-width', '100%');
+                expect(window.getComputedStyle(image.nativeElement)).to.have.property('height', '20px');
 
                 expect(image.root, 'verify image is wrapped for sizing').to.not.equal(image.nativeElement);
                 expect(window.getComputedStyle(image.root).getPropertyValue('background-size')).to.equal('cover');
@@ -171,7 +171,7 @@ describe('<Image />', () => {
                 expect(image.nativeElement).to.be.present();
                 expect(image.root, 'verify that native image is the root').to.equal(image.nativeElement);
                 expect(image.source, 'incorrect image source').to.equal(onePixelBlack);
-                expect(image.getComputedStyle('visibility')).to.not.equal('hidden');
+                expect(window.getComputedStyle(image.nativeElement)).to.not.have.property('visibility', 'hidden');
                 expect(image.nativeElement.parentElement, 'verify image is not wrapped').to.equal(container);
             });
         });
