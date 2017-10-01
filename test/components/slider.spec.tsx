@@ -1,7 +1,13 @@
 import * as React from 'react';
-import {ClientRenderer, expect, sinon, waitFor} from 'test-drive-react';
+import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react';
 import {ContextProvider} from '../../src';
-import {AXES, AxisOptions, Slider, SliderProps} from '../../src/components/slider';
+import {
+    AXES, AxisOptions, AxisOptionsKey, CONTINUOUS_STEP,
+    getAbsoluteValue,
+    getRelativeStep, getRelativeValue, getSizeProperty, getValueFromElementAndPointer, getValueInRange,
+    isReverse, isVertical, Slider, SliderProps
+} from '../../src/components/slider';
+import styles from '../../src/components/slider/slider.st.css';
 import {ChangeEvent} from '../../src/types/events';
 import {SliderContextProvierDriver, SliderDriver, SliderEventCoordinates} from '../../test-kit';
 import WindowStub from '../stubs/window.stub';
@@ -1177,4 +1183,523 @@ describe('<Slider />', () => {
 
         keyboard(clientRenderer, {step: 2}, {dir: 'rtl'});
     });
+});
+
+describe('Slider/properties', () => {
+    function renderWithProps(props?: SliderProps) {
+        return clientRenderer
+            .render(<Slider {...props}/>)
+            .withDriver(SliderDriver)
+            .driver;
+    }
+
+    const clientRenderer = new ClientRenderer();
+    afterEach(() => clientRenderer.cleanup());
+
+    beforeEach(() => {
+        environment = new WindowStub();
+    });
+
+    afterEach(() => {
+        environment.sandbox.restore();
+    });
+
+    describe('no properties', () => {
+        let driver: any;
+        beforeEach(() => {
+            driver = renderWithProps();
+        });
+
+        it('handle aria-valuemin should be 0', () => {
+            expect(driver.handle).attr('aria-valuemin', '0');
+        });
+        it('handle aria-valuemax should be 100', () => {
+            expect(driver.handle).attr('aria-valuemax', '100');
+        });
+        it('handle aria-orientation should be "horizontal"', () => {
+            expect(driver.handle).attr('aria-orientation', 'horizontal');
+        });
+        it('handle left should be 0%', () => {
+            expect(driver.handle.style.left).to.equal('0%');
+        });
+        it('input value should be ""', () => {
+            expect(driver.input).attr('value', '');
+        });
+        it('should not render marks', () => {
+            expect(driver.getMark(0)).to.be.null;
+        });
+        it('progress width should be 0%', () => {
+            expect(driver.progress.style.width).to.equal('0%');
+        });
+    });
+
+    describe('min={50} max={100} value={60}', () => {
+        let driver: any;
+        beforeEach(() => {
+            driver = renderWithProps({
+                min: 50,
+                max: 100,
+                value: 60
+            });
+        });
+
+        it('handle aria-valuemin should be 50', () => {
+            expect(driver.handle).attr('aria-valuemin', '50');
+        });
+        it('handle aria-valuemax should be 100', () => {
+            expect(driver.handle).attr('aria-valuemax', '100');
+        });
+        it('handle aria-orientation should be "horizontal"', () => {
+            expect(driver.handle).attr('aria-orientation', 'horizontal');
+        });
+        it('handle left should be 20%', () => {
+            expect(driver.handle.style.left).to.equal('20%');
+        });
+        it('input value should be "60"', () => {
+            expect(driver.input).attr('value', '60');
+        });
+        it('progress width should be 20%', () => {
+            expect(driver.progress.style.width).to.equal('20%');
+        });
+    });
+
+    describe('min={50} max={100} value={60} axis={AXES.xReverse}', () => {
+        let driver: any;
+        beforeEach(() => {
+            driver = renderWithProps({
+                min: 50,
+                max: 100,
+                value: 60,
+                axis: AXES.xReverse
+            });
+        });
+
+        it('handle aria-valuemin should be 50', () => {
+            expect(driver.handle).attr('aria-valuemin', '50');
+        });
+        it('handle aria-valuemax should be 100', () => {
+            expect(driver.handle).attr('aria-valuemax', '100');
+        });
+        it('handle aria-orientation should be "horizontal"', () => {
+            expect(driver.handle).attr('aria-orientation', 'horizontal');
+        });
+        it('handle right should be 20%', () => {
+            expect(driver.handle.style.right).to.equal('20%');
+        });
+        it('input value should be "60"', () => {
+            expect(driver.input).attr('value', '60');
+        });
+        it('progress width should be 20%', () => {
+            expect(driver.progress.style.width).to.equal('20%');
+        });
+    });
+
+    describe('min={50} max={100} value={60} axis={AXES.y}', () => {
+        let driver: any;
+        beforeEach(() => {
+            driver = renderWithProps({
+                min: 50,
+                max: 100,
+                value: 60,
+                axis: AXES.y
+            });
+        });
+
+        it('handle aria-valuemin should be 50', () => {
+            expect(driver.handle).attr('aria-valuemin', '50');
+        });
+        it('handle aria-valuemax should be 100', () => {
+            expect(driver.handle).attr('aria-valuemax', '100');
+        });
+        it('handle aria-orientation should be "vertical"', () => {
+            expect(driver.handle).attr('aria-orientation', 'vertical');
+        });
+        it('handle bottom should be 20%', () => {
+            expect(driver.handle.style.bottom).to.equal('20%');
+        });
+        it('input value should be "60"', () => {
+            expect(driver.input).attr('value', '60');
+        });
+        it('progress height should be 20%', () => {
+            expect(driver.progress.style.height).to.equal('20%');
+        });
+    });
+
+    describe('min={50} max={100} value={60} axis={AXES.yReverse}', () => {
+        let driver: any;
+        beforeEach(() => {
+            driver = renderWithProps({
+                min: 50,
+                max: 100,
+                value: 60,
+                axis: AXES.yReverse
+            });
+        });
+
+        it('handle aria-valuemin should be 50', () => {
+            expect(driver.handle).attr('aria-valuemin', '50');
+        });
+        it('handle aria-valuemax should be 100', () => {
+            expect(driver.handle).attr('aria-valuemax', '100');
+        });
+        it('handle aria-orientation should be "vertical"', () => {
+            expect(driver.handle).attr('aria-orientation', 'vertical');
+        });
+        it('handle top should be 20%', () => {
+            expect(driver.handle.style.top).to.equal('20%');
+        });
+        it('input value should be "60"', () => {
+            expect(driver.input).attr('value', '60');
+        });
+        it('progress height should be 20%', () => {
+            expect(driver.progress.style.height).to.equal('20%');
+        });
+    });
+
+    describe('value={40} displayStopMarks={true} step={20}', () => {
+        let driver: any;
+        beforeEach(() => {
+            driver = renderWithProps({
+                value: 40,
+                step: 20,
+                displayStopMarks: true
+            });
+        });
+        new Array(6).fill(0).forEach((value, index) => {
+            it(`should render ${index} mark`, () => {
+                expect(driver.getMark(index)).to.not.null;
+            });
+        });
+        it(`should not render 6 mark`, () => {
+            expect(driver.getMark(6)).to.be.null;
+        });
+        it('mark 0 should have class "markProgress"', () => {
+            expect(driver.getMark(0)).have.class(styles.markProgress);
+        });
+        it('mark 1 should have left "20%"', () => {
+            expect(driver.getMark(1).style.left).to.equal('20%');
+        });
+        it('mark 5 should have class "markTrack"', () => {
+            expect(driver.getMark(5)).have.class(styles.markTrack);
+        });
+    });
+
+    describe('value={40} displayStopMarks={true} step={20} axis={AXES.y}', () => {
+        let driver: any;
+        beforeEach(() => {
+            driver = renderWithProps({
+                value: 40,
+                step: 20,
+                displayStopMarks: true,
+                axis: AXES.y
+            });
+        });
+        it('mark 1 should have left "20%"', () => {
+            expect(driver.getMark(1).style.bottom).to.equal('20%');
+        });
+    });
+
+    describe('name="slider-name" label="slider-label" disabled={true}', () => {
+        let driver: any;
+        beforeEach(() => {
+            driver = renderWithProps({
+                name: 'slider-name',
+                label: 'slider-label',
+                disabled: true
+            });
+        });
+        it('input name should be "slider-name"', () => {
+            expect(driver.input).attr('name', 'slider-name');
+        });
+        it('handle aria-label should be "slider-label"', () => {
+            expect(driver.handle).attr('aria-label', 'slider-label');
+        });
+        it('should have "disabled" styles', () => {
+            expect(driver.slider).attr(`data-${styles.$stylesheet.namespace.toLowerCase()}-disabled`);
+        });
+    });
+
+    describe('render with event listeners', () => {
+        let driver: any;
+        let events: {[key: string]: any};
+
+        beforeEach(() => {
+            events = [
+                'onChange', 'onInput', 'onFocus', 'onBlur',
+                'onDragStart', 'onDrag', 'onDragStop'
+            ].reduce<typeof events>((obj, key) => {
+                obj[key] = sinon.spy();
+                return obj;
+            }, {});
+            driver = renderWithProps(events);
+        });
+        it('should call onChange', () => {
+            const event = {
+                clientX: 0,
+                clientY: 0
+            };
+            driver.mouseDown(event);
+            driver.mouseUp(event, environment);
+            expect(events.onChange).to.be.calledOnce;
+        });
+        it('should call onInput', () => {
+            const event = {
+                clientX: 0,
+                clientY: 0
+            };
+            driver.mouseDown(event);
+            driver.mouseUp(event, environment);
+            expect(events.onInput).to.be.calledOnce;
+        });
+        it('should call onDragStart', () => {
+            const event = {
+                clientX: 0,
+                clientY: 0
+            };
+            driver.mouseDown(event);
+            expect(events.onDragStart).to.be.calledOnce;
+        });
+        it('should call onDragStop', () => {
+            const event = {
+                clientX: 0,
+                clientY: 0
+            };
+            driver.mouseDown(event);
+            driver.mouseUp(event, environment);
+            expect(events.onDragStop).to.be.calledOnce;
+        });
+        it('should call onDrag', () => {
+            const event = {
+                clientX: 0,
+                clientY: 0
+            };
+            driver.mouseDown(event);
+            driver.mouseMove(event, environment);
+            driver.mouseUp(event, environment);
+            expect(events.onDrag).to.be.calledOnce;
+        });
+        it('should call onFocus', () => {
+            simulate.focus(driver.handle);
+            expect(events.onFocus).to.be.calledOnce;
+        });
+        it('should call onBlur', () => {
+            simulate.blur(driver.handle);
+            expect(events.onBlur).to.be.calledOnce;
+        });
+    });
+
+});
+
+describe('Slider/calculations', () => {
+    function testMethod(fn: (prop: any) => any, results: {[key: string]: any}) {
+        Object.keys(results).forEach(key => {
+            it(`${key} => ${results[key]}`, () => {
+                expect(fn(AXES[key as AxisOptionsKey])).to.equal(results[key]);
+            });
+        });
+    }
+
+    describe('isVertical()', () => {
+        const results = {
+            x: false,
+            xReverse: false,
+            y: true,
+            yReverse: true
+        };
+        testMethod(isVertical, results);
+    });
+
+    describe('getSizeProperty()', () => {
+        const results = {
+            x: 'width',
+            xReverse: 'width',
+            y: 'height',
+            yReverse: 'height'
+        };
+        testMethod(getSizeProperty, results);
+    });
+
+    describe('isReverse()', () => {
+        const results = {
+            x: false,
+            xReverse: true,
+            y: false,
+            yReverse: true
+        };
+        testMethod(isReverse, results);
+    });
+
+    describe('getRelativeStep()', () => {
+        it('no step => CONTINUOUS_STEP', () => {
+            expect(getRelativeStep(undefined, 1, 2)).to.equal(CONTINUOUS_STEP);
+        });
+        it('CONTINUOUS_STEP => CONTINUOUS_STEP', () => {
+            expect(getRelativeStep(CONTINUOUS_STEP, 1, 2)).to.equal(CONTINUOUS_STEP);
+        });
+        it('(step = 1, min = 0, max = 10) => 10', () => {
+            expect(getRelativeStep(1, 0, 10)).to.equal(10);
+        });
+        it('(step = 1, min = 5, max = 10) => 20', () => {
+            expect(getRelativeStep(1, 5, 10)).to.equal(20);
+        });
+    });
+
+    describe('getRelativeValue()', () => {
+        it('(value = 10, min = 5, max = 15) => 50', () => {
+            expect(getRelativeValue(10, 5, 15)).to.equal(50);
+        });
+        it('(value = 0, min = 5, max = 15) => 0', () => {
+            expect(getRelativeValue(0, 5, 15)).to.equal(0);
+        });
+        it('(value = 20, min = 5, max = 15) => 100', () => {
+            expect(getRelativeValue(20, 5, 15)).to.equal(100);
+        });
+    });
+
+    describe('getAbsoluteValue()', () => {
+        it('(value = 25, min = 1, max = 5) => 2', () => {
+            expect(getAbsoluteValue(25, 1, 5)).to.equal(2);
+        });
+        it('(value = 0, min = 1, max = 5) => 1', () => {
+            expect(getAbsoluteValue(0, 1, 5)).to.equal(1);
+        });
+        it('(value = 100, min = 1, max = 5) => 5', () => {
+            expect(getAbsoluteValue(100, 1, 5)).to.equal(5);
+        });
+        it('(value = 150, min = 1, max = 5) => 5', () => {
+            expect(getAbsoluteValue(150, 1, 5)).to.equal(5);
+        });
+    });
+
+    describe('getValueInRange()', () => {
+        it('(value = 0, min = 10, max = 20) => 10', () => {
+            expect(getValueInRange(0, 10, 20)).to.equal(10);
+        });
+        it('(value = 15, min = 10, max = 20) => 15', () => {
+            expect(getValueInRange(15, 10, 20)).to.equal(15);
+        });
+        it('(value = 25, min = 10, max = 20) => 20', () => {
+            expect(getValueInRange(25, 10, 20)).to.equal(20);
+        });
+    });
+
+    describe('getValueFromElementAndPointer()', () => {
+        function testCase(opts: {[key: string]: any}) {
+            const name = Object.keys(opts).map(key => `${key} = ${opts[key]}`).join(', ');
+            let elem: any;
+
+            before(() => {
+                elem = document.createElement('div');
+                elem.style.width = opts.width + 'px';
+                elem.style.height = opts.height + 'px';
+                elem.style.left = 0;
+                elem.style.top = 0;
+                elem.style.position = 'absolute';
+                document.body.appendChild(elem);
+            });
+
+            after(() => {
+                document.body.removeChild(elem);
+            });
+
+            it(name, () => {
+                const event = {
+                    clientX: opts.clientX,
+                    clientY: opts.clientY
+                };
+                const args = [
+                    elem,
+                    event,
+                    opts.step,
+                    opts.vertically,
+                    opts.reversed
+                ];
+                expect(getValueFromElementAndPointer.apply(null, args)).to.equal(opts.result);
+            });
+        }
+
+        testCase({
+            width: 20,
+            height: 10,
+            clientX: 5,
+            clientY: 5,
+            step: 1,
+            vertically: false,
+            reversed: false,
+            result: 25
+        });
+
+        testCase({
+            width: 20,
+            height: 10,
+            clientX: 5,
+            clientY: 2,
+            step: 1,
+            vertically: true,
+            reversed: false,
+            result: 80
+        });
+
+        testCase({
+            width: 20,
+            height: 10,
+            clientX: 5,
+            clientY: 5,
+            step: 1,
+            vertically: false,
+            reversed: true,
+            result: 75
+        });
+        testCase({
+            width: 20,
+            height: 10,
+            clientX: 5,
+            clientY: 2,
+            step: 1,
+            vertically: true,
+            reversed: true,
+            result: 20
+        });
+        testCase({
+            width: 20,
+            height: 10,
+            clientX: 25,
+            clientY: 5,
+            step: 1,
+            vertically: false,
+            reversed: false,
+            result: 100
+        });
+        testCase({
+            width: 20,
+            height: 10,
+            clientX: -1,
+            clientY: 5,
+            step: 1,
+            vertically: false,
+            reversed: false,
+            result: 0
+        });
+        testCase({
+            width: 20,
+            height: 10,
+            clientX: 0,
+            clientY: 100,
+            step: 1,
+            vertically: true,
+            reversed: false,
+            result: 0
+        });
+        testCase({
+            width: 20,
+            height: 10,
+            clientX: 0,
+            clientY: -100,
+            step: 1,
+            vertically: true,
+            reversed: false,
+            result: 100
+        });
+    });
+
 });
