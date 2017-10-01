@@ -45,15 +45,15 @@ export class TreeItemDriver extends DriverBase {
         simulate.click(this.label);
     }
 
-    public isSelected(style: {$stylesheet: Stylesheet} = treeItemStyle) {
+    public isSelected(style: {$stylesheet: Stylesheet} = treeItemStyle): boolean {
         return elementHasStylableState(this.root, style, 'selected');
     }
 
-    public isFocused(style: {$stylesheet: Stylesheet} = treeItemStyle) {
+    public isFocused(style: {$stylesheet: Stylesheet} = treeItemStyle): boolean {
         return elementHasStylableState(this.root, style, 'focused');
     }
 
-    public getNestedItem(id: string) {
+    public getNestedItem(id: string): TreeItemDriver {
         return new TreeItemDriver(() => this.select(getTreeItem(id)));
     }
 }
