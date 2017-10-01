@@ -1,7 +1,7 @@
 @namespace "demos";
 :import {
   -st-theme: true;
-  -st-from: "../src/style/default-theme/default.st.css";
+  -st-from: "../src/themes/wix-theme/theme.st.css";
 }
 
 :global(html) {

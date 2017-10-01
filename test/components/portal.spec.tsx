@@ -4,12 +4,12 @@ import {ClientRenderer, expect, waitFor} from 'test-drive-react';
 import {Portal} from '../../src';
 import {PortalTestDriver} from '../../test-kit';
 
-describe('<Portal />', function() {
+describe('<Portal />', () => {
     const clientRenderer = new ClientRenderer();
 
-    afterEach(function() {clientRenderer.cleanup(); });
+    afterEach(() => {clientRenderer.cleanup(); });
 
-    it('displays the portal and renders its children', async function() {
+    it('displays the portal and renders its children', async () => {
         const {driver} = clientRenderer.render(
             <Portal>
                 <span>Portal Body</span>
@@ -21,7 +21,7 @@ describe('<Portal />', function() {
         });
     });
 
-    it('applies supplied styles to the popup and updates them if changed', async function() {
+    it('applies supplied styles to the popup and updates them if changed', async () => {
         const {container, driver} = clientRenderer.render(
             <Portal style={{position: 'absolute'}}>
                 <span>Portal Body</span>
@@ -40,7 +40,7 @@ describe('<Portal />', function() {
         await waitFor(() => expect(driver.portal).to.have.nested.property('style.position', 'fixed'));
     });
 
-    it('applies supplied className and id to the popup and updates them if changed', async function() {
+    it('applies supplied className and id to the popup and updates them if changed', async () => {
         const {container, driver} = clientRenderer.render(
             <Portal className="my-test-class" id="my-test-id">
                 <span>Portal Body</span>
@@ -61,7 +61,7 @@ describe('<Portal />', function() {
         await waitFor(() => expect(driver.portal).to.have.nested.property('id', 'another-test-id'));
     });
 
-    it('removes the component when unmounting', async function() {
+    it('removes the component when unmounting', async () => {
         const container = document.body.appendChild(document.createElement('div'));
         const {driver} = clientRenderer.render(
             <Portal>
@@ -73,11 +73,10 @@ describe('<Portal />', function() {
         ReactDOM.unmountComponentAtNode(container);
         document.body.removeChild(container);
 
-        debugger;
         await waitFor(() => expect(driver.portal).to.be.absent());
     });
 
-    it('updates the portal content if the children are changed', async function() {
+    it('updates the portal content if the children are changed', async () => {
         const initialText = 'Portal Body';
         const updatedText = 'Portal Body Updated';
         const {container, driver} = clientRenderer.render(
@@ -98,7 +97,7 @@ describe('<Portal />', function() {
         await waitFor(() => expect(driver.content[0]).to.have.text(updatedText));
     });
 
-    it('renders the portal in the bottom of the DOM', async function() {
+    it('renders the portal in the bottom of the DOM', async () => {
         const {container, driver} = clientRenderer.render(
             <Portal>
                 <span>Portal Body</span>
@@ -115,7 +114,7 @@ describe('<Portal />', function() {
         });
     });
 
-    it('renders with a className passed as a prop', async function() {
+    it('renders with a className passed as a prop', async () => {
         const {driver} = clientRenderer.render(
             <Portal className="test-class">
                 <span>Portal Body</span>

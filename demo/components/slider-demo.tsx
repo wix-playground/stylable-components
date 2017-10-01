@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {stylable} from 'wix-react-tools';
-import {ContextProvider, Slider} from '../../src';
-import {ChangeEvent} from '../../src/types/events';
+import {ChangeEvent, ContextProvider, Slider} from '../../src';
 import style from './slider-demo.st.css';
 
 export interface SliderDemoState {
@@ -158,7 +157,7 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                                 min={min}
                                 max={max}
                                 step={10}
-                                marks={true}
+                                displayStopMarks={true}
                                 onChange={this.onSliderChange}
                             />
                         </td>
@@ -169,7 +168,7 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                                 min={min}
                                 max={max}
                                 step={10}
-                                marks={true}
+                                displayStopMarks={true}
                                 onChange={this.onSliderChange}
                             />
                         </td>
@@ -180,7 +179,7 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                                 min={min}
                                 max={max}
                                 step={10}
-                                marks={true}
+                                displayStopMarks={true}
                                 onChange={this.onSliderChange}
                             />
                         </td>
@@ -229,7 +228,7 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                                     min={min}
                                     max={max}
                                     step={10}
-                                    marks={true}
+                                    displayStopMarks={true}
                                     onChange={this.onSliderChange}
                                 />
                             </ContextProvider>

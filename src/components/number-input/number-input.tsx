@@ -1,14 +1,12 @@
 import {codes as KeyCodes} from 'keycode';
 import * as React from 'react';
-import {stylable} from 'wix-react-tools';
+import {properties, stylable} from 'wix-react-tools';
 import {FormInputProps} from '../../types';
 import {isNumber, noop} from '../../utils';
 import {Modifiers, Stepper} from '../stepper';
 import styles from './number-input.st.css';
 
-export interface NumberInputProps extends FormInputProps<number | undefined, string> {
-    className?: string;
-    value?: number;
+export interface NumberInputProps extends FormInputProps<number | undefined, string>, properties.Props {
     defaultValue?: number;
     placeholder?: string;
     min?: number;
@@ -27,8 +25,6 @@ interface DefaultProps {
     step: number;
     min: number;
     max: number;
-    onChange(value?: number): void;
-    onInput(value: string): void;
 }
 
 export interface NumberInputState {
@@ -45,9 +41,7 @@ enum Direction {
 const DEFAULTS: DefaultProps = {
     step: 1,
     min: -Infinity,
-    max: Infinity,
-    onChange: noop,
-    onInput: noop
+    max: Infinity
 };
 
 function getPropWithDefault<Prop extends keyof NumberInputProps & keyof DefaultProps>(
@@ -58,10 +52,11 @@ function getPropWithDefault<Prop extends keyof NumberInputProps & keyof DefaultP
 }
 
 @stylable(styles)
+@properties
 export class NumberInput extends React.Component<NumberInputProps, NumberInputState> {
-    public static defaultProps = {
-        onChange: DEFAULTS.onChange,
-        onInput: DEFAULTS.onInput
+    public static defaultProps: Partial<NumberInputProps> = {
+        onChange: noop,
+        onInput: noop
     };
 
     private committed = true;
@@ -94,7 +89,7 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
         };
     }
 
-    public componentWillReceiveProps({min, max, step, value, defaultValue}: NumberInputProps) {
+    public componentWillReceiveProps({value, defaultValue}: NumberInputProps) {
         if (defaultValue === undefined && value !== this.state.value) {
             this.committed = true;
             this.setState({value});
@@ -129,7 +124,7 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
                 }
                 <input
                     ref={input => this.inputRef = input}
-                    className="native-input"
+                    className="nativeInput"
                     data-automation-id="NATIVE_INPUT_NUMBER"
                     type="number"
                     name={name}

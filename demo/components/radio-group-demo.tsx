@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {stylable} from 'wix-react-tools';
-import {RadioButton, RadioGroup} from '../../src';
+import {ChangeEvent, RadioButton, RadioGroup} from '../../src';
 import styles from './radio-group-demo.st.css';
 
 @stylable(styles)
@@ -61,11 +61,11 @@ export class RadioGroupDemo extends React.Component<{}, {}> {
             </div>
         );
     }
-    private onChange = (e: {value: string}) => {
+    private onChange = (e: ChangeEvent<string>) => {
         this.setState({myValue1: e.value});
     }
 
-    private onChange2 = (e: {value: string}) => {
+    private onChange2 = (e: ChangeEvent<string>) => {
         this.setState({myValue2: e.value});
     }
 }

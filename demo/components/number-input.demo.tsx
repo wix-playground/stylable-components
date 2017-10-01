@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {stylable} from 'wix-react-tools';
-import {NumberInput} from '../../src/components/number-input';
-import {ChangeEvent} from '../../src/types';
+import {ChangeEvent, NumberInput} from '../../src';
 import styles from './number-input.demo.st.css';
 
 export interface State {

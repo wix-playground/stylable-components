@@ -1,9 +1,7 @@
 import * as React from 'react';
 import {stylable} from 'wix-react-tools';
+import {ChangeEvent, CheckBox, CheckBoxIconProps} from '../../src';
 import style from './checkbox-demo.st.css';
-
-import {CheckBox, CheckBoxIconProps} from '../../src';
-import {ChangeEvent} from '../../src/types/events';
 
 export const demoCheckBoxText: string = 'Yes, I\'m over 18 years old';
 
