@@ -1,10 +1,12 @@
 import {observable} from 'mobx';
 import * as React from 'react';
+import {Stylesheet} from 'stylable';
 import {ClientRenderer, DriverBase, expect, simulate, sinon, waitFor} from 'test-drive-react';
 import {TreeViewDemo, TreeViewDemoCustom} from '../../demo/components/tree-view-demo';
 import {initParentsMap, TreeItem, TreeItemData, TreeView, TreeViewParentsMap, TreeViewStateMap} from '../../src';
 import {getLastAvailableItem, getNextItem, getPreviousItem} from '../../src/components/tree-view/tree-util';
 import {TreeItemDriver, TreeViewDriver} from '../../test-kit';
+import {elementHasStylableState} from '../../test-kit/utils';
 
 import treeViewDemoStyle from '../../demo/components/tree-view-demo.st.css';
 
@@ -64,6 +66,10 @@ function getAllNodeLabels(data: object[]): string[] {
     return data.map(getLabelsList).reduce((prev, next) => [...prev, ...next]);
 }
 
+function isElementSelected(element: Element, style: {$stylesheet: Stylesheet}) {
+    return elementHasStylableState(element, style, 'selected');
+}
+
 describe('<TreeView />', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
@@ -115,9 +121,8 @@ describe('<TreeView />', () => {
                 `item did not appear: ${item}`).to.be.present()));
 
         customTreeView.getItem(allNodesLabels[2]).clickLabel();
-        await waitForDom(() => expect(customTreeView
-                                        .getItem(allNodesLabels[2])
-                                        .isSelected(treeViewDemoStyle)).to.equal(true));
+        await waitForDom(() => expect(
+            isElementSelected(customTreeView.getItem(allNodesLabels[2]).root, treeViewDemoStyle)).to.equal(true));
     });
 
     it('ends up in expected state after multiple clicks on same tree node', async () => {
