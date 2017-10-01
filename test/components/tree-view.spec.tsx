@@ -523,7 +523,10 @@ describe('<TreeView />', () => {
 
                 item.clickLabel();
 
-                await waitFor(() => expect(onClick).to.have.been.calledOnce);
+                await waitFor(() => {
+                    expect(onClick).to.have.been.calledOnce;
+                    expect(onClick).to.have.been.calledWithMatch(sampleItem);
+                });
             });
         });
 
