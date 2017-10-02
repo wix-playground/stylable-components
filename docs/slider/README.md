@@ -9,15 +9,19 @@ Sliders are great for adjusting settings that reflect intensity levels (volume, 
 
 ![elements](./assets/elements.png)
 
-A **Slider** is composed of the following elements: "bar", "handle", "progressBar", "marks", "progressMarks", "tooltip". The "handle" is dragged across the "bar" in order to give the slider a desired value, while "progress" shows the range from the minimum value to the current value. "Tooltip" is used to show the current value.
+**Slider** is composed of the following elements:
 
-The value steps are indicated by marks and progressMarks.
+* **bar**: represents full range of values.
+* **handle**: dragged across the **bar** and **progress** bar to change value.
+* **progressBar**: represents range from minimum value to current value.
+* **marks**: value steps of **bar**.
+* **progressMarks**: value steps of **progressBar**.
+* **tooltip**: optional display of the current value, enabled by setting the `displayTooltip` prop to `true`.
 
-You can display a tooltip (e.g. to display current value) by setting `displayTooltip` prop to `true`.
 
-### API
+## API
 
-#### Props
+### Props
 
 | name             | type                                     | defaultValue | isRequired | description                              |
 | ---------------- | ---------------------------------------- | ------------ | ---------- | ---------------------------------------- |
@@ -25,20 +29,18 @@ You can display a tooltip (e.g. to display current value) by setting `displayToo
 | value            | number                                   | min          | no         | Displays default OR actual value of the slider. |
 | min              | number                                   | 0            | no         | The absolute minimum of the slider's range. |
 | max              | number                                   | 1            | no         | The absolute maximum of the slider's range. |
-| step             | number OR string "any"                   | 1            | no         | Set the slider's step. If step = "number" it causes slider to move in discrete increments. If step = "any"  sliders moves along a subjective range. |
+| step             | number OR string "any"                   | 1            | no         | Set the slider's step method. If step is set to a number, it causes the **handle** to move in discrete increments. If step is set to the string "any", the **handle** moves along a subjective range. |
 | required         | boolean                                  | false        | no         | Whether or not the slider is required in a form. |
-| disabled         | boolean                                  | false        | no         | If true, the slider will not be interactive. |
-| label            | string                                   |              | no         | Text to display in accessibility mode.   |
-| name             | string                                   |              | no         | The name of the slider. Behaves like the name attribute of an input element. |
-| displayStopMarks | boolean                                  | false        | no         | Controls the visibility of the marks.    |
-| displayTooltip   | bool                                     | false        | no         | Controls the visibility of the tooltip.  |
-| tooltipPosition  | string                                   | top          | no         | Controls the position of the tooltip. Supports the following options: `top`, `bottom`, `left`, `right`. |
-| onChange         | `(event: {value: number}): void`         |              | yes        | Callback function that is fired when the slider's value changed. |
-| onDragStart      | `(event: PointerEvent): void`            |              | no         | Callback function that is fired when the handle has begun to move. |
-| onDragStop       | `event: PointerEvent): void`             |              | no         | Callback function that is fired when the handle has stopped moving. |
-| onDrag           | `event: PointerEvent): void`             |              | no         | Callback function that is fired when the handle is moving. |
-
-#### 
+| disabled         | boolean                        | false        | no         | If true, the slider will not be interactive. |
+| label            | string                         |              | no         | Text to display in accessibility mode.   |
+| name             | string                         |              | no         | The name of the slider. Behaves like the name attribute of an input element. |
+| displayStopMarks | boolean                        | false        | no         | Controls the visibility of the marks.    |
+| displayTooltip   | boolean                        | false        | no         | Controls the visibility of the tooltip.  |
+| tooltipPosition  | string:<br>"top", "bottom", "left", "right"                                   | "top"          | no         | Controls the position of the tooltip. |
+| onChange         | function<br>`(event: {value: number}): void`  |        | yes        | Callback function that is fired when the slider's value changed.<br>Parameters:<br>• **event**: change event for the slider.<br>• **value**: The new value of the slider. |
+| onDragStart      | function:<br>`(event: PointerEvent): void`  |              | no         | Callback function that is fired when the handle has begun to move.<br>Parameters:<br>• **event**: MouseDown or TouchStart event targeting the slider. |
+| onDragStop       | function:<br>`(event: PointerEvent): void`  |              | no         | Callback function that is fired when the handle has stopped moving.<br>Parameters:<br>• **event**: MouseEnd or TouchEnd event targeting the slider. |
+| onDrag           | function:<br>`(event: PointerEvent): void`  |              | no         | Callback function that is fired when the handle is moving.<br>Parameters:<br>• **event**: MouseMove or TouchMove event targeting the slider. |
 
 ### Code Examples
 
