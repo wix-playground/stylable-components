@@ -40,7 +40,7 @@ describe('<Popup />', () => {
 
             await waitForDom(() => {
                 expect(popupDemo.container).to.be.present();
-                expect(popupDemo.popup.root).to.equal(null);
+                expect(popupDemo.popup.root).to.be.absent();
             });
 
             popupDemo.container.click();
@@ -48,7 +48,7 @@ describe('<Popup />', () => {
             await waitForDom(() => expect(popupDemo.popup.root).to.be.present());
 
             popupDemo.container.click();
-            return waitForDom(() => expect(popupDemo.popup.root).to.equal(null));
+            return waitForDom(() => expect(popupDemo.popup.root).to.be.absent());
         });
     });
 
@@ -73,7 +73,7 @@ describe('<Popup />', () => {
         ).withDriver(PopupTestDriver);
         await sleep(100);
 
-        await waitFor(() => expect(popup.root).to.equal(null));
+        await waitFor(() => expect(popup.root).to.be.absent());
     });
 
     it('does not render the popup if the open prop is false', async () => {
@@ -84,7 +84,7 @@ describe('<Popup />', () => {
         ).withDriver(PopupTestDriver);
         await sleep(100);
 
-        await waitFor(() => expect(popup.root).to.equal(null));
+        await waitFor(() => expect(popup.root).to.be.absent());
     });
 
     it('removes the component when unmounting', async () => {
@@ -98,7 +98,7 @@ describe('<Popup />', () => {
 
         await waitFor(() => {expect(popup.root).to.be.present(); });
         ReactDOM.unmountComponentAtNode(popup.root!.parentElement!);
-        return waitFor(() => {expect(popup.root).to.not.exist; });
+        return waitFor(() => {expect(popup.root).to.be.absent(); });
     });
 
     it('syncs the popup width', () => {

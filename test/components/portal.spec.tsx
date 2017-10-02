@@ -121,6 +121,6 @@ describe('<Portal />', () => {
             </Portal>
         ).withDriver(PortalTestDriver);
 
-        await waitFor(() => expect((driver.portal as Element).className).to.contain('test-class'));
+        await waitFor(() => expect(driver.portal as Element).to.have.attribute('class', 'test-class'));
     });
 });
