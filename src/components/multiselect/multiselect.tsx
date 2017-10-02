@@ -1,4 +1,5 @@
 import keycode = require('keycode');
+import {observer} from 'mobx-react';
 import React = require('react');
 import {properties, stylable} from 'wix-react-tools';
 import {ChangeEvent} from '../../types/events';
@@ -9,7 +10,7 @@ import {OptionList, SelectionListItemValue, SelectionListModel, SelectionListVie
 import styles from './multiselect.st.css';
 import {Tag} from './tag';
 
-export interface Props extends OptionList, FormInputProps<SelectionListItemValue[]> {
+export interface Props extends OptionList, FormInputProps<SelectionListItemValue[]>, properties.Props {
     // Standard props
     autoFocus?: boolean;
     disabled?: boolean;
@@ -30,38 +31,44 @@ export interface Props extends OptionList, FormInputProps<SelectionListItemValue
 
 export interface State {
     focused: boolean;
+    focusedIndex: number;
     input: HTMLInputElement | null;
     inputValue: string;
     list: SelectionListModel;
     popup: Popup | null;
     popupDismissed: boolean;
     root: HTMLElement | null;
+    selectedIndex: number;
 }
 
+@observer
 @stylable(styles)
 export class Multiselect extends React.Component<Props, State> {
     public static defaultProps: Props = {
-        allowFreeText: true,
         autoFocus: false,
         disabled: false,
+        onChange: noop,
+        readOnly: false,
+        value: [],
+
+        allowFreeText: true,
         filter: () => true,
         maxSearchResults: Infinity,
         maxSelected: Infinity,
         minCharacters: 0,
-        noSuggestionsNotice: '',
-        onChange: noop,
-        readOnly: false,
-        value: []
+        noSuggestionsNotice: ''
     };
 
     public state: State = {
         focused: false,
+        focusedIndex: -1,
         input: null,
         inputValue: '',
         list: new SelectionListModel(),
         popup: null,
         popupDismissed: false,
-        root: null
+        root: null,
+        selectedIndex: -1
     };
 
     public componentWillMount() {
@@ -122,21 +129,22 @@ export class Multiselect extends React.Component<Props, State> {
                     tabIndex={this.props.tabIndex}
                 />
 
-                {this.isPopupOpen() &&
-                    <Popup
-                        ref={popup => this.state.popup || this.setState({popup})}
-                        open={true}
-                        anchor={this.state.root}
-                        className="fixme-multiselect-portal"
-                    >
-                        <SelectionListView
-                            focused={true}
-                            className="drop-down-list"
-                            list={this.state.list}
-                            onChange={this.handleListItemClick}
-                        />
-                    </Popup>
-                }
+                <Popup
+                    ref={popup => this.state.popup || this.setState({popup})}
+                    open={this.isPopupOpen()}
+                    anchor={this.state.root}
+                    className="fixme-multiselect-portal"
+                >
+                    <SelectionListView
+                        focused={true}
+                        focusedIndex={this.state.focusedIndex}
+                        selectedIndex={this.state.selectedIndex}
+                        className="drop-down-list"
+                        items={this.state.list.items}
+                        onChange={this.handleListItemClick}
+                        onMouseDown={this.handleListMouseDown}
+                    />
+                </Popup>
             </div>
         );
     }
@@ -201,6 +209,11 @@ export class Multiselect extends React.Component<Props, State> {
             event.preventDefault();
             this.focus();
         }
+    }
+
+    protected handleListMouseDown: React.MouseEventHandler<HTMLElement> = event => {
+        // Don't steal focus from the input.
+        event.preventDefault();
     }
 
     protected handleInputChange: React.ChangeEventHandler<HTMLInputElement> = event => {
@@ -274,8 +287,8 @@ export class Multiselect extends React.Component<Props, State> {
         this.deleteTag(i);
     }
 
-    protected handleListItemClick = ({value: itemValue}: {value: string}): void => {
+    protected handleListItemClick = (index: number): void => {
         this.state.list.focusValue(undefined);
-        this.addTag(itemValue);
+        this.addTag(this.state.list.items[index].value);
     }
 }
