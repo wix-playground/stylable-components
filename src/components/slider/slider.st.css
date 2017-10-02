@@ -8,6 +8,7 @@
         PR2,
         STC5,
         PR4,
+        BK1,
         BK2,
         BK3,
         DS1,
@@ -53,6 +54,9 @@
 
     minVerticalSliderHeight: 44px;
     clickableAreaRadius: 15px;
+
+    tooltipOffset: 23px;
+    tooltipColor: value(BK1);
 }
 
 .nativeInput {
@@ -223,16 +227,68 @@
     margin: value(markMiddleOfDot) 0 0 value(markMiddleOfBar);
 }
 
-.tooltip{
+.tooltip {
     position: absolute;
     text-align: center;
-    left: 50%;
-    bottom: 20px;
+    background: value(tooltipColor);
+    padding: 12px 25px;
+    color: white;
+    font-size: 14px;
+    font-family: arial;
 }
-.tooltip > *{
-    display: inline-block;
-    position: relative;
-    left: -50%;
+.tooltip:after {
+    content: '';
+    position: absolute;
+    border-width: 5px;
+    border-style: solid;
+    border: 5px solid transparent;
+}
+
+.tooltip.top {
+    bottom: value(tooltipOffset);
+    transform: translateX(-50%);
+    margin-left: 50%;
+}
+.tooltip.top:after {
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-top-color: value(tooltipColor);
+}
+
+.tooltip.bottom {
+    top: value(tooltipOffset);
+    transform: translateX(-50%);
+    margin-left: 50%;
+}
+.tooltip.bottom:after {
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-bottom-color: value(tooltipColor);
+}
+
+.tooltip.left {
+    right: value(tooltipOffset);
+    transform: translateY(-50%);
+    margin-top: 50%;
+}
+.tooltip.left:after {
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    border-left-color: value(tooltipColor);
+}
+.tooltip.right {
+    left: value(tooltipOffset);
+    transform: translateY(-50%);
+    margin-top: 50%;
+}
+.tooltip.right:after {
+    right: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    border-right-color: value(tooltipColor);
 }
 
 /* Hover state */

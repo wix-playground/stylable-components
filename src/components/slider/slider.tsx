@@ -22,7 +22,7 @@ import {
     DEFAULT_STEP,
     DEFAULT_VALUE
 } from './slider-constants';
-import {AxisOptions, PointerEvent, Step} from './slider-types';
+import {AxisOptions, PointerEvent, Step, TooltipPosition} from './slider-types';
 import {SliderView} from './slider-view';
 
 enum ChangeDirection {
@@ -41,6 +41,8 @@ export interface SliderProps extends FormInputProps<number, string>, properties.
     name?: string;
     label?: string;
 
+    displayTooltip?: boolean;
+    tooltipPosition?: TooltipPosition;
     displayStopMarks?: boolean;
     disabled?: boolean;
     required?: boolean;
@@ -68,6 +70,8 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         max: DEFAULT_MAX,
         step: DEFAULT_STEP,
         axis: DEFAULT_AXIS,
+
+        displayTooltip: false,
 
         onChange: noop,
         onInput: noop,
@@ -122,7 +126,9 @@ export class Slider extends React.Component<SliderProps, SliderState> {
                 required={this.props.required!}
                 rtl={isRTL(this.context)}
                 step={this.props.step!}
-                tooltip={this.getTooltip()}
+                tooltip={this.state.relativeValue}
+                displayTooltip={this.props.displayTooltip!}
+                tooltipPosition={this.props.tooltipPosition || 'top'}
                 value={this.props.value}
 
                 onFocus={this.onSliderFocus}
@@ -179,10 +185,6 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         return typeof value === 'undefined' ?
             (typeof min !== 'undefined' ? min : DEFAULT_VALUE) :
             value;
-    }
-
-    private getTooltip(): React.ReactNode {
-        return this.props.tooltip;
     }
 
     private increaseValue(toEdge: boolean = false, multiplier: number = 1) {
