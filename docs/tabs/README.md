@@ -36,7 +36,10 @@ When a tab interface is initialized, one tab panel is displayed and its associat
 
 | name     | type               | defaultValue | isRequired | description             |
 | -------- | ------------------ | ------------ | ---------- | ----------------------- |
+| value    | string             |              |            | Specifies the value by which this tab can be activated |
+| label    | node               |              |            | Specifies the tab label |
 | disabled | array (of tab IDs) |              |            | Specifies disabled tabs |
+| children | node               |              |            | Specifies the content of current tab |
 
 
 
