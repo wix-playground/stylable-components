@@ -11,9 +11,9 @@ export class PopupDemoTestDriver extends DriverBase {
     public popup: PopupTestDriver;
     public container: HTMLButtonElement = this.select('POPUP_DEMO_BTN');
 
-    constructor(public readonly instance: PopupDemo) {
-        super(() => ReactDOM.findDOMNode(instance));
-        this.popup = new PopupTestDriver(instance.getPopup()!);
+    constructor(getPopupDemo: () => HTMLElement) {
+        super(getPopupDemo);
+        this.popup = new PopupTestDriver(getPopupDemo);
     }
 }
 
@@ -35,9 +35,8 @@ describe('<Popup />', () => {
 
     describe('The popup user', () => {
         it('clicks on the parent and the popup opens and closes after another click', async () => {
-            const {result, waitForDom} = clientRenderer.render(<PopupDemo />);
-
-            let popupDemo = new PopupDemoTestDriver(result as PopupDemo);
+            const {driver: popupDemo, waitForDom} =
+                clientRenderer.render(<PopupDemo />).withDriver(PopupDemoTestDriver);
 
             await waitForDom(() => {
                 expect(popupDemo.container).to.be.present();
@@ -45,7 +44,7 @@ describe('<Popup />', () => {
             });
 
             popupDemo.container.click();
-            popupDemo = new PopupDemoTestDriver(result as PopupDemo);
+
             await waitForDom(() => expect(popupDemo.popup.root).to.be.present());
 
             popupDemo.container.click();
@@ -54,13 +53,11 @@ describe('<Popup />', () => {
     });
 
     it('displays the popup and renders its children if the open prop is given', () => {
-        const {result} = clientRenderer.render(
+        const {driver: popup} = clientRenderer.render(
             <Popup anchor={anchor} open>
                 <span>Popup Body</span>
             </Popup>
-        );
-
-        const popup = new PopupTestDriver(result as Popup);
+        ).withDriver(PopupTestDriver);
 
         return waitFor(() => {
             expect(popup.root).to.be.present();
@@ -69,39 +66,35 @@ describe('<Popup />', () => {
     });
 
     it('does not render the popup if there is no anchor', async () => {
-        const {result} = clientRenderer.render(
+        const {driver: popup} = clientRenderer.render(
             <Popup anchor={null} open>
                 <span>Popup Body</span>
             </Popup>
-        );
+        ).withDriver(PopupTestDriver);
         await sleep(100);
 
-        const popup = new PopupTestDriver(result as Popup);
         await waitFor(() => expect(popup.root).to.equal(null));
     });
 
     it('does not render the popup if the open prop is false', async () => {
-        const {result} = clientRenderer.render(
+        const {driver: popup} = clientRenderer.render(
             <Popup anchor={anchor}>
                 <span data-automation-id="SPAN">Popup Body</span>
             </Popup>
-        );
+        ).withDriver(PopupTestDriver);
         await sleep(100);
 
-        const popup = new PopupTestDriver(result as Popup);
         await waitFor(() => expect(popup.root).to.equal(null));
     });
 
     it('removes the component when unmounting', async () => {
-        const {result} = clientRenderer.render(
+        const {driver: popup} = clientRenderer.render(
             <Popup
                 anchor={anchor}
                 open
             >
                 <span data-automation-id="SPAN">Popup Body</span>
-            </Popup>);
-
-        const popup = new PopupTestDriver(result as Popup);
+            </Popup>).withDriver(PopupTestDriver);
 
         await waitFor(() => {expect(popup.root).to.be.present(); });
         ReactDOM.unmountComponentAtNode(popup.root!.parentElement!);
@@ -109,16 +102,15 @@ describe('<Popup />', () => {
     });
 
     it('syncs the popup width', () => {
-        const {result} = clientRenderer.render(
+        const {driver: popup} = clientRenderer.render(
             <Popup
                 anchor={anchor}
                 syncWidth={true}
                 open
             >
                 <span data-automation-id="SPAN">Popup Body</span>
-            </Popup>);
+            </Popup>).withDriver(PopupTestDriver);
 
-        const popup = new PopupTestDriver(result as Popup);
         return waitFor(() => {
             expect(popup.root.getBoundingClientRect().width)
                 .to.equal(anchor.getBoundingClientRect().width);
@@ -126,31 +118,29 @@ describe('<Popup />', () => {
     });
 
     it('sets the default maxHeight', () => {
-        const {result} = clientRenderer.render(
+        const {driver: popup} = clientRenderer.render(
             <Popup
                 anchor={anchor}
                 open
             >
                 <span data-automation-id="SPAN">Popup Body</span>
-            </Popup>);
+            </Popup>).withDriver(PopupTestDriver);
 
-        const popup = new PopupTestDriver(result as Popup);
         return waitFor(() => {
             expect(popup.root.style.maxHeight).to.equal('500px');
         });
     });
 
     it('sets and enforces the maxHeight', () => {
-        const {result} = clientRenderer.render(
+        const {driver: popup} = clientRenderer.render(
             <Popup
                 anchor={anchor}
                 maxHeight={5}
                 open
             >
                 <span data-automation-id="SPAN">Popup Body</span>
-            </Popup>);
+            </Popup>).withDriver(PopupTestDriver);
 
-        const popup = new PopupTestDriver(result as Popup);
         return waitFor(() => {
             expect(popup.root.style.maxHeight).to.equal('5px');
             expect(popup.root.getBoundingClientRect().height).to.equal(5);
@@ -184,15 +174,14 @@ describe('<Popup />', () => {
             });
             document.body.scrollTop = 500;
             document.body.scrollLeft = 500;
-            const {result} = clientRenderer.render(
+            const {driver: popup} = clientRenderer.render(
                 <Popup
                     anchor={div!}
                     open
                 >
                     <span data-automation-id="SPAN">Popup Body</span>
-                </Popup>);
+                </Popup>).withDriver(PopupTestDriver);
 
-            const popup = new PopupTestDriver(result as Popup);
             return waitForDom(() => {
                 expect([div, popup.root]).to.be.inVerticalSequence();
             });
@@ -206,7 +195,7 @@ describe('<Popup />', () => {
             for (const anchorPos of fixture) {
                 it(`Popup position: V: ${popupPos.vertical} H: ${popupPos.horizontal};
                  Anchor position: V: ${anchorPos.vertical} H: ${anchorPos.horizontal}`, () => {
-                    const {result} = clientRenderer.render(
+                    const {driver: popup} = clientRenderer.render(
                         <Popup anchor={anchor} anchorPosition={anchorPos} popupPosition={popupPos} open>
                             <div style={{background: 'green', color: 'white'}}>
                                     <span data-automation-id="SPAN">
@@ -214,9 +203,8 @@ describe('<Popup />', () => {
                                     </span>
                                 <div>some more stuff</div>
                             </div>
-                        </Popup>);
+                        </Popup>).withDriver(PopupTestDriver);
 
-                    const popup = new PopupTestDriver(result as Popup);
                     return waitFor(() => runTest(popup.root, anchor, popupPos, anchorPos));
                 });
             }

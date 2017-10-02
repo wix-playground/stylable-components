@@ -7,9 +7,9 @@ export class PopupTestDriver extends DriverBase {
     public static ComponentClass = Popup;
     private portalDriver: PortalTestDriver;
 
-    constructor(public readonly instance: Popup) {
-        super(() => ReactDOM.findDOMNode(instance));
-        this.portalDriver = new PortalTestDriver(() => ReactDOM.findDOMNode(instance.getPortal()!));
+    constructor(getPopup: () => HTMLElement) {
+        super(getPopup);
+        this.portalDriver = new PortalTestDriver(getPopup);
     }
 
     public get root(): HTMLElement {
