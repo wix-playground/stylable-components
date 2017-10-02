@@ -1,4 +1,3 @@
-import * as ReactDOM from 'react-dom';
 import {DriverBase} from 'test-drive-react';
 import {Popup} from '../../src';
 import {PortalTestDriver} from './portal-driver';
