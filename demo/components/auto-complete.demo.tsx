@@ -1,6 +1,5 @@
 import * as React from 'react';
-import {AutoComplete} from '../../src';
-import {ChangeEvent} from '../../src/types/events';
+import {AutoComplete, ChangeEvent} from '../../src';
 
 export interface AutoCompleteDemoState {
     open: boolean;

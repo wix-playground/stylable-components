@@ -1,14 +1,9 @@
 language: node_js
 
 node_js:
-  - '6'
-
-sudo: false
+  - 6
 
 addons:
-  apt:
-    packages:
-      - google-chrome-stable
   sauce_connect:
     username: "WixReactComponents"
   jwt:

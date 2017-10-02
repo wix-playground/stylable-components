@@ -55,7 +55,7 @@
     clickableAreaRadius: 15px;
 }
 
-.native-input {
+.nativeInput {
     position: absolute;
     opacity: 0;
     width: 0;
@@ -64,7 +64,7 @@
 }
 
 .root {
-    -st-states: active, disabled, error, x, x-reverse, y, y-reverse;
+    -st-states: active, disabled, error, x, xReverse, y, yReverse;
 
     position: relative;
     display: inline-block;
@@ -82,7 +82,7 @@
     padding: value(clickableAreaRadius) 0;
 }
 
-.root:x-reverse {
+.root:xReverse {
     width: 100%;
     padding: value(clickableAreaRadius) 0;
 }
@@ -93,7 +93,7 @@
     padding: 0 value(clickableAreaRadius);
 }
 
-.root:y-reverse {
+.root:yReverse {
     min-height: value(minVerticalSliderHeight);
     height: 100%;
     padding: 0 value(clickableAreaRadius);
@@ -110,7 +110,7 @@
     width: 100%;
 }
 
-.root:x-reverse .track{
+.root:xReverse .track{
     height: value(trackSize);
     width: 100%;
 }
@@ -122,7 +122,7 @@
     min-height: value(minVerticalSliderHeight);
 }
 
-.root:y-reverse .track{
+.root:yReverse .track{
     text-align: left;
     width: value(trackSize);
     height: 100%;
@@ -140,7 +140,7 @@
     height: inherit;
 }
 
-.root:x-reverse .progress{
+.root:xReverse .progress{
     right: 0;
     height: inherit;
 }
@@ -150,7 +150,7 @@
     width: inherit;
 }
 
-.root:y-reverse .progress{
+.root:yReverse .progress{
     top: 0;
     width: inherit;
 }
@@ -171,7 +171,7 @@
     margin: value(middleOfBar) 0 0 value(middleOfHandle);
 }
 
-.root:x-reverse .handle{
+.root:xReverse .handle{
     margin: value(middleOfBar) value(middleOfHandle) 0px 0px;
 }
 
@@ -179,7 +179,7 @@
     margin: 0px 0px value(middleOfHandle) value(middleOfBar);
 }
 
-.root:y-reverse .handle{
+.root:yReverse .handle{
     margin: value(middleOfHandle) 0px 0px value(middleOfBar);
 }
 
@@ -205,8 +205,8 @@
     margin: value(markMiddleOfBar) 0 0 value(markMiddleOfDot);
 }
 
-.root:x-reverse .markProgress,
-.root:x-reverse .markTrack
+.root:xReverse .markProgress,
+.root:xReverse .markTrack
 {
     margin: value(markMiddleOfBar) value(markMiddleOfDot) 0 0;
 }
@@ -217,8 +217,8 @@
     margin: 0 0 value(markMiddleOfDot) value(markMiddleOfBar);
 }
 
-.root:y-reverse .markProgress,
-.root:y-reverse .markTrack
+.root:yReverse .markProgress,
+.root:yReverse .markTrack
 {
     margin: value(markMiddleOfDot) 0 0 value(markMiddleOfBar);
 }
