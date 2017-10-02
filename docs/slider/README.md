@@ -36,11 +36,11 @@ Sliders are great for adjusting settings that reflect intensity levels (volume, 
 | name             | string                         |              | no         | The name of the slider. Behaves like the name attribute of an input element. |
 | displayStopMarks | boolean                        | false        | no         | Controls the visibility of the marks.    |
 | displayTooltip   | boolean                        | false        | no         | Controls the visibility of the tooltip.  |
-| tooltipPosition  | string:<br>"top", "bottom", "left", "right"                                   | "top"          | no         | Controls the position of the tooltip. |
-| onChange         | function<br>`(event: {value: number}): void`  |        | yes        | Callback function that is fired when the slider's value changed.<br>Parameters:<br>• **event**: change event for the slider.<br>• **value**: The new value of the slider. |
-| onDragStart      | function:<br>`(event: PointerEvent): void`  |              | no         | Callback function that is fired when the handle has begun to move.<br>Parameters:<br>• **event**: MouseDown or TouchStart event targeting the slider. |
-| onDragStop       | function:<br>`(event: PointerEvent): void`  |              | no         | Callback function that is fired when the handle has stopped moving.<br>Parameters:<br>• **event**: MouseEnd or TouchEnd event targeting the slider. |
-| onDrag           | function:<br>`(event: PointerEvent): void`  |              | no         | Callback function that is fired when the handle is moving.<br>Parameters:<br>• **event**: MouseMove or TouchMove event targeting the slider. |
+| tooltipPosition  | enum:<br>'top'<br>'bottom'<br>'left'<br>'right'                                   | "top"          | no         | Controls the position of the tooltip. |
+| onChange         | function  |        | yes        | Callback function that is fired when the slider's value changed.<br>`(event: {value: number}): void`<br>**event** change event for the slider.<br>**value** The new value of the slider. |
+| onDragStart      | function  |              | no         | Callback function that is fired when the handle has begun to move.<br>`(event: PointerEvent): void`<br>**event**: MouseDown or TouchStart event targeting the slider. |
+| onDragStop       | function  |              | no         | Callback function that is fired when the handle has stopped moving.<br>`(event: PointerEvent): void`<br>**event**: MouseEnd or TouchEnd event targeting the slider. |
+| onDrag           | function  |              | no         | Callback function that is fired when the handle is moving.<br>`(event: PointerEvent): void`<br>**event**: MouseMove or TouchMove event targeting the slider. |
 
 ### Code Examples
 
