@@ -21,14 +21,22 @@ When a tab interface is initialized, one tab panel is displayed and its associat
 
 #### Tabs Props
 
-| name                | type               | defaultValue | isRequired | description |
-| ------------------- | ------------------ | ------------ | ---------- | ---------------------------------------- |
-| onChange            | func               |              | yes        | Callback function that is fired when the tab value changes |
-| children            | node               |              |            | Should be used to pass `Tab` components. |
-| value               | string             |              |            | Controls which tab is active |
-| defaultValue        | string             |              |            | Controls tab that is active by default (e.g. when component is mounted) |
-| unmountInactiveTabs | bool               | false        |            | When `false` component mounts all tabs and tab panels content. When `true` component mounts content related to active tab only. Switching between tabs unmounts all previous content. |
-| disabled            | array (of tab IDs) |              |            | Specifies disabled tabs |
+| name                | type   | defaultValue | isRequired | description                              |
+| ------------------- | ------ | ------------ | ---------- | ---------------------------------------- |
+| onChange            | func   |              | yes        | Callback function that is fired when the tab value changes |
+| children            | node   |              |            | Should be used to pass `Tab` components. |
+| value               | string |              |            | Controls which tab is active             |
+| defaultValue        | string |              |            | Controls tab that is active by default (e.g. when component is mounted) |
+| unmountInactiveTabs | bool   | false        |            | When `false` component mounts all tabs and tab panels content. When `true` component mounts content related to active tab only. Switching between tabs unmounts all previous content. |
+| disabled            | bool   | false        |            | Allows to disable all tabs from the tab list |
+
+
+
+#### Tab Props
+
+| name     | type               | defaultValue | isRequired | description             |
+| -------- | ------------------ | ------------ | ---------- | ----------------------- |
+| disabled | array (of tab IDs) |              |            | Specifies disabled tabs |
 
 
 

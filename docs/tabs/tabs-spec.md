@@ -33,7 +33,7 @@
 
 Tabs components makes it easy to explore and switch between different views.
 
-Tabs are a set of layered sections of content, known as tab panels, that display one panel of content at a time. Each tab panel has an associated tab element, that when activated, displays the panel. The list of tab elements is arranged along one edge of the currently displayed panel, most commonly the top edge.
+Tabs are a set of layered sections of content, known as tab panels, that display one panel of content at a time. Each tab panel has an associated tab element, that when activated, displays the panel. 
 
 When a tab interface is initialized, one tab panel is displayed and its associated tab is styled to indicate that it is active. When the user activates one of the other tab elements, the previously displayed tab panel is hidden, the tab panel associated with the activated tab becomes visible, and the tab is considered "active".
 
@@ -50,14 +50,13 @@ When a tab interface is initialized, one tab panel is displayed and its associat
 **Tab consist of:** 
 
 1. Tabs - set of tab elements and their associated tab panels (acts as root)
-
 2. Tab List - set of all tab elements contained in component.
-
 3. Tab - element in the tab list that serves as a label for one of the tab panels and can be activated to display associated panel.
+4. Tab Panel - element in the tab list that serves as a label for one of the tab panels and can be activated to display associated panel.
 
-4. Tab Panel - element that contains the content associated with a particular tab.
+When a tab interface is initialised, one tab panel is displayed and its associated tab is styled to indicate that it is active. When the user activates one of the other tab elements, the previously displayed tab panel is hidden, the tab panel associated with the activated tab becomes visible, and the tab is considered "active".
 
-   ​
+​
 
 ## API
 
@@ -96,25 +95,15 @@ See [keyboard](https://github.com/wix/stylable-components/blob/master/docs/time-
 
 When focus moves into the tab components it goes to the tab list and places focus on the active `tab` element . When the tab list is in focus and "tab" button is pressed again, focus moves to the next element in the page tab sequence outside the tablist (typically it is either the first focusable element inside the tab panel or the tab panel itself).
 
-When focus is on a tab element in a **horizontal** tab list:
+When focus is on a tab element:
 
 - "Left Arrow Key" moves focus to the previous tab. If focus is on the first tab, moves focus to the last tab. 
 - "Right Arrow Key" moves focus to the next tab. If focus is on the last tab element, moves focus to the first tab.
 
-When focus is on a tab element in a **vertical** tab list:
-
-- "Down Arrow Key" performs as "Right Arrow Key" (described above)
-- "Up Arrow Key" performs as "Left Arrow Key" (described above)
-
-When focus is on a tab in a tab list with either **horizontal** or **vertical** orientation:
 
 - "Space" or "Enter" activates the tab if it was not activated automatically on focus **(TBD)**
 - "Home" moves focus to the first tab
 - "End" moves focus to the last tab
-
-NOTE:
-
-Horizontal tab list does not listen for "Down/Up Arrow Key" so those keys can provide their normal browser scrolling functions even when focus is inside the tab list.
 
 See [ARIA docs](https://www.w3.org/TR/wai-aria-practices/#tabpanel) for reference.
 
@@ -149,17 +138,15 @@ User can switch between tabs with mouse or arrow buttons.
 
 When a tab interface is initialized, tab panel displays content that is associated with active tab. When the user activates another tab elements, the previously displayed tab panel is hidden, the tab panel associated with the activated tab becomes visible, and the tab is considered "active". 
 
-User can prevent loading of inactive tabs with `killInactiveTab` prop. When `killInactiveTab` is set to `true` component loads only the content that is related "active" tab & tab panel. When swathing to another tab, content from previously "active" tab unloads and all background activities are terminated.
-
-By default Tab List is displayed on top of the Tab Panel. But it can be changed with `position`  prop that accepts the following values: `left / right / up / down`. When `position` prop is set `left / right` tabs are displayed in vertical position (NOTE: even though tabs are displayed vertically, we keep the text orientation horizontal. Increasing tab content will push the tab panel to the left / right). 
+User can prevent loading of inactive tabs with `unmountInactiveTabs` prop. When `unmountInactiveTabs` is set to `true` component loads only the content that is related "active" tab & tab panel. When swathing to another tab, content from previously "active" tab unloads and all background activities are terminated.
 
 By default tab takes the size of its content + 18 px margins on sides (so different tabs may have different sizes). 
 
-If tab component can not fit all tabs, they simply cut. 
+If tab component can not fit all tabs, they cut. 
 
-Disabled state for tabs can be controlled with `disabled` prop. It is possible to disable one tab OR all tabs at the same time.
+Disabled state for tabs can be controlled with `disabled` prop for both Tabs & Tab elements. Tabs allow to disable entire tab list, while tab allows to disable specific tab based on tab value.
 
-Active tab should always keep its state (e.g. if user entered some information into active tab panel and then left tab component we should preserve the information). Same behavior should be applied inactive tabs if `killInactiveTab` prop is set to `false`.
+Active tab should always keep its state (e.g. if user entered some information into active tab panel and then left tab component we should preserve the information). Same behavior should be applied inactive tabs if `unmountInactiveTabs` prop is set to `false`.
 
 
 
@@ -188,8 +175,6 @@ We do not have anything here for now.
 | shift+tab                     | Moves to previous element which is the previous DOM element OR active tab |
 | left arrow key                | Moves focus to the previous tab OR if focus is on the first tab, moves focus to the last tab (NOTE: works only for horizontal layout, for vertical see Up Arrow Key) |
 | right arrow key               | Moves focus to the next tab OR if focus is on the last tab element, moves focus to the first tab (NOTE: works only for horizontal layout, for vertical see Down Arrow Key) |
-| down arrow key                | Moves focus to the next tab. If focus is on the last tab element, moves focus to the first tab (NOTE: works only for vertical layout, for horizontal layout provides normal browser scrolling functions) |
-| up arrow key                  | Moves focus to the previous tab. If focus is on the first tab element, moves focus to the last tab (NOTE: works only for vertical layout, for horizontal layout provides normal browser scrolling functions) |
 | home (shift + left arrow key) | Moves focus to the first tab             |
 | end (shift + left arrow key)  | Moves focus to the last tab              |
 | esc                           | Removes focus (if on focus)              |
@@ -216,16 +201,6 @@ We do not have anything here for now.
 ## RTL
 
 TBD
-
-
-
-## DOM structure
-
-Each component should have a visual style guide for all of its visual states and elements structure. This style guide will be based on the **Style API**, and a visual theme agreed upon as our reset style (Wix style).
-
-If more themes exist, they should be shown as well, and available as options through change of theme.
-
-In addition, a link to Zeplin or a similar system is optional.
 
 
 
