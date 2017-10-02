@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {properties, stylable} from 'wix-react-tools';
-import {ChevronDownIcon, ChevronUpIcon} from '../../icons';
 import buttonStyles from '../../style/default-theme/controls/button.st.css';
 import {GlobalEvent} from '../global-event';
 import styles from './stepper.st.css';
@@ -72,9 +71,7 @@ export class Stepper extends React.Component<StepperProps, State> {
                     className={`${buttonStyles.root} control up`}
                     onClick={this.handlerClickUp}
                     disabled={disableUp}
-                >
-                    <ChevronUpIcon className="controlIcon" />
-                </button>
+                />
                 <button
                     type="button"
                     tabIndex={-1}
@@ -82,9 +79,7 @@ export class Stepper extends React.Component<StepperProps, State> {
                     className={`${buttonStyles.root} control down`}
                     onClick={this.handlerClickDown}
                     disabled={disableDown}
-                >
-                    <ChevronDownIcon className="controlIcon"/>
-                </button>
+                />
                 <GlobalEvent
                     mousemove={dragged ? this.handleDrag : undefined}
                     mouseup={this.handleDragStop}

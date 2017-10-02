@@ -5,6 +5,12 @@
                color_Disabled,
                borderWidth,
                inputHeight,
+               iconChevronDownBK3,
+               iconChevronDownDS1,
+               iconChevronDownPR3,
+               iconChevronUpBK3,
+               iconChevronUpDS1,
+               iconChevronUpPR3,
                DS1,
                BK3,
                PR3;
@@ -22,31 +28,52 @@
 }
 
 .control {
-    display: flex;
+    position: absolute;
+
     width: 100%;
+    height: 50%;
 
     margin: 0;
     padding: 0;
     border: 0;
 
-    background: transparent;
-    color: value(BK3);
+    outline: none;
+
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 16px 16px;
+    background-color: transparent;
 }
 
-.controlIcon {
-    color: currentColor;
-    width: 16px;
-    height: 16px;
-    flex: 1;
+.control:hover {
+    cursor: pointer;
 }
 
 .control:disabled {
-    color: value(DS1);
+    cursor: default;
 }
 
-.control:focus,
-.control:hover {
-    color: value(PR3);
+.up {
+    top: 0;
+    background-image: value(iconChevronUpBK3);
 }
-.up {}
-.down {}
+.up:focus,
+.up:hover {
+    background-image: value(iconChevronUpPR3);
+}
+.up:disabled {
+    background-image: value(iconChevronUpDS1);
+}
+
+.down {
+    bottom: 0;
+    background-image: value(iconChevronDownBK3);
+}
+.down:focus,
+.down:hover {
+    background-image: value(iconChevronDownPR3);
+}
+.down:disabled {
+    background-image: value(iconChevronDownDS1);
+}
+
