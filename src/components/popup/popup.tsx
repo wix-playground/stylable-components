@@ -47,7 +47,7 @@ export class Popup extends React.Component<PopupCompProps> {
         return null;
     }
 
-    public getPortal() {
+    public getPortal(): Portal | null {
         return this.portal;
     }
 

@@ -85,7 +85,7 @@ export class PopupDemo extends React.Component<{}, DemoState> {
         );
     }
 
-    public getPopup() {
+    public getPopup(): Popup | null {
         return this.popup;
     }
 
