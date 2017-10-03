@@ -1,5 +1,5 @@
 :import{
-    -st-from: "../../src/style/project.st.css";
+    -st-from: "../../src/project.st.css";
     -st-named: color_Keyboard_Focused, color_Active;
 }
 

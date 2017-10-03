@@ -1,7 +1,7 @@
 @namespace "RadioButton";
 
 :import {
-    -st-from: '../../style/project.st.css';
+    -st-from: '../../project.st.css';
     -st-named: B5, B6, B7, M3, PR3;
 }
 

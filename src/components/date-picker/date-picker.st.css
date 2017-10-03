@@ -1,7 +1,7 @@
 @namespace "DatePicker";
 
 :import {
-    -st-from: "../../style/project.st.css";
+    -st-from: "../../project.st.css";
     -st-named:  color_Default,
                 color_MainText_Background,
                 color_MainText,
