@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {stylable} from 'wix-react-tools';
-import {ChangeEvent, CheckBox, CheckBoxIconProps} from '../../src';
+import {ChangeEvent, CheckBox} from '../../src';
 import style from './checkbox-demo.st.css';
 
 export const demoCheckBoxText: string = 'Yes, I\'m over 18 years old';
@@ -26,8 +26,8 @@ export class CheckBoxDemo extends React.Component<{}, {}> {
                 </div>
 
                 <div>
-                    <h3>Custom Icons</h3>
-                    <CustomIconsDemo/>
+                    <h3>Custom Checkbox</h3>
+                    <CustomCheckboxDemo/>
                 </div>
             </div>
         );
@@ -142,55 +142,24 @@ export class IndeterminateDemo extends React.Component<{}, {value1: boolean, val
     private onChangeChild2 = (e: ChangeEvent<boolean>) => { this.setState({value2: e.value}); };
 }
 
-class CustomIconsDemo extends React.Component<{}, {value: boolean}> {
+export class CustomCheckboxDemo extends React.Component<{}, {value: boolean}> {
     public state = {
         value: false
     };
 
     public render() {
         return (
-            <div>
+            <div data-automation-id="CUSTOMCHECKBOX_DEMO">
                 <CheckBox
+                    data-automation-id="CUSTOM_DEMO_CHECKBOX"
                     value={this.state.value}
                     onChange={this.handleChange}
-                    boxIcon={CheckBoxSVG}
-                    tickIcon={TickMarkSVG}
-                    id="myCustomCheckbox"
-                    aria-labelledby="customLabel"
-                />
-                <label id="customLabel" htmlFor="myCustomCheckbox">
-                    <span className={style.label} >I choose triangle</span>
-                </label>
+                    className={style.customDemo}
+                >
+                    <span data-automation-id="CUSTOM_LABEL" className={style.label}>I'm a custom checkbox</span>
+                </CheckBox>
             </div>
         );
     }
     private handleChange = (e: ChangeEvent<boolean>) => { this.setState({value: e.value}); };
 }
-
-const TickMarkSVG: React.SFC<CheckBoxIconProps> = stylable(style)(props => {
-    return (
-        <svg
-            className="customTickIcon"
-            data-automation-id="CHECKBOX_TICKMARK"
-            xmlns="http://www.w3.org/2000/svg"
-            height="16"
-            width="16"
-            focusable="false"
-        >
-            <circle cx="10" cy="14" r="4"/>
-        </svg>
-    );
-});
-
-const CheckBoxSVG: React.SFC<CheckBoxIconProps> = stylable(style)(props => {
-    return (
-        <svg
-            className="customBoxIcon"
-            data-automation-id="CHECKBOX_BOX"
-            xmlns="http://www.w3.org/2000/svg"
-            focusable="false"
-        >
-            <path d="M 10,1 20,20 1,20 z"/>
-        </svg>
-    );
-});
