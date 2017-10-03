@@ -39,10 +39,7 @@
 
     outline: none;
 
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: 16px 16px;
-    background-color: transparent;
+    background: center/16px 16px no-repeat transparent;
 }
 
 .control:hover {
