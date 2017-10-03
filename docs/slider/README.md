@@ -37,10 +37,10 @@ Sliders are great for adjusting settings that reflect intensity levels (volume, 
 | displayStopMarks | boolean                        | false        | no         | Controls the visibility of the marks.    |
 | displayTooltip   | boolean                        | false        | no         | Controls the visibility of the tooltip.  |
 | tooltipPosition  | enum:<br>'top'<br>'bottom'<br>'left'<br>'right'                                   | 'top'          | no         | Controls the position of the tooltip. |
-| onChange         | function  |        | yes        | Callback function that is fired when the slider's value changed.<br>`(event: {value: number}): void`<br>**event** change event for the slider.<br>**value** The new value of the slider. |
-| onDragStart      | function  |              | no         | Callback function that is fired when the handle has begun to move.<br>`(event: PointerEvent): void`<br>**event**: MouseDown or TouchStart event targeting the slider. |
-| onDragStop       | function  |              | no         | Callback function that is fired when the handle has stopped moving.<br>`(event: PointerEvent): void`<br>**event**: MouseUp or TouchEnd event targeting the slider. |
-| onDrag           | function  |              | no         | Callback function that is fired when the handle is moving.<br>`(event: PointerEvent): void`<br>**event**: MouseMove or TouchMove event targeting the slider. |
+| onChange         | function  |        | yes        | Callback function that is fired when the slider's value changed.<br>`(event: {value: number}): void`<br>**event** change event for the slider<br>**value** the new value of the slider |
+| onDragStart      | function  |              | no         | Callback function that is fired when the handle has begun to move.<br>`(event: PointerEvent): void`<br>**event**: mouse click down or touch start |
+| onDragStop       | function  |              | no         | Callback function that is fired when the handle has stopped moving.<br>`(event: PointerEvent): void`<br>**event**: mouse click up or touch end |
+| onDrag           | function  |              | no         | Callback function that is fired when the handle is moving.<br>`(event: PointerEvent): void`<br>**event**: mouse move or touch move |
 
 ### Code Examples
 
