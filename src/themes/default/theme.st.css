@@ -2,7 +2,7 @@
 
 :import {
     -st-theme: true;
-    -st-from: "./project.st.css";
+    -st-from: "../../project.st.css";
     -st-named:
         fontFamily,fontSize,fontWeight,lineHeight,
         borderRadius,borderWidth,borderStyle,
@@ -25,11 +25,6 @@
 :import {
     -st-theme: true;
     -st-from: "./controls/button.st.css";
-}
-
-:import {
-    -st-theme: true;
-    -st-from: "./controls/input.st.css";
 }
 
 :import {
