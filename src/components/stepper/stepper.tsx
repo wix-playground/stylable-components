@@ -12,7 +12,7 @@ export interface StepperProps extends properties.Props, React.DOMAttributes<HTML
     onDown(modifiers: Modifiers): void;
 }
 
-export interface State {
+export interface StepperState {
     dragged: boolean;
 }
 
@@ -35,13 +35,13 @@ const DEFAULTS = {
 
 @stylable(styles)
 @properties
-export class Stepper extends React.Component<StepperProps, State> {
+export class Stepper extends React.Component<StepperProps, StepperState> {
     public static defaultProps: Partial<StepperProps> = {
         disableUp: DEFAULTS.disableUp,
         disableDown: DEFAULTS.disableDown
     };
 
-    public state: State = {dragged: false};
+    public state: StepperState = {dragged: false};
 
     private dragRefPoint: DragPoint = {
         clientX: 0,

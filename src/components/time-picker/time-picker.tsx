@@ -14,7 +14,7 @@ import {
     isTouchTimeInputSupported, isValidValue, Segment, TimeSegment, to24, toAmpm
 } from './utils';
 
-export interface Props extends FormInputProps<string> {
+export interface TimePickerProps extends FormInputProps<string> {
     format?: Format;
     placeholder?: string;
     disabled?: boolean;
@@ -25,7 +25,7 @@ export interface Props extends FormInputProps<string> {
     rtl?: boolean;
 }
 
-export interface State {
+export interface TimePickerState {
     focus: boolean;
     hh?: string;
     mm?: string;
@@ -59,8 +59,8 @@ function propsValueToSegments(value?: string, format?: Format): {hh?: string, mm
 }
 
 @stylable(styles)
-export class TimePicker extends React.Component<Props, State> {
-    public static defaultProps: Partial<Props> = {
+export class TimePicker extends React.Component<TimePickerProps, TimePickerState> {
+    public static defaultProps: Partial<TimePickerProps> = {
         format: is12TimeFormat ? 'ampm' : '24h',
         disabled: false,
         error: false,
@@ -79,7 +79,7 @@ export class TimePicker extends React.Component<Props, State> {
     };
     private lastValue: string | undefined;
 
-    constructor(props: Props) {
+    constructor(props: TimePickerProps) {
         super();
         const format = isTouchTimeInputSupported ? '24h' : props.format!;
         this.lastValue = props.value;
@@ -92,7 +92,7 @@ export class TimePicker extends React.Component<Props, State> {
         };
     }
 
-    public componentWillReceiveProps(props: Props, state: State) {
+    public componentWillReceiveProps(props: TimePickerProps, state: TimePickerState) {
         if (props.value !== this.props.value) {
             this.setState(propsValueToSegments(props.value, this.state.format), () => {
                 const {focus, currentSegment} = this.state;
@@ -363,7 +363,7 @@ export class TimePicker extends React.Component<Props, State> {
     private onInputFocus = (e: React.SyntheticEvent<HTMLInputElement>) => {
         const {hh, mm} = this.state;
         const input = e.currentTarget;
-        const update: Pick<State, TimeSegment | 'focus' | 'currentSegment'> = {
+        const update: Pick<TimePickerState, TimeSegment | 'focus' | 'currentSegment'> = {
             focus: true,
             currentSegment: e.currentTarget.name as Segment
         };
@@ -377,7 +377,7 @@ export class TimePicker extends React.Component<Props, State> {
     }
     private onBlur = (e: React.SyntheticEvent<HTMLElement>) => {
         const name = e.currentTarget instanceof HTMLInputElement && e.currentTarget.name;
-        const update: Pick<State, TimeSegment | 'focus' | 'currentSegment'> = {
+        const update: Pick<TimePickerState, TimeSegment | 'focus' | 'currentSegment'> = {
             focus: false,
             currentSegment: 'hh'
         };
