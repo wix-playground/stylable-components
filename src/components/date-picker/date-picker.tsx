@@ -3,6 +3,7 @@ import * as React from 'react';
 import {properties, stylable} from 'wix-react-tools';
 import {FormInputProps} from '../../types/forms';
 import {noop} from '../../utils';
+import {Input} from '../input';
 import {Popup} from '../popup';
 import {Calendar} from './calendar';
 import {CalendarIcon} from './date-picker-icons';
@@ -54,7 +55,7 @@ export class DatePicker extends React.PureComponent<DatePickerProps, DatePickerS
                 data-automation-id="DATE_PICKER_ROOT"
                 ref={dropdownRef => this.setState({dropdownRef})}
             >
-                <input
+                <Input
                     className="input"
                     onKeyDown={this.onKeyDown}
                     onMouseDown={this.onMouseDown}

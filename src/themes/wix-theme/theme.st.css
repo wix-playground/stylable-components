@@ -32,6 +32,14 @@
 	-st-from: "../../components/slider/slider.st.css";
 	-st-default: Slider;
 }
+:import {
+	-st-from: "../../components/button/button.st.css";
+	-st-default: Button;
+}
+:import {
+	-st-from: "../../components/input/input.st.css";
+	-st-default: Input;
+}
 
 
 /* Fonts */
@@ -447,3 +455,8 @@ Slider:disabled::handle {
 	background-position: center;
 }
 
+/* Button */
+Button {}
+
+/* Input */
+Input {}

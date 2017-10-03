@@ -110,12 +110,12 @@ export class ComponentsDemo extends React.Component {
                 </div>
                 <hr />
                 <div>
-                    <h2>button</h2>
+                    <h2>Button</h2>
                     <table>
                         <tbody>
                             <tr>
                                 <th>
-                                    <Button className="fullBlue large">Normal</Button>
+                                    <Button>Normal</Button>
                                 </th>
                                 <th>
                                     <Button disabled>Disabled</Button>
@@ -129,7 +129,7 @@ export class ComponentsDemo extends React.Component {
                 </div>
                 <hr />
                 <div>
-                    <h2>anchor</h2>
+                    <h2>Anchor</h2>
                     <table>
                         <tbody>
                             <tr>
@@ -145,7 +145,7 @@ export class ComponentsDemo extends React.Component {
                 </div>
                 <hr />
                 <div>
-                    <h2>input</h2>
+                    <h2>Input</h2>
                     <table>
                         <tbody>
                             <tr>
