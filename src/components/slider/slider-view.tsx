@@ -156,8 +156,12 @@ export class SliderView extends React.Component<SliderViewProps, {}> {
                             <div
                                 className={`tooltip ${this.props.tooltipPosition}`}
                                 data-automation-id="SLIDER-TOOLTIP"
-                                children={this.props.tooltip}
-                            />
+                            >
+                                {this.props.tooltip}
+                                <svg className="tooltip-tail" height="5" width="10">
+                                    <polygon points="0,0 10,0 5,5"/>
+                                </svg>
+                            </div>
                         }
                     </a>
                     {this.getMarks()}

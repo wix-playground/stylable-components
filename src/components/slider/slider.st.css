@@ -236,12 +236,10 @@
     font-size: 14px;
     font-family: arial;
 }
-.tooltip:after {
-    content: '';
+
+
+.tooltip-tail {
     position: absolute;
-    border-width: 5px;
-    border-style: solid;
-    border: 5px solid transparent;
 }
 
 .tooltip.top {
@@ -249,11 +247,10 @@
     transform: translateX(-50%);
     margin-left: 50%;
 }
-.tooltip.top:after {
+.tooltip.top .tooltip-tail {
     top: 100%;
     left: 50%;
     transform: translateX(-50%);
-    border-top-color: value(tooltipColor);
 }
 
 .tooltip.bottom {
@@ -261,11 +258,10 @@
     transform: translateX(-50%);
     margin-left: 50%;
 }
-.tooltip.bottom:after {
+.tooltip.bottom .tooltip-tail {
     bottom: 100%;
     left: 50%;
-    transform: translateX(-50%);
-    border-bottom-color: value(tooltipColor);
+    transform: translateX(-50%) rotate(180deg);
 }
 
 .tooltip.left {
@@ -273,22 +269,23 @@
     transform: translateY(-50%);
     margin-top: 50%;
 }
-.tooltip.left:after {
+.tooltip.left .tooltip-tail {
     left: 100%;
     top: 50%;
-    transform: translateY(-50%);
-    border-left-color: value(tooltipColor);
+    transform: translateY(100%) rotate(-90deg);
+    transform-origin: 0 0;
 }
+
 .tooltip.right {
     left: value(tooltipOffset);
     transform: translateY(-50%);
     margin-top: 50%;
 }
-.tooltip.right:after {
+.tooltip.right .tooltip-tail {
     right: 100%;
     top: 50%;
-    transform: translateY(-50%);
-    border-right-color: value(tooltipColor);
+    transform: translateY(100%) rotate(90deg);
+    transform-origin: 100% 0;
 }
 
 /* Hover state */
