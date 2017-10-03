@@ -4,7 +4,7 @@ export interface FormInputProps<T, S = T> {
     value?: T;
     onChange?: (event: ChangeEvent<T>) => void;
     onInput?: (event: ChangeEvent<S>) => void;
-    autofocus?: boolean;
+    autoFocus?: boolean;
     disabled?: boolean;
     name?: string;
     readOnly?: boolean;
