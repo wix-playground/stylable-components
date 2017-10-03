@@ -12,6 +12,9 @@ Support a similar to native checkbox implementation.
 | indeterminate | boolean | false | no | indicates that the checkbox is neither on nor off. Changes the appearance to resemble a third state. Does not affect the value of the checked attribute, and clicking the checkbox will set the value to false. |
 | disabled | boolean | false | no | Whether the checkbox responds to events or not |
 | readonly | boolean | false | no | Gains tab focus but user cannot change value |
+| id | string | null | no | Unique identifier |
+| name | string | null | no | Specifies the name of the input element |
+| tabIndex | number | null | no | Tab order of the element |
 | aria-label | string | null | no | aria attribute |
 | aria-labelledby | string | null | no | aria attribute |
 | aria-describedby | string | null | no | aria attribute |
