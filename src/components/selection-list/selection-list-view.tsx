@@ -44,7 +44,6 @@ export class SelectionListView extends React.Component<ViewProps> {
     public render() {
         return (
             <div
-                className="list"
                 data-automation-id="LIST"
                 style-state={{focused: Boolean(this.props.focused)}}
                 onBlur={this.props.onBlur}

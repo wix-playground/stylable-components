@@ -39,7 +39,10 @@ export class Popup extends React.Component<PopupCompProps> {
     public render() {
         if (this.props.anchor && this.props.open) {
             return (
-                <Portal style={this.createStyle()} ref={portal => this.portal = portal}>
+                <Portal
+                    style={this.createStyle()}
+                    ref={portal => this.portal = portal}
+                >
                     {this.props.children}
                 </Portal>);
         }

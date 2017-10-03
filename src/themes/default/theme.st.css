@@ -31,3 +31,8 @@
     -st-theme: true;
     -st-from: "./controls/input.st.css";
 }
+
+:import {
+    -st-theme: true;
+    -st-from: "./components/auto-complete.st.css";
+}

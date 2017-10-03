@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {properties, stylable} from 'wix-react-tools';
-import {Popup} from '../../';
 import {ChangeEvent} from '../../types/events';
 import {FormInputProps} from '../../types/forms';
 import {noop} from '../../utils';
@@ -55,13 +54,16 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
                     ref={this.refCallback}
                 />
                 <CaretDown onClick={this.onCaretClick} className="caret" data-automation-id="AUTO_COMPLETE_CARET"/>
-                <Popup anchor={this.state.input} open={this.props.open && filteredItems!.length > 0}>
-                    <SelectionListView
-                        className="root autoCompleteList"
-                        list={list}
-                        onChange={this.onClick}
-                    />
-                </Popup>
+                {
+                    this.props.open && filteredItems!.length > 0 &&
+                    <div className="popup">
+                        <SelectionListView
+                            className="autoCompleteList"
+                            list={list}
+                            onChange={this.onClick}
+                        />
+                    </div>
+                }
             </div>
         );
     }

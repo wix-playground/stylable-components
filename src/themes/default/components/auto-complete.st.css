@@ -1,0 +1,25 @@
+:import {
+	-st-from: "../../../components/auto-complete/auto-complete.st.css";
+	-st-default: AutoComplete;
+}
+
+AutoComplete {
+    font-size: 16px;
+}
+
+AutoComplete::autoCompleteInput {
+    font: 16px ArialMT, sans-serif;
+    height: 36px;
+    padding-left: 5px;
+    border: 1px solid #adbac5;
+}
+
+AutoComplete::autoCompleteList {
+    border-top: 0;
+    background: #ffffff;
+}
+
+AutoComplete::autoCompleteInput:hover {
+    border-color: #5cb4ff
+}
+
