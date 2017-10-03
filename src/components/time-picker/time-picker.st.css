@@ -221,6 +221,3 @@
     transition: opacity 100ms ease;
     float: right;
 }
-.stepper::control {
-    background: transparent;
-}

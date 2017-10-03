@@ -178,13 +178,12 @@ export class TimePicker extends React.Component<Props, State> {
                     />
                 }
                 {!isTouchTimeInputSupported &&
-                    <div onMouseDown={this.onStepperMouseDown}>
-                        <Stepper
-                            className="stepper"
-                            onUp={this.onStepperUp}
-                            onDown={this.onStepperDown}
-                        />
-                    </div>
+                    <Stepper
+                        onMouseDown={this.onStepperMouseDown}
+                        className="stepper"
+                        onUp={this.onStepperUp}
+                        onDown={this.onStepperDown}
+                    />
                 }
                 <label className="label" style-state={{visible: isTouchTimeInputSupported}}>
                     <input
@@ -306,7 +305,9 @@ export class TimePicker extends React.Component<Props, State> {
         e.preventDefault();
     }
 
-    private onStepperUp = ({shiftKey}: Modifiers) => this.changeValue(1, shiftKey ? 10 : 1);
+    private onStepperUp = ({shiftKey}: Modifiers) => {
+        this.changeValue(1, shiftKey ? 10 : 1);
+    }
     private onStepperDown = ({shiftKey}: Modifiers) => this.changeValue(-1, shiftKey ? 10 : 1);
 
     private onAmpmMouseDown = (e: React.SyntheticEvent<HTMLDivElement>) => {
