@@ -98,6 +98,7 @@ Reference [listbox](https://www.w3.org/TR/wai-aria-practices/#Listbox) in w3 dra
 
 ### Aria
 * aria-selected="true" - Applied to elements with role option that are visually styled as selected to inform assistive technologies that the options are selected. When multiple selections are allowed, this attribute is applied to all selected items (false when not selected).
+* aria-orientation="vertical" - Applied on the root element. By default the value should be vertical, so only if the orientation is set horizontal should the value change to "horizontal".
 
 ### Focus
 

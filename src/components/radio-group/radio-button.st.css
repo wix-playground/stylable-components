@@ -2,7 +2,7 @@
 
 :import {
     -st-from: '../../style/project.st.css';
-    -st-named: B5, B6, B7, M3, PR3, hiddenElement;
+    -st-named: B5, B6, B7, M3, PR3;
 }
 
 :vars {
@@ -32,7 +32,14 @@
 }
 
 .hiddenInput {
-    -st-compose: hiddenElement;
+    position: absolute;
+    overflow: hidden;
+    height: 1px;
+    width: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+    opacity: 0;
 }
 
 .iconContainer {

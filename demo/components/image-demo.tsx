@@ -1,11 +1,14 @@
 import * as React from 'react';
+import {stylable} from 'wix-react-tools';
 import {Image} from '../../src';
+import styles from './image-demo.st.css';
 
 export interface ImageDemoState {
     src: string;
     resizeMode: 'cover' | 'contain' | 'fill';
 }
 
+@stylable(styles)
 export class ImageDemo extends React.Component<{}, ImageDemoState> {
     public state: ImageDemoState = {
         // Wix.com's Logo
@@ -30,7 +33,7 @@ export class ImageDemo extends React.Component<{}, ImageDemoState> {
                 <Image
                     src={this.state.src}
                     resizeMode={this.state.resizeMode}
-                    style={{width: 300, height: 200, marginTop: 10}}
+                    className="myImage"
                 />
             </div>
         );
