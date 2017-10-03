@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {properties, stylable} from 'wix-react-tools';
 import {ChevronDownIcon, ChevronUpIcon} from '../../icons';
-import buttonStyles from '../../style/default-theme/controls/button.st.css';
+import buttonStyles from '../../themes/default/controls/button.st.css';
 import {GlobalEvent} from '../global-event';
 import styles from './stepper.st.css';
 

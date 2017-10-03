@@ -6,7 +6,7 @@
 }
 
 :import {
-    -st-from: "../../style/project.st.css";
+    -st-from: "../../project.st.css";
     -st-named:
         ER1,
         DS1,
