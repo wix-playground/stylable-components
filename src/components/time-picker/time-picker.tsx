@@ -179,6 +179,7 @@ export class TimePicker extends React.Component<Props, State> {
                 }
                 {!isTouchTimeInputSupported &&
                     <Stepper
+                        onMouseDown={this.onStepperMouseDown}
                         className="stepper"
                         onUp={this.onStepperUp}
                         onDown={this.onStepperDown}
@@ -298,6 +299,10 @@ export class TimePicker extends React.Component<Props, State> {
         } else {
             this.segments.hh!.focus();
         }
+    }
+
+    private onStepperMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+        e.preventDefault();
     }
 
     private onStepperUp = ({shiftKey}: Modifiers) => {

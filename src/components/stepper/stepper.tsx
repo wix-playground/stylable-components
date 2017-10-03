@@ -4,7 +4,7 @@ import buttonStyles from '../../style/default-theme/controls/button.st.css';
 import {GlobalEvent} from '../global-event';
 import styles from './stepper.st.css';
 
-export interface StepperProps extends properties.Props {
+export interface StepperProps extends properties.Props, React.DOMAttributes<HTMLDivElement> {
     disableUp?: boolean;
     disableDown?: boolean;
     dragStep?: number;
@@ -60,10 +60,7 @@ export class Stepper extends React.Component<StepperProps, State> {
         } = this.props;
 
         return (
-            <div
-                {...props}
-                onMouseDown={this.handleDragStart}
-            >
+            <div {...props} onMouseDown={this.handleMouseDown}>
                 <button
                     type="button"
                     tabIndex={-1}
@@ -94,11 +91,16 @@ export class Stepper extends React.Component<StepperProps, State> {
     private handlerClickDown: React.MouseEventHandler<HTMLButtonElement> =
         ({altKey, ctrlKey, shiftKey}) => this.props.onDown({altKey, ctrlKey, shiftKey})
 
-    private handleDragStart: React.MouseEventHandler<HTMLDivElement> =
-        ({clientX, clientY}) => {
-            this.setState({dragged: true});
-            this.updateDragRefPoint({clientX, clientY});
+    private handleMouseDown: React.MouseEventHandler<HTMLDivElement> = e => {
+        const {clientX, clientY} = e;
+
+        this.setState({dragged: true});
+        this.updateDragRefPoint({clientX, clientY});
+
+        if (typeof this.props.onMouseDown === 'function') {
+            this.props.onMouseDown(e);
         }
+    }
 
     private handleDragStop = () => {
             this.setState({dragged: false});
