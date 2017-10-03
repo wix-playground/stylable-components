@@ -13,7 +13,7 @@
 | tabIndex | number | 0 | no | Determines the order by which the component gains tab focus. |
 | id | string |  | no | Puts an ID property to be used for HTML labels. |
 | value | boolean | false | no | The value chosen in the checkbox |
-| onChange | (event : ChangeEvent) => void | NOOP | no | Event triggered by changing the value |
+| onChange | (event : {value: boolean}): void | NOOP | no | Event triggered by changing the value |
 | children | React.ReactNode | null | no | children | Any further nodes will be rendered after the checkbox element |
 | boxIcon | React component |  | no | Component representing an empty state. |
 | indeterminateIcon | React component |  | no | Component representing an indeterminate state. |
