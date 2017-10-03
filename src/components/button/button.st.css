@@ -57,3 +57,19 @@
     color: value(color_MainText_Background);
     pointer-events: none;
 }
+
+/*.button {
+	border-radius: 10px;
+}
+
+.button.fullBlue {
+	background-color: #0099ff;
+	color: white;
+}
+
+.button.large {
+	height: 36px;
+	padding: 0 30px;
+
+}*/
+

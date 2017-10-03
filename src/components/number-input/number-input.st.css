@@ -64,7 +64,7 @@
     align-items: center;
 }
 
-.native-input {
+.nativeInput {
     flex-grow: 1;
 
     height: auto;
@@ -79,12 +79,12 @@
     padding: 6px 12px;
 }
 
-.native-input::-webkit-outer-spin-button,
-.native-input::-webkit-inner-spin-button {
+.nativeInput::-webkit-outer-spin-button,
+.nativeInput::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
-.native-input:disabled {
+.nativeInput:disabled {
     background: inherit;
 }
 

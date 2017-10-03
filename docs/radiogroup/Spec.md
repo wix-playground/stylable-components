@@ -3,14 +3,29 @@
 Support a similar to native radiogroup implementations.
 
 ## Properties
+**RadioGroup** Props:
+
 | Name | Type | Default | Required | Description |
 |------|------|---------|----------|-------------
-| name | string |  | no | the name of the group. sets the _name_ property on each child |
+| name | string |  | no | The name of the group. sets the _name_ property on each child |
 | disabled | boolean | false | no | Whether all the radio buttons are disabled |
-| readOnly | boolean | false | no | Whether the group value cannot be changed |
-| labelLocation | 'right' or 'left' | 'right' | no | Whether each child's value appears as text to the right or left of the radio button  |
+| readonly | boolean | false | no | Whether the group value cannot be changed |
 | onChange | (e: RadioChangeEvent) => void | NOOP | no | Triggered by changing a radio button state |
 | dataSource | Array\<RadioButtonProps> | [] | no | Array of dataSchema objects |
+| children | React Node | null | no | children
+
+
+**RadioButton** Props:
+
+| Name | Type | Default | Required | Description |
+|------|------|---------|----------|-------------
+| value | string |  | no | The value of the radio button |
+| checked | boolean |  | no | Whether the button appears checked |
+| name | string |  | no | The name of the group that this button is part of |
+| disabled | boolean | false | no | Whether this button appears as disabled |
+| readonly | boolean | false | no | Whether this button's value can be changed |
+| onChange | (e: RadioChangeEvent) => void | NOOP | no | Triggered by changing the button's state |
+| children | React Node | null | no | children | Any further nodes will be rendered. |
 
 
 ## Styling

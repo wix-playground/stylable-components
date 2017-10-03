@@ -1,11 +1,11 @@
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
-import {stylable} from 'wix-react-tools';
+import {properties, stylable} from 'wix-react-tools';
 import {FormInputProps} from '../../types/forms';
 import {isRTLContext} from '../../utils';
 import style from './toggle.st.css';
 
-export interface Props extends FormInputProps<boolean> {
+export interface Props extends FormInputProps<boolean>, properties.Props {
     className?: string;
     error?: boolean;
     disabled?: boolean;
@@ -19,8 +19,9 @@ export interface State {
 }
 
 @stylable(style)
+@properties
 export default class Toggle extends React.Component<Props, State> {
-    public static defaultProps = {
+    public static defaultProps: Partial<Props> = {
         value: false,
         disabled: false,
         error: false,
@@ -64,7 +65,7 @@ export default class Toggle extends React.Component<Props, State> {
             >
                 {!disabled &&
                     <input
-                        data-automation-id="TOGGLE_INPUT"
+                        data-automation-id="NATIVE_INPUT"
                         className="nativeInput"
                         type="checkbox"
                         name={name}
@@ -77,9 +78,7 @@ export default class Toggle extends React.Component<Props, State> {
                         onBlur={this.onInputBlur}
                     />
                 }
-                <div className="switchWrap">
-                    <div className="switch"/>
-                </div>
+                <div className="switch"/>
             </label>
         );
     }
