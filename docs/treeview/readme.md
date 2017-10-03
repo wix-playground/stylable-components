@@ -38,7 +38,9 @@ Notice, the `itemRenderer` is required in order to enable the tree nodes to rend
 
 ### The State Map
 
-
+In order to manage the state of the tree items, each item is mapped to a `TreeItemState`.
+This object encloses information about the item's state (is it selected? expanded? focused?).
+It is required to propagate the state map through the tree items so they can access their own state and render accordingly.
 
 
 ## Code Examples
@@ -87,4 +89,28 @@ function onSelectItem(selectedItem) {
 }
 
 <TreeView dataSource={treeData} selectedItem={this.state.selectedItem} onSelectItem={this.onSelectItem.bind(this)} />
+```
+
+## Style API
+
+| State     | Description                                                         |
+| --------- | ------------------------------------------------------------------- |
+| :selected | Style to apply when the element is selected                         |
+| :focused  | Style to apply when the element is focused (by keyboard navigation) |
+
+### examples
+
+```
+.item {
+    background-color: white;
+}
+
+.item:focused {
+    border: 1px solid lightblue;
+}
+
+.item:selected {
+    background-color: navy;
+    color: white;
+}
 ```
