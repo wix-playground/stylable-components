@@ -5,7 +5,7 @@ import {FormInputProps} from '../../types/forms';
 import {isRTLContext} from '../../utils';
 import style from './toggle.st.css';
 
-export interface Props extends FormInputProps<boolean>, properties.Props {
+export interface ToggleProps extends FormInputProps<boolean>, properties.Props {
     className?: string;
     error?: boolean;
     disabled?: boolean;
@@ -14,14 +14,14 @@ export interface Props extends FormInputProps<boolean>, properties.Props {
     required?: boolean;
     name?: string;
 }
-export interface State {
+export interface ToggleState {
     focus: boolean;
 }
 
 @stylable(style)
 @properties
-export default class Toggle extends React.Component<Props, State> {
-    public static defaultProps: Partial<Props> = {
+export default class Toggle extends React.Component<ToggleProps, ToggleState> {
+    public static defaultProps: Partial<ToggleProps> = {
         value: false,
         disabled: false,
         error: false,

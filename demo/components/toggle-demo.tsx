@@ -3,12 +3,12 @@ import {stylable} from 'wix-react-tools';
 import {ChangeEvent, ContextProvider, Toggle} from '../../src';
 import styles from './toggle-demo.st.css';
 
-export interface State {
+export interface ToggleDemoState {
     checked: boolean;
 }
 
 @stylable(styles)
-export class ToggleDemo extends React.Component<{}, State> {
+export class ToggleDemo extends React.Component<{}, ToggleDemoState> {
     public state = {
         checked: false
     };

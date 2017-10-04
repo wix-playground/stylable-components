@@ -5,7 +5,7 @@ import {ChangeEvent} from '../../types/events';
 import {FormInputProps} from '../../types/forms';
 import {noop} from '../../utils/noop';
 import {Popup} from '../popup/';
-import {OptionList, SelectionList} from '../selection-list';
+import {SelectionList, SelectionListOptionList} from '../selection-list';
 import {CaretDown} from './drop-down-icons';
 import style from './drop-down.st.css';
 
@@ -17,7 +17,7 @@ const KeyCodes: any = {
     ESC: keycode('escape')
 };
 
-export interface DropDownProps extends OptionList, FormInputProps<string>, properties.Props {
+export interface DropDownProps extends SelectionListOptionList, FormInputProps<string>, properties.Props {
     open?: boolean;
     disabled?: boolean;
     openOnFocus?: boolean;

@@ -1,7 +1,11 @@
 import React = require('react');
 import {stylable} from 'wix-react-tools';
-import {SelectionList, SelectionListDivider as divider, SelectionListItemValue,
-    SelectionListOption as Option} from '../../src';
+import {
+    SelectionList,
+    SelectionListDividerSymbol as divider,
+    SelectionListItemValue,
+    SelectionListOption as Option
+} from '../../src';
 import demoStyle from './selection-list-demo.st.css';
 
 export class SelectionListDemo extends React.Component<{}, {}> {
