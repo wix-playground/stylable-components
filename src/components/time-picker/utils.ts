@@ -18,9 +18,9 @@ export const is12TimeFormat = /AM|PM/.test(new Date().toLocaleTimeString());
 export const ampmLabels: {
     [key: string]: string
 } = {
-    'am': 'AM',
-    'pm': 'PM',
-    'ampm': ''
+    am: 'AM',
+    pm: 'PM',
+    ampm: ''
 };
 
 export function formatTimeChunk(num: string | number): string {

@@ -1,7 +1,7 @@
 import * as keycode from 'keycode';
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
-import {stylable, properties} from 'wix-react-tools';
+import {properties, stylable} from 'wix-react-tools';
 import {FormInputProps} from '../../types/forms';
 import {isRTLContext} from '../../utils';
 import {ScreenReaderNotification} from '../screen-reader-notification';
@@ -35,9 +35,9 @@ export interface TimePickerState {
 }
 
 const ampmSwitch = {
-    'am': 'pm',
-    'pm': 'am',
-    'none': 'none'
+    am: 'pm',
+    pm: 'am',
+    none: 'none'
 };
 const segments: Segment[] = ['hh', 'mm', 'ampm'];
 
