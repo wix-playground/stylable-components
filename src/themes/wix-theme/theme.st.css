@@ -32,6 +32,14 @@
 	-st-from: "../../components/slider/slider.st.css";
 	-st-default: Slider;
 }
+:import {
+	-st-from: "../../components/button/button.st.css";
+	-st-default: Button;
+}
+:import {
+	-st-from: "../../components/input/input.st.css";
+	-st-default: Input;
+}
 
 
 /* Fonts */
@@ -149,22 +157,6 @@ NumberInput:disabled::stepper::down::control-icon, NumberInput:disabled::stepper
 NumberInput:error {
 	border-color: value(R00);
 }
-
-
-/*.button {
-	border-radius: 10px;
-}
-
-.button.fullBlue {
-	background-color: #0099ff;
-	color: white;
-}
-
-.button.large {
-	height: 36px;
-	padding: 0 30px;
-
-}*/
 
 /* Toggle */
 
@@ -463,3 +455,8 @@ Slider:disabled::handle {
 	background-position: center;
 }
 
+/* Button */
+Button {}
+
+/* Input */
+Input {}

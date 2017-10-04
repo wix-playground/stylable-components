@@ -1,5 +1,5 @@
 :import {
-    -st-from: "../../project.st.css";
+    -st-from: "../../style/project.st.css";
     -st-named: fontFamily,
                fontSize,
                fontWeight,
@@ -13,7 +13,7 @@
                color_Disabled;
 }
 
-button {
+.root {
     box-sizing: inherit;
     display: inline-block;
     vertical-align: middle;
@@ -37,23 +37,22 @@ button {
     outline: 0;
 }
 
-button:focus {
+.root:focus {
     background-color: value(color_Focus);
     color: value(color_MainText_Background);
 }
 
-button:hover {
+.root:hover {
     background-color: value(color_Hover);
     color: value(color_MainText_Background);
 }
 
-button:active {
+.root:active {
     background-color: value(color_Active);
     color: value(color_MainText_Background);
 }
 
-button[disabled],
-button.disabled {
+.root[disabled] {
     background-color: value(color_Disabled);
     color: value(color_MainText_Background);
     pointer-events: none;
