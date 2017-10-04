@@ -1,10 +1,10 @@
 import {Component} from 'react';
 
-export type Props = {
+export type GlobalEventProps = {
     [EventName in keyof WindowEventMap]?: (event: WindowEventMap[EventName]) => void;
 };
 
-export class GlobalEvent extends Component<Props> {
+export class GlobalEvent extends Component<GlobalEventProps> {
 
     public shouldComponentUpdate() {
         return false;
@@ -18,7 +18,7 @@ export class GlobalEvent extends Component<Props> {
         this.forEachEvent((name, listener) => this.unsubscribe(name, listener));
     }
 
-    public componentWillReceiveProps(props: Props) {
+    public componentWillReceiveProps(props: GlobalEventProps) {
         this.forEachEvent((name, listener) => {
             if (listener !== props[name]) {
                 this.unsubscribe(name, listener);
@@ -31,10 +31,10 @@ export class GlobalEvent extends Component<Props> {
         return null;
     }
 
-    private forEachEvent(fn: (name: keyof Props, listener: EventListener) => void) {
+    private forEachEvent(fn: (name: keyof GlobalEventProps, listener: EventListener) => void) {
         (Object
             .keys(this.props)
-            .filter(name => name !== 'children') as Array<keyof Props>)
+            .filter(name => name !== 'children') as Array<keyof GlobalEventProps>)
             .forEach(name => fn(name, this.props[name] as EventListener));
     }
 

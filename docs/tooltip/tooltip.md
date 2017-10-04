@@ -20,6 +20,7 @@ A typed React Tooltip component extending the [Popup](../popup/popup.md) compone
   * [Mouse](#mouse)
   * [Touch](#touch)
 * [Examples](#examples)
+* [Design](#design)
 
 ## Elements
 
@@ -45,8 +46,8 @@ A typed React Tooltip component extending the [Popup](../popup/popup.md) compone
 | open | boolean | false | no | Whether the tooltip is shown or hidden |
 | onOpenStateChange | function | NOOP | no | Triggered when the popup is opened/closed |
 | anchor | Element | none | Yes | The element to be used as an anchor for the tooltip (will open next to it). |
-| maxHeight | number | 0 | no | The max height in pixels of the popup. If set to 0, the property will be ignored and receive height from its content |
-| distance | number | 5(px) | no | Sets the distance in pixels between the location of the tooltip and the anchor element (in the direction of the specified position property). Both negative and positive numbers accepted.* |
+| maxHeight*** | number | 0 | no | The max height in pixels of the popup. If set to 0, the property will be ignored and receive height from its content |
+| distance*** | number | 5(px) | no | Sets the distance in pixels between the location of the tooltip and the anchor element (in the direction of the specified position property). Both negative and positive numbers accepted.* |
 | position | string literal type | "bottom" | no | Options are "bottom", "left", "right", "top" |
 | showTrigger | Array\<string> | ["mouseEnter"] | no | Shows the tooltip according to an event or events triggered on the anchor element (see [triggers](#triggers)) |
 | hideTrigger | Array\<string> | ["mouseLeave"]** | no | Hides the tooltip according to an event or events triggered on the anchor element |
@@ -54,6 +55,8 @@ A typed React Tooltip component extending the [Popup](../popup/popup.md) compone
 \* No matter the position specified by the user, a positive number will always push the tooltip away from the component, while a negative while number will push the tooltip onto the component.
 
 \** The hideTrigger will default to the opposite event/s of the triggers in the showTrigger property unless explicitly specified (focus <-> blur, mouseEnter <-> mouseLeave, click <-> click, manual <-> manual).
+
+\*** TalmiJS requirement
 
 ### Triggers
 
@@ -209,4 +212,4 @@ None
 
 ## Design
 
-Awaiting Alexey.
+See [zeplin](https://zpl.io/2vMlOW5).

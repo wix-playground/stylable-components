@@ -1,16 +1,15 @@
 import * as React from 'react';
 import {ClientRenderer, expect, sinon} from 'test-drive-react';
-import {GlobalEvent, Props as GlobalEventProps} from '../../src/components/global-event';
+import {GlobalEvent, GlobalEventProps} from '../../src';
 import WindowStub from '../stubs/window.stub';
 
 describe('<GlobalEvent />', () => {
     const clientRenderer = new ClientRenderer();
-    let windowStub: WindowStub;
-
-    beforeEach(() => windowStub = new WindowStub());
-
-    afterEach(() => windowStub.sandbox.restore());
     afterEach(() => clientRenderer.cleanup());
+
+    let windowStub: WindowStub;
+    beforeEach(() => windowStub = new WindowStub());
+    afterEach(() => windowStub.sandbox.restore());
 
     describe('mount', () => {
         it('should add an event listener on window object when mounted', () => {

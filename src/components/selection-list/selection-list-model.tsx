@@ -1,12 +1,12 @@
 import {extendShallowObservable} from 'mobx';
 import React = require('react');
 import {clamp} from '../../utils/clamp';
-import {divider, Divider} from './divider';
-import {Option} from './option';
+import {SelectionListDivider, SelectionListDividerSymbol} from './divider';
+import {SelectionListOption} from './option';
 
 export type DataSourceItem = string | object | symbol;
 
-export interface OptionList {
+export interface SelectionListOptionList {
     dataSource?: DataSourceItem[];
     dataSchema?: {};
     renderItem?: (item: DataSourceItem) => JSX.Element | null;
@@ -50,12 +50,12 @@ function defaultRenderItem(item: DataSourceItemDefaultFormat): JSX.Element | nul
         item = {value: item, label: item};
     }
 
-    if (item === divider) {
-        return <Divider />;
+    if (item === SelectionListDividerSymbol) {
+        return <SelectionListDivider />;
     } else if (item.hidden) {
         return null;
     }
-    return <Option value={item.value} disabled={item.disabled}>{item.label}</Option>;
+    return <SelectionListOption value={item.value} disabled={item.disabled}>{item.label}</SelectionListOption>;
 }
 
 export class SelectionListModel {
@@ -65,7 +65,7 @@ export class SelectionListModel {
     private selectedValue: SelectionListItemValue | undefined = undefined;
     private focusedValue: SelectionListItemValue | undefined = undefined;
 
-    public addDataSource({dataSource = [], dataSchema, renderItem = defaultRenderItem}: OptionList) {
+    public addDataSource({dataSource = [], dataSchema, renderItem = defaultRenderItem}: SelectionListOptionList) {
         dataSource.forEach(data => {
             const element = renderItem(dataSchema && typeof data === 'object' ? renameKeys(data, dataSchema) : data);
             if (element) {
