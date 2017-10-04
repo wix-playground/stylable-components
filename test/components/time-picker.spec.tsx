@@ -273,6 +273,7 @@ describe('<TimePicker/>', () => {
                 expect(document.activeElement).to.equal(mm);
             });
         });
+
         describe('backspace x 2 on mm segment', () => {
             beforeEach(() => {
                 renderer.driver.keydownMinutes('backspace');
@@ -285,7 +286,25 @@ describe('<TimePicker/>', () => {
                 expect(mm).attr('value', '00');
             });
             it('should move selection on hh segment', () => {
-                expect(document.activeElement).to.equal(mm);
+                expect(document.activeElement).to.equal(hh);
+            });
+            it('onChange should be callen with "13:00"', async () => {
+                expect(onChange).to.be.calledWithExactly({value: '13:00'});
+            });
+        });
+
+        describe('backspace on hh segment', () => {
+            beforeEach(() => {
+                renderer.driver.keydownHours('backspace');
+            });
+            it('hh input should have "00" value', () => {
+                expect(hh).attr('value', '00');
+            });
+            it('focus should stay on hh section', () => {
+                expect(document.activeElement).to.equal(hh);
+            });
+            it('onChange should be callen with "00:55"', async () => {
+                expect(onChange).to.be.calledWithExactly({value: '00:55'});
             });
         });
 
@@ -561,6 +580,24 @@ describe('<TimePicker/>', () => {
             });
             it('onChange should be callen with "12:00"', async () => {
                 expect(onChange).to.be.calledWithExactly({value: '12:00'});
+            });
+        });
+
+        describeDesktop('backspace on hh segment', () => {
+            beforeEach(() => {
+                renderer.driver.keydownHours('backspace');
+            });
+            it('hh input should have "12" value', () => {
+                expect(hh).attr('value', '12');
+            });
+            it('focus should stay on hh section', () => {
+                expect(document.activeElement).to.equal(hh);
+            });
+            it('ampm should have AM text', () => {
+                expect(renderer.driver.ampm).text('AM');
+            });
+            it('onChange should be callen with "00:59"', async () => {
+                expect(onChange).to.be.calledWithExactly({value: '00:59'});
             });
         });
     });

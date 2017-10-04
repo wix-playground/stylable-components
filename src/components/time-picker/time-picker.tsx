@@ -429,8 +429,10 @@ export class TimePicker extends React.Component<TimePickerProps, TimePickerState
                 break;
             case 'backspace':
                 e.preventDefault();
-                if (isTimeSegment(currentSegment) && this.state[currentSegment]) {
-                    this.updateSegmentValue(currentSegment, '00');
+                const newValue = currentSegment === 'mm' ? '00' :
+                    (this.props.format === '24h' ? '00' : '12');
+                if (isTimeSegment(currentSegment) && this.state[currentSegment] !== newValue) {
+                    this.updateSegmentValue(currentSegment, newValue);
                 } else {
                     this.moveSelection(-1);
                 }
