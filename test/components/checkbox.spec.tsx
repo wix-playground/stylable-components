@@ -1,49 +1,32 @@
 import * as React from 'react';
 import {ClientRenderer, DriverBase, expect, sinon, waitFor} from 'test-drive-react';
 import {CheckBoxDemo, demoCheckBoxText} from '../../demo/components/checkbox-demo';
-import {CheckBox, CheckBoxIconProps} from '../../src';
+import {CheckBox} from '../../src';
 import {CheckBoxTestDriver} from '../../test-kit/components/checkbox-driver';
 import {sleep} from '../utils/sleep';
 
-const boxSVG: React.SFC<CheckBoxIconProps> = props => {
-    return (
-        <svg
-            data-automation-id="CHECKBOX_BOX"
-            data-name="custom-box"
-            height="1em"
-            width="1em"
-            xmlns="http://www.w3.org/2000/svg"
-        >
-            <path fill="none" stroke="black" d="M.5.5h15v15H.5z"/>
-        </svg>
-    );
-};
+const tickSVG: React.ReactNode = (
+    <svg
+        data-automation-id="CHECKBOX_TICKMARK"
+        data-name="custom-tickmark"
+        height="1em"
+        width="1em"
+        xmlns="http://www.w3.org/2000/svg"
+    >
+        <path stroke="black" strokeLinecap="square" strokeWidth="1.5" d="M5 8.685l2.496 1.664M8 10.685L11.748 6"/>
+    </svg>
 
-const tickSVG: React.SFC<CheckBoxIconProps> = props => {
-    return (
-        <svg
-            data-automation-id="CHECKBOX_TICKMARK"
-            data-name="custom-tickmark"
-            height="1em"
-            width="1em"
-            xmlns="http://www.w3.org/2000/svg"
-        >
-            <path stroke="black" strokeLinecap="square" strokeWidth="1.5" d="M5 8.685l2.496 1.664M8 10.685L11.748 6"/>
-        </svg>
-    );
-};
+);
 
-const IndeterminateSVG: React.SFC<CheckBoxIconProps> = props => {
-    return (
-        <svg
-            data-automation-id="CHECKBOX_INDETERMINATE"
-            data-name="custom-indeterminate"
-            xmlns="http://www.w3.org/2000/svg"
-        >
-            <path d="M5 0h8v2H0z"/>
-        </svg>
-    );
-};
+const IndeterminateSVG: React.ReactNode = (
+    <svg
+        data-automation-id="CHECKBOX_INDETERMINATE"
+        data-name="custom-indeterminate"
+        xmlns="http://www.w3.org/2000/svg"
+    >
+        <path d="M5 0h8v2H0z"/>
+    </svg>
+);
 
 class CheckBoxDemoDriver extends DriverBase {
     public static ComponentClass = CheckBoxDemo;
@@ -159,20 +142,9 @@ describe('<Checkbox/>', () => {
         });
     });
 
-    it('Displays a box icon', async () => {
-        const {driver: checkbox, waitForDom} = clientRenderer.render(
-            <CheckBox boxIcon={boxSVG} />
-        ).withDriver(CheckBoxTestDriver);
-
-        await waitForDom(() => {
-            expect(checkbox.box).to.be.present();
-            expect(checkbox.box).to.have.attribute('data-name', 'custom-box');
-        });
-    });
-
     it('Aligns children and box icon', async () => {
         const {driver: checkbox, waitForDom} = clientRenderer.render(
-            <CheckBox boxIcon={boxSVG}>
+            <CheckBox>
                 <span>yoyo</span>
             </CheckBox>
         ).withDriver(CheckBoxTestDriver);
@@ -186,15 +158,12 @@ describe('<Checkbox/>', () => {
     it('Displays custom tick mark when value is true', async () => {
         const {driver: checkbox, waitForDom} = clientRenderer.render(
             <CheckBox
-                boxIcon={boxSVG}
                 tickIcon={tickSVG}
                 value={true}
             />
         ).withDriver(CheckBoxTestDriver);
 
         await waitForDom(() => {
-            expect(checkbox.box).to.be.present();
-            expect(checkbox.box).to.have.attribute('data-name', 'custom-box');
             expect(checkbox.tickMark).to.be.present();
             expect(checkbox.tickMark).to.have.attribute('data-name', 'custom-tickmark');
         });
@@ -205,7 +174,6 @@ describe('<Checkbox/>', () => {
 
         const {driver: checkbox, waitForDom} = clientRenderer.render(
             <CheckBox
-                boxIcon={boxSVG}
                 tickIcon={tickSVG}
                 value={true}
                 onChange={onChange}

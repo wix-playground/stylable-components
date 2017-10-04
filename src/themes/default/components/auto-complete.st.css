@@ -16,7 +16,7 @@ AutoComplete::autoCompleteInput {
 
 AutoComplete::autoCompleteList {
     border-top: 0;
-    background: #ffffff;
+    background: #fff;
 }
 
 AutoComplete::autoCompleteInput:hover {
