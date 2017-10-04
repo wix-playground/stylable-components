@@ -2,38 +2,56 @@
 
 A component which allows the user to take action by choosing an item from a list. The SelectionList will usually be displayed inside a Popup component.
 
-* [Properties](#properties)
-* [ItemRenderer Contract](#itemrenderer-contract)
-* [Default ItemRenderer](#default-itemrenderer)
+* [Elements](#elements)
+* [API](#api)
+* [RenderItem Contract](#renderitem-contract)
+* [Default RenderItem](#default-renderitem)
 * [Accessibility](#accessibility)
-* [Input Handling](#input-handling)
+  * [Roles](#roles)
+  * [Aria Attributes](#aria-attributes)
+  * [Focus](#focus)
+* [Behavior](#behavior)
+  * [Keyboard](#keyboard)
+  * [Mouse](#mouse)
+  * [Touch](#touch)
 * [Internal Implementation](#internal-implementation)
-* [Examples](#examples)
 
-## Properties
+## Elements
+
+![image](./assets/selectionlistelements.png)
+
+## API
 
 | Name | Type | Default | Required | Description |
 | -- | -- | -- | -- | -- |
 | value | string \| Array\<string> | null | no | id/s of the selected item/s |
-| onChange | (value: string) => void | NOP | no | Triggered when an item is selected in the list |
+| onChange | (event: ChangeEvent) => void | NOP | no | Triggered when an item is selected in the list |
 | multiple | boolean | false | no | Whether the selection list supports a single or multiple selections. When true, adds the aria-multiselectable='true' on the root element.
 | orientation | enum | Vertical | no | The orientation is used mostly for assistive technologies. Changing to Horizontal will change the behavior of keyboard navigation and add an aria-orientation attribute to the root with the 'horizontal' value |
-| typeAhead | boolean | false | no | Enables keyboard type-ahead |
+| typeAhead | boolean | true | no | Enables keyboard type-ahead |
 | children | any | null | no | Children to be rendered in the list |
+| disabled | boolean | false | no | Whether the SelectionList responds to events or not |
+| readonly | boolean | false | no | Gains tab focus but user cannot change value |
+| id | string | null | no | Unique identifier, relevant for a standalone component |
+| name | string | null | no | Specifies the name of the input element, relevant for a standalone component |
+| tabIndex | number | null | no | Tab order of the element, relevant for a standalone component |
+| aria-label | string | null | no | aria attribute, relevant for a standalone component |
+| aria-labelledby | string | null | no | aria attribute, relevant for a standalone component |
+| aria-describedby | string | null | no | aria attribute, relevant for a standalone component |
 
 * The following props should be placed in an OptionList interface since they will need to be passed from higher order components.
 
 | Name | Type | Default | Required | Description |
 | -- | -- | -- | -- | -- |
-| dataSource | SelectionItem[] | [] | no | There are a few options accepted as a datasource (see below for explanation) |
-| dataSchema | object | { id: 'id', displayText: 'displayText' } | no | Maps the object properties to the relevant properties required by the ItemRenderer |
-| itemRenderer | Component | default itemRenderer | no | Renders an item in the list |
+| dataSource | Array[DataSourceItem] | [] | no | The DataSourceItem is of type '*string \| object \| symbol*'. The dataSource receives an array and the component uses the renderItem function to render the items in the array in order.
+| dataSchema | {[index: string]: string} | {} | no | Maps fields from the DataSourceItem to the field used by the renderItem function |
+| renderItem | (item : DataSourceItem) -> JSX.Element | default function | no | The renderItem function receives a DataSourceItem and then decides how to render it.
 
-**Note** that if both datasource and children are present then the children are rendered first and then the dataSource items.
+**Note** for the default SelectionList renderItem function that if both datasource and children are present then the children are rendered first and then the dataSource items.
 
-## ItemRenderer Contract
+## RenderItem Contract
 
-ItemRenderer is a component with the following props:
+RenderItem is a function with the following props:
 
 | Name | Type | Default value | Description |
 | -- | -- | -- | -- |
@@ -42,7 +60,7 @@ ItemRenderer is a component with the following props:
 | focused | boolean | false  | Whether the item is focused by keyboard navigation |
 
 
-ItemRenderer must put `data-value` attribute on the root node of any selectable item. Items without the `data-value`
+RenderItem must put `data-value` attribute on the root node of any selectable item. Items without the `data-value`
 attribute will be displayed, but won't be selectable.
 
 `item` is an object created by remapping the original SelectionItem using `dataSchema`. Therefore, the
@@ -51,7 +69,7 @@ attribute will be displayed, but won't be selectable.
 If the original SelectionItemn was string, the resulting `item` object will put this value into
 the `value` and `displayText` fields.
 
-## Default ItemRenderer
+## Default RenderItem
 
 If the item doesn't have the `value` field, it is rendered without the `data-value`.
 
@@ -96,7 +114,7 @@ Reference [listbox](https://www.w3.org/TR/wai-aria-practices/#Listbox) in w3 dra
 * Root Role - listbox (identifies the focusable element that has listbox behaviors and contains listbox options)
 * Children role - option (identifies a selectable element)
 
-### Aria
+### Aria Attributes
 * aria-selected="true" - Applied to elements with role option that are visually styled as selected to inform assistive technologies that the options are selected. When multiple selections are allowed, this attribute is applied to all selected items (false when not selected).
 * aria-orientation="vertical" - Applied on the root element. By default the value should be vertical, so only if the orientation is set horizontal should the value change to "horizontal".
 
@@ -104,11 +122,11 @@ Reference [listbox](https://www.w3.org/TR/wai-aria-practices/#Listbox) in w3 dra
 
 Focus handled by the parent component.
 
-## Input Handling
+## Behavior
 
 Keyboard and mouse navigation have different styling behaviors.
 
-### Keyboard Navigation
+### Keyboard
 
 * <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">Home</kbd> -> highlights ths first item in the SelectionList
 * <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">End</kbd> -> highlights the last item in the SelectionList
@@ -130,6 +148,10 @@ Non-selectable items (items without `data-value` on the root element) are skippe
 * Left-click -> selects an item
 * Mouse over -> Gives mouse hover to an item
 
+### Touch
+
+* Tapping on an item selects it.
+
 ## Internal Implementation
 
 ### Children
@@ -149,9 +171,9 @@ SelectionItem is a union type of the following
 
 | Type | Description |
 | -- | -- |
-| Divider | A Symbol representing non-selectable divider
-| string | Represents both item value and label
-| object | Item is represented as object with schema defined by `dataSchema`
+| Divider | A Symbol representing non-selectable divider |
+| string | Represents both item value and label |
+| object | Item is represented as object with schema defined by `dataSchema` |
 
 ### dataSchema
 
@@ -165,11 +187,3 @@ Data schema creates mapping, which bridges between data structure of `dataSource
 
 If the `'id'` field is missing in the item, it should be displayed but not selectable. (e.g. headings, etc.).
 
-
-## Examples
-
-* Create a SelectionList which receives children and renders them
-* Create a SelectionList which receives a string array and renders it using the default itemRenderer
-* Create a SelectionList which receives an object array and renders it with the dataSchema mapping
-* Create a SelectionList which supports mouse input handling
-* Create a SelectionList which supports keyboard navigation

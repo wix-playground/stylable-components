@@ -87,11 +87,14 @@ export class TreeView extends React.Component<TreeViewProps> {
     };
 
     private stateMap: TreeViewStateMap = new TreeViewStateMap();
-    private parentsMap: TreeViewParentsMap = new Map<TreeItemData, TreeItemData | undefined>();
+    private parentsMap: TreeViewParentsMap;
 
     constructor(props: TreeViewProps) {
         super(props);
-        initParentsMap(this.parentsMap, props.dataSource as TreeItemData[], undefined);
+        autorun(() => {
+            this.parentsMap = new Map<TreeItemData, TreeItemData | undefined>();
+            initParentsMap(this.parentsMap, props.dataSource as TreeItemData[], undefined);
+        });
     }
 
     public componentDidMount() {
