@@ -72,6 +72,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         axis: DEFAULT_AXIS,
 
         displayTooltip: false,
+        tooltipPosition: 'top',
 
         onChange: noop,
         onInput: noop,
@@ -128,7 +129,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
                 step={this.props.step!}
                 tooltip={this.state.relativeValue}
                 displayTooltip={this.props.displayTooltip!}
-                tooltipPosition={this.props.tooltipPosition || 'top'}
+                tooltipPosition={this.props.tooltipPosition!}
                 value={this.props.value}
 
                 onFocus={this.onSliderFocus}
