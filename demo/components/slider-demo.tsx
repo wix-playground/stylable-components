@@ -68,6 +68,28 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                 </tbody>
                 <thead>
                     <tr>
+                        <th className="table-head-cell">Range Slider with disableCross</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <Slider
+                                value={this.state.multiValue}
+                                disableCross
+                                min={min}
+                                max={max}
+                                onChange={this.onRangeSliderChange}
+                            />
+                        </td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+                <thead>
+                    <tr>
                         <th className="table-head-cell">Default Slider</th>
                         <th className="table-head-cell">Disabled Slider</th>
                         <th className="table-head-cell">Slider with step</th>
