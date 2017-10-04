@@ -1,7 +1,7 @@
 import * as keycode from 'keycode';
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
-import {stylable} from 'wix-react-tools';
+import {stylable, properties} from 'wix-react-tools';
 import {FormInputProps} from '../../types/forms';
 import {isRTLContext} from '../../utils';
 import {ScreenReaderNotification} from '../screen-reader-notification';
@@ -14,7 +14,7 @@ import {
     isTouchTimeInputSupported, isValidValue, Segment, TimeSegment, to24, toAmpm
 } from './utils';
 
-export interface TimePickerProps extends FormInputProps<string> {
+export interface TimePickerProps extends FormInputProps<string>, properties.Props {
     format?: Format;
     placeholder?: string;
     disabled?: boolean;
@@ -59,6 +59,7 @@ function propsValueToSegments(value?: string, format?: Format): {hh?: string, mm
 }
 
 @stylable(styles)
+@properties
 export class TimePicker extends React.Component<TimePickerProps, TimePickerState> {
     public static defaultProps: Partial<TimePickerProps> = {
         format: is12TimeFormat ? 'ampm' : '24h',
