@@ -1,0 +1,49 @@
+:import {
+	-st-from: "../../../components/number-input/number-input.st.css";
+	-st-default: NumberInput;
+}
+
+:import {
+    -st-from: "../../../project.st.css";
+    -st-named: color_MainText,
+               color_MainPlaceholder,
+               color_MainText_Background,
+               borderRadius,
+               color_Disabled,
+               borderDefault,
+               borderHover,
+               borderFocus,
+               inputHeight,
+               inputWidth,
+               borderDisabled,
+               borderError,
+               DS2;
+}
+
+NumberInput {
+    border: value(borderDefault);
+    border-radius: value(borderRadius);
+    background-color: value(color_MainText_Background);
+    color: value(color_MainText);
+
+    height: value(inputHeight);
+    min-width: value(inputWidth);
+}
+
+NumberInput:hover {
+    border: value(borderHover);
+}
+
+NumberInput:focus {
+    border: value(borderFocus);
+}
+
+NumberInput:disabled {
+    background-color: value(DS2);
+    color: value(color_MainPlaceholder);
+    border: value(borderDisabled);
+}
+
+NumberInput:error {
+    border: value(borderError);
+}

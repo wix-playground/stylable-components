@@ -36,3 +36,8 @@
     -st-theme: true;
     -st-from: "./components/auto-complete.st.css";
 }
+
+:import {
+    -st-theme: true;
+    -st-from: "./components/number-input.st.css";
+}

@@ -1,23 +1,6 @@
 :import {
-    -st-from: "../../project.st.css";
-    -st-named: color_MainText,
-               color_MainPlaceholder,
-               color_MainText_Background,
-               borderRadius,
-               color_Disabled,
-               borderDefault,
-               borderHover,
-               borderFocus,
-               inputHeight,
-               inputWidth,
-               borderDisabled,
-               borderError,
-               DS2;
-}
-
-:import {
     -st-from: "../stepper/stepper.st.css";
-    -st-default: stepper;
+    -st-default: Stepper;
 }
 
 .root {
@@ -26,32 +9,6 @@
     box-sizing: inherit;
     position: relative;
     display: inline-flex;
-
-    border: value(borderDefault);
-    border-radius: value(borderRadius);
-    background-color: value(color_MainText_Background);
-    color: value(color_MainText);
-
-    height: value(inputHeight);
-    min-width: value(inputWidth);
-}
-
-.root:hover {
-    border: value(borderHover);
-}
-
-.root:focus {
-    border: value(borderFocus);
-}
-
-.root:disabled {
-    background-color: value(DS2);
-    color: value(color_MainPlaceholder);
-    border: value(borderDisabled);
-}
-
-.root:error {
-    border: value(borderError);
 }
 
 .prefix {
@@ -75,6 +32,12 @@
     background: none;
 
     -moz-appearance: textfield;
+    color: inherit;
+    font: inherit;
+}
+
+.nativeInput: hover {
+  border: none;
 }
 
 .nativeInput::-webkit-outer-spin-button,
@@ -87,6 +50,6 @@
 }
 
 .stepper {
-    -st-extends: stepper;
+    -st-extends: Stepper;
     height: auto;
 }
