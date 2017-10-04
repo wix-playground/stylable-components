@@ -583,7 +583,7 @@ describe('<TimePicker/>', () => {
             });
         });
 
-        describe('backspace on hh segment', () => {
+        describeDesktop('backspace on hh segment', () => {
             beforeEach(() => {
                 renderer.driver.keydownHours('backspace');
             });
