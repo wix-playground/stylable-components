@@ -44,7 +44,7 @@ The following props are part of the DataInterface (name to be decided):
 | -- | -- | -- | -- | -- |
 | dataSource | Array[DataSourceItem] | [] | no | The DataSourceItem is of type '*string \| object \| symbol*'. The dataSource receives an array and the component uses the renderItem function to render the items in the array in order.
 | dataSchema | {[index: string]: string} | {} | no | Maps fields from the DataSourceItem to the field used by the renderItem function |
-| renderItem | (item : DataSourceItem) -> JSX.Element \| default function | no | The renderItem function receives a DataSourceItem and then decides how to render it.
+| renderItem | (item : DataSourceItem) -> JSX.Element | default function | no | The renderItem function receives a DataSourceItem and then decides how to render it.
 
 **RadioButton**
 
