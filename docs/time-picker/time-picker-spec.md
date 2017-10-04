@@ -120,7 +120,7 @@ We mirror the behavior of [native HTML number input.](https://www.w3schools.com/
 
 The component follows the external control pattern (value displayed is defined by the `value` property, and in order for the component to function, it should be bound to a state in the parent component, and the `onChange` handler should be set).
 
-
+**RTL** direction moves 'hh' & 'mm' to the right while 'am/pm' is displayed on the left. So the format looks like this: (`am/pm`, `hh`, `mm`). When user focuses on time picker with RTL direction focus is set to hh, pressing TAB button moves focus to 'mm' and then 'am/pm' (here we preserve the same logic as with LTR).
 
 ### Edge case handling
 
@@ -140,19 +140,14 @@ The component follows the external control pattern (value displayed is defined b
 | type a number              | insert a value without committing it     |
 | up arrow key               | increase & commit value (for focused element) |
 | down arrow key             | decrease & commit value (for focused element) |
-| shift + up arrow key       | increase & commit value by 10 (NOTE: works only for 'mm') |
-| shift + down arrow key     | decrease & commit value by 10 (NOTE: works only for 'mm') |
+| shift + up arrow key       | increase & commit value by 10 <br>NOTE: works only for 'mm' |
+| shift + down arrow key     | decrease & commit value by 10 <br>NOTE: works only for 'mm' |
 | tab / right arrow key      | moves focus to previous element within component ('hh' -> 'mm' -> 'am/pm') AND once it reaches the end of time picker moves focus to the next component |
 | shift+tab / left arrow key | moves focus to previous element within component ('am/pm' -> 'mm' -> 'hh') AND once it reaches the beginning of time picker moves focus to the next component |
 | esc                        | removes focus (if on focus)              |
 | enter                      | removes focus (if in focus), discards non-committed new value (if value typed) |
-| space                      | switches between AM / PM (NOTE: space works only for AM/PM and only when it is in focus) |
-
-**RTL** orientation ( if applicable )
-
-| Keys                | Action |
-| ------------------- | ------ |
-| no special handling |        |
+| space                      | switches between AM / PM <br>NOTE: space works only for AM / PM and only when it is in focus |
+| delete / backspace         | for 'hh' sets value to '12' OR '00 based on `format`<br>'for 'mm' sets value to '00'<br>for 'am/pm' does nothing<br>NOTE: double tap on delete / backspace moves focus to previous value |
 
 
 
