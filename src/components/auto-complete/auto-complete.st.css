@@ -9,12 +9,6 @@
     width: 100%;
 }
 
-.popup {
-    position: absolute;
-    z-index: 1;
-    width: 100%;
-}
-
 .autoCompleteList {
     width: 100%;
     /*
