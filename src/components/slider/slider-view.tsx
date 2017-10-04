@@ -16,9 +16,8 @@ import {
     AxisOptions,
     FocusEventHandler,
     KeyboardHandler,
-    MouseHandler,
+    EventHandler,
     Step,
-    TouchHandler
 } from './slider-types';
 import style from './slider.st.css';
 
@@ -49,13 +48,13 @@ export interface SliderViewProps extends FormInputProps<number[], string>, prope
 
     onSliderAreaKeyDown: KeyboardHandler;
 
-    onSliderAreaMouseDown: MouseHandler;
-    onSliderAreaMouseMove: MouseHandler;
-    onSliderAreaMouseUp: MouseHandler;
+    onSliderAreaMouseDown: EventHandler<React.MouseEvent<HTMLElement>>;
+    onSliderAreaMouseMove: EventHandler<MouseEvent>;
+    onSliderAreaMouseUp: EventHandler<MouseEvent>;
 
-    onSliderAreaTouchStart: TouchHandler;
-    onSliderAreaTouchMove: TouchHandler;
-    onSliderAreaTouchEnd: TouchHandler;
+    onSliderAreaTouchStart: EventHandler<React.TouchEvent<HTMLElement>>;
+    onSliderAreaTouchMove: EventHandler<TouchEvent>;
+    onSliderAreaTouchEnd: EventHandler<TouchEvent>;
 }
 
 @stylable(style)

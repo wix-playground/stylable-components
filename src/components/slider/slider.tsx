@@ -30,6 +30,11 @@ enum ChangeDirection {
     descend
 }
 
+//export type MouseOrTouch = React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement> | MouseEvent | TouchEvent;
+function isTouchEvent(event: any): event is TouchEvent | React.TouchEvent<any> {
+    return 'changedTouches' in event;
+}
+
 export interface SliderProps extends FormInputProps<number[], string>, properties.Props {
     tooltip?: React.ReactNode;
 
@@ -89,7 +94,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         })
     };
 
-    private isSliderMounted: boolean = false;
+    private animationFrameId: number;
 
     private isActive: boolean = false;
 
@@ -139,23 +144,19 @@ export class Slider extends React.Component<SliderProps, SliderState> {
 
                 onSliderAreaKeyDown={this.onSliderAreaKeyDown}
 
-                onSliderAreaMouseDown={this.onSliderAreaMouseDown}
-                onSliderAreaMouseMove={this.onSliderAreaMouseMove}
-                onSliderAreaMouseUp={this.onSliderAreaMouseUp}
+                onSliderAreaMouseDown={this.onDragStart}
+                onSliderAreaMouseMove={this.onDrag}
+                onSliderAreaMouseUp={this.onDragStop}
 
-                onSliderAreaTouchStart={this.onSliderAreaTouchStart}
-                onSliderAreaTouchMove={this.onSliderAreaTouchMove}
-                onSliderAreaTouchEnd={this.onSliderAreaTouchEnd}
+                onSliderAreaTouchStart={this.onDragStart}
+                onSliderAreaTouchMove={this.onDrag}
+                onSliderAreaTouchEnd={this.onDragStop}
             />
         );
     }
 
-    public componentDidMount() {
-        this.isSliderMounted = true;
-    }
-
     public componentWillUnmount() {
-        this.isSliderMounted = false;
+        cancelAnimationFrame(this.animationFrameId);
     }
 
     public componentWillReceiveProps(nextProps: SliderProps) {
@@ -196,9 +197,10 @@ export class Slider extends React.Component<SliderProps, SliderState> {
     }
 
     private getRelativeValueFromPointerPositionAndArea(
-        position: PointerPosition,
+        event: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement> | MouseEvent | TouchEvent,
         sliderArea: HTMLElement,
     ): ValueFromPointer {
+        const position = isTouchEvent(event) ? event.changedTouches[0] : event;
         const currentHandleValue = getValueFromElementAndPointer(
             sliderArea,
             position,
@@ -291,16 +293,14 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         this.props.onBlur!(event);
     }
 
-    private onSliderAreaMouseDown = (
-        event: React.MouseEvent<HTMLElement>,
+    private onDragStart = (
+        event: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement>,
         sliderArea: HTMLElement,
         focusableElement: HTMLElement[]
     ) => {
         if (this.props.disabled) {
             return;
         }
-
-        event.preventDefault();
 
         const {
             relativeValue,
@@ -319,20 +319,22 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         this.isActive = true;
         this.currentValueIndex = currentValueIndex;
 
-        this.onDragStart(event.nativeEvent);
+        event.preventDefault();
+
+        this.props.onDragStart!(event.nativeEvent);
         this.callInput(relativeValue);
     }
 
-    private onSliderAreaMouseMove = (
-        event: MouseEvent,
+    private onDrag = (
+        event: MouseEvent | TouchEvent,
         sliderArea: HTMLElement
     ) => {
         if (!this.isActive) {
             return;
         }
         const {
-            relativeValue,
-            currentValueIndex
+            currentValueIndex,
+            relativeValue
         } = this.getRelativeValueFromPointerPositionAndArea(
             event,
             sliderArea
@@ -342,31 +344,27 @@ export class Slider extends React.Component<SliderProps, SliderState> {
             return;
         }
 
-        requestAnimationFrame(() => {
-            if (!this.isSliderMounted) {
-                return;
-            }
-
+        this.animationFrameId = requestAnimationFrame(() => {
             this.setState({
                 relativeValue
             });
         });
 
-        this.onDrag(event);
+        event.preventDefault();
+
+        this.props.onDrag!(event);
         this.callInput(relativeValue);
     }
 
-    private onSliderAreaMouseUp = (
-        event: MouseEvent,
-        sliderArea: HTMLElement,
-        focusableElement: HTMLElement[]
+    private onDragStop = (
+        event: MouseEvent | TouchEvent,
+        sliderArea: HTMLElement
     ) => {
         if (!this.isActive) {
             return;
         }
         const {
-            relativeValue,
-            currentValueIndex
+            relativeValue
         } = this.getRelativeValueFromPointerPositionAndArea(
             event,
             sliderArea
@@ -379,94 +377,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         this.isActive = false;
         this.currentValueIndex = null;
 
-        focusableElement[currentValueIndex].focus();
-
-        this.onDragStop(event);
-        this.callChange(relativeValue);
-    }
-
-    private onSliderAreaTouchStart = (
-        event: React.TouchEvent<HTMLElement>,
-        sliderArea: HTMLElement,
-        focusableElement: HTMLElement[]
-    ) => {
-        if (this.props.disabled) {
-            return;
-        }
-
-        const {
-            relativeValue,
-            currentValueIndex
-        } = this.getRelativeValueFromPointerPositionAndArea(
-            event.changedTouches[0],
-            sliderArea
-        );
-
-        focusableElement[currentValueIndex].focus();
-
-        this.setState({
-            relativeValue,
-            isActive: true
-        });
-        this.isActive = true;
-
-        event.preventDefault();
-
-        this.onDragStart(event.nativeEvent);
-        this.callInput(relativeValue);
-    }
-
-    private onSliderAreaTouchMove = (
-        event: TouchEvent,
-        sliderArea: HTMLElement
-    ) => {
-        if (!this.isActive) {
-            return;
-        }
-        const {
-            relativeValue
-        } = this.getRelativeValueFromPointerPositionAndArea(
-            event.changedTouches[0],
-            sliderArea
-        );
-
-        requestAnimationFrame(() => {
-            if (!this.isSliderMounted) {
-                return;
-            }
-
-            this.setState({
-                relativeValue
-            });
-        });
-
-        event.preventDefault();
-
-        this.onDrag(event);
-        this.callInput(relativeValue);
-    }
-
-    private onSliderAreaTouchEnd = (
-        event: TouchEvent,
-        sliderArea: HTMLElement
-    ) => {
-        if (!this.isActive) {
-            return;
-        }
-        const {
-            relativeValue
-        } = this.getRelativeValueFromPointerPositionAndArea(
-            event.changedTouches[0],
-            sliderArea
-        );
-
-        this.setState({
-            relativeValue,
-            isActive: false
-        });
-        this.isActive = false;
-
-        this.onDragStop(event);
+        this.props.onDragStop!(event);
         this.callChange(relativeValue);
     }
 
@@ -522,17 +433,5 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         }
 
         event.preventDefault();
-    }
-
-    private onDragStart(event: PointerEvent) {
-        this.props.onDragStart!(event);
-    }
-
-    private onDrag(event: PointerEvent) {
-        this.props.onDrag!(event);
-    }
-
-    private onDragStop(event: PointerEvent) {
-        this.props.onDragStop!(event);
     }
 }
