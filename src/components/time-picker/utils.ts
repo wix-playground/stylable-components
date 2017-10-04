@@ -1,10 +1,6 @@
 import {isTouch} from '../../utils';
 
-export enum Ampm {
-    AM,
-    PM,
-    NONE
-}
+export type Ampm = 'am' | 'pm' | 'none';
 export type TimeSegment = 'hh' | 'mm';
 export type Format = 'ampm' | '24h';
 export type Segment = TimeSegment | 'ampm';
@@ -19,10 +15,12 @@ export const isTouchTimeInputSupported = (() => {
 })();
 
 export const is12TimeFormat = /AM|PM/.test(new Date().toLocaleTimeString());
-export const ampmLabels = {
-    [Ampm.AM]: 'AM',
-    [Ampm.PM]: 'PM',
-    [Ampm.NONE]: ''
+export const ampmLabels: {
+    [key: string]: string
+} = {
+    'am': 'AM',
+    'pm': 'PM',
+    'ampm': ''
 };
 
 export function formatTimeChunk(num: string | number): string {
@@ -35,11 +33,11 @@ export function isTimeSegment(arg: any): arg is TimeSegment {
 
 export function to24(hh: number, ampm: Ampm): number {
     switch (ampm) {
-        case Ampm.NONE:
+        case 'none':
             return hh;
-        case Ampm.AM:
+        case 'am':
             return hh === 12 ? 0 : hh;
-        case Ampm.PM:
+        case 'pm':
             return hh === 12 ? hh : (hh + 12);
     }
 }
@@ -48,10 +46,10 @@ export function toAmpm(hh: number): {hh: number, ampm: Ampm} {
     let ampm: Ampm;
     if (hh < 12) {
         hh = hh === 0 ? 12 : hh;
-        ampm = Ampm.AM;
+        ampm = 'am';
     } else {
         hh = hh === 12 ? hh : (hh % 12);
-        ampm = Ampm.PM;
+        ampm = 'pm';
     }
     return {hh, ampm};
 }
@@ -61,10 +59,10 @@ export function isValidValue(num: number, part: TimeSegment, ampm: Ampm): boolea
         return num >= 0 && num <= 59;
     }
     switch (ampm) {
-        case Ampm.NONE:
+        case 'none':
             return num >= 0 && num <= 23;
-        case Ampm.AM:
-        case Ampm.PM:
+        case 'am':
+        case 'pm':
             return num >= 1 && num <= 12;
     }
 }
