@@ -17,6 +17,13 @@
 
 .autoCompleteList {
     width: 100%;
+    /*
+        Styling list is here (not at the theme)
+        because it is rendered in <Portal/>
+        which isn't able to get theme yet.
+    */
+    border-top: 0;
+    background: #ffffff;
 }
 
 .caret {
