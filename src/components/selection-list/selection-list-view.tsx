@@ -1,16 +1,11 @@
-import {observable} from 'mobx';
-import {observer} from 'mobx-react';
 import React = require('react');
 import ReactDOM = require('react-dom');
-import {properties, stylable} from 'wix-react-tools';
+import {globalId, properties, stylable} from 'wix-react-tools';
 import {noop} from '../../utils';
-import {SelectionListItem, SelectionListItemValue, SelectionListModel} from './selection-list-model';
+import {SelectionListItem} from './selection-list-model';
 import listStyle from './selection-list.st.css';
 
-function closestElementMatching(
-    predicate: (element: Element) => boolean,
-    startAt: Element
-): Element | null {
+function closestElementMatching(predicate: (element: Element) => boolean, startAt: Element): Element | null {
     let current: Element | null = startAt;
     while (current && !predicate(current)) {
         current = current.parentElement;
@@ -29,12 +24,11 @@ function getChildIndex(child: Node) {
 
 export interface ViewProps extends properties.Props {
     // Standard props
-    name?: string;
     onBlur?: React.FocusEventHandler<HTMLElement>;
-    onChange?: (index: number) => void;
+    onClick?: (event: React.MouseEvent<HTMLElement>, itemIndex: number) => void;
     onFocus?: React.FocusEventHandler<HTMLElement>;
     onKeyDown?: React.KeyboardEventHandler<HTMLElement>;
-    onMouseDown?: React.MouseEventHandler<HTMLElement>;
+    onMouseDown?: (event: React.MouseEvent<HTMLElement>, itemIndex: number) => void;
     tabIndex?: number;
 
     // Component-specific props
@@ -44,18 +38,19 @@ export interface ViewProps extends properties.Props {
     selectedIndex?: number;
 }
 
-export interface ItemState {
+interface ItemWrapperProps {
+    id: string;
+    item: SelectionListItem;
     focused: boolean;
     selected: boolean;
 }
 
-@observer
 @stylable(listStyle)
 @properties
 export class SelectionListView extends React.Component<ViewProps> {
     public static defaultProps: ViewProps = {
         onBlur: noop,
-        onChange: noop,
+        onClick: noop,
         onFocus: noop,
         onKeyDown: noop,
         onMouseDown: noop,
@@ -67,28 +62,38 @@ export class SelectionListView extends React.Component<ViewProps> {
     };
 
     public render() {
-        const itemStates = this.props.items!.map((item, index) => ({
-            selected: item.isOption && index === this.props.selectedIndex,
-            focused: item.isOption && index === this.props.focusedIndex
-        }));
-
         return (
             <div
                 className="list"
                 data-automation-id="LIST"
+                role="listbox"
+                aria-orientation="vertical"
+                aria-activedescendant={
+                    this.props.focusedIndex! > -1 ? this.itemId(this.props.focusedIndex!) : undefined
+                }
                 style-state={{focused: this.props.focused!}}
                 onBlur={this.props.onBlur}
                 onClick={this.handleClick}
-                onMouseDown={this.props.onMouseDown}
+                onMouseDown={this.handleMouseDown}
                 onFocus={this.props.onFocus}
                 onKeyDown={this.props.onKeyDown}
                 tabIndex={this.props.tabIndex}
             >
                 {this.props.items!.map((item, index) =>
-                    <ItemWrapper key={index} item={item} state={itemStates[index]} />
+                    <ItemWrapper
+                        key={index}
+                        id={this.itemId(index)}
+                        item={item}
+                        focused={index === this.props.focusedIndex}
+                        selected={index === this.props.selectedIndex}
+                    />
                 )}
             </div>
         );
+    }
+
+    protected itemId(index: number): string {
+        return globalId.getLocalId(globalId.getRootId(this), String(index));
     }
 
     protected itemIndexFromElement(element: Element): number {
@@ -99,15 +104,23 @@ export class SelectionListView extends React.Component<ViewProps> {
 
     protected handleClick: React.MouseEventHandler<HTMLElement> = event => {
         const index = this.itemIndexFromElement(event.target as Element);
-        if (index > -1 && index !== this.props.selectedIndex && this.props.items![index].selectable) {
-            this.props.onChange!(index);
+        const item = index > -1 ? this.props.items![index] : null;
+        this.props.onClick!(event, item && item.selectable ? index : -1);
+    }
+
+    protected handleMouseDown: React.MouseEventHandler<HTMLElement> = event => {
+        const index = this.itemIndexFromElement(event.target as Element);
+        const item = index > -1 ? this.props.items![index] : null;
+        if (item && item.disabled) {
+            event.preventDefault();
         }
+        this.props.onMouseDown!(event, item && item.selectable ? index : -1);
     }
 }
 
-class ItemWrapper extends React.Component<{item: SelectionListItem, state: ItemState}> {
+class ItemWrapper extends React.Component<ItemWrapperProps> {
     public componentDidUpdate() {
-        if (this.props.state.focused) {
+        if (this.props.focused) {
             const node = ReactDOM.findDOMNode(this);
             node.scrollIntoView({behavior: 'instant', block: 'nearest', inline: 'nearest'});
         }
@@ -117,8 +130,9 @@ class ItemWrapper extends React.Component<{item: SelectionListItem, state: ItemS
         const item = this.props.item;
         if (item.isOption) {
             return React.cloneElement(item.element, {
-                focused:  item.focused,
-                selected: item.selected
+                id: this.props.id,
+                focused:  this.props.focused,
+                selected: this.props.selected
             });
         }
         return item.element;

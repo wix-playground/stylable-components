@@ -24,7 +24,7 @@ setGlobalConfig({devMode: true});
 @stylable(styles)
 export class ComponentsDemo extends React.Component {
     public render() {
-        return <MultiselectDemo /> || (
+        return <SelectionListDemo /> || (
             <div>
                 <ImageDemo />
                 <hr />

@@ -7,15 +7,19 @@ export interface OptionProps {
     children?: React.ReactNode;
     disabled?: boolean;
     focused?: boolean;
+    id?: string;
     selected?: boolean;
     value?: SelectionListItemValue;
 }
 
 export const Option: React.SFC<OptionProps> = stylable(listStyle)(
-    props => (
+    (props: OptionProps) => (
         <div
+            id={props.id}
             className="item"
-            data-value={props.disabled ? undefined : props.value}
+            role="option"
+            aria-selected={props.selected || undefined}
+            aria-disabled={props.disabled || undefined}
             style-state={{
                 disabled: Boolean(props.disabled),
                 selected: Boolean(props.selected),
