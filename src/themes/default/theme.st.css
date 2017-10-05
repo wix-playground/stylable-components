@@ -2,27 +2,10 @@
 
 :import {
     -st-theme: true;
-    -st-from: "../../project.st.css";
-    -st-named:
-        fontFamily,fontSize,fontWeight,lineHeight,
-        borderRadius,borderWidth,borderStyle,
-        inputHeight,inputWidth,
-        color_MainText,
-        color_MainPlaceholder,
-        color_MainError,
-        color_MainDisabled,
-        color_MainText_Background,
-        color_Default,
-        color_Hover,
-        color_Active,
-        color_Focus,
-        color_Disabled,
-        color_Keyboard_Focused,
-        BK3,DS2,PR1,PR2,WT1,DS1,PR3,PR4,ER1,BK2,
-        B1,B2,B3,B4,B5,B6,B7,M1,M2,M3,M4,M5,M6,M7,M0,R1;
+    -st-from: "./components/auto-complete.st.css";
 }
 
 :import {
     -st-theme: true;
-    -st-from: "./components/auto-complete.st.css";
+    -st-from: "./components/button.st.css";
 }

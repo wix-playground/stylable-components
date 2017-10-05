@@ -1,59 +1,10 @@
-:import {
-    -st-from: "../../project.st.css";
-    -st-named: fontFamily,
-               fontSize,
-               fontWeight,
-               lineHeight,
-               color_MainText_Background,
-               color_Default,
-               color_Focus,
-               color_Hover,
-               color_Active,
-               borderRadius,
-               color_Disabled;
-}
-
 .root {
     box-sizing: inherit;
     display: inline-block;
     vertical-align: middle;
-    padding: 9px 30px;
     margin: 0;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    border: 1px solid transparent;
-    border-radius: value(borderRadius);
-    background: value(color_Default);
-    color: value(color_MainText_Background);
-    font-family: value(fontFamily);
-    font-size: value(fontSize);
-    font-weight: value(fontWeight);
-    line-height: value(lineHeight);
-    text-align: center;
-    text-decoration: none;
-    cursor: pointer;
-    user-select: none;
-    outline: 0;
-}
-
-.root:focus {
-    background-color: value(color_Focus);
-    color: value(color_MainText_Background);
-}
-
-.root:hover {
-    background-color: value(color_Hover);
-    color: value(color_MainText_Background);
-}
-
-.root:active {
-    background-color: value(color_Active);
-    color: value(color_MainText_Background);
 }
 
 .root[disabled] {
-    background-color: value(color_Disabled);
-    color: value(color_MainText_Background);
     pointer-events: none;
 }
