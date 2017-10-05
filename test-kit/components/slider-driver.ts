@@ -26,8 +26,8 @@ export class BaseSliderDriver extends DriverBase {
     public getInput(index: number): HTMLElement {
         return this.select(`NATIVE-INPUT-${index}`);
     }
-    public get tooltip(): HTMLElement {
-        return this.select('SLIDER-TOOLTIP');
+    public getTooltip(index: number): HTMLElement {
+        return this.select(`SLIDER-TOOLTIP-${index}`);
     }
     public getMark(index: number): HTMLElement {
         return this.select(`SLIDER-MARKS-${index}`);

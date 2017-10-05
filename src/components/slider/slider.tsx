@@ -140,7 +140,6 @@ export class Slider extends React.Component<SliderProps, SliderState> {
                 step={this.props.step!}
                 value={this.getDefaultValue()}
 
-                tooltip={this.state.relativeValue}
                 displayTooltip={this.props.displayTooltip!}
                 tooltipPosition={this.props.tooltipPosition!}
 

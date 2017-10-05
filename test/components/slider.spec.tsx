@@ -1124,36 +1124,6 @@ describe.only('<Slider />', () => {
         });
     });
 
-    describe('tooltip', () => {
-        const value = [5];
-        const min = 0;
-        const max = 10;
-        const label = 'Simple Slider Tooltip';
-
-        it('should be presented', async () => {
-            const rendered = clientRenderer.render(
-                <Slider
-                    value={value}
-                    min={min}
-                    max={max}
-                    label={label}
-                    tooltip={<div data-slot="tooltip" data-automation-id="TOOLTIP-CUSTOM-CONTENT">{label}</div>}
-                />
-            ).withDriver(SliderDriver);
-            const waitForDom: (expectation: () => void) => Promise<void> = rendered.waitForDom;
-            const driver = rendered.driver;
-
-            await waitForDom(() => {
-                const tooltip = driver.tooltip;
-                const tooltipContent = driver.find('TOOLTIP-CUSTOM-CONTENT');
-
-                expect(tooltip).to.be.present();
-                expect(tooltipContent).to.be.present();
-                expect(tooltipContent).text(label);
-            });
-        });
-    });
-
     describe('vertical Slider', () => {
         withValueMinMax(
             clientRenderer,
@@ -1332,7 +1302,7 @@ describe('Slider/properties', () => {
             expect(driver.getMark(0)).to.be.null;
         });
         it('should not render tooltip', () => {
-            expect(driver.tooltip).to.be.null;
+            expect(driver.getTooltip(0)).to.be.null;
         });
         it('progress width should be 0%', () => {
             expect(driver.progress.style.width).to.equal('0%');
@@ -1525,15 +1495,19 @@ describe('Slider/properties', () => {
         });
     });
 
-    describe('displayTooltip={true}', () => {
+    describe('displayTooltip={true} value={[44]}', () => {
         let driver: any;
         beforeEach(() => {
             driver = renderWithProps({
+                value: [44],
                 displayTooltip: true
             });
         });
         it('should render tooltip', () => {
-            expect(driver.tooltip).to.not.null;
+            expect(driver.getTooltip(0)).to.not.null;
+        });
+        it('tooltip should have text "44"', () => {
+            expect(driver.getTooltip(0)).text('44');
         });
     });
 

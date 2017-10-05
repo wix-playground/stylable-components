@@ -23,8 +23,6 @@ import {
 import style from './slider.st.css';
 
 export interface SliderViewProps extends FormInputProps<number[], string>, properties.Props {
-    tooltip: React.ReactNode;
-
     relativeValue: number[];
     relativeStep: Step;
 
@@ -174,9 +172,9 @@ export class SliderView extends React.Component<SliderViewProps, {}> {
                 {this.props.displayTooltip &&
                     <div
                         className={`tooltip ${this.props.tooltipPosition}`}
-                        data-automation-id={"SLIDER-TOOLTIP-" + index}
+                        data-automation-id={'SLIDER-TOOLTIP-' + index}
                     >
-                        {this.props.tooltip[index]}
+                        {this.props.relativeValue[index]}
                         <svg className="tooltip-tail" height="5" width="10">
                             <polygon points="0,0 10,0 5,5"/>
                         </svg>
