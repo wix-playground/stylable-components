@@ -18,7 +18,7 @@ function closestElementMatching(
     return current;
 }
 
-export interface ViewProps extends FormInputProps<SelectionListItemValue> {
+export interface SelectionListViewProps extends FormInputProps<SelectionListItemValue> {
     className?: string;
     focused?: boolean;
     list: SelectionListModel;
@@ -33,8 +33,8 @@ export interface ViewProps extends FormInputProps<SelectionListItemValue> {
 @observer
 @stylable(listStyle)
 @properties
-export class SelectionListView extends React.Component<ViewProps> {
-    public static defaultProps: Partial<ViewProps> = {
+export class SelectionListView extends React.Component<SelectionListViewProps> {
+    public static defaultProps: Partial<SelectionListViewProps> = {
         onChange: noop,
         onBlur: noop,
         onFocus: noop,
@@ -52,7 +52,7 @@ export class SelectionListView extends React.Component<ViewProps> {
                 onKeyDown={this.props.onKeyDown}
                 tabIndex={this.props.tabIndex}
             >
-                {this.props.list.items.map((item, index) =>
+                {this.props.list && this.props.list.items.map((item, index) =>
                     <ItemWrapper key={index} item={item} />
                 )}
             </div>

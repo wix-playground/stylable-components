@@ -1,12 +1,13 @@
 import React = require('react');
 import {findDOMNode} from 'react-dom';
 import {ClientRenderer, expect, RenderingContext} from 'test-drive-react';
+import {isDecorated, properties} from 'wix-react-tools';
 import * as WixReactComponents from '../../src';
 import {isReactComponent} from '../utils/is-react-component';
 
 const allComponents = Object.keys(WixReactComponents);
 const failingComponents = [
-    'NumberInput', 'Portal', 'Popup', 'TimePicker', 'Modal', 'ContextProvider'
+    'Portal', 'Popup', 'TimePicker', 'Modal', 'ContextProvider', 'GlobalEvent'
 ];
 
 describe('Root Element contract', () => {
@@ -41,28 +42,8 @@ export function assertRootElementContract(Component: React.ComponentType<any>): 
         expect(rootNode).to.be.instanceOf(Element);
     });
 
-    it('performs data-automation-id merge', () => {
-         const {select, rootNode} = render(<Component data-automation-id="CONTRACT_TEST"/>);
-         expect(select('CONTRACT_TEST'), 'data-automation-id not properly merged').to.equal(rootNode);
-    });
-
-    it('performs data-* attribute merge', () => {
-        const customValue = 'some-custom-value';
-        const {rootNode} = render(<Component data-some-custom-attr={customValue}/>);
-        expect(rootNode).to.have.attribute('data-some-custom-attr');
-        expect(rootNode.getAttribute('data-some-custom-attr')).to.contain(customValue);
-    });
-
-    it('performs inline style merge', () => {
-        const sampleColor = 'rgb(255, 0, 0)';
-        const {rootNode} = render(<Component style={{backgroundColor: sampleColor}}/>);
-        expect(getComputedStyle(rootNode).backgroundColor, 'inline style not properly merged').to.equal(sampleColor);
-    });
-
-    it('performs className merge', () => {
-        const testClassName = 'sample-class-name';
-        const {rootNode} = render(<Component className={testClassName}/>);
-        expect(rootNode.classList.contains(testClassName), 'className not properly merged').to.equal(true);
+    it('detects the "properties" feature decorator', () => {
+        expect(isDecorated(Component, properties)).to.equal(true);
     });
 
     it('has display values of \'inline-block\' or \'inline-flex\'', () => {

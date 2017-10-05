@@ -908,6 +908,39 @@ describe('<Slider />', () => {
 
     keyboard(clientRenderer, {step: 2});
 
+    describe('step=0', () => {
+        let onChange: (data: ChangeEvent<number>) => void;
+        let driver: any;
+        beforeEach(() => {
+            onChange = sinon.spy();
+            const rendered = clientRenderer.render(
+                <Slider
+                    value={50}
+                    step={0}
+                    onChange={onChange}
+                />
+            ).withDriver(SliderDriver);
+            driver = rendered.driver;
+        });
+
+        beforeEach(() => {
+            const bounds = driver.getBounds();
+            const event = {
+                clientX: bounds.left + bounds.width * 3 / 4,
+                clientY: bounds.top + bounds.height / 3
+            };
+            driver.mouseDown(event);
+            driver.mouseUp(event, environment);
+        });
+
+        it('should trigger onChange with 75 value', () => {
+            expect(onChange).to.be.calledWithMatch({value: 75});
+        });
+        it('should move handle to 75%', () => {
+            expect(driver.handle.style.left).to.equal('75%');
+        });
+    });
+
     describe('when disabled', () => {
         const value = 5;
         const min = 0;

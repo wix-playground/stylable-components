@@ -5,27 +5,27 @@
     -st-default: CB;
 }
 
-.customBoxIcon {
-    height: 20px;
-    width: 20px;
-    fill: none;
-    stroke: #D1D1D1;
+.customInput CB::box {
+    background: red;
+    border-color: blue;
 }
 
-CB:checked .customBoxIcon {
-    fill: goldenrod;
+.customInput CB:checked .customBoxIcon {
+    background: goldenrod;
 }
 
-CB:focus .customBoxIcon {
+.customInput CB:focus::box {
     outline: none;
 }
 
 .customTickIcon {
-    height: 20px;
-    width: 20px;
-    position: relative;
-    margin-left: -20px;
-    fill: #f1f1f1;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+}
+
+.customTickIcon circle {
+    fill: #fff;
 }
 
 .label {

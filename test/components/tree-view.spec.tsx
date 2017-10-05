@@ -44,6 +44,28 @@ const changedLabel = 'Kaiserschmarrn';
 const newTreeData = JSON.parse(JSON.stringify(treeData));
 newTreeData[0].children![2].children!.push({label: changedLabel});
 
+const parentsTestTreeData: TreeItemData[] = [
+    {
+        label: 'Food Menu', children: [
+        {
+            label: 'Desserts', children: [
+            {label: 'Pancakes'},
+            {label: 'Muffin'},
+            {label: 'Waffle'},
+            {label: 'Cupcake'}
+        ]
+        },
+        {
+            label: 'Salads', children: [
+            {label: 'Greek Salad'},
+            {label: 'Israeli Salad'},
+            {label: 'Caesar Salad'}
+        ]
+        }
+    ]
+    }
+];
+
 class TreeViewDemoDriver extends DriverBase {
     public static ComponentClass = TreeViewDemo;
 
@@ -442,6 +464,45 @@ describe('<TreeView />', () => {
                 treeView.getItem(newTreeData[0].children![2].label).clickIcon();
 
                 return waitForDom(() => expect(treeView.getItem('Kaiserschmarrn').root).to.be.present());
+            });
+
+            it('correctly reacts to keyboard nav after a new data array is passed (updating parents map)', async () => {
+                const onFocusItem = sinon.spy();
+
+                const {container, waitForDom, driver: treeView} =
+                    clientRenderer
+                        .render(<TreeView dataSource={treeData} onFocusItem={onFocusItem} focusedItem={treeData[0]} />)
+                        .withDriver(TreeViewDriver);
+
+                treeView.getItem(treeData[0].label).clickIcon();
+
+                treeView.pressKey('DOWN');
+
+                await waitForDom(() => {
+                    expect(onFocusItem.getCall(1).args[0].label,
+                        `${onFocusItem.getCall(1).args[0].label} was the wrong arg`)
+                        .to.equal(treeData[0].children![0].label);
+                });
+
+                const onFocusItemNew = sinon.spy();
+                const {driver: treeViewNew} =
+                    clientRenderer
+                        .render((
+                            <TreeView
+                                dataSource={parentsTestTreeData}
+                                onFocusItem={onFocusItemNew}
+                                focusedItem={parentsTestTreeData[0]}
+                            />), container).withDriver(TreeViewDriver);
+
+                treeViewNew.getItem(parentsTestTreeData[0].label).clickIcon();
+
+                treeViewNew.pressKey('DOWN');
+
+                await waitForDom(() => {
+                    expect(onFocusItemNew.getCall(1).args[0].label,
+                        `${onFocusItemNew.getCall(1).args[0].label} was the wrong arg`)
+                        .to.equal(parentsTestTreeData[0].children![0].label);
+                });
             });
 
             it('renders the additional item when a new data element is added to existing data', async () => {

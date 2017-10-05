@@ -7,57 +7,58 @@
     cursor: pointer;
 }
 
-.boxIcon {
+.box {
+    display: inline-block;
+    position: relative;
     height: 1rem;
     width: 1rem;
-    fill: none;
-    stroke: #D1D1D1;
+    background: #ffffff;
+    border: 1px solid #D1D1D1;
 }
 
-.root:checked .boxIcon, .root:indeterminate .boxIcon{
-    fill: #4A90E2;
+.root:checked .box,
+.root:indeterminate .box {
+    background: #4A90E2;
 }
 
-.root:disabled .boxIcon {
-    fill: #f1f1f1;
+.root:disabled .box {
+    background: #f1f1f1;
 }
 
-.root:focus .boxIcon {
+.root:focus .box {
     outline: 4px solid #add9ff;
 }
 
-.tickIcon {
-    height: 1rem;
-    width: 1rem;
-    position: relative;
-    margin-left: -1rem;
-    stroke: #FFF;
-    stroke-linecap: square;
-    stroke-width: 1.5;
+.icon {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background: no-repeat 0 0 / 100%;
 }
 
-.root:disabled .tickIcon, .root:disabled .indeterminateIcon {
-    stroke: #c8c8c8;
+.tickIcon {
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHBhdGggZmlsbD0iI2ZmZiIgZD0iTTExLjggNEw2LjUgOS4yIDQuMiA3IDMgOC4ybDMuNSAzLjZMMTMgNS4yIi8+PC9zdmc+);
 }
 
 .indeterminateIcon {
-    height: 1em;
-    width: 1em;
-    position: relative;
-    margin-left: -1rem;
-    stroke: #FFF;
-    stroke-width: 1.5;
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHBhdGggZmlsbD0iI2ZmZmZmZiIgZD0iTTQgN2g4djJINHoiLz48L3N2Zz4=);
 }
 
+
+.root:disabled .tickIcon {
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHBhdGggZmlsbD0iI2M4YzhjOCIgZD0iTTExLjggNEw2LjUgOS4yIDQuMiA3IDMgOC4ybDMuNSAzLjZMMTMgNS4yIi8+PC9zdmc+);
+}
+
+.root:disabled .indeterminateIcon {
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHBhdGggZmlsbD0iI2M4YzhjOCIgZD0iTTQgN2g4djJINHoiLz48L3N2Zz4=);
+}
+
+
 .nativeCheckbox {
-    position: absolute;
-    overflow: hidden;
-    height: 1px;
-    width: 1px;
-    margin: -1px;
-    padding: 0;
-    border: 0;
-    opacity: 0;
+    position: fixed;
+    top: -100%;
+    visibility: hidden;
+    pointer-events: none;
 }
 
 .childContainer {

@@ -30,14 +30,17 @@
     outline: none;
 
     background: none;
+    font-size: 16px;
 
     -moz-appearance: textfield;
+    padding: 6px 12px;
     color: inherit;
     font: inherit;
 }
 
 .nativeInput: hover {
   border: none;
+
 }
 
 .nativeInput::-webkit-outer-spin-button,
