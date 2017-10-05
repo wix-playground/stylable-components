@@ -17,7 +17,8 @@ import {
     EventHandler,
     FocusEventHandler,
     KeyboardHandler,
-    Step
+    Step,
+    TooltipPosition
 } from './slider-types';
 import style from './slider.st.css';
 
@@ -40,8 +41,10 @@ export interface SliderViewProps extends FormInputProps<number[], string>, prope
     disabled: boolean;
     error: boolean;
     displayStopMarks: boolean;
+    displayTooltip: boolean;
     required: boolean;
     rtl: boolean;
+    tooltipPosition: TooltipPosition;
 
     onSliderFocus: FocusEventHandler;
     onSliderBlur: FocusEventHandler;
@@ -129,10 +132,6 @@ export class SliderView extends React.Component<SliderViewProps, {}> {
         );
     }
 
-    private getTooltip(): React.ReactNode {
-        return this.props.tooltip;
-    }
-
     private getNativeInput(): JSX.Element[] {
         return this.props.value!.map((item, index) => (
             <input
@@ -172,12 +171,17 @@ export class SliderView extends React.Component<SliderViewProps, {}> {
 
                 key={index}
             >
-                <div
-                    className="tooltip"
-                    data-automation-id="SLIDER-TOOLTIP"
-                >
-                    {this.getTooltip()}
-                </div>
+                {this.props.displayTooltip &&
+                    <div
+                        className={`tooltip ${this.props.tooltipPosition}`}
+                        data-automation-id={"SLIDER-TOOLTIP-" + index}
+                    >
+                        {this.props.tooltip[index]}
+                        <svg className="tooltip-tail" height="5" width="10">
+                            <polygon points="0,0 10,0 5,5"/>
+                        </svg>
+                    </div>
+                }
             </a>
 
         ));

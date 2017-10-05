@@ -22,7 +22,7 @@ import {
     DEFAULT_STEP,
     DEFAULT_VALUE
 } from './slider-constants';
-import {AxisOptions, PointerEvent, Step, ValueFromPointer} from './slider-types';
+import {AxisOptions, PointerEvent, Step, TooltipPosition, ValueFromPointer} from './slider-types';
 import {SliderView} from './slider-view';
 
 enum ChangeDirection {
@@ -35,8 +35,6 @@ function isTouchEvent(event: any): event is TouchEvent | React.TouchEvent<any> {
 }
 
 export interface SliderProps extends FormInputProps<number[], string>, properties.Props {
-    tooltip?: React.ReactNode;
-
     min?: number;
     max?: number;
     step?: Step;
@@ -46,6 +44,8 @@ export interface SliderProps extends FormInputProps<number[], string>, propertie
     label?: string;
 
     disableCross?: boolean;
+    displayTooltip?: boolean;
+    tooltipPosition?: TooltipPosition;
     displayStopMarks?: boolean;
     disabled?: boolean;
     required?: boolean;
@@ -76,6 +76,9 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         axis: DEFAULT_AXIS,
 
         disableCross: false,
+        displayTooltip: false,
+        tooltipPosition: 'top',
+
         onChange: noop,
         onInput: noop,
 
@@ -135,8 +138,11 @@ export class Slider extends React.Component<SliderProps, SliderState> {
                 required={this.props.required!}
                 rtl={isRTL(this.context)}
                 step={this.props.step!}
-                tooltip={this.getTooltip()}
                 value={this.getDefaultValue()}
+
+                tooltip={this.state.relativeValue}
+                displayTooltip={this.props.displayTooltip!}
+                tooltipPosition={this.props.tooltipPosition!}
 
                 onSliderFocus={this.onSliderFocus}
                 onSliderBlur={this.onSliderBlur}
@@ -220,10 +226,6 @@ export class Slider extends React.Component<SliderProps, SliderState> {
             currentValue: currentHandleValue,
             currentValueIndex: nearestHandleIndex
         };
-    }
-
-    private getTooltip(): React.ReactNode {
-        return this.props.tooltip;
     }
 
     private increaseValue(toEdge: boolean = false, multiplier: number = 1) {

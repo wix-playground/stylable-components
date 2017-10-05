@@ -1331,6 +1331,9 @@ describe('Slider/properties', () => {
         it('should not render marks', () => {
             expect(driver.getMark(0)).to.be.null;
         });
+        it('should not render tooltip', () => {
+            expect(driver.tooltip).to.be.null;
+        });
         it('progress width should be 0%', () => {
             expect(driver.progress.style.width).to.equal('0%');
         });
@@ -1519,6 +1522,18 @@ describe('Slider/properties', () => {
         });
         it('should have "disabled" styles', () => {
             expect(driver.slider).attr(`data-${styles.$stylesheet.namespace.toLowerCase()}-disabled`);
+        });
+    });
+
+    describe('displayTooltip={true}', () => {
+        let driver: any;
+        beforeEach(() => {
+            driver = renderWithProps({
+                displayTooltip: true
+            });
+        });
+        it('should render tooltip', () => {
+            expect(driver.tooltip).to.not.null;
         });
     });
 
