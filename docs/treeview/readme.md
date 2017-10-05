@@ -6,32 +6,42 @@
 
 ![TreeView example](./assets/treeview/treeElements.png)
 
-A TreeView is composed of TreeItems (nodes) that have a TreeItem Label and a TreeItem Icon if the node has children. The TreeItem Icon (typically an arrow) is used to expand and collapse that particular node.
+A TreeView is composed of TreeItems (nodes) that have a label and, if the node has children, an icon. The icon is used to expand and collapse that particular node.
 
 ## API
 
 ### Component Props
 
-| name        | type                                  | default | required | description                              |
-| ----------- | ------------------------------------- | ------------ | ---------- | ---------------------------------------- |
-| selectedItem | Object reference | null | no | The selected object, by default none is selected |
-| keyboardNavigation | boolean | true | no | When enabled, user can traverse the tree using keyboard arrow keys |
-| loadOnDemand | boolean | false | no | Whether parent nodes are populated with children before they are expanded |
-| loadMethod | function | null | no | The method used to load the children of a node when `loadOnDemand` is true<br>`function(item: TreeItem)`<br> ● returns promise or list of Objects |
-| filter | function | default function | no | The default function searches according to the node title with exact prefix matching.<br>`function(item: object)` |
-| onSelect | function | null | no | Event triggered when a selection has been changed |
-| onExpand | function | null | no | Event triggered when a node is expanded |
-| onCollapse | function | null | no | Event triggered when a node is collapsed |
+| name         | type                | default  | required | description                                     |
+| ------------ | ------------------- | -------- | -------- | ----------------------------------------------- |
+| dataSource   | TreeItemData[]      |          | yes      | Collection of item data                         |
+| itemRenderer | React.ComponentType | TreeItem | no       | Returns an JSX.Element to render as a tree node |
+| onSelectItem | React.EventHandler  | () => {} | no       | Callback to be invoked when an item is selected |
+| onFocusItem  | React.EventHandler  | () => {} | no       | Callback to be invoked when an item is focused  |
+| selectedItem | TreeItemData        |          | no       | Refers to the currently selected data item      | 
+| focusedItem  | TreeItemData        |          | no       | Refers to the currently focused data item       |
 
-##### The following props are placed in an `OptionList` interface since they need to be passed from higher order components.
+### The Tree Item Props Interface
 
-| name | type | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | required | description |
-| --- | --- | --- | --- | --- |
-| dataSource | SelectionItem[] | [] | no | Collection of item data. |
-| dataSchema | object | { id: 'id',<br>displayText: 'displayText'} | no | Maps the object properties to the relevant properties required by the `itemRenderer`. |
-| itemRenderer | Component | default itemRenderer | no | Renders an item in the list. |
+In order to render custom tree nodes, you need to provide an `itemRenderer` as described above.
+The component (or function) should accept props that conforms (or extends) the `TreeItemProps` interface:
 
-> **Note** If both `dataSource` and children are present, the children are rendered first and then the `dataSource` items.
+| name         | type                 | default  | required | description                                     |
+| ------------ | -------------------- | -------- | -------- | ----------------------------------------------- |
+| item         | TreeItemData         |          | yes      | Item data to render                         |
+| itemRenderer | React.ComponentType  | TreeItem | no       | Returns an JSX.Element to render as a tree node |
+| onItemClick  | TreeItemEventHandler | () => {} | no       | Callback to be invoked when the item label is clicked |
+| onIconClick  | TreeItemEventHandler | () => {} | no       | Callback to be invoked when the item icon is clicked  |
+| stateMap     | TreeViewStateMap     |          | yes      | A map that keeps the state of each item               |
+
+Notice, the `itemRenderer` is required in order to enable the tree nodes to render nested nodes.
+
+### The State Map
+
+In order to manage the state of the tree items, each item is mapped to a `TreeItemState`.
+This object encloses information about the item's state (is it selected? expanded? focused?).
+It is required to propagate the state map through the tree items so they can access their own state and render accordingly.
+
 
 ## Code Examples
 
@@ -79,4 +89,28 @@ function onSelectItem(selectedItem) {
 }
 
 <TreeView dataSource={treeData} selectedItem={this.state.selectedItem} onSelectItem={this.onSelectItem.bind(this)} />
+```
+
+## Style API
+
+| State     | Description                                                         |
+| --------- | ------------------------------------------------------------------- |
+| :selected | Style to apply when the element is selected                         |
+| :focused  | Style to apply when the element is focused (by keyboard navigation) |
+
+### examples
+
+```
+.item {
+    background-color: white;
+}
+
+.item:focused {
+    border: 1px solid lightblue;
+}
+
+.item:selected {
+    background-color: navy;
+    color: white;
+}
 ```

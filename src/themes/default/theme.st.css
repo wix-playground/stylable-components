@@ -21,6 +21,7 @@
         BK3,DS2,PR1,PR2,WT1,DS1,PR3,PR4,ER1,BK2,
         B1,B2,B3,B4,B5,B6,B7,M1,M2,M3,M4,M5,M6,M7,M0,R1;
 }
+<<<<<<< HEAD:src/themes/default/theme.st.css
 
 :import {
     -st-theme: true;
@@ -36,3 +37,5 @@
     -st-theme: true;
     -st-from: "./components/auto-complete.st.css";
 }
+=======
+>>>>>>> 0da89bd78559f0547f669493b3cb705974eae4ef:src/style/default-theme/default.st.css
