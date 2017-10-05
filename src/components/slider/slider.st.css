@@ -175,6 +175,14 @@
     box-shadow: none;
     background-color: value(colorHandle_Active);
     border-color: value(colorHandle_Active);
+    z-index: 2;
+}
+.handle:active .tooltip {
+    display: block;
+}
+.handle:hover .tooltip {
+    display: block;
+    z-index: 3;
 }
 
 .root:x .handle{
@@ -241,8 +249,8 @@
     color: white;
     font-size: 14px;
     font-family: arial;
+    display: none;
 }
-
 
 .tooltip-tail {
     position: absolute;

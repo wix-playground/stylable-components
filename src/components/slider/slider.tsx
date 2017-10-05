@@ -214,7 +214,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
             this.state.isVertical,
             this.state.isReverse
         );
-        const nearestHandleIndex = typeof index === 'number'?
+        let nearestHandleIndex = typeof index === 'number'?
             index :
             nearestIndex(this.state.relativeValue, currentHandleValue);
 
@@ -223,6 +223,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
             currentHandleValue,
             nearestHandleIndex
         );
+        nearestHandleIndex = relativeValue.indexOf(currentHandleValue);
 
         return {
             relativeValue,
@@ -338,6 +339,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
             return;
         }
         const {
+            currentValueIndex,
             relativeValue
         } = this.getRelativeValueFromPointerPositionAndArea(
             event,
@@ -345,12 +347,14 @@ export class Slider extends React.Component<SliderProps, SliderState> {
             this.currentValueIndex
         );
 
-        if (this.props.disableCross && relativeValue.slice(1).some((v, i) => relativeValue[i] > v)) {
+        if (this.props.disableCross && this.currentValueIndex !== currentValueIndex) {
             return;
         }
 
+        this.currentValueIndex = currentValueIndex;
         this.animationFrameId = requestAnimationFrame(() => {
             this.setState({
+                currentHandleIndex: currentValueIndex,
                 relativeValue
             });
         });
@@ -376,7 +380,6 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         );
 
         this.setState({
-            currentHandleIndex: -1,
             relativeValue,
             isActive: false
         });

@@ -81,5 +81,5 @@ export function getValueFromElementAndPointer(
 }
 
 export function getNewValue(values: number[], newValue: number, index: number): number[] {
-    return values.map((value, i) => i === index ? newValue : value);
+    return values.map((value, i) => i === index ? newValue : value).sort((a, b) => a - b);
 }
