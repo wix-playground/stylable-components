@@ -1,3 +1,4 @@
+import {warnOnce} from '../../utils/logger';
 import {AXES, CONTINUOUS_STEP} from './slider-constants';
 import {AxisOptions, PointerPosition, Step} from './slider-types';
 
@@ -21,7 +22,10 @@ export function isReverse(axis: AxisOptions): boolean {
 }
 
 export function getRelativeStep(step: Step | undefined, min: number, max: number): Step {
-    if (typeof step === 'undefined' || step === CONTINUOUS_STEP) {
+    if (typeof step === 'number' && step <= 0) {
+        warnOnce('Slider accepts only step="any" or number greater than 0, but %s given', step);
+    }
+    if (typeof step === 'undefined' || step === CONTINUOUS_STEP || step <= 0) {
         return CONTINUOUS_STEP;
     }
     return 100 * step / (max - min);

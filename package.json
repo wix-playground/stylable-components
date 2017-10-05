@@ -1,6 +1,6 @@
 {
   "name": "stylable-components",
-  "version": "0.2.1-rc.2",
+  "version": "0.2.1",
   "description": "Fully-tested & strictly-typed component library based on React, using optional Wix styling.",
   "main": "./dist/src/index.js",
   "types": "./dist/src/index.d.ts",
@@ -11,7 +11,7 @@
     "lint": "tslint \"@(src|demo|test|test-kit)/**/*.ts?(x)\" -c tslint.json --type-check -p tsconfig.json",
     "test": "npm run lint && npm run test:browser && npm run test:node",
     "test:browser": "karma start --single-run",
-    "test:node": "mocha --compilers ts:ts-node/register,tsx:ts-node/register,css:stylable-integration/require \"./test/node/**/*.node-spec.ts?(x)\"",
+    "test:node": "mocha --require ts-node/register --require stylable-integration/require \"./test/node/**/*.node-spec.ts?(x)\"",
     "start": "webpack-dev-server --progress"
   },
   "peerDependencies": {
@@ -20,17 +20,17 @@
   },
   "dependencies": {
     "keycode": "^2.1.9",
-    "mobx": "^3.2.2",
-    "mobx-react": "^4.2.2",
-    "prop-types": "^15.5.10",
-    "wix-react-tools": "^3.0.0"
+    "mobx": "^3.3.0",
+    "mobx-react": "^4.3.3",
+    "prop-types": "^15.6.0",
+    "wix-react-tools": "3.1.0-rc.3"
   },
   "devDependencies": {
     "@types/mocha": "^2.2.43",
-    "@types/node": "^8.0.28",
-    "@types/prop-types": "^15.5.1",
-    "@types/react": "^16.0.5",
-    "@types/react-dom": "^15.5.4",
+    "@types/node": "^8.0.32",
+    "@types/prop-types": "^15.5.2",
+    "@types/react": "^15.0.0",
+    "@types/react-dom": "^15.0.0",
     "@types/webpack-env": "^1.13.1",
     "glob": "^7.1.2",
     "karma": "^1.7.1",
@@ -42,20 +42,20 @@
     "karma-webdriver-launcher": "^1.0.5",
     "karma-webpack": "^2.0.4",
     "mobx-react-devtools": "^4.2.15",
-    "mocha": "^3.5.2",
+    "mocha": "^4.0.0",
     "mocha-loader": "^1.1.1",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
-    "stylable": "^4.0.14",
+    "stylable": "^4.0.18",
     "stylable-integration": "^5.1.7",
     "test-drive-react": "^0.7.0",
     "ts-loader": "^2.3.7",
     "ts-node": "^3.3.0",
     "tslint": "^5.7.0",
     "tslint-wix-react": "^4.1.0",
-    "typescript": "~2.5.2",
-    "webpack": "^3.5.6",
-    "webpack-dev-server": "^2.7.1"
+    "typescript": "~2.5.3",
+    "webpack": "^3.6.0",
+    "webpack-dev-server": "^2.9.1"
   },
   "testGlob": "./test/**/*.spec.ts?(x)",
   "license": "MIT",
