@@ -2,39 +2,31 @@
 
 The **NumberInput** component improves upon the native `<input type="number">` by providing ability to customize the stepper arrows design, a common React+Typescript API, and working out the kinks of native implementations.
 
-![elements](./elements.png)
+![elements](./assets/elements.png)
 
 ### Component API
 
 #### Props
 
-| name         | type   | defaultValue | isRequired | description                              |
-| ------------ | ------ | ------------ | ---------- | ---------------------------------------- |
-| value        | number |              | yes        | Used to set & change the value of the input. If you bind this to a state in your parent component, you should also set the onChange handler, in order for the component to work |
-| defaultValue | number |              |            | Sets the default value if the input is uncontrolled |
-| placeholder  | string |              |            | Text to display if the value is null     |
-| min          | number | 1            |            |                                          |
-| max          | number | 100          |            |                                          |
-| step         | number | 1            |            |                                          |
-| required     | bool   | FALSE        |            | Whether or not filling the value is required in a form. |
-| disabled     | bool   | FALSE        |            | If true, the component will not be interactable. |
-| label        | string |              |            | Text to display in accessibility mode.   |
-| name         | string |              |            | The name of the component. Behaves like the name attribute of an input element. |
-| onChange     | func   |              | yes        | Callback function that is fired when the component's value is changed and committed. Signature: `function(event: object, newValue: number):void`. event: KeyDown event targeting the slider. newValue: The new value of the slider. |
-| onInput      | func   |              |            | Callback function that is fired every time the user types a character into the input. |
-| error        | bool   | false        |            | Sets the `:error` CSS state on the `<NumberInput/>` |
-| rtl          | bool   | FALSE        |            | Makes the component RTL                  |
+| name         | type                             | defaultValue | isRequired | description                              |
+| ------------ | -------------------------------- | ------------ | ---------- | ---------------------------------------- |
+| value        | number                           |              | yes        | Used to set & change the value of the input. If you bind this to a state in your parent component, you should also set the onChange handler, in order for the component to work. |
+| defaultValue | number                           |              |            | Sets the default value if the input is uncontrolled. |
+| placeholder  | string                           |              |            | Text to display if the value is null.    |
+| min          | number                           | 1            |            |                                          |
+| max          | number                           | 100          |            |                                          |
+| step         | number                           | 1            |            |                                          |
+| required     | bool                             | FALSE        |            | Whether or not filling the value is required in a form. |
+| disabled     | bool                             | FALSE        |            | If true, the component will not be interactable. |
+| label        | string                           |              |            | Text to display in accessibility mode.   |
+| name         | string                           |              |            | The name of the component. Behaves like the name attribute of an input element. |
+| prefix       | node                             |              |            | Inserts a component at the start of the input. |
+| suffix       | node                             |              |            | Inserts a component at the end of the input. |
+| onChange     | `(event: {value: number}): void` |              | yes        | Callback function that is fired on component blur. |
+| onInput      | `(event: {value: number}): void` |              |            | Callback function that is fired on every keydown event. |
+| error        | bool                             | false        |            | Sets the `:error` CSS state on the `<NumberInput/>`. |
 
 
-
-#### Accepted Children
-
-This component accepts children with the following `data-slot` attribute values, in order to be displayed in specific places in its layout
-
-| data-slot | description                              | example                                  |
-| --------- | ---------------------------------------- | ---------------------------------------- |
-| prefix    | Allows you to insert a component (or components) at the start of the input | `<div data-slot="prefix">hello world</div>` |
-| suffix    | Allows you to insert a component (or components) at the end of the input. Default data slot (not specifying anything will land the children here) | `<div data-slot="suffix">hello world</div>` |
 
 ### Code Examples
 

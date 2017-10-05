@@ -1,7 +1,3 @@
----
-typora-copy-images-to: ../NumberInput
----
-
 **Table of Contents**
 
 - [Definition](#definition)
@@ -28,7 +24,7 @@ The **NumberInput** component improves upon the native `<input type="number">` b
 
 ## Elements
 
-![elements](./elements.png)
+![elements](./assets/elements.png)
 
 The NumberInput consists of a native input and a Stepper subcomponent, which provides customisable Up and Down buttons. Also, you can add elements into it in the prefix and suffix slots, by passing the component children with the corresponding data-slot attribute.
 
