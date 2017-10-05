@@ -1,6 +1,7 @@
 import * as keycode from 'keycode';
 import {DriverBase, simulate} from 'test-drive-react';
 import {ContextProvider, Slider} from '../../src';
+import {noop} from '../../src/utils';
 import WindowStub from '../../test/stubs/window.stub';
 import {simulateMouseEvent, simulateTouchEvent} from '../../test/utils';
 
@@ -22,8 +23,8 @@ export class BaseSliderDriver extends DriverBase {
     public get progress(): HTMLElement {
         return this.select('SLIDER-PROGRESS');
     }
-    public get input(): HTMLElement {
-        return this.select('NATIVE-INPUT');
+    public getInput(index: number): HTMLElement {
+        return this.select(`NATIVE-INPUT-${index}`);
     }
     public get tooltip(): HTMLElement {
         return this.select('SLIDER-TOOLTIP');
@@ -39,6 +40,7 @@ export class BaseSliderDriver extends DriverBase {
     public mouseDown(event: SliderEventCoordinates) {
         const element = this.slider;
         simulate.mouseDown(element, {
+            preventDefault: noop,
             currentTarget: element!,
             clientX: event.clientX,
             clientY: event.clientY
@@ -54,6 +56,7 @@ export class BaseSliderDriver extends DriverBase {
     public touchStart(event: SliderEventCoordinates) {
         const element = this.slider;
         simulate.touchStart(element, {
+            preventDefault: noop,
             currentTarget: element,
             touches: {
                 0: {
@@ -72,6 +75,7 @@ export class BaseSliderDriver extends DriverBase {
     }
 
     public keyDown(key: string, opts?: object) {
+        simulate.focus(this.handle);
         simulate.keyDown(this.handle, {
             keyCode: keycode(key),
             ...opts
@@ -83,6 +87,7 @@ export class BaseSliderDriver extends DriverBase {
             environment,
             name,
             {
+                preventDefault: noop,
                 clientX: event.clientX,
                 clientY: event.clientY
             }

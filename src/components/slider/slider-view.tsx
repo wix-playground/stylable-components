@@ -14,10 +14,10 @@ import {
 } from './slider-constants';
 import {
     AxisOptions,
+    EventHandler,
     FocusEventHandler,
     KeyboardHandler,
-    EventHandler,
-    Step,
+    Step
 } from './slider-types';
 import style from './slider.st.css';
 

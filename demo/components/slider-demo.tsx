@@ -69,8 +69,8 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                 <thead>
                     <tr>
                         <th className="table-head-cell">Range Slider with disableCross</th>
-                        <th></th>
-                        <th></th>
+                        <th/>
+                        <th/>
                     </tr>
                 </thead>
                 <tbody>
@@ -84,8 +84,7 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                                 onChange={this.onRangeSliderChange}
                             />
                         </td>
-                        <td></td>
-                        <td></td>
+                        <td/>
                     </tr>
                 </tbody>
                 <thead>

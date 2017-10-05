@@ -22,7 +22,7 @@ import {
     DEFAULT_STEP,
     DEFAULT_VALUE
 } from './slider-constants';
-import {AxisOptions, PointerEvent, PointerPosition, Step, ValueFromPointer} from './slider-types';
+import {AxisOptions, PointerEvent, Step, ValueFromPointer} from './slider-types';
 import {SliderView} from './slider-view';
 
 enum ChangeDirection {
@@ -30,7 +30,6 @@ enum ChangeDirection {
     descend
 }
 
-//export type MouseOrTouch = React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement> | MouseEvent | TouchEvent;
 function isTouchEvent(event: any): event is TouchEvent | React.TouchEvent<any> {
     return 'changedTouches' in event;
 }
@@ -198,7 +197,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
 
     private getRelativeValueFromPointerPositionAndArea(
         event: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement> | MouseEvent | TouchEvent,
-        sliderArea: HTMLElement,
+        sliderArea: HTMLElement
     ): ValueFromPointer {
         const position = isTouchEvent(event) ? event.changedTouches[0] : event;
         const currentHandleValue = getValueFromElementAndPointer(
@@ -267,7 +266,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
     }
 
     private relativeToAbsoluteValue(relativeValue: number[]): number[] {
-        return relativeValue.map(value => getAbsoluteValue(value, this.props.min!, this.props.max!))
+        return relativeValue.map(value => getAbsoluteValue(value, this.props.min!, this.props.max!));
     }
 
     private callInput(relativeValue: number[]): void {

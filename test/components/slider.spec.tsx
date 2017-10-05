@@ -2,7 +2,7 @@ import * as React from 'react';
 import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react';
 import {ContextProvider} from '../../src';
 import {
-    AXES, AxisOptions, AxisOptionsKey, CONTINUOUS_STEP,
+    AXES, AxisOptions, AxisOptionsKey, CONTINUOUS_STEP, DEFAULT_VALUE,
     getAbsoluteValue,
     getRelativeStep, getRelativeValue, getSizeProperty, getValueFromElementAndPointer, getValueInRange,
     isReverse, isVertical, Slider, SliderProps
@@ -140,7 +140,7 @@ function withValueMinMax(
 
         it('renders invisible native input with right value', async () => {
             await waitForDom(() => {
-                expect(driver.input).to.has.value(String(value));
+                expect(driver.getInput(0)).to.has.value(String(value));
             });
         });
 
@@ -411,7 +411,7 @@ function whenDragThingsAroundWithStep(
 
         it('renders invisible native input with right value', async () => {
             await waitForDom(() => {
-                expect(driver.input).to.has.value(String(value));
+                expect(driver.getInput(0)).to.has.value(String(value));
             });
         });
 
@@ -727,7 +727,7 @@ describe.only('<Slider />', () => {
 
         it('renders invisible native input with default value', async () => {
             await waitForDom(() => {
-                expect(driver.input).to.has.value('');
+                expect(driver.getInput(0)).to.has.value(String(DEFAULT_VALUE));
             });
         });
     });
@@ -767,7 +767,7 @@ describe.only('<Slider />', () => {
 
         it('renders invisible native input with right value', async () => {
             await waitForDom(() => {
-                expect(driver.input).to.has.value('');
+                expect(driver.getInput(0)).to.has.value('-10');
             });
         });
     });
@@ -863,7 +863,7 @@ describe.only('<Slider />', () => {
 
         it('renders invisible native input with passed value', async () => {
             await waitForDom(() => {
-                expect(driver.input).to.has.value(String(valueOutOfStep));
+                expect(driver.getInput(0)).to.has.value(String(valueOutOfStep));
             });
         });
 
@@ -979,13 +979,13 @@ describe.only('<Slider />', () => {
     keyboard(clientRenderer, {step: 2});
 
     describe('step=0', () => {
-        let onChange: (data: ChangeEvent<number>) => void;
+        let onChange: (data: ChangeEvent<number[]>) => void;
         let driver: any;
         beforeEach(() => {
             onChange = sinon.spy();
             const rendered = clientRenderer.render(
                 <Slider
-                    value={50}
+                    value={[50]}
                     step={0}
                     onChange={onChange}
                 />
@@ -1003,8 +1003,8 @@ describe.only('<Slider />', () => {
             driver.mouseUp(event, environment);
         });
 
-        it('should trigger onChange with 75 value', () => {
-            expect(onChange).to.be.calledWithMatch({value: 75});
+        it('should trigger onChange with [75] value', () => {
+            expect(onChange).to.be.calledWithMatch({value: [75]});
         });
         it('should move handle to 75%', () => {
             expect(driver.handle.style.left).to.equal('75%');
@@ -1096,7 +1096,7 @@ describe.only('<Slider />', () => {
             const driver = rendered.driver;
 
             await waitForDom(() => {
-                expect(driver.input).attr('name', name);
+                expect(driver.getInput(0)).attr('name', name);
             });
         });
     });
@@ -1119,7 +1119,7 @@ describe.only('<Slider />', () => {
             const driver = rendered.driver;
 
             await waitForDom(() => {
-                expect(driver.input).attr('required');
+                expect(driver.getInput(0)).attr('required');
             });
         });
     });
@@ -1326,7 +1326,7 @@ describe('Slider/properties', () => {
             expect(driver.handle.style.left).to.equal('0%');
         });
         it('input value should be ""', () => {
-            expect(driver.input).attr('value', '');
+            expect(driver.getInput(0)).attr('value', '');
         });
         it('should not render marks', () => {
             expect(driver.getMark(0)).to.be.null;
@@ -1359,7 +1359,7 @@ describe('Slider/properties', () => {
             expect(driver.handle.style.left).to.equal('20%');
         });
         it('input value should be "60"', () => {
-            expect(driver.input).attr('value', '60');
+            expect(driver.getInput(0)).attr('value', '60');
         });
         it('progress width should be 20%', () => {
             expect(driver.progress.style.width).to.equal('20%');
@@ -1390,7 +1390,7 @@ describe('Slider/properties', () => {
             expect(driver.handle.style.right).to.equal('20%');
         });
         it('input value should be "60"', () => {
-            expect(driver.input).attr('value', '60');
+            expect(driver.getInput(0)).attr('value', '60');
         });
         it('progress width should be 20%', () => {
             expect(driver.progress.style.width).to.equal('20%');
@@ -1421,7 +1421,7 @@ describe('Slider/properties', () => {
             expect(driver.handle.style.bottom).to.equal('20%');
         });
         it('input value should be "60"', () => {
-            expect(driver.input).attr('value', '60');
+            expect(driver.getInput(0)).attr('value', '60');
         });
         it('progress height should be 20%', () => {
             expect(driver.progress.style.height).to.equal('20%');
@@ -1452,7 +1452,7 @@ describe('Slider/properties', () => {
             expect(driver.handle.style.top).to.equal('20%');
         });
         it('input value should be "60"', () => {
-            expect(driver.input).attr('value', '60');
+            expect(driver.getInput(0)).attr('value', '60');
         });
         it('progress height should be 20%', () => {
             expect(driver.progress.style.height).to.equal('20%');
@@ -1512,7 +1512,7 @@ describe('Slider/properties', () => {
             });
         });
         it('input name should be "slider-name"', () => {
-            expect(driver.input).attr('name', 'slider-name');
+            expect(driver.getInput(0)).attr('name', 'slider-name');
         });
         it('handle aria-label should be "slider-label"', () => {
             expect(driver.handle).attr('aria-label', 'slider-label');
@@ -1593,7 +1593,7 @@ describe('Slider/properties', () => {
 
 });
 
-describe('Slider/calculations', () => {
+describe.only('Slider/calculations', () => {
     function testMethod(fn: (prop: any) => any, results: {[key: string]: any}) {
         Object.keys(results).forEach(key => {
             it(`${key} => ${results[key]}`, () => {
