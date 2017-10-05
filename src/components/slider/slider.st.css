@@ -160,6 +160,7 @@
 }
 
 .handle {
+    -st-states: active;
     position: absolute;
     width: value(handleWidth);
     height: value(handleHeight);
@@ -169,6 +170,11 @@
     border-color: value(handleBorder);
     box-sizing: border-box;
     z-index: 1;
+}
+.handle:active {
+    box-shadow: none;
+    background-color: value(colorHandle_Active);
+    border-color: value(colorHandle_Active);
 }
 
 .root:x .handle{
@@ -309,13 +315,6 @@
 }
 
 /* Active state */
-.root:active .handle,
-.root:active:hover .handle {
-    box-shadow: none;
-    background-color: value(colorHandle_Active);
-    border-color: value(colorHandle_Active);
-}
-
 .root:active .track {
     background-color: value(colorTrack);
 }

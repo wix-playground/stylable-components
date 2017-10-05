@@ -42,6 +42,7 @@ export interface SliderViewProps extends FormInputProps<number[], string>, prope
     displayTooltip: boolean;
     required: boolean;
     rtl: boolean;
+    currentHandleIndex: number;
     tooltipPosition: TooltipPosition;
 
     onSliderFocus: FocusEventHandler;
@@ -153,6 +154,9 @@ export class SliderView extends React.Component<SliderViewProps, {}> {
                 data-automation-id={this.props.value!.length > 1 ? `SLIDER-HANDLE-${index}` : 'SLIDER-HANDLE'}
                 data-index={index}
                 style={this.getHandleStyles(value)}
+                style-state={{
+                    active: index === this.props.currentHandleIndex
+                }}
 
                 onKeyDown={this.onSliderAreaKeyDown}
 
@@ -216,7 +220,7 @@ export class SliderView extends React.Component<SliderViewProps, {}> {
     }
 
     private getProgressStyles(): {[key in 'width' | 'height']?: string} {
-        const values = this.props.relativeValue;
+        const values = this.props.relativeValue.slice().sort((a, b) => a - b);
         const firstValue = values[0];
         const lastValue = last(values);
         const leftEdge = values.length > 1 ?
