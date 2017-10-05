@@ -70,7 +70,7 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                 <thead>
                     <tr>
                         <th className="table-head-cell">Range Slider with disableCross</th>
-                        <th/>
+                        <th className="table-head-cell">Range Slider with tooltip</th>
                         <th/>
                     </tr>
                 </thead>
@@ -83,6 +83,15 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                                 min={min}
                                 max={max}
                                 onChange={this.onRangeSliderChange}
+                            />
+                        </td>
+                        <td>
+                            <Slider
+                                value={this.state.multiValue}
+                                min={min}
+                                max={max}
+                                onChange={this.onRangeSliderChange}
+                                displayTooltip
                             />
                         </td>
                         <td/>
