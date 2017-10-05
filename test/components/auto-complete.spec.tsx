@@ -1,6 +1,8 @@
 import * as React from 'react';
 import {ClientRenderer, expect, selectDom, simulate, sinon, trigger, waitForDom as gWaitForDom} from 'test-drive-react';
+import {stylable} from 'wix-react-tools';
 import {AutoCompleteDemo} from '../../demo/components/auto-complete.demo';
+import styles from '../../demo/style.st.css';
 import {AutoComplete} from '../../src';
 
 const autoComp = 'AUTO_COMPLETE';
@@ -10,6 +12,8 @@ const autoCompInput = autoComp + '_INPUT';
 const items = ['Muffins', 'Pancakes', 'Cupcakes', 'Souffles', 'Pasta', 'Soup', 'Caramel', 'Avazim', 'Moses'];
 const bodySelect = selectDom(document.body);
 const bodyWaitForDom = gWaitForDom.bind(null, document.body);
+
+const DefaultThemeProvider = stylable(styles)(({children}) => <div>{children}</div>);
 
 describe('<AutoComplete />', () => {
     const clientRenderer = new ClientRenderer();
@@ -110,7 +114,11 @@ describe('<AutoComplete />', () => {
     });
 
     it('places the caret inside the input and centers it', async () => {
-        const {select, waitForDom} = clientRenderer.render(<AutoComplete/>);
+        const {select, waitForDom} = clientRenderer.render(
+            <DefaultThemeProvider>
+                <AutoComplete />
+            </DefaultThemeProvider>
+        );
 
         await waitForDom(() => {
             const input = select(autoComp, autoCompInput)!;
