@@ -1054,36 +1054,6 @@ describe('<Slider />', () => {
         });
     });
 
-    describe('tooltip', () => {
-        const value = 5;
-        const min = 0;
-        const max = 10;
-        const label = 'Simple Slider Tooltip';
-
-        it('should be presented', async () => {
-            const rendered = clientRenderer.render(
-                <Slider
-                    value={value}
-                    min={min}
-                    max={max}
-                    label={label}
-                    tooltip={<div data-slot="tooltip" data-automation-id="TOOLTIP-CUSTOM-CONTENT">{label}</div>}
-                />
-            ).withDriver(SliderDriver);
-            const waitForDom: (expectation: () => void) => Promise<void> = rendered.waitForDom;
-            const driver = rendered.driver;
-
-            await waitForDom(() => {
-                const tooltip = driver.tooltip;
-                const tooltipContent = driver.find('TOOLTIP-CUSTOM-CONTENT');
-
-                expect(tooltip).to.be.present();
-                expect(tooltipContent).to.be.present();
-                expect(tooltipContent).text(label);
-            });
-        });
-    });
-
     describe('vertical Slider', () => {
         withValueMinMax(
             clientRenderer,
@@ -1260,6 +1230,9 @@ describe('Slider/properties', () => {
         });
         it('should not render marks', () => {
             expect(driver.getMark(0)).to.be.null;
+        });
+        it('should not render tooltip', () => {
+            expect(driver.tooltip).to.be.null;
         });
         it('progress width should be 0%', () => {
             expect(driver.progress.style.width).to.equal('0%');
@@ -1449,6 +1422,18 @@ describe('Slider/properties', () => {
         });
         it('should have "disabled" styles', () => {
             expect(driver.slider).attr(`data-${styles.$stylesheet.namespace.toLowerCase()}-disabled`);
+        });
+    });
+
+    describe('displayTooltip={true}', () => {
+        let driver: any;
+        beforeEach(() => {
+            driver = renderWithProps({
+                displayTooltip: true
+            });
+        });
+        it('should render tooltip', () => {
+            expect(driver.tooltip).to.not.null;
         });
     });
 
