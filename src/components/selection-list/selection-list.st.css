@@ -1,6 +1,7 @@
 @namespace "SelectionList";
 
-.root {
+.list {
+    -st-extends: root;
     -st-states: focused;
     width: 276px;
     border: 1px solid #adbbc6;
@@ -8,7 +9,7 @@
     display: inline-block;
 }
 
-.root:focused {
+.list:focused {
     border-color: #4a90e2;
 }
 
