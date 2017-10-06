@@ -169,15 +169,18 @@
     border: solid 1px;
     border-color: value(handleBorder);
     box-sizing: border-box;
-    z-index: 1;
 }
 .handle:hover {
     box-shadow: none;
     background-color: value(colorHandle_Active);
     border-color: value(colorHandle_Active);
+    z-index: 2;
 }
 .handle:active {
-    z-index: 2;
+    z-index: 1;
+}
+.handle:hover:active {
+    z-index: 3;
 }
 .handle:active .tooltip {
     display: block;
