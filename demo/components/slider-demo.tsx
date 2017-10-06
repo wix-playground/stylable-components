@@ -32,6 +32,14 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
             <table cellSpacing="24px">
                 <thead>
                     <tr>
+                        <td>value: {this.state.value[0]}</td>
+                        <td>multiValue: {this.state.multiValue.join(', ')}</td>
+                    </tr>
+                    <tr>
+                        <td>rawValue: {this.state.rawValue}</td>
+                        <td>rawMultiValue: {this.state.rawMultiValue}</td>
+                    </tr>
+                    <tr>
                         <th className="table-head-cell">Default Range Slider</th>
                         <th className="table-head-cell">Disabled Range Slider</th>
                         <th className="table-head-cell">Range Slider with step</th>
@@ -45,6 +53,7 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                                 min={min}
                                 max={max}
                                 onChange={this.onRangeSliderChange}
+                                onInput={this.onRangeSliderInput}
                             />
                         </td>
                         <td>
@@ -54,6 +63,7 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                                 max={max}
                                 disabled={true}
                                 onChange={this.onRangeSliderChange}
+                                onInput={this.onRangeSliderInput}
                             />
                         </td>
                         <td>
@@ -63,6 +73,7 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                                 max={max}
                                 step={10}
                                 onChange={this.onRangeSliderChange}
+                                onInput={this.onRangeSliderInput}
                             />
                         </td>
                     </tr>
@@ -83,6 +94,7 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                                 min={min}
                                 max={max}
                                 onChange={this.onRangeSliderChange}
+                                onInput={this.onRangeSliderInput}
                             />
                         </td>
                         <td>
@@ -91,6 +103,7 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                                 min={min}
                                 max={max}
                                 onChange={this.onRangeSliderChange}
+                                onInput={this.onRangeSliderInput}
                                 displayTooltip
                             />
                         </td>
@@ -339,6 +352,9 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
             multiValue: value,
             rawMultiValue: String(value)
         });
+    }
+    private onRangeSliderInput = ({value}: ChangeEvent<string>) => {
+        this.setState({rawMultiValue: value});
     }
 
     private onSliderInput = ({value}: ChangeEvent<string>) => {

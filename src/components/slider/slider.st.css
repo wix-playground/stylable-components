@@ -171,10 +171,12 @@
     box-sizing: border-box;
     z-index: 1;
 }
-.handle:active {
+.handle:hover {
     box-shadow: none;
     background-color: value(colorHandle_Active);
     border-color: value(colorHandle_Active);
+}
+.handle:active {
     z-index: 2;
 }
 .handle:active .tooltip {
@@ -182,7 +184,6 @@
 }
 .handle:hover .tooltip {
     display: block;
-    z-index: 3;
 }
 
 .root:x .handle{

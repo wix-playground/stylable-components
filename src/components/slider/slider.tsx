@@ -338,7 +338,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         if (!this.isActive) {
             return;
         }
-        const {
+        let {
             currentValueIndex,
             relativeValue
         } = this.getRelativeValueFromPointerPositionAndArea(
@@ -348,14 +348,16 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         );
 
         if (this.props.disableCross && this.currentValueIndex !== currentValueIndex) {
-            return;
+            relativeValue = [...relativeValue];
+            relativeValue[currentValueIndex] = relativeValue[this.currentValueIndex!];
+            currentValueIndex = this.currentValueIndex!;
         }
 
         this.currentValueIndex = currentValueIndex;
         this.animationFrameId = requestAnimationFrame(() => {
             this.setState({
-                currentHandleIndex: currentValueIndex,
-                relativeValue
+                relativeValue,
+                currentHandleIndex: currentValueIndex
             });
         });
 
