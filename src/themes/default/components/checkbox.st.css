@@ -6,7 +6,14 @@
 :import {
     -st-from: "../../../project.st.css";
     -st-named:  color_MainText_Background,
-                borderDefault;
+                color_Default,
+                color_Disabled2,
+                color_Outline,
+                borderDefault,
+                iconTick,
+                iconTickDisabled,
+                iconIntermediate,
+                iconIntermediateDisabled;
 }
 
 CB::box {
@@ -16,29 +23,29 @@ CB::box {
 
 CB:checked::box,
 CB:indeterminate::box {
-    background: #4A90E2;
+    background: value(color_Default);
 }
 
 CB:disabled::box {
-    background: #f1f1f1;
+    background: value(color_Disabled2);
 }
 
 CB:focus::box {
-    outline: 4px solid #add9ff;
+    outline: 4px solid value(color_Outline);
 }
 
 CB::tickIcon {
-    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHBhdGggZmlsbD0iI2ZmZiIgZD0iTTExLjggNEw2LjUgOS4yIDQuMiA3IDMgOC4ybDMuNSAzLjZMMTMgNS4yIi8+PC9zdmc+);
+    background-image: value(iconTick);
 }
 
 CB::indeterminateIcon {
-    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHBhdGggZmlsbD0iI2ZmZmZmZiIgZD0iTTQgN2g4djJINHoiLz48L3N2Zz4=);
+    background-image: value(iconIntermediate);
 }
 
-CB:disabled:tickIcon {
-    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHBhdGggZmlsbD0iI2M4YzhjOCIgZD0iTTExLjggNEw2LjUgOS4yIDQuMiA3IDMgOC4ybDMuNSAzLjZMMTMgNS4yIi8+PC9zdmc+);
+CB:disabled::tickIcon {
+    background-image: value(iconTickDisabled);
 }
 
 CB:disabled::indeterminateIcon {
-    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHBhdGggZmlsbD0iI2M4YzhjOCIgZD0iTTQgN2g4djJINHoiLz48L3N2Zz4=);
+    background-image: value(iconIntermediateDisabled);
 }
