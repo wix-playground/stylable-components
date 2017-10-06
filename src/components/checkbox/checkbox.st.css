@@ -12,21 +12,6 @@
     position: relative;
     height: 1rem;
     width: 1rem;
-    background: #ffffff;
-    border: 1px solid #D1D1D1;
-}
-
-.root:checked .box,
-.root:indeterminate .box {
-    background: #4A90E2;
-}
-
-.root:disabled .box {
-    background: #f1f1f1;
-}
-
-.root:focus .box {
-    outline: 4px solid #add9ff;
 }
 
 .icon {
@@ -36,22 +21,10 @@
     background: no-repeat 0 0 / 100%;
 }
 
-.tickIcon {
-    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHBhdGggZmlsbD0iI2ZmZiIgZD0iTTExLjggNEw2LjUgOS4yIDQuMiA3IDMgOC4ybDMuNSAzLjZMMTMgNS4yIi8+PC9zdmc+);
-}
-
-.indeterminateIcon {
-    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHBhdGggZmlsbD0iI2ZmZmZmZiIgZD0iTTQgN2g4djJINHoiLz48L3N2Zz4=);
-}
-
-
-.root:disabled .tickIcon {
-    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHBhdGggZmlsbD0iI2M4YzhjOCIgZD0iTTExLjggNEw2LjUgOS4yIDQuMiA3IDMgOC4ybDMuNSAzLjZMMTMgNS4yIi8+PC9zdmc+);
-}
-
-.root:disabled .indeterminateIcon {
-    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHBhdGggZmlsbD0iI2M4YzhjOCIgZD0iTTQgN2g4djJINHoiLz48L3N2Zz4=);
-}
+.tickIcon {}
+.indeterminateIcon {}
+.root:disabled .tickIcon {}
+.root:disabled .indeterminateIcon {}
 
 
 .nativeCheckbox {

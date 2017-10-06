@@ -14,3 +14,8 @@
     -st-theme: true;
     -st-from: "./components/date-picker.st.css";
 }
+
+:import {
+    -st-theme: true;
+    -st-from: "./components/checkbox.st.css";
+}
