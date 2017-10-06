@@ -9,3 +9,8 @@
     -st-theme: true;
     -st-from: "./components/button.st.css";
 }
+
+:import {
+    -st-theme: true;
+    -st-from: "./components/date-picker.st.css";
+}

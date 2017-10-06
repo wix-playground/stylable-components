@@ -1,0 +1,8 @@
+:import {
+	-st-from: "../../../components/checkbox/checkbox.st.css";
+	-st-default: CB;
+}
+
+CB::box {
+
+}
