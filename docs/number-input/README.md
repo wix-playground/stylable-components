@@ -1,10 +1,12 @@
 # Number Input
 
-The **NumberInput** component improves upon the native `<input type="number">` by providing ability to customize the stepper arrows design, a common React+Typescript API, and working out the kinks of native implementations.
+**Number Input** allows  the user to enter a number within a certain range.
+
+Number Input improves upon the native `<input type="number">` by providing the ability to customise stepper arrows design, a common React+Typescript API, and working out the kinks of native implementations.
 
 ![elements](./assets/elements.png)
 
-### Component API
+## Component API
 
 #### Props
 
@@ -16,15 +18,15 @@ The **NumberInput** component improves upon the native `<input type="number">` b
 | min          | number                           | 1            |            |                                          |
 | max          | number                           | 100          |            |                                          |
 | step         | number                           | 1            |            |                                          |
-| required     | bool                             | FALSE        |            | Whether or not filling the value is required in a form. |
-| disabled     | bool                             | FALSE        |            | If true, the component will not be interactable. |
+| required     | bool                             | false        |            | Whether or not filling the value is required in a form. |
+| disabled     | bool                             | false        |            | If true, the component will not be interactable. |
 | label        | string                           |              |            | Text to display in accessibility mode.   |
 | name         | string                           |              |            | The name of the component. Behaves like the name attribute of an input element. |
 | prefix       | node                             |              |            | Inserts a component at the start of the input. |
 | suffix       | node                             |              |            | Inserts a component at the end of the input. |
 | onChange     | `(event: {value: number}): void` |              | yes        | Callback function that is fired on component blur. |
 | onInput      | `(event: {value: number}): void` |              |            | Callback function that is fired on every keydown event. |
-| error        | bool                             | false        |            | Sets the `:error` CSS state on the `<NumberInput/>`. |
+| error        | bool                             | false        |            | Sets the `:error` CSS state on the `<NumberInput>`. |
 
 
 
@@ -85,15 +87,15 @@ Comments to example 2
 
 ## Style API
 
-#### Subcomponents (pseudo elements)
+#### Subcomponents (pseudo-elements)
 
-| selector  | description                            | type                                     |
-| --------- | -------------------------------------- | ---------------------------------------- |
-| ::stepper | Allows you to style the stepper arrows | Style the internal `<Stepper/>` component. This component exposes some internal styles. Consult the (Link to Documentation) to see which subcomponents and states are available |
+| selector        | description                  | type                                     |
+| --------------- | ---------------------------- | ---------------------------------------- |
+| ::stepper       | Style the stepper            | Style the internal `<Stepper/>` component. ADD LINK. |
+| ::stepper::up   | Style the stepper UP arrow   | Style the internal `<Stepper/>` component. ADD LINK. |
+| ::stepper::down | Style the stepper DOWN arrow | Style the internal `<Stepper/>` component. ADD LINK. |
 
-*if a subcomponent is a COMPONENT, it might have subcomponents -> then we will link here to its documentation
-
-#### Custom CSS States (pseudo classes)
+#### Custom CSS States (pseudo-classes)
 
 | selector                       | description                              |
 | ------------------------------ | ---------------------------------------- |

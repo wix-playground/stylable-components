@@ -18,48 +18,66 @@
 
 ## Definition
 
-The **NumberInput** component improves upon the native `<input type="number">` by providing ability to customize the stepper arrows design, a common React+Typescript API, and working out the kinks of native implementations.
+**Number Input** allows  the user to enter a number within a certain range.
 
-
+Number Input improves upon the native `<input type="number">` by providing the ability to customise stepper arrows design, a common React+Typescript API, and working out the kinks of native implementations.
 
 ## Elements
 
 ![elements](./assets/elements.png)
 
-The NumberInput consists of a native input and a Stepper subcomponent, which provides customisable Up and Down buttons. Also, you can add elements into it in the prefix and suffix slots, by passing the component children with the corresponding data-slot attribute.
+The **Number Input** functions as native `<input type="time">` component with additional ability to customise stepper and stepper arrows (using `::stepper`, `::stepper::up` ,`::stepper::down` subcomponents). Also number input can be customised by passing node elements into `prefix` and `suffix` properties.
 
+## API
 
+**Props**
+
+See [README.md](./README.md) for more info.
+
+**Style**
+
+The **Number Input** can be customised using:
+
+1. Tag selector or class for the main element
+2. Subcomponents:
+   - `::stepper` - to style entire stepper subcomponent
+   - `::stepper::up` - style the stepper UP arrow
+   - `::stepper::down` - style the stepper DOWN arrow  
+
+See [README.md](./README.md) for more info.
 
 ## Visual States
 
-| State    | Description                            |
-| :------- | -------------------------------------- |
-| Default  | Default component appearance           |
-| Hover    | User hovered any part of the component |
-| Focus    | Browser is focused on the component    |
-| Error    | The `error` property is true           |
-| Disabled | Component can not be changed           |
+| State    | Description                              |
+| :------- | ---------------------------------------- |
+| Default  | Default component appearance             |
+| Hover    | User hovered over any part of the component |
+| Focus    | Browser is focused on the component      |
+| Error    | The `error` property is true             |
+| Disabled | Component can not be changed             |
 
-https://wix.invisionapp.com/share/9YCNHDR68#/screens/244465917
+Link to [assets](https://zpl.io/agGkPRa)
 
+## Accessibility
 
-## Props
+**Roles & Attributes**
 
-See [README.md](./README.md) for more info.
+| Role       | Attribute       | Element | Usage                                    |
+| ---------- | --------------- | ------- | ---------------------------------------- |
+| spinbutton |                 | `div`   | Idetifies component as a spin button.    |
+|            | `aria-valuemin` | `div`   | Specifies the minimum value of the input (e.g. 00) |
+|            | `aria-valuemax` | `div`   | Specifies the maximum value of the input (e.g. 25) |
+|            | `aria-valuenow` | `div`   | Specifies current value of the input (e.g. 30) |
 
+NOTE: there is not Accessibility spec in W3 for number input to put here as a reference.
 
+**Screen Reader Behaviour**
 
-## UI Customizations
+Here is what a screenreader should say:
 
-The NumberInput can be customized using:
-
-Tag Selector or class for the main element
-
-`::stepper` subcomponent, which has subcomponents of its own
-
-See [README.md](./README.md) for more info.
-
-
+1. **Focus on hours:** current value (if present) -> "stepper";
+2. **Change value:** new value -> "stepper";
+3. **Set value to Max / Min**:  value -> "max" OR "min" -> "stepper".
 
 ## Behavior
 
@@ -73,28 +91,41 @@ When the user types a value, it isn't committed until enter, tab, click outside 
 
 If the user types a value out of range, the value is set to the corresponding min/max **on commit**.
 
+**RTL** 
+
+RTL direction moves numbers to the right while `stepper` moves to the left. 
+
+**Delete the value**
+When user deletes values from the input it shows either placeholder (if prop is set) or empty state (if prop is empty).
+
 The component follows the external control pattern (value displayed is defined by the `value` property, and in order for the component to function, it should be bound to a state in the parent component, and the `onChange` handler should be set).
+
+**Error handling**
+
+| Error                                    | Handling                                 |
+| ---------------------------------------- | ---------------------------------------- |
+| value (given as prop) out of min/max range | Show error in console                    |
+| value (given as prop) out of step (e.g. min=0 / max=10, step=5, value=7) | value is shown as given (is NOT moved to the closest step) |
+| user sets value out of range             | set value within range (to max or min)   |
+| the `error` property is true             | This is used to give the user ability to manually indicate that there's an error in the input. Will set the `:error` CSS state on the input itself |
+
+
+
+## Input Methods
 
 #### Keyboard 
 
-| Keys              | Action                                   |
-| ----------------- | ---------------------------------------- |
-| type a number     | insert a value without committing it.    |
-| up arrow key      | increase value (& commit)                |
-| down arrow key    | decrease value (& commit)                |
-| shift + up / down | increase / decrease value by step * 10 (& commit) |
-| tab               | commits the value if needed, moves to next element (skips the stepper) |
-| Shift + tab       | commits the value if needed, moves to previous element |
-| enter             | Commits the value (if value wasn't committed) |
-| esc               | removes focus (if in focus), discards non-committed new value (if value typed) |
-
-**RTL** orientation
-
-| Keys                | Action |
-| ------------------- | ------ |
-| no special handling |        |
-
-
+| Keys               | Action                                   |
+| ------------------ | ---------------------------------------- |
+| type a number      | insert a value without committing it.    |
+| up arrow key       | increase value (& commit)                |
+| down arrow key     | decrease value (& commit)                |
+| shift + up / down  | increase / decrease value by step * 10 (& commit) |
+| tab                | commits the value if needed, moves to next element (skips the stepper) |
+| shift + tab        | commits the value if needed, moves to previous element |
+| enter              | commits the value (if value wasn't committed) |
+| esc                | removes focus (if in focus), discards non-committed new value (if value typed) |
+| delete / backspace | deletes number                           |
 
 #### Mouse
 
@@ -118,27 +149,6 @@ The component follows the external control pattern (value displayed is defined b
 
 
 
-## Error handling
-
-| Error                                    | Handling                                 |
-| ---------------------------------------- | ---------------------------------------- |
-| value (given as prop) out of min/max range | Show error in console                    |
-| value (given as prop) out of step (e.g. min=0 / max=10, step=5, value=7) | value is shown as given (is NOT moved to the closest step) |
-| user sets value out of range             | set value within range (to max or min)   |
-| the `error` property is true             | This is used to give the user ability to manually indicate that there's an error in the input. Will set the `:error` CSS state on the input itself |
-
-
-
-## Accessibility
-
-To be included
-
-## Examples
-
- To be included
-
 ## Design
 
-Link to assets:
-
-https://wix.invisionapp.com/share/9YCNHDR68#/screens/244465917
+Link to [assets](https://zpl.io/agGkPRa)
