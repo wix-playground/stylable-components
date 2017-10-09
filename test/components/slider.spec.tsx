@@ -15,13 +15,6 @@ import {skipItIfTouch} from '../utils';
 
 let environment: WindowStub;
 
-function renderWithProps(clientRenderer: ClientRenderer, props?: SliderProps) {
-    return clientRenderer
-        .render(<Slider {...props}/>)
-        .withDriver(SliderDriver)
-        .driver;
-}
-
 function getAxis(
     options?: Partial<{axis: AxisOptions, RTL: boolean}>,
     context?: any
@@ -1280,7 +1273,7 @@ describe('Slider/properties', () => {
     describe('no properties', () => {
         let driver: any;
         beforeEach(() => {
-            driver = renderWithProps(clientRenderer);
+            driver = getRenderedSlider(clientRenderer).driver;
         });
 
         it('handle aria-valuemin should be 0', () => {
@@ -1312,11 +1305,11 @@ describe('Slider/properties', () => {
     describe('min={50} max={100} value={60}', () => {
         let driver: any;
         beforeEach(() => {
-            driver = renderWithProps(clientRenderer, {
+            driver = getRenderedSlider(clientRenderer, {
                 min: 50,
                 max: 100,
                 value: [60]
-            });
+            }).driver;
         });
 
         it('handle aria-valuemin should be 50', () => {
@@ -1342,12 +1335,12 @@ describe('Slider/properties', () => {
     describe('min={50} max={100} value={60} axis={AXES.xReverse}', () => {
         let driver: any;
         beforeEach(() => {
-            driver = renderWithProps(clientRenderer, {
+            driver = getRenderedSlider(clientRenderer, {
                 min: 50,
                 max: 100,
                 value: [60],
                 axis: AXES.xReverse
-            });
+            }).driver;
         });
 
         it('handle aria-valuemin should be 50', () => {
@@ -1373,12 +1366,12 @@ describe('Slider/properties', () => {
     describe('min={50} max={100} value={60} axis={AXES.y}', () => {
         let driver: any;
         beforeEach(() => {
-            driver = renderWithProps(clientRenderer, {
+            driver = getRenderedSlider(clientRenderer, {
                 min: 50,
                 max: 100,
                 value: [60],
                 axis: AXES.y
-            });
+            }).driver;
         });
 
         it('handle aria-valuemin should be 50', () => {
@@ -1404,12 +1397,12 @@ describe('Slider/properties', () => {
     describe('min={50} max={100} value={60} axis={AXES.yReverse}', () => {
         let driver: any;
         beforeEach(() => {
-            driver = renderWithProps(clientRenderer, {
+            driver = getRenderedSlider(clientRenderer, {
                 min: 50,
                 max: 100,
                 value: [60],
                 axis: AXES.yReverse
-            });
+            }).driver;
         });
 
         it('handle aria-valuemin should be 50', () => {
@@ -1435,11 +1428,11 @@ describe('Slider/properties', () => {
     describe('value={40} displayStopMarks={true} step={20}', () => {
         let driver: any;
         beforeEach(() => {
-            driver = renderWithProps(clientRenderer, {
+            driver = getRenderedSlider(clientRenderer, {
                 value: [40],
                 step: 20,
                 displayStopMarks: true
-            });
+            }).driver;
         });
         new Array(6).fill(0).forEach((value, index) => {
             it(`should render ${index} mark`, () => {
@@ -1463,12 +1456,12 @@ describe('Slider/properties', () => {
     describe('value={40} displayStopMarks={true} step={20} axis={AXES.y}', () => {
         let driver: any;
         beforeEach(() => {
-            driver = renderWithProps(clientRenderer, {
+            driver = getRenderedSlider(clientRenderer, {
                 value: [40],
                 step: 20,
                 displayStopMarks: true,
                 axis: AXES.y
-            });
+            }).driver;
         });
         it('mark 1 should have left "20%"', () => {
             expect(driver.getMark(1).style.bottom).to.equal('20%');
@@ -1478,11 +1471,11 @@ describe('Slider/properties', () => {
     describe('name="slider-name" label="slider-label" disabled={true}', () => {
         let driver: any;
         beforeEach(() => {
-            driver = renderWithProps(clientRenderer, {
+            driver = getRenderedSlider(clientRenderer, {
                 name: 'slider-name',
                 label: 'slider-label',
                 disabled: true
-            });
+            }).driver;
         });
         it('input name should be "slider-name"', () => {
             expect(driver.getInput(0)).attr('name', 'slider-name');
@@ -1498,10 +1491,10 @@ describe('Slider/properties', () => {
     describe('displayTooltip={true} value={[44]}', () => {
         let driver: any;
         beforeEach(() => {
-            driver = renderWithProps(clientRenderer, {
+            driver = getRenderedSlider(clientRenderer, {
                 value: [44],
                 displayTooltip: true
-            });
+            }).driver;
         });
         it('should render tooltip', () => {
             expect(driver.getTooltip(0)).to.not.null;
@@ -1523,7 +1516,7 @@ describe('Slider/properties', () => {
                 obj[key] = sinon.spy();
                 return obj;
             }, {});
-            driver = renderWithProps(clientRenderer, events);
+            driver = getRenderedSlider(clientRenderer, events).driver;
         });
         it('should call onChange', () => {
             const event = {
@@ -1804,12 +1797,12 @@ function rangeWithDisabledCross(clientRenderer: ClientRenderer, axis: AxisOption
 
             beforeEach(async () => {
                 onChange = sinon.spy();
-                driver = renderWithProps(clientRenderer, {
+                driver = getRenderedSlider(clientRenderer, {
                     onChange,
                     axis,
                     value: [20, 80],
                     disableCross: true
-                });
+                }).driver;
 
                 const bounds = driver.getBounds();
                 const event1 = getEventCoordinates(bounds, axis, 0.3);
@@ -1831,11 +1824,11 @@ function rangeWithDisabledCross(clientRenderer: ClientRenderer, axis: AxisOption
 
             beforeEach(async () => {
                 onChange = sinon.spy();
-                driver = renderWithProps(clientRenderer, {
+                driver = getRenderedSlider(clientRenderer, {
                     onChange,
                     value: [79, 80],
                     disableCross: true
-                });
+                }).driver;
                 driver.getHandle(0).focus();
             });
             it('left handle should not cross the right handle when using right key', () => {

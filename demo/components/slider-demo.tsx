@@ -349,8 +349,7 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
 
     private onRangeSliderChange = ({value}: ChangeEvent<number[]>) => {
         this.setState({
-            multiValue: value,
-            rawMultiValue: String(value)
+            multiValue: value
         });
     }
     private onRangeSliderInput = ({value}: ChangeEvent<string>) => {
