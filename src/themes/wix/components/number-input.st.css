@@ -6,96 +6,65 @@
 :import {
   -st-from: "../variables.st.css";
   -st-theme: true;
-  -st-named: B00,
-             B05,
-             B10,
-             B20,
-             B25,
-             B27,
-             B30,
-             B40,
-             B50,
-             B60,
-             D10,
-  D20,
-  D30,
-  D40,
-  D50,
-  D55,
-  D60,
-  D70,
-  D80,
-  R00,
-  R05,
-  R10,
-  R20,
-  R30,
-  primary-color;
-}
+  -st-named: 
+          inputWidth,
+          inputHeight,
 
-:import {
-    -st-from: "../../../project.st.css";
-    -st-named: color_MainText,
-               color_MainPlaceholder,
-               color_MainText_Background,
-               borderRadius,
-               color_Disabled,
-               borderDefault,
-               borderHover,
-               borderFocus,
-               inputHeight,
-               inputWidth,
-               borderDisabled,
-               borderError,
-               DS2;
+          fontStyle,
+          textColor,
+          textColorDisabled,
+          placeholderColor,
+
+          inputBackgroundColor,
+          inputBackgroundColorHover,
+          inputBackgroundColorDisabled,
+
+          borderStyle,
+          borderRadius,
+          borderColorHover,
+          borderColorFocus,
+          borderColorDisabled,
+          borderColorError;
 }
 
 NumberInput {
   min-width: value(inputWidth);
   height: value(inputHeight);
-  border: 1px solid value(primary-color);
-  border-radius: 6px;
-  background: value(D80);
-
-    font-family: "HelveticaNeue-Regular", sans-serif;
-  color: value(D10);
-  font-size: 16px;
-
+  border: value(borderStyle);
+  border-radius: value(borderRadius);
+  background: value(inputBackgroundColor);
+  font: value(fontStyle);
+  color: value(textColor);
 }
 
-/*NumberInput input {
-  background: transparent;
-}*/
-
 NumberInput::nativeInput::placeholder {
-  font-family: "HelveticaNeue-Regular", sans-serif;
-  color: value(D40);
+  font: value(fontStyle);
+  color: value(placeholderColor);
 }
 
 NumberInput:hover {
-  background: value(B60);
-  border: 1px solid value(B30);
+  background: value(inputBackgroundColorHover);
+  border-color: value(borderColorHover);
 }
 
-/* Disabled */
+NumberInput:focus {
+  border-color: value(borderColorFocus);
+}
 
 NumberInput::nativeInput:disabled::placeholder {
-  color: value(D50);
+  color: value(textColorDisabled);
 }
 
-NumberInput:disabled {
-  background-color: value(D80);
-  border-color: value(D60);
-  color: value(D50);
+NumberInput:disabled  {
+  background-color: value(inputBackgroundColorDisabled);
+  border-color: value(borderColorDisabled);
+  color: value(textColorDisabled);
 }
 
-NumberInput:disabled::stepper::down::control-icon, NumberInput:disabled::stepper::up::control-icon {
-  color: value(D50);
-}
-
-
-/* Error */
+/*NumberInput:disabled::stepper::down::control-icon, NumberInput:disabled::stepper::up::control-icon {
+  color: value(textColorDisabled);
+}*/
 
 NumberInput:error {
-  border-color: value(R00);
+  border-color: value(borderColorError);
 }

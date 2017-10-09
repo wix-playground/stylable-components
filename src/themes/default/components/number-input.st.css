@@ -4,7 +4,7 @@
 }
 
 :import {
-    -st-from: "../../../project.st.css";
+    -st-from: "../variables.st.css";
     -st-named: color_MainText,
                color_MainPlaceholder,
                color_MainText_Background,

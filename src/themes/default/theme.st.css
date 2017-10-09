@@ -2,7 +2,7 @@
 
 :import {
     -st-theme: true;
-    -st-from: "../../project.st.css";
+    -st-from: "./variables.st.css";
     -st-named:
         fontFamily,fontSize,fontWeight,lineHeight,
         borderRadius,borderWidth,borderStyle,
