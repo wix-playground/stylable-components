@@ -1,0 +1,35 @@
+:import {
+	-st-from: "../../../components/drop-down/drop-down.st.css";
+	-st-default: DropDown;
+}
+
+:import {
+    -st-from: "../../../project.st.css";
+    -st-named:  inputLeftSpacing,
+                inputWidth,
+                inputFont,
+                borderDefault,
+                color_Border,
+                color_Selected;
+}
+
+DropDown {
+    font: value(inputFont);
+}
+
+DropDown::input {
+    border: 1px solid #adbac5;
+    height: 36px;
+}
+
+DropDown::label {
+    margin-left: value(inputLeftSpacing);
+}
+
+DropDown::dropdownInput:hover {
+    border: 1px solid #5cb4ff;
+}
+
+DropDown::list {
+    background-color: white;
+}

@@ -61,6 +61,10 @@
     /* Copmponent Sizes */
     inputHeight: 36px;
     inputWidth: 192px;
+    inputLeftSpacing: 5px;
+    caretRightSpacing: 1px;
+
+    inputFont: 16px value(fontFamily), sans-serif;
 
     /* Borders */
     borderRadius: 0px;

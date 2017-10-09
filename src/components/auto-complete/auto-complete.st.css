@@ -1,5 +1,10 @@
 @namespace "AutoComplete";
 
+:import {
+    -st-from: "../../../project.st.css";
+    -st-named:  caretRightSpacing;
+}
+
 .root {
     position: relative;
     display: inline-block;
@@ -24,7 +29,6 @@
     cursor: pointer;
     position: absolute;
     top: 50%;
-    left: calc(100% - 24px);
+    right: value(caretRightSpacing);
     transform:translateY(-50%);
-    -webkit-transform:translateY(-50%);
 }

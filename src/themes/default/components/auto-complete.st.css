@@ -3,14 +3,20 @@
 	-st-default: AutoComplete;
 }
 
+:import {
+    -st-from: "../../../project.st.css";
+    -st-named:  inputLeftSpacing,
+                inputFont;
+}
+
 AutoComplete {
     font-size: 16px;
 }
 
 AutoComplete::autoCompleteInput {
-    font: 16px ArialMT, sans-serif;
+    font: value(inputFont);
     height: 36px;
-    padding-left: 5px;
+    padding-left: value(inputLeftSpacing);
     border: 1px solid #adbac5;
 }
 

@@ -5,37 +5,39 @@
 
 .root {
     width: auto;
-    font-family: Arial, sans-serif;
-    font-size: 16px;
     display: inline-block;
     min-width: 150px;
     outline: none;
 }
 
-.dropdownInput {
-    border: 1px solid #adbac5;
-    height: 36px;
+.input {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
-.dropdownInput .caret {
-    margin-right: 5px;
-    vertical-align: middle;
-}
-
-.dropdownInput .label {
-    margin-left: 5px;
-}
-
-.dropdownInput:hover {
+.caret {
     cursor: pointer;
-    border: 1px solid #5cb4ff;
+    position: absolute;
+    top: 50%;
+    right: value(caretRightSpacing);
+    transform: translateY(-50%);
 }
 
-.dropdownList {
+.label {}
+
+.input:hover {
+    cursor: pointer;
+}
+
+.list {
     -st-extends: SelectionList;
     width: 100%;
+    /*
+        Styling list is here (not at the theme)
+        because it is rendered in <Portal/>
+        which isn't able to get theme yet.
+    */
     background-color: white;
 }

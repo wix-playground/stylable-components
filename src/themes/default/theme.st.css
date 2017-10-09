@@ -19,3 +19,8 @@
     -st-theme: true;
     -st-from: "./components/checkbox.st.css";
 }
+
+:import {
+    -st-theme: true;
+    -st-from: "./components/drop-down.st.css";
+}

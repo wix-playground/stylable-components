@@ -10,8 +10,8 @@
     border-color: blue;
 }
 
-.customInput CB:checked .customBoxIcon {
-    background: goldenrod;
+.customInput CB:checked::box {
+    background: green;
 }
 
 .customInput CB:focus::box {
