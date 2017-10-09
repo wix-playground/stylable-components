@@ -1,8 +1,33 @@
 @namespace "wixTheme";
 
 :import {
-	-st-from: "./variables.st.css";
-	-st-theme: true;
+  -st-from: "./variables.st.css";
+  -st-theme: true;
+  -st-named: B00,
+             B05,
+             B10,
+             B20,
+             B25,
+             B27,
+             B30,
+             B40,
+             B50,
+             B60,
+             D10,
+  D20,
+  D30,
+  D40,
+  D50,
+  D55,
+  D60,
+  D70,
+  D80,
+  R00,
+  R05,
+  R10,
+  R20,
+  R30,
+  primary-color;
 }
 
 :import {
