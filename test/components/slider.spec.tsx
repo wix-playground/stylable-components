@@ -15,6 +15,13 @@ import {skipItIfTouch} from '../utils';
 
 let environment: WindowStub;
 
+function renderWithProps(clientRenderer: ClientRenderer, props?: SliderProps) {
+    return clientRenderer
+        .render(<Slider {...props}/>)
+        .withDriver(SliderDriver)
+        .driver;
+}
+
 function getAxis(
     options?: Partial<{axis: AxisOptions, RTL: boolean}>,
     context?: any
@@ -686,7 +693,7 @@ function keyboard(
     });
 }
 
-describe.only('<Slider />', () => {
+describe('<Slider />', () => {
     const clientRenderer = new ClientRenderer();
 
     beforeEach(() => {
@@ -1259,13 +1266,6 @@ describe.only('<Slider />', () => {
 });
 
 describe('Slider/properties', () => {
-    function renderWithProps(props?: SliderProps) {
-        return clientRenderer
-            .render(<Slider {...props}/>)
-            .withDriver(SliderDriver)
-            .driver;
-    }
-
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
 
@@ -1280,7 +1280,7 @@ describe('Slider/properties', () => {
     describe('no properties', () => {
         let driver: any;
         beforeEach(() => {
-            driver = renderWithProps();
+            driver = renderWithProps(clientRenderer);
         });
 
         it('handle aria-valuemin should be 0', () => {
@@ -1312,7 +1312,7 @@ describe('Slider/properties', () => {
     describe('min={50} max={100} value={60}', () => {
         let driver: any;
         beforeEach(() => {
-            driver = renderWithProps({
+            driver = renderWithProps(clientRenderer, {
                 min: 50,
                 max: 100,
                 value: [60]
@@ -1342,7 +1342,7 @@ describe('Slider/properties', () => {
     describe('min={50} max={100} value={60} axis={AXES.xReverse}', () => {
         let driver: any;
         beforeEach(() => {
-            driver = renderWithProps({
+            driver = renderWithProps(clientRenderer, {
                 min: 50,
                 max: 100,
                 value: [60],
@@ -1373,7 +1373,7 @@ describe('Slider/properties', () => {
     describe('min={50} max={100} value={60} axis={AXES.y}', () => {
         let driver: any;
         beforeEach(() => {
-            driver = renderWithProps({
+            driver = renderWithProps(clientRenderer, {
                 min: 50,
                 max: 100,
                 value: [60],
@@ -1404,7 +1404,7 @@ describe('Slider/properties', () => {
     describe('min={50} max={100} value={60} axis={AXES.yReverse}', () => {
         let driver: any;
         beforeEach(() => {
-            driver = renderWithProps({
+            driver = renderWithProps(clientRenderer, {
                 min: 50,
                 max: 100,
                 value: [60],
@@ -1435,7 +1435,7 @@ describe('Slider/properties', () => {
     describe('value={40} displayStopMarks={true} step={20}', () => {
         let driver: any;
         beforeEach(() => {
-            driver = renderWithProps({
+            driver = renderWithProps(clientRenderer, {
                 value: [40],
                 step: 20,
                 displayStopMarks: true
@@ -1463,7 +1463,7 @@ describe('Slider/properties', () => {
     describe('value={40} displayStopMarks={true} step={20} axis={AXES.y}', () => {
         let driver: any;
         beforeEach(() => {
-            driver = renderWithProps({
+            driver = renderWithProps(clientRenderer, {
                 value: [40],
                 step: 20,
                 displayStopMarks: true,
@@ -1478,7 +1478,7 @@ describe('Slider/properties', () => {
     describe('name="slider-name" label="slider-label" disabled={true}', () => {
         let driver: any;
         beforeEach(() => {
-            driver = renderWithProps({
+            driver = renderWithProps(clientRenderer, {
                 name: 'slider-name',
                 label: 'slider-label',
                 disabled: true
@@ -1498,7 +1498,7 @@ describe('Slider/properties', () => {
     describe('displayTooltip={true} value={[44]}', () => {
         let driver: any;
         beforeEach(() => {
-            driver = renderWithProps({
+            driver = renderWithProps(clientRenderer, {
                 value: [44],
                 displayTooltip: true
             });
@@ -1523,7 +1523,7 @@ describe('Slider/properties', () => {
                 obj[key] = sinon.spy();
                 return obj;
             }, {});
-            driver = renderWithProps(events);
+            driver = renderWithProps(clientRenderer, events);
         });
         it('should call onChange', () => {
             const event = {
@@ -1582,7 +1582,7 @@ describe('Slider/properties', () => {
 
 });
 
-describe.only('Slider/calculations', () => {
+describe('Slider/calculations', () => {
     function testMethod(fn: (prop: any) => any, results: {[key: string]: any}) {
         Object.keys(results).forEach(key => {
             it(`${key} => ${results[key]}`, () => {
@@ -1805,10 +1805,37 @@ describe.only('<Slider /> type Range', () => {
 
     afterEach(() => {
         environment.sandbox.restore();
-    });
-    afterEach(() => {
         clientRenderer.cleanup();
     });
 
     rangeWithValueMinMax(clientRenderer, 'left', 'width', 'horizontal', {});
+
+    describe('check disableCross', () => {
+        let onChange: any;
+        let driver: any;
+        let bounds: any;
+        beforeEach(() => {
+            onChange = sinon.spy();
+            driver = renderWithProps(clientRenderer, {
+                onChange,
+                value: [20, 80],
+                disableCross: true
+            });
+            bounds = driver.getBounds();
+        });
+
+        describe('when drag', () => {
+            beforeEach(async () => {
+                const event1 = getEventCoordinates(bounds, AXES.x, 0.3);
+                const event2 = getEventCoordinates(bounds, AXES.x, 0.9);
+                driver.mouseDown(event1);
+                driver.mouseMove(event2, environment);
+                await new Promise(resolve => setTimeout(resolve, 100));
+                driver.mouseUp(event2, environment);
+            });
+            it('onChange should be callen with [80, 80]', () => {
+                expect(onChange).to.be.calledWithMatch({value: [80, 80]});
+            });
+        });
+    });
 });

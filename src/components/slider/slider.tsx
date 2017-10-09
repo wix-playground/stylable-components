@@ -203,8 +203,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
 
     private getRelativeValueFromPointerPositionAndArea(
         event: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement> | MouseEvent | TouchEvent,
-        sliderArea: HTMLElement,
-        index?: number | null
+        sliderArea: HTMLElement
     ): ValueFromPointer {
         const position = isTouchEvent(event) ? event.changedTouches[0] : event;
         const currentHandleValue = getValueFromElementAndPointer(
@@ -214,8 +213,8 @@ export class Slider extends React.Component<SliderProps, SliderState> {
             this.state.isVertical,
             this.state.isReverse
         );
-        let nearestHandleIndex = typeof index === 'number'?
-            index :
+        let nearestHandleIndex = typeof this.currentValueIndex === 'number' ?
+            this.currentValueIndex :
             nearestIndex(this.state.relativeValue, currentHandleValue);
 
         const relativeValue = getNewValue(
@@ -223,7 +222,13 @@ export class Slider extends React.Component<SliderProps, SliderState> {
             currentHandleValue,
             nearestHandleIndex
         );
-        nearestHandleIndex = relativeValue.indexOf(currentHandleValue);
+        const newHandleIndex = relativeValue.indexOf(currentHandleValue);
+
+        if (this.props.disableCross && newHandleIndex !== nearestHandleIndex) {
+            relativeValue[newHandleIndex] = relativeValue[nearestHandleIndex];
+        } else {
+            nearestHandleIndex = newHandleIndex;
+        }
 
         return {
             relativeValue,
@@ -272,7 +277,9 @@ export class Slider extends React.Component<SliderProps, SliderState> {
     }
 
     private relativeToAbsoluteValue(relativeValue: number[]): number[] {
-        return relativeValue.map(value => getAbsoluteValue(value, this.props.min!, this.props.max!)).sort((a, b) => a - b);
+        return relativeValue
+            .map(value => getAbsoluteValue(value, this.props.min!, this.props.max!))
+            .sort((a, b) => a - b);
     }
 
     private callInput(relativeValue: number[]): void {
@@ -338,20 +345,13 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         if (!this.isActive) {
             return;
         }
-        let {
+        const {
             currentValueIndex,
             relativeValue
         } = this.getRelativeValueFromPointerPositionAndArea(
             event,
-            sliderArea,
-            this.currentValueIndex
+            sliderArea
         );
-
-        if (this.props.disableCross && this.currentValueIndex !== currentValueIndex) {
-            relativeValue = [...relativeValue];
-            relativeValue[currentValueIndex] = relativeValue[this.currentValueIndex!];
-            currentValueIndex = this.currentValueIndex!;
-        }
 
         this.currentValueIndex = currentValueIndex;
         this.animationFrameId = requestAnimationFrame(() => {
