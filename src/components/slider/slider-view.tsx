@@ -151,7 +151,7 @@ export class SliderView extends React.Component<SliderViewProps, {}> {
             <a
                 ref={el => this.focusableElements[index] = el as HTMLElement}
                 className="handle"
-                data-automation-id={this.props.value!.length > 1 ? `SLIDER-HANDLE-${index}` : 'SLIDER-HANDLE'}
+                data-automation-id={`SLIDER-HANDLE-${index}`}
                 data-index={index}
                 style={this.getHandleStyles(value)}
                 style-state={{

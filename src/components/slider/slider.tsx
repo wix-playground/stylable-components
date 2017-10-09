@@ -254,19 +254,25 @@ export class Slider extends React.Component<SliderProps, SliderState> {
             1 :
             this.state.relativeStep;
         const deviation = isAscending ? 1 : -1;
+        const newValue = toEdge ?
+            isAscending ? 100 : 0 :
+            getValueInRange(
+                relativeStep * (round(currentValue / relativeStep) + multiplier * deviation),
+                0, 100
+            );
 
         let newRelativeValue: number[];
 
         newRelativeValue = getNewValue(
             relativeValue,
-            toEdge ?
-                isAscending ? 100 : 0 :
-                getValueInRange(
-                    relativeStep * (round(currentValue / relativeStep) + multiplier * deviation),
-                    0, 100
-                ),
+            newValue,
             currentHandleIndex
         );
+
+        const newHandleIndex = newRelativeValue.indexOf(newValue);
+        if (this.props.disableCross && newHandleIndex !== currentHandleIndex) {
+            newRelativeValue[newHandleIndex] = newRelativeValue[currentHandleIndex];
+        }
 
         this.setState({
             relativeValue: newRelativeValue

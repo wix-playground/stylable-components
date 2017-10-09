@@ -18,7 +18,10 @@ export class BaseSliderDriver extends DriverBase {
         return this.select('SLIDER');
     }
     public get handle(): HTMLElement {
-        return this.select('SLIDER-HANDLE');
+        return this.getHandle(0);
+    }
+    public getHandle(index: number): HTMLElement {
+        return this.select(`SLIDER-HANDLE-${index}`);
     }
     public get progress(): HTMLElement {
         return this.select('SLIDER-PROGRESS');

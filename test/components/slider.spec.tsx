@@ -1796,6 +1796,66 @@ describe('Slider/calculations', () => {
 
 });
 
+function rangeWithDisabledCross(clientRenderer: ClientRenderer, axis: AxisOptions) {
+    describe(`check disableCross and axis=${axis}`, () => {
+        describe('when drag', () => {
+            let driver: any;
+            let onChange: any;
+
+            beforeEach(async () => {
+                onChange = sinon.spy();
+                driver = renderWithProps(clientRenderer, {
+                    onChange,
+                    axis,
+                    value: [20, 80],
+                    disableCross: true
+                });
+
+                const bounds = driver.getBounds();
+                const event1 = getEventCoordinates(bounds, axis, 0.3);
+                const event2 = getEventCoordinates(bounds, axis, 0.9);
+
+                driver.mouseDown(event1);
+                driver.mouseMove(event2, environment);
+                await new Promise(resolve => setTimeout(resolve, 100));
+                driver.mouseUp(event2, environment);
+            });
+            it('onChange should be callen with [80, 80]', () => {
+                expect(onChange).to.be.calledWithMatch({value: [80, 80]});
+            });
+        });
+
+        describe('when using keyboard', () => {
+            let driver: any;
+            let onChange: any;
+
+            beforeEach(async () => {
+                onChange = sinon.spy();
+                driver = renderWithProps(clientRenderer, {
+                    onChange,
+                    value: [79, 80],
+                    disableCross: true
+                });
+                driver.getHandle(0).focus();
+            });
+            it('left handle should not cross the right handle when using right key', () => {
+                driver.keyDown('right');
+                driver.keyDown('right');
+                expect(onChange.args).to.deep.equal([
+                    [{value: [80, 80]}],
+                    [{value: [80, 80]}]
+                ]);
+            });
+            it('left handle should not cross the right handle when using right key + shift', () => {
+                driver.keyDown('right', {shiftKey: true});
+                expect(onChange.args).to.deep.equal([
+                    [{value: [80, 80]}]
+                ]);
+            });
+        });
+    });
+}
+
 describe.only('<Slider /> type Range', () => {
     const clientRenderer = new ClientRenderer();
 
@@ -1809,33 +1869,9 @@ describe.only('<Slider /> type Range', () => {
     });
 
     rangeWithValueMinMax(clientRenderer, 'left', 'width', 'horizontal', {});
+    rangeWithDisabledCross(clientRenderer, AXES.x);
+    rangeWithDisabledCross(clientRenderer, AXES.y);
+    rangeWithDisabledCross(clientRenderer, AXES.xReverse);
+    rangeWithDisabledCross(clientRenderer, AXES.yReverse);
 
-    describe('check disableCross', () => {
-        let onChange: any;
-        let driver: any;
-        let bounds: any;
-        beforeEach(() => {
-            onChange = sinon.spy();
-            driver = renderWithProps(clientRenderer, {
-                onChange,
-                value: [20, 80],
-                disableCross: true
-            });
-            bounds = driver.getBounds();
-        });
-
-        describe('when drag', () => {
-            beforeEach(async () => {
-                const event1 = getEventCoordinates(bounds, AXES.x, 0.3);
-                const event2 = getEventCoordinates(bounds, AXES.x, 0.9);
-                driver.mouseDown(event1);
-                driver.mouseMove(event2, environment);
-                await new Promise(resolve => setTimeout(resolve, 100));
-                driver.mouseUp(event2, environment);
-            });
-            it('onChange should be callen with [80, 80]', () => {
-                expect(onChange).to.be.calledWithMatch({value: [80, 80]});
-            });
-        });
-    });
 });
