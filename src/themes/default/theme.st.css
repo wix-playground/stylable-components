@@ -24,3 +24,8 @@
     -st-theme: true;
     -st-from: "./components/drop-down.st.css";
 }
+
+:import {
+    -st-theme: true;
+    -st-from: "./components/number-input.st.css";
+}
