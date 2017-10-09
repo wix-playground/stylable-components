@@ -1,7 +1,7 @@
 @namespace "AutoComplete";
 
 :import {
-    -st-from: "../../../project.st.css";
+    -st-from: "../../project.st.css";
     -st-named:  caretRightSpacing;
 }
 

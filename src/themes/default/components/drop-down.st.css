@@ -6,11 +6,7 @@
 :import {
     -st-from: "../../../project.st.css";
     -st-named:  inputLeftSpacing,
-                inputWidth,
-                inputFont,
-                borderDefault,
-                color_Border,
-                color_Selected;
+                inputFont;
 }
 
 DropDown {

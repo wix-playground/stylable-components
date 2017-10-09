@@ -38,9 +38,8 @@
     font: inherit;
 }
 
-.nativeInput: hover {
+.nativeInput:hover {
   border: none;
-
 }
 
 .nativeInput::-webkit-outer-spin-button,
