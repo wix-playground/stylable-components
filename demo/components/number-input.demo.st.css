@@ -13,3 +13,11 @@ NumberInput::suffix {
     padding: 6px;
     color: value(BK3);
 }
+
+NumberInput::prefix {
+	padding-right: 0;
+}
+
+NumberInput {
+	width: 192px;
+}
