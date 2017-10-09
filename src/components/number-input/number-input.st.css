@@ -22,19 +22,22 @@
 }
 
 .nativeInput {
-    flex-grow: 1;
+    -moz-appearance: textfield;
+    padding: 6px 12px;
 
+    /* making sure the input shrinks properly */
+    flex: 1;
+    min-width: 1px;
+    text-overflow: ellipsis;
+
+    /* negating global input styles */
     height: auto;
     border: none;
     box-shadow: none;
     outline: none;
-
-    background: none;
-
-    -moz-appearance: textfield;
-    padding: 6px 12px;
     color: inherit;
     font: inherit;
+    background: none;
 }
 
 .nativeInput: hover {
