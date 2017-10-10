@@ -12,7 +12,7 @@ Number Input improves upon the native `<input type="number">` by providing the a
 
 | name         | type                             | defaultValue | isRequired | description                              |
 | ------------ | -------------------------------- | ------------ | ---------- | ---------------------------------------- |
-| value        | number                           |              | yes        | Used to set & change the value of the input. If you bind this to a state in your parent component, you should also set the onChange handler, in order for the component to work. |
+| value        | number                           |              |            | Used to set & change the value of the input. If you bind this to a state in your parent component, you should also set the onChange handler, in order for the component to work. <br>  If value is empty, component behaves as uncontrolled |
 | defaultValue | number                           |              |            | Sets the default value if the input is uncontrolled. |
 | placeholder  | string                           |              |            | Text to display if the value is null.    |
 | min          | number                           | 1            |            |                                          |
@@ -24,7 +24,7 @@ Number Input improves upon the native `<input type="number">` by providing the a
 | name         | string                           |              |            | The name of the component. Behaves like the name attribute of an input element. |
 | prefix       | node                             |              |            | Inserts a component at the start of the input. |
 | suffix       | node                             |              |            | Inserts a component at the end of the input. |
-| onChange     | `(event: {value: number}): void` |              | yes        | Callback function that is fired on component blur. |
+| onChange     | `(event: {value: number}): void` |              |            | Callback function that is fired on component blur. |
 | onInput      | `(event: {value: number}): void` |              |            | Callback function that is fired on every keydown event. |
 | error        | bool                             | false        |            | Sets the `:error` CSS state on the `<NumberInput>`. |
 
@@ -45,14 +45,17 @@ export class ComponentsDemo extends React.Component<{}, {}>{
         super();
     }
 
-    render() {
-        return <NumberInput
-        		 value="{this.state.numberInputValue}"
-                 onChange={/* something */}
-
-                 />;
+    public render() {
+    const {basicValue, sharedValue} = this.state;
+    return (
+      <NumberInput
+        value={basicValue}
+        step={1}
+        max={100}
+        onChange={this.handleBasicValueChange}
+        placeholder="How Many?"
+      />
     }
-}
 ```
 
 Comments to example 1
@@ -70,15 +73,19 @@ export class ComponentsDemo extends React.Component<{}, {}>{
         super();
     }
 
-    render() {
-        return <NumberInput
-        		 value="{this.state.numberInputValue}"
-                 onChange={/* something */}>
-    				<span data-slot="prefix">$</span>
-        			<button data-slot="suffix">x</button>
-               </NumberInput>;
+    public render() {
+    const {basicValue, sharedValue} = this.state;
+    return (
+      <NumberInput
+        value={basicValue}
+        step={1}
+        max={100}
+        onChange={this.handleBasicValueChange}
+        placeholder="How Many?"
+        prefix={<img src="sample.svg" alt="sample svg description"></img>}
+        suffix={<span>USD</span>}
+      />
     }
-}
 ```
 
 Comments to example 2

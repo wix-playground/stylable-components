@@ -26,7 +26,7 @@ Number Input improves upon the native `<input type="number">` by providing the a
 
 ![elements](./assets/elements.png)
 
-The **Number Input** functions as native `<input type="time">` component with additional ability to customise stepper and stepper arrows (using `::stepper`, `::stepper::up` ,`::stepper::down` subcomponents). Also number input can be customised by passing node elements into `prefix` and `suffix` properties.
+The **Number Input** functions as native `<input type="number">` component with additional ability to customise stepper and stepper arrows (using `::stepper`, `::stepper::up` ,`::stepper::down` subcomponents). Also number input can be customised by passing node elements into `prefix` and `suffix` properties.
 
 ## API
 
