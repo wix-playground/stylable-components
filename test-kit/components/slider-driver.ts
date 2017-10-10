@@ -44,6 +44,9 @@ export class BaseSliderDriver extends DriverBase {
     public getBounds() {
         return this.slider.getBoundingClientRect();
     }
+    public focus(index: number = 0): void {
+        simulate.focus(this.getHandle(index));
+    }
 
     public mouseDown(event: SliderEventCoordinates) {
         const element = this.slider;
@@ -83,7 +86,6 @@ export class BaseSliderDriver extends DriverBase {
     }
 
     public keyDown(key: string, opts?: object) {
-        simulate.focus(this.handle);
         simulate.keyDown(this.handle, {
             keyCode: keycode(key),
             ...opts

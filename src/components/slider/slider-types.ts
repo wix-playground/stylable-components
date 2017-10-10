@@ -23,4 +23,5 @@ export interface ValueFromPointer {
     relativeValue: number[];
     currentValue: number;
     currentValueIndex: number;
+    isCross: boolean;
 }

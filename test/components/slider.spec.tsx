@@ -15,6 +15,10 @@ import {skipItIfTouch} from '../utils';
 
 let environment: WindowStub;
 
+function delayToNextFrame() {
+    return new Promise(resolve => requestAnimationFrame(resolve));
+}
+
 function getAxis(
     options?: Partial<{axis: AxisOptions, RTL: boolean}>,
     context?: any
@@ -164,63 +168,201 @@ function rangeWithValueMinMax(
         const min = -10;
         const max = 10;
 
-        let select: (automationId: string) => HTMLElement | null;
-        let waitForDom: (expectation: () => void) => Promise<void>;
+        let driver: any;
+        let onChange: any;
 
         beforeEach(() => {
-            const rendered = clientRenderer.render(
-                <Slider
-                    value={value}
-                    min={min}
-                    max={max}
-                    {...options}
-                />
-            );
-            select = rendered.select;
-            waitForDom = rendered.waitForDom;
+            onChange = sinon.spy();
+            driver = getRenderedSlider(clientRenderer, {
+                value, min, max, onChange, ...options
+            }).driver;
         });
 
-        it('renders handle on the right place', async () => {
-            await waitForDom(() => {
-                const handle0 = select('SLIDER-HANDLE-0');
-                const handle1 = select('SLIDER-HANDLE-1');
+        it('renders handle on the right place', () => {
+            const handle0 = driver.getHandle(0);
+            const handle1 = driver.getHandle(1);
 
-                expect(handle0!.style[positionProp as any]).to.equal('25%');
-                expect(handle1!.style[positionProp as any]).to.equal('75%');
+            expect(handle0!.style[positionProp as any]).to.equal('25%');
+            expect(handle1!.style[positionProp as any]).to.equal('75%');
+        });
+
+        it('renders progress bar with the right width', () => {
+            const element = driver.progress;
+
+            expect(element).to.be.present();
+            expect(element!.style[positionProp as any]).to.equal('25%');
+            expect(element!.style[sizeProp as any]).to.equal('50%');
+        });
+
+        it('renders invisible native input with right value', () => {
+            const input0 = driver.getInput(0);
+            const input1 = driver.getInput(1);
+
+            expect(input0).to.has.value(String(value[0]));
+            expect(input1).to.has.value(String(value[1]));
+        });
+
+        it('renders with proper aria-orientation', () => {
+            const handle0 = driver.getHandle(0);
+            const handle1 = driver.getHandle(1);
+            expect(handle0).attr('aria-orientation', orientation);
+            expect(handle1).attr('aria-orientation', orientation);
+        });
+
+        describe('using keyboard to move right handle all the way left', () => {
+            beforeEach(async () => {
+                driver.focus(1);
+                driver.keyDown('left', {shiftKey: true});
+            });
+
+            it('should call onChange with correct value', () => {
+                expect(onChange).to.calledWithMatch({value: [-10, -5]});
+            });
+
+            it('right handle should become left but keep active state', () => {
+                expect(driver.getHandle(0)).attr(`data-${styles.$stylesheet.namespace.toLowerCase()}-active`);
             });
         });
 
-        it('renders progress bar with the right width', async () => {
-            await waitForDom(() => {
-                const element = select('SLIDER-PROGRESS');
-
-                expect(element).to.be.present();
-                expect(element!.style[positionProp as any]).to.equal('25%');
-                expect(element!.style[sizeProp as any]).to.equal('50%');
+        describe('using mouse to move right handle all the way left', () => {
+            beforeEach(async () => {
+                const bounds = driver.getBounds();
+                const event1 = getEventCoordinates(bounds, getAxis(options, context), 75);
+                const event2 = getEventCoordinates(bounds, getAxis(options, context), 0);
+                driver.mouseDown(event1);
+                driver.mouseMove(event2, environment);
+                await delayToNextFrame();
+                driver.mouseUp(event2, environment);
             });
-        });
 
-        it('renders invisible native input with right value', async () => {
-            await waitForDom(() => {
-                const input0 = select('NATIVE-INPUT-0');
-                const input1 = select('NATIVE-INPUT-1');
-
-                expect(input0).to.has.value(String(value[0]));
-                expect(input1).to.has.value(String(value[1]));
+            it('should call onChange with correct value', () => {
+                expect(onChange).to.calledWithMatch({value: [-10, -5]});
             });
-        });
 
-        it('renders with proper aria-orientation', async () => {
-            await waitForDom(() => {
-                const handle0 = select('SLIDER-HANDLE-0');
-                const handle1 = select('SLIDER-HANDLE-1');
-
-                expect(handle0!.getAttribute('aria-orientation')).to.equal(orientation);
-                expect(handle1!.getAttribute('aria-orientation')).to.equal(orientation);
+            it('right handle should become left but keep active state', () => {
+                expect(driver.getHandle(0)).attr(`data-${styles.$stylesheet.namespace.toLowerCase()}-active`);
             });
         });
     });
 }
+
+function rangeWithDisabledCross(clientRenderer: ClientRenderer, axis: AxisOptions) {
+    describe(`check disableCross and axis=${axis}`, () => {
+        describe('when drag', () => {
+            let driver: any;
+            let onChange: any;
+
+            beforeEach(() => {
+                onChange = sinon.spy();
+                driver = getRenderedSlider(clientRenderer, {
+                    onChange,
+                    axis,
+                    value: [20, 80],
+                    disableCross: true
+                }).driver;
+
+                const bounds = driver.getBounds();
+                const event1 = getEventCoordinates(bounds, axis, 0.3);
+                const event2 = getEventCoordinates(bounds, axis, 0.9);
+
+                driver.mouseDown(event1);
+                driver.mouseMove(event2, environment);
+                driver.mouseUp(event2, environment);
+            });
+            it('lower value should be limited by higher value', () => {
+                expect(onChange).to.be.calledWithMatch({value: [80, 80]});
+            });
+        });
+
+        describe('when using keyboard', () => {
+            let driver: any;
+            let onChange: any;
+
+            beforeEach(async () => {
+                onChange = sinon.spy();
+                driver = getRenderedSlider(clientRenderer, {
+                    onChange,
+                    value: [79, 80],
+                    disableCross: true
+                }).driver;
+                driver.getHandle(0).focus();
+            });
+            it('left handle should not cross the right handle when using right key', () => {
+                driver.focus(0);
+                driver.keyDown('right');
+                driver.keyDown('right');
+                expect(onChange.args).to.deep.equal([
+                    [{value: [80, 80]}],
+                    [{value: [80, 80]}]
+                ]);
+            });
+            it('left handle should not cross the right handle when using right key + shift', () => {
+                driver.focus(0);
+                driver.keyDown('right', {shiftKey: true});
+                expect(onChange.args).to.deep.equal([
+                    [{value: [80, 80]}]
+                ]);
+            });
+        });
+
+        describe('when disableCross and both values has the same value', () => {
+            let driver: any;
+            let onChange: any;
+
+            beforeEach(async () => {
+                onChange = sinon.spy();
+                driver = getRenderedSlider(clientRenderer, {
+                    onChange,
+                    axis,
+                    value: [50, 50],
+                    disableCross: true
+                }).driver;
+            });
+
+            describe('should be possible to decrease the value', () => {
+                it('with mouse', () => {
+                    const bounds = driver.getBounds();
+                    const event1 = getEventCoordinates(bounds, axis, 0.5);
+                    const event2 = getEventCoordinates(bounds, axis, 0.3);
+                    driver.mouseDown(event1);
+                    driver.mouseUp(event2, environment);
+                    expect(onChange).to.be.calledWithMatch({value: [30, 50]})
+                })
+
+                it('with keyboard', () => {
+                    const bounds = driver.getBounds();
+                    const event = getEventCoordinates(bounds, axis, 0.5);
+                    driver.mouseDown(event);
+                    driver.mouseUp(event, environment);
+                    driver.keyDown(isReverse(axis) ? 'right': 'left');
+                    expect(onChange).to.be.calledWithMatch({value: [49, 50]})
+                })
+            });
+
+            describe('should be possible to increase the value', () => {
+                it('with mouse', () => {
+                    const bounds = driver.getBounds();
+                    const event1 = getEventCoordinates(bounds, axis, 0.5);
+                    const event2 = getEventCoordinates(bounds, axis, 0.8);
+                    driver.mouseDown(event1);
+                    driver.mouseUp(event2, environment);
+                    expect(onChange).to.be.calledWithMatch({value: [50, 80]})
+                })
+
+                it('with keyboard', () => {
+                    const bounds = driver.getBounds();
+                    const event = getEventCoordinates(bounds, axis, 0.5);
+                    driver.mouseDown(event);
+                    driver.mouseUp(event, environment);
+                    driver.keyDown(isReverse(axis) ? 'left': 'right');
+                    expect(onChange).to.be.calledWithMatch({value: [50, 51]})
+                })
+            });
+        });
+
+    });
+}
+
 
 function whenDragThingsAround(
     clientRenderer: ClientRenderer,
@@ -554,6 +696,7 @@ function keyboard(
             );
             driver = rendered.driver;
             waitForDom = rendered.waitForDom;
+            driver.focus();
         });
 
         it('on pressing right key', async () => {
@@ -686,7 +829,7 @@ function keyboard(
     });
 }
 
-describe.only('<Slider />', () => {
+describe('<Slider />', () => {
     const clientRenderer = new ClientRenderer();
 
     beforeEach(() => {
@@ -1258,7 +1401,7 @@ describe.only('<Slider />', () => {
     });
 });
 
-describe.only('Slider/properties', () => {
+describe('Slider/properties', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
 
@@ -1490,25 +1633,18 @@ describe.only('Slider/properties', () => {
 
     describe('displayTooltip={true} value={[44]}', () => {
         let driver: any;
-        let waitForDom: any;
         beforeEach(() => {
-            const rendered = getRenderedSlider(clientRenderer, {
+            driver = getRenderedSlider(clientRenderer, {
                 value: [44],
                 displayTooltip: true
-            });
-            driver = rendered.driver;
-            waitForDom = rendered.waitForDom;
-            driver.getHandle(0).focus();
+            }).driver;
+            driver.focus(0);
         });
         it('should render tooltip', () => {
-            return waitForDom(() => {
-                expect(driver.getTooltip(0)).to.not.null;
-            })
+            expect(driver.getTooltip(0)).to.not.null;
         });
         it('tooltip should have text "44"', () => {
-            return waitForDom(() => {
-                expect(driver.getTooltip(0)).text('44');
-            })
+            expect(driver.getTooltip(0)).text('44');
         });
     });
 
@@ -1797,67 +1933,7 @@ describe('Slider/calculations', () => {
 
 });
 
-function rangeWithDisabledCross(clientRenderer: ClientRenderer, axis: AxisOptions) {
-    describe(`check disableCross and axis=${axis}`, () => {
-        describe('when drag', () => {
-            let driver: any;
-            let onChange: any;
-
-            beforeEach(async () => {
-                onChange = sinon.spy();
-                driver = getRenderedSlider(clientRenderer, {
-                    onChange,
-                    axis,
-                    value: [20, 80],
-                    disableCross: true
-                }).driver;
-
-                const bounds = driver.getBounds();
-                const event1 = getEventCoordinates(bounds, axis, 0.3);
-                const event2 = getEventCoordinates(bounds, axis, 0.9);
-
-                driver.mouseDown(event1);
-                driver.mouseMove(event2, environment);
-                await new Promise(resolve => setTimeout(resolve, 100));
-                driver.mouseUp(event2, environment);
-            });
-            it('onChange should be callen with [80, 80]', () => {
-                expect(onChange).to.be.calledWithMatch({value: [80, 80]});
-            });
-        });
-
-        describe('when using keyboard', () => {
-            let driver: any;
-            let onChange: any;
-
-            beforeEach(async () => {
-                onChange = sinon.spy();
-                driver = getRenderedSlider(clientRenderer, {
-                    onChange,
-                    value: [79, 80],
-                    disableCross: true
-                }).driver;
-                driver.getHandle(0).focus();
-            });
-            it('left handle should not cross the right handle when using right key', () => {
-                driver.keyDown('right');
-                driver.keyDown('right');
-                expect(onChange.args).to.deep.equal([
-                    [{value: [80, 80]}],
-                    [{value: [80, 80]}]
-                ]);
-            });
-            it('left handle should not cross the right handle when using right key + shift', () => {
-                driver.keyDown('right', {shiftKey: true});
-                expect(onChange.args).to.deep.equal([
-                    [{value: [80, 80]}]
-                ]);
-            });
-        });
-    });
-}
-
-describe.only('<Slider /> type Range', () => {
+describe('<Slider /> type Range', () => {
     const clientRenderer = new ClientRenderer();
 
     beforeEach(() => {
