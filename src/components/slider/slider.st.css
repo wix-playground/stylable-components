@@ -54,9 +54,6 @@
 
     minVerticalSliderHeight: 44px;
     clickableAreaRadius: 15px;
-
-    tooltipOffset: 23px;
-    tooltipColor: value(BK1);
 }
 
 .nativeInput {
@@ -174,13 +171,9 @@
     box-shadow: none;
     background-color: value(colorHandle_Active);
     border-color: value(colorHandle_Active);
-    z-index: 2;
 }
 .handle:active {
     z-index: 1;
-}
-.handle:hover:active {
-    z-index: 3;
 }
 .handle:active .tooltip {
     display: block;
@@ -243,67 +236,6 @@
 .root:yReverse .markTrack
 {
     margin: value(markMiddleOfDot) 0 0 value(markMiddleOfBar);
-}
-
-.tooltip {
-    position: absolute;
-    text-align: center;
-    background: value(tooltipColor);
-    padding: 12px 25px;
-    color: white;
-    font-size: 14px;
-    font-family: arial;
-    display: none;
-}
-
-.tooltip-tail {
-    position: absolute;
-}
-
-.tooltip.top {
-    bottom: value(tooltipOffset);
-    transform: translateX(-50%);
-    margin-left: 50%;
-}
-.tooltip.top .tooltip-tail {
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-.tooltip.bottom {
-    top: value(tooltipOffset);
-    transform: translateX(-50%);
-    margin-left: 50%;
-}
-.tooltip.bottom .tooltip-tail {
-    bottom: 100%;
-    left: 50%;
-    transform: translateX(-50%) rotate(180deg);
-}
-
-.tooltip.left {
-    right: value(tooltipOffset);
-    transform: translateY(-50%);
-    margin-top: 50%;
-}
-.tooltip.left .tooltip-tail {
-    left: 100%;
-    top: 50%;
-    transform: translateY(100%) rotate(-90deg);
-    transform-origin: 0 0;
-}
-
-.tooltip.right {
-    left: value(tooltipOffset);
-    transform: translateY(-50%);
-    margin-top: 50%;
-}
-.tooltip.right .tooltip-tail {
-    right: 100%;
-    top: 50%;
-    transform: translateY(100%) rotate(90deg);
-    transform-origin: 100% 0;
 }
 
 /* Hover state */

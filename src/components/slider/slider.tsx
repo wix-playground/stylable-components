@@ -60,6 +60,7 @@ export interface SliderProps extends FormInputProps<number[], string>, propertie
 }
 export interface SliderState {
     currentHandleIndex: number;
+    currentHoverIndex: number;
     relativeValue: number[];
     relativeStep: Step;
     isActive: boolean;
@@ -109,6 +110,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
 
         this.state = {
             currentHandleIndex: -1,
+            currentHoverIndex: -1,
             relativeValue: this.getDefaultValue()
                 .map(
                     value => getRelativeValue(value, min!, max!)
@@ -140,6 +142,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
                 step={this.props.step!}
                 value={this.getDefaultValue()}
                 currentHandleIndex={this.state.currentHandleIndex}
+                currentHoverIndex={this.state.currentHoverIndex}
 
                 displayTooltip={this.props.displayTooltip!}
                 tooltipPosition={this.props.tooltipPosition!}
@@ -156,6 +159,8 @@ export class Slider extends React.Component<SliderProps, SliderState> {
                 onSliderAreaTouchStart={this.onDragStart}
                 onSliderAreaTouchMove={this.onDrag}
                 onSliderAreaTouchEnd={this.onDragStop}
+                onSliderHover={this.onSliderHover}
+                onSliderLeave={this.onSliderLeave}
             />
         );
     }
@@ -302,12 +307,18 @@ export class Slider extends React.Component<SliderProps, SliderState> {
     }
 
     private onSliderFocus = (event: React.FocusEvent<HTMLElement>, currentHandleIndex: number) => {
-        this.setState({currentHandleIndex});
+        this.setState({
+            currentHandleIndex,
+            currentHoverIndex: currentHandleIndex
+        });
         this.props.onFocus!(event);
     }
 
     private onSliderBlur = (event: React.FocusEvent<HTMLElement>) => {
-        this.setState({currentHandleIndex: -1});
+        this.setState({
+            currentHandleIndex: -1,
+            currentHoverIndex: -1
+        });
         this.props.onBlur!(event);
     }
 
@@ -333,6 +344,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         this.setState({
             relativeValue,
             currentHandleIndex: currentValueIndex,
+            currentHoverIndex: currentValueIndex,
             isActive: true
         });
         this.isActive = true;
@@ -363,6 +375,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         this.animationFrameId = requestAnimationFrame(() => {
             this.setState({
                 relativeValue,
+                currentHoverIndex: currentValueIndex,
                 currentHandleIndex: currentValueIndex
             });
         });
@@ -396,6 +409,13 @@ export class Slider extends React.Component<SliderProps, SliderState> {
 
         this.props.onDragStop!(event);
         this.callChange(relativeValue);
+    }
+
+    private onSliderHover = (index: number) => {
+        this.setState({currentHoverIndex: index});
+    }
+    private onSliderLeave = () => {
+        this.setState({currentHoverIndex: this.state.currentHandleIndex});
     }
 
     private onSliderAreaKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {

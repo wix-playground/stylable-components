@@ -21,6 +21,7 @@ import {
     TooltipPosition
 } from './slider-types';
 import style from './slider.st.css';
+import {Tooltip} from './tooltip';
 
 export interface SliderViewProps extends FormInputProps<number[], string>, properties.Props {
     relativeValue: number[];
@@ -43,10 +44,13 @@ export interface SliderViewProps extends FormInputProps<number[], string>, prope
     required: boolean;
     rtl: boolean;
     currentHandleIndex: number;
+    currentHoverIndex: number;
     tooltipPosition: TooltipPosition;
 
     onSliderFocus: FocusEventHandler;
     onSliderBlur: FocusEventHandler;
+    onSliderHover: (index: number) => void;
+    onSliderLeave: () => void;
 
     onSliderAreaKeyDown: KeyboardHandler;
 
@@ -162,6 +166,8 @@ export class SliderView extends React.Component<SliderViewProps, {}> {
 
                 onFocus={this.onSliderFocus}
                 onBlur={this.onSliderBlur}
+                onMouseEnter={this.props.onSliderHover.bind(null, index)}
+                onMouseLeave={this.props.onSliderLeave}
 
                 role="slider"
                 aria-label={this.props.label}
@@ -174,15 +180,13 @@ export class SliderView extends React.Component<SliderViewProps, {}> {
                 key={index}
             >
                 {this.props.displayTooltip &&
-                    <div
-                        className={`tooltip ${this.props.tooltipPosition}`}
+                    <Tooltip
+                        open={this.props.currentHoverIndex === index || this.props.currentHandleIndex === index}
+                        position={this.props.tooltipPosition}
+                        active={index === this.props.currentHoverIndex}
                         data-automation-id={'SLIDER-TOOLTIP-' + index}
-                    >
-                        {this.props.relativeValue[index]}
-                        <svg className="tooltip-tail" height="5" width="10">
-                            <polygon points="0,0 10,0 5,5"/>
-                        </svg>
-                    </div>
+                        children={this.props.relativeValue[index]}
+                    />
                 }
             </a>
 
