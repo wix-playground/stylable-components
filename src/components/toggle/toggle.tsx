@@ -1,10 +1,11 @@
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
-import {stylable} from 'wix-react-tools';
+import {properties, stylable} from 'wix-react-tools';
 import {FormInputProps} from '../../types/forms';
+import {isRTLContext} from '../../utils';
 import style from './toggle.st.css';
 
-export interface Props extends FormInputProps<boolean> {
+export interface ToggleProps extends FormInputProps<boolean>, properties.Props {
     className?: string;
     error?: boolean;
     disabled?: boolean;
@@ -13,13 +14,14 @@ export interface Props extends FormInputProps<boolean> {
     required?: boolean;
     name?: string;
 }
-export interface State {
+export interface ToggleState {
     focus: boolean;
 }
 
 @stylable(style)
-export default class Toggle extends React.Component<Props, State> {
-    public static defaultProps = {
+@properties
+export default class Toggle extends React.Component<ToggleProps, ToggleState> {
+    public static defaultProps: Partial<ToggleProps> = {
         value: false,
         disabled: false,
         error: false,
@@ -58,14 +60,13 @@ export default class Toggle extends React.Component<Props, State> {
                     disabled: disabled!,
                     focus: focus!,
                     error: error!,
-                    rtl: this.context.contextProvider &&
-                        this.context.contextProvider.dir === 'rtl'
+                    rtl: isRTLContext(this.context)
                 }}
             >
                 {!disabled &&
                     <input
-                        data-automation-id="TOGGLE_INPUT"
-                        className="input"
+                        data-automation-id="NATIVE_INPUT"
+                        className="nativeInput"
                         type="checkbox"
                         name={name}
                         aria-label={label}
@@ -77,9 +78,7 @@ export default class Toggle extends React.Component<Props, State> {
                         onBlur={this.onInputBlur}
                     />
                 }
-                <div className="switch-wrap">
-                    <div className="switch"/>
-                </div>
+                <div className="switch"/>
             </label>
         );
     }

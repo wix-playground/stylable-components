@@ -1,7 +1,7 @@
 import React = require('react');
 import {stylable} from 'wix-react-tools';
-import {Popup, PopupHorizontalPosition, PopupPositionPoint, PopupVerticalPosition, RadioGroup} from '../../src/';
-import {ChangeEvent} from '../../src/types/events';
+import {ChangeEvent, Popup, PopupHorizontalPosition, PopupPositionPoint, PopupVerticalPosition,
+    RadioGroup, RadioGroupDataSchemaProps} from '../../src/';
 import styles from './popup-demo.st.css';
 
 export interface DemoState {
@@ -24,6 +24,8 @@ export class PopupDemo extends React.Component<{}, DemoState> {
         aHorizontal: 'left' as PopupHorizontalPosition
     };
 
+    private popup: Popup | null;
+
     public render() {
         const popupPos: PopupPositionPoint = {
             vertical: this.state.pVertical, horizontal: this.state.pHorizontal
@@ -32,15 +34,23 @@ export class PopupDemo extends React.Component<{}, DemoState> {
             vertical: this.state.aVertical, horizontal: this.state.aHorizontal
         };
 
-        const vPos = [{value: 'top'}, {value: 'center'}, {value: 'bottom'}];
-        const hPos = [{value: 'left'}, {value: 'center'}, {value: 'right'}];
+        const vPos: RadioGroupDataSchemaProps[] = [
+            {value: 'top', labelText: 'top'},
+            {value: 'center', labelText: 'center'},
+            {value: 'bottom', labelText: 'bottom'}
+            ];
+        const hPos: RadioGroupDataSchemaProps[] = [
+            {value: 'left', labelText: 'left'},
+            {value: 'center', labelText: 'center'},
+            {value: 'right', labelText: 'right'}
+            ];
         return (
             <div>
                 <button
                     ref={this.updateState}
                     onClick={this.onClick}
                     className="anchor"
-                    data-automation-id="POPUP_DEMO_DIV"
+                    data-automation-id="POPUP_DEMO_BTN"
                 >
                     {this.state.isOpen ? 'Hide Popup' : 'Show Popup'}
                 </button>
@@ -49,6 +59,7 @@ export class PopupDemo extends React.Component<{}, DemoState> {
                     popupPosition={popupPos}
                     anchorPosition={anchorPos}
                     open={this.state.isOpen}
+                    ref={popup => this.popup = popup}
                 >
                     <div style={{color: 'white', backgroundColor: 'black'}}>Hello!</div>
                 </Popup>
@@ -72,6 +83,10 @@ export class PopupDemo extends React.Component<{}, DemoState> {
                 </div>
             </div>
         );
+    }
+
+    public getPopup(): Popup | null {
+        return this.popup;
     }
 
     private onClick = () => {

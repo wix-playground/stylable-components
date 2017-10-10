@@ -1,11 +1,10 @@
 import * as React from 'react';
-import {stylable} from 'wix-react-tools';
-import {ChevronDownIcon, ChevronUpIcon} from '../../icons';
-import buttonStyles from '../../style/default-theme/controls/button.st.css';
+import {properties, stylable} from 'wix-react-tools';
+import buttonStyles from '../button/button.st.css';
 import {GlobalEvent} from '../global-event';
 import styles from './stepper.st.css';
 
-export interface StepperProps extends React.HTMLProps<HTMLElement> {
+export interface StepperProps extends properties.Props, React.DOMAttributes<HTMLDivElement> {
     disableUp?: boolean;
     disableDown?: boolean;
     dragStep?: number;
@@ -13,7 +12,7 @@ export interface StepperProps extends React.HTMLProps<HTMLElement> {
     onDown(modifiers: Modifiers): void;
 }
 
-export interface State {
+export interface StepperState {
     dragged: boolean;
 }
 
@@ -35,13 +34,14 @@ const DEFAULTS = {
 };
 
 @stylable(styles)
-export class Stepper extends React.Component<StepperProps, State> {
-    public static defaultProps = {
+@properties
+export class Stepper extends React.Component<StepperProps, StepperState> {
+    public static defaultProps: Partial<StepperProps> = {
         disableUp: DEFAULTS.disableUp,
         disableDown: DEFAULTS.disableDown
     };
 
-    public state: State = {dragged: false};
+    public state: StepperState = {dragged: false};
 
     private dragRefPoint: DragPoint = {
         clientX: 0,
@@ -60,10 +60,7 @@ export class Stepper extends React.Component<StepperProps, State> {
         } = this.props;
 
         return (
-            <div
-                {...props}
-                onMouseDown={this.handleDragStart}
-            >
+            <div {...props} onMouseDown={this.handleMouseDown}>
                 <button
                     type="button"
                     tabIndex={-1}
@@ -71,9 +68,7 @@ export class Stepper extends React.Component<StepperProps, State> {
                     className={`${buttonStyles.root} control up`}
                     onClick={this.handlerClickUp}
                     disabled={disableUp}
-                >
-                    <ChevronUpIcon className="control-icon" />
-                </button>
+                />
                 <button
                     type="button"
                     tabIndex={-1}
@@ -81,9 +76,7 @@ export class Stepper extends React.Component<StepperProps, State> {
                     className={`${buttonStyles.root} control down`}
                     onClick={this.handlerClickDown}
                     disabled={disableDown}
-                >
-                    <ChevronDownIcon className="control-icon"/>
-                </button>
+                />
                 <GlobalEvent
                     mousemove={dragged ? this.handleDrag : undefined}
                     mouseup={this.handleDragStop}
@@ -98,11 +91,16 @@ export class Stepper extends React.Component<StepperProps, State> {
     private handlerClickDown: React.MouseEventHandler<HTMLButtonElement> =
         ({altKey, ctrlKey, shiftKey}) => this.props.onDown({altKey, ctrlKey, shiftKey})
 
-    private handleDragStart: React.MouseEventHandler<HTMLDivElement> =
-        ({clientX, clientY}) => {
-            this.setState({dragged: true});
-            this.updateDragRefPoint({clientX, clientY});
+    private handleMouseDown: React.MouseEventHandler<HTMLDivElement> = e => {
+        const {clientX, clientY} = e;
+
+        this.setState({dragged: true});
+        this.updateDragRefPoint({clientX, clientY});
+
+        if (typeof this.props.onMouseDown === 'function') {
+            this.props.onMouseDown(e);
         }
+    }
 
     private handleDragStop = () => {
             this.setState({dragged: false});

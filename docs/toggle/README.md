@@ -10,13 +10,13 @@ A toggle switch is used as an on/off control
 
 | name     | type   | defaultValue | isRequired | description                              |
 | -------- | ------ | ------------ | :--------- | ---------------------------------------- |
-| value    | bool   | FALSE        |            |                                          |
-| onChange | func   |              |            | Callback function when user changes the value of the component |
-| required | bool   | FALSE        |            | Whether or not filling the value is required in a form. |
+| value    | bool   | false        |            |                                          |
+| onChange | `(event: {value: boolean}): void`	   |              |            | Callback function when user changes the value of the component |
+| required | bool   | false        |            | Whether or not filling the value is required in a form. |
 | name     | string |              |            | The name of the toggle. Behaves like the name attribute of an input element. |
-| disabled | bool   | FALSE        |            | If `true`, the toggle will not be interactive |
+| disabled | bool   | false        |            | If `true`, the toggle will not be interactive |
 | label    | string |              |            | Text to display in accessibility mode    |
-| error    | bool   | FALSE        |            | Sets the `:error` CSS state on the `<toggle/>` |
+| error    | bool   | false        |            | Sets the `:error` CSS state on the `<toggle/>` |
 
 #### Accepted Children
 
@@ -27,9 +27,8 @@ This component has no accepted children.
 #### Example 1:
 
 ```jsx
-//TODO: code guys - fix code example!
 import * as React from 'react';
-import { Toggle } from './components/toggle';
+import {Toggle} from './components/toggle';
 import style from './style.st.css'; // link to Style file - see examples of style files below
 
 type State = {
@@ -37,18 +36,16 @@ type State = {
 }
 
 export class ComponentsDemo extends React.Component<{}, State>{
-  	state: State,
+  public state = {
+    toggleValue: false
+  }
 
-    constructor() {
-        super();
-    },
-
-     public render() {
-        return <toggle
-        		 value="{this.state.toggleValue}"
-                 onChange={newValue => this.setState({toggleValue: newValue})}
-               />;
-    }
+  public render() {
+    return <Toggle
+      value={this.state.toggleValue}
+      onChange={e => this.setState({toggleValue: e.value})}
+    />;
+  }
 }
 ```
 
