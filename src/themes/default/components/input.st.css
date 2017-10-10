@@ -5,7 +5,11 @@
 
 :import {
     -st-from: "../../../project.st.css";
-    -st-named: color_MainText,
+    -st-named: fontFamily,
+               fontSize,
+               fontWeight,
+               lineHeight,
+               color_MainText,
                color_MainPlaceholder,
                color_MainText_Background,
                borderRadius,
@@ -16,34 +20,44 @@
                inputHeight,
                inputWidth,
                borderDisabled,
-               borderError,
-               DS2;
+               borderError;
 }
 
-Input {
+.root {
+    box-sizing: inherit;
     border: value(borderDefault);
     border-radius: value(borderRadius);
     background-color: value(color_MainText_Background);
     color: value(color_MainText);
-
+    font-family: value(fontFamily);
+    font-size: value(fontSize);
+    font-weight: value(fontWeight);
+    line-height: value(lineHeight);
+    margin: 0;
+    padding: 6px 12px;
     height: value(inputHeight);
-    min-width: value(inputWidth);
+    width: value(inputWidth);
+    outline: 0;
 }
 
-Input:hover {
+.root::placeholder {
+    color: value(color_MainPlaceholder);
+}
+
+.root:hover {
     border: value(borderHover);
 }
 
-Input:focus {
+.root:focus {
     border: value(borderFocus);
 }
 
-Input:disabled {
-    background-color: value(DS2);
+.root[disabled] {
+    background-color: value(color_Disabled);
     color: value(color_MainPlaceholder);
     border: value(borderDisabled);
 }
 
-Input:error {
+.root:error {
     border: value(borderError);
 }

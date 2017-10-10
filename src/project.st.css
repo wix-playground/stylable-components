@@ -64,7 +64,7 @@
     inputLeftSpacing: 5px;
     caretRightSpacing: 1px;
 
-    inputFont: 16px value(fontFamily), sans-serif;
+    inputFont: value(fontSize) value(fontFamily), sans-serif;
 
     /* Borders */
     borderRadius: 0px;
