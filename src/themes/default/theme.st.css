@@ -34,3 +34,8 @@
     -st-theme: true;
     -st-from: "./components/number-input.st.css";
 }
+
+:import {
+    -st-theme: true;
+    -st-from: "./components/modal.st.css";
+}

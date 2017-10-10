@@ -4,28 +4,34 @@
 }
 
 :import {
-    -st-from: "../../../project.st.css";
+    -st-from: "../variables.st.css";
     -st-named:  inputLeftSpacing,
-                inputFont;
+                inputFont,
+                caretRightSpacing;
 }
 
 AutoComplete {
     font-size: 16px;
 }
 
-AutoComplete::autoCompleteInput {
+AutoComplete::input {
     font: value(inputFont);
     height: 36px;
     padding-left: value(inputLeftSpacing);
     border: 1px solid #adbac5;
 }
 
-AutoComplete::autoCompleteList {
+AutoComplete::input:hover {
+    border-color: #5cb4ff
+}
+
+AutoComplete::caret {
+    right: value(caretRightSpacing);
+}
+
+AutoComplete::list {
     border-top: 0;
     background: #fff;
 }
 
-AutoComplete::autoCompleteInput:hover {
-    border-color: #5cb4ff
-}
 

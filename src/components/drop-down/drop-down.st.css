@@ -3,12 +3,6 @@
     -st-default: SelectionList;
 }
 
-:import {
-    -st-from: "../../project.st.css";
-    -st-named:  caretRightSpacing;
-}
-
-
 .root {
     width: auto;
     display: inline-block;
@@ -27,7 +21,7 @@
     cursor: pointer;
     position: absolute;
     top: 50%;
-    right: value(caretRightSpacing);
+    right: 0;
     transform: translateY(-50%);
 }
 

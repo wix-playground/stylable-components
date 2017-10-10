@@ -4,9 +4,10 @@
 }
 
 :import {
-    -st-from: "../../../project.st.css";
+    -st-from: "../variables.st.css";
     -st-named:  inputLeftSpacing,
-                inputFont;
+                inputFont,
+                caretRightSpacing;
 }
 
 DropDown {
@@ -22,7 +23,11 @@ DropDown::label {
     margin-left: value(inputLeftSpacing);
 }
 
-DropDown::dropdownInput:hover {
+DropDown::caret {
+    right: value(caretRightSpacing);
+}
+
+DropDown::input:hover {
     border: 1px solid #5cb4ff;
 }
 

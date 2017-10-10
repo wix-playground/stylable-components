@@ -1,20 +1,15 @@
 @namespace "AutoComplete";
 
-:import {
-    -st-from: "../../project.st.css";
-    -st-named:  caretRightSpacing;
-}
-
 .root {
     position: relative;
     display: inline-block;
 }
 
-.autoCompleteInput {
+.input {
     width: 100%;
 }
 
-.autoCompleteList {
+.list {
     width: 100%;
     /*
         Styling list is here (not at the theme)
@@ -29,6 +24,6 @@
     cursor: pointer;
     position: absolute;
     top: 50%;
-    right: value(caretRightSpacing);
+    right: 0;
     transform:translateY(-50%);
 }

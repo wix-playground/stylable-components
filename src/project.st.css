@@ -62,7 +62,6 @@
     inputHeight: 36px;
     inputWidth: 192px;
     inputLeftSpacing: 5px;
-    caretRightSpacing: 1px;
 
     inputFont: value(fontSize) value(fontFamily), sans-serif;
 
