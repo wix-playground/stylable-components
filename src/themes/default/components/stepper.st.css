@@ -1,0 +1,8 @@
+:import {
+	-st-from: "../../../components/stepper/stepper.st.css";
+	-st-default: Stepper;
+}
+
+Stepper {
+
+}

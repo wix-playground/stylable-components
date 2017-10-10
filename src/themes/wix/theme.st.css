@@ -36,6 +36,11 @@
 }
 
 :import {
+    -st-theme: true;
+    -st-from: "./components/stepper.st.css";
+}
+
+:import {
 	-st-from: "../../components/toggle/toggle.st.css";
 	-st-default: Toggle;
 }
@@ -52,11 +57,6 @@
 :import {
 	-st-from: "../../components/time-picker/time-picker.st.css";
 	-st-default: TimePicker;
-}
-
-:import {
-	-st-from: "../../components/stepper/stepper.st.css";
-	-st-default: Stepper;
 }
 
 :import {
@@ -266,27 +266,6 @@ TimePicker::input::selection {
 }
 TimePicker::input::selection:hover {
 	background: #DAEFFE;
-}
-
-/* Stepper */
-Stepper::up {
-	position: relative;
-	top:1px;
-	color:#3899EC;
-}
-
-Stepper::down {
-	position: relative;
-	bottom:1px;
-	color:#3899EC;
-}
-
-Stepper::up:hover {
-	color:#4EB7F5;
-}
-
-Stepper::down:hover {
-	color:#4EB7F5;
 }
 
 /* Slider */

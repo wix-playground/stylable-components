@@ -1,0 +1,21 @@
+:import {
+	-st-from: "../../../components/stepper/stepper.st.css";
+	-st-default: Stepper;
+}
+
+
+Stepper::up {
+	color:#3899EC;
+}
+
+Stepper::down {
+	color:#3899EC;
+}
+
+Stepper::up:hover {
+	color:#4EB7F5;
+}
+
+Stepper::down:hover {
+	color:#4EB7F5;
+}
