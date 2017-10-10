@@ -686,7 +686,7 @@ function keyboard(
     });
 }
 
-describe('<Slider />', () => {
+describe.only('<Slider />', () => {
     const clientRenderer = new ClientRenderer();
 
     beforeEach(() => {
@@ -1258,7 +1258,7 @@ describe('<Slider />', () => {
     });
 });
 
-describe('Slider/properties', () => {
+describe.only('Slider/properties', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
 
@@ -1288,8 +1288,8 @@ describe('Slider/properties', () => {
         it('handle left should be 0%', () => {
             expect(driver.handle.style.left).to.equal('0%');
         });
-        it('input value should be ""', () => {
-            expect(driver.getInput(0)).attr('value', '');
+        it('input value should be "0"', () => {
+            expect(driver.getInput(0)).attr('value', '0');
         });
         it('should not render marks', () => {
             expect(driver.getMark(0)).to.be.null;
@@ -1490,17 +1490,25 @@ describe('Slider/properties', () => {
 
     describe('displayTooltip={true} value={[44]}', () => {
         let driver: any;
+        let waitForDom: any;
         beforeEach(() => {
-            driver = getRenderedSlider(clientRenderer, {
+            const rendered = getRenderedSlider(clientRenderer, {
                 value: [44],
                 displayTooltip: true
-            }).driver;
+            });
+            driver = rendered.driver;
+            waitForDom = rendered.waitForDom;
+            driver.getHandle(0).focus();
         });
         it('should render tooltip', () => {
-            expect(driver.getTooltip(0)).to.not.null;
+            return waitForDom(() => {
+                expect(driver.getTooltip(0)).to.not.null;
+            })
         });
         it('tooltip should have text "44"', () => {
-            expect(driver.getTooltip(0)).text('44');
+            return waitForDom(() => {
+                expect(driver.getTooltip(0)).text('44');
+            })
         });
     });
 

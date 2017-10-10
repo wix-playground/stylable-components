@@ -25,7 +25,10 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
     public render() {
         const {children, position, active, open} = this.props;
         return (
-            <div ref={this.onRef}>
+            <div
+                ref={this.onRef}
+                data-automation-id="SLIDER-TOOLTIP"
+            >
                 <Popup
                     open={open}
                     anchor={this.state.anchor}

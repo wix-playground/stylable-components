@@ -30,7 +30,12 @@ export class BaseSliderDriver extends DriverBase {
         return this.select(`NATIVE-INPUT-${index}`);
     }
     public getTooltip(index: number): HTMLElement {
-        return this.select(`SLIDER-TOOLTIP-${index}`);
+        const portal = this.select(`SLIDER-HANDLE-${index}`, 'SLIDER-TOOLTIP', 'PORTAL_REF');
+        if (!portal) {
+            return portal;
+        }
+        const id = (portal as HTMLElement).dataset.id;
+        return document.querySelector(`[data-automation-id="${id}"]`) as HTMLElement;
     }
     public getMark(index: number): HTMLElement {
         return this.select(`SLIDER-MARKS-${index}`);

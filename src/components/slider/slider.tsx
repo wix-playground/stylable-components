@@ -301,7 +301,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
 
     private callChange(relativeValue: number[]): void {
         const value = this.relativeToAbsoluteValue(relativeValue);
-        if (value.some((item, index) => item !== this.props.value![index])) {
+        if (!this.props.value || value.some((item, index) => item !== this.props.value![index])) {
             this.props.onChange!({value});
         }
     }
