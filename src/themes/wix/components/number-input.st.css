@@ -5,6 +5,8 @@
 
 :import {
   -st-from: "../variables.st.css";
+  /* import list is long because -st-mixin currently requires 
+     importing all the variables that the mixed in class uses */
   -st-named:
           inputStyle,
           inputWidth,
