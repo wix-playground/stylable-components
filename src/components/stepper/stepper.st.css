@@ -14,7 +14,8 @@
     width: 30px;
 }
 
-.up, .down {
+.up, 
+.down {
     position: absolute;
 
     width: 100%;
@@ -26,15 +27,17 @@
 
     outline: none;
 
-    background: center/16px 16px no-repeat transparent;
+    background: center no-repeat transparent;
     background-origin:content-box;
 }
 
-.up:hover, .down:hover {
+.up:hover, 
+.down:hover {
     cursor: pointer;
 }
 
-.up:disabled, .down:disabled {
+.up:disabled, 
+.down:disabled {
     cursor: default;
 }
 
@@ -43,10 +46,12 @@
     background-image: value(iconChevronUpBK3);
     padding-top:1px;
 }
+
 .up:focus,
 .up:hover {
     background-image: value(iconChevronUpPR3);
 }
+
 .up:disabled {
     background-image: value(iconChevronUpDS1);
 }
@@ -56,10 +61,12 @@
     background-image: value(iconChevronDownBK3);
     padding-bottom:1px;
 }
+
 .down:focus,
 .down:hover {
     background-image: value(iconChevronDownPR3);
 }
+
 .down:disabled {
     background-image: value(iconChevronDownDS1);
 }
