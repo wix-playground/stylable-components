@@ -21,7 +21,7 @@
                borderError;
 }
 
-.root {
+Input {
     box-sizing: inherit;
     border: value(borderDefault);
     border-radius: value(borderRadius);
@@ -36,24 +36,24 @@
     outline: 0;
 }
 
-.root::placeholder {
+Input::placeholder {
     color: value(color_MainPlaceholder);
 }
 
-.root:hover {
+Input:hover {
     border: value(borderHover);
 }
 
-.root:focus {
+Input:focus {
     border: value(borderFocus);
 }
 
-.root[disabled] {
+Input:disabled {
     background-color: value(color_Disabled);
     color: value(color_MainPlaceholder);
     border: value(borderDisabled);
 }
 
-.root:error {
+Input:error {
     border: value(borderError);
 }
