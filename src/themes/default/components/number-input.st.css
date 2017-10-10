@@ -5,19 +5,19 @@
 
 :import {
     -st-from: "../variables.st.css";
-    -st-named: color_MainText,
-               color_MainPlaceholder,
-               color_MainText_Background,
-               borderRadius,
-               color_Disabled,
-               borderDefault,
-               borderHover,
-               borderFocus,
-               inputHeight,
-               inputWidth,
-               borderDisabled,
-               borderError,
-               DS2;
+    -st-named:  inputSpacing,
+                color_MainText,
+                color_MainPlaceholder,
+                color_MainText_Background,
+                borderRadius,
+                borderDefault,
+                borderHover,
+                borderFocus,
+                inputHeight,
+                inputWidth,
+                borderDisabled,
+                borderError,
+                color_Disabled2;
 }
 
 NumberInput {
@@ -30,6 +30,10 @@ NumberInput {
     min-width: value(inputWidth);
 }
 
+NumberInput::nativeInput {
+    padding: value(inputSpacing);
+}
+
 NumberInput:hover {
     border: value(borderHover);
 }
@@ -39,7 +43,7 @@ NumberInput:focus {
 }
 
 NumberInput:disabled {
-    background-color: value(DS2);
+    background-color: value(color_Disabled2);
     color: value(color_MainPlaceholder);
     border: value(borderDisabled);
 }

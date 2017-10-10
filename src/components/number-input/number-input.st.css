@@ -23,7 +23,6 @@
 
 .nativeInput {
     -moz-appearance: textfield;
-    padding: 6px 12px;
 
     /* making sure the input shrinks properly */
     flex: 1;
@@ -49,6 +48,7 @@
     -webkit-appearance: none;
     margin: 0;
 }
+
 .nativeInput:disabled {
     background: inherit;
 }

@@ -51,15 +51,20 @@
     color_Active: value(B3);
     color_Focus: value(B4);
     color_Disabled: value(B5);
+    color_Disabled2: value(DS2);
     color_Keyboard_Focused: value(M4);
+    color_Selected: value(DS2);
+    color_Outline: value(PR4);
 
     /* Copmponent Sizes */
     inputHeight: 36px;
     inputWidth: 192px;
-    inputLeftSpacing: 5px;
+    inputHSpacing: 6px;
+    inputVSpacing: 12px;
+    inputSpacing: value(inputVSpacing) value(inputHSpacing);
     caretRightSpacing: 1px;
 
-    inputFont: value(fontSize) value(fontFamily), sans-serif;
+    inputFont: normal value(fontSize) value(fontFamily), sans-serif;
 
 
     /* Borders */

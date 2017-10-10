@@ -37,6 +37,11 @@ NumberInput {
   color: value(textColor);
 }
 
+NumberInput::nativeInput {
+  padding: 6px 12px;
+}
+
+
 NumberInput::nativeInput::placeholder {
   font: value(fontStyle);
   color: value(placeholderColor);

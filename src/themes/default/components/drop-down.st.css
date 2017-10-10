@@ -5,7 +5,7 @@
 
 :import {
     -st-from: "../variables.st.css";
-    -st-named:  inputLeftSpacing,
+    -st-named:  inputHSpacing,
                 inputFont,
                 caretRightSpacing;
 }
@@ -20,7 +20,7 @@ DropDown::input {
 }
 
 DropDown::label {
-    margin-left: value(inputLeftSpacing);
+    margin-left: value(inputHSpacing);
 }
 
 DropDown::caret {

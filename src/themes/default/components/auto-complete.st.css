@@ -5,7 +5,7 @@
 
 :import {
     -st-from: "../variables.st.css";
-    -st-named:  inputLeftSpacing,
+    -st-named:  inputHSpacing,
                 inputFont,
                 caretRightSpacing;
 }
@@ -17,7 +17,7 @@ AutoComplete {
 AutoComplete::input {
     font: value(inputFont);
     height: 36px;
-    padding-left: value(inputLeftSpacing);
+    padding-left: value(inputHSpacing);
     border: 1px solid #adbac5;
 }
 
