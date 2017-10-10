@@ -283,6 +283,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
             relativeValue: newRelativeValue,
             currentHandleIndex: newHandleIndex
         });
+        this.currentValueIndex = newHandleIndex;
 
         this.callInput(newRelativeValue);
         this.callChange(newRelativeValue);
@@ -361,7 +362,8 @@ export class Slider extends React.Component<SliderProps, SliderState> {
 
     private onDrag = (
         event: MouseEvent | TouchEvent,
-        sliderArea: HTMLElement
+        sliderArea: HTMLElement,
+        focusableElement: HTMLElement[]
     ) => {
         if (!this.isActive) {
             return;
@@ -375,6 +377,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         );
 
         this.currentValueIndex = currentValueIndex;
+        focusableElement[currentValueIndex].focus();
         this.animationFrameId = requestAnimationFrame(() => {
             this.setState({
                 relativeValue,
@@ -391,14 +394,15 @@ export class Slider extends React.Component<SliderProps, SliderState> {
 
     private onDragStop = (
         event: MouseEvent | TouchEvent,
-        sliderArea: HTMLElement
+        sliderArea: HTMLElement,
+        focusableElement: HTMLElement[]
     ) => {
         if (!this.isActive) {
             return;
         }
         const {
             relativeValue,
-            isCross,
+            isCross
         } = this.getRelativeValueFromPointerPositionAndArea(
             event,
             sliderArea
@@ -423,7 +427,11 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         this.setState({currentHoverIndex: this.state.currentHandleIndex});
     }
 
-    private onSliderAreaKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
+    private onSliderAreaKeyDown = (
+        event: React.KeyboardEvent<HTMLElement>,
+        sliderArea: HTMLElement,
+        focusableElements: HTMLElement[]
+    ) => {
         if (this.isActive || this.props.disabled) {
             event.preventDefault();
             return;
@@ -475,5 +483,6 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         }
 
         event.preventDefault();
+        focusableElements[this.currentValueIndex!].focus();
     }
 }

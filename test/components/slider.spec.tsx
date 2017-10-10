@@ -222,6 +222,9 @@ function rangeWithValueMinMax(
             it('right handle should become left but keep active state', () => {
                 expect(driver.getHandle(0)).attr(`data-${styles.$stylesheet.namespace.toLowerCase()}-active`);
             });
+            it('right handle should become left and keep focus', () => {
+                expect(driver.getHandle(0)).to.equal(document.activeElement);
+            });
         });
 
         describe('using mouse to move right handle all the way left', () => {
@@ -241,6 +244,10 @@ function rangeWithValueMinMax(
 
             it('right handle should become left but keep active state', () => {
                 expect(driver.getHandle(0)).attr(`data-${styles.$stylesheet.namespace.toLowerCase()}-active`);
+            });
+
+            it('right handle should become left and keep focus', () => {
+                expect(driver.getHandle(0)).to.equal(document.activeElement);
             });
         });
     });
@@ -326,17 +333,17 @@ function rangeWithDisabledCross(clientRenderer: ClientRenderer, axis: AxisOption
                     const event2 = getEventCoordinates(bounds, axis, 0.3);
                     driver.mouseDown(event1);
                     driver.mouseUp(event2, environment);
-                    expect(onChange).to.be.calledWithMatch({value: [30, 50]})
-                })
+                    expect(onChange).to.be.calledWithMatch({value: [30, 50]});
+                });
 
                 it('with keyboard', () => {
                     const bounds = driver.getBounds();
                     const event = getEventCoordinates(bounds, axis, 0.5);
                     driver.mouseDown(event);
                     driver.mouseUp(event, environment);
-                    driver.keyDown(isReverse(axis) ? 'right': 'left');
-                    expect(onChange).to.be.calledWithMatch({value: [49, 50]})
-                })
+                    driver.keyDown(isReverse(axis) ? 'right' : 'left');
+                    expect(onChange).to.be.calledWithMatch({value: [49, 50]});
+                });
             });
 
             describe('should be possible to increase the value', () => {
@@ -346,23 +353,22 @@ function rangeWithDisabledCross(clientRenderer: ClientRenderer, axis: AxisOption
                     const event2 = getEventCoordinates(bounds, axis, 0.8);
                     driver.mouseDown(event1);
                     driver.mouseUp(event2, environment);
-                    expect(onChange).to.be.calledWithMatch({value: [50, 80]})
-                })
+                    expect(onChange).to.be.calledWithMatch({value: [50, 80]});
+                });
 
                 it('with keyboard', () => {
                     const bounds = driver.getBounds();
                     const event = getEventCoordinates(bounds, axis, 0.5);
                     driver.mouseDown(event);
                     driver.mouseUp(event, environment);
-                    driver.keyDown(isReverse(axis) ? 'left': 'right');
-                    expect(onChange).to.be.calledWithMatch({value: [50, 51]})
-                })
+                    driver.keyDown(isReverse(axis) ? 'left' : 'right');
+                    expect(onChange).to.be.calledWithMatch({value: [50, 51]});
+                });
             });
         });
 
     });
 }
-
 
 function whenDragThingsAround(
     clientRenderer: ClientRenderer,
@@ -1933,7 +1939,7 @@ describe('Slider/calculations', () => {
 
 });
 
-describe('<Slider /> type Range', () => {
+describe.only('<Slider /> type Range', () => {
     const clientRenderer = new ClientRenderer();
 
     beforeEach(() => {

@@ -16,7 +16,6 @@ import {
     AxisOptions,
     EventHandler,
     FocusEventHandler,
-    KeyboardHandler,
     Step,
     TooltipPosition
 } from './slider-types';
@@ -52,7 +51,7 @@ export interface SliderViewProps extends FormInputProps<number[], string>, prope
     onSliderHover: (index: number) => void;
     onSliderLeave: () => void;
 
-    onSliderAreaKeyDown: KeyboardHandler;
+    onSliderAreaKeyDown: EventHandler<React.KeyboardEvent<HTMLElement>>;
 
     onSliderAreaMouseDown: EventHandler<React.MouseEvent<HTMLElement>>;
     onSliderAreaMouseMove: EventHandler<MouseEvent>;
@@ -314,6 +313,6 @@ export class SliderView extends React.Component<SliderViewProps, {}> {
     }
 
     private onSliderAreaKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
-        this.props.onSliderAreaKeyDown!(event);
+        this.props.onSliderAreaKeyDown!(event, this.sliderArea, this.focusableElements);
     }
 }
