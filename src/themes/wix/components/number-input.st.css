@@ -8,6 +8,7 @@
   -st-named:
           inputWidth,
           inputHeight,
+          inputPadding,
 
           fontStyle,
           textColor,
@@ -37,7 +38,7 @@ NumberInput {
 }
 
 NumberInput::nativeInput {
-  padding: 6px 12px;
+  padding: value(inputPadding);
 }
 
 
@@ -64,12 +65,6 @@ NumberInput:disabled  {
   border-color: value(borderColorDisabled);
   color: value(textColorDisabled);
 }
-
-/*
-NumberInput:disabled::stepper::down::control-icon,
-NumberInput:disabled::stepper::up::control-icon {
-  color: value(textColorDisabled);
-}*/
 
 NumberInput:error {
   border-color: value(borderColorError);

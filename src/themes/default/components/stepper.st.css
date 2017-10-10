@@ -6,3 +6,8 @@
 Stepper {
 
 }
+
+Stepper:up,
+Stepper:down {
+	background-size: 16px 16px;
+}

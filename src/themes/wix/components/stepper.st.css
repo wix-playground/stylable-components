@@ -3,19 +3,44 @@
 	-st-default: Stepper;
 }
 
+:import {
+  -st-from: "../variables.st.css";
+  -st-named:
+          iconChevronUpDefault,
+          iconChevronUpHover,
+          iconChevronUpDisabled,
+          iconChevronDownDefault,
+          iconChevronDownHover,
+          iconChevronDownDisabled;
 
-Stepper::up {
-	color:#3899EC;
 }
 
-Stepper::down {
-	color:#3899EC;
+Stepper {
+	width: 28px;
+}
+
+Stepper::up {
+	background-image: value(iconChevronUpDefault);
+	padding-top: 2px;
 }
 
 Stepper::up:hover {
-	color:#4EB7F5;
+	background-image: value(iconChevronUpHover);
+}
+
+Stepper::up:disabled {
+	background-image: value(iconChevronUpDisabled);
+}
+
+Stepper::down {
+ 	background-image: value(iconChevronDownDefault);
+ 	padding-bottom: 3px;
 }
 
 Stepper::down:hover {
-	color:#4EB7F5;
+	background-image: value(iconChevronDownHover);
+}
+
+Stepper::down:disabled {
+	background-image: value(iconChevronDownDisabled);
 }
