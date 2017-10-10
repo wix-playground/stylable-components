@@ -60,7 +60,7 @@ export class ComponentsDemo extends React.Component<{}, {}>{
 
 Comments to example 1
 
-**Example 2 (with children):**
+**Example 2:**
 
 ```jsx
 //TODO: code guys - fix code example!
