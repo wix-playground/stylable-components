@@ -1,6 +1,6 @@
 :import {
-	-st-from: "../../../components/number-input/number-input.st.css";
-	-st-default: NumberInput;
+	-st-from: "../../../components/input/input.st.css";
+	-st-default: Input;
 }
 
 :import {
@@ -28,22 +28,7 @@
           borderColorError;
 }
 
-NumberInput {
+
+Input {
   -st-mixin: inputStyle;
-  padding: 0;
-}
-
-NumberInput::nativeInput {
-  padding: value(inputPadding);
-}
-
-
-NumberInput::nativeInput::placeholder {
-  font: value(fontStyle);
-  color: value(placeholderColor);
-}
-
-
-NumberInput::nativeInput:disabled::placeholder {
-  color: value(textColorDisabled);
 }

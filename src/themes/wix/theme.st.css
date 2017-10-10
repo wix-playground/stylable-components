@@ -41,6 +41,11 @@
 }
 
 :import {
+    -st-theme: true;
+    -st-from: "./components/input.st.css";
+}
+
+:import {
 	-st-from: "../../components/toggle/toggle.st.css";
 	-st-default: Toggle;
 }

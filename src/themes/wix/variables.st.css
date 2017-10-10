@@ -1,4 +1,3 @@
-
 :vars {
 	/* From Wix Styleguide */
 	B00: #2b81cb;
@@ -58,4 +57,45 @@
     /* uses the color D50 */
     iconChevronUpDisabled:   url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMCIgaGVpZ2h0PSI2IiB2aWV3Qm94PSIwIDAgMTAgNiI+PHBhdGggZmlsbD0iI2I2YzFjZCIgZD0iTTguNjQ2IDUuNzA4TDkuMzU0IDUgNSAuNjQ3LjY0NiA1bC43MDguNzA4TDUgMi4wNiIvPjwvc3ZnPg==);
     iconChevronDownDisabled: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMCIgaGVpZ2h0PSI2IiB2aWV3Qm94PSIwIDAgMTAgNiI+PHBhdGggZmlsbD0iI2I2YzFjZCIgZD0iTTEuMzU0LjY0NmwtLjcwOC43MDhMNSA1LjcwN2w0LjM1NC00LjM1My0uNzA4LS43MDhMNSA0LjI5MyIvPjwvc3ZnPg==);
+}
+
+
+/* Shared Styles / mixins */
+.inputStyle {
+	min-width: value(inputWidth);
+	height: value(inputHeight);
+	border: value(borderStyle);
+	border-radius: value(borderRadius);
+	background: value(inputBackgroundColor);
+	font: value(fontStyle);
+	color: value(textColor);
+	padding: value(inputPadding);
+}
+
+.inputStyle:hover {
+	background: value(inputBackgroundColorHover);
+	border-color: value(borderColorHover);
+}
+
+.inputStyle:focus {
+	border-color: value(borderColorFocus);
+}
+
+.inputStyle:disabled {
+	background-color: value(inputBackgroundColorDisabled);
+	border-color: value(borderColorDisabled);
+	color: value(textColorDisabled);
+}
+
+.inputStyle:error {
+	border-color: value(borderColorError);
+}
+
+.inputStyle::placeholder {
+	font: value(fontStyle);
+	color: value(placeholderColor);
+}
+
+.inputStyle:disabled::placeholder {
+	color: value(textColorDisabled);
 }
