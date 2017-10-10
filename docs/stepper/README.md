@@ -70,10 +70,9 @@ Comments to example 2
 
 #### Custom CSS States (pseudo-classes)
 
-| selector                       | description                              |
-| ------------------------------ | ---------------------------------------- |
-| :error                         | Style the component on error, i.e. when the `error` prop is true |
-| :hover, :focus, :disabled, etc | Standard CSS pseudo classes              |
+| selector                       | description                 |
+| ------------------------------ | --------------------------- |
+| :hover, :focus, :disabled, etc | Standard CSS pseudo classes |
 
 ### Style Code Examples
 
