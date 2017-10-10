@@ -1,6 +1,23 @@
 @namespace "wixTheme";
 
 :import {
+	-st-from: "./components/number-input.st.css";
+	-st-theme: true;
+}
+
+:import {
+    -st-theme: true;
+    -st-from: "./components/stepper.st.css";
+}
+
+:import {
+    -st-theme: true;
+    -st-from: "./components/input.st.css";
+}
+
+/* old content */
+
+:import {
   -st-from: "./variables.st.css";
   -st-theme: true;
   -st-named: B00,
@@ -28,21 +45,6 @@
   R20,
   R30,
   primary-color;
-}
-
-:import {
-	-st-from: "./components/number-input.st.css";
-	-st-theme: true;
-}
-
-:import {
-    -st-theme: true;
-    -st-from: "./components/stepper.st.css";
-}
-
-:import {
-    -st-theme: true;
-    -st-from: "./components/input.st.css";
 }
 
 :import {
