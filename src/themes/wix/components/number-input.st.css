@@ -5,7 +5,6 @@
 
 :import {
   -st-from: "../variables.st.css";
-  -st-theme: true;
   -st-named:
           inputWidth,
           inputHeight,
@@ -66,7 +65,9 @@ NumberInput:disabled  {
   color: value(textColorDisabled);
 }
 
-/*NumberInput:disabled::stepper::down::control-icon, NumberInput:disabled::stepper::up::control-icon {
+/*
+NumberInput:disabled::stepper::down::control-icon,
+NumberInput:disabled::stepper::up::control-icon {
   color: value(textColorDisabled);
 }*/
 
