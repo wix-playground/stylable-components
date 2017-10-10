@@ -70,6 +70,7 @@
 	font: value(fontStyle);
 	color: value(textColor);
 	padding: value(inputPadding);
+	outline: 0;
 }
 
 .inputStyle:hover {
