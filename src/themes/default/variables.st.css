@@ -48,6 +48,7 @@
     /* Component state colors */
     color_Default: value(B1);
     color_Hover: value(B2);
+    color_Hover2: value(PR4);
     color_Active: value(B3);
     color_Focus: value(B4);
     color_Disabled: value(B5);
@@ -55,6 +56,8 @@
     color_Keyboard_Focused: value(M4);
     color_Selected: value(DS2);
     color_Outline: value(PR4);
+    color_Error: value(R1);
+    color_Divider: value(BK3);
 
     /* Copmponent Sizes */
     inputHeight: 36px;
@@ -64,8 +67,7 @@
     inputSpacing: value(inputVSpacing) value(inputHSpacing);
     caretRightSpacing: 1px;
 
-    inputFont: normal value(fontSize) value(fontFamily), sans-serif;
-
+    defaultFont: normal value(fontSize) value(fontFamily), sans-serif;
 
     /* Borders */
     borderRadius: 0px;
@@ -73,16 +75,11 @@
     borderStyle: solid;
 
     borderDefaultColor: value(B5);
-    borderHoverColor: value(B2);
-    borderFocusColor: value(B3);
-    borderDisabledColor: value(B5);
-    borderErrorColor: value(R1);
-
     borderDefault: value(borderStyle) value(borderWidth) value(borderDefaultColor);
-    borderHover: value(borderStyle) value(borderWidth) value(borderHoverColor);
-    borderFocus: value(borderStyle) value(borderWidth) value(borderFocusColorB3);
-    borderDisabled: value(borderStyle) value(borderWidth) value(borderDisabledColor);
-    borderError: value(borderStyle) value(borderWidth) value(borderErrorColor);
+    borderHover: value(borderStyle) value(borderWidth) value(color_Hover);
+    borderFocus: value(borderStyle) value(borderWidth) value(color_Focus);
+    borderDisabled: value(borderStyle) value(borderWidth) value(color_Disabled2);
+    borderError: value(borderStyle) value(borderWidth) value(color_Error);
 
     iconChevronUpBK3:   url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNhZGJiYzYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cG9seWxpbmUgcG9pbnRzPSIxOCAxNSAxMiA5IDYgMTUiPjwvcG9seWxpbmU+PC9zdmc+);
     iconChevronUpDS1:   url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNjOGM4YzgiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cG9seWxpbmUgcG9pbnRzPSIxOCAxNSAxMiA5IDYgMTUiPjwvcG9seWxpbmU+PC9zdmc+);

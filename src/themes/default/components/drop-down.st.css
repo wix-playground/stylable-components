@@ -6,16 +6,16 @@
 :import {
     -st-from: "../variables.st.css";
     -st-named:  color_MainText_Background,
-                borderHoverColor,
+                color_Hover,
                 borderDefault,
                 inputHeight,
                 inputHSpacing,
-                inputFont,
+                defaultFont,
                 caretRightSpacing;
 }
 
 DropDown {
-    font: value(inputFont);
+    font: value(defaultFont);
 }
 
 DropDown::input {
@@ -32,7 +32,7 @@ DropDown::caret {
 }
 
 DropDown::input:hover {
-    border-color: value(borderHoverColor);
+    color_Hover);
 }
 
 DropDown::list {

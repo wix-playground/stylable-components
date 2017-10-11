@@ -60,7 +60,6 @@ export class SelectionList extends React.Component<SelectionListProps> {
     public render() {
         return (
             <SelectionListView
-                className="list"
                 focused={this.focused}
                 list={this.list}
                 onBlur={this.handleBlur}

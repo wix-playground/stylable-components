@@ -13,12 +13,12 @@
                 inputWidth,
                 inputHeight,
                 inputSpacing,
-                inputFont,
+                defaultFont,
                 caretRightSpacing;
 }
 
 AutoComplete {
-    font:value(inputFont);
+    font: value(defaultFont);
     border: value(borderDefault);
     border-radius: value(borderRadius);
     background-color: value(color_MainText_Background);
