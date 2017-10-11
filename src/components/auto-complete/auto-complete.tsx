@@ -24,7 +24,7 @@ export interface AutoCompleteProps extends FormInputProps<string>,
 }
 
 export interface AutoCompleteState {
-    input: HTMLInputElement | null;
+    self: HTMLDivElement | null;
 }
 
 const prefixFilter: FilterPredicate = (item: string, prefix: string) => {
@@ -42,7 +42,7 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
         onChange: noop,
         onOpenStateChange: noop
     };
-    public state = {input: null, isOpen: this.props.open!};
+    public state = {self: null, isOpen: this.props.open!};
 
     public render() {
         const filteredItems = this.props.value ?
@@ -51,19 +51,21 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
         const list = new SelectionListModel();
         list.addDataSource({dataSource: filteredItems});
         return (
-            <div data-automation-id="AUTO_COMPLETE">
+            <div data-automation-id="AUTO_COMPLETE"
+                ref={this.refCallback}
+            >
                 <input
                     className="input"
                     data-automation-id="AUTO_COMPLETE_INPUT"
                     type="text"
                     onChange={this.onChange}
                     value={this.props.value}
-                    ref={this.refCallback}
+                    
                 />
                 <CaretDown onClick={this.onCaretClick} className="caret" data-automation-id="AUTO_COMPLETE_CARET"/>
                 <Popup
                     className="root"
-                    anchor={this.state.input}
+                    anchor={this.state.self}
                     open={this.props.open && filteredItems!.length > 0}
                 >
                     <SelectionListView
@@ -76,8 +78,8 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
         );
     }
 
-    private refCallback = (ref: HTMLInputElement) => {
-        this.setState({input: ref});
+    private refCallback = (ref: HTMLDivElement) => {
+        this.setState({self: ref});
     }
 
     private onChange = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -1,12 +1,25 @@
 @namespace "AutoComplete";
 
 .root {
+    box-sizing: inherit;
     position: relative;
-    display: inline-block;
+    display: inline-flex;
 }
 
 .input {
-    width: 100%;
+        /* making sure the input shrinks properly */
+    flex: 1;
+    min-width: 1px;
+    text-overflow: ellipsis;
+
+    /* negating global input styles */
+    height: auto;
+    border: none;
+    box-shadow: none;
+    outline: none;
+    color: inherit;
+    font: inherit;
+    background: none;
 }
 
 .list {
@@ -22,8 +35,5 @@
 
 .caret {
     cursor: pointer;
-    position: absolute;
-    top: 50%;
-    right: 0;
-    transform:translateY(-50%);
+    height: auto;
 }
