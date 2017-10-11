@@ -6,7 +6,7 @@
 :import {
     -st-from: "../../../project.st.css";
     -st-named: defaultFont,
-                lineHeight,
+               lineHeight,
                color_MainText,
                color_MainPlaceholder,
                color_MainText_Background,

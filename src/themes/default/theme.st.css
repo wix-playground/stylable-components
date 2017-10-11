@@ -60,3 +60,8 @@
     -st-theme: true;
     -st-from: "./components/selection-list.st.css";
 }
+
+:import {
+    -st-theme: true;
+    -st-from: "./components/time-picker.st.css";
+}

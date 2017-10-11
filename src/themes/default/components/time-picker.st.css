@@ -1,0 +1,135 @@
+:import {
+	-st-from: "../../../components/time-picker/time-picker.st.css";
+	-st-default: TimePicker;
+}
+
+:import {
+    -st-from: "../variables.st.css";
+    -st-named:  defaultFont,
+                color_MainText_Background,
+                borderDefault,
+                borderDefaultColor,
+                color_MainDisabled,
+                color_Disabled2,
+                color_Focus,
+                color_Error,
+                color_Selection,
+                color_Hover,
+                color_MainPlaceholder;
+}
+
+
+TimePicker {
+    font: value(defaultFont);
+    border: value(borderDefault);
+    background-color: value(color_MainText_Background);
+}
+
+TimePicker:not(:disabled):hover {
+    border-color: value(color_Hover);
+}
+
+/* reset :hover for touch devices */
+@media (hover: none) {
+    TimePicker:not(:focus):hover {
+        border-color: value(borderDefaultColor);
+    }
+}
+
+TimePicker:focus {
+    border-color: value(color_Focus);
+}
+
+TimePicker:disabled {
+    background-color: value(color_Disabled2);
+    color: value(color_MainDisabled);
+}
+
+TimePicker:empty {
+    color: value(color_MainPlaceholder);
+}
+
+TimePicker:error {
+    border-color: value(color_Error);
+}
+
+TimePicker::input {
+    font: inherit;
+    background: none;
+    color: inherit;
+    -webkit-text-fill-color: inherit;
+}
+
+/* TODO replace with mixin */
+TimePicker::input::-webkit-input-placeholder {
+    color: value(color_MainPlaceholder);
+    -webkit-text-fill-color: currentColor;
+    opacity: 1;
+}
+TimePicker::input:-ms-input-placeholder {
+    color: value(color_MainPlaceholder);
+    -webkit-text-fill-color: currentColor;
+    opacity: 1;
+}
+TimePicker::input::-moz-placeholder {
+    color: value(color_MainPlaceholder);
+    -webkit-text-fill-color: currentColor;
+    opacity: 1;
+}
+
+/* TODO replace with mixin */
+TimePicker::input::-moz-selection {
+    color: value(color_MainText_Background);
+    background: value(color_Selection);
+    padding: 2px;
+}
+TimePicker::input::selection {
+    color: value(color_MainText_Background);
+    -webkit-text-fill-color: currentColor;
+    background: value(color_Selection);
+    padding: 2px;
+}
+
+TimePicker::input:hover,
+TimePicker::input:focus {
+    border: 0;
+    outline: 0;
+}
+TimePicker::input:disabled {
+    opacity: 1;
+    background-color: inherit;
+    border: none;
+    color: inherit;
+}
+
+TimePicker::ampm {
+    background-color: inherit;
+}
+
+TimePicker::ampm:hover {
+    color: value(color_Hover);
+}
+
+TimePicker::ampm:focus {
+    background: value(color_Selection);
+    outline: none;
+    color: value(color_MainText_Background);
+}
+
+TimePicker:disabled::ampm:hover {
+    color: inherit;
+}
+
+TimePicker::label {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+}
+
+TimePicker::nativeInput:focus {
+    border: 0;
+}
+
+.stepper {
+    transition: opacity 100ms ease;
+}
+
