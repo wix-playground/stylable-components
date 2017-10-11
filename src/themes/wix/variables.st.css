@@ -71,7 +71,6 @@
 	background: value(inputBackgroundColor);
 	font: value(fontStyle);
 	color: value(textColor);
-	padding: value(inputPadding);
 	outline: 0;
 }
 
@@ -101,4 +100,17 @@
 
 .inputStyle:disabled::placeholder {
 	color: value(textColorDisabled);
+}
+
+.inputCaretStyle {
+	width: 28px;
+	background-image: value(iconChevronDownDefault);
+}
+
+.inputCaretStyle:hover {
+	background-image: value(iconChevronDownHover);	
+}
+
+.inputCaretStyle:disabled {
+	background-image: value(iconChevronDownDisabled);
 }

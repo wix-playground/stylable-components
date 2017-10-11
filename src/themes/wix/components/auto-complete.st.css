@@ -1,6 +1,6 @@
 :import {
-	-st-from: "../../../components/input/input.st.css";
-	-st-default: Input;
+	-st-from: "../../../components/auto-complete/auto-complete.st.css";
+	-st-default: AutoComplete;
 }
 
 :import {
@@ -27,11 +27,32 @@
           borderColorHover,
           borderColorFocus,
           borderColorDisabled,
-          borderColorError;
+          borderColorError,
+
+          inputCaretStyle,
+          iconChevronDownDefault,
+          iconChevronDownHover,
+          iconChevronDownDisabled;
 }
 
-
-Input {
-  -st-mixin: inputStyle;
-  padding: value(inputPadding);
+AutoComplete {
+    -st-mixin: inputStyle;
 }
+
+AutoComplete::input {
+    padding: value(inputPadding);
+}
+
+AutoComplete::input::placeholder {
+    font: value(fontStyle);
+    color: value(placeholderColor);
+}
+
+AutoComplete::caret {
+    -st-mixin: inputCaretStyle;
+}
+
+AutoComplete::input:disabled::placeholder {
+  color: value(textColorDisabled);
+}
+

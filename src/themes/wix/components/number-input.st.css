@@ -32,7 +32,6 @@
 
 NumberInput {
   -st-mixin: inputStyle;
-  padding: 0;
 }
 
 NumberInput::nativeInput {
