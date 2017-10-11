@@ -5,7 +5,11 @@
 
 :import {
     -st-from: "../variables.st.css";
-    -st-named:  inputHSpacing,
+    -st-named:  color_MainText_Background,
+                borderDefault,
+                borderHoverColor,
+                inputHeight,
+                inputHSpacing,
                 inputFont,
                 caretRightSpacing;
 }
@@ -16,13 +20,13 @@ AutoComplete {
 
 AutoComplete::input {
     font: value(inputFont);
-    height: 36px;
+    height: value(inputHeight);
     padding-left: value(inputHSpacing);
-    border: 1px solid #adbac5;
+    border: value(borderDefault);
 }
 
 AutoComplete::input:hover {
-    border-color: #5cb4ff
+    border-color: value(borderHoverColor);
 }
 
 AutoComplete::caret {
@@ -31,7 +35,7 @@ AutoComplete::caret {
 
 AutoComplete::list {
     border-top: 0;
-    background: #fff;
+    background-color: value(color_MainText_Background);
 }
 
 
