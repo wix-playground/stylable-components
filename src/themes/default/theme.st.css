@@ -65,3 +65,8 @@
     -st-theme: true;
     -st-from: "./components/time-picker.st.css";
 }
+
+:import {
+    -st-theme: true;
+    -st-from: "./components/toggle.st.css";
+}
