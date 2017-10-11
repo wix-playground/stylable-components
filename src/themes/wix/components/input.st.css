@@ -33,4 +33,5 @@
 
 Input {
   -st-mixin: inputStyle;
+  padding: value(inputPadding);
 }
