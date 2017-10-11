@@ -4,7 +4,7 @@ import {Popup} from '../../';
 import {ChangeEvent} from '../../types/events';
 import {FormInputProps} from '../../types/forms';
 import {noop} from '../../utils';
-//import {CaretDown} from '../drop-down/drop-down-icons';
+// import {CaretDown} from '../drop-down/drop-down-icons';
 import {
     SelectionListItemValue,
     SelectionListModel,
@@ -51,7 +51,8 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
         const list = new SelectionListModel();
         list.addDataSource({dataSource: filteredItems});
         return (
-            <div data-automation-id="AUTO_COMPLETE"
+            <div
+                data-automation-id="AUTO_COMPLETE"
                 ref={this.refCallback}
             >
                 <input
@@ -60,9 +61,13 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
                     type="text"
                     onChange={this.onChange}
                     value={this.props.value}
-                    
+
                 />
-                <button onClick={this.onCaretClick} className="caret" data-automation-id="AUTO_COMPLETE_CARET"/>
+                <button
+                    onClick={this.onCaretClick}
+                    className="caret"
+                    data-automation-id="AUTO_COMPLETE_CARET"
+                />
                 <Popup
                     className="root"
                     anchor={this.state.self}
