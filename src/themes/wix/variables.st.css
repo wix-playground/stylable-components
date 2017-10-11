@@ -47,14 +47,14 @@
     borderColorDisabled: value(D60);
     borderColorError: value(R00);
 
-    /* Stepper Vars */
-    /* uses the color B10 */
+    /* Icons */
+    /* color: B10 */
     iconChevronUpDefault:   url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMCIgaGVpZ2h0PSI2IiB2aWV3Qm94PSIwIDAgMTAgNiI+PHBhdGggZmlsbD0iIzM4OTlFQyIgZD0iTTguNjQ2IDUuNzA4TDkuMzU0IDUgNSAuNjQ3LjY0NiA1bC43MDguNzA4TDUgMi4wNiIvPjwvc3ZnPg==);
     iconChevronDownDefault: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMCIgaGVpZ2h0PSI2IiB2aWV3Qm94PSIwIDAgMTAgNiI+PHBhdGggZmlsbD0iIzM4OTlFQyIgZD0iTTEuMzU0LjY0NmwtLjcwOC43MDhMNSA1LjcwN2w0LjM1NC00LjM1My0uNzA4LS43MDhMNSA0LjI5MyIvPjwvc3ZnPg==);
-    /* uses the color B20 */
+    /* color: B20 */
     iconChevronUpHover:   url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMCIgaGVpZ2h0PSI2IiB2aWV3Qm94PSIwIDAgMTAgNiI+PHBhdGggZmlsbD0iIzRFQjdGNSIgZD0iTTguNjQ2IDUuNzA4TDkuMzU0IDUgNSAuNjQ3LjY0NiA1bC43MDguNzA4TDUgMi4wNiIvPjwvc3ZnPg==);
     iconChevronDownHover: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMCIgaGVpZ2h0PSI2IiB2aWV3Qm94PSIwIDAgMTAgNiI+PHBhdGggZmlsbD0iIzRFQjdGNSIgZD0iTTEuMzU0LjY0NmwtLjcwOC43MDhMNSA1LjcwN2w0LjM1NC00LjM1My0uNzA4LS43MDhMNSA0LjI5MyIvPjwvc3ZnPg==);
-    /* uses the color D50 */
+    /* color: D50 */
     iconChevronUpDisabled:   url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMCIgaGVpZ2h0PSI2IiB2aWV3Qm94PSIwIDAgMTAgNiI+PHBhdGggZmlsbD0iI2I2YzFjZCIgZD0iTTguNjQ2IDUuNzA4TDkuMzU0IDUgNSAuNjQ3LjY0NiA1bC43MDguNzA4TDUgMi4wNiIvPjwvc3ZnPg==);
     iconChevronDownDisabled: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMCIgaGVpZ2h0PSI2IiB2aWV3Qm94PSIwIDAgMTAgNiI+PHBhdGggZmlsbD0iI2I2YzFjZCIgZD0iTTEuMzU0LjY0NmwtLjcwOC43MDhMNSA1LjcwN2w0LjM1NC00LjM1My0uNzA4LS43MDhMNSA0LjI5MyIvPjwvc3ZnPg==);
 }

@@ -36,6 +36,7 @@ NumberInput {
 
 NumberInput::nativeInput {
   padding: value(inputPadding);
+  padding-right: 0;
 }
 
 
