@@ -48,6 +48,7 @@
     /* Component state colors */
     color_Default: value(B1);
     color_Hover: value(B2);
+    color_Hover2: value(PR4);
     color_Active: value(B3);
     color_Focus: value(B4);
     color_Disabled: value(B5);
@@ -56,6 +57,7 @@
     color_Selected: value(DS2);
     color_Outline: value(PR4);
     color_Error: value(R1);
+    color_Divider: value(BK3);
 
     /* Copmponent Sizes */
     inputHeight: 36px;
@@ -65,8 +67,7 @@
     inputSpacing: value(inputVSpacing) value(inputHSpacing);
     caretRightSpacing: 1px;
 
-    inputFont: normal value(fontSize) value(fontFamily), sans-serif;
-
+    defaultFont: normal value(fontSize) value(fontFamily), sans-serif;
 
     /* Borders */
     borderRadius: 0px;

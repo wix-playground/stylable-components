@@ -10,12 +10,12 @@
                 borderDefault,
                 inputHeight,
                 inputHSpacing,
-                inputFont,
+                defaultFont,
                 caretRightSpacing;
 }
 
 DropDown {
-    font: value(inputFont);
+    font: value(defaultFont);
 }
 
 DropDown::input {

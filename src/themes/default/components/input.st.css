@@ -5,7 +5,7 @@
 
 :import {
     -st-from: "../../../project.st.css";
-    -st-named: inputFont,
+    -st-named: defaultFont,
                 lineHeight,
                color_MainText,
                color_MainPlaceholder,
@@ -27,7 +27,7 @@ Input {
     border-radius: value(borderRadius);
     background-color: value(color_MainText_Background);
     color: value(color_MainText);
-    font: value(inputFont);
+    font: value(defaultFont);
     line-height: value(lineHeight);
     margin: 0;
     padding: 6px 12px;

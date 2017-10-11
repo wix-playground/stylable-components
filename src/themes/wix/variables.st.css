@@ -61,6 +61,8 @@
 
 
 /* Shared Styles / mixins */
+
+/* TODO: Eliminate as many variables as possible, replacing with hard values */
 .inputStyle {
 	min-width: value(inputWidth);
 	height: value(inputHeight);

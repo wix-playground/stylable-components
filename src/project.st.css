@@ -63,7 +63,7 @@
     inputWidth: 192px;
     inputLeftSpacing: 5px;
 
-    inputFont: value(fontSize) value(fontFamily), sans-serif;
+    defaultFont: value(fontSize) value(fontFamily), sans-serif;
 
     /* Borders */
     borderRadius: 0px;
