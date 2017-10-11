@@ -80,77 +80,10 @@ Comments to example 2
 
 ```css
 /* Layout for default components style */
-
-:import {
-    -st-from: "../../style/project.st.css";
-    -st-named: color_MainText,
-               color_MainText_Background,
-               color_Disabled,
-               borderWidth,
-               inputHeight,
-               iconChevronDownBK3,
-               iconChevronDownDS1,
-               iconChevronDownPR3,
-               iconChevronUpBK3,
-               iconChevronUpDS1,
-               iconChevronUpPR3,
-               DS1,
-               BK3,
-               PR3;
-}
-
-.root {
-    display: inline-flex;
-    flex-direction: column;
-    justify-content: space-between;
-
-    position: relative;
-
-    width: 30px;
-    height: value(inputHeight);
-}
-
-.control {
-    position: absolute;
-
-    width: 100%;
-    height: 50%;
-
-    margin: 0;
-    padding: 0;
-    border: 0;
-
-    outline: none;
-
-    background: center/16px 16px no-repeat transparent;
-}
 ```
 
 **Example 2:**
 
 ```css
 /* Style the UP & DOWN arrow keys */
-.up {
-    top: 0;
-    background-image: value(iconChevronUpBK3);
-}
-.up:focus,
-.up:hover {
-    background-image: value(iconChevronUpPR3);
-}
-.up:disabled {
-    background-image: value(iconChevronUpDS1);
-}
-
-.down {
-    bottom: 0;
-    background-image: value(iconChevronDownBK3);
-}
-.down:focus,
-.down:hover {
-    background-image: value(iconChevronDownPR3);
-}
-.down:disabled {
-    background-image: value(iconChevronDownDS1);
-}
 ```
