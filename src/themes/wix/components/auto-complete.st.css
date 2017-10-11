@@ -1,0 +1,58 @@
+:import {
+	-st-from: "../../../components/auto-complete/auto-complete.st.css";
+	-st-default: AutoComplete;
+}
+
+:import {
+  -st-from: "../variables.st.css";
+  -st-named:
+    /* import list is long because -st-mixin currently requires 
+     importing all the variables that the mixed in class uses */
+          inputStyle,
+          inputWidth,
+          inputHeight,
+          inputPadding,
+
+          fontStyle,
+          textColor,
+          textColorDisabled,
+          placeholderColor,
+
+          inputBackgroundColor,
+          inputBackgroundColorHover,
+          inputBackgroundColorDisabled,
+
+          borderStyle,
+          borderRadius,
+          borderColorHover,
+          borderColorFocus,
+          borderColorDisabled,
+          borderColorError,
+
+          inputCaretStyle,
+          iconChevronDownDefault,
+          iconChevronDownHover,
+          iconChevronDownDisabled;
+}
+
+AutoComplete {
+    -st-mixin: inputStyle;
+}
+
+AutoComplete::input {
+    padding: value(inputPadding);
+}
+
+AutoComplete::input::placeholder {
+    font: value(fontStyle);
+    color: value(placeholderColor);
+}
+
+AutoComplete::caret {
+    -st-mixin: inputCaretStyle;
+}
+
+AutoComplete::input:disabled::placeholder {
+  color: value(textColorDisabled);
+}
+

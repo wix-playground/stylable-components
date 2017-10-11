@@ -15,6 +15,11 @@
     -st-from: "./components/input.st.css";
 }
 
+:import {
+    -st-theme: true;
+    -st-from: "./components/auto-complete.st.css";
+}
+
 /* old content */
 
 :import {

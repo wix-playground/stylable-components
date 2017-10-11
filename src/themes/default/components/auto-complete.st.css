@@ -39,6 +39,7 @@ AutoComplete:hover {
 
 AutoComplete::caret {
     width: 30px;
+    background-size: 16px 16px;
 }
 
 AutoComplete::list {
