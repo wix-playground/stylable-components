@@ -13,7 +13,6 @@
     -st-default: Divider;
 }
 
-
 :import {
     -st-from: "../variables.st.css";
     -st-named:  defaultFont,
