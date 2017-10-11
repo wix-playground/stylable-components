@@ -1,20 +1,9 @@
-:import {
-    -st-from: "../../project.st.css";
-    -st-named: 
-               iconChevronDownBK3,
-               iconChevronDownDS1,
-               iconChevronDownPR3,
-               iconChevronUpBK3,
-               iconChevronUpDS1,
-               iconChevronUpPR3;
-}
-
 .root {
     position: relative;
     width: 30px;
 }
 
-.up, 
+.up,
 .down {
     position: absolute;
 
@@ -28,46 +17,23 @@
     outline: none;
 
     background: center no-repeat transparent;
-    background-origin:content-box;
+    background-origin: content-box;
 }
 
-.up:hover, 
+.up:hover,
 .down:hover {
     cursor: pointer;
 }
 
-.up:disabled, 
+.up:disabled,
 .down:disabled {
     cursor: default;
 }
 
 .up {
     top: 0;
-    background-image: value(iconChevronUpBK3);
-    padding-top:1px;
-}
-
-.up:focus,
-.up:hover {
-    background-image: value(iconChevronUpPR3);
-}
-
-.up:disabled {
-    background-image: value(iconChevronUpDS1);
 }
 
 .down {
     bottom: 0;
-    background-image: value(iconChevronDownBK3);
-    padding-bottom:1px;
 }
-
-.down:focus,
-.down:hover {
-    background-image: value(iconChevronDownPR3);
-}
-
-.down:disabled {
-    background-image: value(iconChevronDownDS1);
-}
-

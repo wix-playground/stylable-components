@@ -3,6 +3,17 @@
 	-st-default: Stepper;
 }
 
+:import {
+    -st-from: "../variables.st.css";
+    -st-named:  iconChevronDownBK3,
+                iconChevronDownDS1,
+                iconChevronDownPR3,
+                iconChevronUpBK3,
+                iconChevronUpDS1,
+                iconChevronUpPR3;
+}
+
+
 Stepper {
 
 }
@@ -11,3 +22,33 @@ Stepper::up,
 Stepper::down {
 	background-size: 16px 16px;
 }
+
+Stepper::up {
+    background-image: value(iconChevronUpBK3);
+    padding-top: 1px;
+}
+
+Stepper::down {
+    background-image: value(iconChevronDownBK3);
+    padding-bottom: 1px;
+}
+
+
+Stepper::up:focus,
+Stepper::up:hover {
+    background-image: value(iconChevronUpPR3);
+}
+
+Stepper::down:focus,
+Stepper::down:hover {
+    background-image: value(iconChevronDownPR3);
+}
+
+Stepper::up:disabled {
+    background-image: value(iconChevronUpDS1);
+}
+
+Stepper::down:disabled {
+    background-image: value(iconChevronDownDS1);
+}
+
