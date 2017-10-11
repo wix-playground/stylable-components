@@ -9,6 +9,7 @@
                 color_MainText,
                 color_MainPlaceholder,
                 color_MainText_Background,
+                inputFont,
                 borderRadius,
                 borderDefault,
                 borderHover,
@@ -21,6 +22,7 @@
 }
 
 NumberInput {
+    font: value(inputFont);
     border: value(borderDefault);
     border-radius: value(borderRadius);
     background-color: value(color_MainText_Background);
