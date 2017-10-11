@@ -7,7 +7,7 @@
     -st-from: "../variables.st.css";
     -st-named:  color_MainText_Background,
                 borderDefault,
-                borderHoverColor,
+                color_Hover,
                 inputHeight,
                 inputHSpacing,
                 inputFont,
@@ -26,7 +26,7 @@ AutoComplete::input {
 }
 
 AutoComplete::input:hover {
-    border-color: value(borderHoverColor);
+    border-color: value(color_Hover);
 }
 
 AutoComplete::caret {
