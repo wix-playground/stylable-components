@@ -11,19 +11,6 @@
     list-style: none;
 }
 
-.item:hover {
-    background-color: value(color_Keyboard_Focused);
-}
-
-.item:focused {
-    border: 1px solid value(color_Active);
-}
-
-.item:selected {
-    background-color: value(color_Active);
-    color: white;
-}
-
 .nestedTree {
     margin-left: 2rem;
     list-style: none;

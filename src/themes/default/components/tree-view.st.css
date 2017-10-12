@@ -1,0 +1,36 @@
+:import {
+	-st-from: "../../../components/tree-view/tree-view.st.css";
+	-st-default: TreeView;
+}
+
+:import{
+    -st-from: "../../../components/tree-view/tree-item.st.css";
+    -st-default: TreeItem;
+}
+
+
+:import {
+    -st-from: "../variables.st.css";
+    -st-named:  defaultFont,
+                borderFocus,
+                color_Active,
+                color_MainText_Background,
+                color_Keyboard_Focused;
+}
+
+.TreeView {
+    font: defaultFont;
+}
+
+TreeItem::item:hover {
+    background-color: value(color_Keyboard_Focused);
+}
+
+TreeItem::item:focused {
+    border: value(borderFocus);
+}
+
+TreeItem::item:selected {
+    background-color: value(color_Active);
+    color: value(color_MainText_Background);
+}

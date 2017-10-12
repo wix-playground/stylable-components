@@ -70,3 +70,8 @@
     -st-theme: true;
     -st-from: "./components/toggle.st.css";
 }
+
+:import {
+    -st-theme: true;
+    -st-from: "./components/tree-view.st.css";
+}
