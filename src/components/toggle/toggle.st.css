@@ -1,6 +1,5 @@
 @namespace 'toggle';
 
-
 .root {
     -st-states: checked, disabled, focus, error, rtl;
     display: inline-block;

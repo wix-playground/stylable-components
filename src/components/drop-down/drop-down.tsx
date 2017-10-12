@@ -22,7 +22,7 @@ export interface DropDownProps extends SelectionListOptionList, FormInputProps<s
     disabled?: boolean;
     openOnFocus?: boolean;
     children?: React.ReactNode;
-    //toggleIcon?: React.ReactNode;
+    // toggleIcon?: React.ReactNode;
     tabIndex?: number;
     onOpenStateChange?: (e: ChangeEvent<boolean>) => void;
 }
@@ -38,7 +38,7 @@ export class DropDown extends React.PureComponent<DropDownProps, DropDownState> 
         children: [],
         onChange: noop,
         tabIndex: 0,
-        //toggleIcon: <CaretDown className="caret" data-automation-id="ICON" />,
+        // toggleIcon: <CaretDown className="caret" data-automation-id="ICON" />,
         disabled: false,
         onOpenStateChange: noop
     };
@@ -65,18 +65,20 @@ export class DropDown extends React.PureComponent<DropDownProps, DropDownState> 
                     <span className="label">{this.props.value!}</span>
                 </div>
                 <button onClick={this.toggleDropdown} className="caret" data-automation-id="AUTO_COMPLETE_CARET"/>
-                <Popup open={this.props.open && !this.props.disabled} anchor={this.state.dropdown}>
-                    <div className="root">
-                        <SelectionList
-                            data-automation-id="DROP_DOWN_LIST"
-                            className="list"
-                            value={this.props.value}
-                            onChange={this.onItemClick!}
-                            dataSource={this.props.dataSource}
-                        >
-                            {this.props.children}
-                        </SelectionList>
-                    </div>
+                <Popup
+                    clas
+                    open={this.props.open && !this.props.disabled}
+                    anchor={this.state.dropdown}
+                >
+                    <SelectionList
+                        data-automation-id="DROP_DOWN_LIST"
+                        className="list"
+                        value={this.props.value}
+                        onChange={this.onItemClick!}
+                        dataSource={this.props.dataSource}
+                    >
+                        {this.props.children}
+                    </SelectionList>
                 </Popup>
             </div>
         );

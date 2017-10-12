@@ -1,13 +1,8 @@
-@namespace "DropDown"
-
-:import {
-    -st-from: "../selection-list/selection-list.st.css";
-    -st-default: SelectionList;
-}
+@namespace "DropDown";
 
 :import {
     -st-from: "../../project.st.css";
-    -st-named: 
+    -st-named:
                iconChevronDownBK3,
                iconChevronDownDS1,
                iconChevronDownPR3;
@@ -36,7 +31,6 @@
 }
 
 .list {
-    -st-extends: SelectionList;
     width: 100%;
     /*
         Styling list is here (not at the theme)
@@ -59,7 +53,7 @@
 
 .caret {
 
-    margin: 0; 
+    margin: 0;
     padding: 0;
     border: 0;
 
