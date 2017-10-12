@@ -3,7 +3,7 @@ import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import {properties} from 'wix-react-tools';
 import {FormInputProps} from '../../types/forms';
-import {isRTLContext as isRTL, nearestIndex, noop} from '../../utils';
+import {isRTLContext as isRTL, isTouchEvent, nearestIndex, noop} from '../../utils';
 import {
     getAbsoluteValue,
     getNewValue,
@@ -28,10 +28,6 @@ import {SliderView} from './slider-view';
 enum ChangeDirection {
     ascend,
     descend
-}
-
-function isTouchEvent(event: any): event is TouchEvent | React.TouchEvent<any> {
-    return 'changedTouches' in event;
 }
 
 export interface SliderProps extends FormInputProps<number[], string>, properties.Props {
