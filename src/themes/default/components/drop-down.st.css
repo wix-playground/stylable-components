@@ -6,29 +6,43 @@
 :import {
     -st-from: "../variables.st.css";
     -st-named:  color_MainText_Background,
-                color_Hover,
+                color_MainText,
                 borderDefault,
+                borderRadius,
+                borderHover,
+                borderFocus,
+                inputWidth,
                 inputHeight,
                 inputHSpacing,
+                inputSpacing,
                 defaultFont,
                 caretRightSpacing;
 }
 
 DropDown {
     font: value(defaultFont);
-}
-
-DropDown::input {
     border: value(borderDefault);
+    border-radius: value(borderRadius);
+    background-color: value(color_MainText_Background);
+    color: value(color_MainText);
+
     height: value(inputHeight);
+    min-width: value(inputWidth);
+}
+DropDown:hover {
+    border: value(borderHover);
 }
 
-DropDown::label {
-    margin-left: value(inputHSpacing);
+DropDown:focus {
+    border: value(borderFocus);
+}
+DropDown::input {
+    padding: value(inputSpacing);
 }
 
 DropDown::caret {
-    right: value(caretRightSpacing);
+    width: 30px;
+    background-size: 16px 16px;
 }
 
 DropDown::input:hover {
@@ -38,3 +52,4 @@ DropDown::input:hover {
 DropDown::list {
     background-color: value(color_MainText_Background);
 }
+

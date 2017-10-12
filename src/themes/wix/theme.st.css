@@ -20,6 +20,11 @@
     -st-from: "./components/auto-complete.st.css";
 }
 
+:import {
+    -st-theme: true;
+    -st-from: "./components/drop-down.st.css";
+}
+
 /* old content */
 
 :import {
@@ -55,11 +60,6 @@
 :import {
 	-st-from: "../../components/toggle/toggle.st.css";
 	-st-default: Toggle;
-}
-
-:import {
-	-st-from: "../../components/drop-down/drop-down.st.css";
-	-st-default: DropDown;
 }
 
 :import {
@@ -162,39 +162,6 @@ Toggle:error::switch {
 	height: 18px;
 	background-size: 60% 60%;
 }
-
-
-
-
-/* Dropdown */
-
-DropDown::drop-down-input {
-	background: #FFFFFF;
-	border: 1px solid #C1E4FE;
-	border-radius: 6px;
-	width: 276px;
-	height: 36px;
-}
-
-DropDown::label {
-	padding-left: 12px;
-}
-
-DropDown::drop-down-list {
-	border: none;
-	background: #FFFFFF;
-	box-shadow: 0 0 18px 0 rgba(22, 45, 61, 0.12), 0 6px 6px 0 rgba(22, 45, 61, 0.06);
-	border-radius: 8px;
-}
-
-DropDown::drop-down-list::item {
-	background: red;
-}
-
-DropDownItem {
-	background: red;
-}
-
 
 /* CheckBox */
 
