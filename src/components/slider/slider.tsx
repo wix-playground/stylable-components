@@ -99,8 +99,9 @@ export class Slider extends React.Component<SliderProps, SliderState> {
 
     private animationFrameId: number;
     private isActive: boolean = false;
-    private currentValueIndex: null | number = null;
+    private currentValueIndex: number = -1;
     private isCross: boolean = false;
+    private view: SliderView | null;
 
     constructor(props: SliderProps, context?: any) {
         super(props, context);
@@ -124,6 +125,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
     public render() {
         return (
             <SliderView
+                ref={view => this.view = view}
                 active={this.state.isActive}
                 axis={this.props.axis!}
                 disabled={this.props.disabled!}
@@ -205,6 +207,23 @@ export class Slider extends React.Component<SliderProps, SliderState> {
             value;
     }
 
+    private getNewValueWithoutCross(value: number, index: number) {
+        const relativeValue = getNewValue(
+            this.state.relativeValue,
+            value,
+            index
+        );
+        let currentHandleIndex = relativeValue.indexOf(value);
+        if (this.props.disableCross && index !== currentHandleIndex && !this.isCross) {
+            relativeValue[currentHandleIndex] = relativeValue[index];
+            currentHandleIndex = index;
+        }
+        if (relativeValue[0] !== relativeValue[1]) {
+            this.isCross = false;
+        }
+        return {relativeValue, currentHandleIndex};
+    }
+
     private getRelativeValueFromPointerPositionAndArea(
         event: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement> | MouseEvent | TouchEvent,
         sliderArea: HTMLElement
@@ -217,28 +236,19 @@ export class Slider extends React.Component<SliderProps, SliderState> {
             this.state.isVertical,
             this.state.isReverse
         );
-        let nearestHandleIndex = typeof this.currentValueIndex === 'number' ?
+        const nearestHandleIndex = this.currentValueIndex !== -1 ?
             this.currentValueIndex :
             nearestIndex(this.state.relativeValue, currentHandleValue);
 
-        const relativeValue = getNewValue(
-            this.state.relativeValue,
-            currentHandleValue,
-            nearestHandleIndex
-        );
-        const newHandleIndex = relativeValue.indexOf(currentHandleValue);
-
-        if (this.props.disableCross && newHandleIndex !== nearestHandleIndex && !this.isCross) {
-            relativeValue[newHandleIndex] = relativeValue[nearestHandleIndex];
-        } else {
-            nearestHandleIndex = newHandleIndex;
-        }
+        const {
+            relativeValue,
+            currentHandleIndex
+        } = this.getNewValueWithoutCross(currentHandleValue, nearestHandleIndex);
 
         return {
             relativeValue,
-            isCross: relativeValue[0] === relativeValue[1],
             currentValue: currentHandleValue,
-            currentValueIndex: nearestHandleIndex
+            currentValueIndex: currentHandleIndex
         };
     }
 
@@ -251,8 +261,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
     }
 
     private changeValue(direction: ChangeDirection, multiplier: number = 1, toEdge: boolean = false) {
-        const {relativeValue, currentHandleIndex} = this.state;
-        const currentValue = relativeValue[currentHandleIndex];
+        const currentValue = this.state.relativeValue[this.state.currentHandleIndex];
         const isAscending = direction === ChangeDirection.ascend;
         const round = isAscending ? Math.floor : Math.ceil;
         const relativeStep = this.state.relativeStep === CONTINUOUS_STEP ?
@@ -266,27 +275,21 @@ export class Slider extends React.Component<SliderProps, SliderState> {
                 0, 100
             );
 
-        let newRelativeValue: number[];
-
-        newRelativeValue = getNewValue(
+        const {
             relativeValue,
-            newValue,
             currentHandleIndex
-        );
-
-        const newHandleIndex = newRelativeValue.indexOf(newValue);
-        if (this.props.disableCross && newHandleIndex !== currentHandleIndex && !this.isCross) {
-            newRelativeValue[newHandleIndex] = newRelativeValue[currentHandleIndex];
-        }
+        } = this.getNewValueWithoutCross(newValue, this.state.currentHandleIndex);
 
         this.setState({
-            relativeValue: newRelativeValue,
-            currentHandleIndex: newHandleIndex
+            relativeValue,
+            currentHandleIndex
+        }, () => {
+            this.view!.focus(this.currentValueIndex);
         });
-        this.currentValueIndex = newHandleIndex;
+        this.currentValueIndex = currentHandleIndex;
 
-        this.callInput(newRelativeValue);
-        this.callChange(newRelativeValue);
+        this.callInput(relativeValue);
+        this.callChange(relativeValue);
     }
 
     private relativeToAbsoluteValue(relativeValue: number[]): number[] {
@@ -313,6 +316,8 @@ export class Slider extends React.Component<SliderProps, SliderState> {
             currentHandleIndex,
             currentHoverIndex: currentHandleIndex
         });
+        this.currentValueIndex = currentHandleIndex;
+        this.isCross = this.state.relativeValue[0] === this.state.relativeValue[1];
         this.props.onFocus!(event);
     }
 
@@ -321,13 +326,13 @@ export class Slider extends React.Component<SliderProps, SliderState> {
             currentHandleIndex: -1,
             currentHoverIndex: -1
         });
+        this.currentValueIndex = -1;
         this.props.onBlur!(event);
     }
 
     private onDragStart = (
         event: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement>,
-        sliderArea: HTMLElement,
-        focusableElement: HTMLElement[]
+        sliderArea: HTMLElement
     ) => {
         if (this.props.disabled) {
             return;
@@ -335,14 +340,11 @@ export class Slider extends React.Component<SliderProps, SliderState> {
 
         const {
             relativeValue,
-            isCross,
             currentValueIndex
         } = this.getRelativeValueFromPointerPositionAndArea(
             event,
             sliderArea
         );
-
-        focusableElement[currentValueIndex].focus();
 
         this.setState({
             relativeValue,
@@ -352,7 +354,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         });
         this.isActive = true;
         this.currentValueIndex = currentValueIndex;
-        this.isCross = isCross;
+        this.view!.focus(currentValueIndex);
 
         event.preventDefault();
 
@@ -362,8 +364,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
 
     private onDrag = (
         event: MouseEvent | TouchEvent,
-        sliderArea: HTMLElement,
-        focusableElement: HTMLElement[]
+        sliderArea: HTMLElement
     ) => {
         if (!this.isActive) {
             return;
@@ -376,8 +377,6 @@ export class Slider extends React.Component<SliderProps, SliderState> {
             sliderArea
         );
 
-        this.currentValueIndex = currentValueIndex;
-        focusableElement[currentValueIndex].focus();
         this.animationFrameId = requestAnimationFrame(() => {
             this.setState({
                 relativeValue,
@@ -385,6 +384,8 @@ export class Slider extends React.Component<SliderProps, SliderState> {
                 currentHandleIndex: currentValueIndex
             });
         });
+        this.currentValueIndex = currentValueIndex;
+        this.view!.focus(currentValueIndex);
 
         event.preventDefault();
 
@@ -394,15 +395,13 @@ export class Slider extends React.Component<SliderProps, SliderState> {
 
     private onDragStop = (
         event: MouseEvent | TouchEvent,
-        sliderArea: HTMLElement,
-        focusableElement: HTMLElement[]
+        sliderArea: HTMLElement
     ) => {
         if (!this.isActive) {
             return;
         }
         const {
-            relativeValue,
-            isCross
+            relativeValue
         } = this.getRelativeValueFromPointerPositionAndArea(
             event,
             sliderArea
@@ -413,8 +412,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
             isActive: false
         });
         this.isActive = false;
-        this.currentValueIndex = null;
-        this.isCross = isCross;
+        this.currentValueIndex = -1;
 
         this.props.onDragStop!(event);
         this.callChange(relativeValue);
@@ -429,8 +427,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
 
     private onSliderAreaKeyDown = (
         event: React.KeyboardEvent<HTMLElement>,
-        sliderArea: HTMLElement,
-        focusableElements: HTMLElement[]
+        sliderArea: HTMLElement
     ) => {
         if (this.isActive || this.props.disabled) {
             event.preventDefault();
@@ -483,6 +480,5 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         }
 
         event.preventDefault();
-        focusableElements[this.currentValueIndex!].focus();
     }
 }

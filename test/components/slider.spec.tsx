@@ -254,7 +254,7 @@ function rangeWithValueMinMax(
 }
 
 function rangeWithDisabledCross(clientRenderer: ClientRenderer, axis: AxisOptions) {
-    describe(`check disableCross and axis=${axis}`, () => {
+    describe.only(`check disableCross and axis=${axis}`, () => {
         describe('when drag', () => {
             let driver: any;
             let onChange: any;
@@ -327,7 +327,7 @@ function rangeWithDisabledCross(clientRenderer: ClientRenderer, axis: AxisOption
             });
 
             describe('should be possible to decrease the value', () => {
-                it('with mouse', () => {
+                it('with mouse only', () => {
                     const bounds = driver.getBounds();
                     const event1 = getEventCoordinates(bounds, axis, 0.5);
                     const event2 = getEventCoordinates(bounds, axis, 0.3);
@@ -336,7 +336,7 @@ function rangeWithDisabledCross(clientRenderer: ClientRenderer, axis: AxisOption
                     expect(onChange).to.be.calledWithMatch({value: [30, 50]});
                 });
 
-                it('with keyboard', () => {
+                it('with mouse and keyboard', () => {
                     const bounds = driver.getBounds();
                     const event = getEventCoordinates(bounds, axis, 0.5);
                     driver.mouseDown(event);
@@ -344,6 +344,15 @@ function rangeWithDisabledCross(clientRenderer: ClientRenderer, axis: AxisOption
                     driver.keyDown(isReverse(axis) ? 'right' : 'left');
                     expect(onChange).to.be.calledWithMatch({value: [49, 50]});
                 });
+
+                [0, 1].forEach(index => {
+                    it(`when focus on ${index} handle and use keyboard`, () => {
+                        driver.focus(index);
+                        driver.keyDown(isReverse(axis) ? 'right' : 'left');
+                        expect(onChange).to.be.calledWithMatch({value: [49, 50]});
+                    });
+                });
+
             });
 
             describe('should be possible to increase the value', () => {
@@ -363,6 +372,14 @@ function rangeWithDisabledCross(clientRenderer: ClientRenderer, axis: AxisOption
                     driver.mouseUp(event, environment);
                     driver.keyDown(isReverse(axis) ? 'left' : 'right');
                     expect(onChange).to.be.calledWithMatch({value: [50, 51]});
+                });
+
+                [0, 1].forEach(index => {
+                    it(`when focus on ${index} handle and use keyboard`, () => {
+                        driver.focus(index);
+                        driver.keyDown(isReverse(axis) ? 'right' : 'left');
+                        expect(onChange).to.be.calledWithMatch({value: [49, 50]});
+                    });
                 });
             });
         });

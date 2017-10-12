@@ -134,6 +134,10 @@ export class SliderView extends React.Component<SliderViewProps, {}> {
         );
     }
 
+    public focus(index: number) {
+        this.focusableElements[index].focus();
+    }
+
     private getNativeInput(): JSX.Element[] {
         return this.props.value!.map((item, index) => (
             <input
@@ -274,14 +278,14 @@ export class SliderView extends React.Component<SliderViewProps, {}> {
 
     private onSliderAreaMouseDown = (event: React.MouseEvent<HTMLElement>) => {
         this.isActive = true;
-        this.props.onSliderAreaMouseDown!(event, this.sliderArea, this.focusableElements);
+        this.props.onSliderAreaMouseDown!(event, this.sliderArea);
     }
 
     private onSliderAreaMouseMove = (event: MouseEvent) => {
         if (!this.isActive) {
             return;
         }
-        this.props.onSliderAreaMouseMove!(event, this.sliderArea, this.focusableElements);
+        this.props.onSliderAreaMouseMove!(event, this.sliderArea);
     }
 
     private onSliderAreaMouseUp = (event: MouseEvent) => {
@@ -289,19 +293,19 @@ export class SliderView extends React.Component<SliderViewProps, {}> {
             return;
         }
         this.isActive = false;
-        this.props.onSliderAreaMouseUp!(event, this.sliderArea, this.focusableElements);
+        this.props.onSliderAreaMouseUp!(event, this.sliderArea);
     }
 
     private onSliderAreaTouchStart = (event: React.TouchEvent<HTMLElement>) => {
         this.isActive = true;
-        this.props.onSliderAreaTouchStart!(event, this.sliderArea, this.focusableElements);
+        this.props.onSliderAreaTouchStart!(event, this.sliderArea);
     }
 
     private onSliderAreaTouchMove = (event: TouchEvent) => {
         if (!this.isActive) {
             return;
         }
-        this.props.onSliderAreaTouchMove!(event, this.sliderArea, this.focusableElements);
+        this.props.onSliderAreaTouchMove!(event, this.sliderArea);
     }
 
     private onSliderAreaTouchEnd = (event: TouchEvent) => {
@@ -309,10 +313,10 @@ export class SliderView extends React.Component<SliderViewProps, {}> {
             return;
         }
         this.isActive = false;
-        this.props.onSliderAreaTouchEnd!(event, this.sliderArea, this.focusableElements);
+        this.props.onSliderAreaTouchEnd!(event, this.sliderArea);
     }
 
     private onSliderAreaKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
-        this.props.onSliderAreaKeyDown!(event, this.sliderArea, this.focusableElements);
+        this.props.onSliderAreaKeyDown!(event, this.sliderArea);
     }
 }

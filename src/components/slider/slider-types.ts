@@ -14,13 +14,11 @@ export type FocusEventHandler = (
 
 export type EventHandler<T> = (
     event: T,
-    sliderArea: HTMLElement,
-    focusableElement: HTMLElement[]
+    sliderArea: HTMLElement
 ) => void;
 
 export interface ValueFromPointer {
     relativeValue: number[];
     currentValue: number;
     currentValueIndex: number;
-    isCross: boolean;
 }
