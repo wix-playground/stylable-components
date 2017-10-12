@@ -93,10 +93,10 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         })
     };
 
-    private animationFrameId: number;
     private isActive: boolean = false;
-    private currentValueIndex: number = -1;
     private isCross: boolean = false;
+    private animationFrameId: number;
+    private currentValueIndex: number = -1;
     private view: SliderView | null;
 
     constructor(props: SliderProps, context?: any) {
