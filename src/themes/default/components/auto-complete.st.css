@@ -9,7 +9,8 @@
                 color_MainText,
                 borderDefault,
                 borderRadius,
-                borderHoverColor,
+                borderHover,
+                borderFocus,
                 inputWidth,
                 inputHeight,
                 inputSpacing,
@@ -33,8 +34,13 @@ AutoComplete::input {
     padding: value(inputSpacing);
 }
 
+
 AutoComplete:hover {
-    border-color: value(borderHoverColor);
+    border: value(borderHover);
+}
+
+AutoComplete:focus {
+    border: value(borderFocus);
 }
 
 AutoComplete::caret {

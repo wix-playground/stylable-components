@@ -22,7 +22,7 @@ export interface DropDownProps extends SelectionListOptionList, FormInputProps<s
     disabled?: boolean;
     openOnFocus?: boolean;
     children?: React.ReactNode;
-    toggleIcon?: React.ReactNode;
+    //toggleIcon?: React.ReactNode;
     tabIndex?: number;
     onOpenStateChange?: (e: ChangeEvent<boolean>) => void;
 }
@@ -38,7 +38,7 @@ export class DropDown extends React.PureComponent<DropDownProps, DropDownState> 
         children: [],
         onChange: noop,
         tabIndex: 0,
-        toggleIcon: <CaretDown className="caret" data-automation-id="ICON" />,
+        //toggleIcon: <CaretDown className="caret" data-automation-id="ICON" />,
         disabled: false,
         onOpenStateChange: noop
     };
@@ -63,8 +63,8 @@ export class DropDown extends React.PureComponent<DropDownProps, DropDownState> 
             >
                 <div data-automation-id="DROP_DOWN_INPUT" onClick={this.toggleDropdown} className="input">
                     <span className="label">{this.props.value!}</span>
-                    {this.props.toggleIcon}
                 </div>
+                <button onClick={this.toggleDropdown} className="caret" data-automation-id="AUTO_COMPLETE_CARET"/>
                 <Popup open={this.props.open && !this.props.disabled} anchor={this.state.dropdown}>
                     <div className="root">
                         <SelectionList
