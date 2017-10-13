@@ -70,11 +70,6 @@
 }
 
 :import {
-	-st-from: "../../components/toggle/toggle.st.css";
-	-st-default: Toggle;
-}
-
-:import {
 	-st-from: "../../components/checkbox/checkbox.st.css";
 	-st-default: CheckBox;
 }
