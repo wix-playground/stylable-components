@@ -54,10 +54,7 @@ TimePicker:error {
 }
 
 TimePicker::input {
-    font: inherit;
-    background: none;
-    color: inherit;
-    -webkit-text-fill-color: inherit;
+
 }
 
 /* TODO replace with mixin */

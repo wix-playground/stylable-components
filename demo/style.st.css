@@ -1,7 +1,8 @@
 @namespace "demos";
 :import {
   -st-theme: true;
-  -st-from: "../src/themes/default/theme.st.css";
+  -st-from: "../src/themes/wix/theme.st.css";
+  -st-named: toggleSmall;
 }
 
 :global(html) {

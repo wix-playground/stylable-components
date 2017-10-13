@@ -1,1 +1,10 @@
 @namespace "toggleDemo";
+:import {
+  -st-theme: true;
+  -st-from: "../../src/themes/wix/theme.st.css";
+  -st-named: toggleSmall;
+}
+
+.toggleSmall {
+
+}
