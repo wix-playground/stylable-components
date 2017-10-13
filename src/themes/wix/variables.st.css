@@ -11,6 +11,9 @@
 	B50: #eaf7ff;
 	B60: #f4fafe;
 	D10: #162d3d;
+	D10A24: rgba(22, 45, 60, 0.24);
+	D10A30: rgba(22, 45, 60, 0.3);
+	D10A36: rgba(22, 45, 60, 0.36);
 	D20: #32536A;
 	D30: #577083;
 	D40: #7a92a5; /* placeholder color */
@@ -24,6 +27,9 @@
 	R10: #ee5951;
 	R20: #ff6666;
 	R30: #ffd7d7;
+	P00: #cd68ed;
+	P10: #aa4cd8;
+	P20: #cd68ed;
 
     /* Input Vars */
     GR20: #dadada;
@@ -67,6 +73,14 @@
     buttonColorError: value(R10);
     buttonColorErrorHover: value(R20);
     buttonColorErrorActive: value(R10);
+
+    buttonColorPremium: value(P10);
+    buttonColorPremiumHover: value(P20);
+    buttonColorPremiumActive: value(P10);
+
+    buttonColorTransparent: value(D10A24);
+    buttonColorTransparentHover: value(D10A30);
+    buttonColorTransparentActive: value(D10A36);
 
     buttonColorDisabled: value(D55);
 

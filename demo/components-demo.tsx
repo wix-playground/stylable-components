@@ -233,6 +233,66 @@ export class ComponentsDemo extends React.Component {
                                     <Button className="btnErrorSecondary" href="http://www.wix.com" target="_blank">Link</Button>
                                 </td>
                             </tr>
+                            <tr>
+                                <td>
+                                    <Button className="btnPremium btnLarge">Large</Button>
+                                </td>
+                                <td>
+                                    <Button className="btnPremium">Normal</Button>
+                                </td>
+                                <td>
+                                    <Button className="btnPremium btnSmall">Small</Button>
+                                </td>
+                                <td>
+                                    <Button className="btnPremium btnTiny">Tiny</Button>
+                                </td>
+                                <td>
+                                    <Button className="btnPremium" disabled>Disabled</Button>
+                                </td>
+                                <td>
+                                    <Button className="btnPremium" href="http://www.wix.com" target="_blank">Link</Button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <Button className="btnPremiumSecondary btnLarge">Large</Button>
+                                </td>
+                                <td>
+                                    <Button className="btnPremiumSecondary">Normal</Button>
+                                </td>
+                                <td>
+                                    <Button className="btnPremiumSecondary btnSmall">Small</Button>
+                                </td>
+                                <td>
+                                    <Button className="btnPremiumSecondary btnTiny">Tiny</Button>
+                                </td>
+                                <td>
+                                    <Button className="btnPremiumSecondary" disabled>Disabled</Button>
+                                </td>
+                                <td>
+                                    <Button className="btnPremiumSecondary" href="http://www.wix.com" target="_blank">Link</Button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <Button className="btnTransparent btnLarge">Large</Button>
+                                </td>
+                                <td>
+                                    <Button className="btnTransparent">Normal</Button>
+                                </td>
+                                <td>
+                                    <Button className="btnTransparent btnSmall">Small</Button>
+                                </td>
+                                <td>
+                                    <Button className="btnTransparent btnTiny">Tiny</Button>
+                                </td>
+                                <td>
+                                    <Button className="btnTransparent" disabled>Disabled</Button>
+                                </td>
+                                <td>
+                                    <Button className="btnTransparent" href="http://www.wix.com" target="_blank">Link</Button>
+                                </td>
+                            </tr>
 
                         </tbody>
                     </table>

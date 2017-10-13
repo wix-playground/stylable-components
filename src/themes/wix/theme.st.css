@@ -41,7 +41,9 @@
     -st-from: "./components/button.st.css";
     -st-named:	btnLarge, btnSmall, btnTiny, btnSecondary, 
     			btnWhite, btnWhiteSecondary, 
-    			btnError, btnErrorSecondary;
+    			btnError, btnErrorSecondary,
+    			btnPremium, btnPremiumSecondary,
+    			btnTransparent;
 }
 
 :import {

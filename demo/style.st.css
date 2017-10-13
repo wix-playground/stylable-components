@@ -5,7 +5,9 @@
   -st-named:  toggleSmall, btnLarge, btnSmall, btnTiny, 
               btnSecondary, 
               btnWhite, btnWhiteSecondary, 
-              btnError, btnErrorSecondary;
+              btnError, btnErrorSecondary,
+              btnPremium, btnPremiumSecondary,
+              btnTransparent;
 }
 
 :global(html) {
@@ -38,34 +40,9 @@
     padding-right: 1em;
 }
 
-.btnSmall {
-
-}
-
-.btnSecondary {
-
-}
-
-.btnLarge {
-
-}
-
-.btnTiny {
-
-}
-
-.btnWhite {
-
-}
-
-.btnWhiteSecondary {
-
-}
-
-.btnError {
-
-}
-
-.btnErrorSecondary {
+.btnSmall, .btnSecondary, .btnLarge, .btnTiny, 
+.btnWhite, .btnWhiteSecondary, .btnError, 
+.btnErrorSecondary, .btnPremium, .btnPremiumSecondary,
+.btnTransparent {
 
 }
