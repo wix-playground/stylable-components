@@ -75,9 +75,9 @@ NOTE: there is not Accessibility spec in W3 for number input to put here as a re
 
 Here is what a screenreader should say:
 
-1. **Focus on hours:** current value (if present) -> "stepper";
-2. **Change value:** new value -> "stepper";
-3. **Set value to Max / Min**:  value -> "max" OR "min" -> "stepper".
+1. **Focus on input:** "current value" (if present) -> "stepper";
+2. **Change value (via stepper / keyboard):** "new value" -> "stepper";
+3. **Set value to Max / Min:** "new value" -> "max" OR "min" -> "stepper".
 
 ## Behavior
 
