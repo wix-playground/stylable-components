@@ -17,5 +17,6 @@ export * from './selection-list';
 export * from './slider';
 export * from './stepper';
 export * from './time-picker';
+export * from './tabs';
 export * from './toggle';
 export * from './tree-view';

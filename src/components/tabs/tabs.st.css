@@ -1,0 +1,20 @@
+@namespace "Tabs";
+
+:import {
+    -st-from: "../selection-list/selection-list.st.css";
+    -st-default: SelectionList;
+}
+
+.tabList {
+    -st-extends: SelectionList;
+    width: 100%;
+}
+
+.tabList::item {
+    display: inline-block;
+    width: auto;
+}
+
+.tabPanel {
+    padding: 18px;
+}
