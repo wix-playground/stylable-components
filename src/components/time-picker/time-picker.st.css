@@ -71,6 +71,11 @@
     margin: 0;
     width: 1.62em;
     height: 100%;
+    
+    font: inherit;
+    background: none;
+    color: inherit;
+    -webkit-text-fill-color: inherit;
 }
 
 .placeholder {

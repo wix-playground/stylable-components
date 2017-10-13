@@ -34,18 +34,21 @@
 
     inputHeight: 36px;
     inputWidth: 192px;
-    inputPadding: 6px 12px;
+    inputPaddingHorizontal: 6px;
+    inputPadding: 12px 6px;
 
     inputBackgroundColor: #fff;
     inputBackgroundColorHover: value(B60);
     inputBackgroundColorDisabled: value(D80);
+    selectionColor: value(B20);
 
-    borderStyle: 1px solid value(B30);
-    borderRadius: 6px;
-    borderColorHover: value(B30);
+    borderColorDefault: value(B30);
+	borderColorHover: value(B30);
     borderColorFocus: value(B20);
     borderColorDisabled: value(D60);
     borderColorError: value(R00);
+    borderStyle: 1px solid value(borderColorDefault);
+    borderRadius: 6px;
 
     /* Icons */
     /* color: B10 */

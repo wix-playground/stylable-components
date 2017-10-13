@@ -124,7 +124,7 @@ TimePicker::nativeInput:focus {
     border: 0;
 }
 
-.stepper {
+TimePicker::stepper {
     transition: opacity 100ms ease;
 }
 

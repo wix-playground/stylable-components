@@ -25,6 +25,12 @@
     -st-from: "./components/drop-down.st.css";
 }
 
+:import {
+    -st-theme: true;
+    -st-from: "./components/time-picker.st.css";
+}
+
+
 /* old content */
 
 :import {
@@ -204,7 +210,7 @@ CheckBox::boxIcon:hover {
 }
 
 /* Time */
-TimePicker {
+/*TimePicker {
 	background: #FFFFFF;
 	border: 1px solid #C1E4FE;
 	border-radius: 6px;
@@ -242,7 +248,7 @@ TimePicker::input::selection {
 TimePicker::input::selection:hover {
 	background: #DAEFFE;
 }
-
+*/
 /* Slider */
 Slider {
 	width:288px;
