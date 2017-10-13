@@ -35,10 +35,9 @@ Number Input improves upon the native `<input type="number">` by providing the a
 #### **Example 1:**
 
 ```jsx
-//TODO: code guys - fix code example!
 import * as React from 'react';
 import { NumberInput } from './components/NumberInput';
-import style from './style.st.css'; // link to Style file - see examples of style files below
+import style from './style.st.css'; 
 
 export class ComponentsDemo extends React.Component<{}, {}>{
     constructor() {
@@ -51,6 +50,7 @@ export class ComponentsDemo extends React.Component<{}, {}>{
       <NumberInput
         value={basicValue}
         step={1}
+        min={0}
         max={100}
         onChange={this.handleBasicValueChange}
         placeholder="How Many?"
@@ -58,15 +58,15 @@ export class ComponentsDemo extends React.Component<{}, {}>{
     }
 ```
 
-Comments to example 1
+Basic number input with `min` / `max`, `placeholder` and `step`. 
+
 
 **Example 2:**
 
 ```jsx
-//TODO: code guys - fix code example!
 import * as React from 'react';
 import { NumberInput } from './components/NumberInput';
-import style from './style.st.css'; // link to Style file - see examples of style files below
+import style from './style.st.css'; 
 
 export class ComponentsDemo extends React.Component<{}, {}>{
     constructor() {
@@ -88,7 +88,7 @@ export class ComponentsDemo extends React.Component<{}, {}>{
     }
 ```
 
-Comments to example 2
+Complex number input with  `prefix` displaying icon and `suffix` displaying "USD" string.
 
 
 
@@ -116,7 +116,7 @@ Comments to example 2
 ```css
 @import * from './components/slider'; /* TODO: fix the correct syntax */
 /* style.st.css
-Adding rules here (which may be shared between different components) allows us to 	    override specific parts; or even change the whole theme
+Adding rules here (which may be shared between different components) allows us to override specific parts; or even change the whole theme
 */
 NumberInput {
   background: #bada55;
@@ -137,6 +137,7 @@ NumberInput::stepper::down:hover, NumberInput::stepper::up:hover {
 
 **Example 2:**
 
+```css
+/* style example of the basic theme here? */
 ```
-/* code example of the basic theme here? */
-```
+
