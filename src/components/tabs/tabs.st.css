@@ -1,20 +1,55 @@
 @namespace "Tabs";
 
 :import {
+    -st-from: "../../style/project.st.css";
+    -st-named: borderDefault, borderStyle, WT1, PR1, PR2, DS1;
+}
+:import {
     -st-from: "../selection-list/selection-list.st.css";
     -st-default: SelectionList;
 }
 
 .tabList {
     -st-extends: SelectionList;
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
     width: 100%;
+    border: none;
+    border-bottom: value(borderDefault);
+    background: value(WT1);
 }
 
 .tabList::item {
-    display: inline-block;
     width: auto;
+    flex-shrink: 0;
+    padding: 18px;
+    margin-bottom: -1px;
+    border: none;
+    background: transparent;
+}
+
+
+.tabList::item:selected:hover,
+.tabList::item:selected {
+    color: value(PR2);
+    padding-bottom: 16px;
+    border: none;
+    border-bottom: value(borderStyle) 2px value(PR1);
+    background: transparent;
+}
+
+.tabList::item:hover,
+.tabList::item:focused {
+    color: value(PR2);
+}
+
+.tabList::item:disabled {
+    color: value(DS1);
+    cursor: disabled;
 }
 
 .tabPanel {
     padding: 18px;
+    background: value(WT1)
 }
