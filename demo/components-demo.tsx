@@ -115,7 +115,16 @@ export class ComponentsDemo extends React.Component {
                         <tbody>
                             <tr>
                                 <th>
+                                    <Button className="btnLarge">Large</Button>
+                                </th>
+                                <th>
                                     <Button>Normal</Button>
+                                </th>
+                                <th>
+                                    <Button className="btnSmall">Small</Button>
+                                </th>
+                                <th>
+                                    <Button className="btnTiny">Tiny</Button>
                                 </th>
                                 <th>
                                     <Button disabled>Disabled</Button>
@@ -124,6 +133,107 @@ export class ComponentsDemo extends React.Component {
                                     <Button href="http://www.wix.com" target="_blank">Link</Button>
                                 </th>
                             </tr>
+                            <tr>
+                                <td>
+                                    <Button className="btnSecondary btnLarge">Large</Button>
+                                </td>
+                                <td>
+                                    <Button className="btnSecondary">Normal</Button>
+                                </td>
+                                <td>
+                                    <Button className="btnSecondary btnSmall">Small</Button>
+                                </td>
+                                <td>
+                                    <Button className="btnSecondary btnTiny">Tiny</Button>
+                                </td>
+                                <td>
+                                    <Button className="btnSecondary" disabled>Disabled</Button>
+                                </td>
+                                <td>
+                                    <Button className="btnSecondary" href="http://www.wix.com" target="_blank">Link</Button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <Button className="btnWhite btnLarge">Large</Button>
+                                </td>
+                                <td>
+                                    <Button className="btnWhite">Normal</Button>
+                                </td>
+                                <td>
+                                    <Button className="btnWhite btnSmall">Small</Button>
+                                </td>
+                                <td>
+                                    <Button className="btnWhite btnTiny">Tiny</Button>
+                                </td>
+                                <td>
+                                    <Button className="btnWhite" disabled>Disabled</Button>
+                                </td>
+                                <td>
+                                    <Button className="btnWhite" href="http://www.wix.com" target="_blank">Link</Button>
+                                </td>
+                            </tr>
+                            <tr style={{backgroundColor:'#162d3d', border: 'none'}}>
+                                <td>
+                                    <Button className="btnWhiteSecondary btnLarge">Large</Button>
+                                </td>
+                                <td>
+                                    <Button className="btnWhiteSecondary">Normal</Button>
+                                </td>
+                                <td>
+                                    <Button className="btnWhiteSecondary btnSmall">Small</Button>
+                                </td>
+                                <td>
+                                    <Button className="btnWhiteSecondary btnTiny">Tiny</Button>
+                                </td>
+                                <td>
+                                    <Button className="btnWhiteSecondary" disabled>Disabled</Button>
+                                </td>
+                                <td>
+                                    <Button className="btnWhiteSecondary" href="http://www.wix.com" target="_blank">Link</Button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <Button className="btnError btnLarge">Large</Button>
+                                </td>
+                                <td>
+                                    <Button className="btnError">Normal</Button>
+                                </td>
+                                <td>
+                                    <Button className="btnError btnSmall">Small</Button>
+                                </td>
+                                <td>
+                                    <Button className="btnError btnTiny">Tiny</Button>
+                                </td>
+                                <td>
+                                    <Button className="btnError" disabled>Disabled</Button>
+                                </td>
+                                <td>
+                                    <Button className="btnError" href="http://www.wix.com" target="_blank">Link</Button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <Button className="btnErrorSecondary btnLarge">Large</Button>
+                                </td>
+                                <td>
+                                    <Button className="btnErrorSecondary">Normal</Button>
+                                </td>
+                                <td>
+                                    <Button className="btnErrorSecondary btnSmall">Small</Button>
+                                </td>
+                                <td>
+                                    <Button className="btnErrorSecondary btnTiny">Tiny</Button>
+                                </td>
+                                <td>
+                                    <Button className="btnErrorSecondary" disabled>Disabled</Button>
+                                </td>
+                                <td>
+                                    <Button className="btnErrorSecondary" href="http://www.wix.com" target="_blank">Link</Button>
+                                </td>
+                            </tr>
+
                         </tbody>
                     </table>
                 </div>

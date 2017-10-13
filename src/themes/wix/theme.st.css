@@ -36,6 +36,14 @@
     -st-named: smallToggle;
 }
 
+:import {
+    -st-theme: true;
+    -st-from: "./components/button.st.css";
+    -st-named:	btnLarge, btnSmall, btnTiny, btnSecondary, 
+    			btnWhite, btnWhiteSecondary, 
+    			btnError, btnErrorSecondary;
+}
+
 
 /* old content */
 
@@ -245,9 +253,3 @@ Slider:disabled::handle {
 	background-repeat: no-repeat;
 	background-position: center;
 }
-
-/* Button */
-Button {}
-
-/* Input */
-Input {}

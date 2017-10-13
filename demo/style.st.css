@@ -2,7 +2,10 @@
 :import {
   -st-theme: true;
   -st-from: "../src/themes/wix/theme.st.css";
-  -st-named: toggleSmall;
+  -st-named:  toggleSmall, btnLarge, btnSmall, btnTiny, 
+              btnSecondary, 
+              btnWhite, btnWhiteSecondary, 
+              btnError, btnErrorSecondary;
 }
 
 :global(html) {
@@ -33,4 +36,36 @@
 
 :global(th) {
     padding-right: 1em;
+}
+
+.btnSmall {
+
+}
+
+.btnSecondary {
+
+}
+
+.btnLarge {
+
+}
+
+.btnTiny {
+
+}
+
+.btnWhite {
+
+}
+
+.btnWhiteSecondary {
+
+}
+
+.btnError {
+
+}
+
+.btnErrorSecondary {
+
 }
