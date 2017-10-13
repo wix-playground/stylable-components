@@ -1,7 +1,7 @@
 @namespace "CheckBox";
 
 .root {
-    -st-states: checked, disabled, indeterminate, readonly, focus;
+    -st-states: checked, disabled, indeterminate, readonly, focus, error;
     display: inline-block;
     position: relative;
     cursor: pointer;

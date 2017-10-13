@@ -21,6 +21,11 @@ export class CheckBoxDemo extends React.Component<{}, {}> {
                 </div>
 
                 <div>
+                    <h3>Error</h3>
+                    <ErrorDemo />
+                </div>
+
+                <div>
                     <h3>Indeterminate</h3>
                     <IndeterminateDemo/>
                 </div>
@@ -89,6 +94,46 @@ export class DisabledDemo extends React.Component<{}, {value: boolean}> {
                 </span>
                 <span>
                     <CheckBox value={true} disabled indeterminate>
+                        <span className={style.label}>Indeterminate</span>
+                    </CheckBox>
+                </span>
+            </div>
+        );
+    }
+
+    private handleChange = (e: ChangeEvent<boolean>) => { this.setState({value: e.value}); };
+}
+
+@stylable(style)
+export class ErrorDemo extends React.Component<{}, {value: boolean}> {
+
+    public state = {
+        value: false
+    };
+
+    public render() {
+        return (
+            <div>
+                <span data-automation-id="ERROR_DEMO">
+                    <CheckBox
+                        data-automation-id="ERROR_DEMO_CHECKBOX"
+                        value={this.state.value}
+                        onChange={this.handleChange}
+                        error
+                    >
+                        <span data-automation-id="ERROR_LABEL" className={style.label}>Unchecked</span>
+                    </CheckBox>
+                </span>
+                <span>
+                    <CheckBox
+                        value={true}
+                        error
+                    >
+                        <span className={style.label}>Checked</span>
+                    </CheckBox>
+                </span>
+                <span>
+                    <CheckBox value={true} error indeterminate>
                         <span className={style.label}>Indeterminate</span>
                     </CheckBox>
                 </span>

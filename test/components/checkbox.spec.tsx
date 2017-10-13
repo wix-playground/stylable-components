@@ -2,8 +2,9 @@ import * as React from 'react';
 import {ClientRenderer, DriverBase, expect, sinon, waitFor} from 'test-drive-react';
 import {CheckBoxDemo, demoCheckBoxText} from '../../demo/components/checkbox-demo';
 import {CheckBox} from '../../src';
+import styles from '../../src/components/checkbox/checkbox.st.css';
 import {CheckBoxTestDriver} from '../../test-kit/components/checkbox-driver';
-import {sleep} from '../utils/sleep';
+import {hasCssState, sleep} from '../utils';
 
 const tickSVG: React.ReactNode = (
     <svg
@@ -312,6 +313,17 @@ describe('<Checkbox/>', () => {
             await waitForDom(() => {
                 expect(checkbox.isChecked()).to.equal(true);
             });
+        });
+    });
+
+    describe('When error', () => {
+        it('has error style state', async () => {
+            const onChange = sinon.spy();
+            const {driver: checkbox} = clientRenderer.render(
+                <CheckBox error />
+            ).withDriver(CheckBoxTestDriver);
+
+            hasCssState(checkbox.root, styles, {error: true});
         });
     });
 

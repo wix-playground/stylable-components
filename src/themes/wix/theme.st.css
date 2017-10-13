@@ -44,6 +44,11 @@
     			btnError, btnErrorSecondary;
 }
 
+:import {
+    -st-theme: true;
+    -st-from: "./components/checkbox.st.css";
+}
+
 
 /* old content */
 
@@ -116,45 +121,6 @@
 /* Toggle */
 
 
-/* CheckBox */
-
-CheckBox {
-	font-family: HelveticaNeueW01-45Light;
-	font-size: 16px;
-	color: value(D20);
-	line-height: 24px;
-	padding-left: 10px;
-}
-
-CheckBox::label {
-	font-family: HelveticaNeueW01-45Light;
-	font-size: 16px;
-	color: value(D20);
-	line-height: 24px;
-	padding-left: 10px;
-}
-
-CheckBox:disabled::boxIcon {
-	background: value(D70);
-	border: 1px solid #DADADA;
-}
-
-CheckBox:disabled:checked::boxIcon {
-}
-
-CheckBox:checked::boxIcon {
-	fill: value(B10);
-}
-
-CheckBox::boxIcon {
-	background: value(D80);
-	border: 1px solid value(B20);
-	border-radius: 4px;
-}
-
-CheckBox::boxIcon:hover {
-	background: value(B50);
-}
 
 /* Slider */
 Slider {
