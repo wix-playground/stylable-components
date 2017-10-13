@@ -232,6 +232,7 @@ export class TimePicker extends React.Component<TimePickerProps, TimePickerState
             this.select(nextSegment);
             return true;
         }
+        this.select(this.state.currentSegment!);
         return false;
     }
 
