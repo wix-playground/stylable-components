@@ -18,7 +18,12 @@
     display: inline-flex;
     align-items: center;
     user-select: none;
+    padding-left: 6px;
     -webkit-user-select: none;
+}
+.root:rtl {
+    padding-left: 0;
+    padding-right: 6px;
 }
 
 .root:disabled {
@@ -35,30 +40,11 @@
     cursor: not-allowed;
 }
 
-.time {
-    display: inline-block;
-    flex: 1;
-    position: relative;
-}
-
-.time:after {
-    content: ':';
-    position: absolute;
-    top: 0;
-    left: 1.4em;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.root:rtl::time {
-    display: inline-flex;
-    flex-direction: row-reverse;
-}
+.colon {}
 
 .root:empty::stepper,
-.root:empty:hasPlaceholder::time,
+.root:empty:hasPlaceholder::input,
+.root:empty:hasPlaceholder::colon,
 .root:empty:hasPlaceholder::ampm {
     opacity: 0;
 }
@@ -71,7 +57,7 @@
     margin: 0;
     width: 1.62em;
     height: 100%;
-    
+
     font: inherit;
     background: none;
     color: inherit;
@@ -124,6 +110,13 @@
 
 .stepper {
     -st-extends: Stepper;
+    margin-left: auto;
     height: 100%;
     float: right;
 }
+
+.root:rtl::stepper {
+    margin-left: initial;
+    margin-right: auto;
+}
+
