@@ -6,9 +6,9 @@
 :import {
     -st-from: "../variables.st.css";
     -st-named:  labelFontStyle,
-                buttonColorBlue,
-                buttonColorBlueHover,
-                buttonColorBlueActive,
+                buttonColorMain,
+                buttonColorMainHover,
+                buttonColorMainActive,
 
                 buttonColorWhiteHover,
                 buttonColorWhiteActive,
@@ -48,21 +48,21 @@ Button {
 
     padding: 0 24px;
 
-    background: value(buttonColorBlue);
+    background: value(buttonColorMain);
     color: white;
 }
 
 Button:hover,
 .btnSecondary:hover {
     color: white;
-    background: value(buttonColorBlueHover);
+    background: value(buttonColorMainHover);
     border-color: transparent;
 }
 
 Button:active,
 .btnSecondary:active {
     color: white;
-    background-color: value(buttonColorBlueActive);
+    background-color: value(buttonColorMainActive);
     border-color: transparent;
 }
 
@@ -98,9 +98,9 @@ Button:disabled,
 
 .btnSecondary {
     -st-extends: Button;
-    border: 1px solid value(buttonColorBlue);
+    border: 1px solid value(buttonColorMain);
     background: transparent;
-    color: value(buttonColorBlue);
+    color: value(buttonColorMain);
 }
 
 .btnSecondary:disabled, 
@@ -114,21 +114,21 @@ Button:disabled,
 .btnWhite {
     -st-extends:Button;
     background-color: white;
-    color: value(buttonColorBlue);
+    color: value(buttonColorMain);
 }
 
 .btnWhite:hover, 
 .btnWhiteSecondary:hover {
     background-color: value(buttonColorWhiteHover);
     border: transparent;
-    color: value(buttonColorBlue);
+    color: value(buttonColorMain);
 }
 
 .btnWhite:active, 
 .btnWhiteSecondary:active {
     background-color: value(buttonColorWhiteActive);
     border: transparent;
-    color: value(buttonColorBlue);
+    color: value(buttonColorMain);
 }
 
 .btnWhiteSecondary {

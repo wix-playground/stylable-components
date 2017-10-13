@@ -63,9 +63,9 @@
 
 	labelFontStyle: 16px "HelveticaNeueW01-45Light", sans-serif;
 
-    buttonColorBlue: value(B10);
-    buttonColorBlueHover: value(B20);
-    buttonColorBlueActive: value(B00);
+    buttonColorMain: value(B10);
+    buttonColorMainHover: value(B20);
+    buttonColorMainActive: value(B00);
 
     buttonColorWhiteHover: value(B50);
     buttonColorWhiteActive: value(B40);
