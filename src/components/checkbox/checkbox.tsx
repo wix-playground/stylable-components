@@ -10,6 +10,7 @@ export interface CheckBoxProps extends FormInputProps<boolean>, properties.Props
     children?: React.ReactNode;
     disabled?: boolean;
     readonly?: boolean;
+    error?: boolean;
     indeterminate?: boolean;
     tabIndex?: number;
     id?: string;
@@ -44,17 +45,18 @@ export class CheckBox extends React.Component<CheckBoxProps, CheckBoxState> {
 
     public render() {
         const {
-            value, disabled, readonly,
+            value, disabled, readonly, error,
             indeterminate, id, tabIndex,
             indeterminateIcon, tickIcon, children
         } = this.props;
 
         const styleState = {
             checked: value!,
-            disabled: disabled!,
-            readonly: readonly!,
-            indeterminate: indeterminate!,
-            focus: this.state.isFocused
+            focus: this.state.isFocused,
+            disabled,
+            readonly,
+            error,
+            indeterminate
         };
 
         return (

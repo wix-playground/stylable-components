@@ -25,6 +25,8 @@
 	R20: #ff6666;
 	R30: #ffd7d7;
 
+    GR20: #dadada;
+
     /* Number Input Vars */
     fontStyle: 16px "HelveticaNeue-Regular", sans-serif;
 
@@ -50,6 +52,14 @@
     borderStyle: 1px solid value(borderColorDefault);
     borderRadius: 6px;
 
+
+    checkBorder: 1px solid value(B20);
+    checkHoverColor: value(B50);
+    checkDisabledColor: value(D70);
+    checkDisabledBorderColor: value(GR20);
+    checkErrorColor: value(R10);
+    checkedColor: value(B10);
+
     /* Icons */
     /* color: B10 */
     iconChevronUpDefault:   url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMCIgaGVpZ2h0PSI2IiB2aWV3Qm94PSIwIDAgMTAgNiI+PHBhdGggZmlsbD0iIzM4OTlFQyIgZD0iTTguNjQ2IDUuNzA4TDkuMzU0IDUgNSAuNjQ3LjY0NiA1bC43MDguNzA4TDUgMi4wNiIvPjwvc3ZnPg==);
@@ -60,6 +70,14 @@
     /* color: D50 */
     iconChevronUpDisabled:   url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMCIgaGVpZ2h0PSI2IiB2aWV3Qm94PSIwIDAgMTAgNiI+PHBhdGggZmlsbD0iI2I2YzFjZCIgZD0iTTguNjQ2IDUuNzA4TDkuMzU0IDUgNSAuNjQ3LjY0NiA1bC43MDguNzA4TDUgMi4wNiIvPjwvc3ZnPg==);
     iconChevronDownDisabled: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMCIgaGVpZ2h0PSI2IiB2aWV3Qm94PSIwIDAgMTAgNiI+PHBhdGggZmlsbD0iI2I2YzFjZCIgZD0iTTEuMzU0LjY0NmwtLjcwOC43MDhMNSA1LjcwN2w0LjM1NC00LjM1My0uNzA4LS43MDhMNSA0LjI5MyIvPjwvc3ZnPg==);
+
+    /* color: D80 */
+    iconTick:                   url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHBhdGggZmlsbD0iI2ZmZiIgZD0iTTExLjggNEw2LjUgOS4yIDQuMiA3IDMgOC4ybDMuNSAzLjZMMTMgNS4yIi8+PC9zdmc+);
+    iconIntermediate:           url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHBhdGggZmlsbD0iI2ZmZmZmZiIgZD0iTTQgN2g4djJINHoiLz48L3N2Zz4=);
+
+    /* color: D55 */
+    iconTickDisabled:           url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHBhdGggZmlsbD0iI2NiZDNkYyIgZD0iTTExLjggNEw2LjUgOS4yIDQuMiA3IDMgOC4ybDMuNSAzLjZMMTMgNS4yIi8+PC9zdmc+);
+    iconIntermediateDisabled:   url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHBhdGggZmlsbD0iI2NiZDNkYyIgZD0iTTQgN2g4djJINHoiLz48L3N2Zz4=);
 }
 
 
@@ -111,7 +129,7 @@
 }
 
 .inputCaretStyle:hover {
-	background-image: value(iconChevronDownHover);	
+	background-image: value(iconChevronDownHover);
 }
 
 .inputCaretStyle:disabled {
