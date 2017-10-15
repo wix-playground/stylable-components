@@ -82,7 +82,7 @@ export class DatePickerTestDriver extends DriverBase {
             return null;
         }
         const dayNames: string[] = getDayNames();
-        return bodySelect(datePickerDropdown, `DAY_NAME_${dayNames[dayName].toUpperCase()}`);
+        return bodySelect(datePickerDropdown, `DAY_NAME_${dayName}`);
     }
 
     public get yearLabel(): HTMLSpanElement | null {

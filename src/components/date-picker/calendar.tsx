@@ -111,7 +111,7 @@ export class Calendar extends React.Component<CalendarProps, {}> {
                 <span
                     className="calendarItem dayName"
                     key={'DAY_NAME_' + index}
-                    data-automation-id={'DAY_NAME_' + name.toUpperCase()}
+                    data-automation-id={'DAY_NAME_' + index}
                 >
                     {name}
                 </span>

@@ -205,9 +205,9 @@ describe('The DatePicker Component', () => {
 
             await waitForDom(() => {
                 localizedDayNames.forEach((dayName, index) => {
-                    expect(datePicker.getDayName(index)).to.have.text(dayName)
+                    expect(datePicker.getDayName(index), 'day name did not have the proper text').to.have.text(dayName);
                 });
-                expect(datePicker.monthLabel).to.have.text(monthName);
+                expect(datePicker.monthLabel, 'Month Label did not have the proper text').to.have.text(monthName);
             });
         });
 
