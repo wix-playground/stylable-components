@@ -7,7 +7,8 @@ const stylableOptions = { injectBundleCss: true, nsDelimiter:'--' };
 module.exports = {
     devtool: 'source-map',
     entry: {
-        demos: ['core-js/shim', './demo/index.tsx'],
+        demos: ['core-js/shim', './demo/index-default.tsx'],
+        'demos-wix': ['core-js/shim', './demo/index-wix.tsx'],
         tests: ['core-js/shim', './test/utils/mobx.config.ts', ...testFiles.map(fileName => `mocha-loader!${fileName}`)]
     },
     module: {
