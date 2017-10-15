@@ -34,7 +34,7 @@ The Dropdown conforms to the following interfaces:
 
 
 | Name | Type | Default | Required | Description |
-| -- | -- | -- | -- | -- |
+| ---- | ---- | ------- | -------- | ----------- |
 | disabled | boolean | false | no | see HTML specs |
 | autoFocus | boolean | false | no | see HTML specs |
 | open | boolean | false | no | Whether the Popup is shown |
