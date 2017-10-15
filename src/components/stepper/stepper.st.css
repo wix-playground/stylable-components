@@ -1,5 +1,6 @@
 .root {
     position: relative;
+    display: inline-block;
     width: 30px;
 }
 

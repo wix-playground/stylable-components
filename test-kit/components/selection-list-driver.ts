@@ -1,10 +1,15 @@
 import {DriverBase, simulate} from 'test-drive-react';
 import {SelectionList} from '../../src';
+import optionBaseStyle from '../../src/components/selection-list/option.st.css';
 import listBaseStyle from '../../src/components/selection-list/selection-list.st.css';
 import {elementHasStylableClassName, elementHasStylableState} from '../utils';
 
 export class SelectionListTestDriver extends DriverBase {
     public static ComponentClass = SelectionList;
+
+    public get divider(): Element {
+        return this.select('DIVIDER');
+    }
 
     public focus(): void {
         simulate.focus(this.root);
@@ -27,7 +32,8 @@ export class SelectionListTestDriver extends DriverBase {
     }
 
     public elementHasStylableState(element: Element, stateName: string): boolean {
-        return elementHasStylableState(element, listBaseStyle, stateName);
+        return elementHasStylableState(element, listBaseStyle, stateName) ||
+            elementHasStylableState(element, optionBaseStyle, stateName);
     }
 
     public elementHasStylableClassName(element: Element, className: string): boolean {

@@ -1,5 +1,6 @@
 import {DriverBase} from 'test-drive-react';
 import {RadioButton, RadioGroup} from '../../src';
+import {hasCssState} from '../../test/utils';
 
 export class RadioGroupDriver extends DriverBase {
     public static ComponentClass = RadioGroup;
@@ -21,7 +22,7 @@ export class RadioButtonDriver extends DriverBase {
     }
 
     public isChecked(): boolean {
-        return !!this.select('CHECKED_RADIO_ICON');
+        return this.nativeElement.checked;
     }
 
     public isDisabled(): boolean {
@@ -47,7 +48,7 @@ export class RadioButtonDriver extends DriverBase {
     }
 
     public get icon(): SVGElement {
-        return this.isChecked() ? this.select('CHECKED_RADIO_ICON') : this.select('UNCHECKED_RADIO_ICON');
+        return this.select('ICON');
     }
 
     public click(): void {

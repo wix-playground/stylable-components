@@ -8,7 +8,7 @@ import {
     SelectionListOption as Option
 } from '../../src';
 import {SelectionListTestDriver} from '../../test-kit';
-import {sleep} from '../utils';
+import {sleep, WithTheme, WithThemeDAID} from '../utils';
 
 export class SelectionListDemoDriver extends DriverBase {
     public static ComponentClass = SelectionListDemo;
@@ -31,6 +31,14 @@ export class SelectionListDemoDriver extends DriverBase {
 
 describe('<SelectionList />', () => {
     const clientRenderer = new ClientRenderer();
+    let ThemedContainer;
+    let themedContainer: HTMLDivElement;
+
+    beforeEach(() => {
+        ThemedContainer = WithTheme();
+        const {select} = clientRenderer.render(<ThemedContainer />);
+        themedContainer = select(WithThemeDAID) as HTMLDivElement;
+    });
 
     afterEach(() => {
         clientRenderer.cleanup();
@@ -41,7 +49,7 @@ describe('<SelectionList />', () => {
             <SelectionListDemo />
         ).withDriver(SelectionListDemoDriver);
 
-        await waitForDom(() => expect(demo.root).to.be.present);
+        await waitForDom(() => expect(demo.root).to.be.present());
         const {list, result} = demo.food;
         list.click(list.items[1]);
         await waitForDom(() => expect(result).to.contain.text('Bacon'));
@@ -52,7 +60,7 @@ describe('<SelectionList />', () => {
             <SelectionListDemo />
         ).withDriver(SelectionListDemoDriver);
 
-        await waitForDom(() => expect(demo.root).to.be.present);
+        await waitForDom(() => expect(demo.root).to.be.present());
         const {list, result} = demo.emoji;
         expect(list.items[3]).to.contain.text('🐘');
         list.click(list.items[3]);
@@ -64,7 +72,7 @@ describe('<SelectionList />', () => {
             <SelectionListDemo />
         ).withDriver(SelectionListDemoDriver);
 
-        await waitForDom(() => expect(demo.root).to.be.present);
+        await waitForDom(() => expect(demo.root).to.be.present());
         const {list, result} = demo.textStyle;
         list.click(list.items[5]);
         await waitForDom(() => expect(result.className).to.match(/text-style-label/));
@@ -75,7 +83,7 @@ describe('<SelectionList />', () => {
             <SelectionList dataSource={['0', '1', divider]} />
         ).withDriver(SelectionListTestDriver);
 
-        await waitForDom(() => expect(list.root).to.be.present);
+        await waitForDom(() => expect(list.root).to.be.present());
         expect(list.items).to.be.inVerticalSequence();
         expect(list.items).to.be.horizontallyAligned('left');
     });
@@ -86,7 +94,7 @@ describe('<SelectionList />', () => {
             <SelectionList dataSource={['0', '1']} value="0" onChange={onChange} />
         ).withDriver(SelectionListTestDriver);
 
-        await waitForDom(() => expect(list.root).to.be.present);
+        await waitForDom(() => expect(list.root).to.be.present());
         list.click(list.items[1]);
         await waitForDom(() => {
             expect(onChange).to.have.been.calledOnce.calledWithExactly({value: '1'});
@@ -102,7 +110,7 @@ describe('<SelectionList />', () => {
             </SelectionList>
         ).withDriver(SelectionListTestDriver);
 
-        await waitForDom(() => expect(list.root).to.be.present);
+        await waitForDom(() => expect(list.root).to.be.present());
         list.click(list.items[1].firstElementChild!);
         await waitForDom(() => {
             expect(onChange).to.have.been.calledOnce.calledWithExactly({value: '1'});
@@ -125,7 +133,7 @@ describe('<SelectionList />', () => {
                 <SelectionList dataSource={dataSource} value="0" onChange={onChange} />
             ).withDriver(SelectionListTestDriver);
 
-            await waitForDom(() => expect(list.root).to.be.present);
+            await waitForDom(() => expect(list.root).to.be.present());
             list.click(list.items[0]);
             list.click(list.items[1]);
             list.click(list.items[2]);
@@ -140,7 +148,7 @@ describe('<SelectionList />', () => {
             <SelectionList dataSource={['', '1']} />
         ).withDriver(SelectionListTestDriver);
 
-        await waitForDom(() => expect(list.root).to.be.present);
+        await waitForDom(() => expect(list.root).to.be.present());
         const [empty, full] = list.items;
         expect(empty).to.have.width.at.least(full);
         expect(empty).to.have.width.at.most(full);
@@ -150,11 +158,15 @@ describe('<SelectionList />', () => {
 
     it('Renders a divider', async () => {
         const {driver: list, waitForDom} = clientRenderer.render(
-            <SelectionList dataSource={[divider]} />
+            <SelectionList dataSource={[divider]} />,
+            themedContainer
         ).withDriver(SelectionListTestDriver);
 
-        await waitForDom(() => expect(list.root).to.be.present);
-        expect(list.elementHasStylableClassName(list.items[0], 'divider')).to.equal(true);
+        await waitForDom(() => {
+            expect(list.root).to.be.present();
+            expect(list.divider).to.exist;
+        });
+
     });
 
     it('Renders children above dataSource when both are provided', async () => {
@@ -162,7 +174,7 @@ describe('<SelectionList />', () => {
             <SelectionList dataSource={['data']}><div>child</div></SelectionList>
         ).withDriver(SelectionListTestDriver);
 
-        await waitForDom(() => expect(list.root).to.be.present);
+        await waitForDom(() => expect(list.root).to.be.present());
         expect(list.items[0]).to.contain.text('child');
         expect(list.items[1]).to.contain.text('data');
     });
@@ -174,7 +186,7 @@ describe('<SelectionList />', () => {
                 <SelectionList  dataSource={['-2', '-1', '0', '+1', '+2']} value="0" onChange={onChange} />
             ).withDriver(SelectionListTestDriver);
 
-            await waitForDom(() => expect(list.root).to.be.present);
+            await waitForDom(() => expect(list.root).to.be.present());
             list.focus();
             list.keyDown(keycode('down'));
             list.keyDown(keycode('enter'));
@@ -189,7 +201,7 @@ describe('<SelectionList />', () => {
                 <SelectionList  dataSource={['-2', '-1', '0', '+1', '+2']} value="0" onChange={onChange} />
             ).withDriver(SelectionListTestDriver);
 
-            await waitForDom(() => expect(list.root).to.be.present);
+            await waitForDom(() => expect(list.root).to.be.present());
             list.focus();
             list.keyDown(keycode('up'));
             list.keyDown(keycode('enter'));
@@ -204,7 +216,7 @@ describe('<SelectionList />', () => {
                 <SelectionList  dataSource={['-2', '-1', '0', '+1', '+2']} value="0" onChange={onChange} />
             ).withDriver(SelectionListTestDriver);
 
-            await waitForDom(() => expect(list.root).to.be.present);
+            await waitForDom(() => expect(list.root).to.be.present());
             list.focus();
             list.keyDown(keycode('home'));
             list.keyDown(keycode('enter'));
@@ -219,7 +231,7 @@ describe('<SelectionList />', () => {
                 <SelectionList  dataSource={['-2', '-1', '0', '+1', '+2']} value="0" onChange={onChange} />
             ).withDriver(SelectionListTestDriver);
 
-            await waitForDom(() => expect(list.root).to.be.present);
+            await waitForDom(() => expect(list.root).to.be.present());
             list.focus();
             list.keyDown(keycode('end'));
             list.keyDown(keycode('enter'));
@@ -234,7 +246,7 @@ describe('<SelectionList />', () => {
                 <SelectionList  dataSource={['-2', '-1', '0', '+1', '+2']} onChange={onChange} />
             ).withDriver(SelectionListTestDriver);
 
-            await waitForDom(() => expect(list.root).to.be.present);
+            await waitForDom(() => expect(list.root).to.be.present());
             list.focus();
             list.keyDown(keycode('down'));
             list.keyDown(keycode('enter'));
@@ -249,7 +261,7 @@ describe('<SelectionList />', () => {
                 <SelectionList  dataSource={['-2', '-1', '0', '+1', '+2']} onChange={onChange} />
             ).withDriver(SelectionListTestDriver);
 
-            await waitForDom(() => expect(list.root).to.be.present);
+            await waitForDom(() => expect(list.root).to.be.present());
             list.focus();
             list.keyDown(keycode('up'));
             list.keyDown(keycode('enter'));
@@ -264,7 +276,7 @@ describe('<SelectionList />', () => {
                 <SelectionList  dataSource={['-2', '-1', '0', '+1', '+2']} value="0" onChange={onChange} />
             ).withDriver(SelectionListTestDriver);
 
-            await waitForDom(() => expect(list.root).to.be.present);
+            await waitForDom(() => expect(list.root).to.be.present());
             list.focus();
             list.keyDown(keycode('down'));
             list.keyDown(keycode('enter'));
@@ -279,7 +291,7 @@ describe('<SelectionList />', () => {
                 <SelectionList  dataSource={['-2', '-1', '0', '+1', '+2']} value="0" onChange={onChange} />
             ).withDriver(SelectionListTestDriver);
 
-            await waitForDom(() => expect(list.root).to.be.present);
+            await waitForDom(() => expect(list.root).to.be.present());
             list.focus();
             list.keyDown(keycode('down'));
             list.keyDown(keycode('space'));
@@ -292,10 +304,11 @@ describe('<SelectionList />', () => {
     describe(`Styling`, () => {
         it(`Puts "focused" state on the container when it's focused`, async () => {
             const {driver: list, waitForDom} = clientRenderer.render(
-                <SelectionList />
+                <SelectionList />,
+                themedContainer
             ).withDriver(SelectionListTestDriver);
 
-            await waitForDom(() => expect(list.root).to.be.present);
+            await waitForDom(() => expect(list.root).to.be.present());
             expect(list.elementHasStylableState(list.root, 'focused')).to.equal(false);
             list.focus();
             await waitForDom(() => {
@@ -305,20 +318,22 @@ describe('<SelectionList />', () => {
 
         it(`Puts "selected" state on the selected item`, async () => {
             const {driver: list, waitForDom} = clientRenderer.render(
-                <SelectionList dataSource={['0', '1']} value={'0'} />
+                <SelectionList dataSource={['0', '1']} value={'0'} />,
+                themedContainer
             ).withDriver(SelectionListTestDriver);
 
-            await waitForDom(() => expect(list.root).to.be.present);
+            await waitForDom(() => expect(list.root).to.be.present());
             expect(list.elementHasStylableState(list.items[0], 'selected')).to.equal(true);
             expect(list.elementHasStylableState(list.items[1], 'selected')).to.equal(false);
         });
 
         it(`Puts "focused" state on the item focused via keyboard and removes it on blur`, async () => {
             const {driver: list, waitForDom} = clientRenderer.render(
-                <SelectionList dataSource={['0', '1']} value={'0'} />
+                <SelectionList dataSource={['0', '1']} value={'0'} />,
+                themedContainer
             ).withDriver(SelectionListTestDriver);
 
-            await waitForDom(() => expect(list.root).to.be.present);
+            await waitForDom(() => expect(list.root).to.be.present());
 
             list.focus();
             await waitForDom(() => {

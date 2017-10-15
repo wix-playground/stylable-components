@@ -1,10 +1,10 @@
 @namespace "demos";
 :import {
   -st-theme: true;
-  -st-from: "../src/themes/wix/theme.st.css";
-  -st-named:  toggleSmall, btnLarge, btnSmall, btnTiny, 
-              btnSecondary, 
-              btnWhite, btnWhiteSecondary, 
+  -st-from: "../src/themes/default/theme.st.css";
+  -st-named:  toggleSmall, btnLarge, btnSmall, btnTiny,
+              btnSecondary,
+              btnWhite, btnWhiteSecondary,
               btnError, btnErrorSecondary,
               btnPremium, btnPremiumSecondary,
               btnTransparent;
@@ -40,8 +40,8 @@
     padding-right: 1em;
 }
 
-.btnSmall, .btnSecondary, .btnLarge, .btnTiny, 
-.btnWhite, .btnWhiteSecondary, .btnError, 
+.btnSmall, .btnSecondary, .btnLarge, .btnTiny,
+.btnWhite, .btnWhiteSecondary, .btnError,
 .btnErrorSecondary, .btnPremium, .btnPremiumSecondary,
 .btnTransparent {
 

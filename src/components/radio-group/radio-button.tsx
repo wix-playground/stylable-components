@@ -58,7 +58,7 @@ export class RadioButton extends React.Component<RadioButtonProps, RadioButtonSt
                     name={this.props.name}
                 />
                 <div className="contentContainer" data-automation-id="CONTENT_CONTAINER">
-                    <span className="button" />
+                    <span className="button" data-automation-id="ICON" />
                     {this.props.children}
                 </div>
             </div>
