@@ -20,11 +20,10 @@ export interface CalendarProps {
     startingDay?: number;
     highlightSelectedDate?: boolean;
     highlightFocusedDate?: boolean;
+    locale?: string;
     onChange(date: Date): void;
     updateDropdownDate(date: Date): void;
 }
-
-const monthNames = getMonthNames();
 
 @stylable(styles)
 @observer
@@ -75,7 +74,7 @@ export class Calendar extends React.Component<CalendarProps, {}> {
 
     @computed
     get monthName(): string {
-        return monthNames[this.props.value.getMonth()];
+        return getMonthNames(this.props.locale)[this.props.value.getMonth()];
     }
 
     @computed
@@ -107,7 +106,7 @@ export class Calendar extends React.Component<CalendarProps, {}> {
 
     @computed
     get dayNames(): JSX.Element[] {
-        return getDayNames(this.props.startingDay).map((name: string, index: number) => {
+        return getDayNames(this.props.startingDay, this.props.locale).map((name: string, index: number) => {
             return (
                 <span
                     className="calendarItem dayName"
