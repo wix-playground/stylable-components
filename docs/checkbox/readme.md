@@ -85,7 +85,7 @@ export class BasicDemo extends React.Component<{}, {value: boolean}> {
     height: 20px;
     width: 20px;
     fill: none;
-    stroke: #D1D1D1;
+    stroke: #d1d1d1;
 }
 
 .customCheckBox:checked {
