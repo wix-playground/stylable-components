@@ -4,12 +4,14 @@ import {DatePicker, DatePickerProps} from '../../src';
 export interface DatePickerDemoState {
     value: Date;
     startingDay?: number;
+    locale?: string;
 }
 
 export class DatePickerDemo extends React.Component<DatePickerProps, Partial<DatePickerDemoState>> {
     public state: DatePickerDemoState = {
         value: this.props.value ? this.props.value : new Date(),
-        startingDay: 0
+        startingDay: 0,
+        locale: 'en-US'
     };
 
     public render() {
@@ -30,6 +32,17 @@ export class DatePickerDemo extends React.Component<DatePickerProps, Partial<Dat
                         <option value="6">Saturday</option>
                     </select>
                 </span>
+                <h2>Try changing the locale!</h2>
+                <span>
+                    <select
+                        value={this.state.locale}
+                        onChange={this.setLocale}
+                    >
+                        <option value="en-CA">English</option>
+                        <option value="he-IL">עברית</option>
+                        <option value="it-IT">Italiano</option>
+                    </select>
+                </span>
                 <span style={{marginBottom: '1em'}} data-automation-id="CURRENT_DATE">
                     {this.state.value!.toDateString()}
                 </span>
@@ -37,6 +50,7 @@ export class DatePickerDemo extends React.Component<DatePickerProps, Partial<Dat
                     data-automation-id="DATE_PICKER"
                     placeholder="mm/dd/yyyy"
                     startingDay={this.state.startingDay!}
+                    locale={this.state.locale}
                     value={this.state.value!}
                     onChange={this.onChange}
                     {...this.props}
@@ -48,6 +62,11 @@ export class DatePickerDemo extends React.Component<DatePickerProps, Partial<Dat
     private setStartingDay = (event: React.SyntheticEvent<HTMLSelectElement>): void => {
         const target = event.target as HTMLSelectElement;
         this.setState({startingDay: parseInt(target.value, 10)});
+    }
+
+    private setLocale = (event: React.SyntheticEvent<HTMLSelectElement>): void => {
+        const target = event.target as HTMLSelectElement;
+        this.setState({locale: target.value});
     }
 
     private onChange = (e: {value: Date}): void => {
