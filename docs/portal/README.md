@@ -2,9 +2,6 @@
 
 The *Portal* component renders children into container appended to the document.body.
 
-* [API](#api)
-* [React Code Examples]
-
 ## API
 
 | name | type | default | required | description |
