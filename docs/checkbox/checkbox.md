@@ -8,24 +8,16 @@
 
 - [API](#api)
 
-- [States](#states-(if-applicable))
+- [States](#states)
 
 - [Accessibility](#accessibility)
 
 - [Behavior](#behavior)
-  - [Validation](validation)
-  - [Edge case handling](edge-case-handling)
 
 - [Input Methods](#input-methods)
   - [Keyboard](#keyboard)
   - [Mouse](#mouse)
   - [Touch](#touch)
-
-- [RTL](#rtl)
-
-- [DOM Structure](#dom-structure)
-
-- [Design](#design)
 
   ​
 
