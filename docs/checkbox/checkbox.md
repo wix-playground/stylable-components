@@ -1,32 +1,77 @@
 # Checkbox Component Specifications
 
-Support a similar to native checkbox implementation.
+**Table of Contents**
 
-## Properties
+- [Description](#description)
 
-| Name | Type | Default | Required | Description |
-| -- | -- | -- | -- | -- |
-| value | boolean | false | no | The value chosen in the checkbox |
-| onChange | (event : ChangeEvent) => void | NOOP | no | Event triggered by changing the value |
-| children | Array<Node> | null | no | children | Any further nodes will be rendered after the checkbox element |
-| indeterminate | boolean | false | no | indicates that the checkbox is neither on nor off. Changes the appearance to resemble a third state. Does not affect the value of the checked attribute, and clicking the checkbox will set the value to false. |
-| disabled | boolean | false | no | Whether the checkbox responds to events or not |
-| readonly | boolean | false | no | Gains tab focus but user cannot change value |
-| id | string | null | no | Unique identifier |
-| name | string | null | no | Specifies the name of the input element |
-| tabIndex | number | null | no | Tab order of the element |
-| aria-label | string | null | no | aria attribute |
-| aria-labelledby | string | null | no | aria attribute |
-| aria-describedby | string | null | no | aria attribute |
-| aria-controls | string | null | no | list of ids of controls used for implementing an intermediate state |
+- [Elements](#elements)
 
-## Styling
+- [API](#api)
 
-| Name | Description |
-| -- | -- |
-| boxIcon | sets ths style for the empty checkbox
-| tickIcon | Sets the style for the checked state |
-| indeterminateIcon | Sets the style for the indeterminate state |
+- [States](#states-(if-applicable))
+
+- [Accessibility](#accessibility)
+
+- [Behavior](#behavior)
+  - [Validation](validation)
+  - [Edge case handling](edge-case-handling)
+
+- [Input Methods](#input-methods)
+  - [Keyboard](#keyboard)
+  - [Mouse](#mouse)
+  - [Touch](#touch)
+
+- [RTL](#rtl)
+
+- [DOM Structure](#dom-structure)
+
+- [Design](#design)
+
+  ​
+
+
+
+## Description
+
+This component is similar to the native HTML checkbox implementation.
+
+
+
+### Elements
+
+**Checkbox** is consisted of: **box**, **tick mark** and **indeterminate mark**. This component accepts children that will be displayed next to the box and be used as a label.
+
+
+
+
+## API
+
+**Props**
+
+See [README.md](./README.md) for more info. 
+
+**Style**
+
+**Checkbox** can be customized with ::boxIcon, ::tickIcon and ::indeterminateIcon.
+See [README.md](./README.md) for more info. 
+
+
+
+## States
+
+
+| State   | Description                              | Link to design |
+| :------ | :--------------------------------------- | -------------- |
+| Hover   | User hovered over the checkbox  OR its' children          |                |
+| Checked | The checkbox is checked                |
+| Disabled | The checkbox is disabled. Value can't be changed               |
+| Indeterminate | The checkbox is indeterminate                |
+| Read-only | The checkbox value can't be changed. Doesn't appear disabled                |
+| Focused | The checkbox has focus                |
+
+Design [assets](https://zpl.io/2kRTvO)
+
+
 
 ## Accessibility
 
@@ -48,3 +93,36 @@ Support a similar to native checkbox implementation.
 ### Keyboard Navigation
 
 * <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">Space</kbd> changes the state of the checkbox. Note the state change to indeterminate will be available only when determined so by logic, so implementation should explicitly enable this state only when relevant. Otherwise state should be toggled between checked and unchecked.
+
+
+
+### Behavior
+This component mimics the native HTML checkbox behavior. See [MDN checkbox web docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/checkbox) for more details.
+
+
+## Input Methods
+
+#### Keyboard
+
+| Keys      | Action                      |
+| --------- | --------------------------- |
+| space       | toggles the checkbox value       |
+
+
+
+#### Mouse
+
+| Event | Action                | NOTE                     |
+| ----- | --------------------- | ------------------------ |
+| hover | toggles hover state |  |
+| click | toggles the checkbox value                      |                          |
+
+
+
+#### **Touch**
+
+| Event | Action              | NOTE                    |
+| ----- | ------------------- | ----------------------- |
+| tap   | toggles the checkbox value |  |
+
+
