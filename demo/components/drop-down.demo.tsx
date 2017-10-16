@@ -1,33 +1,16 @@
 import * as React from 'react';
-import {DropDown} from '../../src';
-import {DropDownItem} from '../../src/components/drop-down/drop-down';
+import {ChangeEvent, DropDown} from '../../src';
 
 export interface DropDownDemoState {
-    selectedItem: DropDownItem | undefined;
+    selectedItem: string | undefined;
     open: boolean;
 }
 
-const items = [
-    {label: 'Muffins'},
-    {label: 'Pancakes'},
-    {label: 'Waffles'}
-];
+const items = ['Muffins', 'Pancakes', 'Waffles'];
 
 export class DropDownDemo extends React.Component<{}, DropDownDemoState> {
 
     public state = {selectedItem: undefined, open: false};
-
-    public onInputClick = () => {
-        this.setState({
-            open: !this.state.open
-        });
-    }
-
-    public onItemClick = (item: DropDownItem) => {
-        this.setState({
-            selectedItem: item
-        });
-    }
 
     public render() {
         return (
@@ -35,14 +18,26 @@ export class DropDownDemo extends React.Component<{}, DropDownDemoState> {
                 <h2>DropDown</h2>
                 <section data-automation-id="DROP_DOWN_DEMO" style={{width: '250px'}}>
                     <DropDown
-                        selectedItem={this.state.selectedItem}
-                        items={items}
-                        onInputClick={this.onInputClick}
+                        value={this.state.selectedItem}
+                        onChange={this.onItemClick}
+                        dataSource={items}
+                        onOpenStateChange={this.onOpenStateChange}
                         open={this.state.open}
-                        onItemClick={this.onItemClick}
                     />
                 </section>
             </div>
         );
+    }
+
+    private onItemClick = (e: ChangeEvent<string>) => {
+        this.setState({
+            selectedItem: e.value
+        });
+    }
+
+    private onOpenStateChange = (e: ChangeEvent<boolean>) => {
+        this.setState({
+            open: e.value
+        });
     }
 }

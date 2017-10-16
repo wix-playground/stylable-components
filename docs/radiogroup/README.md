@@ -1,6 +1,6 @@
 # Radio Group and Radio Button
 
-The **RadioGroup** component is used to group together children and provide them with similar properties. Most common use case is to render **RadioButton** components under the group. 
+The **RadioGroup** component is used to group together children and provide them with similar properties. Most common use case is to render **RadioButton** components under the group.
 
 
 ## Elements
@@ -8,29 +8,41 @@ The **RadioGroup** component is used to group together children and provide them
 ## API
 
 #### Component Props
-**RadioGroup** Props:
+
+**RadioGroup**:
 
 | Name | Type | Default | Required | Description |
-|------|------|---------|----------|-------------
-| name | string |  | no | The name of the group. sets the _name_ property on each child |
+| -- | -- | -- | -- | -- |
+| name | string | null | no | The name of the group. sets the _name_ property on each child |
+| id | string | null | no | Unique identifier |
+| tabIndex | number | 0 | no | Tab order of the element, copied to the element in focus (not on the root) |
 | disabled | boolean | false | no | Whether all the radio buttons are disabled |
 | readonly | boolean | false | no | Whether the group value cannot be changed |
-| labelLocation | 'right' or 'left' | 'right' | no | Whether each child's value appears as text to the right or left of the radio button  |
-| onChange | (e: RadioChangeEvent) => void | NOOP | no | Triggered by changing a radio button state |
-| dataSource | Array\<RadioButtonProps> | [] | no | Array of dataSchema objects |
+| value | string | null | no | The value of the selected element |
+| onChange | (event: ChangeEvent) => void | NOOP | no | Triggered by changing a radio button state to selected |
+| children | React.ReactNode | null | no | children |
 
-**RadioButton** Props:
+The following props are part of the DataInterface (name to be decided):
 
 | Name | Type | Default | Required | Description |
-|------|------|---------|----------|-------------
-| value | string |  | no | The value of the radio button |
-| checked | boolean |  | no | Whether the button appears checked |
-| name | string |  | no | The name of the group that this button is part of |
+| -- | -- | -- | -- | -- |
+| dataSource | Array[DataSourceItem] | [] | no | The DataSourceItem is of type '*string \| object \| symbol*'. The dataSource receives an array and the component uses the renderItem function to render the items in the array in order.
+| dataSchema | {[index: string]: string} | {} | no | Maps fields from the DataSourceItem to the field used by the renderItem function |
+| renderItem | (item : DataSourceItem) -> JSX.Element \| default function | no | The renderItem function receives a DataSourceItem and then decides how to render it.
+
+**RadioButton**:
+
+| Name | Type | Default | Required | Description |
+| -- | -- | -- | -- | -- |
+| checked | boolean | false | no | Whether the button appears checked |
+| id | string | null | no | Unique identifier |
+| tabIndex | number | -1 \| tabIndex set by RadioGroup | Tab of order of the element |
+| name | string | null | no | The name of the group that this button is part of |
 | disabled | boolean | false | no | Whether this button appears as disabled |
 | readonly | boolean | false | no | Whether this button's value can be changed |
-| labelLocation | 'right' or 'left' | 'right' | no | Whether the text supplied in the value property appears to the right or left of the button itself  |
-| onChange | (e: RadioChangeEvent) => void | NOOP | no | Triggered by changing the button's state |
-
+| value | string | no | Yes | The value of the radio button |
+| onChange | (event: ChangeEvent) => void | NOOP | no | Triggered by changing the button's state |
+| children | React.ReactNode | null | no | children | Any further nodes will be rendered. |
 
 ### React Code Examples
 
@@ -49,7 +61,7 @@ export class Example1 extends React.Component<{}, {}>{
     private onChange = (e: {value: string}) => {
         this.setState({myValue: e.value});
     }
-    
+
     render() {
         return (
             <RadioGroup onChange={this.onChange} name="example1" className="rg1">
@@ -78,12 +90,11 @@ export class Example2 extends React.Component<{}, {}>{
     private onChange = (e: {value: string}) => {
         this.setState({myValue: e.value});
     }
-    
+
     render() {
         return (
             <RadioGroup
                  onChange={this.onChange}
-                 labelLocation="left"
                  name="example2"
                  className="rg2"
                  dataSource={[
@@ -97,15 +108,13 @@ export class Example2 extends React.Component<{}, {}>{
 }
 ```
 
-
-
 ## Style API
 
 #### **RadioGroup** Subcomponents (pseudo-elements)
 
-| selector | description  | type | children pseudo-states |
-|----------|--------------|------|------------------------|
-| ::radioGroupChild | Allows styling the children under the **RadioGroup** | **RadioButton** | :error - allows styling the error state of the internal switch |
+| selector | description  |
+|----------|--------------|
+| ::option | Allows styling the children under the *RadioGroup* |
 
 #### **RadioButton** Custom CSS States (pseudo-classes)
 
@@ -114,12 +123,34 @@ export class Example2 extends React.Component<{}, {}>{
 | :disabled | Style the button when it is disabled |
 | :focused | Style the component when it gets document focus |
 | :checked |  Style the button when it is checked |
-| :isLeftLabel | Style the component when the label is the left side (by default label is on the right) |
-
-
 
 ### Style Code Example
 
 ```css
+@namespace "MyAwsomeComp";
 
-```
+:import {
+    -st-from: "stylable-components/dist/src/components/radio-group/radio-group.st.css";
+    -st-default: RG;
+}
+
+/* myRadioGroup class now extends stylable radio group */
+.myRadioGroup {
+    -st-extends: RG;
+}
+
+/* style every child of the group*/
+.myRadioGroup::option {
+    display: block;
+}
+
+/* style every child of the group when in hover state*/
+.myRadioGroup::option:hover {
+    border: 1px solid rebeccapurple;
+}
+
+/* style every child's inner class */
+.myRadioGroup::option::radioSVG {
+    width: 20px;
+    height: 20px;
+}

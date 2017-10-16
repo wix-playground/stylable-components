@@ -1,64 +1,72 @@
 import * as React from 'react';
-import {Toggle} from '../../src';
+import {stylable} from 'wix-react-tools';
+import {ChangeEvent, ContextProvider, Toggle} from '../../src';
+import styles from './toggle-demo.st.css';
 
-export interface State {
+export interface ToggleDemoState {
     checked: boolean;
 }
 
-export class ToggleDemo extends React.Component<{}, State> {
+@stylable(styles)
+export class ToggleDemo extends React.Component<{}, ToggleDemoState> {
     public state = {
         checked: false
     };
 
     public render() {
-        const onChange = (checked: boolean) => this.setState({checked});
+        const onChange = (e: ChangeEvent<boolean>) => this.setState({checked: e.value});
         return (
             <table>
-            <tbody>
-                <tr>
-                    <th data-automation-id="TOGGLE_DEMO_CONTROLLED">
-                        Controlled
-                        <Toggle
-                            label="with icons"
-                            checked={this.state.checked}
-                            onChange={onChange}
-                        />
-                    </th>
-                    <th>
-                        Controlled RTL
-                        <Toggle
-                            label="with icons"
-                            rtl
-                            checked={this.state.checked}
-                            onChange={onChange}
-                        />
-                    </th>
-                    <th data-automation-id="TOGGLE_DEMO_UNCONTROLLED">
-                        Off
-                        <Toggle/>
-                    </th>
-                    <th>
-                        On
-                        <Toggle checked/>
-                    </th>
-                    <th>
-                        Disabled and off
-                        <Toggle disabled/>
-                    </th>
-                    <th>
-                        Disabled and on
-                        <Toggle disabled checked/>
-                    </th>
-                    <th>
-                        Error and off
-                        <Toggle error/>
-                    </th>
-                    <th>
-                        Error and on
-                        <Toggle error checked/>
-                    </th>
-                </tr>
-            </tbody>
+                <thead>
+                    <tr>
+                        <th>Controlled</th>
+                        <th>Controlled RTL</th>
+                        <th>Off</th>
+                        <th>On</th>
+                        <th>Disabled and off</th>
+                        <th>Disabled and on</th>
+                        <th>Error and off</th>
+                        <th>Error and on</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td data-automation-id="TOGGLE_DEMO_CONTROLLED">
+                            <Toggle
+                                label="with icons"
+                                value={this.state.checked}
+                                onChange={onChange}
+                            />
+                        </td>
+                        <td>
+                            <ContextProvider dir="rtl">
+                                <Toggle
+                                    label="with icons"
+                                    value={this.state.checked}
+                                    onChange={onChange}
+                                />
+                            </ContextProvider>
+                        </td>
+                        <td data-automation-id="TOGGLE_DEMO_UNCONTROLLED">
+                            <Toggle/>
+                        </td>
+                        <td>
+                            <Toggle value={true}/>
+                        </td>
+                        <td>
+                            <Toggle disabled/>
+                        </td>
+                        <td>
+                            <Toggle disabled value={true}/>
+                        </td>
+                        <th>
+                            <Toggle error/>
+                        </th>
+                        <th>
+                            <Toggle error value={true}/>
+                        </th>
+                    </tr>
+                </tbody>
             </table>
         );
     }

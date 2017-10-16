@@ -6,8 +6,9 @@
 }
 
 :import {
-    -st-from: "../../style/default-theme/variables.st.css";
+    -st-from: "../../style/project.st.css";
     -st-named:
+        ER1,
         DS1,
         DS2,
         BK2,
@@ -20,18 +21,21 @@
     width: 7.5em;
 }
 .root {
-    -st-states: focus, disabled, empty;
+    -st-states: focus, disabled, empty, hasPlaceholder, error, rtl;
     font-family: arial;
     font-size: 16px;
     position: relative;
     border: 1px solid value(BK3);
     height: value(height);
     min-width: value(width);
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
     user-select: none;
     -webkit-user-select: none;
+    background-color: white;
 
     padding-left: 9px;
+    overflow: hidden;
 }
 
 .root:not(:disabled):hover {
@@ -50,26 +54,53 @@
 .root:disabled {
     background-color: value(DS2);
     color: value(DS1);
+    position: relative;
 }
+.root:disabled:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    cursor: not-allowed;
+}
+
 .root:empty {
     color: value(BK2);
 }
-
-.input-wrap {
-    position: relative;
-    display: inline-block;
-    height: 100%;
+.root:empty::stepper,
+.root:empty:hasPlaceholder::time,
+.root:empty:hasPlaceholder::ampm {
+    opacity: 0;
 }
-.input-wrap.mm:before {
+.root:error {
+    border-color: value(ER1);
+}
+
+.time {
+    display: inline-block;
+    flex: 1;
+    position: relative;
+}
+.time:after {
     content: ':';
     position: absolute;
     top: 0;
-    width: 10px;
-    left: -5px;
+    left: 1.4em;
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.root:rtl {
+    padding-right: 9px;
+    padding-left: 0;
+}
+.root:rtl::time {
+    display: inline-flex;
+    flex-direction: row-reverse;
 }
 
 .input {
@@ -78,7 +109,7 @@
     border: 0;
     padding: 0 3px;
     margin: 0;
-    width: 1.6em;
+    width: 1.62em;
     height: 100%;
     background: none;
     color: inherit;
@@ -120,9 +151,11 @@
     border: 0;
     outline: 0;
 }
-/* reset ios safari disabled opacity */
 .input:disabled {
     opacity: 1;
+    background-color: inherit;
+    border: none;
+    color: inherit;
 }
 
 .placeholder {
@@ -134,14 +167,12 @@
     padding: 0 12px;
     display: flex;
     align-items: center;
-    background: white;
 }
 
 .ampm {
     display: inline-block;
     background-color: inherit;
     cursor: pointer;
-    vertical-align: baseline;
 }
 .ampm:hover {
     color: value(PR3);
@@ -171,7 +202,7 @@
 .label:visible {
     display: block;
 }
-.native-input {
+.nativeInput {
     position: absolute;
     opacity: 0;
     padding: 0;
@@ -180,7 +211,7 @@
     width: 0;
     height: 0;
 }
-.native-input:focus {
+.nativeInput:focus {
     border: 0;
 }
 
@@ -189,12 +220,4 @@
     height: 100%;
     transition: opacity 100ms ease;
     float: right;
-    opacity: 0;
-}
-.stepper::control {
-    background: transparent;
-}
-.root:focus .stepper,
-.root:hover .stepper {
-    opacity: 1;
 }

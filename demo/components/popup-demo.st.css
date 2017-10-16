@@ -1,0 +1,25 @@
+:import {
+    -st-from: '../../src/components/radio-group/radio-group.st.css';
+    -st-default: RG;
+}
+
+.root {
+    -st-extends: RG;
+}
+
+.position {
+    display: flex;
+}
+
+.anchor {
+    margin-left: 100px;
+    width: 100px;
+}
+
+.category {
+    margin-right: 1rem;
+}
+
+.radio::option {
+    display: block;
+}

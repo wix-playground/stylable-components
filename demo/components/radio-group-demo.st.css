@@ -1,12 +1,21 @@
 :import {
     -st-from: "../../src/components/radio-group/radio-group.st.css";
     -st-default: RG;
+    -st-named: data-label;
 }
 
 .rg {
     -st-extends: RG;
 }
 
-.rg::radioGroupChild {
+.rg::option {
     display: block;
+}
+
+.label {
+    margin-left: 0.5rem;
+}
+
+.label {
+    color: #4A90E2;
 }

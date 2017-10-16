@@ -1,27 +1,31 @@
 import * as React from 'react';
-import {Portal} from '../../../src';
+import {properties} from 'wix-react-tools';
+import {Point} from '../../types';
+import {Portal} from '../portal';
 
-export type VerticalPosition =  'top' | 'center' | 'bottom';
-export type HorizontalPosition = 'left' | 'center' | 'right';
+export type PopupVerticalPosition =  'top' | 'center' | 'bottom';
+export type PopupHorizontalPosition = 'left' | 'center' | 'right';
 
-export interface PositionPoint {
-    vertical: VerticalPosition;
-    horizontal: HorizontalPosition;
+export interface PopupPositionPoint {
+    vertical: PopupVerticalPosition;
+    horizontal: PopupHorizontalPosition;
 }
 
-export interface PopupProps {
+export interface PopupProps extends properties.Props {
     open?: boolean;
-    anchorPosition?: PositionPoint;
-    popupPosition?: PositionPoint;
+    anchorPosition?: PopupPositionPoint;
+    popupPosition?: PopupPositionPoint;
     syncWidth?: boolean;
     maxHeight?: number;
+    children?: React.ReactNode;
 }
 
 export interface PopupCompProps extends PopupProps {
-    anchor: Element | null;
+    anchor: Element | Point | null;
 }
 
-export class Popup extends React.Component<PopupCompProps, {}> {
+@properties
+export class Popup extends React.Component<PopupCompProps> {
     public static defaultProps: Partial<PopupCompProps> = {
         open: false,
         anchorPosition: {vertical: 'bottom', horizontal: 'left'},
@@ -30,10 +34,12 @@ export class Popup extends React.Component<PopupCompProps, {}> {
         maxHeight: 500
     };
 
+    private portal: Portal | null;
+
     public render() {
         if (this.props.anchor && this.props.open) {
             return (
-                <Portal style={this.createStyle()}>
+                <Portal style={this.createStyle()} ref={portal => this.portal = portal}>
                     {this.props.children}
                 </Portal>);
         }
@@ -41,22 +47,32 @@ export class Popup extends React.Component<PopupCompProps, {}> {
         return null;
     }
 
+    public getPortal(): Portal | null {
+        return this.portal;
+    }
+
     private createStyle(): React.CSSProperties {
         if (!this.props.anchor) {
             return {};
         }
         const newStyle: React.CSSProperties = {position: 'absolute'};
-        const anchorRect = this.props.anchor!.getBoundingClientRect();
 
         newStyle.maxHeight = this.props.maxHeight;
         newStyle.transform = '';
         newStyle.WebkitTransform = '';
-        if (this.props.syncWidth) {
-            newStyle.width = anchorRect.width;
-        }
+        if (isPoint(this.props.anchor)) {
+            newStyle.top = this.props.anchor.y;
+            newStyle.left = this.props.anchor.x;
 
-        newStyle.top = getVerticalReference(anchorRect, this.props.anchorPosition!.vertical);
-        newStyle.left = getHorizontalReference(anchorRect, this.props.anchorPosition!.horizontal);
+        } else {
+            const anchorRect = this.props.anchor!.getBoundingClientRect();
+            if (this.props.syncWidth) {
+                newStyle.width = anchorRect.width;
+            }
+
+            newStyle.top = getVerticalReference(anchorRect, this.props.anchorPosition!.vertical);
+            newStyle.left = getHorizontalReference(anchorRect, this.props.anchorPosition!.horizontal);
+        }
         switch (this.props.popupPosition!.vertical) {
             case 'center':
                 addTransform(newStyle, 'translateY(-50%)');
@@ -78,7 +94,7 @@ export class Popup extends React.Component<PopupCompProps, {}> {
     }
 }
 
-function getVerticalReference(rect: ClientRect, anchorPosition: VerticalPosition): number {
+function getVerticalReference(rect: ClientRect, anchorPosition: PopupVerticalPosition): number {
     if (anchorPosition === 'center') {
         return window.pageYOffset + rect.top + (rect.height / 2);
     } else {
@@ -86,7 +102,7 @@ function getVerticalReference(rect: ClientRect, anchorPosition: VerticalPosition
     }
 }
 
-function getHorizontalReference(rect: ClientRect, anchorPosition: HorizontalPosition): number {
+function getHorizontalReference(rect: ClientRect, anchorPosition: PopupHorizontalPosition): number {
     if (anchorPosition === 'center') {
         return window.pageXOffset + rect.left + (rect.width / 2);
     } else {
@@ -97,4 +113,8 @@ function getHorizontalReference(rect: ClientRect, anchorPosition: HorizontalPosi
 function addTransform(style: React.CSSProperties, transformation: string) {
     style.transform += transformation;
     style.WebkitTransform += transformation;
+}
+
+function isPoint(elem: Element | Point): elem is Point {
+    return elem.hasOwnProperty('x') && elem.hasOwnProperty('y');
 }

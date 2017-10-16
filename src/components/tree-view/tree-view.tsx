@@ -1,16 +1,13 @@
+import * as keycode from 'keycode';
 import {action, autorun, observable} from 'mobx';
 import {observer} from 'mobx-react';
 import * as React from 'react';
-import {root} from 'wix-react-tools';
+import {properties, stylable} from 'wix-react-tools';
+import {TreeItem} from './tree-item-default';
 import {getLastAvailableItem, getNextItem, getPreviousItem} from './tree-util';
-
-import * as keycode from 'keycode';
-import {SBComponent, SBStateless} from 'stylable-react-component';
-import {MinusIcon, PlusIcon} from './tree-view-icons';
 import style from './tree-view.st.css';
-import nodeStyle from './tree-node.st.css';
 
-const KeyCodes: any = {
+export const TreeKeyCodes: any = {
     ENTER: keycode('enter'),
     HOME: keycode('home'),
     END: keycode('end'),
@@ -32,10 +29,10 @@ export interface TreeItemProps {
     itemRenderer: React.ComponentType<TreeItemProps>;
     onItemClick?: TreeItemEventHandler;
     onIconClick?: TreeItemEventHandler;
-    stateMap: TreeStateMap;
+    stateMap: TreeViewStateMap;
 }
 
-export interface TreeViewProps {
+export interface TreeViewProps extends React.HTMLAttributes<HTMLUListElement> {
     dataSource: object[];
     itemRenderer?: React.ComponentType<TreeItemProps>;
     onSelectItem?: React.EventHandler<any>;
@@ -52,60 +49,19 @@ export interface TreeItemState {
 }
 
 export type StateMap = Map<TreeItemData, TreeItemState>;
-export type ParentsMap = Map<TreeItemData, TreeItemData | undefined>;
+export type TreeViewParentsMap = Map<TreeItemData, TreeItemData | undefined>;
 
-const itemIdPrefix = 'TREE_ITEM';
-
-export const TreeItem: React.SFC<TreeItemProps> =
-    SBStateless(({item, itemRenderer, onItemClick, onIconClick, stateMap}) => {
-        const state = stateMap.getItemState(item);
-        const itemLabel = item.label.replace(' ', '_');
-        const TreeNode = itemRenderer;
-        const iconProps = {
-            'data-automation-id': `${itemIdPrefix}_${itemLabel}_ICON`,
-            'onClick': onIconClick && onIconClick.bind(null, item),
-            'className': 'tree-item-icon'
-        };
-
-        return (
-            <div>
-                <div
-                    data-automation-id={`${itemIdPrefix}_${itemLabel}`}
-                    className="tree-node"
-                    cssStates={{selected: state!.isSelected, focused: state!.isFocused}}
-                    data-selected={state!.isSelected}
-                    data-focused={state!.isFocused}
-                    onClick={onItemClick && onItemClick.bind(null, item)}
-                >
-                    {item.children && (state!.isExpanded ?
-                        <MinusIcon {...iconProps} /> : <PlusIcon {...iconProps} />)}
-
-                    <span
-                        data-automation-id={`${itemIdPrefix}_${itemLabel}_LABEL`}
-                        className="tree-item-label"
-                    >
-                        {item.label}
-                    </span>
-                </div>
-                <div className="nested-tree">
-                    {state!.isExpanded && (item.children || []).map((child: TreeItemData, index: number) =>
-                        <TreeNode
-                            item={child}
-                            onItemClick={onItemClick}
-                            itemRenderer={itemRenderer}
-                            onIconClick={onIconClick}
-                            stateMap={stateMap}
-                            key={`${index}`}
-                        />
-                    )}
-                </div>
-            </div>
-        );
-    }, nodeStyle);
+export function initParentsMap(parentsMap: TreeViewParentsMap,
+                               data: TreeItemData[] = [], parent: TreeItemData | undefined) {
+    data.forEach((item: TreeItemData) => {
+        parentsMap.set(item, parent);
+        initParentsMap(parentsMap, item.children || [], item);
+    });
+}
 
 const TreeItemWrapper = observer(TreeItem);
 
-export class TreeStateMap {
+export class TreeViewStateMap {
     private stateMap: StateMap = new Map<TreeItemData, TreeItemState>();
 
     public getItemState(item: TreeItemData) {
@@ -120,20 +76,25 @@ export class TreeStateMap {
     }
 }
 
-@SBComponent(style) @observer
-export class TreeView extends React.Component<TreeViewProps, {}> {
+@observer
+@stylable(style)
+@properties
+export class TreeView extends React.Component<TreeViewProps> {
     public static defaultProps: Partial<TreeViewProps> = {
         itemRenderer: TreeItemWrapper,
         onSelectItem: () => { },
         onFocusItem: () => { }
     };
 
-    private stateMap: TreeStateMap = new TreeStateMap();
-    private parentsMap: ParentsMap = new Map<TreeItemData, TreeItemData | undefined>();
+    private stateMap: TreeViewStateMap = new TreeViewStateMap();
+    private parentsMap: TreeViewParentsMap;
 
     constructor(props: TreeViewProps) {
         super(props);
-        this.initParentsMap(props.dataSource as TreeItemData[], undefined);
+        autorun(() => {
+            this.parentsMap = new Map<TreeItemData, TreeItemData | undefined>();
+            initParentsMap(this.parentsMap, props.dataSource as TreeItemData[], undefined);
+        });
     }
 
     public componentDidMount() {
@@ -149,13 +110,14 @@ export class TreeView extends React.Component<TreeViewProps, {}> {
 
     public render() {
         const TreeNode = this.props.itemRenderer!;
-        const rootProps = root(this.props, {'data-automation-id': 'TREE_VIEW', 'className': ''});
 
         return (
-            <div
-                {...rootProps}
-                tabIndex={0}
+            <ul
+                data-automation-id="TREE_VIEW"
                 onKeyDown={this.onKeyDown}
+                role="tree"
+                tabIndex={0}
+                aria-activedescendant={this.props.focusedItem && this.props.focusedItem.label}
             >
                 {(this.props.dataSource || []).map((item: TreeItemData, index: number) =>
                     <TreeNode
@@ -167,22 +129,33 @@ export class TreeView extends React.Component<TreeViewProps, {}> {
                         key={`${index}`}
                     />
                 )}
-            </div>
+            </ul>
         );
     }
 
-    private initParentsMap(data: TreeItemData[] = [], parent: TreeItemData | undefined) {
-        data.forEach((item: TreeItemData) => {
-            this.parentsMap.set(item, parent);
-            this.initParentsMap(item.children || [], item);
-        });
+    public collapse = (item: TreeItemData): void => {
+        this.collapseItem(item);
+        if (item.children) {
+            item.children.forEach(this.collapse);
+        }
     }
 
-    private toggleItem(item: TreeItemData) {
-        this.stateMap.getItemState(item).isExpanded = !this.stateMap.getItemState(item).isExpanded;
+    public collapseAll = (): void => {
+        this.props.dataSource.forEach(this.collapse);
     }
 
-    private selectItem(item: TreeItemData) {
+    public expand = (item: TreeItemData): void => {
+        this.expandItem(item);
+        if (item.children) {
+            item.children.forEach(this.expand);
+        }
+    }
+
+    public expandAll = (): void => {
+        this.props.dataSource.forEach(this.expand);
+    }
+
+    public selectItem(item: TreeItemData) {
         if (this.props.selectedItem) {
             if (this.props.selectedItem !== item) {
                 this.stateMap.getItemState(this.props.selectedItem).isSelected = false;
@@ -191,6 +164,10 @@ export class TreeView extends React.Component<TreeViewProps, {}> {
         } else {
             this.props.onSelectItem!(item);
         }
+    }
+
+    private toggleItem(item: TreeItemData) {
+        this.stateMap.getItemState(item).isExpanded = !this.stateMap.getItemState(item).isExpanded;
     }
 
     @action
@@ -250,20 +227,20 @@ export class TreeView extends React.Component<TreeViewProps, {}> {
         if (!this.props.focusedItem) { return; }
 
         switch (e.keyCode) {
-            case KeyCodes.RIGHT:
+            case TreeKeyCodes.RIGHT:
                 e.preventDefault(); this.expandItem(this.props.focusedItem); break;
-            case KeyCodes.LEFT:
+            case TreeKeyCodes.LEFT:
                 e.preventDefault(); this.collapseItem(this.props.focusedItem); break;
-            case KeyCodes.UP:
+            case TreeKeyCodes.UP:
                 e.preventDefault(); this.focusPrev(this.props.focusedItem); break;
-            case KeyCodes.DOWN:
+            case TreeKeyCodes.DOWN:
                 e.preventDefault(); this.focusNext(this.props.focusedItem); break;
-            case KeyCodes.ENTER:
+            case TreeKeyCodes.ENTER:
                 e.preventDefault(); this.selectItem(this.props.focusedItem); break;
-            case KeyCodes.HOME:
+            case TreeKeyCodes.HOME:
                 this.stateMap.getItemState(this.props.focusedItem).isFocused = false;
                 e.preventDefault(); this.focusFirst(); break;
-            case KeyCodes.END:
+            case TreeKeyCodes.END:
                 this.stateMap.getItemState(this.props.focusedItem).isFocused = false;
                 e.preventDefault(); this.focusLast(); break;
         }

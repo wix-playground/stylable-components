@@ -1,14 +1,12 @@
 import {codes as KeyCodes} from 'keycode';
 import * as React from 'react';
-import {SBComponent} from 'stylable-react-component';
-import inputStyles from '../../style/default-theme/controls/input.st.css';
+import {properties, stylable} from 'wix-react-tools';
+import {FormInputProps} from '../../types';
 import {isNumber, noop} from '../../utils';
 import {Modifiers, Stepper} from '../stepper';
 import styles from './number-input.st.css';
 
-export interface NumberInputProps {
-    className?: string;
-    value?: number;
+export interface NumberInputProps extends FormInputProps<number | undefined, string>, properties.Props {
     defaultValue?: number;
     placeholder?: string;
     min?: number;
@@ -19,23 +17,14 @@ export interface NumberInputProps {
     label?: string;
     name?: string;
     error?: boolean;
-    onChange?(value?: number): void;
-    onInput?(value: string): void;
+    prefix?: React.ReactNode;
+    suffix?: React.ReactNode;
 }
 
 interface DefaultProps {
     step: number;
     min: number;
     max: number;
-    onChange(value?: number): void;
-    onInput(value: string): void;
-}
-
-export type SlotElement = React.ReactElement<{'data-slot': string}>;
-
-export interface Affix {
-    prefix: SlotElement[];
-    suffix: SlotElement[];
 }
 
 export interface NumberInputState {
@@ -44,47 +33,15 @@ export interface NumberInputState {
     error: boolean;
 }
 
-enum Slot {
-    Prefix = 'prefix',
-    Suffix = 'suffix'
-}
-
 enum Direction {
     Increase = 'increase',
     Decrease = 'decrease'
 }
 
-function getAffix(children: React.ReactNode): Affix {
-    return React.Children
-        .toArray(children)
-        .reduce((affix: Affix, child) => {
-            if (typeof child === 'object') {
-                child as React.ReactElement<{}>;
-
-                switch (child.props['data-slot']) {
-                    case Slot.Prefix:
-                        affix.prefix.push(child);
-                        break;
-                    case Slot.Suffix:
-                        affix.suffix.push(child);
-                        break;
-                }
-            }
-
-            return affix;
-        },
-        {
-            prefix: [],
-            suffix: []
-        });
-}
-
 const DEFAULTS: DefaultProps = {
     step: 1,
     min: -Infinity,
-    max: Infinity,
-    onChange: noop,
-    onInput: noop
+    max: Infinity
 };
 
 function getPropWithDefault<Prop extends keyof NumberInputProps & keyof DefaultProps>(
@@ -94,11 +51,12 @@ function getPropWithDefault<Prop extends keyof NumberInputProps & keyof DefaultP
     return props[name] === undefined ? DEFAULTS[name] : props[name];
 }
 
-@SBComponent(styles)
+@stylable(styles)
+@properties
 export class NumberInput extends React.Component<NumberInputProps, NumberInputState> {
-    public static defaultProps = {
-        onChange: DEFAULTS.onChange,
-        onInput: DEFAULTS.onInput
+    public static defaultProps: Partial<NumberInputProps> = {
+        onChange: noop,
+        onInput: noop
     };
 
     private committed = true;
@@ -131,7 +89,7 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
         };
     }
 
-    public componentWillReceiveProps({min, max, step, value, defaultValue}: NumberInputProps) {
+    public componentWillReceiveProps({value, defaultValue}: NumberInputProps) {
         if (defaultValue === undefined && value !== this.state.value) {
             this.committed = true;
             this.setState({value});
@@ -143,16 +101,15 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
         const {
             step, min, max,
             placeholder, name,
-            disabled, required,
-            children, error
+            disabled, required, error,
+            prefix, suffix
         } = this.props;
         const disableIncrement = disabled || (isNumber(value) && value >= max!);
         const disableDecrement = disabled || (isNumber(value) && value <= min!);
-        const {prefix, suffix} = getAffix(children);
 
         return (
             <div
-                cssStates={{
+                style-state={{
                     disabled: Boolean(disabled),
                     error: Boolean(error),
                     focus
@@ -160,14 +117,14 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
                 onFocus={this.handleFocus}
                 onBlur={this.handleBlur}
             >
-                {prefix.length > 0 ?
+                {prefix ?
                     <div className="prefix">
                         {prefix}
                     </div> : null
                 }
                 <input
                     ref={input => this.inputRef = input}
-                    className={`${inputStyles.root} native-input`}
+                    className="nativeInput"
                     data-automation-id="NATIVE_INPUT_NUMBER"
                     type="number"
                     name={name}
@@ -182,7 +139,7 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
                     onKeyDown={this.handleInputKeyDown}
                     onBlur={this.handleInputBlur}
                 />
-                {suffix.length > 0 ?
+                {suffix ?
                     <div className="suffix">
                         {suffix}
                     </div> : null
@@ -214,7 +171,7 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
         this.updateValue(valueInRange);
 
         if (!this.committed) {
-            onChange!(valueInRange);
+            onChange!({value: valueInRange});
             this.committed = true;
         }
     }
@@ -292,6 +249,6 @@ export class NumberInput extends React.Component<NumberInputProps, NumberInputSt
                 undefined;
 
             this.updateValue(next);
-            onInput!(value);
+            onInput!({value});
         }
 }

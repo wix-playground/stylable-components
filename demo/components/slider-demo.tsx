@@ -1,14 +1,15 @@
 import * as React from 'react';
-import {SBComponent} from 'stylable-react-component';
-import {Slider} from '../../src';
+import {stylable} from 'wix-react-tools';
+import {ChangeEvent, ContextProvider, Slider, TooltipPosition} from '../../src';
 import style from './slider-demo.st.css';
 
 export interface SliderDemoState {
     value: number;
     rawValue: string;
+    tooltipPosition?: TooltipPosition;
 }
 
-@SBComponent(style)
+@stylable(style)
 export class SliderDemo extends React.Component<{}, SliderDemoState> {
     constructor(props: {}) {
         super(props);
@@ -26,178 +27,251 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
         return (
             <table cellSpacing="24px">
                 <thead>
-                <tr>
-                    <th className="table-head-cell">Default Slider</th>
-                    <th className="table-head-cell">Disabled Slider</th>
-                    <th className="table-head-cell">Slider with step</th>
-                </tr>
+                    <tr>
+                        <th className="table-head-cell">Default Slider</th>
+                        <th className="table-head-cell">Disabled Slider</th>
+                        <th className="table-head-cell">Slider with step</th>
+                    </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>
-                        <Slider
-                            value={this.state.value}
-                            min={min}
-                            max={max}
-                            onChange={this.onSliderChange}
-                        />
-                    </td>
-                    <td>
-                        <Slider
-                            value={this.state.value}
-                            min={min}
-                            max={max}
-                            disabled={true}
-                            onChange={this.onSliderChange}
-                        />
-                    </td>
-                    <td>
-                        <Slider
-                            value={this.state.value}
-                            min={min}
-                            max={max}
-                            step={10}
-                            onChange={this.onSliderChange}
-                        />
-                    </td>
-                </tr>
+                    <tr>
+                        <td>
+                            <Slider
+                                value={this.state.value}
+                                min={min}
+                                max={max}
+                                onChange={this.onSliderChange}
+                            />
+                        </td>
+                        <td>
+                            <Slider
+                                value={this.state.value}
+                                min={min}
+                                max={max}
+                                disabled={true}
+                                onChange={this.onSliderChange}
+                            />
+                        </td>
+                        <td>
+                            <Slider
+                                value={this.state.value}
+                                min={min}
+                                max={max}
+                                step={10}
+                                onChange={this.onSliderChange}
+                            />
+                        </td>
+                    </tr>
                 </tbody>
                 <thead>
-                <tr>
-                    <th className="table-head-cell">
-                        Slider with error state<br />
-                        <span style={{color: '#777', fontSize: '12px'}}>To be continued...</span>
-                    </th>
-                    <th className="table-head-cell">Slider with label</th>
-                    <th className="table-head-cell">Slider with tooltip</th>
-                </tr>
+                    <tr>
+                        <th className="table-head-cell">
+                            Slider with error state<br />
+                            <span style={{color: '#777', fontSize: '12px'}}>To be continued...</span>
+                        </th>
+                        <th className="table-head-cell">Slider with label</th>
+                        <th className="table-head-cell">
+                            <span>Slider with tooltip</span>
+                            <select
+                                defaultValue={this.state.tooltipPosition}
+                                onChange={this.onTooltipChange}
+                            >
+                                <option value="">default</option>
+                                {['top', 'bottom', 'left', 'right'].map((tooltipPosition: TooltipPosition) =>
+                                    <option
+                                        key={tooltipPosition}
+                                        children={tooltipPosition}
+                                        value={tooltipPosition}
+                                    />
+                                )}
+                            </select>
+                        </th>
+                    </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>
-                        <Slider
-                            value={this.state.value}
-                            min={min}
-                            max={max}
-                            error={true}
-                            onChange={this.onSliderChange}
-                        />
-                    </td>
-                    <td>
-                        <Slider
-                            value={this.state.value}
-                            min={min}
-                            max={max}
-                            label="It's simple slider."
-                            onChange={this.onSliderChange}
-                        />
-                    </td>
-                    <td>
-                        <Slider
-                            value={this.state.value}
-                            min={min}
-                            max={max}
-                            onChange={this.onSliderChange}
-                            onInput={this.onSliderInput}
-                        >
-                            <div data-slot="tooltip" className="tooltip">{this.state.rawValue}</div>
-                        </Slider>
-                    </td>
-                </tr>
+                    <tr>
+                        <td>
+                            <Slider
+                                value={this.state.value}
+                                min={min}
+                                max={max}
+                                error={true}
+                                onChange={this.onSliderChange}
+                            />
+                        </td>
+                        <td>
+                            <Slider
+                                value={this.state.value}
+                                min={min}
+                                max={max}
+                                label="It's simple slider."
+                                onChange={this.onSliderChange}
+                            />
+                        </td>
+                        <td>
+                            <Slider
+                                value={this.state.value}
+                                min={min}
+                                max={max}
+                                onChange={this.onSliderChange}
+                                onInput={this.onSliderInput}
+                                displayTooltip
+                                tooltipPosition={this.state.tooltipPosition}
+                            />
+                        </td>
+                    </tr>
                 </tbody>
                 <thead>
-                <tr>
-                    <th className="table-head-cell">Slider axis="y"</th>
-                    <th className="table-head-cell">Slider axis="x-reverse"</th>
-                    <th className="table-head-cell">Slider axis="y-reverse"</th>
-                </tr>
+                    <tr>
+                        <th className="table-head-cell">Slider axis="y"</th>
+                        <th className="table-head-cell">Slider axis="x-reverse"</th>
+                        <th className="table-head-cell">Slider axis="y-reverse"</th>
+                    </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td className="vertical-demo">
-                        <Slider
-                            axis={'y'}
-                            value={this.state.value}
-                            min={min}
-                            max={max}
-                            onChange={this.onSliderChange}
-                        />
-                    </td>
-                    <td className="vertical-demo">
-                        <Slider
-                            axis={'x-reverse'}
-                            value={this.state.value}
-                            min={min}
-                            max={max}
-                            onChange={this.onSliderChange}
-                        />
-                    </td>
-                    <td className="vertical-demo">
-                        <Slider
-                            axis={'y-reverse'}
-                            value={this.state.value}
-                            min={min}
-                            max={max}
-                            onChange={this.onSliderChange}
-                        />
-                    </td>
-                </tr>
+                    <tr>
+                        <td className="vertical-demo">
+                            <Slider
+                                axis={'y'}
+                                value={this.state.value}
+                                min={min}
+                                max={max}
+                                onChange={this.onSliderChange}
+                            />
+                        </td>
+                        <td className="vertical-demo">
+                            <Slider
+                                axis={'x-reverse'}
+                                value={this.state.value}
+                                min={min}
+                                max={max}
+                                onChange={this.onSliderChange}
+                            />
+                        </td>
+                        <td className="vertical-demo">
+                            <Slider
+                                axis={'y-reverse'}
+                                value={this.state.value}
+                                min={min}
+                                max={max}
+                                onChange={this.onSliderChange}
+                            />
+                        </td>
+                    </tr>
                 </tbody>
                 <thead>
-                <tr>
-                    <th className="table-head-cell">Slider width marks</th>
-                    <th className="table-head-cell">Vertical Slider with marks</th>
-                    <th className="table-head-cell">Reverse Slider with marks</th>
-                </tr>
+                    <tr>
+                        <th className="table-head-cell">Slider with marks</th>
+                        <th className="table-head-cell">Vertical Slider with marks</th>
+                        <th className="table-head-cell">Reverse Slider with marks</th>
+                    </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td className="vertical-demo">
-                        <Slider
-                            value={this.state.value}
-                            min={min}
-                            max={max}
-                            step={10}
-                            marks={true}
-                            onChange={this.onSliderChange}
-                        />
-                    </td>
-                    <td className="vertical-demo">
-                        <Slider
-                            axis={'y'}
-                            value={this.state.value}
-                            min={min}
-                            max={max}
-                            step={10}
-                            marks={true}
-                            onChange={this.onSliderChange}
-                        />
-                    </td>
-                    <td className="vertical-demo">
-                        <Slider
-                            axis={'x-reverse'}
-                            value={this.state.value}
-                            min={min}
-                            max={max}
-                            step={10}
-                            marks={true}
-                            onChange={this.onSliderChange}
-                        />
-                    </td>
-                </tr>
+                    <tr>
+                        <td className="vertical-demo">
+                            <Slider
+                                value={this.state.value}
+                                min={min}
+                                max={max}
+                                step={10}
+                                displayStopMarks={true}
+                                onChange={this.onSliderChange}
+                            />
+                        </td>
+                        <td className="vertical-demo">
+                            <Slider
+                                axis={'y'}
+                                value={this.state.value}
+                                min={min}
+                                max={max}
+                                step={10}
+                                displayStopMarks={true}
+                                onChange={this.onSliderChange}
+                            />
+                        </td>
+                        <td className="vertical-demo">
+                            <Slider
+                                axis={'x-reverse'}
+                                value={this.state.value}
+                                min={min}
+                                max={max}
+                                step={10}
+                                displayStopMarks={true}
+                                onChange={this.onSliderChange}
+                            />
+                        </td>
+                    </tr>
+                </tbody>
+                <thead>
+                    <tr>
+                        <th className="table-head-cell">Slider with RTL</th>
+                        <th className="table-head-cell">Reverse Slider with RTL</th>
+                        <th className="table-head-cell">Slider with RTL and marks</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <ContextProvider
+                                dir="rtl"
+                            >
+                                <Slider
+                                    value={this.state.value}
+                                    min={min}
+                                    max={max}
+                                    onChange={this.onSliderChange}
+                                />
+                            </ContextProvider>
+                        </td>
+                        <td>
+                            <ContextProvider
+                                dir="rtl"
+                            >
+                                <Slider
+                                    value={this.state.value}
+                                    min={min}
+                                    max={max}
+                                    axis="x-reverse"
+                                    onChange={this.onSliderChange}
+                                />
+                            </ContextProvider>
+                        </td>
+                        <td>
+                            <ContextProvider
+                                dir="rtl"
+                            >
+                                <Slider
+                                    value={this.state.value}
+                                    min={min}
+                                    max={max}
+                                    step={10}
+                                    displayStopMarks={true}
+                                    onChange={this.onSliderChange}
+                                />
+                            </ContextProvider>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         );
     }
 
-    private onSliderChange = (value: number) => {
+    private onSliderChange = ({value}: ChangeEvent<number>) => {
         this.setState({
             value,
             rawValue: String(value)
         });
     }
 
-    private onSliderInput = (rawValue: string) => {
-        this.setState({rawValue});
+    private onSliderInput = ({value}: ChangeEvent<string>) => {
+        this.setState({
+            rawValue: value
+        });
+    }
+
+    private onTooltipChange = (e: React.SyntheticEvent<HTMLSelectElement>) => {
+        this.setState({
+            tooltipPosition: e.currentTarget.value as TooltipPosition
+        });
     }
 }

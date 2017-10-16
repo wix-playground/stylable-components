@@ -1,28 +1,36 @@
+import * as PropTypes from 'prop-types';
 import * as React from 'react';
-import {SBComponent} from 'stylable-react-component';
+import {properties, stylable} from 'wix-react-tools';
+import {FormInputProps} from '../../types/forms';
+import {isRTLContext} from '../../utils';
 import style from './toggle.st.css';
 
-export interface Props {
+export interface ToggleProps extends FormInputProps<boolean>, properties.Props {
     className?: string;
-    checked?: boolean;
     error?: boolean;
     disabled?: boolean;
-    onChange?: (selected: boolean) => void;
     label?: string;
     tabIndex?: number;
-    rtl?: boolean;
+    required?: boolean;
+    name?: string;
 }
-export interface State {
+export interface ToggleState {
     focus: boolean;
 }
 
-@SBComponent(style)
-export default class Toggle extends React.Component<Props, State> {
-    public static defaultProps = {
-        checked: false,
+@stylable(style)
+@properties
+export default class Toggle extends React.Component<ToggleProps, ToggleState> {
+    public static defaultProps: Partial<ToggleProps> = {
+        value: false,
         disabled: false,
         error: false,
-        rtl: false
+        required: false
+    };
+    public static contextTypes = {
+        contextProvider: PropTypes.shape({
+            dir: PropTypes.string
+        })
     };
 
     public state = {
@@ -33,11 +41,12 @@ export default class Toggle extends React.Component<Props, State> {
 
     public render() {
         const {
-            checked,
+            value,
             disabled,
             error,
-            rtl,
             label,
+            name,
+            required,
             tabIndex
         } = this.props;
         const {focus} = this.state;
@@ -46,30 +55,30 @@ export default class Toggle extends React.Component<Props, State> {
             <label
                 data-automation-id="TOGGLE"
                 onMouseDown={this.onMouseDown}
-                cssStates={{
-                    checked: checked!,
+                style-state={{
+                    checked: value!,
                     disabled: disabled!,
                     focus: focus!,
                     error: error!,
-                    rtl: rtl!
+                    rtl: isRTLContext(this.context)
                 }}
             >
                 {!disabled &&
                     <input
-                        data-automation-id="TOGGLE_INPUT"
-                        className="input"
+                        data-automation-id="NATIVE_INPUT"
+                        className="nativeInput"
                         type="checkbox"
+                        name={name}
                         aria-label={label}
-                        checked={checked}
+                        checked={value}
+                        required={required}
                         onChange={this.toggle}
                         tabIndex={tabIndex}
                         onFocus={this.onInputFocus}
                         onBlur={this.onInputBlur}
                     />
                 }
-                <div className="switch-wrap">
-                    <div className="switch"/>
-                </div>
+                <div className="switch"/>
             </label>
         );
     }
@@ -78,8 +87,9 @@ export default class Toggle extends React.Component<Props, State> {
     private onInputBlur = () => this.setState({focus: false});
 
     private toggle = (e: React.SyntheticEvent<HTMLInputElement>) => {
-        if (!this.props.disabled && this.props.onChange) {
-            this.props.onChange(!this.props.checked);
+        const {disabled, value, onChange} = this.props;
+        if (!disabled && onChange) {
+            onChange({value: !value});
         }
         if (this.shouldResetFocus) {
             this.setState({focus: false});
