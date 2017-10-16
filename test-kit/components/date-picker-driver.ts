@@ -1,6 +1,5 @@
 import {DriverBase, selectDom, simulate, trigger} from 'test-drive-react';
 import {DatePicker} from '../../src';
-import {getDayNames} from '../../src/utils';
 
 const bodySelect = selectDom(document.body);
 const datePickerDropdown = 'DATE_PICKER_DROPDOWN';
