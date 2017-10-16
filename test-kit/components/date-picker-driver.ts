@@ -81,7 +81,7 @@ export class DatePickerTestDriver extends DriverBase {
         if (dayName < 0 || dayName > 6) {
             return null;
         }
-        const dayNames: string[] = getDayNames();
+
         return bodySelect(datePickerDropdown, `DAY_NAME_${dayName}`);
     }
 
