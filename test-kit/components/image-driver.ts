@@ -8,10 +8,6 @@ export class ImageDriver extends DriverBase {
         return this.select<HTMLImageElement>('NATIVE_IMAGE');
     }
 
-    public get style(): CSSStyleDeclaration {
-        return this.nativeElement.style;
-    }
-
     public get source(): string | null {
         return this.nativeElement.getAttribute('src');
     }

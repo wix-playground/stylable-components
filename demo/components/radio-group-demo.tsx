@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {stylable} from 'wix-react-tools';
-import {RadioButton, RadioGroup} from '../../src';
+import {ChangeEvent, RadioButton, RadioGroup} from '../../src';
 import styles from './radio-group-demo.st.css';
 
 @stylable(styles)
@@ -22,10 +22,18 @@ export class RadioGroupDemo extends React.Component<{}, {}> {
                         className="rg"
                         value={this.state.myValue1}
                     >
-                        <RadioButton value="This way!"/>
-                        <RadioButton value="No, that way!"/>
-                        <RadioButton value="But not here" disabled/>
-                        <RadioButton value="Start here" disabled/>
+                        <RadioButton value="This way!">
+                            <span className="label">Default Radio</span>
+                        </RadioButton>
+                        <RadioButton value="No, that way!">
+                            <span className="label">No, that way!</span>
+                        </RadioButton>
+                        <RadioButton value="But not here" disabled>
+                            <span className="label">But not here</span>
+                        </RadioButton>
+                        <RadioButton value="Start here" disabled>
+                            <span className="label">Start here</span>
+                        </RadioButton>
                     </RadioGroup>
                     <br/>
                     <span data-automation-id="GROUP_1_RESULT">Value: {this.state.myValue1}</span>
@@ -38,9 +46,13 @@ export class RadioGroupDemo extends React.Component<{}, {}> {
                         className="rg"
                         value={this.state.myValue2}
                         dataSource={[
-                            {value: 'Default Radio'},
-                            {value: 'Checked Radio'},
-                            {value: 'Disabled Radio', disabled: true}
+                            {value: 'Default Radio', labelText: 'Default Radio'},
+                            {value: 'Checked Radio', labelText: 'Checked Radio'},
+                            {
+                                value: 'Disabled Radio',
+                                disabled: true,
+                                labelText: 'Disabled Radio'
+                            }
                         ]}
                     />
                     <br/>
@@ -49,11 +61,11 @@ export class RadioGroupDemo extends React.Component<{}, {}> {
             </div>
         );
     }
-    private onChange = (e: {value: string}) => {
+    private onChange = (e: ChangeEvent<string>) => {
         this.setState({myValue1: e.value});
     }
 
-    private onChange2 = (e: {value: string}) => {
+    private onChange2 = (e: ChangeEvent<string>) => {
         this.setState({myValue2: e.value});
     }
 }

@@ -11,7 +11,7 @@ export interface OptionProps {
     value?: SelectionListItemValue;
 }
 
-export const Option: React.SFC<OptionProps> = stylable(listStyle)(
+export const SelectionListOption: React.SFC<OptionProps> = stylable(listStyle)(
     props => (
         <div
             className="item"

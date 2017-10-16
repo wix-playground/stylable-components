@@ -1,23 +1,19 @@
-import * as ReactDOM from 'react-dom';
-import {Portal} from '../../src';
 import {DriverBase} from 'test-drive-react';
+import {Portal} from '../../src';
 
 export class PortalTestDriver extends DriverBase {
     public static ComponentClass = Portal;
 
-    constructor(public readonly instance: Portal) {
-        super(() => ReactDOM.findDOMNode(instance));
-    }
-
-    public get root(): Element {
-        return this.instance.getPortalContainer()!.children[0];
+    public get portal(): Element | null {
+        if (!this.select('PORTAL_REF')) {
+            return null;
+        }
+        const portalRefSelector =
+            `[data-automation-id="${this.select('PORTAL_REF').getAttribute('data-id')!}"]`;
+        return document.querySelector(portalRefSelector);
     }
 
     public get content(): HTMLCollection {
-        return this.instance.getPortalContainer()!.children[0].children;
-    }
-
-    public get isPresent(): boolean {
-        return !!this.instance.getPortalContainer();
+        return this.portal!.children;
     }
 }

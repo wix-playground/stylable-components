@@ -76,29 +76,19 @@ describe('<DropDown />', () => {
     });
 
     it('opens the dropdown when focused and openOnFocus is true', async () => {
+        const onOpenStateChange = sinon.spy();
         const {driver: dropdown, waitForDom} = clientRenderer.render(
-            <DropDown openOnFocus />
+            <DropDown openOnFocus onOpenStateChange={onOpenStateChange}/>
         ).withDriver(DropDownDriver);
 
         await waitForDom(() => expect(dropdown.isOpen(), 'expected list to be closed').to.equal(false));
 
         dropdown.focus();
 
-        await waitForDom(() => expect(dropdown.isOpen(), 'expected list to be open').to.equal(true));
-    });
-
-    it('toggles between dropdown visibility when the input is clicked', async () => {
-        const {driver: dropdown, waitForDom} = clientRenderer.render(<DropDown />).withDriver(DropDownDriver);
-
-        await waitForDom(() => expect(dropdown.isOpen(), 'expected list to be closed').to.equal(false));
-
-        dropdown.clickOnDropDown();
-
-        await waitForDom(() => expect(dropdown.isOpen(), 'expected list to be open').to.equal(true));
-
-        dropdown.clickOnDropDown();
-
-        await waitForDom(() => expect(dropdown.isOpen(), 'expected list to be closed').to.equal(false));
+        await waitForDom(() => {
+            expect(onOpenStateChange).to.have.been.calledOnce;
+            expect(onOpenStateChange).to.have.been.calledWithMatch({value: true});
+        });
     });
 
     it('displays item list to choose from when open is true', async () => {
@@ -128,45 +118,85 @@ describe('<DropDown />', () => {
         await waitFor(() => expect(onClick).to.have.been.calledWithMatch({value: items[0]}));
     });
 
+    it('invokes onOpenStateChange event when the open state changes (closed -> opened)', async () => {
+        const onOpenStateChange = sinon.spy();
+        const {driver: dropdown, waitForDom} =
+            clientRenderer.render(<DropDown onOpenStateChange={onOpenStateChange}/>).withDriver(DropDownDriver);
+
+        await waitForDom(() => expect(dropdown.isOpen()).to.equal(false));
+
+        dropdown.clickOnDropDown();
+
+        return waitForDom(() => expect(onOpenStateChange).to.have.been.calledWithMatch({value: true}));
+    });
+
+    it('invokes onOpenStateChange event when the open state changes (opened -> closed)', async () => {
+        const onOpenStateChange = sinon.spy();
+        const {driver: dropdown, waitForDom} =
+            clientRenderer.render(<DropDown open onOpenStateChange={onOpenStateChange}/>).withDriver(DropDownDriver);
+
+        await waitForDom(() => expect(dropdown.isOpen()).to.equal(true));
+
+        dropdown.clickOnDropDown();
+
+        return waitForDom(() => expect(onOpenStateChange).to.have.been.calledWithMatch({value: false}));
+    });
+
     describe('Keyboard Navigation', () => {
-        it('toggles visibility of selection list when SPACE is clicked', async () => {
-            const {driver: dropdown, waitForDom} = clientRenderer.render(<DropDown />).withDriver(DropDownDriver);
+        it('toggles visibility of selection list when SPACE is clicked (closed -> opened)', async () => {
+            const onOpenStateChange = sinon.spy();
+            const {driver: dropdown, waitForDom} =
+                clientRenderer.render(<DropDown onOpenStateChange={onOpenStateChange}/>).withDriver(DropDownDriver);
 
             await waitForDom(() => expect(dropdown.isOpen(), 'expected list to be closed').to.equal(false));
 
             dropdown.focus();
             dropdown.keyDown(keycode('space'));
 
+            return waitForDom(() => expect(onOpenStateChange).to.have.been.calledWithMatch({value: true}));
+        });
+
+        it('toggles visibility of selection list when SPACE is clicked (opened -> closed)', async () => {
+            const onOpenStateChange = sinon.spy();
+            const {driver: dropdown, waitForDom} =
+                clientRenderer
+                    .render(<DropDown open onOpenStateChange={onOpenStateChange}/>)
+                    .withDriver(DropDownDriver);
+
             await waitForDom(() => expect(dropdown.isOpen(), 'expected list to be open').to.equal(true));
 
+            dropdown.focus();
             dropdown.keyDown(keycode('space'));
 
-            await waitForDom(() => expect(dropdown.isOpen(), 'expected list to be closed').to.equal(false));
+            return waitForDom(() => expect(onOpenStateChange).to.have.been.calledWithMatch({value: false}));
         });
 
         it('closes selection list when ESC is clicked', async () => {
-            const {driver: dropdown, waitForDom} = clientRenderer.render(<DropDown />).withDriver(DropDownDriver);
-
-            await waitForDom(() => expect(dropdown.isOpen(), 'expected list to be closed').to.equal(false));
-
-            dropdown.clickOnDropDown();
+            const onOpenStateChange = sinon.spy();
+            const {driver: dropdown, waitForDom} =
+                clientRenderer
+                    .render(<DropDown open onOpenStateChange={onOpenStateChange}/>)
+                    .withDriver(DropDownDriver);
 
             await waitForDom(() => expect(dropdown.isOpen(), 'expected list to be open').to.equal(true));
 
             dropdown.keyDown(keycode('esc'));
 
-            await waitForDom(() => expect(dropdown.isOpen(), 'expected list to be closed').to.equal(false));
+            return waitForDom(() => expect(onOpenStateChange).to.have.been.calledWithMatch({value: false}));
         });
 
         it('opens selection list when DOWN is clicked and it is closed', async () => {
-            const {driver: dropdown, waitForDom} = clientRenderer.render(<DropDown />).withDriver(DropDownDriver);
+            const onOpenStateChange = sinon.spy();
+            const {driver: dropdown, waitForDom} =
+                clientRenderer
+                    .render(<DropDown onOpenStateChange={onOpenStateChange}/>)
+                    .withDriver(DropDownDriver);
 
             await waitForDom(() => expect(dropdown.isOpen(), 'expected list to be closed').to.equal(false));
 
-            dropdown.focus();
             dropdown.keyDown(keycode('down'));
 
-            await waitForDom(() => expect(dropdown.isOpen(), 'expected list to be open').to.equal(true));
+            return waitForDom(() => expect(onOpenStateChange).to.have.been.calledWithMatch({value: true}));
         });
     });
 });
