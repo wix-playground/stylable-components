@@ -33,7 +33,7 @@
 
 ## Description
 
-This component is similar to the native HTML checkbox implementation.
+Checkbox is usually used to supply a number of selection options and allow multiple selections. This component is similar to the native HTML checkbox implementation.
 
 
 
