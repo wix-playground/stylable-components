@@ -29,7 +29,7 @@ export class Popup extends React.Component<PopupCompProps> {
         open: false,
         anchorPosition: {vertical: 'bottom', horizontal: 'left'},
         popupPosition: {vertical: 'top', horizontal: 'left'},
-        syncWidth: true,
+        syncWidth: true
     };
 
     private portal: Portal | null;
