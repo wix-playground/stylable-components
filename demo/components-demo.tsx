@@ -19,6 +19,8 @@ import {ToggleDemo} from './components/toggle-demo';
 import {TreeViewDemo, TreeViewDemoCustom} from './components/tree-view-demo';
 import styles from './style.st.css';
 
+import {Button, Input} from '../src';
+
 setGlobalConfig({devMode: true});
 
 @stylable(styles)
@@ -114,21 +116,18 @@ export class ComponentsDemo extends React.Component {
                 </div>
                 <hr />
                 <div>
-                    <h2>button</h2>
+                    <h2>Button</h2>
                     <table>
                         <tbody>
                             <tr>
                                 <th>
-                                    <button className="button fullBlue large">Normal</button>
+                                    <Button>Normal</Button>
                                 </th>
                                 <th>
-                                    <button disabled >Disabled</button>
+                                    <Button disabled>Disabled</Button>
                                 </th>
                                 <th>
-                                    <a className="button" href="http://www.wix.com" target="_blank">Link</a>
-                                </th>
-                                <th>
-                                    <a className="button" href="http://www.wix.com" target="_blank">Disabled link</a>
+                                    <Button href="http://www.wix.com" target="_blank">Link</Button>
                                 </th>
                             </tr>
                         </tbody>
@@ -136,7 +135,7 @@ export class ComponentsDemo extends React.Component {
                 </div>
                 <hr />
                 <div>
-                    <h2>anchor</h2>
+                    <h2>Anchor</h2>
                     <table>
                         <tbody>
                             <tr>
@@ -152,15 +151,15 @@ export class ComponentsDemo extends React.Component {
                 </div>
                 <hr />
                 <div>
-                    <h2>input</h2>
+                    <h2>Input</h2>
                     <table>
                         <tbody>
                             <tr>
                                 <th>
-                                    <input placeholder="Placeholder" />
+                                    <Input placeholder="Placeholder" />
                                 </th>
                                 <th>
-                                    <input placeholder="Disabled" disabled />
+                                    <Input placeholder="Disabled" disabled />
                                 </th>
                             </tr>
                         </tbody>

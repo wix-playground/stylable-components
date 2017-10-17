@@ -3,13 +3,13 @@ import {stylable} from 'wix-react-tools';
 import {ChangeEvent, NumberInput} from '../../src';
 import styles from './number-input.demo.st.css';
 
-export interface State {
+export interface NumberInputDemoState {
     sharedValue?: number;
     basicValue?: number;
 }
 
 @stylable(styles)
-export class NumberInputDemo extends React.Component<{}, State> {
+export class NumberInputDemo extends React.Component<{}, NumberInputDemoState> {
 
     constructor() {
         super();

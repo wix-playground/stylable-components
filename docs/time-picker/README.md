@@ -16,27 +16,18 @@ The **Time Picker** component improves upon the native `<input type="time">` by 
 
 ### Component Props
 
-| name        | type                   | defaultValue | isRequired | description                              |
-| ----------- | ---------------------- | ------------ | ---------- | ---------------------------------------- |
-| value       |                        |              |            |                                          |
-| placeholder | string                 |              |            | Text to display if the value is null     |
-| format      | enum  ('ampm’, '24hr’) | system defaul |            | Tells the component to display the picker in ampm (12hr) format or 24hr format. |
-| required    | bool                   | false        |            | Whether or not filling the value is required in a form. |
-| disabled    | bool                   | false        |            | If `true`, the componentName will not be interactive. |
-| label       | string                 |              |            | Text to display in accessibility mode.   |
-| name        | string                 |              |            | The name of the slider. Behaves like the name attribute of an input element. |
-| error       | bool                   | false        |            | Sets the `:error` CSS state on the `<timePicker>` |
-
-
-
-#### Accepted Children
-
-This component accepts children with the following `data-slot` attribute, in order to be displayed in specific places in its layout
-
-| data-slot | description                              | example                                  |
-| --------- | ---------------------------------------- | ---------------------------------------- |
-| prefix    | Allows you to insert a component (or components) at the start of the input | `<div data-slot="prefix">hello world</div>` |
-| suffix    | Allows you to insert a component (or components) at the end of the input | `<div data-slot="suffix">hello world</div>` |
+| name        | type                            | defaultValue   | isRequired | description                              |
+| ----------- | ------------------------------- | -------------- | ---------- | ---------------------------------------- |
+| value       | string                          |                | yes        | Sets and represents time shown in the time picker. <br> Accepts strings in 24h format (12:54). |
+| placeholder | string                          |                |            | Text to display if the value is null.    |
+| format      | enum:<br>    `ampm` <br> `24hr` | system default |            | Tells the component to display the picker in ampm (12hr) format or 24hr format. |
+| required    | bool                            | false          |            | Whether or not filling the value is required in a form. |
+| disabled    | bool                            | false          |            | If `true`, the componentName will not be interactive. |
+| label       | string                          |                |            | Text to display in accessibility mode.   |
+| name        | string                          |                |            | The name of the slider. Behaves like the name attribute of an input element. |
+| prefix      | node                            |                |            | Inserts a component at the start of the input. |
+| suffix      | node                            |                |            | Inserts a component at the end of the input. |
+| error       | bool                            | false          |            | Sets the `:error` CSS state on the `<timePicker>`. |
 
 
 
@@ -100,11 +91,9 @@ export class ComponentsDemo extends React.Component<{}, {}>{
 ### Subcomponents (pseudo-elements)
 
 | selector      | description                            | type                                     |
-| :-------------| -------------------------------------- | ---------------------------------------- |
+| :------------ | -------------------------------------- | ---------------------------------------- |
 | ::stepper     | Allows you to style the stepper arrows | Style the internal `<Stepper/>` component. This component exposes some internal styles. Consult the (Link to Documentation) to see which subcomponents and states are available |
 | ::placeholder | Allows you to style the placeholder    | HTML Element. This subcomponents has no subcomponents of its own* |
-
-**if a subcomponent is a COMPONENT, it might have subcomponents -> then we will link here to its documentation*
 
 You can change color of `::placeholder` subcomponent by changing `color` property.
 

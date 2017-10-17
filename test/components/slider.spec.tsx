@@ -908,6 +908,39 @@ describe('<Slider />', () => {
 
     keyboard(clientRenderer, {step: 2});
 
+    describe('step=0', () => {
+        let onChange: (data: ChangeEvent<number>) => void;
+        let driver: any;
+        beforeEach(() => {
+            onChange = sinon.spy();
+            const rendered = clientRenderer.render(
+                <Slider
+                    value={50}
+                    step={0}
+                    onChange={onChange}
+                />
+            ).withDriver(SliderDriver);
+            driver = rendered.driver;
+        });
+
+        beforeEach(() => {
+            const bounds = driver.getBounds();
+            const event = {
+                clientX: bounds.left + bounds.width * 3 / 4,
+                clientY: bounds.top + bounds.height / 3
+            };
+            driver.mouseDown(event);
+            driver.mouseUp(event, environment);
+        });
+
+        it('should trigger onChange with 75 value', () => {
+            expect(onChange).to.be.calledWithMatch({value: 75});
+        });
+        it('should move handle to 75%', () => {
+            expect(driver.handle.style.left).to.equal('75%');
+        });
+    });
+
     describe('when disabled', () => {
         const value = 5;
         const min = 0;
@@ -1017,36 +1050,6 @@ describe('<Slider />', () => {
 
             await waitForDom(() => {
                 expect(driver.input).attr('required');
-            });
-        });
-    });
-
-    describe('tooltip', () => {
-        const value = 5;
-        const min = 0;
-        const max = 10;
-        const label = 'Simple Slider Tooltip';
-
-        it('should be presented', async () => {
-            const rendered = clientRenderer.render(
-                <Slider
-                    value={value}
-                    min={min}
-                    max={max}
-                    label={label}
-                    tooltip={<div data-slot="tooltip" data-automation-id="TOOLTIP-CUSTOM-CONTENT">{label}</div>}
-                />
-            ).withDriver(SliderDriver);
-            const waitForDom: (expectation: () => void) => Promise<void> = rendered.waitForDom;
-            const driver = rendered.driver;
-
-            await waitForDom(() => {
-                const tooltip = driver.tooltip;
-                const tooltipContent = driver.find('TOOLTIP-CUSTOM-CONTENT');
-
-                expect(tooltip).to.be.present();
-                expect(tooltipContent).to.be.present();
-                expect(tooltipContent).text(label);
             });
         });
     });
@@ -1227,6 +1230,9 @@ describe('Slider/properties', () => {
         });
         it('should not render marks', () => {
             expect(driver.getMark(0)).to.be.null;
+        });
+        it('should not render tooltip', () => {
+            expect(driver.tooltip).to.be.null;
         });
         it('progress width should be 0%', () => {
             expect(driver.progress.style.width).to.equal('0%');
@@ -1416,6 +1422,18 @@ describe('Slider/properties', () => {
         });
         it('should have "disabled" styles', () => {
             expect(driver.slider).attr(`data-${styles.$stylesheet.namespace.toLowerCase()}-disabled`);
+        });
+    });
+
+    describe('displayTooltip={true}', () => {
+        let driver: any;
+        beforeEach(() => {
+            driver = renderWithProps({
+                displayTooltip: true
+            });
+        });
+        it('should render tooltip', () => {
+            expect(driver.tooltip).to.not.null;
         });
     });
 

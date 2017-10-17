@@ -1,11 +1,12 @@
 import * as React from 'react';
 import {stylable} from 'wix-react-tools';
-import {ChangeEvent, ContextProvider, Slider} from '../../src';
+import {ChangeEvent, ContextProvider, Slider, TooltipPosition} from '../../src';
 import style from './slider-demo.st.css';
 
 export interface SliderDemoState {
     value: number;
     rawValue: string;
+    tooltipPosition?: TooltipPosition;
 }
 
 @stylable(style)
@@ -69,7 +70,22 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                             <span style={{color: '#777', fontSize: '12px'}}>To be continued...</span>
                         </th>
                         <th className="table-head-cell">Slider with label</th>
-                        <th className="table-head-cell">Slider with tooltip</th>
+                        <th className="table-head-cell">
+                            <span>Slider with tooltip</span>
+                            <select
+                                defaultValue={this.state.tooltipPosition}
+                                onChange={this.onTooltipChange}
+                            >
+                                <option value="">default</option>
+                                {['top', 'bottom', 'left', 'right'].map((tooltipPosition: TooltipPosition) =>
+                                    <option
+                                        key={tooltipPosition}
+                                        children={tooltipPosition}
+                                        value={tooltipPosition}
+                                    />
+                                )}
+                            </select>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -99,7 +115,8 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                                 max={max}
                                 onChange={this.onSliderChange}
                                 onInput={this.onSliderInput}
-                                tooltip={<div className="tooltip">{this.state.rawValue}</div>}
+                                displayTooltip
+                                tooltipPosition={this.state.tooltipPosition}
                             />
                         </td>
                     </tr>
@@ -249,6 +266,12 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
     private onSliderInput = ({value}: ChangeEvent<string>) => {
         this.setState({
             rawValue: value
+        });
+    }
+
+    private onTooltipChange = (e: React.SyntheticEvent<HTMLSelectElement>) => {
+        this.setState({
+            tooltipPosition: e.currentTarget.value as TooltipPosition
         });
     }
 }

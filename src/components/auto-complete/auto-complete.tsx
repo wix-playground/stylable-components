@@ -5,13 +5,19 @@ import {ChangeEvent} from '../../types/events';
 import {FormInputProps} from '../../types/forms';
 import {noop} from '../../utils';
 import {CaretDown} from '../drop-down/drop-down-icons';
-import {OptionList, SelectionListItemValue, SelectionListModel} from '../selection-list/selection-list-model';
+import {
+    SelectionListItemValue,
+    SelectionListModel,
+    SelectionListOptionList
+} from '../selection-list/selection-list-model';
 import {SelectionListView} from '../selection-list/selection-list-view';
 import style from './auto-complete.st.css';
 
 export type FilterPredicate = (item: string, filterString: string) => boolean;
 
-export interface AutoCompleteProps extends FormInputProps<string>, Partial<OptionList>, properties.Props {
+export interface AutoCompleteProps extends FormInputProps<string>,
+    Partial<SelectionListOptionList>,
+    properties.Props {
     open?: boolean;
     filter?: FilterPredicate;
     onOpenStateChange?: (e: ChangeEvent<boolean>) => void;
@@ -54,7 +60,7 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
                     value={this.props.value}
                     ref={this.refCallback}
                 />
-                <CaretDown onClick={this.onCaretClick} className="caret" data-automation-id="AUTO_COMPLETE_CARET"/>
+                <CaretDown onClick={this.onCaretClick} className="caret" data-automation-id="AUTO_COMPLETE_CARET" />
                 <Popup anchor={this.state.input} open={this.props.open && filteredItems!.length > 0}>
                     <SelectionListView
                         className="root autoCompleteList"
