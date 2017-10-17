@@ -7,6 +7,8 @@ import {
     SelectionListDividerSymbol as divider,
     SelectionListOption as Option
 } from '../../src';
+import dividerStyle from '../../src/components/selection-list/divider.st.css';
+import optionStyle from '../../src/components/selection-list/option.st.css';
 import {SelectionListTestDriver} from '../../test-kit';
 import {sleep, WithTheme, WithThemeDAID} from '../utils';
 
@@ -164,9 +166,15 @@ describe('<SelectionList />', () => {
 
         await waitForDom(() => {
             expect(list.root).to.be.present();
-            expect(list.divider).to.exist;
         });
 
+        expect(
+            list.elementHasStylableClassName(
+                list.items[0],
+                'root',
+                dividerStyle
+            )
+        ).to.equal(true);
     });
 
     it('Renders children above dataSource when both are provided', async () => {
@@ -323,8 +331,8 @@ describe('<SelectionList />', () => {
             ).withDriver(SelectionListTestDriver);
 
             await waitForDom(() => expect(list.root).to.be.present());
-            expect(list.elementHasStylableState(list.items[0], 'selected')).to.equal(true);
-            expect(list.elementHasStylableState(list.items[1], 'selected')).to.equal(false);
+            expect(list.elementHasStylableState(list.items[0], 'selected', optionStyle)).to.equal(true);
+            expect(list.elementHasStylableState(list.items[1], 'selected', optionStyle)).to.equal(false);
         });
 
         it(`Puts "focused" state on the item focused via keyboard and removes it on blur`, async () => {
@@ -337,20 +345,20 @@ describe('<SelectionList />', () => {
 
             list.focus();
             await waitForDom(() => {
-                expect(list.elementHasStylableState(list.items[0], 'focused')).to.equal(true);
-                expect(list.elementHasStylableState(list.items[1], 'focused')).to.equal(false);
+                expect(list.elementHasStylableState(list.items[0], 'focused', optionStyle)).to.equal(true);
+                expect(list.elementHasStylableState(list.items[1], 'focused', optionStyle)).to.equal(false);
             });
 
             list.keyDown(keycode('down'));
             await waitForDom(() => {
-                expect(list.elementHasStylableState(list.items[0], 'focused')).to.equal(false);
-                expect(list.elementHasStylableState(list.items[1], 'focused')).to.equal(true);
+                expect(list.elementHasStylableState(list.items[0], 'focused', optionStyle)).to.equal(false);
+                expect(list.elementHasStylableState(list.items[1], 'focused', optionStyle)).to.equal(true);
             });
 
             list.blur();
             await waitForDom(() => {
-                expect(list.elementHasStylableState(list.items[0], 'focused')).to.equal(false);
-                expect(list.elementHasStylableState(list.items[1], 'focused')).to.equal(false);
+                expect(list.elementHasStylableState(list.items[0], 'focused', optionStyle)).to.equal(false);
+                expect(list.elementHasStylableState(list.items[1], 'focused', optionStyle)).to.equal(false);
             });
         });
     });

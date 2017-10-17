@@ -30,8 +30,7 @@
 .nativeCheckbox {
     position: fixed;
     top: -100%;
-    visibility: hidden;
-    pointer-events: none;
+    opacity: 0;
 }
 
 .childContainer {
