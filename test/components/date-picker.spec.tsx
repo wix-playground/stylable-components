@@ -15,7 +15,7 @@ class DatePickerDemoDriver extends DriverBase {
     }
 }
 
-describe('The DatePicker Component', () => {
+describe('<DatePicker />', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
 

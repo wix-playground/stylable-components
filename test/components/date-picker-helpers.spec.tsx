@@ -6,7 +6,7 @@ import {
     getNumOfPreviousDays
 } from '../../src/utils';
 
-describe('The Helper Functions', () => {
+describe('Date Helper Functions', () => {
     it('getMonthFromOffset should return the next month when the second argument is 1', () => {
         const date = new Date('Mar 6 2017');
         const nextMonth = getMonthFromOffset(date, 1);

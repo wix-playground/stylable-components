@@ -5,7 +5,7 @@ import {DatePicker} from '../../src';
 import {getDayNames} from '../../src/utils';
 import {DatePickerTestDriver} from '../../test-kit';
 
-describe('The Dropdown', () => {
+describe('<Calendar />', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
 
