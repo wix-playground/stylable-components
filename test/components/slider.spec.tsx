@@ -254,7 +254,7 @@ function rangeWithValueMinMax(
 }
 
 function rangeWithDisabledCross(clientRenderer: ClientRenderer, axis: AxisOptions) {
-    describe.only(`check disableCross and axis=${axis}`, () => {
+    describe(`check disableCross and axis=${axis}`, () => {
         describe('when drag', () => {
             let driver: any;
             let onChange: any;
@@ -1956,7 +1956,7 @@ describe('Slider/calculations', () => {
 
 });
 
-describe.only('<Slider /> type Range', () => {
+describe('<Slider /> type Range', () => {
     const clientRenderer = new ClientRenderer();
 
     beforeEach(() => {
