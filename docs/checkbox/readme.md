@@ -8,17 +8,20 @@ The **Checkbox** component provides the same functionality as the native Checkbo
 
 | name        | type       | default | required | description       |
 | ----------- | ---------- | ------- | -------- | ----------------- |
-| disabled | boolean | false | no | Whether the checkbox responds to events. |
-| readonly | boolean | false | no | Gains tab focus but user cannot change value. |
-| tabIndex | number | 0 | no | Determines the order by which the component gains tab focus. |
-| id | string |  | no | Puts an ID property to be used for HTML labels. |
 | value | boolean | false | no | The value chosen in the checkbox. |
 | onChange | function | NOOP | no | Event triggered by changing the value.<br>`(event : ChangeEvent) => void` |
+| disabled | boolean | false | no | Whether the checkbox responds to events. |
+| readOnly | boolean | false | no | Gains tab focus but user cannot change value. |
+| tabIndex | number | 0 | no | Determines the order by which the component gains tab focus. |
+| id | string |  | no | Puts an ID property to be used for HTML labels. |
 | children | React.ReactNode | null | no | children | Any further nodes will be rendered after the checkbox element |
 | boxIcon | React component |  | no | Component representing an empty state. |
 | indeterminateIcon | React component |  | no | Component representing an indeterminate state. |
 | tickIcon | React component |  | no | Component representing a checked state. This will be overlayed on top of the boxIcon. |
 | indeterminate | boolean | false | no | Indicates that the checkbox is neither on nor off. Changes the appearance to resemble a third state. Does not affect the value of the checked attribute, and clicking the checkbox will set the value to false. |
+| autoFocus | boolean | false | no | Whether the checkbox receives focus automatically when page loads |
+| name | string |  | no | Name is used for form data reference |
+| required | boolean | false | no | Whether the checkbox must be checked to submit the form |
 
 
 ### React Code Example
