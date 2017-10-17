@@ -119,23 +119,17 @@ describe('<TimePicker/>', () => {
 
     describe('render with 12h format and value below 12:00 PM', () => {
         let renderer: any;
-        let hh: any;
-        let mm: any;
-        let ampm: any;
         beforeEach(() => {
             renderer = clientRenderer.render(<TimePicker value="4:36" format="ampm" />).withDriver(TimePickerDriver);
-            hh = renderer.driver.hoursInput;
-            mm = renderer.driver.minutesInput;
-            ampm = renderer.driver.ampm;
         });
         it('hours should have padding zero and dislay hours segment', () => {
-            expect(hh).attr('value', '04');
+            expect(renderer.driver.hoursInput).attr('value', '04');
         });
         it('minutes should have padding zero and dislay minutes segment', () => {
-            expect(mm).attr('value', '36');
+            expect(renderer.driver.minutesInput).attr('value', '36');
         });
         itDesktop('"AM" label should follow the time', () => {
-            expect(ampm).text('AM');
+            expect(renderer.driver.ampm).text('AM');
         });
     });
 
@@ -163,7 +157,7 @@ describe('<TimePicker/>', () => {
 
         describeNative('on touch', () => {
             it('hours should be in 24h format', () => {
-                expect(renderer.driver.hh).attr('value', '23');
+                expect(renderer.driver.hoursInput).attr('value', '23');
             });
             it('should not render ampm', () => {
                 expect(renderer.driver.ampm).to.be.null;
