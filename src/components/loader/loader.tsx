@@ -1,10 +1,7 @@
 import * as React from 'react';
-import {properties, stylable} from 'wix-react-tools';
-import {circle} from './circle';
-import styles from './loader.st.css';
+import {properties} from 'wix-react-tools';
 
 export interface LoaderProps extends properties.Props {
-    type?: 'circle'; // TODO add 'dots' and 'lines'
     delay?: number;
     text?: string;
     children?: React.ReactNode;
@@ -14,16 +11,8 @@ export interface LoaderState {
     active: boolean;
 }
 
-const loaders = {
-    circle
-};
-
-@stylable(styles)
 @properties
 export class Loader extends React.Component<LoaderProps, LoaderState> {
-    public static defaultProps: Partial<LoaderProps> = {
-        type: 'circle'
-    };
     private timer: number;
 
     public constructor(props: LoaderProps) {
@@ -46,7 +35,7 @@ export class Loader extends React.Component<LoaderProps, LoaderState> {
     }
 
     public render() {
-        const {type, text, children} = this.props;
+        const {text, children} = this.props;
 
         if (!this.state.active) {
             return null;
@@ -58,7 +47,7 @@ export class Loader extends React.Component<LoaderProps, LoaderState> {
 
         return (
             <div data-automation-id="LOADER">
-                {loaders[type!]()}
+                {this.renderLoader()}
                 {text &&
                     <span
                         data-automation-id="LOADER_TEXT"
@@ -68,6 +57,10 @@ export class Loader extends React.Component<LoaderProps, LoaderState> {
                 }
             </div>
         );
+    }
+
+    protected renderLoader(): JSX.Element | null {
+        return null;
     }
 
     private setTimer(props: LoaderProps) {

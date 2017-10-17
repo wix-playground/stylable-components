@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {stylable} from 'wix-react-tools';
-import {ChangeEvent, Loader, NumberInput} from '../../src';
+import {ChangeEvent, CircleLoader, NumberInput} from '../../src';
 import styles from './loader-demo.st.css';
 
 @stylable(styles)
@@ -34,15 +34,13 @@ export class LoaderDemo extends React.Component {
                     <tbody>
                         <tr>
                             <td>
-                                <Loader
+                                <CircleLoader
                                     delay={delay}
-                                    type="circle"
                                 />
                             </td>
                             <td>
-                                <Loader
+                                <CircleLoader
                                     delay={delay}
-                                    type="circle"
                                     text="Loading"
                                 />
                             </td>
