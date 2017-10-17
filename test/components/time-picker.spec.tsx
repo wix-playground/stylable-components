@@ -368,12 +368,14 @@ describe('<TimePicker/>', () => {
         }
     }
 
-    suits.forEach(suit => {
-        const {props, action, items} = suit;
-        const describeFunc = (props.format === 'ampm' || action.inc || action.dec) ?
-            describeDesktop : describe;
+    function getDescribeFunction(condition: boolean) {
+        return condition ? describe : describeDesktop;
+    }
 
-        describeFunc(`render with "${props.value}" and "${props.format}" format`, () => {
+    suits.forEach(suit => {
+        const {props, items} = suit;
+
+        getDescribeFunction(props.format === '24h')(`render with "${props.value}" and "${props.format}" format`, () => {
             let onChange: any;
             let onInput: any;
             let renderer: any;
@@ -394,7 +396,7 @@ describe('<TimePicker/>', () => {
             items.forEach(test => {
                 const [action, expectation] = test;
 
-                describe(getTitle(action), () => {
+                getDescribeFunction(!action.inc && !action.dec)(getTitle(action), () => {
                     let focusedElem: any;
                     beforeEach(() => {
                         focusedElem = {hh, mm, ampm}[expectation.focus];
