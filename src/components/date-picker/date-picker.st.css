@@ -25,15 +25,18 @@
     iconWidth: 36px;
 }
 
-/* The DatePicker Input */
-.input {
-    width: value(inputWidth);
+/* root */
+.root {
+    display: inline-block;
+    height: value(inputHeight);
+}
+
+.flex-wrapper {
+    display: flex;
 }
 
 .icon {
-    position: relative;
-    left: calc(value(inputWidth) - value(iconWidth));
-    top: -value(iconWidth);
+    margin-left: -value(iconWidth);
     padding: 10px;
     cursor: pointer;
     width: value(iconWidth);
@@ -212,9 +215,4 @@
 .day:inactive:hover {
     color: #d8d8d8;
     background-color: value(color_MainText_Background);
-}
-
-/* root */
-.root {
-    display: inline-block;
 }
