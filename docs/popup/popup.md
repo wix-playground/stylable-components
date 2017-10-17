@@ -108,7 +108,6 @@ The position of popup should remain in the location in which it was opened when 
 | -- | -- | -- | -- | -- |
 | anchor | Element \| Point | none | Yes | The element to be used as an anchor for the popup (will open next to it). |
 | open | boolean | false | no | Whether to show or hide the Popup |
-| onOpenStateChange | function | NOOP | no | Triggered when the popup is opened/closed |
 
 * The following props should be placed in a PopupProps interface since they will need to be passed from higher order components.
 
@@ -118,7 +117,6 @@ The position of popup should remain in the location in which it was opened when 
 | popupPosition | PositionPoint | { vertical: 'top', horizontal: 'left'} | no | The point from which the popupPosition will pivot |
 | collision | ICollision| {'vertical: 'none', horizontal: 'none'} | No | Specify the collision behavior of the component |
 | syncWidth	| boolean |	true | no | If true, the width of the popup will be set to the width of the anchor. If false, it will be set to the width of the children.* Not relevant for a point anchor type.|
-| maxHeight | number | 500 | no | The max height in pixels of the popup. If set to 0, the property will be ignored and receive height from its content |
 
 \* This property should be more robust in the future in order to handle options such as *contentMin* (set to size of largest content item), etc.
 
