@@ -369,8 +369,9 @@ describe('<TimePicker/>', () => {
     }
 
     suits.forEach(suit => {
-        const {props, items} = suit;
-        const describeFunc = props.format === '24h' ? describe : describeDesktop;
+        const {props, action, items} = suit;
+        const describeFunc = (props.format === 'ampm' || action.inc || action.dec) ?
+            describeDesktop : describe;
 
         describeFunc(`render with "${props.value}" and "${props.format}" format`, () => {
             let onChange: any;
