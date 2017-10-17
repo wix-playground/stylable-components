@@ -1,8 +1,6 @@
 :import {
     -st-from: "../../style/project.st.css";
-    -st-named:
-    PR2,
-    BK2;
+    -st-named: PR2;
 }
 :vars {
     size: 100px;
@@ -55,12 +53,4 @@
 }
 .right .track {
     animation-delay: 1.2s;
-}
-
-.text {
-    display: block;
-    text-align: center;
-    color: value(BK2);
-    text-align: center;
-    margin-top: 1.5em;
 }

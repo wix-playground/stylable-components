@@ -1,5 +1,6 @@
 import * as React from 'react';
-import {properties} from 'wix-react-tools';
+import {properties, stylable} from 'wix-react-tools';
+import styles from './loader.st.css';
 
 export interface LoaderProps extends properties.Props {
     delay?: number;
@@ -11,7 +12,7 @@ export interface LoaderState {
     active: boolean;
 }
 
-@properties
+@stylable(styles)
 export class Loader extends React.Component<LoaderProps, LoaderState> {
     private timer: number;
 

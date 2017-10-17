@@ -1,0 +1,14 @@
+:import {
+    -st-from: "../../style/project.st.css";
+    -st-named: BK2;
+}
+.root {
+    display: inline-block;
+}
+.text {
+    display: block;
+    text-align: center;
+    color: value(BK2);
+    text-align: center;
+    margin-top: 1.5em;
+}

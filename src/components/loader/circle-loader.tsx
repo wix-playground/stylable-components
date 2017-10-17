@@ -1,9 +1,10 @@
 import * as React from 'react';
-import {stylable} from 'wix-react-tools';
+import {properties, stylable} from 'wix-react-tools';
 import styles from './circle-loader.st.css';
 import {Loader} from './loader';
 
 @stylable(styles)
+@properties
 export class CircleLoader extends Loader {
     protected renderLoader() {
         return (
