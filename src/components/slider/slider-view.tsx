@@ -17,6 +17,7 @@ import {
     KeyboardHandler,
     MouseHandler,
     Step,
+    TooltipPosition,
     TouchHandler
 } from './slider-types';
 import style from './slider.st.css';
@@ -40,8 +41,10 @@ export interface SliderViewProps extends FormInputProps<number, string>, propert
     disabled: boolean;
     error: boolean;
     displayStopMarks: boolean;
+    displayTooltip: boolean;
     required: boolean;
     rtl: boolean;
+    tooltipPosition: TooltipPosition;
 
     onFocus: React.FocusEventHandler<HTMLElement>;
     onBlur: React.FocusEventHandler<HTMLElement>;
@@ -149,21 +152,22 @@ export class SliderView extends React.Component<SliderViewProps, {}> {
                         aria-valuenow={`${this.props.value}`}
                         tabIndex={this.props.disabled ? -1 : 0}
                     >
-                        <div
-                            className="tooltip"
-                            data-automation-id="SLIDER-TOOLTIP"
-                        >
-                            {this.getTooltip()}
-                        </div>
+                        {this.props.displayTooltip &&
+                            <div
+                                className={`tooltip ${this.props.tooltipPosition}`}
+                                data-automation-id="SLIDER-TOOLTIP"
+                            >
+                                {this.props.tooltip}
+                                <svg className="tooltip-tail" height="5" width="10">
+                                    <polygon points="0,0 10,0 5,5"/>
+                                </svg>
+                            </div>
+                        }
                     </a>
                     {this.getMarks()}
                 </div>
             </div>
         );
-    }
-
-    private getTooltip(): React.ReactNode {
-        return this.props.tooltip;
     }
 
     private getMarks(): JSX.Element[] {

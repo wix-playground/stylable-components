@@ -1,7 +1,7 @@
 import * as keycode from 'keycode';
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
-import {stylable} from 'wix-react-tools';
+import {properties, stylable} from 'wix-react-tools';
 import {FormInputProps} from '../../types/forms';
 import {isRTLContext} from '../../utils';
 import {ScreenReaderNotification} from '../screen-reader-notification';
@@ -14,7 +14,7 @@ import {
     isTouchTimeInputSupported, isValidValue, Segment, TimeSegment, to24, toAmpm
 } from './utils';
 
-export interface TimePickerProps extends FormInputProps<string> {
+export interface TimePickerProps extends FormInputProps<string>, properties.Props {
     format?: Format;
     placeholder?: string;
     disabled?: boolean;
@@ -22,7 +22,6 @@ export interface TimePickerProps extends FormInputProps<string> {
     name?: string;
     required?: boolean;
     error?: boolean;
-    rtl?: boolean;
 }
 
 export interface TimePickerState {
@@ -36,9 +35,9 @@ export interface TimePickerState {
 }
 
 const ampmSwitch = {
-    [Ampm.AM]: Ampm.PM,
-    [Ampm.PM]: Ampm.AM,
-    [Ampm.NONE]: Ampm.NONE
+    am: 'pm',
+    pm: 'am',
+    none: 'none'
 };
 const segments: Segment[] = ['hh', 'mm', 'ampm'];
 
@@ -46,7 +45,7 @@ function propsValueToSegments(value?: string, format?: Format): {hh?: string, mm
     const isAmpm = format === 'ampm';
     if (!value) {
         return {
-            ampm: isAmpm ? Ampm.PM : Ampm.NONE
+            ampm: isAmpm ? 'pm' : 'none'
         };
     }
     const [hh24, mm] = value.split(':').map(Number);
@@ -54,11 +53,12 @@ function propsValueToSegments(value?: string, format?: Format): {hh?: string, mm
     return {
         mm: formatTimeChunk(mm),
         hh: formatTimeChunk(isAmpm ? hh : hh24),
-        ampm: isAmpm ? ampm : Ampm.NONE
+        ampm: isAmpm ? ampm : 'none'
     };
 }
 
 @stylable(styles)
+@properties
 export class TimePicker extends React.Component<TimePickerProps, TimePickerState> {
     public static defaultProps: Partial<TimePickerProps> = {
         format: is12TimeFormat ? 'ampm' : '24h',
@@ -238,7 +238,7 @@ export class TimePicker extends React.Component<TimePickerProps, TimePickerState
         return false;
     }
 
-    private updateSegmentValue(name: Segment, value: string | Ampm): void {
+    private updateSegmentValue(name: Segment, value: string): void {
         this.setState({
             [name as any]: value
         }, () => {
@@ -277,7 +277,7 @@ export class TimePicker extends React.Component<TimePickerProps, TimePickerState
         const totalMinutes: number = hh * 60 + mm;
         mm = (totalMinutes + 60) % 60;
         hh = Math.floor(totalMinutes / 60 + 24) % 24;
-        if (ampm !== Ampm.NONE) {
+        if (ampm !== 'none') {
             const hhAmpm = toAmpm(hh);
             hh = hhAmpm.hh;
             ampm = hhAmpm.ampm;
