@@ -1,22 +1,22 @@
 :import {
-	-st-from: "../../../components/toggle/toggle.st.css";
-	-st-default: Toggle;
+    -st-from: "../../../components/toggle/toggle.st.css";
+    -st-default: Toggle;
 }
 
 :import {
   -st-from: "../variables.st.css";
-  -st-named: 	toggleBackgroundColor,
-  				toggleBackgroundColorChecked,
-  				iconToggleOff,
-  				iconToggleOn,
-  				iconToggleOffDisabled,
-  				iconToggleOnDisabled,
-  				iconToggleOffError,
-  				iconToggleOnError;
+  -st-named:    toggleBackgroundColor,
+                toggleBackgroundColorChecked,
+                iconToggleOff,
+                iconToggleOn,
+                iconToggleOffDisabled,
+                iconToggleOnDisabled,
+                iconToggleOffError,
+                iconToggleOnError;
 }
 
 Toggle {
-	background-color: value(toggleBackgroundColor);
+    background-color: value(toggleBackgroundColor);
     width: 46px;
     height:24px;
     padding: 1px;
@@ -25,62 +25,62 @@ Toggle {
 }
 
 Toggle:checked {
-	background-color: value(toggleBackgroundColorChecked);
+    background-color: value(toggleBackgroundColorChecked);
 }
 
 Toggle::switch {
-	width: 22px;
-	height: 22px;
-	box-shadow: 0 2px 1px 0 rgba(32, 69, 94, 0.50);
-	background: white center no-repeat value(iconToggleOff);
+    width: 22px;
+    height: 22px;
+    box-shadow: 0 2px 1px 0 rgba(32, 69, 94, 0.50);
+    background: white center no-repeat value(iconToggleOff);
     border-radius: 100px;
     transition: all 200ms linear;
 }
 
 Toggle:checked::switch {
-	background-image: value(iconToggleOn);
-	background-color: white;
+    background-image: value(iconToggleOn);
+    background-color: white;
 }
 
 
 
 Toggle:disabled {
-	background: #CBD3DC;
+    background: #CBD3DC;
 }
 
 Toggle:disabled::switch {
-	background-image: value(iconToggleOffDisabled);
+    background-image: value(iconToggleOffDisabled);
 }
 
 Toggle:checked:disabled::switch {
-	background-image: value(iconToggleOnDisabled);
+    background-image: value(iconToggleOnDisabled);
 }
 
 Toggle:checked:error {
-	background: #EE5951;
+    background: #EE5951;
 }
 
 Toggle:error {
-	background: #FFD7D7;
+    background: #FFD7D7;
 }
 
 Toggle:error::switch {
-	background-image: value(iconToggleOffError);
+    background-image: value(iconToggleOffError);
 }
 
 Toggle:checked:error::switch {
-	background-image: value(iconToggleOnError);
+    background-image: value(iconToggleOnError);
 }
 
 
 .toggleSmall {
-	-st-extends: Toggle;
-	width:36px;
-	height: 20px;
+    -st-extends: Toggle;
+    width:36px;
+    height: 20px;
 }
 
 .toggleSmall::switch {
-	width: 18px;
-	height: 18px;
-	background-size: 60% 60%;
+    width: 18px;
+    height: 18px;
+    background-size: 60% 60%;
 }
