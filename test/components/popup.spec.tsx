@@ -117,36 +117,6 @@ describe('<Popup />', () => {
         });
     });
 
-    it('sets the default maxHeight', () => {
-        const {driver: popup} = clientRenderer.render(
-            <Popup
-                anchor={anchor}
-                open
-            >
-                <span data-automation-id="SPAN">Popup Body</span>
-            </Popup>).withDriver(PopupTestDriver);
-
-        return waitFor(() => {
-            expect(popup.root.style.maxHeight).to.equal('500px');
-        });
-    });
-
-    it('sets and enforces the maxHeight', () => {
-        const {driver: popup} = clientRenderer.render(
-            <Popup
-                anchor={anchor}
-                maxHeight={5}
-                open
-            >
-                <span data-automation-id="SPAN">Popup Body</span>
-            </Popup>).withDriver(PopupTestDriver);
-
-        return waitFor(() => {
-            expect(popup.root.style.maxHeight).to.equal('5px');
-            expect(popup.root.getBoundingClientRect().height).to.equal(5);
-        });
-    });
-
     describe('Scrolling tests', () => {
         const scroll = document.createElement('div');
         scroll.style.height = '5000px';
