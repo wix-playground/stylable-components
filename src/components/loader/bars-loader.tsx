@@ -1,11 +1,12 @@
 import * as React from 'react';
-import {stylable} from 'wix-react-tools';
+import {properties, stylable} from 'wix-react-tools';
 import styles from './bars-loader.st.css';
 import {Loader} from './loader';
 
 const bars = new Array(5).fill(0);
 
 @stylable(styles)
+@properties
 export class BarsLoader extends Loader {
     protected renderLoader() {
         return (
