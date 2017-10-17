@@ -24,3 +24,18 @@ export class PortalDemo extends React.Component<{}, {}> {
 }
 
 ```
+
+**Inline style example**
+
+```jsx
+
+export class PortalDemo extends React.Component<{}, {}> {
+    render() {
+        const portalStyle: React.CSSProperties = {width: '50px', height: '50px'};
+        <Portal style={portalStyle}>
+            I am a in a tiny portal!
+        </Portal>
+    }
+}
+
+```
