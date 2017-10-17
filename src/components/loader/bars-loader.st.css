@@ -4,6 +4,7 @@
 }
 :vars {
     duration: 1s;
+    size: 46px;
 }
 
 @keyframes dance {
@@ -13,13 +14,12 @@
 }
 
 .bars {
-    width: 46px;
-    height: 44px;
+    width: value(size);
+    height: value(size);
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    margin: auto;
 }
 
 .bar {

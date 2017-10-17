@@ -10,8 +10,8 @@ export class BarsLoader extends Loader {
     protected renderLoader() {
         return (
             <div className='bars'>
-                {bars.map(item =>
-                    <div className='bar'/>
+                {bars.map((item, index) =>
+                    <div className='bar' key={index}/>
                 )}
             </div>
         );

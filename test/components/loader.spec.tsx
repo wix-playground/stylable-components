@@ -1,13 +1,13 @@
 import * as React from 'react';
 import {ClientRenderer, expect} from 'test-drive-react';
-import {CircleLoader} from '../../src';
+import {CircleLoader, BarsLoader} from '../../src';
 
 function delay(time: number) {
     return new Promise(resolve => setTimeout(resolve, time));
 }
-const loaders: any = {CircleLoader};
+const loaders: any = {CircleLoader, BarsLoader};
 
-describe('<Loader/>', () => {
+describe.only('<Loader/>', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
 
