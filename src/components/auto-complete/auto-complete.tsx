@@ -4,7 +4,6 @@ import {Popup} from '../../';
 import {ChangeEvent} from '../../types/events';
 import {FormInputProps} from '../../types/forms';
 import {noop} from '../../utils';
-// import {CaretDown} from '../drop-down/drop-down-icons';
 import {
     SelectionListItemValue,
     SelectionListModel,
