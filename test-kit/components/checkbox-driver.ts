@@ -1,5 +1,7 @@
 import {DriverBase, simulate} from 'test-drive-react';
 import {CheckBox} from '../../src';
+import baseStyle from '../../src/components/checkbox/checkbox.st.css';
+import {elementHasStylableClassName, elementHasStylableState} from '../utils';
 
 export class CheckBoxTestDriver extends DriverBase {
 
@@ -15,6 +17,10 @@ export class CheckBoxTestDriver extends DriverBase {
 
     public click(): void {
         simulate.click(this.root);
+    }
+
+    public focus(): void {
+        simulate.focus(this.nativeInput);
     }
 
     public get children(): HTMLCollection {
@@ -35,5 +41,9 @@ export class CheckBoxTestDriver extends DriverBase {
 
     public get nativeInput(): HTMLInputElement {
         return this.select('NATIVE_CHECKBOX');
+    }
+
+    public elementHasStylableState(stateName: string): boolean {
+        return elementHasStylableState(this.root, baseStyle, stateName);
     }
 }

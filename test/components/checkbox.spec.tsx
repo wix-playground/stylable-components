@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {ClientRenderer, DriverBase, expect, sinon, waitFor} from 'test-drive-react';
+import {ClientRenderer, DriverBase, expect, simulate, sinon, waitFor} from 'test-drive-react';
 import {CheckBoxDemo, demoCheckBoxText} from '../../demo/components/checkbox-demo';
 import {CheckBox, CheckBoxIconProps} from '../../src';
 import {CheckBoxTestDriver} from '../../test-kit/components/checkbox-driver';
@@ -224,6 +224,56 @@ describe('<Checkbox/>', () => {
         });
     });
 
+    it('Switches to focus state when focused', async () => {
+        const {driver: checkbox, waitForDom} = clientRenderer.render(
+            <CheckBox   value={true}/>
+        ).withDriver(CheckBoxTestDriver);
+
+        await waitForDom(() => {
+            checkbox.focus();
+            expect(checkbox.elementHasStylableState('focus')).to.equal(true);
+        });
+    });
+
+    it('Accepts "name" prop', async () => {
+        const {driver: checkbox, waitForDom} = clientRenderer.render(
+            <CheckBox  name="shlomi"/>
+        ).withDriver(CheckBoxTestDriver);
+
+        await waitForDom(() => {
+            expect(checkbox.nativeInput).to.have.attribute('name', 'shlomi');
+        });
+    });
+
+    it('Accepts "required" prop', async () => {
+        const {driver: checkbox, waitForDom} = clientRenderer.render(
+            <CheckBox  required/>
+        ).withDriver(CheckBoxTestDriver);
+
+        await waitForDom(() => {
+            expect(checkbox.nativeInput).to.have.property('required', true);
+        });
+    });
+
+    it('Accepts "autofocus" prop', async () => {
+        if (document.hasFocus()) {
+
+            const {driver: checkbox, waitForDom} = clientRenderer.render(
+                <CheckBox  autoFocus/>
+            ).withDriver(CheckBoxTestDriver);
+
+            await waitForDom(() => {
+                expect(document.activeElement).to.equal(checkbox.nativeInput);
+                expect(checkbox.elementHasStylableState('focus')).to.equal(true);
+            });
+
+        } else {
+            console.warn(// tslint:disable-line no-console
+                'Checkbox autofocus test wasn\'t run since document doesn\'t have focus'
+            );
+        }
+    });
+
     describe('Accessibility features', () => {
         it('Renders a native input and pass on checked state', async () => {
             const {driver: checkbox, waitForDom} = clientRenderer.render(
@@ -324,7 +374,7 @@ describe('<Checkbox/>', () => {
         it('doesn\'t call onChange when clicked', async () => {
             const onChange = sinon.spy();
             const {driver: checkbox, waitForDom} = clientRenderer.render(
-                <CheckBox readonly onChange={onChange}/>
+                <CheckBox readOnly onChange={onChange}/>
             ).withDriver(CheckBoxTestDriver);
 
             await waitForDom(() => {
@@ -338,7 +388,7 @@ describe('<Checkbox/>', () => {
 
         it('displays tickmark if value is true', async () => {
             const {driver: checkbox, waitForDom} = clientRenderer.render(
-                <CheckBox readonly value={true}/>
+                <CheckBox readOnly value={true}/>
             ).withDriver(CheckBoxTestDriver);
 
             await waitForDom(() => {
