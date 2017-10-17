@@ -1,13 +1,30 @@
 # Popup Component Specification
 
-The Popup enables positioning content next to an anchor element.
+The Popup enables positioning content next to an anchor element or a point on the viewport.
 
-* [Position and Collision](#position-and-collision)
-* [Properties](#properties)
-* [Input Handling](#input-handling)
-* [Examples](#examples) - Based on the stages of builds
+* [Elements](#elements)
+* [Internal](#internal)
+  * [Position and Collision](#position-and-collision)
+    * [Positioning](#positioning)
+    * [Collision](#collision)
+  * [Scroll](#scroll)
+* [API](#properties)
+* [Behavior](#behavior)
+  * [Keyboard](#keyboard)
+  * [Mouse](#mouse)
+  * [Touch](#touch)
 
-## Position and Collision
+## Elements
+
+![Image of elements](./assets/popup/points.png)
+
+Or
+
+![Image of point.anchor](./assets/popup/pointanchorelements.png)
+
+## Internal
+
+### Position and Collision
 
 * Position - The point and pivot for popup to anchor alignment
   * Anchor Position - Horizontal:
@@ -27,7 +44,7 @@ The Popup enables positioning content next to an anchor element.
     * center - the center point of the popup element
     * bottom - the bottom point of the popup element
 
-### Positioning
+#### Positioning
 
 * Points of reference
 
@@ -70,22 +87,27 @@ The Popup enables positioning content next to an anchor element.
   * Anchor { vertical: 'bottom', horizontal: 'left'}
   * Popup { vertical: 'top, horizontal: 'right}
 
+#### Collision
 
-* Collision - The behavior of the popup when viewport limitations collide with the the position property
-  * Horizontal Collision:
+Anytime a popup opens in a page, a check is made to verify that it fully fits into the viewport. Collision detection is the code that compares the viewport limitations with the size of the element and if there is not enough space, decides according to a set of rules how to react to the limitation. The rules are:
+
+  * Horizontal collision was detected:
     * flip - Checks if the opposite side of the anchor has more space and if so flips it.
     * fit - Shifts the popup away from the edge of the viewport until it has enough space or reaches other side of viewport
     * flipfit - Applies flip logic and then fit logic
     * none - no collision detection
   * Vertical Collision - same as horizontal
 
-## Properties
+### Scroll
+
+The position of popup should remain in the location in which it was opened when the page is scrolled.
+
+## API
 
 | Name | Type | Default | Required | Description |
 | -- | -- | -- | -- | -- |
-| anchor | Node \| Point | none | Yes | The element to be used as an anchor for the popup (will open next to it). |
+| anchor | Element \| Point | none | Yes | The element to be used as an anchor for the popup (will open next to it). |
 | open | boolean | false | no | Whether to show or hide the Popup |
-| onOpenStateChange | function | NOOP | no | Triggered when the popup is opened/closed |
 
 * The following props should be placed in a PopupProps interface since they will need to be passed from higher order components.
 
@@ -94,52 +116,20 @@ The Popup enables positioning content next to an anchor element.
 | anchorPosition | PositionPoint | { vertical: 'bottom', horizontal: 'left'} | no | The point on the anchor element to which the popupPosition will attach to |
 | popupPosition | PositionPoint | { vertical: 'top', horizontal: 'left'} | no | The point from which the popupPosition will pivot |
 | collision | ICollision| {'vertical: 'none', horizontal: 'none'} | No | Specify the collision behavior of the component |
-| syncWidth	| boolean |	true | no | If true, the width of the popup will be set to the width of the anchor. If false, it will be set to the width of the children |
-| maxHeight | number | 500 | no | The max height in pixels of the popup. If set to 0, the property will be ignored and receive height from its content |
+| syncWidth	| boolean |	true | no | If true, the width of the popup will be set to the width of the anchor. If false, it will be set to the width of the children.* Not relevant for a point anchor type.|
 
-## Input Handling
+\* This property should be more robust in the future in order to handle options such as *contentMin* (set to size of largest content item), etc.
+
+## Behavior
 
 ### Keyboard
 
-* Esc - closes the popup
-* Click outside - closes the popup
+* <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">Esc</kbd> - closes the popup
 
-## Examples
+### Mouse
 
-* Primary use case
+* None - determined by
 
-  Given a popup is attached to an element, when rendered, then it should appear on the screen
-    ```
-    render() {
-     return (
-         <div ref={ (MyAnchor) => {this.anchorElement = MyAnchor;} }>Anchor Element</div>
-         <Popup anchor={this.anchorElement}>
-               <div>Popup Element</div>
-         </Popup>
-     );
-   }
-   ```
+### Touch
 
-* Popup inside a React component parent
-
-    Given a component is created with a popup connected to an anchor element, when rendered and the parent component receives focus, then it should appear on the screen
-
-* Popup opens according to anchor positioning
-
-    Given a popup is connected to an anchor element, when the anchor position is changed, then the popup will open on that specific position.
-
-* Popup opens according to popup positioning
-
-    Given a popup is connected to an anchor element, when the popup position is changed, the popup will pivot according to that position in relation to the location on the anchor to which it was set.
-
-* Collision rules are observed
-
-    Given a popup is connected to an anchor element, when the popup does not have enough space in the viewport, then it will realign according to the collision rules.
-
-* Open and close events
-
-    Given a popup, when it opens or closes, then registered open and close events are triggered.
-
-* Right-click menu
-
-    Given a popup, when the user right-clicks on a certain point on the screen, then a popup opens at that specific point (collision rules apply of course).
+* None - determined by user

@@ -1,18 +1,19 @@
 import React = require('react');
 import {findDOMNode} from 'react-dom';
 import {ClientRenderer, expect, RenderingContext} from 'test-drive-react';
+import {isDecorated, properties} from 'wix-react-tools';
 import * as WixReactComponents from '../../src';
 import {isReactComponent} from '../utils/is-react-component';
 
 const allComponents = Object.keys(WixReactComponents);
 const failingComponents = [
-    'NumberInput', 'Toggle', 'Portal', 'Popup', 'TimePicker', 'Modal', 'ContextProvider'
+    'Portal', 'Popup', 'Modal', 'ContextProvider', 'GlobalEvent'
 ];
 
-describe('Root Element contract', function() {
+describe('Root Element contract', () => {
     allComponents
         .filter(exportName => failingComponents.indexOf(exportName) === -1)
-        .forEach(exportName => describe(exportName, function() {
+        .forEach(exportName => describe(exportName, () => {
             const ComponentClass = (WixReactComponents as any)[exportName];
             if (isReactComponent(ComponentClass)) {
                 assertRootElementContract(ComponentClass);
@@ -36,36 +37,16 @@ export function assertRootElementContract(Component: React.ComponentType<any>): 
         clientRenderer.cleanup();
     });
 
-    it('is rendered with default props', function() {
+    it('is rendered with default props', () => {
         const {rootNode} = render(<Component data-automation-id="CONTRACT_TEST"/>);
         expect(rootNode).to.be.instanceOf(Element);
     });
 
-    it('performs data-automation-id merge', function() {
-         const {select, rootNode} = render(<Component data-automation-id="CONTRACT_TEST"/>);
-         expect(select('CONTRACT_TEST'), 'data-automation-id not properly merged').to.equal(rootNode);
+    it('detects the "properties" feature decorator', () => {
+        expect(isDecorated(Component, properties)).to.equal(true);
     });
 
-    it('performs data-* attribute merge', function() {
-        const customValue = 'some-custom-value';
-        const {rootNode} = render(<Component data-some-custom-attr={customValue}/>);
-        expect(rootNode).to.have.attribute('data-some-custom-attr');
-        expect(rootNode.getAttribute('data-some-custom-attr')).to.contain(customValue);
-    });
-
-    it('performs inline style merge', function() {
-        const sampleColor = 'rgb(255, 0, 0)';
-        const {rootNode} = render(<Component style={{backgroundColor: sampleColor}}/>);
-        expect(getComputedStyle(rootNode).backgroundColor, 'inline style not properly merged').to.equal(sampleColor);
-    });
-
-    it('performs className merge', function() {
-        const testClassName = 'sample-class-name';
-        const {rootNode} = render(<Component className={testClassName}/>);
-        expect(rootNode.classList.contains(testClassName), 'className not properly merged').to.equal(true);
-    });
-
-    it('has display values of \'inline-block\' or \'inline-flex\'', function() {
+    it('has display values of \'inline-block\' or \'inline-flex\'', () => {
         const {rootNode} = render(<Component />);
         expect(isDisplayInline(rootNode), 'element display is not \'inline-block\' or \'inline-flex\'').to.equal(true);
     });

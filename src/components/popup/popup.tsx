@@ -16,7 +16,6 @@ export interface PopupProps extends properties.Props {
     anchorPosition?: PopupPositionPoint;
     popupPosition?: PopupPositionPoint;
     syncWidth?: boolean;
-    maxHeight?: number;
     children?: React.ReactNode;
 }
 
@@ -30,19 +29,24 @@ export class Popup extends React.Component<PopupCompProps> {
         open: false,
         anchorPosition: {vertical: 'bottom', horizontal: 'left'},
         popupPosition: {vertical: 'top', horizontal: 'left'},
-        syncWidth: true,
-        maxHeight: 500
+        syncWidth: true
     };
+
+    private portal: Portal | null;
 
     public render() {
         if (this.props.anchor && this.props.open) {
             return (
-                <Portal style={this.createStyle()}>
+                <Portal style={this.createStyle()} ref={portal => this.portal = portal}>
                     {this.props.children}
                 </Portal>);
         }
 
         return null;
+    }
+
+    public getPortal(): Portal | null {
+        return this.portal;
     }
 
     private createStyle(): React.CSSProperties {
@@ -51,7 +55,6 @@ export class Popup extends React.Component<PopupCompProps> {
         }
         const newStyle: React.CSSProperties = {position: 'absolute'};
 
-        newStyle.maxHeight = this.props.maxHeight;
         newStyle.transform = '';
         newStyle.WebkitTransform = '';
         if (isPoint(this.props.anchor)) {

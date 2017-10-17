@@ -1,18 +1,24 @@
 import React = require('react');
 import ReactDOM = require('react-dom');
-import {selectDom} from 'test-drive';
-import {ClientRenderer, expect, waitFor} from 'test-drive-react';
+import {ClientRenderer, DriverBase, expect, waitFor} from 'test-drive-react';
 import {PopupDemo} from '../../demo/components/popup-demo';
 import {Popup, PopupPositionPoint} from '../../src/components/';
-import {Point} from '../../src/types';
+import {PopupTestDriver} from '../../test-kit/components/popup-driver';
 import {sleep} from '../utils';
 
-const portalId = 'PORTAL';
-const demoContainer = 'POPUP_DEMO_DIV';
+export class PopupDemoTestDriver extends DriverBase {
+    public static ComponentClass = PopupDemo;
+    public popup: PopupTestDriver;
+    public container: HTMLButtonElement = this.select('POPUP_DEMO_BTN');
 
-describe('<Popup />', function() {
+    constructor(getPopupDemo: () => HTMLElement) {
+        super(getPopupDemo);
+        this.popup = new PopupTestDriver(getPopupDemo);
+    }
+}
+
+describe('<Popup />', () => {
     const clientRenderer = new ClientRenderer();
-    const bodySelect = selectDom(document.body);
     let anchor: HTMLElement;
 
     before(() => {
@@ -24,129 +30,94 @@ describe('<Popup />', function() {
         anchor.style.height = '150px';
         anchor.style.border = '1px solid blue';
     });
-    afterEach(function() {clientRenderer.cleanup(); });
+    afterEach(() => {clientRenderer.cleanup(); });
     after(() => {document.body.removeChild(anchor); });
 
-    describe('The popup user', function() {
-        it('clicks on the parent and the popup opens and closes after another click', async function() {
-            const {select, waitForDom} = clientRenderer.render(<PopupDemo />);
+    describe('The popup user', () => {
+        it('clicks on the parent and the popup opens and closes after another click', async () => {
+            const {driver: popupDemo, waitForDom} =
+                clientRenderer.render(<PopupDemo />).withDriver(PopupDemoTestDriver);
 
             await waitForDom(() => {
-                expect(select(demoContainer)).to.be.present();
-                expect(select(demoContainer, portalId)).to.be.absent();
+                expect(popupDemo.container).to.be.present();
+                expect(popupDemo.popup.root).to.be.absent();
             });
-            select<HTMLDivElement>(demoContainer)!.click();
-            await waitForDom(() => expect(bodySelect(portalId)).to.be.present());
-            select<HTMLDivElement>(demoContainer)!.click();
-            return waitForDom(() => expect(bodySelect(portalId)).to.be.absent());
+
+            popupDemo.container.click();
+
+            await waitForDom(() => expect(popupDemo.popup.root).to.be.present());
+
+            popupDemo.container.click();
+            return waitForDom(() => expect(popupDemo.popup.root).to.be.absent());
         });
     });
 
-    it('displays the popup and renders its children if the open prop is given', function() {
-        clientRenderer.render(
+    it('displays the popup and renders its children if the open prop is given', () => {
+        const {driver: popup} = clientRenderer.render(
             <Popup anchor={anchor} open>
-                <span data-automation-id="SPAN">Popup Body</span>
+                <span>Popup Body</span>
             </Popup>
-        );
+        ).withDriver(PopupTestDriver);
 
         return waitFor(() => {
-            expect(bodySelect(portalId)).to.be.present();
-            expect(bodySelect(portalId, 'SPAN')).to.be.present();
+            expect(popup.root).to.be.present();
+            expect(popup.content[0]).to.be.present();
         });
     });
 
-    it('does not render the popup if there is no anchor', async function() {
-        clientRenderer.render(
-            <Popup anchor={null} open={true}>
-                <span data-automation-id="SPAN">Popup Body</span>
+    it('does not render the popup if there is no anchor', async () => {
+        const {driver: popup} = clientRenderer.render(
+            <Popup anchor={null} open>
+                <span>Popup Body</span>
             </Popup>
-        );
+        ).withDriver(PopupTestDriver);
         await sleep(100);
-        await waitFor(() => expect(bodySelect(portalId)).to.be.absent());
+
+        await waitFor(() => expect(popup.root).to.be.absent());
     });
 
-    it('does not reder the popup if the open prop is false', async function() {
-        clientRenderer.render(
-            <Popup anchor={anchor} open={false}>
+    it('does not render the popup if the open prop is false', async () => {
+        const {driver: popup} = clientRenderer.render(
+            <Popup anchor={anchor}>
                 <span data-automation-id="SPAN">Popup Body</span>
             </Popup>
-        );
+        ).withDriver(PopupTestDriver);
         await sleep(100);
-        await waitFor(() => expect(bodySelect(portalId)).to.be.absent());
+
+        await waitFor(() => expect(popup.root).to.be.absent());
     });
 
-    it('renders the popup using a point as anchor', async () => {
-        const point: Point = {x: 100, y: 100};
-        clientRenderer.render(
-            <Popup anchor={point} open>
-                <span data-automation-id="SPAN">Popup Body</span>
-            </Popup>
-        );
-
-        await waitFor(() => expect(bodySelect(portalId)).to.be.present());
-    });
-
-    it('removes the component when unmounting', async function() {
-        clientRenderer.render(
+    it('removes the component when unmounting', async () => {
+        const {driver: popup} = clientRenderer.render(
             <Popup
                 anchor={anchor}
-                open={true}
+                open
             >
                 <span data-automation-id="SPAN">Popup Body</span>
-            </Popup>);
+            </Popup>).withDriver(PopupTestDriver);
 
-        await waitFor(() => {expect(bodySelect(portalId)).to.be.present(); });
-        ReactDOM.unmountComponentAtNode(bodySelect(portalId)!.parentElement!);
-        return waitFor(() => {expect(bodySelect(portalId)).to.not.exist; });
+        await waitFor(() => {expect(popup.root).to.be.present(); });
+        ReactDOM.unmountComponentAtNode(popup.root!.parentElement!);
+        return waitFor(() => {expect(popup.root).to.be.absent(); });
     });
 
-    it('syncs the popup width', function() {
-        clientRenderer.render(
+    it('syncs the popup width', () => {
+        const {driver: popup} = clientRenderer.render(
             <Popup
                 anchor={anchor}
                 syncWidth={true}
-                open={true}
+                open
             >
                 <span data-automation-id="SPAN">Popup Body</span>
-            </Popup>);
+            </Popup>).withDriver(PopupTestDriver);
 
         return waitFor(() => {
-            expect(bodySelect(portalId)!.getBoundingClientRect().width)
+            expect(popup.root.getBoundingClientRect().width)
                 .to.equal(anchor.getBoundingClientRect().width);
         });
     });
 
-    it('sets the default maxHeight', function() {
-        clientRenderer.render(
-            <Popup
-                anchor={anchor}
-                open={true}
-            >
-                <span data-automation-id="SPAN">Popup Body</span>
-            </Popup>);
-
-        return waitFor(() => {
-            expect(bodySelect<HTMLElement>(portalId)!.style.maxHeight).to.equal('500px');
-        });
-    });
-
-    it('sets and enforces the maxHeight', function() {
-        clientRenderer.render(
-            <Popup
-                anchor={anchor}
-                maxHeight={5}
-                open={true}
-            >
-                <span data-automation-id="SPAN">Popup Body</span>
-            </Popup>);
-
-        return waitFor(() => {
-            expect(bodySelect<HTMLElement>(portalId)!.style.maxHeight).to.equal('5px');
-            expect(bodySelect<HTMLElement>(portalId)!.getBoundingClientRect().height).to.equal(5);
-        });
-    });
-
-    describe('Scrolling tests', function() {
+    describe('Scrolling tests', () => {
         const scroll = document.createElement('div');
         scroll.style.height = '5000px';
         scroll.style.width = '5000px';
@@ -159,7 +130,7 @@ describe('<Popup />', function() {
             document.body.scrollLeft = 0;
         });
 
-        it('renders the popup in the right location when it is out of view', async function() {
+        it('renders the popup in the right location when it is out of view', async () => {
             let div: HTMLDivElement;
             const {waitForDom} = clientRenderer.render(
                 <div>
@@ -173,75 +144,45 @@ describe('<Popup />', function() {
             });
             document.body.scrollTop = 500;
             document.body.scrollLeft = 500;
-            clientRenderer.render(
+            const {driver: popup} = clientRenderer.render(
                 <Popup
                     anchor={div!}
-                    open={true}
+                    open
                 >
                     <span data-automation-id="SPAN">Popup Body</span>
-                </Popup>);
+                </Popup>).withDriver(PopupTestDriver);
 
             return waitForDom(() => {
-                expect([div, bodySelect(portalId)]).to.be.inVerticalSequence();
+                expect([div, popup.root]).to.be.inVerticalSequence();
             });
         });
     });
 
-    describe('Layout tests', function() {
+    describe('Layout tests', () => {
         const fixture = getFixture();
 
-        describe('Popup with anchor', () => {
-            for (const popupPos of fixture) {
-                for (const anchorPos of fixture) {
-                    it(`Popup position: V: ${popupPos.vertical} H: ${popupPos.horizontal};
-                 Anchor position: V: ${anchorPos.vertical} H: ${anchorPos.horizontal}`, function() {
-                        clientRenderer.render(
-                            <Popup anchor={anchor} anchorPosition={anchorPos} popupPosition={popupPos} open={true}>
-                                <div style={{background: 'green', color: 'white'}}>
+        for (const popupPos of fixture) {
+            for (const anchorPos of fixture) {
+                it(`Popup position: V: ${popupPos.vertical} H: ${popupPos.horizontal};
+                 Anchor position: V: ${anchorPos.vertical} H: ${anchorPos.horizontal}`, () => {
+                    const {driver: popup} = clientRenderer.render(
+                        <Popup anchor={anchor} anchorPosition={anchorPos} popupPosition={popupPos} open>
+                            <div style={{background: 'green', color: 'white'}}>
                                     <span data-automation-id="SPAN">
                                         Popup Body
                                     </span>
-                                    <div>some more stuff</div>
-                                </div>
-                            </Popup>);
-
-                        return waitFor(() => {
-                            const popup = bodySelect<HTMLElement>(portalId)!;
-
-                            runTest(popup, anchor, popupPos, anchorPos);
-                        });
-                    });
-                }
-            }
-        });
-
-        describe('Popup with point', () => {
-            const point: Point = {x: 90, y: 100};
-            const verticalTests = getPointLayoutTests('vertical');
-            const horizontalTests = getPointLayoutTests('horizontal');
-
-            for (const popupPos of fixture) {
-                it(`Popup position: V: ${popupPos.vertical} H: ${popupPos.horizontal}`, async () => {
-                    clientRenderer.render(
-                        <Popup anchor={point} popupPosition={popupPos} open>
-                            <div style={{background: 'green', color: 'white'}}>
-                                <span data-automation-id="SPAN">Popup Body</span>
+                                <div>some more stuff</div>
                             </div>
-                        </Popup>);
+                        </Popup>).withDriver(PopupTestDriver);
 
-                    await waitFor(() => {
-                        const popup = bodySelect<HTMLElement>(portalId)!;
-
-                        verticalTests[popupPos.vertical](popup, point);
-                        horizontalTests[popupPos.horizontal](popup, point);
-                    });
+                    return waitFor(() => runTest(popup.root, anchor, popupPos, anchorPos));
                 });
             }
-        });
+        }
     });
 });
 
-function getAnchorLayoutTests(axis: 'vertical' | 'horizontal') {
+function getLayoutTest(axis: 'vertical' | 'horizontal') {
     let start: 'left' | 'top' = 'top';
     let end: 'bottom' | 'right' = 'bottom';
     let length: 'height' | 'width' = 'height';
@@ -288,34 +229,9 @@ function getAnchorLayoutTests(axis: 'vertical' | 'horizontal') {
     };
 }
 
-function getPointLayoutTests(axis: 'vertical' | 'horizontal') {
-    let start: 'left' | 'top' = 'top';
-    let end: 'bottom' | 'right' = 'bottom';
-    let length: 'height' | 'width' = 'height';
-    let pointAxis: 'x' | 'y' = 'y';
-
-    if (axis === 'horizontal') {
-        start = 'left';
-        end = 'right';
-        length = 'width';
-        pointAxis = 'x';
-    }
-
-    return {
-        [start]: (popup: HTMLElement, p: Point) => {
-            createExpect(popup.getBoundingClientRect()[start], p[pointAxis], 0.5);
-        },
-        center: (popup: HTMLElement, p: Point) => {
-            const popupRect = popup.getBoundingClientRect();
-            createExpect(popupRect[start], p[pointAxis] - (popupRect[length] / 2), 0.5);
-        },
-        [end]: (popup: HTMLElement, p: Point) => createExpect(popup.getBoundingClientRect()[end], p[pointAxis], 0.5)
-    };
-}
-
 function runTest(popup: HTMLElement, anchor: HTMLElement, popupPos: PopupPositionPoint, anchorPos: PopupPositionPoint) {
-    const topTests = getAnchorLayoutTests('vertical');
-    const leftTests = getAnchorLayoutTests('horizontal');
+    const topTests = getLayoutTest('vertical');
+    const leftTests = getLayoutTest('horizontal');
 
     topTests[popupPos.vertical][anchorPos.vertical](anchor, popup);
     leftTests[popupPos.horizontal][anchorPos.horizontal](anchor, popup);
@@ -333,6 +249,6 @@ function getFixture(): PopupPositionPoint[] {
         {vertical: 'bottom', horizontal: 'right'}];
 }
 
-function createExpect(pValue: number, aValue: number, resulotion: number = 0.01) {
-    expect(pValue, `popup value: ${pValue} anchor value: ${aValue}`).to.be.closeTo(aValue, resulotion);
+function createExpect(pValue: number, aValue: number) {
+    expect(pValue, `popup value: ${pValue} anchor value: ${aValue}`).to.be.closeTo(aValue, 0.01);
 }

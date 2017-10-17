@@ -68,15 +68,15 @@ class CheckBoxDemoDriver extends DriverBase {
     };
 }
 
-describe('<Checkbox/>', function() {
+describe('<Checkbox/>', () => {
     const clientRenderer = new ClientRenderer();
 
     afterEach(() => {
         clientRenderer.cleanup();
     });
 
-    describe('Component / Demo test', function() {
-        it('Basic demo', async function() {
+    describe('Component / Demo test', () => {
+        it('Basic demo', async () => {
             const {driver, waitForDom} = clientRenderer.render(<CheckBoxDemo/>).withDriver(CheckBoxDemoDriver);
 
             const checkbox = driver.basicDemo.checkbox;
@@ -98,7 +98,7 @@ describe('<Checkbox/>', function() {
             });
         });
 
-        it('Disabled Demo', async function() {
+        it('Disabled Demo', async () => {
             const {driver, waitForDom} = clientRenderer.render(<CheckBoxDemo/>).withDriver(CheckBoxDemoDriver);
 
             const checkbox = driver.disabledDemo.checkbox;
@@ -117,7 +117,7 @@ describe('<Checkbox/>', function() {
             });
         });
 
-        it('Indeterminate Demo', async function() {
+        it('Indeterminate Demo', async () => {
             const {driver, waitForDom} = clientRenderer.render(<CheckBoxDemo/>).withDriver(CheckBoxDemoDriver);
 
             const {topCheckbox, option1Checkbox, option2Checkbox} = driver.indeterminateDemo;
@@ -138,7 +138,7 @@ describe('<Checkbox/>', function() {
         });
     });
 
-    it('Renders with default values', async function() {
+    it('Renders with default values', async () => {
         const {driver: checkbox, waitForDom} = clientRenderer.render(<CheckBox/>).withDriver(CheckBoxTestDriver);
 
         await waitForDom(() => {
@@ -147,7 +147,7 @@ describe('<Checkbox/>', function() {
         });
     });
 
-    it('Displays children', async function() {
+    it('Displays children', async () => {
         const {driver: checkbox, waitForDom} = clientRenderer.render(
             <CheckBox>
                 <span>covfefe</span>
@@ -159,7 +159,7 @@ describe('<Checkbox/>', function() {
         });
     });
 
-    it('Displays a box icon', async function() {
+    it('Displays a box icon', async () => {
         const {driver: checkbox, waitForDom} = clientRenderer.render(
             <CheckBox boxIcon={boxSVG} />
         ).withDriver(CheckBoxTestDriver);
@@ -170,7 +170,7 @@ describe('<Checkbox/>', function() {
         });
     });
 
-    it('Aligns children and box icon', async function() {
+    it('Aligns children and box icon', async () => {
         const {driver: checkbox, waitForDom} = clientRenderer.render(
             <CheckBox boxIcon={boxSVG}>
                 <span>yoyo</span>
@@ -183,7 +183,7 @@ describe('<Checkbox/>', function() {
         });
     });
 
-    it('Displays custom tick mark when value is true', async function() {
+    it('Displays custom tick mark when value is true', async () => {
         const {driver: checkbox, waitForDom} = clientRenderer.render(
             <CheckBox
                 boxIcon={boxSVG}
@@ -200,7 +200,7 @@ describe('<Checkbox/>', function() {
         });
     });
 
-    it('Calls onChange when clicked', async function() {
+    it('Calls onChange when clicked', async () => {
         const onChange = sinon.spy();
 
         const {driver: checkbox, waitForDom} = clientRenderer.render(
@@ -224,8 +224,8 @@ describe('<Checkbox/>', function() {
         });
     });
 
-    describe('Accessibility features', function() {
-        it('Renders a native input and pass on checked state', async function() {
+    describe('Accessibility features', () => {
+        it('Renders a native input and pass on checked state', async () => {
             const {driver: checkbox, waitForDom} = clientRenderer.render(
                 <CheckBox value={true}/>
             ).withDriver(CheckBoxTestDriver);
@@ -240,7 +240,7 @@ describe('<Checkbox/>', function() {
             });
         });
 
-        it('native input gets disabled state', async function() {
+        it('native input gets disabled state', async () => {
             const {driver: checkbox, waitForDom} = clientRenderer.render(
                 <CheckBox disabled/>
             ).withDriver(CheckBoxTestDriver);
@@ -252,7 +252,7 @@ describe('<Checkbox/>', function() {
             });
         });
 
-        it('native input gets id prop if supplied by user', async function() {
+        it('native input gets id prop if supplied by user', async () => {
             const {driver: checkbox, waitForDom} = clientRenderer.render(
                 <CheckBox id="covfefe"/>
             ).withDriver(CheckBoxTestDriver);
@@ -264,7 +264,7 @@ describe('<Checkbox/>', function() {
             });
         });
 
-        it('component gets tabIndex 0 by default', async function() {
+        it('component gets tabIndex 0 by default', async () => {
             const {driver: checkbox, waitForDom} = clientRenderer.render(<CheckBox/>).withDriver(CheckBoxTestDriver);
 
             await waitForDom(() => {
@@ -272,7 +272,7 @@ describe('<Checkbox/>', function() {
             });
         });
 
-        it('component gets tabIndex supplied by the user', async function() {
+        it('component gets tabIndex supplied by the user', async () => {
             const {driver: checkbox, waitForDom} = clientRenderer.render(
                 <CheckBox tabIndex={99998}/>
             ).withDriver(CheckBoxTestDriver);
@@ -283,8 +283,8 @@ describe('<Checkbox/>', function() {
         });
     });
 
-    describe('When disabled', function() {
-        it('doesn\'t call onChange when clicked', async function() {
+    describe('When disabled', () => {
+        it('doesn\'t call onChange when clicked', async () => {
             const onChange = sinon.spy();
             const {driver: checkbox, waitForDom} = clientRenderer.render(
                 <CheckBox disabled onChange={onChange}/>
@@ -299,7 +299,7 @@ describe('<Checkbox/>', function() {
             expect(onChange).to.not.have.been.called;
         });
 
-        it('displays tickmark if value is true', async function() {
+        it('displays tickmark if value is true', async () => {
             const {driver: checkbox, waitForDom} = clientRenderer.render(
                 <CheckBox disabled value={true}/>
             ).withDriver(CheckBoxTestDriver);
@@ -309,7 +309,7 @@ describe('<Checkbox/>', function() {
             });
         });
 
-        it('displays indeterminate icon', async function() {
+        it('displays indeterminate icon', async () => {
             const {driver: checkbox, waitForDom} = clientRenderer.render(
                 <CheckBox disabled value={true} indeterminate/>
             ).withDriver(CheckBoxTestDriver);
@@ -320,8 +320,8 @@ describe('<Checkbox/>', function() {
         });
     });
 
-    describe('When readonly', function() {
-        it('doesn\'t call onChange when clicked', async function() {
+    describe('When readonly', () => {
+        it('doesn\'t call onChange when clicked', async () => {
             const onChange = sinon.spy();
             const {driver: checkbox, waitForDom} = clientRenderer.render(
                 <CheckBox readonly onChange={onChange}/>
@@ -336,7 +336,7 @@ describe('<Checkbox/>', function() {
             expect(onChange).to.not.have.been.called;
         });
 
-        it('displays tickmark if value is true', async function() {
+        it('displays tickmark if value is true', async () => {
             const {driver: checkbox, waitForDom} = clientRenderer.render(
                 <CheckBox readonly value={true}/>
             ).withDriver(CheckBoxTestDriver);
@@ -347,8 +347,8 @@ describe('<Checkbox/>', function() {
         });
     });
 
-    describe('When indeterminate', function() {
-        it('renders indeterminate icon when value is true', async function() {
+    describe('When indeterminate', () => {
+        it('renders indeterminate icon when value is true', async () => {
             const {driver: checkbox, waitForDom} = clientRenderer.render(
                 <CheckBox value={true} indeterminate/>
             ).withDriver(CheckBoxTestDriver);
@@ -360,7 +360,7 @@ describe('<Checkbox/>', function() {
             });
         });
 
-        it('renders indeterminate icon when value is false', async function() {
+        it('renders indeterminate icon when value is false', async () => {
             const {driver: checkbox, waitForDom} = clientRenderer.render(
                 <CheckBox value={false} indeterminate/>
             ).withDriver(CheckBoxTestDriver);
@@ -371,7 +371,7 @@ describe('<Checkbox/>', function() {
             });
         });
 
-        it('click calls onChange with value true', async function() {
+        it('click calls onChange with value true', async () => {
             const onChange = sinon.spy();
             const {driver: checkbox, waitForDom} = clientRenderer.render(
                 <CheckBox
@@ -393,7 +393,7 @@ describe('<Checkbox/>', function() {
             });
         });
 
-        it('renders custom indeterminate icon', async function() {
+        it('renders custom indeterminate icon', async () => {
             const {driver: checkbox, waitForDom} = clientRenderer.render(
                 <CheckBox
                     indeterminateIcon={IndeterminateSVG}
@@ -407,7 +407,7 @@ describe('<Checkbox/>', function() {
             });
         });
 
-        it('does not call onChange when disabled', async function() {
+        it('does not call onChange when disabled', async () => {
             const onChange = sinon.spy();
             const {driver: checkbox, waitForDom} = clientRenderer.render(
                 <CheckBox disabled onChange={onChange} indeterminate/>

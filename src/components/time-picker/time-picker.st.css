@@ -21,7 +21,7 @@
     width: 7.5em;
 }
 .root {
-    -st-states: focus, disabled, empty, has-placeholder, error, rtl;
+    -st-states: focus, disabled, empty, hasPlaceholder, error, rtl;
     font-family: arial;
     font-size: 16px;
     position: relative;
@@ -69,10 +69,10 @@
 .root:empty {
     color: value(BK2);
 }
-.root:empty .stepper,
-.root:empty:has-placeholder .time,
-.root:empty:has-placeholder .ampm {
-    visibility: hidden;
+.root:empty::stepper,
+.root:empty:hasPlaceholder::time,
+.root:empty:hasPlaceholder::ampm {
+    opacity: 0;
 }
 .root:error {
     border-color: value(ER1);
@@ -97,6 +97,9 @@
 .root:rtl {
     padding-right: 9px;
     padding-left: 0;
+}
+.root:rtl::time {
+    display: inline-flex;
     flex-direction: row-reverse;
 }
 
@@ -106,7 +109,7 @@
     border: 0;
     padding: 0 3px;
     margin: 0;
-    width: 1.6em;
+    width: 1.62em;
     height: 100%;
     background: none;
     color: inherit;
@@ -148,9 +151,11 @@
     border: 0;
     outline: 0;
 }
-/* reset ios safari disabled opacity */
 .input:disabled {
     opacity: 1;
+    background-color: inherit;
+    border: none;
+    color: inherit;
 }
 
 .placeholder {
@@ -197,7 +202,7 @@
 .label:visible {
     display: block;
 }
-.native-input {
+.nativeInput {
     position: absolute;
     opacity: 0;
     padding: 0;
@@ -206,7 +211,7 @@
     width: 0;
     height: 0;
 }
-.native-input:focus {
+.nativeInput:focus {
     border: 0;
 }
 
@@ -215,7 +220,4 @@
     height: 100%;
     transition: opacity 100ms ease;
     float: right;
-}
-.stepper::control {
-    background: transparent;
 }
