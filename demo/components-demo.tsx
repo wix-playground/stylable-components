@@ -7,6 +7,7 @@ import {CheckBoxDemo} from './components/checkbox-demo';
 import {DatePickerDemo} from './components/date-picker-demo';
 import {DropDownDemo} from './components/drop-down.demo';
 import {ImageDemo} from './components/image-demo';
+import {LoaderDemo} from './components/loader-demo';
 import {ModalDemo} from './components/modal-demo';
 import {NumberInputDemo} from './components/number-input.demo';
 import {PopupDemo} from './components/popup-demo';
@@ -73,6 +74,11 @@ export class ComponentsDemo extends React.Component {
                 <div>
                     <h2>Radio Group</h2>
                     <RadioGroupDemo />
+                </div>
+                <hr />
+                <div>
+                    <h2>Loader</h2>
+                    <LoaderDemo/>
                 </div>
                 <hr />
                 <div>

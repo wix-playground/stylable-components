@@ -1,0 +1,64 @@
+:import {
+    -st-from: "../../style/project.st.css";
+    -st-named: PR2;
+}
+:vars {
+    size: 100px;
+    trackWidth: 5px;
+    rotateTime: 2s;
+    loadTime: 4s;
+}
+@keyframes circle {
+    :global(0%) {transform: rotate(0)}
+    :global(100%) {transform: rotate(360deg)}
+}
+@keyframes track {
+    :global(0%) {transform: rotate(-180deg)}
+    :global(25%) {transform: rotate(-180deg)}
+    :global(50%) {transform: rotate(0)}
+    :global(75%) {transform: rotate(0)}
+    :global(100%) {transform: rotate(180deg)}
+}
+
+.root {
+    display: inline-block;
+}
+
+.circle {
+    width: value(size);
+    height: value(size);
+    position: relative;
+    animation: circle value(rotateTime) infinite;
+}
+
+.left, .right {
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.track {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+    transform: rotate(-180deg);
+    animation: track value(loadTime) infinite linear;
+    transform-origin: 100% 50%;
+}
+.track:after {
+    position: absolute;
+    content: '';
+    width: value(size);
+    height: value(size);
+    border: 5px solid value(PR2);
+    border-radius: 50%;
+}
+.right {
+    transform: rotate(180deg) translate(-100%);
+}
+.right .track {
+    animation-delay: calc(value(loadTime) * 0.25);
+}
