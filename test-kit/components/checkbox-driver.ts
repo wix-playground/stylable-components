@@ -1,7 +1,7 @@
 import {DriverBase, simulate} from 'test-drive-react';
 import {CheckBox} from '../../src';
 import baseStyle from '../../src/components/checkbox/checkbox.st.css';
-import {elementHasStylableClassName, elementHasStylableState} from '../utils';
+import {elementHasStylableState} from '../utils';
 
 export class CheckBoxTestDriver extends DriverBase {
 

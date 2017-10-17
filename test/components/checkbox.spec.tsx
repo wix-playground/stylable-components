@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {ClientRenderer, DriverBase, expect, simulate, sinon, waitFor} from 'test-drive-react';
+import {ClientRenderer, DriverBase, expect, sinon, waitFor} from 'test-drive-react';
 import {CheckBoxDemo, demoCheckBoxText} from '../../demo/components/checkbox-demo';
 import {CheckBox, CheckBoxIconProps} from '../../src';
 import {CheckBoxTestDriver} from '../../test-kit/components/checkbox-driver';
