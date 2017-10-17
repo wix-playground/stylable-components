@@ -1,0 +1,8 @@
+@namespace "Dialog";
+
+
+/*
+    Styling colors are here (not at the theme)
+    because it is rendered in <Portal/>
+    which isn't able to get theme yet.
+*/
