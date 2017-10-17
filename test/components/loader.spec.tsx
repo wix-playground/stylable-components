@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {ClientRenderer, expect} from 'test-drive-react';
-import {CircleLoader, BarsLoader} from '../../src';
+import {BarsLoader, CircleLoader} from '../../src';
 
 function delay(time: number) {
     return new Promise(resolve => setTimeout(resolve, time));

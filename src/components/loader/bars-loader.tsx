@@ -9,9 +9,9 @@ const bars = new Array(5).fill(0);
 export class BarsLoader extends Loader {
     protected renderLoader() {
         return (
-            <div className='bars'>
+            <div className="bars">
                 {bars.map((item, index) =>
-                    <div className='bar' key={index}/>
+                    <div className="bar" key={index}/>
                 )}
             </div>
         );

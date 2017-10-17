@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {stylable} from 'wix-react-tools';
-import {ChangeEvent, CircleLoader, BarsLoader, NumberInput} from '../../src';
+import {BarsLoader, ChangeEvent, CircleLoader, NumberInput} from '../../src';
 import styles from './loader-demo.st.css';
 
 @stylable(styles)
