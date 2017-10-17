@@ -26,9 +26,8 @@ export interface Props extends OptionList, FormInputProps<SelectionListItemValue
 
 export interface State {
     focused: boolean;
-    focusedIndex: number;
     items: SelectionListItem[];
-    selectedIndex: number;
+    nav: SelectionListNav;
 }
 
 @properties
@@ -40,9 +39,8 @@ export class SelectionList extends React.Component<Props, State> {
 
     public state: State = {
         focused: false,
-        focusedIndex: -1,
         items: [],
-        selectedIndex: -1
+        nav: new SelectionListNav([])
     };
 
     public componentWillMount() {
@@ -57,14 +55,14 @@ export class SelectionList extends React.Component<Props, State> {
         return (
             <SelectionListView
                 focused={this.state.focused}
-                focusedIndex={this.state.focusedIndex}
+                focusedIndex={this.state.nav.focusedIndex}
                 items={this.state.items}
                 onBlur={this.handleBlur}
                 onClick={this.handleClick}
                 onFocus={this.handleFocus}
                 onKeyDown={this.handleKeyDown}
                 onMouseDown={this.handleMouseDown}
-                selectedIndex={this.state.selectedIndex}
+                selectedIndex={this.state.nav.selectedIndex}
                 style={this.props.style}
                 tabIndex={this.props.tabIndex}
             />
@@ -73,51 +71,37 @@ export class SelectionList extends React.Component<Props, State> {
 
     private updateItems(props: Props) {
         const items = selectionListItemsFromProps(props);
-
-        const selectedIndex = (props.value === undefined) ?
-            -1 : items.findIndex(item => item.value === props.value);
-
-        const selectedIsFocusable = (
-            selectedIndex > -1 &&
-            items[selectedIndex].isOption &&
-            !items[selectedIndex].disabled
-        );
-
-        const focusedIndex = this.state.focused && selectedIsFocusable ? selectedIndex : -1;
-
-        this.setState({items, selectedIndex, focusedIndex});
+        const nav = new SelectionListNav(items);
+        nav.selectValue(props.value);
+        if (this.state.focused) {
+            nav.focusSelected();
+        }
+        this.setState({items, nav});
     }
 
     private handleFocus: React.FocusEventHandler<HTMLElement> = () => {
-        const {items, selectedIndex, focusedIndex} = this.state;
-
-        const selectedIsFocusable = (
-            selectedIndex > -1 &&
-            items[selectedIndex].isOption &&
-            !items[selectedIndex].disabled
-        );
-
-        this.setState({
-            focused: true,
-            focusedIndex: focusedIndex > -1 ? focusedIndex : (selectedIsFocusable ? selectedIndex : -1)
-        });
+        const nav = this.state.nav;
+        if (nav.focusedIndex === -1) {
+            nav.focusSelected();
+        }
+        this.setState({focused: true, nav});
     }
 
     private handleBlur: React.FocusEventHandler<HTMLElement> = () => {
-        this.setState({
-            focused: false,
-            focusedIndex: -1
-        });
+        const nav = this.state.nav;
+        nav.blur();
+        this.setState({focused: false, nav});
     }
 
     private handleMouseDown = (event: React.MouseEvent<HTMLElement>, itemIndex: number) => {
         if (itemIndex > -1) {
-            this.setState({focusedIndex: itemIndex});
+            this.state.nav.focusedIndex = itemIndex;
+            this.setState({nav: this.state.nav});
         }
     }
 
     private handleClick = (event: React.MouseEvent<HTMLElement>, itemIndex: number) => {
-        if (itemIndex > -1 && itemIndex !== this.state.selectedIndex) {
+        if (itemIndex > -1 && itemIndex !== this.state.nav.selectedIndex) {
             this.triggerChange(itemIndex);
         }
     }
@@ -130,33 +114,39 @@ export class SelectionList extends React.Component<Props, State> {
     }
 
     private handleKeyDown: React.KeyboardEventHandler<HTMLElement> = event => {
+        const nav = this.state.nav;
+
         switch (event.keyCode) {
             case keycode('enter'):
             case keycode('space'):
                 event.preventDefault();
-                if (this.state.focusedIndex > -1) {
-                    this.triggerChange(this.state.focusedIndex);
+                if (nav.focusedIndex > -1) {
+                    this.triggerChange(nav.focusedIndex);
                 }
                 break;
 
             case keycode('up'):
                 event.preventDefault();
-                this.setState({focusedIndex: this.state.focusedIndex - 1});
+                nav.focusPrevious();
+                this.setState({nav});
                 break;
 
             case keycode('down'):
                 event.preventDefault();
-                this.setState({focusedIndex: this.state.focusedIndex + 1});
+                nav.focusNext();
+                this.setState({nav});
                 break;
 
             case keycode('home'):
                 event.preventDefault();
-                this.setState({focusedIndex: 0});
+                nav.focusFirst();
+                this.setState({nav});
                 break;
 
             case keycode('end'):
                 event.preventDefault();
-                this.setState({focusedIndex: this.state.items.length - 1});
+                nav.focusLast();
+                this.setState({nav});
                 break;
         }
     }

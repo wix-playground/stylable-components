@@ -181,7 +181,7 @@ export class SelectionListNav {
         if (this.focusedIndex === -1) {
             this.focusLast();
         } else {
-            const index = this.findSelectable(this.focusedIndex, -1);
+            const index = this.findSelectable(this.focusedIndex - 1, -1);
             if (index !== -1) {
                 this.focusedIndex = index;
             }
@@ -192,7 +192,7 @@ export class SelectionListNav {
         if (this.focusedIndex === -1) {
             this.focusFirst();
         } else {
-            const index = this.findSelectable(this.focusedIndex, 1);
+            const index = this.findSelectable(this.focusedIndex + 1, 1);
             if (index !== -1) {
                 this.focusedIndex = index;
             }
@@ -200,7 +200,7 @@ export class SelectionListNav {
     }
 
     private findSelectable(startIndex: number, step: number) {
-        for (let i = startIndex; 0 <= i && i <= this.items.length; i += step) {
+        for (let i = startIndex; 0 <= i && i < this.items.length; i += step) {
             if (this.items[i].selectable) {
                 return i;
             }
