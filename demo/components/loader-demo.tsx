@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {stylable} from 'wix-react-tools';
-import {ChangeEvent, CircleLoader, NumberInput} from '../../src';
+import {ChangeEvent, CircleLoader, BarsLoader, NumberInput} from '../../src';
 import styles from './loader-demo.st.css';
 
 @stylable(styles)
@@ -28,6 +28,8 @@ export class LoaderDemo extends React.Component {
                     <tr>
                         <th>Circle</th>
                         <th>Circle with text</th>
+                        <th>Bars</th>
+                        <th>Bars with text</th>
                     </tr>
                 </thead>
                 {visible &&
@@ -40,6 +42,17 @@ export class LoaderDemo extends React.Component {
                             </td>
                             <td>
                                 <CircleLoader
+                                    delay={delay}
+                                    text="Loading"
+                                />
+                            </td>
+                            <td>
+                                <BarsLoader
+                                    delay={delay}
+                                />
+                            </td>
+                            <td>
+                                <BarsLoader
                                     delay={delay}
                                     text="Loading"
                                 />

@@ -1,0 +1,41 @@
+:import {
+    -st-from: "../../style/project.st.css";
+    -st-named: PR2;
+}
+:vars {
+    duration: 1s;
+}
+
+@keyframes dance {
+    :global(0%) {height: 20%}
+    :global(33%) {height: 100%}
+    :global(100%) {height: 20%}
+}
+
+.bars {
+    width: 46px;
+    height: 44px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: auto;
+}
+
+.bar {
+    background: value(PR2);
+    width: 5px;
+    border-radius: 2px;
+    animation: dance value(duration) infinite linear;
+}
+
+.bar:nth-child(1),
+.bar:nth-child(5)
+{
+    animation-delay: calc(value(duration) / 3);
+}
+.bar:nth-child(2),
+.bar:nth-child(4),
+{
+    animation-delay: calc(value(duration) / 6);
+}
