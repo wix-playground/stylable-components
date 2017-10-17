@@ -1,6 +1,5 @@
 import {DriverBase} from 'test-drive-react';
 import {RadioButton, RadioGroup} from '../../src';
-import {hasCssState} from '../../test/utils';
 
 export class RadioGroupDriver extends DriverBase {
     public static ComponentClass = RadioGroup;

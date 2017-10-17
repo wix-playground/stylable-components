@@ -318,7 +318,6 @@ describe('<Checkbox/>', () => {
 
     describe('When error', () => {
         it('has error style state', async () => {
-            const onChange = sinon.spy();
             const {driver: checkbox} = clientRenderer.render(
                 <CheckBox error />
             ).withDriver(CheckBoxTestDriver);

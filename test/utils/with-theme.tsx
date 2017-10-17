@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {properties, stylable} from 'wix-react-tools';
+import {stylable} from 'wix-react-tools';
 import styles from '../../demo/style-default.st.css';
 
 export const WithThemeDAID = 'THEMED_CONTAINER';

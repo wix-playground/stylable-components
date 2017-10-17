@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {ClientRenderer, expect, selectDom, simulate, sinon, trigger, waitForDom as gWaitForDom} from 'test-drive-react';
-import {stylable} from 'wix-react-tools';
 import {AutoCompleteDemo} from '../../demo/components/auto-complete.demo';
 import {AutoComplete} from '../../src';
 import {WithTheme} from '../utils';
