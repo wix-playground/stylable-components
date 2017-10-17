@@ -7,7 +7,7 @@ function delay(time: number) {
 }
 const loaders: any = {CircleLoader, BarsLoader};
 
-describe.only('<Loader/>', () => {
+describe('<Loader/>', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
 

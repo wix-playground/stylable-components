@@ -13,7 +13,6 @@ export interface LoaderState {
 }
 
 @stylable(styles)
-@properties
 export class Loader extends React.Component<LoaderProps, LoaderState> {
     private timer: number;
 
