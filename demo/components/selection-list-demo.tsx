@@ -1,6 +1,7 @@
 import React = require('react');
 import {stylable} from 'wix-react-tools';
 import {
+    OptionList,
     SelectionList,
     SelectionListDividerSymbol as divider,
     SelectionListItemValue,
@@ -70,8 +71,8 @@ class EmojiList extends React.Component {
                 <h3>Custom item renderer</h3>
                 <SelectionList
                     className="emoji-list"
-                    dataSchema={this.dataSchema}
                     dataSource={this.dataSource}
+                    resolveItem={this.resolveItem}
                     renderItem={this.renderItem}
                     value={this.state.value}
                     onChange={this.handleChange}
@@ -83,8 +84,22 @@ class EmojiList extends React.Component {
         );
     }
 
-    private renderItem = ({value, label}: {value: string, label: string}) => {
-        return <Option value={value}>{label}</Option>;
+    private resolveItem: OptionList['resolveItem'] = (item: {name: string, icon: string}) => {
+        return {value: item.name, label: item.name};
+    }
+
+    private renderItem: OptionList['renderItem'] = (
+        props: {item: {name: string, icon: string}, id: string, selected: boolean, focused: boolean}
+    ) => {
+        return (
+            <Option
+                id={props.id}
+                selected={props.selected}
+                focused={props.focused}
+            >
+                {props.item.icon}
+            </Option>
+        );
     }
 
     private handleChange = ({value}: {value: SelectionListItemValue}) => this.setState({value});

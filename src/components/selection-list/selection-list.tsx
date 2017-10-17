@@ -6,7 +6,13 @@ import {Disposers, properties} from 'wix-react-tools';
 import {ChangeEvent} from '../../types/events';
 import {FormInputProps} from '../../types/forms';
 import {noop} from '../../utils';
-import {OptionList, SelectionListItem, SelectionListItemValue, SelectionListModel} from './selection-list-model';
+import {
+    OptionList,
+    SelectionListItem,
+    selectionListItemsFromProps,
+    SelectionListItemValue,
+    SelectionListNav
+} from './selection-list-model';
 import {SelectionListView} from './selection-list-view';
 
 export interface Props extends OptionList, FormInputProps<SelectionListItemValue> {
@@ -66,26 +72,35 @@ export class SelectionList extends React.Component<Props, State> {
     }
 
     private updateItems(props: Props) {
-        const list = new SelectionListModel();
-        list.addChildren(props.children);
-        list.addDataSource(props);
-        const items = list.items;
+        const items = selectionListItemsFromProps(props);
 
         const selectedIndex = (props.value === undefined) ?
             -1 : items.findIndex(item => item.value === props.value);
 
-        const focusedIndex = this.state.focused && selectedIndex > -1 && items[selectedIndex].selectable ?
-            selectedIndex : -1;
+        const selectedIsFocusable = (
+            selectedIndex > -1 &&
+            items[selectedIndex].isOption &&
+            !items[selectedIndex].disabled
+        );
+
+        const focusedIndex = this.state.focused && selectedIsFocusable ? selectedIndex : -1;
 
         this.setState({items, selectedIndex, focusedIndex});
     }
 
     private handleFocus: React.FocusEventHandler<HTMLElement> = () => {
-        const {items, selectedIndex} = this.state;
-        const focusedIndex = this.state.focusedIndex > -1 ?
-            this.state.focusedIndex :
-            (selectedIndex > -1 && items[selectedIndex].selectable ? selectedIndex : -1);
-        this.setState({focused: true, focusedIndex});
+        const {items, selectedIndex, focusedIndex} = this.state;
+
+        const selectedIsFocusable = (
+            selectedIndex > -1 &&
+            items[selectedIndex].isOption &&
+            !items[selectedIndex].disabled
+        );
+
+        this.setState({
+            focused: true,
+            focusedIndex: focusedIndex > -1 ? focusedIndex : (selectedIsFocusable ? selectedIndex : -1)
+        });
     }
 
     private handleBlur: React.FocusEventHandler<HTMLElement> = () => {
@@ -108,7 +123,10 @@ export class SelectionList extends React.Component<Props, State> {
     }
 
     private triggerChange(itemIndex: number) {
-        this.props.onChange!({value: this.state.items[itemIndex].value});
+        const value = this.state.items[itemIndex].value;
+        if (value !== undefined) {
+            this.props.onChange!({value});
+        }
     }
 
     private handleKeyDown: React.KeyboardEventHandler<HTMLElement> = event => {
@@ -143,54 +161,3 @@ export class SelectionList extends React.Component<Props, State> {
         }
     }
 }
-
-function scan<T>(
-    arr: T[],
-    match: (item: T) => boolean,
-    direction: number,
-    startIndex: number,
-    stopAfter: number = Infinity
-) {
-    const index = -1;
-    const maxIndex = arr.length - 1;
-    for (let i = startIndex; 0 <= i && i <= maxIndex; i += direction < 0 ? -1 : 1) {
-        if (match(arr[i])) {
-            return i;
-        }
-    }
-    return -1;
-}
-
-// class SelectionListNav {
-//     private index = -1;
-
-//     constructor(private items: SelectionListItem[]) {}
-
-//     public moveToValue(value: SelectionListItemValue): void {
-//         this.index = scan(this.items, item => item.value === value);
-//     }
-
-//     public moveToIndex(index: number): void {
-//         this.index = index;
-//     }
-
-//     public moveToBeginning(): void {
-//         this.index = scan(this.items, item => item.selectable);
-//     }
-
-//     public moveToEnd(): void {
-//         this.index = scan(this.items, item => item.selectable, this.items.length - 1, -1);
-//     }
-
-//     public moveToPrevious(): void {
-//         if (this.index === -1) {
-//             this.moveToEnd();
-//         } else {
-//             const index = scan(this.items, item => item.selectable, this.index + 1);
-//         }
-//     }
-
-//     public moveToNext(): void {
-
-//     }
-// }

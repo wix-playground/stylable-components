@@ -13,15 +13,6 @@ function closestElementMatching(predicate: (element: Element) => boolean, startA
     return current;
 }
 
-function getChildIndex(child: Node) {
-    let i = 0;
-    while (child.previousSibling) {
-        child = child.previousSibling;
-        i += 1;
-    }
-    return i;
-}
-
 export interface ViewProps extends properties.Props {
     // Standard props
     onBlur?: React.FocusEventHandler<HTMLElement>;
@@ -93,13 +84,13 @@ export class SelectionListView extends React.Component<ViewProps> {
     }
 
     protected itemId(index: number): string {
-        return globalId.getLocalId(globalId.getRootId(this), String(index));
+        return globalId.getRootId(this) + '-' + index;
     }
 
     protected itemIndexFromElement(element: Element): number {
         const rootElement = ReactDOM.findDOMNode(this);
         const itemElement = closestElementMatching(el => el.parentElement === rootElement, element);
-        return itemElement ? getChildIndex(itemElement) : -1;
+        return itemElement ? Number(itemElement.id.replace(/.*(\d+)$/, '$1')) : -1;
     }
 
     protected handleClick: React.MouseEventHandler<HTMLElement> = event => {
@@ -122,19 +113,13 @@ class ItemWrapper extends React.Component<ItemWrapperProps> {
     public componentDidUpdate() {
         if (this.props.focused) {
             const node = ReactDOM.findDOMNode(this);
-            node.scrollIntoView({behavior: 'instant', block: 'nearest', inline: 'nearest'});
+            if (node) {
+                node.scrollIntoView({behavior: 'instant', block: 'nearest', inline: 'nearest'});
+            }
         }
     }
 
     public render() {
-        const item = this.props.item;
-        if (item.isOption) {
-            return React.cloneElement(item.element, {
-                id: this.props.id,
-                focused:  this.props.focused,
-                selected: this.props.selected
-            });
-        }
-        return item.element;
+        return this.props.item.render(this.props.id, this.props.selected, this.props.focused);
     }
 }
