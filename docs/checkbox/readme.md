@@ -21,7 +21,6 @@ The **Checkbox** component provides the same functionality as the native Checkbo
 | indeterminate | boolean | false | no | Indicates that the checkbox is neither on nor off. Changes the appearance to resemble a third state. Does not affect the value of the checked attribute, and clicking the checkbox will set the value to false. |
 | autoFocus | boolean | false | no | Whether the checkbox receives focus automatically when page loads |
 | name | string |  | no | Name is used for form data reference |
-| required | boolean | false | no | Whether the checkbox must be checked to submit the form |
 
 
 ### React Code Example

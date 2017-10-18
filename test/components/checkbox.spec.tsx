@@ -213,16 +213,6 @@ describe('<Checkbox/>', () => {
         });
     });
 
-    it('Accepts "required" prop', async () => {
-        const {driver: checkbox, waitForDom} = clientRenderer.render(
-            <CheckBox  required/>
-        ).withDriver(CheckBoxTestDriver);
-
-        await waitForDom(() => {
-            expect(checkbox.nativeInput).to.have.property('required', true);
-        });
-    });
-
     it('Accepts "autofocus" prop', async () => {
         if (document.hasFocus()) {
 

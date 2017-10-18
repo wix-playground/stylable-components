@@ -72,7 +72,6 @@ export class CheckBox extends React.Component<CheckBoxProps, CheckBoxState> {
                     tabIndex={this.props.tabIndex}
                     autoFocus={this.props.autoFocus}
                     name={this.props.name}
-                    required={this.props.required}
                 />
 
                 <span
