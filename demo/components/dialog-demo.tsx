@@ -24,5 +24,7 @@ export class DialogDemo extends React.Component<{}, DialogDemoState> {
         );
     }
 
-    private toggleOpen = () => this.setState({isOpen: !this.state.isOpen});
+    private toggleOpen = () => {
+        this.setState({isOpen: !this.state.isOpen});
+    }
 }

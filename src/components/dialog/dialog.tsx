@@ -29,18 +29,26 @@ export class Dialog extends React.PureComponent<DialogProps> {
                 isOpen={this.props.isOpen}
                 onRequestClose={this.props.onCancel}
             >
-                <div className="header" role="header">
-                    <span role="title" className="title">{this.props.title}</span>
-                    <Button role="header-close-button">X</Button>
-                </div>
-                <div className="body" role="body">
-                    {this.props.children}
-                </div>
-                <div className="footer" role="footer">
-                    <Button role="footer-close-button">Cancel</Button>
-                    <Button role="footer-primary-button">OK</Button>
+                <div onClick={this.onDialogBodyClick}>
+                    <div className="header" role="header">
+                        <span role="title" className="title">{this.props.title}</span>
+                        <Button role="header-close-button">X</Button>
+                    </div>
+                    <div className="body" role="body">
+                        {this.props.children}
+                    </div>
+                    <div className="footer" role="footer">
+                        <Button onClick={this.props.onCancel} role="footer-close-button">Cancel</Button>
+                        <Button onClick={this.props.onOk} role="footer-primary-button">OK</Button>
+                    </div>
                 </div>
             </Modal>
         );
+    }
+
+    private onDialogBodyClick(e: React.SyntheticEvent<HTMLElement>) {
+        // without this, the click on the body propagates
+        // to the backdrop which closes the dialog
+        e.stopPropagation();
     }
 }
