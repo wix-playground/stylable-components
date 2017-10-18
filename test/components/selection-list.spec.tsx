@@ -31,7 +31,7 @@ export class SelectionListDemoDriver extends DriverBase {
     };
 }
 
-describe.only('<SelectionList />', () => {
+describe('<SelectionList />', () => {
     const clientRenderer = new ClientRenderer();
 
     afterEach(() => {
