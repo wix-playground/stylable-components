@@ -1,13 +1,14 @@
 @namespace "Slider";
 
 :import {
-    -st-from: "../../style/project.st.css";
+    -st-from: "../../project.st.css";
     -st-named:
         color_Border,
         M0,
         PR2,
         STC5,
         PR4,
+        BK1,
         BK2,
         BK3,
         DS1,
@@ -53,6 +54,9 @@
 
     minVerticalSliderHeight: 44px;
     clickableAreaRadius: 15px;
+
+    tooltipOffset: 23px;
+    tooltipColor: value(BK1);
 }
 
 .nativeInput {
@@ -223,16 +227,65 @@
     margin: value(markMiddleOfDot) 0 0 value(markMiddleOfBar);
 }
 
-.tooltip{
+.tooltip {
     position: absolute;
     text-align: center;
-    left: 50%;
-    bottom: 20px;
+    background: value(tooltipColor);
+    padding: 12px 25px;
+    color: white;
+    font-size: 14px;
+    font-family: arial;
 }
-.tooltip > *{
-    display: inline-block;
-    position: relative;
-    left: -50%;
+
+
+.tooltip-tail {
+    position: absolute;
+}
+
+.tooltip.top {
+    bottom: value(tooltipOffset);
+    transform: translateX(-50%);
+    margin-left: 50%;
+}
+.tooltip.top .tooltip-tail {
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.tooltip.bottom {
+    top: value(tooltipOffset);
+    transform: translateX(-50%);
+    margin-left: 50%;
+}
+.tooltip.bottom .tooltip-tail {
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) rotate(180deg);
+}
+
+.tooltip.left {
+    right: value(tooltipOffset);
+    transform: translateY(-50%);
+    margin-top: 50%;
+}
+.tooltip.left .tooltip-tail {
+    left: 100%;
+    top: 50%;
+    transform: translateY(100%) rotate(-90deg);
+    transform-origin: 0 0;
+}
+
+.tooltip.right {
+    left: value(tooltipOffset);
+    transform: translateY(-50%);
+    margin-top: 50%;
+}
+.tooltip.right .tooltip-tail {
+    right: 100%;
+    top: 50%;
+    transform: translateY(100%) rotate(90deg);
+    transform-origin: 100% 0;
 }
 
 /* Hover state */

@@ -7,6 +7,7 @@ export * from './drop-down';
 export * from './global-event';
 export * from './image';
 export * from './input';
+export * from './loader';
 export * from './modal';
 export * from './number-input';
 export * from './popup';

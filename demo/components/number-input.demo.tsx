@@ -28,10 +28,9 @@ export class NumberInputDemo extends React.Component<{}, NumberInputDemoState> {
                         max={100}
                         onChange={this.handleBasicValueChange}
                         placeholder="How Many?"
-                        prefix={<TrendingUp data-slot="prefix" />}
-                    >
-                        <span data-slot="suffix">USD</span>
-                    </NumberInput>
+                        prefix={<TrendingUp/>}
+                        suffix={<span>USD</span>}
+                    />
                 </div>
                 <div>
                     <h3>With min/max/step</h3>

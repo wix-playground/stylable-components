@@ -1,35 +1,70 @@
 @namespace "AutoComplete";
 
+:import {
+    -st-from: "../../project.st.css";
+    -st-named: 
+               iconChevronDownBK3,
+               iconChevronDownDS1,
+               iconChevronDownPR3;
+}
+
+/*
+    FOCUS doesn't work.
+    TODO: Component needs to handle focus (pass it to the root element) in code
+*/
 .root {
-    font-size: 16px;
+    box-sizing: inherit;
     position: relative;
-    display: inline-block;
+    display: inline-flex;
 }
 
-.autoCompleteInput {
-    border: 1px solid #adbac5;
-    font-family: ArialMT;
-    font-size: 16px;
-    height: 36px;
+.input {
+    /* making sure the input shrinks properly */
+    flex: 1;
+    min-width: 1px;
+    text-overflow: ellipsis;
+
+    /* negating global input styles */
+    height: auto;
+    border: none;
+    box-shadow: none;
+    outline: none;
+    color: inherit;
+    font: inherit;
+    background: none;
+}
+
+.list {
     width: 100%;
-    padding-left: 5px;
-}
-
-.autoCompleteList {
-    -st-extends: root;
-    width: 100%;
-    background: #FFFFFF;
-}
-
-.autoCompleteInput:hover {
-    border: 1px solid #5cb4ff;
+    /*
+        Styling list is here (not at the theme)
+        because it is rendered in <Portal/>
+        which isn't able to get theme yet.
+    */
+    border-top: 0;
+    background: #ffffff;
 }
 
 .caret {
+
+    margin: 0; 
+    padding: 0;
+    border: 0;
+
+    outline: none;
+
+    background: center no-repeat transparent;
+    background-origin:content-box;
     cursor: pointer;
-    position:absolute;
-    top:50%;
-    left: calc(100% - 24px);
-    transform:translateY(-50%);
-    -webkit-transform:translateY(-50%);
+    height: auto;
+    background-image: value(iconChevronDownBK3);
+}
+
+.caret:hover,
+.caret:focus {
+    background-image: value(iconChevronDownPR3);
+}
+
+.caret:disabled {
+    background-image: value(iconChevronDownDS1);
 }

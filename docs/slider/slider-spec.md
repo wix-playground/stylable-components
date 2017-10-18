@@ -29,7 +29,7 @@
 
 ## Definition
 
-A **slider** an input where the user selects a value from within a given range.
+**Slider** is a component that allows users to input or select a value from a range.
 
 Sliders are great for adjusting settings that reflect intensity levels (volume, brightness, color saturation).
 
@@ -39,16 +39,19 @@ Sliders are great for adjusting settings that reflect intensity levels (volume, 
 
 ![elements](./assets/elements.png)
 
-**Slider consists of:** ::bar, ::handle, ::progressBar, ::marks and ::progressMarks . The ::handle is dragged across the bar in order to give the slider a desired value. ::progressBar shows range from min value to the current value. ::marks and ::progressMarks are representing the step
+A **Slider** is composed of the following elements: "bar", "handle", "progressBar", "marks", "progressMarks", "tooltip". The "handle" is dragged across the "bar" in order to give the slider a desired value, while "progress" shows the range from the minimum value to the current value. "Tooltip" is used to show the current value.
 
-> TBD (need to decide on how to implement tooltip)
-> Also, you can display tooltip (e.g. to display current value) by adding child DOM element with relevant data-slot (data-slot="tooltip")
+The value steps are indicated by marks and progressMarks.
+
+You can display a tooltip (e.g. to display current value) by setting `displayTooltip` prop to `true`.
+
+
 
 ## API
 
 **Props**
 
-See [README.md](https://github.com/wix/stylable-components/blob/master/specs/specTemplate/README.md) for more info.
+See [README.md](./README.md) for more info.
 
 **Style**
 
@@ -141,6 +144,17 @@ You can adjust sliders alignment and direction in which the range is going to ch
 4. `axis="y-reverse"` -> vertical slider, progress is moving from top to bottom
 
 
+**Tooltip**
+
+To enable tooltip, set `displayTooltip` prop to `true`. Tooltip is shown on hover or focus.  Tooltip position can be changed with `tooltipPosition` prop that accepts the following values `top`, `bottom`, `left`, `right`. Default position for the tooltip is `top`. NOTE: this is relevant for both horizontal & vertical position.
+
+Tooltip is shown on:
+
+1. Hover over the "handle"
+2. Focus over the "handle"
+
+See [sample slider](https://ant.design/components/slider/).
+
 #### Validation
 
 | Case                          | Handling          |
@@ -164,17 +178,17 @@ You can adjust sliders alignment and direction in which the range is going to ch
 
 #### Keyboard
 
-| Keys                                          | Action                      |
-| --------------------------------------------- | --------------------------- |
-| up / right arrow key                          | increase value              |
-| left / down arrow key                         | decrease value              |
-| home (fn/ctrl) OR shift + left arrow key      | set min value               |
-| end (fn/ctrl) OR shift + right arrow key      | set max value               |
-| page up (fn/ctrl) OR shift + up arrow key     | increase value by 10        |
-| page down (fn/ctrl) OR shift + down arrow ke  | decrease value by 10        |
-| tab                                           | moves to next element       |
-| shift + tab                                   | moves to previous element   |
-| esc                                           | removes focus (if in focus) |
+| Keys                                     | Action                      |
+| ---------------------------------------- | --------------------------- |
+| up / right arrow key                     | increase value              |
+| left / down arrow key                    | decrease value              |
+| home (fn/ctrl) OR shift + left arrow key | set min value               |
+| end (fn/ctrl) OR shift + right arrow key | set max value               |
+| page up (fn/ctrl) OR shift + up arrow key | increase value by 10        |
+| page down (fn/ctrl) OR shift + down arrow ke | decrease value by 10        |
+| tab                                      | moves to next element       |
+| shift + tab                              | moves to previous element   |
+| esc                                      | removes focus (if in focus) |
 
 **RTL** orientation
 
@@ -201,7 +215,7 @@ You can adjust sliders alignment and direction in which the range is going to ch
 | Event                                  | Action                                   | NOTE                                     |
 | -------------------------------------- | ---------------------------------------- | ---------------------------------------- |
 | tap (on handle)                        | highlights handle                        | we need the ability to expand clickable area for mobile devices |
-| tap (on bar / mark / clickable area)     | moves handle to position where user clicked | -                                        |
+| tap (on bar / mark / clickable area)   | moves handle to position where user clicked | -                                        |
 | tap & drag (right / left OR up / down) | change value according to direction of movement | -                                        |
 
 
@@ -213,7 +227,7 @@ http://ilyabirman.net/meanwhile/all/slider/
 
 ## RTL
 
-> RTL behavior is under discussion.
+TBD
 
 ## DOM structure
 

@@ -6,7 +6,6 @@ import {FormInputProps} from '../../types/forms';
 import {noop} from '../../utils/noop';
 import {Popup} from '../popup/';
 import {SelectionList, SelectionListOptionList} from '../selection-list';
-import {CaretDown} from './drop-down-icons';
 import style from './drop-down.st.css';
 
 const KeyCodes: any = {
@@ -22,7 +21,7 @@ export interface DropDownProps extends SelectionListOptionList, FormInputProps<s
     disabled?: boolean;
     openOnFocus?: boolean;
     children?: React.ReactNode;
-    toggleIcon?: React.ComponentType;
+    // toggleIcon?: React.ReactNode;
     tabIndex?: number;
     onOpenStateChange?: (e: ChangeEvent<boolean>) => void;
 }
@@ -38,7 +37,6 @@ export class DropDown extends React.PureComponent<DropDownProps, DropDownState> 
         children: [],
         onChange: noop,
         tabIndex: 0,
-        toggleIcon: CaretDown,
         disabled: false,
         onOpenStateChange: noop
     };
@@ -53,35 +51,32 @@ export class DropDown extends React.PureComponent<DropDownProps, DropDownState> 
     }
 
     public render() {
-        const ToggleIcon = this.props.toggleIcon!;
-
         return (
             <div
                 data-automation-id="DROP_DOWN"
-                className="drop-down"
                 onKeyDown={this.onKeyDown}
                 onFocus={this.onFocus}
                 tabIndex={this.props.tabIndex}
                 ref={dropdown => this.setState({dropdown})}
             >
-                <div data-automation-id="DROP_DOWN_INPUT" onClick={this.toggleDropdown} className="dropdownInput">
+                <div data-automation-id="DROP_DOWN_INPUT" onClick={this.toggleDropdown} className="input">
                     <span className="label">{this.props.value!}</span>
-                    <div className="caret" data-automation-id="ICON">
-                        <ToggleIcon />
-                    </div>
                 </div>
-                <Popup open={this.props.open && !this.props.disabled} anchor={this.state.dropdown}>
-                    <div className="root">
-                        <SelectionList
-                            data-automation-id="DROP_DOWN_LIST"
-                            className="dropdownList"
-                            value={this.props.value}
-                            onChange={this.onItemClick!}
-                            dataSource={this.props.dataSource}
-                        >
-                            {this.props.children}
-                        </SelectionList>
-                    </div>
+                <button onClick={this.toggleDropdown} className="caret" data-automation-id="AUTO_COMPLETE_CARET"/>
+                <Popup
+                    className="root"
+                    open={this.props.open && !this.props.disabled}
+                    anchor={this.state.dropdown}
+                >
+                    <SelectionList
+                        data-automation-id="DROP_DOWN_LIST"
+                        className="list"
+                        value={this.props.value}
+                        onChange={this.onItemClick!}
+                        dataSource={this.props.dataSource}
+                    >
+                        {this.props.children}
+                    </SelectionList>
                 </Popup>
             </div>
         );
