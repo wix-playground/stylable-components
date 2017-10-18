@@ -6,7 +6,7 @@ import {SelectionListOption} from './option';
 
 export type DataSourceItem = string | object | symbol;
 
-export interface SelectionListOptionList {
+export interface OptionList {
     dataSource?: DataSourceItem[];
     dataSchema?: {};
     renderItem?: (item: DataSourceItem) => JSX.Element | null;
@@ -72,7 +72,7 @@ export class SelectionListModel {
     private selectedValue: SelectionListItemValue | undefined = undefined;
     private focusedValue: SelectionListItemValue | undefined = undefined;
 
-    public addDataSource({dataSource = [], dataSchema, renderItem = defaultRenderItem}: SelectionListOptionList) {
+    public addDataSource({dataSource = [], dataSchema, renderItem = defaultRenderItem}: OptionList) {
         dataSource.forEach(data => {
             const element = renderItem(dataSchema && typeof data === 'object' ? renameKeys(data, dataSchema) : data);
             if (element) {

@@ -1,36 +1,7 @@
 @namespace "SelectionList";
 
-:import {
-    -st-from: "./option.st.css";
-    -st-default: Option;
-}
-
-:import {
-    -st-from: "./divider.st.css";
-    -st-default: Divider;
-}
-
 .root {
     -st-states: focused;
     outline: none;
     display: inline-block;
 }
-
-Option {
-    width: 100%;
-    min-height: 36px;
-    padding: 5px 23px;
-    border: 1px solid transparent;
-    cursor: pointer;
-    user-select: none;
-    box-sizing: border-box;
-}
-
-Option:disabled {
-    cursor: default;
-}
-
-Divider {
-    height: 1px;
-}
-
