@@ -1,15 +1,15 @@
 import * as React from 'react';
 import {properties, stylable} from 'wix-react-tools';
 import {noop} from '../../utils';
-import {Modal, RequestCloseEvent} from '../modal';
 import {Button} from '../button';
+import {Modal} from '../modal';
 import styles from './dialog.st.css';
 
 export interface DialogProps extends React.HTMLAttributes<HTMLDivElement> {
     isOpen: boolean;
-    onCancelButton: () => void;
-    onOkButton: () => void;
-    title: string;
+    onCancel: () => void;
+    onOk: () => void;
+    title?: string;
 }
 
 @stylable(styles)
@@ -17,8 +17,8 @@ export interface DialogProps extends React.HTMLAttributes<HTMLDivElement> {
 export class Dialog extends React.PureComponent<DialogProps> {
     public static defaultProps: DialogProps = {
         isOpen: false,
-        onCancelButton: noop,
-        onOkButton: noop,
+        onCancel: noop,
+        onOk: noop,
         title: 'Dialog'
     };
 
@@ -27,18 +27,18 @@ export class Dialog extends React.PureComponent<DialogProps> {
             <Modal
                 className="root"
                 isOpen={this.props.isOpen}
-                onRequestClose={console.log}
+                onRequestClose={this.props.onCancel}
             >
-                <div role="header">
-                    <span role="title">{this.props.title}</span>
+                <div className="header" role="header">
+                    <span role="title" className="title">{this.props.title}</span>
                     <Button role="header-close-button">X</Button>
                 </div>
-                <div role="body">
+                <div className="body" role="body">
                     {this.props.children}
                 </div>
-                <div role="footer">
-                    <Button role="footer-primary-button">OK</Button>
+                <div className="footer" role="footer">
                     <Button role="footer-close-button">Cancel</Button>
+                    <Button role="footer-primary-button">OK</Button>
                 </div>
             </Modal>
         );
