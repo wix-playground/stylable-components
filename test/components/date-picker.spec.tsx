@@ -189,7 +189,7 @@ describe('The DatePicker Component', () => {
     });
 
     it('should focus automatically on the datepicker when autoFocus is provided', async () => {
-        const {driver: datePicker, waitForDom} = clientRenderer.render(<DatePicker autoFocus />)
+        const {driver: datePicker} = clientRenderer.render(<DatePicker autoFocus />)
             .withDriver(DatePickerTestDriver);
 
         await waitFor(() => expect(document.activeElement).to.equal(datePicker.input));
