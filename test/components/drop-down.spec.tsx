@@ -4,7 +4,6 @@ import {ClientRenderer, DriverBase, expect, sinon, waitFor} from 'test-drive-rea
 import {DropDownDemo} from '../../demo/components/drop-down.demo';
 import {DropDown} from '../../src';
 import {DropDownDriver} from '../../test-kit';
-import {WithTheme, WithThemeDAID} from '../utils';
 
 class DropDownDemoDriver extends DriverBase {
     public static ComponentClass = DropDownDemo;
@@ -40,21 +39,6 @@ describe('<DropDown />', () => {
         await waitForDom(() => {
             expect(dropdown.list).to.be.absent();
             expect(demo.text()).to.equal('Muffins');
-        });
-    });
-
-    it('renders to the screen', async () => {
-        const ThemedContainer = WithTheme();
-        const {select} = clientRenderer.render(<ThemedContainer />);
-        const container = select(WithThemeDAID) as HTMLDivElement;
-        const {driver: dropdown, waitForDom} = clientRenderer.render(
-            <DropDown />,
-            container
-        ).withDriver(DropDownDriver);
-
-        await waitForDom(() => {
-            expect(dropdown.root).to.be.present();
-            expect(dropdown.selection).to.equal('');
         });
     });
 
