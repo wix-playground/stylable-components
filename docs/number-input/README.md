@@ -2,7 +2,7 @@
 
 The **NumberInput** component improves upon the native `<input type="number">` by providing the ability to customize the stepper arrows design, a common React+Typescript API, and working out the kinks of native implementations.
 
-![elements](./elements.png)
+![elements](./assets/elements.png)
 
 ## Component API
 
