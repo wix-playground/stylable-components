@@ -557,19 +557,47 @@ describe('<RadioGroup />', () => {
         });
 
         it('renders any children given to the component', async () => {
-            const {select, waitForDom} = clientRenderer.render(
+            const {driver: radio, waitForDom} = clientRenderer.render(
                 <RadioButton value="">
                     <span data-automation-id="CHILD">Offspring</span>
                 </RadioButton>
-            );
-
-            const child = select('CHILD') as HTMLSpanElement;
+            ).withDriver(RadioButtonDriver);
 
             await waitForDom(() => {
-                expect(child).to.be.present();
-                expect(child).to.be.instanceOf(HTMLSpanElement);
+                expect(radio.children).to.have.length(1);
+                expect(radio.children[0]).to.be.instanceOf(HTMLSpanElement);
             });
+        });
 
+        it('gets focused style state', async () => {
+            const {driver: radio, waitForDom} = clientRenderer.render(
+                <RadioButton />
+            ).withDriver(RadioButtonDriver);
+
+            radio.focus();
+
+            await waitForDom(() => {
+                expect(radio.hasStylableState('focused')).to.equal(true);
+            });
+        });
+
+        it('accepts "autofocus" prop', async () => {
+            if (document.hasFocus()) {
+
+                const {driver: radio, waitForDom} = clientRenderer.render(
+                    <RadioButton autoFocus />
+                ).withDriver(RadioButtonDriver);
+
+                await waitForDom(() => {
+                    expect(document.activeElement).to.equal(radio.nativeElement);
+                    expect(radio.hasStylableState('focused')).to.equal(true);
+                });
+
+            } else {
+                console.warn(// tslint:disable-line no-console
+                    'RadioButton autofocus test wasn\'t run since document doesn\'t have focus'
+                 );
+            }
         });
 
         describe('Accessibility', () => {
