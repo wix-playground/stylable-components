@@ -1,0 +1,51 @@
+:import {
+	-st-from: "../../../components/checkbox/checkbox.st.css";
+	-st-default: CB;
+}
+
+:import {
+    -st-from: "../variables.st.css";
+    -st-named:  color_MainText_Background,
+                color_Default,
+                color_Disabled2,
+                color_Focus2,
+                borderDefault,
+                iconTick,
+                iconTickDisabled,
+                iconIntermediate,
+                iconIntermediateDisabled;
+}
+
+CB::box {
+    background: value(color_MainText_Background);
+    border: value(borderDefault);
+}
+
+CB:checked::box,
+CB:indeterminate::box {
+    background: value(color_Default);
+}
+
+CB:disabled::box {
+    background: value(color_Disabled2);
+}
+
+CB:focus::box {
+    outline: 4px solid value(color_Focus2);
+}
+
+CB::tickIcon {
+    background-image: value(iconTick);
+}
+
+CB::indeterminateIcon {
+    background-image: value(iconIntermediate);
+}
+
+CB:disabled::tickIcon {
+    background-image: value(iconTickDisabled);
+}
+
+CB:disabled::indeterminateIcon {
+    background-image: value(iconIntermediateDisabled);
+}

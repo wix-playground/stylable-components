@@ -1,0 +1,71 @@
+:import {
+	-st-from: "../../../components/radio-group/radio-button.st.css";
+	-st-default: RadioButton;
+}
+
+:import {
+    -st-from: '../variables.st.css';
+    -st-named:  borderDefault,
+                color_MainText_Background,
+                color_Focus2,
+                color_Active,
+                color_Disabled2,
+                color_Disabled;
+}
+
+RadioButton {
+    -st-states: disabled, focused, checked;
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+}
+
+RadioButton:disabled {
+    cursor: default;
+}
+
+RadioButton::button {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    box-sizing: border-box;
+    border: value(borderDefault);
+    background: value(color_MainText_Background);
+}
+
+RadioButton::button::after {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+RadioButton:checked:not(:disabled)::button {
+    border-color: value(color_Active);
+}
+
+RadioButton:checked:not(:disabled)::button::after {
+    background-color: value(color_Active);
+}
+
+RadioButton:disabled::button::after {
+    background-color: value(color_Disabled);
+}
+
+RadioButton:hover:not(:disabled)::button {
+    border-color: value(color_Active)
+}
+
+RadioButton:disabled::button {
+    border-color: value(color_Disabled);
+}
+
+RadioButton:disabled:not(:checked)::button::after {
+    background-color: value(color_Disabled2);
+    width: 15px;
+    height: 15px;
+}
+
+RadioButton:focused::button {
+    box-shadow: 0 0 0 2px value(color_Focus2);
+}
+

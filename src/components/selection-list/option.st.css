@@ -1,0 +1,5 @@
+@namespace "SelectionListOption";
+
+.root {
+    -st-states: selected, focused, disabled;
+}

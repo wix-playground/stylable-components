@@ -5,3 +5,4 @@ export * from './simulate-touch-event';
 export * from './skip-describe-if-touch';
 export * from './skip-it-if-touch';
 export * from './sleep';
+export * from './with-theme';

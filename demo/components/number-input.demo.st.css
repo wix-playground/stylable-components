@@ -4,7 +4,7 @@
 }
 
 :import {
-    -st-from: "../../src/style/project.st.css";
+    -st-from: "../../src/project.st.css";
     -st-named: BK3;
 }
 
@@ -12,4 +12,12 @@ NumberInput::prefix,
 NumberInput::suffix {
     padding: 6px;
     color: value(BK3);
+}
+
+NumberInput::prefix {
+	padding-right: 0;
+}
+
+NumberInput {
+	width: 192px;
 }

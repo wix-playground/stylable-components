@@ -3,7 +3,7 @@ import {ClientRenderer, DriverBase, expect, sinon, waitFor} from 'test-drive-rea
 import {RadioGroupDemo} from '../../demo/components/radio-group-demo';
 import {RadioButton, RadioGroup} from '../../src';
 import {RadioButtonDriver, RadioGroupDriver} from '../../test-kit/components/radio-group-driver';
-import {sleep} from '../utils';
+import {sleep, WithTheme, WithThemeDAID} from '../utils';
 
 class RadioGroupDemoTestDriver extends DriverBase {
     public static ComponentClass = RadioGroupDemo;
@@ -17,6 +17,14 @@ class RadioGroupDemoTestDriver extends DriverBase {
 
 describe('<RadioGroup />', () => {
     const clientRenderer = new ClientRenderer();
+    let ThemedContainer;
+    let themedContainer: HTMLDivElement;
+
+    beforeEach(() => {
+        ThemedContainer = WithTheme();
+        const {select} = clientRenderer.render(<ThemedContainer />);
+        themedContainer = select(WithThemeDAID) as HTMLDivElement;
+    });
 
     afterEach(() => {
         clientRenderer.cleanup();
@@ -45,7 +53,8 @@ describe('<RadioGroup />', () => {
             <RadioGroup>
                 <RadioButton value="Ifrit"/>
                 <RadioButton value="Titan"/>
-            </RadioGroup>
+            </RadioGroup>,
+            themedContainer
         ).withDriver(RadioGroupDriver);
 
         const button0 = group.getRadioButton(0);
@@ -99,15 +108,15 @@ describe('<RadioGroup />', () => {
                 <RadioButton value="Fafnir"/>
                 <RadioButton value="Sleipnir"/>
                 <RadioButton value="Snepnir"/>
-            </RadioGroup>
+            </RadioGroup>,
+            themedContainer
         ).withDriver(RadioGroupDriver);
-
         await waitForDom(() => {
             expect(group.getRadioButton(1).isChecked(), 'expected radio to be checked').to.equal(true);
         });
     });
 
-    it('"value" prop on the group overrides "checked"  on child', async () => {
+    it('"value" prop on the group overrides "checked" on child', async () => {
         const {driver: group, waitForDom} = clientRenderer.render(
             <RadioGroup value="Sleipnir">
                 <RadioButton value="Fafnir" checked/>
@@ -128,7 +137,8 @@ describe('<RadioGroup />', () => {
             <RadioGroup onChange={onChange}>
                 <RadioButton value="Leviathan"/>
                 <RadioButton value="Quetzalcoatl"/>
-            </RadioGroup>
+            </RadioGroup>,
+            themedContainer
         ).withDriver(RadioGroupDriver);
 
         const button1 = group.getRadioButton(1);
@@ -150,7 +160,8 @@ describe('<RadioGroup />', () => {
             <RadioGroup>
                 <RadioButton value="Garuda"/>
                 <RadioButton value="Ramuh"/>
-            </RadioGroup>
+            </RadioGroup>,
+            themedContainer
         ).withDriver(RadioGroupDriver);
 
         const button0 = group.getRadioButton(0);
@@ -173,7 +184,8 @@ describe('<RadioGroup />', () => {
             <RadioGroup>
                 <RadioButton value="Diabolos"/>
                 <RadioButton value="Bahamut"/>
-            </RadioGroup>
+            </RadioGroup>,
+            themedContainer
         ).withDriver(RadioGroupDriver);
 
         const button0 = group.getRadioButton(0);
@@ -204,7 +216,8 @@ describe('<RadioGroup />', () => {
                     <RadioButton value="Alexander"/>
                     <RadioButton value="Odin"/>
                 </RadioGroup>
-            </div>
+            </div>,
+            themedContainer
         );
 
         const group0 = new RadioGroupDriver(() => select('GROUP_0')!);
@@ -271,7 +284,8 @@ describe('<RadioGroup />', () => {
             <RadioGroup
                 value="Child1"
                 dataSource={[{value: 'Child0'}, {value: 'Child1'}, {value: 'Child2'}]}
-            />
+            />,
+            themedContainer
         ).withDriver(RadioGroupDriver);
 
         const button0 = group.getRadioButton(0);
@@ -389,7 +403,8 @@ describe('<RadioGroup />', () => {
     describe('<RadioButton />', () => {
         it('renders a radio button to the screen', async () => {
             const {driver: radio, waitForDom} = clientRenderer.render(
-                <RadioButton value="Shiva" />
+                <RadioButton value="Shiva" />,
+                themedContainer
             ).withDriver(RadioButtonDriver);
 
             await waitForDom(() => {
@@ -403,7 +418,8 @@ describe('<RadioGroup />', () => {
         it('renders the label next to the radio button (right by default)', async () => {
             const distance = 7;
             const {driver: radio, waitForDom} = clientRenderer.render(
-                <RadioButton><span style={{marginLeft: distance + 'px'}}>Omega</span></RadioButton>
+                <RadioButton><span style={{marginLeft: distance + 'px'}}>Omega</span></RadioButton>,
+                themedContainer
             ).withDriver(RadioButtonDriver);
 
             const child = radio.children[0];
@@ -443,7 +459,8 @@ describe('<RadioGroup />', () => {
         it('calls the onClick function when clicked', async () => {
             const onChange = sinon.spy();
             const {driver: radio, waitForDom} = clientRenderer.render(
-                <RadioButton value="Tonberry" onChange={onChange}/>
+                <RadioButton value="Tonberry" onChange={onChange}/>,
+                themedContainer
             ).withDriver(RadioButtonDriver);
 
             await waitForDom(() => {
