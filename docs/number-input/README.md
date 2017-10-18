@@ -4,35 +4,27 @@ The **NumberInput** component improves upon the native `<input type="number">` b
 
 ![elements](./elements.png)
 
-### Component API
+## Component API
 
-#### Props
+### Props
 
-| name         | type   | defaultValue | isRequired | description                              |
-| ------------ | ------ | ------------ | ---------- | ---------------------------------------- |
-| value        | number |              | yes        | Used to set & change the value of the input. If you bind this to a state in your parent component, you should also set the `onChange` handler, in order for the component to work. |
-| defaultValue | number |              |            | Sets the default value if the input is uncontrolled. |
-| placeholder  | string |              |            | Text to display if the value is null.     |
-| min          | number | 1            |            |                                          |
-| max          | number | 100          |            |                                          |
-| step         | number | 1            |            |                                          |
-| required     | boolean   | false        |            | Whether or not filling the value is required in a form. |
-| disabled     | boolean   | false        |            | If true, the component will not be interactable. |
-| label        | string |              |            | Text to display in accessibility mode.   |
-| name         | string |              |            | The name of the component. Behaves like the name attribute of an input element. |
-| onChange     | function   |              | yes        | Callback function that is fired when the component's value is changed and committed. Signature: `function(event: object, newValue: number):void`. event: KeyDown event targeting the slider. newValue: The new value of the slider. |
-| onInput      | function   |              |            | Callback function that is fired every time the user types a character into the input. |
-| error        | boolean   | false        |            | Sets the `:error` CSS state on the `<NumberInput/>`. |
-| rtl          | boolean   | false        |            | Makes the component RTL.                  |
-
-#### Accepted Children
-
-This component accepts children with the following `data-slot` attribute values, in order to be displayed in specific places in its layout.
-
-| data-slot | description                              | example                                  |
-| --------- | ---------------------------------------- | ---------------------------------------- |
-| prefix    | Allows you to insert a child component (or components) at the start of the input. | `<div data-slot="prefix">hello world</div>` |
-| suffix    | Allows you to insert a child component (or components) at the end of the input.<br> This is the **default data slot**. Not specifying a slot will insert the component(s) here. | `<div data-slot="suffix">hello world</div>` |
+| name         | type                             | defaultValue | isRequired | description                              |
+| ------------ | -------------------------------- | ------------ | ---------- | ---------------------------------------- |
+| value        | number                           |              |            | Used to set and change the value of the input. If you bind this to a state in your parent component, you should also set the `onChange` handler in order for the component to work.<br>If value is empty, component behaves as uncontrolled. |
+| defaultValue | number                           |              |            | Sets the default value if the input is uncontrolled. |
+| placeholder  | string                           |              |            | Text to display if the value is null.    |
+| min          | number                           | 1            |            |                                          |
+| max          | number                           | 100          |            |                                          |
+| step         | number                           | 1            |            |                                          |
+| required     | boolean                             | false        |            | Whether or not filling the value is required in a form. |
+| disabled     | boolean                             | false        |            | If true, the component will not be interactable. |
+| label        | string                           |              |            | Text to display in accessibility mode.   |
+| name         | string                           |              |            | The name of the component. Behaves like the name attribute of an input element. |
+| prefix       | node                             |              |            | Inserts a component at the start of the input. |
+| suffix       | node                             |              |            | Inserts a component at the end of the input. |
+| onChange     | function |   |   | Callback function that is fired on component blur.<br>`(event: {value: number}): void`<br>`event` KeyDown event targeting the slider.<br>`newValue` The new value of the slider. |
+| onInput      |function |   |  | Callback function that is fired on every keydown event.<br> `(event: {value: number}): void`<br>`event` KeyDown event targeting the slider.<br>`newValue` The new value of the slider. |
+| error        | boolean                        | false        |            | Sets the `:error` CSS state on the `<NumberInput>`. |
 
 ### Code Examples
 
@@ -49,14 +41,17 @@ export class ComponentsDemo extends React.Component<{}, {}>{
         super();
     }
 
-    render() {
-        return <NumberInput
-        		 value="{this.state.numberInputValue}"
-                 onChange={/* something */}
-
-               />;
+    public render() {
+    const {basicValue, sharedValue} = this.state;
+    return (
+      <NumberInput
+        value={basicValue}
+        step={1}
+        max={100}
+        onChange={this.handleBasicValueChange}
+        placeholder="How Many?"
+      />
     }
-}
 ```
 
 ##### Example 2 (with children)
@@ -72,15 +67,19 @@ export class ComponentsDemo extends React.Component<{}, {}>{
         super();
     }
 
-    render() {
-        return <NumberInput
-        		 value="{this.state.numberInputValue}"
-                 onChange={/* something */}>
-    				<span data-slot="prefix">$</span>
-        			<button data-slot="suffix">x</button>
-               </NumberInput>;
+    public render() {
+    const {basicValue, sharedValue} = this.state;
+    return (
+      <NumberInput
+        value={basicValue}
+        step={1}
+        max={100}
+        onChange={this.handleBasicValueChange}
+        placeholder="How Many?"
+        prefix={<img src="sample.svg" alt="sample svg description"></img>}
+        suffix={<span>USD</span>}
+      />
     }
-}
 ```
 
 ## Style API
@@ -89,9 +88,9 @@ export class ComponentsDemo extends React.Component<{}, {}>{
 
 | selector  | description                            | type                                     |
 | --------- | -------------------------------------- | ---------------------------------------- |
-| ::stepper | Style the stepper arrows. | Style the internal `<Stepper/>` component. This component exposes some internal styles. |
-
-> If a subcomponent is a **component**, it might have subcomponents -> then we will link here to its documentation
+| ::stepper | Style the stepper arrows. | Style the internal `<stepper/>` component. This component exposes some internal styles. |
+| ::stepper::up   | Style the stepper UP arrow.   | Style the internal `<up/>` arrow component.|
+| ::stepper::down | Style the stepper DOWN arrow. | Style the internal `<down/>` arrow component. |
 
 ### Custom CSS States (pseudo classes)
 
@@ -101,8 +100,6 @@ export class ComponentsDemo extends React.Component<{}, {}>{
 | :hover, :focus, :disabled, etc | Standard CSS pseudo classes.              |
 
 ### Style Code Examples
-
-##### Example 1
 
 ```css
 @import * from './components/slider'; /* TODO: fix the correct syntax */
