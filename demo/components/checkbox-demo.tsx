@@ -138,8 +138,6 @@ export class ErrorDemo extends React.Component<{}, {value: boolean}> {
             </div>
         );
     }
-
-    private handleChange = (e: ChangeEvent<boolean>) => { this.setState({value: e.value}); };
 }
 
 @stylable(style)
