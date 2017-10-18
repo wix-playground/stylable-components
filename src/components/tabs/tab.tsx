@@ -2,7 +2,7 @@ import * as React from 'react';
 import {properties, stylable} from 'wix-react-tools';
 
 export interface TabProps extends properties.Props {
-    value: string;
+    value?: string;
     label: React.ReactNode;
     disabled?: boolean;
 }

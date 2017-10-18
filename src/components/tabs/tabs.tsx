@@ -24,6 +24,7 @@ export class Tabs extends React.Component<TabsProps> {
             <div>
                 <SelectionList
                     className="tabList"
+                    data-automation-id="TAB_LIST"
                     value={selected}
                     onChange={this.handleChange}
                 >
@@ -37,7 +38,10 @@ export class Tabs extends React.Component<TabsProps> {
                             </Option>
                     )}
                 </SelectionList>
-                <div className="tabPanel">
+                <div
+                    className="tabPanel"
+                    data-automation-id="TAB_PANEL"
+                >
                     {children.filter(({props: {value}}) => value === selected)}
                 </div>
             </div>
