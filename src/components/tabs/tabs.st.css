@@ -1,7 +1,7 @@
 @namespace "Tabs";
 
 :import {
-    -st-from: "../../style/project.st.css";
+    -st-from: "../../project.st.css";
     -st-named: borderDefault, borderStyle, WT1, PR1, PR2, DS1;
 }
 :import {
