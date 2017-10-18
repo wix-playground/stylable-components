@@ -1,6 +1,6 @@
 import * as keycode from 'keycode';
 import * as React from 'react';
-import {ClientRenderer, DriverBase, expect, sinon} from 'test-drive-react';
+import {ClientRenderer, DriverBase, expect, sinon, waitFor} from 'test-drive-react';
 import {DatePickerDemo} from '../../demo/components/date-picker-demo';
 import {DatePicker} from '../../src';
 import {
@@ -165,6 +165,114 @@ describe('The DatePicker Component', () => {
         simulateKeyPress('left');
 
         await waitForDom(() => expect(datePicker.selectedDate).to.equal('Sun Jan 01 2017'));
+    });
+
+    it('should set the tabindex attribute', () => {
+        const {driver: datePicker, waitForDom} = clientRenderer.render(<DatePicker tabIndex={123} />)
+            .withDriver(DatePickerTestDriver);
+
+        return waitForDom(() => expect(datePicker.root).to.have.attribute('tabindex', '123'));
+    });
+
+    it('should set the required attribute', () => {
+        const {driver: datePicker, waitForDom} = clientRenderer.render(<DatePicker required />)
+            .withDriver(DatePickerTestDriver);
+
+        return waitForDom(() => expect(datePicker.input).to.have.attribute('required'));
+    });
+
+    it('should set the name attribute', () => {
+        const {driver: datePicker, waitForDom} = clientRenderer.render(<DatePicker name="test" />)
+            .withDriver(DatePickerTestDriver);
+
+        return waitForDom(() => expect(datePicker.input).to.have.attribute('name', 'test'));
+    });
+
+    it('should focus automatically on the datepicker when autoFocus is provided', async () => {
+        const {driver: datePicker, waitForDom} = clientRenderer.render(<DatePicker autoFocus />)
+            .withDriver(DatePickerTestDriver);
+
+        await waitFor(() => expect(document.activeElement).to.equal(datePicker.input));
+    });
+
+    describe('When Disabled or ReadOnly', () => {
+        it('should not show the dropdown when the icon is clicked', async () => {
+            const {driver: datePicker, waitForDom, container} = clientRenderer.render(<DatePicker disabled />)
+                .withDriver(DatePickerTestDriver);
+
+            await waitForDom(() => expect(datePicker.isOpen()).to.be.false);
+
+            datePicker.clickOnDatePicker();
+
+            await waitForDom(() => expect(datePicker.isOpen()).to.be.false);
+
+            clientRenderer.render(<DatePicker readOnly />, container);
+
+            await waitForDom(() => expect(datePicker.isOpen()).to.be.false);
+
+            datePicker.clickOnDatePicker();
+
+            await waitForDom(() => expect(datePicker.isOpen()).to.be.false);
+        });
+
+        it('should not show the dropdown when the input is clicked', async () => {
+            const {driver: datePicker, waitForDom, container} = clientRenderer.render(<DatePicker disabled />)
+                .withDriver(DatePickerTestDriver);
+
+            await waitForDom(() => expect(datePicker.isOpen()).to.be.false);
+
+            datePicker.clickOnDatePicker();
+
+            await waitForDom(() => expect(datePicker.isOpen()).to.be.false);
+
+            clientRenderer.render(<DatePicker readOnly />, container).withDriver(DatePickerTestDriver);
+
+            await waitForDom(() => expect(datePicker.isOpen()).to.be.false);
+
+            datePicker.clickOnDatePicker();
+
+            await waitForDom(() => expect(datePicker.isOpen()).to.be.false);
+        });
+
+        it('should not show the dropdown when the date picker is focused and openOnFocus is set to true', async () => {
+            const {driver: datePicker, waitForDom, container} = clientRenderer.render(
+                <DatePicker openOnFocus disabled />
+            ).withDriver(DatePickerTestDriver);
+
+            await waitForDom(() => expect(datePicker.dropDown).to.be.absent());
+
+            datePicker.focus();
+
+            await waitForDom(() => expect(datePicker.dropDown).to.be.absent());
+
+            clientRenderer.render(<DatePicker openOnFocus readOnly />, container).withDriver(DatePickerTestDriver);
+
+            await waitForDom(() => expect(datePicker.dropDown).to.be.absent());
+
+            datePicker.focus();
+
+            await waitForDom(() => expect(datePicker.dropDown).to.be.absent());
+        });
+
+        it('should not allow the input value to be changed', async () => {
+            const onChange = sinon.spy();
+            const {driver: datePicker, waitForDom, container} = clientRenderer.render(
+                <DatePicker onChange={onChange} disabled />
+            ).withDriver(DatePickerTestDriver);
+
+            datePicker.changeDate('2017/02/01');
+
+            await sleep(20);
+            expect(onChange).to.have.not.been.called;
+
+            clientRenderer.render(<DatePicker onChange={onChange} readOnly />, container)
+                .withDriver(DatePickerTestDriver);
+
+            datePicker.changeDate('2017/02/01');
+
+            await sleep(20);
+            expect(onChange).to.have.not.been.called;
+        });
     });
 
     describe('The Dropdown', () => {

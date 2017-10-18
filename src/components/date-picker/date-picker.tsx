@@ -11,11 +11,9 @@ import styles from './date-picker.st.css';
 
 const invalidDate: string = 'Invalid Date';
 
-export interface DatePickerProps extends FormInputProps<Date>, properties.Props {
+export interface DatePickerProps extends FormInputProps<Date, string>, properties.Props {
     placeholder?: string;
     openOnFocus?: boolean;
-    disabled?: boolean;
-    readOnly?: boolean;
     showDropdownOnInit?: boolean;
     startingDay?: number;
     calendarIcon?: React.ComponentType;
@@ -36,6 +34,7 @@ export class DatePicker extends React.PureComponent<DatePickerProps, DatePickerS
     public static defaultProps: Partial<DatePickerProps> = {
         openOnFocus: false,
         onChange: noop,
+        onInput: noop,
         calendarIcon: CalendarIcon
     };
 
@@ -54,6 +53,7 @@ export class DatePicker extends React.PureComponent<DatePickerProps, DatePickerS
             <div
                 data-automation-id="DATE_PICKER_ROOT"
                 ref={dropdownRef => this.setState({dropdownRef})}
+                tabIndex={this.props.tabIndex}
             >
                 <Input
                     className="input"
@@ -64,6 +64,9 @@ export class DatePicker extends React.PureComponent<DatePickerProps, DatePickerS
                     onChange={this.onInputChange}
                     value={this.state.inputValue}
                     placeholder={this.props.placeholder}
+                    autoFocus={this.props.autoFocus}
+                    name={this.props.name}
+                    required={this.props.required}
                     type="text"
                     data-automation-id="DATE_PICKER_INPUT"
                 />
@@ -87,27 +90,31 @@ export class DatePicker extends React.PureComponent<DatePickerProps, DatePickerS
 
     // Called with possibly invalid string from the input
     private onUserInput = (input: string): void => {
-        if (this.isDateValid(input)) {
-            const updatedDate = input ? new Date(input) : new Date();
-            this.setState({inputValue: updatedDate.toDateString()});
+        if (!(this.props.disabled || this.props.readOnly)) {
+            if (this.isDateValid(input)) {
+                const updatedDate = input ? new Date(input) : new Date();
+                this.setState({inputValue: updatedDate.toDateString()});
 
-            this.props.onChange!({value: updatedDate});
-        } else {
-            this.setState({inputValue: invalidDate});
+                this.props.onChange!({value: updatedDate});
+            } else {
+                this.setState({inputValue: invalidDate});
+            }
         }
     }
 
     // Should only be called with valid date from the dropdown
     private onCalendarInput = (input: Date): void => {
-        this.setState({
-            inputValue: input.toDateString() ,
-            isDropdownVisible: false,
-            highlightSelectedDate: true,
-            highlightFocusedDate: false,
-            dropdownDate: input
-        });
+        if (!(this.props.disabled || this.props.readOnly)) {
+            this.setState({
+                inputValue: input.toDateString() ,
+                isDropdownVisible: false,
+                highlightSelectedDate: true,
+                highlightFocusedDate: false,
+                dropdownDate: input
+            });
 
-        this.props.onChange!({value: input});
+            this.props.onChange!({value: input});
+        }
     }
 
     private updateDropdownDate = (updatedDate: Date): void => {
@@ -125,11 +132,12 @@ export class DatePicker extends React.PureComponent<DatePickerProps, DatePickerS
 
     private onInputChange: React.EventHandler<React.SyntheticEvent<HTMLInputElement>> = (event): void => {
         const eventTarget = event.target as HTMLInputElement;
+        this.props.onInput!({value: eventTarget.value});
         this.setState({inputValue: eventTarget.value});
     }
 
     private onFocus: React.EventHandler<React.SyntheticEvent<HTMLInputElement>> = (): void => {
-        if (this.props.openOnFocus) {
+        if (this.props.openOnFocus && !(this.props.disabled || this.props.readOnly)) {
             this.setState({isDropdownVisible: true});
         }
     }
