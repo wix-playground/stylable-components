@@ -1,0 +1,10 @@
+
+:import {
+	-st-from: "../../../components/tabs/tabs.st.css";
+	-st-default: Tabs;
+}
+
+:import {
+	-st-from: "../../../components/selection-list/selection-list.st.css";
+	-st-default: SelectionList;
+}

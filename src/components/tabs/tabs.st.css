@@ -2,54 +2,72 @@
 
 :import {
     -st-from: "../../project.st.css";
-    -st-named: borderDefault, borderStyle, WT1, PR1, PR2, DS1;
+    -st-named: borderDefault,
+               borderStyle,
+               color_Focus,
+               color_Disabled,
+               color_MainText_Background;
 }
 :import {
     -st-from: "../selection-list/selection-list.st.css";
     -st-default: SelectionList;
 }
+:import {
+    -st-from: "../selection-list/option.st.css";
+    -st-default: Option;
+}
 
 .tabList {
     -st-extends: SelectionList;
-    display: flex;
-    overflow-x: auto;
-    overflow-y: hidden;
-    width: 100%;
-    border: none;
-    border-bottom: value(borderDefault);
-    background: value(WT1);
 }
 
-.tabList::item {
+.tabList,
+.tabList:focused {
+    display: flex;
+
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    width: 100%;
+
+    border: none;
+    border-bottom: value(borderDefault);
+
+    background: value(color_MainText_Background);
+}
+
+.tabList Option {
     width: auto;
     flex-shrink: 0;
     padding: 18px;
-    margin-bottom: -1px;
     border: none;
     background: transparent;
 }
 
+.tabList Option:selected:hover,
+.tabList Option:selected {
+    color: value(color_Focus);
 
-.tabList::item:selected:hover,
-.tabList::item:selected {
-    color: value(PR2);
     padding-bottom: 16px;
+    margin-bottom: 0px;
+
     border: none;
-    border-bottom: value(borderStyle) 2px value(PR1);
+    border-bottom: value(borderStyle) 2px value(color_Focus);
+
     background: transparent;
 }
 
-.tabList::item:hover,
-.tabList::item:focused {
-    color: value(PR2);
+.tabList Option:hover,
+.tabList Option:focused {
+    color: value(color_Focus);
 }
 
-.tabList::item:disabled {
-    color: value(DS1);
-    cursor: disabled;
+.tabList Option:disabled {
+    color: value(color_Disabled);
+    cursor: not-allowed;
 }
 
 .tabPanel {
     padding: 18px;
-    background: value(WT1)
+    background: value(color_MainText_Background)
 }
