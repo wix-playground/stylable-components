@@ -21,7 +21,7 @@ export class RadioButtonDriver extends DriverBase {
     }
 
     public isChecked(): boolean {
-        return !!this.select('CHECKED_RADIO_ICON');
+        return this.nativeElement.checked;
     }
 
     public isDisabled(): boolean {
@@ -47,7 +47,7 @@ export class RadioButtonDriver extends DriverBase {
     }
 
     public get icon(): SVGElement {
-        return this.isChecked() ? this.select('CHECKED_RADIO_ICON') : this.select('UNCHECKED_RADIO_ICON');
+        return this.select('ICON');
     }
 
     public click(): void {

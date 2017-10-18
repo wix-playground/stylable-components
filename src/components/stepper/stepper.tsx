@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {properties, stylable} from 'wix-react-tools';
-import buttonStyles from '../button/button.st.css';
 import {GlobalEvent} from '../global-event';
 import styles from './stepper.st.css';
 
@@ -65,7 +64,7 @@ export class Stepper extends React.Component<StepperProps, StepperState> {
                     type="button"
                     tabIndex={-1}
                     data-automation-id="STEPPER_INCREMENT"
-                    className={`${buttonStyles.root} control up`}
+                    className="up"
                     onClick={this.handlerClickUp}
                     disabled={disableUp}
                 />
@@ -73,7 +72,7 @@ export class Stepper extends React.Component<StepperProps, StepperState> {
                     type="button"
                     tabIndex={-1}
                     data-automation-id="STEPPER_DECREMENT"
-                    className={`${buttonStyles.root} control down`}
+                    className="down"
                     onClick={this.handlerClickDown}
                     disabled={disableDown}
                 />

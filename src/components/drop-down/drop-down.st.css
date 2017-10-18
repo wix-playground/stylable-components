@@ -1,41 +1,77 @@
+@namespace "DropDown";
+
 :import {
-    -st-from: "../selection-list/selection-list.st.css";
-    -st-default: SelectionList;
+    -st-from: "../../project.st.css";
+    -st-named:
+               iconChevronDownBK3,
+               iconChevronDownDS1,
+               iconChevronDownPR3;
 }
 
+/*
+    FOCUS doesn't work.
+    TODO: Component needs to handle focus (pass it to the root element) in code
+*/
 .root {
-    width: auto;
-    font-family: Arial, sans-serif;
-    font-size: 16px;
-    display: inline-block;
-    min-width: 150px;
+    box-sizing: inherit;
+    position: relative;
+    display: inline-flex;
+
     outline: none;
 }
 
-.dropdownInput {
-    border: 1px solid #adbac5;
-    height: 36px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.dropdownInput .caret {
-    margin-right: 5px;
-    vertical-align: middle;
-}
-
-.dropdownInput .label {
-    margin-left: 5px;
-}
-
-.dropdownInput:hover {
+.root:hover {
     cursor: pointer;
-    border: 1px solid #5cb4ff;
 }
 
-.dropdownList {
-    -st-extends: SelectionList;
+.label {}
+
+.input:hover {
+    cursor: pointer;
+}
+
+.list {
     width: 100%;
+    /*
+        Styling list is here (not at the theme)
+        because it is rendered in <Portal/>
+        which isn't able to get theme yet.
+    */
     background-color: white;
 }
+
+.input { /* This element is not actually an input */
+    /* making sure the input shrinks properly */
+    flex: 1;
+    min-width: 1px;
+    text-overflow: ellipsis;
+
+    /* putting the label inside in the correct place */
+    display:inline-flex;
+    align-items: center;
+}
+
+.caret {
+
+    margin: 0;
+    padding: 0;
+    border: 0;
+
+    outline: none;
+
+    background: center no-repeat transparent;
+    background-origin:content-box;
+    cursor: pointer;
+    height: auto;
+    background-image: value(iconChevronDownBK3);
+}
+
+.caret:hover,
+.caret:focus {
+    background-image: value(iconChevronDownPR3);
+}
+
+.caret:disabled {
+    background-image: value(iconChevronDownDS1);
+}
+
