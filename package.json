@@ -45,7 +45,7 @@
     "mocha-loader": "^1.1.1",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
-    "stylable": "^4.0.18",
+    "stylable": "^4.0.21",
     "stylable-integration": "^5.1.7",
     "test-drive-react": "^0.7.0",
     "ts-loader": "^2.3.7",
