@@ -45,9 +45,23 @@ export class Popup extends React.Component<PopupCompProps> {
         return null;
     }
 
+    public componentDidMount() {
+        window.addEventListener('scroll', this.test, true);
+    }
+
+    public componentWillUnmount() {
+        window.removeEventListener('scroll', this.test);
+    }
+
     public getPortal(): Portal | null {
         return this.portal;
     }
+
+    private test = (e: any) => {
+        if (e.target.contains(this.props.anchor)) {
+            this.forceUpdate();
+        }
+    };
 
     private createStyle(): React.CSSProperties {
         if (!this.props.anchor) {

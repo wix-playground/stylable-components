@@ -30,8 +30,8 @@ describe('<Popup />', () => {
         anchor.style.height = '150px';
         anchor.style.border = '1px solid blue';
     });
-    // afterEach(() => {clientRenderer.cleanup(); });
-    // after(() => {document.body.removeChild(anchor); });
+    afterEach(() => {clientRenderer.cleanup(); });
+    after(() => {document.body.removeChild(anchor); });
 
     describe('The popup user', () => {
         it('clicks on the parent and the popup opens and closes after another click', async () => {
