@@ -256,7 +256,7 @@ describe('The DatePicker Component', () => {
 
         it('should not allow the input value to be changed', async () => {
             const onChange = sinon.spy();
-            const {driver: datePicker, waitForDom, container} = clientRenderer.render(
+            const {driver: datePicker, container} = clientRenderer.render(
                 <DatePicker onChange={onChange} disabled />
             ).withDriver(DatePickerTestDriver);
 
