@@ -30,8 +30,8 @@ describe('<Popup />', () => {
         anchor.style.height = '150px';
         anchor.style.border = '1px solid blue';
     });
-    afterEach(() => {clientRenderer.cleanup(); });
-    after(() => {document.body.removeChild(anchor); });
+    // afterEach(() => {clientRenderer.cleanup(); });
+    // after(() => {document.body.removeChild(anchor); });
 
     describe('The popup user', () => {
         it('clicks on the parent and the popup opens and closes after another click', async () => {
@@ -154,6 +154,35 @@ describe('<Popup />', () => {
 
             return waitForDom(() => {
                 expect([div, popup.root]).to.be.inVerticalSequence();
+            });
+        });
+
+        it('listens to internal scrolling and adjusts the popup location accordingly', async () => {
+            let anchorDiv: HTMLDivElement;
+            let scrollDiv: HTMLDivElement;
+            const {waitForDom} = clientRenderer.render(
+                <div>
+                    <div ref={(elem: HTMLDivElement) => scrollDiv = elem} style={{height: '100px', overflow: 'scroll'}}>
+                        <div style={{height: '300px'}}>Filler</div>
+                        <div ref={(elem: HTMLDivElement) => anchorDiv = elem}>Anchor</div>
+                    </div>
+                </div>
+            );
+
+            await waitForDom(() => expect(anchorDiv).to.be.present());
+
+            const {driver: popup} = clientRenderer.render(
+                <Popup
+                    anchor={anchorDiv!}
+                    open
+                >
+                    <span data-automation-id="SPAN">Popup Body</span>
+                </Popup>).withDriver(PopupTestDriver);
+
+            scrollDiv!.scrollTop = 100;
+
+            return waitForDom(() => {
+                expect([anchorDiv, popup.root]).to.be.inVerticalSequence();
             });
         });
     });
