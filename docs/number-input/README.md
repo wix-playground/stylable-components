@@ -1,5 +1,7 @@
 # Number Input
 
+**NumberInput** allows the user to enter a number within a certain range.
+
 The **NumberInput** component improves upon the native `<input type="number">` by providing the ability to customize the stepper arrows design, a common React+Typescript API, and working out the kinks of native implementations.
 
 ![elements](./assets/elements.png)
