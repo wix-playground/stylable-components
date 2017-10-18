@@ -6,7 +6,6 @@ import {FormInputProps} from '../../types/forms';
 import {noop} from '../../utils/noop';
 import {Popup} from '../popup/';
 import {SelectionList, SelectionListOptionList} from '../selection-list';
-import {CaretDown} from './drop-down-icons';
 import style from './drop-down.st.css';
 
 const KeyCodes: any = {
@@ -38,7 +37,6 @@ export class DropDown extends React.PureComponent<DropDownProps, DropDownState> 
         children: [],
         onChange: noop,
         tabIndex: 0,
-        // toggleIcon: <CaretDown className="caret" data-automation-id="ICON" />,
         disabled: false,
         onOpenStateChange: noop
     };

@@ -14,6 +14,7 @@
     PR1: #257ade;
     PR2: #4a90e2;
     PR3: #5cb4ff;
+    PR3-50: rgba(92, 180, 255, 0.5);
     PR4: #edf7ff;
     WT1: #ffffff;
 
@@ -51,6 +52,7 @@
     color_Hover2: value(PR4);
     color_Active: value(B3);
     color_Focus: value(B4);
+    color_Focus2: value(PR3-50);
     color_Disabled: value(B5);
     color_Disabled2: value(DS2);
     color_Keyboard_Focused: value(M4);

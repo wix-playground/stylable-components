@@ -7,7 +7,7 @@
     -st-from: '../variables.st.css';
     -st-named:  borderDefault,
                 color_MainText_Background,
-                color_Outline,
+                color_Focus2,
                 color_Active,
                 color_Disabled2,
                 color_Disabled;
@@ -66,6 +66,6 @@ RadioButton:disabled:not(:checked)::button::after {
 }
 
 RadioButton:focused::button {
-    box-shadow: 0 0 0 2px value(color_Outline);
+    box-shadow: 0 0 0 2px value(color_Focus2);
 }
 

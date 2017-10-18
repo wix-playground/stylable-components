@@ -3,8 +3,10 @@ import * as React from 'react';
 import {AutoCompleteDemo} from './components/auto-complete.demo';
 import {CheckBoxDemo} from './components/checkbox-demo';
 import {DatePickerDemo} from './components/date-picker-demo';
+import {DialogDemo} from './components/dialog-demo';
 import {DropDownDemo} from './components/drop-down.demo';
 import {ImageDemo} from './components/image-demo';
+import {LoaderDemo} from './components/loader-demo';
 import {ModalDemo} from './components/modal-demo';
 import {NumberInputDemo} from './components/number-input.demo';
 import {PopupDemo} from './components/popup-demo';
@@ -67,6 +69,11 @@ export class ComponentsDemo extends React.Component {
                 <div>
                     <h2>Radio Group</h2>
                     <RadioGroupDemo />
+                </div>
+                <hr />
+                <div>
+                    <h2>Loader</h2>
+                    <LoaderDemo/>
                 </div>
                 <hr />
                 <div>
@@ -144,7 +151,13 @@ export class ComponentsDemo extends React.Component {
                                     <Button className="btnSecondary" disabled>Disabled</Button>
                                 </td>
                                 <td>
-                                    <Button className="btnSecondary" href="http://www.wix.com" target="_blank">Link</Button>
+                                    <Button
+                                        className="btnSecondary"
+                                        href="http://www.wix.com"
+                                        target="_blank"
+                                    >
+                                        Link
+                                    </Button>
                                 </td>
                             </tr>
                             <tr>
@@ -167,7 +180,7 @@ export class ComponentsDemo extends React.Component {
                                     <Button className="btnWhite" href="http://www.wix.com" target="_blank">Link</Button>
                                 </td>
                             </tr>
-                            <tr style={{backgroundColor:'#162d3d', border: 'none'}}>
+                            <tr style={{backgroundColor: '#162d3d', border: 'none'}}>
                                 <td>
                                     <Button className="btnWhiteSecondary btnLarge">Large</Button>
                                 </td>
@@ -184,7 +197,13 @@ export class ComponentsDemo extends React.Component {
                                     <Button className="btnWhiteSecondary" disabled>Disabled</Button>
                                 </td>
                                 <td>
-                                    <Button className="btnWhiteSecondary" href="http://www.wix.com" target="_blank">Link</Button>
+                                    <Button
+                                        className="btnWhiteSecondary"
+                                        href="http://www.wix.com"
+                                        target="_blank"
+                                    >
+                                        Link
+                                    </Button>
                                 </td>
                             </tr>
                             <tr>
@@ -224,7 +243,13 @@ export class ComponentsDemo extends React.Component {
                                     <Button className="btnErrorSecondary" disabled>Disabled</Button>
                                 </td>
                                 <td>
-                                    <Button className="btnErrorSecondary" href="http://www.wix.com" target="_blank">Link</Button>
+                                    <Button
+                                        className="btnErrorSecondary"
+                                        href="http://www.wix.com"
+                                        target="_blank"
+                                    >
+                                        Link
+                                    </Button>
                                 </td>
                             </tr>
                             <tr>
@@ -244,7 +269,13 @@ export class ComponentsDemo extends React.Component {
                                     <Button className="btnPremium" disabled>Disabled</Button>
                                 </td>
                                 <td>
-                                    <Button className="btnPremium" href="http://www.wix.com" target="_blank">Link</Button>
+                                    <Button
+                                        className="btnPremium"
+                                        href="http://www.wix.com"
+                                        target="_blank"
+                                    >
+                                        Link
+                                    </Button>
                                 </td>
                             </tr>
                             <tr>
@@ -264,7 +295,13 @@ export class ComponentsDemo extends React.Component {
                                     <Button className="btnPremiumSecondary" disabled>Disabled</Button>
                                 </td>
                                 <td>
-                                    <Button className="btnPremiumSecondary" href="http://www.wix.com" target="_blank">Link</Button>
+                                    <Button
+                                        className="btnPremiumSecondary"
+                                        href="http://www.wix.com"
+                                        target="_blank"
+                                    >
+                                        Link
+                                    </Button>
                                 </td>
                             </tr>
                             <tr>
@@ -284,7 +321,13 @@ export class ComponentsDemo extends React.Component {
                                     <Button className="btnTransparent" disabled>Disabled</Button>
                                 </td>
                                 <td>
-                                    <Button className="btnTransparent" href="http://www.wix.com" target="_blank">Link</Button>
+                                    <Button
+                                        className="btnTransparent"
+                                        href="http://www.wix.com"
+                                        target="_blank"
+                                    >
+                                        Link
+                                    </Button>
                                 </td>
                             </tr>
 
@@ -337,6 +380,11 @@ export class ComponentsDemo extends React.Component {
                 <div>
                     <h2>Modal</h2>
                     <ModalDemo />
+                </div>
+                <hr />
+                <div>
+                    <h2>Dialog</h2>
+                    <DialogDemo />
                 </div>
             </div>
         );

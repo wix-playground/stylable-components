@@ -8,7 +8,7 @@
     -st-named:  color_MainText_Background,
                 color_Default,
                 color_Disabled2,
-                color_Outline,
+                color_Focus2,
                 borderDefault,
                 iconTick,
                 iconTickDisabled,
@@ -31,7 +31,7 @@ CB:disabled::box {
 }
 
 CB:focus::box {
-    outline: 4px solid value(color_Outline);
+    outline: 4px solid value(color_Focus2);
 }
 
 CB::tickIcon {

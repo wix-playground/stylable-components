@@ -39,8 +39,8 @@
 :import {
     -st-theme: true;
     -st-from: "./components/button.st.css";
-    -st-named:	btnLarge, btnSmall, btnTiny, btnSecondary, 
-    			btnWhite, btnWhiteSecondary, 
+    -st-named:	btnLarge, btnSmall, btnTiny, btnSecondary,
+    			btnWhite, btnWhiteSecondary,
     			btnError, btnErrorSecondary,
     			btnPremium, btnPremiumSecondary,
     			btnTransparent;
@@ -51,6 +51,15 @@
     -st-from: "./components/checkbox.st.css";
 }
 
+:import {
+    -st-theme: true;
+    -st-from: "./components/radio-group.st.css";
+}
+
+:import {
+    -st-theme: true;
+    -st-from: "./components/radio-button.st.css";
+}
 
 /* old content */
 
