@@ -81,6 +81,8 @@ export class SelectionList extends React.Component<Props, State> {
 
     private handleFocus: React.FocusEventHandler<HTMLElement> = () => {
         const nav = this.state.nav;
+        // mouseDown fires before focus, so we may already have a focused item by now, in which case the focus
+        // shouldn't move to the selected item.
         if (nav.focusedIndex === -1) {
             nav.focusSelected();
         }

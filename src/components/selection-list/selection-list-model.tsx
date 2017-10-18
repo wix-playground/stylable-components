@@ -4,7 +4,7 @@ import {clamp} from '../../utils/clamp';
 import {divider, Divider} from './divider';
 import {Option} from './option';
 
-export type SelectionListItemValue = string;
+export type SelectionListItemValue = any;
 
 export interface SelectionListItem {
     item: DataSourceItem | React.ReactChild;
@@ -111,13 +111,15 @@ class SelectionListItemBasedOnChild implements SelectionListItem {
     public label?: string;
 
     constructor(public item: React.ReactChild) {
-        // We have no way of knowing if the child component supports selected and focused props. Let's assume that it
-        // supports them if it has the value attribute, and otherwise treat it as a divider.
+        // There's no way for us to know if the component accepts selected and focused prop. Let's assume that if it
+        // has the value attribute then it does, otherwise let's treat it as a divider.
         if (typeof item === 'object' && item.props.value !== undefined) {
             this.isOption = true;
             this.value = item.props.value;
             this.disabled = Boolean(item.props.disabled);
-            this.label = item.props.label || '';
+            this.label = (item.props.label === undefined) ?
+                (typeof item.props.children === 'string' ? item.props.children : '') :
+                item.props.label;
             this.selectable = !this.disabled;
         }
     }

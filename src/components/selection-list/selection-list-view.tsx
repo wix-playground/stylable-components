@@ -83,6 +83,8 @@ export class SelectionListView extends React.Component<ViewProps> {
         );
     }
 
+    // The id attribute serves dual purpose: it's used for accessibility in combination with aria-activedescendant,
+    // and for finding an item corresponding to the DOM node on click or touch.
     protected itemId(index: number): string {
         return globalId.getRootId(this) + '-' + index;
     }
@@ -103,6 +105,8 @@ export class SelectionListView extends React.Component<ViewProps> {
         const index = this.itemIndexFromElement(event.target as Element);
         const item = index > -1 ? this.props.items![index] : null;
         if (item && item.disabled) {
+            // Prevent the component from gaining focus when a disabled item is clicked.
+            // This replicates the native <select multiple /> behaviour.
             event.preventDefault();
         }
         this.props.onMouseDown!(event, item && item.selectable ? index : -1);

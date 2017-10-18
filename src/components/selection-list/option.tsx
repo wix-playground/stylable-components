@@ -9,6 +9,7 @@ export interface OptionProps {
     focused?: boolean;
     id?: string;
     selected?: boolean;
+    // The value is not used by the option component, it only exists to provide the option's value to the list.
     value?: SelectionListItemValue;
 }
 
