@@ -1,0 +1,51 @@
+:import {
+	-st-from: "../../../components/number-input/number-input.st.css";
+	-st-default: NumberInput;
+}
+
+:import {
+  -st-from: "../variables.st.css";
+  /* import list is long because -st-mixin currently requires 
+     importing all the variables that the mixed in class uses */
+  -st-named:
+          inputStyle,
+          inputWidth,
+          inputHeight,
+          inputPadding,
+
+          fontStyle,
+          textColor,
+          textColorDisabled,
+          placeholderColor,
+
+          inputBackgroundColor,
+          inputBackgroundColorHover,
+          inputBackgroundColorDisabled,
+
+          borderStyle,
+          borderRadius,
+          borderColorHover,
+          borderColorFocus,
+          borderColorDisabled,
+          borderColorError;
+}
+
+NumberInput {
+  -st-mixin: inputStyle;
+}
+
+NumberInput::nativeInput {
+  padding: value(inputPadding);
+  padding-right: 0;
+}
+
+
+NumberInput::nativeInput::placeholder {
+  font: value(fontStyle);
+  color: value(placeholderColor);
+}
+
+
+NumberInput::nativeInput:disabled::placeholder {
+  color: value(textColorDisabled);
+}

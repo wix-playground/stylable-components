@@ -1,5 +1,5 @@
 :import{
-    -st-from: "../../style/project.st.css";
+    -st-from: "../../project.st.css";
     -st-named: color_Keyboard_Focused, color_Active;
 }
 
@@ -9,19 +9,6 @@
     padding: 5px 7px;
     border: 1px solid transparent;
     list-style: none;
-}
-
-.item:hover {
-    background-color: value(color_Keyboard_Focused);
-}
-
-.item:focused {
-    border: 1px solid value(color_Active);
-}
-
-.item:selected {
-    background-color: value(color_Active);
-    color: white;
 }
 
 .nestedTree {

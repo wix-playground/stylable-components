@@ -26,11 +26,19 @@ export class SelectionListTestDriver extends DriverBase {
         simulate.click(element);
     }
 
-    public elementHasStylableState(element: Element, stateName: string): boolean {
-        return elementHasStylableState(element, listBaseStyle, stateName);
+    public elementHasStylableState(
+        element: Element,
+        stateName: string,
+        style = listBaseStyle
+    ): boolean {
+        return elementHasStylableState(element, style, stateName);
     }
 
-    public elementHasStylableClassName(element: Element, className: string): boolean {
-        return elementHasStylableClassName(element, listBaseStyle, className);
+    public elementHasStylableClassName(
+        element: Element,
+        className: string,
+        style = listBaseStyle
+    ): boolean {
+        return elementHasStylableClassName(element, style, className);
     }
 }
