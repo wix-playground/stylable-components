@@ -327,6 +327,16 @@ describe('<Checkbox/>', () => {
             });
         });
 
+        it('gets disabled style state', async () => {
+            const {driver: checkbox, waitForDom} = clientRenderer.render(
+                <CheckBox disabled />
+            ).withDriver(CheckBoxTestDriver);
+
+            await waitForDom(() => {
+                expect(checkbox.elementHasStylableState('disabled')).to.equal(true);
+            });
+        });
+
         it('displays indeterminate icon', async () => {
             const {driver: checkbox, waitForDom} = clientRenderer.render(
                 <CheckBox disabled value={true} indeterminate/>
@@ -361,6 +371,16 @@ describe('<Checkbox/>', () => {
 
             await waitForDom(() => {
                 expect(checkbox.isChecked()).to.equal(true);
+            });
+        });
+
+        it('gets readOnly style state', async () => {
+            const {driver: checkbox, waitForDom} = clientRenderer.render(
+                <CheckBox readOnly/>
+            ).withDriver(CheckBoxTestDriver);
+
+            await waitForDom(() => {
+                expect(checkbox.elementHasStylableState('readonly')).to.equal(true);
             });
         });
     });
@@ -450,6 +470,16 @@ describe('<Checkbox/>', () => {
             checkbox.click();
             await sleep(10);
             expect(onChange).to.not.have.been.called;
+        });
+
+        it('gets indeterminate style state', async () => {
+            const {driver: checkbox, waitForDom} = clientRenderer.render(
+                <CheckBox indeterminate/>
+            ).withDriver(CheckBoxTestDriver);
+
+            await waitForDom(() => {
+                expect(checkbox.elementHasStylableState('indeterminate')).to.equal(true);
+            });
         });
     });
 });
