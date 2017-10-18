@@ -55,7 +55,14 @@ function defaultRenderItem(item: DataSourceItemDefaultFormat): JSX.Element | nul
     } else if (item.hidden) {
         return null;
     }
-    return <SelectionListOption value={item.value} disabled={item.disabled}>{item.label}</SelectionListOption>;
+    return (
+        <SelectionListOption
+            value={item.value}
+            disabled={item.disabled}
+        >
+            {item.label}
+        </SelectionListOption>
+    );
 }
 
 export class SelectionListModel {

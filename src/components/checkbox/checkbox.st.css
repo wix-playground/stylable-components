@@ -1,62 +1,35 @@
 @namespace "CheckBox";
 
 .root {
-    -st-states: checked, disabled, indeterminate, readonly, focus;
+    -st-states: checked, disabled, indeterminate, readonly, focus, error;
     display: inline-block;
     position: relative;
     cursor: pointer;
 }
 
-.boxIcon {
+.box {
+    display: inline-block;
+    position: relative;
     height: 1rem;
     width: 1rem;
-    fill: none;
-    stroke: #D1D1D1;
 }
 
-.root:checked .boxIcon, .root:indeterminate .boxIcon{
-    fill: #4A90E2;
+.icon {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background: no-repeat 0 0 / 100%;
 }
 
-.root:disabled .boxIcon {
-    fill: #f1f1f1;
-}
+.tickIcon {}
+.indeterminateIcon {}
+.root:disabled .tickIcon {}
+.root:disabled .indeterminateIcon {}
 
-.root:focus .boxIcon {
-    outline: 4px solid #add9ff;
-}
-
-.tickIcon {
-    height: 1rem;
-    width: 1rem;
-    position: relative;
-    margin-left: -1rem;
-    stroke: #FFF;
-    stroke-linecap: square;
-    stroke-width: 1.5;
-}
-
-.root:disabled .tickIcon, .root:disabled .indeterminateIcon {
-    stroke: #c8c8c8;
-}
-
-.indeterminateIcon {
-    height: 1em;
-    width: 1em;
-    position: relative;
-    margin-left: -1rem;
-    stroke: #FFF;
-    stroke-width: 1.5;
-}
 
 .nativeCheckbox {
-    position: absolute;
-    overflow: hidden;
-    height: 1px;
-    width: 1px;
-    margin: -1px;
-    padding: 0;
-    border: 0;
+    position: fixed;
+    top: -100%;
     opacity: 0;
 }
 

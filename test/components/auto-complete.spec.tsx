@@ -2,6 +2,7 @@ import * as React from 'react';
 import {ClientRenderer, expect, selectDom, simulate, sinon, trigger, waitForDom as gWaitForDom} from 'test-drive-react';
 import {AutoCompleteDemo} from '../../demo/components/auto-complete.demo';
 import {AutoComplete} from '../../src';
+import {WithTheme} from '../utils';
 
 const autoComp = 'AUTO_COMPLETE';
 const autoCompDemo = autoComp + '_DEMO';
@@ -110,20 +111,23 @@ describe('<AutoComplete />', () => {
     });
 
     it('places the caret inside the input and centers it', async () => {
-        const {select, waitForDom} = clientRenderer.render(<AutoComplete/>);
+        const ThemedAutoComplete = WithTheme(<AutoComplete />);
+        const {select, waitForDom} = clientRenderer.render(<ThemedAutoComplete/>);
 
         await waitForDom(() => {
+            const autocomplete = select(autoComp)!;
             const input = select(autoComp, autoCompInput)!;
             const caret = select(autoComp, autoComp + '_CARET')!;
 
-            expect(caret).to.be.insideOf(input);
+            expect(caret).to.be.insideOf(autocomplete);
             expect([input, caret]).to.be.verticallyAligned('center');
         });
     });
 
     it('calls the onOpenStateChange event when clicking on the caret', async () => {
         const onOpenStateChange = sinon.spy();
-        const {select, waitForDom} = clientRenderer.render(<AutoComplete onOpenStateChange={onOpenStateChange}/>);
+        const ThemedAutoComplete = WithTheme(<AutoComplete onOpenStateChange={onOpenStateChange} />);
+        const {select, waitForDom} = clientRenderer.render(<ThemedAutoComplete />);
 
         await waitForDom(() => expect(select(autoComp, autoComp + '_CARET')).to.be.present());
         simulate.click(select(autoComp, autoComp + '_CARET'));
