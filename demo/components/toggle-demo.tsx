@@ -54,7 +54,7 @@ export class ToggleDemo extends React.Component<{}, ToggleDemoState> {
                             <Toggle value={true}/>
                         </td>
                         <td>
-                            <Toggle disabled/>
+                            <Toggle className="toggleSmall" disabled/>
                         </td>
                         <td>
                             <Toggle disabled value={true}/>

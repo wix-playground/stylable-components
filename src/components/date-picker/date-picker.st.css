@@ -1,7 +1,7 @@
 @namespace "DatePicker";
 
 :import {
-    -st-from: "../../style/project.st.css";
+    -st-from: "../../project.st.css";
     -st-named:  color_Default,
                 color_MainText_Background,
                 color_MainText,
@@ -12,7 +12,6 @@
                 fontFamily,
                 inputHeight,
                 inputWidth,
-                borderDefault,
                 borderHover;
 }
 
@@ -41,15 +40,13 @@
     cursor: pointer;
     width: value(iconWidth);
     height: value(inputHeight);
-    fill: #3899EC;
-    border-left: value(borderDefault);
 }
 
-.icon:hover {
-    background-color: rgb(240, 240, 240);
-    outline: value(borderDefault);
-    outline-offset: -1px;
-}
+/*
+    Styling dropdown is here (not at the theme)
+    because it is rendered in <Portal/>
+    which isn't able to get theme yet.
+*/
 
 /* The dropdown arrow extends from the input and into the calendar view */
 .dropdownArrowWrapper {

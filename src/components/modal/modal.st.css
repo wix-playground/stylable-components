@@ -1,5 +1,12 @@
 @namespace "Modal";
 
+
+/*
+    Styling colors are here (not at the theme)
+    because it is rendered in <Portal/>
+    which isn't able to get theme yet.
+*/
+
 .backdrop {
     width: 100vw;
     height: 100vh;

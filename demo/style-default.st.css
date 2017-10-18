@@ -1,0 +1,48 @@
+@namespace "demos";
+:import {
+  -st-theme: true;
+  -st-from: "../src/themes/default/theme.st.css";
+  -st-named:  toggleSmall, btnLarge, btnSmall, btnTiny,
+              btnSecondary,
+              btnWhite, btnWhiteSecondary,
+              btnError, btnErrorSecondary,
+              btnPremium, btnPremiumSecondary,
+              btnTransparent;
+}
+
+:global(html) {
+  box-sizing: border-box;
+  font-size: 100%; }
+
+:global(*),
+:global(*::before),
+:global(*::after) {
+  box-sizing: inherit;
+}
+
+:global(body) {
+  margin-left: 1em;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.test {
+    background-color: red;
+}
+
+:global(hr) {
+    margin: 1em 0;
+    max-width: none;
+}
+
+:global(th) {
+    padding-right: 1em;
+}
+
+.btnSmall, .btnSecondary, .btnLarge, .btnTiny,
+.btnWhite, .btnWhiteSecondary, .btnError,
+.btnErrorSecondary, .btnPremium, .btnPremiumSecondary,
+.btnTransparent {
+
+}

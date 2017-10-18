@@ -1,0 +1,75 @@
+:import {
+	-st-from: "../../../components/checkbox/checkbox.st.css";
+	-st-default: CB;
+}
+
+:import {
+    -st-from: "../variables.st.css";
+    -st-named:  labelFontStyle,
+                borderStyle,
+                checkBorder,
+                checkedColor,
+                inputBackgroundColor,
+                checkDisabledColor,
+                borderColorDisabled,
+                checkDisabledBorderColor,
+                checkErrorColor,
+                checkHoverColor,
+                iconTick,
+                iconTickDisabled,
+                iconIntermediate,
+                iconIntermediateDisabled;
+}
+
+CB {
+    font: 300 value(labelFontStyle);
+}
+
+CB::box {
+    border-radius: 4px;
+    border: value(checkBorder);
+    background: value(inputBackgroundColor);
+}
+
+CB:hover::box {
+    background: value(checkHoverColor);
+}
+
+CB:checked:not(:disabled)::box,
+CB:indeterminate:not(:disabled)::box {
+    border-color: transparent;
+    background: value(checkedColor);
+}
+
+CB:error:not(:disabled):not(:checked):not(:indeterminate)::box {
+    border-color: value(checkErrorColor);
+}
+
+CB:disabled::box {
+    border-color: value(checkDisabledBorderColor);
+    background: value(checkDisabledColor);
+}
+
+CB:disabled:checked::box {
+    border-color: value(borderColorDisabled);
+}
+
+CB:focus::box {
+    background: value(checkHoverColor);
+}
+
+CB::tickIcon {
+    background-image: value(iconTick);
+}
+
+CB::indeterminateIcon {
+    background-image: value(iconIntermediate);
+}
+
+CB:disabled::tickIcon {
+    background-image: value(iconTickDisabled);
+}
+
+CB:disabled::indeterminateIcon {
+    background-image: value(iconIntermediateDisabled);
+}
