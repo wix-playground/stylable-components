@@ -7,7 +7,7 @@
     size: 15px;
 }
 
-@keyframes pulse {
+@keyframes pulseAnimation {
     :global(0%) {transform: scale(0)}
     :global(50%) {transform: scale(1)}
     :global(100%) {transform: scale(0)}
@@ -26,7 +26,7 @@
     background: value(PR2);
     transform: scale(0);
     border-radius: 100%;
-    animation: pulse value(duration) ease-in-out infinite;
+    animation: pulseAnimation value(duration) ease-in-out infinite;
 }
 .dot:nth-child(2) {
     animation-delay: calc(value(duration) * 0.2);
