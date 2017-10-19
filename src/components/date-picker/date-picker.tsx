@@ -53,7 +53,6 @@ export class DatePicker extends React.PureComponent<DatePickerProps, DatePickerS
             <div
                 data-automation-id="DATE_PICKER_ROOT"
                 ref={dropdownRef => this.setState({dropdownRef})}
-                tabIndex={this.props.tabIndex}
             >
                 <Input
                     className="input"
@@ -66,7 +65,7 @@ export class DatePicker extends React.PureComponent<DatePickerProps, DatePickerS
                     placeholder={this.props.placeholder}
                     autoFocus={this.props.autoFocus}
                     name={this.props.name}
-                    required={this.props.required}
+                    tabIndex={this.props.tabIndex}
                     type="text"
                     data-automation-id="DATE_PICKER_INPUT"
                 />

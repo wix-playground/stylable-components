@@ -171,14 +171,7 @@ describe('The DatePicker Component', () => {
         const {driver: datePicker, waitForDom} = clientRenderer.render(<DatePicker tabIndex={123} />)
             .withDriver(DatePickerTestDriver);
 
-        return waitForDom(() => expect(datePicker.root).to.have.attribute('tabindex', '123'));
-    });
-
-    it('should set the required attribute', () => {
-        const {driver: datePicker, waitForDom} = clientRenderer.render(<DatePicker required />)
-            .withDriver(DatePickerTestDriver);
-
-        return waitForDom(() => expect(datePicker.input).to.have.attribute('required'));
+        return waitForDom(() => expect(datePicker.input).to.have.attribute('tabindex', '123'));
     });
 
     it('should set the name attribute', () => {
