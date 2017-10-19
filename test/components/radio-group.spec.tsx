@@ -448,6 +448,7 @@ describe('<RadioGroup />', () => {
         it('Accepts "autoFocus" props and passes it to the checked button - dataSchema', async () => {
             const {driver: group, waitForDom} = clientRenderer.render(
                 <RadioGroup
+                    autoFocus
                     value="Child1"
                     name="lala"
                     dataSource={[{value: 'Child0'}, {value: 'Child1'}, {value: 'Child2'}]}
@@ -464,6 +465,7 @@ describe('<RadioGroup />', () => {
         it('Accepts "autoFocus" props and passes it to the first button if none are checked - dataSchema', async () => {
             const {driver: group, waitForDom} = clientRenderer.render(
                 <RadioGroup
+                    autoFocus
                     name="lala"
                     dataSource={[{value: 'Child0'}, {value: 'Child1'}, {value: 'Child2'}]}
                 />

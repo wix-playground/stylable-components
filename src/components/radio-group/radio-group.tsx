@@ -119,7 +119,7 @@ export class RadioGroup extends React.Component<RadioGroupProps> {
                 name={this.name}
                 className="option"
                 tabIndex={this.getChildTabIndex(index, this.isGroupChecked)}
-                autoFocus={this.isGroupChecked ? this.checkedArray[index].checked : index === 0}
+                autoFocus={this.isChildAutoFocused(index)}
             >
                 {props.labelText ? <label className="label">{props.labelText}</label> : null}
             </RadioButton>
@@ -138,7 +138,7 @@ export class RadioGroup extends React.Component<RadioGroupProps> {
                         readOnly: this.props.readOnly || child.props.readOnly,
                         className: child.props.className + ' ' + styles.option,
                         tabIndex: this.getChildTabIndex(index, this.isGroupChecked),
-                        autoFocus: this.isGroupChecked ? this.checkedArray[index].checked : index === 0,
+                        autoFocus: this.isChildAutoFocused(index),
                         ['data-automation-id']: 'RADIO_BUTTON_' + index
                     } : {};
 
@@ -158,7 +158,7 @@ export class RadioGroup extends React.Component<RadioGroupProps> {
 
     @computed
     get isGroupChecked(): boolean {
-        return !!this.checkedArray.find(elm => elm.checked);
+        return this.checkedArray.some(elm => elm.checked);
     }
 
     private getChildTabIndex = (index: number, isGroupChecked: boolean): number | undefined => {
@@ -167,5 +167,15 @@ export class RadioGroup extends React.Component<RadioGroupProps> {
         } else {
             return index === 0 ? this.props.tabIndex : -1;
         }
+    }
+
+    private isChildAutoFocused(index: number): boolean {
+        if (this.props.autoFocus) {
+            if (this.isGroupChecked) {
+                return this.checkedArray[index].checked;
+            }
+            return index === 0;
+        }
+        return false;
     }
 }
