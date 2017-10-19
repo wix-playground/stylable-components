@@ -38,10 +38,11 @@ export class Modal extends React.PureComponent<ModalProps> {
                     <div
                         className="backdrop"
                         data-slot="backdrop"
+                        role="backdrop"
                         data-automation-id="MODAL"
                         onClick={this.onClick}
                     >
-                        <div className="body" data-slot="body" role="dialog" aria-modal="true">
+                        <div className="dialog" data-slot="dialog" role="dialog" aria-modal="true">
                             {this.props.children}
                         </div>
                     </div>

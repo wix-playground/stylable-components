@@ -16,7 +16,7 @@
     background: rgba(0, 0, 0, 0.05);
 }
 
-.body {
+.dialog {
     position: absolute;
     left: 50%;
     top: 50%;
