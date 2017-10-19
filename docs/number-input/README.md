@@ -24,8 +24,8 @@ The **NumberInput** component improves upon the native `<input type="number">` b
 | name         | string                           |              |            | The name of the component. Behaves like the name attribute of an input element. |
 | prefix       | node                             |              |            | Inserts a component at the start of the input. |
 | suffix       | node                             |              |            | Inserts a component at the end of the input. |
-| onChange     | function |   |   | Callback function that is fired on component blur.<br>`(event: {value: number}): void`<br>`event` KeyDown event for current component instance.<br>`newValue` The new value of `<NumberInput>`. |
-| onInput      |function |   |  | Callback function that is fired on every keydown event.<br> `(event: {value: number}): void`<br>`event` KeyDown event targeting current component instance.<br>`newValue` The new value of `<NumberInput>`. |
+| onChange     | function |   |   | Callback function that is fired on component blur.<br>`(event: {value: number}): void`<br>`event` KeyDown event for current component instance.<br>`newValue` The new value of the component instance. |
+| onInput      |function |   |  | Callback function that is fired on every keydown event.<br> `(event: {value: number}): void`<br>`event` KeyDown event targeting current component instance.<br>`newValue` The new value of the component instance. |
 | error        | boolean                        | false        |            | Sets the `:error` CSS state on the current component instance. |
 
 ### Code Examples
