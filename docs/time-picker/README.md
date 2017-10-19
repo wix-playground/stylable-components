@@ -16,18 +16,18 @@ The **TimePicker** component allows users to select the time and switch between 
 
 | name        | type                            | defaultValue   | isRequired | description                              |
 | ----------- | ------------------------------- | -------------- | ---------- | ---------------------------------------- |
-| value       | string                          |                | yes        | Sets and represents the time shown in `<TimePicker>`.<br>Accepts strings in 24h format (12:54). |
+| value       | string                          |                | yes        | Sets and represents the time shown in the current component instance.<br>Accepts strings in 24h format (12:54). |
 | placeholder | string                          |                |            | Text to display if the value is null.    |
-| format      | enum:<br>"ampm",<br>"24hr" | system default |            | Tells the component to display the picker in ampm (12hr) format or 24hr format. |
+| format      | enum:<br>"ampm",<br>"24hr" | system default |            | Tells the component instance to display the picker in ampm (12hr) format or 24hr format. |
 | required    | boolean                            | false          |            | Whether or not filling the value is required in a form. |
-| disabled    | boolean                            | false          |            | If `true`, the `<TimePicker>` component will not be interactive. |
+| disabled    | boolean                            | false          |            | If `true`, the  component instance will not be interactive. |
 | label       | string                          |                |            | Text to display in accessibility mode.   |
-| name        | string                          |                |            | The name of the `<TimePicker>`. Behaves like the name attribute of an input element. |
+| name        | string                          |                |            | The name of the component instance. Behaves like the name attribute of an input element. |
 | prefix      | node                            |                |            | Inserts a component at the start of the input. |
 | suffix      | node                            |                |            | Inserts a component at the end of the input. |
-| onChange     | function |   |   | Callback function that is fired on component blur.<br>`(event: {value: number}): void`<br>`event` KeyDown event targeting `<TimePicker>`.<br>`newValue` The new value of `<TimePicker>`. |
-| onInput      |function |   |  | Callback function that is fired on every keydown event.<br> `(event: {value: number}): void`<br>`event` KeyDown event targeting the `<TimePicker>`.<br>`newValue` The new value of `<TimePicker>`. |
-| error       | boolean                            | false          |            | Sets the `:error` CSS state on `<TimePicker>`. |
+| onChange     | function |   |   | Callback function that is fired on component blur.<br>`(event: {value: number}): void`<br>`event` KeyDown event targeting the component instance.<br>`newValue` The new value of the component instance. |
+| onInput      |function |   |  | Callback function that is fired on every keydown event.<br> `(event: {value: number}): void`<br>`event` KeyDown event targeting the component instance.<br>`newValue` The new value of the component instance. |
+| error       | boolean                            | false          |            | Sets the `:error` CSS state on the component instance. |
 
 ### Code Example
 
@@ -102,7 +102,7 @@ TimePicker::placeholder {
 
 | state                   | description                              |
 | ----------------------- | ---------------------------------------- |
-| :error                  | Style the component on error, i.e. when the `error` prop is true. |
+| :error                  | Style the component instance on error, i.e. when the `error` prop is true. |
 | :hover, :focus, :disabled, etc | Standard CSS states                      |
 
 
