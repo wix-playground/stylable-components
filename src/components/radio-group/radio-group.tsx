@@ -17,11 +17,6 @@ export interface RadioGroupDataSchemaProps {
 export interface RadioGroupProps extends FormInputProps<string>, properties.Props {
     children?: React.ReactNode;
     dataSource?: RadioGroupDataSchemaProps[];
-    name?: string;
-    disabled?: boolean;
-    readOnly?: boolean;
-    tabIndex?: number;
-    className?: string;
 }
 
 let counter = 0;
@@ -124,6 +119,7 @@ export class RadioGroup extends React.Component<RadioGroupProps> {
                 name={this.name}
                 className="option"
                 tabIndex={this.getChildTabIndex(index, this.isGroupChecked)}
+                autoFocus={this.isGroupChecked ? this.checkedArray[index].checked : index === 0}
             >
                 {props.labelText ? <label className="label">{props.labelText}</label> : null}
             </RadioButton>
@@ -133,17 +129,17 @@ export class RadioGroup extends React.Component<RadioGroupProps> {
     private createChildren(dataArray: React.ReactNode): React.ReactNode[] {
         return React.Children.map(dataArray, (child, index) => {
             if (child && typeof child === 'object') {
-
                 const extraProps = child.type === RadioButton ?
                     {
-                        ['data-automation-id']: 'RADIO_BUTTON_' + index,
                         name: this.name,
                         checked: this.checkedArray[index].checked,
                         onChange: action(this.childrenOnClick(index)),
                         disabled: this.props.disabled || child.props.disabled,
                         readOnly: this.props.readOnly || child.props.readOnly,
                         className: child.props.className + ' ' + styles.option,
-                        tabIndex: this.getChildTabIndex(index, this.isGroupChecked)
+                        tabIndex: this.getChildTabIndex(index, this.isGroupChecked),
+                        autoFocus: this.isGroupChecked ? this.checkedArray[index].checked : index === 0,
+                        ['data-automation-id']: 'RADIO_BUTTON_' + index
                     } : {};
 
                 const childProps = {

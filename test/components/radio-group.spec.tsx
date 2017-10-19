@@ -243,7 +243,7 @@ describe('<RadioGroup />', () => {
         });
     });
 
-    it('disabled all radio button children if the disabled prop is true', async () => {
+    it('disables all radio button children if the disabled prop is true', async () => {
         const {driver: group, waitForDom} = clientRenderer.render(
             <RadioGroup disabled>
                 <RadioButton value="Fafnir"/>
@@ -254,6 +254,20 @@ describe('<RadioGroup />', () => {
         await waitForDom(() => {
             expect(group.getRadioButton(0).isDisabled(), 'expected radio to be disabled').to.equal(true);
             expect(group.getRadioButton(1).isDisabled(), 'expected radio to be disabled').to.equal(true);
+        });
+    });
+
+    it('makes all radio button readOnly if readOnly prop is given', async () => {
+        const {driver: group, waitForDom} = clientRenderer.render(
+            <RadioGroup readOnly>
+                <RadioButton value="Fafnir"/>
+                <RadioButton value="Sleipnir"/>
+            </RadioGroup>
+        ).withDriver(RadioGroupDriver);
+
+        await waitForDom(() => {
+            expect(group.getRadioButton(0).isReadOnly(), 'expected radio to be readOnly').to.equal(true);
+            expect(group.getRadioButton(1).isReadOnly(), 'expected radio to be readOnly').to.equal(true);
         });
     });
 
@@ -396,6 +410,69 @@ describe('<RadioGroup />', () => {
 
             await waitForDom(() => {
                 expect(group.root).to.have.attribute('role', 'radiogroup');
+            });
+        });
+
+        it('Accepts "autoFocus" props and passes it to the checked button', async () => {
+            const {driver: group, waitForDom} = clientRenderer.render(
+                <RadioGroup name="yaya" autoFocus value={'female'}>
+                    <RadioButton value="male"/>
+                    <RadioButton value="female"/>
+                    <RadioButton value="other"/>
+                </RadioGroup>
+            ).withDriver(RadioGroupDriver);
+
+            const button1 = group.getRadioButton(1);
+
+            await waitForDom(() => {
+                expect(document.activeElement).to.equal(button1.nativeElement);
+            });
+        });
+
+        it('Accepts "autoFocus" props and passes it to the first button if none are checked', async () => {
+            const {driver: group, waitForDom} = clientRenderer.render(
+                <RadioGroup name="yaya" autoFocus>
+                    <RadioButton value="male" />
+                    <RadioButton value="female" />
+                    <RadioButton value="other"/>
+                </RadioGroup>
+            ).withDriver(RadioGroupDriver);
+
+            const button0 = group.getRadioButton(0);
+
+            await waitForDom(() => {
+                expect(document.activeElement).to.equal(button0.nativeElement);
+            });
+        });
+
+        it('Accepts "autoFocus" props and passes it to the checked button - dataSchema', async () => {
+            const {driver: group, waitForDom} = clientRenderer.render(
+                <RadioGroup
+                    value="Child1"
+                    name="lala"
+                    dataSource={[{value: 'Child0'}, {value: 'Child1'}, {value: 'Child2'}]}
+                />
+            ).withDriver(RadioGroupDriver);
+
+            const button1 = group.getRadioButton(1);
+
+            await waitForDom(() => {
+                expect(document.activeElement).to.equal(button1.nativeElement);
+            });
+        });
+
+        it('Accepts "autoFocus" props and passes it to the first button if none are checked - dataSchema', async () => {
+            const {driver: group, waitForDom} = clientRenderer.render(
+                <RadioGroup
+                    name="lala"
+                    dataSource={[{value: 'Child0'}, {value: 'Child1'}, {value: 'Child2'}]}
+                />
+            ).withDriver(RadioGroupDriver);
+
+            const button0 = group.getRadioButton(0);
+
+            await waitForDom(() => {
+                expect(document.activeElement).to.equal(button0.nativeElement);
             });
         });
     });
