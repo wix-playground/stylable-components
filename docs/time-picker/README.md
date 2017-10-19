@@ -18,7 +18,7 @@ The **TimePicker** component allows users to select the time and switch between 
 | ----------- | ------------------------------- | -------------- | ---------- | ---------------------------------------- |
 | value       | string                          |                | yes        | Sets and represents the time shown in the current component instance.<br>Accepts strings in 24h format (12:54). |
 | placeholder | string                          |                |            | Text to display if the value is null.    |
-| format      | enum:<br>"ampm",<br>"24hr" | system default |            | Tells the component instance to display the picker in ampm (12hr) format or 24hr format. |
+| format      | enum:<br>"ampm",<br>"24hr" | system default |            | Tells the component instance to present the time in ampm (12hr) format or 24hr format. |
 | required    | boolean                            | false          |            | Whether or not filling the value is required in a form. |
 | disabled    | boolean                            | false          |            | If `true`, the  component instance will not be interactive. |
 | label       | string                          |                |            | Text to display in accessibility mode.   |
