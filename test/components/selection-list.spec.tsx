@@ -137,7 +137,8 @@ describe('<SelectionList />', () => {
 
     it('Renders blank items at the same height as normal items', async () => {
         const {driver: list, waitForDom} = clientRenderer.render(
-            <SelectionList dataSource={['', '1']} />
+            <SelectionList dataSource={['', '1']} />,
+            themedContainer
         ).withDriver(SelectionListTestDriver);
 
         await waitForDom(() => expect(list.root).to.be.present());
