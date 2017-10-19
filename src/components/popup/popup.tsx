@@ -49,18 +49,18 @@ export class Popup extends React.Component<PopupCompProps> {
     }
 
     public componentDidMount() {
-        window.addEventListener('scroll', this.test, true);
+        window.addEventListener('scroll', this.onScroll, true);
     }
 
     public componentWillUnmount() {
-        window.removeEventListener('scroll', this.test);
+        window.removeEventListener('scroll', this.onScroll);
     }
 
     public getPortal(): Portal | null {
         return this.portal;
     }
 
-    private test = (e: any) => {
+    private onScroll = (e: any) => {
         if (e.target.contains(this.props.anchor)) {
             this.forceUpdate();
         }
