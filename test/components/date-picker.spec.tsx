@@ -206,7 +206,7 @@ describe('The DatePicker Component', () => {
 
             await waitForDom(() => expect(datePicker.isOpen()).to.be.false);
 
-            clientRenderer.render(<DatePicker readOnly />, container);
+            clientRenderer.render(<DatePicker readOnly />, container).withDriver(DatePickerTestDriver);;
 
             await waitForDom(() => expect(datePicker.isOpen()).to.be.false);
 
@@ -239,19 +239,19 @@ describe('The DatePicker Component', () => {
                 <DatePicker openOnFocus disabled />
             ).withDriver(DatePickerTestDriver);
 
-            await waitForDom(() => expect(datePicker.dropDown).to.be.absent());
+            await waitForDom(() => expect(datePicker.isOpen()).to.be.false);
 
             datePicker.focus();
 
-            await waitForDom(() => expect(datePicker.dropDown).to.be.absent());
+            await waitForDom(() => expect(datePicker.isOpen()).to.be.false);
 
             clientRenderer.render(<DatePicker openOnFocus readOnly />, container).withDriver(DatePickerTestDriver);
 
-            await waitForDom(() => expect(datePicker.dropDown).to.be.absent());
+            await waitForDom(() => expect(datePicker.isOpen()).to.be.false);
 
             datePicker.focus();
 
-            await waitForDom(() => expect(datePicker.dropDown).to.be.absent());
+            await waitForDom(() => expect(datePicker.isOpen()).to.be.false);
         });
 
         it('should not allow the input value to be changed', async () => {
