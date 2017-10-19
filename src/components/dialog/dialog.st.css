@@ -7,7 +7,6 @@
 
 .root {
     -st-extends: Modal;
-  display: inline-block;
 }
 
 .root::children {
