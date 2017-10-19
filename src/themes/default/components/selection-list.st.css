@@ -29,7 +29,6 @@
 }
 
 SelectionList {
-    font: value(defaultFont);
     border: value(borderDefault);
 }
 
@@ -37,37 +36,45 @@ SelectionList:focused {
     border-color: value(color_Focus);
 }
 
-SelectionList Divider {
+Divider {
+    height: 1px;
     background-color: value(color_Divider);
 }
 
-Option:hover {
-    background-color: value(color_Hover2);
-}
-
-Option:selected:not(:hover) {
-    background-color: value(color_Selected);
+Option {
+    border: 1px solid transparent;
+    box-sizing: border-box;
+    font: value(defaultFont);
+    line-height: 24px;
+    min-height: 36px;
+    overflow: hidden;
+    padding: 5px 23px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 Option:disabled {
     color: value(color_MainDisabled);
 }
 
-Option:disabled:hover {
-    background: value(color_MainText_Background);
-}
-
-SelectionList::focused > Option:selected {
-    background-color: value(color_Active);
-    color: value(color_MainText_Background);;
-}
-
-SelectionList::focused > Option:selected:hover {
-    background-color: value(color_Hover);
-    color: value(color_MainText_Background);;
-}
-
-SelectionList::focused > Option:focused {
+Option:focused {
     border-color: value(color_Active);
 }
 
+Option:selected {
+    background-color: value(color_Selected);
+}
+
+Option:hover:not(:disabled) {
+    background-color: value(color_Hover2);
+}
+
+SelectionList:focused Option:selected:not(:disabled) {
+    background-color: value(color_Active);
+    color: value(color_MainText_Background);
+}
+
+SelectionList:focused > Option:selected:hover:not(:disabled) {
+    background-color: value(color_Hover);
+    color: value(color_MainText_Background);
+}
