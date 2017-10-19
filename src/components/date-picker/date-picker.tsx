@@ -54,36 +54,36 @@ export class DatePicker extends React.PureComponent<DatePickerProps, DatePickerS
                 data-automation-id="DATE_PICKER_ROOT"
                 ref={dropdownRef => this.setState({dropdownRef})}
             >
-                <Input
-                    className="input"
-                    onKeyDown={this.onKeyDown}
-                    onMouseDown={this.onMouseDown}
-                    onBlur={this.onBlur}
-                    onFocus={this.onFocus}
-                    onChange={this.onInputChange}
-                    onInput={this.props.onInput}
-                    value={this.state.inputValue}
-                    placeholder={this.props.placeholder}
-                    autoFocus={this.props.autoFocus}
-                    name={this.props.name}
-                    tabIndex={this.props.tabIndex}
-                    type="text"
-                    data-automation-id="DATE_PICKER_INPUT"
-                />
-                <div className="icon" data-automation-id="CALENDAR_ICON" onClick={this.toggleDropdown}>
-                    <Icon />
-                </div>
-                <Popup open={this.state.isDropdownVisible} anchor={this.state.dropdownRef}>
-                    <Calendar
-                        onChange={this.onCalendarInput}
-                        updateDropdownDate={this.updateDropdownDate}
-                        value={this.state.dropdownDate}
-                        selectedDate={this.props.value}
-                        startingDay={this.props.startingDay}
-                        highlightSelectedDate={this.state.highlightSelectedDate}
-                        highlightFocusedDate={this.state.highlightFocusedDate}
+                <div className="flex-wrapper">
+                    <Input
+                        className="input"
+                        onKeyDown={this.onKeyDown}
+                        onMouseDown={this.onMouseDown}
+                        onBlur={this.onBlur}
+                        onFocus={this.onFocus}
+                        onChange={this.onInputChange}
+                        onInput={this.props.onInput}value={this.state.inputValue}
+                        placeholder={this.props.placeholder}autoFocus={this.props.autoFocus}
+                        name={this.props.name}
+                        tabIndex={this.props.tabIndex}
+                        type="text"
+                        data-automation-id="DATE_PICKER_INPUT"
                     />
-                </Popup>
+                    <div className="icon" data-automation-id="CALENDAR_ICON" onClick={this.toggleDropdown}>
+                        <Icon />
+                    </div>
+                    <Popup open={this.state.isDropdownVisible} anchor={this.state.dropdownRef}>
+                        <Calendar
+                            onChange={this.onCalendarInput}
+                            updateDropdownDate={this.updateDropdownDate}
+                            value={this.state.dropdownDate}
+                            selectedDate={this.props.value}
+                            startingDay={this.props.startingDay}
+                            highlightSelectedDate={this.state.highlightSelectedDate}
+                            highlightFocusedDate={this.state.highlightFocusedDate}
+                        />
+                    </Popup>
+                </div>
             </div>
         );
     }
