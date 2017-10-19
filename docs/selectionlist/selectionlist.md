@@ -93,8 +93,7 @@ You can customize the following internal parts:
 
 ### Style States
 
-The following states apply to the items. They are passed as corresponding props of the ItemRenderer
-and added as an attribute with the appropriate prefix (`data-`).
+The following states apply to the items. They are passed as corresponding props of the ItemRenderer.
 
 | Name | Type | Default | Description |
 | -- | -- | -- | -- |
@@ -102,6 +101,14 @@ and added as an attribute with the appropriate prefix (`data-`).
 | focused | boolean | false | Whether the item is focused by keyboard navigation |
 | hidden | boolean | false | Whether ths item appears in the list |
 | disabled | boolean | false | Whether an item is enabled for selection or not |
+
+Appart from the items the component's root i.e. the list itself has states as follows.
+
+| Name | Type | Default| Description |
+| -- | -- | -- | -- |
+| hasSelection| boolean | false | Wheter an item in the list is selected |
+|focused | boolean | false | whther the root is focused |
+| disabled | boolean | false | Wheter the list has been diabled
 
 The only exception is `hover` which doesn't correspond to an attribute. Rather, it should be staled with
 the `:hover` CSS pseudoselector.
