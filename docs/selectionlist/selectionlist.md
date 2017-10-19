@@ -44,7 +44,7 @@ A component which allows the user to take action by choosing an item from a list
 | Name | Type | Default | Required | Description |
 | -- | -- | -- | -- | -- |
 | dataSource | Array[DataSourceItem] | [] | no | The DataSourceItem is of type '*string \| object \| symbol*'. The dataSource receives an array and the component uses the renderItem function to render the items in the array in order.
-| dataSchema | {[index: string]: string} | {} | no | Maps fields from the DataSourceItem to the field used by the renderItem function |
+| dataMapper | (item) -> ({value, string, disabled}) | {} | no | Maps fields from the DataSourceItem to the field used by the renderItem function |
 | renderItem | (item : DataSourceItem) -> JSX.Element | default function | no | The renderItem function receives a DataSourceItem and then decides how to render it.
 
 **Note** for the default SelectionList renderItem function that if both datasource and children are present then the children are rendered first and then the dataSource items.
@@ -63,7 +63,7 @@ RenderItem is a function with the following props:
 RenderItem must put `data-value` attribute on the root node of any selectable item. Items without the `data-value`
 attribute will be displayed, but won't be selectable.
 
-`item` is an object created by remapping the original SelectionItem using `dataSchema`. Therefore, the
+`item` is an object created by remapping the original SelectionItem using `dataMapper`. Therefore, the
 `item` object has always consistent structure, regardless of the structure of the `dataSource.`
 
 If the original SelectionItemn was string, the resulting `item` object will put this value into
@@ -173,17 +173,17 @@ SelectionItem is a union type of the following
 | -- | -- |
 | Divider | A Symbol representing non-selectable divider |
 | string | Represents both item value and label |
-| object | Item is represented as object with schema defined by `dataSchema` |
+| object | Item is represented as object with schema defined by `dataMapper` |
 
-### dataSchema
+### dataMapper
 
-Data schema creates mapping, which bridges between data structure of `dataSource` and that assumed by the `itemRenderer`.
-(i.e. it is itemRenderer and dataSource specific)
+Data mapper provides information regarding dadtaSource items and specifically their value and label. 
 
-| Name | Type | Default | Required | Description |
+| Name | Type | Default | Description |
 | -- | -- | -- | -- | -- |
-| value | string | 'id' | Field containing unique identifier of the item's value
-| displayText | string | 'displayText' | Field containing text which is rendered as textual content of the item
+| value | Any | no | Field containing the item's value or its identifier.
+| label | string | "" | Field contating text ual represntation of the item.
+| disabled | boolean | false | Marks item as unselectable
 
-If the `'id'` field is missing in the item, it should be displayed but not selectable. (e.g. headings, etc.).
+In case where there is item should be ignored (for example when it is a divider) dataMapper should return no.
 
