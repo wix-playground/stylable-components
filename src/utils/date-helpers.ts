@@ -1,12 +1,11 @@
-const monthNames = [
-    'January', 'February', 'March',
-    'April', 'May', 'June',
-    'July', 'August', 'September',
-    'October', 'November', 'December'
-];
+export function getDayNames(startingDay: number = 0, locale: string = 'en-US', nameLength: string = 'short'): string[] {
+    const dayNames: string[] = [];
 
-export function getDayNames(startingDay: number = 0): string[] {
-    const dayNames: string[] = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    // For each of the seven days of the week
+    for (let day = 0; day < 7; day++) {
+        const dayName = new Date(1970, 5, day).toLocaleString(locale, {weekday: nameLength});
+        dayNames.push(dayName);
+    }
 
     // Days start from Sunday (Sunday = 0, Monday = 1, etc.)
     for (let i = startingDay; i > 0; i--) {
@@ -16,8 +15,16 @@ export function getDayNames(startingDay: number = 0): string[] {
     return dayNames;
 }
 
-export function getMonthNames(): string[] {
-    return monthNames;
+export function getMonthNames(locale: string = 'en-US', nameLength: string = 'long'): string[] {
+    const listOfMonthNames: string[] = [];
+
+    // For each of the twelve months of the year
+    for (let month = 0; month < 12; month++) {
+        const monthName = new Date(1970, month, 1).toLocaleString(locale, {month: nameLength});
+        listOfMonthNames.push(monthName);
+    }
+
+    return listOfMonthNames;
 }
 
 export function getMonthFromOffset(date: Date, offset: number): Date {

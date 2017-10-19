@@ -7,6 +7,7 @@ import {
     getDayNames,
     getDaysInMonth,
     getMonthFromOffset,
+    getMonthNames,
     getNumOfFollowingDays,
     getNumOfPreviousDays
 } from '../../src/utils';
@@ -186,6 +187,27 @@ describe('The DatePicker Component', () => {
             await waitForDom(() => {
                 dayNames.forEach((dayName, index) => expect(datePicker.getDayName(index)).to.have.text(dayName));
                 days.forEach(day => expect(datePicker.getDay(day)).to.have.text(day));
+            });
+        });
+
+        it('should support localization', async () => {
+            const testLocale = 'he-IL';
+            const {driver: datePicker, waitForDom} = clientRenderer.render(
+                <DatePicker
+                    showDropdownOnInit={true}
+                    value={FEBRUARY_FIRST}
+                    locale={testLocale}
+                />
+            ).withDriver(DatePickerTestDriver);
+
+            const localizedDayNames = getDayNames(0, testLocale);
+            const monthName = getMonthNames(testLocale)[FEBRUARY_FIRST.getMonth()];
+
+            await waitForDom(() => {
+                localizedDayNames.forEach((dayName, index) => {
+                    expect(datePicker.getDayName(index), 'day name did not have the proper text').to.have.text(dayName);
+                });
+                expect(datePicker.monthLabel, 'Month Label did not have the proper text').to.have.text(monthName);
             });
         });
 

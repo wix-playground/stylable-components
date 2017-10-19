@@ -1,6 +1,5 @@
 import {DriverBase, selectDom, simulate, trigger} from 'test-drive-react';
 import {DatePicker} from '../../src';
-import {getDayNames} from '../../src/utils';
 
 const bodySelect = selectDom(document.body);
 const datePickerDropdown = 'DATE_PICKER_DROPDOWN';
@@ -81,8 +80,8 @@ export class DatePickerTestDriver extends DriverBase {
         if (dayName < 0 || dayName > 6) {
             return null;
         }
-        const dayNames: string[] = getDayNames();
-        return bodySelect(datePickerDropdown, `DAY_NAME_${dayNames[dayName].toUpperCase()}`);
+
+        return bodySelect(datePickerDropdown, `DAY_NAME_${dayName}`);
     }
 
     public get yearLabel(): HTMLSpanElement | null {
