@@ -12,7 +12,7 @@ import defaultTheme from '../../src/themes/default/theme.st.css';
 
 const themes: any = {default: defaultTheme};
 
-describe.only('themes', () => {
+describe('themes', () => {
 
     Object.keys(themes).forEach(key => {
         describe(key, () => {
