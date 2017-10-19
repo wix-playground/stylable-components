@@ -16,7 +16,7 @@ The **TimePicker** component allows users to select the time and switch between 
 
 | name        | type                            | defaultValue   | isRequired | description                              |
 | ----------- | ------------------------------- | -------------- | ---------- | ---------------------------------------- |
-| value       | string                          |                | yes        | Sets and represents the time shown in the current component instance.<br>Accepts strings in 24h format (12:54). |
+| value       | string                          |                | yes        | Sets and represents the time shown in the component instance.<br>Accepts strings in 24h format (12:54). |
 | placeholder | string                          |                |            | Text to display if the value is null.    |
 | format      | enum:<br>"ampm",<br>"24hr" | system default |            | Tells the component instance to present the time in ampm (12hr) format or 24hr format. |
 | required    | boolean                            | false          |            | Whether or not filling the value is required in a form. |
@@ -27,7 +27,7 @@ The **TimePicker** component allows users to select the time and switch between 
 | suffix      | node                            |                |            | Inserts a component at the end of the input. |
 | onChange     | function |   |   | Callback function that is fired on component blur.<br>`(event: {value: number}): void`<br>`event` KeyDown event targeting the component instance.<br>`newValue` The new value of the component instance. |
 | onInput      |function |   |  | Callback function that is fired on every keydown event.<br> `(event: {value: number}): void`<br>`event` KeyDown event targeting the component instance.<br>`newValue` The new value of the component instance. |
-| error       | boolean                            | false          |            | Sets the `:error` CSS state on the component instance. |
+| error       | boolean                            | false          |            | Sets the `:error` CSS state of the component instance. |
 
 ### Code Example
 
