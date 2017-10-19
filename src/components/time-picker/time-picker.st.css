@@ -21,9 +21,18 @@
     padding-left: 6px;
     -webkit-user-select: none;
 }
+
+.colon {}
+.time {}
+
 .root:rtl {
     padding-left: 0;
     padding-right: 6px;
+}
+
+.root:rtl::time {
+    display: flex;
+    flex-direction: row-reverse;
 }
 
 .root:disabled {
@@ -39,8 +48,6 @@
     width: 100%;
     cursor: not-allowed;
 }
-
-.colon {}
 
 .root:empty::stepper,
 .root:empty:hasPlaceholder::input,
