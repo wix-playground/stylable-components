@@ -57,17 +57,19 @@ export class DatePicker extends React.PureComponent<DatePickerProps, DatePickerS
                 <div className="flex-wrapper">
                     <Input
                         className="input"
+                        value={this.state.inputValue}
+                        placeholder={this.props.placeholder}
+                        autoFocus={this.props.autoFocus}
+                        name={this.props.name}
+                        tabIndex={this.props.tabIndex}
+                        type="text"
+                        data-automation-id="DATE_PICKER_INPUT"
                         onKeyDown={this.onKeyDown}
                         onMouseDown={this.onMouseDown}
                         onBlur={this.onBlur}
                         onFocus={this.onFocus}
                         onChange={this.onInputChange}
-                        onInput={this.props.onInput}value={this.state.inputValue}
-                        placeholder={this.props.placeholder}autoFocus={this.props.autoFocus}
-                        name={this.props.name}
-                        tabIndex={this.props.tabIndex}
-                        type="text"
-                        data-automation-id="DATE_PICKER_INPUT"
+                        onInput={this.props.onInput}
                     />
                     <div className="icon" data-automation-id="CALENDAR_ICON" onClick={this.toggleDropdown}>
                         <Icon />
