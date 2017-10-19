@@ -7,8 +7,8 @@ import styles from './dialog.st.css';
 
 export interface DialogProps extends React.HTMLAttributes<HTMLDivElement> {
     isOpen: boolean;
-    onCancel: () => void;
-    onOk: () => void;
+    onCancel?: () => void;
+    onOk?: () => void;
     title?: string;
 }
 
@@ -29,17 +29,35 @@ export class Dialog extends React.PureComponent<DialogProps> {
                 isOpen={this.props.isOpen}
                 onRequestClose={this.props.onCancel}
             >
-                <div onClick={this.onDialogBodyClick}>
+                <div data-automation-id="DIALOG_BODY" onClick={this.onDialogBodyClick}>
                     <div className="header" role="header">
-                        <span role="title" className="title">{this.props.title}</span>
-                        <Button role="header-close-button">X</Button>
+                        <span data-automation-id="DIALOG_TITLE" role="title" className="title">{this.props.title}</span>
+                        <Button
+                            onClick={this.props.onCancel}
+                            role="header-close-button"
+                            data-automation-id="DIALOG_X"
+                        >
+                            X
+                        </Button>
                     </div>
                     <div className="body" role="body">
                         {this.props.children}
                     </div>
                     <div className="footer" role="footer">
-                        <Button onClick={this.props.onCancel} role="footer-close-button">Cancel</Button>
-                        <Button onClick={this.props.onOk} role="footer-primary-button">OK</Button>
+                        <Button
+                            onClick={this.props.onCancel}
+                            role="footer-close-button"
+                            data-automation-id="DIALOG_CANCEL"
+                        >
+                            Cancel
+                        </Button>
+                        <Button
+                            onClick={this.props.onOk}
+                            role="footer-primary-button"
+                            data-automation-id="DIALOG_PRIMARY"
+                        >
+                            OK
+                        </Button>
                     </div>
                 </div>
             </Modal>
