@@ -1,16 +1,32 @@
 import * as React from 'react';
 import keycode = require('keycode');
+import {stylable} from 'wix-react-tools';
+import {DriverConstructor, DriverBase, ClientRenderer, expect, selectDom, simulate, sinon, trigger, waitFor, waitForDom} from 'test-drive-react';
 import {WithTheme, WithThemeDAID} from '../utils';
 import {AutoComplete, DropDown, RadioGroup, RadioButton, SelectionList, SelectionListDividerSymbol} from '../../src';
 import {DropDownDriver, RadioGroupDriver, RadioButtonDriver, SelectionListTestDriver} from '../../test-kit';
-import {ClientRenderer, expect, selectDom, simulate, sinon, trigger, waitFor, waitForDom} from 'test-drive-react';
 
 import optionStyle from '../../src/components/selection-list/option.st.css';
 import dividerStyle from '../../src/components/selection-list/divider.st.css';
 
-describe('default theme', () => {
+import theme from '../../demo/style-default.st.css';
+
+const ThemeWrap: React.SFC = stylable(theme)((props: any) => {
+    return <div {...props}/>
+});
+
+describe.only('default theme', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
+
+    function render(children: React.ReactNode) {
+        return clientRenderer.render(<ThemeWrap children={children}/>);
+    }
+    function renderWithDriver(children: React.ReactNode, Driver: any) {
+        const {waitForDom, container} = render(children);
+        const driver = new Driver(() => container.firstElementChild!.firstElementChild);
+        return {driver, waitForDom, container};
+    }
 
     describe('<AutoComplete />', () => {
 
@@ -18,8 +34,7 @@ describe('default theme', () => {
         const autoCompInput = autoComp + '_INPUT';
 
         it('places the caret inside the input and centers it', () => {
-            const ThemedAutoComplete = WithTheme(<AutoComplete />);
-            const {select} = clientRenderer.render(<ThemedAutoComplete/>);
+            const {select} = render(<AutoComplete/>);
 
             const autocomplete = select(autoComp)!;
             const input = select(autoComp, autoCompInput)!;
@@ -31,8 +46,7 @@ describe('default theme', () => {
 
         it('calls the onOpenStateChange event when clicking on the caret', () => {
             const onOpenStateChange = sinon.spy();
-            const ThemedAutoComplete = WithTheme(<AutoComplete onOpenStateChange={onOpenStateChange} />);
-            const {select} = clientRenderer.render(<ThemedAutoComplete />);
+            const {select} = render(<AutoComplete onOpenStateChange={onOpenStateChange} />);
             const caret = select(autoComp, autoComp + '_CARET');
 
             expect(caret).to.be.present();
@@ -45,13 +59,7 @@ describe('default theme', () => {
 
     describe('<DropDown />', () => {
         it('renders to the screen', () => {
-            const ThemedContainer = WithTheme();
-            const {select} = clientRenderer.render(<ThemedContainer />);
-            const container = select(WithThemeDAID) as HTMLDivElement;
-            const {driver} = clientRenderer.render(
-                <DropDown />,
-                container
-            ).withDriver(DropDownDriver);
+            const {driver} = renderWithDriver(<DropDown/>, DropDownDriver);
 
             expect(driver.root).to.be.present();
             expect(driver.selection).to.equal('');
@@ -60,21 +68,15 @@ describe('default theme', () => {
     })
 
     describe('<RadioGroup />', () => {
-        let themedContainer: HTMLDivElement;
-        beforeEach(() => {
-            const ThemedContainer = WithTheme();
-            const {select} = clientRenderer.render(<ThemedContainer />);
-            themedContainer = select(WithThemeDAID) as HTMLDivElement;
-        });
 
         it('renders to the screen with unselected radio buttons as children', () => {
-            const {driver} = clientRenderer.render(
+            const {driver} = renderWithDriver(
                 <RadioGroup>
                     <RadioButton value="Ifrit"/>
                     <RadioButton value="Titan"/>
                 </RadioGroup>,
-                themedContainer
-            ).withDriver(RadioGroupDriver);
+                RadioGroupDriver
+            );
 
             const button0 = driver.getRadioButton(0);
             const button1 = driver.getRadioButton(1);
@@ -89,27 +91,27 @@ describe('default theme', () => {
         });
 
         it('uses "value" prop to determine checked child', () => {
-            const {driver} = clientRenderer.render(
+            const {driver} = renderWithDriver(
                 <RadioGroup value="Sleipnir">
                     <RadioButton value="Fafnir"/>
                     <RadioButton value="Sleipnir"/>
                     <RadioButton value="Snepnir"/>
                 </RadioGroup>,
-                themedContainer
-            ).withDriver(RadioGroupDriver);
+                RadioGroupDriver
+            );
 
             expect(driver.getRadioButton(1).isChecked(), 'expected radio to be checked').to.equal(true);
         });
 
         it('renders calls the given onChange function on change', () => {
             const onChange = sinon.spy();
-            const {driver} = clientRenderer.render(
+            const {driver} = renderWithDriver(
                 <RadioGroup onChange={onChange}>
                     <RadioButton value="Leviathan"/>
                     <RadioButton value="Quetzalcoatl"/>
                 </RadioGroup>,
-                themedContainer
-            ).withDriver(RadioGroupDriver);
+                RadioGroupDriver
+            );
 
             const button1 = driver.getRadioButton(1);
             expect(button1.root).to.be.present();
@@ -120,13 +122,13 @@ describe('default theme', () => {
         });
 
         it('sets the clicked radio button to be active on click', () => {
-            const {driver} = clientRenderer.render(
+            const {driver} = renderWithDriver(
                 <RadioGroup>
                     <RadioButton value="Garuda"/>
                     <RadioButton value="Ramuh"/>
                 </RadioGroup>,
-                themedContainer
-            ).withDriver(RadioGroupDriver);
+                RadioGroupDriver
+            );
 
             const button0 = driver.getRadioButton(0);
             const button1 = driver.getRadioButton(1);
@@ -139,13 +141,13 @@ describe('default theme', () => {
 
 
         it('changes the selected button when clicking on a different one', () => {
-            const {driver} = clientRenderer.render(
+            const {driver} = renderWithDriver(
                 <RadioGroup>
                     <RadioButton value="Diabolos"/>
                     <RadioButton value="Bahamut"/>
                 </RadioGroup>,
-                themedContainer
-            ).withDriver(RadioGroupDriver);
+                RadioGroupDriver
+            );
 
             const button0 = driver.getRadioButton(0);
             const button1 = driver.getRadioButton(1);
@@ -161,7 +163,7 @@ describe('default theme', () => {
         });
 
         it('does not affect buttons in a different radio group', () => {
-            const {select} = clientRenderer.render(
+            const {select} = render(
                 <div>
                     <RadioGroup data-automation-id="GROUP_0">
                         <RadioButton value="Siren"/>
@@ -171,8 +173,7 @@ describe('default theme', () => {
                         <RadioButton value="Alexander"/>
                         <RadioButton value="Odin"/>
                     </RadioGroup>
-                </div>,
-                themedContainer
+                </div>
             );
 
             const group0 = new RadioGroupDriver(() => select('GROUP_0')!);
@@ -192,13 +193,13 @@ describe('default theme', () => {
         });
 
         it('renders children from the data source prop if given', () => {
-            const {driver} = clientRenderer.render(
+            const {driver} = renderWithDriver(
                 <RadioGroup
                     value="Child1"
                     dataSource={[{value: 'Child0'}, {value: 'Child1'}, {value: 'Child2'}]}
                 />,
-                themedContainer
-            ).withDriver(RadioGroupDriver);
+                RadioGroupDriver
+            );
 
             const button0 = driver.getRadioButton(0);
             const button1 = driver.getRadioButton(1);
@@ -218,10 +219,10 @@ describe('default theme', () => {
         describe('<RadioButton/>', () => {
 
             it('renders a radio button to the screen', () => {
-                const {driver} = clientRenderer.render(
+                const {driver} = renderWithDriver(
                     <RadioButton value="Shiva" />,
-                    themedContainer
-                ).withDriver(RadioButtonDriver);
+                    RadioButtonDriver
+                );
 
                 expect(driver.root).to.be.present();
                 expect(driver.nativeElement).to.have.attribute('type', 'radio');
@@ -231,10 +232,12 @@ describe('default theme', () => {
 
             it('renders the label next to the radio button (right by default)', () => {
                 const distance = 7;
-                const {driver} = clientRenderer.render(
-                    <RadioButton><span style={{marginLeft: distance + 'px'}}>Omega</span></RadioButton>,
-                    themedContainer
-                ).withDriver(RadioButtonDriver);
+                const {driver} = renderWithDriver(
+                    <RadioButton>
+                        <span style={{marginLeft: distance + 'px'}}>Omega</span>
+                    </RadioButton>,
+                    RadioButtonDriver
+                )
                 const child = driver.children[0];
                 expect(child).to.to.be.instanceOf(HTMLSpanElement);
                 expect(child).to.have.text('Omega');
@@ -244,10 +247,10 @@ describe('default theme', () => {
 
             it('calls the onClick function when clicked', () => {
                 const onChange = sinon.spy();
-                const {driver} = clientRenderer.render(
+                const {driver} = renderWithDriver(
                     <RadioButton value="Tonberry" onChange={onChange}/>,
-                    themedContainer
-                ).withDriver(RadioButtonDriver);
+                    RadioButtonDriver
+                );
 
                 expect(driver.root).to.be.present();
                 driver.click();
@@ -259,23 +262,16 @@ describe('default theme', () => {
     });
 
     describe('<SelectionList />', () => {
-        let themedContainer: HTMLDivElement;
-        beforeEach(() => {
-            const ThemedContainer = WithTheme();
-            const {select} = clientRenderer.render(<ThemedContainer />);
-            themedContainer = select(WithThemeDAID) as HTMLDivElement;
-        });
 
         it('Renders a divider', () => {
-            const {driver} = clientRenderer.render(
+            const {driver} = renderWithDriver(
                 <SelectionList dataSource={[SelectionListDividerSymbol]} />,
-                themedContainer
-            ).withDriver(SelectionListTestDriver);
-
+                SelectionListTestDriver
+            );
             expect(driver.root).to.be.present();
             expect(
                 driver.elementHasStylableClassName(
-                    list.items[0],
+                    driver.items[0],
                     'root',
                     dividerStyle
                 )
@@ -284,46 +280,46 @@ describe('default theme', () => {
 
         describe('Styling', () => {
             it(`Puts "focused" state on the container when it's focused`, () => {
-                const {driver} = clientRenderer.render(
+                const {driver} = renderWithDriver(
                     <SelectionList />,
-                    themedContainer
-                ).withDriver(SelectionListTestDriver);
+                    SelectionListTestDriver
+                );
 
                 expect(driver.root).to.be.present()
-                expect(driver.elementHasStylableState(list.root, 'focused')).to.equal(false);
+                expect(driver.elementHasStylableState(driver.root, 'focused')).to.equal(false);
                 driver.focus();
-                expect(driver.elementHasStylableState(list.root, 'focused')).to.equal(true);
+                expect(driver.elementHasStylableState(driver.root, 'focused')).to.equal(true);
             });
 
             it(`Puts "selected" state on the selected item`, () => {
-                const {driver} = clientRenderer.render(
+                const {driver} = renderWithDriver(
                     <SelectionList dataSource={['0', '1']} value={'0'} />,
-                    themedContainer
-                ).withDriver(SelectionListTestDriver);
+                    SelectionListTestDriver
+                );
 
-                expect(driver.root).to.be.present());
-                expect(driver.elementHasStylableState(list.items[0], 'selected', optionStyle)).to.equal(true);
-                expect(driver.elementHasStylableState(list.items[1], 'selected', optionStyle)).to.equal(false);
+                expect(driver.root).to.be.present();
+                expect(driver.elementHasStylableState(driver.items[0], 'selected', optionStyle)).to.equal(true);
+                expect(driver.elementHasStylableState(driver.items[1], 'selected', optionStyle)).to.equal(false);
             });
 
             it(`Puts "focused" state on the item focused via keyboard and removes it on blur`, () => {
-                const {driver} = clientRenderer.render(
+                const {driver} = renderWithDriver(
                     <SelectionList dataSource={['0', '1']} value={'0'} />,
-                    themedContainer
-                ).withDriver(SelectionListTestDriver);
+                    SelectionListTestDriver
+                );
 
                 expect(driver.root).to.be.present();
                 driver.focus();
-                expect(driver.elementHasStylableState(list.items[0], 'focused', optionStyle)).to.equal(true);
-                expect(driver.elementHasStylableState(list.items[1], 'focused', optionStyle)).to.equal(false);
+                expect(driver.elementHasStylableState(driver.items[0], 'focused', optionStyle)).to.equal(true);
+                expect(driver.elementHasStylableState(driver.items[1], 'focused', optionStyle)).to.equal(false);
 
                 driver.keyDown(keycode('down'));
-                expect(driver.elementHasStylableState(list.items[0], 'focused', optionStyle)).to.equal(false);
-                expect(driver.elementHasStylableState(list.items[1], 'focused', optionStyle)).to.equal(true);
+                expect(driver.elementHasStylableState(driver.items[0], 'focused', optionStyle)).to.equal(false);
+                expect(driver.elementHasStylableState(driver.items[1], 'focused', optionStyle)).to.equal(true);
 
                 driver.blur();
-                expect(driver.elementHasStylableState(list.items[0], 'focused', optionStyle)).to.equal(false);
-                expect(driver.elementHasStylableState(list.items[1], 'focused', optionStyle)).to.equal(false);
+                expect(driver.elementHasStylableState(driver.items[0], 'focused', optionStyle)).to.equal(false);
+                expect(driver.elementHasStylableState(driver.items[1], 'focused', optionStyle)).to.equal(false);
             });
         })
 
