@@ -110,10 +110,11 @@ describe('<Modal />', () => {
         scroll.style.width = '1000vw';
         document.body.appendChild(scroll);
         window.scrollTo(0, 2 * window.innerHeight);
-        clientRenderer.render(<Modal isOpen={true} />);
+        const {driver: modal} =
+            clientRenderer.render(<Modal isOpen={true} />).withDriver(ModalTestDriver);
 
         await waitFor(() => {
-            expect(bodySelect('MODAL')!.getBoundingClientRect().top).to.equal(0);
+            expect(modal.content.getBoundingClientRect().top).to.equal(0);
         });
 
         window.scrollTo(0, 0);
@@ -122,9 +123,12 @@ describe('<Modal />', () => {
 
     it('calls onRequestClose with source equal to backdrop when the backdrop is clicked', async () => {
         const onRequestClose = sinon.spy();
-        clientRenderer.render(<Modal isOpen={true} onRequestClose={onRequestClose} />);
+        const {driver: modal} =
+            clientRenderer
+                .render(<Modal isOpen={true} onRequestClose={onRequestClose} />)
+                .withDriver(ModalTestDriver);
 
-        simulate.click(bodySelect('MODAL'));
+        simulate.click(modal.content);
 
         await waitFor(() => expect(onRequestClose).to.have.been.calledWithMatch({source: 'backdrop'}));
     });
@@ -132,32 +136,31 @@ describe('<Modal />', () => {
     it('calls onRequestClose with source equal to children when the child is clicked', async () => {
         const onRequestClose = sinon.spy();
 
-        clientRenderer.render(
+        const {driver: modal} = clientRenderer.render(
             <Modal isOpen={true} onRequestClose={onRequestClose}>
-                <p data-slot="child" data-automation-id="CHILD_1">child 1</p>
+                <p data-slot="child">child 1</p>
             </Modal>
-        );
+        ).withDriver(ModalTestDriver);
 
-        simulate.click(bodySelect('CHILD_1'));
+        simulate.click(modal.children[0]);
 
         await waitFor(() => expect(onRequestClose.getCall(0)).to.have.been.calledWithMatch({source: 'child'}));
     });
 
     it('renders the modal to the bottom of the DOM', async () => {
-        const {container} = clientRenderer.render(
+        const {container, driver: modal} = clientRenderer.render(
             <Modal isOpen={true}>
-                <p data-automation-id="CHILD_1">child 1</p>
+                <p>child 1</p>
             </Modal>
-        );
+        ).withDriver(ModalTestDriver);
 
         await waitFor(() => {
-            const modal = bodySelect<HTMLElement>('MODAL')!;
-            const children = bodySelect<HTMLElement>('CHILD_1')!;
+            const children = modal.children[0];
 
             /* tslint:disable:no-bitwise */
-            expect(modal.compareDocumentPosition(children) & Node.DOCUMENT_POSITION_CONTAINED_BY,
+            expect(modal.content.compareDocumentPosition(children) & Node.DOCUMENT_POSITION_CONTAINED_BY,
                 'children contained in modal').to.equal(Node.DOCUMENT_POSITION_CONTAINED_BY);
-            expect(container.compareDocumentPosition(modal) & Node.DOCUMENT_POSITION_FOLLOWING,
+            expect(container.compareDocumentPosition(modal.content) & Node.DOCUMENT_POSITION_FOLLOWING,
                 'modal is following the app container').to.equal(Node.DOCUMENT_POSITION_FOLLOWING);
             /* tslint:enable:no-bitwise */
         });
