@@ -1,6 +1,6 @@
 @namespace "SliderTooltip";
 :import {
-    -st-from: "../../style/project.st.css";
+    -st-from: "../../project.st.css";
     -st-named:
         BK1;
 }
