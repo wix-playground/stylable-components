@@ -1,0 +1,80 @@
+:import {
+	-st-from: "../../../components/selection-list/selection-list.st.css";
+	-st-default: SelectionList;
+}
+
+:import {
+    -st-from: "../../../components/selection-list/option.st.css";
+    -st-default: Option;
+}
+
+:import {
+    -st-from: "../../../components/selection-list/divider.st.css";
+    -st-default: Divider;
+}
+
+:import {
+    -st-from: "../variables.st.css";
+    -st-named:  defaultFont,
+                borderDefault,
+                color_Focus,
+                color_Divider,
+                color_Hover2,
+                color_Selected,
+                color_Disabled,
+                color_MainDisabled,
+                color_MainText_Background,
+                color_Active,
+                color_Hover;
+}
+
+SelectionList {
+    border: value(borderDefault);
+}
+
+SelectionList:focused {
+    border-color: value(color_Focus);
+}
+
+Divider {
+    height: 1px;
+    background-color: value(color_Divider);
+}
+
+Option {
+    border: 1px solid transparent;
+    box-sizing: border-box;
+    font: value(defaultFont);
+    line-height: 24px;
+    min-height: 36px;
+    overflow: hidden;
+    padding: 5px 23px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+Option:disabled {
+    color: value(color_MainDisabled);
+}
+
+Option:focused {
+    border-color: value(color_Active);
+}
+
+Option:selected {
+    background-color: value(color_Selected);
+}
+
+Option:hover:not(:disabled) {
+    background-color: value(color_Hover2);
+}
+
+SelectionList:focused Option:selected:not(:disabled) {
+    background-color: value(color_Active);
+    color: value(color_MainText_Background);
+}
+
+SelectionList:focused > Option:selected:hover:not(:disabled) {
+    background-color: value(color_Hover);
+    color: value(color_MainText_Background);
+}

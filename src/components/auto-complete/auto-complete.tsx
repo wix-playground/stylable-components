@@ -4,27 +4,24 @@ import {Popup} from '../../';
 import {ChangeEvent} from '../../types/events';
 import {FormInputProps} from '../../types/forms';
 import {noop} from '../../utils';
-import {CaretDown} from '../drop-down/drop-down-icons';
 import {
+    OptionList,
     SelectionListItemValue,
-    SelectionListModel,
-    SelectionListOptionList
+    SelectionListModel
 } from '../selection-list/selection-list-model';
 import {SelectionListView} from '../selection-list/selection-list-view';
 import style from './auto-complete.st.css';
 
 export type FilterPredicate = (item: string, filterString: string) => boolean;
 
-export interface AutoCompleteProps extends FormInputProps<string>,
-    Partial<SelectionListOptionList>,
-    properties.Props {
+export interface AutoCompleteProps extends OptionList, FormInputProps<string>, properties.Props {
     open?: boolean;
     filter?: FilterPredicate;
     onOpenStateChange?: (e: ChangeEvent<boolean>) => void;
 }
 
 export interface AutoCompleteState {
-    input: HTMLInputElement | null;
+    self: HTMLDivElement | null;
 }
 
 const prefixFilter: FilterPredicate = (item: string, prefix: string) => {
@@ -42,7 +39,7 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
         onChange: noop,
         onOpenStateChange: noop
     };
-    public state = {input: null, isOpen: this.props.open!};
+    public state = {self: null, isOpen: this.props.open!};
 
     public render() {
         const filteredItems = this.props.value ?
@@ -51,19 +48,30 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
         const list = new SelectionListModel();
         list.addDataSource({dataSource: filteredItems});
         return (
-            <div data-automation-id="AUTO_COMPLETE">
+            <div
+                data-automation-id="AUTO_COMPLETE"
+                ref={this.refCallback}
+            >
                 <input
-                    className="autoCompleteInput"
+                    className="input"
                     data-automation-id="AUTO_COMPLETE_INPUT"
                     type="text"
                     onChange={this.onChange}
                     value={this.props.value}
-                    ref={this.refCallback}
+
                 />
-                <CaretDown onClick={this.onCaretClick} className="caret" data-automation-id="AUTO_COMPLETE_CARET" />
-                <Popup anchor={this.state.input} open={this.props.open && filteredItems!.length > 0}>
+                <button
+                    onClick={this.onCaretClick}
+                    className="caret"
+                    data-automation-id="AUTO_COMPLETE_CARET"
+                />
+                <Popup
+                    className="root"
+                    anchor={this.state.self}
+                    open={this.props.open && filteredItems!.length > 0}
+                >
                     <SelectionListView
-                        className="root autoCompleteList"
+                        className="list"
                         list={list}
                         onChange={this.onClick}
                     />
@@ -72,8 +80,8 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
         );
     }
 
-    private refCallback = (ref: HTMLInputElement) => {
-        this.setState({input: ref});
+    private refCallback = (ref: HTMLDivElement) => {
+        this.setState({self: ref});
     }
 
     private onChange = (e: React.ChangeEvent<HTMLInputElement>) => {

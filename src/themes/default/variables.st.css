@@ -1,0 +1,167 @@
+:vars {
+    fontFamily: Arial;
+    fontSize: 100%;
+    fontWeight: normal;
+    lineHeight: 1.5;
+
+    /* Colors from styleguide */
+    BK1: #000000;
+    BK2: #7d8c98;
+    BK3: #adbbc6;
+    DS1: #c8c8c8;
+    DS2: #f1f1f1;
+    ER1: #d0011b;
+    PR1: #257ade;
+    PR2: #4a90e2;
+    PR3: #5cb4ff;
+    PR3-50: rgba(92, 180, 255, 0.5);
+    PR4: #edf7ff;
+    WT1: #ffffff;
+
+    /* Other colors - TODO: we should not use any of them  */
+    B1: #4990e2;
+    B2: #5cb4ff;
+    B3: #4990e2;
+    B4: #257ade;
+    B5: #d1d1d1;
+    B6: #f1f1f1;
+    B7: #adbbc6;
+    B10: #3899ec;
+
+    M1: #000000;
+    M2: #577083;
+    M3: #4A90E2;
+    M4: #EDF7FF;
+    M5: #D0021B;
+    M6: #c8c8c8;
+    M7: #4a90e2;
+    M0: #ffffff;
+    R1: #d0011b;
+
+    /* Basic colors */
+    color_MainText: value(M1); /* Base text color  */
+    color_MainPlaceholder: value(BK2);
+    color_MainError: value(M5);
+    color_MainDisabled: value(M6);
+    color_MainText_Background: value(WT1);
+    color_Border: value(B10);
+
+    /* Component state colors */
+    color_Default: value(B1);
+    color_Hover: value(PR3);
+    color_Hover2: value(PR4);
+    color_Active: value(B3);
+    color_Focus: value(B4);
+    color_Focus2: value(PR3-50);
+    color_Disabled: value(B5);
+    color_Disabled2: value(DS2);
+    color_Keyboard_Focused: value(M4);
+    color_Selected: value(DS2);
+    color_Selection: value(PR2);
+    color_Outline: value(PR4);
+    color_Error: value(R1);
+    color_Divider: value(BK3);
+
+    /* Copmponent Sizes */
+    inputHeight: 36px;
+    inputWidth: 192px;
+    inputHSpacing: 6px;
+    inputVSpacing: 12px;
+    inputSpacing: value(inputVSpacing) value(inputHSpacing);
+    caretRightSpacing: 1px;
+
+    defaultFont: normal value(fontSize) value(fontFamily), sans-serif;
+
+    /* Borders */
+    borderRadius: 0px;
+    borderWidth: 1px;
+    borderStyle: solid;
+
+    borderDefaultColor: value(B5);
+    borderDefault: value(borderStyle) value(borderWidth) value(borderDefaultColor);
+    borderHover: value(borderStyle) value(borderWidth) value(color_Hover);
+    borderFocus: value(borderStyle) value(borderWidth) value(color_Focus);
+    borderDisabled: value(borderStyle) value(borderWidth) value(color_Disabled2);
+    borderError: value(borderStyle) value(borderWidth) value(color_Error);
+
+    iconChevronUpBK3:   url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNhZGJiYzYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cG9seWxpbmUgcG9pbnRzPSIxOCAxNSAxMiA5IDYgMTUiPjwvcG9seWxpbmU+PC9zdmc+);
+    iconChevronUpDS1:   url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNjOGM4YzgiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cG9seWxpbmUgcG9pbnRzPSIxOCAxNSAxMiA5IDYgMTUiPjwvcG9seWxpbmU+PC9zdmc+);
+    iconChevronUpPR3:   url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiM1Y2I0ZmYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cG9seWxpbmUgcG9pbnRzPSIxOCAxNSAxMiA5IDYgMTUiPjwvcG9seWxpbmU+PC9zdmc+);
+    iconChevronDownBK3: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNhZGJiYzYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cG9seWxpbmUgcG9pbnRzPSI2IDkgMTIgMTUgMTggOSI+PC9wb2x5bGluZT48L3N2Zz4=);
+    iconChevronDownDS1: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNjOGM4YzgiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cG9seWxpbmUgcG9pbnRzPSI2IDkgMTIgMTUgMTggOSI+PC9wb2x5bGluZT48L3N2Zz4=);
+    iconChevronDownPR3: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiM1Y2I0ZmYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cG9seWxpbmUgcG9pbnRzPSI2IDkgMTIgMTUgMTggOSI+PC9wb2x5bGluZT48L3N2Zz4=);
+
+    iconTick:                   url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHBhdGggZmlsbD0iI2ZmZiIgZD0iTTExLjggNEw2LjUgOS4yIDQuMiA3IDMgOC4ybDMuNSAzLjZMMTMgNS4yIi8+PC9zdmc+);
+    iconTickDisabled:           url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHBhdGggZmlsbD0iI2M4YzhjOCIgZD0iTTExLjggNEw2LjUgOS4yIDQuMiA3IDMgOC4ybDMuNSAzLjZMMTMgNS4yIi8+PC9zdmc+);
+    iconIntermediate:           url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHBhdGggZmlsbD0iI2ZmZmZmZiIgZD0iTTQgN2g4djJINHoiLz48L3N2Zz4=);
+    iconIntermediateDisabled:   url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHBhdGggZmlsbD0iI2M4YzhjOCIgZD0iTTQgN2g4djJINHoiLz48L3N2Zz4=);
+}
+
+/* Typography */
+h1 {
+    color: value(color_MainText);
+    font-size: 32px;
+    line-height: 48px;
+}
+h2 {
+    color: value(color_MainText);
+    font-size: 24px;
+    line-height: 36px;
+}
+h3 {
+    color: value(color_MainText);
+    font-size: 19px;
+    line-height: 28px;
+}
+h4 {
+    color: value(color_MainText);
+    font-size: 16px;
+    line-height: 24px;
+}
+h5 {
+    color: value(color_MainText);
+    font-size: 14px;
+    line-height: 20px;
+}
+h6 {
+    color: value(color_MainText);
+    font-size: 12px;
+    line-height: 18px;
+}
+p {
+    color: value(color_MainText);
+    font-size: 16px;
+    line-height: 24px;
+}
+label {
+    color: value(color_MainPlaceholder);
+    font-size: 16px;
+    line-height: 24px;
+}
+img {
+    display: inline-block;
+    vertical-align: middle;
+}
+textarea {
+    height: auto;
+    min-height: 50px;
+    border-radius: value(borderRadius);
+}
+a {
+    text-decoration: none;
+    user-select: none;
+    color: value(color_Default);
+    outline: 0;
+}
+a:focus {
+    color: value(color_Default);
+}
+a:visited:not(.button):not([disabled]) {
+    color: value(color_Focus);
+}
+a:hover {
+    color: value(color_Hover);
+}
+a.disabled, a[disabled] {
+    color: value(color_Disabled);
+}

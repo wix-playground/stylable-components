@@ -1,7 +1,7 @@
 import React = require('react');
 import {stylable} from 'wix-react-tools';
+import style from './option.st.css';
 import {SelectionListItemValue} from './selection-list-model';
-import listStyle from './selection-list.st.css';
 
 export interface OptionProps {
     children?: React.ReactNode;
@@ -11,10 +11,9 @@ export interface OptionProps {
     value?: SelectionListItemValue;
 }
 
-export const SelectionListOption: React.SFC<OptionProps> = stylable(listStyle)(
+export const SelectionListOption: React.SFC<OptionProps> = stylable(style)(
     props => (
         <div
-            className="item"
             data-value={props.disabled ? undefined : props.value}
             style-state={{
                 disabled: Boolean(props.disabled),

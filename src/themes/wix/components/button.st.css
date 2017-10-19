@@ -1,0 +1,214 @@
+:import {
+    -st-from: "../../../components/button/button.st.css";
+    -st-default: Button;
+}
+
+:import {
+    -st-from: "../variables.st.css";
+    -st-named:  labelFontStyle,
+                buttonColorMain,
+                buttonColorMainHover,
+                buttonColorMainActive,
+
+                buttonColorWhiteHover,
+                buttonColorWhiteActive,
+
+                buttonColorDisabled,
+
+                buttonColorError,
+                buttonColorErrorHover,
+                buttonColorErrorActive,
+
+                buttonColorPremium,
+                buttonColorPremiumHover,
+                buttonColorPremiumActive,
+
+                buttonColorTransparent,
+                buttonColorTransparentHover,
+                buttonColorTransparentActive;
+};
+
+Button {
+    box-sizing: border-box;
+    border: none;
+    cursor: pointer;
+    font: value(labelFontStyle);
+
+    border-radius: 21px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    /*vertical-align: middle;*/
+    margin: 12px;
+    outline: none;
+
+    height: 36px;
+    font-size: 16px;
+    line-height: 24px;
+
+    padding: 0 24px;
+
+    background: value(buttonColorMain);
+    color: white;
+}
+
+Button:hover,
+.btnSecondary:hover {
+    color: white;
+    background: value(buttonColorMainHover);
+    border-color: transparent;
+}
+
+Button:active,
+.btnSecondary:active {
+    color: white;
+    background-color: value(buttonColorMainActive);
+    border-color: transparent;
+}
+
+Button:disabled, 
+.btnWhite:disabled,
+.btnError:disabled,
+.btnPremium:disabled {
+    background-color: value(buttonColorDisabled);
+    color: white;
+}
+
+
+.btnLarge {
+    -st-extends: Button;
+    height: 42px;
+}
+
+.btnSmall {
+    -st-extends: Button;
+    height: 30px;
+    font-size: 14px;
+    line-height: 18px;
+    padding: 0 18px;
+}
+
+.btnTiny {
+    -st-extends: Button;
+    height: 24px;
+    font-size: 14px;
+    line-height: 18px;
+    padding: 0 12px;
+}
+
+.btnSecondary {
+    -st-extends: Button;
+    border: 1px solid value(buttonColorMain);
+    background: transparent;
+    color: value(buttonColorMain);
+}
+
+.btnSecondary:disabled, 
+.btnWhiteSecondary:disabled,
+.btnErrorSecondary:disabled,
+.btnPremiumSecondary:disabled  {
+    color: value(buttonColorDisabled);
+    border-color: value(buttonColorDisabled);
+}
+
+.btnWhite {
+    -st-extends:Button;
+    background-color: white;
+    color: value(buttonColorMain);
+}
+
+.btnWhite:hover, 
+.btnWhiteSecondary:hover {
+    background-color: value(buttonColorWhiteHover);
+    border: transparent;
+    color: value(buttonColorMain);
+}
+
+.btnWhite:active, 
+.btnWhiteSecondary:active {
+    background-color: value(buttonColorWhiteActive);
+    border: transparent;
+    color: value(buttonColorMain);
+}
+
+.btnWhiteSecondary {
+    -st-extends: Button;
+    border: 1px solid white;
+    background-color: transparent;
+    color: white;
+}
+
+.btnError {
+    -st-extends:Button;
+    background: value(buttonColorError);
+    color: white;
+
+}
+
+.btnError:hover, 
+.btnErrorSecondary:hover {
+    background-color: value(buttonColorErrorHover);
+    border: transparent;
+    color: white;
+}
+
+.btnError:active, 
+.btnErrorSecondary:active {
+    background-color: value(buttonColorErrorActive);
+    border: transparent;
+    color: white;
+}
+
+.btnErrorSecondary {
+    -st-extends: Button;
+    border: 1px solid value(buttonColorError);
+    background-color: transparent;
+    color: value(buttonColorError);
+}
+
+.btnPremium {
+    -st-extends:Button;
+    background: value(buttonColorPremium);
+    color: white;
+
+}
+
+.btnPremium:hover, 
+.btnPremiumSecondary:hover {
+    background-color: value(buttonColorPremiumHover);
+    border: transparent;
+    color: white;
+}
+
+.btnPremium:active, 
+.btnPremiumSecondary:active {
+    background-color: value(buttonColorPremiumActive);
+    border: transparent;
+    color: white;
+}
+
+.btnPremiumSecondary {
+    -st-extends: Button;
+    border: 1px solid value(buttonColorPremium);
+    background-color: transparent;
+    color: value(buttonColorPremium);
+}
+
+.btnTransparent {
+    -st-extends:Button;
+    background: value(buttonColorTransparent);
+    color: white;
+
+}
+
+.btnTransparent:hover {
+    background-color: value(buttonColorTransparentHover);
+    border: transparent;
+    color: white;
+}
+
+.btnTransparent:active {
+    background-color: value(buttonColorTransparentActive);
+    border: transparent;
+    color: white;
+}

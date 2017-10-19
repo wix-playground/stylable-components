@@ -5,57 +5,40 @@
     -st-default: Stepper;
 }
 
-:import {
-    -st-from: "../../style/project.st.css";
-    -st-named:
-        ER1,
-        DS1,
-        DS2,
-        BK2,
-        BK3,
-        PR2,
-        PR3;
-}
 :vars {
     height: 2.25em;
     width: 7.5em;
 }
+
 .root {
     -st-states: focus, disabled, empty, hasPlaceholder, error, rtl;
-    font-family: arial;
-    font-size: 16px;
     position: relative;
-    border: 1px solid value(BK3);
     height: value(height);
     min-width: value(width);
     display: inline-flex;
     align-items: center;
     user-select: none;
+    padding-left: 6px;
     -webkit-user-select: none;
-    background-color: white;
-
-    padding-left: 9px;
-    overflow: hidden;
 }
 
-.root:not(:disabled):hover {
-    border-color: value(PR3);
-}
-/* reset :hover for touch devices */
-@media (hover: none) {
-    .root:not(:focus):hover {
-        border-color: value(BK3);
-    }
+.colon {}
+.time {}
+
+.root:rtl {
+    padding-left: 0;
+    padding-right: 6px;
 }
 
-.root:focus {
-    border-color: value(PR2);
+.root:rtl::time {
+    display: flex;
+    flex-direction: row-reverse;
 }
+
 .root:disabled {
-    background-color: value(DS2);
-    color: value(DS1);
     position: relative;
 }
+
 .root:disabled:after {
     content: '';
     position: absolute;
@@ -66,96 +49,26 @@
     cursor: not-allowed;
 }
 
-.root:empty {
-    color: value(BK2);
-}
 .root:empty::stepper,
-.root:empty:hasPlaceholder::time,
+.root:empty:hasPlaceholder::input,
+.root:empty:hasPlaceholder::colon,
 .root:empty:hasPlaceholder::ampm {
     opacity: 0;
-}
-.root:error {
-    border-color: value(ER1);
-}
-
-.time {
-    display: inline-block;
-    flex: 1;
-    position: relative;
-}
-.time:after {
-    content: ':';
-    position: absolute;
-    top: 0;
-    left: 1.4em;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.root:rtl {
-    padding-right: 9px;
-    padding-left: 0;
-}
-.root:rtl::time {
-    display: inline-flex;
-    flex-direction: row-reverse;
 }
 
 .input {
     position: relative;
-    font: inherit;
     border: 0;
+    outline: 0;
     padding: 0 3px;
     margin: 0;
     width: 1.62em;
     height: 100%;
+
+    font: inherit;
     background: none;
     color: inherit;
     -webkit-text-fill-color: inherit;
-}
-
-/* TODO replace with mixin */
-.input::-webkit-input-placeholder {
-    color: value(BK2);
-    -webkit-text-fill-color: currentColor;
-    opacity: 1;
-}
-.input:-ms-input-placeholder {
-    color: value(BK2);
-    -webkit-text-fill-color: currentColor;
-    opacity: 1;
-}
-.input::-moz-placeholder {
-    color: value(BK2);
-    -webkit-text-fill-color: currentColor;
-    opacity: 1;
-}
-
-/* TODO replace with mixin */
-.input::-moz-selection {
-    color: white;
-    background: value(PR2);
-    padding: 2px;
-}
-.input::selection {
-    color: white;
-    -webkit-text-fill-color: currentColor;
-    background: value(PR2);
-    padding: 2px;
-}
-
-.input:hover,
-.input:focus {
-    border: 0;
-    outline: 0;
-}
-.input:disabled {
-    opacity: 1;
-    background-color: inherit;
-    border: none;
-    color: inherit;
 }
 
 .placeholder {
@@ -171,21 +84,13 @@
 
 .ampm {
     display: inline-block;
-    background-color: inherit;
     cursor: pointer;
 }
-.ampm:hover {
-    color: value(PR3);
-}
-.ampm:focus {
-    background: value(PR2);
-    outline: none;
-    color: white;
-}
+
 .root:disabled::ampm:hover {
-    color: inherit;
     cursor: inherit;
 }
+
 .label {
     -st-states: visible;
     display: none;
@@ -195,8 +100,6 @@
     width: 100%;
     height: 100%;
     user-select: none;
-    -webkit-tap-highlight-color: transparent;
-    -webkit-touch-callout: none;
     -webkit-user-select: none;
 }
 .label:visible {
@@ -211,13 +114,16 @@
     width: 0;
     height: 0;
 }
-.nativeInput:focus {
-    border: 0;
-}
 
 .stepper {
     -st-extends: Stepper;
+    margin-left: auto;
     height: 100%;
-    transition: opacity 100ms ease;
     float: right;
 }
+
+.root:rtl::stepper {
+    margin-left: initial;
+    margin-right: auto;
+}
+

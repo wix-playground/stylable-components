@@ -1,0 +1,56 @@
+:import {
+	-st-from: "../../../components/auto-complete/auto-complete.st.css";
+	-st-default: AutoComplete;
+}
+
+:import {
+    -st-from: "../variables.st.css";
+    -st-named:  color_MainText_Background,
+                color_MainText,
+                borderDefault,
+                borderRadius,
+                borderHover,
+                borderFocus,
+                inputWidth,
+                inputHeight,
+                inputSpacing,
+                defaultFont,
+                caretRightSpacing;
+}
+
+AutoComplete {
+    font: value(defaultFont);
+    border: value(borderDefault);
+    border-radius: value(borderRadius);
+    background-color: value(color_MainText_Background);
+    color: value(color_MainText);
+
+    height: value(inputHeight);
+    min-width: value(inputWidth);
+
+}
+
+AutoComplete::input {
+    padding: value(inputSpacing);
+}
+
+
+AutoComplete:hover {
+    border: value(borderHover);
+}
+
+AutoComplete:focus {
+    border: value(borderFocus);
+}
+
+AutoComplete::caret {
+    width: 30px;
+    background-size: 16px 16px;
+}
+
+AutoComplete::list {
+    border-top: 0;
+    background-color: value(color_MainText_Background);
+}
+
+
