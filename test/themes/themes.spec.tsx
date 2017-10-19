@@ -1,12 +1,11 @@
-import keycode = require('keycode');
 import * as React from 'react';
 import {expect, simulate, sinon} from 'test-drive-react';
-import {AutoComplete, DropDown, RadioButton, RadioGroup, SelectionList, SelectionListDividerSymbol} from '../../src';
+import {
+    AutoComplete, DropDown, RadioButton,
+    RadioGroup, SelectionList, SelectionListDividerSymbol as divider
+} from '../../src';
 import {DropDownDriver, RadioButtonDriver, RadioGroupDriver, SelectionListTestDriver} from '../../test-kit';
 import {ClientRendererWithTheme} from '../utils';
-
-import dividerStyle from '../../src/components/selection-list/divider.st.css';
-import optionStyle from '../../src/components/selection-list/option.st.css';
 
 import defaultTheme from '../../src/themes/default/theme.st.css';
 
@@ -243,61 +242,27 @@ describe('themes', () => {
 
             describe('<SelectionList />', () => {
 
-                it('Renders a divider', () => {
+                it('Renders items under each other using the default renderer', () => {
                     const {driver} = clientRenderer.render(
-                        <SelectionList dataSource={[SelectionListDividerSymbol]} />
+                        <SelectionList dataSource={['0', '1', divider]} />
                     ).withDriver(SelectionListTestDriver);
+
                     expect(driver.root).to.be.present();
-                    expect(
-                        driver.elementHasStylableClassName(
-                            driver.items[0],
-                            'root',
-                            dividerStyle
-                        )
-                    ).to.equal(true);
+                    expect(driver.items).to.be.inVerticalSequence();
+                    expect(driver.items).to.be.horizontallyAligned('left');
                 });
 
-                describe('Styling', () => {
-                    it(`Puts "focused" state on the container when it's focused`, () => {
-                        const {driver} = clientRenderer.render(
-                            <SelectionList />
-                        ).withDriver(SelectionListTestDriver);
+                it('Renders blank items at the same height as normal items', () => {
+                    const {driver} = clientRenderer.render(
+                        <SelectionList dataSource={['', '1']} />
+                    ).withDriver(SelectionListTestDriver);
 
-                        expect(driver.root).to.be.present();
-                        expect(driver.elementHasStylableState(driver.root, 'focused')).to.equal(false);
-                        driver.focus();
-                        expect(driver.elementHasStylableState(driver.root, 'focused')).to.equal(true);
-                    });
-
-                    it(`Puts "selected" state on the selected item`, () => {
-                        const {driver} = clientRenderer.render(
-                            <SelectionList dataSource={['0', '1']} value={'0'} />
-                        ).withDriver(SelectionListTestDriver);
-
-                        expect(driver.root).to.be.present();
-                        expect(driver.elementHasStylableState(driver.items[0], 'selected', optionStyle)).to.equal(true);
-                        expect(driver.elementHasStylableState(driver.items[1], 'selected', optionStyle))
-                            .to.equal(false);
-                    });
-
-                    it(`Puts "focused" state on the item focused via keyboard and removes it on blur`, () => {
-                        const {driver} = clientRenderer.render(
-                            <SelectionList dataSource={['0', '1']} value={'0'} />
-                        ).withDriver(SelectionListTestDriver);
-
-                        expect(driver.root).to.be.present();
-                        driver.focus();
-                        expect(driver.elementHasStylableState(driver.items[0], 'focused', optionStyle)).to.equal(true);
-                        expect(driver.elementHasStylableState(driver.items[1], 'focused', optionStyle)).to.equal(false);
-
-                        driver.keyDown(keycode('down'));
-                        expect(driver.elementHasStylableState(driver.items[0], 'focused', optionStyle)).to.equal(false);
-                        expect(driver.elementHasStylableState(driver.items[1], 'focused', optionStyle)).to.equal(true);
-
-                        driver.blur();
-                        expect(driver.elementHasStylableState(driver.items[0], 'focused', optionStyle)).to.equal(false);
-                        expect(driver.elementHasStylableState(driver.items[1], 'focused', optionStyle)).to.equal(false);
-                    });
+                    expect(driver.root).to.be.present();
+                    const [empty, full] = driver.items;
+                    expect(empty).to.have.width.at.least(full);
+                    expect(empty).to.have.width.at.most(full);
+                    expect(empty).to.have.height.at.least(full);
+                    expect(empty).to.have.height.at.most(full);
                 });
 
             });

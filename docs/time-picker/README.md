@@ -1,16 +1,14 @@
 # Time Picker Component
 
-Time Picker allows users to select time and switch between time formats ( AM/PM & 24h ).
+The **TimePicker** component allows users to select the time and switch between time formats (AM/PM & 24h), and improves upon the native `<input type="time">` by providing:
 
-
+* the ability to customize the stepper arrows style
+* a common React+Typescript API
+* works out the kinks of native implementations
 
 ## Elements
 
 ![elements](./assets/elements.png)
-
-The **Time Picker** component improves upon the native `<input type="time">` by providing ability to customize the stepper arrows design, a common React+Typescript API, and working out the kinks of native implementations
-
-
 
 ## API
 
@@ -18,22 +16,22 @@ The **Time Picker** component improves upon the native `<input type="time">` by 
 
 | name        | type                            | defaultValue   | isRequired | description                              |
 | ----------- | ------------------------------- | -------------- | ---------- | ---------------------------------------- |
-| value       | string                          |                | yes        | Sets and represents time shown in the time picker. <br> Accepts strings in 24h format (12:54). |
+| value       | string                          |                | yes        | Sets and represents the time shown in the component instance.<br>Accepts strings in 24h format (12:54). |
 | placeholder | string                          |                |            | Text to display if the value is null.    |
-| format      | enum:<br>    `ampm` <br> `24hr` | system default |            | Tells the component to display the picker in ampm (12hr) format or 24hr format. |
-| required    | bool                            | false          |            | Whether or not filling the value is required in a form. |
-| disabled    | bool                            | false          |            | If `true`, the componentName will not be interactive. |
+| format      | enum:<br>"ampm",<br>"24hr" | system default |            | Tells the component instance to present the time in ampm (12hr) format or 24hr format. |
+| required    | boolean                            | false          |            | Whether or not filling the value is required in a form. |
+| disabled    | boolean                            | false          |            | If `true`, the  component instance will not be interactive. |
 | label       | string                          |                |            | Text to display in accessibility mode.   |
-| name        | string                          |                |            | The name of the slider. Behaves like the name attribute of an input element. |
+| name        | string                          |                |            | The name of the component instance. Behaves like the name attribute of an input element. |
 | prefix      | node                            |                |            | Inserts a component at the start of the input. |
 | suffix      | node                            |                |            | Inserts a component at the end of the input. |
-| error       | bool                            | false          |            | Sets the `:error` CSS state on the `<timePicker>`. |
-
-
+| onChange     | function |   |   | Callback function that is fired on component blur.<br>`(event: {value: number}): void`<br>`event` KeyDown event targeting the component instance.<br>`newValue` The new value of the component instance. |
+| onInput      |function |   |  | Callback function that is fired on every keydown event.<br> `(event: {value: number}): void`<br>`event` KeyDown event targeting the component instance.<br>`newValue` The new value of the component instance. |
+| error       | boolean                            | false          |            | Sets the `:error` CSS state of the component instance. |
 
 ### Code Example
 
-**Example 1:**
+##### Example 1
 
 ```jsx
 //TODO: code guys - fix code example!
@@ -56,9 +54,7 @@ export class ComponentsDemo extends React.Component<{}, {}>{
 }
 ```
 
-*Comments to example 1*
-
-**Example 2:**
+##### Example 2
 
 ```jsx
 //TODO: code guys - fix code example!
@@ -82,20 +78,18 @@ export class ComponentsDemo extends React.Component<{}, {}>{
 }
 ```
 
-*Comments to example 2*
-
-
-
 ## Style API
 
 ### Subcomponents (pseudo-elements)
 
 | selector      | description                            | type                                     |
 | :------------ | -------------------------------------- | ---------------------------------------- |
-| ::stepper     | Allows you to style the stepper arrows | Style the internal `<Stepper/>` component. This component exposes some internal styles. Consult the (Link to Documentation) to see which subcomponents and states are available |
-| ::placeholder | Allows you to style the placeholder    | HTML Element. This subcomponents has no subcomponents of its own* |
+| ::stepper     | Allows you to style the stepper arrows. | Style the internal `<Stepper/>` component. This component exposes some internal styles. |
+| ::stepper::up   | Style the stepper UP arrow.   | Style the internal `<up/>` arrow component.|
+| ::stepper::down | Style the stepper DOWN arrow. | Style the internal `<down/>` arrow component. |
+| ::placeholder | Allows you to style the placeholder. | This subcomponent is an HTML Element and has no subcomponents of its own. |
 
-You can change color of `::placeholder` subcomponent by changing `color` property.
+You can change color of the `::placeholder` subcomponent by setting the `color` property.
 
 ```css
 TimePicker::placeholder {
@@ -106,9 +100,9 @@ TimePicker::placeholder {
 
 ### Custom CSS States (pseudo-classes)
 
-| state                          | description                              |
-| ------------------------------ | ---------------------------------------- |
-| :error                         | Style the component on error, i.e. when the `error` prop is true |
+| state                   | description                              |
+| ----------------------- | ---------------------------------------- |
+| :error                  | Style the component instance on error, i.e. when the `error` prop is true. |
 | :hover, :focus, :disabled, etc | Standard CSS states                      |
 
 

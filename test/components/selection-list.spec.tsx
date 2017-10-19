@@ -70,16 +70,6 @@ describe('<SelectionList />', () => {
         await waitForDom(() => expect(result.className).to.match(/text-style-label/));
     });
 
-    it('Renders items under each other using the default renderer', async () => {
-        const {driver: list, waitForDom} = clientRenderer.render(
-            <SelectionList dataSource={['0', '1', divider]} />
-        ).withDriver(SelectionListTestDriver);
-
-        await waitForDom(() => expect(list.root).to.be.present());
-        expect(list.items).to.be.inVerticalSequence();
-        expect(list.items).to.be.horizontallyAligned('left');
-    });
-
     it('Fires onChange when an item is clicked', async () => {
         const onChange = sinon.spy();
         const {driver: list, waitForDom} = clientRenderer.render(
@@ -135,18 +125,16 @@ describe('<SelectionList />', () => {
         }
     );
 
-    it('Renders blank items at the same height as normal items', async () => {
+    it('Renders a divider', async () => {
         const {driver: list, waitForDom} = clientRenderer.render(
-            <SelectionList dataSource={['', '1']} />,
-            themedContainer
+            <SelectionList dataSource={[divider]} />
         ).withDriver(SelectionListTestDriver);
 
-        await waitForDom(() => expect(list.root).to.be.present());
-        const [empty, full] = list.items;
-        expect(empty).to.have.width.at.least(full);
-        expect(empty).to.have.width.at.most(full);
-        expect(empty).to.have.height.at.least(full);
-        expect(empty).to.have.height.at.most(full);
+        await waitForDom(() => {
+            expect(list.root).to.be.not.null;
+        });
+
+        expect(list.isDivider(list.items[0])).to.equal(true);
     });
 
     it('Renders children above dataSource when both are provided', async () => {
@@ -277,6 +265,66 @@ describe('<SelectionList />', () => {
             list.keyDown(keycode('space'));
             await waitForDom(() => {
                 expect(onChange).to.have.been.calledOnce.calledWithExactly({value: '+1'});
+            });
+        });
+    });
+
+    describe(`Styling`, () => {
+        it(`Puts "disabled" state on disabled items`, async () => {
+            const {driver: list, waitForDom} = clientRenderer.render(
+                <SelectionList dataSource={[{value: 0, disabled: true}]} />
+            ).withDriver(SelectionListTestDriver);
+
+            await waitForDom(() => expect(list.root).to.be.not.null);
+            expect(list.optionHasStylableState(list.items[0], 'disabled')).to.equal(true);
+        });
+
+        it(`Puts "focused" state on the container when it's focused`, async () => {
+            const {driver: list, waitForDom} = clientRenderer.render(
+                <SelectionList />
+            ).withDriver(SelectionListTestDriver);
+
+            await waitForDom(() => expect(list.root).to.be.not.null);
+            expect(list.hasStylableState('focused')).to.equal(false);
+            list.focus();
+            await waitForDom(() => {
+                expect(list.hasStylableState('focused')).to.equal(true);
+            });
+        });
+
+        it(`Puts "selected" state on the selected item`, async () => {
+            const {driver: list, waitForDom} = clientRenderer.render(
+                <SelectionList dataSource={['0', '1']} value={'0'} />
+            ).withDriver(SelectionListTestDriver);
+
+            await waitForDom(() => expect(list.root).to.be.not.null);
+            expect(list.optionHasStylableState(list.items[0], 'selected')).to.equal(true);
+            expect(list.optionHasStylableState(list.items[1], 'selected')).to.equal(false);
+        });
+
+        it(`Puts "focused" state on the item focused via keyboard and removes it on blur`, async () => {
+            const {driver: list, waitForDom} = clientRenderer.render(
+                <SelectionList dataSource={['0', '1']} value={'0'} />
+            ).withDriver(SelectionListTestDriver);
+
+            await waitForDom(() => expect(list.root).to.be.not.null);
+
+            list.focus();
+            await waitForDom(() => {
+                expect(list.optionHasStylableState(list.items[0], 'focused')).to.equal(true);
+                expect(list.optionHasStylableState(list.items[1], 'focused')).to.equal(false);
+            });
+
+            list.keyDown(keycode('down'));
+            await waitForDom(() => {
+                expect(list.optionHasStylableState(list.items[0], 'focused')).to.equal(false);
+                expect(list.optionHasStylableState(list.items[1], 'focused')).to.equal(true);
+            });
+
+            list.blur();
+            await waitForDom(() => {
+                expect(list.optionHasStylableState(list.items[0], 'focused')).to.equal(false);
+                expect(list.optionHasStylableState(list.items[1], 'focused')).to.equal(false);
             });
         });
     });
