@@ -53,6 +53,10 @@ export class DatePickerTestDriver extends DriverBase {
         simulate.keyDown(this.input, {keyCode});
     }
 
+    public simulateInput(): void {
+        simulate.input(this.input);
+    }
+
     public get nextMonthLabel(): HTMLSpanElement | null {
         return bodySelect('NEXT_MONTH_BUTTON');
     }

@@ -50,7 +50,6 @@ describe('The DatePicker Component', () => {
             const datePicker = datePickerDemo.datePicker;
 
             await waitForDom(() => expect(datePicker.dropDown).to.be.absent());
-            // simulate.click(select('CALENDAR_ICON'));
 
             datePicker.openCalender();
 
@@ -101,6 +100,17 @@ describe('The DatePicker Component', () => {
         datePicker.changeDate('2017/02/01');
 
         await waitForDom(() => expect(onChange).to.have.been.calledWithMatch({value: FEBRUARY_FIRST}));
+    });
+
+    it('should call onInput when the input is changed', async () => {
+        const onInput = sinon.spy();
+        const {driver: datePicker, waitForDom} = clientRenderer.render(
+            <DatePicker onInput={onInput} />
+        ).withDriver(DatePickerTestDriver);
+
+        datePicker.simulateInput();
+
+        await waitForDom(() => expect(onInput).to.have.been.called);
     });
 
     it('should use a provided placeholder', async () => {
@@ -188,37 +198,21 @@ describe('The DatePicker Component', () => {
         await waitFor(() => expect(document.activeElement).to.equal(datePicker.input));
     });
 
-    describe('When Disabled or ReadOnly', () => {
+    describe('When Disabled', () => {
         it('should not show the dropdown when the icon is clicked', async () => {
-            const {driver: datePicker, waitForDom, container} = clientRenderer.render(<DatePicker disabled />)
+            const {driver: datePicker, waitForDom} = clientRenderer.render(<DatePicker disabled />)
                 .withDriver(DatePickerTestDriver);
 
             await waitForDom(() => expect(datePicker.isOpen()).to.be.false);
 
-            datePicker.clickOnDatePicker();
-
-            await waitForDom(() => expect(datePicker.isOpen()).to.be.false);
-
-            clientRenderer.render(<DatePicker readOnly />, container).withDriver(DatePickerTestDriver);
-
-            await waitForDom(() => expect(datePicker.isOpen()).to.be.false);
-
-            datePicker.clickOnDatePicker();
+            datePicker.openCalender();
 
             await waitForDom(() => expect(datePicker.isOpen()).to.be.false);
         });
 
         it('should not show the dropdown when the input is clicked', async () => {
-            const {driver: datePicker, waitForDom, container} = clientRenderer.render(<DatePicker disabled />)
+            const {driver: datePicker, waitForDom} = clientRenderer.render(<DatePicker disabled />)
                 .withDriver(DatePickerTestDriver);
-
-            await waitForDom(() => expect(datePicker.isOpen()).to.be.false);
-
-            datePicker.clickOnDatePicker();
-
-            await waitForDom(() => expect(datePicker.isOpen()).to.be.false);
-
-            clientRenderer.render(<DatePicker readOnly />, container).withDriver(DatePickerTestDriver);
 
             await waitForDom(() => expect(datePicker.isOpen()).to.be.false);
 
@@ -228,17 +222,9 @@ describe('The DatePicker Component', () => {
         });
 
         it('should not show the dropdown when the date picker is focused and openOnFocus is set to true', async () => {
-            const {driver: datePicker, waitForDom, container} = clientRenderer.render(
+            const {driver: datePicker, waitForDom} = clientRenderer.render(
                 <DatePicker openOnFocus disabled />
             ).withDriver(DatePickerTestDriver);
-
-            await waitForDom(() => expect(datePicker.isOpen()).to.be.false);
-
-            datePicker.focus();
-
-            await waitForDom(() => expect(datePicker.isOpen()).to.be.false);
-
-            clientRenderer.render(<DatePicker openOnFocus readOnly />, container).withDriver(DatePickerTestDriver);
 
             await waitForDom(() => expect(datePicker.isOpen()).to.be.false);
 
@@ -249,7 +235,7 @@ describe('The DatePicker Component', () => {
 
         it('should not allow the input value to be changed', async () => {
             const onChange = sinon.spy();
-            const {driver: datePicker, container} = clientRenderer.render(
+            const {driver: datePicker} = clientRenderer.render(
                 <DatePicker onChange={onChange} disabled />
             ).withDriver(DatePickerTestDriver);
 
@@ -257,9 +243,49 @@ describe('The DatePicker Component', () => {
 
             await sleep(20);
             expect(onChange).to.have.not.been.called;
+        });
+    });
 
-            clientRenderer.render(<DatePicker onChange={onChange} readOnly />, container)
+    describe('When readOnly', () => {
+        it('should not show the dropdown when the icon is clicked', async () => {
+            const {driver: datePicker, waitForDom} = clientRenderer.render(<DatePicker readOnly />)
                 .withDriver(DatePickerTestDriver);
+
+            await waitForDom(() => expect(datePicker.isOpen()).to.be.false);
+
+            datePicker.openCalender();
+
+            await waitForDom(() => expect(datePicker.isOpen()).to.be.false);
+        });
+
+        it('should not show the dropdown when the input is clicked', async () => {
+            const {driver: datePicker, waitForDom} = clientRenderer.render(<DatePicker readOnly />)
+                .withDriver(DatePickerTestDriver);
+
+            await waitForDom(() => expect(datePicker.isOpen()).to.be.false);
+
+            datePicker.clickOnDatePicker();
+
+            await waitForDom(() => expect(datePicker.isOpen()).to.be.false);
+        });
+
+        it('should not show the dropdown when the date picker is focused and openOnFocus is set to true', async () => {
+            const {driver: datePicker, waitForDom} = clientRenderer.render(
+                <DatePicker openOnFocus readOnly />
+            ).withDriver(DatePickerTestDriver);
+
+            await waitForDom(() => expect(datePicker.isOpen()).to.be.false);
+
+            datePicker.focus();
+
+            await waitForDom(() => expect(datePicker.isOpen()).to.be.false);
+        });
+
+        it('should not allow the input value to be changed', async () => {
+            const onChange = sinon.spy();
+            const {driver: datePicker} = clientRenderer.render(
+                <DatePicker onChange={onChange} readOnly />
+            ).withDriver(DatePickerTestDriver);
 
             datePicker.changeDate('2017/02/01');
 

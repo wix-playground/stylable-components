@@ -61,6 +61,7 @@ export class DatePicker extends React.PureComponent<DatePickerProps, DatePickerS
                     onBlur={this.onBlur}
                     onFocus={this.onFocus}
                     onChange={this.onInputChange}
+                    onInput={this.props.onInput}
                     value={this.state.inputValue}
                     placeholder={this.props.placeholder}
                     autoFocus={this.props.autoFocus}
@@ -131,7 +132,6 @@ export class DatePicker extends React.PureComponent<DatePickerProps, DatePickerS
 
     private onInputChange: React.EventHandler<React.SyntheticEvent<HTMLInputElement>> = (event): void => {
         const eventTarget = event.target as HTMLInputElement;
-        this.props.onInput!({value: eventTarget.value});
         this.setState({inputValue: eventTarget.value});
     }
 
