@@ -4,6 +4,7 @@ import * as React from 'react';
 import {properties, stylable} from 'wix-react-tools';
 import {ChangeEvent} from '../../types/events';
 import {FormInputProps} from '../../types/forms';
+import {StylableProps} from '../../types/props';
 import {RadioButton} from './radio-button';
 import styles from './radio-group.st.css';
 
@@ -14,7 +15,7 @@ export interface RadioGroupDataSchemaProps {
     labelText?: string;
 }
 
-export interface RadioGroupProps extends FormInputProps<string>, properties.Props {
+export interface RadioGroupProps extends FormInputProps<string>, StylableProps {
     children?: React.ReactNode;
     dataSource?: RadioGroupDataSchemaProps[];
     name?: string;

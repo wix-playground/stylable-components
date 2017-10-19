@@ -1,10 +1,11 @@
 import * as React from 'react';
 import {properties, stylable} from 'wix-react-tools';
 import {FormInputProps} from '../../types/forms';
+import {StylableProps} from '../../types/props';
 import {noop} from '../../utils';
 import style from './radio-button.st.css';
 
-export interface RadioButtonProps extends FormInputProps<string> {
+export interface RadioButtonProps extends FormInputProps<string>, StylableProps {
     checked?: boolean;
     name?: string;
     disabled?: boolean;
