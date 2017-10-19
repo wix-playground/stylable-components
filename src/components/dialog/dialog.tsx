@@ -6,7 +6,7 @@ import {Modal} from '../modal';
 import styles from './dialog.st.css';
 
 export interface DialogProps extends React.HTMLAttributes<HTMLDivElement> {
-    isOpen: boolean;
+    isOpen?: boolean;
     onCancel?: () => void;
     onOk?: () => void;
     title?: string;
@@ -26,7 +26,7 @@ export class Dialog extends React.PureComponent<DialogProps> {
         return (
             <Modal
                 className="root"
-                isOpen={this.props.isOpen}
+                isOpen={!!this.props.isOpen}
                 onRequestClose={this.props.onCancel}
             >
                 <div data-automation-id="DIALOG_BODY" onClick={this.onDialogBodyClick}>
