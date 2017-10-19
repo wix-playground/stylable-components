@@ -24,14 +24,18 @@
     iconWidth: 36px;
 }
 
+/* root */
 .root {
     display: inline-block;
+    height: value(inputHeight);
+}
+
+.flex-wrapper {
+    display: flex;
 }
 
 .icon {
-    position: relative;
-    left: calc(value(inputWidth) - value(iconWidth));
-    top: -value(iconWidth);
+    margin-left: -value(iconWidth);
     padding: 10px;
     cursor: pointer;
     width: value(iconWidth);

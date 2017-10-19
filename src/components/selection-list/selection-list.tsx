@@ -6,10 +6,10 @@ import {Disposers, properties} from 'wix-react-tools';
 import {ChangeEvent} from '../../types/events';
 import {FormInputProps} from '../../types/forms';
 import {noop} from '../../utils';
-import {SelectionListItemValue, SelectionListModel, SelectionListOptionList} from './selection-list-model';
+import {OptionList, SelectionListItemValue, SelectionListModel} from './selection-list-model';
 import {SelectionListView} from './selection-list-view';
 
-export interface SelectionListProps extends SelectionListOptionList, FormInputProps<SelectionListItemValue> {
+export interface SelectionListProps extends OptionList, FormInputProps<SelectionListItemValue> {
     className?: string;
     onChange?: (event: ChangeEvent<SelectionListItemValue>) => void;
     style?: React.CSSProperties;

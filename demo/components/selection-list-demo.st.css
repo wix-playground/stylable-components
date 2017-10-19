@@ -29,7 +29,6 @@
     transition: all 300ms;
     cursor: pointer;
     text-align: center;
-
     min-height: unset;
     padding: unset;
     line-height: unset;
@@ -62,12 +61,17 @@
 .text-style-list Option {
     padding: 10px 20px;
     color: #000000;
-    border-top: 1px solid #DDDDDD;
     cursor: pointer;
+    line-height: 1em;
 }
 
-.text-style-list Option:first-child {
-    border-top: none;
+.text-style-list Option:not(:focused):not(:first-child) {
+    border-top: 1px solid #ddd;
+}
+
+.text-style-list Option span {
+    vertical-align: middle;
+    line-height: 1em;
 }
 
 .text-style-list Option:disabled {

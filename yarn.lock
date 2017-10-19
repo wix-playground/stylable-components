@@ -3295,7 +3295,7 @@ postcss-filter-plugins@^2.0.0:
     postcss "^5.0.4"
     uniqid "^4.0.0"
 
-postcss-js@^1.0.0:
+postcss-js@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/postcss-js/-/postcss-js-1.0.1.tgz#ffaf29226e399ea74b5dce02cab1729d7addbc7b"
   dependencies:
@@ -3390,7 +3390,7 @@ postcss-modules-values@^1.1.0:
     icss-replace-symbols "^1.1.0"
     postcss "^6.0.1"
 
-postcss-nested@^2.0.2:
+postcss-nested@^2.1.2:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/postcss-nested/-/postcss-nested-2.1.2.tgz#04057281f9631fef684857fb0119bae04ede03c6"
   dependencies:
@@ -3499,7 +3499,7 @@ postcss@^5.0.10, postcss@^5.0.11, postcss@^5.0.12, postcss@^5.0.13, postcss@^5.0
     source-map "^0.5.6"
     supports-color "^3.2.3"
 
-postcss@^6.0.1, postcss@^6.0.11, postcss@^6.0.3, postcss@^6.0.6, postcss@^6.0.9:
+postcss@^6.0.1, postcss@^6.0.11, postcss@^6.0.13, postcss@^6.0.6, postcss@^6.0.9:
   version "6.0.13"
   resolved "https://registry.yarnpkg.com/postcss/-/postcss-6.0.13.tgz#b9ecab4ee00c89db3ec931145bd9590bbf3f125f"
   dependencies:
@@ -4311,18 +4311,18 @@ stylable-integration@^5.1.7:
     webpack-sources "^1.0.1"
     yargs "^8.0.2"
 
-stylable@^4.0.18:
-  version "4.0.20"
-  resolved "https://registry.yarnpkg.com/stylable/-/stylable-4.0.20.tgz#1ba5b220271231dca1c36b2d0364b8160f619737"
+stylable@^4.0.21:
+  version "4.0.21"
+  resolved "https://registry.yarnpkg.com/stylable/-/stylable-4.0.21.tgz#9de71c3b34b01cad91842796e61364681d72a4dc"
   dependencies:
     css-selector-tokenizer "^0.7.0"
     deindent "^0.1.0"
     enhanced-resolve "^3.4.1"
     lodash.clonedeep "^4.5.0"
     murmurhash "^0.0.2"
-    postcss "^6.0.3"
-    postcss-js "^1.0.0"
-    postcss-nested "^2.0.2"
+    postcss "^6.0.13"
+    postcss-js "^1.0.1"
+    postcss-nested "^2.1.2"
     postcss-safe-parser "^3.0.1"
     postcss-selector-matches "^3.0.1"
     postcss-value-parser "^3.3.0"
@@ -4884,9 +4884,9 @@ window-size@0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/window-size/-/window-size-0.1.0.tgz#5438cd2ea93b202efa3a19fe8887aee7c94f9c9d"
 
-wix-react-tools@3.1.0-rc.3:
-  version "3.1.0-rc.3"
-  resolved "https://registry.yarnpkg.com/wix-react-tools/-/wix-react-tools-3.1.0-rc.3.tgz#f05be3d1f66725264acae811e6195ba33e1df416"
+wix-react-tools@^3.1.0-rc.6:
+  version "3.1.0-rc.6"
+  resolved "https://registry.yarnpkg.com/wix-react-tools/-/wix-react-tools-3.1.0-rc.6.tgz#28313885dfedcee98a24179f5ed49abe166e71e1"
   dependencies:
     ifndef "^0.0.31"
     lodash "^4.17.4"
