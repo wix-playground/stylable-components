@@ -24,6 +24,7 @@ export class Tabs extends React.Component<TabsProps> {
             <div>
                 <SelectionList
                     className="tabList"
+                    tabIndex={0}
                     data-automation-id="TAB_LIST"
                     value={selected}
                     onChange={this.handleChange}
