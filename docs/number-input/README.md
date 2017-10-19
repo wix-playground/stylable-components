@@ -12,7 +12,7 @@ The **NumberInput** component improves upon the native `<input type="number">` b
 
 | name         | type                             | defaultValue | isRequired | description                              |
 | ------------ | -------------------------------- | ------------ | ---------- | ---------------------------------------- |
-| value        | number                           |              |            | Used to set and change the value of the input. If you bind this to a state in your parent component, you should also set the `onChange` handler in order for the component to work.<br>If value is empty, component behaves as uncontrolled. |
+| value        | number                           |              |            | Used to set and change the value of the input. If you bind this to a state in your parent component, you should also set the `onChange` handler in order for the component to work.<br>If value is empty, the component instance behaves as uncontrolled. |
 | defaultValue | number                           |              |            | Sets the default value if the input is uncontrolled. |
 | placeholder  | string                           |              |            | Text to display if the value is null.    |
 | min          | number                           | 1            |            |                                          |
@@ -24,9 +24,9 @@ The **NumberInput** component improves upon the native `<input type="number">` b
 | name         | string                           |              |            | The name of the component. Behaves like the name attribute of an input element. |
 | prefix       | node                             |              |            | Inserts a component at the start of the input. |
 | suffix       | node                             |              |            | Inserts a component at the end of the input. |
-| onChange     | function |   |   | Callback function that is fired on component blur.<br>`(event: {value: number}): void`<br>`event` KeyDown event targeting `<NumberInput>`.<br>`newValue` The new value of `<NumberInput>`. |
-| onInput      |function |   |  | Callback function that is fired on every keydown event.<br> `(event: {value: number}): void`<br>`event` KeyDown event targeting `<NumberInput>`.<br>`newValue` The new value of `<NumberInput>`. |
-| error        | boolean                        | false        |            | Sets the `:error` CSS state on the `<NumberInput>`. |
+| onChange     | function |   |   | Callback function that is fired on component blur.<br>`(event: {value: number}): void`<br>`event` KeyDown event for current component instance.<br>`newValue` The new value of `<NumberInput>`. |
+| onInput      |function |   |  | Callback function that is fired on every keydown event.<br> `(event: {value: number}): void`<br>`event` KeyDown event targeting current component instance.<br>`newValue` The new value of `<NumberInput>`. |
+| error        | boolean                        | false        |            | Sets the `:error` CSS state on the current component instance. |
 
 ### Code Examples
 
