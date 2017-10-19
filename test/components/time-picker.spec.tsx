@@ -3,21 +3,44 @@ import {ClientRenderer, expect, simulate, sinon} from 'test-drive-react';
 import {TimePickerDemo} from '../../demo/components/time-picker-demo';
 import {TimePicker} from '../../src';
 import {
-    formatTimeChunk,
-    isTouchTimeInputSupported, isValidValue, to24, toAmpm
+    Format, formatTimeChunk, isTouchTimeInputSupported, isValidValue,
+    Segment, to24, toAmpm
 } from '../../src/components/time-picker/utils';
 import {TimePickerDriver} from '../../test-kit';
 
 const describeNative = isTouchTimeInputSupported ? describe : describe.skip;
 const describeDesktop = !isTouchTimeInputSupported ? describe : describe.skip;
 const itDesktop = !isTouchTimeInputSupported ? it : it.skip;
-const itNative = isTouchTimeInputSupported ? it : it.skip;
+
+interface Suit {
+    props: {
+        value: string,
+        format: Format
+    };
+    items: [[
+        {
+            segment: Segment,
+            key?: string,
+            value?: string,
+            inc?: true,
+            dec?: true,
+            options?: object
+        },
+        {
+            hh: string,
+            mm: string,
+            ampm?: string,
+            value: string | null,
+            focus: Segment
+        }
+    ]];
+}
 
 describe('<TimePicker/>', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
 
-    describeDesktop('render with format="ampm"', () => {
+    describeDesktop('render without value and 12h format', () => {
         let renderer: any;
         let hh: any;
         let mm: any;
@@ -28,23 +51,23 @@ describe('<TimePicker/>', () => {
             mm = renderer.driver.minutesInput;
             placeholder = renderer.driver.placeholder;
         });
-        it('should not render with placeholder', () => {
+        it('should not render placeholder', () => {
             expect(placeholder).to.be.null;
         });
-        it('hh should not have value set', () => {
-            expect(hh).attr('value', '');
-        });
-        it('hh should have placeholder "00"', () => {
+        it('hours should have placeholder "00"', () => {
             expect(hh).attr('placeholder', '00');
         });
-        it('mm should not have value set', () => {
+        it('hours should not have value set', () => {
+            expect(hh).attr('value', '');
+        });
+        it('minutes should not have value set', () => {
             expect(mm).attr('value', '');
         });
-        it('mm should have placeholder "00"', () => {
+        it('minutes should have placeholder "00"', () => {
             expect(mm).attr('placeholder', '00');
         });
     });
-    describe('render with format="24h"', () => {
+    describe('render without value and 24h format', () => {
         let renderer: any;
         let hh: any;
         let mm: any;
@@ -58,43 +81,21 @@ describe('<TimePicker/>', () => {
         it('should not render with placeholder', () => {
             expect(placeholder).to.be.null;
         });
-        it('hh should not have value set', () => {
+        it('hours should not have value set', () => {
             expect(hh).attr('value', '');
         });
-        it('hh should have placeholder "00"', () => {
+        it('hours should have placeholder "00"', () => {
             expect(hh).attr('placeholder', '00');
         });
-        it('mm should not have value set', () => {
+        it('minutes should not have value set', () => {
             expect(mm).attr('value', '');
         });
-        it('mm should have placeholder "00"', () => {
+        it('minutes should have placeholder "00"', () => {
             expect(mm).attr('placeholder', '00');
         });
     });
 
-    describe('render with value="4:36" format="ampm"', () => {
-        let renderer: any;
-        let hh: any;
-        let mm: any;
-        let ampm: any;
-        beforeEach(() => {
-            renderer = clientRenderer.render(<TimePicker value="4:36" format="ampm" />).withDriver(TimePickerDriver);
-            hh = renderer.driver.hoursInput;
-            mm = renderer.driver.minutesInput;
-            ampm = renderer.driver.ampm;
-        });
-        it('hh input should have "04" value', () => {
-            expect(hh).attr('value', '04');
-        });
-        it('mm input should have "36" value', () => {
-            expect(mm).attr('value', '36');
-        });
-        itDesktop('ampm should have "AM" value', () => {
-            expect(ampm).text('AM');
-        });
-    });
-
-    describe('render with placeholder="Enter Time"', () => {
+    describe('render without value and with placeholder', () => {
         let renderer: any;
         let hh: any;
         let mm: any;
@@ -105,691 +106,67 @@ describe('<TimePicker/>', () => {
             mm = renderer.driver.minutesInput;
             placeholder = renderer.driver.placeholder;
         });
-        it('placeholder should render with "Enter Time"', () => {
+        it('should render placeholder element', () => {
             expect(placeholder).text('Enter Time');
         });
-        it('hh should not have value set', () => {
+        it('hours should be empty', () => {
             expect(hh).attr('value', '');
         });
-        it('mm should not have value set', () => {
+        it('minutes should be empty', () => {
             expect(mm).attr('value', '');
         });
     });
 
-    describe('render with format="ampm" value="13:55"', () => {
+    describe('render with 12h format and value below 12:00 PM', () => {
         let renderer: any;
-        let hh: any;
-        let mm: any;
-        let ampm: any;
         beforeEach(() => {
-            renderer = clientRenderer.render(<TimePicker format="ampm" value="13:55"/>).withDriver(TimePickerDriver);
-            hh = renderer.driver.hoursInput;
-            mm = renderer.driver.minutesInput;
-            ampm = renderer.driver.ampm;
+            renderer = clientRenderer.render(<TimePicker value="4:36" format="ampm" />).withDriver(TimePickerDriver);
         });
-
-        describeDesktop('desktop', () => {
-            it('hh input should have "01" value', () => {
-                expect(hh).attr('value', '01');
-            });
-            it('mm input should have "55" value', () => {
-                expect(mm).attr('value', '55');
-            });
-            it('ampm should have input "PM" value', () => {
-                expect(ampm).text('PM');
-            });
+        it('hours should have padding zero and dislay hours segment', () => {
+            expect(renderer.driver.hoursInput).attr('value', '04');
         });
-        describeNative('mobile', () => {
-            it('hh input should have "13" value', () => {
-                expect(hh).attr('value', '13');
-            });
-            it('mm input should have "55" value', () => {
-                expect(mm).attr('value', '55');
-            });
+        it('minutes should have padding zero and dislay minutes segment', () => {
+            expect(renderer.driver.minutesInput).attr('value', '36');
+        });
+        itDesktop('"AM" label should follow the time', () => {
+            expect(renderer.driver.ampm).text('AM');
         });
     });
 
-    describe('render with format="24h" value="13:55"', () => {
-        let renderer: any;
-        let hh: any;
-        let mm: any;
-        beforeEach(() => {
-            renderer = clientRenderer.render(<TimePicker format="24h" value="13:55"/>).withDriver(TimePickerDriver);
-            hh = renderer.driver.hoursInput;
-            mm = renderer.driver.minutesInput;
-        });
-        it('hh input should have "13" value', () => {
-            expect(hh).attr('value', '13');
-        });
-        it('mm input should have "55" value', () => {
-            expect(mm).attr('value', '55');
-        });
-    });
-
-    describe('render with onChange={onChange} format="24h" value="13:55"', () => {
-        let onChange: any;
-        let renderer: any;
-        let hh: any;
-        let mm: any;
-        beforeEach(() => {
-            onChange = sinon.spy();
-            renderer = clientRenderer.render(<TimePicker format="24h" value="13:55" onChange={onChange}/>)
-                .withDriver(TimePickerDriver);
-            hh = renderer.driver.hoursInput;
-            mm = renderer.driver.minutesInput;
-        });
-
-        describe('entering "3" into hh segment', () => {
-            beforeEach(() => {
-                renderer.driver.changeHours('3');
-            });
-            it('should set focus state', () => {
-                expect(renderer.driver.getCssState('focus')).to.be.true;
-            });
-            it('hh input should have "03" value', () => {
-                expect(hh).attr('value', '03');
-            });
-            it('mm input should have "55" value', () => {
-                expect(mm).attr('value', '55');
-            });
-            it('should move selection to mm segment', () => {
-                expect(document.activeElement).to.equal(mm);
-            });
-            it('onChange should be callend with "03:55"', () => {
-                expect(onChange).to.be.calledWithExactly({value: '03:55'});
-            });
-        });
-
-        describe('entering "2" into hh segment', () => {
-            beforeEach(async () => {
-                renderer.driver.changeHours('2');
-            });
-            it('hh input should have "2" value', () => {
-                expect(hh).attr('value', '2');
-            });
-            it('mm input should have "55" value', () => {
-                expect(mm).attr('value', '55');
-            });
-            it('should keep selection on hh segment', () => {
-                expect(document.activeElement).to.equal(hh);
-            });
-            it('onChange should not be callen', async () => {
-                await new Promise(resolve => setTimeout(resolve, 500));
-                expect(onChange).to.not.be.called;
-            });
-        });
-
-        describe('entering "7" into mm segment', () => {
-            beforeEach(() => {
-                renderer.driver.changeMinutes('7');
-            });
-            it('should set focus state', () => {
-                expect(renderer.driver.getCssState('focus')).to.be.true;
-            });
-            it('hh input should have "13" value', () => {
-                expect(hh).attr('value', '13');
-            });
-            it('mm input should have "07" value', () => {
-                expect(mm).attr('value', '07');
-            });
-            it('should keep selection on mm segment', () => {
-                expect(document.activeElement).to.equal(mm);
-            });
-            it('onChange should be callen with "13:07"', async () => {
-                expect(onChange).to.be.calledWithExactly({value: '13:07'});
-            });
-        });
-
-        describe('entering "5" into mm input', () => {
-            beforeEach(() => {
-                renderer.driver.changeMinutes('5');
-            });
-            it('hh input should have "13" value', () => {
-                expect(hh).attr('value', '13');
-            });
-            it('mm input should have "5" value', () => {
-                expect(mm).attr('value', '5');
-            });
-            it('should keep selection on mm segment', () => {
-                expect(document.activeElement).to.equal(mm);
-            });
-            it('onChange should not be callen', async () => {
-                await new Promise(resolve => setTimeout(resolve, 500));
-                expect(onChange).to.not.called;
-            });
-        });
-
-        describe('backspace on mm segment', () => {
-            beforeEach(() => {
-                renderer.driver.keydownMinutes('backspace');
-            });
-            it('hh input should have "13" value', () => {
-                expect(hh).attr('value', '13');
-            });
-            it('mm input should have "00" value', () => {
-                expect(mm).attr('value', '00');
-            });
-            it('should keep selection on mm segment', () => {
-                expect(document.activeElement).to.equal(mm);
-            });
-        });
-
-        describe('backspace x 2 on mm segment', () => {
-            beforeEach(() => {
-                renderer.driver.keydownMinutes('backspace');
-                renderer.driver.keydownMinutes('backspace');
-            });
-            it('hh input should have "13" value', () => {
-                expect(hh).attr('value', '13');
-            });
-            it('mm input should have "00" value', () => {
-                expect(mm).attr('value', '00');
-            });
-            it('should move selection on hh segment', () => {
-                expect(document.activeElement).to.equal(hh);
-            });
-            it('onChange should be callen with "13:00"', async () => {
-                expect(onChange).to.be.calledWithExactly({value: '13:00'});
-            });
-        });
-
-        describe('backspace on hh segment', () => {
-            beforeEach(() => {
-                renderer.driver.keydownHours('backspace');
-            });
-            it('hh input should have "00" value', () => {
-                expect(hh).attr('value', '00');
-            });
-            it('focus should stay on hh section', () => {
-                expect(document.activeElement).to.equal(hh);
-            });
-            it('onChange should be callen with "00:55"', async () => {
-                expect(onChange).to.be.calledWithExactly({value: '00:55'});
-            });
-        });
-
-        describe('arrow down on hh segment', () => {
-            beforeEach(() => {
-                renderer.driver.keydownHours('down');
-            });
-            it('hh input should have "12" value', () => {
-                expect(hh).attr('value', '12');
-            });
-            it('onChange should be callen with "12:55"', async () => {
-                expect(onChange).to.be.calledWithExactly({value: '12:55'});
-            });
-        });
-
-        describe('arrow up on hh segment', () => {
-            beforeEach(() => {
-                renderer.driver.keydownHours('up');
-            });
-            it('hh input should have "14" value', () => {
-                expect(hh).attr('value', '14');
-            });
-            it('onChange should be callen with "14:55"', async () => {
-                expect(onChange).to.be.calledWithExactly({value: '14:55'});
-            });
-        });
-
-        describe('arrow down on mm segment', () => {
-            beforeEach(() => {
-                renderer.driver.keydownMinutes('down');
-            });
-            it('mm input should have "54" value', () => {
-                expect(mm).attr('value', '54');
-            });
-            it('onChange should be callen with "13:54"', async () => {
-                expect(onChange).to.be.calledWithExactly({value: '13:54'});
-            });
-        });
-
-        describe('arrow up on mm segment', () => {
-            beforeEach(() => {
-                renderer.driver.keydownMinutes('up');
-            });
-            it('mm input should have "56" value', () => {
-                expect(mm).attr('value', '56');
-            });
-            it('onChange should be callen with "13:56"', async () => {
-                expect(onChange).to.be.calledWithExactly({value: '13:56'});
-            });
-        });
-
-    });
-
-    describe('render with onChange={onChange} onInput={onInput} format="24h" value="13:55"', () => {
-        let onChange: any;
-        let onInput: any;
-        let renderer: any;
-        let hh: any;
-        beforeEach(() => {
-            onChange = sinon.spy();
-            onInput = sinon.spy();
-            renderer = clientRenderer.render(
-                <TimePicker format="24h" value="13:55" onChange={onChange} onInput={onInput}/>
-            ).withDriver(TimePickerDriver);
-            hh = renderer.driver.hoursInput;
-        });
-
-        describe('entering "3" into hh segment', () => {
-            beforeEach(() => {
-                renderer.driver.changeHours('3');
-            });
-            it('onChange should be callend with "03:55"', () => {
-                expect(onChange).to.be.calledWithExactly({value: '03:55'});
-            });
-            it('onInput should be callend with "03:55"', () => {
-                expect(onInput).to.be.calledWithExactly({value: '03:55'});
-            });
-        });
-    });
-
-    describe('render with onChange={onChange} format="24h" value="13:59"', () => {
-        let onChange: any;
-        let renderer: any;
-        let hh: any;
-        let mm: any;
-
-        beforeEach(() => {
-            onChange = sinon.spy();
-            renderer = clientRenderer.render(<TimePicker format="24h" value="13:59" onChange={onChange}/>)
-                .withDriver(TimePickerDriver);
-            hh = renderer.driver.hoursInput;
-            mm = renderer.driver.minutesInput;
-        });
-
-        describe('arrow up on mm segment', () => {
-            beforeEach(() => {
-                renderer.driver.keydownMinutes('up');
-            });
-            it('hh input should have "14" value', () => {
-                expect(hh).attr('value', '14');
-            });
-            it('mm input should have "00" value', () => {
-                expect(mm).attr('value', '00');
-            });
-            itDesktop('mm input should have selection', () => {
-                expect([mm.selectionStart, mm.selectionEnd]).to.deep.equal([0, 2]);
-            });
-            it('onChange should be callen with "14:00"', async () => {
-                expect(onChange).to.be.calledWithExactly({value: '14:00'});
-            });
-        });
-
-        describe('arrow shift + up on mm segment', () => {
-            beforeEach(() => {
-                renderer.driver.keydownMinutes('up', {shiftKey: true});
-            });
-            it('hh input should have "14" value', () => {
-                expect(hh).attr('value', '14');
-            });
-            it('mm input should have "09" value', () => {
-                expect(mm).attr('value', '09');
-            });
-            it('onChange should be callen with "14:09"', async () => {
-                expect(onChange).to.be.calledWithExactly({value: '14:09'});
-            });
-        });
-
-        describe('arrow shift + down on mm segment', () => {
-            beforeEach(() => {
-                renderer.driver.keydownMinutes('down', {shiftKey: true});
-            });
-            it('mm input should have "49" value', () => {
-                expect(mm).attr('value', '49');
-            });
-            it('onChange should be callen with "13:49"', async () => {
-                expect(onChange).to.be.calledWithExactly({value: '13:49'});
-            });
-        });
-
-        describe('arrow shift + up on hh segment', () => {
-            beforeEach(() => {
-                renderer.driver.keydownHours('up', {shiftKey: true});
-            });
-            it('hh input should have "14" value', () => {
-                expect(hh).attr('value', '14');
-            });
-            it('onChange should be callen with "14:59"', async () => {
-                expect(onChange).to.be.calledWithExactly({value: '14:59'});
-            });
-        });
-
-        describe('arrow shift + down on hh segment', () => {
-            beforeEach(() => {
-                renderer.driver.keydownHours('down', {shiftKey: true});
-            });
-            it('hh input should have "12" value', () => {
-                expect(hh).attr('value', '12');
-            });
-            it('onChange should be callen with "12:59"', async () => {
-                expect(onChange).to.be.calledWithExactly({value: '12:59'});
-            });
-        });
-
-        describeDesktop('shift + stepper up (mm focus)', () => {
-            beforeEach(() => {
-                renderer.driver.focusMinutes();
-                renderer.driver.clickIncrement({shiftKey: true});
-            });
-            it('hh input should have "14" value', () => {
-                expect(hh).attr('value', '14');
-            });
-            it('mm input should have "09" value', () => {
-                expect(mm).attr('value', '09');
-            });
-            itDesktop('mm input should have selection', () => {
-                expect([mm.selectionStart, mm.selectionEnd]).to.deep.equal([0, 2]);
-            });
-            it('onChange should be callen with "14:09"', async () => {
-                expect(onChange).to.be.calledWithExactly({value: '14:09'});
-            });
-        });
-
-        describeDesktop('shift + stepper down (mm focus)', () => {
-            beforeEach(() => {
-                renderer.driver.focusMinutes();
-                renderer.driver.clickDecrement({shiftKey: true});
-            });
-            it('mm input should have "49" value', () => {
-                expect(mm).attr('value', '49');
-            });
-            it('onChange should be callen with "13:49"', async () => {
-                expect(onChange).to.be.calledWithExactly({value: '13:49'});
-            });
-        });
-
-        describeDesktop('shift + stepper up (hh focus)', () => {
-            beforeEach(() => {
-                renderer.driver.focusHours();
-                renderer.driver.clickIncrement({shiftKey: true});
-            });
-            it('hh input should have "14" value', () => {
-                expect(hh).attr('value', '14');
-            });
-            itDesktop('hh input should have selection', () => {
-                expect([hh.selectionStart, hh.selectionEnd]).to.deep.equal([0, 2]);
-            });
-            it('onChange should be callen with "14:59"', async () => {
-                expect(onChange).to.be.calledWithExactly({value: '14:59'});
-            });
-        });
-
-        describeDesktop('shift + stepper down (hh focus)', () => {
-            beforeEach(() => {
-                renderer.driver.focusHours();
-                renderer.driver.clickDecrement({shiftKey: true});
-            });
-            it('hh input should have "12" value', () => {
-                expect(hh).attr('value', '12');
-            });
-            itDesktop('hh input should have selection', () => {
-                expect([hh.selectionStart, hh.selectionEnd]).to.deep.equal([0, 2]);
-            });
-            it('onChange should be callen with "12:59"', async () => {
-                expect(onChange).to.be.calledWithExactly({value: '12:59'});
-            });
-        });
-
-        describe('arrow up on mm segment', () => {
-            beforeEach(() => {
-                renderer.driver.keydownMinutes('up');
-            });
-            it('hh input should have "14" value', () => {
-                expect(hh).attr('value', '14');
-            });
-            it('mm input should have "00" value', () => {
-                expect(mm).attr('value', '00');
-            });
-            it('onChange should be callen with "14:00"', async () => {
-                expect(onChange).to.be.calledWithExactly({value: '14:00'});
-            });
-        });
-
-    });
-
-    describe('render with onChange={onChange} format=ampm" value="11:59"', () => {
-        let onChange: any;
-        let renderer: any;
-        let hh: any;
-        let mm: any;
-        let ampm: any;
-
-        beforeEach(() => {
-            onChange = sinon.spy();
-            renderer = clientRenderer.render(<TimePicker format="ampm" value="11:59" onChange={onChange}/>)
-                .withDriver(TimePickerDriver);
-            hh = renderer.driver.hoursInput;
-            mm = renderer.driver.minutesInput;
-            ampm = renderer.driver.ampm;
-        });
-
-        describe('arrow up on mm segment', () => {
-            beforeEach(() => {
-                renderer.driver.keydownMinutes('up');
-            });
-            it('hh input should have "12" value', () => {
-                expect(hh).attr('value', '12');
-            });
-            it('mm input should have "00" value', () => {
-                expect(mm).attr('value', '00');
-            });
-            itDesktop('ampm input should have "PM" value', () => {
-                expect(ampm).text('PM');
-            });
-            it('onChange should be callen with "12:00"', async () => {
-                expect(onChange).to.be.calledWithExactly({value: '12:00'});
-            });
-        });
-
-        describeDesktop('backspace on hh segment', () => {
-            beforeEach(() => {
-                renderer.driver.keydownHours('backspace');
-            });
-            it('hh input should have "12" value', () => {
-                expect(hh).attr('value', '12');
-            });
-            it('focus should stay on hh section', () => {
-                expect(document.activeElement).to.equal(hh);
-            });
-            it('ampm should have AM text', () => {
-                expect(renderer.driver.ampm).text('AM');
-            });
-            it('onChange should be callen with "00:59"', async () => {
-                expect(onChange).to.be.calledWithExactly({value: '00:59'});
-            });
-        });
-    });
-
-    describe('render with onChange={onChange} format="ampm" value="23:59"', () => {
-        let onChange: any;
-        let renderer: any;
-        let hh: any;
-        let mm: any;
-        let ampm: any;
-
-        beforeEach(() => {
-            onChange = sinon.spy();
-            renderer = clientRenderer.render(<TimePicker format="ampm" value="23:59" onChange={onChange}/>)
-                .withDriver(TimePickerDriver);
-            hh = renderer.driver.hoursInput;
-            mm = renderer.driver.minutesInput;
-            ampm = renderer.driver.ampm;
-        });
-
-        describe('arrow up on hh segment', () => {
-            beforeEach(() => {
-                renderer.driver.keydownHours('up');
-            });
-            itDesktop('hh input should have "12" value', () => {
-                expect(hh).attr('value', '12');
-            });
-            itNative('hh input should have "00" value', () => {
-                expect(hh).attr('value', '00');
-            });
-            it('mm input should have "59" value', () => {
-                expect(mm).attr('value', '59');
-            });
-            itDesktop('ampm input should have "AM" value', () => {
-                expect(ampm).text('AM');
-            });
-            it('onChange should be callen with "00:59"', async () => {
-                expect(onChange).to.be.calledWithExactly({value: '00:59'});
-            });
-        });
-    });
-
-    describe('render with onChange={onChange} format="ampm" value="00:00"', () => {
-        let onChange: any;
-        let renderer: any;
-        let hh: any;
-        let mm: any;
-        let ampm: any;
-
-        beforeEach(() => {
-            onChange = sinon.spy();
-            renderer = clientRenderer.render(<TimePicker format="ampm" value="00:00" onChange={onChange}/>)
-                .withDriver(TimePickerDriver);
-            hh = renderer.driver.hoursInput;
-            mm = renderer.driver.minutesInput;
-            ampm = renderer.driver.ampm;
-        });
-
-        describe('arrow down on mm segment', () => {
-            beforeEach(() => {
-                renderer.driver.keydownMinutes('down');
-            });
-            itDesktop('hh input should have "11" value', () => {
-                expect(hh).attr('value', '11');
-            });
-            itNative('hh input should have "23" value', () => {
-                expect(hh).attr('value', '23');
-            });
-            it('mm input should have "59" value', () => {
-                expect(mm).attr('value', '59');
-            });
-            itDesktop('ampm input should have "PM" value', () => {
-                expect(ampm).text('PM');
-            });
-            it('onChange should be callen with "23:59"', async () => {
-                expect(onChange).to.be.calledWithExactly({value: '23:59'});
-            });
-        });
-    });
-
-    describe('render with format="24h" value="01:55"', () => {
-        let renderer: any;
-        let hh: any;
-        let mm: any;
-        beforeEach(() => {
-            renderer = clientRenderer.render(<TimePicker format="24h" value="01:55"/>).withDriver(TimePickerDriver);
-            hh = renderer.driver.hoursInput;
-            mm = renderer.driver.minutesInput;
-        });
-
-        describe('entering "1" into hh segment', () => {
-            beforeEach(() => {
-                renderer.driver.changeHours('1');
-            });
-            it('should set focus state', () => {
-                expect(renderer.driver.getCssState('focus')).to.be.true;
-            });
-            it('hh input should have "1" value', () => {
-                expect(hh).attr('value', '1');
-            });
-            it('mm input should have "55" value', () => {
-                expect(mm).attr('value', '55');
-            });
-            it('should keep curson in hh segment', () => {
-                expect(document.activeElement).to.equal(hh);
-            });
-        });
-    });
-
-    describeNative('render with value="01:59" format="ampm" (touch)', () => {
+    describe('render with 12h format and value above 12:00 PM', () => {
         let renderer: any;
 
         beforeEach(() => {
-            renderer = clientRenderer.render(<TimePicker format="ampm" value="01:59"/>).withDriver(TimePickerDriver);
+            renderer = clientRenderer.render(<TimePicker format="ampm" value="23:59"/>).withDriver(TimePickerDriver);
         });
-        it ('should not render stepperIncrement', () => {
-            expect(renderer.driver.increment).to.be.null;
-        });
-        it ('should not render stepperDecrement', () => {
-            expect(renderer.driver.decrement).to.be.null;
-        });
-    });
 
-    describe('render with onChange={onChange} format="ampm" value="04:55"', () => {
-        let onChange: any;
-        let renderer: any;
-        let hh: any;
-        let mm: any;
-        let ampm: any;
-        beforeEach(() => {
-            onChange = sinon.spy();
-            renderer = clientRenderer.render(<TimePicker format="ampm" value="04:55" onChange={onChange}/>)
-                .withDriver(TimePickerDriver);
-            hh = renderer.driver.hoursInput;
-            mm = renderer.driver.minutesInput;
-            ampm = renderer.driver.ampm;
-        });
-        describe('entering "3" into mm segment', () => {
-            beforeEach(() => {
-                renderer.driver.changeMinutes('3');
+        describeDesktop('on desktop', () => {
+            it('hours should be in 12h format', () => {
+                expect(renderer.driver.hoursInput).attr('value', '11');
             });
-            it('should set focus state', () => {
-                expect(renderer.driver.getCssState('focus')).to.be.true;
+            it('should render ampm', () => {
+                expect(renderer.driver.ampm).to.not.null;
             });
-            it('hh input should have "04" value', () => {
-                expect(hh).attr('value', '04');
+            it('should render stepperIncrement', () => {
+                expect(renderer.driver.increment).to.not.null;
             });
-            it('mm input should have "3" value', () => {
-                expect(mm).attr('value', '3');
-            });
-            itDesktop('ampm should have "AM" value', () => {
-                expect(ampm).text('AM');
-            });
-            it('should keep selection on mm segment', () => {
-                expect(document.activeElement).to.equal(mm);
-            });
-            it('onChange should not be callen', async () => {
-                await new Promise(resolve => setTimeout(resolve, 500));
-                expect(onChange).to.not.be.called;
+            it('should render stepperDecrement', () => {
+                expect(renderer.driver.decrement).to.not.null;
             });
         });
 
-        describe('entering "7" into mm segment', () => {
-            beforeEach(() => {
-                renderer.driver.changeMinutes('7');
+        describeNative('on touch', () => {
+            it('hours should be in 24h format', () => {
+                expect(renderer.driver.hoursInput).attr('value', '23');
             });
-            it('should set focus state', () => {
-                expect(renderer.driver.getCssState('focus')).to.be.true;
+            it('should not render ampm', () => {
+                expect(renderer.driver.ampm).to.be.null;
             });
-            it('hh input should have "04" value', () => {
-                expect(hh).attr('value', '04');
+            it('should not render stepperIncrement', () => {
+                expect(renderer.driver.increment).to.be.null;
             });
-            it('mm input should have "07" value', () => {
-                expect(mm).attr('value', '07');
-            });
-            itDesktop('ampm should have "AM" value', () => {
-                expect(ampm).text('AM');
-            });
-            itDesktop('should move selection on ampm segment', () => {
-                expect(document.activeElement).to.equal(ampm);
-            });
-            it('onChange should be callen with "04:07"', async () => {
-                expect(onChange).to.be.calledWithExactly({value: '04:07'});
-            });
-        });
-
-        describeDesktop('focus and change ampm input', () => {
-            beforeEach(() => {
-                renderer.driver.keydownAmpm('space');
-            });
-            it('onChange should be callen with "16:55"', () => {
-                expect(onChange).to.be.calledWithExactly({value: '16:55'});
+            it('should not render stepperDecrement', () => {
+                expect(renderer.driver.decrement).to.be.null;
             });
         });
     });
@@ -855,6 +232,203 @@ describe('<TimePicker/>', () => {
                     });
                 });
             });
+        });
+    });
+
+    const suits: Suit[] = [
+        {
+            props: {value: '13:55', format: '24h'},
+            items: [
+                [{segment: 'hh', value: '3'}, {hh: '03', mm: '55', focus: 'mm', value: '03:55'}],
+                [{segment: 'hh', value: '2'}, {hh: '2', mm: '55', focus: 'hh', value: null}],
+                [{segment: 'mm', value: '7'}, {hh: '13', mm: '07', focus: 'mm', value: '13:07'}],
+                [{segment: 'mm', value: '5'}, {hh: '13', mm: '5', focus: 'mm', value: null}],
+                [{segment: 'mm', key: 'backspace'}, {hh: '13', mm: '00', focus: 'mm', value: '13:00'}],
+                [{segment: 'hh', key: 'backspace'}, {hh: '00', mm: '55', focus: 'hh', value: '00:55'}],
+                [{segment: 'hh', key: 'down'}, {hh: '12', mm: '55', focus: 'hh', value: '12:55'}],
+                [{segment: 'hh', key: 'up'}, {hh: '14', mm: '55', focus: 'hh', value: '14:55'}],
+                [{segment: 'mm', key: 'down'}, {hh: '13', mm: '54', focus: 'mm', value: '13:54'}],
+                [{segment: 'mm', key: 'up'}, {hh: '13', mm: '56', focus: 'mm', value: '13:56'}]
+            ]
+        },
+        {
+            props: {value: '13:00', format: '24h'},
+            items: [
+                [{segment: 'mm', key: 'backspace'}, {hh: '13', mm: '00', focus: 'hh', value: null}]
+            ]
+        },
+        {
+            props: {value: '13:59', format: '24h'},
+            items: [
+                [{segment: 'mm', key: 'up'}, {hh: '14', mm: '00', focus: 'mm', value: '14:00'}],
+                [
+                    {segment: 'mm', key: 'up', options: {shiftKey: true}},
+                    {hh: '14', mm: '09', focus: 'mm', value: '14:09'}
+                ],
+                [
+                    {segment: 'mm', key: 'down', options: {shiftKey: true}},
+                    {hh: '13', mm: '49', focus: 'mm', value: '13:49'}
+                ],
+                [
+                    {segment: 'hh', key: 'up', options: {shiftKey: true}},
+                    {hh: '14', mm: '59', focus: 'hh', value: '14:59'}
+                ],
+                [
+                    {segment: 'hh', key: 'down', options: {shiftKey: true}},
+                    {hh: '12', mm: '59', focus: 'hh', value: '12:59'}
+                ],
+                [
+                    {segment: 'mm', inc: true, options: {shiftKey: true}},
+                    {hh: '14', mm: '09', focus: 'mm', value: '14:09'}
+                ],
+                [
+                    {segment: 'mm', dec: true, options: {shiftKey: true}},
+                    {hh: '13', mm: '49', focus: 'mm', value: '13:49'}
+                ],
+                [
+                    {segment: 'hh', inc: true, options: {shiftKey: true}},
+                    {hh: '14', mm: '59', focus: 'hh', value: '14:59'}
+                ],
+                [
+                    {segment: 'hh', dec: true, options: {shiftKey: true}},
+                    {hh: '12', mm: '59', focus: 'hh', value: '12:59'}
+                ]
+            ]
+        },
+        {
+            props: {value: '11:59', format: 'ampm'},
+            items: [
+                [{segment: 'mm', key: 'up'}, {hh: '12', mm: '00', focus: 'mm', ampm: 'PM', value: '12:00'}],
+                [{segment: 'hh', key: 'backspace'}, {hh: '12', mm: '59', focus: 'hh', ampm: 'AM', value: '00:59'}]
+            ]
+        },
+        {
+            props: {value: '01:55', format: '24h'},
+            items: [
+                [{segment: 'hh', value: '1'}, {hh: '1', mm: '55', focus: 'hh', value: null}]
+            ]
+        },
+        {
+            props: {value: '23:59', format: 'ampm'},
+            items: [
+                [{segment: 'hh', key: 'up'}, {hh: '12', mm: '59', focus: 'hh', ampm: 'AM', value: '00:59'}],
+                [{segment: 'mm', key: 'up'}, {hh: '12', mm: '00', focus: 'mm', ampm: 'AM', value: '00:00'}]
+            ]
+        },
+        {
+            props: {value: '00:00', format: 'ampm'},
+            items: [
+                [{segment: 'hh', key: 'down'}, {hh: '11', mm: '00', focus: 'hh', ampm: 'PM', value: '23:00'}],
+                [{segment: 'mm', key: 'down'}, {hh: '11', mm: '59', focus: 'mm', ampm: 'PM', value: '23:59'}]
+            ]
+        },
+        {
+            props: {value: '04:55', format: 'ampm'},
+            items: [
+                [{segment: 'mm', value: '3'}, {hh: '04', mm: '3', focus: 'mm', value: null}],
+                [{segment: 'mm', value: '7'}, {hh: '04', mm: '07', focus: 'ampm', value: '04:07'}],
+                [{segment: 'ampm', key: 'space'}, {hh: '04', mm: '55', ampm: 'PM', focus: 'ampm', value: '16:55'}],
+                [{segment: 'hh', key: 'space'}, {hh: '04', mm: '55', ampm: 'AM', focus: 'mm', value: null}],
+                [{segment: 'mm', key: 'space'}, {hh: '04', mm: '55', ampm: 'AM', focus: 'ampm', value: null}]
+            ]
+        }
+
+    ];
+
+    function execAction(driver: any, action: any) {
+        const suffix = ({mm: 'Minutes', hh: 'Hours', ampm: 'Ampm'} as any)[action.segment];
+        if (action.key) {
+            driver['keydown' + suffix](action.key, action.options);
+        } else if (action.value) {
+            driver['change' + suffix](action.value);
+        } else if (action.inc) {
+            driver['focus' + suffix]();
+            driver.clickIncrement(action.options);
+        } else {
+            driver['focus' + suffix]();
+            driver.clickDecrement(action.options);
+        }
+    }
+
+    function getTitle(action: any) {
+        if (action.key) {
+            return `pressing "${action.key}" on ${action.segment}`;
+        } else if (action.value) {
+            return `enter "${action.value}" to ${action.segment}`;
+        } else if (action.inc) {
+            return 'increment with stepper';
+        } else {
+            return 'decrement with stepper';
+        }
+    }
+
+    function getDescribeFunction(condition: boolean) {
+        return condition ? describe : describeDesktop;
+    }
+
+    suits.forEach(suit => {
+        const {props, items} = suit;
+
+        getDescribeFunction(props.format === '24h')(`render with "${props.value}" and "${props.format}" format`, () => {
+            let onChange: any;
+            let onInput: any;
+            let renderer: any;
+            let hh: any;
+            let mm: any;
+            let ampm: any;
+
+            beforeEach(() => {
+                onChange = sinon.spy();
+                onInput = sinon.spy();
+                renderer = clientRenderer.render(<TimePicker {...props} onChange={onChange} onInput={onInput}/>)
+                    .withDriver(TimePickerDriver);
+                hh = renderer.driver.hoursInput;
+                mm = renderer.driver.minutesInput;
+                ampm = renderer.driver.ampm;
+            });
+
+            items.forEach(test => {
+                const [action, expectation] = test;
+
+                getDescribeFunction(!action.inc && !action.dec)(getTitle(action), () => {
+                    let focusedElem: any;
+                    beforeEach(() => {
+                        focusedElem = {hh, mm, ampm}[expectation.focus];
+                        execAction(renderer.driver, action);
+                    });
+
+                    it('hours should have correct value', () => {
+                        expect(hh).attr('value', expectation.hh);
+                    });
+                    it('minutes should have correct value', () => {
+                        expect(mm).attr('value', expectation.mm);
+                    });
+                    if (expectation.ampm) {
+                        itDesktop('ampm should have correct value', () => {
+                            expect(ampm).text(expectation.ampm!);
+                        });
+                    }
+                    it(`${expectation.focus} should be focused`, () => {
+                        expect(document.activeElement).to.equal(focusedElem);
+                    });
+                    if (expectation.value) {
+                        if (expectation.focus !== 'ampm') {
+                            itDesktop(`${expectation.focus} should be selected`, () => {
+                                expect([focusedElem.selectionStart, focusedElem.selectionEnd]).to.deep.equal([0, 2]);
+                            });
+                        }
+                        it('onChange should be callen with correct value', () => {
+                            expect(onChange).to.be.calledWithExactly({value: expectation.value});
+                        });
+                    } else {
+                        it('onChange should not be callen', async () => {
+                            await new Promise(resolve => setTimeout(resolve, 500));
+                            expect(onChange).to.not.be.called;
+                        });
+                    }
+                });
+            });
+
         });
     });
 

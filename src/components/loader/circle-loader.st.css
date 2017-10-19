@@ -9,12 +9,12 @@
     loadTime: 4s;
 }
 
-@keyframes circle {
+@keyframes circle-animation {
     :global(0%) {transform: rotate(0)}
     :global(100%) {transform: rotate(360deg)}
 }
 
-@keyframes track {
+@keyframes track-animation {
     :global(0%) {transform: rotate(-180deg)}
     :global(25%) {transform: rotate(-180deg)}
     :global(50%) {transform: rotate(0)}
@@ -30,7 +30,7 @@
     width: value(size);
     height: value(size);
     position: relative;
-    animation: circle value(rotateTime) infinite;
+    animation: circle-animation value(rotateTime) infinite;
 }
 
 .left, .right {
@@ -47,7 +47,7 @@
     box-sizing: border-box;
     overflow: hidden;
     transform: rotate(-180deg);
-    animation: track value(loadTime) infinite linear;
+    animation: track-animation value(loadTime) infinite linear;
     transform-origin: 100% 50%;
 }
 .track:after {
