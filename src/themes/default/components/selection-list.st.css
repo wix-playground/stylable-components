@@ -46,10 +46,11 @@ Option {
     box-sizing: border-box;
     font: value(defaultFont);
     line-height: 24px;
-    padding: 5px 23px;
-    white-space: nowrap;
+    min-height: 36px;
     overflow: hidden;
+    padding: 5px 23px;
     text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 Option:disabled {
