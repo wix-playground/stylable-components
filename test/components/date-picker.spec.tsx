@@ -206,7 +206,7 @@ describe('The DatePicker Component', () => {
 
             await waitForDom(() => expect(datePicker.isOpen()).to.be.false);
 
-            clientRenderer.render(<DatePicker readOnly />, container).withDriver(DatePickerTestDriver);;
+            clientRenderer.render(<DatePicker readOnly />, container).withDriver(DatePickerTestDriver);
 
             await waitForDom(() => expect(datePicker.isOpen()).to.be.false);
 
