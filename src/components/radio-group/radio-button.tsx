@@ -7,11 +7,6 @@ import style from './radio-button.st.css';
 
 export interface RadioButtonProps extends FormInputProps<string>, StylableProps {
     checked?: boolean;
-    name?: string;
-    disabled?: boolean;
-    readOnly?: boolean;
-    tabIndex?: number;
-    className?: string;
 }
 
 export interface RadioButtonState {
@@ -57,6 +52,7 @@ export class RadioButton extends React.Component<RadioButtonProps, RadioButtonSt
                     disabled={this.props.disabled}
                     readOnly={this.props.readOnly}
                     name={this.props.name}
+                    autoFocus={this.props.autoFocus}
                 />
                 <div className="contentContainer" data-automation-id="CONTENT_CONTAINER">
                     <span className="button" data-automation-id="ICON" />
