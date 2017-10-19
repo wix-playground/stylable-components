@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {ClientRenderer, expect, selectDom, simulate, sinon, waitFor} from 'test-drive-react';
+import {ClientRenderer, expect, selectDom, sinon, waitFor} from 'test-drive-react';
 import {DialogDemo} from '../../demo/components/dialog-demo';
 import {Dialog} from '../../src';
 
