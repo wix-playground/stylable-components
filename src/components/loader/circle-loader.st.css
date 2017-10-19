@@ -10,16 +10,16 @@
 }
 
 @keyframes circle-animation {
-    :global(0%) {transform: rotate(0)}
-    :global(100%) {transform: rotate(360deg)}
+    0% {transform: rotate(0)}
+    100% {transform: rotate(360deg)}
 }
 
 @keyframes track-animation {
-    :global(0%) {transform: rotate(-180deg)}
-    :global(25%) {transform: rotate(-180deg)}
-    :global(50%) {transform: rotate(0)}
-    :global(75%) {transform: rotate(0)}
-    :global(100%) {transform: rotate(180deg)}
+    0% {transform: rotate(-180deg)}
+    25% {transform: rotate(-180deg)}
+    50% {transform: rotate(0)}
+    75% {transform: rotate(0)}
+    100% {transform: rotate(180deg)}
 }
 
 .root {
