@@ -40,7 +40,6 @@ describe('<RadioGroup />', () => {
         });
     });
 
-
     it('renders non RadioButton components as children', async () => {
         const {driver: group, waitForDom} = clientRenderer.render(
             <RadioGroup>
@@ -85,7 +84,6 @@ describe('<RadioGroup />', () => {
             expect(group.getRadioButton(1).isChecked(), 'expected radio to be checked').to.equal(true);
         });
     });
-
 
     it('disabled all radio button children if the disabled prop is true', async () => {
         const {driver: group, waitForDom} = clientRenderer.render(

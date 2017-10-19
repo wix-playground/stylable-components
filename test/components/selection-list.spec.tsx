@@ -7,8 +7,6 @@ import {
     SelectionListDividerSymbol as divider,
     SelectionListOption as Option
 } from '../../src';
-import dividerStyle from '../../src/components/selection-list/divider.st.css';
-import optionStyle from '../../src/components/selection-list/option.st.css';
 import {SelectionListTestDriver} from '../../test-kit';
 import {sleep} from '../utils';
 
