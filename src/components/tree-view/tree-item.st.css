@@ -4,17 +4,15 @@
 }
 
 .item {
-    -st-states: selected, focused;
+    -st-states: selected, focused, expanded;
     cursor: pointer;
-    padding: 5px 7px;
-    border: 1px solid transparent;
     list-style: none;
 }
 
 .nestedTree {
-    margin-left: 2rem;
     list-style: none;
-    padding-left: 0;
+    padding: 0;
+    margin: 0;
 }
 
 .itemIcon {

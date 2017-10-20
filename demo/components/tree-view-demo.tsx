@@ -5,6 +5,11 @@ import {TreeItemData , TreeItemProps, TreeView} from '../../src';
 import style from './tree-view-demo.st.css';
 
 export const treeData: TreeItemData[] = [
+    { label: 'Appetizers'},
+    { label: 'Drinks', children: [
+        {label: 'Vodka'},
+        {label: 'Beer'}
+    ]},
     { label: 'Food Menu', children: [
         { label: 'Salads', children: [
             {label: 'Greek Salad'},
