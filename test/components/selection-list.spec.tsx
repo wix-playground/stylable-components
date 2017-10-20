@@ -8,7 +8,7 @@ import {
     SelectionListOption as Option
 } from '../../src';
 import {SelectionListTestDriver} from '../../test-kit';
-import {sleep, WithTheme, WithThemeDAID} from '../utils';
+import {sleep} from '../utils';
 
 export class SelectionListDemoDriver extends DriverBase {
     public static ComponentClass = SelectionListDemo;
@@ -31,14 +31,6 @@ export class SelectionListDemoDriver extends DriverBase {
 
 describe('<SelectionList />', () => {
     const clientRenderer = new ClientRenderer();
-    let ThemedContainer;
-    let themedContainer: HTMLDivElement;
-
-    beforeEach(() => {
-        ThemedContainer = WithTheme();
-        const {select} = clientRenderer.render(<ThemedContainer />);
-        themedContainer = select(WithThemeDAID) as HTMLDivElement;
-    });
 
     afterEach(() => {
         clientRenderer.cleanup();
@@ -76,17 +68,6 @@ describe('<SelectionList />', () => {
         const {list, result} = demo.textStyle;
         list.click(list.items[5]);
         await waitForDom(() => expect(result.className).to.match(/text-style-label/));
-    });
-
-    it('Renders items under each other using the default renderer', async () => {
-        const {driver: list, waitForDom} = clientRenderer.render(
-            <SelectionList dataSource={['0', '1', divider]} />,
-            themedContainer
-        ).withDriver(SelectionListTestDriver);
-
-        await waitForDom(() => expect(list.root).to.be.present());
-        expect(list.items).to.be.inVerticalSequence();
-        expect(list.items).to.be.horizontallyAligned('left');
     });
 
     it('Fires onChange when an item is clicked', async () => {
@@ -143,20 +124,6 @@ describe('<SelectionList />', () => {
             expect(onChange).to.have.not.been.called;
         }
     );
-
-    it('Renders blank items at the same height as normal items', async () => {
-        const {driver: list, waitForDom} = clientRenderer.render(
-            <SelectionList dataSource={['', '1']} />,
-            themedContainer
-        ).withDriver(SelectionListTestDriver);
-
-        await waitForDom(() => expect(list.root).to.be.present());
-        const [empty, full] = list.items;
-        expect(empty).to.have.width.at.least(full);
-        expect(empty).to.have.width.at.most(full);
-        expect(empty).to.have.height.at.least(full);
-        expect(empty).to.have.height.at.most(full);
-    });
 
     it('Renders a divider', async () => {
         const {driver: list, waitForDom} = clientRenderer.render(
