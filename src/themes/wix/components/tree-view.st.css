@@ -10,18 +10,20 @@
 :import {
     -st-from: "../variables.st.css";
     -st-named:
-        checkedColor;
+        checkedColor,
+        iconChevronDownDisabled;
+}
+:vars {
+    spaceVertical: 9px;
+    spaceHorizontal: 30px;
 }
 
 TreeView {
     background: white;
 }
-TreeItem {
-    //padding: 9px 30px;
-}
 
 TreeItem::itemLabel {
-    padding: 9px 30px;
+    padding: value(spaceVertical) value(spaceHorizontal);
     display: inline-block;
 }
 
@@ -29,27 +31,32 @@ TreeItem::itemIcon {
     float: right;
 }
 TreeItem::nestedTree {
-    margin-left: 30px;
+    margin-left: value(spaceHorizontal);
 }
 TreeItem::nestedTree TreeItem::itemLabel {
     border-left: 1px solid #b6c1cd;
 }
 
 TreeItem::nestedTree TreeItem::itemLabel:hover {
-    color: value(checkedColor);
     border-left-color: value(checkedColor);
 }
-
-/*
-TreeItem::nestedTree TreeItem:hover {
-    border-left-color: value(checkedColor);
-}
-
-TreeItem:hover::itemLabel {
+TreeItem::itemLabel:hover {
     color: value(checkedColor);
 }
-*/
 
 TreeItem.item:expanded {
     background-color: #f0f4f7;
+    padding-bottom: value(spaceVertical);
+}
+
+TreeItem::open, TreeItem::close {
+    float: right;
+    margin-top: value(spaceVertical);
+    margin-right: value(spaceHorizontal);
+    background-image: value(iconChevronDownDisabled);
+    transition: transform 200ms ease-out;
+}
+
+TreeItem::close {
+    transform: rotate(180deg);
 }
