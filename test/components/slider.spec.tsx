@@ -329,18 +329,15 @@ function rangeWithDisabledCross(clientRenderer: ClientRenderer, axis: AxisOption
             describe('should be possible to decrease the value', () => {
                 it('with mouse only', () => {
                     const bounds = driver.getBounds();
-                    const event1 = getEventCoordinates(bounds, axis, 0.5);
+                    const event1 = getEventCoordinates(bounds, axis, 0.4);
                     const event2 = getEventCoordinates(bounds, axis, 0.3);
                     driver.mouseDown(event1);
                     driver.mouseUp(event2, environment);
                     expect(onChange).to.be.calledWithMatch({value: [30, 50]});
                 });
 
-                it('with mouse and keyboard', () => {
-                    const bounds = driver.getBounds();
-                    const event = getEventCoordinates(bounds, axis, 0.5);
-                    driver.mouseDown(event);
-                    driver.mouseUp(event, environment);
+                it('with keyboard', () => {
+                    driver.focus(1);
                     driver.keyDown(isReverse(axis) ? 'right' : 'left');
                     expect(onChange).to.be.calledWithMatch({value: [49, 50]});
                 });
@@ -852,7 +849,7 @@ function keyboard(
     });
 }
 
-describe.only('<Slider />', () => {
+describe('<Slider />', () => {
     const clientRenderer = new ClientRenderer();
 
     beforeEach(() => {
@@ -1424,7 +1421,7 @@ describe.only('<Slider />', () => {
     });
 });
 
-describe.only('Slider/properties', () => {
+describe('Slider/properties', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
 
@@ -1742,7 +1739,7 @@ describe.only('Slider/properties', () => {
 
 });
 
-describe.only('Slider/calculations', () => {
+describe('Slider/calculations', () => {
     function testMethod(fn: (prop: any) => any, results: {[key: string]: any}) {
         Object.keys(results).forEach(key => {
             it(`${key} => ${results[key]}`, () => {
@@ -1956,7 +1953,7 @@ describe.only('Slider/calculations', () => {
 
 });
 
-describe.only('<Slider /> type Range', () => {
+describe('<Slider /> type Range', () => {
     const clientRenderer = new ClientRenderer();
 
     beforeEach(() => {

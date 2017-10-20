@@ -234,8 +234,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         );
         const nearestHandleIndex = this.currentValueIndex !== -1 ?
             this.currentValueIndex :
-            nearestIndex(this.state.relativeValue, currentHandleValue);
-
+            nearestIndex(this.state.relativeValue, currentHandleValue, true);
         const {
             relativeValue,
             currentHandleIndex
@@ -422,8 +421,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
     }
 
     private onSliderAreaKeyDown = (
-        event: React.KeyboardEvent<HTMLElement>,
-        sliderArea: HTMLElement
+        event: React.KeyboardEvent<HTMLElement>
     ) => {
         if (this.isActive || this.props.disabled) {
             event.preventDefault();
