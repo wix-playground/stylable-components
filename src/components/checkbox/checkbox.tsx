@@ -8,11 +8,8 @@ export interface CheckBoxProps extends FormInputProps<boolean>, properties.Props
     tickIcon?: React.ReactNode;
     indeterminateIcon?: React.ReactNode;
     children?: React.ReactNode;
-    disabled?: boolean;
-    readonly?: boolean;
     error?: boolean;
     indeterminate?: boolean;
-    tabIndex?: number;
     id?: string;
 }
 
@@ -44,19 +41,14 @@ export class CheckBox extends React.Component<CheckBoxProps, CheckBoxState> {
     public state: CheckBoxState = {isFocused: false};
 
     public render() {
-        const {
-            value, disabled, readonly, error,
-            indeterminate, id, tabIndex,
-            indeterminateIcon, tickIcon, children
-        } = this.props;
 
         const styleState = {
-            checked: value!,
+            checked: this.props.value!,
+            disabled: this.props.disabled!,
+            readonly: this.props.readOnly!,
+            indeterminate: this.props.indeterminate!,
             focus: this.state.isFocused,
-            disabled,
-            readonly,
-            error,
-            indeterminate
+            error: this.props.error
         };
 
         return (
@@ -65,34 +57,37 @@ export class CheckBox extends React.Component<CheckBoxProps, CheckBoxState> {
                 onClick={this.handleChange}
                 style-state={styleState}
                 role="checkbox"
-                aria-checked={indeterminate ? 'mixed' : value}
+                aria-checked={this.props.indeterminate ? 'mixed' : this.props.value}
             >
                 <input
                     data-automation-id="NATIVE_CHECKBOX"
                     type="checkbox"
                     className="nativeCheckbox"
-                    checked={value}
-                    disabled={disabled}
+                    checked={this.props.value}
+                    disabled={this.props.disabled}
                     onChange={this.handleChange}
                     onFocus={this.handleInputFocus}
                     onBlur={this.handleInputBlur}
-                    id={id}
-                    tabIndex={tabIndex}
+                    id={this.props.id}
+                    tabIndex={this.props.tabIndex}
+                    autoFocus={this.props.autoFocus}
+                    name={this.props.name}
                 />
 
                 <span
                     className="box"
                     data-automation-id="CHECKBOX_BOX"
                 >
-                    {indeterminate ? indeterminateIcon : (value && tickIcon)}
+                    {this.props.indeterminate ?
+                        this.props.indeterminateIcon : (this.props.value && this.props.tickIcon)}
                 </span>
 
-                {children ? (
+                {this.props.children ? (
                         <div
                             data-automation-id="CHECKBOX_CHILD_CONTAINER"
                             className="childContainer"
                         >
-                            {children}
+                            {this.props.children}
                         </div>
                     ) : null
                 }
@@ -101,7 +96,7 @@ export class CheckBox extends React.Component<CheckBoxProps, CheckBoxState> {
     }
 
     private handleChange = (e: React.SyntheticEvent<HTMLElement>) => {
-        if (!this.props.disabled && !this.props.readonly) {
+        if (!this.props.disabled && !this.props.readOnly) {
             this.props.onChange!({
                 value: this.props.indeterminate ? true : !this.props.value
             });

@@ -2,11 +2,17 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {setGlobalConfig, stylable} from 'wix-react-tools';
 import {ComponentsDemo} from './components-demo';
-import styles from './style-wix.st.css';
+
+import defaultTheme from './styles/default.st.css';
+import wixTheme from './styles/wix.st.css';
+const themes: any = {wix: wixTheme, default: defaultTheme};
+
+let themeName = window.location.search.match(/theme=(\w+)/) && RegExp.$1;
+themeName = (themeName && themeName in themes) ? themeName : 'default';
 
 setGlobalConfig({devMode: true});
 
-@stylable(styles)
+@stylable(themes[themeName])
 class Demo extends ComponentsDemo {}
 
 const meta = document.createElement('meta');
@@ -16,4 +22,4 @@ document.head.appendChild(meta);
 
 const rootContainer = document.createElement('div');
 document.body.appendChild(rootContainer);
-ReactDOM.render(<Demo />, rootContainer);
+ReactDOM.render(<Demo theme={themeName} themes={Object.keys(themes)}/>, rootContainer);

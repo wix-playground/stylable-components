@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {ClientRenderer, expect, sinon} from 'test-drive-react';
 import {GlobalEvent, GlobalEventProps} from '../../src';
-import WindowStub from '../stubs/window.stub';
+import {WindowStub} from '../../test-kit';
 
 describe('<GlobalEvent />', () => {
     const clientRenderer = new ClientRenderer();

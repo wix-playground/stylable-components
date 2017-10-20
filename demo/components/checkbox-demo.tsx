@@ -117,8 +117,6 @@ export class ErrorDemo extends React.Component<{}, {value: boolean}> {
                 <span data-automation-id="ERROR_DEMO">
                     <CheckBox
                         data-automation-id="ERROR_DEMO_CHECKBOX"
-                        value={this.state.value}
-                        onChange={this.handleChange}
                         error
                     >
                         <span data-automation-id="ERROR_LABEL" className={style.label}>Unchecked</span>
@@ -140,8 +138,6 @@ export class ErrorDemo extends React.Component<{}, {value: boolean}> {
             </div>
         );
     }
-
-    private handleChange = (e: ChangeEvent<boolean>) => { this.setState({value: e.value}); };
 }
 
 @stylable(style)

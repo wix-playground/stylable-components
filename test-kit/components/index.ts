@@ -11,3 +11,4 @@ export * from './stateful-uncontrolled-number-input-driver';
 export * from './time-picker-driver';
 export * from './toggle-driver';
 export * from './slider-driver';
+export * from './loader-driver';
