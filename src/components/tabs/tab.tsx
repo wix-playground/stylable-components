@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {properties, stylable} from 'wix-react-tools';
+import {properties} from 'wix-react-tools';
 
 export interface TabProps extends properties.Props {
     value?: string;

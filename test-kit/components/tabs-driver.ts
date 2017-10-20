@@ -1,4 +1,4 @@
-import {DriverBase, simulate} from 'test-drive-react';
+import {DriverBase} from 'test-drive-react';
 import {Tabs} from '../../src';
 
 export class TabsDriver extends DriverBase {

@@ -1,6 +1,5 @@
 import * as React from 'react';
-import {ClientRenderer, expect, sinon} from 'test-drive-react';
-import {SelectionList} from '../../src/components/selection-list';
+import {ClientRenderer, expect} from 'test-drive-react';
 import {Tab, Tabs} from '../../src/components/tabs';
 import {TabsDriver} from '../../test-kit';
 
