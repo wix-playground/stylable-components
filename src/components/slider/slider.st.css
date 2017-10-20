@@ -130,28 +130,28 @@
     min-height: value(minVerticalSliderHeight);
 }
 
-.progress {
+.rangeBar {
     position: absolute;
     background-color: value(colorProgress);
     border-radius: value(trackRadius);
 }
 
-.root:x .progress{
+.root:x .rangeBar{
     left: 0;
     height: inherit;
 }
 
-.root:xReverse .progress{
+.root:xReverse .rangeBar{
     right: 0;
     height: inherit;
 }
 
-.root:y .progress{
+.root:y .rangeBar{
     bottom: 0;
     width: inherit;
 }
 
-.root:yReverse .progress{
+.root:yReverse .rangeBar{
     top: 0;
     width: inherit;
 }
@@ -271,7 +271,7 @@
     background-color: value(colorTrack);
 }
 
-.root:active .progress {
+.root:active .rangeBar {
     background-color: value(colorProgress);
 }
 
@@ -294,13 +294,13 @@
     background-color: value(color_Disabled);
 }
 
-.root:disabled .progress {
+.root:disabled .rangeBar {
     background-color: transparent;
 }
 
 /* Error state */
 .root:error .markProgress,
-.root:error .progress
+.root:error .rangeBar
 {
     background-color: value(color_Error);
 }

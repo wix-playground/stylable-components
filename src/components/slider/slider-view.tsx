@@ -123,7 +123,7 @@ export class SliderView extends React.Component<SliderViewProps, {}> {
                     data-automation-id="SLIDER-TRACK"
                 >
                     <div
-                        className="progress"
+                        className="rangeBar"
                         data-automation-id="SLIDER-PROGRESS"
                         style={this.getProgressStyles()}
                     />

@@ -149,7 +149,7 @@ Slider:x::bar {
 	border-radius: 3px;
 }
 
-Slider:x::progress {
+Slider:x::rangeBar {
 	height: 6px;
 	background: #3899EC;
 	border-radius: 3px;
@@ -220,7 +220,7 @@ Slider::slider::handle:focus {
 	transition: box-shadow 0.3s ease-in-out;
 }
 
-Slider:disabled::progress {
+Slider:disabled::rangeBar {
 	background: #CBD3DC;
 }
 

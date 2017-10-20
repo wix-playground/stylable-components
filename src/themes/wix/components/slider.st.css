@@ -9,7 +9,7 @@ Slider:x::bar {
     border-radius: 3px;
 }
 
-Slider:x::progress {
+Slider:x::rangeBar {
     height: 6px;
     background: #3899EC;
     border-radius: 3px;
@@ -52,7 +52,7 @@ Slider:active::bar {
     background: #DAEFFE;
 }
 
-Slider:disabled::progress {
+Slider:disabled::rangeBar {
     background: #CBD3DC;
 }
 
