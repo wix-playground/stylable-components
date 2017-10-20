@@ -119,7 +119,7 @@ export class SliderView extends React.Component<SliderViewProps, {}> {
                 />
                 {this.getNativeInput()}
                 <div
-                    className="track"
+                    className="bar"
                     data-automation-id="SLIDER-TRACK"
                 >
                     <div

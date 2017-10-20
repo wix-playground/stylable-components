@@ -100,30 +100,30 @@
     padding: 0 value(clickableAreaRadius);
 }
 
-.track {
+.bar {
     position: relative;
     border-radius: value(trackRadius);
     background-color: value(colorTrack);
 }
 
-.root:x .track{
+.root:x .bar{
     height: value(trackSize);
     width: 100%;
 }
 
-.root:xReverse .track{
+.root:xReverse .bar{
     height: value(trackSize);
     width: 100%;
 }
 
-.root:y .track{
+.root:y .bar{
     text-align: left;
     width: value(trackSize);
     height: 100%;
     min-height: value(minVerticalSliderHeight);
 }
 
-.root:yReverse .track{
+.root:yReverse .bar{
     text-align: left;
     width: value(trackSize);
     height: 100%;
@@ -239,7 +239,7 @@
 }
 
 /* Hover state */
-.root:hover .track {
+.root:hover .bar {
     background-color: value(colorTrack_Hover);
 }
 
@@ -259,11 +259,11 @@
 }
 
 /* Active state */
-.root:active .track {
+.root:active .bar {
     background-color: value(colorTrack);
 }
 
-.root:active:hover .track {
+.root:active:hover .bar {
     background-color: value(colorTrack);
 }
 
@@ -286,7 +286,7 @@
     background-color: value(colorHandle_Disabled);
 }
 
-.root:disabled .track {
+.root:disabled .bar {
     background-color: value(color_Disabled);
 }
 
