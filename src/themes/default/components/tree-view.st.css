@@ -1,6 +1,6 @@
 :import {
-	-st-from: "../../../components/tree-view/tree-view.st.css";
-	-st-default: TreeView;
+    -st-from: "../../../components/tree-view/tree-view.st.css";
+    -st-default: TreeView;
 }
 
 :import{
@@ -12,10 +12,10 @@
 :import {
     -st-from: "../variables.st.css";
     -st-named:  defaultFont,
-                borderFocus,
-                color_Active,
-                color_MainText_Background,
-                color_Keyboard_Focused;
+    borderFocus,
+    color_Active,
+    color_MainText_Background,
+    color_Keyboard_Focused;
 }
 
 .TreeView {

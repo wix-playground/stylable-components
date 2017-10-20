@@ -61,6 +61,11 @@
     -st-from: "./components/radio-button.st.css";
 }
 
+:import {
+    -st-theme: true;
+    -st-from: "./components/tree-view.st.css";
+}
+
 /* old content */
 
 :import {

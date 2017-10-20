@@ -1,0 +1,9 @@
+:import {
+    -st-from: "../../../components/tree-view/tree-view.st.css";
+    -st-default: TreeView;
+}
+
+:import{
+    -st-from: "../../../components/tree-view/tree-item.st.css";
+    -st-default: TreeItem;
+}
