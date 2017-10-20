@@ -17,6 +17,15 @@
     -st-default: Option;
 }
 
+.root {
+    -st-states: rtl, horizontal-top, horizontal-bottom, vertical-before, vertical-after;
+}
+
+.root {
+    display: flex;
+    flex-direction: column;
+}
+
 .tabList {
     -st-extends: SelectionList;
 }
@@ -24,6 +33,7 @@
 .tabList,
 .tabList:focused {
     display: flex;
+    flex-grow: 0;
 
     overflow-x: auto;
     overflow-y: hidden;
@@ -70,4 +80,51 @@
 .tabPanel {
     padding: 18px;
     background: value(color_MainText_Background)
+}
+
+.root:horizontal-bottom {
+    flex-direction: column-reverse;
+}
+
+.root:horizontal-bottom .tabList,
+.root:horizontal-bottom .tabList:focused {
+    border: none;
+    border-top: value(borderDefault);
+}
+
+.root:horizontal-bottom .tabList Option:selected:hover,
+.root:horizontal-bottom .tabList Option:selected {
+    border: none;
+    border-top: value(borderStyle) 2px value(color_Focus);
+}
+
+.root:vertical-before {
+    flex-direction: row;
+}
+
+.root:vertical-before .tabList,
+.root:vertical-before .tabList:focused {
+    flex-direction: column;
+    width: auto;
+
+    border: none;
+    border-right: value(borderDefault);
+}
+
+.root:rtl:vertical-before .tabList,
+.root:rtl:vertical-before .tabList:focused {
+    border: none;
+    border-left: value(borderDefault);
+}
+
+.root:vertical-before .tabList Option:selected:hover,
+.root:vertical-before .tabList Option:selected {
+    border: none;
+    border-right: value(borderStyle) 2px value(color_Focus);
+}
+
+.root:rtl:vertical-before .tabList Option:selected:hover,
+.root:rtl:vertical-before .tabList Option:selected {
+    border: none;
+    border-left: value(borderStyle) 2px value(color_Focus);
 }

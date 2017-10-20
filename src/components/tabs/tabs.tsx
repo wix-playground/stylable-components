@@ -1,14 +1,23 @@
+import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import {properties, stylable} from 'wix-react-tools';
 import {ChangeEvent} from '../../types/events';
+import {isRTLContext} from '../../utils';
 import {SelectionList, SelectionListOption as Option} from '../selection-list';
 import {TabProps} from './tab';
 import styles from './tabs.st.css';
+
+export type TabsOrientation
+    = 'horizontal-top'
+    | 'horizontal-bottom'
+    | 'vertical-before'
+    | 'vertical-after';
 
 export interface TabsProps extends properties.Props {
     value?: string;
     defaultValue?: string;
     disabled?: boolean;
+    orientation?: TabsOrientation;
     unmountInactiveTabs?: boolean;
     onChange?: (event: ChangeEvent<string>) => void;
     children: Array<React.ReactElement<TabProps>>;
@@ -17,11 +26,29 @@ export interface TabsProps extends properties.Props {
 @properties
 @stylable(styles)
 export class Tabs extends React.Component<TabsProps> {
+    public static defaultProps: Partial<TabsProps> = {
+        orientation: 'horizontal-top'
+    };
+
+    public static contextTypes = {
+        contextProvider: PropTypes.shape({
+            dir: PropTypes.string
+        })
+    };
+
     public render() {
-        const {children, value: selected} = this.props;
+        const {children, orientation, value: selected} = this.props;
 
         return (
-            <div>
+            <div
+                style-state={{
+                    'horizontal-top': orientation === 'horizontal-top',
+                    'horizontal-bottom': orientation === 'horizontal-bottom',
+                    'vertical-before': orientation === 'vertical-before',
+                    'vertical-after': orientation === 'vertical-after',
+                    'rtl': isRTLContext(this.context)
+                }}
+            >
                 <SelectionList
                     className="tabList"
                     tabIndex={0}
