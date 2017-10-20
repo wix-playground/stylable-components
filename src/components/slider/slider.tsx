@@ -224,7 +224,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         event: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement> | MouseEvent | TouchEvent,
         sliderArea: HTMLElement
     ): ValueFromPointer {
-        const position = isTouchEvent(event) ? event.changedTouches[0] : event;
+        const position = isTouchEvent(event) ? (event.changedTouches || event.touches)[0] : event;
         const currentHandleValue = getValueFromElementAndPointer(
             sliderArea,
             position,
