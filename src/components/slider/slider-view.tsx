@@ -254,12 +254,12 @@ export class SliderView extends React.Component<SliderViewProps, {}> {
         };
     }
 
-    private getMarkClass(position: number): 'markProgress' | 'markTrack' {
+    private getMarkClass(position: number): 'markProgress' | 'mark' {
         const {relativeValue} = this.props;
         return !(position < relativeValue[0] && relativeValue.length > 1) &&
             position <= last(relativeValue) ?
                 'markProgress' :
-                'markTrack';
+                'mark';
     }
 
     private getHandleIndex(handle: HTMLElement): number {

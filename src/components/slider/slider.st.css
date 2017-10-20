@@ -199,7 +199,7 @@
 }
 
 .markProgress,
-.markTrack
+.mark
 {
     width: value(markSize);
     height: value(markSize);
@@ -209,31 +209,31 @@
 .markProgress{
     background-color: value(colorProgress);
 }
-.markTrack{
+.mark{
     background-color: value(colorTrack);
 }
 
 
 .root:x .markProgress,
-.root:x .markTrack
+.root:x .mark
 {
     margin: value(markMiddleOfBar) 0 0 value(markMiddleOfDot);
 }
 
 .root:xReverse .markProgress,
-.root:xReverse .markTrack
+.root:xReverse .mark
 {
     margin: value(markMiddleOfBar) value(markMiddleOfDot) 0 0;
 }
 
 .root:y .markProgress,
-.root:y .markTrack
+.root:y .mark
 {
     margin: 0 0 value(markMiddleOfDot) value(markMiddleOfBar);
 }
 
 .root:yReverse .markProgress,
-.root:yReverse .markTrack
+.root:yReverse .mark
 {
     margin: value(markMiddleOfDot) 0 0 value(markMiddleOfBar);
 }
@@ -243,7 +243,7 @@
     background-color: value(colorTrack_Hover);
 }
 
-.root:hover .markTrack {
+.root:hover .mark {
     background-color: value(colorTrack_Hover);
 }
 
@@ -267,7 +267,7 @@
     background-color: value(colorTrack);
 }
 
-.root:active .markTrack {
+.root:active .mark {
     background-color: value(colorTrack);
 }
 
@@ -290,7 +290,7 @@
     background-color: value(color_Disabled);
 }
 
-.root:disabled .markTrack {
+.root:disabled .mark {
     background-color: value(color_Disabled);
 }
 
