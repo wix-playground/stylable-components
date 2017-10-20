@@ -198,7 +198,7 @@
     margin: value(middleOfHandle) 0px 0px value(middleOfBar);
 }
 
-.markProgress,
+.rangeMark,
 .mark
 {
     width: value(markSize);
@@ -206,7 +206,7 @@
     position: absolute;
     border-radius: value(markRadius);
 }
-.markProgress{
+.rangeMark{
     background-color: value(colorProgress);
 }
 .mark{
@@ -214,25 +214,25 @@
 }
 
 
-.root:x .markProgress,
+.root:x .rangeMark,
 .root:x .mark
 {
     margin: value(markMiddleOfBar) 0 0 value(markMiddleOfDot);
 }
 
-.root:xReverse .markProgress,
+.root:xReverse .rangeMark,
 .root:xReverse .mark
 {
     margin: value(markMiddleOfBar) value(markMiddleOfDot) 0 0;
 }
 
-.root:y .markProgress,
+.root:y .rangeMark,
 .root:y .mark
 {
     margin: 0 0 value(markMiddleOfDot) value(markMiddleOfBar);
 }
 
-.root:yReverse .markProgress,
+.root:yReverse .rangeMark,
 .root:yReverse .mark
 {
     margin: value(markMiddleOfDot) 0 0 value(markMiddleOfBar);
@@ -299,7 +299,7 @@
 }
 
 /* Error state */
-.root:error .markProgress,
+.root:error .rangeMark,
 .root:error .rangeBar
 {
     background-color: value(color_Error);
