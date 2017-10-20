@@ -1605,14 +1605,14 @@ describe('Slider/properties', () => {
         it(`should not render 6 mark`, () => {
             expect(driver.getMark(6)).to.be.null;
         });
-        it('mark 0 should have class "markProgress"', () => {
-            expect(driver.getMark(0)).have.class(styles.markProgress);
+        it('mark 0 should have class "rangeMark"', () => {
+            expect(driver.getMark(0)).have.class(styles.rangeMark);
         });
         it('mark 1 should have left "20%"', () => {
             expect(driver.getMark(1).style.left).to.equal('20%');
         });
-        it('mark 5 should have class "markTrack"', () => {
-            expect(driver.getMark(5)).have.class(styles.markTrack);
+        it('mark 5 should have class "mark"', () => {
+            expect(driver.getMark(5)).have.class(styles.mark);
         });
     });
 
