@@ -6,7 +6,7 @@ export type DialogButtonType = 'CANCEL' | 'CLOSE' | 'PRIMARY';
 
 export class DialogTestDriver extends DriverBase {
     public static ComponentClass = Dialog;
-    private modalDriver: ModalTestDriver;
+    public modalDriver: ModalTestDriver;
 
     constructor(getDialog: () => HTMLElement) {
         super(getDialog);

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {ClientRenderer, expect, selectDom, sinon, waitFor} from 'test-drive-react';
+import {ClientRenderer, DriverBase, expect, sinon, waitFor} from 'test-drive-react';
 import {DialogDemo} from '../../demo/components/dialog-demo';
 import {Dialog} from '../../src';
 import {DialogButtonType, DialogTestDriver} from '../../test-kit/components';
@@ -10,33 +10,55 @@ const dialogButtons = [
     {id: 'PRIMARY', handler: 'onOk', type: 'PRIMARY'}
 ];
 
+class DialogDemoDriver extends DriverBase {
+    public static ComponentClass = DialogDemo;
+    public dialogDriver: DialogTestDriver;
+
+    constructor(getDialogDemo: () => HTMLElement) {
+        super(getDialogDemo);
+        this.dialogDriver = new DialogTestDriver(getDialogDemo);
+    }
+
+    public get dialog(): Element {
+        return this.dialogDriver.root;
+    }
+
+    public get showDialogButton(): Element {
+        return this.select('DIALOG_BUTTON');
+    }
+}
+
 describe('<Dialog />', () => {
     const clientRenderer = new ClientRenderer();
-    const bodySelect = selectDom(document.body);
 
     afterEach(() => clientRenderer.cleanup());
 
     it('opens the dialog upon extra button click, and closes it upon clicking any of the buttons', async () => {
-        const {select, waitForDom} = clientRenderer.render(<DialogDemo />);
+        const {driver: dialogDemo, waitForDom} =
+            clientRenderer
+                .render(<DialogDemo />)
+                .withDriver(DialogDemoDriver);
 
-        const showDialogBtn = select('DIALOG_BUTTON') as HTMLButtonElement;
+        const showDialogBtn = dialogDemo.showDialogButton as HTMLButtonElement;
         showDialogBtn.click();
 
-        await waitForDom(() => expect(bodySelect('DIALOG_BODY')).to.be.present());
+        const dialogDriver = dialogDemo.dialogDriver;
 
-        (bodySelect('DIALOG_BODY', 'DIALOG_CLOSE') as HTMLButtonElement).click();
+        await waitForDom(() => expect(dialogDemo.dialog).to.be.present());
 
-        await waitForDom(() => expect(bodySelect('DIALOG_BODY')).to.be.absent());
+        (dialogDriver.getButton('CLOSE') as HTMLButtonElement).click();
+
+        await waitForDom(() => expect(dialogDriver.modalDriver.root).to.be.absent());
         showDialogBtn.click();
 
-        (bodySelect('DIALOG_BODY', 'DIALOG_CANCEL') as HTMLButtonElement).click();
+        (dialogDriver.getButton('CANCEL') as HTMLButtonElement).click();
 
-        await waitForDom(() => expect(bodySelect('DIALOG_BODY')).to.be.absent());
+        await waitForDom(() => expect(dialogDriver.modalDriver.root).to.be.absent());
         showDialogBtn.click();
 
-        (bodySelect('DIALOG_BODY', 'DIALOG_PRIMARY') as HTMLButtonElement).click();
+        (dialogDriver.getButton('PRIMARY') as HTMLButtonElement).click();
 
-        await waitForDom(() => expect(bodySelect('DIALOG_BODY')).to.be.absent());
+        await waitForDom(() => expect(dialogDriver.modalDriver.root).to.be.absent());
     });
 
     it('displays the provided title', async () => {
