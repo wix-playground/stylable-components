@@ -4,6 +4,7 @@ export * from './drop-down-driver';
 export * from './image-driver';
 export * from './modal-driver';
 export * from './portal-driver';
+export * from './dialog-driver';
 export * from './modal-driver';
 export * from './radio-group-driver';
 export * from './selection-list-driver';

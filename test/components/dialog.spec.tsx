@@ -2,11 +2,12 @@ import * as React from 'react';
 import {ClientRenderer, expect, selectDom, sinon, waitFor} from 'test-drive-react';
 import {DialogDemo} from '../../demo/components/dialog-demo';
 import {Dialog} from '../../src';
+import {DialogButtonType, DialogTestDriver} from '../../test-kit/components';
 
 const dialogButtons = [
-    {id: 'X', handler: 'onCancel'},
-    {id: 'CANCEL', handler: 'onCancel'},
-    {id: 'PRIMARY', handler: 'onOk'}
+    {id: 'X', handler: 'onCancel', type: 'CLOSE'},
+    {id: 'CANCEL', handler: 'onCancel', type: 'CANCEL'},
+    {id: 'PRIMARY', handler: 'onOk', type: 'PRIMARY'}
 ];
 
 describe('<Dialog />', () => {
@@ -23,7 +24,7 @@ describe('<Dialog />', () => {
 
         await waitForDom(() => expect(bodySelect('DIALOG_BODY')).to.be.present());
 
-        (bodySelect('DIALOG_BODY', 'DIALOG_X') as HTMLButtonElement).click();
+        (bodySelect('DIALOG_BODY', 'DIALOG_CLOSE') as HTMLButtonElement).click();
 
         await waitForDom(() => expect(bodySelect('DIALOG_BODY')).to.be.absent());
         showDialogBtn.click();
@@ -40,9 +41,11 @@ describe('<Dialog />', () => {
 
     it('displays the provided title', async () => {
         const testTitle = 'Do you accept this?';
-        const {waitForDom} = clientRenderer.render(<Dialog isOpen title={testTitle} />);
+        const {driver: dialog, waitForDom} = clientRenderer
+            .render(<Dialog isOpen title={testTitle} />)
+            .withDriver(DialogTestDriver);
 
-        await waitForDom(() => expect(bodySelect('DIALOG_BODY', 'DIALOG_TITLE')).to.have.text(testTitle));
+        await waitForDom(() => expect(dialog.title).to.have.text(testTitle));
 
     });
 
@@ -54,9 +57,13 @@ describe('<Dialog />', () => {
                 [button.handler]: onClick
             };
 
-            clientRenderer.render(<Dialog isOpen {...handlerProp} />);
+            const {driver: dialog} = clientRenderer
+                                        .render(<Dialog isOpen {...handlerProp} />)
+                                        .withDriver(DialogTestDriver);
 
-            (bodySelect('DIALOG_BODY', `DIALOG_${button.id}`) as HTMLButtonElement).click();
+            const getButton: Element = dialog.getButton(button.type as DialogButtonType);
+
+            (getButton as HTMLButtonElement).click();
 
             await waitFor(() => expect(onClick).to.have.been.calledOnce);
         });

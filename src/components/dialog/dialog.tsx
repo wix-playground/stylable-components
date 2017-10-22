@@ -35,7 +35,7 @@ export class Dialog extends React.PureComponent<DialogProps> {
                         <Button
                             onClick={this.props.onCancel}
                             role="header-close-button"
-                            data-automation-id="DIALOG_X"
+                            data-automation-id="DIALOG_CLOSE"
                         >
                             X
                         </Button>
