@@ -26,6 +26,7 @@
 
 /* root */
 .root {
+    -st-states: disabled, readonly, error;
     display: inline-block;
     height: value(inputHeight);
 }

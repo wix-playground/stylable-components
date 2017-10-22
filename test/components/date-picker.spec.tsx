@@ -81,16 +81,6 @@ describe('The DatePicker Component', () => {
         await waitForDom(() => expect(datePicker.selectedDate).to.equal(JANUARY_FIRST.toDateString()));
     });
 
-    it('should not call onChange with an invalid date', async () => {
-        const onChange = sinon.spy();
-        const {driver: datePicker} = clientRenderer.render(<DatePicker onChange={onChange} />)
-            .withDriver(DatePickerTestDriver);
-
-        datePicker.changeDate('2sgsdfsdfw223');
-        await sleep(20);
-        expect(onChange).to.have.not.been.called;
-    });
-
     it('should call onChange with the current input value when blurred', async () => {
         const onChange = sinon.spy();
         const {driver: datePicker, waitForDom} = clientRenderer.render(
@@ -196,6 +186,27 @@ describe('The DatePicker Component', () => {
             .withDriver(DatePickerTestDriver);
 
         await waitFor(() => expect(document.activeElement).to.equal(datePicker.input));
+    });
+
+    describe('On invalid input', () => {
+        it('should not call onChange', async () => {
+            const onChange = sinon.spy();
+            const {driver: datePicker} = clientRenderer.render(<DatePicker onChange={onChange} />)
+                .withDriver(DatePickerTestDriver);
+
+            datePicker.changeDate('2sgsdfsdfw223');
+            await sleep(20);
+            expect(onChange).to.have.not.been.called;
+        });
+
+        it('should expose an error state', async () => {
+            const {driver: datePicker, waitForDom} = clientRenderer.render(<DatePicker />)
+                .withDriver(DatePickerTestDriver);
+
+            datePicker.changeDate('2sgsdfsdfw223');
+
+            await waitForDom(() => expect(datePicker.elementHasStylableState('error')).to.equal(true));
+        });
     });
 
     describe('When Disabled', () => {
