@@ -14,14 +14,10 @@
     border: 1px solid black;
     border-radius: 5px;
     background-color: lightgray;
-    padding: 5px;
 }
 
 .header {
     border-bottom: 1px solid black;
-    width: calc(100% + 10px);
-    margin-left: -5px;
-    padding-bottom: 5px;
 }
 
 .header .title {
