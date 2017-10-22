@@ -84,8 +84,8 @@ export class Image extends React.PureComponent<ImageProps, ImageState> {
     }
 
     private onError: React.EventHandler<React.SyntheticEvent<HTMLImageElement>> = e => {
-        this.props.onError!({...e, src: this.state.src});
         this.setState({src: this.getFallbackSrcFor(this.state.src)});
+        this.props.onError!({...e, src: this.state.src});
     }
 
     private onLoad: React.EventHandler<React.SyntheticEvent<HTMLImageElement>> = e => {
@@ -95,7 +95,11 @@ export class Image extends React.PureComponent<ImageProps, ImageState> {
     }
 
     private getFallbackSrcFor(src: string): string {
-        // first, fallback to defaultImage, and later to one transparent pixel
-        return (src !== this.props.defaultImage) ? this.props.errorImage! : transparentImage;
+        // first, fallback to errorImage, and later to one transparent pixel
+        if (!this.props.errorImage) {
+            return transparentImage;
+        }
+
+        return src === this.props.errorImage ? transparentImage : this.props.errorImage;
     }
 }

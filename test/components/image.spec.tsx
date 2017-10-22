@@ -101,7 +101,7 @@ describe('<Image />', () => {
         await waitFor(() => expect(onError).to.have.been.calledWithMatch({src: brokenSrc}));
     });
 
-    it('after error loads error image', async () => {
+    it('after error - loads error image', async () => {
         const {driver: image, waitForDom} = clientRenderer.render(
             <Image src={brokenSrc} errorImage={onePixelBlue} />
         ).withDriver(ImageDriver);
@@ -111,9 +111,19 @@ describe('<Image />', () => {
         ).to.equal(onePixelBlue));
     });
 
-    it('after error loads transparent image if no error image is given', async () => {
+    it('after error - loads transparent image if no error image is given', async () => {
         const {driver: image, waitForDom} = clientRenderer.render(
             <Image defaultImage={brokenSrc} />
+        ).withDriver(ImageDriver);
+
+        await waitForDom(() => {
+            expect(image.source, 'Expected source to be transparent image').to.equal(transparentImage);
+        });
+    });
+
+    it('after error - loads transparent image if no error image is broken', async () => {
+        const {driver: image, waitForDom} = clientRenderer.render(
+            <Image src={brokenSrc} errorImage={'lalala.png'}/>
         ).withDriver(ImageDriver);
 
         await waitForDom(() => {
