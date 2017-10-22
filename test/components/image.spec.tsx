@@ -87,24 +87,38 @@ describe('<Image />', () => {
         await waitFor(() => expect(onLoad).to.have.been.calledWithMatch({src: onePixelBlack}));
     });
 
-    it('calls onError when it cannot load a source, and falls back to default source', async () => {
+    it('calls onError when it cannot load a source', async () => {
         const onError = sinon.spy();
-        const {driver: image, waitForDom} = clientRenderer.render(
-            <Image src={brokenSrc} defaultImage={onePixelBlue} onError={onError} />
-        ).withDriver(ImageDriver);
+        clientRenderer.render(<Image src={brokenSrc} onError={onError}/>).withDriver(ImageDriver);
 
         await waitFor(() => expect(onError).to.have.been.calledWithMatch({src: brokenSrc}));
-        await waitForDom(() => expect(image.source, 'incorrect image source').to.equal(onePixelBlue));
     });
 
-    it('calls onError when cannot load the default image, and falls back to `transparentImage`', async () => {
+    it('calls onError when it cannot load default source', async () => {
         const onError = sinon.spy();
-        const {driver: image, waitForDom} = clientRenderer.render(
-            <Image defaultImage={brokenSrc} onError={onError} />
-        ).withDriver(ImageDriver);
+        clientRenderer.render(<Image defaultImage={brokenSrc} onError={onError}/>).withDriver(ImageDriver);
 
         await waitFor(() => expect(onError).to.have.been.calledWithMatch({src: brokenSrc}));
-        await waitForDom(() => expect(image.source, 'incorrect image source').to.equal(transparentImage));
+    });
+
+    it('after error loads error image', async () => {
+        const {driver: image, waitForDom} = clientRenderer.render(
+            <Image src={brokenSrc} errorImage={onePixelBlue} />
+        ).withDriver(ImageDriver);
+
+        await waitForDom(() => expect(
+            image.source, 'Expected source to be as provided in errorImage'
+        ).to.equal(onePixelBlue));
+    });
+
+    it('after error loads transparent image if no error image is given', async () => {
+        const {driver: image, waitForDom} = clientRenderer.render(
+            <Image defaultImage={brokenSrc} />
+        ).withDriver(ImageDriver);
+
+        await waitForDom(() => {
+            expect(image.source, 'Expected source to be transparent image').to.equal(transparentImage);
+        });
     });
 
     describe('resize mode', () => {

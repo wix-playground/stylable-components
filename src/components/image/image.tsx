@@ -16,6 +16,7 @@ export interface ImageProps extends React.HTMLAttributes<HTMLImageElement> {
     onLoad?: (event: ImageEvent) => void;
     onError?: (event: ImageEvent) => void;
     defaultImage?: string;
+    errorImage?: string;
 }
 
 export interface ImageState {
@@ -39,6 +40,7 @@ export class Image extends React.PureComponent<ImageProps, ImageState> {
 
             // shouldn't be printed to DOM
             defaultImage,
+            errorImage,
             resizeMode,
 
             ...additionalImageProps
@@ -94,6 +96,6 @@ export class Image extends React.PureComponent<ImageProps, ImageState> {
 
     private getFallbackSrcFor(src: string): string {
         // first, fallback to defaultImage, and later to one transparent pixel
-        return (src !== this.props.defaultImage) ? this.props.defaultImage! : transparentImage;
+        return (src !== this.props.defaultImage) ? this.props.errorImage! : transparentImage;
     }
 }
