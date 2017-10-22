@@ -1,16 +1,16 @@
 import * as React from 'react';
 import {properties, stylable} from 'wix-react-tools';
 import {FormInputProps} from '../../types/forms';
+import {StylableProps} from '../../types/props';
 import {noop} from '../../utils';
 import styles from './checkbox.st.css';
 
-export interface CheckBoxProps extends FormInputProps<boolean>, properties.Props {
+export interface CheckBoxProps extends FormInputProps<boolean>, StylableProps {
     tickIcon?: React.ReactNode;
     indeterminateIcon?: React.ReactNode;
     children?: React.ReactNode;
     error?: boolean;
     indeterminate?: boolean;
-    id?: string;
 }
 
 export interface CheckBoxState {
