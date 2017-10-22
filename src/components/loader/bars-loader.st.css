@@ -8,9 +8,9 @@
 }
 
 @keyframes dance {
-    :global(0%) {height: 20%}
-    :global(33%) {height: 100%}
-    :global(100%) {height: 20%}
+    0% {height: 20%}
+    33% {height: 100%}
+    100% {height: 20%}
 }
 
 .bars {

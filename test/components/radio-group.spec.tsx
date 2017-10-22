@@ -243,7 +243,7 @@ describe('<RadioGroup />', () => {
         });
     });
 
-    it('disabled all radio button children if the disabled prop is true', async () => {
+    it('disables all radio button children if the disabled prop is true', async () => {
         const {driver: group, waitForDom} = clientRenderer.render(
             <RadioGroup disabled>
                 <RadioButton value="Fafnir"/>
@@ -254,6 +254,20 @@ describe('<RadioGroup />', () => {
         await waitForDom(() => {
             expect(group.getRadioButton(0).isDisabled(), 'expected radio to be disabled').to.equal(true);
             expect(group.getRadioButton(1).isDisabled(), 'expected radio to be disabled').to.equal(true);
+        });
+    });
+
+    it('makes all radio button readOnly if readOnly prop is given', async () => {
+        const {driver: group, waitForDom} = clientRenderer.render(
+            <RadioGroup readOnly>
+                <RadioButton value="Fafnir"/>
+                <RadioButton value="Sleipnir"/>
+            </RadioGroup>
+        ).withDriver(RadioGroupDriver);
+
+        await waitForDom(() => {
+            expect(group.getRadioButton(0).isReadOnly(), 'expected radio to be readOnly').to.equal(true);
+            expect(group.getRadioButton(1).isReadOnly(), 'expected radio to be readOnly').to.equal(true);
         });
     });
 
@@ -396,6 +410,71 @@ describe('<RadioGroup />', () => {
 
             await waitForDom(() => {
                 expect(group.root).to.have.attribute('role', 'radiogroup');
+            });
+        });
+
+        it('Accepts "autoFocus" props and passes it to the checked button', async () => {
+            const {driver: group, waitForDom} = clientRenderer.render(
+                <RadioGroup name="yaya" autoFocus value={'female'}>
+                    <RadioButton value="male"/>
+                    <RadioButton value="female"/>
+                    <RadioButton value="other"/>
+                </RadioGroup>
+            ).withDriver(RadioGroupDriver);
+
+            const button1 = group.getRadioButton(1);
+
+            await waitForDom(() => {
+                expect(document.activeElement).to.equal(button1.nativeElement);
+            });
+        });
+
+        it('Accepts "autoFocus" props and passes it to the first button if none are checked', async () => {
+            const {driver: group, waitForDom} = clientRenderer.render(
+                <RadioGroup name="yaya" autoFocus>
+                    <RadioButton value="male" />
+                    <RadioButton value="female" />
+                    <RadioButton value="other"/>
+                </RadioGroup>
+            ).withDriver(RadioGroupDriver);
+
+            const button0 = group.getRadioButton(0);
+
+            await waitForDom(() => {
+                expect(document.activeElement).to.equal(button0.nativeElement);
+            });
+        });
+
+        it('Accepts "autoFocus" props and passes it to the checked button - dataSchema', async () => {
+            const {driver: group, waitForDom} = clientRenderer.render(
+                <RadioGroup
+                    autoFocus
+                    value="Child1"
+                    name="lala"
+                    dataSource={[{value: 'Child0'}, {value: 'Child1'}, {value: 'Child2'}]}
+                />
+            ).withDriver(RadioGroupDriver);
+
+            const button1 = group.getRadioButton(1);
+
+            await waitForDom(() => {
+                expect(document.activeElement).to.equal(button1.nativeElement);
+            });
+        });
+
+        it('Accepts "autoFocus" props and passes it to the first button if none are checked - dataSchema', async () => {
+            const {driver: group, waitForDom} = clientRenderer.render(
+                <RadioGroup
+                    autoFocus
+                    name="lala"
+                    dataSource={[{value: 'Child0'}, {value: 'Child1'}, {value: 'Child2'}]}
+                />
+            ).withDriver(RadioGroupDriver);
+
+            const button0 = group.getRadioButton(0);
+
+            await waitForDom(() => {
+                expect(document.activeElement).to.equal(button0.nativeElement);
             });
         });
     });
@@ -557,19 +636,47 @@ describe('<RadioGroup />', () => {
         });
 
         it('renders any children given to the component', async () => {
-            const {select, waitForDom} = clientRenderer.render(
+            const {driver: radio, waitForDom} = clientRenderer.render(
                 <RadioButton value="">
                     <span data-automation-id="CHILD">Offspring</span>
                 </RadioButton>
-            );
-
-            const child = select('CHILD') as HTMLSpanElement;
+            ).withDriver(RadioButtonDriver);
 
             await waitForDom(() => {
-                expect(child).to.be.present();
-                expect(child).to.be.instanceOf(HTMLSpanElement);
+                expect(radio.children).to.have.length(1);
+                expect(radio.children[0]).to.be.instanceOf(HTMLSpanElement);
             });
+        });
 
+        it('gets focused style state', async () => {
+            const {driver: radio, waitForDom} = clientRenderer.render(
+                <RadioButton />
+            ).withDriver(RadioButtonDriver);
+
+            radio.focus();
+
+            await waitForDom(() => {
+                expect(radio.hasStylableState('focused')).to.equal(true);
+            });
+        });
+
+        it('accepts "autofocus" prop', async () => {
+            if (document.hasFocus()) {
+
+                const {driver: radio, waitForDom} = clientRenderer.render(
+                    <RadioButton autoFocus />
+                ).withDriver(RadioButtonDriver);
+
+                await waitForDom(() => {
+                    expect(document.activeElement).to.equal(radio.nativeElement);
+                    expect(radio.hasStylableState('focused')).to.equal(true);
+                });
+
+            } else {
+                console.warn(// tslint:disable-line no-console
+                    'RadioButton autofocus test wasn\'t run since document doesn\'t have focus'
+                 );
+            }
         });
 
         describe('Accessibility', () => {

@@ -1,5 +1,7 @@
-import {DriverBase} from 'test-drive-react';
+import {DriverBase, simulate} from 'test-drive-react';
 import {RadioButton, RadioGroup} from '../../src';
+import baseStyle from '../../src/components/radio-group/radio-button.st.css';
+import {elementHasStylableState} from '../utils/inspect-stylable';
 
 export class RadioGroupDriver extends DriverBase {
     public static ComponentClass = RadioGroup;
@@ -52,5 +54,13 @@ export class RadioButtonDriver extends DriverBase {
 
     public click(): void {
         (this.root as HTMLDivElement).click();
+    }
+
+    public focus(): void {
+        simulate.focus(this.nativeElement);
+    }
+
+    public hasStylableState(state: string): boolean {
+        return elementHasStylableState(this.root, baseStyle, state);
     }
 }

@@ -1,6 +1,6 @@
 {
   "name": "stylable-components",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Fully-tested & strictly-typed component library based on React, using optional Wix styling.",
   "main": "./dist/src/index.js",
   "types": "./dist/src/index.d.ts",
@@ -46,7 +46,7 @@
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "stylable": "^4.0.21",
-    "stylable-integration": "^5.1.7",
+    "stylable-integration": "^5.1.9",
     "test-drive-react": "^0.7.0",
     "ts-loader": "^2.3.7",
     "ts-node": "^3.3.0",
