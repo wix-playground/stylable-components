@@ -3,7 +3,7 @@
     -st-named: color_Keyboard_Focused, color_Active;
 }
 
-.root {
+.root.example {
     padding: 20px;
 }
 
