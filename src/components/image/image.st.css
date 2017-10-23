@@ -1,6 +1,11 @@
 .root {
+    -st-states: loaded, loading, error;
     display: inline-block;
 }
+
+.root:loaded {}
+.root:loading {}
+.root:error {}
 
 .hiddenImage {
     display: block;

@@ -3,7 +3,8 @@ import {ClientRenderer, expect, sinon, waitFor} from 'test-drive-react';
 import {Image} from '../../src';
 import {transparentImage} from '../../src/utils';
 import {ImageDriver} from '../../test-kit';
-import {brokenSrc, onePixelBlack, onePixelBlue} from '../fixtures/sample-images';
+import {brokenSrc, brokenSrc2, onePixelBlack, onePixelBlue} from '../fixtures/sample-images';
+import {sleep} from '../utils';
 
 describe('<Image />', () => {
     const clientRenderer = new ClientRenderer();
@@ -96,7 +97,7 @@ describe('<Image />', () => {
 
     it('calls onError when it cannot load default source', async () => {
         const onError = sinon.spy();
-        clientRenderer.render(<Image defaultImage={brokenSrc} onError={onError}/>).withDriver(ImageDriver);
+        clientRenderer.render(<Image defaultImage={brokenSrc} onError={onError}/>);
 
         await waitFor(() => expect(onError).to.have.been.calledWithMatch({src: brokenSrc}));
     });
@@ -121,13 +122,72 @@ describe('<Image />', () => {
         });
     });
 
-    it('after error - loads transparent image if no error image is broken', async () => {
+    it('after error - loads transparent image if error image is broken', async () => {
         const {driver: image, waitForDom} = clientRenderer.render(
-            <Image src={brokenSrc} errorImage={'lalala.png'}/>
+            <Image src={brokenSrc} errorImage={brokenSrc2}/>
         ).withDriver(ImageDriver);
 
         await waitForDom(() => {
             expect(image.source, 'Expected source to be transparent image').to.equal(transparentImage);
+        });
+    });
+
+    describe('Stylable states', () => {
+        it('gets to "loaded" state on successful loading', async () => {
+            const {driver: image, waitForDom} = clientRenderer.render(
+                <Image src={onePixelBlue}/>
+            ).withDriver(ImageDriver);
+
+            await waitForDom(() => {
+                expect(image.hasStylableState('loaded'), 'Expected to have "loaded" style state').to.equal(true);
+            });
+        });
+        it('gets to "loading" state before "loaded" state', async () => {
+            const {driver: image, waitForDom} = clientRenderer.render(
+                <Image src={onePixelBlue}/>
+            ).withDriver(ImageDriver);
+
+            const msg1 = 'Did not get to "loading" state before "loaded"';
+            await waitFor(() => {
+                expect(image.hasStylableState('loading'), msg1).to.equal(true);
+                expect(image.hasStylableState('loaded'), msg1).to.equal(false);
+            });
+
+            const msg2 = 'Did not get to "loaded" state after "loading"';
+            await waitFor(() => {
+                expect(image.hasStylableState('loading'), msg2).to.equal(false);
+                expect(image.hasStylableState('loaded'), msg2).to.equal(true);
+            });
+        });
+
+        it('gets to "error" state if source is broken', async () => {
+            const {driver: image, waitForDom} = clientRenderer.render(
+                <Image src={brokenSrc} errorImage={onePixelBlue}/>
+            ).withDriver(ImageDriver);
+
+            await sleep(10);
+
+            await waitForDom(() => {
+                expect(image.hasStylableState('error'), 'Expected to have "error" style state').to.equal(true);
+            });
+        });
+
+        it('removes "error" state if broken source is replaced', async () => {
+            const {driver: image, waitForDom, container} = clientRenderer.render(
+                <Image src={brokenSrc} />
+            ).withDriver(ImageDriver);
+
+            await sleep(10);
+
+            await waitForDom(() => {
+                expect(image.hasStylableState('error'), 'Expected to have "error" style state').to.equal(true);
+            });
+
+            clientRenderer.render(<Image src={onePixelBlue} />, container);
+
+            await waitForDom(() => {
+                expect(image.hasStylableState('loaded'), 'Expected to have "loaded" style state').to.equal(true);
+            });
         });
     });
 
