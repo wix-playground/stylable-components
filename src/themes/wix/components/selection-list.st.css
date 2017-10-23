@@ -47,7 +47,8 @@ SelectionList Option:disabled {
 }
 
 SelectionList Option:focused {
-    /* Don't have styles for focus in the styleguide */
+    /* Don't have styles for focus in the styleguide, temporary rule added */
+    outline: 1px solid value(optionBackgroundColorSelected);
 }
 
 SelectionList Option:selected {
@@ -63,7 +64,8 @@ SelectionList Option:hover:not(:disabled) {
 }
 
 SelectionList:focused Option:selected:not(:disabled) {
-    /* Don't have styles for focus in the styleguide */
+    /* Don't have styles for focus in the styleguide, temporary rule added */
+    outline: 1px solid value(optionBackgroundColorSelected);
 }
 
 SelectionList:focused Option:selected:hover:not(:disabled) {
