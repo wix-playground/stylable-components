@@ -1,6 +1,6 @@
 import React = require('react');
 import ReactDOM = require('react-dom');
-import {ClientRenderer, DriverBase, expect, waitFor} from 'test-drive-react';
+import {ClientRenderer, DriverBase, expect, sinon, waitFor} from 'test-drive-react';
 import {PopupDemo} from '../../demo/components/popup-demo';
 import {Popup, PopupPositionPoint} from '../../src/components/';
 import {PopupTestDriver} from '../../test-kit/components/popup-driver';
@@ -183,6 +183,36 @@ describe('<Popup />', () => {
 
             return waitForDom(() => {
                 expect([anchorDiv, popup.root]).to.be.inVerticalSequence();
+            });
+        });
+
+        it('calls onExitBounds when the popup leaves the viewport', async () => {
+            let div: HTMLDivElement;
+            let scrollDiv: HTMLDivElement;
+            const onExitBounds = sinon.spy();
+            const {waitForDom} = clientRenderer.render(
+                <div ref={(elem: HTMLDivElement) => scrollDiv = elem} style={{height: '1000px', overflow: 'scroll'}}>
+                    <div ref={(elem: HTMLDivElement) => div = elem} style={{height: '50px'}}>Anchor</div>
+                    <div style={{height: '5000px'}}/>
+                </div>
+            );
+
+            await waitForDom(() => expect(div).to.be.present());
+
+            const {driver: popup} = clientRenderer.render(
+                <Popup
+                    anchor={div!}
+                    open
+                    onExitBounds={onExitBounds}
+                >
+                    <div style={{height: '50px'}}>Body</div>
+                </Popup>).withDriver(PopupTestDriver);
+
+            await waitForDom(() => expect(popup.root).to.be.present());
+            scrollDiv!.scrollTop = 51;
+
+            return waitFor(() => {
+                expect(onExitBounds).to.have.been.called;
             });
         });
     });

@@ -2,6 +2,7 @@ import * as React from 'react';
 import {properties} from 'wix-react-tools';
 import {Point} from '../../types';
 import {Portal} from '../portal';
+import {noop} from '../../utils';
 
 export type PopupVerticalPosition =  'top' | 'center' | 'bottom';
 export type PopupHorizontalPosition = 'left' | 'center' | 'right';
@@ -16,6 +17,7 @@ export interface PopupProps extends properties.Props {
     anchorPosition?: PopupPositionPoint;
     popupPosition?: PopupPositionPoint;
     syncWidth?: boolean;
+    onExitBounds?: () => void;
     children?: React.ReactNode;
 }
 
@@ -29,12 +31,15 @@ export class Popup extends React.Component<PopupCompProps> {
         open: false,
         anchorPosition: {vertical: 'bottom', horizontal: 'left'},
         popupPosition: {vertical: 'top', horizontal: 'left'},
-        syncWidth: true
+        syncWidth: true,
+        onExitBounds: noop
     };
 
     private portal: Portal | null;
+    private isOutOfBounds = false;
 
     public render() {
+        this.isOutOfBounds = false;
         if (this.props.anchor && this.props.open) {
             return (
                 <Portal
@@ -56,6 +61,12 @@ export class Popup extends React.Component<PopupCompProps> {
         window.removeEventListener('scroll', this.onScroll);
     }
 
+    public componentDidUpdate() {
+        if (this.isOutOfBounds) {
+            this.props.onExitBounds!();
+        }
+    }
+
     public getPortal(): Portal | null {
         return this.portal;
     }
@@ -64,7 +75,7 @@ export class Popup extends React.Component<PopupCompProps> {
         if (e.target.contains(this.props.anchor)) {
             this.forceUpdate();
         }
-    };
+    }
 
     private createStyle(): React.CSSProperties {
         if (!this.props.anchor) {
@@ -104,6 +115,10 @@ export class Popup extends React.Component<PopupCompProps> {
                 break;
         }
 
+        const rect = this.portal && this.portal.getPortal && this.portal.getPortal()!.getBoundingClientRect();
+        if (rect) {
+            this.isOutOfBounds = isOutOfBounds(newStyle.top, newStyle.left, rect.height, rect.width) ? true : false;
+        }
         return newStyle;
     }
 }
@@ -131,4 +146,11 @@ function addTransform(style: React.CSSProperties, transformation: string) {
 
 function isPoint(elem: Element | Point): elem is Point {
     return elem.hasOwnProperty('x') && elem.hasOwnProperty('y');
+}
+
+function isOutOfBounds(top: number, left: number, height: number, width: number): boolean {
+    return top < 0 ||
+        left < 0 ||
+        top + height - window.pageYOffset > (window.innerHeight || document.documentElement.clientHeight) ||
+        left + width - window.pageXOffset > (window.innerWidth || document.documentElement.clientWidth);
 }

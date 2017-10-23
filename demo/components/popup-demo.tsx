@@ -38,31 +38,36 @@ export class PopupDemo extends React.Component<{}, DemoState> {
             {value: 'top', labelText: 'top'},
             {value: 'center', labelText: 'center'},
             {value: 'bottom', labelText: 'bottom'}
-            ];
+        ];
         const hPos: RadioGroupDataSchemaProps[] = [
             {value: 'left', labelText: 'left'},
             {value: 'center', labelText: 'center'},
             {value: 'right', labelText: 'right'}
-            ];
+        ];
         return (
             <div>
-                <button
-                    ref={this.updateState}
-                    onClick={this.onClick}
-                    className="anchor"
-                    data-automation-id="POPUP_DEMO_BTN"
-                >
-                    {this.state.isOpen ? 'Hide Popup' : 'Show Popup'}
-                </button>
-                <Popup
-                    anchor={this.state.div}
-                    popupPosition={popupPos}
-                    anchorPosition={anchorPos}
-                    open={this.state.isOpen}
-                    ref={popup => this.popup = popup}
-                >
-                    <div style={{color: 'white', backgroundColor: 'black'}}>Hello!</div>
-                </Popup>
+                <div style={{height: '100px', overflow: 'scroll'}}>
+                    <div style={{height: '150px'}}>
+                        <button
+                            ref={this.updateState}
+                            onClick={this.onClick}
+                            className="anchor"
+                            data-automation-id="POPUP_DEMO_BTN"
+                        >
+                            {this.state.isOpen ? 'Hide Popup' : 'Show Popup'}
+                        </button>
+                    </div>
+                    <Popup
+                        anchor={this.state.div}
+                        popupPosition={popupPos}
+                        anchorPosition={anchorPos}
+                        open={this.state.isOpen}
+                        ref={popup => this.popup = popup}
+                        onExitBounds={this.onExitBounds}
+                    >
+                        <div style={{color: 'white', backgroundColor: 'black'}}>Hello!</div>
+                    </Popup>
+                </div>
                 <div className="position">
                     <div className="category">
                         <h3>Popup position - vertical</h3>
@@ -113,4 +118,7 @@ export class PopupDemo extends React.Component<{}, DemoState> {
         this.setState({aHorizontal: e.value});
     }
 
+    private onExitBounds = () => {
+        this.setState({isOpen: false});
+    }
 }
