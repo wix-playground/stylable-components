@@ -270,6 +270,13 @@ describe('The DatePicker Component', () => {
             await sleep(20);
             expect(onChange).to.have.not.been.called;
         });
+
+        it('should expose an disabled state', async () => {
+            const {driver: datePicker, waitForDom} = clientRenderer.render(<DatePicker disabled />)
+                .withDriver(DatePickerTestDriver);
+
+            await waitForDom(() => expect(datePicker.elementHasStylableState('disabled')).to.equal(true));
+        });
     });
 
     describe('When readOnly', () => {
@@ -317,6 +324,13 @@ describe('The DatePicker Component', () => {
 
             await sleep(20);
             expect(onChange).to.have.not.been.called;
+        });
+
+        it('should expose a readOnly state', async () => {
+            const {driver: datePicker, waitForDom} = clientRenderer.render(<DatePicker readOnly />)
+                .withDriver(DatePickerTestDriver);
+
+            await waitForDom(() => expect(datePicker.elementHasStylableState('readOnly')).to.equal(true));
         });
     });
 
