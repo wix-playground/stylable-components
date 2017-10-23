@@ -17,11 +17,12 @@
                 color_Error;
 }
 
-DatePicker::input {
+DatePicker .flex-wrapper .input {
     width: value(inputWidth);
+    background-color: red;
 }
 
-DatePicker:error::input {
+DatePicker:error .input {
     border-color: value(color_Error);
 }
 

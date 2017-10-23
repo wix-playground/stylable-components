@@ -15,6 +15,11 @@
                 borderHover;
 }
 
+:import {
+    -st-from: "../input/input.st.css";
+    -st-default: Input;
+}
+
 :vars {
     arrowThickness: 0.09em;
     headerHeight: 60px;
@@ -33,6 +38,10 @@
 
 .flex-wrapper {
     display: flex;
+}
+
+.input {
+    -st-extends: Input;
 }
 
 .icon {
