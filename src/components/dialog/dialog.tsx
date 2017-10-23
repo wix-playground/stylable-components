@@ -1,13 +1,14 @@
+import keycode = require('keycode');
 import * as React from 'react';
 import {properties, stylable} from 'wix-react-tools';
 import {noop} from '../../utils';
 import {Button} from '../button';
-import {Modal} from '../modal';
+import {Modal, RequestCloseEvent} from '../modal';
 import styles from './dialog.st.css';
 
 export interface DialogProps extends React.HTMLAttributes<HTMLDivElement> {
     isOpen?: boolean;
-    onCancel?: () => void;
+    onCancel?: (src: RequestCloseEvent) => void;
     onOk?: () => void;
     title?: string;
 }
@@ -29,7 +30,12 @@ export class Dialog extends React.PureComponent<DialogProps> {
                 isOpen={!!this.props.isOpen}
                 onRequestClose={this.props.onCancel}
             >
-                <div data-automation-id="DIALOG_BODY" onClick={this.onDialogBodyClick}>
+                <div
+                    data-automation-id="DIALOG_BODY"
+                    onClick={this.onDialogBodyClick}
+                    onKeyDown={this.handleKeyDown}
+                    tabIndex={0}
+                >
                     <div className="header" role="header">
                         <span data-automation-id="DIALOG_TITLE" role="title" className="title">{this.props.title}</span>
                         <Button
@@ -62,6 +68,15 @@ export class Dialog extends React.PureComponent<DialogProps> {
                 </div>
             </Modal>
         );
+    }
+
+    private handleKeyDown: React.KeyboardEventHandler<HTMLElement> = e => {
+        debugger;
+        switch (e.keyCode) {
+            case keycode('esc'):
+                const closeEvent: RequestCloseEvent = {source: 'escKeyPress'};
+                this.props.onCancel!(closeEvent);
+        }
     }
 
     private onDialogBodyClick(e: React.SyntheticEvent<HTMLElement>) {
