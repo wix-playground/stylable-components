@@ -10,53 +10,53 @@
 :import {
     -st-from: "../variables.st.css";
     -st-named:
+        textColor,
         checkedColor,
-        iconChevronDownDisabled;
+        borderColorDisabled,
+        treeFontStyle,
+        iconChevronDownDefault;
 }
 :vars {
-    spaceVertical: 9px;
-    spaceHorizontal: 30px;
+    /*spaceVertical: 9px;*/
+    /*spaceHorizontal: 30px;*/
 }
 
 TreeView {
     background: white;
+    font: value(treeFontStyle);
+    color: value(textColor);
 }
 
-TreeItem::itemLabel {
-    padding: value(spaceVertical) value(spaceHorizontal);
-    display: inline-block;
+TreeItem::head {
+    padding: 12px 0 12px 27px;
 }
-
-TreeItem::itemIcon {
-    float: right;
-}
-TreeItem::nestedTree {
-    margin-left: value(spaceHorizontal);
-}
-TreeItem::nestedTree TreeItem::itemLabel {
-    border-left: 1px solid #b6c1cd;
-}
-
-TreeItem::nestedTree TreeItem::itemLabel:hover {
-    border-left-color: value(checkedColor);
-}
-TreeItem::itemLabel:hover {
-    color: value(checkedColor);
-}
-
-TreeItem.item:expanded {
-    background-color: #f0f4f7;
-    padding-bottom: value(spaceVertical);
-}
-
 TreeItem::open, TreeItem::close {
-    float: right;
-    margin-top: value(spaceVertical);
-    margin-right: value(spaceHorizontal);
-    background-image: value(iconChevronDownDisabled);
+    width: 10px;
+    height: 10px;
+    margin-right: 15px;
+    background-image: value(iconChevronDownDefault);
+    transform: rotate(-90deg);
     transition: transform 200ms ease-out;
 }
 
 TreeItem::close {
-    transform: rotate(180deg);
+    transform: rotate(0);
+}
+
+TreeItem.item:expanded::nestedTree {
+    margin-left: 32px;
+    border-left: 1px dashed value(borderColorDisabled);
+}
+
+TreeItem.item {
+    color: value(textColor);
+}
+TreeItem.item:selected,
+TreeItem.item:hover
+{
+    color: value(checkedColor);
+}
+TreeItem.item:focused
+{
+    box-shadow: inset 0 0 0 1px value(checkedColor);
 }

@@ -5,11 +5,6 @@ import {TreeItemData , TreeItemProps, TreeView} from '../../src';
 import style from './tree-view-demo.st.css';
 
 export const treeData: TreeItemData[] = [
-    { label: 'Appetizers'},
-    { label: 'Drinks', children: [
-        {label: 'Vodka'},
-        {label: 'Beer'}
-    ]},
     { label: 'Food Menu', children: [
         { label: 'Salads', children: [
             {label: 'Greek Salad'},
@@ -26,7 +21,12 @@ export const treeData: TreeItemData[] = [
             {label: 'Waffle'},
             {label: 'Cupcake'}
         ]}
-    ]}
+    ]},
+    { label: 'Appetizers'},
+    { label: 'Drinks', children: [
+        {label: 'Vodka'},
+        {label: 'Beer'}
+    ]},
 ];
 
 function SelectedItem({selectedItem}: any) {

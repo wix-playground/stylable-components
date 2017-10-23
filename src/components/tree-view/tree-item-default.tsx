@@ -23,7 +23,7 @@ export const TreeItem: React.SFC<TreeItemProps> =
                 style-state={{selected: state!.isSelected, focused: state!.isFocused, expanded: !!state!.isExpanded}}
                 onClick={onItemClick && onItemClick.bind(null, item)}
             >
-                <div>
+                <div className="head">
                     {item.children &&
                         <div
                             className={state.isExpanded ? 'close' : 'open'}
