@@ -17,6 +17,7 @@ export interface DatePickerProps extends FormInputProps<Date, string>, propertie
     showDropdownOnInit?: boolean;
     startingDay?: number;
     calendarIcon?: React.ComponentType;
+    disableWeekends?: boolean;
 }
 
 export interface DatePickerState {
@@ -83,6 +84,7 @@ export class DatePicker extends React.PureComponent<DatePickerProps, DatePickerS
                             startingDay={this.props.startingDay}
                             highlightSelectedDate={this.state.highlightSelectedDate}
                             highlightFocusedDate={this.state.highlightFocusedDate}
+                            disableWeekends={this.props.disableWeekends}
                         />
                     </Popup>
                 </div>

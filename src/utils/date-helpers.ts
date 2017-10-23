@@ -44,3 +44,14 @@ export function getNumOfFollowingDays(date: Date, startingDay: number = 0): numb
     const followingDays = (6 - getLastDayOfMonth(date)) + startingDay;
     return followingDays > 6 ? followingDays - 7 : followingDays;
 }
+
+export function changeDay(date: Date, dayToSet: number): Date {
+    const dateToReturn = new Date(date.getFullYear(), date.getMonth());
+    dateToReturn.setDate(dayToSet);
+    return dateToReturn;
+}
+
+export function isWeekend(date: Date): boolean {
+    // Returns true if Saturday or Sunday... need to add localization
+    return date.getDay() === 6 || date.getDay() === 0;
+}
