@@ -1,3 +1,4 @@
+CI Test
 # stylable-components
 [![npm version](https://badge.fury.io/js/stylable-components.svg)](https://www.npmjs.com/package/stylable-components)
 [![Build Status](https://travis-ci.org/wix/stylable-components.svg?branch=master)](https://travis-ci.org/wix/stylable-components)
