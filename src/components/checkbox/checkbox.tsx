@@ -11,6 +11,7 @@ export interface CheckBoxProps extends FormInputProps<boolean>, StylableProps {
     children?: React.ReactNode;
     error?: boolean;
     indeterminate?: boolean;
+    ['aria-controls']?: string[];
 }
 
 export interface CheckBoxState {
@@ -72,6 +73,7 @@ export class CheckBox extends React.Component<CheckBoxProps, CheckBoxState> {
                     tabIndex={this.props.tabIndex}
                     autoFocus={this.props.autoFocus}
                     name={this.props.name}
+                    aria-controls={this.props['aria-controls']}
                 />
 
                 <span
