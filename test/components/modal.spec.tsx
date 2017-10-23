@@ -133,7 +133,7 @@ describe('<Modal />', () => {
         await waitFor(() => expect(onRequestClose).to.have.been.calledWithMatch({source: 'backdrop'}));
     });
 
-    it('calls onRequestClose with source equal to children when the child is clicked', async () => {
+    it('calls onRequestClose with source equal to the data-slot of the clicked element', async () => {
         const onRequestClose = sinon.spy();
 
         const {driver: modal} = clientRenderer.render(
