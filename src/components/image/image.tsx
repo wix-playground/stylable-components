@@ -53,7 +53,7 @@ export class Image extends React.PureComponent<ImageProps, ImageState> {
             loaded: this.state.status === ImageStatus.Loaded,
             loading: this.state.status === ImageStatus.Loading,
             error: this.state.status === ImageStatus.Error
-        }
+        };
         // 'fill' is the default image behavior, so no need to put it on background
         if (resizeMode === 'contain' || resizeMode === 'cover') {
             const wrapperStyle = {

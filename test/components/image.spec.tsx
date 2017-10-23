@@ -143,7 +143,7 @@ describe('<Image />', () => {
             });
         });
         it('gets to "loading" state before "loaded" state', async () => {
-            const {driver: image, waitForDom} = clientRenderer.render(
+            const {driver: image} = clientRenderer.render(
                 <Image src={onePixelBlue}/>
             ).withDriver(ImageDriver);
 
