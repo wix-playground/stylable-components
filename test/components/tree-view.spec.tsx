@@ -215,6 +215,22 @@ describe('<TreeView />', () => {
         });
 
         describe('Keyboard Navigation', () => {
+            it('reacts to keyboard events even when a node is not focused initially', async () => {
+                const {driver: treeViewDemo, waitForDom} = clientRenderer.render(
+                    <TreeViewDemo />
+                ).withDriver(TreeViewDemoDriver);
+
+                const {treeView} = treeViewDemo;
+
+                const nodeChildren = treeData[0].children;
+
+                await waitForDom(() => expect(treeView.getItem(nodeChildren![1].label).root).to.be.absent());
+
+                treeView.pressKey('RIGHT');
+
+                await waitForDom(() => expect(treeView.getItem(nodeChildren![1].label).root).to.be.present());
+            });
+
             it('expands and collapses focused treeItem when right and left arrows are clicked', async () => {
                 const {driver: treeViewDemo, waitForDom} = clientRenderer.render(
                     <TreeViewDemo />
