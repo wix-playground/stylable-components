@@ -25,13 +25,13 @@ TimePicker {
     background-color: value(color_MainText_Background);
 }
 
-TimePicker:not(:disabled):hover {
+TimePicker:hover {
     border-color: value(color_Hover);
 }
 
 /* reset :hover for touch devices */
 @media (hover: none) {
-    TimePicker:not(:focus):hover {
+    TimePicker:hover {
         border-color: value(borderDefaultColor);
     }
 }

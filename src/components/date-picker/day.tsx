@@ -1,9 +1,10 @@
 import {observer} from 'mobx-react';
 import * as React from 'react';
 import {properties, stylable} from 'wix-react-tools';
+import {StylableProps} from '../../types/props';
 import styles from './date-picker.st.css';
 
-export interface DayProps extends properties.Props {
+export interface DayProps extends StylableProps {
     day: Date;
     selected?: boolean;
     currentDay?: boolean;
