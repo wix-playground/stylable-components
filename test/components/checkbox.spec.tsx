@@ -289,6 +289,16 @@ describe('<Checkbox/>', () => {
                 expect(checkbox.nativeInput).to.have.attribute('tabIndex', '99998');
             });
         });
+
+        it('takes "aria-controls" property', async () => {
+            const {driver: checkbox, waitForDom} = clientRenderer.render(
+                <CheckBox aria-controls={['123', '345']}/>
+            ).withDriver(CheckBoxTestDriver);
+
+            await waitForDom(() => {
+                expect(checkbox.nativeInput).to.have.attribute('aria-controls', '123,345');
+            });
+        });
     });
 
     describe('When disabled', () => {

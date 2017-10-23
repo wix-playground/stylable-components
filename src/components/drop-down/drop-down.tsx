@@ -3,6 +3,7 @@ import * as React from 'react';
 import {properties, stylable} from 'wix-react-tools';
 import {ChangeEvent} from '../../types/events';
 import {FormInputProps} from '../../types/forms';
+import {StylableProps} from '../../types/props';
 import {noop} from '../../utils/noop';
 import {Popup} from '../popup/';
 import {OptionList, SelectionList} from '../selection-list';
@@ -16,7 +17,7 @@ const KeyCodes: any = {
     ESC: keycode('escape')
 };
 
-export interface DropDownProps extends OptionList, FormInputProps<string>, properties.Props {
+export interface DropDownProps extends OptionList, FormInputProps<string>, StylableProps {
     open?: boolean;
     disabled?: boolean;
     openOnFocus?: boolean;
