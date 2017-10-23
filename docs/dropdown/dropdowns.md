@@ -29,7 +29,7 @@ All dropdowns use the following interfaces:
 
 * PopupProps
 
-    See Popup specifications.
+    See Popup specifications()
 
 * Optionlist
 
@@ -201,6 +201,7 @@ The following behaviors are implemented in the SelectionList (relevant when a po
 * <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">Space</kbd> -> Selects the highlighted option, closes the popup
 * <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">Enter</kbd> -> Selects the highlighted option, closes the popup.
 * Type-Ahead -> Changes the highlighted item in the list. See SelectionList [spec](./selectionlist.md).
+* <kbd style="display: inline-block; padding: .1em .3em; color: #555; vertical-align: middle; background-color: #fcfcfc; border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: .2em;box-shadow: inset 0 -1px 0 #bbb;">Tab</kbd> -> Moves focus to the next focusable component and popup is closed.
 
 #### AutoComplete
 
