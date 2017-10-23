@@ -4,9 +4,9 @@
   -st-from: "../../src/themes/wix/theme.st.css";
   -st-named:  toggleSmall, btnLarge, btnSmall, btnTiny,
               btnSecondary,
-              btnWhite, btnWhiteSecondary,
-              btnError, btnErrorSecondary,
-              btnPremium, btnPremiumSecondary,
+              btnWhite,
+              btnError,
+              btnPremium,
               btnTransparent;
 }
 
@@ -41,8 +41,8 @@
 }
 
 .btnSmall, .btnSecondary, .btnLarge, .btnTiny,
-.btnWhite, .btnWhiteSecondary, .btnError,
-.btnErrorSecondary, .btnPremium, .btnPremiumSecondary,
+.btnWhite, .btnError,
+.btnPremium,
 .btnTransparent {
 
 }

@@ -104,9 +104,9 @@ Button:disabled,
 }
 
 .btnSecondary:disabled, 
-.btnWhiteSecondary:disabled,
-.btnErrorSecondary:disabled,
-.btnPremiumSecondary:disabled  {
+.btnWhite.btnSecondary:disabled,
+.btnError.btnSecondary:disabled,
+.btnPremium.btnSecondary:disabled  {
     color: value(buttonColorDisabled);
     border-color: value(buttonColorDisabled);
 }
@@ -118,21 +118,20 @@ Button:disabled,
 }
 
 .btnWhite:hover, 
-.btnWhiteSecondary:hover {
+.btnWhite.btnSecondary:hover {
     background-color: value(buttonColorWhiteHover);
     border: transparent;
     color: value(buttonColorMain);
 }
 
 .btnWhite:active, 
-.btnWhiteSecondary:active {
+.btnWhite.btnSecondary:active {
     background-color: value(buttonColorWhiteActive);
     border: transparent;
     color: value(buttonColorMain);
 }
 
-.btnWhiteSecondary {
-    -st-extends: Button;
+.btnWhite.btnSecondary {
     border: 1px solid white;
     background-color: transparent;
     color: white;
@@ -146,21 +145,20 @@ Button:disabled,
 }
 
 .btnError:hover, 
-.btnErrorSecondary:hover {
+.btnError.btnSecondary:hover {
     background-color: value(buttonColorErrorHover);
     border: transparent;
     color: white;
 }
 
 .btnError:active, 
-.btnErrorSecondary:active {
+.btnError.btnSecondary:active {
     background-color: value(buttonColorErrorActive);
     border: transparent;
     color: white;
 }
 
-.btnErrorSecondary {
-    -st-extends: Button;
+.btnError.btnSecondary {
     border: 1px solid value(buttonColorError);
     background-color: transparent;
     color: value(buttonColorError);
@@ -174,21 +172,20 @@ Button:disabled,
 }
 
 .btnPremium:hover, 
-.btnPremiumSecondary:hover {
+.btnPremium.btnSecondary:hover {
     background-color: value(buttonColorPremiumHover);
     border: transparent;
     color: white;
 }
 
 .btnPremium:active, 
-.btnPremiumSecondary:active {
+.btnPremium.btnSecondary:active {
     background-color: value(buttonColorPremiumActive);
     border: transparent;
     color: white;
 }
 
-.btnPremiumSecondary {
-    -st-extends: Button;
+.btnPremium.btnSecondary {
     border: 1px solid value(buttonColorPremium);
     background-color: transparent;
     color: value(buttonColorPremium);

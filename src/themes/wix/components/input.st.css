@@ -4,6 +4,7 @@
 }
 
 :import {
+  -st-theme: true;
   -st-from: "../variables.st.css";
   -st-named:
     /* import list is long because -st-mixin currently requires 
@@ -32,6 +33,6 @@
 
 
 Input {
-  -st-mixin: inputStyle;
+  -st-compose: inputStyle;
   padding: value(inputPadding);
 }

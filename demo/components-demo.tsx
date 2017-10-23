@@ -198,19 +198,19 @@ export class ComponentsDemo extends React.Component<DemoProps> {
                             </tr>
                             <tr style={{backgroundColor: '#162d3d', border: 'none'}}>
                                 <td>
-                                    <Button className="btnWhiteSecondary btnLarge">Large</Button>
+                                    <Button className="btnWhite btnSecondary btnLarge">Large</Button>
                                 </td>
                                 <td>
-                                    <Button className="btnWhiteSecondary">Normal</Button>
+                                    <Button className="btnWhite btnSecondary">Normal</Button>
                                 </td>
                                 <td>
-                                    <Button className="btnWhiteSecondary btnSmall">Small</Button>
+                                    <Button className="btnWhite btnSecondary btnSmall">Small</Button>
                                 </td>
                                 <td>
-                                    <Button className="btnWhiteSecondary btnTiny">Tiny</Button>
+                                    <Button className="btnWhite btnSecondary btnTiny">Tiny</Button>
                                 </td>
                                 <td>
-                                    <Button className="btnWhiteSecondary" disabled>Disabled</Button>
+                                    <Button className="btnWhite btnSecondary" disabled>Disabled</Button>
                                 </td>
                                 <td>
                                     <Button
@@ -244,23 +244,23 @@ export class ComponentsDemo extends React.Component<DemoProps> {
                             </tr>
                             <tr>
                                 <td>
-                                    <Button className="btnErrorSecondary btnLarge">Large</Button>
+                                    <Button className="btnError btnSecondary btnLarge">Large</Button>
                                 </td>
                                 <td>
-                                    <Button className="btnErrorSecondary">Normal</Button>
+                                    <Button className="btnError btnSecondary">Normal</Button>
                                 </td>
                                 <td>
-                                    <Button className="btnErrorSecondary btnSmall">Small</Button>
+                                    <Button className="btnError btnSecondary btnSmall">Small</Button>
                                 </td>
                                 <td>
-                                    <Button className="btnErrorSecondary btnTiny">Tiny</Button>
+                                    <Button className="btnError btnSecondary btnTiny">Tiny</Button>
                                 </td>
                                 <td>
-                                    <Button className="btnErrorSecondary" disabled>Disabled</Button>
+                                    <Button className="btnError btnSecondary" disabled>Disabled</Button>
                                 </td>
                                 <td>
                                     <Button
-                                        className="btnErrorSecondary"
+                                        className="btnError btnSecondary"
                                         href="http://www.wix.com"
                                         target="_blank"
                                     >
@@ -296,19 +296,19 @@ export class ComponentsDemo extends React.Component<DemoProps> {
                             </tr>
                             <tr>
                                 <td>
-                                    <Button className="btnPremiumSecondary btnLarge">Large</Button>
+                                    <Button className="btnPremium btnSecondary btnLarge">Large</Button>
                                 </td>
                                 <td>
-                                    <Button className="btnPremiumSecondary">Normal</Button>
+                                    <Button className="btnPremium btnSecondary">Normal</Button>
                                 </td>
                                 <td>
-                                    <Button className="btnPremiumSecondary btnSmall">Small</Button>
+                                    <Button className="btnPremium btnSecondary btnSmall">Small</Button>
                                 </td>
                                 <td>
-                                    <Button className="btnPremiumSecondary btnTiny">Tiny</Button>
+                                    <Button className="btnPremium btnSecondary btnTiny">Tiny</Button>
                                 </td>
                                 <td>
-                                    <Button className="btnPremiumSecondary" disabled>Disabled</Button>
+                                    <Button className="btnPremium btnSecondary" disabled>Disabled</Button>
                                 </td>
                                 <td>
                                     <Button
