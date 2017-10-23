@@ -7,8 +7,6 @@ import {
     SelectionListDividerSymbol as divider,
     SelectionListOption as Option
 } from '../../src';
-import dividerStyle from '../../src/components/selection-list/divider.st.css';
-import optionStyle from '../../src/components/selection-list/option.st.css';
 import {SelectionListTestDriver} from '../../test-kit';
 import {sleep, WithTheme, WithThemeDAID} from '../utils';
 
@@ -82,7 +80,8 @@ describe('<SelectionList />', () => {
 
     it('Renders items under each other using the default renderer', async () => {
         const {driver: list, waitForDom} = clientRenderer.render(
-            <SelectionList dataSource={['0', '1', divider]} />
+            <SelectionList dataSource={['0', '1', divider]} />,
+            themedContainer
         ).withDriver(SelectionListTestDriver);
 
         await waitForDom(() => expect(list.root).to.be.present());
@@ -161,21 +160,14 @@ describe('<SelectionList />', () => {
 
     it('Renders a divider', async () => {
         const {driver: list, waitForDom} = clientRenderer.render(
-            <SelectionList dataSource={[divider]} />,
-            themedContainer
+            <SelectionList dataSource={[divider]} />
         ).withDriver(SelectionListTestDriver);
 
         await waitForDom(() => {
-            expect(list.root).to.be.present();
+            expect(list.root).to.be.not.null;
         });
 
-        expect(
-            list.elementHasStylableClassName(
-                list.items[0],
-                'root',
-                dividerStyle
-            )
-        ).to.equal(true);
+        expect(list.isDivider(list.items[0])).to.equal(true);
     });
 
     it('Renders children above dataSource when both are provided', async () => {
@@ -311,55 +303,61 @@ describe('<SelectionList />', () => {
     });
 
     describe(`Styling`, () => {
-        it(`Puts "focused" state on the container when it's focused`, async () => {
+        it(`Puts "disabled" state on disabled items`, async () => {
             const {driver: list, waitForDom} = clientRenderer.render(
-                <SelectionList />,
-                themedContainer
+                <SelectionList dataSource={[{value: 0, disabled: true}]} />
             ).withDriver(SelectionListTestDriver);
 
-            await waitForDom(() => expect(list.root).to.be.present());
-            expect(list.elementHasStylableState(list.root, 'focused')).to.equal(false);
+            await waitForDom(() => expect(list.root).to.be.not.null);
+            expect(list.optionHasStylableState(list.items[0], 'disabled')).to.equal(true);
+        });
+
+        it(`Puts "focused" state on the container when it's focused`, async () => {
+            const {driver: list, waitForDom} = clientRenderer.render(
+                <SelectionList />
+            ).withDriver(SelectionListTestDriver);
+
+            await waitForDom(() => expect(list.root).to.be.not.null);
+            expect(list.hasStylableState('focused')).to.equal(false);
             list.focus();
             await waitForDom(() => {
-                expect(list.elementHasStylableState(list.root, 'focused')).to.equal(true);
+                expect(list.hasStylableState('focused')).to.equal(true);
             });
         });
 
         it(`Puts "selected" state on the selected item`, async () => {
             const {driver: list, waitForDom} = clientRenderer.render(
-                <SelectionList dataSource={['0', '1']} value={'0'} />,
-                themedContainer
+                <SelectionList dataSource={['0', '1']} value={'0'} />
             ).withDriver(SelectionListTestDriver);
 
-            await waitForDom(() => expect(list.root).to.be.present());
-            expect(list.elementHasStylableState(list.items[0], 'selected', optionStyle)).to.equal(true);
-            expect(list.elementHasStylableState(list.items[1], 'selected', optionStyle)).to.equal(false);
+            await waitForDom(() => expect(list.root).to.be.not.null);
+            expect(list.optionHasStylableState(list.items[0], 'selected')).to.equal(true);
+            expect(list.optionHasStylableState(list.items[1], 'selected')).to.equal(false);
         });
 
         it(`Puts "focused" state on the item focused via keyboard and removes it on blur`, async () => {
             const {driver: list, waitForDom} = clientRenderer.render(
-                <SelectionList dataSource={['0', '1']} value={'0'} />,
-                themedContainer
+                <SelectionList dataSource={['0', '1']} value={'0'} />
             ).withDriver(SelectionListTestDriver);
 
-            await waitForDom(() => expect(list.root).to.be.present());
+            await waitForDom(() => expect(list.root).to.be.not.null);
 
             list.focus();
             await waitForDom(() => {
-                expect(list.elementHasStylableState(list.items[0], 'focused', optionStyle)).to.equal(true);
-                expect(list.elementHasStylableState(list.items[1], 'focused', optionStyle)).to.equal(false);
+                expect(list.optionHasStylableState(list.items[0], 'focused')).to.equal(true);
+                expect(list.optionHasStylableState(list.items[1], 'focused')).to.equal(false);
             });
 
             list.keyDown(keycode('down'));
             await waitForDom(() => {
-                expect(list.elementHasStylableState(list.items[0], 'focused', optionStyle)).to.equal(false);
-                expect(list.elementHasStylableState(list.items[1], 'focused', optionStyle)).to.equal(true);
+                expect(list.optionHasStylableState(list.items[0], 'focused')).to.equal(false);
+                expect(list.optionHasStylableState(list.items[1], 'focused')).to.equal(true);
             });
 
             list.blur();
             await waitForDom(() => {
-                expect(list.elementHasStylableState(list.items[0], 'focused', optionStyle)).to.equal(false);
-                expect(list.elementHasStylableState(list.items[1], 'focused', optionStyle)).to.equal(false);
+                expect(list.optionHasStylableState(list.items[0], 'focused')).to.equal(false);
+                expect(list.optionHasStylableState(list.items[1], 'focused')).to.equal(false);
             });
         });
     });

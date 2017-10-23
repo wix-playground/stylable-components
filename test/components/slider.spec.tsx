@@ -9,8 +9,7 @@ import {
 } from '../../src/components/slider';
 import styles from '../../src/components/slider/slider.st.css';
 import {ChangeEvent} from '../../src/types/events';
-import {SliderContextProvierDriver, SliderDriver, SliderEventCoordinates} from '../../test-kit';
-import WindowStub from '../stubs/window.stub';
+import {SliderContextProvierDriver, SliderDriver, SliderEventCoordinates, WindowStub} from '../../test-kit';
 import {skipItIfTouch} from '../utils';
 
 let environment: WindowStub;
