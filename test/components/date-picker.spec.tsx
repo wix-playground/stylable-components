@@ -207,6 +207,21 @@ describe('The DatePicker Component', () => {
 
             await waitForDom(() => expect(datePicker.elementHasStylableState('error')).to.equal(true));
         });
+
+        it('should remove error state when a date is chosen from the calendar', async () => {
+            const {driver: datePicker, waitForDom} = clientRenderer.render(<DatePicker />)
+                .withDriver(DatePickerTestDriver);
+
+            datePicker.changeDate('2sgsdfsdfw223');
+
+            await waitForDom(() => expect(datePicker.elementHasStylableState('error')).to.equal(true));
+
+            datePicker.openCalender();
+
+            await waitForDom(() => datePicker.clickOnDay(2));
+
+            await waitForDom(() => expect(datePicker.elementHasStylableState('error')).to.equal(false));
+        });
     });
 
     describe('When Disabled', () => {
