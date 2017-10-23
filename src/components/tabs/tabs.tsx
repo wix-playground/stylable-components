@@ -100,14 +100,7 @@ const renderSelected = (selected: TabsProps['value']) => (child: React.ReactChil
             return null;
         default:
             const tab = child as React.ReactElement<TabProps>;
-            const {props: {value, disabled, label}} = tab;
-            return value === selected ? (
-                <Option
-                    key={value}
-                    value={value}
-                    disabled={disabled}
-                >{label}
-                </Option>
-            ) : null;
+            const {props: {value, children}} = tab;
+            return value === selected ? children : null;
     }
 };
