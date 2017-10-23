@@ -7,4 +7,4 @@ export interface TabProps {
     children?: React.ReactNode;
 }
 
-const Tab: React.StatelessComponent<TabProps> = props => null;
+export const Tab: React.StatelessComponent<TabProps> = props => null;
