@@ -2,30 +2,25 @@
 
 **SelectionList** is a component which allows the user to take action by choosing an item from a list. **SelectionList** will usually be displayed inside of a **Popup** component.
 
-* [Elements](#elements)
-* [API](#api)
-* [React Code Examples](#react-code-examples)
-* [Style API](#style-api)
-
 ## Elements
 
-![image](./assets/selectionlistelements.png)
+![image](./assets/elements.png)
 
 ## API
 
-### Component Props
+### Props
 
 | Name | Type | Default | Required | Description |
-| -- | -- | -- | -- | -- |
-| value | string \| Array\<string> | null | no | id/s of the selected item/s |
-| onChange | (event: ChangeEvent) => void | NOP | no | Triggered when an item is selected in the list |
-| multiple | boolean | false | no | Whether the selection list supports a single or multiple selections. When true, adds the aria-multiselectable='true' on the root element.
-| orientation | enum | Vertical | no | The orientation is used mostly for assistive technologies. Changing to Horizontal will change the behavior of keyboard navigation and add an aria-orientation attribute to the root with the 'horizontal' value |
-| typeAhead | boolean | true | no | Enables keyboard type-ahead |
-| children | any | null | no | Children to be rendered in the list |
-| dataSource | Array[DataSourceItem] | [] | no | The DataSourceItem is of type '*string \| object \| symbol*'. The dataSource receives an array and the component uses the renderItem function to render the items in the array in order.
+| --- | --- | --- | --- | --- |
+| value | string \| Array\<string> | null | no | ID string, or array of ID strings, of the selected item(s). |
+| onChange | function | noop | no | Triggered when an item is selected in the list.<br>`(event: ChangeEvent) => void` |
+| multiple | boolean | false | no | Whether the selection list supports single or multiple selections. When `true`, adds `aria-multiselectable='true'` to the root element.
+| orientation | enum:<br>'Vertical'<br>'Horizontal' | 'Vertical' | no | The orientation is used mostly for assistive technologies. Changing to 'Horizontal' will change the behavior of keyboard navigation and add an aria-orientation attribute to the root with the 'Horizontal' value. |
+| typeAhead | boolean | true | no | Enables keyboard type-ahead. |
+| children | any | null | no | Children to be rendered in the list. |
+| dataSource | Array[DataSourceItem] | [] | no | The DataSourceItem is of type `string | object | symbol`. The dataSource receives an array and the component uses the renderItem function to render the items in the array in order.
 | dataSchema | {[index: string]: string} | {} | no | Maps fields from the DataSourceItem to the field used by the renderItem function |
-| renderItem | (item : DataSourceItem) -> JSX.Element | default function | no | The renderItem function receives a DataSourceItem and then decides how to render it. |
+| renderItem | function | default function | no | The renderItem function receives a DataSourceItem and then decides how to render it.<br>`(item : DataSourceItem) -> JSX.Element` |
 
 ### React Code Examples
 
@@ -80,21 +75,20 @@ class TextStyleList extends React.Component {
 ### Subcomponents (pseudo elements)
 
 | selector | description |
-| -- | -- |
-| item | Selector applying to items in the list. |
+| --- | --- |
+| ::item | Selector applying to items in the list. |
 
-### Custom CSS States (pseudo-classes)
+### Custom CSS States (pseudo classes)
 
-The following states apply to the items. They are passed as corresponding props of the ItemRenderer and added as an attribute with the prefix `data-`.
+The following states are applied to the items in the list. 
 
 state | type | default | description
 --- | --- | --- | ---
-selected | boolean | false | Whether the item is selected.
-focused | boolean | false | Whether the item is focused by keyboard navigation.
-hidden | boolean | false | Whether the item appears in the list.
-disabled | boolean | false | Whether the item is enabled for selection or not.
-
-The only exception is `hover` which doesn't correspond to an attribute. Rather, it should be styled with the `:hover` CSS pseudoselector.
+:selected | boolean | false | Whether the item is selected.
+:focused | boolean | false | Whether the item is focused by keyboard navigation.
+:hidden | boolean | false | Whether the item appears in the list.
+:disabled | boolean | false | Whether the item is enabled for selection or not.
+:hover | boolean | false | Whether the cursor is positioned over the item.<br>(Standard CSS pseudo state)
 
 ### Style Code Example
 
