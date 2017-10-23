@@ -48,6 +48,7 @@
 
 .tabList Option {
     width: auto;
+    box-sizing: border-box;
     flex-shrink: 0;
     padding: 18px;
     border: none;
@@ -57,9 +58,6 @@
 .tabList Option:selected:hover,
 .tabList Option:selected {
     color: value(color_Focus);
-
-    padding-bottom: 16px;
-    margin-bottom: 0px;
 
     border: none;
     border-bottom: value(borderStyle) 2px value(color_Focus);
