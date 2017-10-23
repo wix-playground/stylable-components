@@ -2,7 +2,7 @@ import * as React from 'react';
 import {SinonSpy} from 'sinon';
 import {ClientRenderer, expect, simulate, sinon} from 'test-drive-react';
 import {Stepper} from '../../src/components/stepper';
-import WindowStub from '../stubs/window.stub';
+import {WindowStub} from '../../test-kit';
 
 describe('<Stepper />', () => {
     const clientRenderer = new ClientRenderer();

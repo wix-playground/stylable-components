@@ -1,0 +1,46 @@
+:import {
+	-st-from: "../../../components/stepper/stepper.st.css";
+	-st-default: Stepper;
+}
+
+:import {
+  -st-from: "../variables.st.css";
+  -st-named:
+          iconChevronUpDefault,
+          iconChevronUpHover,
+          iconChevronUpDisabled,
+          iconChevronDownDefault,
+          iconChevronDownHover,
+          iconChevronDownDisabled;
+
+}
+
+Stepper {
+	width: 28px;
+}
+
+Stepper::up {
+	background-image: value(iconChevronUpDefault);
+	padding-top: 2px;
+}
+
+Stepper::up:hover {
+	background-image: value(iconChevronUpHover);
+}
+
+Stepper::up:disabled {
+	background-image: value(iconChevronUpDisabled);
+}
+
+Stepper::down {
+ 	background-image: value(iconChevronDownDefault);
+ 	padding-bottom: 3px;
+}
+
+Stepper::down:hover {
+	background-image: value(iconChevronDownHover);
+}
+
+Stepper::down:disabled {
+	background-image: value(iconChevronDownDisabled);
+}

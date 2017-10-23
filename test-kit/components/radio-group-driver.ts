@@ -1,5 +1,7 @@
-import {DriverBase} from 'test-drive-react';
+import {DriverBase, simulate} from 'test-drive-react';
 import {RadioButton, RadioGroup} from '../../src';
+import baseStyle from '../../src/components/radio-group/radio-button.st.css';
+import {elementHasStylableState} from '../utils/inspect-stylable';
 
 export class RadioGroupDriver extends DriverBase {
     public static ComponentClass = RadioGroup;
@@ -21,7 +23,7 @@ export class RadioButtonDriver extends DriverBase {
     }
 
     public isChecked(): boolean {
-        return !!this.select('CHECKED_RADIO_ICON');
+        return this.nativeElement.checked;
     }
 
     public isDisabled(): boolean {
@@ -47,10 +49,18 @@ export class RadioButtonDriver extends DriverBase {
     }
 
     public get icon(): SVGElement {
-        return this.isChecked() ? this.select('CHECKED_RADIO_ICON') : this.select('UNCHECKED_RADIO_ICON');
+        return this.select('ICON');
     }
 
     public click(): void {
         (this.root as HTMLDivElement).click();
+    }
+
+    public focus(): void {
+        simulate.focus(this.nativeElement);
+    }
+
+    public hasStylableState(state: string): boolean {
+        return elementHasStylableState(this.root, baseStyle, state);
     }
 }

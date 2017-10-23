@@ -1,0 +1,4 @@
+:import {
+	-st-from: "../../../components/radio-group/radio-group.st.css";
+	-st-default: RadioGroup;
+}
