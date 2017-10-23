@@ -36,12 +36,12 @@ SelectionList:focused {
     border-color: value(color_Focus);
 }
 
-Divider {
+SelectionList Divider {
     height: 1px;
     background-color: value(color_Divider);
 }
 
-Option {
+SelectionList Option {
     border: 1px solid transparent;
     box-sizing: border-box;
     font: value(defaultFont);
@@ -53,19 +53,22 @@ Option {
     white-space: nowrap;
 }
 
-Option:disabled {
+SelectionList Option:disabled {
     color: value(color_MainDisabled);
 }
 
-Option:focused {
+SelectionList Option:focused {
     border-color: value(color_Active);
 }
 
-Option:selected {
+SelectionList Option:selected {
     background-color: value(color_Selected);
 }
 
-Option:hover:not(:disabled) {
+SelectionList Option:hover:not(:disabled) {
+    /* we're adding :not(:disabled) because our disabled state in this component is
+     not a native state, and unlike the native :disabled it has less weight than native :hover
+     If we used native :disabled state, we wouldn't have to add this; */
     background-color: value(color_Hover2);
 }
 
@@ -74,7 +77,7 @@ SelectionList:focused Option:selected:not(:disabled) {
     color: value(color_MainText_Background);
 }
 
-SelectionList:focused > Option:selected:hover:not(:disabled) {
+SelectionList:focused Option:selected:hover:not(:disabled) {
     background-color: value(color_Hover);
     color: value(color_MainText_Background);
 }
