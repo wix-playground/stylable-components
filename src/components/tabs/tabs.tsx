@@ -20,7 +20,7 @@ export interface TabsProps extends properties.Props {
     orientation?: TabsOrientation;
     unmountInactiveTabs?: boolean;
     onChange?: (event: ChangeEvent<string>) => void;
-    children: Array<React.ReactElement<TabProps>>;
+    children?: Array<React.ReactElement<TabProps>>;
 }
 
 @properties
@@ -56,21 +56,15 @@ export class Tabs extends React.Component<TabsProps> {
                     value={selected}
                     onChange={this.handleChange}
                 >
-                    {children.map(
-                        ({props: {label, value, disabled}}) =>
-                            <Option
-                                key={value}
-                                value={value}
-                                disabled={disabled}
-                            >{label}
-                            </Option>
-                    )}
+                    {React.Children.map(children, renderOption)}
                 </SelectionList>
                 <div
                     className="tabPanel"
                     data-automation-id="TAB_PANEL"
                 >
-                    {children.filter(({props: {value}}) => value === selected)}
+                    {React.Children.map(
+                        children, renderSelected(selected)
+                    )}
                 </div>
             </div>
         );
@@ -79,3 +73,41 @@ export class Tabs extends React.Component<TabsProps> {
     private handleChange = (event: ChangeEvent<string>) =>
         typeof this.props.onChange === 'function' ? this.props.onChange(event) : null
 }
+
+const renderOption = (child: React.ReactChild) => {
+    switch (typeof child) {
+        case 'string':
+        case 'number':
+            return null;
+        default:
+            const tab = child as React.ReactElement<TabProps>;
+            const {props: {value, disabled, label}} = tab;
+            return (
+                <Option
+                    key={value}
+                    value={value}
+                    disabled={disabled}
+                >{label}
+                </Option>
+            );
+    }
+};
+
+const renderSelected = (selected: TabsProps['value']) => (child: React.ReactChild) => {
+    switch (typeof child) {
+        case 'string':
+        case 'number':
+            return null;
+        default:
+            const tab = child as React.ReactElement<TabProps>;
+            const {props: {value, disabled, label}} = tab;
+            return value === selected ? (
+                <Option
+                    key={value}
+                    value={value}
+                    disabled={disabled}
+                >{label}
+                </Option>
+            ) : null;
+    }
+};
