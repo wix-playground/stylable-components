@@ -62,9 +62,7 @@ export class Tabs extends React.Component<TabsProps> {
                     className="tabPanel"
                     data-automation-id="TAB_PANEL"
                 >
-                    {React.Children.map(
-                        children, renderSelected(selected)
-                    )}
+                    {React.Children.map(children, renderSelected(selected))}
                 </div>
             </div>
         );
