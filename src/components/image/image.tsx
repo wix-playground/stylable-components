@@ -114,7 +114,6 @@ export class Image extends React.PureComponent<ImageProps, ImageState> {
 
             this.setState({status: ImageStatus.Loaded});
             this.props.onLoad!({...e, src: this.state.src});
-
         }
     }
 
