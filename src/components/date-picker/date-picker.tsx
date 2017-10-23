@@ -124,7 +124,8 @@ export class DatePicker extends React.PureComponent<DatePickerProps, DatePickerS
                 isDropdownVisible: false,
                 highlightSelectedDate: true,
                 highlightFocusedDate: false,
-                dropdownDate: input
+                dropdownDate: input,
+                error: false
             });
 
             this.props.onChange!({value: input});
