@@ -1,0 +1,72 @@
+:import {
+	-st-from: "../../../components/selection-list/selection-list.st.css";
+	-st-default: SelectionList;
+}
+
+:import {
+    -st-from: "../../../components/selection-list/option.st.css";
+    -st-default: Option;
+}
+
+:import {
+    -st-from: "../../../components/selection-list/divider.st.css";
+    -st-default: Divider;
+}
+
+:import {
+    -st-from: "../variables.st.css";
+    -st-named:  fontStyle,
+                inputHeight,
+                dividerColor,
+                buttonColorDisabled,
+                buttonTextColorDisabled,
+                optionBackgroundColorHover,
+                optionBackgroundColorSelected,
+                optionTextColorSelected;
+}
+
+SelectionList {
+    background: white;
+}
+
+SelectionList Divider {
+    height: 1px;
+    background-color: value(dividerColor);
+
+}
+
+SelectionList Option {
+    font: value(fontStyle);
+    line-height: value(inputHeight);
+    padding: 0 24px;
+}
+
+SelectionList Option:disabled {
+    background-color: value(buttonColorDisabled);
+    color: value(buttonTextColorDisabled);
+}
+
+SelectionList Option:focused {
+    /* Don't have styles for focus in the styleguide */
+}
+
+SelectionList Option:selected {
+    background-color: value(optionBackgroundColorSelected);
+    color: value(optionTextColorSelected);
+}
+
+SelectionList Option:hover:not(:disabled) {
+    /* we're adding :not(:disabled) because our disabled state in this component is
+     not a native state, and unlike the native :disabled it has less weight than native :hover
+     If we used native :disabled state, we wouldn't have to add this; */
+    background-color: value(optionBackgroundColorHover);
+}
+
+SelectionList:focused Option:selected:not(:disabled) {
+    /* Don't have styles for focus in the styleguide */
+}
+
+SelectionList:focused Option:selected:hover:not(:disabled) {
+    background-color: value(optionBackgroundColorSelected);
+    color: value(optionTextColorSelected);
+}
