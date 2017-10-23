@@ -2,6 +2,7 @@ import * as keycode from 'keycode';
 import * as React from 'react';
 import {properties, stylable} from 'wix-react-tools';
 import {FormInputProps} from '../../types/forms';
+import {StylableProps} from '../../types/props';
 import {noop} from '../../utils';
 import {Input} from '../input';
 import {Popup} from '../popup';
@@ -11,7 +12,7 @@ import styles from './date-picker.st.css';
 
 const invalidDate: string = 'Invalid Date';
 
-export interface DatePickerProps extends FormInputProps<Date, string>, properties.Props {
+export interface DatePickerProps extends FormInputProps<Date, string>, StylableProps {
     placeholder?: string;
     openOnFocus?: boolean;
     showDropdownOnInit?: boolean;

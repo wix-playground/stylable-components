@@ -30,11 +30,9 @@
 	P00: #cd68ed;
 	P10: #aa4cd8;
 	P20: #cd68ed;
-
-    /* Input Vars */
     GR20: #dadada;
 
-    /* Number Input Vars */
+    /* Inputs */
     fontStyle: 16px "HelveticaNeue-Regular", sans-serif;
     treeFontStyle: 14px "HelveticaNeue-Regular", sans-serif;
 
@@ -60,6 +58,13 @@
     borderStyle: 1px solid value(borderColorDefault);
     borderRadius: 6px;
 
+    /* Selection List */
+
+    dividerColor: value(D70);
+    optionBackgroundColorHover: value(B50);
+    optionBackgroundColorSelected: value(B10);
+    optionTextColorSelected: white;
+
     /* Buttons */
 
 	labelFontStyle: 16px "HelveticaNeueW01-45Light", sans-serif;
@@ -84,6 +89,7 @@
     buttonColorTransparentActive: value(D10A36);
 
     buttonColorDisabled: value(D55);
+    buttonTextColorDisabled: white;
 
     /* Toggle */
 

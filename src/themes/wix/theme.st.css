@@ -63,7 +63,11 @@
 
 :import {
     -st-theme: true;
+<<<<<<< HEAD
     -st-from: "./components/tree-view.st.css";
+=======
+    -st-from: "./components/selection-list.st.css";
+>>>>>>> master
 }
 
 /* old content */
@@ -102,18 +106,10 @@
 	-st-from: "../../components/checkbox/checkbox.st.css";
 	-st-default: CheckBox;
 }
-:import {
-	-st-from: "../../components/time-picker/time-picker.st.css";
-	-st-default: TimePicker;
-}
 
 :import {
 	-st-from: "../../components/slider/slider.st.css";
 	-st-default: Slider;
-}
-:import {
-	-st-from: "../../components/button/button.st.css";
-	-st-default: Button;
 }
 
 
