@@ -16,10 +16,6 @@
         treeFontStyle,
         iconChevronDownDefault;
 }
-:vars {
-    /*spaceVertical: 9px;*/
-    /*spaceHorizontal: 30px;*/
-}
 
 TreeView {
     background: white;

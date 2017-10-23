@@ -2,7 +2,7 @@ import {observable} from 'mobx';
 import * as React from 'react';
 import {Stylesheet} from 'stylable';
 import {ClientRenderer, DriverBase, expect, simulate, sinon, waitFor} from 'test-drive-react';
-import {TreeViewDemo, TreeViewDemoCustom, treeData} from '../../demo/components/tree-view-demo';
+import {treeData, TreeViewDemo, TreeViewDemoCustom} from '../../demo/components/tree-view-demo';
 import {initParentsMap, TreeItem, TreeItemData, TreeView, TreeViewParentsMap, TreeViewStateMap} from '../../src';
 import {getLastAvailableItem, getNextItem, getPreviousItem} from '../../src/components/tree-view/tree-util';
 import {TreeItemDriver, TreeViewDriver} from '../../test-kit';

@@ -22,11 +22,11 @@ export const treeData: TreeItemData[] = [
             {label: 'Cupcake'}
         ]}
     ]},
-    { label: 'Appetizers'},
+    {label: 'Appetizers'},
     { label: 'Drinks', children: [
         {label: 'Vodka'},
         {label: 'Beer'}
-    ]},
+    ]}
 ];
 
 function SelectedItem({selectedItem}: any) {
