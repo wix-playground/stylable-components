@@ -15,6 +15,7 @@ import {SliderDemo} from './components/slider-demo';
 import {TimePickerDemo} from './components/time-picker-demo';
 import {ToggleDemo} from './components/toggle-demo';
 import {TreeViewDemo, TreeViewDemoCustom} from './components/tree-view-demo';
+import {TooltipDemo} from './components/tooltip-demo';
 
 import {Button, Input} from '../src';
 
@@ -70,6 +71,11 @@ export class ComponentsDemo extends React.Component<DemoProps> {
                 <div>
                     <h2>Slider</h2>
                     <SliderDemo />
+                </div>
+                <hr />
+                <div>
+                    <h2>Tooltip</h2>
+                    <TooltipDemo/>
                 </div>
                 <hr />
                 <div>
