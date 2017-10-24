@@ -52,7 +52,6 @@ export function relativeToAbsoluteValue(relativeValue: number[], min: number, ma
         .sort((a, b) => a - b);
 }
 
-
 export function getValueInRange(value: number, min: number, max: number): number {
     return value < min ? min : (value > max ? max : value);
 }

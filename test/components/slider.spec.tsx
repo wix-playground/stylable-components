@@ -9,8 +9,11 @@ import {
     getSizeProperty,
     getValueFromElementAndPointer,
     getValueInRange,
-    isReverse, isVertical, Slider, SliderProps,
-    relativeToAbsoluteValue
+    isReverse,
+    isVertical,
+    relativeToAbsoluteValue,
+    Slider,
+    SliderProps
 } from '../../src/components/slider';
 import styles from '../../src/components/slider/slider.st.css';
 import {ChangeEvent} from '../../src/types/events';
