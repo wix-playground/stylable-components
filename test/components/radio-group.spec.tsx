@@ -10,6 +10,7 @@ class RadioGroupDemoTestDriver extends DriverBase {
 
     public group: RadioGroupDriver = new RadioGroupDriver(() => this.select('GROUP_1_GROUP'));
 
+    
     public get result(): string | null {
         return this.select('GROUP_1_RESULT').textContent;
     }
