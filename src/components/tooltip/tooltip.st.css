@@ -1,0 +1,74 @@
+@namespace "Tooltip";
+:import {
+    -st-from: "../../project.st.css";
+    -st-named:
+        BK1;
+}
+:vars {
+    tooltipOffset: 5px;
+    tooltipColor: value(BK1);
+}
+
+.root {
+    position: absolute;
+    text-align: center;
+    background: value(tooltipColor);
+    padding: 12px 25px;
+    color: white;
+    font-size: 14px;
+    font-family: arial;
+    z-index: 1;
+}
+
+.tail {
+    position: absolute;
+}
+
+.root.top {
+    bottom: value(tooltipOffset);
+    transform: translateX(-50%);
+    margin-left: 50%;
+}
+.root.top .tail {
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.root.bottom {
+    top: value(tooltipOffset);
+    margin-top: 100%;
+    margin-left: 50%;
+    transform: translateX(-50%);
+}
+.root.bottom .tail {
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) rotate(180deg);
+}
+
+.root.left {
+    right: value(tooltipOffset);
+    transform: translateY(-50%);
+    margin-top: 50%;
+    margin-right: 100%;
+}
+.root.left .tail {
+    left: 100%;
+    top: 50%;
+    transform: translateY(100%) rotate(-90deg);
+    transform-origin: 0 0;
+}
+
+.root.right {
+    left: value(tooltipOffset);
+    transform: translateY(-50%);
+    margin-top: 50%;
+    margin-left: 100%;
+}
+.root.right .tail {
+    right: 100%;
+    top: 50%;
+    transform: translateY(100%) rotate(90deg);
+    transform-origin: 100% 0;
+}
