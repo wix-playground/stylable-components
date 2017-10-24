@@ -46,28 +46,24 @@ export class PopupDemo extends React.Component<{}, DemoState> {
         ];
         return (
             <div>
-                <div style={{height: '100px', overflow: 'scroll'}}>
-                    <div style={{height: '150px'}}>
-                        <button
-                            ref={this.updateState}
-                            onClick={this.onClick}
-                            className="anchor"
-                            data-automation-id="POPUP_DEMO_BTN"
-                        >
-                            {this.state.isOpen ? 'Hide Popup' : 'Show Popup'}
-                        </button>
-                    </div>
-                    <Popup
-                        anchor={this.state.div}
-                        popupPosition={popupPos}
-                        anchorPosition={anchorPos}
-                        open={this.state.isOpen}
-                        ref={popup => this.popup = popup}
-                        onExitBounds={this.onExitBounds}
-                    >
-                        <div style={{color: 'white', backgroundColor: 'black'}}>Hello!</div>
-                    </Popup>
-                </div>
+                <button
+                    ref={this.updateState}
+                    onClick={this.onClick}
+                    className="anchor"
+                    data-automation-id="POPUP_DEMO_BTN"
+                >
+                    {this.state.isOpen ? 'Hide Popup' : 'Show Popup'}
+                </button>
+                <Popup
+                    anchor={this.state.div}
+                    popupPosition={popupPos}
+                    anchorPosition={anchorPos}
+                    open={this.state.isOpen}
+                    ref={popup => this.popup = popup}
+                    onExitBounds={this.onExitBounds}
+                >
+                    <div style={{color: 'white', backgroundColor: 'black'}}>Hello!</div>
+                </Popup>
                 <div className="position">
                     <div className="category">
                         <h3>Popup position - vertical</h3>
