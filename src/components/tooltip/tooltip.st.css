@@ -11,6 +11,10 @@
 
 .root {
     position: absolute;
+}
+
+.tooltip  {
+    position: absolute;
     text-align: center;
     background: value(tooltipColor);
     padding: 12px 25px;
@@ -24,49 +28,51 @@
     position: absolute;
 }
 
-.root.top {
-    bottom: value(tooltipOffset);
-    transform: translateX(-50%);
-    margin-left: 50%;
+/* TOP */
+.tooltip.top {
+    bottom: 100%;
+    left: 50%;
+    transform: translate(-50%, -value(tooltipOffset));
 }
-.root.top .tail {
+.tooltip.top .tail {
     top: 100%;
     left: 50%;
     transform: translateX(-50%);
 }
 
-.root.bottom {
-    top: value(tooltipOffset);
-    margin-top: 100%;
-    margin-left: 50%;
-    transform: translateX(-50%);
+/* BOTTOM */
+.tooltip.bottom {
+    top: 100%;
+    left: 50%;
+    transform: translate(-50%, value(tooltipOffset));
 }
-.root.bottom .tail {
+
+.tooltip.bottom .tail {
     bottom: 100%;
     left: 50%;
     transform: translateX(-50%) rotate(180deg);
 }
 
-.root.left {
-    right: value(tooltipOffset);
-    transform: translateY(-50%);
-    margin-top: 50%;
-    margin-right: 100%;
+/* LEFT */
+.tooltip.left {
+    right: 100%;
+    top: 50%;
+    transform: translate(-value(tooltipOffset), -50%);
 }
-.root.left .tail {
+.tooltip.left .tail {
     left: 100%;
     top: 50%;
     transform: translateY(100%) rotate(-90deg);
     transform-origin: 0 0;
 }
 
-.root.right {
-    left: value(tooltipOffset);
-    transform: translateY(-50%);
-    margin-top: 50%;
-    margin-left: 100%;
+/* RIGHT */
+.tooltip.right {
+    left: 100%;
+    top: 50%;
+    transform: translate(value(tooltipOffset), -50%);
 }
-.root.right .tail {
+.tooltip.right .tail {
     right: 100%;
     top: 50%;
     transform: translateY(100%) rotate(90deg);

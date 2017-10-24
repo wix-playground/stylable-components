@@ -8,50 +8,63 @@ export type Position = 'top' | 'left' | 'right' | 'bottom';
 
 export interface TooltipProps {
     children?: React.ReactNode;
-	position?: Position;
-	id: string
-}
-export interface TooltipState {
-    //anchor: HTMLElement | null;
+    position?: Position;
+    id: string;
 }
 
+export interface TooltipState {
+    style?: React.CSSProperties
+}
 
 @stylable(styles)
 class TooltipInner extends React.Component<TooltipProps, TooltipState> {
-	render() {
-		const {children, position} = this.props;
-        return <div
-            className={position}
-        >
-            {children}
-            <svg className="tail" height="5" width="10">
-                <polygon points="0,0 10,0 5,5"/>
-            </svg>
-        </div>
-	}
+    static defaultProps = {
+        position: 'top'
+    }
+    state = {
+        style: undefined
+    }
+    public componentDidMount() {
+        const {id} = this.props;
+        const target = document.querySelector(`[data-id=${id}]`);
+        if (!target) {
+                return;
+        }
+        const elemRect = target.getBoundingClientRect();
+        //const bodyRect = document.body.getBoundingClientRect()
+        const style = {
+            top: elemRect.top + window.scrollY,
+            left: elemRect.left + window.scrollX,
+            width: elemRect.width,
+            height: elemRect.height
+        }
+        this.setState({style});
+    }
+    render() {
+        const {children, position} = this.props;
+        const {style} = this.state;
+        console.log(style);
+
+        return (
+            <div style={style}>
+                <div className={`tooltip ${position}`}>
+                    {children}
+                    <svg className="tail" height="5" width="10">
+                        <polygon points="0,0 10,0 5,5"/>
+                    </svg>
+                </div>
+            </div>
+        );
+    }
 }
 
 
 export class Tooltip extends React.Component<TooltipProps> {
-	static defaultProps = {
-		position: 'top'
-	}
-	/*
-    public state = {
-        anchor: null
-    };
-    public componentDidMount() {
-    	const {id} = this.props;
-    	const target = document.querySelector(`[data-id=${id}]`);
-    	this.setState({anchor: target as HTMLElement});
-    }
-    */
-	render() {
+    render() {
         return (
             <Portal>
-            	<TooltipInner {...this.props}/>
+                <TooltipInner {...this.props}/>
             </Portal>
         );
-	}
-
+    }
 }
