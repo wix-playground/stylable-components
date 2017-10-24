@@ -162,7 +162,7 @@ describe('<Popup />', () => {
             let scrollDiv: HTMLDivElement;
             const {waitForDom} = clientRenderer.render(
                 <div>
-                    <div ref={(elem: HTMLDivElement) => scrollDiv = elem} style={{height: '100px', overflow: 'scroll'}}>
+                    <div ref={(elem: HTMLDivElement) => scrollDiv = elem} style={{height: '100px', overflow: 'auto'}}>
                         <div style={{height: '300px'}}>Filler</div>
                         <div ref={(elem: HTMLDivElement) => anchorDiv = elem}>Anchor</div>
                     </div>
@@ -191,7 +191,7 @@ describe('<Popup />', () => {
             let scrollDiv: HTMLDivElement;
             const onExitBounds = sinon.spy();
             const {waitForDom} = clientRenderer.render(
-                <div ref={(elem: HTMLDivElement) => scrollDiv = elem} style={{height: '1000px', overflow: 'scroll'}}>
+                <div ref={(elem: HTMLDivElement) => scrollDiv = elem} style={{height: '1000px', overflow: 'auto'}}>
                     <div ref={(elem: HTMLDivElement) => div = elem} style={{height: '50px'}}>Anchor</div>
                     <div style={{height: '5000px'}}/>
                 </div>
