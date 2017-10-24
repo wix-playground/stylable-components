@@ -119,14 +119,13 @@ describe('<SelectionList />', () => {
     });
 
     it(
-        `Doesn't fire onChange for clicks on active items, disabled items, items without value, and dividers`,
+        `Doesn't fire onChange for clicks on active items, disabled items, and dividers`,
         async () => {
             const onChange = sinon.spy();
 
             const dataSource = [
                 {value: '0', label: 'Zero'},
                 {value: '1', label: 'One', disabled: true},
-                {label: 'Three'},
                 divider
             ];
 
@@ -138,7 +137,6 @@ describe('<SelectionList />', () => {
             list.click(list.items[0]);
             list.click(list.items[1]);
             list.click(list.items[2]);
-            list.click(list.items[3]);
             await sleep(16);
             expect(onChange).to.have.not.been.called;
         }

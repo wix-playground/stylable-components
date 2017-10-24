@@ -1,33 +1,31 @@
 import {observer} from 'mobx-react';
 import React = require('react');
-import {properties, stylable} from 'wix-react-tools';
-import {ChangeEvent} from '../../types/events';
-import {FormInputProps} from '../../types/forms';
+import ReactDOM = require('react-dom');
+import {globalId, properties, stylable} from 'wix-react-tools';
 import {noop} from '../../utils';
-import {SelectionListItem, SelectionListItemValue, SelectionListModel} from './selection-list-model';
+import {SelectionListItem, SelectionListModel} from './selection-list-model';
 import listStyle from './selection-list.st.css';
 
-function closestElementMatching(
-    predicate: (element: HTMLElement) => boolean,
-    startAt: HTMLElement
-): HTMLElement | null {
-    let current: HTMLElement | null = startAt;
+function closestElementMatching(predicate: (element: Element) => boolean, startAt: Element): Element | null {
+    let current: Element | null = startAt;
     while (current && !predicate(current)) {
         current = current.parentElement;
     }
     return current;
 }
 
-export interface SelectionListViewProps extends FormInputProps<SelectionListItemValue> {
-    className?: string;
-    focused?: boolean;
-    list: SelectionListModel;
+export interface SelectionListViewProps extends properties.Props {
+    // Standard props
     onBlur?: React.FocusEventHandler<HTMLElement>;
-    onChange?: (event: ChangeEvent<SelectionListItemValue>) => void;
+    onClick?: (event: React.MouseEvent<HTMLElement>, itemIndex: number) => void;
     onFocus?: React.FocusEventHandler<HTMLElement>;
     onKeyDown?: React.KeyboardEventHandler<HTMLElement>;
-    style?: React.CSSProperties;
+    onMouseDown?: (event: React.MouseEvent<HTMLElement>, itemIndex: number) => void;
     tabIndex?: number;
+
+    // Component-specific props
+    focused?: boolean;
+    list?: SelectionListModel;
 }
 
 @observer
@@ -35,55 +33,87 @@ export interface SelectionListViewProps extends FormInputProps<SelectionListItem
 @properties
 export class SelectionListView extends React.Component<SelectionListViewProps> {
     public static defaultProps: Partial<SelectionListViewProps> = {
-        onChange: noop,
         onBlur: noop,
+        onClick: noop,
         onFocus: noop,
-        onKeyDown: noop
+        onKeyDown: noop,
+        onMouseDown: noop,
+        focused: false,
+        list: new SelectionListModel([])
     };
 
     public render() {
+        const list = this.props.list!;
+        const items = list.items;
+        const focused = this.props.focused;
+        const focusedIndex = list.focusedIndex;
+        const hasSelection = list.hasSelection();
+
         return (
             <div
                 data-automation-id="LIST"
-                style-state={{focused: Boolean(this.props.focused)}}
+                role="listbox"
+                aria-orientation="vertical"
+                aria-activedescendant={
+                    focusedIndex > -1 ? this.itemId(focusedIndex) : undefined
+                }
+                style-state={{focused, hasSelection}}
                 onBlur={this.props.onBlur}
                 onClick={this.handleClick}
+                onMouseDown={this.handleMouseDown}
                 onFocus={this.props.onFocus}
                 onKeyDown={this.props.onKeyDown}
                 tabIndex={this.props.tabIndex}
             >
-                {this.props.list && this.props.list.items.map((item, index) =>
-                    <ItemWrapper key={index} item={item} />
+                {items.map((item, index) =>
+                    <ItemWrapper key={index} id={this.itemId(index)} item={item} />
                 )}
             </div>
         );
     }
 
-    private handleClick: React.MouseEventHandler<HTMLElement> = event => {
-        const item = closestElementMatching(
-            el => el.parentElement === event.currentTarget,
-            event.target as HTMLElement
-        );
-        if (!item) {
-            return;
+    // The id attribute serves dual purpose: it's used for accessibility in combination with aria-activedescendant,
+    // and for finding an item corresponding to the DOM node on click or touch.
+    protected itemId(index: number): string {
+        return globalId.getRootId(this) + '-' + index;
+    }
+
+    protected itemIndexFromElement(element: Element): number {
+        const rootElement = ReactDOM.findDOMNode(this);
+        const itemElement = closestElementMatching(el => el.parentElement === rootElement, element);
+        return itemElement ? Number(itemElement.id.replace(/.*(\d+)$/, '$1')) : -1;
+    }
+
+    protected handleClick: React.MouseEventHandler<HTMLElement> = event => {
+        const index = this.itemIndexFromElement(event.target as Element);
+        const item = index > -1 ? this.props.list!.items[index] : null;
+        this.props.onClick!(event, item && item.selectable ? index : -1);
+    }
+
+    protected handleMouseDown: React.MouseEventHandler<HTMLElement> = event => {
+        const index = this.itemIndexFromElement(event.target as Element);
+        const item = index > -1 ? this.props.list!.items[index] : null;
+        if (item && item.disabled) {
+            // Prevent the component from gaining focus when a disabled item is clicked.
+            // This replicates the native <select multiple /> behaviour.
+            event.preventDefault();
         }
-        const value = item.dataset.value;
-        if (value !== undefined && value !== this.props.list.getSelectedValue()) {
-            this.props.onChange!({value});
-        }
+        this.props.onMouseDown!(event, item && item.selectable ? index : -1);
     }
 }
 
 @observer
-class ItemWrapper extends React.Component<{item: SelectionListItem}> {
-    public render() {
-        const item = this.props.item;
-        if (item.isOption) {
-            return React.cloneElement(item.element, {
-                focused:  item.focused,
-                selected: item.selected
-            });
+class ItemWrapper extends React.Component<{item: SelectionListItem, id: string}> {
+    public componentDidUpdate() {
+        if (this.props.item.focused) {
+            const node = ReactDOM.findDOMNode(this);
+            if (node) {
+                node.scrollIntoView({behavior: 'instant', block: 'nearest', inline: 'nearest'});
+            }
         }
-        return item.element;
+    }
+
+    public render() {
+        return this.props.item.render(this.props.id);
     }
 }
