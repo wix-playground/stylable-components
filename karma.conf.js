@@ -4,6 +4,8 @@
 const webpack = require('./webpack.config');
 const testEntrypoint = './test/webpack.ts';
 
+webpack.plugins[0].options.injectBundleCss = true;
+
 const sauceLabsLaunchers = { // Check out https://saucelabs.com/platforms for all browser/platform combos
     slChrome: {
         base: 'SauceLabs',

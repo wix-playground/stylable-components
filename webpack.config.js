@@ -1,12 +1,13 @@
 const StylablePlugin = require('stylable-integration/webpack-plugin');
-const stylableOptions = { injectBundleCss: true, nsDelimiter:'--' };
+const stylableOptions = { injectBundleCss: false, nsDelimiter: '--' };
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
     devtool: 'source-map',
     entry: {
         demos: ['core-js/shim', './demo/index.tsx'],
         tests: ['core-js/shim', './test/utils/mobx.config.ts', 'mocha-loader!./test/webpack.ts']
-    },
+    },    
     module: {
         rules: [
             {
@@ -36,6 +37,17 @@ module.exports = {
         disableHostCheck: true
     },
     plugins: [
-        new StylablePlugin(stylableOptions)
+        new StylablePlugin(stylableOptions),
+        new HtmlWebpackPlugin({
+            chunks: ['demos'],
+            filename: 'demos.html',
+            inject: true
+        }),
+        new HtmlWebpackPlugin({
+            chunks: ['tests'],
+            filename: 'tests.html',
+            inject: true
+        })
     ]
 }
+
