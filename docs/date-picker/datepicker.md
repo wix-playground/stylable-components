@@ -1,7 +1,14 @@
 # DatePicker Components Specification
 
+* [Elements](#elements)
 * [Accessibility](#accessibility)
 * [Behavior](#behavior)
+
+## Elements
+* Input with Calendar Icon
+* Calendar
+* Expand Scope button
+
 
 ## Accessibility
 
@@ -100,9 +107,24 @@ Input handling inside the calendar:
 * Mouse click selects the focused date in the calendar view (popup closes after selection)
 * Mouse click opens/closes the popup when done on the widget (and only on the widget)
 * Mouse click on the input element moves the caret to the clicked location.
+* Mouse over the calendar banner reveals the Expand Scope button.
+* Clicking on the expand scope button changes the calendar view to be based on month, year or decade.
 
 ### Touch Handling
 
 * Tap selects the date touched (popup closes after selection)
 * Tap opens/closes the popup when done on the widget (and only on the widget)
 * Tap on the input element moves the caret to the touched location.
+* Tap on Expand Scope button causes the data table content to change
+* Tap on content in the expanded scope datatables causes changes view to a more detailed level
+
+### Time Range Extension Dialogs
+
+* On mouse over the banner of calendar view, the year and month appear to be selectable desite not being so through keyboard navigation
+* When clicking on the banner calendar view changes to show all twelve months (full year view) instead of dates within a month and callendar view banner show only the year
+* Selecting a month from the display returns the view to be regular calendar view showing the dates of the selected month
+* Clicking on the banner displaying while in full year view  changes it to display a the decade this year belongs to (decade view) the banner changes to display the the decade marked as XXX0-XXX9
+* Selecting a year from the display returns the view to be be full year view
+* Pressing on the banner displaying the decade shifts the view to show ten decade groupings (century view). The banner displays the century in the folloewing fashion XX00-XX99
+* Selecting a decade shifts the view to decade view
+
