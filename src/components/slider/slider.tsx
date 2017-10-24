@@ -5,14 +5,14 @@ import {properties} from 'wix-react-tools';
 import {FormInputProps} from '../../types/forms';
 import {isRTLContext as isRTL, isTouchEvent, nearestIndex, noop} from '../../utils';
 import {
-    getAbsoluteValue,
     getNewValue,
     getRelativeStep,
     getRelativeValue,
     getValueFromElementAndPointer,
     getValueInRange,
     isReverse,
-    isVertical
+    isVertical,
+    relativeToAbsoluteValue
 } from './slider-calculations';
 import {
     CONTINUOUS_STEP,
@@ -287,20 +287,14 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         this.callChange(relativeValue);
     }
 
-    private relativeToAbsoluteValue(relativeValue: number[]): number[] {
-        return relativeValue
-            .map(value => getAbsoluteValue(value, this.props.min!, this.props.max!))
-            .sort((a, b) => a - b);
-    }
-
     private callInput(relativeValue: number[]): void {
         this.props.onInput!({
-            value: JSON.stringify(this.relativeToAbsoluteValue(relativeValue))
+            value: JSON.stringify(relativeToAbsoluteValue(relativeValue, this.props.min!, this.props.max!))
         });
     }
 
     private callChange(relativeValue: number[]): void {
-        const value = this.relativeToAbsoluteValue(relativeValue);
+        const value = relativeToAbsoluteValue(relativeValue, this.props.min!, this.props.max!);
         if (!this.props.value || value.some((item, index) => item !== this.props.value![index])) {
             this.props.onChange!({value});
         }
