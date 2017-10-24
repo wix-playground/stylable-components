@@ -4,8 +4,13 @@ import {ContextProvider} from '../../src';
 import {
     AXES, AxisOptions, AxisOptionsKey, CONTINUOUS_STEP, DEFAULT_VALUE,
     getAbsoluteValue,
-    getRelativeStep, getRelativeValue, getSizeProperty, getValueFromElementAndPointer, getValueInRange,
-    isReverse, isVertical, Slider, SliderProps
+    getRelativeStep,
+    getRelativeValue,
+    getSizeProperty,
+    getValueFromElementAndPointer,
+    getValueInRange,
+    isReverse, isVertical, Slider, SliderProps,
+    relativeToAbsoluteValue
 } from '../../src/components/slider';
 import styles from '../../src/components/slider/slider.st.css';
 import {ChangeEvent} from '../../src/types/events';
@@ -1828,6 +1833,18 @@ describe('Slider/calculations', () => {
         });
         it('(value = 25, min = 10, max = 20) => 20', () => {
             expect(getValueInRange(25, 10, 20)).to.equal(20);
+        });
+    });
+
+    describe('relativeToAbsoluteValue()', () => {
+        it('(value = [0], min = 10, max = 20) => 10', () => {
+            expect(relativeToAbsoluteValue([0], 10, 20)).to.deep.equal([10]);
+        });
+        it('(value = [15], min = 10, max = 20) => 15', () => {
+            expect(relativeToAbsoluteValue([50], 10, 20)).to.deep.equal([15]);
+        });
+        it('(value = [25], min = 10, max = 20) => 20', () => {
+            expect(relativeToAbsoluteValue([100], 10, 20)).to.deep.equal([20]);
         });
     });
 
