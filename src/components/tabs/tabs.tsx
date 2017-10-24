@@ -56,49 +56,63 @@ export class Tabs extends React.Component<TabsProps> {
                     value={selected}
                     onChange={this.handleChange}
                 >
-                    {React.Children.map(children, renderOption)}
+                    {this.tabItems}
                 </SelectionList>
                 <div
                     className="tabPanel"
                     data-automation-id="TAB_PANEL"
                 >
-                    {React.Children.map(children, renderSelected(selected))}
+                    {this.tabPanelContent}
                 </div>
             </div>
         );
+    }
+
+    private get tabs(): Array<React.ReactElement<TabProps>> {
+        return React.Children
+            .toArray(this.props.children)
+            .filter(isTabElement);
+    }
+
+    private get tabItems() {
+        const {children} = this.props;
+        return React.Children.map(children, renderTabItem);
+    }
+
+    private get tabPanelContent() {
+        const {defaultValue, value} = this.props;
+        const selected = defaultValue || value;
+
+        return this.tabs.map(renderTab(selected));
     }
 
     private handleChange = (event: ChangeEvent<string>) =>
         typeof this.props.onChange === 'function' ? this.props.onChange(event) : null
 }
 
-const renderOption = (child: React.ReactChild) => {
-    switch (typeof child) {
-        case 'string':
-        case 'number':
-            return null;
-        default:
-            const tab = child as React.ReactElement<TabProps>;
-            const {props: {value, disabled, label}} = tab;
-            return (
-                <Option
-                    key={value}
-                    value={value}
-                    disabled={disabled}
-                >{label}
-                </Option>
-            );
+const renderTabItem = (child: React.ReactChild, index: number) => {
+    if (isTabElement(child)) {
+        const {props: {value, disabled, label}} = child;
+        const ensured = value === undefined ? String(index) : value;
+        return (
+            <Option
+                key={ensured}
+                value={ensured}
+                disabled={disabled}
+            >{label}
+            </Option>
+        );
+    } else {
+        return null;
     }
 };
 
-const renderSelected = (selected: TabsProps['value']) => (child: React.ReactChild) => {
-    switch (typeof child) {
-        case 'string':
-        case 'number':
-            return null;
-        default:
-            const tab = child as React.ReactElement<TabProps>;
-            const {props: {value, children}} = tab;
-            return value === selected ? children : null;
-    }
+const renderTab = (selected?: string) => (tab: React.ReactElement<TabProps>, index: number) => {
+    const {props: {value, children}} = tab;
+    const ensured = value === undefined ? String(index) : value;
+    return selected !== undefined && selected === ensured ? children : null;
 };
+
+function isTabElement(child: React.ReactChild): child is React.ReactElement<TabProps> {
+    return typeof child !== 'string' && typeof child !== 'number';
+}
