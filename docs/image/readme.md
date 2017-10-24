@@ -4,6 +4,12 @@ The **Image** component represents an image on the DOM.
 
 It accepts all native `<img />` attributes, with several additional features listed below.
 
+| name        | type       | default | required | description       |
+| ----------- | ---------- | ------- | -------- | ----------------- |
+| resizeMode | oneOf('fill', 'cover', 'contain') | 'fill' | no | Defines how the Image responds to the height and width of its content box. |
+| defaultImage | string |  | no | URL to load when src is not provided|
+| errorImage | string |  | no | URL to load if src (or defaultImage) are broken|
+
 ## Features
  
 ### Resize Modes
@@ -16,10 +22,15 @@ It accepts all native `<img />` attributes, with several additional features lis
 
 When an `<img />` has no `src` prop, or it fails to load the specified image, some web browsers show a "broken image" placeholder or an outline around the element. These typically do not conform to the page design causing the page to appear broken.
 
-The `<Image />` component normalizes this behavior by implementing an image source fall-back mechanism:
+The `<Image />` component allows supplying `defaultImage` to replace `src` if missing. If the source fails loading `errorImage` will be displayed. If `errorImage` is not supplied the `<Image/>` component will render an empty pixel.
 
 ```
-src -> defaultImage -> one empty pixel
+src -> defaultImage -> errorImage -> one empty pixel
 ```
 
-If `src` fails loading or is missing, `defaultImage` is used. If `defaultImage` fails loading, the component will fall back to using one empty pixel.
+### Style States
+| state | description|
+| ----- | -----------|
+| :loading | Styles the Image when image is loading
+| :loaded | Styles the Image after it loads successfully
+| :error | Styles the Image after if it fails during loading
