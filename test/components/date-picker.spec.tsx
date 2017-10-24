@@ -481,6 +481,20 @@ describe('The DatePicker Component', () => {
 
             await waitForDom(() => expect(datePicker.dropDown).to.be.present());
         });
+
+        it('should show a list of the months when the year/month header is clicked, and then the header should'
+            + ' display only the year', async () => {
+            const {driver: datePicker, waitForDom} = clientRenderer.render(
+                <DatePicker showDropdownOnInit value={JANUARY_FIRST}/>
+            ).withDriver(DatePickerTestDriver);
+
+            datePicker.clickOnHeader();
+
+            await waitForDom(() => {
+                expect(datePicker.monthView).to.be.present();
+                expect(datePicker.monthLabel).to.be.absent();
+            });
+        });
     });
 
     describe('The Helper Functions', () => {

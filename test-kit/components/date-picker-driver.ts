@@ -41,6 +41,10 @@ export class DatePickerTestDriver extends DriverBase {
         simulate.mouseDown(this.prevMonthLabel);
     }
 
+    public clickOnHeader(): void {
+        simulate.mouseDown(this.calendarHeader);
+    }
+
     public openCalender(): void {
         simulate.click(this.select('CALENDAR_ICON'));
     }
@@ -67,6 +71,14 @@ export class DatePickerTestDriver extends DriverBase {
 
     public get dropDown(): HTMLDivElement | null {
         return bodySelect(datePickerDropdown);
+    }
+
+    public get calendarHeader(): HTMLSpanElement | null {
+        return bodySelect('CALENDAR_HEADER');
+    }
+
+    public get monthView(): HTMLDivElement | null {
+        return bodySelect('MONTH_VIEW');
     }
 
     public getDay(day: number | string): HTMLSpanElement | null {
