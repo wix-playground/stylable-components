@@ -151,6 +151,6 @@ function isPoint(elem: Element | Point): elem is Point {
 function isOutOfBounds(top: number, left: number, height: number, width: number): boolean {
     return top < 0 ||
         left < 0 ||
-        top + height - window.pageYOffset > (window.innerHeight || document.documentElement.clientHeight) ||
-        left + width - window.pageXOffset > (window.innerWidth || document.documentElement.clientWidth);
+        top + height - window.pageYOffset > window.innerHeight ||
+        left + width - window.pageXOffset > window.innerWidth;
 }
