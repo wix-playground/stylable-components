@@ -227,7 +227,7 @@ export class SliderView extends React.Component<SliderViewProps, {}> {
     }
 
     private getProgressStyles(): {[key in 'width' | 'height']?: string} {
-        const values = this.props.relativeValue.slice().sort((a, b) => a - b);
+        const values = [...this.props.relativeValue].sort((a, b) => a - b);
         const firstValue = values[0];
         const lastValue = last(values);
         const leftEdge = values.length > 1 ?
