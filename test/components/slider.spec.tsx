@@ -2,7 +2,11 @@ import * as React from 'react';
 import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react';
 import {ContextProvider} from '../../src';
 import {
-    AXES, AxisOptions, AxisOptionsKey, CONTINUOUS_STEP, DEFAULT_VALUE,
+    AXES,
+    AxisOptions,
+    AxisOptionsKey,
+    CONTINUOUS_STEP,
+    DEFAULT_VALUE,
     getAbsoluteValue,
     getRelativeStep,
     getRelativeValue,
