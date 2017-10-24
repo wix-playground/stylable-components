@@ -256,8 +256,11 @@ export class SliderView extends React.Component<SliderViewProps, {}> {
 
     private getMarkClass(position: number): 'rangeMark' | 'mark' {
         const {relativeValue} = this.props;
-        return !(position < relativeValue[0] && relativeValue.length > 1) &&
-            position <= last(relativeValue) ?
+        const isRangeSlider = relativeValue.length > 1;
+        const isLessThanLowerValue = position < relativeValue[0];
+        const isLessThanSingleValue = position < relativeValue[0];
+        return !(isLessThanLowerValue && isRangeSlider) &&
+        isLessThanSingleValue ?
                 'rangeMark' :
                 'mark';
     }
