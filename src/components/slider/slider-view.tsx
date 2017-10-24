@@ -269,12 +269,12 @@ export class SliderView extends React.Component<SliderViewProps, {}> {
     }
 
     private onSliderFocus: React.FocusEventHandler<HTMLElement> = event => {
-        const handle: HTMLElement = event.target as any;
+        const handle: HTMLElement = event.target as HTMLElement;
         this.props.onSliderFocus!(event, this.getHandleIndex(handle));
     }
 
     private onSliderBlur: React.FocusEventHandler<HTMLElement> = event => {
-        const handle: HTMLElement = event.target as any;
+        const handle: HTMLElement = event.target as HTMLElement;
         this.props.onSliderBlur!(event, this.getHandleIndex(handle));
     }
 
