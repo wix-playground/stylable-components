@@ -30,7 +30,7 @@ describe('<RadioGroup />', () => {
 
             const button0 = demo.group.getRadioButton(0);
 
-            await waitForDom(() => { expect(button0.root).to.not.be.null});
+            await waitForDom(() => { expect(button0.root).to.not.be.null; });
 
             button0.click();
 
