@@ -107,7 +107,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         this.state = {
             currentHandleIndex: -1,
             currentHoverIndex: -1,
-            relativeValue: this.getDefaultValue()
+            relativeValue: this.defaultValue
                 .map(
                     value => getRelativeValue(value, min!, max!)
                 ),
@@ -137,7 +137,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
                 required={this.props.required!}
                 rtl={isRTL(this.context)}
                 step={this.props.step!}
-                value={this.getDefaultValue()}
+                value={this.defaultValue}
                 currentHandleIndex={this.state.currentHandleIndex}
                 currentHoverIndex={this.state.currentHoverIndex}
 
@@ -195,7 +195,7 @@ export class Slider extends React.Component<SliderProps, SliderState> {
         });
     }
 
-    private getDefaultValue() {
+    private get defaultValue() {
         const {value, min} = this.props;
         const defaultValue = typeof min !== 'undefined' ? min : DEFAULT_VALUE;
         return !value || typeof value![0] === 'undefined' ?
