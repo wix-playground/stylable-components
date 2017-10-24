@@ -45,6 +45,10 @@ export class DatePickerTestDriver extends DriverBase {
         simulate.mouseDown(this.calendarHeader);
     }
 
+    public clickOnMonth(month: string): void {
+        simulate.mouseDown(this.getMonth(month));
+    }
+
     public openCalender(): void {
         simulate.click(this.select('CALENDAR_ICON'));
     }
@@ -107,5 +111,9 @@ export class DatePickerTestDriver extends DriverBase {
 
     public get monthLabel(): HTMLSpanElement | null {
         return bodySelect(datePickerDropdown, 'MONTH_NAME');
+    }
+
+    public getMonth(month: string): HTMLSpanElement | null {
+        return bodySelect(datePickerDropdown, `MONTH_${month.toUpperCase()}`);
     }
 }

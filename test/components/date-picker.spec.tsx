@@ -7,6 +7,7 @@ import {
     getDayNames,
     getDaysInMonth,
     getMonthFromOffset,
+    getMonthNames,
     getNumOfFollowingDays,
     getNumOfPreviousDays
 } from '../../src/utils';
@@ -484,6 +485,7 @@ describe('The DatePicker Component', () => {
 
         it('should show a list of the months when the year/month header is clicked, and then the header should'
             + ' display only the year', async () => {
+            const monthNames = getMonthNames();
             const {driver: datePicker, waitForDom} = clientRenderer.render(
                 <DatePicker showDropdownOnInit value={JANUARY_FIRST}/>
             ).withDriver(DatePickerTestDriver);
@@ -493,6 +495,31 @@ describe('The DatePicker Component', () => {
             await waitForDom(() => {
                 expect(datePicker.monthView).to.be.present();
                 expect(datePicker.monthLabel).to.be.absent();
+                monthNames.forEach(month => expect(datePicker.getMonth(month)).to.be.present());
+            });
+        });
+
+        it('when in month-select view, clicking on a month should change the month'
+            + ' and hide the list of months', async () => {
+            const monthToClick = 'March';
+            const {driver: datePicker, waitForDom} = clientRenderer.render(
+                <DatePicker showDropdownOnInit value={JANUARY_FIRST}/>
+            ).withDriver(DatePickerTestDriver);
+
+            datePicker.clickOnHeader();
+
+            await waitForDom(() => {
+                expect(datePicker.monthView).to.be.present();
+                expect(datePicker.monthLabel).to.be.absent();
+            });
+
+            datePicker.clickOnMonth(monthToClick);
+
+            await waitForDom(() => {
+                expect(datePicker.monthView).to.be.absent();
+                expect(datePicker.monthLabel).to.be.present();
+                expect(datePicker.isOpen()).to.equal(true);
+                expect(datePicker.monthLabel).to.have.text(monthToClick);
             });
         });
     });

@@ -187,7 +187,16 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
         const monthArray: JSX.Element[] = [];
 
         monthNames.forEach(month => {
-            monthArray.push(<span className="calendarItem monthName">{month}</span>);
+            monthArray.push(
+                <span
+                    className="calendarItem monthName"
+                    onMouseDown={this.selectMonth}
+                    key={`MONTH_${month.toUpperCase()}`}
+                    data-automation-id={`MONTH_${month.toUpperCase()}`}
+                >
+                    {month}
+                </span>
+                );
         });
 
         return monthArray;
@@ -217,6 +226,18 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
         } else {
             return false;
         }
+    }
+
+    private selectMonth: React.EventHandler<React.SyntheticEvent<Element>> = event => {
+        event.preventDefault();
+        const eventTarget = event.target as HTMLSpanElement;
+        this.setState({showMonthView: !this.state.showMonthView});
+
+        const date = new Date(this.props.value.getFullYear(),
+            monthNames.indexOf(eventTarget.textContent!),
+            this.props.value.getDate());
+
+        this.props.updateDropdownDate(date);
     }
 
     private goToNextMonth: React.EventHandler<React.SyntheticEvent<Element>> = event => {
