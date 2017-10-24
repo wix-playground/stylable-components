@@ -179,7 +179,7 @@ describe('<Popup />', () => {
                     <span data-automation-id="SPAN">Popup Body</span>
                 </Popup>).withDriver(PopupTestDriver);
 
-            scrollDiv!.scrollTop = 100;
+            scrollDiv!.scrollTop = 200;
 
             return waitForDom(() => {
                 expect([anchorDiv, popup.root]).to.be.inVerticalSequence();
@@ -209,7 +209,7 @@ describe('<Popup />', () => {
                 </Popup>).withDriver(PopupTestDriver);
 
             await waitForDom(() => expect(popup.root).to.be.present());
-            scrollDiv!.scrollTop = 51;
+            scrollDiv!.scrollTop = 500;
 
             return waitFor(() => {
                 expect(onExitBounds).to.have.been.called;
