@@ -4,17 +4,14 @@ Tooltip is a label (usually a text one) that appear when the user hovers over, f
 
 Tooltips identify an element when they are activated. Usually used to display brief text description about its functionality. 
 
-Tooltip is shown on:
-
-1. Hover
-2. Focus
-3. Touch
-
-
 
 ## Elements
 
-![elements](/Users/maximc/code/stylable-components/docs/tooltip/assets/elements.png)
+![elements](./assets/elements.png)
+
+**Position**
+
+![position](./assets/position.png)
 
 ## API
 
@@ -23,13 +20,13 @@ Tooltip is shown on:
 | name        | type                                     | defaultValue | isRequired | description                              |
 | ----------- | ---------------------------------------- | ------------ | ---------- | ---------------------------------------- |
 | children    | node                                     | -            | -          | Specifies the element to render inside the tooltip |
-| position    | enum: <br>`top`<br>`bottom`<br>`left`<br>`right` | `top`        | yes        | Controls the position of the tooltip. <br> Supports the following options: `top`, `bottom`, `left`, `right`. |
-| anchor      | element                                  | -            | yes        | The element to be used as an anchor for the tooltip (element will open next to it). |
-| distance    | number<br>(pixels)                       | -            | -          | Specifies the distance between an anchor & tooltip. |
+| position    | enum: <br>`topLeft`, `top`, `topRight`<br> `bottomLeft`, `bottom`, `bottomRight`<br>`leftTop`, `left`, `leftBottom`<br>`rightTop`, `right`, `rightBottom` | `top`        | -          | Controls the position of the tooltip.    |
+| anchor      | string **(TBD w Yuri)**                  | -            | yes        | The element to be used as an anchor for the tooltip (element will open next to it). |
+| distance    | number (pixels) **(check if it can be replaced w margins)** | -            | -          | Specifies the distance between an anchor & tooltip. |
 | showDelay   | number<br>(milliseconds)                 | -            | -          | Specifies a delay in milliseconds for tooltip to appear. |
 | hideDelay   | number<br>(milliseconds)                 | -            | -          | Specifies a delay in milliseconds for tooltip to disappear. |
-| showTrigger | string                                   | `mouseenter` | yes        | Specifies the trigger that shows tooltip.<br>NOTE: supports multiple triggers.<br>[List of triggers](#list_or_triggers). |
-| hideTrigger | string                                   | `mouseleave` | yes        | Specifies the trigger that hides tooltip.<br>NOTE: supports multiple triggers.<br>[List of triggers](#list_of_triggers). |
+| showTrigger | string                                   | `mouseEnter` | -          | Specifies the trigger that shows tooltip.<br>NOTE: supports multiple triggers.<br>[List of triggers](#list_or_triggers). |
+| hideTrigger | string                                   | `mouseleave` | -          | Specifies the trigger that hides tooltip.<br>NOTE: supports multiple triggers.<br>[List of triggers](#list_of_triggers). |
 
 
 
@@ -42,7 +39,7 @@ Tooltip is shown on:
 | mouseEnter | onMouseEnter                    |
 | mouseLeave | onMouseLeave                    |
 | click      | onClick                         |
-| custom     | Allows to create custom trigger |
+| custom?    | Allows to create custom trigger |
 
 
 
@@ -68,11 +65,9 @@ some comment
 
 #### Subcomponents (pseudo-elements)
 
-| selector      | description                              |
-| ------------- | ---------------------------------------- |
-| ::tabList     | Allows to style container that stores all tabs |
-| ::selectedTab | Allows to style selected tab             |
-| ::tabPanel    | Allows to style tab panel                |
+| selector | description                              |
+| -------- | ---------------------------------------- |
+| ::tail   | Style the tail part of the tooltip. <br> E.g. we often hide it with `display: none;` rule. |
 
 #### Custom CSS States (pseudo-classes)
 
@@ -80,7 +75,7 @@ some comment
 | ------------------------------ | ------------------- |
 | :hover, :focus, :disabled, etc | Standard CSS states |
 
-### Style Code Example (TBD!!!)
+### Style Code Example
 
 ```css
 Tooltip{

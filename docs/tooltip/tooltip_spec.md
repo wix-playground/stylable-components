@@ -1,5 +1,3 @@
-
-
 # Tooltip
 
 Tooltip is a label (usually a text one) that appear when the user hovers over, focuses on, or touches an element.
@@ -8,7 +6,11 @@ Tooltips identify an element when they are activated. Usually used to display br
 
 ## Elements
 
-![elements](/Users/maximc/code/stylable-components/docs/tooltip/assets/elements.png)
+![elements](./assets/elements.png)
+
+**Position**
+
+![position](./assets/position.png)
 
 ## API
 
