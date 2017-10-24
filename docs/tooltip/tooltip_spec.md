@@ -1,8 +1,8 @@
 # Tooltip
 
-Tooltip is a label (usually a text one) that appear when the user hovers over, focuses on, or touches an element.
+Tooltip is a label (usually a text one) that appear on particular event (e.g. hover, focus, touch).
 
-Tooltips identify an element when they are activated. Usually used to display brief text description about its functionality. 
+Tooltip identifies element when it is activated. Often used to display brief text description about the anchor element functionality. 
 
 ## Elements
 
@@ -28,88 +28,88 @@ Brief description of pseudo-classes and custom CSS states that can be applied to
 
 ##### Keyboard
 
-The tooltip element can be shown when user focuses over the anchor element with TAB key. 
+Tooltip can be shown when user focuses over the anchor element with TAB key.
 Tooltip can be hidden when user removes focus from the anchor element with ESC key.
 
 ##### Focus
 
-The tooltip itself never receives focus. Focus is placed over the anchor element which triggers the tooltip to be displayed. 
-
-
+Tooltip never receives focus. Focus is placed over the anchor element which triggers the tooltip to be displayed. 
 
 **Roles & Attributes**
 
-| Role    | Attribute | Element | Usage                               |
-| ------- | --------- | ------- | ----------------------------------- |
-| tooltip |           | `div`   | Identifies the element as a tooltip |
+| Role    | Attribute          | Element | Usage                                    |
+| ------- | ------------------ | ------- | :--------------------------------------- |
+| tooltip |                    | `div`   | Identifies anchor element that triggers the tooltip. |
+|         | `aria-describedby` | `div`   | Element that serves as the tooltip anchor requires an aria-describedby property set to the id of the tooltip. |
+
+See ARIA example for reference: 
+http://oaa-accessibility.org/example/39/
+http://oaa-accessibility.org/example/40/
+
+See ARIA documentation on the topic:
+http://accessibility.athena-ict.com/aria/examples/tooltip.shtml
 
 ### Behavior
 
-Tooltip is shown on:
+By default tooltip is shown on hover and/or focus. Nevertheless tooltip can be shown on other triggers:
 
-1. Hover
-2. Focus
-3. Touch
+**Triggers**
 
+| Name                                   | Event                           |
+| -------------------------------------- | ------------------------------- |
+| focus                                  | onFocus                         |
+| blur                                   | onBlur                          |
+| mouseEnter                             | onMouseEnter                    |
+| mouseLeave                             | onMouseLeave                    |
+| click                                  | onClick                         |
+| touchstart                             | touchStart                      |
+| touchleave                             | touchLeave                      |
+| custom **(check if we can do custom)** | Allows to create custom trigger |
 
+**Position**
 
-NOTES:
-
-1. The tooltip widget can be shown via keyboard focus or by the onMouse, onTouch event.
-2. The tooltip widget can be hidden by removing focus from the anchor element or by moving the mouse off it.
-3. Escape key hides the tooltip (as it removes focus)
-
-
-
-Tooltip should be able to automatically change its position on the screen to keep element visible for the user (e.g if the tooltip position is set to `top` but there is no space above the anchor element, tooltip should be displayed on the `bottom`. Same logic goes to `left` / `right`)
-
-
-
-#### Validation
-
-Default validation needs to be addressed, as well as the component behavior when validation is broken.
-
-#### Edge case handling
-
-| Case | Handling |
-| ---- | -------- |
-|      |          |
+As it was described above, tooltip has 12 positions. But, tooltip should also be able to automatically change its position on the screen to keep element visible for the user (e.g if the tooltip position is set to `top` but there is no space above the anchor element, tooltip should be displayed on the `bottom`). 
+We apply simple logic here, `topRight` position changes to `bottomRight`, `rightBottom` changes to `leftBottom` and so on.
 
 ## Input Methods
 
 #### Keyboard
 
+Depends on show/hideTrigger prop.
+
+Default behaviour is:
+
 | Keys | Action                                   |
 | ---- | ---------------------------------------- |
-| tab  | sets focus over the anchor element & displays the tooltip |
-| esc  | removes focus from the element & hides the tooltip |
-|      |                                          |
-|      |                                          |
-
-**RTL** ( if applicable )
-
-| Keys | Action |
-| ---- | ------ |
-|      |        |
+| tab  | Sets focus over the anchor element & displays the tooltip. |
+| esc  | Removes focus from the element & hides the tooltip. |
 
 #### Mouse
 
-| Event | Action                | NOTE                     |
-| ----- | --------------------- | ------------------------ |
-| hover | what happens on hover | Side notes (if relevant) |
-| click |                       |                          |
+Depends on show/hideTrigger prop.
+
+Default behaviour is:
+
+| Event             | Action            |
+| ----------------- | ----------------- |
+| hover, mouseEnter | Show the tooltip. |
+| mouseLeave        | Hide the tooltip. |
 
 #### **Touch**
 
-| Event | Action              | NOTE                    |
-| ----- | ------------------- | ----------------------- |
-| tap   | what happens on tap | Side note (if relevant) |
-| drag  |                     |                         |
+Depends on show/hideTrigger prop.
+
+Default behaviour is:
+
+| Event      | Action            |
+| ---------- | ----------------- |
+| touchstart | Show the tooltip. |
+| touchleave | Hide the tooltip. |
 
 ## RTL
 
-> We are deciding on how are we going to handle the RTL. Detailed description will be added later.
+RTL does not influence the tooltip position. Please make sure that position prop set to `right` is displayed on the right side with `dir="rtl"`. The layout of the page may be different but the tooltip position should remain unchanged. 
 
 ## Design
 
-Link to [assets](link goes here)
+Link to [assets](https://zpl.io/2vMlOW5)

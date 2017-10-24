@@ -1,8 +1,8 @@
 # Tooltip
 
-Tooltip is a label (usually a text one) that appear when the user hovers over, focuses on, or touches an element.
+Tooltip is a label (usually a text one) that appear on particular event (e.g. hover, focus, touch).
 
-Tooltips identify an element when they are activated. Usually used to display brief text description about its functionality. 
+Tooltip identifies element when it is activated. Often used to display brief text description about the anchor element functionality. 
 
 
 ## Elements
@@ -32,14 +32,16 @@ Tooltips identify an element when they are activated. Usually used to display br
 
 **List of triggers**
 
-| Name       | Event                           |
-| ---------- | ------------------------------- |
-| focus      | onFocus                         |
-| blur       | onBlur                          |
-| mouseEnter | onMouseEnter                    |
-| mouseLeave | onMouseLeave                    |
-| click      | onClick                         |
-| custom?    | Allows to create custom trigger |
+| Name                                   | Event                           |
+| -------------------------------------- | ------------------------------- |
+| focus                                  | onFocus                         |
+| blur                                   | onBlur                          |
+| mouseEnter                             | onMouseEnter                    |
+| mouseLeave                             | onMouseLeave                    |
+| click                                  | onClick                         |
+| touchstart                             | touchStart                      |
+| touchleave                             | touchLeave                      |
+| custom **(check if we can do custom)** | Allows to create custom trigger |
 
 
 
@@ -47,16 +49,16 @@ Tooltips identify an element when they are activated. Usually used to display br
 
 **Example 1:**
 
-```
-some comment
+```jsx
+Fil will add samples 
 ```
 
 *Comments to example 1*
 
 **Example 2:**
 
-```
-some comment
+```jsx
+Fil will add samples 
 ```
 
 *Comments to example 2*
@@ -78,6 +80,8 @@ some comment
 ### Style Code Example
 
 ```css
+/* Fil will add samples */
+ 
 Tooltip{
     border: 1px solid limegreen;
     /* border around tooltip */
