@@ -18,7 +18,7 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
 
         this.state = {
             value: [50],
-            multiValue: [80, 80],
+            multiValue: [20, 80],
             rawValue: '50',
             rawMultiValue: '[80, 80]'
         };
