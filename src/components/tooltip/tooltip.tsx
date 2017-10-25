@@ -22,7 +22,7 @@ export interface TooltipState {
 }
 
 @stylable(styles)
-class TooltipInner extends React.Component<TooltipProps, TooltipState> {
+class StyledTooltip extends React.Component<TooltipProps, TooltipState> {
     public static defaultProps = {
         position: 'top',
         showTrigger: 'mouseenter',
@@ -141,14 +141,13 @@ class TooltipInner extends React.Component<TooltipProps, TooltipState> {
             next();
         }
     }
-
 }
 
 export class Tooltip extends React.Component<TooltipProps> {
     public render() {
         return (
             <Portal>
-                <TooltipInner {...this.props}/>
+                <StyledTooltip {...this.props}/>
             </Portal>
         );
     }
