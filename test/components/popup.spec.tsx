@@ -131,7 +131,7 @@ describe('<Popup />', () => {
         afterEach(() => {
             document.body.scrollTop = 0;
             document.body.scrollLeft = 0;
-        })
+        });
 
         it('renders the popup in the right location when it is out of view', async () => {
             let div: HTMLDivElement;
