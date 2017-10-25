@@ -3,6 +3,7 @@ import * as React from 'react';
 import {AutoCompleteDemo} from './components/auto-complete.demo';
 import {CheckBoxDemo} from './components/checkbox-demo';
 import {DatePickerDemo} from './components/date-picker-demo';
+import {DialogDemo} from './components/dialog-demo';
 import {DropDownDemo} from './components/drop-down.demo';
 import {ImageDemo} from './components/image-demo';
 import {LoaderDemo} from './components/loader-demo';
@@ -396,6 +397,11 @@ export class ComponentsDemo extends React.Component<DemoProps> {
                 <div>
                     <h2>Modal</h2>
                     <ModalDemo />
+                </div>
+                <hr />
+                <div>
+                    <h2>Dialog</h2>
+                    <DialogDemo />
                 </div>
             </div>
         );

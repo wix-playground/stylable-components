@@ -6,7 +6,7 @@ import {enableScrolling, stopScrolling} from '../../utils/stop-scrolling';
 import {Portal} from '../portal';
 import styles from './modal.st.css';
 
-export interface RequestCloseEvent extends React.SyntheticEvent<Element> {
+export interface RequestCloseEvent {
     source: string;
 }
 
@@ -54,7 +54,7 @@ export class Modal extends React.PureComponent<ModalProps> {
     private onClick: React.EventHandler<React.SyntheticEvent<Element>> = event => {
         const {target} = event;
         if (isElement(target)) {
-            const closeEvent: RequestCloseEvent = {...event, source: this.getDataFromNearestNode(target)};
+            const closeEvent: RequestCloseEvent = {source: this.getDataFromNearestNode(target)};
             this.props.onRequestClose!(closeEvent);
         }
     }

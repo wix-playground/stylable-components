@@ -3,6 +3,7 @@ export * from './button';
 export * from './checkbox';
 export * from './context-provider';
 export * from './date-picker';
+export * from './dialog';
 export * from './drop-down';
 export * from './global-event';
 export * from './image';
