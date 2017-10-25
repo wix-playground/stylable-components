@@ -10,6 +10,7 @@ export interface TooltipProps {
     children?: React.ReactNode;
     position?: Position;
     id: string;
+    open?: boolean;
     showTrigger?: string;
     hideTrigger?: string;
     showDelay?: number;
@@ -24,6 +25,7 @@ export interface TooltipState {
 @stylable(styles)
 class StyledTooltip extends React.Component<TooltipProps, TooltipState> {
     public static defaultProps = {
+        open: false,
         position: 'top',
         showTrigger: 'mouseenter',
         hideTrigger: 'mouseleave',
@@ -64,6 +66,7 @@ class StyledTooltip extends React.Component<TooltipProps, TooltipState> {
 
         return (
             <div
+                data-automation-id="TOOLTIP"
                 className={`root ${position}`}
                 style={style}
                 style-state={{open}}
@@ -106,7 +109,7 @@ class StyledTooltip extends React.Component<TooltipProps, TooltipState> {
         if (!this.target) {
             return;
         }
-        const {position} = this.props;
+        const {position, open} = this.props;
         const rect = this.target!.getBoundingClientRect();
         const top = rect.top + window.scrollY;
         const left = rect.left + window.scrollX;
@@ -116,7 +119,7 @@ class StyledTooltip extends React.Component<TooltipProps, TooltipState> {
             marginLeft: (position === 'top' || position === 'bottom') ? (rect.width / 2) : undefined,
             marginTop: (position === 'left' || position === 'right') ? (rect.height / 2) : undefined
         };
-        this.setState({style});
+        this.setState({style, open: open!});
     }
 
     private toggle = (e: Event) => {
@@ -144,10 +147,17 @@ class StyledTooltip extends React.Component<TooltipProps, TooltipState> {
 }
 
 export class Tooltip extends React.Component<TooltipProps> {
+    private tooltip: React.ReactNode;
+    public getTooltip() {
+        return this.tooltip;
+    }
     public render() {
         return (
             <Portal>
-                <StyledTooltip {...this.props}/>
+                <StyledTooltip
+                    ref={tooltip => this.tooltip = tooltip}
+                    {...this.props}
+                />
             </Portal>
         );
     }
