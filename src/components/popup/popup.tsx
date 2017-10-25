@@ -39,7 +39,6 @@ export class Popup extends React.Component<PopupCompProps> {
     private isOutOfBounds = false;
 
     public render() {
-        this.isOutOfBounds = false;
         if (this.props.anchor && this.props.open) {
             return (
                 <Portal
@@ -65,15 +64,22 @@ export class Popup extends React.Component<PopupCompProps> {
         if (this.isOutOfBounds) {
             this.props.onExitBounds!();
         }
+        this.isOutOfBounds = false;
     }
 
     public getPortal(): Portal | null {
         return this.portal;
     }
 
-    private onScroll = (e: any) => {
-        if (e.target.contains(this.props.anchor)) {
-            this.forceUpdate();
+    private onScroll = (e: Event) => {
+        if (this.props.anchor) {
+            if (isPoint(this.props.anchor)) {
+                if (isOutOfBounds(this.props.anchor.y, this.props.anchor.x, 0, 0)) {
+                    this.forceUpdate();
+                }
+            } else if ((e.target as Node).contains(this.props.anchor)) {
+                this.forceUpdate();
+            }
         }
     }
 

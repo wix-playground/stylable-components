@@ -35,8 +35,8 @@ export class Portal extends React.PureComponent<PortalProps> {
         }
     }
 
-    public getPortal() {
-        if (this.container) {
+    public getPortal(): Element | null {
+        if (this.container && this.container.children.length > 0) {
             return this.container.children[0];
         }
         return null;
