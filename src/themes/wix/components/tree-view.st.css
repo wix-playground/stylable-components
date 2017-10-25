@@ -18,9 +18,10 @@
 }
 
 :vars {
-    verticalSpace: 12px;
-    horizontalSpace: 27px;
-    iconSize: 10px;
+    horizontalSpace: 18px;
+    noIconSpace: 11px;
+    iconHeight: 42px;
+    iconWidth: 24px;
 }
 
 TreeView {
@@ -28,40 +29,39 @@ TreeView {
     font: value(treeFontStyle);
     color: value(textColor);
 }
-TreeView>TreeItem.item:expanded {
-    padding-bottom: value(verticalSpace);
+
+TreeView>TreeItem:expanded {
+    padding-bottom: 12px;
 }
 
-TreeItem::head {
-    padding: value(verticalSpace) 0 value(verticalSpace) value(horizontalSpace);
+TreeItem::title {
+    line-height: value(iconHeight);
+    padding-left: calc(value(horizontalSpace) + value(noIconSpace));
 }
-TreeItem::open, TreeItem::close {
-    width: value(iconSize);
-    height: value(iconSize);
-    margin-right: 15px;
+TreeItem::icon {
+    width: value(iconWidth);
+    height: value(iconHeight);
     background-image: value(iconChevronDownDefault);
     transform: rotate(-90deg);
     transition: transform 200ms ease-out;
+    margin-right: 6px;
+    margin-left: -value(noIconSpace);
 }
 
-TreeItem::close {
+TreeItem::icon:expanded {
     transform: rotate(0);
 }
 
-TreeItem.item:expanded::nestedTree {
-    margin-left: calc(value(horizontalSpace) + value(iconSize) / 2);
+TreeItem:expanded::nestedTree {
+    margin-left: calc(value(horizontalSpace) + value(iconWidth) / 2);
     border-left: 1px dashed value(borderColorDisabled);
 }
 
-TreeItem.item {
+TreeItem{
     color: value(textColor);
 }
 
-TreeItem.item:selected,
-TreeItem.item:hover {
+TreeItem:selected,
+TreeItem::title:hover {
     color: value(checkedColor);
-}
-
-TreeItem.item:focused {
-    box-shadow: inset 0 0 0 1px value(checkedColor);
 }

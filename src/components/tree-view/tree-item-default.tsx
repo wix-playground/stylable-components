@@ -19,14 +19,14 @@ export const TreeItem: React.SFC<TreeItemProps> =
                 id={item.label}
                 role="treeitem"
                 data-automation-id={prefix}
-                className="item"
                 style-state={{selected: state!.isSelected, focused: state!.isFocused, expanded: !!state!.isExpanded}}
                 onClick={onItemClick && onItemClick.bind(null, item)}
             >
-                <div className="head">
+                <div className="title">
                     {item.children &&
                         <div
-                            className={state.isExpanded ? 'close' : 'open'}
+                            className='icon'
+                            style-state={{expanded: state.isExpanded}}
                             data-automation-id={`${prefix}_ICON`}
                             onClick={onIconClick && onIconClick.bind(null, item)}
                             aria-hidden

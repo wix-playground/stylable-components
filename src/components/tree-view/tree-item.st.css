@@ -3,7 +3,7 @@
     -st-named: color_Keyboard_Focused, color_Active;
 }
 
-.item {
+.root {
     -st-states: selected, focused, expanded;
     cursor: pointer;
     list-style: none;
@@ -19,15 +19,15 @@
     vertical-align: middle;
 }
 
-.open, .close {
+.icon {
+    -st-states: expanded;
     height: 1rem;
     width: 1rem;
     vertical-align: middle;
     margin-right: 5px;
     display: inline-block;
-    background-size: 100%;
     background-repeat: no-repeat;
     background-position: center;
 }
 
-.head {}
+.title {}
