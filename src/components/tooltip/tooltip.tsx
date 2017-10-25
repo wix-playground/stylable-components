@@ -10,8 +10,10 @@ export interface TooltipProps {
     children?: React.ReactNode;
     position?: Position;
     id: string;
-    openTrigger?: string;
-    closeTrigger?: string;
+    showTrigger?: string;
+    hideTrigger?: string;
+    showDelay?: number;
+    hideDelay?: number;
 }
 
 export interface TooltipState {
@@ -21,17 +23,20 @@ export interface TooltipState {
 
 @stylable(styles)
 class TooltipInner extends React.Component<TooltipProps, TooltipState> {
-    static defaultProps = {
+    public static defaultProps = {
         position: 'top',
-        openTrigger: 'mouseenter',
-        closeTrigger: 'mouseleave'
-    }
-    state = {
+        showTrigger: 'mouseenter',
+        hideTrigger: 'mouseleave',
+        showDelay: 0,
+        hideDelay: 0
+    };
+    public state = {
         style: undefined,
         open: false
-    }
+    };
     private target: HTMLElement | null = null;
     private events: string[] = [];
+    private timeout?: number;
 
     public componentDidMount() {
         this.setTarget();
@@ -39,6 +44,7 @@ class TooltipInner extends React.Component<TooltipProps, TooltipState> {
         this.setStyles();
     }
     public componentWillUnmount() {
+        window.clearTimeout(this.timeout!);
         this.unbindEvents();
     }
     public componentWillReceiveProps(props: TooltipProps) {
@@ -46,6 +52,30 @@ class TooltipInner extends React.Component<TooltipProps, TooltipState> {
         this.setTarget();
         this.bindEvents();
         this.setStyles();
+    }
+
+    public render() {
+        const {children, position} = this.props;
+        const {style, open} = this.state;
+
+        if (!style) {
+            return null;
+        }
+
+        return (
+            <div
+                className={`root ${position}`}
+                style={style}
+                style-state={{open}}
+            >
+                <div className="tooltip">
+                    {children}
+                    <svg className="tail" height="5" width="10">
+                        <polygon points="0,0 10,0 5,5"/>
+                    </svg>
+                </div>
+            </div>
+        );
     }
 
     private setTarget() {
@@ -56,9 +86,9 @@ class TooltipInner extends React.Component<TooltipProps, TooltipState> {
         if (!this.target) {
             return;
         }
-        const {openTrigger, closeTrigger} = this.props;
-        this.events = openTrigger!.split(',')
-            .concat(closeTrigger!.split(','))
+        const {showTrigger, hideTrigger} = this.props;
+        this.events = showTrigger!.split(',')
+            .concat(hideTrigger!.split(','))
             .filter((val, index, arr) => arr.indexOf(val) === index);
         this.events.forEach(event => {
             this.target!.addEventListener(event, this.toggle);
@@ -84,50 +114,38 @@ class TooltipInner extends React.Component<TooltipProps, TooltipState> {
             top: position === 'bottom' ? (top + rect.height) : top,
             left: position === 'right' ? (left + rect.width) : left,
             marginLeft: (position === 'top' || position === 'bottom') ? (rect.width / 2) : undefined,
-            marginTop: (position === 'left' || position === 'right') ? (rect.height / 2) : undefined,
-        }
+            marginTop: (position === 'left' || position === 'right') ? (rect.height / 2) : undefined
+        };
         this.setState({style});
     }
 
     private toggle = (e: Event) => {
         const {open} = this.state;
-        const {openTrigger, closeTrigger} = this.props;
-        if (
-            (open && closeTrigger!.indexOf(e.type) !== -1) ||
-            (!open && openTrigger!.indexOf(e.type) !== -1)
-        ) {
-            this.setState({open: !open});
+        const {showTrigger, hideTrigger, showDelay, hideDelay} = this.props;
+        const {type} = e;
+        const delay = open ? hideDelay : showDelay;
+
+        const next = () => {
+            if (
+                (open && hideTrigger!.indexOf(type) !== -1) ||
+                (!open && showTrigger!.indexOf(type) !== -1)
+            ) {
+                this.setState({open: !open});
+            }
+        };
+
+        window.clearTimeout(this.timeout!);
+        if (delay) {
+            this.timeout = window.setTimeout(next, delay);
+        } else {
+            next();
         }
     }
 
-    public render() {
-        const {children, position} = this.props;
-        const {style, open} = this.state;
-
-        if (!style) {
-            return null;
-        }
-
-        return (
-            <div
-                className={`root ${position}`}
-                style={style}
-                style-state={{open}}
-            >
-                <div className='tooltip'>
-                    {children}
-                    <svg className="tail" height="5" width="10">
-                        <polygon points="0,0 10,0 5,5"/>
-                    </svg>
-                </div>
-            </div>
-        );
-    }
 }
 
-
 export class Tooltip extends React.Component<TooltipProps> {
-    render() {
+    public render() {
         return (
             <Portal>
                 <TooltipInner {...this.props}/>

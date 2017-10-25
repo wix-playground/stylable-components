@@ -14,8 +14,8 @@ import {SelectionListDemo} from './components/selection-list-demo';
 import {SliderDemo} from './components/slider-demo';
 import {TimePickerDemo} from './components/time-picker-demo';
 import {ToggleDemo} from './components/toggle-demo';
-import {TreeViewDemo, TreeViewDemoCustom} from './components/tree-view-demo';
 import {TooltipDemo} from './components/tooltip-demo';
+import {TreeViewDemo, TreeViewDemoCustom} from './components/tree-view-demo';
 
 import {Button, Input} from '../src';
 
