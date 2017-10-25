@@ -30,7 +30,6 @@ export interface ImageState {
 @stylable(styles)
 export class Image extends React.PureComponent<ImageProps, ImageState> {
     public static defaultProps: Partial<ImageProps> = {
-        defaultImage: transparentImage,
         onLoad: noop,
         onError: noop
     };
@@ -87,14 +86,14 @@ export class Image extends React.PureComponent<ImageProps, ImageState> {
     }
     public componentWillMount() {
         this.setState({
-            src: this.props.src || this.props.defaultImage!,
+            src: this.props.src || this.props.defaultImage! || transparentImage,
             status: ImageStatus.Loading
         });
     }
 
     public componentWillReceiveProps(newProps: ImageProps) {
         this.setState({
-            src: newProps.src || this.props.defaultImage!,
+            src: newProps.src || this.props.defaultImage! || transparentImage,
             status: ImageStatus.Loading
         });
     }
@@ -108,10 +107,7 @@ export class Image extends React.PureComponent<ImageProps, ImageState> {
     }
 
     private onLoad: React.EventHandler<React.SyntheticEvent<HTMLImageElement>> = e => {
-        if (this.state.src !== this.props.defaultImage &&
-            this.state.src !== transparentImage &&
-            this.state.src !== this.props.errorImage) {
-
+        if (this.state.status !== ImageStatus.Error) {
             this.setState({status: ImageStatus.Loaded});
             this.props.onLoad!({...e, src: this.state.src});
         }
@@ -119,10 +115,7 @@ export class Image extends React.PureComponent<ImageProps, ImageState> {
 
     private getFallbackSrcFor(src: string): string {
         // first, fallback to errorImage, and later to one transparent pixel
-        if (!this.props.errorImage) {
-            return transparentImage;
-        }
-
-        return src === this.props.errorImage ? transparentImage : this.props.errorImage;
+        const {errorImage} = this.props;
+        return !errorImage || src === errorImage ? transparentImage : errorImage;
     }
 }
