@@ -37,7 +37,7 @@ export class TooltipDemo extends React.Component {
                     <h4>{sample.title}</h4>
                     {sample.positions.map((position: any, j) =>
                         <div className='positionButton' key={j}>
-                            <Button data-id={'id' + i + j} children={position}/>
+                            <Button data-tooltip-for={'id' + i + j} children={position}/>
                             <Tooltip id={'id' + i + j} position={position} {...sample.props}/>
                         </div>
                     )}

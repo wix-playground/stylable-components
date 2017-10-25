@@ -49,7 +49,7 @@ class TooltipInner extends React.Component<TooltipProps, TooltipState> {
     }
 
     private setTarget() {
-        this.target = document.querySelector(`[data-id=${this.props.id}]`) as HTMLElement;
+        this.target = document.querySelector(`[data-tooltip-for=${this.props.id}]`) as HTMLElement;
     }
 
     private bindEvents() {
