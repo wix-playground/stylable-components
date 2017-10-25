@@ -21,27 +21,27 @@ Tooltip identifies element when it is activated. Often used to display brief tex
 | ----------- | ---------------------------------------- | ------------ | ---------- | ---------------------------------------- |
 | children    | node                                     | -            | -          | Specifies the element to render inside the tooltip |
 | position    | enum: <br>`topLeft`, `top`, `topRight`<br> `bottomLeft`, `bottom`, `bottomRight`<br>`leftTop`, `left`, `leftBottom`<br>`rightTop`, `right`, `rightBottom` | `top`        | -          | Controls the position of the tooltip.    |
-| anchor      | string **(TBD w Yuri)**                  | -            | yes        | The element to be used as an anchor for the tooltip (element will open next to it). |
+| id          | string **(TBD w Yuri)**                  | -            | yes        | The id of element to be used as an anchor for the tooltip (element should have `data-tooltip-for` attribute with the same value). |
 | distance    | number (pixels) **(check if it can be replaced w margins)** | -            | -          | Specifies the distance between an anchor & tooltip. |
 | showDelay   | number<br>(milliseconds)                 | -            | -          | Specifies a delay in milliseconds for tooltip to appear. |
 | hideDelay   | number<br>(milliseconds)                 | -            | -          | Specifies a delay in milliseconds for tooltip to disappear. |
-| showTrigger | string                                   | `mouseEnter` | -          | Specifies the trigger that shows tooltip.<br>NOTE: supports multiple triggers.<br>[List of triggers](#list_or_triggers). |
-| hideTrigger | string                                   | `mouseleave` | -          | Specifies the trigger that hides tooltip.<br>NOTE: supports multiple triggers.<br>[List of triggers](#list_of_triggers). |
+| showTrigger | string                                   | `mouseenter` | -          | Specifies the triggers (multiple triggers separated by comma) that shows tooltip.<br>NOTE: supports multiple triggers.<br>[List of triggers](#list_or_triggers). |
+| hideTrigger | string                                   | `mouseleave` | -          | Specifies the triggers (multiple triggers separated be comma) that hides tooltip.<br>NOTE: supports multiple triggers.<br>[List of triggers](#list_of_triggers). |
 
 
 
 **List of triggers**
 
-| Name                                   | Event                           |
-| -------------------------------------- | ------------------------------- |
-| focus                                  | onFocus                         |
-| blur                                   | onBlur                          |
-| mouseEnter                             | onMouseEnter                    |
-| mouseLeave                             | onMouseLeave                    |
-| click                                  | onClick                         |
-| touchstart                             | touchStart                      |
-| touchleave                             | touchLeave                      |
-| custom **(check if we can do custom)** | Allows to create custom trigger |
+| Name                                   |
+| -------------------------------------- |
+| focus                                  |
+| blur                                   |
+| mouseEnter                             |
+| mouseLeave                             |
+| click                                  |
+| touchstart                             |
+| touchleave                             |
+| custom **(check if we can do custom)** |
 
 
 
@@ -50,7 +50,17 @@ Tooltip identifies element when it is activated. Often used to display brief tex
 **Example 1:**
 
 ```jsx
-Fil will add samples 
+import {Tooltip, Button} from 'stylable-components';
+
+
+class Demo extends React.Component {
+    render() {
+        return <div>
+            <Button data-tooltip-for="any string here">Click for more info</Button>
+            <Tooltip id="any string here">I am the Tooltip</Tooltip>
+        </div>
+    }
+}
 ```
 
 *Comments to example 1*
@@ -58,7 +68,22 @@ Fil will add samples
 **Example 2:**
 
 ```jsx
-Fil will add samples 
+import {Tooltip, Button} from 'stylable-components';
+
+class Demo extends React.Component {
+    render() {
+        return <div>
+            <Button data-tooltip-for="any string here">Click for more info</Button>
+            <Tooltip
+                id="any string here"
+                position="bottom"
+                openTrigger="click"
+                closeTrigger="click,mouseleave"
+                children="I am the Tooltip"
+            />
+        </div>
+    }
+}
 ```
 
 *Comments to example 2*
@@ -80,8 +105,6 @@ Fil will add samples
 ### Style Code Example
 
 ```css
-/* Fil will add samples */
- 
 Tooltip{
     border: 1px solid limegreen;
     /* border around tooltip */
