@@ -61,7 +61,7 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
         return this.value ? items.filter(item => this.filter!(item.label, this.value!)) : items;
     }
 
-    @computed public get list() {
+    @computed private get list() {
         return new SelectionListModel(this.items);
     }
 

@@ -72,6 +72,40 @@ export class SelectionListView extends React.Component<SelectionListViewProps> {
         );
     }
 
+    public componentDidMount() {
+        // The native component automatically scrolls to the selected value on initialization.
+        this.scrollToItem(this.props.list!.selectedIndex);
+    }
+
+    public componentDidUpdate() {
+        this.scrollToItem(this.props.list!.focusedIndex);
+    }
+
+    protected scrollToItem(index: number) {
+        if (index === -1) {
+            return;
+        }
+
+        const listNode = ReactDOM.findDOMNode(this);
+        if (listNode.clientHeight >= listNode.scrollHeight) {
+            return;
+        }
+
+        const itemNode = document.getElementById(this.itemId(index));
+        if (!itemNode) {
+            return;
+        }
+
+        const listBox = listNode.getBoundingClientRect();
+        const itemBox = itemNode.getBoundingClientRect();
+
+        if (itemBox.top < listBox.top) {
+            listNode.scrollTop += itemBox.top - listBox.top;
+        } else if (itemBox.bottom > listBox.bottom) {
+            listNode.scrollTop += itemBox.bottom - listBox.bottom;
+        }
+    }
+
     // The id attribute serves dual purpose: it's used for accessibility in combination with aria-activedescendant,
     // and for finding an item corresponding to the DOM node on click or touch.
     protected itemId(index: number): string {
@@ -102,17 +136,9 @@ export class SelectionListView extends React.Component<SelectionListViewProps> {
     }
 }
 
+// Since we don't require item components to be observers, we need to wrap them.
 @observer
 class ItemWrapper extends React.Component<{item: SelectionListItem, id: string}> {
-    public componentDidUpdate() {
-        if (this.props.item.focused) {
-            const node = ReactDOM.findDOMNode(this);
-            if (node) {
-                node.scrollIntoView({behavior: 'instant', block: 'nearest', inline: 'nearest'});
-            }
-        }
-    }
-
     public render() {
         return this.props.item.render(this.props.id);
     }

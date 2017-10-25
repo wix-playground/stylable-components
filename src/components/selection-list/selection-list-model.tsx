@@ -183,7 +183,7 @@ export function selectionListItemsFromProps(props: OptionList & {children?: Reac
 export class SelectionListModel {
     @observable public items: SelectionListItem[] = [];
     @observable public focusedIndex: number = -1;
-    @observable private selectedIndex: number = -1;
+    @observable public selectedIndex: number = -1;
 
     constructor(items: SelectionListItem[]) {
         this.items = items;
@@ -207,43 +207,47 @@ export class SelectionListModel {
         // not implemented
     }
 
-    public focusFirst() {
-        this.focusIndex(this.findSelectable(0, 1));
+    public focusFirst(): boolean {
+        return this.focusIndex(this.findSelectable(0, 1));
     }
 
-    public focusLast() {
-        this.focusIndex(this.findSelectable(this.items.length - 1, -1));
+    public focusLast(): boolean {
+        return this.focusIndex(this.findSelectable(this.items.length - 1, -1));
     }
 
-    public focusPrevious() {
+    public focusPrevious(): boolean {
         if (this.focusedIndex === -1) {
-            this.focusLast();
+            return this.focusLast();
         } else {
             const index = this.findSelectable(this.focusedIndex - 1, -1);
             if (index !== -1) {
-                this.focusIndex(index);
+                return this.focusIndex(index);
             }
         }
+        return false;
     }
 
-    public focusNext() {
+    public focusNext(): boolean {
         if (this.focusedIndex === -1) {
-            this.focusFirst();
+            return this.focusFirst();
         } else {
             const index = this.findSelectable(this.focusedIndex + 1, 1);
             if (index !== -1) {
-                this.focusIndex(index);
+                return this.focusIndex(index);
             }
         }
+        return false;
     }
 
-    @action public focusIndex(newIndex: number) {
+    @action public focusIndex(newIndex: number): boolean {
         const oldIndex = this.focusedIndex;
         if (oldIndex !== newIndex) {
             (oldIndex > -1) && (this.items[oldIndex].focused = false);
             (newIndex > -1) && (this.items[newIndex].focused = true);
             this.focusedIndex = newIndex;
+            return true;
         }
+        return false;
     }
 
     @action public selectIndex(newIndex: number) {

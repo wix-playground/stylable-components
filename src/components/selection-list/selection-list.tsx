@@ -113,6 +113,12 @@ export class SelectionList extends React.Component<SelectionListProps> {
     }
 
     private handleKeyDown: React.KeyboardEventHandler<HTMLElement> = event => {
+        // It's important to not prevent default on Up/Down press if the focus didn't actually change,
+        // because want to be able to scroll to the very endif the list even when it has a bunch of disabled items at
+        // the bottom.
+        // At the same time, pressing PgUp/PgDown while the list is focused shouldn't cause page scroll, which is how
+        // the native component works.
+
         switch (event.keyCode) {
             case keycode('enter'):
             case keycode('space'):
@@ -121,13 +127,15 @@ export class SelectionList extends React.Component<SelectionListProps> {
                 break;
 
             case keycode('up'):
-                event.preventDefault();
-                this.list.focusPrevious();
+                if (this.list.focusPrevious()) {
+                    event.preventDefault();
+                }
                 break;
 
             case keycode('down'):
-                event.preventDefault();
-                this.list.focusNext();
+                if (this.list.focusNext()) {
+                    event.preventDefault();
+                }
                 break;
 
             case keycode('home'):
