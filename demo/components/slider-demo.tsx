@@ -268,7 +268,7 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                 <tr>
                     <th className="table-head-cell">Default Range Slider</th>
                     <th className="table-head-cell">Disabled Range Slider</th>
-                    <th className="table-head-cell">Range Slider with step</th>
+                    <th className="table-head-cell">Range Slider with step and marks</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -298,6 +298,7 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                             min={min}
                             max={max}
                             step={10}
+                            displayStopMarks={true}
                             onChange={this.onRangeSliderChange}
                             onInput={this.onRangeSliderInput}
                         />
