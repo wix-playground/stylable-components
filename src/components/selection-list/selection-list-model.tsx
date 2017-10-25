@@ -35,11 +35,7 @@ export interface OptionList {
     ) => JSX.Element | null;
 }
 
-export type DataSourceItemDefaultFormat = string | symbol | {
-    value: SelectionListItemValue;
-    label: string;
-    disabled: boolean;
-};
+export type DataSourceItemDefaultFormat = string | symbol | DataSourceItemResolved;
 
 function defaultResolveItem(item: DataSourceItem): DataSourceItemResolved {
     if (typeof item === 'string') {

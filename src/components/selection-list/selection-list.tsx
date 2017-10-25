@@ -33,11 +33,11 @@ export class SelectionList extends React.Component<SelectionListProps> {
     private disposers = new Disposers();
 
     // Wrapping props with @computed allows to observe them independently from other props.
-    @computed private get children()    { return this.props.children; }
-    @computed private get dataSource()  { return this.props.dataSource; }
+    @computed private get children()   { return this.props.children; }
+    @computed private get dataSource() { return this.props.dataSource; }
     @computed private get dataMapper() { return this.props.dataMapper; }
-    @computed private get renderItem()  { return this.props.renderItem; }
-    @computed private get value()       { return this.props.value; }
+    @computed private get renderItem() { return this.props.renderItem; }
+    @computed private get value()      { return this.props.value; }
 
     @computed private get items() {
         return selectionListItemsFromProps({
