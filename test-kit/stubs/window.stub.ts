@@ -13,7 +13,7 @@ function stubWindowMethod(
     return sandbox.stub(window, method).callsFake(stub);
 }
 
-export default class WindowStub {
+export class WindowStub {
 
     public sandbox = sinon.sandbox.create();
 
@@ -66,5 +66,4 @@ export default class WindowStub {
             listeners!.forEach(listener => listener(event));
         }
     }
-
 }

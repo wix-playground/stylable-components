@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {properties} from 'wix-react-tools';
 import {Point} from '../../types';
+import {StylableProps} from '../../types/props';
 import {noop} from '../../utils';
 import {Portal} from '../portal';
 
@@ -12,7 +13,7 @@ export interface PopupPositionPoint {
     horizontal: PopupHorizontalPosition;
 }
 
-export interface PopupProps extends properties.Props {
+export interface PopupProps extends StylableProps {
     open?: boolean;
     anchorPosition?: PopupPositionPoint;
     popupPosition?: PopupPositionPoint;

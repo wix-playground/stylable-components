@@ -124,9 +124,11 @@ export class TimePicker extends React.Component<TimePickerProps, TimePickerState
                 {notification &&
                     <ScreenReaderNotification>{notification}</ScreenReaderNotification>
                 }
-                    {this.getInput('mm')}
-                    <span className="colon">:</span>
+                <div className="time">
                     {this.getInput('hh')}
+                    <span className="colon">:</span>
+                    {this.getInput('mm')}
+                </div>
                 {format === 'ampm' &&
                     <div
                         data-automation-id="TIME_PICKER_AMPM"
@@ -235,6 +237,7 @@ export class TimePicker extends React.Component<TimePickerProps, TimePickerState
             this.select(nextSegment);
             return true;
         }
+        this.select(this.state.currentSegment!);
         return false;
     }
 

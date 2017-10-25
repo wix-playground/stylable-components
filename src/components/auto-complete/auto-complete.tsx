@@ -3,20 +3,19 @@ import {properties, stylable} from 'wix-react-tools';
 import {Popup} from '../../';
 import {ChangeEvent} from '../../types/events';
 import {FormInputProps} from '../../types/forms';
+import {StylableProps} from '../../types/props';
 import {noop} from '../../utils';
 import {
+    OptionList,
     SelectionListItemValue,
-    SelectionListModel,
-    SelectionListOptionList
+    SelectionListModel
 } from '../selection-list/selection-list-model';
 import {SelectionListView} from '../selection-list/selection-list-view';
 import style from './auto-complete.st.css';
 
 export type FilterPredicate = (item: string, filterString: string) => boolean;
 
-export interface AutoCompleteProps extends FormInputProps<string>,
-    Partial<SelectionListOptionList>,
-    properties.Props {
+export interface AutoCompleteProps extends OptionList, FormInputProps<string>, StylableProps {
     open?: boolean;
     filter?: FilterPredicate;
     onOpenStateChange?: (e: ChangeEvent<boolean>) => void;
