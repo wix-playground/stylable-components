@@ -10,11 +10,17 @@
 }
 
 .root {
+    -st-states: open;
     position: absolute;
+    display: none;
+    z-index: 9;
+}
+
+.root:open {
+    display: block;
 }
 
 .tooltip  {
-    position: absolute;
     text-align: center;
     background: value(tooltipColor);
     padding: 12px 25px;
@@ -22,6 +28,7 @@
     font-size: 14px;
     font-family: arial;
     z-index: 1;
+    max-width: 300px;
 }
 
 .tail {
@@ -29,37 +36,33 @@
 }
 
 /* TOP */
-.tooltip.top {
-    bottom: 100%;
-    left: 50%;
-    transform: translate(-50%, -value(tooltipOffset));
+.root.top {
+    transform: translate(-50%, -100%);
+    margin-top: -value(tooltipOffset);
 }
-.tooltip.top .tail {
+.root.top .tail {
     top: 100%;
     left: 50%;
     transform: translateX(-50%);
 }
 
 /* BOTTOM */
-.tooltip.bottom {
-    top: 100%;
-    left: 50%;
-    transform: translate(-50%, value(tooltipOffset));
+.root.bottom {
+    transform: translate(-50%, 0);
+    margin-top: value(tooltipOffset);
 }
-
-.tooltip.bottom .tail {
+.root.bottom .tail {
     bottom: 100%;
     left: 50%;
     transform: translateX(-50%) rotate(180deg);
 }
 
 /* LEFT */
-.tooltip.left {
-    right: 100%;
-    top: 50%;
-    transform: translate(-value(tooltipOffset), -50%);
+.root.left {
+    transform: translate(-100%, -50%);
+    margin-left: -value(tooltipOffset);
 }
-.tooltip.left .tail {
+.root.left .tail {
     left: 100%;
     top: 50%;
     transform: translateY(100%) rotate(-90deg);
@@ -67,12 +70,11 @@
 }
 
 /* RIGHT */
-.tooltip.right {
-    left: 100%;
-    top: 50%;
-    transform: translate(value(tooltipOffset), -50%);
+.root.right {
+    transform: translate(0, -50%);
+    margin-left: value(tooltipOffset);
 }
-.tooltip.right .tail {
+.root.right .tail {
     right: 100%;
     top: 50%;
     transform: translateY(100%) rotate(90deg);
