@@ -3,10 +3,6 @@
     display: inline-block;
 }
 
-.root:loaded {}
-.root:loading {}
-.root:error {}
-
 .hiddenImage {
     display: block;
     max-width: 100%;

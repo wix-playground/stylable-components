@@ -188,14 +188,14 @@ describe('<Image />', () => {
         await waitFor(() => expect(onLoad).to.have.been.calledWithMatch({src: onePixelBlack}));
     });
 
-    it('calls onError when it cannot load a source', async () => {
+    it('calls onError when src fails loading', async () => {
         const onError = sinon.spy();
         clientRenderer.render(<Image src={brokenSrc} onError={onError}/>).withDriver(ImageDriver);
 
         await waitFor(() => expect(onError).to.have.been.calledWithMatch({src: brokenSrc}));
     });
 
-    it('calls onError when it cannot load default source', async () => {
+    it('calls onError when defaultImage fails loading', async () => {
         const onError = sinon.spy();
         clientRenderer.render(<Image defaultImage={brokenSrc} onError={onError}/>);
 
