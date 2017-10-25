@@ -218,7 +218,7 @@ describe('<Popup />', () => {
                 </Popup>).withDriver(PopupTestDriver);
 
             await waitForDom(() => expect(popup.root).to.be.present());
-            scrollDiv!.scrollTop = 500;
+            scrollDiv!.scrollTop = 51;
 
             return waitFor(() => {
                 expect(onExitBounds).to.have.been.called;
