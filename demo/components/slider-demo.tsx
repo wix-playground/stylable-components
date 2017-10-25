@@ -1,11 +1,11 @@
 import * as React from 'react';
 import {stylable} from 'wix-react-tools';
-import {ChangeEvent, ContextProvider, Slider, TooltipPosition} from '../../src';
+import {ChangeEvent, ContextProvider, Slider, SliderValue, TooltipPosition} from '../../src';
 import style from './slider-demo.st.css';
 
 export interface SliderDemoState {
-    value: number[];
-    multiValue: number[];
+    value: SliderValue;
+    multiValue: SliderValue;
     rawValue: string;
     rawMultiValue: string;
     tooltipPosition?: TooltipPosition;
@@ -17,7 +17,7 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
         super(props);
 
         this.state = {
-            value: [50],
+            value: 50,
             multiValue: [20, 80],
             rawValue: '50',
             rawMultiValue: '[80, 80]'
@@ -31,6 +31,12 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
         return (
             <table cellSpacing="24px">
                 <thead>
+                    <tr>
+                        <td>value: {this.state.value}</td>
+                    </tr>
+                    <tr>
+                        <td>rawValue: {this.state.rawValue}</td>
+                    </tr>
                     <tr>
                         <th className="table-head-cell">Default Slider</th>
                         <th className="table-head-cell">Disabled Slider</th>
@@ -258,11 +264,11 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                 </tbody>
                 <thead>
                 <tr>
-                    <td>value: {this.state.value[0]}</td>
-                    <td>multiValue: {this.state.multiValue.join(', ')}</td>
+                    <td>multiValue: {
+                        Array.isArray(this.state.multiValue) ? this.state.multiValue.join(', ') : this.state.multiValue
+                    }</td>
                 </tr>
                 <tr>
-                    <td>rawValue: {this.state.rawValue}</td>
                     <td>rawMultiValue: {this.state.rawMultiValue}</td>
                 </tr>
                 <tr>

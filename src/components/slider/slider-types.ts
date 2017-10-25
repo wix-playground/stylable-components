@@ -16,7 +16,7 @@ export type EventHandler<T> = (
     event: T,
     sliderArea: HTMLElement
 ) => void;
-
+export type SliderValue = number | number[];
 export interface ValueFromPointer {
     relativeValue: number[];
     currentValue: number;

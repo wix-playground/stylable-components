@@ -4888,9 +4888,9 @@ window-size@0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/window-size/-/window-size-0.1.0.tgz#5438cd2ea93b202efa3a19fe8887aee7c94f9c9d"
 
-wix-react-tools@^3.1.0-rc.6:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/wix-react-tools/-/wix-react-tools-3.1.0.tgz#e247ebb8c73ba211c65b2766de04e050b8847d98"
+wix-react-tools@^3.1.0:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/wix-react-tools/-/wix-react-tools-3.1.1.tgz#c49f48c66f3e64d9c9e498c06bb34ef723b5ef54"
   dependencies:
     ifndef "^0.0.31"
     lodash "^4.17.4"

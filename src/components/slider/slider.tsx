@@ -5,7 +5,9 @@ import {properties} from 'wix-react-tools';
 import {FormInputProps} from '../../types/forms';
 import {isRTLContext as isRTL, isTouchEvent, nearestIndex, noop} from '../../utils';
 import {
+    getDenormalizedValue,
     getNewValue,
+    getNormalizedValue,
     getRelativeStep,
     getRelativeValue,
     getValueFromElementAndPointer,
@@ -22,7 +24,7 @@ import {
     DEFAULT_STEP,
     DEFAULT_VALUE
 } from './slider-constants';
-import {AxisOptions, PointerEvent, Step, TooltipPosition, ValueFromPointer} from './slider-types';
+import {AxisOptions, PointerEvent, SliderValue, Step, TooltipPosition, ValueFromPointer} from './slider-types';
 import {SliderView} from './slider-view';
 
 enum ChangeDirection {
@@ -30,7 +32,7 @@ enum ChangeDirection {
     descend
 }
 
-export interface SliderProps extends FormInputProps<number[], string>, properties.Props {
+export interface SliderProps extends FormInputProps<SliderValue, string>, properties.Props {
     min?: number;
     max?: number;
     step?: Step;
@@ -171,10 +173,12 @@ export class Slider extends React.Component<SliderProps, SliderState> {
             return;
         }
 
-        const values = nextProps.value === undefined ? this.props.value : nextProps.value;
+        let values = nextProps.value === undefined ? this.props.value : nextProps.value;
         const min = nextProps.min === undefined ? this.props.min : nextProps.min;
         const max = nextProps.max === undefined ? this.props.max : nextProps.max;
         const step = nextProps.step === undefined ? this.props.step : nextProps.step;
+
+        values = getNormalizedValue(values!);
 
         const relativeValues = values!.map(value => {
                 let normalizedValue = value;
@@ -197,10 +201,11 @@ export class Slider extends React.Component<SliderProps, SliderState> {
 
     private get defaultValue() {
         const {value, min} = this.props;
+        const normalizedValue = getNormalizedValue(value!);
         const defaultValue = typeof min !== 'undefined' ? min : DEFAULT_VALUE;
-        return !value || typeof value![0] === 'undefined' ?
+        return !value || typeof normalizedValue[0] === 'undefined' ?
             [defaultValue] :
-            value;
+            normalizedValue;
     }
 
     private getNewValueWithoutCross(value: number, index: number) {
@@ -269,7 +274,6 @@ export class Slider extends React.Component<SliderProps, SliderState> {
                 relativeStep * (round(currentValue / relativeStep) + multiplier * deviation),
                 0, 100
             );
-
         const {
             relativeValue,
             currentHandleIndex
@@ -282,21 +286,29 @@ export class Slider extends React.Component<SliderProps, SliderState> {
             this.view!.focus(this.currentValueIndex);
         });
         this.currentValueIndex = currentHandleIndex;
-
         this.callInput(relativeValue);
         this.callChange(relativeValue);
     }
 
     private callInput(relativeValue: number[]): void {
+        const value = relativeToAbsoluteValue(
+            relativeValue,
+            this.props.min!,
+            this.props.max!
+        );
+
         this.props.onInput!({
-            value: JSON.stringify(relativeToAbsoluteValue(relativeValue, this.props.min!, this.props.max!))
+            value: JSON.stringify(getDenormalizedValue(value))
         });
     }
 
     private callChange(relativeValue: number[]): void {
         const value = relativeToAbsoluteValue(relativeValue, this.props.min!, this.props.max!);
-        if (!this.props.value || value.some((item, index) => item !== this.props.value![index])) {
-            this.props.onChange!({value});
+        const normalizedValue = getNormalizedValue(this.props.value!);
+        if (!this.props.value || value.some((item, index) => item !== normalizedValue[index])) {
+            this.props.onChange!({
+                value: getDenormalizedValue(value)
+            });
         }
     }
 

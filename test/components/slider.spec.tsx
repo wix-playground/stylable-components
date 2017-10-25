@@ -115,7 +115,7 @@ function withValueMinMax(
     context?: any
 ) {
     describe('with value, min and max', () => {
-        const value = [5];
+        const value = 5;
         const min = -10;
         const max = 10;
 
@@ -403,7 +403,7 @@ function whenDragThingsAround(
     context?: any
 ) {
     describe('when drag things around', () => {
-        const value = [5];
+        const value = 5;
         const min = 0;
         const max = 10;
 
@@ -447,7 +447,7 @@ function whenDragThingsAround(
             await waitFor(() => {
                 driver.mouseDown(eventMock);
                 driver.mouseUp(eventMock, environment);
-                expect(onChange).to.be.calledWithMatch({value: [7]});
+                expect(onChange).to.be.calledWithMatch({value: 7});
             });
         });
 
@@ -457,14 +457,14 @@ function whenDragThingsAround(
                 driver.mouseMove(eventMock, environment);
                 driver.mouseUp(eventMock, environment);
 
-                expect(onInput).to.be.calledWithMatch({value: '[7]'});
-                expect(onChange).to.be.calledWithMatch({value: [7]});
+                expect(onInput).to.be.calledWithMatch({value: '7'});
+                expect(onChange).to.be.calledWithMatch({value: 7});
             });
         });
     });
 
     describe('when drag things around using touch', () => {
-        const value = [5];
+        const value = 5;
         const min = 0;
         const max = 10;
 
@@ -508,7 +508,7 @@ function whenDragThingsAround(
             await waitFor(() => {
                 driver.touchStart(eventMock);
                 driver.touchEnd(eventMock, environment);
-                expect(onChange).to.be.calledWithMatch({value: [7]});
+                expect(onChange).to.be.calledWithMatch({value: 7});
             });
         });
 
@@ -518,8 +518,8 @@ function whenDragThingsAround(
                 driver.touchMove(eventMock, environment);
                 driver.touchEnd(eventMock, environment);
 
-                expect(onInput).to.be.calledWithMatch({value: '[7]'});
-                expect(onChange).to.be.calledWithMatch({value: [7]});
+                expect(onInput).to.be.calledWithMatch({value: '7'});
+                expect(onChange).to.be.calledWithMatch({value: 7});
             });
         });
     });
@@ -533,7 +533,7 @@ function whenDragThingsAroundWithStep(
     context?: any
 ) {
     describe('when drag things around with step', () => {
-        const value = [5];
+        const value = 5;
         const min = 0;
         const max = 10;
         const step = 2;
@@ -601,7 +601,7 @@ function whenDragThingsAroundWithStep(
                 driver.mouseDown(eventMock);
                 driver.mouseUp(eventMock, environment);
 
-                expect(onChange).to.be.calledWithMatch({value: [8]});
+                expect(onChange).to.be.calledWithMatch({value: 8});
             });
         });
 
@@ -611,14 +611,14 @@ function whenDragThingsAroundWithStep(
                 driver.mouseMove(eventMock, environment);
                 driver.mouseUp(eventMock, environment);
 
-                expect(onInput).to.be.calledWithMatch({value: '[8]'});
-                expect(onChange).to.be.calledWithMatch({value: [8]});
+                expect(onInput).to.be.calledWithMatch({value: '8'});
+                expect(onChange).to.be.calledWithMatch({value: 8});
             });
         });
     });
 
     describe('when drag things around with step using touch', () => {
-        const value = [5];
+        const value = 5;
         const min = 0;
         const max = 10;
         const step = 2;
@@ -666,7 +666,7 @@ function whenDragThingsAroundWithStep(
                 driver.touchStart(eventMock);
                 driver.touchEnd(eventMock, environment);
 
-                expect(onChange).to.be.calledWithMatch({value: [8]});
+                expect(onChange).to.be.calledWithMatch({value: 8});
             });
         });
 
@@ -676,8 +676,8 @@ function whenDragThingsAroundWithStep(
                 driver.touchMove(eventMock, environment);
                 driver.touchEnd(eventMock, environment);
 
-                expect(onInput).to.be.calledWithMatch({value: '[8]'});
-                expect(onChange).to.be.calledWithMatch({value: [8]});
+                expect(onInput).to.be.calledWithMatch({value: '8'});
+                expect(onChange).to.be.calledWithMatch({value: 8});
             });
         });
     });
@@ -690,7 +690,7 @@ function keyboard(
 ) {
     const step = Number(options && options.step || 1);
     describe(step === 1 ? 'keyboard control' : 'keyboard control with step', () => {
-        const value = [50];
+        const value = 50;
         const min = 0;
         const max = 100;
 
@@ -734,7 +734,7 @@ function keyboard(
             driver.keyDown('right');
 
             return waitFor(() => {
-                expect(onChange).to.be.calledWithMatch({value: value.map(item => item + deviation)});
+                expect(onChange).to.be.calledWithMatch({value: value + deviation});
             });
         });
 
@@ -742,7 +742,7 @@ function keyboard(
             driver.keyDown('up');
 
             return waitFor(() => {
-                expect(onChange).to.be.calledWithMatch({value: value.map(item => item + deviation)});
+                expect(onChange).to.be.calledWithMatch({value: value + deviation});
             });
         });
 
@@ -750,7 +750,7 @@ function keyboard(
             driver.keyDown('page up');
 
             return waitFor(() => {
-                expect(onChange).have.been.calledWithMatch({value: value.map(item => item + Math.abs(deviation * 10))});
+                expect(onChange).have.been.calledWithMatch({value: value + Math.abs(deviation * 10)});
             });
         });
 
@@ -758,7 +758,7 @@ function keyboard(
             driver.keyDown('up', {ctrlKey: true});
 
             return waitFor(() => {
-                expect(onChange).have.been.calledWithMatch({value: value.map(item => item + (deviation * 10))});
+                expect(onChange).have.been.calledWithMatch({value: value + (deviation * 10)});
             });
         });
 
@@ -766,7 +766,7 @@ function keyboard(
             driver.keyDown('left', {ctrlKey: true});
 
             return waitFor(() => {
-                expect(onChange).have.been.calledWithMatch({value: [home]});
+                expect(onChange).have.been.calledWithMatch({value: home});
             });
         });
 
@@ -774,7 +774,7 @@ function keyboard(
             driver.keyDown('up', {shiftKey: true});
 
             return waitFor(() => {
-                expect(onChange).have.been.calledWithMatch({value: value.map(item => item + (deviation * 10))});
+                expect(onChange).have.been.calledWithMatch({value: value + (deviation * 10)});
             });
         });
 
@@ -782,7 +782,7 @@ function keyboard(
             driver.keyDown('left', {shiftKey: true});
 
             return waitFor(() => {
-                expect(onChange).have.been.calledWithMatch({value: [home]});
+                expect(onChange).have.been.calledWithMatch({value: home});
             });
         });
 
@@ -790,7 +790,7 @@ function keyboard(
             driver.keyDown('left');
 
             return waitFor(() => {
-                expect(onChange).have.been.calledWithMatch({value: value.map(item => item - deviation)});
+                expect(onChange).have.been.calledWithMatch({value: value - deviation});
             });
         });
 
@@ -798,7 +798,7 @@ function keyboard(
             driver.keyDown('down');
 
             return waitFor(() => {
-                expect(onChange).have.been.calledWithMatch({value: value.map(item => item - deviation)});
+                expect(onChange).have.been.calledWithMatch({value: value - deviation});
             });
         });
 
@@ -806,7 +806,7 @@ function keyboard(
             driver.keyDown('page down');
 
             return waitFor(() => {
-                expect(onChange).have.been.calledWithMatch({value: value.map(item => item - Math.abs(deviation * 10))});
+                expect(onChange).have.been.calledWithMatch({value: value - Math.abs(deviation * 10)});
             });
         });
 
@@ -814,7 +814,7 @@ function keyboard(
             driver.keyDown('down', {ctrlKey: true});
 
             return waitFor(() => {
-                expect(onChange).have.been.calledWithMatch({value: value.map(item => item - (deviation * 10))});
+                expect(onChange).have.been.calledWithMatch({value: value - (deviation * 10)});
             });
         });
 
@@ -822,7 +822,7 @@ function keyboard(
             driver.keyDown('right', {ctrlKey: true});
 
             return waitFor(() => {
-                expect(onChange).have.been.calledWithMatch({value: [end]});
+                expect(onChange).have.been.calledWithMatch({value: end});
             });
         });
 
@@ -830,7 +830,7 @@ function keyboard(
             driver.keyDown('down', {shiftKey: true});
 
             return waitFor(() => {
-                expect(onChange).have.been.calledWithMatch({value: value.map(item => item - (deviation * 10))});
+                expect(onChange).have.been.calledWithMatch({value: value - (deviation * 10)});
             });
         });
 
@@ -838,7 +838,7 @@ function keyboard(
             driver.keyDown('right', {shiftKey: true});
 
             return waitFor(() => {
-                expect(onChange).have.been.calledWithMatch({value: [end]});
+                expect(onChange).have.been.calledWithMatch({value: end});
             });
         });
 
@@ -846,7 +846,7 @@ function keyboard(
             driver.keyDown('home');
 
             return waitFor(() => {
-                expect(onChange).have.been.calledWithMatch({value: [home]});
+                expect(onChange).have.been.calledWithMatch({value: home});
             });
         });
 
@@ -854,13 +854,13 @@ function keyboard(
             driver.keyDown('end', {shiftKey: true});
 
             return waitFor(() => {
-                expect(onChange).have.been.calledWithMatch({value: [end]});
+                expect(onChange).have.been.calledWithMatch({value: end});
             });
         });
     });
 }
 
-describe('<Slider />', () => {
+describe.only('<Slider />', () => {
     const clientRenderer = new ClientRenderer();
 
     beforeEach(() => {
@@ -949,8 +949,8 @@ describe('<Slider />', () => {
     withValueMinMax(clientRenderer, 'left', 'width', 'horizontal', {});
 
     describe('when value is out of range', () => {
-        const valueLessThenMin = [-1];
-        const valueGreaterThenMax = [11];
+        const valueLessThenMin = -1;
+        const valueGreaterThenMax = 11;
         const min = 0;
         const max = 10;
 
@@ -992,7 +992,7 @@ describe('<Slider />', () => {
     });
 
     describe('when value is out of step', () => {
-        const valueOutOfStep = [3];
+        const valueOutOfStep = 3;
         const min = 0;
         const max = 10;
         const step = 5;
@@ -1069,7 +1069,7 @@ describe('<Slider />', () => {
                     clientX: Math.round(bounds.left + bounds.width * 0.8)
                 }, environment);
 
-                expect(onChange).to.be.calledWithMatch({value: [10]});
+                expect(onChange).to.be.calledWithMatch({value: 10});
             });
         });
 
@@ -1087,15 +1087,15 @@ describe('<Slider />', () => {
                     clientX: Math.round(bounds.left + bounds.width * 0.6)
                 }, environment);
 
-                expect(onInput).to.be.calledWithMatch({value: '[5]'});
-                expect(onChange).to.be.calledWithMatch({value: [5]});
+                expect(onInput).to.be.calledWithMatch({value: '5'});
+                expect(onChange).to.be.calledWithMatch({value: 5});
             });
         });
     });
 
     describe('when displayStopMarks=true', () => {
         it('renders proper number of marks', async () => {
-            const value = [5];
+            const value = 5;
             const min = 0;
             const max = 10;
             const step = 5;
@@ -1120,7 +1120,7 @@ describe('<Slider />', () => {
         });
 
         it('renders marks on proper places', async () => {
-            const value = [5];
+            const value = 5;
             const min = 0;
             const max = 10;
             const step = 2;
@@ -1159,7 +1159,7 @@ describe('<Slider />', () => {
             onChange = sinon.spy();
             const rendered = clientRenderer.render(
                 <Slider
-                    value={[50]}
+                    value={50}
                     step={0}
                     onChange={onChange}
                 />
@@ -1178,7 +1178,7 @@ describe('<Slider />', () => {
         });
 
         it('should trigger onChange with [75] value', () => {
-            expect(onChange).to.be.calledWithMatch({value: [75]});
+            expect(onChange).to.be.calledWithMatch({value: 75});
         });
         it('should move handle to 75%', () => {
             expect(driver.handle.style.left).to.equal('75%');
@@ -1186,7 +1186,7 @@ describe('<Slider />', () => {
     });
 
     describe('when disabled', () => {
-        const value = [5];
+        const value = 5;
         const min = 0;
         const max = 10;
 
@@ -1227,7 +1227,7 @@ describe('<Slider />', () => {
     });
 
     describe('when label provided', () => {
-        const value = [5];
+        const value = 5;
         const min = 0;
         const max = 10;
         const label = 'Simple Slider';
@@ -1252,7 +1252,7 @@ describe('<Slider />', () => {
     });
 
     describe('when name provided', () => {
-        const value = [5];
+        const value = 5;
         const min = 0;
         const max = 10;
         const name = 'Simple Slider';
@@ -1276,7 +1276,7 @@ describe('<Slider />', () => {
     });
 
     describe('when it is required', () => {
-        const value = [5];
+        const value = 5;
         const min = 0;
         const max = 10;
 
@@ -1432,7 +1432,7 @@ describe('<Slider />', () => {
     });
 });
 
-describe('Slider/properties', () => {
+describe.only('Slider/properties', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
 
@@ -1482,7 +1482,7 @@ describe('Slider/properties', () => {
             driver = getRenderedSlider(clientRenderer, {
                 min: 50,
                 max: 100,
-                value: [60]
+                value: 60
             }).driver;
         });
 
@@ -1512,7 +1512,7 @@ describe('Slider/properties', () => {
             driver = getRenderedSlider(clientRenderer, {
                 min: 50,
                 max: 100,
-                value: [60],
+                value: 60,
                 axis: AXES.xReverse
             }).driver;
         });
@@ -1543,7 +1543,7 @@ describe('Slider/properties', () => {
             driver = getRenderedSlider(clientRenderer, {
                 min: 50,
                 max: 100,
-                value: [60],
+                value: 60,
                 axis: AXES.y
             }).driver;
         });
@@ -1574,7 +1574,7 @@ describe('Slider/properties', () => {
             driver = getRenderedSlider(clientRenderer, {
                 min: 50,
                 max: 100,
-                value: [60],
+                value: 60,
                 axis: AXES.yReverse
             }).driver;
         });
@@ -1603,7 +1603,7 @@ describe('Slider/properties', () => {
         let driver: any;
         beforeEach(() => {
             driver = getRenderedSlider(clientRenderer, {
-                value: [40],
+                value: 40,
                 step: 20,
                 displayStopMarks: true
             }).driver;
@@ -1631,7 +1631,7 @@ describe('Slider/properties', () => {
         let driver: any;
         beforeEach(() => {
             driver = getRenderedSlider(clientRenderer, {
-                value: [40],
+                value: 40,
                 step: 20,
                 displayStopMarks: true,
                 axis: AXES.y
@@ -1662,11 +1662,11 @@ describe('Slider/properties', () => {
         });
     });
 
-    describe('displayTooltip={true} value={[44]}', () => {
+    describe('displayTooltip={true} value={44}', () => {
         let driver: any;
         beforeEach(() => {
             driver = getRenderedSlider(clientRenderer, {
-                value: [44],
+                value: 44,
                 displayTooltip: true
             }).driver;
             driver.focus(0);
@@ -1750,7 +1750,7 @@ describe('Slider/properties', () => {
 
 });
 
-describe('Slider/calculations', () => {
+describe.only('Slider/calculations', () => {
     function testMethod(fn: (prop: any) => any, results: {[key: string]: any}) {
         Object.keys(results).forEach(key => {
             it(`${key} => ${results[key]}`, () => {
@@ -1844,13 +1844,13 @@ describe('Slider/calculations', () => {
     });
 
     describe('relativeToAbsoluteValue()', () => {
-        it('(value = [0], min = 10, max = 20) => 10', () => {
+        it('(value = 0, min = 10, max = 20) => 10', () => {
             expect(relativeToAbsoluteValue([0], 10, 20)).to.deep.equal([10]);
         });
-        it('(value = [15], min = 10, max = 20) => 15', () => {
+        it('(value = 15, min = 10, max = 20) => 15', () => {
             expect(relativeToAbsoluteValue([50], 10, 20)).to.deep.equal([15]);
         });
-        it('(value = [25], min = 10, max = 20) => 20', () => {
+        it('(value = 25, min = 10, max = 20) => 20', () => {
             expect(relativeToAbsoluteValue([100], 10, 20)).to.deep.equal([20]);
         });
     });
@@ -1976,7 +1976,7 @@ describe('Slider/calculations', () => {
 
 });
 
-describe('<Slider /> type Range', () => {
+describe.only('<Slider /> type Range', () => {
     const clientRenderer = new ClientRenderer();
 
     beforeEach(() => {

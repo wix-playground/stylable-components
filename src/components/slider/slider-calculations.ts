@@ -1,6 +1,6 @@
 import {warnOnce} from '../../utils/logger';
 import {AXES, CONTINUOUS_STEP} from './slider-constants';
-import {AxisOptions, PointerPosition, Step} from './slider-types';
+import {AxisOptions, PointerPosition, SliderValue, Step} from './slider-types';
 
 export function isVertical(axis: AxisOptions): boolean {
     return axis === AXES.y || axis === AXES.yReverse;
@@ -88,4 +88,20 @@ export function getValueFromElementAndPointer(
 
 export function getNewValue(values: number[], newValue: number, index: number): number[] {
     return values.map((value, i) => i === index ? newValue : value).sort((a, b) => a - b);
+}
+
+export function getNormalizedValue(values: SliderValue): number[] {
+    if (Array.isArray(values)) {
+        return values;
+    } else {
+        return [values];
+    }
+}
+
+export function getDenormalizedValue(values: number[]): SliderValue {
+    if (values.length > 1) {
+        return values;
+    } else {
+        return values[0];
+    }
 }
