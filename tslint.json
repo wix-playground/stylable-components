@@ -1,6 +1,7 @@
 {
   "extends": ["tslint-wix-react"],
   "rules": {
-    "no-submodule-imports" : [true, "react-dom"]
+    "no-submodule-imports" : [true, "react-dom"],
+    "no-implicit-dependencies": false
   }
 }
