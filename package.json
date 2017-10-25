@@ -23,7 +23,7 @@
     "mobx": "^3.3.0",
     "mobx-react": "^4.3.3",
     "prop-types": "^15.6.0",
-    "wix-react-tools": "^3.1.0-rc.6"
+    "wix-react-tools": "^3.1.0"
   },
   "devDependencies": {
     "@types/mocha": "^2.2.43",
