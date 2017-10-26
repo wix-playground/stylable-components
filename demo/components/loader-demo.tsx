@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {stylable} from 'wix-react-tools';
-import {BarsLoader, ChangeEvent, CircleLoader, DotsLoader, NumberInput} from '../../src';
+import {BarsLoader, Button, ChangeEvent, CircleLoader, DotsLoader, NumberInput} from '../../src';
 import styles from './loader-demo.st.css';
 
 @stylable(styles)
@@ -15,10 +15,10 @@ export class LoaderDemo extends React.Component {
             <table>
                 <thead>
                     <tr>
-                        <th>
+                        <th colSpan={6}>
                             Delay:
                             <NumberInput step={1000} value={delay} onChange={this.onChangeDelay}/>
-                            <button
+                            <Button
                                 className="visibilityButton"
                                 children={visible ? 'Hide loaders' : 'Show loaders'}
                                 onClick={this.onVisibilityChange}

@@ -12,7 +12,7 @@ export class BarsLoader extends Loader {
         return (
             <div className="bars">
                 {bars.map((item, index) =>
-                    <div className="bar" key={index}/>
+                    <div className="track" key={index}/>
                 )}
             </div>
         );
