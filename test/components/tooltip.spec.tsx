@@ -47,7 +47,7 @@ function renderWithProps(clientRenderer: ClientRenderer, props?: Partial<Tooltip
     return driver;
 }
 
-describe.only('<Tooltip/>', () => {
+describe('<Tooltip/>', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
 
