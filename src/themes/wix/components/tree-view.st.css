@@ -13,8 +13,7 @@
         textColor,
         checkedColor,
         borderColorDisabled,
-        treeFontStyle,
-        iconChevronDownDefault;
+        treeFontStyle;
 }
 
 :vars {
@@ -37,19 +36,19 @@ TreeView>TreeItem:expanded {
 TreeItem::title {
     line-height: value(iconHeight);
     padding-left: calc(value(horizontalSpace) + value(noIconSpace));
+    user-select: none;
 }
 TreeItem::icon {
     width: value(iconWidth);
     height: value(iconHeight);
-    background-image: value(iconChevronDownDefault);
-    transform: rotate(-90deg);
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2IiBoZWlnaHQ9IjEwIiB2aWV3Qm94PSIwIDAgNiAxMCI+ICA8cG9seWdvbiBmaWxsPSIjMTYyRDNEIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIHBvaW50cz0iMTAuMDcxIDE2IDkgMTcuMDczIDEyLjkzIDIxIDkgMjQuOTMgMTAuMDcxIDI2IDE1LjA3MSAyMSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTkgLTE2KSIvPjwvc3ZnPg==);
     transition: transform 200ms ease-out;
     margin-right: 6px;
     margin-left: -value(noIconSpace);
 }
 
 TreeItem::icon:expanded {
-    transform: rotate(0);
+    transform: rotate(90deg);
 }
 
 TreeItem:expanded::nestedTree {
