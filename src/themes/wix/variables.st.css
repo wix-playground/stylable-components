@@ -32,7 +32,13 @@
 	P20: #cd68ed;
     GR20: #dadada;
 
+<<<<<<< HEAD
     /* Typography */
+=======
+    /* Inputs */
+    fontStyle: 16px "HelveticaNeue-Regular", sans-serif;
+    treeFontStyle: 14px "HelveticaNeue-Regular", sans-serif;
+>>>>>>> master
 
     h1FontStyle: 36px "HelveticaNeueW01-Thin", sans-serif;
     fontStyle: 16px "HelveticaNeueW01-45Light", sans-serif;
@@ -55,7 +61,7 @@
     selectionColor: value(B20);
 
     borderColorDefault: value(B30);
-	borderColorHover: value(B30);
+    borderColorHover: value(B30);
     borderColorFocus: value(B20);
     borderColorDisabled: value(D60);
     borderColorError: value(R00);

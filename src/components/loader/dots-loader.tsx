@@ -12,7 +12,7 @@ export class DotsLoader extends Loader {
         return (
             <div className="dots">
                 {dots.map((value, index) =>
-                    <div className="dot" key={index}/>
+                    <div className="track" key={index}/>
                 )}
             </div>
         );

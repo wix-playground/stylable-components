@@ -9,11 +9,13 @@ export class CircleLoader extends Loader {
     protected renderLoader() {
         return (
             <div className="circle">
-                <div className="left">
-                    <div className="track"/>
-                </div>
-                <div className="right">
-                    <div className="track"/>
+                <div className="inner">
+                    <div className="left">
+                        <div className="track"/>
+                    </div>
+                    <div className="right">
+                        <div className="track"/>
+                    </div>
                 </div>
             </div>
         );
