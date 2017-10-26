@@ -15,7 +15,7 @@ Part of the selectionList family. The text input area of MultiSelect can hold se
 
 ## Elements
 
-![Image of dropdown elements](./assets/dropdowns/MultiSelectElements.png)
+![Image of dropdown elements](./assets/multi-select/MultiSelectElements.png)
 
 ## Properties
 

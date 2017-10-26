@@ -7,14 +7,18 @@ export interface PointerPosition {
     clientX: number;
     clientY: number;
 }
-export type KeyboardHandler = (event: React.KeyboardEvent<HTMLElement>) => void;
-export type MouseHandler = (
-    event: React.MouseEvent<HTMLElement> | MouseEvent,
-    sliderArea: HTMLElement,
-    focusableElement: HTMLElement
+export type FocusEventHandler = (
+    event: React.FocusEvent<HTMLElement> | MouseEvent,
+    currentIndex: number
 ) => void;
-export type TouchHandler = (
-    event: React.TouchEvent<HTMLElement> | TouchEvent,
-    sliderArea: HTMLElement,
-    focusableElement: HTMLElement
+
+export type EventHandler<T> = (
+    event: T,
+    sliderArea: HTMLElement
 ) => void;
+export type SliderValue = number | number[];
+export interface ValueFromPointer {
+    relativeValue: number[];
+    currentValue: number;
+    currentValueIndex: number;
+}
