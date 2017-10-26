@@ -57,7 +57,8 @@ export class ComponentsDemo extends React.Component<{}, State>{
 | -------- | --------------- | ----------------------- |
 | ::switch | Style the switch of **Toggle**. | HTML Element. This subcomponent has no subcomponents of its own. |
 
-You can add icons to the `::switch` subcomponent by setting the `background-image` property.
+* Set the `background-image` property to add icons to the `::switch` subcomponent.<br>
+* `:Root` allows you to style the actual body of the toggle component. See the [Style Code Examples section](#style-examples).
 
 ### Custom CSS States (pseudo-classes)
 
@@ -67,7 +68,7 @@ You can add icons to the `::switch` subcomponent by setting the `background-imag
 | :checked          | Style the toggle element in checked state. |
 | :hover, :focus, :disabled, etc | Standard CSS states.           |
 
-### Style Code Examples
+### <a id="style-examples"></a>Style Code Examples
 
 ##### Example 1
 
