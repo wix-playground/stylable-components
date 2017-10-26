@@ -1,6 +1,11 @@
 @namespace "wixTheme";
 
 :import {
+	-st-from: "./typography.st.css";
+	-st-theme: true;
+}
+
+:import {
 	-st-from: "./components/number-input.st.css";
 	-st-theme: true;
 }
@@ -101,11 +106,6 @@
   R20,
   R30,
   primary-color;
-}
-
-:import {
-	-st-from: "../../components/checkbox/checkbox.st.css";
-	-st-default: CheckBox;
 }
 
 :import {

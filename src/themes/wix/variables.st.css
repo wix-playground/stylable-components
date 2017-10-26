@@ -32,11 +32,16 @@
 	P20: #cd68ed;
     GR20: #dadada;
 
-    /* Inputs */
-    fontStyle: 16px "HelveticaNeue-Regular", sans-serif;
+    /* Typography */
 
+    h1FontStyle: 36px "HelveticaNeueW01-Thin", sans-serif;
+    fontStyle: 16px "HelveticaNeueW01-45Light", sans-serif;
     textColor: value(D10);
+    textColorLighter: value(D20);
     textColorDisabled: value(D50);
+    
+    /* Inputs */
+    inputFontStyle: 16px "HelveticaNeueW01-55Roman", sans-serif;
     placeholderColor: value(D40);
 
     inputHeight: 36px;
@@ -65,8 +70,6 @@
     optionTextColorSelected: white;
 
     /* Buttons */
-
-	labelFontStyle: 16px "HelveticaNeueW01-45Light", sans-serif;
 
     buttonColorMain: value(B10);
     buttonColorMainHover: value(B20);
@@ -139,7 +142,7 @@
 	border: value(borderStyle);
 	border-radius: value(borderRadius);
 	background: value(inputBackgroundColor);
-	font: value(fontStyle);
+	font: value(inputFontStyle);
 	color: value(textColor);
 	outline: 0;
 }
@@ -164,7 +167,7 @@
 }
 
 .inputStyle::placeholder {
-	font: value(fontStyle);
+	font: value(inputFontStyle);
 	color: value(placeholderColor);
 }
 
