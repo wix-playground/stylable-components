@@ -1,0 +1,66 @@
+:import {
+    -st-from: "../../../components/tree-view/tree-view.st.css";
+    -st-default: TreeView;
+}
+
+:import{
+    -st-from: "../../../components/tree-view/tree-item.st.css";
+    -st-default: TreeItem;
+}
+:import {
+    -st-from: "../variables.st.css";
+    -st-named:
+        textColor,
+        checkedColor,
+        borderColorDisabled,
+        treeFontStyle;
+}
+
+:vars {
+    horizontalSpace: 18px;
+    noIconSpace: 11px;
+    iconHeight: 42px;
+    iconWidth: 24px;
+}
+
+TreeView {
+    background: white;
+    font: value(treeFontStyle);
+    color: value(textColor);
+}
+
+TreeView>TreeItem:expanded {
+    padding-bottom: 12px;
+}
+
+TreeItem::title {
+    line-height: value(iconHeight);
+    padding-left: calc(value(horizontalSpace) + value(noIconSpace));
+    user-select: none;
+}
+TreeItem::icon {
+    width: value(iconWidth);
+    height: value(iconHeight);
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2IiBoZWlnaHQ9IjEwIiB2aWV3Qm94PSIwIDAgNiAxMCI+ICA8cG9seWdvbiBmaWxsPSIjMTYyRDNEIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIHBvaW50cz0iMTAuMDcxIDE2IDkgMTcuMDczIDEyLjkzIDIxIDkgMjQuOTMgMTAuMDcxIDI2IDE1LjA3MSAyMSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTkgLTE2KSIvPjwvc3ZnPg==);
+    transition: transform 200ms ease-out;
+    margin-right: 6px;
+    margin-left: -value(noIconSpace);
+}
+
+TreeItem::icon:expanded {
+    transform: rotate(90deg);
+}
+
+TreeItem:expanded::nestedTree {
+    margin-left: calc(value(horizontalSpace) + value(iconWidth) / 2);
+    border-left: 1px dashed value(borderColorDisabled);
+}
+
+TreeItem{
+    color: value(textColor);
+}
+
+TreeItem:selected,
+TreeItem::title:hover {
+    color: value(checkedColor);
+}

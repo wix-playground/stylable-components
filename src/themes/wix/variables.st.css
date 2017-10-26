@@ -34,6 +34,7 @@
 
     /* Inputs */
     fontStyle: 16px "HelveticaNeue-Regular", sans-serif;
+    treeFontStyle: 14px "HelveticaNeue-Regular", sans-serif;
 
     textColor: value(D10);
     textColorDisabled: value(D50);
@@ -50,7 +51,7 @@
     selectionColor: value(B20);
 
     borderColorDefault: value(B30);
-	borderColorHover: value(B30);
+    borderColorHover: value(B30);
     borderColorFocus: value(B20);
     borderColorDisabled: value(D60);
     borderColorError: value(R00);
