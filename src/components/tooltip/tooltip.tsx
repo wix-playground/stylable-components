@@ -93,10 +93,14 @@ class StyledTooltip extends React.Component<TooltipProps, TooltipState> {
         this.onWindowResize.clear();
     }
     public componentWillReceiveProps(props: TooltipProps) {
-        this.unbindEvents();
-        this.setTarget();
-        this.bindEvents();
-        this.setStyles();
+        if (props.id !== this.props.id) {
+            this.unbindEvents();
+            this.setTarget();
+            this.bindEvents();
+        }
+        if (props.id !== this.props.id || props.position !== this.props.position) {
+            this.setStyles();
+        }
     }
 
     private setTarget() {

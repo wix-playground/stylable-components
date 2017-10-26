@@ -2,6 +2,9 @@
 :import {
     -st-from: "../../project.st.css";
     -st-named:
+        fontFamily,
+        fontSize,
+        color_MainText_Background,
         BK1;
 }
 :vars {
@@ -24,9 +27,8 @@
     text-align: center;
     background: value(tooltipColor);
     padding: 12px 25px;
-    color: white;
-    font-size: 14px;
-    font-family: arial;
+    color: value(color_MainText_Background);
+    font: value(fontSize) value(fontFamily);
     z-index: 1;
     max-width: 300px;
 }
