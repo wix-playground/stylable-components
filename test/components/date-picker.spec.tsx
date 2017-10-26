@@ -499,8 +499,8 @@ describe('The DatePicker Component', () => {
             });
         });
 
-        it('when in month-select view, clicking on a month should change the month'
-            + ' and hide the list of months', async () => {
+        it('when in the month-view, clicking on a month should change the current month'
+            + ' to the selected month, and then hide the month-view', async () => {
             const monthToClick = 'March';
             const {driver: datePicker, waitForDom} = clientRenderer.render(
                 <DatePicker showDropdownOnInit value={JANUARY_FIRST}/>
