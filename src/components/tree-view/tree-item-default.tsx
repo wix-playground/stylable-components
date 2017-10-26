@@ -25,7 +25,7 @@ export const TreeItem: React.SFC<TreeItemProps> =
                 <div className="title">
                     {item.children &&
                         <div
-                            className='icon'
+                            className="icon"
                             style-state={{expanded: state.isExpanded}}
                             data-automation-id={`${prefix}_ICON`}
                             onClick={onIconClick && onIconClick.bind(null, item)}
