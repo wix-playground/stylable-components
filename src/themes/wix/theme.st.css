@@ -32,6 +32,11 @@
 
 :import {
     -st-theme: true;
+    -st-from: "./components/slider.st.css";
+}
+
+:import {
+    -st-theme: true;
     -st-from: "./components/toggle.st.css";
     -st-named: smallToggle;
 }
@@ -135,13 +140,13 @@ Slider {
 	width:288px;
 }
 
-Slider:x::track {
+Slider:x::bar {
 	height: 6px;
 	background: #DAEFFE;
 	border-radius: 3px;
 }
 
-Slider:x::progress {
+Slider:x::rangeBar {
 	height: 6px;
 	background: #3899EC;
 	border-radius: 3px;
@@ -163,7 +168,7 @@ Slider::handle:hover {
 	box-shadow: 0 1px 2px 2px rgba(138,209,250,0.58);
 }
 
-Slider:hover::slider::track {
+Slider:hover::slider::bar {
 	background: #DAEFFE;
 }
 
@@ -202,7 +207,7 @@ Slider:active:hover::slider::handle {
 	background-position: center;
 }
 
-Slider:active::slider::track {
+Slider:active::slider::bar {
 	background: #DAEFFE;
 }
 
@@ -212,11 +217,11 @@ Slider::slider::handle:focus {
 	transition: box-shadow 0.3s ease-in-out;
 }
 
-Slider:disabled::progress {
+Slider:disabled::rangeBar {
 	background: #CBD3DC;
 }
 
-Slider:disabled::track {
+Slider:disabled::bar {
 	background: #DFE5EB;
 }
 

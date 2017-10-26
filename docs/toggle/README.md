@@ -8,15 +8,15 @@ A toggle switch is used as an on/off control
 
 #### Props
 
-| name     | type   | defaultValue | isRequired | description                              |
-| -------- | ------ | ------------ | :--------- | ---------------------------------------- |
-| value    | bool   | false        |            |                                          |
-| onChange | `(event: {value: boolean}): void`	   |              |            | Callback function when user changes the value of the component |
-| required | bool   | false        |            | Whether or not filling the value is required in a form. |
-| name     | string |              |            | The name of the toggle. Behaves like the name attribute of an input element. |
-| disabled | bool   | false        |            | If `true`, the toggle will not be interactive |
-| label    | string |              |            | Text to display in accessibility mode    |
-| error    | bool   | false        |            | Sets the `:error` CSS state on the `<toggle/>` |
+| name     | type                              | defaultValue | isRequired | description                              |
+| -------- | --------------------------------- | ------------ | :--------- | ---------------------------------------- |
+| value    | bool                              | false        |            |                                          |
+| onChange | `(event: {value: boolean}): void` |              |            | Callback function when user changes the value of the component |
+| required | bool                              | false        |            | Whether or not filling the value is required in a form. |
+| name     | string                            |              |            | The name of the toggle. Behaves like the name attribute of an input element. |
+| disabled | bool                              | false        |            | If `true`, the toggle will not be interactive |
+| label    | string                            |              |            | Text to display in accessibility mode    |
+| error    | bool                              | false        |            | Sets the `:error` CSS state on the `<toggle/>` |
 
 #### Accepted Children
 
@@ -87,6 +87,7 @@ Toggle:checked::switch {
 | ------------------------------ | ---------------------------------------- |
 | :error                         | Style the component on error, i.e. when the `error` prop is true |
 | :checked                       | Style the toggle element in checked state |
+| :rtl                           | Style the component in RTL mode          |
 | :hover, :focus, :disabled, etc | Standard CSS state                       |
 
 
