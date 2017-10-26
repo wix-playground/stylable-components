@@ -13,7 +13,7 @@
         textColor,
         checkedColor,
         borderColorDisabled,
-        treeFontStyle;
+        fontStyle;
 }
 
 :vars {
@@ -25,7 +25,8 @@
 
 TreeView {
     background: white;
-    font: value(treeFontStyle);
+    font: value(fontStyle);
+    font-size: 14px;
     color: value(textColor);
 }
 

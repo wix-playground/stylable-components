@@ -1,8 +1,13 @@
 @namespace "wixTheme";
 
 :import {
-    -st-from: "./components/number-input.st.css";
-    -st-theme: true;
+	-st-from: "./typography.st.css";
+	-st-theme: true;
+}
+
+:import {
+	-st-from: "./components/number-input.st.css";
+	-st-theme: true;
 }
 
 :import {
@@ -111,13 +116,8 @@
 }
 
 :import {
-    -st-from: "../../components/checkbox/checkbox.st.css";
-    -st-default: CheckBox;
-}
-
-:import {
-    -st-from: "../../components/slider/slider.st.css";
-    -st-default: Slider;
+	-st-from: "../../components/slider/slider.st.css";
+	-st-default: Slider;
 }
 
 
