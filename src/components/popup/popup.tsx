@@ -37,7 +37,7 @@ export class Popup extends React.Component<PopupCompProps> {
     };
 
     private portal: Portal | null;
-    private isOutOfBounds = false;
+    private isExitingBounds = false;
 
     public render() {
         if (this.props.anchor && this.props.open) {
@@ -62,10 +62,10 @@ export class Popup extends React.Component<PopupCompProps> {
     }
 
     public componentDidUpdate() {
-        if (this.isOutOfBounds) {
+        if (this.isExitingBounds) {
             this.props.onExitBounds!();
         }
-        this.isOutOfBounds = false;
+        this.isExitingBounds = false;
     }
 
     public getPortal(): Portal | null {
@@ -73,9 +73,10 @@ export class Popup extends React.Component<PopupCompProps> {
     }
 
     private onScroll = (e: Event) => {
-        if (this.props.anchor) {
-            if (isPoint(this.props.anchor)) {
-                if (isOutOfBounds(this.props.anchor.y, this.props.anchor.x, 0, 0)) {
+        if (this.props.anchor && this.props.open) {
+            if (e.target === document || isPoint(this.props.anchor)) {
+                const rect = this.getPortalRect();
+                if (rect && isFullyContainedWithinWindow(rect.top, rect.left, rect.height, rect.width)) {
                     this.forceUpdate();
                 }
             } else if ((e.target as Node).contains(this.props.anchor)) {
@@ -122,11 +123,15 @@ export class Popup extends React.Component<PopupCompProps> {
                 break;
         }
 
-        const rect = this.portal && this.portal.getPortal && this.portal.getPortal()!.getBoundingClientRect();
+        const rect = this.getPortalRect();
         if (rect) {
-            this.isOutOfBounds = isOutOfBounds(newStyle.top, newStyle.left, rect.height, rect.width) ? true : false;
+            this.isExitingBounds = isFullyContainedWithinWindow(newStyle.top, newStyle.left, rect.height, rect.width);
         }
         return newStyle;
+    }
+
+    private getPortalRect(): ClientRect | null {
+        return this.portal && this.portal.getPortal && this.portal.getPortal()!.getBoundingClientRect();
     }
 }
 
@@ -155,7 +160,7 @@ function isPoint(elem: Element | Point): elem is Point {
     return elem.hasOwnProperty('x') && elem.hasOwnProperty('y');
 }
 
-function isOutOfBounds(top: number, left: number, height: number, width: number): boolean {
+function isFullyContainedWithinWindow(top: number, left: number, height: number, width: number): boolean {
     return top < 0 ||
         left < 0 ||
         top + height - window.pageYOffset > window.innerHeight ||
