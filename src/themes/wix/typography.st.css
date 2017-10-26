@@ -9,7 +9,7 @@
                 buttonColorDisabled,
                 buttonColorMainActive;
 }
-h2, h3, h4, h5, h6, p, label, a, th, td, div, span {
+h2, h3, h4, h5, h6, p, label, a, th, td {
     font: value(fontStyle);
     color: value(textColor);
 }
@@ -32,7 +32,7 @@ h4 {
     font-size: 10px;
     line-height: 18px;
 }
-p, label, a, th, td, div, span {
+p, label, a, th, td {
     font-size: 16px;
     line-height: 24px;
 }
