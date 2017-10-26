@@ -66,6 +66,7 @@ export class ComponentsDemo extends React.Component<{}, State>{
 | ------------------------------ | --------------------------- |
 | :error            | Style the component on error, i.e. when the `error` prop is true. |
 | :checked          | Style the toggle element in checked state. |
+| :rtl              | Style the component in RTL mode.          |
 | :hover, :focus, :disabled, etc | Standard CSS states.           |
 
 ### <a id="style-examples"></a>Style Code Examples

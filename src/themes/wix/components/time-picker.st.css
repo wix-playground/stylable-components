@@ -55,7 +55,7 @@ TimePicker::input {
 }
 
 
-TimePicker::input::placeholder {
+TimePicker::placeholder {
   font: value(fontStyle);
   color: value(placeholderColor);
 }
