@@ -1,11 +1,13 @@
 import * as React from 'react';
 import {stylable} from 'wix-react-tools';
-import {ChangeEvent, ContextProvider, Slider, TooltipPosition} from '../../src';
+import {ChangeEvent, ContextProvider, Slider, SliderValue, TooltipPosition} from '../../src';
 import style from './slider-demo.st.css';
 
 export interface SliderDemoState {
-    value: number;
+    value: SliderValue;
+    multiValue: SliderValue;
     rawValue: string;
+    rawMultiValue: string;
     tooltipPosition?: TooltipPosition;
 }
 
@@ -16,7 +18,9 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
 
         this.state = {
             value: 50,
-            rawValue: '50'
+            multiValue: [20, 80],
+            rawValue: '50',
+            rawMultiValue: '[80, 80]'
         };
     }
 
@@ -27,6 +31,12 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
         return (
             <table cellSpacing="24px">
                 <thead>
+                    <tr>
+                        <td>value: {this.state.value}</td>
+                    </tr>
+                    <tr>
+                        <td>rawValue: {this.state.rawValue}</td>
+                    </tr>
                     <tr>
                         <th className="table-head-cell">Default Slider</th>
                         <th className="table-head-cell">Disabled Slider</th>
@@ -252,15 +262,105 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                         </td>
                     </tr>
                 </tbody>
+                <thead>
+                <tr>
+                    <td>multiValue: {
+                        Array.isArray(this.state.multiValue) ? this.state.multiValue.join(', ') : this.state.multiValue
+                    }</td>
+                </tr>
+                <tr>
+                    <td>rawMultiValue: {this.state.rawMultiValue}</td>
+                </tr>
+                <tr>
+                    <th className="table-head-cell">Default Range Slider</th>
+                    <th className="table-head-cell">Disabled Range Slider</th>
+                    <th className="table-head-cell">Range Slider with step and marks</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>
+                        <Slider
+                            value={this.state.multiValue}
+                            min={min}
+                            max={max}
+                            onChange={this.onRangeSliderChange}
+                            onInput={this.onRangeSliderInput}
+                        />
+                    </td>
+                    <td>
+                        <Slider
+                            value={this.state.multiValue}
+                            min={min}
+                            max={max}
+                            disabled={true}
+                            onChange={this.onRangeSliderChange}
+                            onInput={this.onRangeSliderInput}
+                        />
+                    </td>
+                    <td>
+                        <Slider
+                            value={this.state.multiValue}
+                            min={min}
+                            max={max}
+                            step={10}
+                            displayStopMarks={true}
+                            onChange={this.onRangeSliderChange}
+                            onInput={this.onRangeSliderInput}
+                        />
+                    </td>
+                </tr>
+                </tbody>
+                <thead>
+                <tr>
+                    <th className="table-head-cell">Range Slider with disableCross</th>
+                    <th className="table-head-cell">Range Slider with tooltip</th>
+                    <th/>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>
+                        <Slider
+                            value={this.state.multiValue}
+                            disableCross
+                            min={min}
+                            max={max}
+                            onChange={this.onRangeSliderChange}
+                            onInput={this.onRangeSliderInput}
+                        />
+                    </td>
+                    <td>
+                        <Slider
+                            value={this.state.multiValue}
+                            min={min}
+                            max={max}
+                            onChange={this.onRangeSliderChange}
+                            onInput={this.onRangeSliderInput}
+                            displayTooltip
+                        />
+                    </td>
+                    <td/>
+                </tr>
+                </tbody>
             </table>
         );
     }
 
-    private onSliderChange = ({value}: ChangeEvent<number>) => {
+    private onSliderChange = ({value}: ChangeEvent<number[]>) => {
         this.setState({
             value,
             rawValue: String(value)
         });
+    }
+
+    private onRangeSliderChange = ({value}: ChangeEvent<number[]>) => {
+        this.setState({
+            multiValue: value
+        });
+    }
+    private onRangeSliderInput = ({value}: ChangeEvent<string>) => {
+        this.setState({rawMultiValue: value});
     }
 
     private onSliderInput = ({value}: ChangeEvent<string>) => {
