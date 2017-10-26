@@ -38,10 +38,10 @@ const samples = [
         positions: ['top', 'left', 'right', 'bottom']
     },
     {
-        title: 'Show after 1s and hide after 2s',
+        title: 'Show after 200ms and hide after 300ms',
         props: {
-            showDelay: 1000,
-            hideDelay: 2000,
+            showDelay: 200,
+            hideDelay: 300,
             children: longText
         },
         positions: ['top', 'left', 'right', 'bottom']

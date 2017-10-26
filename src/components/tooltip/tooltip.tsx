@@ -1,6 +1,8 @@
+import * as debounce from 'debounce';
 import * as React from 'react';
 import {stylable} from 'wix-react-tools';
 
+import {GlobalEvent} from '../global-event';
 import {Portal} from '../portal';
 import styles from './tooltip.st.css';
 
@@ -32,28 +34,22 @@ class StyledTooltip extends React.Component<TooltipProps, TooltipState> {
         showDelay: 0,
         hideDelay: 0
     };
-    public state = {
-        style: undefined,
-        open: false
-    };
+
     private target: HTMLElement | null = null;
     private events: string[] = [];
     private timeout?: number;
+    private onWindowResize = debounce(() => {
+        if (this.state.open) {
+            this.setStyles();
+        }
+    }, 500);
 
-    public componentDidMount() {
-        this.setTarget();
-        this.bindEvents();
-        this.setStyles();
-    }
-    public componentWillUnmount() {
-        window.clearTimeout(this.timeout!);
-        this.unbindEvents();
-    }
-    public componentWillReceiveProps(props: TooltipProps) {
-        this.unbindEvents();
-        this.setTarget();
-        this.bindEvents();
-        this.setStyles();
+    public constructor(props: TooltipProps) {
+        super();
+        this.state = {
+            style: undefined,
+            open: props.open!
+        };
     }
 
     public render() {
@@ -71,6 +67,11 @@ class StyledTooltip extends React.Component<TooltipProps, TooltipState> {
                 style={style}
                 style-state={{open}}
             >
+                <GlobalEvent
+                    resize={this.onWindowResize}
+                    mousedown={this.hide}
+                    touchstart={this.hide}
+                />
                 <div className="tooltip">
                     {children}
                     <svg className="tail" height="5" width="10">
@@ -79,6 +80,23 @@ class StyledTooltip extends React.Component<TooltipProps, TooltipState> {
                 </div>
             </div>
         );
+    }
+
+    public componentDidMount() {
+        this.setTarget();
+        this.bindEvents();
+        this.setStyles();
+    }
+    public componentWillUnmount() {
+        window.clearTimeout(this.timeout!);
+        this.unbindEvents();
+        this.onWindowResize.clear();
+    }
+    public componentWillReceiveProps(props: TooltipProps) {
+        this.unbindEvents();
+        this.setTarget();
+        this.bindEvents();
+        this.setStyles();
     }
 
     private setTarget() {
@@ -109,7 +127,7 @@ class StyledTooltip extends React.Component<TooltipProps, TooltipState> {
         if (!this.target) {
             return;
         }
-        const {position, open} = this.props;
+        const {position} = this.props;
         const rect = this.target!.getBoundingClientRect();
         const top = rect.top + window.scrollY;
         const left = rect.left + window.scrollX;
@@ -119,7 +137,7 @@ class StyledTooltip extends React.Component<TooltipProps, TooltipState> {
             marginLeft: (position === 'top' || position === 'bottom') ? (rect.width / 2) : undefined,
             marginTop: (position === 'left' || position === 'right') ? (rect.height / 2) : undefined
         };
-        this.setState({style, open: open!});
+        this.setState({style});
     }
 
     private toggle = (e: Event) => {
@@ -144,6 +162,9 @@ class StyledTooltip extends React.Component<TooltipProps, TooltipState> {
             next();
         }
     }
+
+    private hide = () => this.setState({open: false});
+
 }
 
 export class Tooltip extends React.Component<TooltipProps> {
