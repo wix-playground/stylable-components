@@ -1,7 +1,39 @@
 # DatePicker Components Specification
 
+* [Description](#description)
+* [Elements](#elements)
+* [Properties](#properties)
 * [Accessibility](#accessibility)
 * [Behavior](#behavior)
+
+## Description
+A date picker allows users to select dates by using an input or a popup calendar.
+
+## Elements
+* Input Component with Icon Component
+* Calendar View for selecting dates
+
+## Properties
+
+DatePicker extends formInputProps
+
+| Name | Type | Default| Required | Description |
+| --- | --- | --- | --- | --- |
+| openOnFocus | boolean | false | no | Whether the Calendar View is opened when the input component gains focus. |
+| inputPlaceholder | string | empty string | no |Placeholder text for the input |
+| firstDayOfWeek | number | Defaults to 0 (Sunday), accepts 0 - 6 | no | define starting day of the week |
+| minDate | ISO 8601 date | empty date | no | Used to set the minimal date shown in the Calendar View and accepted in the input |
+| maxDate | ISO 8601 date | empty date | no | Used to set the maximum date shown in the Calendar View and accepted in the input |
+| inputFormat | string | browser implementation of javascript date object constructor | no | The format used to parse the input | 
+| disabledDates | Array [ISO 8601 date] | empty array | | List of ISO 8601 dates that are disabled (cannot be selected) in the Calendar View |
+| disableWeekends | boolean | false | no | Weekends cannot be selected in the Calendar View |
+| weekendDays | number | 1 | no |Defaults to [0,6], list of days set as weekend |
+| locale | string | user agent locale | no | Locale
+| dayLabels | Array[String] | english weekdays | no | Default in English, user may enter different labels (maybe can be done with code, in which case we change implementation - R&D)|
+| monthLabels | Array[String] | english month names| no | Default in English, user may enter different labels (maybe can be done with code, in which case we change implementation- R&D)|
+| showPrevNextDays | boolean | true | no | Defaults to false, in the calendar month show previous and next days. |
+
+
 
 ## Accessibility
 

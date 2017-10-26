@@ -15,8 +15,6 @@ The dropdown is part of Selection List family of components and incorporates pop
 
 ## Elements
 
-### Dropdown
-
 ![Image of dropdown elements](./assets/dropdowns/DropdownElements.png)
 
 ## Properties
@@ -36,10 +34,9 @@ Dropdown Properties
 | autoFocus | boolean | false | no | see HTML specs |
 | open | boolean | false | no | Whether the Popup is shown |
 | openOnFocus | boolean | false | no | Whether the Popup opens automatically when focus is gained |
-| onChange | (id: string) => void | NOP | no | Triggered when an item is selected in the list |
+| onChange | (event: {value: string}): void | NOP | no | Triggered when an item is selected in the list |
 | hideSelected | boolean | false | no | Hides selected values so that they do not appear in the selection list |
 | children | any | null | no | Children to be rendered in the list, see SelectionList for further details |
-| toggleIcon | React.SFC | default toggle | no | User can replace the default SVG with another one |
 | value | string | null | no | id of the selected item |
 
 
@@ -51,7 +48,7 @@ See [SelectionList](../selectionlist/selectionlist.md) for further styles.
 | -- | -- |
 | input | The dropdown input container |
 | toggle | The toggle used in the input container |
-
+| toggleIcon | URL for the icon |
 ### States
 
 | Name | Description |
