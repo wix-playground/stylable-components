@@ -22,7 +22,7 @@ class Sample extends React.Component {
         const id = 'id' + Math.random().toString().slice(2);
         return (
             <div>
-                <div data-automation-id="TEST_ANCHOR" data-tooltip-for={id}/>
+                <div data-automation-id="TEST_ANCHOR" data-tooltip-for={id} children="I am anchor"/>
                 <Tooltip id={id} children="I am a tooltip!" open {...this.props}/>
             </div>
         );
