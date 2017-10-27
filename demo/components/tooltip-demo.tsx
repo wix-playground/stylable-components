@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {stylable} from 'wix-react-tools';
-import {Button, Position, Tooltip} from '../../src';
+import {Position, Tooltip} from '../../src';
 
 import styles from './tooltip-demo.st.css';
 
@@ -69,8 +69,8 @@ export class TooltipDemo extends React.Component {
                     <div key={i}>
                         <h4>{sample.title}</h4>
                         {sample.positions.map((position: Position, j) =>
-                            <div className="positionButton" key={j}>
-                                <Button data-tooltip-for={'id' + i + j} children={position}/>
+                            <div className="anchorWrap" key={j}>
+                                <div className="anchor" data-tooltip-for={'id' + i + j} children={position}/>
                                 <Tooltip id={'id' + i + j} position={position} {...sample.props}/>
                             </div>
                         )}
