@@ -4,6 +4,23 @@ import {Position, Tooltip, TooltipProps} from '../../src';
 import {TooltipDriver} from '../../test-kit';
 import {sleep} from '../utils';
 
+function toFixedNumber(num: number): number {
+    return Number(num.toFixed(0));
+}
+
+function getRect(elem: Element) {
+    const rect = elem.getBoundingClientRect();
+    const styles = window.getComputedStyle(elem);
+    return {
+        top: toFixedNumber(rect.top),
+        left: toFixedNumber(rect.left),
+        width: toFixedNumber(rect.width),
+        height: toFixedNumber(rect.height),
+        marginLeft: Number(styles.marginLeft!.slice(0, -2)),
+        marginTop: Number(styles.marginTop!.slice(0, -2))
+    };
+}
+
 class Sample extends React.Component {
     public render() {
         const id = 'id' + Math.random().toString().slice(2);
@@ -25,20 +42,13 @@ class SampleDriver extends DriverBase {
         return this.select('TEST_ANCHOR');
     }
     public get tooltipBounds() {
-        return this.tooltip.getBoundingClientRect();
+        return getRect(this.tooltip);
     }
     public get anchorBounds() {
-        return this.anchor.getBoundingClientRect();
+        return getRect(this.anchor);
     }
     public dispatchOnAnchor(type: string) {
         this.anchor.dispatchEvent(new Event(type));
-    }
-    public get tooltipMargins() {
-        const styles = window.getComputedStyle(this.tooltip);
-        return {
-            left: Number(styles.marginLeft!.slice(0, -2)),
-            top: Number(styles.marginTop!.slice(0, -2))
-        };
     }
 }
 
@@ -58,14 +68,14 @@ function testPosition(clientRenderer: ClientRenderer, position: Position, expect
             it('should be on the top', () => {
                 const tooltipBounds = driver.tooltipBounds;
                 const anchorBounds = driver.anchorBounds;
-                expect(anchorBounds.top).to.equal(tooltipBounds.top + tooltipBounds.height - driver.tooltipMargins.top);
+                expect(anchorBounds.top).to.equal(tooltipBounds.top + tooltipBounds.height - tooltipBounds.marginTop);
             });
         }
         if (expectations.positionBottom) {
             it('should be on the bottom', () => {
                 const tooltipBounds = driver.tooltipBounds;
                 const anchorBounds = driver.anchorBounds;
-                expect(anchorBounds.top + anchorBounds.height).to.equal(tooltipBounds.top - driver.tooltipMargins.top);
+                expect(anchorBounds.top + anchorBounds.height).to.equal(tooltipBounds.top - tooltipBounds.marginTop);
             });
         }
         if (expectations.positionLeft) {
@@ -73,7 +83,7 @@ function testPosition(clientRenderer: ClientRenderer, position: Position, expect
                 const tooltipBounds = driver.tooltipBounds;
                 const anchorBounds = driver.anchorBounds;
                 expect(anchorBounds.left)
-                    .to.equal(tooltipBounds.left + tooltipBounds.width - driver.tooltipMargins.left);
+                    .to.equal(tooltipBounds.left + tooltipBounds.width - tooltipBounds.marginLeft);
             });
         }
         if (expectations.centeredHorizontaly) {
@@ -97,7 +107,7 @@ function testPosition(clientRenderer: ClientRenderer, position: Position, expect
                 const tooltipBounds = driver.tooltipBounds;
                 const anchorBounds = driver.anchorBounds;
                 expect(anchorBounds.left + anchorBounds.width)
-                    .to.equal(tooltipBounds.left - driver.tooltipMargins.left);
+                    .to.equal(tooltipBounds.left - tooltipBounds.marginLeft);
             });
         }
         if (expectations.aligmnentLeft) {
@@ -131,7 +141,7 @@ function testPosition(clientRenderer: ClientRenderer, position: Position, expect
     });
 }
 
-describe('<Tooltip/>', () => {
+describe.only('<Tooltip/>', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
 
