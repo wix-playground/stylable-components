@@ -168,7 +168,7 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                         </td>
                         <td className="vertical-demo">
                             <Slider
-                                    data-automation-id="SLIDER_Y_REVERSE"
+                                data-automation-id="SLIDER_Y_REVERSE"
                                 axis={'y-reverse'}
                                 value={this.state.value}
                                 min={min}
