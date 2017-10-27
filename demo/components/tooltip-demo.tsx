@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {stylable} from 'wix-react-tools';
-import {Button, Tooltip} from '../../src';
+import {Button, Position, Tooltip} from '../../src';
 
 import styles from './tooltip-demo.st.css';
 
@@ -27,6 +27,18 @@ const samples = [
             children: 'I am tooltip!'
         },
         positions: ['top', 'left', 'right', 'bottom']
+    },
+    {
+        title: 'Diagonal positions',
+        props: {
+            showTrigger: 'click',
+            hideTrigger: 'click',
+            children: 'I am tooltip!'
+        },
+        positions: [
+            'topLeft', 'topRight', 'bottomLeft', 'bottomRight',
+            'leftTop', 'leftBottom', 'rightTop', 'rightBottom'
+        ]
     },
     {
         title: 'Click to show, click to hide',
@@ -56,7 +68,7 @@ export class TooltipDemo extends React.Component {
                 {samples.map((sample, i) =>
                     <div key={i}>
                         <h4>{sample.title}</h4>
-                        {sample.positions.map((position: any, j) =>
+                        {sample.positions.map((position: Position, j) =>
                             <div className="positionButton" key={j}>
                                 <Button data-tooltip-for={'id' + i + j} children={position}/>
                                 <Tooltip id={'id' + i + j} position={position} {...sample.props}/>

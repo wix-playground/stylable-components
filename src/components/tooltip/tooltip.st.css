@@ -10,6 +10,7 @@
 :vars {
     tooltipOffset: 5px;
     tooltipColor: value(BK1);
+    diagonalTailOffset: 10px;
 }
 
 .root {
@@ -31,6 +32,7 @@
     font: value(fontSize) value(fontFamily);
     z-index: 1;
     max-width: 300px;
+    margin-top: -1px;
 }
 
 .tail {
@@ -79,6 +81,94 @@
 .root.right .tail {
     right: 100%;
     top: 50%;
+    transform: translateY(100%) rotate(90deg);
+    transform-origin: 100% 0;
+}
+
+/* TOP-LEFT */
+.root.topLeft {
+    transform: translate(0, -100%);
+    margin-top: -value(tooltipOffset);
+}
+.root.topLeft .tail {
+    top: 100%;
+    left: value(diagonalTailOffset);
+}
+
+/* TOP-LEFT */
+.root.topRight {
+    transform: translate(-100%, -100%);
+    margin-top: -value(tooltipOffset);
+}
+.root.topRight .tail {
+    top: 100%;
+    right: value(diagonalTailOffset);
+}
+
+/* BOTTOM-LEFT */
+.root.bottomLeft {
+    margin-top: value(tooltipOffset);
+}
+.root.bottomLeft .tail {
+    bottom: 100%;
+    left: value(diagonalTailOffset);
+    transform: translateX(-50%) rotate(180deg);
+}
+
+/* BOTTOM-LEFT */
+.root.bottomRight {
+    transform: translate(-100%, 0);
+    margin-top: value(tooltipOffset);
+}
+.root.bottomRight .tail {
+    bottom: 100%;
+    right: value(diagonalTailOffset);
+    transform: translateX(-50%) rotate(180deg);
+}
+
+/* LEFT-TOP */
+.root.leftTop {
+    transform: translate(-100%, 0);
+    margin-left: -value(tooltipOffset);
+}
+.root.leftTop .tail {
+    top: value(diagonalTailOffset);
+    left: 100%;
+    transform: translateY(100%) rotate(-90deg);
+    transform-origin: 0 0;
+}
+
+/* LEFT-BOTTOM */
+.root.leftBottom {
+    transform: translate(-100%, -100%);
+    margin-left: -value(tooltipOffset);
+}
+.root.leftBottom .tail {
+    bottom: value(diagonalTailOffset);
+    left: 100%;
+    transform: translateY(100%) rotate(-90deg);
+    transform-origin: 0 0;
+}
+
+/* RIGHT-TOP */
+.root.rightTop {
+    margin-left: value(tooltipOffset);
+}
+.root.rightTop .tail {
+    top: value(diagonalTailOffset);
+    right: 100%;
+    transform: translateY(100%) rotate(90deg);
+    transform-origin: 100% 0;
+}
+
+/* RIGHT-BOTTOM */
+.root.rightBottom {
+    margin-left: value(tooltipOffset);
+    transform: translate(0, -100%);
+}
+.root.rightBottom .tail {
+    right: 100%;
+    bottom: value(diagonalTailOffset);
     transform: translateY(100%) rotate(90deg);
     transform-origin: 100% 0;
 }

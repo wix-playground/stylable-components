@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {ClientRenderer, DriverBase, expect} from 'test-drive-react';
-import {Tooltip, TooltipProps} from '../../src';
+import {Position, Tooltip, TooltipProps} from '../../src';
 import {TooltipDriver} from '../../test-kit';
 import {sleep} from '../utils';
 
@@ -47,85 +47,106 @@ function renderWithProps(clientRenderer: ClientRenderer, props?: Partial<Tooltip
     return driver;
 }
 
+function testPosition(clientRenderer: ClientRenderer, position: Position, expectations: any) {
+    describe(`render with ${position} position`, () => {
+        let driver: any;
+        beforeEach(() => {
+            driver = renderWithProps(clientRenderer, {position});
+        });
+
+        if (expectations.positionTop) {
+            it('should be on the top', () => {
+                const tooltipBounds = driver.tooltipBounds;
+                const anchorBounds = driver.anchorBounds;
+                expect(anchorBounds.top).to.equal(tooltipBounds.top + tooltipBounds.height - driver.tooltipMargins.top);
+            });
+        }
+        if (expectations.positionBottom) {
+            it('should be on the bottom', () => {
+                const tooltipBounds = driver.tooltipBounds;
+                const anchorBounds = driver.anchorBounds;
+                expect(anchorBounds.top + anchorBounds.height).to.equal(tooltipBounds.top - driver.tooltipMargins.top);
+            });
+        }
+        if (expectations.positionLeft) {
+            it('should be on the left', () => {
+                const tooltipBounds = driver.tooltipBounds;
+                const anchorBounds = driver.anchorBounds;
+                expect(anchorBounds.left)
+                    .to.equal(tooltipBounds.left + tooltipBounds.width - driver.tooltipMargins.left);
+            });
+        }
+        if (expectations.centeredHorizontaly) {
+            it('should be centerd horizontaly', () => {
+                const tooltipBounds = driver.tooltipBounds;
+                const anchorBounds = driver.anchorBounds;
+                expect(anchorBounds.left + anchorBounds.width / 2)
+                    .to.equal(tooltipBounds.left + tooltipBounds.width / 2);
+            });
+        }
+        if (expectations.centeredVerticaly) {
+            it('should be centerd verticaly', () => {
+                const tooltipBounds = driver.tooltipBounds;
+                const anchorBounds = driver.anchorBounds;
+                expect(anchorBounds.top + anchorBounds.height / 2)
+                    .to.equal(tooltipBounds.top + tooltipBounds.height / 2);
+            });
+        }
+        if (expectations.positionRight) {
+            it('should be on the right', () => {
+                const tooltipBounds = driver.tooltipBounds;
+                const anchorBounds = driver.anchorBounds;
+                expect(anchorBounds.left + anchorBounds.width)
+                    .to.equal(tooltipBounds.left - driver.tooltipMargins.left);
+            });
+        }
+        if (expectations.aligmnentLeft) {
+            it('should be alignet to left', () => {
+                const tooltipBounds = driver.tooltipBounds;
+                const anchorBounds = driver.anchorBounds;
+                expect(anchorBounds.left).to.equal(tooltipBounds.left);
+            });
+        }
+        if (expectations.aligmnentRight) {
+            it('should be alignet to right', () => {
+                const tooltipBounds = driver.tooltipBounds;
+                const anchorBounds = driver.anchorBounds;
+                expect(anchorBounds.left + anchorBounds.width).to.equal(tooltipBounds.left + tooltipBounds.width);
+            });
+        }
+        if (expectations.aligmnentTop) {
+            it('should be alignet to top', () => {
+                const tooltipBounds = driver.tooltipBounds;
+                const anchorBounds = driver.anchorBounds;
+                expect(anchorBounds.top).to.equal(tooltipBounds.top);
+            });
+        }
+        if (expectations.aligmnentBottom) {
+            it('should be alignet to bottom', () => {
+                const tooltipBounds = driver.tooltipBounds;
+                const anchorBounds = driver.anchorBounds;
+                expect(anchorBounds.top + anchorBounds.height).to.equal(tooltipBounds.top + tooltipBounds.height);
+            });
+        }
+    });
+}
+
 describe('<Tooltip/>', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
 
-    describe('render without props', () => {
-        let driver: any;
-        beforeEach(() => {
-            driver = renderWithProps(clientRenderer);
-        });
-
-        it('should be alignet to top', () => {
-            const tooltipBounds = driver.tooltipBounds;
-            const anchorBounds = driver.anchorBounds;
-            expect(anchorBounds.top).to.equal(tooltipBounds.top + tooltipBounds.height - driver.tooltipMargins.top);
-        });
-
-        it('should be centerd horizontaly', () => {
-            const tooltipBounds = driver.tooltipBounds;
-            const anchorBounds = driver.anchorBounds;
-            expect(anchorBounds.left + anchorBounds.width / 2).to.equal(tooltipBounds.left + tooltipBounds.width / 2);
-        });
-    });
-
-    describe('render with bottom position', () => {
-        let driver: any;
-        beforeEach(() => {
-            driver = renderWithProps(clientRenderer, {position: 'bottom'});
-        });
-
-        it('should be alignet to top', () => {
-            const tooltipBounds = driver.tooltipBounds;
-            const anchorBounds = driver.anchorBounds;
-            expect(anchorBounds.top + anchorBounds.height).to.equal(tooltipBounds.top - driver.tooltipMargins.top);
-        });
-
-        it('should be centerd horizontaly', () => {
-            const tooltipBounds = driver.tooltipBounds;
-            const anchorBounds = driver.anchorBounds;
-            expect(anchorBounds.left + anchorBounds.width / 2).to.equal(tooltipBounds.left + tooltipBounds.width / 2);
-        });
-    });
-
-    describe('render with left position', () => {
-        let driver: any;
-        beforeEach(() => {
-            driver = renderWithProps(clientRenderer, {position: 'left'});
-        });
-
-        it('should be alignet to left', () => {
-            const tooltipBounds = driver.tooltipBounds;
-            const anchorBounds = driver.anchorBounds;
-            expect(anchorBounds.left).to.equal(tooltipBounds.left + tooltipBounds.width - driver.tooltipMargins.left);
-        });
-
-        it('should be centerd verticaly', () => {
-            const tooltipBounds = driver.tooltipBounds;
-            const anchorBounds = driver.anchorBounds;
-            expect(anchorBounds.top + anchorBounds.height / 2).to.equal(tooltipBounds.top + tooltipBounds.height / 2);
-        });
-    });
-
-    describe('render with right position', () => {
-        let driver: any;
-        beforeEach(() => {
-            driver = renderWithProps(clientRenderer, {position: 'right'});
-        });
-
-        it('should be alignet to left', () => {
-            const tooltipBounds = driver.tooltipBounds;
-            const anchorBounds = driver.anchorBounds;
-            expect(anchorBounds.left + anchorBounds.width).to.equal(tooltipBounds.left - driver.tooltipMargins.left);
-        });
-
-        it('should be centerd verticaly', () => {
-            const tooltipBounds = driver.tooltipBounds;
-            const anchorBounds = driver.anchorBounds;
-            expect(anchorBounds.top + anchorBounds.height / 2).to.equal(tooltipBounds.top + tooltipBounds.height / 2);
-        });
-    });
+    testPosition(clientRenderer, 'top', {positionTop: true, centeredHorizontaly: true});
+    testPosition(clientRenderer, 'bottom', {positionBottom: true, centeredHorizontaly: true});
+    testPosition(clientRenderer, 'left', {positionLeft: true, centeredVerticaly: true});
+    testPosition(clientRenderer, 'right', {positionRight: true, centeredVerticaly: true});
+    testPosition(clientRenderer, 'topLeft', {positionTop: true, aligmnentLeft: true});
+    testPosition(clientRenderer, 'topRight', {positionTop: true, aligmnentRight: true});
+    testPosition(clientRenderer, 'bottomLeft', {positionBottom: true, aligmnentLeft: true});
+    testPosition(clientRenderer, 'bottomRight', {positionBottom: true, aligmnentRight: true});
+    testPosition(clientRenderer, 'leftTop', {positionLeft: true, aligmnentTop: true});
+    testPosition(clientRenderer, 'leftBottom', {positionLeft: true, aligmnentBottom: true});
+    testPosition(clientRenderer, 'rightTop', {positionRight: true, aligmnentTop: true});
+    testPosition(clientRenderer, 'rightBottom', {positionRight: true, aligmnentBottom: true});
 
     describe('render with showTrigger and hideTrigger (click)', () => {
         let driver: any;

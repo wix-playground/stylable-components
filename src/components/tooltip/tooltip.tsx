@@ -6,7 +6,9 @@ import {GlobalEvent} from '../global-event';
 import {Portal} from '../portal';
 import styles from './tooltip.st.css';
 
-export type Position = 'top' | 'left' | 'right' | 'bottom';
+export type Position = 'top' | 'left' | 'right' | 'bottom' |
+    'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight' |
+    'leftTop' | 'leftBottom' | 'rightTop' | 'rightBottom';
 
 export interface TooltipProps {
     children?: React.ReactNode;
@@ -22,6 +24,10 @@ export interface TooltipProps {
 export interface TooltipState {
     style?: React.CSSProperties;
     open: boolean;
+}
+
+function hasPosition(position: Position, ...candidates: string[]): boolean {
+    return candidates.some(item => item === position);
 }
 
 @stylable(styles)
@@ -133,14 +139,21 @@ class StyledTooltip extends React.Component<TooltipProps, TooltipState> {
         }
         const {position} = this.props;
         const rect = this.target!.getBoundingClientRect();
-        const top = rect.top + window.scrollY;
-        const left = rect.left + window.scrollX;
-        const style = {
-            top: position === 'bottom' ? (top + rect.height) : top,
-            left: position === 'right' ? (left + rect.width) : left,
-            marginLeft: (position === 'top' || position === 'bottom') ? (rect.width / 2) : undefined,
-            marginTop: (position === 'left' || position === 'right') ? (rect.height / 2) : undefined
-        };
+        let top = rect.top + window.scrollY;
+        let left = rect.left + window.scrollX;
+        if (hasPosition(position!, 'bottom', 'leftBottom', 'rightBottom')) {
+            top += rect.height;
+        }
+        if (hasPosition(position!, 'left', 'right')) {
+            top += rect.height / 2;
+        }
+        if (hasPosition(position!, 'right', 'topRight', 'bottomRight', 'rightTop', 'rightBottom')) {
+            left += rect.width;
+        }
+        if (hasPosition(position!, 'top', 'bottom')) {
+            left += rect.width / 2;
+        }
+        const style = {top, left};
         this.setState({style});
     }
 
