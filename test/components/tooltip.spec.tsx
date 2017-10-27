@@ -4,18 +4,14 @@ import {Position, Tooltip, TooltipProps} from '../../src';
 import {TooltipDriver} from '../../test-kit';
 import {sleep} from '../utils';
 
-function toFixedNumber(num: number): number {
-    return Number(num.toFixed(0));
-}
-
 function getRect(elem: Element) {
     const rect = elem.getBoundingClientRect();
     const styles = window.getComputedStyle(elem);
     return {
-        top: toFixedNumber(rect.top),
-        left: toFixedNumber(rect.left),
-        width: toFixedNumber(rect.width),
-        height: toFixedNumber(rect.height),
+        top: Math.round(rect.top),
+        left: Math.round(rect.left),
+        width: Math.round(rect.width),
+        height: Math.round(rect.height),
         marginLeft: Number(styles.marginLeft!.slice(0, -2)),
         marginTop: Number(styles.marginTop!.slice(0, -2))
     };
@@ -141,7 +137,7 @@ function testPosition(clientRenderer: ClientRenderer, position: Position, expect
     });
 }
 
-describe('<Tooltip/>', () => {
+describe.only('<Tooltip/>', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
 
