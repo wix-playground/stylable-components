@@ -20,3 +20,4 @@ export * from './stepper';
 export * from './time-picker';
 export * from './toggle';
 export * from './tree-view';
+export * from './tooltip';
