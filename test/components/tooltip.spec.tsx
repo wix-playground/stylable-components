@@ -141,7 +141,7 @@ function testPosition(clientRenderer: ClientRenderer, position: Position, expect
     });
 }
 
-describe.only('<Tooltip/>', () => {
+describe('<Tooltip/>', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
 
