@@ -42,52 +42,61 @@ describe('<Image />', () => {
     });
 
     it('shows provided src', async () => {
-        const {driver: image, waitForDom} = clientRenderer.render(
-            <Image src={onePixelBlack} />
+        const onLoad = sinon.spy();
+        const {driver: image} = clientRenderer.render(
+            <Image src={onePixelBlack} onLoad={onLoad} />
         ).withDriver(ImageDriver);
 
-        await waitForDom(() => {
+        await waitFor(() => {
             expect(image.source, 'incorrect image source').to.equal(onePixelBlack);
             expect(image.hasStylableState('loaded'), 'Expected to have "loaded" style state').to.equal(true);
+            expect(onLoad).to.have.been.calledOnce.calledWithMatch({src: onePixelBlack});
         });
     });
 
     it('shows src if provided together with defaultImage', async () => {
-        const {driver: image, waitForDom} = clientRenderer.render(
-            <Image src={onePixelBlack} defaultImage={onePixelBlue}/>
+        const onLoad = sinon.spy();
+        const {driver: image} = clientRenderer.render(
+            <Image src={onePixelBlack} defaultImage={onePixelBlue} onLoad={onLoad}/>
         ).withDriver(ImageDriver);
 
-        await waitForDom(() => {
+        await waitFor(() => {
             expect(image.source, 'incorrect image source').to.equal(onePixelBlack);
             expect(image.hasStylableState('loaded'), 'Expected to have "loaded" style state').to.equal(true);
+            expect(onLoad).to.have.been.calledOnce.calledWithMatch({src: onePixelBlack});
+
         });
     });
 
     it('shows defaultImage if provided without src', async () => {
-        const {driver: image, waitForDom} = clientRenderer.render(
-            <Image defaultImage={onePixelBlack}/>
+        const onLoad = sinon.spy();
+        const {driver: image} = clientRenderer.render(
+            <Image defaultImage={onePixelBlack} onLoad={onLoad}/>
         ).withDriver(ImageDriver);
 
-        await waitForDom(() => {
+        await waitFor(() => {
             expect(image.source, 'incorrect image source').to.equal(onePixelBlack);
             expect(image.hasStylableState('loaded'), 'Expected to have "loaded" style state').to.equal(true);
+            expect(onLoad).to.have.been.calledOnce.calledWithMatch({src: onePixelBlack});
         });
     });
 
     it('shows defaultImage if provided src is an empty string', async () => {
-        const {driver: image, waitForDom} = clientRenderer.render(
-            <Image defaultImage={onePixelBlack} src=""/>
+        const onLoad = sinon.spy();
+        const {driver: image} = clientRenderer.render(
+            <Image defaultImage={onePixelBlack} src="" onLoad={onLoad}/>
         ).withDriver(ImageDriver);
 
-        await waitForDom(() => {
+        await waitFor(() => {
             expect(image.source, 'incorrect image source').to.equal(onePixelBlack);
             expect(image.hasStylableState('loaded'), 'Expected to have "loaded" style state').to.equal(true);
+            expect(onLoad).to.have.been.calledOnce.calledWithMatch({src: onePixelBlack});
         });
     });
 
     it('shows a transparent pixel gif if provided only with errorImage', async () => {
         const {driver: image, waitForDom} = clientRenderer.render(
-            <Image errorImage={onePixelBlack}/>
+            <Image errorImage={onePixelBlack} />
         ).withDriver(ImageDriver);
 
         await waitForDom(() => {
@@ -97,68 +106,84 @@ describe('<Image />', () => {
     });
 
     it('shows errorImage if provided with invalid src', async () => {
-        const {driver: image, waitForDom} = clientRenderer.render(
-            <Image src={brokenSrc} errorImage={onePixelBlack}/>
+        const onError = sinon.spy();
+        const {driver: image} = clientRenderer.render(
+            <Image src={brokenSrc} errorImage={onePixelBlack} onError={onError} />
         ).withDriver(ImageDriver);
 
-        await waitForDom(() => {
+        await waitFor(() => {
             expect(image.source, 'incorrect image source').to.equal(onePixelBlack);
             expect(image.hasStylableState('error'), 'Expected to have "error" style state').to.equal(true);
+            expect(onError).to.have.been.calledOnce.calledWithMatch({src: brokenSrc});
         });
     });
 
     it('shows errorImage if provided with invalid defaultImage', async () => {
-        const {driver: image, waitForDom} = clientRenderer.render(
-            <Image defaultImage={brokenSrc} errorImage={onePixelBlack}/>
+        const onError = sinon.spy();
+        const {driver: image} = clientRenderer.render(
+            <Image defaultImage={brokenSrc} errorImage={onePixelBlack} onError={onError}/>
         ).withDriver(ImageDriver);
 
-        await waitForDom(() => {
+        await waitFor(() => {
             expect(image.source, 'incorrect image source').to.equal(onePixelBlack);
             expect(image.hasStylableState('error'), 'Expected to have "error" style state').to.equal(true);
+            expect(onError).to.have.been.calledOnce.calledWithMatch({src: brokenSrc});
         });
     });
 
     it('shows a transparent pixel gif if provided with invalid src', async () => {
-        const {driver: image, waitForDom} = clientRenderer.render(
-            <Image src={brokenSrc}/>
+        const onError = sinon.spy();
+        const {driver: image} = clientRenderer.render(
+            <Image src={brokenSrc} onError={onError}/>
         ).withDriver(ImageDriver);
 
-        await waitForDom(() => {
+        await waitFor(() => {
             expect(image.source, 'incorrect image source').to.equal(transparentImage);
             expect(image.hasStylableState('error'), 'Expected to have "error" style state').to.equal(true);
+            expect(onError).to.have.been.calledOnce.calledWithMatch({src: brokenSrc});
         });
     });
 
     it('shows a transparent pixel gif if provided with invalid defaultImage', async () => {
-        const {driver: image, waitForDom} = clientRenderer.render(
-            <Image defaultImage={brokenSrc}/>
+        const onError = sinon.spy();
+        const {driver: image} = clientRenderer.render(
+            <Image defaultImage={brokenSrc} onError={onError}/>
         ).withDriver(ImageDriver);
 
-        await waitForDom(() => {
+        await waitFor(() => {
             expect(image.source, 'incorrect image source').to.equal(transparentImage);
             expect(image.hasStylableState('error'), 'Expected to have "error" style state').to.equal(true);
+            expect(onError).to.have.been.calledOnce.calledWithMatch({src: brokenSrc});
         });
     });
 
     it('shows a transparent pixel gif if provided with invalid src and invalid errorImage', async () => {
-        const {driver: image, waitForDom} = clientRenderer.render(
-            <Image src={brokenSrc} errorImage={brokenSrc2}/>
+        const onError = sinon.spy();
+        const {driver: image} = clientRenderer.render(
+            <Image src={brokenSrc} errorImage={brokenSrc2} onError={onError}/>
         ).withDriver(ImageDriver);
 
-        await waitForDom(() => {
+        await waitFor(() => {
             expect(image.source, 'incorrect image source').to.equal(transparentImage);
             expect(image.hasStylableState('error'), 'Expected to have "error" style state').to.equal(true);
+            expect(onError).to.have.been.calledTwice;
+            expect(onError).to.have.been.calledWithMatch({src: brokenSrc});
+            expect(onError).to.have.been.calledWithMatch({src: brokenSrc2});
         });
     });
 
     it('shows a transparent pixel gif if provided with invalid defaultImage and invalid errorImage', async () => {
-        const {driver: image, waitForDom} = clientRenderer.render(
-            <Image defaultImage={brokenSrc} errorImage={brokenSrc2}/>
+        const onError = sinon.spy();
+        const {driver: image} = clientRenderer.render(
+            <Image defaultImage={brokenSrc} errorImage={brokenSrc2} onError={onError}/>
         ).withDriver(ImageDriver);
 
-        await waitForDom(() => {
+        await waitFor(() => {
             expect(image.source, 'incorrect image source').to.equal(transparentImage);
             expect(image.hasStylableState('error'), 'Expected to have "error" style state').to.equal(true);
+            expect(onError).to.have.been.calledTwice;
+            expect(onError).to.have.been.calledWithMatch({src: brokenSrc});
+            expect(onError).to.have.been.calledWithMatch({src: brokenSrc2});
         });
     });
 
@@ -190,42 +215,19 @@ describe('<Image />', () => {
         await waitForDom(() => expect(image.source, 'incorrect image source').to.equal(onePixelBlue));
     });
 
-    it('calls onLoad when image has loaded', async () => {
-        const onLoad = sinon.spy();
-        clientRenderer.render(<Image src={onePixelBlack} onLoad={onLoad} />).withDriver(ImageDriver);
-
-        await waitFor(() => expect(onLoad).to.have.been.calledWithMatch({src: onePixelBlack}));
-    });
-
-    it('calls onError when src fails loading', async () => {
-        const onError = sinon.spy();
-        clientRenderer.render(<Image src={brokenSrc} onError={onError}/>).withDriver(ImageDriver);
-
-        await waitFor(() => expect(onError).to.have.been.calledWithMatch({src: brokenSrc}));
-    });
-
-    it('calls onError when defaultImage fails loading', async () => {
-        const onError = sinon.spy();
-        clientRenderer.render(<Image defaultImage={brokenSrc} onError={onError}/>);
-
-        await waitFor(() => expect(onError).to.have.been.calledWithMatch({src: brokenSrc}));
-    });
-
     it('gets to "loading" state before "loaded" state', async () => {
-        const {driver: image} = clientRenderer.render(
+        const {driver: image, waitForDom} = clientRenderer.render(
             <Image src={onePixelBlue}/>
         ).withDriver(ImageDriver);
 
-        const msg1 = 'Did not get to "loading" state before "loaded"';
-        await waitFor(() => {
-            expect(image.hasStylableState('loading'), msg1).to.equal(true);
-            expect(image.hasStylableState('loaded'), msg1).to.equal(false);
+        await waitForDom(() => {
+            expect(image.hasStylableState('loading'), 'Did not get to "loading" state before "loaded"').to.equal(true);
+            expect(image.hasStylableState('loaded'), 'Did not get to "loading" state before "loaded"').to.equal(false);
         });
 
-        const msg2 = 'Did not get to "loaded" state after "loading"';
-        await waitFor(() => {
-            expect(image.hasStylableState('loading'), msg2).to.equal(false);
-            expect(image.hasStylableState('loaded'), msg2).to.equal(true);
+        await waitForDom(() => {
+            expect(image.hasStylableState('loading'), 'Did not get to "loaded" state after "loading"').to.equal(false);
+            expect(image.hasStylableState('loaded'), 'Did not get to "loaded" state after "loading"').to.equal(true);
         });
     });
 
