@@ -4346,8 +4346,8 @@ stylable-integration@^5.1.9:
     yargs "^9.0.1"
 
 stylable@^4.0.21:
-  version "4.0.21"
-  resolved "https://registry.yarnpkg.com/stylable/-/stylable-4.0.21.tgz#9de71c3b34b01cad91842796e61364681d72a4dc"
+  version "4.0.26"
+  resolved "https://registry.yarnpkg.com/stylable/-/stylable-4.0.26.tgz#593736256e45babb0d9c9d07e73d3186b19d2b8d"
   dependencies:
     css-selector-tokenizer "^0.7.0"
     deindent "^0.1.0"
