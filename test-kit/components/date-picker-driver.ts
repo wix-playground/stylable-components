@@ -105,12 +105,8 @@ export class DatePickerTestDriver extends DriverBase {
         return bodySelect(datePickerDropdown, `DAY_NAME_${dayNames[dayName].toUpperCase()}`);
     }
 
-    public get yearLabel(): HTMLSpanElement | null {
-        return bodySelect(datePickerDropdown, 'YEAR');
-    }
-
-    public get monthLabel(): HTMLSpanElement | null {
-        return bodySelect(datePickerDropdown, 'MONTH_NAME');
+    public get headerDate(): HTMLSpanElement | null {
+        return bodySelect(datePickerDropdown, 'HEADER_DATE');
     }
 
     public getMonth(month: string): HTMLSpanElement | null {

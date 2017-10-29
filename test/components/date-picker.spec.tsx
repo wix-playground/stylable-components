@@ -325,8 +325,7 @@ describe('The DatePicker Component', () => {
             await waitForDom(() => {
                 const headerContents = [
                     datePicker.prevMonthLabel,
-                    datePicker.monthLabel,
-                    datePicker.yearLabel,
+                    datePicker.headerDate,
                     datePicker.nextMonthLabel
                 ];
                 expect(headerContents).to.be.verticallyAligned('center', 1);
@@ -402,7 +401,7 @@ describe('The DatePicker Component', () => {
                 <DatePicker showDropdownOnInit value={JANUARY_FIRST}/>
             ).withDriver(DatePickerTestDriver);
 
-            await waitForDom(() => expect(datePicker.yearLabel).to.have.text('2017'));
+            await waitForDom(() => expect(datePicker.headerDate).to.contain.text('2017'));
         });
 
         it('displays the name of the month', async () => {
@@ -413,7 +412,7 @@ describe('The DatePicker Component', () => {
                 />
             ).withDriver(DatePickerTestDriver);
 
-            await waitForDom(() => expect(datePicker.monthLabel).to.have.text('January'));
+            await waitForDom(() => expect(datePicker.headerDate).to.contain.text('January'));
         });
 
         it('has a button which steps forward a month', async () => {
@@ -421,13 +420,11 @@ describe('The DatePicker Component', () => {
                 <DatePicker showDropdownOnInit value={DECEMBER_FIRST}/>
             ).withDriver(DatePickerTestDriver);
 
-            expect(datePicker.yearLabel).to.have.text('2017');
-            expect(datePicker.monthLabel).to.have.text('December');
+            expect(datePicker.headerDate).to.have.text('December 2017');
             datePicker.clickOnNextMonth();
 
             await waitForDom(() => {
-                expect(datePicker.yearLabel).to.have.text('2018');
-                expect(datePicker.monthLabel).to.have.text('January');
+                expect(datePicker.headerDate).to.have.text('January 2018');
             });
         });
 
@@ -436,13 +433,11 @@ describe('The DatePicker Component', () => {
                 <DatePicker showDropdownOnInit value={JANUARY_FIRST}/>
             ).withDriver(DatePickerTestDriver);
 
-            expect(datePicker.yearLabel).to.have.text('2017');
-            expect(datePicker.monthLabel).to.have.text('January');
+            expect(datePicker.headerDate).to.have.text('January 2017');
             datePicker.clickOnPrevMonth();
 
             await waitForDom(() => {
-                expect(datePicker.yearLabel).to.have.text('2016');
-                expect(datePicker.monthLabel).to.have.text('December');
+                expect(datePicker.headerDate).to.have.text('December 2016');
             });
         });
 
@@ -494,7 +489,7 @@ describe('The DatePicker Component', () => {
 
             await waitForDom(() => {
                 expect(datePicker.monthView).to.be.present();
-                expect(datePicker.monthLabel).to.be.absent();
+                expect(datePicker.headerDate).to.have.text('2017');
                 monthNames.forEach(month => expect(datePicker.getMonth(month)).to.be.present());
             });
         });
@@ -510,16 +505,43 @@ describe('The DatePicker Component', () => {
 
             await waitForDom(() => {
                 expect(datePicker.monthView).to.be.present();
-                expect(datePicker.monthLabel).to.be.absent();
+                expect(datePicker.headerDate).to.have.text('2017');
             });
 
             datePicker.clickOnMonth(monthToClick);
 
             await waitForDom(() => {
                 expect(datePicker.monthView).to.be.absent();
-                expect(datePicker.monthLabel).to.be.present();
                 expect(datePicker.isOpen()).to.equal(true);
-                expect(datePicker.monthLabel).to.have.text(monthToClick);
+                expect(datePicker.headerDate).to.have.text(`${monthToClick} 2017`);
+            });
+        });
+
+        it('when in the month-view, clicking on the arrows should change the year', async () => {
+            const {driver: datePicker, waitForDom} = clientRenderer.render(
+                <DatePicker showDropdownOnInit value={JANUARY_FIRST}/>
+            ).withDriver(DatePickerTestDriver);
+
+            datePicker.clickOnHeader();
+
+            await waitForDom(() => {
+                expect(datePicker.monthView).to.be.present();
+                expect(datePicker.headerDate).to.have.text('2017');
+            });
+
+            datePicker.clickOnNextMonth();
+
+            await waitForDom(() => {
+                expect(datePicker.monthView).to.be.present();
+                expect(datePicker.headerDate).to.have.text('2018');
+            });
+
+            datePicker.clickOnPrevMonth();
+            datePicker.clickOnPrevMonth();
+
+            await waitForDom(() => {
+                expect(datePicker.monthView).to.be.present();
+                expect(datePicker.headerDate).to.have.text('2016');
             });
         });
     });

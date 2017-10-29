@@ -33,9 +33,7 @@ const monthNames = getMonthNames();
 @stylable(styles)
 @observer
 export class Calendar extends React.Component<CalendarProps, CalendarState> {
-    public componentWillMount() {
-        this.setState({showMonthView: false});
-    }
+    public state: CalendarState = {showMonthView: false};
 
     public render() {
         return (
@@ -53,17 +51,9 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
                         <span
                             data-automation-id="CALENDAR_HEADER"
                             className="headerDate"
-                            onMouseDown={this.toggleMonthView}
+                            onMouseDown={this.headerClicked}
                         >
-                            {this.state.showMonthView ?
-                                null
-                                :
-                                <span data-automation-id="MONTH_NAME">
-                                    {this.monthName}
-                                </span>
-                            }
-                            &nbsp;
-                            <span data-automation-id="YEAR">{this.year}</span>
+                            {this.getHeader()}
                         </span>
                         <span
                             className="arrowWrapper arrowWrapperNext"
@@ -93,6 +83,20 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
     private selectDay = (day: number) => {
         const date = new Date(this.props.value.getFullYear(), this.props.value.getMonth(), day);
         this.props.onChange(date);
+    }
+
+    private getHeader = () => {
+        if (this.state.showMonthView) {
+            return (
+                <span data-automation-id="HEADER_DATE">
+                    {this.year}
+                </span>);
+        } else {
+            return (
+                <span data-automation-id="HEADER_DATE">
+                    {this.monthName} {this.year}
+                </span>);
+        }
     }
 
     @computed
@@ -228,10 +232,14 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
         }
     }
 
+    private toggleMonthView = () => {
+        this.setState({showMonthView: !this.state.showMonthView});
+    }
+
     private selectMonth: React.EventHandler<React.SyntheticEvent<Element>> = event => {
         event.preventDefault();
         const eventTarget = event.target as HTMLSpanElement;
-        this.setState({showMonthView: !this.state.showMonthView});
+        this.toggleMonthView();
 
         const date = new Date(this.props.value.getFullYear(),
             monthNames.indexOf(eventTarget.textContent!),
@@ -254,8 +262,8 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
         this.props.updateDropdownDate(previousMonth);
     }
 
-    private toggleMonthView: React.EventHandler<React.SyntheticEvent<Element>> = event => {
+    private headerClicked: React.EventHandler<React.SyntheticEvent<Element>> = event => {
         event.preventDefault();
-        this.setState({showMonthView: !this.state.showMonthView});
+        this.toggleMonthView();
     }
 }
