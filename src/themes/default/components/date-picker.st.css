@@ -11,9 +11,18 @@
                 color_Selected;
 }
 
+:import {
+    -st-from: "../variables.st.css";
+    -st-named:  defaultFont,
+                color_Error;
+}
 
 DatePicker::input {
     width: value(inputWidth);
+}
+
+DatePicker:error::input {
+    border-color: value(color_Error);
 }
 
 DatePicker::icon {

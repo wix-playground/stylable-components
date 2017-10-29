@@ -28,6 +28,7 @@ export interface DatePickerState {
     dropdownDate: Date;
     highlightSelectedDate: boolean;
     highlightFocusedDate: boolean;
+    error: boolean;
 }
 
 @stylable(styles)
@@ -51,10 +52,17 @@ export class DatePicker extends React.PureComponent<DatePickerProps, DatePickerS
     public render() {
         const Icon = this.props.calendarIcon!;
 
+        const styleState = {
+            disabled: this.props.disabled!,
+            readonly: this.props.readOnly!,
+            error: this.state.error
+        };
+
         return (
             <div
                 data-automation-id="DATE_PICKER_ROOT"
                 ref={dropdownRef => this.setState({dropdownRef})}
+                style-state={styleState}
             >
                 <div className="flex-wrapper">
                     <Input
@@ -98,11 +106,14 @@ export class DatePicker extends React.PureComponent<DatePickerProps, DatePickerS
         if (!(this.props.disabled || this.props.readOnly)) {
             if (this.isDateValid(input)) {
                 const updatedDate = input ? new Date(input) : new Date();
-                this.setState({inputValue: updatedDate.toDateString()});
+                this.setState({
+                    inputValue: updatedDate.toDateString(),
+                    error: false
+                });
 
                 this.props.onChange!({value: updatedDate});
             } else {
-                this.setState({inputValue: invalidDate});
+                this.setState({error: true});
             }
         }
     }
@@ -115,7 +126,8 @@ export class DatePicker extends React.PureComponent<DatePickerProps, DatePickerS
                 isDropdownVisible: false,
                 highlightSelectedDate: true,
                 highlightFocusedDate: false,
-                dropdownDate: input
+                dropdownDate: input,
+                error: false
             });
 
             this.props.onChange!({value: input});

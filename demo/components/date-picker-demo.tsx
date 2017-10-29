@@ -1,11 +1,14 @@
 import * as React from 'react';
+import {stylable} from 'wix-react-tools';
 import {DatePicker, DatePickerProps} from '../../src';
+import style from './date-picker-demo.st.css';
 
 export interface DatePickerDemoState {
     value: Date;
     startingDay?: number;
 }
 
+@stylable(style)
 export class DatePickerDemo extends React.Component<DatePickerProps, Partial<DatePickerDemoState>> {
     public state: DatePickerDemoState = {
         value: this.props.value ? this.props.value : new Date(),
@@ -35,6 +38,7 @@ export class DatePickerDemo extends React.Component<DatePickerProps, Partial<Dat
                 </span>
                 <DatePicker
                     data-automation-id="DATE_PICKER"
+                    className="date-picker-demo"
                     placeholder="mm/dd/yyyy"
                     startingDay={this.state.startingDay!}
                     value={this.state.value!}
