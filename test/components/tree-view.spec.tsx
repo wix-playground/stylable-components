@@ -216,11 +216,9 @@ describe('<TreeView />', () => {
 
         describe('Keyboard Navigation', () => {
             it('reacts to keyboard events even when a node is not focused initially', async () => {
-                const {driver: treeViewDemo, waitForDom} = clientRenderer.render(
-                    <TreeViewDemo />
-                ).withDriver(TreeViewDemoDriver);
-
-                const {treeView} = treeViewDemo;
+                const {driver: treeView, waitForDom} = clientRenderer.render(
+                    <TreeView dataSource={treeData} />
+                ).withDriver(TreeViewDriver);
 
                 const nodeChildren = treeData[0].children;
 
