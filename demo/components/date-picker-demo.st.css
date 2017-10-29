@@ -1,0 +1,8 @@
+:import {
+    -st-from: '../../src/components/date-picker/date-picker.st.css';
+    -st-default: DatePicker;
+}
+
+.date-picker-demo {
+  -st-extends: DatePicker;
+}
