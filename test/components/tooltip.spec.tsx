@@ -47,7 +47,9 @@ function renderWithProps(clientRenderer: ClientRenderer, props?: Partial<Tooltip
     return driver;
 }
 
-describe.skip('<Tooltip/>', () => {
+const renderInaccuracy = 0.6;
+
+describe('<Tooltip/>', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
 
@@ -59,14 +61,17 @@ describe.skip('<Tooltip/>', () => {
 
         it('should be aligned to top', () => {
             const tooltipBounds = driver.tooltipBounds;
-            const anchorBounds = driver.anchorBounds;
-            expect(anchorBounds.top).to.equal(tooltipBounds.top + tooltipBounds.height - driver.tooltipMargins.top);
+            const acnhorPoint = driver.anchorBounds.top;
+            const tooltipPoint = tooltipBounds.top + tooltipBounds.height - driver.tooltipMargins.top;
+            expect(Math.abs(acnhorPoint - tooltipPoint)).to.below(renderInaccuracy);
         });
 
         it('should be centerd horizontaly', () => {
             const tooltipBounds = driver.tooltipBounds;
             const anchorBounds = driver.anchorBounds;
-            expect(anchorBounds.left + anchorBounds.width / 2).to.equal(tooltipBounds.left + tooltipBounds.width / 2);
+            const acnhorPoint = anchorBounds.left + (anchorBounds.width / 2);
+            const tooltipPoint = tooltipBounds.left + (tooltipBounds.width / 2);
+            expect(Math.abs(acnhorPoint - tooltipPoint)).to.below(renderInaccuracy);
         });
     });
 
@@ -79,13 +84,17 @@ describe.skip('<Tooltip/>', () => {
         it('should be aligned to top', () => {
             const tooltipBounds = driver.tooltipBounds;
             const anchorBounds = driver.anchorBounds;
-            expect(anchorBounds.top + anchorBounds.height).to.equal(tooltipBounds.top - driver.tooltipMargins.top);
+            const acnhorPoint = anchorBounds.top + anchorBounds.height;
+            const tooltipPoint = tooltipBounds.top - driver.tooltipMargins.top;
+            expect(Math.abs(acnhorPoint - tooltipPoint)).to.below(renderInaccuracy);
         });
 
         it('should be centerd horizontaly', () => {
             const tooltipBounds = driver.tooltipBounds;
             const anchorBounds = driver.anchorBounds;
-            expect(anchorBounds.left + anchorBounds.width / 2).to.equal(tooltipBounds.left + tooltipBounds.width / 2);
+            const acnhorPoint = anchorBounds.left + (anchorBounds.width / 2);
+            const tooltipPoint = tooltipBounds.left + (tooltipBounds.width / 2);
+            expect(Math.abs(acnhorPoint - tooltipPoint)).to.below(renderInaccuracy);
         });
     });
 
@@ -97,14 +106,17 @@ describe.skip('<Tooltip/>', () => {
 
         it('should be aligned to left', () => {
             const tooltipBounds = driver.tooltipBounds;
-            const anchorBounds = driver.anchorBounds;
-            expect(anchorBounds.left).to.equal(tooltipBounds.left + tooltipBounds.width - driver.tooltipMargins.left);
+            const acnhorPoint = driver.anchorBounds.left;
+            const tooltipPoint = tooltipBounds.left + tooltipBounds.width - driver.tooltipMargins.left;
+            expect(Math.abs(acnhorPoint - tooltipPoint)).to.below(renderInaccuracy);
         });
 
         it('should be centered verticaly', () => {
             const tooltipBounds = driver.tooltipBounds;
             const anchorBounds = driver.anchorBounds;
-            expect(anchorBounds.top + anchorBounds.height / 2).to.equal(tooltipBounds.top + tooltipBounds.height / 2);
+            const acnhorPoint = anchorBounds.top + (anchorBounds.height / 2);
+            const tooltipPoint = tooltipBounds.top + (tooltipBounds.height / 2);
+            expect(Math.abs(acnhorPoint - tooltipPoint)).to.below(renderInaccuracy);
         });
     });
 
@@ -117,13 +129,17 @@ describe.skip('<Tooltip/>', () => {
         it('should be aligned to left', () => {
             const tooltipBounds = driver.tooltipBounds;
             const anchorBounds = driver.anchorBounds;
-            expect(anchorBounds.left + anchorBounds.width).to.equal(tooltipBounds.left - driver.tooltipMargins.left);
+            const acnhorPoint = anchorBounds.left + anchorBounds.width;
+            const tooltipPoint = tooltipBounds.left - driver.tooltipMargins.left;
+            expect(Math.abs(acnhorPoint - tooltipPoint)).to.below(renderInaccuracy);
         });
 
         it('should be centered verticaly', () => {
             const tooltipBounds = driver.tooltipBounds;
             const anchorBounds = driver.anchorBounds;
-            expect(anchorBounds.top + anchorBounds.height / 2).to.equal(tooltipBounds.top + tooltipBounds.height / 2);
+            const acnhorPoint = anchorBounds.top + (anchorBounds.height / 2);
+            const tooltipPoint = tooltipBounds.top + (tooltipBounds.height / 2);
+            expect(Math.abs(acnhorPoint - tooltipPoint)).to.below(renderInaccuracy);
         });
     });
 
