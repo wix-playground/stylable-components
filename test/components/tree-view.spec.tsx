@@ -2,41 +2,13 @@ import {observable} from 'mobx';
 import * as React from 'react';
 import {Stylesheet} from 'stylable';
 import {ClientRenderer, DriverBase, expect, simulate, sinon, waitFor} from 'test-drive-react';
-import {TreeViewDemo, TreeViewDemoCustom} from '../../demo/components/tree-view-demo';
+import {treeData, TreeViewDemo, TreeViewDemoCustom} from '../../demo/components/tree-view-demo';
 import {initParentsMap, TreeItem, TreeItemData, TreeView, TreeViewParentsMap, TreeViewStateMap} from '../../src';
 import {getLastAvailableItem, getNextItem, getPreviousItem} from '../../src/components/tree-view/tree-util';
 import {TreeItemDriver, TreeViewDriver} from '../../test-kit';
 import {elementHasStylableState} from '../../test-kit/utils';
 
 import treeViewDemoStyle from '../../demo/components/tree-view-demo.st.css';
-
-const treeData: TreeItemData[] = [
-    {
-        label: 'Food Menu', children: [
-            {
-                label: 'Salads', children: [
-                    {label: 'Greek Salad'},
-                    {label: 'Israeli Salad'},
-                    {label: 'Caesar Salad'}
-                ]
-            },
-            {
-                label: 'Steaks', children: [
-                    {label: 'Fillet Steak'},
-                    {label: 'Sirloin Steak'}
-                ]
-            },
-            {
-                label: 'Desserts', children: [
-                    {label: 'Pancakes'},
-                    {label: 'Muffin'},
-                    {label: 'Waffle'},
-                    {label: 'Cupcake'}
-                ]
-            }
-        ]
-    }
-];
 
 const changedLabel = 'Kaiserschmarrn';
 

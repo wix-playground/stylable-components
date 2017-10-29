@@ -13,7 +13,7 @@
           inputHeight,
           inputPadding,
 
-          fontStyle,
+          inputFontStyle,
           textColor,
           textColorDisabled,
           placeholderColor,
@@ -45,7 +45,7 @@ AutoComplete::input {
 }
 
 AutoComplete::input::placeholder {
-    font: value(fontStyle);
+    font: value(inputFontStyle);
     color: value(placeholderColor);
 }
 

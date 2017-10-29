@@ -11,16 +11,16 @@ The **RadioGroup** component is used to group together children and provide them
 
 **RadioGroup**:
 
-| Name | Type | Default | Required | Description |
-| -- | -- | -- | -- | -- |
-| name | string | null | no | The name of the group. sets the _name_ property on each child |
-| id | string | null | no | Unique identifier |
-| tabIndex | number | 0 | no | Tab order of the element, copied to the element in focus (not on the root) |
-| disabled | boolean | false | no | Whether all the radio buttons are disabled |
-| readonly | boolean | false | no | Whether the group value cannot be changed |
-| value | string | null | no | The value of the selected element |
-| onChange | (event: ChangeEvent) => void | NOOP | no | Triggered by changing a radio button state to selected |
-| children | React.ReactNode | null | no | children |
+| Name     | Type                         | Default | Required | Description                              |
+| -------- | ---------------------------- | ------- | -------- | ---------------------------------------- |
+| name     | string                       | null    | no       | The name of the group. sets the _name_ property on each child |
+| id       | string                       | null    | no       | Unique identifier                        |
+| tabIndex | number                       | 0       | no       | Tab order of the element, copied to the element in focus (not on the root) |
+| disabled | boolean                      | false   | no       | Whether all the radio buttons are disabled |
+| readonly | boolean                      | false   | no       | Whether the group value cannot be changed |
+| value    | string                       | null    | no       | The value of the selected element        |
+| onChange | (event: ChangeEvent) => void | NOOP    | no       | Triggered by changing a radio button state to selected |
+| children | React.ReactNode              | null    | no       | children                                 |
 
 The following props are part of the DataInterface (name to be decided):
 
@@ -32,17 +32,17 @@ The following props are part of the DataInterface (name to be decided):
 
 **RadioButton**:
 
-| Name | Type | Default | Required | Description |
-| -- | -- | -- | -- | -- |
-| checked | boolean | false | no | Whether the button appears checked |
-| id | string | null | no | Unique identifier |
-| tabIndex | number | -1 \| tabIndex set by RadioGroup | Tab of order of the element |
-| name | string | null | no | The name of the group that this button is part of |
-| disabled | boolean | false | no | Whether this button appears as disabled |
-| readonly | boolean | false | no | Whether this button's value can be changed |
-| value | string | no | Yes | The value of the radio button |
-| onChange | (event: ChangeEvent) => void | NOOP | no | Triggered by changing the button's state |
-| children | React.ReactNode | null | no | children | Any further nodes will be rendered. |
+| Name     | Type                         | Default                          | Required                    | Description                              |
+| -------- | ---------------------------- | -------------------------------- | --------------------------- | ---------------------------------------- |
+| checked  | boolean                      | false                            | no                          | Whether the button appears checked       |
+| id       | string                       | null                             | no                          | Unique identifier                        |
+| tabIndex | number                       | -1 \| tabIndex set by RadioGroup | Tab of order of the element |                                          |
+| name     | string                       | null                             | no                          | The name of the group that this button is part of |
+| disabled | boolean                      | false                            | no                          | Whether this button appears as disabled  |
+| readonly | boolean                      | false                            | no                          | Whether this button's value can be changed |
+| value    | string                       | no                               | Yes                         | The value of the radio button            |
+| onChange | (event: ChangeEvent) => void | NOOP                             | no                          | Triggered by changing the button's state |
+| children | React.ReactNode              | null                             | no                          | children                                 |
 
 ### React Code Examples
 
@@ -112,17 +112,28 @@ export class Example2 extends React.Component<{}, {}>{
 
 #### **RadioGroup** Subcomponents (pseudo-elements)
 
-| selector | description  |
-|----------|--------------|
-| ::option | Allows styling the children under the *RadioGroup* |
+| selector | description                              |
+| -------- | ---------------------------------------- |
+| ::option | Allows styling the children under the *RadioGroup*. This subcomponent is a RadioButton. See its style API below |
+
+
+
+#### **RadioButton** Subcomponents (pseudo-elements)
+
+| selector           | description                              |
+| ------------------ | ---------------------------------------- |
+| ::contentContainer | Style the div containing the button and the children passed to the component |
+| ::button           | Style the actual button graphics for the RadioButton (use the `:checked` state to style the icon) |
+
+#### 
 
 #### **RadioButton** Custom CSS States (pseudo-classes)
 
-| state | description |
-| ----- | ----------- |
-| :disabled | Style the button when it is disabled |
-| :focused | Style the component when it gets document focus |
-| :checked |  Style the button when it is checked |
+| state     | description                              |
+| --------- | ---------------------------------------- |
+| :disabled | Style the button when it is disabled     |
+| :focused  | Style the component when it gets document focus |
+| :checked  | Style the button when it is checked      |
 
 ### Style Code Example
 
