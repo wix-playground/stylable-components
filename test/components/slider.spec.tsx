@@ -860,7 +860,7 @@ function keyboard(
     });
 }
 
-describe.only('<Slider />', () => {
+describe('<Slider />', () => {
     const clientRenderer = new ClientRenderer();
 
     beforeEach(() => {
@@ -1432,7 +1432,7 @@ describe.only('<Slider />', () => {
     });
 });
 
-describe.only('Slider/properties', () => {
+describe('Slider/properties', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
 
@@ -1750,7 +1750,7 @@ describe.only('Slider/properties', () => {
 
 });
 
-describe.only('Slider/calculations', () => {
+describe('Slider/calculations', () => {
     function testMethod(fn: (prop: any) => any, results: {[key: string]: any}) {
         Object.keys(results).forEach(key => {
             it(`${key} => ${results[key]}`, () => {
@@ -1976,7 +1976,7 @@ describe.only('Slider/calculations', () => {
 
 });
 
-describe.only('<Slider /> type Range', () => {
+describe('<Slider /> type Range', () => {
     const clientRenderer = new ClientRenderer();
 
     beforeEach(() => {

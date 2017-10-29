@@ -13,3 +13,4 @@ export * from './time-picker-driver';
 export * from './toggle-driver';
 export * from './slider-driver';
 export * from './loader-driver';
+export * from './tooltip-driver';

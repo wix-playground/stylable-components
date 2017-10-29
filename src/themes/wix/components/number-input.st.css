@@ -13,7 +13,7 @@
           inputHeight,
           inputPadding,
 
-          fontStyle,
+          inputFontStyle,
           textColor,
           textColorDisabled,
           placeholderColor,
@@ -41,7 +41,7 @@ NumberInput::nativeInput {
 
 
 NumberInput::nativeInput::placeholder {
-  font: value(fontStyle);
+  font: value(inputFontStyle);
   color: value(placeholderColor);
 }
 
