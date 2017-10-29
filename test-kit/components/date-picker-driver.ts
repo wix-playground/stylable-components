@@ -85,6 +85,10 @@ export class DatePickerTestDriver extends DriverBase {
         return bodySelect('MONTH_VIEW');
     }
 
+    public get yearView(): HTMLDivElement | null {
+        return bodySelect('YEAR_VIEW');
+    }
+
     public getDay(day: number | string): HTMLSpanElement | null {
         return bodySelect(datePickerDropdown, `DAY_${day}`);
     }

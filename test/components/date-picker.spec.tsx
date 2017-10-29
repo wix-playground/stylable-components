@@ -522,6 +522,28 @@ describe('The DatePicker Component', () => {
                 expect(datePicker.monthLabel).to.have.text(monthToClick);
             });
         });
+
+        it('when in the month-view, clicking on the year should bring up the year-view', async () => {
+            const {driver: datePicker, waitForDom} = clientRenderer.render(
+                <DatePicker showDropdownOnInit value={JANUARY_FIRST}/>
+            ).withDriver(DatePickerTestDriver);
+
+            datePicker.clickOnHeader();
+
+            await waitForDom(() => {
+                expect(datePicker.monthView).to.be.present();
+                expect(datePicker.monthLabel).to.be.absent();
+            });
+
+            datePicker.clickOnHeader();
+
+            await waitForDom(() => {
+                expect(datePicker.monthView).to.be.absent();
+                expect(datePicker.yearView).to.be.present();
+                expect(datePicker.monthLabel).to.be.absent();
+                expect(datePicker.yearLabel).to.be.absent();
+            });
+        });
     });
 
     describe('The Helper Functions', () => {

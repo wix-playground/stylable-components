@@ -26,6 +26,7 @@ export interface CalendarProps {
 
 export interface CalendarState {
     showMonthView: boolean;
+    showYearView: boolean;
 }
 
 const monthNames = getMonthNames();
@@ -34,7 +35,10 @@ const monthNames = getMonthNames();
 @observer
 export class Calendar extends React.Component<CalendarProps, CalendarState> {
     public componentWillMount() {
-        this.setState({showMonthView: false});
+        this.setState({
+            showMonthView: false,
+            showYearView: false
+        });
     }
 
     public render() {
