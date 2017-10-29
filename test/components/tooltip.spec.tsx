@@ -57,7 +57,7 @@ describe('<Tooltip/>', () => {
             driver = renderWithProps(clientRenderer);
         });
 
-        it('should be alignet to top', () => {
+        it('should be aligned to top', () => {
             const tooltipBounds = driver.tooltipBounds;
             const anchorBounds = driver.anchorBounds;
             expect(anchorBounds.top).to.equal(tooltipBounds.top + tooltipBounds.height - driver.tooltipMargins.top);
@@ -76,7 +76,7 @@ describe('<Tooltip/>', () => {
             driver = renderWithProps(clientRenderer, {position: 'bottom'});
         });
 
-        it('should be alignet to top', () => {
+        it('should be aligned to top', () => {
             const tooltipBounds = driver.tooltipBounds;
             const anchorBounds = driver.anchorBounds;
             expect(anchorBounds.top + anchorBounds.height).to.equal(tooltipBounds.top - driver.tooltipMargins.top);
@@ -101,7 +101,7 @@ describe('<Tooltip/>', () => {
             expect(anchorBounds.left).to.equal(tooltipBounds.left + tooltipBounds.width - driver.tooltipMargins.left);
         });
 
-        it.skip('should be centerd verticaly', () => {
+        it.skip('should be centered verticaly', () => {
             const tooltipBounds = driver.tooltipBounds;
             const anchorBounds = driver.anchorBounds;
             expect(anchorBounds.top + anchorBounds.height / 2).to.equal(tooltipBounds.top + tooltipBounds.height / 2);
@@ -114,13 +114,13 @@ describe('<Tooltip/>', () => {
             driver = renderWithProps(clientRenderer, {position: 'right'});
         });
 
-        it('should be alignet to left', () => {
+        it('should be aligned to left', () => {
             const tooltipBounds = driver.tooltipBounds;
             const anchorBounds = driver.anchorBounds;
             expect(anchorBounds.left + anchorBounds.width).to.equal(tooltipBounds.left - driver.tooltipMargins.left);
         });
 
-        it.skip('should be centerd verticaly', () => {
+        it.skip('should be centered verticaly', () => {
             const tooltipBounds = driver.tooltipBounds;
             const anchorBounds = driver.anchorBounds;
             expect(anchorBounds.top + anchorBounds.height / 2).to.equal(tooltipBounds.top + tooltipBounds.height / 2);
