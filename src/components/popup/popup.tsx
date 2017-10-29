@@ -73,10 +73,10 @@ export class Popup extends React.Component<PopupCompProps> {
     }
 
     private onScroll = (e: Event) => {
-        if (this.props.anchor && this.props.open) {
-            if (!isPoint(this.props.anchor) && (e.target as Node).contains(this.props.anchor)) {
-                this.forceUpdate();
-            }
+        debugger;
+        if (this.props.anchor && this.props.open
+                && !isPoint(this.props.anchor) && (e.target as Node).contains(this.props.anchor)) {
+            this.forceUpdate();
         }
     }
 
