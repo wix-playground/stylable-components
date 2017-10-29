@@ -5,7 +5,7 @@
 
 :import {
     -st-from: "../variables.st.css";
-    -st-named:  labelFontStyle,
+    -st-named:  fontStyle,
                 buttonColorMain,
                 buttonColorMainHover,
                 buttonColorMainActive,
@@ -33,7 +33,7 @@ Button {
     box-sizing: border-box;
     border: none;
     cursor: pointer;
-    font: value(labelFontStyle);
+    font: value(fontStyle);
 
     border-radius: 21px;
     display: inline-flex;
