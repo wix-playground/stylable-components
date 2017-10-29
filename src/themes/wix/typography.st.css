@@ -1,0 +1,61 @@
+:import {
+    -st-from: "./variables.st.css";
+    -st-named:  h1FontStyle,
+                fontStyle,
+                textColor,
+                textColorLighter,
+                buttonColorMain,
+                buttonColorMainHover,
+                buttonColorDisabled,
+                buttonColorMainActive;
+}
+h2, h3, h4, h5, h6, p, label, a, th, td {
+    font: value(fontStyle);
+    color: value(textColor);
+}
+h1 {
+    font: value(h1FontStyle);
+    color: value(textColor);
+    line-height: 48px;
+}
+h2 {
+    font-size: 20px;
+    line-height: 24px;
+}
+h3 {
+    color: value(textColorLighter);
+    font-size: 13px;
+    line-height: 24px;
+}
+h4 {
+    color: value(textColorLighter);
+    font-size: 10px;
+    line-height: 18px;
+}
+p, label, a, th, td {
+    font-size: 16px;
+    line-height: 24px;
+}
+th {
+    font-weight: bold;
+}
+a {
+    color: value(buttonColorMain);
+    text-decoration: none;
+    user-select: none;
+    outline: 0;
+}
+a:hover {
+    color: value(buttonColorMainHover);
+    text-decoration: underline;
+}
+a:active {
+    color: value(buttonColorMain);
+    text-decoration: underline;
+}
+a:focus {
+    color: value(buttonColorMainActive);
+}
+a.disabled, a[disabled], a:disabled {
+    color: value(buttonColorDisabled);
+}

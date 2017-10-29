@@ -30,15 +30,18 @@
 	P00: #cd68ed;
 	P10: #aa4cd8;
 	P20: #cd68ed;
-
-    /* Input Vars */
     GR20: #dadada;
 
-    /* Number Input Vars */
-    fontStyle: 16px "HelveticaNeue-Regular", sans-serif;
+    /* Typography */
 
+    h1FontStyle: 36px "HelveticaNeueW01-Thin", sans-serif;
+    fontStyle: 16px "HelveticaNeueW01-45Light", sans-serif;
     textColor: value(D10);
+    textColorLighter: value(D20);
     textColorDisabled: value(D50);
+    
+    /* Inputs */
+    inputFontStyle: 16px "HelveticaNeueW01-55Roman", sans-serif;
     placeholderColor: value(D40);
 
     inputHeight: 36px;
@@ -52,16 +55,21 @@
     selectionColor: value(B20);
 
     borderColorDefault: value(B30);
-	borderColorHover: value(B30);
+    borderColorHover: value(B30);
     borderColorFocus: value(B20);
     borderColorDisabled: value(D60);
     borderColorError: value(R00);
     borderStyle: 1px solid value(borderColorDefault);
     borderRadius: 6px;
 
-    /* Buttons */
+    /* Selection List */
 
-	labelFontStyle: 16px "HelveticaNeueW01-45Light", sans-serif;
+    dividerColor: value(D70);
+    optionBackgroundColorHover: value(B50);
+    optionBackgroundColorSelected: value(B10);
+    optionTextColorSelected: white;
+
+    /* Buttons */
 
     buttonColorMain: value(B10);
     buttonColorMainHover: value(B20);
@@ -83,6 +91,7 @@
     buttonColorTransparentActive: value(D10A36);
 
     buttonColorDisabled: value(D55);
+    buttonTextColorDisabled: white;
 
     /* Toggle */
 
@@ -133,7 +142,7 @@
 	border: value(borderStyle);
 	border-radius: value(borderRadius);
 	background: value(inputBackgroundColor);
-	font: value(fontStyle);
+	font: value(inputFontStyle);
 	color: value(textColor);
 	outline: 0;
 }
@@ -158,7 +167,7 @@
 }
 
 .inputStyle::placeholder {
-	font: value(fontStyle);
+	font: value(inputFontStyle);
 	color: value(placeholderColor);
 }
 
