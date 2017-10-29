@@ -70,7 +70,7 @@ describe('<Tooltip/>', () => {
         });
     });
 
-    describe('render with bottom position', () => {
+    describe.skip('render with bottom position', () => {
         let driver: any;
         beforeEach(() => {
             driver = renderWithProps(clientRenderer, {position: 'bottom'});
@@ -101,14 +101,14 @@ describe('<Tooltip/>', () => {
             expect(anchorBounds.left).to.equal(tooltipBounds.left + tooltipBounds.width - driver.tooltipMargins.left);
         });
 
-        it.skip('should be centered verticaly', () => {
+        it('should be centered verticaly', () => {
             const tooltipBounds = driver.tooltipBounds;
             const anchorBounds = driver.anchorBounds;
             expect(anchorBounds.top + anchorBounds.height / 2).to.equal(tooltipBounds.top + tooltipBounds.height / 2);
         });
     });
 
-    describe('render with right position', () => {
+    describe.skip('render with right position', () => {
         let driver: any;
         beforeEach(() => {
             driver = renderWithProps(clientRenderer, {position: 'right'});
@@ -120,7 +120,7 @@ describe('<Tooltip/>', () => {
             expect(anchorBounds.left + anchorBounds.width).to.equal(tooltipBounds.left - driver.tooltipMargins.left);
         });
 
-        it.skip('should be centered verticaly', () => {
+        it('should be centered verticaly', () => {
             const tooltipBounds = driver.tooltipBounds;
             const anchorBounds = driver.anchorBounds;
             expect(anchorBounds.top + anchorBounds.height / 2).to.equal(tooltipBounds.top + tooltipBounds.height / 2);
