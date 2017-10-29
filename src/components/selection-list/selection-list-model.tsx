@@ -89,27 +89,27 @@ class SelectionListItemBasedOnDataSource implements SelectionListItem {
         this.itemResolved = resolveItem(item);
     }
 
-    public get isOption() {
+    public get isOption(): boolean {
         return this.itemResolved.value !== undefined;
     }
 
-    public get selectable() {
+    public get selectable(): boolean {
         return this.isOption && !this.disabled;
     }
 
-    public get value() {
+    public get value(): SelectionListItemValue {
         return this.itemResolved.value;
     }
 
-    public get label() {
+    public get label(): string {
         return this.itemResolved.label || '';
     }
 
-    public get disabled() {
+    public get disabled(): boolean {
         return Boolean(this.itemResolved.disabled);
     }
 
-    public render(id: string) {
+    public render(id: string): JSX.Element | null {
         return this.renderItem!(this.item, this.itemResolved, {id, selected: this.selected, focused: this.focused});
     }
 }
@@ -120,19 +120,19 @@ class SelectionListItemBasedOnChild implements SelectionListItem {
 
     constructor(public item: React.ReactChild) {}
 
-    public get isOption() {
+    public get isOption(): boolean {
         return typeof this.item === 'object' && this.item.props.value !== undefined;
     }
 
-    public get selectable() {
+    public get selectable(): boolean {
         return  this.isOption && !this.disabled;
     }
 
-    public get value() {
+    public get value(): SelectionListItemValue {
         return typeof this.item === 'object' ? this.item.props.value : undefined;
     }
 
-    public get label() {
+    public get label(): string {
         if (typeof this.item === 'object') {
             if (this.item.props.label !== undefined) {
                 return this.item.props.label;
@@ -144,11 +144,11 @@ class SelectionListItemBasedOnChild implements SelectionListItem {
         return '';
     }
 
-    public get disabled() {
+    public get disabled(): boolean {
         return Boolean(typeof this.item === 'object' && this.item.props.disabled);
     }
 
-    public render(id: string) {
+    public render(id: string): JSX.Element | null {
         if (typeof this.item !== 'object') {
             return null;
         }
@@ -185,21 +185,21 @@ export class SelectionListModel {
         this.items = items;
     }
 
-    @action public selectValue(value: SelectionListItemValue) {
+    @action public selectValue(value: SelectionListItemValue): void {
         this.selectIndex((value === undefined) ? -1 : this.items.findIndex(item => item.value === value));
     }
 
-    public hasSelection() {
+    public hasSelection(): boolean {
         return this.selectedIndex > -1;
     }
 
-    @action public focusSelected() {
+    @action public focusSelected(): void {
         if (this.selectedIndex > -1 && this.items[this.selectedIndex].selectable) {
             this.focusIndex(this.selectedIndex);
         }
     }
 
-    public typeAhead(character: string) {
+    public typeAhead(character: string): void {
         // not implemented
     }
 
@@ -246,7 +246,7 @@ export class SelectionListModel {
         return false;
     }
 
-    @action public selectIndex(newIndex: number) {
+    @action public selectIndex(newIndex: number): void {
         const oldIndex = this.selectedIndex;
         if (oldIndex !== newIndex) {
             (oldIndex > -1) && (this.items[oldIndex].selected = false);
@@ -255,7 +255,7 @@ export class SelectionListModel {
         }
     }
 
-    private findSelectable(startIndex: number, step: number) {
+    private findSelectable(startIndex: number, step: number): number {
         for (let i = startIndex; 0 <= i && i < this.items.length; i += step) {
             if (this.items[i].selectable) {
                 return i;
