@@ -4,7 +4,7 @@ import {ClientRenderer, DriverBase, expect, sinon, waitFor} from 'test-drive-rea
 import {DatePickerDemo} from '../../demo/components/date-picker-demo';
 import {DatePicker} from '../../src';
 import {
-    changeDay,
+    changeDayInMonth,
     getDayNames,
     getDaysInMonth,
     getMonthFromOffset,
@@ -630,14 +630,16 @@ describe('The DatePicker Component', () => {
         it('changeDay should return a Date object with the same year and month, but a different day', () => {
             const dateToTest = new Date('July 5 2017');
 
-            expect(changeDay(dateToTest, 15).toDateString()).to.equal('Sat Jul 15 2017');
+            expect(changeDayInMonth(dateToTest, 15).toDateString()).to.equal('Sat Jul 15 2017');
         });
 
         it('isWeekend should return true if the date is on a weekend and false if not', () => {
-            const weekend = new Date('July 15 2017');
-            const weekday = new Date('July 12 2017');
+            const saturday = new Date('Saturday July 15, 2017');
+            const sunday = new Date('Sunday July 16, 2017');
+            const weekday = new Date('Wednesday July 12, 2017');
 
-            expect(isWeekend(weekend)).to.equal(true);
+            expect(isWeekend(saturday)).to.equal(true);
+            expect(isWeekend(sunday)).to.equal(true);
             expect(isWeekend(weekday)).to.equal(false);
         });
     });

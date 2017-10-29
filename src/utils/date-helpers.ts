@@ -45,7 +45,7 @@ export function getNumOfFollowingDays(date: Date, startingDay: number = 0): numb
     return followingDays > 6 ? followingDays - 7 : followingDays;
 }
 
-export function changeDay(date: Date, dayToSet: number): Date {
+export function changeDayInMonth(date: Date, dayToSet: number): Date {
     const dateToReturn = new Date(date.getFullYear(), date.getMonth());
     dateToReturn.setDate(dayToSet);
     return dateToReturn;

@@ -3,7 +3,7 @@ import {observer} from 'mobx-react';
 import * as React from 'react';
 import {stylable} from 'wix-react-tools';
 import {
-    changeDay,
+    changeDayInMonth,
     getDayNames,
     getDaysInMonth,
     getMonthFromOffset,
@@ -88,7 +88,7 @@ export class Calendar extends React.Component<CalendarProps, {}> {
         const daysInMonth = getDaysInMonth(this.props.value);
 
         for (let day = 1; day <= daysInMonth; day++) {
-            const date = changeDay(this.props.value, day);
+            const date = changeDayInMonth(this.props.value, day);
             const shouldDisable = this.props.disableWeekends ? isWeekend(date) : false;
 
             dayArray.push(
@@ -132,7 +132,7 @@ export class Calendar extends React.Component<CalendarProps, {}> {
             getNumOfPreviousDays(this.props.value, this.props.startingDay);
 
         for (let day = numberOfDaysToDisplay + 1; day <= lastDayOfPrevMonth; day++) {
-            const lastMonthCopy = changeDay(lastMonth, day);
+            const lastMonthCopy = changeDayInMonth(lastMonth, day);
 
             previousDays.push((
                 <Day
@@ -153,7 +153,7 @@ export class Calendar extends React.Component<CalendarProps, {}> {
         const numberOfDaysToDisplay: number = getNumOfFollowingDays(this.props.value, this.props.startingDay);
 
         for (let day = 1; day <= numberOfDaysToDisplay; day++) {
-            const nextMonth = changeDay(getMonthFromOffset(this.props.value, 1), day);
+            const nextMonth = changeDayInMonth(getMonthFromOffset(this.props.value, 1), day);
 
             followingDays.push(
                 <Day
