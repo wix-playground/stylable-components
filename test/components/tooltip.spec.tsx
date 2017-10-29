@@ -47,7 +47,7 @@ function renderWithProps(clientRenderer: ClientRenderer, props?: Partial<Tooltip
     return driver;
 }
 
-describe('<Tooltip/>', () => {
+describe.skip('<Tooltip/>', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
 
@@ -70,7 +70,7 @@ describe('<Tooltip/>', () => {
         });
     });
 
-    describe.skip('render with bottom position', () => {
+    describe('render with bottom position', () => {
         let driver: any;
         beforeEach(() => {
             driver = renderWithProps(clientRenderer, {position: 'bottom'});
@@ -108,7 +108,7 @@ describe('<Tooltip/>', () => {
         });
     });
 
-    describe.skip('render with right position', () => {
+    describe('render with right position', () => {
         let driver: any;
         beforeEach(() => {
             driver = renderWithProps(clientRenderer, {position: 'right'});
