@@ -1,6 +1,6 @@
 :import {
-	-st-from: "../../../components/tree-view/tree-view.st.css";
-	-st-default: TreeView;
+    -st-from: "../../../components/tree-view/tree-view.st.css";
+    -st-default: TreeView;
 }
 
 :import{
@@ -8,29 +8,46 @@
     -st-default: TreeItem;
 }
 
-
 :import {
     -st-from: "../variables.st.css";
-    -st-named:  defaultFont,
-                borderFocus,
-                color_Active,
-                color_MainText_Background,
-                color_Keyboard_Focused;
+    -st-named:
+        defaultFont,
+        borderFocus,
+        color_Active,
+        color_MainText_Background,
+        color_Keyboard_Focused;
 }
 
-.TreeView {
+TreeView {
     font: defaultFont;
 }
 
-TreeItem::item:hover {
+TreeItem {
+    padding: 5px 7px;
+}
+
+TreeItem:hover {
     background-color: value(color_Keyboard_Focused);
 }
 
-TreeItem::item:focused {
+TreeItem:focused {
     border: value(borderFocus);
 }
 
-TreeItem::item:selected {
+TreeItem:selected {
     background-color: value(color_Active);
     color: value(color_MainText_Background);
+}
+
+TreeItem::nestedTree {
+    padding-left: 2em;
+}
+
+TreeItem::icon {
+    background-size: 100%;
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGRhdGEtYXV0b21hdGlvbi1pZD0iVFJFRV9JVEVNX0RyaW5rc19JQ09OIiBhcmlhLWhpZGRlbj0idHJ1ZSI+PHJlY3QgeD0iMyIgeT0iMyIgd2lkdGg9IjE4IiBoZWlnaHQ9IjE4IiByeD0iMiIgcnk9IjIiPjwvcmVjdD48bGluZSB4MT0iMTIiIHkxPSI4IiB4Mj0iMTIiIHkyPSIxNiI+PC9saW5lPjxsaW5lIHgxPSI4IiB5MT0iMTIiIHgyPSIxNiIgeTI9IjEyIj48L2xpbmU+PC9zdmc+);
+}
+
+TreeItem::icon:expanded {
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGRhdGEtYXV0b21hdGlvbi1pZD0iVFJFRV9JVEVNX0Zvb2RfTWVudV9JQ09OIiBhcmlhLWhpZGRlbj0idHJ1ZSI+PHJlY3QgeD0iMyIgeT0iMyIgd2lkdGg9IjE4IiBoZWlnaHQ9IjE4IiByeT0iMiI+PC9yZWN0PjxsaW5lIHgxPSI4IiB5MT0iMTIiIHgyPSIxNiIgeTI9IjEyIj48L2xpbmU+PC9zdmc+);
 }

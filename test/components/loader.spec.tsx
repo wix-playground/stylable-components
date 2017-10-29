@@ -1,81 +1,88 @@
 import * as React from 'react';
 import {ClientRenderer, expect} from 'test-drive-react';
-import {BarsLoader, CircleLoader, Loader} from '../../src';
+import {BarsLoader, CircleLoader, DotsLoader, Loader} from '../../src';
+import {BarsLoaderDriver, CircleLoaderDriver, DotsLoaderDriver, LoaderDriver} from '../../test-kit';
 
 function delay(time: number) {
     return new Promise(resolve => setTimeout(resolve, time));
 }
-const loaders: any = {Loader, CircleLoader, BarsLoader};
+
+const loaders: any = {
+    Loader: [Loader, LoaderDriver],
+    CircleLoader: [CircleLoader, CircleLoaderDriver],
+    BarsLoader: [BarsLoader, BarsLoaderDriver],
+    DotsLoader: [DotsLoader, DotsLoaderDriver]
+};
 
 describe('<Loader/>', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
 
     Object.keys(loaders).forEach(key => {
-        const Component = loaders[key];
+        const [Component, Driver] = loaders[key];
         describe(`<${key}/>`, () => {
             describe('render without options', () => {
-                let renderer: any;
+                let driver: any;
                 beforeEach(() => {
-                    renderer = clientRenderer.render(<Component/>);
+                    driver = clientRenderer.render(<Component/>).withDriver(Driver).driver;
                 });
 
                 it('should render loader', () => {
-                    expect(renderer.select('LOADER')).to.not.null;
+                    expect(driver.loader).to.not.null;
                 });
 
                 it('should not render text', () => {
-                    expect(renderer.select('LOADER_TEXT')).to.be.null;
+                    expect(driver.text).to.be.null;
                 });
             });
 
             describe('render with delay', () => {
-                let renderer: any;
+                let driver: any;
                 beforeEach(() => {
-                    renderer = clientRenderer.render(<Component delay={200}/>);
+                    driver = clientRenderer.render(<Component delay={200}/>).withDriver(Driver).driver;
                 });
 
                 it('should not render loader before delay time', async () => {
                     await delay(100);
-                    expect(renderer.select('LOADER')).to.be.null;
+                    expect(driver.loader).to.be.null;
                 });
                 it('should render loader after delay time', async () => {
                     await delay(300);
-                    expect(renderer.select('LOADER')).to.not.null;
+                    expect(driver.loader).to.not.null;
                 });
             });
 
             describe('render with text', () => {
-                let renderer: any;
+                let driver: any;
                 beforeEach(() => {
-                    renderer = clientRenderer.render(<Component text="loading"/>);
+                    driver = clientRenderer.render(<Component text="loading"/>).withDriver(Driver).driver;
                 });
 
                 it('should render text', () => {
-                    expect(renderer.select('LOADER_TEXT')).text('loading');
+                    expect(driver.text).text('loading');
                 });
             });
 
             describe('render with children and text', () => {
-                let renderer: any;
+                let driver: any;
                 beforeEach(() => {
-                    renderer = clientRenderer.render(
+                    driver = clientRenderer.render((
                         <Component>
                             <div data-automation-id="TEST_DIV"/>
                         </Component>
-                    );
+                    )).withDriver(Driver).driver;
                 });
 
                 it('should render loader', () => {
-                    expect(renderer.select('LOADER')).to.not.null;
+                    expect(driver.loader).to.not.null;
                 });
 
                 it('should render children', () => {
-                    expect(renderer.select('TEST_DIV')).to.not.null;
+                    expect(driver.find('TEST_DIV')).to.not.null;
                 });
 
                 it('should not render the text', () => {
-                    expect(renderer.select('LOADER_TEXT')).to.be.null;
+                    expect(driver.text).to.be.null;
                 });
             });
 

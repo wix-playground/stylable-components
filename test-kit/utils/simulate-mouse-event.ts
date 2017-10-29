@@ -1,4 +1,4 @@
-import WindowStub from '../stubs/window.stub';
+import {WindowStub} from '../../test-kit/stubs';
 
 export interface Options {
     clientX?: number;

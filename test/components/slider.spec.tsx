@@ -2,18 +2,33 @@ import * as React from 'react';
 import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react';
 import {ContextProvider} from '../../src';
 import {
-    AXES, AxisOptions, AxisOptionsKey, CONTINUOUS_STEP,
+    AXES,
+    AxisOptions,
+    AxisOptionsKey,
+    CONTINUOUS_STEP,
+    DEFAULT_VALUE,
     getAbsoluteValue,
-    getRelativeStep, getRelativeValue, getSizeProperty, getValueFromElementAndPointer, getValueInRange,
-    isReverse, isVertical, Slider, SliderProps
+    getRelativeStep,
+    getRelativeValue,
+    getSizeProperty,
+    getValueFromElementAndPointer,
+    getValueInRange,
+    isReverse,
+    isVertical,
+    relativeToAbsoluteValue,
+    Slider,
+    SliderProps
 } from '../../src/components/slider';
 import styles from '../../src/components/slider/slider.st.css';
 import {ChangeEvent} from '../../src/types/events';
-import {SliderContextProvierDriver, SliderDriver, SliderEventCoordinates} from '../../test-kit';
-import WindowStub from '../stubs/window.stub';
+import {SliderContextProvierDriver, SliderDriver, SliderEventCoordinates, WindowStub} from '../../test-kit';
 import {skipItIfTouch} from '../utils';
 
 let environment: WindowStub;
+
+function delayToNextFrame() {
+    return new Promise(resolve => requestAnimationFrame(resolve));
+}
 
 function getAxis(
     options?: Partial<{axis: AxisOptions, RTL: boolean}>,
@@ -140,7 +155,7 @@ function withValueMinMax(
 
         it('renders invisible native input with right value', async () => {
             await waitForDom(() => {
-                expect(driver.input).to.has.value(String(value));
+                expect(driver.getInput(0)).to.has.value(String(value));
             });
         });
 
@@ -149,6 +164,234 @@ function withValueMinMax(
                 expect(driver.handle).attr('aria-orientation', orientation);
             });
         });
+    });
+}
+
+function rangeWithValueMinMax(
+    clientRenderer: ClientRenderer,
+    positionProp: string,
+    sizeProp: string,
+    orientation: 'vertical' | 'horizontal',
+    options?: Partial<SliderProps>
+) {
+    describe('with value, min and max', () => {
+        const value = [-5, 5];
+        const min = -10;
+        const max = 10;
+
+        let driver: any;
+        let onChange: any;
+
+        beforeEach(() => {
+            onChange = sinon.spy();
+            driver = getRenderedSlider(clientRenderer, {
+                value, min, max, onChange, ...options
+            }).driver;
+        });
+
+        it('renders handle on the right place', () => {
+            const handle0 = driver.getHandle(0);
+            const handle1 = driver.getHandle(1);
+
+            expect(handle0!.style[positionProp as any]).to.equal('25%');
+            expect(handle1!.style[positionProp as any]).to.equal('75%');
+        });
+
+        it('renders progress bar with the right width', () => {
+            const element = driver.progress;
+
+            expect(element).to.be.present();
+            expect(element!.style[positionProp as any]).to.equal('25%');
+            expect(element!.style[sizeProp as any]).to.equal('50%');
+        });
+
+        it('renders invisible native input with right value', () => {
+            const input0 = driver.getInput(0);
+            const input1 = driver.getInput(1);
+
+            expect(input0).to.has.value(String(value[0]));
+            expect(input1).to.has.value(String(value[1]));
+        });
+
+        it('renders with proper aria-orientation', () => {
+            const handle0 = driver.getHandle(0);
+            const handle1 = driver.getHandle(1);
+            expect(handle0).attr('aria-orientation', orientation);
+            expect(handle1).attr('aria-orientation', orientation);
+        });
+
+        describe('using keyboard to move right handle all the way left', () => {
+            beforeEach(async () => {
+                driver.focus(1);
+                driver.keyDown('left', {shiftKey: true});
+            });
+
+            it('should call onChange with correct value', () => {
+                expect(onChange).to.calledWithMatch({value: [-10, -5]});
+            });
+
+            it('right handle should become left but keep active state', () => {
+                expect(driver.getHandle(0)).attr(`data-${styles.$stylesheet.namespace.toLowerCase()}-active`);
+            });
+            it('right handle should become left and keep focus', () => {
+                expect(driver.getHandle(0)).to.equal(document.activeElement);
+            });
+        });
+
+        describe('using mouse to move right handle all the way left', () => {
+            beforeEach(async () => {
+                const bounds = driver.getBounds();
+                const event1 = getEventCoordinates(bounds, getAxis(options, context), 75);
+                const event2 = getEventCoordinates(bounds, getAxis(options, context), 0);
+                driver.mouseDown(event1);
+                driver.mouseMove(event2, environment);
+                await delayToNextFrame();
+                driver.mouseUp(event2, environment);
+            });
+
+            it('should call onChange with correct value', () => {
+                expect(onChange).to.calledWithMatch({value: [-10, -5]});
+            });
+
+            it('right handle should become left but keep active state', () => {
+                expect(driver.getHandle(0)).attr(`data-${styles.$stylesheet.namespace.toLowerCase()}-active`);
+            });
+
+            it('right handle should become left and keep focus', () => {
+                expect(driver.getHandle(0)).to.equal(document.activeElement);
+            });
+        });
+    });
+}
+
+function rangeWithDisabledCross(clientRenderer: ClientRenderer, axis: AxisOptions) {
+    describe(`check disableCross and axis=${axis}`, () => {
+        describe('when drag', () => {
+            let driver: any;
+            let onChange: any;
+
+            beforeEach(() => {
+                onChange = sinon.spy();
+                driver = getRenderedSlider(clientRenderer, {
+                    onChange,
+                    axis,
+                    value: [20, 80],
+                    disableCross: true
+                }).driver;
+
+                const bounds = driver.getBounds();
+                const event1 = getEventCoordinates(bounds, axis, 0.3);
+                const event2 = getEventCoordinates(bounds, axis, 0.9);
+
+                driver.mouseDown(event1);
+                driver.mouseMove(event2, environment);
+                driver.mouseUp(event2, environment);
+            });
+            it('lower value should be limited by higher value', () => {
+                expect(onChange).to.be.calledWithMatch({value: [80, 80]});
+            });
+        });
+
+        describe('when using keyboard', () => {
+            let driver: any;
+            let onChange: any;
+
+            beforeEach(async () => {
+                onChange = sinon.spy();
+                driver = getRenderedSlider(clientRenderer, {
+                    onChange,
+                    value: [79, 80],
+                    disableCross: true
+                }).driver;
+                driver.getHandle(0).focus();
+            });
+            it('left handle should not cross the right handle when using right key', () => {
+                driver.focus(0);
+                driver.keyDown('right');
+                driver.keyDown('right');
+                expect(onChange.args).to.deep.equal([
+                    [{value: [80, 80]}],
+                    [{value: [80, 80]}]
+                ]);
+            });
+            it('left handle should not cross the right handle when using right key + shift', () => {
+                driver.focus(0);
+                driver.keyDown('right', {shiftKey: true});
+                expect(onChange.args).to.deep.equal([
+                    [{value: [80, 80]}]
+                ]);
+            });
+        });
+
+        describe('when disableCross and both values has the same value', () => {
+            let driver: any;
+            let onChange: any;
+
+            beforeEach(async () => {
+                onChange = sinon.spy();
+                driver = getRenderedSlider(clientRenderer, {
+                    onChange,
+                    axis,
+                    value: [50, 50],
+                    disableCross: true
+                }).driver;
+            });
+
+            describe('should be possible to decrease the value', () => {
+                it('with mouse only', () => {
+                    const bounds = driver.getBounds();
+                    const event1 = getEventCoordinates(bounds, axis, 0.4);
+                    const event2 = getEventCoordinates(bounds, axis, 0.3);
+                    driver.mouseDown(event1);
+                    driver.mouseUp(event2, environment);
+                    expect(onChange).to.be.calledWithMatch({value: [30, 50]});
+                });
+
+                it('with keyboard', () => {
+                    driver.focus(1);
+                    driver.keyDown(isReverse(axis) ? 'right' : 'left');
+                    expect(onChange).to.be.calledWithMatch({value: [49, 50]});
+                });
+
+                [0, 1].forEach(index => {
+                    it(`when focus on ${index} handle and use keyboard`, () => {
+                        driver.focus(index);
+                        driver.keyDown(isReverse(axis) ? 'right' : 'left');
+                        expect(onChange).to.be.calledWithMatch({value: [49, 50]});
+                    });
+                });
+
+            });
+
+            describe('should be possible to increase the value', () => {
+                it('with mouse', () => {
+                    const bounds = driver.getBounds();
+                    const event1 = getEventCoordinates(bounds, axis, 0.5);
+                    const event2 = getEventCoordinates(bounds, axis, 0.8);
+                    driver.mouseDown(event1);
+                    driver.mouseUp(event2, environment);
+                    expect(onChange).to.be.calledWithMatch({value: [50, 80]});
+                });
+
+                it('with keyboard', () => {
+                    const bounds = driver.getBounds();
+                    const event = getEventCoordinates(bounds, axis, 0.5);
+                    driver.mouseDown(event);
+                    driver.mouseUp(event, environment);
+                    driver.keyDown(isReverse(axis) ? 'left' : 'right');
+                    expect(onChange).to.be.calledWithMatch({value: [50, 51]});
+                });
+
+                [0, 1].forEach(index => {
+                    it(`when focus on ${index} handle and use keyboard`, () => {
+                        driver.focus(index);
+                        driver.keyDown(isReverse(axis) ? 'right' : 'left');
+                        expect(onChange).to.be.calledWithMatch({value: [49, 50]});
+                    });
+                });
+            });
+        });
+
     });
 }
 
@@ -164,7 +407,7 @@ function whenDragThingsAround(
         const min = 0;
         const max = 10;
 
-        let onChange: (data: ChangeEvent<number>) => void;
+        let onChange: (data: ChangeEvent<number[]>) => void;
         let onInput: (data: ChangeEvent<string>) => void;
         let waitForDom: (expectation: () => void) => Promise<void>;
         let eventMock: SliderEventCoordinates;
@@ -225,7 +468,7 @@ function whenDragThingsAround(
         const min = 0;
         const max = 10;
 
-        let onChange: (data: ChangeEvent<number>) => void;
+        let onChange: (data: ChangeEvent<number[]>) => void;
         let onInput: (data: ChangeEvent<string>) => void;
         let waitForDom: (expectation: () => void) => Promise<void>;
         let eventMock: SliderEventCoordinates;
@@ -295,7 +538,7 @@ function whenDragThingsAroundWithStep(
         const max = 10;
         const step = 2;
 
-        let onChange: (data: ChangeEvent<number>) => void;
+        let onChange: (data: ChangeEvent<number[]>) => void;
         let onInput: (data: ChangeEvent<string>) => void;
         let waitForDom: (expectation: () => void) => Promise<void>;
         let driver: any;
@@ -341,7 +584,7 @@ function whenDragThingsAroundWithStep(
 
         it('renders invisible native input with right value', async () => {
             await waitForDom(() => {
-                expect(driver.input).to.has.value(String(value));
+                expect(driver.getInput(0)).to.has.value(String(value));
             });
         });
 
@@ -380,7 +623,7 @@ function whenDragThingsAroundWithStep(
         const max = 10;
         const step = 2;
 
-        let onChange: (data: ChangeEvent<number>) => void;
+        let onChange: (data: ChangeEvent<number[]>) => void;
         let onInput: (data: ChangeEvent<string>) => void;
         let waitForDom: (expectation: () => void) => Promise<void>;
         let eventMock: SliderEventCoordinates;
@@ -451,7 +694,7 @@ function keyboard(
         const min = 0;
         const max = 100;
 
-        let onChange: (data: ChangeEvent<number>) => void;
+        let onChange: (data: ChangeEvent<number[]>) => void;
         let onInput: (data: ChangeEvent<string>) => void;
         let waitForDom: (expectation: () => void) => Promise<void>;
         let deviation: number = step;
@@ -484,6 +727,7 @@ function keyboard(
             );
             driver = rendered.driver;
             waitForDom = rendered.waitForDom;
+            driver.focus();
         });
 
         it('on pressing right key', async () => {
@@ -657,7 +901,7 @@ describe('<Slider />', () => {
 
         it('renders invisible native input with default value', async () => {
             await waitForDom(() => {
-                expect(driver.input).to.has.value('');
+                expect(driver.getInput(0)).to.has.value(String(DEFAULT_VALUE));
             });
         });
     });
@@ -697,7 +941,7 @@ describe('<Slider />', () => {
 
         it('renders invisible native input with right value', async () => {
             await waitForDom(() => {
-                expect(driver.input).to.has.value('');
+                expect(driver.getInput(0)).to.has.value('-10');
             });
         });
     });
@@ -752,7 +996,7 @@ describe('<Slider />', () => {
         const min = 0;
         const max = 10;
         const step = 5;
-        let onChange: (data: ChangeEvent<number>) => void;
+        let onChange: (data: ChangeEvent<number[]>) => void;
         let onInput: (data: ChangeEvent<string>) => void;
         let waitForDom: (expectation: () => void) => Promise<void>;
         let driver: any;
@@ -793,7 +1037,7 @@ describe('<Slider />', () => {
 
         it('renders invisible native input with passed value', async () => {
             await waitForDom(() => {
-                expect(driver.input).to.has.value(String(valueOutOfStep));
+                expect(driver.getInput(0)).to.has.value(String(valueOutOfStep));
             });
         });
 
@@ -909,7 +1153,7 @@ describe('<Slider />', () => {
     keyboard(clientRenderer, {step: 2});
 
     describe('step=0', () => {
-        let onChange: (data: ChangeEvent<number>) => void;
+        let onChange: (data: ChangeEvent<number[]>) => void;
         let driver: any;
         beforeEach(() => {
             onChange = sinon.spy();
@@ -933,7 +1177,7 @@ describe('<Slider />', () => {
             driver.mouseUp(event, environment);
         });
 
-        it('should trigger onChange with 75 value', () => {
+        it('should trigger onChange with [75] value', () => {
             expect(onChange).to.be.calledWithMatch({value: 75});
         });
         it('should move handle to 75%', () => {
@@ -946,7 +1190,7 @@ describe('<Slider />', () => {
         const min = 0;
         const max = 10;
 
-        let onChange: (data: ChangeEvent<number>) => void;
+        let onChange: (data: ChangeEvent<number[]>) => void;
         let driver: any;
         let waitForDom: (expectation: () => void) => Promise<void>;
 
@@ -1026,7 +1270,7 @@ describe('<Slider />', () => {
             const driver = rendered.driver;
 
             await waitForDom(() => {
-                expect(driver.input).attr('name', name);
+                expect(driver.getInput(0)).attr('name', name);
             });
         });
     });
@@ -1049,7 +1293,7 @@ describe('<Slider />', () => {
             const driver = rendered.driver;
 
             await waitForDom(() => {
-                expect(driver.input).attr('required');
+                expect(driver.getInput(0)).attr('required');
             });
         });
     });
@@ -1189,13 +1433,6 @@ describe('<Slider />', () => {
 });
 
 describe('Slider/properties', () => {
-    function renderWithProps(props?: SliderProps) {
-        return clientRenderer
-            .render(<Slider {...props}/>)
-            .withDriver(SliderDriver)
-            .driver;
-    }
-
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
 
@@ -1210,7 +1447,7 @@ describe('Slider/properties', () => {
     describe('no properties', () => {
         let driver: any;
         beforeEach(() => {
-            driver = renderWithProps();
+            driver = getRenderedSlider(clientRenderer).driver;
         });
 
         it('handle aria-valuemin should be 0', () => {
@@ -1225,14 +1462,14 @@ describe('Slider/properties', () => {
         it('handle left should be 0%', () => {
             expect(driver.handle.style.left).to.equal('0%');
         });
-        it('input value should be ""', () => {
-            expect(driver.input).attr('value', '');
+        it('input value should be "0"', () => {
+            expect(driver.getInput(0)).attr('value', '0');
         });
         it('should not render marks', () => {
             expect(driver.getMark(0)).to.be.null;
         });
         it('should not render tooltip', () => {
-            expect(driver.tooltip).to.be.null;
+            expect(driver.getTooltip(0)).to.be.null;
         });
         it('progress width should be 0%', () => {
             expect(driver.progress.style.width).to.equal('0%');
@@ -1242,11 +1479,11 @@ describe('Slider/properties', () => {
     describe('min={50} max={100} value={60}', () => {
         let driver: any;
         beforeEach(() => {
-            driver = renderWithProps({
+            driver = getRenderedSlider(clientRenderer, {
                 min: 50,
                 max: 100,
                 value: 60
-            });
+            }).driver;
         });
 
         it('handle aria-valuemin should be 50', () => {
@@ -1262,7 +1499,7 @@ describe('Slider/properties', () => {
             expect(driver.handle.style.left).to.equal('20%');
         });
         it('input value should be "60"', () => {
-            expect(driver.input).attr('value', '60');
+            expect(driver.getInput(0)).attr('value', '60');
         });
         it('progress width should be 20%', () => {
             expect(driver.progress.style.width).to.equal('20%');
@@ -1272,12 +1509,12 @@ describe('Slider/properties', () => {
     describe('min={50} max={100} value={60} axis={AXES.xReverse}', () => {
         let driver: any;
         beforeEach(() => {
-            driver = renderWithProps({
+            driver = getRenderedSlider(clientRenderer, {
                 min: 50,
                 max: 100,
                 value: 60,
                 axis: AXES.xReverse
-            });
+            }).driver;
         });
 
         it('handle aria-valuemin should be 50', () => {
@@ -1293,7 +1530,7 @@ describe('Slider/properties', () => {
             expect(driver.handle.style.right).to.equal('20%');
         });
         it('input value should be "60"', () => {
-            expect(driver.input).attr('value', '60');
+            expect(driver.getInput(0)).attr('value', '60');
         });
         it('progress width should be 20%', () => {
             expect(driver.progress.style.width).to.equal('20%');
@@ -1303,12 +1540,12 @@ describe('Slider/properties', () => {
     describe('min={50} max={100} value={60} axis={AXES.y}', () => {
         let driver: any;
         beforeEach(() => {
-            driver = renderWithProps({
+            driver = getRenderedSlider(clientRenderer, {
                 min: 50,
                 max: 100,
                 value: 60,
                 axis: AXES.y
-            });
+            }).driver;
         });
 
         it('handle aria-valuemin should be 50', () => {
@@ -1324,7 +1561,7 @@ describe('Slider/properties', () => {
             expect(driver.handle.style.bottom).to.equal('20%');
         });
         it('input value should be "60"', () => {
-            expect(driver.input).attr('value', '60');
+            expect(driver.getInput(0)).attr('value', '60');
         });
         it('progress height should be 20%', () => {
             expect(driver.progress.style.height).to.equal('20%');
@@ -1334,12 +1571,12 @@ describe('Slider/properties', () => {
     describe('min={50} max={100} value={60} axis={AXES.yReverse}', () => {
         let driver: any;
         beforeEach(() => {
-            driver = renderWithProps({
+            driver = getRenderedSlider(clientRenderer, {
                 min: 50,
                 max: 100,
                 value: 60,
                 axis: AXES.yReverse
-            });
+            }).driver;
         });
 
         it('handle aria-valuemin should be 50', () => {
@@ -1355,7 +1592,7 @@ describe('Slider/properties', () => {
             expect(driver.handle.style.top).to.equal('20%');
         });
         it('input value should be "60"', () => {
-            expect(driver.input).attr('value', '60');
+            expect(driver.getInput(0)).attr('value', '60');
         });
         it('progress height should be 20%', () => {
             expect(driver.progress.style.height).to.equal('20%');
@@ -1365,11 +1602,11 @@ describe('Slider/properties', () => {
     describe('value={40} displayStopMarks={true} step={20}', () => {
         let driver: any;
         beforeEach(() => {
-            driver = renderWithProps({
+            driver = getRenderedSlider(clientRenderer, {
                 value: 40,
                 step: 20,
                 displayStopMarks: true
-            });
+            }).driver;
         });
         new Array(6).fill(0).forEach((value, index) => {
             it(`should render ${index} mark`, () => {
@@ -1379,26 +1616,26 @@ describe('Slider/properties', () => {
         it(`should not render 6 mark`, () => {
             expect(driver.getMark(6)).to.be.null;
         });
-        it('mark 0 should have class "markProgress"', () => {
-            expect(driver.getMark(0)).have.class(styles.markProgress);
+        it('mark 0 should have class "rangeMark"', () => {
+            expect(driver.getMark(0)).have.class(styles.rangeMark);
         });
         it('mark 1 should have left "20%"', () => {
             expect(driver.getMark(1).style.left).to.equal('20%');
         });
-        it('mark 5 should have class "markTrack"', () => {
-            expect(driver.getMark(5)).have.class(styles.markTrack);
+        it('mark 5 should have class "mark"', () => {
+            expect(driver.getMark(5)).have.class(styles.mark);
         });
     });
 
     describe('value={40} displayStopMarks={true} step={20} axis={AXES.y}', () => {
         let driver: any;
         beforeEach(() => {
-            driver = renderWithProps({
+            driver = getRenderedSlider(clientRenderer, {
                 value: 40,
                 step: 20,
                 displayStopMarks: true,
                 axis: AXES.y
-            });
+            }).driver;
         });
         it('mark 1 should have left "20%"', () => {
             expect(driver.getMark(1).style.bottom).to.equal('20%');
@@ -1408,14 +1645,14 @@ describe('Slider/properties', () => {
     describe('name="slider-name" label="slider-label" disabled={true}', () => {
         let driver: any;
         beforeEach(() => {
-            driver = renderWithProps({
+            driver = getRenderedSlider(clientRenderer, {
                 name: 'slider-name',
                 label: 'slider-label',
                 disabled: true
-            });
+            }).driver;
         });
         it('input name should be "slider-name"', () => {
-            expect(driver.input).attr('name', 'slider-name');
+            expect(driver.getInput(0)).attr('name', 'slider-name');
         });
         it('handle aria-label should be "slider-label"', () => {
             expect(driver.handle).attr('aria-label', 'slider-label');
@@ -1425,15 +1662,20 @@ describe('Slider/properties', () => {
         });
     });
 
-    describe('displayTooltip={true}', () => {
+    describe('displayTooltip={true} value={44}', () => {
         let driver: any;
         beforeEach(() => {
-            driver = renderWithProps({
+            driver = getRenderedSlider(clientRenderer, {
+                value: 44,
                 displayTooltip: true
-            });
+            }).driver;
+            driver.focus(0);
         });
         it('should render tooltip', () => {
-            expect(driver.tooltip).to.not.null;
+            expect(driver.getTooltip(0)).to.not.null;
+        });
+        it('tooltip should have text "44"', () => {
+            expect(driver.getTooltip(0)).text('44');
         });
     });
 
@@ -1449,7 +1691,7 @@ describe('Slider/properties', () => {
                 obj[key] = sinon.spy();
                 return obj;
             }, {});
-            driver = renderWithProps(events);
+            driver = getRenderedSlider(clientRenderer, events).driver;
         });
         it('should call onChange', () => {
             const event = {
@@ -1601,6 +1843,18 @@ describe('Slider/calculations', () => {
         });
     });
 
+    describe('relativeToAbsoluteValue()', () => {
+        it('(value = 0, min = 10, max = 20) => 10', () => {
+            expect(relativeToAbsoluteValue([0], 10, 20)).to.deep.equal([10]);
+        });
+        it('(value = 15, min = 10, max = 20) => 15', () => {
+            expect(relativeToAbsoluteValue([50], 10, 20)).to.deep.equal([15]);
+        });
+        it('(value = 25, min = 10, max = 20) => 20', () => {
+            expect(relativeToAbsoluteValue([100], 10, 20)).to.deep.equal([20]);
+        });
+    });
+
     describe('getValueFromElementAndPointer()', () => {
         function testCase(opts: {[key: string]: any}) {
             const name = Object.keys(opts).map(key => `${key} = ${opts[key]}`).join(', ');
@@ -1719,5 +1973,25 @@ describe('Slider/calculations', () => {
             result: 100
         });
     });
+
+});
+
+describe('<Slider /> type Range', () => {
+    const clientRenderer = new ClientRenderer();
+
+    beforeEach(() => {
+        environment = new WindowStub();
+    });
+
+    afterEach(() => {
+        environment.sandbox.restore();
+        clientRenderer.cleanup();
+    });
+
+    rangeWithValueMinMax(clientRenderer, 'left', 'width', 'horizontal', {});
+    rangeWithDisabledCross(clientRenderer, AXES.x);
+    rangeWithDisabledCross(clientRenderer, AXES.y);
+    rangeWithDisabledCross(clientRenderer, AXES.xReverse);
+    rangeWithDisabledCross(clientRenderer, AXES.yReverse);
 
 });
