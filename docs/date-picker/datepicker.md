@@ -3,8 +3,11 @@
 * [Description](#description)
 * [Elements](#elements)
 * [Properties](#properties)
+* [Styles](#styles)
 * [Accessibility](#accessibility)
 * [Behavior](#behavior)
+* [Examples](#examples)
+* [Design](#design)
 
 ## Description
 A date picker allows users to select dates by using an input or a popup calendar.
@@ -32,6 +35,17 @@ DatePicker extends formInputProps
 | dayLabels | Array[String] | english weekdays | no | Default in English, user may enter different labels (maybe can be done with code, in which case we change implementation - R&D)|
 | monthLabels | Array[String] | english month names| no | Default in English, user may enter different labels (maybe can be done with code, in which case we change implementation- R&D)|
 | showPrevNextDays | boolean | true | no | Defaults to false, in the calendar month show previous and next days. |
+
+## Styles
+| Name | Description |
+| --- | --- |
+| inputStyle | Used for the input component |
+| iconStyle | Used for the icon component |
+| calendarViewStyle | Used for the Calendar View |
+| itemStyle | For an item in the Calendar View |
+| calendarTitleStyle | For changing the look of the month/year title |
+| calendarIconStyle | For changing the icons style |
+| calendarDividerStyle | Control appearance of the title divider |
 
 
 
@@ -138,3 +152,9 @@ Input handling inside the calendar:
 * Tap selects the date touched (popup closes after selection)
 * Tap opens/closes the popup when done on the widget (and only on the widget)
 * Tap on the input element moves the caret to the touched location.
+
+## Examples
+TBD
+
+## Design 
+See in [Zeplin](https://app.zeplin.io/project/5864e02695b5754a69f56150/screen/58b28d00efec796080acbd70)
