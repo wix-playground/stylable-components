@@ -109,7 +109,7 @@ export class Image extends React.PureComponent<ImageProps, ImageState> {
     private onLoad: React.EventHandler<React.SyntheticEvent<HTMLImageElement>> = e => {
         if (this.state.status !== ImageStatus.Error) {
             this.setState({status: ImageStatus.Loaded});
-            this.props.onLoad!({...e, src: this.state.src});
+            this.state.src !== transparentImage && this.props.onLoad!({...e, src: this.state.src});
         }
     }
 

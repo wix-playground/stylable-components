@@ -32,6 +32,15 @@ describe('<Image />', () => {
         });
     });
 
+    it('does not send an onLoad event when falling back to showing one transparent pixel', async () => {
+        const onLoad = sinon.spy();
+        clientRenderer.render(<Image onLoad={onLoad}/>).withDriver(ImageDriver);
+
+        await sleep(10);
+
+        expect(onLoad).to.not.have.been.called;
+    });
+
     it('shows provided src', async () => {
         const {driver: image, waitForDom} = clientRenderer.render(
             <Image src={onePixelBlack} />
