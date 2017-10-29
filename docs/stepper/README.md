@@ -12,13 +12,13 @@
 
 ##### Component Props
 
-| name        | type      | defaultValue | isRequired | description  |
-| ----------- | --------- | ------------ | ---------- | ------------ |
-| disableUp   | boolean   | false        | no         | Disables **up** arrow.    |
-| disableDown | boolean   | false        | no         | Disables **down** arrow.  |
-| dragStep    | number    | 10           | no         | Defines how many pixels the user drags the cursor on mousedown to fire the `onUp` and `onDown` functions. |
-| onUp        | function |  | no  | Callback function that is fired on **step up** events: mouse click, Up Arrow Key, drag step. <br> `(modifiers: Modifiers): void;` <br> `Modifiers` altKey, ctrlKey, shiftKey |
-| onDown      | function |  | no | Callback function that is fired on **step down** events: mouse click, Down Arrow Key, drag step. <br> `(modifiers: Modifiers): void;` <br> `Modifiers` altKey, ctrlKey, shiftKey |
+| name        | type     | defaultValue | isRequired | description                              |
+| ----------- | -------- | ------------ | ---------- | ---------------------------------------- |
+| disableUp   | boolean  | false        | no         | Disables **up** arrow.                   |
+| disableDown | boolean  | false        | no         | Disables **down** arrow.                 |
+| dragStep    | number   | 10           | no         | Defines how many pixels the user drags the cursor on mousedown to fire the `onUp` and `onDown` functions. |
+| onUp        | function |              | no         | Callback function that is fired on **step up** events: mouse click, Up Arrow Key, drag step. <br> `(modifiers: Modifiers): void;` <br> `Modifiers` altKey, ctrlKey, shiftKey |
+| onDown      | function |              | no         | Callback function that is fired on **step down** events: mouse click, Down Arrow Key, drag step. <br> `(modifiers: Modifiers): void;` <br> `Modifiers` altKey, ctrlKey, shiftKey |
 
 ### Code Examples
 
@@ -46,15 +46,17 @@ return (
 
 ### Subcomponents (pseudo-elements)
 
-| selector | description          |
-| -------- | -------------------- |
+| selector | description               |
+| -------- | ------------------------- |
 | ::up     | Style the **up** arrow.   |
 | ::down   | Style the **down** arrow. |
 
+Note: change the arrow icons by overriding `background-image` in the `::up` and `::down` elements
+
 ### Custom CSS States (pseudo-classes)
 
-| selector                       | description                 |
-| ------------------------------ | --------------------------- |
+| selector                       | description                  |
+| ------------------------------ | ---------------------------- |
 | :hover, :focus, :disabled, etc | Standard CSS pseudo classes. |
 
 ### Style Code Examples
