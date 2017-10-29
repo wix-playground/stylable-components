@@ -1,5 +1,6 @@
 # DatePicker Components Specification
 
+urik9/datepickerupdate
 * [Description](#description)
 * [Elements](#elements)
 * [Properties](#properties)
@@ -105,6 +106,12 @@ DatePicker extends formInputProps
 
 
 
+## Elements
+* Input with Calendar Icon
+* Calendar
+* Expand Scope button
+
+
 ## Accessibility
 
 ### Role
@@ -202,12 +209,15 @@ Input handling inside the calendar:
 * Mouse click selects the focused date in the calendar view (popup closes after selection)
 * Mouse click opens/closes the popup when done on the widget (and only on the widget)
 * Mouse click on the input element moves the caret to the clicked location.
+* Mouse over the calendar banner reveals the Expand Scope button.
+* Clicking on the expand scope button changes the calendar view to be based on month, year or decade.
 
 ### Touch Handling
 
 * Tap selects the date touched (popup closes after selection)
 * Tap opens/closes the popup when done on the widget (and only on the widget)
 * Tap on the input element moves the caret to the touched location.
+
 
 ### Time Range Extension Dialogs
 
@@ -227,3 +237,5 @@ TBD
 
 ## Design 
 See in [Zeplin](https://app.zeplin.io/project/5864e02695b5754a69f56150/screen/58b28d00efec796080acbd70)
+=======
+
