@@ -16,6 +16,62 @@ A date picker allows users to select dates by using an input or a popup calendar
 * Input Component with Icon Component
 * Calendar View for selecting dates
 
+![Image of basic date picker](./assets/datepicker/DatePickerBasicInput.png)
+
+UI presentation of Calendar View behaviors:
+
+* *Nothing selected or focused*
+
+![Image of calendar view 1](./assets/datepicker/CalendarView-nothing.png)
+
+* *Same date selected and focused*
+
+![Image of calendar view 2](./assets/datepicker/CalendarView-SameSelectedFocused.png)
+
+* *Current day focused, not selected*
+
+![Image of calendar view 3](./assets/datepicker/CalendarView-SameSelectedCurrentFocus.png)
+
+* *Selected and focused on different days* - 18th selected, 20th focused
+
+![Image of calendar view 4](./assets/datepicker/CalendarView-SelectedFocusedDifferent.png)
+
+* *Selected, focused and current on different days* - 18th selected, 20th current day, 11th focused
+
+![Image of calendar view 5](./assets/datepicker/CalendarView-SelectedCurrentFocusedDifferent.png)
+
+* *Changing the first day of the week* - In this example the first day of the week is set to Monday.
+
+![Image of calendar view 6](./assets/datepicker/CalendarView-firstdayofweek.png)
+
+* *Show prev/next days* - the days are not clickable, just shown and considered disabled
+
+![Image of calendar view 7](./assets/datepicker/CalendarViewPrevNext.png)
+
+* *Disable Weekends* - the days are not clickable, just shown and considered disabled
+
+![Image of calendar view 8](./assets/datepicker/CalendarViewDisabledWeekends.png)
+
+* *Disable specific dates* - the days are not clickable, just shown and considered disabled
+
+![Image of calendar view 9](./assets/datepicker/CalendarView-DisableSpecificDates.png)
+
+* *Calendar View open - Bottom Left*
+
+![Image of calendar view 10](./assets/datepicker/CalendarView-OpenBL.png)
+
+* *Calendar View open - Bottom Right*
+
+![Image of calendar view 11](./assets/datepicker/CalendarView-OpenBR.png)
+
+* *Calendar View open - Top Left*
+
+![Image of calendar view 12](./assets/datepicker/CalendarView-OpenTL.png)
+
+* *Calendar View open - Top Right*
+
+![Image of calendar view 13](./assets/datepicker/CalendarView-OpenTR.png)
+
 ## Properties
 
 DatePicker extends formInputProps
@@ -152,6 +208,19 @@ Input handling inside the calendar:
 * Tap selects the date touched (popup closes after selection)
 * Tap opens/closes the popup when done on the widget (and only on the widget)
 * Tap on the input element moves the caret to the touched location.
+
+### Time Range Extension Dialogs
+
+On mouse over the banner of calendar view, the year and month appear to be selectable desite not being so through keyboard navigation
+When clicking on the banner calendar view changes to show all twelve months (full year view) instead of dates within a month and callendar view banner show only the year
+Selecting a month from the display returns the view to be regular calendar view showing the dates of the selected month
+Clicking on the banner displaying while in full year view changes it to display a the decade this year belongs to (decade view) the banner changes to display the the decade marked as XXX0-XXX9
+Selecting a year from the display returns the view to be be full year view
+Pressing on the banner displaying the decade shifts the view to show ten decade groupings (century view). The banner displays the century in the folloewing fashion XX00-XX99
+Selecting a decade shifts the view to decade view
+
+![Image of expanded calendar view](./assets/datepicker/CalendarViewExpandTimeScope.png)
+
 
 ## Examples
 TBD
