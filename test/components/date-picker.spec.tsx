@@ -21,6 +21,10 @@ class DatePickerDemoDriver extends DriverBase {
     public get date(): HTMLSpanElement {
         return this.select('DATE_PICKER_DEMO', 'CURRENT_DATE');
     }
+
+    public clickOnHeader(): void {
+        simulate.mouseDown(this.calendarHeader);
+    }
 }
 
 describe('The DatePicker Component', () => {
@@ -61,6 +65,28 @@ describe('The DatePicker Component', () => {
             await waitForDom(() => {
                 expect(datePicker.dropDown).to.be.absent();
                 expect(datePickerDemo.date).to.have.text('Wed Jan 04 2017');
+            });
+        });
+
+        it('clicks on the month/year header, selects a month from the list,'
+        + ' and then chooses a date from the calendar', async () => {
+            const monthToClick = 'March';
+            const {driver: datePickerDemo, waitForDom} = clientRenderer.render(
+                <DatePickerDemo value={JANUARY_FIRST} />).withDriver(DatePickerDemoDriver);
+
+            datePickerDemo.clickOnHeader();
+
+            await waitForDom(() => {
+                expect(datePickerDemo.monthView).to.be.present();
+                expect(datePickerDemo.headerDate).to.have.text('2017');
+            });
+
+            datePickerDemo.clickOnMonth(monthToClick);
+
+            await waitForDom(() => {
+                expect(datePickerDemo.monthView).to.be.absent();
+                expect(datePickerDemo.isOpen()).to.equal(true);
+                expect(datePickerDemo.headerDate).to.have.text(`${monthToClick} 2017`);
             });
         });
     });
