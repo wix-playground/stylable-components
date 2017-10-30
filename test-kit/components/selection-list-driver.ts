@@ -1,5 +1,7 @@
 import {DriverBase, simulate} from 'test-drive-react';
 import {SelectionList} from '../../src';
+import dividerBaseStyle from '../../src/components/selection-list/divider.st.css';
+import optionBaseStyle from '../../src/components/selection-list/option.st.css';
 import listBaseStyle from '../../src/components/selection-list/selection-list.st.css';
 import {elementHasStylableClassName, elementHasStylableState} from '../utils';
 
@@ -22,23 +24,23 @@ export class SelectionListTestDriver extends DriverBase {
         simulate.keyDown(this.root, {keyCode});
     }
 
+    public mouseDown(element: Element): void {
+        simulate.mouseDown(element);
+    }
+
     public click(element: Element): void {
         simulate.click(element);
     }
 
-    public elementHasStylableState(
-        element: Element,
-        stateName: string,
-        style = listBaseStyle
-    ): boolean {
-        return elementHasStylableState(element, style, stateName);
+    public isDivider(element: Element): boolean {
+        return elementHasStylableClassName(element, dividerBaseStyle, 'root');
     }
 
-    public elementHasStylableClassName(
-        element: Element,
-        className: string,
-        style = listBaseStyle
-    ): boolean {
-        return elementHasStylableClassName(element, style, className);
+    public optionHasStylableState(element: Element, stateName: string): boolean {
+        return elementHasStylableState(element, optionBaseStyle, stateName);
+    }
+
+    public hasStylableState(stateName: string): boolean {
+        return elementHasStylableState(this.root, listBaseStyle, stateName);
     }
 }

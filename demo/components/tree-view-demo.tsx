@@ -100,7 +100,7 @@ export class TreeViewDemo extends React.Component<{}, TreeViewDemoState> {
 
     public render() {
         return (
-            <div>
+            <div className="example">
                 <h3>TreeView with ability to select a child</h3>
                 <section data-automation-id="TREE_VIEW_DEMO">
                     <SelectedItem selectedItem={this.state.selectedItem} />
@@ -139,7 +139,7 @@ export class TreeViewDemoCustom extends React.Component<{}, TreeViewDemoCustomSt
 
     public render() {
         return (
-            <div>
+            <div className="example">
                 <h3>TreeView with custom item renderer (try hovering the labels)</h3>
                 <section data-automation-id="TREE_VIEW_DEMO_CUSTOM">
                     <SelectedItem selectedItem={this.state.selectedItemCustom} />

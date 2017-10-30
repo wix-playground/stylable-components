@@ -4,6 +4,7 @@ import * as React from 'react';
 import {properties, stylable} from 'wix-react-tools';
 import {ChangeEvent} from '../../types/events';
 import {FormInputProps} from '../../types/forms';
+import {StylableProps} from '../../types/props';
 import {RadioButton} from './radio-button';
 import styles from './radio-group.st.css';
 
@@ -14,14 +15,9 @@ export interface RadioGroupDataSchemaProps {
     labelText?: string;
 }
 
-export interface RadioGroupProps extends FormInputProps<string>, properties.Props {
+export interface RadioGroupProps extends FormInputProps<string>, StylableProps {
     children?: React.ReactNode;
     dataSource?: RadioGroupDataSchemaProps[];
-    name?: string;
-    disabled?: boolean;
-    readOnly?: boolean;
-    tabIndex?: number;
-    className?: string;
 }
 
 let counter = 0;
@@ -124,6 +120,7 @@ export class RadioGroup extends React.Component<RadioGroupProps> {
                 name={this.name}
                 className="option"
                 tabIndex={this.getChildTabIndex(index, this.isGroupChecked)}
+                autoFocus={this.isChildAutoFocused(index)}
             >
                 {props.labelText ? <label className="label">{props.labelText}</label> : null}
             </RadioButton>
@@ -133,17 +130,17 @@ export class RadioGroup extends React.Component<RadioGroupProps> {
     private createChildren(dataArray: React.ReactNode): React.ReactNode[] {
         return React.Children.map(dataArray, (child, index) => {
             if (child && typeof child === 'object') {
-
                 const extraProps = child.type === RadioButton ?
                     {
-                        ['data-automation-id']: 'RADIO_BUTTON_' + index,
                         name: this.name,
                         checked: this.checkedArray[index].checked,
                         onChange: action(this.childrenOnClick(index)),
                         disabled: this.props.disabled || child.props.disabled,
                         readOnly: this.props.readOnly || child.props.readOnly,
                         className: child.props.className + ' ' + styles.option,
-                        tabIndex: this.getChildTabIndex(index, this.isGroupChecked)
+                        tabIndex: this.getChildTabIndex(index, this.isGroupChecked),
+                        autoFocus: this.isChildAutoFocused(index),
+                        ['data-automation-id']: 'RADIO_BUTTON_' + index
                     } : {};
 
                 const childProps = {
@@ -162,7 +159,7 @@ export class RadioGroup extends React.Component<RadioGroupProps> {
 
     @computed
     get isGroupChecked(): boolean {
-        return !!this.checkedArray.find(elm => elm.checked);
+        return this.checkedArray.some(elm => elm.checked);
     }
 
     private getChildTabIndex = (index: number, isGroupChecked: boolean): number | undefined => {
@@ -171,5 +168,15 @@ export class RadioGroup extends React.Component<RadioGroupProps> {
         } else {
             return index === 0 ? this.props.tabIndex : -1;
         }
+    }
+
+    private isChildAutoFocused(index: number): boolean {
+        if (this.props.autoFocus) {
+            if (this.isGroupChecked) {
+                return this.checkedArray[index].checked;
+            }
+            return index === 0;
+        }
+        return false;
     }
 }

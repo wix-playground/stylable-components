@@ -1,8 +1,9 @@
 import * as keycode from 'keycode';
 import {DriverBase, simulate} from 'test-drive-react';
 import {ContextProvider, Slider} from '../../src';
-import WindowStub from '../../test/stubs/window.stub';
-import {simulateMouseEvent, simulateTouchEvent} from '../../test/utils';
+import {noop} from '../../src/utils';
+import {WindowStub} from '../../test-kit';
+import {simulateMouseEvent, simulateTouchEvent} from '../utils';
 
 export interface SliderEventCoordinates {
     clientX: number;
@@ -17,16 +18,24 @@ export class BaseSliderDriver extends DriverBase {
         return this.select('SLIDER');
     }
     public get handle(): HTMLElement {
-        return this.select('SLIDER-HANDLE');
+        return this.getHandle(0);
+    }
+    public getHandle(index: number): HTMLElement {
+        return this.select(`SLIDER-HANDLE-${index}`);
     }
     public get progress(): HTMLElement {
         return this.select('SLIDER-PROGRESS');
     }
-    public get input(): HTMLElement {
-        return this.select('NATIVE-INPUT');
+    public getInput(index: number): HTMLElement {
+        return this.select(`NATIVE-INPUT-${index}`);
     }
-    public get tooltip(): HTMLElement {
-        return this.select('SLIDER-TOOLTIP');
+    public getTooltip(index: number): HTMLElement {
+        const portal = this.select(`SLIDER-HANDLE-${index}`, 'SLIDER-TOOLTIP', 'PORTAL_REF');
+        if (!portal) {
+            return portal;
+        }
+        const id = (portal as HTMLElement).dataset.id;
+        return document.querySelector(`[data-automation-id="${id}"]`) as HTMLElement;
     }
     public getMark(index: number): HTMLElement {
         return this.select(`SLIDER-MARKS-${index}`);
@@ -35,10 +44,14 @@ export class BaseSliderDriver extends DriverBase {
     public getBounds() {
         return this.slider.getBoundingClientRect();
     }
+    public focus(index: number = 0): void {
+        simulate.focus(this.getHandle(index));
+    }
 
     public mouseDown(event: SliderEventCoordinates) {
         const element = this.slider;
         simulate.mouseDown(element, {
+            preventDefault: noop,
             currentTarget: element!,
             clientX: event.clientX,
             clientY: event.clientY
@@ -54,6 +67,7 @@ export class BaseSliderDriver extends DriverBase {
     public touchStart(event: SliderEventCoordinates) {
         const element = this.slider;
         simulate.touchStart(element, {
+            preventDefault: noop,
             currentTarget: element,
             touches: {
                 0: {
@@ -83,6 +97,7 @@ export class BaseSliderDriver extends DriverBase {
             environment,
             name,
             {
+                preventDefault: noop,
                 clientX: event.clientX,
                 clientY: event.clientY
             }

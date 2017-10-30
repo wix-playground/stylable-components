@@ -5,21 +5,23 @@
 :vars {
     size: 100px;
     trackWidth: 5px;
-    rotateTime: 2s;
-    loadTime: 4s;
+    circleRotateTime: 2.5s;
+    innerRotateTime: 1.6s;
+    trackRotateTime: 2.1s;
+
+    /* full rotate [-135deg; 45deg] */
+    rotateFrom: -130deg;
+    rotateTo: 40deg;
 }
 
-@keyframes circle {
-    :global(0%) {transform: rotate(0)}
-    :global(100%) {transform: rotate(360deg)}
+@keyframes circle-animation {
+    0% {transform: rotate(0)}
+    100% {transform: rotate(360deg)}
 }
-
-@keyframes track {
-    :global(0%) {transform: rotate(-180deg)}
-    :global(25%) {transform: rotate(-180deg)}
-    :global(50%) {transform: rotate(0)}
-    :global(75%) {transform: rotate(0)}
-    :global(100%) {transform: rotate(180deg)}
+@keyframes track-animation {
+    0% {transform: rotate(value(rotateFrom))}
+    50% {transform: rotate(value(rotateTo))}
+    100% {transform: rotate(value(rotateFrom))}
 }
 
 .root {
@@ -30,7 +32,12 @@
     width: value(size);
     height: value(size);
     position: relative;
-    animation: circle value(rotateTime) infinite;
+    animation: circle-animation value(circleRotateTime) infinite;
+}
+.inner {
+    width: 100%;
+    height: 100%;
+    animation: circle-animation value(innerRotateTime) infinite linear;
 }
 
 .left, .right {
@@ -41,26 +48,31 @@
     box-sizing: border-box;
 }
 
-.track {
-    width: 100%;
-    height: 100%;
-    box-sizing: border-box;
-    overflow: hidden;
-    transform: rotate(-180deg);
-    animation: track value(loadTime) infinite linear;
-    transform-origin: 100% 50%;
-}
-.track:after {
-    position: absolute;
+.inner:after {
     content: '';
+    position: absolute;
+    top: 0px;
+    left: 50%;
+    width: 10%;
+    border-top: 5px solid value(PR2);
+    border-radius: 50px;
+    box-sizing: content-box;
+    transform: translate(-50%);
+    height: 100%;
+}
+
+.right {
+    transform-origin: 100% 50%;
+    transform: scaleX(-1);
+}
+
+.track {
     width: value(size);
     height: value(size);
-    border: 5px solid value(PR2);
+    box-sizing: border-box;
+    border: 5px solid;
+    border-color: value(PR2) value(PR2) transparent transparent;
     border-radius: 50%;
-}
-.right {
-    transform: rotate(180deg) translate(-100%);
-}
-.right .track {
-    animation-delay: calc(value(loadTime) * 0.25);
+    transform: rotate(value(rotateFrom));
+    animation: track-animation value(trackRotateTime) infinite linear;
 }

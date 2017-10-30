@@ -94,6 +94,7 @@ The default renderItem function works only for strings and renders RadioButtons 
   * If a radio button is checked, focus is set to the checked button
   * If no button is checked, focus is set to the first radio button
 * Set tabindex="-1" on all radio buttons which are unchecked (apart from the first one if all are unchecked), otherwise set tabindex="0"
+* When the radio group has "autoFocus" it will put autoFocus on the checked button. If no button is checked, autoFocus will be on the first button of the group.
 
 Use roving tabindex method in a minimal way, no need to set focus explicitly in code since the hidden input element takes care of it in the browser and assistive technologies.
 

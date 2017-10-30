@@ -15,14 +15,32 @@ import {SliderDemo} from './components/slider-demo';
 import {TabsDemo} from './components/tabs-demo';
 import {TimePickerDemo} from './components/time-picker-demo';
 import {ToggleDemo} from './components/toggle-demo';
+import {TooltipDemo} from './components/tooltip-demo';
 import {TreeViewDemo, TreeViewDemoCustom} from './components/tree-view-demo';
 
 import {Button, Input} from '../src';
 
-export class ComponentsDemo extends React.Component {
+export interface DemoProps {
+    theme: string;
+    themes: string[];
+}
+
+export class ComponentsDemo extends React.Component<DemoProps> {
     public render() {
         return (
             <div>
+                <h2>Switch Theme</h2>
+                <h3>
+                    {this.props.themes.map(theme =>
+                        <div key={theme}>
+                            {theme === this.props.theme ?
+                                <span children={theme}/> :
+                                <a children={theme} href={'?theme=' + theme}/>
+                            }
+                        </div>
+                    )}
+                </h3>
+                <hr/>
                 <ImageDemo />
                 <hr />
                 <DropDownDemo />
@@ -54,6 +72,11 @@ export class ComponentsDemo extends React.Component {
                 <div>
                     <h2>Slider</h2>
                     <SliderDemo />
+                </div>
+                <hr />
+                <div>
+                    <h2>Tooltip</h2>
+                    <TooltipDemo/>
                 </div>
                 <hr />
                 <div>

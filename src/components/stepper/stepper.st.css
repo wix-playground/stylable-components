@@ -17,6 +17,7 @@
     margin: 0;
     padding: 0;
     border: 0;
+    left: 0;
 
     outline: none;
 
@@ -32,6 +33,13 @@
 .up:disabled,
 .down:disabled {
     cursor: default;
+}
+
+.down:active {
+    padding-top: 2px;
+}
+.up:active {
+    padding-bottom: 1px;
 }
 
 .up {

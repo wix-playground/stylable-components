@@ -5,7 +5,7 @@
 
 :import {
     -st-from: "../variables.st.css";
-    -st-named:  labelFontStyle,
+    -st-named:  fontStyle,
                 borderStyle,
                 checkBorder,
                 checkedColor,
@@ -22,7 +22,7 @@
 }
 
 CB {
-    font: 300 value(labelFontStyle);
+    font: 300 value(fontStyle);
 }
 
 CB::box {

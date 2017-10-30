@@ -15,6 +15,11 @@
                 borderHover;
 }
 
+:import {
+    -st-from: "../input/input.st.css";
+    -st-default: Input;
+}
+
 :vars {
     arrowThickness: 0.09em;
     headerHeight: 60px;
@@ -24,14 +29,23 @@
     iconWidth: 36px;
 }
 
+/* root */
 .root {
+    -st-states: disabled, readonly, error;
     display: inline-block;
+    height: value(inputHeight);
+}
+
+.flex-wrapper {
+    display: flex;
+}
+
+.input {
+    -st-extends: Input;
 }
 
 .icon {
-    position: relative;
-    left: calc(value(inputWidth) - value(iconWidth));
-    top: -value(iconWidth);
+    margin-left: -value(iconWidth);
     padding: 10px;
     cursor: pointer;
     width: value(iconWidth);

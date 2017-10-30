@@ -21,3 +21,4 @@ export * from './time-picker';
 export * from './tabs';
 export * from './toggle';
 export * from './tree-view';
+export * from './tooltip';
