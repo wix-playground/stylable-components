@@ -25,8 +25,7 @@ All dropdowns use the following interfaces:
 
 * [SelectionList Component Properties](../selectionlist/selectionlist.md)
 
-
-Dropdown Properties
+Dropdown properties
 
 | Name | Type | Default | Required | Description |
 | -- | -- | -- | -- | -- |
@@ -49,6 +48,7 @@ See [SelectionList](../selectionlist/selectionlist.md) for further styles.
 | input | The dropdown input container |
 | toggle | The toggle used in the input container |
 | toggleIcon | URL for the icon |
+
 ### States
 
 | Name | Description |
