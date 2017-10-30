@@ -93,16 +93,22 @@ DatePicker extends formInputProps
 | showPrevNextDays | boolean | true | no | Defaults to false, in the calendar month show previous and next days. |
 
 ## Styles
+
+### Subcomponents (psuedo elemnts)
 | Name | Description |
 | --- | --- |
-| inputStyle | Used for the input component |
-| iconStyle | Used for the icon component |
-| calendarViewStyle | Used for the Calendar View |
-| itemStyle | For an item in the Calendar View |
-| calendarTitleStyle | For changing the look of the month/year title |
-| calendarIconStyle | For changing the icons style |
-| calendarDividerStyle | Control appearance of the title divider |
+| input | Used for the input component |
+| icon| Used for the icon component |
+| calendarTitle | For changing the look of the month/year title |
+| calendarView | Used for the Calendar View |
+| fullYearView | Used in full year view (time range extension) |
+| decadeView | Used in decade view (time range extension) |
 
+### States
+| Name | Description |
+| --- | --- |
+| Error | style component on error |
+| Focus, Disabled, Hover, etc | Standard style |
 
 
 ## Accessibility
