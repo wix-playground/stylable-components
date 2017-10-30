@@ -1,4 +1,3 @@
-import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import {properties} from 'wix-react-tools';
 import {ChangeEvent} from '../../types/events';
@@ -18,12 +17,6 @@ export interface TabsProps extends properties.Props, Partial<TabsViewProps> {
 export class Tabs extends React.Component<TabsProps> {
     public static defaultProps: Partial<TabsProps> = {
         orientation: 'horizontal-top'
-    };
-
-    public static contextTypes = {
-        contextProvider: PropTypes.shape({
-            dir: PropTypes.string
-        })
     };
 
     public render() {

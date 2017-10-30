@@ -1,10 +1,11 @@
 import {codes as KeyCodes} from 'keycode';
 import {SyntheticEventData} from 'react-dom/test-utils';
 import {DriverBase, simulate} from 'test-drive-react';
-import {Tabs} from '../../src';
 
-export class TabsDriver extends DriverBase {
-    public static ComponentClass = Tabs;
+import {ContextProvider} from '../../src/components/context-provider';
+import {Tabs} from '../../src/components/tabs';
+
+export class BaseTabsDriver extends DriverBase {
 
     public get tabList() {
         return this.select('TAB_LIST');
@@ -33,4 +34,12 @@ export class TabsDriver extends DriverBase {
     public tabListPressEnter() {
         this.tabListKeyDown(KeyCodes.enter);
     }
+}
+
+export class TabsDriver extends BaseTabsDriver {
+    public static ComponentClass = Tabs;
+}
+
+export class RTLTabsDriver extends BaseTabsDriver {
+    public static ComponentClass = ContextProvider;
 }

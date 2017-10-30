@@ -1,12 +1,19 @@
+import * as PropTypes from 'prop-types';
 import * as React from 'react';
 
+import {codes as KeyCode} from 'keycode';
 import {stylable} from 'wix-react-tools';
-import styles from './tabs.st.css';
 
 import {ChangeEvent} from '../../types/events';
 import {isRTLContext} from '../../utils';
-import {SelectionList, SelectionListOption as Option} from '../selection-list';
+import {
+    SelectionList,
+    SelectionListModel,
+    SelectionListOption as Option,
+    SelectionListView
+} from '../selection-list';
 import {TabProps} from './tab';
+import styles from './tabs.st.css';
 
 export type TabsOrientation
     = 'horizontal-top'
@@ -23,9 +30,46 @@ export interface TabsViewProps {
     children?: Array<React.ReactElement<TabProps>>;
 }
 
-export const TabsView: React.StatelessComponent<TabsViewProps> = stylable(styles)(
-    ({value, onChange, disabled, orientation, children, ...props}, context) => {
-        const tabs = tabElements(children);
+export interface TabsViewState {
+    focused: boolean;
+    tabList: SelectionListModel;
+}
+
+@stylable(styles)
+export class TabsView extends React.Component<TabsViewProps, TabsViewState> {
+
+    public static contextTypes = {
+        contextProvider: PropTypes.shape({
+            dir: PropTypes.string
+        })
+    };
+
+    constructor({value, children}: TabsViewProps) {
+        super();
+        const tabList = new SelectionListModel();
+        tabList.addChildren(renderTabItems(children));
+        tabList.selectValue(value);
+        this.state = {tabList, focused: false};
+    }
+
+    public componentWillReceiveProps({value, children}: TabsViewProps) {
+        const {focused} = this.state;
+        const tabList = new SelectionListModel();
+
+        tabList.addChildren(renderTabItems(children));
+        tabList.selectValue(value);
+        if (focused) {
+            tabList.focusValue(value);
+        }
+
+        this.setState({tabList});
+    }
+
+    public render() {
+        const {value, onChange, disabled, orientation, children, ...props} = this.props;
+        const {tabList, focused} = this.state;
+        const context = this.context;
+
         return (
             <div
                 style-state={{
@@ -37,25 +81,82 @@ export const TabsView: React.StatelessComponent<TabsViewProps> = stylable(styles
                 }}
                 {...props}
             >
-                <SelectionList
+                <SelectionListView
                     className="tabList"
-                    tabIndex={0}
                     data-automation-id="TAB_LIST"
-                    value={value}
+                    tabIndex={0}
+                    list={tabList}
+                    focused={focused}
                     onChange={onChange}
-                >
-                    {tabs.map(renderTabItem)}
-                </SelectionList>
+                    onBlur={this.handleTabListBlur}
+                    onFocus={this.handleTabListFocus}
+                    onKeyDown={this.handleTabListKeyDown}
+                />
                 <div
                     className="tabPanel"
                     data-automation-id="TAB_PANEL"
                 >
-                    {tabs.map(renderTab(value))}
+                    {tabElements(children).map(renderTab(value))}
                 </div>
             </div>
         );
     }
-);
+
+    private handleTabListBlur: React.FocusEventHandler<HTMLElement> = event => {
+        const {tabList} = this.state;
+        tabList.focusValue(undefined);
+        this.setState({focused: false, tabList});
+    }
+
+    private handleTabListFocus: React.FocusEventHandler<HTMLElement> = event => {
+        const {tabList} = this.state;
+        const selected = tabList.getSelectedValue();
+        tabList.focusValue(selected);
+        this.setState({focused: true, tabList});
+    }
+
+    private handleTabListKeyDown: React.KeyboardEventHandler<HTMLElement> = event => {
+        const {tabList} = this.state;
+        const context = this.context;
+        switch (event.keyCode) {
+            case KeyCode.enter:
+                event.preventDefault();
+                const focused = tabList.getFocusedValue();
+                tabList.selectValue(focused);
+                this.setState({tabList});
+                focused !== undefined ?
+                    this.props.onChange({value: focused}) :
+                    null;
+                break;
+            case KeyCode.up:
+                event.preventDefault();
+                tabList.focusPrevious();
+                this.setState({tabList});
+                break;
+            case KeyCode.down:
+                event.preventDefault();
+                tabList.focusNext();
+                this.setState({tabList});
+                break;
+            case KeyCode.left:
+                event.preventDefault();
+                // tabList.focusPrevious();
+                isRTLContext(context) ?
+                    tabList.focusNext() :
+                    tabList.focusPrevious();
+                this.setState({tabList});
+                break;
+            case KeyCode.right:
+                event.preventDefault();
+                // tabList.focusNext();
+                isRTLContext(context) ?
+                    tabList.focusPrevious() :
+                    tabList.focusNext();
+                this.setState({tabList});
+                break;
+        }
+    }
+}
 
 const isTabElement = (
     child: React.ReactChild
@@ -80,6 +181,9 @@ const renderTabItem = (
         </Option>
     );
 };
+
+const renderTabItems = (children: React.ReactNode) =>
+    tabElements(children).map(renderTabItem);
 
 const renderTab = (
     selected: string | undefined

@@ -2,8 +2,9 @@ import * as React from 'react';
 
 import {codes as KeyCodes} from 'keycode';
 import {ClientRenderer, expect, sinon} from 'test-drive-react';
+import {ContextProvider} from '../../src/components/context-provider';
 import {Tab, Tabs} from '../../src/components/tabs';
-import {TabsDriver} from '../../test-kit';
+import {RTLTabsDriver, TabsDriver} from '../../test-kit';
 
 function assertOnChange(
     onChange: sinon.SinonSpy,
@@ -15,7 +16,10 @@ function assertOnChange(
 
 describe('<Tabs />', () => {
     const clientRenderer = new ClientRenderer();
-    const render = (component: React.ReactElement<any>) => clientRenderer.render(component).withDriver(TabsDriver);
+    const render = (component: React.ReactElement<any>) =>
+        clientRenderer.render(component).withDriver(TabsDriver);
+    const renderRTL = (component: React.ReactElement<any>) =>
+        clientRenderer.render(component).withDriver(RTLTabsDriver);
     afterEach(() => clientRenderer.cleanup());
 
     it('should render a tabList and a tabPanel', () => {
@@ -156,6 +160,57 @@ describe('<Tabs />', () => {
                 driver.tabListPressEnter();
 
                 assertOnChange(onChange, '1');
+            });
+        });
+
+    });
+
+    describe('horizontal RTL', () => {
+        describe('left key and enter', () => {
+            it('should select next tab', async () => {
+                const onChange = sinon.spy();
+                const {driver} = renderRTL(
+                    <ContextProvider dir="rtl">
+                        <Tabs orientation="horizontal-top" value="0" onChange={onChange}>
+                            <Tab label="Tab One" value="0">
+                                <span data-automation-id="FIRST_TAB">Tab One Content</span>
+                            </Tab>
+                            <Tab label="Tab Two" value="1">
+                                <span data-automation-id="SECOND_TAB">Tab Two Content</span>
+                            </Tab>
+                        </Tabs>
+                    </ContextProvider>
+                );
+
+                driver.tabListFocus();
+                driver.tabListKeyDown(KeyCodes.left);
+                driver.tabListPressEnter();
+
+                assertOnChange(onChange, '1');
+            });
+        });
+
+        describe('right key and enter', () => {
+            it('should select previous tab', async () => {
+                const onChange = sinon.spy();
+                const {driver} = renderRTL(
+                    <ContextProvider dir="rtl">
+                        <Tabs orientation="horizontal-top" value="1" onChange={onChange}>
+                            <Tab label="Tab One" value="0">
+                                <span data-automation-id="FIRST_TAB">Tab One Content</span>
+                            </Tab>
+                            <Tab label="Tab Two" value="1">
+                                <span data-automation-id="SECOND_TAB">Tab Two Content</span>
+                            </Tab>
+                        </Tabs>
+                    </ContextProvider>
+                );
+
+                driver.tabListFocus();
+                driver.tabListKeyDown(KeyCodes.right);
+                driver.tabListPressEnter();
+
+                assertOnChange(onChange, '0');
             });
         });
 
