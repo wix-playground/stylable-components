@@ -4,3 +4,4 @@ export const onePixelBlack: string = 'data:image/png;base64,iVBORw0KGgoAAAANSUhE
 export const onePixelBlue: string = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+P//PwAGBAL/VJiKjgAAAABJRU5ErkJggg==';
 
 export const brokenSrc = 'data:image/png;base64,this-is-broken!';
+export const brokenSrc2 = 'data:image/png;base64,this-is-also-broken!';

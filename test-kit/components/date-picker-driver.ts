@@ -1,6 +1,8 @@
 import {DriverBase, selectDom, simulate, trigger} from 'test-drive-react';
 import {DatePicker} from '../../src';
+import baseStyle from '../../src/components/date-picker/date-picker.st.css';
 import {getDayNames} from '../../src/utils';
+import {elementHasStylableState} from '../utils';
 
 const bodySelect = selectDom(document.body);
 const datePickerDropdown = 'DATE_PICKER_DROPDOWN';
@@ -95,5 +97,9 @@ export class DatePickerTestDriver extends DriverBase {
 
     public get monthLabel(): HTMLSpanElement | null {
         return bodySelect(datePickerDropdown, 'MONTH_NAME');
+    }
+
+    public elementHasStylableState(stateName: string): boolean {
+        return elementHasStylableState(this.root, baseStyle, stateName);
     }
 }
