@@ -99,7 +99,10 @@ export class SelectionList extends React.Component<SelectionListProps> {
     }
 
     private handleMouseDown = (event: React.MouseEvent<HTMLElement>, itemIndex: number) => {
-        if (event.button === 0 && itemIndex > -1 && this.list.focusIndex(itemIndex)) {
+        if (!event.defaultPrevented) {
+            if (event.button === 0 && itemIndex > -1) {
+                this.list.focusIndex(itemIndex);
+            }
             this.focused = true;
         }
     }
