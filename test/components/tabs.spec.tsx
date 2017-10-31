@@ -25,18 +25,10 @@ describe('<Tabs />', () => {
     it('should render a tabList and a tabPanel', () => {
         const {driver} = render(
             <Tabs>
-                <Tab
-                    label={
-                        <span data-automation-id="TAB_1">Tab One</span>
-                    }
-                >
+                <Tab label={<span data-automation-id="TAB_1">Tab One</span>}>
                     Tab One Content
                 </Tab>
-                <Tab
-                    label={
-                        <span data-automation-id="TAB_2">Tab Two</span>
-                    }
-                >
+                <Tab label={<span data-automation-id="TAB_2">Tab Two</span>}>
                     Tab Two Content
                 </Tab>
             </Tabs>

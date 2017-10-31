@@ -48,13 +48,11 @@
 
 .tabList Option {
     width: auto;
-    box-sizing: border-box;
     flex-shrink: 0;
     padding: 18px;
     border: none;
     background: transparent;
 }
-
 
 .tabList Option:selected:hover:not(:disabled),
 .tabList:focused Option:selected:hover:not(:disabled),
@@ -64,6 +62,7 @@
 
     border: none;
     border-bottom: value(borderStyle) 2px value(color_Focus);
+    padding-bottom: 16px;
 
     background: transparent;
 }
@@ -98,6 +97,7 @@
 .root:horizontal-bottom .tabList Option:selected:not(:disabled) {
     border: none;
     border-top: value(borderStyle) 2px value(color_Focus);
+    padding-top: 16px;
 }
 
 .root:vertical-before {
@@ -119,14 +119,16 @@
     border-left: value(borderDefault);
 }
 
-.root:vertical-before .tabList Option:selected:hover,
-.root:vertical-before .tabList Option:selected {
+.root:not(:rtl):vertical-before .tabList Option:selected:hover,
+.root:not(:rtl):vertical-before .tabList Option:selected {
     border: none;
     border-right: value(borderStyle) 2px value(color_Focus);
+    padding-right: 16px;
 }
 
 .root:rtl:vertical-before .tabList Option:selected:hover,
 .root:rtl:vertical-before .tabList Option:selected {
     border: none;
     border-left: value(borderStyle) 2px value(color_Focus);
+    padding-left: 16px;
 }
