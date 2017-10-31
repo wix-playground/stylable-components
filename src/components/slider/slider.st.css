@@ -1,59 +1,7 @@
 @namespace "Slider";
 
-:import {
-    -st-from: "../../project.st.css";
-    -st-named:
-        color_Border,
-        M0,
-        PR2,
-        STC5,
-        PR4,
-        BK1,
-        BK2,
-        BK3,
-        DS1,
-        DS2,
-        ER1,
-        PR2,
-        WT1;
-}
-
 :vars {
-    colorTrack: value(BK3);
-    colorTrack_Hover: value(BK2);
-    colorProgress: value(PR2);
-    colorProgress_Hover: value(PR2);
-    colorHandle: value(WT1);
-    colorHandle_Hover: value(PR4);
-    colorHandle_Active: value(PR2);
-    colorHandle_Focus: rgba(92, 180, 255, 0.5);
-    colorHandleBorder: value(BK2);
-    colorHandle_Disabled: value(DS2);
-    color_Error: value(ER1);
-    color_Disabled: value(DS1);
-
-    markSize: 8px;
-    markRadius: 50%;
-    markMiddleOfBar: -2px;
-    markMiddleOfDot: -4px;
-
-    focusSize: 4px;
-
-    handleSize: 16px;
-    handleWidth: value(handleSize);
-    handleHeight: value(handleSize);
-    handleRadius: 50%;
-    handleBorder: 1px solid value(BK2);
-    handleBorderHover: 1px solid value(PR2);
-
     trackSize: 4px;
-    trackRadius: 0px;
-
-    middleOfBar: -6px;
-    middleOfHandle: -8px;
-
-    minVerticalSliderHeight: 44px;
-    clickableAreaRadius: 15px;
 }
 
 .nativeInput {
@@ -78,234 +26,85 @@
     -webkit-touch-callout: none;
 }
 
-.root:x {
+.root:disabled {
+    pointer-events: none;
+    cursor: not-allowed;
+}
+
+.root:x, .root:xReverse {
     width: 100%;
-    padding: value(clickableAreaRadius) 0;
 }
-
-.root:xReverse {
-    width: 100%;
-    padding: value(clickableAreaRadius) 0;
-}
-
-.root:y {
-    min-height: value(minVerticalSliderHeight);
+.root:y, .root:yReverse {
     height: 100%;
-    padding: 0 value(clickableAreaRadius);
-}
-
-.root:yReverse {
-    min-height: value(minVerticalSliderHeight);
-    height: 100%;
-    padding: 0 value(clickableAreaRadius);
 }
 
 .bar {
-    position: relative;
-    border-radius: value(trackRadius);
-    background-color: value(colorTrack);
+    position: absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    margin:auto;
+    
 }
 
-.root:x .bar{
+.root:x .bar, .root:xReverse .bar {
     height: value(trackSize);
     width: 100%;
 }
 
-.root:xReverse .bar{
-    height: value(trackSize);
-    width: 100%;
-}
-
-.root:y .bar{
+.root:y .bar, .root:yReverse .bar {
     text-align: left;
     width: value(trackSize);
     height: 100%;
-    min-height: value(minVerticalSliderHeight);
-}
-
-.root:yReverse .bar{
-    text-align: left;
-    width: value(trackSize);
-    height: 100%;
-    min-height: value(minVerticalSliderHeight);
 }
 
 .rangeBar {
     position: absolute;
-    background-color: value(colorProgress);
-    border-radius: value(trackRadius);
 }
 
-.root:x .rangeBar{
+.root:x .rangeBar, .root:xReverse .rangeBar{
+    height: inherit;
+}
+
+.root:x .rangeBar {
     left: 0;
-    height: inherit;
 }
 
-.root:xReverse .rangeBar{
+.root:xReverse .rangeBar {
     right: 0;
-    height: inherit;
 }
 
-.root:y .rangeBar{
+.root:y .rangeBar, .root:yReverse .rangeBar{
     bottom: 0;
-    width: inherit;
-}
-
-.root:yReverse .rangeBar{
-    top: 0;
     width: inherit;
 }
 
 .handle {
     -st-states: active;
     position: absolute;
-    width: value(handleWidth);
-    height: value(handleHeight);
-    border-radius: value(handleRadius);
-    background-color: value(colorHandle);
-    border: solid 1px;
-    border-color: value(handleBorder);
     box-sizing: border-box;
-}
-.handle:hover {
-    box-shadow: none;
-    background-color: value(colorHandle_Active);
-    border-color: value(colorHandle_Active);
-}
-.handle:active {
     z-index: 1;
 }
+
+.handle:active {
+    z-index: 2;
+}
+
 .handle:active .tooltip {
     display: block;
 }
+
 .handle:hover .tooltip {
     display: block;
 }
 
-.root:x .handle{
-    margin: value(middleOfBar) 0 0 value(middleOfHandle);
-}
+.mark {}
 
-.root:xReverse .handle{
-    margin: value(middleOfBar) value(middleOfHandle) 0px 0px;
-}
-
-.root:y .handle{
-    margin: 0px 0px value(middleOfHandle) value(middleOfBar);
-}
-
-.root:yReverse .handle{
-    margin: value(middleOfHandle) 0px 0px value(middleOfBar);
-}
+.rangeMark {}
 
 .rangeMark,
 .mark
 {
-    width: value(markSize);
-    height: value(markSize);
     position: absolute;
-    border-radius: value(markRadius);
-}
-.rangeMark{
-    background-color: value(colorProgress);
-}
-.mark{
-    background-color: value(colorTrack);
-}
-
-
-.root:x .rangeMark,
-.root:x .mark
-{
-    margin: value(markMiddleOfBar) 0 0 value(markMiddleOfDot);
-}
-
-.root:xReverse .rangeMark,
-.root:xReverse .mark
-{
-    margin: value(markMiddleOfBar) value(markMiddleOfDot) 0 0;
-}
-
-.root:y .rangeMark,
-.root:y .mark
-{
-    margin: 0 0 value(markMiddleOfDot) value(markMiddleOfBar);
-}
-
-.root:yReverse .rangeMark,
-.root:yReverse .mark
-{
-    margin: value(markMiddleOfDot) 0 0 value(markMiddleOfBar);
-}
-
-/* Hover state */
-.root:hover .bar {
-    background-color: value(colorTrack_Hover);
-}
-
-.root:hover .mark {
-    background-color: value(colorTrack_Hover);
-}
-
-.root:hover .handle {
-    background-color: value(colorHandle_Hover);
-    border-color: value(colorHandle_Active);
-}
-
-/* Focus state */
-.handle:focus {
-    box-shadow: 0 0 0 value(focusSize) value(colorHandle_Focus);
-    outline: none;
-}
-
-/* Active state */
-.root:active .bar {
-    background-color: value(colorTrack);
-}
-
-.root:active:hover .bar {
-    background-color: value(colorTrack);
-}
-
-.root:active .mark {
-    background-color: value(colorTrack);
-}
-
-.root:active .rangeBar {
-    background-color: value(colorProgress);
-}
-
-/* Disabled state */
-.root:disabled {
-    pointer-events: none;
-    cursor: not-allowed;
-}
-
-.root:disabled .handle {
-    border-color: value(color_Disabled);
-    background-color: value(colorHandle_Disabled);
-}
-
-.root:disabled .bar {
-    background-color: value(color_Disabled);
-}
-
-.root:disabled .mark {
-    background-color: value(color_Disabled);
-}
-
-.root:disabled .rangeBar {
-    background-color: transparent;
-}
-
-/* Error state */
-.root:error .rangeMark,
-.root:error .rangeBar
-{
-    background-color: value(color_Error);
-}
-.root:active:error .handle,
-.root:active:error:hover .handle {
-    background-color: value(color_Error);
-    border-color: value(color_Error);
 }
