@@ -4542,9 +4542,9 @@ tslint-react@^3.1.0:
   dependencies:
     tsutils "^2.8.0"
 
-tslint-wix-react@^4.1.0:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/tslint-wix-react/-/tslint-wix-react-4.1.0.tgz#11e7c1a13266895544c101f812d12a17b17ef7be"
+tslint-wix-react@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/tslint-wix-react/-/tslint-wix-react-5.0.0.tgz#940f3b2c063e152997104a4e57081867c8e985fa"
   dependencies:
     tslint-eslint-rules "^4.1.1"
     tslint-react "^3.1.0"
