@@ -11,7 +11,7 @@
     "lint": "tslint \"@(src|demo|test|test-kit)/**/*.ts?(x)\" -c tslint.json -p tsconfig.json",
     "test": "npm run lint && npm run test:browser && npm run test:node",
     "test:browser": "karma start --single-run",
-    "test:node": "mocha --require ts-node/register --require stylable-integration/require \"./test/node/**/*.node-spec.ts?(x)\"",
+    "test:node": "mocha \"./test/node/**/*.node-spec.ts?(x)\" --watch-extensions ts,tsx --require ts-node/register --require stylable-integration/require",
     "start": "webpack-dev-server --progress"
   },
   "peerDependencies": {
