@@ -12,7 +12,8 @@ export class TypeAhead {
     public handleEvent(event: React.KeyboardEvent<Element>): number {
         const char = event.key;
 
-        // Even though alt can be used to type symbols and letters, native select controls ignore alt-combinations.
+        // Even though alt codes can be used to type characters, native select controls ignore them.
+        // For the sake of simplicity we also ignore code points outside of the Basic Multilingual Plane.
         if (event.metaKey || event.altKey || event.ctrlKey || !char || char.length !== 1) {
             return -1;
         }
