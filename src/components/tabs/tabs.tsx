@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {properties} from 'wix-react-tools';
 import {ChangeEvent} from '../../types/events';
-import {TabsView, TabsViewProps} from './tabs-view';
+import {tabElements, TabsView, TabsViewProps} from './tabs-view';
 
 export type TabsOrientation
     = 'horizontal-top'
@@ -13,15 +13,35 @@ export interface TabsProps extends properties.Props, Partial<TabsViewProps> {
     defaultValue?: TabsViewProps['value'];
 }
 
+export interface TabsState {
+    selected?: TabsViewProps['value'];
+}
+
 @properties
-export class Tabs extends React.Component<TabsProps> {
+export class Tabs extends React.Component<TabsProps, TabsState> {
     public static defaultProps: Partial<TabsProps> = {
         orientation: 'horizontal-top'
     };
 
+    constructor({value, defaultValue, children}: TabsProps) {
+        super();
+
+        this.state = {
+            selected: getSelectedValue(value, defaultValue, children)
+        };
+    }
+
+    public componentWillReceiveProps({value, defaultValue}: TabsProps) {
+        if (this.isControlled) {
+            if (value !== this.props.value) {
+                this.setState({selected: value});
+            }
+        }
+    }
+
     public render() {
         const {value, defaultValue, ...rest} = this.props;
-        const selected = defaultValue || value;
+        const {selected} = this.state;
 
         return (
             <TabsView
@@ -32,6 +52,29 @@ export class Tabs extends React.Component<TabsProps> {
         );
     }
 
-    private handleChange = (event: ChangeEvent<string>) =>
-        typeof this.props.onChange === 'function' ? this.props.onChange(event) : null
+    private handleChange = (event: ChangeEvent<string>) => {
+        if (this.isControlled && this.props.onChange !== undefined) {
+            this.props.onChange(event);
+        } else {
+            this.setState({selected: event.value});
+        }
+    }
+
+    private get isControlled() {
+        return this.props.value !== undefined;
+    }
+}
+
+function getSelectedValue(
+    value: TabsProps['value'],
+    defaultValue: TabsProps['value'],
+    children: TabsProps['children']
+): TabsState['selected'] {
+    if (value !== undefined) {
+        return value;
+    }
+    if (defaultValue !== undefined) {
+        return defaultValue;
+    }
+    return '0';
 }

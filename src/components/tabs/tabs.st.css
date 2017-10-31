@@ -93,8 +93,8 @@
     border-top: value(borderDefault);
 }
 
-.root:horizontal-bottom .tabList Option:selected:hover:not(:disabled),
-.root:horizontal-bottom .tabList Option:selected:not(:disabled) {
+.root:horizontal-bottom .tabList Option:selected:hover,
+.root:horizontal-bottom .tabList Option:selected {
     border: none;
     border-top: value(borderStyle) 2px value(color_Focus);
     padding-top: 16px;

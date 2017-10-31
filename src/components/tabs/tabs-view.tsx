@@ -177,7 +177,7 @@ const isTabElement = (
 ): child is React.ReactElement<TabProps> =>
     typeof child !== 'string' && typeof child !== 'number';
 
-const tabElements = (
+export const tabElements = (
     children: React.ReactNode
 ): Array<React.ReactElement<TabProps>> =>
     React.Children.toArray(children).filter(isTabElement);

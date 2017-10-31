@@ -134,7 +134,19 @@ export class TabsDemo extends React.Component {
                             </td>
                         </tr>
                     </tbody></table>
-                </div>
+                    <label>Uncontrolled</label>
+                    <Tabs defaultValue="2">
+                        <Tab value="1" label="Tab One">
+                            <p>This is tab one</p>
+                        </Tab>
+                        <Tab value="2" label="Tab Two">
+                            <p>This is tab two</p>
+                        </Tab>
+                        <Tab value="3" label="Tab Three" disabled={true}>
+                            <p>This is disabled and cannot be selected</p>
+                        </Tab>
+                    </Tabs>
+                    </div>
             </div>
         );
     }

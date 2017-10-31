@@ -3,7 +3,7 @@ import * as React from 'react';
 import {codes as KeyCodes} from 'keycode';
 import {ClientRenderer, expect, sinon} from 'test-drive-react';
 import {ContextProvider} from '../../src/components/context-provider';
-import {Tab, Tabs} from '../../src/components/tabs';
+import {Tab, Tabs, TabsProps} from '../../src/components/tabs';
 import {RTLTabsDriver, TabsDriver} from '../../test-kit';
 
 function assertOnChange(
@@ -38,41 +38,6 @@ describe('<Tabs />', () => {
         expect(driver.selectTabItem('TAB_1')).to.be.present();
         expect(driver.selectTabItem('TAB_2')).to.be.present();
         expect(driver.tabPanel).to.be.present();
-    });
-
-    describe('defaultValue', () => {
-
-        it('should render corresponding tab as active', async () => {
-            const {select} = clientRenderer.render(
-                <Tabs defaultValue="1">
-                    <Tab label="Tab One">
-                        <span data-automation-id="FIRST_TAB">Tab One Content</span>
-                    </Tab>
-                    <Tab label="Tab Two">
-                        <span data-automation-id="SECOND_TAB">Tab Two Content</span>
-                    </Tab>
-                </Tabs>
-            );
-            expect(select('FIRST_TAB')).not.to.be.present();
-            expect(select('SECOND_TAB')).to.be.present();
-        });
-
-        describe('undefined', () => {
-            it('should not render any tabs', async () => {
-                const {driver} = render(
-                    <Tabs>
-                        <Tab label="Tab One">
-                            <span data-automation-id="FIRST_TAB">Tab One Content</span>
-                        </Tab>
-                        <Tab label="Tab Two">
-                            <span data-automation-id="SECOND_TAB">Tab Two Content</span>
-                        </Tab>
-                    </Tabs>
-                );
-                expect(driver.selectTabContent('FIRST_TAB')).not.to.be.present();
-                expect(driver.selectTabContent('SECOND_TAB')).not.to.be.present();
-            });
-        });
     });
 
     describe('vertical', () => {
@@ -217,5 +182,75 @@ describe('<Tabs />', () => {
             });
         });
 
+    });
+
+    describe('uncontrolled', () => {
+        describe('defaultValue', () => {
+            it('should render corresponding tab as active', async () => {
+                const {driver} = render(
+                    <Tabs defaultValue="1">
+                        <Tab label="Tab One">
+                            <span data-automation-id="FIRST_TAB">Tab One Content</span>
+                        </Tab>
+                        <Tab label="Tab Two">
+                            <span data-automation-id="SECOND_TAB">Tab Two Content</span>
+                        </Tab>
+                    </Tabs>
+                );
+                expect(driver.selectTabContent('FIRST_TAB')).not.to.be.present();
+                expect(driver.selectTabContent('SECOND_TAB')).to.be.present();
+            });
+
+            it('should render the first tab as active when undefined', async () => {
+                const {driver} = render(
+                    <Tabs>
+                        <Tab label="Tab One">
+                            <span data-automation-id="FIRST_TAB">Tab One Content</span>
+                        </Tab>
+                        <Tab label="Tab Two">
+                            <span data-automation-id="SECOND_TAB">Tab Two Content</span>
+                        </Tab>
+                    </Tabs>
+                );
+
+                expect(driver.selectTabContent('FIRST_TAB')).to.be.present();
+                expect(driver.selectTabContent('SECOND_TAB')).not.to.be.present();
+            });
+        });
+
+        it('should change tabs on user interactions', async () => {
+            const {driver} = render(
+                <Tabs defaultValue="0">
+                    <Tab label="Tab One">
+                        <span data-automation-id="FIRST_TAB">Tab One Content</span>
+                    </Tab>
+                    <Tab label="Tab Two">
+                        <span data-automation-id="SECOND_TAB">Tab Two Content</span>
+                    </Tab>
+                </Tabs>
+            );
+
+            expect(
+                driver.selectTabContent('FIRST_TAB'),
+                'initial: first tab is active'
+            ).to.be.present();
+            expect(
+                driver.selectTabContent('SECOND_TAB'),
+                'initial: second tab is not active'
+            ).not.to.be.present();
+
+            driver.tabListFocus();
+            driver.tabListKeyDown(KeyCodes.right);
+            driver.tabListPressEnter();
+
+            expect(
+                driver.selectTabContent('FIRST_TAB'),
+                'result: first tab is active'
+            ).not.to.be.present();
+            expect(
+                driver.selectTabContent('SECOND_TAB'),
+                'result: second tab is not active'
+            ).to.be.present();
+        });
     });
 });
