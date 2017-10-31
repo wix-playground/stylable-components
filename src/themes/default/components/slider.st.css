@@ -1,4 +1,8 @@
-/* Slider */
+:import {
+	-st-from: "../../../components/slider/slider.st.css";
+	-st-default: Slider;
+}
+
 Slider {
     width:288px;
 }
