@@ -55,8 +55,11 @@
     background: transparent;
 }
 
-.tabList Option:selected:hover,
-.tabList Option:selected {
+
+.tabList Option:selected:hover:not(:disabled),
+.tabList:focused Option:selected:hover:not(:disabled),
+.tabList Option:selected:not(:disabled),
+.tabList:focused Option:selected:not(:disabled) {
     color: value(color_Focus);
 
     border: none;
@@ -65,9 +68,10 @@
     background: transparent;
 }
 
-.tabList Option:hover,
-.tabList Option:focused {
+.tabList Option:hover:not(:disabled),
+.tabList Option:focused:not(:disabled) {
     color: value(color_Focus);
+    background: transparent;
 }
 
 .tabList Option:disabled {
@@ -90,8 +94,8 @@
     border-top: value(borderDefault);
 }
 
-.root:horizontal-bottom .tabList Option:selected:hover,
-.root:horizontal-bottom .tabList Option:selected {
+.root:horizontal-bottom .tabList Option:selected:hover:not(:disabled),
+.root:horizontal-bottom .tabList Option:selected:not(:disabled) {
     border: none;
     border-top: value(borderStyle) 2px value(color_Focus);
 }
