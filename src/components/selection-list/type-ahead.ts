@@ -1,7 +1,6 @@
 export class TypeAhead {
     private timeout: number = 1000;
     private lastTypeTime: number = 0;
-    private repeatingChar: string = '';
     private prefix: string = '';
 
     constructor(
@@ -27,24 +26,19 @@ export class TypeAhead {
         this.prefix += char;
 
         // We want to simultaneously support two modes:
-        // 1) Cycling through items that start with a certain letter by repeatedly pressing said letter.
+        // 1) Cycling through items that start with a certain letter by repeatedly pressing this letter.
         //    I.e. pressing "a" twice should not jump to "aardvark", it should cycle through all animals
         //    starting with "a".
         // 2) Matching based on prefix: typing "aar" should jump to "aardvark".
 
-        if (char === this.repeatingChar) {
-            return this.findByPrefix(char, this.getCurrentIndex() + 1);
-        } else if (this.prefix.length > 1) {
-            this.repeatingChar = '';
-            return this.findByPrefix(this.prefix, Math.max(this.getCurrentIndex(), 0));
-        } else {
-            this.repeatingChar = char;
-            return this.findByPrefix(char, this.getCurrentIndex() + 1);
-        }
+        return /^(.)\1*$/i.test(this.prefix) ?
+            this.findByPrefix(char, this.getCurrentIndex() + 1) :
+            this.findByPrefix(this.prefix, this.getCurrentIndex());
     }
 
     private findByPrefix(prefix: string, startIndex: number): number {
         prefix = prefix.toLowerCase();
+        startIndex = Math.max(0, startIndex);
         const itemCount = this.getItemCount();
         for (let i = 0; i < itemCount; i++) {
             const itemIndex = (i + startIndex) % itemCount;
