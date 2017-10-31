@@ -147,6 +147,9 @@ export class SelectionList extends React.Component<SelectionListProps> {
                 event.preventDefault();
                 this.list.focusLast();
                 break;
+
+            default:
+                this.list.focusUsingTypeAhead(event);
         }
     }
 }

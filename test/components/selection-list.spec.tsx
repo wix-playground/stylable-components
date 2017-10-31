@@ -187,8 +187,8 @@ describe('<SelectionList />', () => {
 
             await waitForDom(() => expect(list.root).to.be.present());
             list.focus();
-            list.keyDown(keycode('down'));
-            list.keyDown(keycode('enter'));
+            list.keyDown({keyCode: keycode('down')});
+            list.keyDown({keyCode: keycode('enter')});
             await waitForDom(() => {
                 expect(onChange).to.have.been.calledOnce.calledWithExactly({value: '+1'});
             });
@@ -202,8 +202,8 @@ describe('<SelectionList />', () => {
 
             await waitForDom(() => expect(list.root).to.be.present());
             list.focus();
-            list.keyDown(keycode('up'));
-            list.keyDown(keycode('enter'));
+            list.keyDown({keyCode: keycode('up')});
+            list.keyDown({keyCode: keycode('enter')});
             await waitForDom(() => {
                 expect(onChange).to.have.been.calledOnce.calledWithExactly({value: '-1'});
             });
@@ -217,8 +217,8 @@ describe('<SelectionList />', () => {
 
             await waitForDom(() => expect(list.root).to.be.present());
             list.focus();
-            list.keyDown(keycode('home'));
-            list.keyDown(keycode('enter'));
+            list.keyDown({keyCode: keycode('home')});
+            list.keyDown({keyCode: keycode('enter')});
             await waitForDom(() => {
                 expect(onChange).to.have.been.calledOnce.calledWithExactly({value: '-2'});
             });
@@ -232,8 +232,8 @@ describe('<SelectionList />', () => {
 
             await waitForDom(() => expect(list.root).to.be.present());
             list.focus();
-            list.keyDown(keycode('end'));
-            list.keyDown(keycode('enter'));
+            list.keyDown({keyCode: keycode('end')});
+            list.keyDown({keyCode: keycode('enter')});
             await waitForDom(() => {
                 expect(onChange).to.have.been.calledOnce.calledWithExactly({value: '+2'});
             });
@@ -247,8 +247,8 @@ describe('<SelectionList />', () => {
 
             await waitForDom(() => expect(list.root).to.be.present());
             list.focus();
-            list.keyDown(keycode('down'));
-            list.keyDown(keycode('enter'));
+            list.keyDown({keyCode: keycode('down')});
+            list.keyDown({keyCode: keycode('enter')});
             await waitForDom(() => {
                 expect(onChange).to.have.been.calledOnce.calledWithExactly({value: '-2'});
             });
@@ -262,8 +262,8 @@ describe('<SelectionList />', () => {
 
             await waitForDom(() => expect(list.root).to.be.present());
             list.focus();
-            list.keyDown(keycode('up'));
-            list.keyDown(keycode('enter'));
+            list.keyDown({keyCode: keycode('up')});
+            list.keyDown({keyCode: keycode('enter')});
             await waitForDom(() => {
                 expect(onChange).to.have.been.calledOnce.calledWithExactly({value: '+2'});
             });
@@ -277,8 +277,8 @@ describe('<SelectionList />', () => {
 
             await waitForDom(() => expect(list.root).to.be.present());
             list.focus();
-            list.keyDown(keycode('down'));
-            list.keyDown(keycode('enter'));
+            list.keyDown({keyCode: keycode('down')});
+            list.keyDown({keyCode: keycode('enter')});
             await waitForDom(() => {
                 expect(onChange).to.have.been.calledOnce.calledWithExactly({value: '+1'});
             });
@@ -287,16 +287,206 @@ describe('<SelectionList />', () => {
         it(`Selects item on 'Space' press`, async () => {
             const onChange = sinon.spy();
             const {driver: list, waitForDom} = clientRenderer.render(
-                <SelectionList  dataSource={['-2', '-1', '0', '+1', '+2']} value="0" onChange={onChange} />
+                <SelectionList dataSource={['-2', '-1', '0', '+1', '+2']} value="0" onChange={onChange} />
             ).withDriver(SelectionListTestDriver);
 
             await waitForDom(() => expect(list.root).to.be.present());
             list.focus();
-            list.keyDown(keycode('down'));
-            list.keyDown(keycode('space'));
+            list.keyDown({keyCode: keycode('down')});
+            list.keyDown({keyCode: keycode('space')});
             await waitForDom(() => {
                 expect(onChange).to.have.been.calledOnce.calledWithExactly({value: '+1'});
             });
+        });
+    });
+
+    describe('Type ahead', async () => {
+        it(`Matches items by prefix`, async () => {
+            const items = [
+                {value: 0, label: 'collie'},
+                {value: 1, label: 'coyote'},
+                {value: 2, label: 'cow'}
+            ];
+
+            const {driver: list, waitForDom} = clientRenderer.render(
+                <SelectionList dataSource={items} />
+            ).withDriver(SelectionListTestDriver);
+
+            await waitForDom(() => expect(list.root).to.be.present());
+            list.focus();
+            list.keyDown({keyCode: keycode('c'), key: 'c'});
+            list.keyDown({keyCode: keycode('o'), key: 'o'});
+            list.keyDown({keyCode: keycode('y'), key: 'y'});
+            expect(list.optionHasStylableState(list.items[1], 'focused')).to.equal(true);
+        });
+
+        it(`Is case-insensitive and works with non-latin scripts`, async () => {
+            const items = [
+                {value: 0, label: 'кОлЛи'},
+                {value: 1, label: 'кОйОт'},
+                {value: 2, label: 'кОрОвА'}
+            ];
+
+            const {driver: list, waitForDom} = clientRenderer.render(
+                <SelectionList dataSource={items} />
+            ).withDriver(SelectionListTestDriver);
+
+            await waitForDom(() => expect(list.root).to.be.present());
+            list.focus();
+            list.keyDown({keyCode: keycode('r'), key: 'к'});
+            list.keyDown({keyCode: keycode('j'), key: 'о'});
+            list.keyDown({keyCode: keycode('q'), key: 'й'});
+            expect(list.optionHasStylableState(list.items[1], 'focused')).to.equal(true);
+        });
+
+        it(`Skips disabled items`, async () => {
+            const items = [
+                {value: 0, label: 'collie', disabled: true},
+                {value: 1, label: 'coyote'},
+                {value: 2, label: 'cow'}
+            ];
+
+            const {driver: list, waitForDom} = clientRenderer.render(
+                <SelectionList dataSource={items} />
+            ).withDriver(SelectionListTestDriver);
+
+            await waitForDom(() => expect(list.root).to.be.present());
+            list.focus();
+            list.keyDown({keyCode: keycode('c'), key: 'c'});
+            list.keyDown({keyCode: keycode('o'), key: 'o'});
+            expect(list.optionHasStylableState(list.items[1], 'focused')).to.equal(true);
+        });
+
+        it(`Doesn't change focus when no match is found`, async () => {
+            const items = [
+                {value: 0, label: 'collie'},
+                {value: 1, label: 'coyote'},
+                {value: 2, label: 'cow'}
+            ];
+
+            const {driver: list, waitForDom} = clientRenderer.render(
+                <SelectionList dataSource={items} />
+            ).withDriver(SelectionListTestDriver);
+
+            await waitForDom(() => expect(list.root).to.be.present());
+            list.focus();
+            list.keyDown({keyCode: keycode('c'), key: 'c'});
+            list.keyDown({keyCode: keycode('o'), key: 'o'});
+            list.keyDown({keyCode: keycode('c'), key: 'c'});
+            list.keyDown({keyCode: keycode('o'), key: 'o'});
+            expect(list.optionHasStylableState(list.items[0], 'focused')).to.equal(true);
+        });
+
+        it(`Starts matching at the current position`, async () => {
+            const items = [
+                {value: 0, label: 'collie'},
+                {value: 1, label: 'demogorgon'},
+                {value: 2, label: 'cow'}
+            ];
+
+            const {driver: list, waitForDom} = clientRenderer.render(
+                <SelectionList dataSource={items} value={1} />
+            ).withDriver(SelectionListTestDriver);
+
+            await waitForDom(() => expect(list.root).to.be.present());
+            list.focus();
+            list.keyDown({keyCode: keycode('c'), key: 'c'});
+            list.keyDown({keyCode: keycode('o'), key: 'o'});
+            expect(list.optionHasStylableState(list.items[2], 'focused')).to.equal(true);
+        });
+
+        it(`Wraps around after reaching the end`, async () => {
+            const items = [
+                {value: 0, label: 'collie'},
+                {value: 1, label: 'demogorgon'},
+                {value: 2, label: 'mind flayer'}
+            ];
+
+            const {driver: list, waitForDom} = clientRenderer.render(
+                <SelectionList dataSource={items} value={1} />
+            ).withDriver(SelectionListTestDriver);
+
+            await waitForDom(() => expect(list.root).to.be.present());
+            list.focus();
+            list.keyDown({keyCode: keycode('c'), key: 'c'});
+            list.keyDown({keyCode: keycode('o'), key: 'o'});
+            expect(list.optionHasStylableState(list.items[0], 'focused')).to.equal(true);
+        });
+
+        it(`Cycles through items starting with a certain character when it's pressed repeatedly`, async () => {
+            const items = [
+                {value: 0, label: 'collie'},
+                {value: 1, label: 'coyote'},
+                {value: 2, label: 'cow'}
+            ];
+
+            const {driver: list, waitForDom} = clientRenderer.render(
+                <SelectionList dataSource={items} />
+            ).withDriver(SelectionListTestDriver);
+
+            await waitForDom(() => expect(list.root).to.be.present());
+            list.focus();
+            list.keyDown({keyCode: keycode('c'), key: 'c'});
+            expect(list.optionHasStylableState(list.items[0], 'focused')).to.equal(true);
+            list.keyDown({keyCode: keycode('c'), key: 'c'});
+            expect(list.optionHasStylableState(list.items[1], 'focused')).to.equal(true);
+            list.keyDown({keyCode: keycode('c'), key: 'c'});
+            expect(list.optionHasStylableState(list.items[2], 'focused')).to.equal(true);
+        });
+
+        it(`Skips the current item when matching based on the first letter`, async () => {
+            const items = [
+                {value: 0, label: 'collie'},
+                {value: 1, label: 'coyote'},
+                {value: 2, label: 'cow'}
+            ];
+
+            const {driver: list, waitForDom} = clientRenderer.render(
+                <SelectionList dataSource={items} value={0} />
+            ).withDriver(SelectionListTestDriver);
+
+            await waitForDom(() => expect(list.root).to.be.present());
+            list.focus();
+            expect(list.optionHasStylableState(list.items[0], 'focused')).to.equal(true);
+            list.keyDown({keyCode: keycode('c'), key: 'c'});
+            expect(list.optionHasStylableState(list.items[1], 'focused')).to.equal(true);
+        });
+
+        it(`Switches from matching first letter to matching prefix`, async () => {
+            const items = [
+                {value: 0, label: 'Aardvark'},
+                {value: 1, label: 'Armadillo'},
+                {value: 2, label: 'Angelfish'}
+            ];
+
+            const {driver: list, waitForDom} = clientRenderer.render(
+                <SelectionList dataSource={items} />
+            ).withDriver(SelectionListTestDriver);
+
+            await waitForDom(() => expect(list.root).to.be.present());
+            list.focus();
+            list.keyDown({keyCode: keycode('a'), key: 'a'});
+            expect(list.optionHasStylableState(list.items[0], 'focused')).to.equal(true);
+            list.keyDown({keyCode: keycode('a'), key: 'a'});
+            expect(list.optionHasStylableState(list.items[1], 'focused')).to.equal(true);
+            list.keyDown({keyCode: keycode('r'), key: 'r'});
+            expect(list.optionHasStylableState(list.items[0], 'focused')).to.equal(true);
+        });
+
+        it(`Matches children based on their label attribute or contents if it's a plain string`, async () => {
+            const {driver: list, waitForDom} = clientRenderer.render(
+                <SelectionList>
+                    <Option value={0} label="a">not a</Option>
+                    <Option value={1}>a</Option>
+                </SelectionList>
+            ).withDriver(SelectionListTestDriver);
+
+            await waitForDom(() => expect(list.root).to.be.present());
+            list.focus();
+            list.keyDown({keyCode: keycode('a'), key: 'a'});
+            expect(list.optionHasStylableState(list.items[0], 'focused')).to.equal(true);
+            list.keyDown({keyCode: keycode('a'), key: 'a'});
+            expect(list.optionHasStylableState(list.items[1], 'focused')).to.equal(true);
         });
     });
 
@@ -398,7 +588,7 @@ describe('<SelectionList />', () => {
                 expect(list.optionHasStylableState(list.items[1], 'focused')).to.equal(false);
             });
 
-            list.keyDown(keycode('down'));
+            list.keyDown({keyCode: keycode('down')});
             await waitForDom(() => {
                 expect(list.optionHasStylableState(list.items[0], 'focused')).to.equal(false);
                 expect(list.optionHasStylableState(list.items[1], 'focused')).to.equal(true);
@@ -429,7 +619,7 @@ describe('<SelectionList />', () => {
 
             await waitForDom(() => expect(list.root).to.be.not.null);
             list.focus();
-            list.keyDown(keycode('down'));
+            list.keyDown({keyCode: keycode('down')});
             const itemId = list.items[0].id;
             expect(itemId).to.be.not.empty;
             expect(list.root.getAttribute('aria-activedescendant')).to.be.equal(itemId);
@@ -482,7 +672,7 @@ describe('<SelectionList />', () => {
             await waitForDom(() => expect(list.root).to.be.not.null);
 
             list.focus();
-            list.keyDown(keycode('end'));
+            list.keyDown({keyCode: keycode('end')});
 
             await waitForDom(() => {
                 expect(list.items[0]).to.be.outsideOf(list.root);

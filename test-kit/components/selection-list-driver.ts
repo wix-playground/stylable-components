@@ -20,8 +20,8 @@ export class SelectionListTestDriver extends DriverBase {
         return Array.from(this.root.children);
     }
 
-    public keyDown(keyCode: number): void {
-        simulate.keyDown(this.root, {keyCode});
+    public keyDown(eventData: object): void {
+        simulate.keyDown(this.root, eventData);
     }
 
     public mouseDown(element: Element): void {
