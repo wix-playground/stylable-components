@@ -25,19 +25,19 @@ export class SelectionListTestDriver extends DriverBase {
     }
 
     public mouseDown(element: Element): void {
-        simulate.mouseDown(element);
+        simulate.mouseDown(element, {button: 0});
     }
 
     public click(element: Element): void {
-        simulate.click(element);
+        simulate.click(element, {button: 0});
     }
 
     public isDivider(element: Element): boolean {
         return elementHasStylableClassName(element, dividerBaseStyle, 'root');
     }
 
-    public optionHasStylableState(element: Element, stateName: string): boolean {
-        return elementHasStylableState(element, optionBaseStyle, stateName);
+    public itemHasStylableState(index: number, stateName: string): boolean {
+        return elementHasStylableState(this.items[index], optionBaseStyle, stateName);
     }
 
     public hasStylableState(stateName: string): boolean {
