@@ -19,6 +19,10 @@ export class BaseTabsDriver extends DriverBase {
         return this.select('TAB_PANEL', selector);
     }
 
+    public selectTabItem(selector: string) {
+        return this.select('TAB_LIST', selector);
+    }
+
     public tabListFocus() {
         simulate.focus(this.tabList);
     }

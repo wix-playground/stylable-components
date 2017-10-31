@@ -25,16 +25,27 @@ describe('<Tabs />', () => {
     it('should render a tabList and a tabPanel', () => {
         const {driver} = render(
             <Tabs>
-                <Tab label="Tab One">Tab One Content</Tab>
-                <Tab label="Tab Two">Tab Two Content</Tab>
+                <Tab
+                    label={
+                        <span data-automation-id="TAB_1">Tab One</span>
+                    }
+                >
+                    Tab One Content
+                </Tab>
+                <Tab
+                    label={
+                        <span data-automation-id="TAB_2">Tab Two</span>
+                    }
+                >
+                    Tab Two Content
+                </Tab>
             </Tabs>
         );
 
-        const tabList = driver.tabList;
-        const tabPanel = driver.tabPanel;
-
-        expect(tabList).to.be.present();
-        expect(tabPanel).to.be.present();
+        expect(driver.tabList).to.be.present();
+        expect(driver.selectTabItem('TAB_1')).to.be.present();
+        expect(driver.selectTabItem('TAB_2')).to.be.present();
+        expect(driver.tabPanel).to.be.present();
     });
 
     describe('defaultValue', () => {
