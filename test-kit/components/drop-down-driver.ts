@@ -14,17 +14,20 @@ export class DropDownDriver extends DriverBase {
         return !!this.list;
     }
 
+    // Refactor using selectionList driver.
     public clickOnItem(idx: number): void {
         if (this.items) {
-            this.items[idx] && simulate.click(this.items![idx]);
+            this.items[idx] && simulate.click(this.items![idx], {button: 0});
         }
     }
 
-    public get list(): HTMLDivElement | null {  // refactor when selectionList driver is available
+    // Refactor using selectionList driver.
+    public get list(): HTMLDivElement | null {
         return bodySelect('LIST');
     }
 
-    public get items(): HTMLCollection | null { // refactor when selectionList driver is available
+    // Refactor using selectionList driver.
+    public get items(): HTMLCollection | null {
         return this.list ? this.list.children : null;
     }
 
