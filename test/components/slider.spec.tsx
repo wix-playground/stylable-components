@@ -2034,7 +2034,7 @@ function checkDemoSlider(clientRenderer: ClientRenderer, id: string, numberOfHan
         });
     });
 }
-describe.only('<SliderDemo />', () => {
+describe('<SliderDemo />', () => {
     const clientRenderer = new ClientRenderer();
     let render;
 
