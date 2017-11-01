@@ -118,6 +118,12 @@ DatePicker extends formInputProps
 * Expand Scope button
 
 
+## Elements
+* Input with Calendar Icon
+* Calendar
+* Expand Scope button
+
+
 ## Accessibility
 
 ### Role
