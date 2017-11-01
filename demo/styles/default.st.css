@@ -2,12 +2,6 @@
 :import {
   -st-theme: true;
   -st-from: "../../src/themes/default/theme.st.css";
-  -st-named:  toggleSmall, btnLarge, btnSmall, btnTiny,
-              btnSecondary,
-              btnWhite, btnWhiteSecondary,
-              btnError, btnErrorSecondary,
-              btnPremium, btnPremiumSecondary,
-              btnTransparent;
 }
 
 :global(html) {
