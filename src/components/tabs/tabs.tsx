@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {properties} from 'wix-react-tools';
 import {ChangeEvent} from '../../types/events';
-import {tabElements, TabsView, TabsViewProps} from './tabs-view';
+import {TabsView, TabsViewProps} from './tabs-view';
 
 export type TabsOrientation
     = 'horizontal-top'

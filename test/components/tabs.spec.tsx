@@ -3,7 +3,7 @@ import * as React from 'react';
 import {codes as KeyCodes} from 'keycode';
 import {ClientRenderer, expect, sinon} from 'test-drive-react';
 import {ContextProvider} from '../../src/components/context-provider';
-import {Tab, Tabs, TabsProps} from '../../src/components/tabs';
+import {Tab, Tabs} from '../../src/components/tabs';
 import {RTLTabsDriver, TabsDriver} from '../../test-kit';
 
 function assertOnChange(
