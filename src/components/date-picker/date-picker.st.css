@@ -198,7 +198,7 @@
 
 /* Styling for the days of the month */
 .day {
-    -st-states: focused, selected, current, inactive;
+    -st-states: focused, selected, current, inactive, disabled;
     font-family: value(fontFamily);
     font-size: 14px;
     text-align: center;
@@ -233,6 +233,14 @@
     cursor: default;
 }
 
+/* Styles for disabled day */
+.day:disabled {
+    color: #d8d8d8;
+    width: 36px;
+    line-height: 36px;
+    cursor: default;
+}
+
 /* Special case for when a user selected a date and then navigates to it using the keyboard */
 .day:focused:selected {
     color: value(color_MainText_Background);
@@ -247,6 +255,12 @@
 
 /* Hover styles for the days of the previous and next months */
 .day:inactive:hover {
+    color: #d8d8d8;
+    background-color: value(color_MainText_Background);
+}
+
+/* Hover styles for disabled days */
+.day:disabled:hover {
     color: #d8d8d8;
     background-color: value(color_MainText_Background);
 }

@@ -4,12 +4,14 @@ import {ClientRenderer, DriverBase, expect, sinon, waitFor} from 'test-drive-rea
 import {DatePickerDemo} from '../../demo/components/date-picker-demo';
 import {DatePicker} from '../../src';
 import {
+    changeDayInMonth,
     getDayNames,
     getDaysInMonth,
     getMonthFromOffset,
     getMonthNames,
     getNumOfFollowingDays,
-    getNumOfPreviousDays
+    getNumOfPreviousDays,
+    isWeekend
 } from '../../src/utils';
 import {DatePickerTestDriver} from '../../test-kit';
 import {sleep} from '../utils';
@@ -229,7 +231,7 @@ describe('The DatePicker Component', () => {
 
             datePicker.changeDate('2sgsdfsdfw223');
 
-            await waitForDom(() => expect(datePicker.elementHasStylableState('error')).to.equal(true));
+            await waitForDom(() => expect(datePicker.elementHasStylableState(datePicker.root, 'error')).to.equal(true));
         });
 
         it('should remove error state when a date is chosen from the calendar', async () => {
@@ -238,13 +240,14 @@ describe('The DatePicker Component', () => {
 
             datePicker.changeDate('2sgsdfsdfw223');
 
-            await waitForDom(() => expect(datePicker.elementHasStylableState('error')).to.equal(true));
+            await waitForDom(() => expect(datePicker.elementHasStylableState(datePicker.root, 'error')).to.equal(true));
 
             datePicker.openCalender();
 
             await waitForDom(() => datePicker.clickOnDay(2));
 
-            await waitForDom(() => expect(datePicker.elementHasStylableState('error')).to.equal(false));
+            await waitForDom(() => expect(datePicker.elementHasStylableState(datePicker.root, 'error'))
+                .to.equal(false));
         });
     });
 
@@ -299,7 +302,8 @@ describe('The DatePicker Component', () => {
             const {driver: datePicker, waitForDom} = clientRenderer.render(<DatePicker disabled />)
                 .withDriver(DatePickerTestDriver);
 
-            await waitForDom(() => expect(datePicker.elementHasStylableState('disabled')).to.equal(true));
+            await waitForDom(() => expect(datePicker.elementHasStylableState(datePicker.root, 'disabled'))
+                .to.equal(true));
         });
     });
 
@@ -354,7 +358,8 @@ describe('The DatePicker Component', () => {
             const {driver: datePicker, waitForDom} = clientRenderer.render(<DatePicker readOnly />)
                 .withDriver(DatePickerTestDriver);
 
-            await waitForDom(() => expect(datePicker.elementHasStylableState('readOnly')).to.equal(true));
+            await waitForDom(() => expect(datePicker.elementHasStylableState(datePicker.root, 'readOnly'))
+                .to.equal(true));
         });
     });
 
@@ -607,6 +612,25 @@ describe('The DatePicker Component', () => {
                 expect(datePicker.headerDate).to.have.text('2016');
             });
         });
+
+        it('should allow disabling weekends', async () => {
+            const {driver: datePicker, waitForDom} = clientRenderer.render(
+                <DatePicker
+                    disableWeekends
+                    showDropdownOnInit={true}
+                    value={FEBRUARY_FIRST}
+                />
+            ).withDriver(DatePickerTestDriver);
+
+            await waitForDom(() => {
+                // Check a weekend to ensure the days are disabled
+                expect(datePicker.elementHasStylableState(datePicker.getDay(4) as Element, 'disabled')).to.be.true;
+            });
+
+            datePicker.clickOnDay(4);
+
+            await waitForDom(() => expect(datePicker.selectedDate).to.equal(FEBRUARY_FIRST.toDateString()));
+        });
     });
 
     describe('The Helper Functions', () => {
@@ -730,6 +754,22 @@ describe('The DatePicker Component', () => {
             expect(getNumOfFollowingDays(fourthDateToTest, 4), 'Wrong number of days for Thursday').to.equal(4);
             expect(getNumOfFollowingDays(fourthDateToTest, 5), 'Wrong number of days for Friday').to.equal(5);
             expect(getNumOfFollowingDays(fourthDateToTest, 6), 'Wrong number of days for Saturday').to.equal(6);
+        });
+
+        it('changeDay should return a Date object with the same year and month, but a different day', () => {
+            const dateToTest = new Date('July 5 2017');
+
+            expect(changeDayInMonth(dateToTest, 15).toDateString()).to.equal('Sat Jul 15 2017');
+        });
+
+        it('isWeekend should return true if the date is on a weekend and false if not', () => {
+            const saturday = new Date('Saturday July 15, 2017');
+            const sunday = new Date('Sunday July 16, 2017');
+            const weekday = new Date('Wednesday July 12, 2017');
+
+            expect(isWeekend(saturday)).to.equal(true);
+            expect(isWeekend(sunday)).to.equal(true);
+            expect(isWeekend(weekday)).to.equal(false);
         });
     });
 });

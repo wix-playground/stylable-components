@@ -3,12 +3,15 @@ import {observer} from 'mobx-react';
 import * as React from 'react';
 import {stylable} from 'wix-react-tools';
 import {
+    changeDayInMonth,
     getDayNames,
     getDaysInMonth,
     getMonthFromOffset,
     getMonthNames,
     getNumOfFollowingDays,
-    getNumOfPreviousDays
+    getNumOfPreviousDays,
+    isWeekend,
+    noop
 } from '../../utils';
 import styles from './date-picker.st.css';
 import {Day} from './day';
@@ -20,6 +23,7 @@ export interface CalendarProps {
     startingDay?: number;
     highlightSelectedDate?: boolean;
     highlightFocusedDate?: boolean;
+    disableWeekends?: boolean;
     onChange(date: Date): void;
     updateDropdownDate(date: Date): void;
 }
@@ -115,15 +119,19 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
         const daysInMonth = getDaysInMonth(this.props.value);
 
         for (let day = 1; day <= daysInMonth; day++) {
+            const date = changeDayInMonth(this.props.value, day);
+            const shouldDisable = this.props.disableWeekends ? isWeekend(date) : false;
+
             dayArray.push(
                 <Day
-                    day={day}
+                    day={date}
                     focused={this.isFocused(day)}
                     selected={this.isSelected(day)}
                     currentDay={this.isCurrentDay(day)}
-                    onSelect={this.selectDay}
+                    onSelect={!shouldDisable ? this.props.onChange : noop}
                     data-automation-id={'DAY_' + day}
                     key={'DAY_' + day}
+                    disabled={shouldDisable}
                 />
             );
         }
@@ -149,14 +157,17 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
     @computed
     private get previousDays(): JSX.Element[] {
         const previousDays: JSX.Element[] = [];
-        const lastDayOfPrevMonth: number = getDaysInMonth(getMonthFromOffset(this.props.value, -1));
+        const lastMonth = getMonthFromOffset(this.props.value, -1);
+        const lastDayOfPrevMonth: number = getDaysInMonth(lastMonth);
         const numberOfDaysToDisplay: number = lastDayOfPrevMonth -
             getNumOfPreviousDays(this.props.value, this.props.startingDay);
 
         for (let day = numberOfDaysToDisplay + 1; day <= lastDayOfPrevMonth; day++) {
+            const lastMonthCopy = changeDayInMonth(lastMonth, day);
+
             previousDays.push((
                 <Day
-                    day={day}
+                    day={lastMonthCopy}
                     data-automation-id={'PREV_DAY_' + day}
                     key={'PREV_DAY_' + day}
                     partOfPrevMonth={true}
@@ -172,12 +183,14 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
         const followingDays: JSX.Element[] = [];
         const numberOfDaysToDisplay: number = getNumOfFollowingDays(this.props.value, this.props.startingDay);
 
-        for (let i = 1; i <= numberOfDaysToDisplay; i++) {
+        for (let day = 1; day <= numberOfDaysToDisplay; day++) {
+            const nextMonth = changeDayInMonth(getMonthFromOffset(this.props.value, 1), day);
+
             followingDays.push(
                 <Day
-                    day={i}
-                    data-automation-id={'NEXT_DAY_' + i}
-                    key={'NEXT_DAY_' + i}
+                    day={nextMonth}
+                    data-automation-id={'NEXT_DAY_' + day}
+                    key={'NEXT_DAY_' + day}
                     partOfNextMonth={true}
                 />
             );
