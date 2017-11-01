@@ -1,6 +1,6 @@
 import * as keycode from 'keycode';
 import * as React from 'react';
-import {ClientRenderer, DriverBase, expect, selectDom, simulate, sinon, waitFor} from 'test-drive-react';
+import {ClientRenderer, DriverBase, expect, selectDom, sinon, waitFor} from 'test-drive-react';
 import {DatePickerDemo} from '../../demo/components/date-picker-demo';
 import {DatePicker} from '../../src';
 import {
@@ -17,8 +17,6 @@ import {sleep} from '../utils';
 class DatePickerDemoDriver extends DriverBase {
     public static ComponentClass = DatePickerDemo;
     public datePicker = new DatePickerTestDriver(() => this.select('DATE_PICKER_DEMO', 'DATE_PICKER'));
-    private bodySelect = selectDom(document.body);
-    private datePickerDropdown = 'DATE_PICKER_DROPDOWN';
 
     public get date(): HTMLSpanElement {
         return this.select('DATE_PICKER_DEMO', 'CURRENT_DATE');
