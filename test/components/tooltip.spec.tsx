@@ -4,7 +4,6 @@ import {Tooltip, TooltipProps} from '../../src';
 import {TooltipDriver} from '../../test-kit';
 import {sleep} from '../utils';
 
-
 function getBounds(elem: HTMLElement) {
     const rect = elem.getBoundingClientRect();
     return {
@@ -12,7 +11,7 @@ function getBounds(elem: HTMLElement) {
         left: rect.left,
         width: elem.offsetWidth,
         height: elem.offsetHeight
-    }
+    };
 }
 
 class Sample extends React.Component {
