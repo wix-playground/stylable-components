@@ -9,10 +9,14 @@ import {isRTLContext} from '../../utils';
 import {
     selectionListItemsFromChildren,
     SelectionListModel,
-    SelectionListOption as Option,
     SelectionListView
 } from '../selection-list';
-import {TabProps} from './tab';
+import {
+    renderTabContent,
+    renderTabItems,
+    tabElements,
+    TabProps
+} from './tab';
 import styles from './tabs.st.css';
 
 export type TabsOrientation
@@ -105,7 +109,7 @@ export class TabsView extends React.Component<TabsViewProps, TabsViewState> {
                     className="tabPanel"
                     data-automation-id="TAB_PANEL"
                 >
-                    {tabElements(children).map(renderTabContent(value, !unmountInactiveTabs))}
+                    {tabElements(children).map(renderTabContent(!unmountInactiveTabs, value))}
                 </div>
             </div>
         );
@@ -183,33 +187,6 @@ export class TabsView extends React.Component<TabsViewProps, TabsViewState> {
     }
 }
 
-const isTabElement = (
-    child: React.ReactChild
-): child is React.ReactElement<TabProps> =>
-    typeof child !== 'string' && typeof child !== 'number';
-
-export const tabElements = (
-    children: React.ReactNode
-): Array<React.ReactElement<TabProps>> =>
-    React.Children.toArray(children).filter(isTabElement);
-
-const renderTabItem = (
-    {props: {value, disabled, label}}: React.ReactElement<TabProps>, index: number
-) => {
-    const ensured = ensureValue(value, index);
-    return (
-        <Option
-            key={ensured}
-            value={ensured}
-            disabled={disabled}
-        >{label}
-        </Option>
-    );
-};
-
-const renderTabItems = (children: React.ReactNode) =>
-    tabElements(children).map(renderTabItem);
-
 const getSelectionListModel = (
     children: TabsViewProps['children']
 ): SelectionListModel => new SelectionListModel(
@@ -217,20 +194,3 @@ const getSelectionListModel = (
             renderTabItems(children)
         )
     );
-
-const renderTabContent = (
-    selected: string | undefined,
-    mountInactiveTabs: boolean
-) => (
-    {props: {value, children}}: React.ReactElement<TabProps>,
-    index: number
-) => selected !== undefined && selected === ensureValue(value, index) ?
-    <div className="tabContent">{children}</div> :
-    mountInactiveTabs ?
-        <div className="tabContent" style-state={{inactive: true}}>{children}</div> :
-        null;
-
-const ensureValue = (
-    value: string | undefined,
-    index: number
-) => value === undefined ? String(index) : value;
