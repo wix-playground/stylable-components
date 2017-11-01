@@ -99,7 +99,7 @@ export class DatePickerTestDriver extends DriverBase {
         return bodySelect(datePickerDropdown, 'MONTH_NAME');
     }
 
-    public elementHasStylableState(stateName: string): boolean {
-        return elementHasStylableState(this.root, baseStyle, stateName);
+    public elementHasStylableState(element: Element, stateName: string): boolean {
+        return elementHasStylableState(element, baseStyle, stateName);
     }
 }
