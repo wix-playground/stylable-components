@@ -147,7 +147,7 @@ function testPosition(clientRenderer: ClientRenderer, position: Position, expect
                 expect(anchorBounds.top + anchorBounds.height).to.equal(tooltipBounds.top + tooltipBounds.height);
             });
             it('tail should be alignet to bottom', () => {
-                expect(anchorBounds.top + anchorBounds.height).to.equal(tooltipBounds.top + tooltipBounds.height + TAIL_OFFSET);
+                expect(anchorBounds.top + anchorBounds.height).to.equal(tailBounds.top + tailBounds.height + TAIL_OFFSET);
             });
         }
     });
