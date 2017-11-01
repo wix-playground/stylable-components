@@ -84,11 +84,6 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
         );
     }
 
-    private selectDay = (day: number) => {
-        const date = new Date(this.props.value.getFullYear(), this.props.value.getMonth(), day);
-        this.props.onChange(date);
-    }
-
     private getHeader = () => {
         if (this.state.showMonthView) {
             return (
