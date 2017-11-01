@@ -24,41 +24,41 @@ class DatePickerDemoDriver extends DriverBase {
         return this.select('DATE_PICKER_DEMO', 'CURRENT_DATE');
     }
 
-    public clickOnHeader(): void {
-        simulate.mouseDown(this.calendarHeader);
-    }
+    // public clickOnHeader(): void {
+    //     simulate.mouseDown(this.calendarHeader);
+    // }
 
-    public get calendarHeader(): HTMLSpanElement | null {
-        return this.bodySelect('CALENDAR_HEADER');
-    }
+    // public get calendarHeader(): HTMLSpanElement | null {
+    //     return this.bodySelect('CALENDAR_HEADER');
+    // }
 
-    public get dropDown(): HTMLDivElement | null {
-        return this.bodySelect(this.datePickerDropdown);
-    }
+    // public get dropDown(): HTMLDivElement | null {
+    //     return this.bodySelect(this.datePickerDropdown);
+    // }
 
-    public get monthView(): HTMLDivElement | null {
-        return this.bodySelect('MONTH_VIEW');
-    }
+    // public get monthView(): HTMLDivElement | null {
+    //     return this.bodySelect('MONTH_VIEW');
+    // }
 
-    public get headerDate(): HTMLSpanElement | null {
-        return this.bodySelect(this.datePickerDropdown, 'HEADER_DATE');
-    }
+    // public get headerDate(): HTMLSpanElement | null {
+    //     return this.bodySelect(this.datePickerDropdown, 'HEADER_DATE');
+    // }
 
-    public getMonth(month: string): HTMLSpanElement | null {
-        return this.bodySelect(this.datePickerDropdown, `MONTH_${month.toUpperCase()}`);
-    }
+    // public getMonth(month: string): HTMLSpanElement | null {
+    //     return this.bodySelect(this.datePickerDropdown, `MONTH_${month.toUpperCase()}`);
+    // }
 
-    public clickOnMonth(month: string): void {
-        simulate.mouseDown(this.getMonth(month));
-    }
+    // public clickOnMonth(month: string): void {
+    //     simulate.mouseDown(this.getMonth(month));
+    // }
 
-    public openCalender(): void {
-        simulate.click(this.select('CALENDAR_ICON'));
-    }
+    // public openCalender(): void {
+    //     simulate.click(this.select('CALENDAR_ICON'));
+    // }
 
-    public isOpen(): boolean {
-        return !!this.dropDown;
-    }
+    // public isOpen(): boolean {
+    //     return !!this.dropDown;
+    // }
 }
 
 describe('The DatePicker Component', () => {
@@ -108,19 +108,19 @@ describe('The DatePicker Component', () => {
             const {driver: datePickerDemo, waitForDom} = clientRenderer.render(
                 <DatePickerDemo value={JANUARY_FIRST} />).withDriver(DatePickerDemoDriver);
 
-            datePickerDemo.clickOnHeader();
+            datePickerDemo.datePicker.clickOnHeader();
 
             await waitForDom(() => {
-                expect(datePickerDemo.monthView).to.be.present();
-                expect(datePickerDemo.headerDate).to.have.text('2017');
+                expect(datePickerDemo.datePicker.monthView).to.be.present();
+                expect(datePickerDemo.datePicker.headerDate).to.have.text('2017');
             });
 
-            datePickerDemo.clickOnMonth(monthToClick);
+            datePickerDemo.datePicker.clickOnMonth(monthToClick);
 
             await waitForDom(() => {
-                expect(datePickerDemo.monthView).to.be.absent();
-                expect(datePickerDemo.isOpen()).to.equal(true);
-                expect(datePickerDemo.headerDate).to.have.text(`${monthToClick} 2017`);
+                expect(datePickerDemo.datePicker.monthView).to.be.absent();
+                expect(datePickerDemo.datePicker.isOpen()).to.equal(true);
+                expect(datePickerDemo.datePicker.headerDate).to.have.text(`${monthToClick} 2017`);
             });
         });
     });
