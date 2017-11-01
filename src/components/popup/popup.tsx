@@ -155,8 +155,8 @@ function isPoint(elem: Element | Point): elem is Point {
 }
 
 function isFullyContainedWithinWindow(top: number, left: number, height: number, width: number): boolean {
-    return top < 0 ||
-        left < 0 ||
+    return top < window.pageYOffset ||
+        left < window.pageXOffset ||
         top + height - window.pageYOffset > window.innerHeight ||
         left + width - window.pageXOffset > window.innerWidth;
 }
