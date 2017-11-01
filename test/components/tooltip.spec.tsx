@@ -62,8 +62,11 @@ function equal(a: number, b: number) {
     return expect(Math.abs(a - b)).to.below(0.1);
 }
 
-function testPosition(clientRenderer: ClientRenderer, position: Position, expectations: any) {
+function testPosition(position: Position, expectations: any) {
     describe(`render with ${position} position`, () => {
+        const clientRenderer = new ClientRenderer();
+        afterEach(() => clientRenderer.cleanup());
+
         let driver: any;
         let tooltipBounds: any;
         let anchorBounds: any;
@@ -157,18 +160,18 @@ describe.only('<Tooltip/>', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
 
-    testPosition(clientRenderer, 'top', {positionTop: true, centeredHorizontaly: true});
-    testPosition(clientRenderer, 'bottom', {positionBottom: true, centeredHorizontaly: true});
-    testPosition(clientRenderer, 'left', {positionLeft: true, centeredVerticaly: true});
-    testPosition(clientRenderer, 'right', {positionRight: true, centeredVerticaly: true});
-    testPosition(clientRenderer, 'topLeft', {positionTop: true, aligmnentLeft: true});
-    testPosition(clientRenderer, 'topRight', {positionTop: true, aligmnentRight: true});
-    testPosition(clientRenderer, 'bottomLeft', {positionBottom: true, aligmnentLeft: true});
-    testPosition(clientRenderer, 'bottomRight', {positionBottom: true, aligmnentRight: true});
-    testPosition(clientRenderer, 'leftTop', {positionLeft: true, aligmnentTop: true});
-    testPosition(clientRenderer, 'leftBottom', {positionLeft: true, aligmnentBottom: true});
-    testPosition(clientRenderer, 'rightTop', {positionRight: true, aligmnentTop: true});
-    testPosition(clientRenderer, 'rightBottom', {positionRight: true, aligmnentBottom: true});
+    testPosition('top', {positionTop: true, centeredHorizontaly: true});
+    testPosition('bottom', {positionBottom: true, centeredHorizontaly: true});
+    testPosition('left', {positionLeft: true, centeredVerticaly: true});
+    testPosition('right', {positionRight: true, centeredVerticaly: true});
+    testPosition('topLeft', {positionTop: true, aligmnentLeft: true});
+    testPosition('topRight', {positionTop: true, aligmnentRight: true});
+    testPosition('bottomLeft', {positionBottom: true, aligmnentLeft: true});
+    testPosition('bottomRight', {positionBottom: true, aligmnentRight: true});
+    testPosition('leftTop', {positionLeft: true, aligmnentTop: true});
+    testPosition('leftBottom', {positionLeft: true, aligmnentBottom: true});
+    testPosition('rightTop', {positionRight: true, aligmnentTop: true});
+    testPosition('rightBottom', {positionRight: true, aligmnentBottom: true});
 
     describe('render with showTrigger and hideTrigger (click)', () => {
         let driver: any;
