@@ -31,7 +31,9 @@ class SampleDriver extends DriverBase {
         return this.anchor.getBoundingClientRect();
     }
     public dispatchOnAnchor(type: string) {
-        this.anchor.dispatchEvent(new Event(type));
+        const event = document.createEvent('CustomEvent');
+        event.initCustomEvent(type, false, false, null);
+        this.anchor.dispatchEvent(event);
     }
     public get tooltipMargins() {
         const styles = window.getComputedStyle(this.tooltip);
