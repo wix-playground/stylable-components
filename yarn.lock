@@ -4333,9 +4333,9 @@ strip-json-comments@^2.0.0, strip-json-comments@~2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-2.0.1.tgz#3c531942e908c2697c0ec344858c286c7ca0a60a"
 
-stylable-integration@^5.1.9:
-  version "5.1.9"
-  resolved "https://registry.yarnpkg.com/stylable-integration/-/stylable-integration-5.1.9.tgz#39ae8e56dc1ba59bcdd17217fc02264f6ba06189"
+stylable-integration@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/stylable-integration/-/stylable-integration-6.0.0.tgz#783965043d7c65339082f0d7a762c5cb26c28a2b"
   dependencies:
     deindent "^0.1.0"
     file-loader "^1.1.5"
@@ -4345,9 +4345,9 @@ stylable-integration@^5.1.9:
     webpack-sources "^1.0.1"
     yargs "^9.0.1"
 
-stylable@^4.0.21:
-  version "4.0.21"
-  resolved "https://registry.yarnpkg.com/stylable/-/stylable-4.0.21.tgz#9de71c3b34b01cad91842796e61364681d72a4dc"
+stylable@^4.0.26:
+  version "4.0.26"
+  resolved "https://registry.yarnpkg.com/stylable/-/stylable-4.0.26.tgz#593736256e45babb0d9c9d07e73d3186b19d2b8d"
   dependencies:
     css-selector-tokenizer "^0.7.0"
     deindent "^0.1.0"
@@ -4542,9 +4542,9 @@ tslint-react@^3.1.0:
   dependencies:
     tsutils "^2.8.0"
 
-tslint-wix-react@^4.1.0:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/tslint-wix-react/-/tslint-wix-react-4.1.0.tgz#11e7c1a13266895544c101f812d12a17b17ef7be"
+tslint-wix-react@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/tslint-wix-react/-/tslint-wix-react-5.0.0.tgz#940f3b2c063e152997104a4e57081867c8e985fa"
   dependencies:
     tslint-eslint-rules "^4.1.1"
     tslint-react "^3.1.0"

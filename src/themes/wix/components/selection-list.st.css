@@ -27,6 +27,7 @@
 
 SelectionList {
     background: white;
+    overflow-y: auto;
 }
 
 SelectionList Divider {
