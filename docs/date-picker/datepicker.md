@@ -13,12 +13,16 @@
 A date picker allows users to select dates by using an input or a popup calendar.
 
 ## Elements
-* Input Component with Icon Component
-* Calendar View for selecting dates
+ * Input Component with Icon Component
+
+ UI Presentation of input with icon
 
 ![Image of basic date picker](./assets/datepicker/DatePickerBasicInput.png)
 
-UI presentation of Calendar View behaviors:
+* Calendar View for selecting dates
+
+
+UI presentation of calendar view behaviors:
 
 * *Nothing selected or focused*
 
@@ -88,8 +92,8 @@ DatePicker extends formInputProps
 | disableWeekends | boolean | false | no | Weekends cannot be selected in the Calendar View |
 | weekendDays | number | 1 | no |Defaults to [0,6], list of days set as weekend |
 | locale | string | user agent locale | no | Locale
-| dayLabels | Array[String] | english weekdays | no | Default in English, user may enter different labels (maybe can be done with code, in which case we change implementation - R&D)|
-| monthLabels | Array[String] | english month names| no | Default in English, user may enter different labels (maybe can be done with code, in which case we change implementation- R&D)|
+| dayLabels | Array[{String, String}] | english weekdays | no | Default in English, user may enter arrays of labels where each label has a regular and shortened version (maybe can be done with code, in which case we change implementation - R&D)|
+| monthLabels | Array[{String, String}] | english month names with regular and three letter versions| no | Default in English, user may enter arrays of labels where each label has a regular and shortened version (maybe can be done with code, in which case we change implementation- R&D)|
 | showPrevNextDays | boolean | true | no | Defaults to false, in the calendar month show previous and next days. |
 
 ## Styles
