@@ -117,15 +117,15 @@ export class Popup extends React.Component<PopupCompProps> {
                 break;
         }
 
-        const rect = this.getPortalRect();
+        const rect = this.getContentRect();
         if (rect) {
             this.isExitingBounds = isFullyContainedWithinWindow(newStyle.top, newStyle.left, rect.height, rect.width);
         }
         return newStyle;
     }
 
-    private getPortalRect(): ClientRect | null {
-        return this.portal && this.portal.getPortal && this.portal.getPortal()!.getBoundingClientRect();
+    private getContentRect(): ClientRect | null {
+        return this.portal && this.portal.getPortal() && this.portal.getPortal()!.getBoundingClientRect();
     }
 }
 

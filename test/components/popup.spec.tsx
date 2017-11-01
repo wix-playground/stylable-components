@@ -193,7 +193,7 @@ describe('<Popup />', () => {
         });
 
         it('calls onExitBounds when the popup leaves the viewport', async () => {
-            let div: HTMLDivElement;
+            let anchorDiv: HTMLDivElement;
             let scrollDiv: HTMLDivElement;
             const onExitBounds = sinon.spy();
             const {waitForDom} = clientRenderer.render(
@@ -201,16 +201,16 @@ describe('<Popup />', () => {
                     ref={(elem: HTMLDivElement) => scrollDiv = elem}
                     style={{height: '1000px', overflow: 'auto', WebkitOverflowScrolling: 'touch'}}
                 >
-                    <div ref={(elem: HTMLDivElement) => div = elem} style={{height: '50px'}}>Anchor</div>
+                    <div ref={(elem: HTMLDivElement) => anchorDiv = elem} style={{height: '50px'}}>Anchor</div>
                     <div style={{height: '5000px'}}/>
                 </div>
             );
 
-            await waitForDom(() => expect(div).to.be.present());
+            await waitForDom(() => expect(anchorDiv).to.be.present());
 
             const {driver: popup} = clientRenderer.render(
                 <Popup
-                    anchor={div!}
+                    anchor={anchorDiv!}
                     open
                     onExitBounds={onExitBounds}
                 >
@@ -218,10 +218,11 @@ describe('<Popup />', () => {
                 </Popup>).withDriver(PopupTestDriver);
 
             await waitForDom(() => expect(popup.root).to.be.present());
+            expect(onExitBounds).to.not.have.been.called;
             scrollDiv!.scrollTop = 51;
 
             return waitFor(() => {
-                expect(onExitBounds).to.have.been.called;
+                expect(onExitBounds).to.have.been.calledOnce;
             });
         });
     });
