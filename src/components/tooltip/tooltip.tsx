@@ -80,7 +80,7 @@ class StyledTooltip extends React.Component<TooltipProps, TooltipState> {
                 />
                 <div className="tooltip">
                     {children}
-                    <svg className="tail" height="5" width="10">
+                    <svg className="tail" height="5" width="10" data-automation-id="TOOLTIP_TAIL">
                         <polygon points="0,0 10,0 5,5"/>
                     </svg>
                 </div>

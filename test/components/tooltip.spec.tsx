@@ -4,14 +4,16 @@ import {Position, Tooltip, TooltipProps} from '../../src';
 import {TooltipDriver} from '../../test-kit';
 import {sleep} from '../utils';
 
+const TAIL_OFFSET = 10;
+
 function getRect(elem: Element) {
     const rect = elem.getBoundingClientRect();
     const styles = window.getComputedStyle(elem);
     return {
-        top: Math.round(rect.top),
-        left: Math.round(rect.left),
-        width: Math.round(rect.width),
-        height: Math.round(rect.height),
+        top: rect.top,
+        left: rect.left,
+        width: rect.width,
+        height: rect.height,
         marginLeft: Number(styles.marginLeft!.slice(0, -2)),
         marginTop: Number(styles.marginTop!.slice(0, -2))
     };
@@ -32,16 +34,19 @@ class Sample extends React.Component {
 class SampleDriver extends DriverBase {
     public static ComponentClass = Sample;
     public get tooltip() {
-        return new TooltipDriver(() => this.select('PORTAL_REF')).content;
+        return new TooltipDriver(() => this.select('PORTAL_REF'));
     }
     public get anchor() {
         return this.select('TEST_ANCHOR');
     }
     public get tooltipBounds() {
-        return getRect(this.tooltip);
+        return getRect(this.tooltip.content);
     }
     public get anchorBounds() {
         return getRect(this.anchor);
+    }
+    public get tailBounds() {
+        return getRect(this.tooltip.tail);
     }
     public dispatchOnAnchor(type: string) {
         this.anchor.dispatchEvent(new Event(type));
@@ -53,91 +58,102 @@ function renderWithProps(clientRenderer: ClientRenderer, props?: Partial<Tooltip
     return driver;
 }
 
+function equal(a: number, b: number) {
+    return expect(Math.abs(a - b)).to.below(0.1);
+}
+
 function testPosition(clientRenderer: ClientRenderer, position: Position, expectations: any) {
     describe(`render with ${position} position`, () => {
         let driver: any;
+        let tooltipBounds: any;
+        let anchorBounds: any;
+        let tailBounds: any;
         beforeEach(() => {
             driver = renderWithProps(clientRenderer, {position});
+            tooltipBounds = driver.tooltipBounds;
+            anchorBounds = driver.anchorBounds;
+            tailBounds = driver.tailBounds;
         });
 
         if (expectations.positionTop) {
             it('should be on the top', () => {
-                const tooltipBounds = driver.tooltipBounds;
-                const anchorBounds = driver.anchorBounds;
                 expect(anchorBounds.top).to.equal(tooltipBounds.top + tooltipBounds.height - tooltipBounds.marginTop);
             });
         }
         if (expectations.positionBottom) {
             it('should be on the bottom', () => {
-                const tooltipBounds = driver.tooltipBounds;
-                const anchorBounds = driver.anchorBounds;
                 expect(anchorBounds.top + anchorBounds.height).to.equal(tooltipBounds.top - tooltipBounds.marginTop);
             });
         }
         if (expectations.positionLeft) {
             it('should be on the left', () => {
-                const tooltipBounds = driver.tooltipBounds;
-                const anchorBounds = driver.anchorBounds;
                 expect(anchorBounds.left)
                     .to.equal(tooltipBounds.left + tooltipBounds.width - tooltipBounds.marginLeft);
             });
         }
+
         if (expectations.centeredHorizontaly) {
             it('should be centerd horizontaly', () => {
-                const tooltipBounds = driver.tooltipBounds;
-                const anchorBounds = driver.anchorBounds;
                 expect(anchorBounds.left + anchorBounds.width / 2)
                     .to.equal(tooltipBounds.left + tooltipBounds.width / 2);
             });
+            it('tail should be centerd horizontaly', () => {
+                equal(anchorBounds.left + anchorBounds.width / 2, tailBounds.left + tailBounds.width / 2);
+            });
         }
+
         if (expectations.centeredVerticaly) {
             it('should be centerd verticaly', () => {
-                const tooltipBounds = driver.tooltipBounds;
-                const anchorBounds = driver.anchorBounds;
                 expect(anchorBounds.top + anchorBounds.height / 2)
                     .to.equal(tooltipBounds.top + tooltipBounds.height / 2);
             });
+            it('tail should be centerd verticaly', () => {
+                equal(anchorBounds.top + anchorBounds.height / 2, tailBounds.top + tailBounds.height / 2);
+            });
         }
+
         if (expectations.positionRight) {
             it('should be on the right', () => {
-                const tooltipBounds = driver.tooltipBounds;
-                const anchorBounds = driver.anchorBounds;
                 expect(anchorBounds.left + anchorBounds.width)
                     .to.equal(tooltipBounds.left - tooltipBounds.marginLeft);
             });
         }
         if (expectations.aligmnentLeft) {
             it('should be alignet to left', () => {
-                const tooltipBounds = driver.tooltipBounds;
-                const anchorBounds = driver.anchorBounds;
                 expect(anchorBounds.left).to.equal(tooltipBounds.left);
+            });
+            it('tail should be alignet to left', () => {
+                expect(anchorBounds.left).to.equal(tailBounds.left - TAIL_OFFSET);
             });
         }
         if (expectations.aligmnentRight) {
             it('should be alignet to right', () => {
-                const tooltipBounds = driver.tooltipBounds;
-                const anchorBounds = driver.anchorBounds;
                 expect(anchorBounds.left + anchorBounds.width).to.equal(tooltipBounds.left + tooltipBounds.width);
+            });
+            it('tail should be alignet to right', () => {
+                expect(anchorBounds.left + anchorBounds.width).to.equal(tailBounds.left + tailBounds.width + TAIL_OFFSET);
             });
         }
         if (expectations.aligmnentTop) {
             it('should be alignet to top', () => {
-                const tooltipBounds = driver.tooltipBounds;
-                const anchorBounds = driver.anchorBounds;
                 expect(anchorBounds.top).to.equal(tooltipBounds.top);
+            });
+            it('tail should be alignet to top', () => {
+                expect(anchorBounds.top).to.equal(tailBounds.top - TAIL_OFFSET);
             });
         }
         if (expectations.aligmnentBottom) {
             it('should be alignet to bottom', () => {
-                const tooltipBounds = driver.tooltipBounds;
-                const anchorBounds = driver.anchorBounds;
                 expect(anchorBounds.top + anchorBounds.height).to.equal(tooltipBounds.top + tooltipBounds.height);
+            });
+            it('tail should be alignet to bottom', () => {
+                expect(anchorBounds.top + anchorBounds.height).to.equal(tooltipBounds.top + tooltipBounds.height + TAIL_OFFSET);
             });
         }
     });
 }
 
-describe('<Tooltip/>', () => {
+describe.only('<Tooltip/>', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
 
@@ -161,18 +177,18 @@ describe('<Tooltip/>', () => {
         });
 
         it('should not be visible by default', () => {
-            expect(driver.tooltip.offsetParent).to.be.null;
+            expect(driver.tooltip.content.offsetParent).to.be.null;
         });
 
         it('should be visible after click', () => {
             driver.dispatchOnAnchor('click');
-            expect(driver.tooltip.offsetParent).to.not.null;
+            expect(driver.tooltip.content.offsetParent).to.not.null;
         });
 
         it('should be hidden after click and click', () => {
             driver.dispatchOnAnchor('click');
             driver.dispatchOnAnchor('click');
-            expect(driver.tooltip.offsetParent).to.be.null;
+            expect(driver.tooltip.content.offsetParent).to.be.null;
         });
     });
 
@@ -184,20 +200,20 @@ describe('<Tooltip/>', () => {
 
         it('should not be visible right after trigger', () => {
             driver.dispatchOnAnchor('mouseenter');
-            expect(driver.tooltip.offsetParent).to.be.null;
+            expect(driver.tooltip.content.offsetParent).to.be.null;
         });
 
         it('should be visible after delay', async () => {
             driver.dispatchOnAnchor('mouseenter');
             await sleep(120);
-            expect(driver.tooltip.offsetParent).to.not.null;
+            expect(driver.tooltip.content.offsetParent).to.not.null;
         });
 
         it('should be visible right after hide trigger', async () => {
             driver.dispatchOnAnchor('mouseenter');
             await sleep(120);
             driver.dispatchOnAnchor('mouseleave');
-            expect(driver.tooltip.offsetParent).to.not.null;
+            expect(driver.tooltip.content.offsetParent).to.not.null;
         });
 
         it('should not be visible after hide trigger and delay', async () => {
@@ -205,14 +221,14 @@ describe('<Tooltip/>', () => {
             await sleep(120);
             driver.dispatchOnAnchor('mouseleave');
             await sleep(220);
-            expect(driver.tooltip.offsetParent).to.be.null;
+            expect(driver.tooltip.content.offsetParent).to.be.null;
         });
 
         it('should not be visible after rapid triggers', async () => {
             driver.dispatchOnAnchor('mouseenter');
             driver.dispatchOnAnchor('mouseleave');
             await sleep(220);
-            expect(driver.tooltip.offsetParent).to.be.null;
+            expect(driver.tooltip.content.offsetParent).to.be.null;
         });
     });
 });
