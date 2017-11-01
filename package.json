@@ -11,7 +11,7 @@
     "lint": "tslint \"@(src|demo|test|test-kit)/**/*.ts?(x)\" -c tslint.json -p tsconfig.json",
     "test": "npm run lint && npm run test:browser && npm run test:node",
     "test:browser": "karma start --single-run",
-    "test:node": "mocha --require ts-node/register --require stylable-integration/require \"./test/node/**/*.node-spec.ts?(x)\"",
+    "test:node": "mocha \"./test/node/**/*.node-spec.ts?(x)\" --watch-extensions ts,tsx --require ts-node/register --require stylable-integration/require",
     "start": "webpack-dev-server --progress"
   },
   "peerDependencies": {
@@ -47,13 +47,13 @@
     "mocha-loader": "^1.1.1",
     "react": "^15.6.2",
     "react-dom": "^15.6.2",
-    "stylable": "^4.0.21",
-    "stylable-integration": "^5.1.9",
+    "stylable": "^4.0.26",
+    "stylable-integration": "^6.0.0",
     "test-drive-react": "^0.7.0",
     "ts-loader": "^3.0.5",
     "ts-node": "^3.3.0",
     "tslint": "^5.8.0",
-    "tslint-wix-react": "^4.1.0",
+    "tslint-wix-react": "^5.0.0",
     "typescript": "~2.5.3",
     "webpack": "^3.8.1",
     "webpack-dev-server": "^2.9.3"

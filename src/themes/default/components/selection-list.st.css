@@ -30,6 +30,7 @@
 
 SelectionList {
     border: value(borderDefault);
+    overflow-y: auto;
 }
 
 SelectionList:focused {
