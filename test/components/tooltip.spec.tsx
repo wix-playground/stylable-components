@@ -9,8 +9,18 @@ class Sample extends React.Component {
         const id = 'id' + Math.random().toString().slice(2);
         return (
             <div>
-                <div data-automation-id="TEST_ANCHOR" data-tooltip-for={id} children="I am a anchor!"/>
-                <Tooltip id={id} children="I am a tooltip!" open {...this.props}/>
+                <div
+                    data-automation-id="TEST_ANCHOR"
+                    data-tooltip-for={id}
+                    children="I am a anchor!"
+                    style={{width: 100}}
+                />
+                <Tooltip
+                    id={id}
+                    children="I am a tooltip!"
+                    open
+                    {...this.props}
+                />
             </div>
         );
     }
@@ -50,7 +60,7 @@ function renderWithProps(clientRenderer: ClientRenderer, props?: Partial<Tooltip
 }
 
 function equal(a: number, b: number) {
-    return expect(Math.abs(a - b)).to.below(0.1);
+    return expect(Math.abs(a - b)).to.below(0.5);
 }
 
 describe('<Tooltip/>', () => {
