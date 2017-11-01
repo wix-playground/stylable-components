@@ -23,42 +23,6 @@ class DatePickerDemoDriver extends DriverBase {
     public get date(): HTMLSpanElement {
         return this.select('DATE_PICKER_DEMO', 'CURRENT_DATE');
     }
-
-    // public clickOnHeader(): void {
-    //     simulate.mouseDown(this.calendarHeader);
-    // }
-
-    // public get calendarHeader(): HTMLSpanElement | null {
-    //     return this.bodySelect('CALENDAR_HEADER');
-    // }
-
-    // public get dropDown(): HTMLDivElement | null {
-    //     return this.bodySelect(this.datePickerDropdown);
-    // }
-
-    // public get monthView(): HTMLDivElement | null {
-    //     return this.bodySelect('MONTH_VIEW');
-    // }
-
-    // public get headerDate(): HTMLSpanElement | null {
-    //     return this.bodySelect(this.datePickerDropdown, 'HEADER_DATE');
-    // }
-
-    // public getMonth(month: string): HTMLSpanElement | null {
-    //     return this.bodySelect(this.datePickerDropdown, `MONTH_${month.toUpperCase()}`);
-    // }
-
-    // public clickOnMonth(month: string): void {
-    //     simulate.mouseDown(this.getMonth(month));
-    // }
-
-    // public openCalender(): void {
-    //     simulate.click(this.select('CALENDAR_ICON'));
-    // }
-
-    // public isOpen(): boolean {
-    //     return !!this.dropDown;
-    // }
 }
 
 describe('The DatePicker Component', () => {
@@ -108,6 +72,7 @@ describe('The DatePicker Component', () => {
             const {driver: datePickerDemo, waitForDom} = clientRenderer.render(
                 <DatePickerDemo value={JANUARY_FIRST} />).withDriver(DatePickerDemoDriver);
 
+            datePickerDemo.datePicker.openCalender();
             datePickerDemo.datePicker.clickOnHeader();
 
             await waitForDom(() => {
