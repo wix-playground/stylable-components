@@ -24,8 +24,12 @@ export interface PopupCompProps extends PopupProps {
     anchor: Element | Point | null;
 }
 
+export interface PopupState {
+    style: React.CSSProperties;
+}
+
 @properties
-export class Popup extends React.Component<PopupCompProps> {
+export class Popup extends React.Component<PopupCompProps, PopupState> {
     public static defaultProps: Partial<PopupCompProps> = {
         open: false,
         anchorPosition: {vertical: 'bottom', horizontal: 'left'},
@@ -33,13 +37,25 @@ export class Popup extends React.Component<PopupCompProps> {
         syncWidth: true
     };
 
+    public state: PopupState = {
+        style: {}
+    };
+
     private portal: Portal | null;
+
+    public componentWillMount() {
+        this.setState({style: this.createStyle(this.props)});
+    }
+
+    public componentWillReceiveProps(nextProps: PopupCompProps) {
+        this.setState({style: this.createStyle(nextProps)});
+    }
 
     public render() {
         if (this.props.anchor && this.props.open) {
             return (
                 <Portal
-                    style={this.createStyle()}
+                    style={this.state.style}
                     ref={portal => this.portal = portal}
                 >
                     {this.props.children}
@@ -49,32 +65,40 @@ export class Popup extends React.Component<PopupCompProps> {
         return null;
     }
 
+    public componentDidUpdate() {
+        const oldStyle = this.state.style;
+        const newStyle = this.createStyle(this.props);
+        if (!objectsShallowEqual(oldStyle, newStyle)) {
+            this.setState({style: newStyle});
+        }
+    }
+
     public getPortal(): Portal | null {
         return this.portal;
     }
 
-    private createStyle(): React.CSSProperties {
-        if (!this.props.anchor) {
+    private createStyle(props: PopupCompProps): React.CSSProperties {
+        if (!props.anchor || !props.open) {
             return {};
         }
         const newStyle: React.CSSProperties = {position: 'absolute'};
 
         newStyle.transform = '';
         newStyle.WebkitTransform = '';
-        if (isPoint(this.props.anchor)) {
-            newStyle.top = this.props.anchor.y;
-            newStyle.left = this.props.anchor.x;
+        if (isPoint(props.anchor)) {
+            newStyle.top = props.anchor.y;
+            newStyle.left = props.anchor.x;
 
         } else {
-            const anchorRect = this.props.anchor!.getBoundingClientRect();
-            if (this.props.syncWidth) {
+            const anchorRect = props.anchor!.getBoundingClientRect();
+            if (props.syncWidth) {
                 newStyle.width = anchorRect.width;
             }
 
-            newStyle.top = getVerticalReference(anchorRect, this.props.anchorPosition!.vertical);
-            newStyle.left = getHorizontalReference(anchorRect, this.props.anchorPosition!.horizontal);
+            newStyle.top = getVerticalReference(anchorRect, props.anchorPosition!.vertical);
+            newStyle.left = getHorizontalReference(anchorRect, props.anchorPosition!.horizontal);
         }
-        switch (this.props.popupPosition!.vertical) {
+        switch (props.popupPosition!.vertical) {
             case 'center':
                 addTransform(newStyle, 'translateY(-50%)');
                 break;
@@ -82,7 +106,7 @@ export class Popup extends React.Component<PopupCompProps> {
                 addTransform(newStyle, 'translateY(-100%)');
                 break;
         }
-        switch (this.props.popupPosition!.horizontal) {
+        switch (props.popupPosition!.horizontal) {
             case 'center':
                 addTransform(newStyle, 'translateX(-50%)');
                 break;
@@ -93,6 +117,12 @@ export class Popup extends React.Component<PopupCompProps> {
 
         return newStyle;
     }
+}
+
+function objectsShallowEqual(a: {[index: string]: any}, b: {[index: string]: any}) {
+    const aKeys = Object.keys(a);
+    const bKeys = Object.keys(b);
+    return (aKeys.length === bKeys.length) ? aKeys.every(k => a[k] === b[k]) : false;
 }
 
 function getVerticalReference(rect: ClientRect, anchorPosition: PopupVerticalPosition): number {
