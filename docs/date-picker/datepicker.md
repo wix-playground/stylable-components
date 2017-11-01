@@ -1,6 +1,5 @@
 # DatePicker Components Specification
 
-urik9/datepickerupdate
 * [Description](#description)
 * [Elements](#elements)
 * [Properties](#properties)
@@ -57,19 +56,19 @@ UI presentation of Calendar View behaviors:
 
 ![Image of calendar view 9](./assets/datepicker/CalendarView-DisableSpecificDates.png)
 
-* *Calendar View open - Bottom Left*
+* *Calendar View open - Align Bottom Left*
 
 ![Image of calendar view 10](./assets/datepicker/CalendarView-OpenBL.png)
 
-* *Calendar View open - Bottom Right*
+* *Calendar View open - Align Bottom Right*
 
 ![Image of calendar view 11](./assets/datepicker/CalendarView-OpenBR.png)
 
-* *Calendar View open - Top Left*
+* *Calendar View open - Align Top Left*
 
 ![Image of calendar view 12](./assets/datepicker/CalendarView-OpenTL.png)
 
-* *Calendar View open - Top Right*
+* *Calendar View open -Align Top Right*
 
 ![Image of calendar view 13](./assets/datepicker/CalendarView-OpenTR.png)
 
@@ -96,26 +95,20 @@ DatePicker extends formInputProps
 ## Styles
 
 ### Subcomponents (psuedo elemnts)
-| Name | Description |
-| --- | --- |
-| input | Used for the input component |
-| icon| Used for the icon component |
-| calendarTitle | For changing the look of the month/year title |
-| calendarView | Used for the Calendar View |
-| fullYearView | Used in full year view (time range extension) |
-| decadeView | Used in decade view (time range extension) |
+| Name | Description | Inner States |
+| --- | --- | --- |
+| input | Used for the input component | error, focus, hover, disabled |
+| icon| Used for the icon component | focus | 
+| calendarTitle | For changing the look of the month/year title | hover, focus |
+| calendarView | Used for the Calendar View ||
+| fullYearView | Used in full year view (time range extension) | |
+| decadeView | Used in decade view (time range extension) | |
+| dateItem | A date in a calendar | selected, hover, focus, today, disabled |
 
 ### States
 | Name | Description |
 | --- | --- |
-| Error | style component on error |
-| Focus, Disabled, Hover, etc | Standard style |
-
-
-## Elements
-* Input with Calendar Icon
-* Calendar
-* Expand Scope button
+| -- | -- |
 
 
 ## Elements
@@ -147,20 +140,20 @@ DatePicker extends formInputProps
 A calendar view aria example:
 
 ```html
-<div class="DatePicker2408660667💠dropdown" role="group">
-	<div class="DatePicker2408660667💠header">
-		<span class="DatePicker2408660667💠arrowWrapper DatePicker2408660667💠arrowWrapperPrev">
-			<i class="DatePicker2408660667💠headerArrow DatePicker2408660667💠headerArrowPrev"></i>
+<div class="dropdown" role="group">
+	<div class="header">
+		<span class="arrowWrapper arrowWrapperPrev">
+			<i class="headerArrow headerArrowPrev"></i>
 		</span>
-		<span class="DatePicker2408660667💠headerDate" aria-live="assertive">
+		<span class="headerDate" aria-live="assertive">
 			<span data-automation-id="MONTH_NAME">August</span>
 			<span data-automation-id="YEAR">2017</span>
 		</span>
-		<span class="DatePicker2408660667💠arrowWrapper DatePicker2408660667💠arrowWrapperNext">
-			<i class="DatePicker2408660667💠headerArrow DatePicker2408660667💠headerArrowNext"></i>
+		<span class="arrowWrapper arrowWrapperNext">
+			<i class="headerArrow headerArrowNext"></i>
 		</span>
 	</div>
-	<div role="grid" class="DatePicker2408660667💠calendar">
+	<div role="grid" class="calendar">
         <span role="row">
             <span role="columnheader">Sun</span>
             <span role="columnheader">Mon</span>
@@ -171,8 +164,8 @@ A calendar view aria example:
             <span role="columnheader">Sat</span>
         </span>
         <span role="row">
-            <span role="gridcell" data-datepicker2408660667-inactive="true" aria-label="Sunday, 30 July 2017">30</span>
-            <span role="gridcell" data-datepicker2408660667-inactive="true" aria-label="Monday, 31 July 2017">31</span>
+            <span role="gridcell" data--inactive="true" aria-label="Sunday, 30 July 2017">30</span>
+            <span role="gridcell" data--inactive="true" aria-label="Monday, 31 July 2017">31</span>
             <span role="gridcell" data-automation-id=" DAY_1" aria-label="Tuesday, 1 August 2017">1</span>
             <span role="gridcell" data-automation-id=" DAY_2" aria-label="Wednesday, 2 August 2017">2</span>
             <span role="gridcell" data-automation-id=" DAY_3" aria-label="Thursday, 3 August 2017">3</span>
@@ -182,8 +175,8 @@ A calendar view aria example:
         ...
             <span role="gridcell" data-automation-id=" DAY_30">30</span>
             <span role="gridcell" data-automation-id=" DAY_31">31</span>
-            <span role="gridcell" data-datepicker2408660667-inactive="true">1</span>
-            <span role="gridcell" data-datepicker2408660667-inactive="true">2</span>
+            <span role="gridcell" data--inactive="true">1</span>
+            <span role="gridcell" data--inactive="true">2</span>
         </span>
 	</div>
 </div>
