@@ -37,6 +37,9 @@ export interface TabsViewState {
 
 @stylable(styles)
 export class TabsView extends React.Component<TabsViewProps, TabsViewState> {
+    public static defaultProps = {
+        unmountInactiveTabs: true
+    };
 
     public static contextTypes = {
         contextProvider: PropTypes.shape({
@@ -64,7 +67,15 @@ export class TabsView extends React.Component<TabsViewProps, TabsViewState> {
     }
 
     public render() {
-        const {value, onChange, disabled, orientation, children, ...props} = this.props;
+        const {
+            value,
+            onChange,
+            disabled,
+            orientation,
+            children,
+            unmountInactiveTabs,
+            ...props
+        } = this.props;
         const {tabList, focused} = this.state;
         const context = this.context;
 
@@ -94,7 +105,7 @@ export class TabsView extends React.Component<TabsViewProps, TabsViewState> {
                     className="tabPanel"
                     data-automation-id="TAB_PANEL"
                 >
-                    {tabElements(children).map(renderTabContent(value))}
+                    {tabElements(children).map(renderTabContent(value, !unmountInactiveTabs))}
                 </div>
             </div>
         );
@@ -208,11 +219,16 @@ const getSelectionListModel = (
     );
 
 const renderTabContent = (
-    selected: string | undefined
+    selected: string | undefined,
+    mountInactiveTabs: boolean
 ) => (
     {props: {value, children}}: React.ReactElement<TabProps>,
     index: number
-) => selected !== undefined && selected === ensureValue(value, index) ? children : null;
+) => selected !== undefined && selected === ensureValue(value, index) ?
+    <div className="tabContent">{children}</div> :
+    mountInactiveTabs ?
+        <div className="tabContent" style-state={{inactive: true}}>{children}</div> :
+        null;
 
 const ensureValue = (
     value: string | undefined,

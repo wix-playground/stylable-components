@@ -78,9 +78,17 @@
     cursor: not-allowed;
 }
 
-.tabPanel {
+.tabContent {
+    -st-states: inactive;
+}
+
+.tabContent {
     padding: 18px;
     background: value(color_MainText_Background)
+}
+
+.tabContent:inactive {
+    display: none;
 }
 
 .root:horizontal-bottom {

@@ -42,7 +42,7 @@ describe('<Tabs />', () => {
 
     describe('vertical', () => {
         describe('up key and enter', () => {
-            it('should select previous tab', async () => {
+            it('should select previous tab', () => {
                 const onChange = sinon.spy();
                 const {driver} = render(
                     <Tabs orientation="vertical-before" value="1" onChange={onChange}>
@@ -64,7 +64,7 @@ describe('<Tabs />', () => {
         });
 
         describe('down key and enter', () => {
-            it('should select previous tab', async () => {
+            it('should select previous tab', () => {
                 const onChange = sinon.spy();
                 const {driver} = render(
                     <Tabs orientation="vertical-before" value="0" onChange={onChange}>
@@ -88,7 +88,7 @@ describe('<Tabs />', () => {
 
     describe('horizontal', () => {
         describe('left key and enter', () => {
-            it('should select previous tab', async () => {
+            it('should select previous tab', () => {
                 const onChange = sinon.spy();
                 const {driver} = render(
                     <Tabs orientation="horizontal-top" value="1" onChange={onChange}>
@@ -110,7 +110,7 @@ describe('<Tabs />', () => {
         });
 
         describe('right key and enter', () => {
-            it('should select next tab', async () => {
+            it('should select next tab', () => {
                 const onChange = sinon.spy();
                 const {driver} = render(
                     <Tabs orientation="horizontal-top" value="0" onChange={onChange}>
@@ -135,7 +135,7 @@ describe('<Tabs />', () => {
 
     describe('horizontal RTL', () => {
         describe('left key and enter', () => {
-            it('should select next tab', async () => {
+            it('should select next tab', () => {
                 const onChange = sinon.spy();
                 const {driver} = renderRTL(
                     <ContextProvider dir="rtl">
@@ -159,7 +159,7 @@ describe('<Tabs />', () => {
         });
 
         describe('right key and enter', () => {
-            it('should select previous tab', async () => {
+            it('should select previous tab', () => {
                 const onChange = sinon.spy();
                 const {driver} = renderRTL(
                     <ContextProvider dir="rtl">
@@ -186,7 +186,7 @@ describe('<Tabs />', () => {
 
     describe('uncontrolled', () => {
         describe('defaultValue', () => {
-            it('should render corresponding tab as active', async () => {
+            it('should render corresponding tab as active', () => {
                 const {driver} = render(
                     <Tabs defaultValue="1">
                         <Tab label="Tab One">
@@ -218,7 +218,7 @@ describe('<Tabs />', () => {
             });
         });
 
-        it('should change tabs on user interactions', async () => {
+        it('should change tabs on user interactions', () => {
             const {driver} = render(
                 <Tabs defaultValue="0">
                     <Tab label="Tab One">
@@ -251,6 +251,40 @@ describe('<Tabs />', () => {
                 driver.selectTabContent('SECOND_TAB'),
                 'result: second tab is not active'
             ).to.be.present();
+        });
+    });
+
+    describe('unmountInactiveTabs', () => {
+        it('should not unmount inactive tabs', () => {
+            class TrackMount extends React.Component<{onUnmount: () => void}> {
+                public componentWillUnmount() {
+                    this.props.onUnmount();
+                }
+                public render() {
+                    return React.Children.only(this.props.children);
+                }
+            }
+            const onUnmount = sinon.spy();
+            const {driver} = render(
+                <Tabs unmountInactiveTabs={false}>
+                    <Tab label="Tab One">
+                        <TrackMount onUnmount={onUnmount}>
+                            <span data-automation-id="FIRST_TAB">Tab One Content</span>
+                        </TrackMount>
+                    </Tab>
+                    <Tab label="Tab Two">
+                        <span data-automation-id="SECOND_TAB">Tab Two Content</span>
+                    </Tab>
+                </Tabs>
+            );
+
+            driver.tabListFocus();
+            driver.tabListKeyDown(KeyCodes.right);
+            driver.tabListPressEnter();
+
+            expect(onUnmount).not.to.have.been.called;
+            expect(driver.selectTabContent('FIRST_TAB')).not.to.be.present();
+            expect(driver.selectTabContent('SECOND_TAB')).to.be.present();
         });
     });
 });
