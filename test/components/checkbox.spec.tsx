@@ -214,12 +214,10 @@ describe('<Checkbox/>', () => {
     });
 
     it('Accepts "autofocus" prop', async () => {
+        const {driver: checkbox, waitForDom} = clientRenderer.render(
+            <CheckBox  autoFocus/>
+        ).withDriver(CheckBoxTestDriver);
         if (document.hasFocus()) {
-
-            const {driver: checkbox, waitForDom} = clientRenderer.render(
-                <CheckBox  autoFocus/>
-            ).withDriver(CheckBoxTestDriver);
-
             await waitForDom(() => {
                 expect(document.activeElement).to.equal(checkbox.nativeInput);
                 expect(checkbox.elementHasStylableState('focus')).to.equal(true);
