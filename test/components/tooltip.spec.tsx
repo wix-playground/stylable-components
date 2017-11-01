@@ -48,7 +48,7 @@ function renderWithProps(clientRenderer: ClientRenderer, props?: Partial<Tooltip
 }
 
 function equal(a: number, b: number) {
-    return expect(Math.abs(a - b)).to.below(0.01);
+    return expect(Math.abs(a - b)).to.below(0.1);
 }
 
 describe('<Tooltip/>', () => {
