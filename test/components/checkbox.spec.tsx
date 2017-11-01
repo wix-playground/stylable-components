@@ -217,17 +217,18 @@ describe('<Checkbox/>', () => {
         const {driver: checkbox, waitForDom} = clientRenderer.render(
             <CheckBox  autoFocus/>
         ).withDriver(CheckBoxTestDriver);
-        if (document.hasFocus()) {
-            await waitForDom(() => {
-                expect(document.activeElement).to.equal(checkbox.nativeInput);
-                expect(checkbox.elementHasStylableState('focus')).to.equal(true);
-            });
 
-        } else {
-            console.warn(// tslint:disable-line no-console
-                'Checkbox autofocus test wasn\'t run since document doesn\'t have focus'
-            );
-        }
+        await waitForDom(() => {
+            if (document.hasFocus()) {
+                    expect(document.activeElement).to.equal(checkbox.nativeInput);
+                    expect(checkbox.elementHasStylableState('focus')).to.equal(true);
+
+            } else {
+                console.warn(// tslint:disable-line no-console
+                    'Checkbox autofocus test wasn\'t run since document doesn\'t have focus'
+                );
+            }
+        });
     });
 
     describe('Accessibility features', () => {
