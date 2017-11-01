@@ -207,7 +207,7 @@ describe('The DatePicker Component', () => {
 
             datePicker.changeDate('2sgsdfsdfw223');
 
-            await waitForDom(() => expect(datePicker.elementHasStylableState('error')).to.equal(true));
+            await waitForDom(() => expect(datePicker.elementHasStylableState(datePicker.root, 'error')).to.equal(true));
         });
 
         it('should remove error state when a date is chosen from the calendar', async () => {
@@ -216,13 +216,14 @@ describe('The DatePicker Component', () => {
 
             datePicker.changeDate('2sgsdfsdfw223');
 
-            await waitForDom(() => expect(datePicker.elementHasStylableState('error')).to.equal(true));
+            await waitForDom(() => expect(datePicker.elementHasStylableState(datePicker.root, 'error')).to.equal(true));
 
             datePicker.openCalender();
 
             await waitForDom(() => datePicker.clickOnDay(2));
 
-            await waitForDom(() => expect(datePicker.elementHasStylableState('error')).to.equal(false));
+            await waitForDom(() => expect(datePicker.elementHasStylableState(datePicker.root, 'error'))
+                .to.equal(false));
         });
     });
 
@@ -277,7 +278,8 @@ describe('The DatePicker Component', () => {
             const {driver: datePicker, waitForDom} = clientRenderer.render(<DatePicker disabled />)
                 .withDriver(DatePickerTestDriver);
 
-            await waitForDom(() => expect(datePicker.elementHasStylableState('disabled')).to.equal(true));
+            await waitForDom(() => expect(datePicker.elementHasStylableState(datePicker.root, 'disabled'))
+                .to.equal(true));
         });
     });
 
@@ -332,7 +334,8 @@ describe('The DatePicker Component', () => {
             const {driver: datePicker, waitForDom} = clientRenderer.render(<DatePicker readOnly />)
                 .withDriver(DatePickerTestDriver);
 
-            await waitForDom(() => expect(datePicker.elementHasStylableState('readOnly')).to.equal(true));
+            await waitForDom(() => expect(datePicker.elementHasStylableState(datePicker.root, 'readOnly'))
+                .to.equal(true));
         });
     });
 
