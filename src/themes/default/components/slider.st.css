@@ -41,7 +41,7 @@ Slider {
 
 Slider:x,
 Slider:xReverse {
-    width:288px;
+    width: 288px;
     height: 30px;
 }
 
@@ -88,7 +88,7 @@ Slider:x::mark,
 Slider:xReverse::mark,
 Slider:x::rangeMark,
 Slider:xReverse::rangeMark {
-    top:0;
+    top: 0;
     bottom: 0;
     margin: auto;
 }

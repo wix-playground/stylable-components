@@ -14,7 +14,7 @@
 
 Slider:x,
 Slider:xReverse {
-    width:288px;
+    width: 288px;
     height: 30px;
 }
 
@@ -51,7 +51,7 @@ Slider::handle {
     width: 16px;
     border-radius: 50%;
     background: value(sliderHandleColor);
-    border:4px solid white;
+    border: 4px solid white;
     box-shadow: 0 0 3px 0 rgba(22,45,61,0.12), 0 1px 2px 0 rgba(22,45,61,0.24);
 }
 
@@ -63,7 +63,7 @@ Slider::handle:focus {
 
 Slider:x::handle,
 Slider:xReverse::handle {
-    top:0;
+    top: 0;
     bottom: 0;
     margin: auto;
 }
