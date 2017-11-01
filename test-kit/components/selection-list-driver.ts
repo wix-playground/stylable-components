@@ -24,6 +24,10 @@ export class SelectionListTestDriver extends DriverBase {
         simulate.keyDown(this.root, {keyCode});
     }
 
+    public mouseDown(element: Element): void {
+        simulate.mouseDown(element);
+    }
+
     public click(element: Element): void {
         simulate.click(element);
     }
