@@ -112,7 +112,6 @@ export class ComponentsDemo extends React.Component<{}, State>{
 | ::rangeBar  | Allows you to style the progress bar of the slider. |                                          |
 | ::mark      | Allows you to style marks that are shown on the ::bar section of the slider. | By default ::marks use the same background color as ::bar. |
 | ::rangeMark | Allows you to style marks that are shown on the ::progressBar section of the slider. | By default, ::progressMark elements use the same background color as ::progressBar. |
-| ::tooltip   | Allows you to style the tooltip.         |                                          |
 
 ### Custom CSS States (pseudo-classes)
 
