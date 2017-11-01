@@ -1,6 +1,6 @@
 import * as keycode from 'keycode';
 import * as React from 'react';
-import {ClientRenderer, DriverBase, expect, sinon, waitFor} from 'test-drive-react';
+import {ClientRenderer, DriverBase, expect, selectDom, simulate, sinon, waitFor} from 'test-drive-react';
 import {DatePickerDemo} from '../../demo/components/date-picker-demo';
 import {DatePicker} from '../../src';
 import {
@@ -17,6 +17,8 @@ import {sleep} from '../utils';
 class DatePickerDemoDriver extends DriverBase {
     public static ComponentClass = DatePickerDemo;
     public datePicker = new DatePickerTestDriver(() => this.select('DATE_PICKER_DEMO', 'DATE_PICKER'));
+    private bodySelect = selectDom(document.body);
+    private datePickerDropdown = 'DATE_PICKER_DROPDOWN';
 
     public get date(): HTMLSpanElement {
         return this.select('DATE_PICKER_DEMO', 'CURRENT_DATE');
@@ -24,6 +26,38 @@ class DatePickerDemoDriver extends DriverBase {
 
     public clickOnHeader(): void {
         simulate.mouseDown(this.calendarHeader);
+    }
+
+    public get calendarHeader(): HTMLSpanElement | null {
+        return this.bodySelect('CALENDAR_HEADER');
+    }
+
+    public get dropDown(): HTMLDivElement | null {
+        return this.bodySelect(this.datePickerDropdown);
+    }
+
+    public get monthView(): HTMLDivElement | null {
+        return this.bodySelect('MONTH_VIEW');
+    }
+
+    public get headerDate(): HTMLSpanElement | null {
+        return this.bodySelect(this.datePickerDropdown, 'HEADER_DATE');
+    }
+
+    public getMonth(month: string): HTMLSpanElement | null {
+        return this.bodySelect(this.datePickerDropdown, `MONTH_${month.toUpperCase()}`);
+    }
+
+    public clickOnMonth(month: string): void {
+        simulate.mouseDown(this.getMonth(month));
+    }
+
+    public openCalender(): void {
+        simulate.click(this.select('CALENDAR_ICON'));
+    }
+
+    public isOpen(): boolean {
+        return !!this.dropDown;
     }
 }
 
