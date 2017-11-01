@@ -78,13 +78,13 @@
     cursor: not-allowed;
 }
 
-.tabContent {
-    -st-states: inactive;
+.tabPanel {
+    padding: 18px;
+    background: value(color_MainText_Background)
 }
 
 .tabContent {
-    padding: 18px;
-    background: value(color_MainText_Background)
+    -st-states: inactive;
 }
 
 .tabContent:inactive {
