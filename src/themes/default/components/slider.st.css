@@ -39,12 +39,14 @@ Slider {
     
 }
 
-Slider:x, Slider:xReverse {
+Slider:x,
+Slider:xReverse {
     width:288px;
     height: 30px;
 }
 
-Slider:y, Slider:yReverse {
+Slider:y,
+Slider:yReverse {
     width: 30px;
     min-height: value(minVerticalSliderHeight);
 }
@@ -54,12 +56,14 @@ Slider::bar {
     background-color: value(colorTrack);
 }
 
-Slider:x::bar, Slider:xReverse::bar {
+Slider:x::bar,
+Slider:xReverse::bar {
     height: value(barThickness);
     width: 100%;
 }
 
-Slider:y::bar, Slider:yReverse::bar {
+Slider:y::bar,
+Slider:yReverse::bar {
     height: 100%;
     width: value(barThickness);
 }
@@ -78,10 +82,10 @@ Slider::handle {
 }
 
 /* Centering handle and tick marks */
-Slider:x::handle, 
-Slider:xReverse::handle, 
-Slider:x::mark, 
-Slider:xReverse::mark, 
+Slider:x::handle,
+Slider:xReverse::handle,
+Slider:x::mark,
+Slider:xReverse::mark,
 Slider:x::rangeMark,
 Slider:xReverse::rangeMark {
     top:0;
@@ -101,13 +105,12 @@ Slider:xReverse::rangeMark {
     transform: translateX(50%);
 }
 
-Slider:y::handle, 
+Slider:y::handle,
 Slider:yReverse::handle,
-Slider:y::mark, 
-Slider:yReverse::mark, 
+Slider:y::mark,
+Slider:yReverse::mark,
 Slider:y::rangeMark,
 Slider:yReverse::rangeMark {
-
     left: 50%;
 }
 
@@ -123,13 +126,16 @@ Slider:yReverse::rangeMark {
     transform: translateY(-50%) translateX(-50%);
 }
 
-Slider::handle:hover, Slider:hover::handle:hover,
-Slider::handle:active, Slider:active::handle:active {
+Slider::handle:hover,
+Slider:hover::handle:hover,
+Slider::handle:active,
+Slider:active::handle:active {
     background-color: value(colorHandle_Active);
     border-color: value(colorHandle_Active);
 } 
 
-Slider::mark, Slider::rangeMark {
+Slider::mark,
+Slider::rangeMark {
     width: 8px;
     height: 8px;
     border-radius: 50%;
@@ -196,8 +202,7 @@ Slider:disabled::rangeBar {
 }
 
 Slider:error::rangeMark,
-Slider:error::rangeBar
-{
+Slider:error::rangeBar {
     background-color: value(color_Error);
 }
 

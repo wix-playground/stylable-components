@@ -31,10 +31,12 @@
     cursor: not-allowed;
 }
 
-.root:x, .root:xReverse {
+.root:x,
+.root:xReverse {
     width: 100%;
 }
-.root:y, .root:yReverse {
+.root:y,
+.root:yReverse {
     height: 100%;
 }
 
@@ -45,15 +47,16 @@
     right:0;
     bottom:0;
     margin:auto;
-    
 }
 
-.root:x .bar, .root:xReverse .bar {
+.root:x .bar,
+.root:xReverse .bar {
     height: value(trackSize);
     width: 100%;
 }
 
-.root:y .bar, .root:yReverse .bar {
+.root:y .bar,
+.root:yReverse .bar {
     text-align: left;
     width: value(trackSize);
     height: 100%;
@@ -63,7 +66,8 @@
     position: absolute;
 }
 
-.root:x .rangeBar, .root:xReverse .rangeBar{
+.root:x .rangeBar,
+.root:xReverse .rangeBar {
     height: inherit;
 }
 
@@ -75,7 +79,8 @@
     right: 0;
 }
 
-.root:y .rangeBar, .root:yReverse .rangeBar{
+.root:y .rangeBar,
+.root:yReverse .rangeBar {
     bottom: 0;
     width: inherit;
 }
@@ -104,7 +109,6 @@
 .rangeMark {}
 
 .rangeMark,
-.mark
-{
+.mark {
     position: absolute;
 }

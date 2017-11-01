@@ -12,12 +12,14 @@
                 sliderColorDisabledLighter;
 }
 
-Slider:x, Slider:xReverse {
+Slider:x,
+Slider:xReverse {
     width:288px;
     height: 30px;
 }
 
-Slider:y, Slider:yReverse {
+Slider:y,
+Slider:yReverse {
     width: 30px;
     min-height: 288px;
 }
@@ -32,12 +34,14 @@ Slider::rangeBar {
     border-radius: 3px;
 }
 
-Slider:x::bar, Slider:xReverse::bar {
+Slider:x::bar,
+Slider:xReverse::bar {
     height: 6px;
     width: 100%;
 }
 
-Slider:y::bar, Slider:yReverse::bar {
+Slider:y::bar,
+Slider:yReverse::bar {
     height: 100%;
     width: 6px;
 }
@@ -57,7 +61,7 @@ Slider::handle:focus {
     transition: box-shadow 0.3s ease-in-out;
 }
 
-Slider:x::handle, 
+Slider:x::handle,
 Slider:xReverse::handle {
     top:0;
     bottom: 0;
@@ -72,7 +76,7 @@ Slider:xReverse::handle {
     transform: translateX(50%);
 }
 
-Slider:y::handle, 
+Slider:y::handle,
 Slider:yReverse::handle {
     left: 50%;
 }
@@ -85,12 +89,14 @@ Slider:yReverse::handle {
     transform: translateY(-50%) translateX(-50%);
 }
 
-Slider::mark, Slider::rangeMark {
+Slider::mark,
+Slider::rangeMark {
     background-color: value(buttonColorDisabled);
 }
 
 /* The ::after creates a larger hit area for the tick marks */
-Slider::mark::after, Slider::rangeMark::after {
+Slider::mark::after,
+Slider::rangeMark::after {
     content: '';
     position: absolute;
     left: 50%;
@@ -100,15 +106,19 @@ Slider::mark::after, Slider::rangeMark::after {
     height: 10px;
 }
 
-Slider:x::mark, Slider:xReverse::mark,
-Slider:x::rangeMark, Slider:xReverse::rangeMark {
+Slider:x::mark,
+Slider:xReverse::mark,
+Slider:x::rangeMark,
+Slider:xReverse::rangeMark {
     width: 1px;
     height: 6px;
     margin-top: 18px;
 }
 
-Slider:y::mark, Slider:yReverse::mark,
-Slider:y::rangeMark, Slider:yReverse::rangeMark {
+Slider:y::mark,
+Slider:yReverse::mark,
+Slider:y::rangeMark,
+Slider:yReverse::rangeMark {
     width: 6px;
     height: 1px;
     margin-left: 18px;
