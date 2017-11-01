@@ -102,7 +102,9 @@
 }
 
 .root:horizontal-bottom .tabList Option:selected:hover,
-.root:horizontal-bottom .tabList Option:selected {
+.root:horizontal-bottom .tabList:focused Option:selected:hover,
+.root:horizontal-bottom .tabList Option:selected,
+.root:horizontal-bottom .tabList:focused Option:selected {
     border: none;
     border-top: value(borderStyle) 2px value(color_Focus);
     padding-top: 16px;
