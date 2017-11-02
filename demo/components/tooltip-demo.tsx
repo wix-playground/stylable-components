@@ -76,6 +76,13 @@ export class TooltipDemo extends React.Component {
                         )}
                     </div>
                 )}
+                <div>
+                    <h4>Auto position</h4>
+                    <div className="anchorWrap">
+                        <div className="anchor" data-tooltip-for="free" children="drag me"/>
+                        <Tooltip id="free" children="I am anchor"/>
+                    </div>
+                </div>
             </div>
         );
     }

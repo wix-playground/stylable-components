@@ -150,12 +150,14 @@ class StyledTooltip extends React.Component<TooltipProps, TooltipState> {
         const rectLeft = rect.left + (window.pageXOffset || document.documentElement.scrollLeft);
         const tipWidth = this.tooltip!.offsetWidth;
         const tipHeight = this.tooltip!.offsetHeight;
+        const winWidth = document.documentElement.offsetWidth;
+        const winHeight = document.documentElement.offsetHeight;
+        const orderedPositions = [this.props.position!].concat(positions);
 
         let top: number = 0;
         let left: number = 0;
-        console.log(tipWidth, tipHeight);
-        let {position} = this.state;
-        //for (position of positions) {
+        let position: Position;
+        for (position of orderedPositions) {
             top = rectTop;
             left = rectLeft;
             if (hasPosition(position, 'bottom', 'bottomLeft', 'bottomRight', 'leftBottom', 'rightBottom')) {
@@ -176,13 +178,13 @@ class StyledTooltip extends React.Component<TooltipProps, TooltipState> {
             if (hasPosition(position, 'left', 'topRight', 'bottomRight', 'leftTop', 'leftBottom')) {
                 left -= tipWidth;
             }
-            //if (true) {
-                //break;
-            //}
-        //}
+            if ((left >= 0) && (top >= 0) && (left + tipWidth <= winWidth) && (top + tipHeight <= winHeight)) {
+                break;
+            }
+        }
 
         const style = {top, left};
-        this.setState({style, position});
+        this.setState({style, position: position!});
     }
 
     private toggle = (e: Event) => {
