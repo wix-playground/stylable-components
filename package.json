@@ -20,15 +20,15 @@
     "stylable": "^4.0.0"
   },
   "dependencies": {
-    "debounce": "^1.0.2",
+    "debounce": "^1.1.0",
     "keycode": "^2.1.9",
     "mobx": "^3.3.1",
-    "mobx-react": "^4.3.3",
+    "mobx-react": "^4.3.4",
     "prop-types": "^15.6.0",
-    "wix-react-tools": "^3.1.1"
+    "wix-react-tools": "^4.0.0"
   },
   "devDependencies": {
-    "@types/mocha": "^2.2.43",
+    "@types/mocha": "^2.2.44",
     "@types/node": "^8.0.47",
     "@types/prop-types": "^15.5.2",
     "@types/react": "^15.0.0",
@@ -50,13 +50,13 @@
     "stylable": "^4.0.26",
     "stylable-integration": "^6.0.0",
     "test-drive-react": "^0.7.0",
-    "ts-loader": "^3.0.5",
+    "ts-loader": "^3.1.1",
     "ts-node": "^3.3.0",
     "tslint": "^5.8.0",
-    "tslint-wix-react": "^5.0.0",
+    "tslint-wix-react": "^6.0.0",
     "typescript": "~2.5.3",
     "webpack": "^3.8.1",
-    "webpack-dev-server": "^2.9.3"
+    "webpack-dev-server": "^2.9.4"
   },
   "license": "MIT",
   "files": [
