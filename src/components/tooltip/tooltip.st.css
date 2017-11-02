@@ -40,46 +40,56 @@
 
 /* TOP */
 .root.top {
+    -webkit-transform: translate(-50%, -100%);
     transform: translate(-50%, -100%);
     margin-top: -value(tooltipOffset);
 }
 .root.top .tail {
     top: 100%;
     left: 50%;
+    -webkit-transform: translateX(-50%);
     transform: translateX(-50%);
 }
 
 /* BOTTOM */
 .root.bottom {
+    -webkit-transform: translate(-50%, 0);
     transform: translate(-50%, 0);
     margin-top: value(tooltipOffset);
 }
 .root.bottom .tail {
     bottom: 100%;
     left: 50%;
+    -webkit-transform: translateX(-50%) rotate(180deg);
     transform: translateX(-50%) rotate(180deg);
 }
 
 /* LEFT */
 .root.left {
+    -webkit-transform: translate(-100%, -50%);
     transform: translate(-100%, -50%);
     margin-left: -value(tooltipOffset);
 }
 .root.left .tail {
     left: 100%;
     top: 50%;
+    -webkit-transform: translateY(100%) rotate(-90deg);
+    -webkit-transform-origin: 0 0;
     transform: translateY(100%) rotate(-90deg);
     transform-origin: 0 0;
 }
 
 /* RIGHT */
 .root.right {
+    -webkit-transform: translate(0, -50%);
     transform: translate(0, -50%);
     margin-left: value(tooltipOffset);
 }
 .root.right .tail {
     right: 100%;
     top: 50%;
+    -webkit-transform: translateY(100%) rotate(90deg);
+    -webkit-transform-origin: 100% 0;
     transform: translateY(100%) rotate(90deg);
     transform-origin: 100% 0;
 }

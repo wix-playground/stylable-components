@@ -24,8 +24,18 @@ class Sample extends React.Component {
         const id = 'id' + Math.random().toString().slice(2);
         return (
             <div>
-                <div data-automation-id="TEST_ANCHOR" data-tooltip-for={id} children="I am anchor"/>
-                <Tooltip id={id} children="I am a tooltip!" open {...this.props}/>
+                <div
+                    data-automation-id="TEST_ANCHOR"
+                    data-tooltip-for={id}
+                    children="I am a anchor!"
+                    style={{width: 100}}
+                />
+                <Tooltip
+                    id={id}
+                    children="I am a tooltip!"
+                    open
+                    {...this.props}
+                />
             </div>
         );
     }
@@ -49,7 +59,9 @@ class SampleDriver extends DriverBase {
         return getRect(this.tooltip.tail);
     }
     public dispatchOnAnchor(type: string) {
-        this.anchor.dispatchEvent(new Event(type));
+        const event = document.createEvent('CustomEvent');
+        event.initCustomEvent(type, false, false, null);
+        this.anchor.dispatchEvent(event);
     }
 }
 
