@@ -9,7 +9,7 @@ The **RadioGroup** component is used to group together children and provide them
 
 ## API
 
-#### Component Props
+##### Component Props
 
 **RadioGroup**:
 
