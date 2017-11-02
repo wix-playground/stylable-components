@@ -30,13 +30,14 @@
     color_Error: value(ER1);
     color_Disabled: value(DS1);
 
+    focusSize: 4px;
     minVerticalSliderHeight: 44px;
     barBorderRadius: 0px;
     barThickness:4px;
 }
 
 Slider {
-    
+
 }
 
 Slider:x,
@@ -132,7 +133,7 @@ Slider::handle:active,
 Slider:active::handle:active {
     background-color: value(colorHandle_Active);
     border-color: value(colorHandle_Active);
-} 
+}
 
 Slider::mark,
 Slider::rangeMark {
