@@ -39,12 +39,14 @@
 
 /* TOP */
 .root.top {
+    -webkit-transform: translate(-50%, -100%);
     transform: translate(-50%, -100%);
     margin-top: -value(tooltipOffset);
 }
 .root.top .tail {
     top: 100%;
     left: 50%;
+    -webkit-transform: translateX(-50%);
     transform: translateX(-50%);
 }
 
