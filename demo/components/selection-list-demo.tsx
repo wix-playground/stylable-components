@@ -1,6 +1,7 @@
 import React = require('react');
 import {stylable} from 'wix-react-tools';
 import {
+    OptionList,
     SelectionList,
     SelectionListDividerSymbol as divider,
     SelectionListItemValue,
@@ -54,7 +55,6 @@ export class FoodList extends React.Component {
 @stylable(demoStyle)
 class EmojiList extends React.Component {
     public state = {value: 'Crocodile'};
-    private dataSchema = {value: 'name', label: 'icon'};
     private dataSource = [
         {icon: '🐍', name: 'Snek'},
         {icon: '🐋', name: 'Whale'},
@@ -70,8 +70,8 @@ class EmojiList extends React.Component {
                 <h3>Custom item renderer</h3>
                 <SelectionList
                     className="emoji-list"
-                    dataSchema={this.dataSchema}
                     dataSource={this.dataSource}
+                    dataMapper={this.dataMapper}
                     renderItem={this.renderItem}
                     value={this.state.value}
                     onChange={this.handleChange}
@@ -83,8 +83,16 @@ class EmojiList extends React.Component {
         );
     }
 
-    private renderItem = ({value, label}: {value: string, label: string}) => {
-        return <Option value={value}>{label}</Option>;
+    private dataMapper: OptionList['dataMapper'] = ({icon, name}: {icon: string, name: string}) => {
+        return {value: name, label: name};
+    }
+
+    private renderItem: OptionList['renderItem'] = (
+        {icon, name}: {icon: string, name: string},
+        {value, label},
+        {id, selected, focused}
+    ) => {
+        return <Option id={id} value={value} selected={selected} focused={focused}>{icon}</Option>;
     }
 
     private handleChange = ({value}: {value: SelectionListItemValue}) => this.setState({value});

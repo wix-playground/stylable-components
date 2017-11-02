@@ -1,4 +1,5 @@
 .root {
+    -st-states: loaded, loading, error;
     display: inline-block;
 }
 

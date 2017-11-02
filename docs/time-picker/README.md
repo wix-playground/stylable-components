@@ -14,20 +14,20 @@ The **TimePicker** component allows users to select the time and switch between 
 
 ### Component Props
 
-| name        | type                            | defaultValue   | isRequired | description                              |
-| ----------- | ------------------------------- | -------------- | ---------- | ---------------------------------------- |
-| value       | string                          |                | yes        | Sets and represents the time shown in the component instance.<br>Accepts strings in 24h format (12:54). |
-| placeholder | string                          |                |            | Text to display if the value is null.    |
+| name        | type                       | defaultValue   | isRequired | description                              |
+| ----------- | -------------------------- | -------------- | ---------- | ---------------------------------------- |
+| value       | string                     |                | yes        | Sets and represents the time shown in the component instance.<br>Accepts strings in 24h format (12:54). |
+| placeholder | string                     |                |            | Text to display if the value is null.    |
 | format      | enum:<br>"ampm",<br>"24hr" | system default |            | Tells the component instance to present the time in ampm (12hr) format or 24hr format. |
-| required    | boolean                            | false          |            | Whether or not filling the value is required in a form. |
-| disabled    | boolean                            | false          |            | If `true`, the  component instance will not be interactive. |
-| label       | string                          |                |            | Text to display in accessibility mode.   |
-| name        | string                          |                |            | The name of the component instance. Behaves like the name attribute of an input element. |
-| prefix      | node                            |                |            | Inserts a component at the start of the input. |
-| suffix      | node                            |                |            | Inserts a component at the end of the input. |
-| onChange     | function |   |   | Callback function that is fired on component blur.<br>`(event: {value: number}): void`<br>`event` KeyDown event targeting the component instance.<br>`newValue` The new value of the component instance. |
-| onInput      |function |   |  | Callback function that is fired on every keydown event.<br> `(event: {value: number}): void`<br>`event` KeyDown event targeting the component instance.<br>`newValue` The new value of the component instance. |
-| error       | boolean                            | false          |            | Sets the `:error` CSS state of the component instance. |
+| required    | boolean                    | false          |            | Whether or not filling the value is required in a form. |
+| disabled    | boolean                    | false          |            | If `true`, the  component instance will not be interactive. |
+| label       | string                     |                |            | Text to display in accessibility mode.   |
+| name        | string                     |                |            | The name of the component instance. Behaves like the name attribute of an input element. |
+| prefix      | node                       |                |            | Inserts a component at the start of the input. |
+| suffix      | node                       |                |            | Inserts a component at the end of the input. |
+| onChange    | function                   |                |            | Callback function that is fired on component blur.<br>`(event: {value: number}): void`<br>`event` KeyDown event targeting the component instance.<br>`newValue` The new value of the component instance. |
+| onInput     | function                   |                |            | Callback function that is fired on every keydown event.<br> `(event: {value: number}): void`<br>`event` KeyDown event targeting the component instance.<br>`newValue` The new value of the component instance. |
+| error       | boolean                    | false          |            | Sets the `:error` CSS state of the component instance. |
 
 ### Code Example
 
@@ -82,12 +82,17 @@ export class ComponentsDemo extends React.Component<{}, {}>{
 
 ### Subcomponents (pseudo-elements)
 
-| selector      | description                            | type                                     |
-| :------------ | -------------------------------------- | ---------------------------------------- |
-| ::stepper     | Allows you to style the stepper arrows. | Style the internal `<Stepper/>` component. This component exposes some internal styles. |
-| ::stepper::up   | Style the stepper UP arrow.   | Style the internal `<up/>` arrow component.|
-| ::stepper::down | Style the stepper DOWN arrow. | Style the internal `<down/>` arrow component. |
-| ::placeholder | Allows you to style the placeholder. | This subcomponent is an HTML Element and has no subcomponents of its own. |
+| selector        | description                              | notes                                    |
+| :-------------- | ---------------------------------------- | ---------------------------------------- |
+| ::time          | Wrapper for both of the time inputs (hours and minutes) | Use it to style and align both inputs together |
+| ::input         | This selector styles the time inputs (hours and minutes) themselves |                                          |
+| ::colon         | The colon symbol between the time inputs |                                          |
+| ::nativeInput   | TStyles the native time input which only appears on Touch devices (where a nice native input is implemented) |                                          |
+| ::ampm          | The AM/PM switch                         |                                          |
+| ::stepper       | Allows you to style the stepper arrows.  | Style the internal `<Stepper/>` component. This component exposes some internal styles. |
+| ::stepper::up   | Style the stepper UP arrow.              |                                          |
+| ::stepper::down | Style the stepper DOWN arrow.            |                                          |
+| ::placeholder   | Allows you to style the placeholder.     | This subcomponent is an HTML Element and has no subcomponents of its own. |
 
 You can change color of the `::placeholder` subcomponent by setting the `color` property.
 
@@ -100,9 +105,11 @@ TimePicker::placeholder {
 
 ### Custom CSS States (pseudo-classes)
 
-| state                   | description                              |
-| ----------------------- | ---------------------------------------- |
-| :error                  | Style the component instance on error, i.e. when the `error` prop is true. |
+| state                          | description                              |
+| ------------------------------ | ---------------------------------------- |
+| :error                         | Style the component instance on error, i.e. when the `error` prop is true. |
+| :empty                         | Style the empty state                    |
+| :rtl                           | Adjust the look of the component in RTL mode |
 | :hover, :focus, :disabled, etc | Standard CSS states                      |
 
 

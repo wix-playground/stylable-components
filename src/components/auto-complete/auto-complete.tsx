@@ -1,3 +1,4 @@
+import {computed} from 'mobx';
 import * as React from 'react';
 import {properties, stylable} from 'wix-react-tools';
 import {Popup} from '../../';
@@ -7,7 +8,7 @@ import {StylableProps} from '../../types/props';
 import {noop} from '../../utils';
 import {
     OptionList,
-    SelectionListItemValue,
+    selectionListItemsFromProps,
     SelectionListModel
 } from '../selection-list/selection-list-model';
 import {SelectionListView} from '../selection-list/selection-list-view';
@@ -42,12 +43,29 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
     };
     public state = {self: null, isOpen: this.props.open!};
 
+    // Wrapping props with @computed allows to observe them independently from other props.
+    @computed private get children()    { return this.props.children; }
+    @computed private get dataSource()  { return this.props.dataSource; }
+    @computed private get dataMapper() { return this.props.dataMapper; }
+    @computed private get renderItem()  { return this.props.renderItem; }
+    @computed private get value()       { return this.props.value; }
+    @computed private get filter()      { return this.props.filter; }
+
+    @computed private get items() {
+        const items = selectionListItemsFromProps({
+            dataSource: this.dataSource,
+            dataMapper: this.dataMapper,
+            renderItem: this.renderItem,
+            children: this.children
+        });
+        return this.value ? items.filter(item => this.filter!(item.label, this.value!)) : items;
+    }
+
+    @computed private get list() {
+        return new SelectionListModel(this.items);
+    }
+
     public render() {
-        const filteredItems = this.props.value ?
-            this.props.dataSource!.filter((item: string) => this.props.filter!(item, this.props.value!)) :
-            this.props.dataSource;
-        const list = new SelectionListModel();
-        list.addDataSource({dataSource: filteredItems});
         return (
             <div
                 data-automation-id="AUTO_COMPLETE"
@@ -69,12 +87,12 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
                 <Popup
                     className="root"
                     anchor={this.state.self}
-                    open={this.props.open && filteredItems!.length > 0}
+                    open={this.props.open && this.items.length > 0}
                 >
                     <SelectionListView
                         className="list"
-                        list={list}
-                        onChange={this.onClick}
+                        list={this.list}
+                        onClick={this.onClick}
                     />
                 </Popup>
             </div>
@@ -92,8 +110,10 @@ export class AutoComplete extends React.Component<AutoCompleteProps, AutoComplet
         }
     }
 
-    private onClick = (e: ChangeEvent<SelectionListItemValue>) => {
-        this.props.onChange!(e);
+    private onClick = (e: React.MouseEvent<HTMLElement>, itemIndex: number) => {
+        if (itemIndex > -1) {
+            this.props.onChange!({value: this.list.items[itemIndex].value});
+        }
         this.togglePopup();
     }
 

@@ -1,6 +1,6 @@
 import {warnOnce} from '../../utils/logger';
 import {AXES, CONTINUOUS_STEP} from './slider-constants';
-import {AxisOptions, PointerPosition, Step} from './slider-types';
+import {AxisOptions, PointerPosition, SliderValue, Step} from './slider-types';
 
 export function isVertical(axis: AxisOptions): boolean {
     return axis === AXES.y || axis === AXES.yReverse;
@@ -46,6 +46,12 @@ export function getAbsoluteValue(relativeValue: number, min: number, max: number
     return getValueInRange(absoluteValue, min, max);
 }
 
+export function relativeToAbsoluteValue(relativeValue: number[], min: number, max: number): number[] {
+    return relativeValue
+        .map(value => getAbsoluteValue(value, min, max))
+        .sort((a, b) => a - b);
+}
+
 export function getValueInRange(value: number, min: number, max: number): number {
     return value < min ? min : (value > max ? max : value);
 }
@@ -78,4 +84,24 @@ export function getValueFromElementAndPointer(
         (value < 0 ? value + relativeStep : value);
 
     return value;
+}
+
+export function getNewValue(values: number[], newValue: number, index: number): number[] {
+    return values.map((value, i) => i === index ? newValue : value).sort((a, b) => a - b);
+}
+
+export function getNormalizedValue(values: SliderValue): number[] {
+    if (Array.isArray(values)) {
+        return values;
+    } else {
+        return [values];
+    }
+}
+
+export function getDenormalizedValue(values: number[]): SliderValue {
+    if (values.length > 1) {
+        return values;
+    } else {
+        return values[0];
+    }
 }
