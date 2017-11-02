@@ -66,10 +66,9 @@ export class Popup extends React.Component<PopupCompProps, PopupState> {
     }
 
     public componentDidUpdate() {
-        const oldStyle = this.state.style;
-        const newStyle = this.createStyle(this.props);
-        if (!objectsShallowEqual(oldStyle, newStyle)) {
-            this.setState({style: newStyle});
+        const style = this.createStyle(this.props);
+        if (!objectsShallowEqual(style, this.state.style)) {
+            this.setState({style});
         }
     }
 
