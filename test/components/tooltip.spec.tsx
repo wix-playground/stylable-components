@@ -63,7 +63,7 @@ function equal(a: number, b: number) {
     return expect(Math.abs(a - b)).to.below(0.5);
 }
 
-describe.only('<Tooltip/>', () => {
+describe('<Tooltip/>', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
 
