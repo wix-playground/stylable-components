@@ -133,14 +133,21 @@ class StyledTooltip extends React.Component<TooltipProps, TooltipState> {
         }
         const {position} = this.props;
         const rect = this.target!.getBoundingClientRect();
-        const top = rect.top + window.scrollY;
-        const left = rect.left + window.scrollX;
-        const style = {
-            top: position === 'bottom' ? (top + rect.height) : top,
-            left: position === 'right' ? (left + rect.width) : left,
-            marginLeft: (position === 'top' || position === 'bottom') ? (rect.width / 2) : undefined,
-            marginTop: (position === 'left' || position === 'right') ? (rect.height / 2) : undefined
-        };
+        let top = rect.top + (window.pageYOffset || document.documentElement.scrollTop);
+        let left = rect.left + (window.pageXOffset || document.documentElement.scrollLeft);
+        if (position === 'bottom') {
+            top += rect.height;
+        }
+        if (position === 'left' || position === 'right') {
+            top += rect.height / 2;
+        }
+        if (position === 'right') {
+            left += rect.width;
+        }
+        if (position === 'top' || position === 'bottom') {
+            left += rect.width / 2;
+        }
+        const style = {top, left};
         this.setState({style});
     }
 
