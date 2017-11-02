@@ -164,7 +164,7 @@ function testPosition(position: Position, expectations: any) {
     });
 }
 
-describe.only('<Tooltip/>', () => {
+describe('<Tooltip/>', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
 
