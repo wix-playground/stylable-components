@@ -71,7 +71,7 @@ function renderWithProps(clientRenderer: ClientRenderer, props?: Partial<Tooltip
 }
 
 function equal(a: number, b: number) {
-    return expect(Math.abs(a - b)).to.below(0.1);
+    return expect(Math.abs(a - b)).to.below(0.5);
 }
 
 function testPosition(position: Position, expectations: any) {
@@ -92,25 +92,23 @@ function testPosition(position: Position, expectations: any) {
 
         if (expectations.positionTop) {
             it('should be on the top', () => {
-                expect(anchorBounds.top).to.equal(tooltipBounds.top + tooltipBounds.height - tooltipBounds.marginTop);
+                equal(anchorBounds.top, tooltipBounds.top + tooltipBounds.height - tooltipBounds.marginTop);
             });
         }
         if (expectations.positionBottom) {
             it('should be on the bottom', () => {
-                expect(anchorBounds.top + anchorBounds.height).to.equal(tooltipBounds.top - tooltipBounds.marginTop);
+                equal(anchorBounds.top + anchorBounds.height, tooltipBounds.top - tooltipBounds.marginTop);
             });
         }
         if (expectations.positionLeft) {
             it('should be on the left', () => {
-                expect(anchorBounds.left)
-                    .to.equal(tooltipBounds.left + tooltipBounds.width - tooltipBounds.marginLeft);
+                equal(anchorBounds.left, tooltipBounds.left + tooltipBounds.width - tooltipBounds.marginLeft);
             });
         }
 
         if (expectations.centeredHorizontaly) {
             it('should be centerd horizontaly', () => {
-                expect(anchorBounds.left + anchorBounds.width / 2)
-                    .to.equal(tooltipBounds.left + tooltipBounds.width / 2);
+                equal(anchorBounds.left + anchorBounds.width / 2, tooltipBounds.left + tooltipBounds.width / 2);
             });
             it('tail should be centerd horizontaly', () => {
                 equal(anchorBounds.left + anchorBounds.width / 2, tailBounds.left + tailBounds.width / 2);
@@ -119,8 +117,7 @@ function testPosition(position: Position, expectations: any) {
 
         if (expectations.centeredVerticaly) {
             it('should be centerd verticaly', () => {
-                expect(anchorBounds.top + anchorBounds.height / 2)
-                    .to.equal(tooltipBounds.top + tooltipBounds.height / 2);
+                equal(anchorBounds.top + anchorBounds.height / 2, tooltipBounds.top + tooltipBounds.height / 2);
             });
             it('tail should be centerd verticaly', () => {
                 equal(anchorBounds.top + anchorBounds.height / 2, tailBounds.top + tailBounds.height / 2);
@@ -129,42 +126,39 @@ function testPosition(position: Position, expectations: any) {
 
         if (expectations.positionRight) {
             it('should be on the right', () => {
-                expect(anchorBounds.left + anchorBounds.width)
-                    .to.equal(tooltipBounds.left - tooltipBounds.marginLeft);
+                equal(anchorBounds.left + anchorBounds.width, tooltipBounds.left - tooltipBounds.marginLeft);
             });
         }
         if (expectations.aligmnentLeft) {
             it('should be alignet to left', () => {
-                expect(anchorBounds.left).to.equal(tooltipBounds.left);
+                equal(anchorBounds.left, tooltipBounds.left);
             });
             it('tail should be alignet to left', () => {
-                expect(anchorBounds.left).to.equal(tailBounds.left - TAIL_OFFSET);
+                equal(anchorBounds.left, tailBounds.left - TAIL_OFFSET);
             });
         }
         if (expectations.aligmnentRight) {
             it('should be alignet to right', () => {
-                expect(anchorBounds.left + anchorBounds.width).to.equal(tooltipBounds.left + tooltipBounds.width);
+                equal(anchorBounds.left + anchorBounds.width, tooltipBounds.left + tooltipBounds.width);
             });
             it('tail should be alignet to right', () => {
-                expect(anchorBounds.left + anchorBounds.width)
-                    .to.equal(tailBounds.left + tailBounds.width + TAIL_OFFSET);
+                equal(anchorBounds.left + anchorBounds.width, tailBounds.left + tailBounds.width + TAIL_OFFSET);
             });
         }
         if (expectations.aligmnentTop) {
             it('should be alignet to top', () => {
-                expect(anchorBounds.top).to.equal(tooltipBounds.top);
+                equal(anchorBounds.top, tooltipBounds.top);
             });
             it('tail should be alignet to top', () => {
-                expect(anchorBounds.top).to.equal(tailBounds.top - TAIL_OFFSET);
+                equal(anchorBounds.top, tailBounds.top - TAIL_OFFSET);
             });
         }
         if (expectations.aligmnentBottom) {
             it('should be alignet to bottom', () => {
-                expect(anchorBounds.top + anchorBounds.height).to.equal(tooltipBounds.top + tooltipBounds.height);
+                equal(anchorBounds.top + anchorBounds.height, tooltipBounds.top + tooltipBounds.height);
             });
             it('tail should be alignet to bottom', () => {
-                expect(anchorBounds.top + anchorBounds.height)
-                    .to.equal(tailBounds.top + tailBounds.height + TAIL_OFFSET);
+                equal(anchorBounds.top + anchorBounds.height, tailBounds.top + tailBounds.height + TAIL_OFFSET);
             });
         }
     });
