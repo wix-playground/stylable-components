@@ -54,12 +54,27 @@
     background: transparent;
 }
 
+/* since SelectionList Option is styled with :not(:disabled)
+ * state, this state has to be added here so that the
+ * selector specificity is correct
+ */
 .tabList Option:selected:hover:not(:disabled),
 .tabList:focused Option:selected:hover:not(:disabled),
 .tabList Option:selected:not(:disabled),
 .tabList:focused Option:selected:not(:disabled) {
     color: value(color_Focus);
 
+    border: none;
+    border-bottom: value(borderStyle) 2px value(color_Focus);
+    padding-bottom: 16px;
+
+    background: transparent;
+}
+
+.tabList Option:selected:hover:disabled,
+.tabList:focused Option:selected:hover:disabled,
+.tabList Option:selected:disabled,
+.tabList:focused Option:selected:disabled {
     border: none;
     border-bottom: value(borderStyle) 2px value(color_Focus);
     padding-bottom: 16px;
