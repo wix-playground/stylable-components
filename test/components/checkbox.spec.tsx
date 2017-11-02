@@ -214,8 +214,7 @@ describe('<Checkbox/>', () => {
     });
 
     it('Accepts "autofocus" prop', async () => {
-        if (document.hasFocus()) {
-
+        if (document.visibilityState === 'visible' && document.hasFocus()) {
             const {driver: checkbox, waitForDom} = clientRenderer.render(
                 <CheckBox  autoFocus/>
             ).withDriver(CheckBoxTestDriver);
@@ -224,7 +223,6 @@ describe('<Checkbox/>', () => {
                 expect(document.activeElement).to.equal(checkbox.nativeInput);
                 expect(checkbox.elementHasStylableState('focus')).to.equal(true);
             });
-
         } else {
             console.warn(// tslint:disable-line no-console
                 'Checkbox autofocus test wasn\'t run since document doesn\'t have focus'
