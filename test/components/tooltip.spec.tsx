@@ -63,7 +63,9 @@ function equal(a: number, b: number) {
     return expect(Math.abs(a - b)).to.below(0.5);
 }
 
-describe('<Tooltip/>', () => {
+const log = console.log.bind(console);
+
+describe.only('<Tooltip/>', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
 
@@ -76,6 +78,8 @@ describe('<Tooltip/>', () => {
         it('should be aligned to top', () => {
             const tooltipBounds = driver.tooltipBounds;
             const anchorBounds = driver.anchorBounds;
+            log(anchorBounds);
+            log(tooltipBounds);
             equal(anchorBounds.top, tooltipBounds.top + tooltipBounds.height - driver.tooltipMargins.top);
         });
 
