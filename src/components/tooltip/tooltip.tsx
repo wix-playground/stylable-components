@@ -139,8 +139,8 @@ class StyledTooltip extends React.Component<TooltipProps, TooltipState> {
         }
         const {position} = this.props;
         const rect = this.target!.getBoundingClientRect();
-        let top = rect.top + window.scrollY;
-        let left = rect.left + window.scrollX;
+        let top = rect.top + (window.pageYOffset || document.documentElement.scrollTop);
+        let left = rect.left + (window.pageXOffset || document.documentElement.scrollLeft);
         if (hasPosition(position!, 'bottom', 'bottomLeft', 'bottomRight', 'leftBottom', 'rightBottom')) {
             top += rect.height;
         }

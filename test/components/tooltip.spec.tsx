@@ -146,7 +146,8 @@ function testPosition(position: Position, expectations: any) {
                 expect(anchorBounds.left + anchorBounds.width).to.equal(tooltipBounds.left + tooltipBounds.width);
             });
             it('tail should be alignet to right', () => {
-                expect(anchorBounds.left + anchorBounds.width).to.equal(tailBounds.left + tailBounds.width + TAIL_OFFSET);
+                expect(anchorBounds.left + anchorBounds.width)
+                    .to.equal(tailBounds.left + tailBounds.width + TAIL_OFFSET);
             });
         }
         if (expectations.aligmnentTop) {
@@ -162,7 +163,8 @@ function testPosition(position: Position, expectations: any) {
                 expect(anchorBounds.top + anchorBounds.height).to.equal(tooltipBounds.top + tooltipBounds.height);
             });
             it('tail should be alignet to bottom', () => {
-                expect(anchorBounds.top + anchorBounds.height).to.equal(tailBounds.top + tailBounds.height + TAIL_OFFSET);
+                expect(anchorBounds.top + anchorBounds.height)
+                    .to.equal(tailBounds.top + tailBounds.height + TAIL_OFFSET);
             });
         }
     });
