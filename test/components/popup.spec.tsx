@@ -217,7 +217,10 @@ describe('<Popup />', () => {
                     <div style={{height: '50px'}}>Body</div>
                 </Popup>).withDriver(PopupTestDriver);
 
-            await waitForDom(() => expect(popup.root).to.be.present());
+            await waitForDom(() => {
+                expect(popup.root).to.be.present();
+                expect(popup.root.getBoundingClientRect().top).to.equal(50);
+            });
             expect(onExitBounds).to.not.have.been.called;
             scrollDiv!.scrollTop = 51;
 
