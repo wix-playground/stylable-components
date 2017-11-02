@@ -1,17 +1,22 @@
-import {DriverBase, selectDom, simulate} from 'test-drive-react';
+import {DriverBase, simulate} from 'test-drive-react';
 import {DropDown} from '../../src/components/drop-down/drop-down';
-
-const bodySelect = selectDom(document.body);
+import {PortalTestDriver} from './portal-driver';
 
 export class DropDownDriver extends DriverBase {
     public static ComponentClass = DropDown;
+    private portalDriver: PortalTestDriver;
+
+    constructor(getDropdown: () => HTMLElement) {
+        super(getDropdown);
+        this.portalDriver = new PortalTestDriver(getDropdown);
+    }
 
     public get selection(): string | null {
         return this.root.textContent;
     }
 
     public isOpen(): boolean {
-        return !!this.list;
+        return !!this.portalDriver.portal;
     }
 
     public clickOnItem(idx: number): void {
@@ -21,11 +26,11 @@ export class DropDownDriver extends DriverBase {
     }
 
     public get list(): HTMLDivElement | null {  // refactor when selectionList driver is available
-        return bodySelect('LIST');
+        return this.portalDriver.portal as HTMLDivElement;
     }
 
     public get items(): HTMLCollection | null { // refactor when selectionList driver is available
-        return this.list ? this.list.children : null;
+        return this.list ? this.list.children[0].children : null;
     }
 
     public focus(): void {
