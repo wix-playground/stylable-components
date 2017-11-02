@@ -133,6 +133,45 @@ export class TabsDemo extends React.Component {
                                 </ContextProvider>
                             </td>
                         </tr>
+                        <tr>
+                            <td>Vertical After</td>
+                            <td>
+                                <Tabs
+                                    orientation="vertical-after"
+                                    value={value}
+                                    onChange={this.handleChange}
+                                >
+                                    <Tab value="1" label="Tab One">
+                                        <p>This is tab one</p>
+                                    </Tab>
+                                    <Tab value="2" label="Tab Two">
+                                        <p>This is tab two</p>
+                                    </Tab>
+                                    <Tab value="3" label="Tab Three" disabled={true}>
+                                        <p>This is disabled and cannot be selected</p>
+                                    </Tab>
+                                </Tabs>
+                            </td>
+                            <td>
+                                <ContextProvider dir="rtl">
+                                    <Tabs
+                                        orientation="vertical-after"
+                                        value={value}
+                                        onChange={this.handleChange}
+                                    >
+                                        <Tab value="1" label="Tab One">
+                                            <p>This is tab one</p>
+                                        </Tab>
+                                        <Tab value="2" label="Tab Two">
+                                            <p>This is tab two</p>
+                                        </Tab>
+                                        <Tab value="3" label="Tab Three" disabled={true}>
+                                            <p>This is disabled and cannot be selected</p>
+                                        </Tab>
+                                    </Tabs>
+                                </ContextProvider>
+                            </td>
+                        </tr>
                     </tbody></table>
                     <label>Uncontrolled</label>
                     <Tabs defaultValue="2">

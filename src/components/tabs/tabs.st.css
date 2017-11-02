@@ -107,6 +107,7 @@
 .root:horizontal-bottom .tabList:focused Option:selected {
     border: none;
     border-top: value(borderStyle) 2px value(color_Focus);
+    padding: 18px;
     padding-top: 16px;
 }
 
@@ -133,6 +134,7 @@
 .root:not(:rtl):vertical-before .tabList Option:selected {
     border: none;
     border-right: value(borderStyle) 2px value(color_Focus);
+    padding: 18px;
     padding-right: 16px;
 }
 
@@ -140,5 +142,41 @@
 .root:rtl:vertical-before .tabList Option:selected {
     border: none;
     border-left: value(borderStyle) 2px value(color_Focus);
+    padding: 18px;
     padding-left: 16px;
+}
+
+.root:vertical-after {
+    flex-direction: row-reverse;
+}
+
+.root:vertical-after .tabList,
+.root:vertical-after .tabList:focused {
+    flex-direction: column;
+    width: auto;
+
+    border: none;
+    border-left: value(borderDefault);
+}
+
+.root:rtl:vertical-after .tabList,
+.root:rtl:vertical-after .tabList:focused {
+    border: none;
+    border-right: value(borderDefault);
+}
+
+.root:not(:rtl):vertical-after .tabList Option:selected:hover,
+.root:not(:rtl):vertical-after .tabList Option:selected {
+    border: none;
+    border-left: value(borderStyle) 2px value(color_Focus);
+    padding: 18px;
+    padding-left: 16px;
+}
+
+.root:rtl:vertical-after .tabList Option:selected:hover,
+.root:rtl:vertical-after .tabList Option:selected {
+    border: none;
+    border-right: value(borderStyle) 2px value(color_Focus);
+    padding: 18px;
+    padding-right: 16px;
 }
