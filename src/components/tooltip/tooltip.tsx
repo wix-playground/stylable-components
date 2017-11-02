@@ -24,11 +24,18 @@ export interface TooltipProps {
 export interface TooltipState {
     style?: React.CSSProperties;
     open: boolean;
+    position: Position;
 }
 
 function hasPosition(position: Position, ...candidates: string[]): boolean {
     return candidates.some(item => item === position);
 }
+
+const positions: Position[] = [
+    'top', 'left', 'right', 'bottom',
+    'topLeft', 'topRight', 'bottomLeft', 'bottomRight',
+    'leftTop', 'leftBottom', 'rightTop', 'rightBottom'
+];
 
 @stylable(styles)
 class StyledTooltip extends React.Component<TooltipProps, TooltipState> {
@@ -42,6 +49,7 @@ class StyledTooltip extends React.Component<TooltipProps, TooltipState> {
     };
 
     private target: HTMLElement | null = null;
+    private tooltip: HTMLElement | null = null;
     private events: string[] = [];
     private timeout?: number;
     private onWindowResize = debounce(() => {
@@ -54,31 +62,31 @@ class StyledTooltip extends React.Component<TooltipProps, TooltipState> {
         super();
         this.state = {
             style: undefined,
-            open: props.open!
+            open: props.open!,
+            position: props.position!
         };
     }
 
     public render() {
-        const {children, position} = this.props;
-        const {style, open} = this.state;
-
-        if (!style) {
-            return null;
-        }
+        const {children} = this.props;
+        const {style, open, position} = this.state;
 
         return (
             <div
                 data-automation-id="TOOLTIP"
                 className={`root ${position}`}
                 style={style}
-                style-state={{open}}
+                style-state={{open, unplaced: !style}}
             >
                 <GlobalEvent
                     resize={this.onWindowResize}
                     mousedown={this.hide}
                     touchstart={this.hide}
                 />
-                <div className="tooltip">
+                <div
+                    className="tooltip"
+                    ref={elem => this.tooltip = elem}
+                >
                     {children}
                     <svg className="tail" height="5" width="10" data-automation-id="TOOLTIP_TAIL">
                         <polygon points="0,0 10,0 5,5"/>
@@ -137,24 +145,44 @@ class StyledTooltip extends React.Component<TooltipProps, TooltipState> {
         if (!this.target) {
             return;
         }
-        const {position} = this.props;
         const rect = this.target!.getBoundingClientRect();
-        let top = rect.top + (window.pageYOffset || document.documentElement.scrollTop);
-        let left = rect.left + (window.pageXOffset || document.documentElement.scrollLeft);
-        if (hasPosition(position!, 'bottom', 'bottomLeft', 'bottomRight', 'leftBottom', 'rightBottom')) {
-            top += rect.height;
-        }
-        if (hasPosition(position!, 'left', 'right')) {
-            top += rect.height / 2;
-        }
-        if (hasPosition(position!, 'right', 'topRight', 'bottomRight', 'rightTop', 'rightBottom')) {
-            left += rect.width;
-        }
-        if (hasPosition(position!, 'top', 'bottom')) {
-            left += rect.width / 2;
-        }
+        const rectTop = rect.top + (window.pageYOffset || document.documentElement.scrollTop);
+        const rectLeft = rect.left + (window.pageXOffset || document.documentElement.scrollLeft);
+        const tipWidth = this.tooltip!.offsetWidth;
+        const tipHeight = this.tooltip!.offsetHeight;
+
+        let top: number = 0;
+        let left: number = 0;
+        console.log(tipWidth, tipHeight);
+        let {position} = this.state;
+        //for (position of positions) {
+            top = rectTop;
+            left = rectLeft;
+            if (hasPosition(position, 'bottom', 'bottomLeft', 'bottomRight', 'leftBottom', 'rightBottom')) {
+                top += rect.height;
+            }
+            if (hasPosition(position, 'left', 'right')) {
+                top += rect.height / 2 - tipHeight / 2;
+            }
+            if (hasPosition(position, 'right', 'topRight', 'bottomRight', 'rightTop', 'rightBottom')) {
+                left += rect.width;
+            }
+            if (hasPosition(position, 'top', 'bottom')) {
+                left += rect.width / 2 - tipWidth / 2;
+            }
+            if (hasPosition(position, 'top', 'topLeft', 'topRight', 'leftBottom', 'rightBottom')) {
+                top -= tipHeight;
+            }
+            if (hasPosition(position, 'left', 'topRight', 'bottomRight', 'leftTop', 'leftBottom')) {
+                left -= tipWidth;
+            }
+            //if (true) {
+                //break;
+            //}
+        //}
+
         const style = {top, left};
-        this.setState({style});
+        this.setState({style, position});
     }
 
     private toggle = (e: Event) => {
