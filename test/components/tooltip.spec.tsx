@@ -4,17 +4,6 @@ import {Tooltip, TooltipProps} from '../../src';
 import {TooltipDriver} from '../../test-kit';
 import {sleep} from '../utils';
 
-
-function getBounds(elem: HTMLElement) {
-    const rect = elem.getBoundingClientRect();
-    return {
-        top: rect.top,
-        left: rect.left,
-        width: elem.offsetWidth,
-        height: elem.offsetHeight
-    }
-}
-
 class Sample extends React.Component {
     public render() {
         const id = 'id' + Math.random().toString().slice(2);
@@ -46,10 +35,10 @@ class SampleDriver extends DriverBase {
         return this.select('TEST_ANCHOR');
     }
     public get tooltipBounds() {
-        return getBounds(this.tooltip as HTMLElement);
+        return this.tooltip.getBoundingClientRect();
     }
     public get anchorBounds() {
-        return getBounds(this.anchor as HTMLElement);
+        return this.anchor.getBoundingClientRect();
     }
     public dispatchOnAnchor(type: string) {
         const event = document.createEvent('CustomEvent');
@@ -74,7 +63,7 @@ function equal(a: number, b: number) {
     return expect(Math.abs(a - b)).to.below(0.5);
 }
 
-describe.only('<Tooltip/>', () => {
+describe('<Tooltip/>', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
 
