@@ -75,8 +75,6 @@ describe('<DropDown />', () => {
             <DropDown open disabled />
         ).withDriver(DropDownDriver);
 
-        debugger;
-
         await waitForDom(() => expect(dropdown.isOpen(), 'expected list to be closed').to.equal(false));
 
         clientRenderer.render(<DropDown open />, container);

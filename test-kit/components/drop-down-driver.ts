@@ -11,21 +11,12 @@ export class DropDownDriver extends DriverBase {
         this.portalDriver = new PortalTestDriver(getDropdown);
     }
 
-    // public get root(): HTMLElement {
-    //
-    // }
-
-    public get content(): HTMLElement {
-        return this.portalDriver.portal as HTMLElement;
-        // return this.portalDriver.content;
-    }
-
     public get selection(): string | null {
         return this.root.textContent;
     }
 
     public isOpen(): boolean {
-        return !!this.list;
+        return !!this.portalDriver.portal;
     }
 
     public clickOnItem(idx: number): void {
@@ -35,11 +26,11 @@ export class DropDownDriver extends DriverBase {
     }
 
     public get list(): HTMLDivElement | null {  // refactor when selectionList driver is available
-        return this.root as HTMLDivElement;
+        return this.portalDriver.portal as HTMLDivElement;
     }
 
     public get items(): HTMLCollection | null { // refactor when selectionList driver is available
-        return this.list ? this.list.children : null;
+        return this.list ? this.list.children[0].children : null;
     }
 
     public focus(): void {
