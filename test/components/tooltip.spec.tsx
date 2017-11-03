@@ -19,11 +19,13 @@ function getRect(elem: Element) {
     };
 }
 
-class Sample extends React.Component {
+type SampleProps = Partial<TooltipProps> & {style?: React.CSSProperties};
+class Sample extends React.Component<SampleProps> {
     public render() {
         const id = 'id' + Math.random().toString().slice(2);
+        const {style, ...props} = this.props;
         return (
-            <div>
+            <div style={style}>
                 <div
                     data-automation-id="TEST_ANCHOR"
                     data-tooltip-for={id}
@@ -34,7 +36,7 @@ class Sample extends React.Component {
                     id={id}
                     children="I am a tooltip!"
                     open
-                    {...this.props}
+                    {...props}
                 />
             </div>
         );
@@ -65,7 +67,7 @@ class SampleDriver extends DriverBase {
     }
 }
 
-function renderWithProps(clientRenderer: ClientRenderer, props?: Partial<TooltipProps>) {
+function renderWithProps(clientRenderer: ClientRenderer, props?: SampleProps) {
     const {driver} = clientRenderer.render(<Sample {...props}/>).withDriver(SampleDriver);
     return driver;
 }
@@ -77,6 +79,7 @@ function equal(a: number, b: number) {
 function testPosition(position: Position, expectations: any) {
     describe(`render with ${position} position`, () => {
         const clientRenderer = new ClientRenderer();
+        const style = {marginTop: 200, marginLeft: 200};
         afterEach(() => clientRenderer.cleanup());
 
         let driver: any;
@@ -84,7 +87,7 @@ function testPosition(position: Position, expectations: any) {
         let anchorBounds: any;
         let tailBounds: any;
         beforeEach(() => {
-            driver = renderWithProps(clientRenderer, {position});
+            driver = renderWithProps(clientRenderer, {position, style});
             tooltipBounds = driver.tooltipBounds;
             anchorBounds = driver.anchorBounds;
             tailBounds = driver.tailBounds;

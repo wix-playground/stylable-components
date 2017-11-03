@@ -35,7 +35,6 @@
     color: value(color_MainText_Background);
     font: value(fontSize) value(fontFamily);
     z-index: 1;
-    max-width: 300px;
 }
 
 .tail {

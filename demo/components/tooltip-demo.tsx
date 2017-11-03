@@ -19,6 +19,7 @@ const longText = `
     [5] Spin-off films include the animated Star Wars: The Clone Wars (2008) and Rogue One (2016),
     the latter of which is the first in a planned series of anthology films.
 `;
+const longTextContainer = <p style={{width: 400}} children={longText}/>;
 
 const samples = [
     {
@@ -45,7 +46,7 @@ const samples = [
         props: {
             showTrigger: 'click',
             hideTrigger: 'click',
-            children: longText
+            children: longTextContainer
         },
         positions: ['top', 'left', 'right', 'bottom']
     },
@@ -54,7 +55,7 @@ const samples = [
         props: {
             showDelay: 200,
             hideDelay: 300,
-            children: longText
+            children: longTextContainer
         },
         positions: ['top', 'left', 'right', 'bottom']
     }

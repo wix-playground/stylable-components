@@ -32,9 +32,10 @@ function hasPosition(position: Position, ...candidates: string[]): boolean {
 }
 
 const positions: Position[] = [
-    'top', 'left', 'right', 'bottom',
-    'topLeft', 'topRight', 'bottomLeft', 'bottomRight',
-    'leftTop', 'leftBottom', 'rightTop', 'rightBottom'
+    'topRight', 'top', 'topLeft',
+    'rightBottom', 'right', 'rightTop',
+    'bottomLeft', 'bottom', 'bottomRight',
+    'leftTop', 'left', 'leftBottom'
 ];
 
 @stylable(styles)
@@ -80,6 +81,7 @@ class StyledTooltip extends React.Component<TooltipProps, TooltipState> {
             >
                 <GlobalEvent
                     resize={this.onWindowResize}
+                    scroll={this.onWindowResize}
                     mousedown={this.hide}
                     touchstart={this.hide}
                 />
@@ -146,13 +148,16 @@ class StyledTooltip extends React.Component<TooltipProps, TooltipState> {
             return;
         }
         const rect = this.target!.getBoundingClientRect();
-        const rectTop = rect.top + (window.pageYOffset || document.documentElement.scrollTop);
-        const rectLeft = rect.left + (window.pageXOffset || document.documentElement.scrollLeft);
+        const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+        const scrollX = window.pageXOffset || document.documentElement.scrollLeft;
+        const rectTop = rect.top + scrollY;
+        const rectLeft = rect.left + scrollX;
         const tipWidth = this.tooltip!.offsetWidth;
         const tipHeight = this.tooltip!.offsetHeight;
-        const winWidth = document.documentElement.offsetWidth;
-        const winHeight = document.documentElement.offsetHeight;
-        const orderedPositions = [this.props.position!].concat(positions);
+        const winWidth = window.innerWidth;
+        const winHeight = window.innerHeight;
+        const index = positions.indexOf(this.props.position!);
+        const orderedPositions = positions.slice(index).concat(positions.slice(0, index), this.state.position);
 
         let top: number = 0;
         let left: number = 0;
@@ -178,7 +183,11 @@ class StyledTooltip extends React.Component<TooltipProps, TooltipState> {
             if (hasPosition(position, 'left', 'topRight', 'bottomRight', 'leftTop', 'leftBottom')) {
                 left -= tipWidth;
             }
-            if ((left >= 0) && (top >= 0) && (left + tipWidth <= winWidth) && (top + tipHeight <= winHeight)) {
+            if (
+                (left >= scrollX) && (top >= scrollY) &&
+                (left + tipWidth <= scrollX + winWidth) &&
+                (top + tipHeight <= scrollY + winHeight)
+            ) {
                 break;
             }
         }
