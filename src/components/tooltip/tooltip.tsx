@@ -19,6 +19,7 @@ export interface TooltipProps {
     hideTrigger?: string;
     showDelay?: number;
     hideDelay?: number;
+    disableAutoPosition?: boolean;
 }
 
 export interface TooltipState {
@@ -46,7 +47,8 @@ class StyledTooltip extends React.Component<TooltipProps, TooltipState> {
         showTrigger: 'mouseenter',
         hideTrigger: 'mouseleave',
         showDelay: 0,
-        hideDelay: 0
+        hideDelay: 0,
+        disableAutoPosition: false
     };
 
     private target: HTMLElement | null = null;
@@ -157,7 +159,9 @@ class StyledTooltip extends React.Component<TooltipProps, TooltipState> {
         const winWidth = window.innerWidth;
         const winHeight = window.innerHeight;
         const index = positions.indexOf(this.props.position!);
-        const orderedPositions = positions.slice(index).concat(positions.slice(0, index), this.state.position);
+        const orderedPositions = this.props.disableAutoPosition ?
+            [this.props.position!] :
+            positions.slice(index).concat(positions.slice(0, index), this.state.position);
 
         let top: number = 0;
         let left: number = 0;
