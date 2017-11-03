@@ -1,13 +1,7 @@
 import * as React from 'react';
 import {properties} from 'wix-react-tools';
 import {ChangeEvent} from '../../types/events';
-import {TabsView, TabsViewProps} from './tabs-view';
-
-export type TabsOrientation
-    = 'horizontal-top'
-    | 'horizontal-bottom'
-    | 'vertical-before'
-    | 'vertical-after';
+import {TabsOrientation, TabsView, TabsViewProps} from './tabs-view';
 
 export interface TabsProps extends properties.Props, Partial<TabsViewProps> {
     defaultValue?: TabsViewProps['value'];
@@ -27,7 +21,7 @@ export class Tabs extends React.Component<TabsProps, TabsState> {
         super();
 
         this.state = {
-            selected: getSelectedValue(value, defaultValue, children)
+            selected: getSelectedValue(value, defaultValue)
         };
     }
 
@@ -67,8 +61,7 @@ export class Tabs extends React.Component<TabsProps, TabsState> {
 
 function getSelectedValue(
     value: TabsProps['value'],
-    defaultValue: TabsProps['value'],
-    children: TabsProps['children']
+    defaultValue: TabsProps['value']
 ): TabsState['selected'] {
     if (value !== undefined) {
         return value;
