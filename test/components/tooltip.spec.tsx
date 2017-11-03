@@ -79,7 +79,7 @@ function equal(a: number, b: number) {
 function testPosition(position: Position, expectations: any) {
     describe(`render with ${position} position`, () => {
         const clientRenderer = new ClientRenderer();
-        const style = {marginTop: 200, marginLeft: 200};
+        const style = {marginTop: 100, marginLeft: 150};
         afterEach(() => clientRenderer.cleanup());
 
         let driver: any;
