@@ -21,8 +21,8 @@ export interface SelectionListProps extends OptionList, FormInputProps<Selection
     value?: SelectionListItemValue;
 }
 
-@observer
 @properties
+@observer
 export class SelectionList extends React.Component<SelectionListProps> {
     public static defaultProps: SelectionListProps = {
         onChange: noop,

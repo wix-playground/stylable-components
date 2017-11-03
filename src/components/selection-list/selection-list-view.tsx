@@ -28,9 +28,9 @@ export interface SelectionListViewProps extends properties.Props {
     list?: SelectionListModel;
 }
 
-@observer
 @stylable(listStyle)
 @properties
+@observer
 export class SelectionListView extends React.Component<SelectionListViewProps> {
     public static defaultProps: Partial<SelectionListViewProps> = {
         onBlur: noop,

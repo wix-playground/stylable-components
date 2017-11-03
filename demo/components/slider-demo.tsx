@@ -47,6 +47,7 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                     <tr>
                         <td>
                             <Slider
+                                data-automation-id="SLIDER_DEFAULT"
                                 value={this.state.value}
                                 min={min}
                                 max={max}
@@ -55,6 +56,7 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                         </td>
                         <td>
                             <Slider
+                                data-automation-id="SLIDER_DISABLED"
                                 value={this.state.value}
                                 min={min}
                                 max={max}
@@ -64,6 +66,7 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                         </td>
                         <td>
                             <Slider
+                                data-automation-id="SLIDER_WITH_STEP"
                                 value={this.state.value}
                                 min={min}
                                 max={max}
@@ -102,6 +105,7 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                     <tr>
                         <td>
                             <Slider
+                                data-automation-id="SLIDER_ERROR"
                                 value={this.state.value}
                                 min={min}
                                 max={max}
@@ -111,6 +115,7 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                         </td>
                         <td>
                             <Slider
+                                data-automation-id="SLIDER_WITH_LABEL"
                                 value={this.state.value}
                                 min={min}
                                 max={max}
@@ -120,6 +125,7 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                         </td>
                         <td>
                             <Slider
+                                data-automation-id="SLIDER_WITH_TOOLTIP"
                                 value={this.state.value}
                                 min={min}
                                 max={max}
@@ -142,6 +148,7 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                     <tr>
                         <td className="vertical-demo">
                             <Slider
+                                data-automation-id="SLIDER_Y"
                                 axis={'y'}
                                 value={this.state.value}
                                 min={min}
@@ -151,6 +158,7 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                         </td>
                         <td className="vertical-demo">
                             <Slider
+                                data-automation-id="SLIDER_X_REVERSE"
                                 axis={'x-reverse'}
                                 value={this.state.value}
                                 min={min}
@@ -160,6 +168,7 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                         </td>
                         <td className="vertical-demo">
                             <Slider
+                                data-automation-id="SLIDER_Y_REVERSE"
                                 axis={'y-reverse'}
                                 value={this.state.value}
                                 min={min}
@@ -180,6 +189,7 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                     <tr>
                         <td className="vertical-demo">
                             <Slider
+                                data-automation-id="SLIDER_WITH_MARKS"
                                 value={this.state.value}
                                 min={min}
                                 max={max}
@@ -190,6 +200,7 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                         </td>
                         <td className="vertical-demo">
                             <Slider
+                                data-automation-id="SLIDER_WITH_MARKS_VERTICAL"
                                 axis={'y'}
                                 value={this.state.value}
                                 min={min}
@@ -201,6 +212,7 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                         </td>
                         <td className="vertical-demo">
                             <Slider
+                                data-automation-id="SLIDER_WITH_MARKS_REVERSE"
                                 axis={'x-reverse'}
                                 value={this.state.value}
                                 min={min}
@@ -226,6 +238,7 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                                 dir="rtl"
                             >
                                 <Slider
+                                    data-automation-id="SLIDER_RTL"
                                     value={this.state.value}
                                     min={min}
                                     max={max}
@@ -238,6 +251,7 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                                 dir="rtl"
                             >
                                 <Slider
+                                    data-automation-id="SLIDER_RTL_REVERSE"
                                     value={this.state.value}
                                     min={min}
                                     max={max}
@@ -251,6 +265,7 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                                 dir="rtl"
                             >
                                 <Slider
+                                    data-automation-id="SLIDER_RTL_MARKS"
                                     value={this.state.value}
                                     min={min}
                                     max={max}
@@ -281,6 +296,7 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                 <tr>
                     <td>
                         <Slider
+                            data-automation-id="RANGE_SLIDER"
                             value={this.state.multiValue}
                             min={min}
                             max={max}
@@ -290,6 +306,7 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                     </td>
                     <td>
                         <Slider
+                            data-automation-id="RANGE_SLIDER_DISABLED"
                             value={this.state.multiValue}
                             min={min}
                             max={max}
@@ -300,6 +317,7 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                     </td>
                     <td>
                         <Slider
+                            data-automation-id="RANGE_SLIDER_STEP_MARKS"
                             value={this.state.multiValue}
                             min={min}
                             max={max}
@@ -315,13 +333,14 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                 <tr>
                     <th className="table-head-cell">Range Slider with disableCross</th>
                     <th className="table-head-cell">Range Slider with tooltip</th>
-                    <th/>
+                    <th className="table-head-cell">Range Slider RTL</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr>
                     <td>
                         <Slider
+                            data-automation-id="RANGE_SLIDER_DISABLE_CROSS"
                             value={this.state.multiValue}
                             disableCross
                             min={min}
@@ -332,6 +351,7 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                     </td>
                     <td>
                         <Slider
+                            data-automation-id="RANGE_SLIDER_TOOLTIP"
                             value={this.state.multiValue}
                             min={min}
                             max={max}
@@ -340,7 +360,20 @@ export class SliderDemo extends React.Component<{}, SliderDemoState> {
                             displayTooltip
                         />
                     </td>
-                    <td/>
+                    <td>
+                        <ContextProvider
+                            dir="rtl"
+                        >
+                            <Slider
+                                data-automation-id="RANGE_SLIDER_RTL"
+                                value={this.state.multiValue}
+                                min={min}
+                                max={max}
+                                onChange={this.onRangeSliderChange}
+                                onInput={this.onRangeSliderInput}
+                            />
+                        </ContextProvider>
+                    </td>
                 </tr>
                 </tbody>
             </table>
