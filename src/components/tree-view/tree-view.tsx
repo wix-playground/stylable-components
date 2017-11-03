@@ -76,9 +76,9 @@ export class TreeViewStateMap {
     }
 }
 
-@observer
 @stylable(style)
 @properties
+@observer
 export class TreeView extends React.Component<TreeViewProps> {
     public static defaultProps: Partial<TreeViewProps> = {
         itemRenderer: TreeItemWrapper,
