@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import {ClientRenderer, expect, waitFor, sinon} from 'test-drive-react';
+import {ClientRenderer, expect, sinon, waitFor} from 'test-drive-react';
 import {Portal} from '../../src';
 import {PortalTestDriver} from '../../test-kit';
 
