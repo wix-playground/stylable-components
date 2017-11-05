@@ -1,6 +1,5 @@
-import keycode = require('keycode');
 import * as React from 'react';
-import {ClientRenderer, DriverBase, expect, simulate, sinon, trigger, waitFor} from 'test-drive-react';
+import {ClientRenderer, DriverBase, expect, sinon, waitFor} from 'test-drive-react';
 import {CheckBoxDemo, demoCheckBoxText} from '../../demo/components/checkbox-demo';
 import {CheckBox} from '../../src';
 import {CheckBoxTestDriver} from '../../test-kit/components/checkbox-driver';
