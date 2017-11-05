@@ -15,4 +15,7 @@ export class TooltipDriver extends DriverBase {
     public get content(): HTMLElement {
         return this.select('TOOLTIP');
     }
+    public get tail(): HTMLElement {
+        return this.select('TOOLTIP_TAIL');
+    }
 }
