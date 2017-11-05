@@ -20,6 +20,11 @@ export class SelectionListTestDriver extends DriverBase {
         return Array.from(this.root.children);
     }
 
+    public get focusedIndex() {
+        const id = this.root.getAttribute('aria-activedescendant');
+        return id ? this.items.findIndex(element => element.id === id) : -1;
+    }
+
     public keyDown(eventData: object): void {
         simulate.keyDown(this.root, eventData);
     }

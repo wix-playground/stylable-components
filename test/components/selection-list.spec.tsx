@@ -10,10 +10,6 @@ import {
 import {SelectionListTestDriver} from '../../test-kit';
 import {sleep, WithTheme, WithThemeDAID} from '../utils';
 
-function focusedIndex(list: SelectionListTestDriver) {
-    return list.items.findIndex((_, i) => list.itemHasStylableState(i, 'focused'));
-}
-
 export class SelectionListDemoDriver extends DriverBase {
     public static ComponentClass = SelectionListDemo;
 
@@ -196,7 +192,7 @@ describe('<SelectionList />', () => {
             container
         ).withDriver(SelectionListTestDriver);
 
-        await waitForDom(() => expect(focusedIndex(list)).to.equal(1));
+        await waitForDom(() => expect(list.focusedIndex).to.equal(1));
     });
 
     describe('Keyboard navigation', async () => {
@@ -208,7 +204,7 @@ describe('<SelectionList />', () => {
             await waitForDom(() => expect(list.root).to.be.present());
             list.focus();
             list.keyDown({keyCode: keycode('down')});
-            await waitForDom(() => expect(focusedIndex(list)).to.equal(3));
+            await waitForDom(() => expect(list.focusedIndex).to.equal(3));
         });
 
         it(`Moves up on 'Up' press`, async () => {
@@ -219,7 +215,7 @@ describe('<SelectionList />', () => {
             await waitForDom(() => expect(list.root).to.be.present());
             list.focus();
             list.keyDown({keyCode: keycode('up')});
-            await waitForDom(() => expect(focusedIndex(list)).to.equal(1));
+            await waitForDom(() => expect(list.focusedIndex).to.equal(1));
         });
 
         it(`Moves to the beginning on 'Home' press`, async () => {
@@ -230,7 +226,7 @@ describe('<SelectionList />', () => {
             await waitForDom(() => expect(list.root).to.be.present());
             list.focus();
             list.keyDown({keyCode: keycode('home')});
-            await waitForDom(() => expect(focusedIndex(list)).to.equal(0));
+            await waitForDom(() => expect(list.focusedIndex).to.equal(0));
         });
 
         it(`Moves to the end on 'End' press`, async () => {
@@ -241,7 +237,7 @@ describe('<SelectionList />', () => {
             await waitForDom(() => expect(list.root).to.be.present());
             list.focus();
             list.keyDown({keyCode: keycode('end')});
-            await waitForDom(() => expect(focusedIndex(list)).to.equal(4));
+            await waitForDom(() => expect(list.focusedIndex).to.equal(4));
         });
 
         it(`Moves to the beginning on 'Down' press if no item is selected`, async () => {
@@ -252,7 +248,7 @@ describe('<SelectionList />', () => {
             await waitForDom(() => expect(list.root).to.be.present());
             list.focus();
             list.keyDown({keyCode: keycode('down')});
-            await waitForDom(() => expect(focusedIndex(list)).to.equal(0));
+            await waitForDom(() => expect(list.focusedIndex).to.equal(0));
         });
 
         it(`Moves to the end on 'Up' press if no item is selected`, async () => {
@@ -263,7 +259,7 @@ describe('<SelectionList />', () => {
             await waitForDom(() => expect(list.root).to.be.present());
             list.focus();
             list.keyDown({keyCode: keycode('up')});
-            await waitForDom(() => expect(focusedIndex(list)).to.equal(4));
+            await waitForDom(() => expect(list.focusedIndex).to.equal(4));
         });
 
         it(`Selects item on 'Enter' press`, async () => {
@@ -310,7 +306,7 @@ describe('<SelectionList />', () => {
             list.keyDown({keyCode: keycode('c'), key: 'c'});
             list.keyDown({keyCode: keycode('o'), key: 'o'});
             list.keyDown({keyCode: keycode('y'), key: 'y'});
-            expect(focusedIndex(list)).to.equal(1);
+            expect(list.focusedIndex).to.equal(1);
         });
 
         it(`Is case-insensitive and works with non-latin scripts`, async () => {
@@ -329,7 +325,7 @@ describe('<SelectionList />', () => {
             list.keyDown({keyCode: keycode('r'), key: 'к'});
             list.keyDown({keyCode: keycode('j'), key: 'о'});
             list.keyDown({keyCode: keycode('q'), key: 'й'});
-            expect(focusedIndex(list)).to.equal(1);
+            expect(list.focusedIndex).to.equal(1);
         });
 
         it(`Skips disabled items`, async () => {
@@ -347,7 +343,7 @@ describe('<SelectionList />', () => {
             list.focus();
             list.keyDown({keyCode: keycode('c'), key: 'c'});
             list.keyDown({keyCode: keycode('o'), key: 'o'});
-            expect(focusedIndex(list)).to.equal(1);
+            expect(list.focusedIndex).to.equal(1);
         });
 
         it(`Doesn't change focus when no match is found`, async () => {
@@ -367,7 +363,7 @@ describe('<SelectionList />', () => {
             list.keyDown({keyCode: keycode('o'), key: 'o'});
             list.keyDown({keyCode: keycode('c'), key: 'c'});
             list.keyDown({keyCode: keycode('o'), key: 'o'});
-            expect(focusedIndex(list)).to.equal(0);
+            expect(list.focusedIndex).to.equal(0);
         });
 
         it(`Starts matching at the current position`, async () => {
@@ -385,7 +381,7 @@ describe('<SelectionList />', () => {
             list.focus();
             list.keyDown({keyCode: keycode('c'), key: 'c'});
             list.keyDown({keyCode: keycode('o'), key: 'o'});
-            expect(focusedIndex(list)).to.equal(2);
+            expect(list.focusedIndex).to.equal(2);
         });
 
         it(`Wraps around after reaching the end`, async () => {
@@ -403,7 +399,7 @@ describe('<SelectionList />', () => {
             list.focus();
             list.keyDown({keyCode: keycode('c'), key: 'c'});
             list.keyDown({keyCode: keycode('o'), key: 'o'});
-            expect(focusedIndex(list)).to.equal(0);
+            expect(list.focusedIndex).to.equal(0);
         });
 
         it(`Cycles through items starting with a certain character when it's pressed repeatedly`, async () => {
@@ -420,11 +416,11 @@ describe('<SelectionList />', () => {
             await waitForDom(() => expect(list.root).to.be.present());
             list.focus();
             list.keyDown({keyCode: keycode('c'), key: 'c'});
-            expect(focusedIndex(list)).to.equal(0);
+            expect(list.focusedIndex).to.equal(0);
             list.keyDown({keyCode: keycode('c'), key: 'c'});
-            expect(focusedIndex(list)).to.equal(1);
+            expect(list.focusedIndex).to.equal(1);
             list.keyDown({keyCode: keycode('c'), key: 'c'});
-            expect(focusedIndex(list)).to.equal(2);
+            expect(list.focusedIndex).to.equal(2);
         });
 
         it(`Skips the current item when matching based on the first letter`, async () => {
@@ -440,9 +436,9 @@ describe('<SelectionList />', () => {
 
             await waitForDom(() => expect(list.root).to.be.present());
             list.focus();
-            expect(focusedIndex(list)).to.equal(0);
+            expect(list.focusedIndex).to.equal(0);
             list.keyDown({keyCode: keycode('c'), key: 'c'});
-            expect(focusedIndex(list)).to.equal(1);
+            expect(list.focusedIndex).to.equal(1);
         });
 
         it(`Switches from matching first letter to matching prefix`, async () => {
@@ -459,11 +455,11 @@ describe('<SelectionList />', () => {
             await waitForDom(() => expect(list.root).to.be.present());
             list.focus();
             list.keyDown({keyCode: keycode('a'), key: 'a'});
-            expect(focusedIndex(list)).to.equal(0);
+            expect(list.focusedIndex).to.equal(0);
             list.keyDown({keyCode: keycode('a'), key: 'a'});
-            expect(focusedIndex(list)).to.equal(1);
+            expect(list.focusedIndex).to.equal(1);
             list.keyDown({keyCode: keycode('r'), key: 'r'});
-            expect(focusedIndex(list)).to.equal(0);
+            expect(list.focusedIndex).to.equal(0);
         });
 
         it(`Matches children based on their label attribute or contents if it's a plain string`, async () => {
@@ -477,9 +473,9 @@ describe('<SelectionList />', () => {
             await waitForDom(() => expect(list.root).to.be.present());
             list.focus();
             list.keyDown({keyCode: keycode('a'), key: 'a'});
-            expect(focusedIndex(list)).to.equal(0);
+            expect(list.focusedIndex).to.equal(0);
             list.keyDown({keyCode: keycode('a'), key: 'a'});
-            expect(focusedIndex(list)).to.equal(1);
+            expect(list.focusedIndex).to.equal(1);
         });
     });
 
@@ -493,7 +489,7 @@ describe('<SelectionList />', () => {
             list.mouseDown(list.items[1]);
 
             await waitForDom(() => {
-                expect(focusedIndex(list)).to.equal(1);
+                expect(list.focusedIndex).to.equal(1);
 
                 // Skipping because simulated mouseDown doesn't affect native focus.
                 // expect(list.hasStylableState('focused')).to.equal(true);
@@ -510,7 +506,7 @@ describe('<SelectionList />', () => {
             list.mouseDown(list.items[0]);
 
             await waitForDom(() => {
-                expect(focusedIndex(list)).to.equal(-1);
+                expect(list.focusedIndex).to.equal(-1);
 
                 // Skipping because simulated mouseDown doesn't affect native focus.
                 // expect(list.hasStylableState('focused')).to.equal(false);
