@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import {ClientRenderer, expect, waitFor} from 'test-drive-react';
+import {ClientRenderer, expect, sinon, waitFor} from 'test-drive-react';
 import {Portal} from '../../src';
 import {PortalTestDriver} from '../../test-kit';
 
@@ -122,5 +122,27 @@ describe('<Portal />', () => {
         ).withDriver(PortalTestDriver);
 
         await waitFor(() => expect(driver.portal as Element).to.have.attribute('class', 'test-class'));
+    });
+
+    it('calls the onLayout callback after rendering with the correct layout', async () => {
+        const onLayout = sinon.spy();
+        const layout = {
+            top: 0,
+            left: 0,
+            right: 102,
+            bottom: 101,
+            height: 101,
+            width: 102
+        };
+        clientRenderer.render(
+            <Portal style={{display: 'inline-block', position: 'absolute', top: '0', left: '0'}} onLayout={onLayout}>
+                <div style={{height: '101px', width: '102px'}}>1</div>
+            </Portal>
+        );
+
+        await waitFor(() => {
+            expect(onLayout).to.have.been.calledOnce;
+            expect(onLayout.getCall(0).args[0]).to.include(layout);
+        });
     });
 });

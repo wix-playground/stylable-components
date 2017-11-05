@@ -38,12 +38,12 @@ export class PopupDemo extends React.Component<{}, DemoState> {
             {value: 'top', labelText: 'top'},
             {value: 'center', labelText: 'center'},
             {value: 'bottom', labelText: 'bottom'}
-            ];
+        ];
         const hPos: RadioGroupDataSchemaProps[] = [
             {value: 'left', labelText: 'left'},
             {value: 'center', labelText: 'center'},
             {value: 'right', labelText: 'right'}
-            ];
+        ];
         return (
             <div>
                 <button
@@ -60,6 +60,7 @@ export class PopupDemo extends React.Component<{}, DemoState> {
                     anchorPosition={anchorPos}
                     open={this.state.isOpen}
                     ref={popup => this.popup = popup}
+                    onExitBounds={this.onExitBounds}
                 >
                     <div style={{color: 'white', backgroundColor: 'black'}}>Hello!</div>
                 </Popup>
@@ -113,4 +114,7 @@ export class PopupDemo extends React.Component<{}, DemoState> {
         this.setState({aHorizontal: e.value});
     }
 
+    private onExitBounds = () => {
+        this.setState({isOpen: false});
+    }
 }

@@ -1,6 +1,6 @@
 import React = require('react');
 import ReactDOM = require('react-dom');
-import {ClientRenderer, DriverBase, expect, waitFor} from 'test-drive-react';
+import {ClientRenderer, DriverBase, expect, sinon, waitFor} from 'test-drive-react';
 import {PopupDemo} from '../../demo/components/popup-demo';
 import {Popup, PopupPositionPoint} from '../../src/components/';
 import {PopupTestDriver} from '../../test-kit/components/popup-driver';
@@ -126,6 +126,9 @@ describe('<Popup />', () => {
 
         after(() => {
             document.body.removeChild(scroll);
+        });
+
+        afterEach(() => {
             document.body.scrollTop = 0;
             document.body.scrollLeft = 0;
         });
@@ -154,6 +157,177 @@ describe('<Popup />', () => {
 
             return waitForDom(() => {
                 expect([div, popup.root]).to.be.inVerticalSequence();
+            });
+        });
+
+        it('listens to internal scrolling and adjusts the popup location accordingly', async () => {
+            let anchorDiv: HTMLDivElement;
+            let scrollDiv: HTMLDivElement;
+            const {waitForDom} = clientRenderer.render(
+                <div>
+                    <div
+                        ref={(elem: HTMLDivElement) => scrollDiv = elem}
+                        style={{height: '100px', overflow: 'auto', WebkitOverflowScrolling: 'touch'}}
+                    >
+                        <div style={{height: '300px'}}>Filler</div>
+                        <div ref={(elem: HTMLDivElement) => anchorDiv = elem}>Anchor</div>
+                    </div>
+                </div>
+            );
+
+            await waitForDom(() => expect(anchorDiv).to.be.present());
+
+            const {driver: popup} = clientRenderer.render(
+                <Popup
+                    anchor={anchorDiv!}
+                    open
+                >
+                    <span data-automation-id="SPAN">Popup Body</span>
+                </Popup>).withDriver(PopupTestDriver);
+
+            scrollDiv!.scrollTop = 200;
+
+            return waitForDom(() => {
+                expect([anchorDiv, popup.root]).to.be.inVerticalSequence();
+            });
+        });
+
+        it('calls onExitBounds when the popup leaves the viewport from top', async () => {
+            let anchorDiv: HTMLDivElement;
+            let scrollDiv: HTMLDivElement;
+            const onExitBounds = sinon.spy();
+            const {waitForDom} = clientRenderer.render(
+                <div
+                    ref={(elem: HTMLDivElement) => scrollDiv = elem}
+                    style={{height: '1000px', overflow: 'auto', WebkitOverflowScrolling: 'touch'}}
+                >
+                    <div ref={(elem: HTMLDivElement) => anchorDiv = elem} style={{height: '50px'}}>Anchor</div>
+                    <div style={{height: '5000px'}}/>
+                </div>
+            );
+
+            await waitForDom(() => expect(anchorDiv).to.be.present());
+
+            const {driver: popup} = clientRenderer.render(
+                <Popup
+                    anchor={anchorDiv!}
+                    open
+                    onExitBounds={onExitBounds}
+                >
+                    <div style={{height: '50px'}}>Body</div>
+                </Popup>).withDriver(PopupTestDriver);
+
+            await waitForDom(() => {
+                expect(popup.root).to.be.present();
+                expect(popup.root.getBoundingClientRect().top).to.equal(50);
+            });
+            expect(onExitBounds).to.not.have.been.called;
+            scrollDiv!.scrollTop = 51;
+
+            return waitFor(() => {
+                expect(onExitBounds).to.have.been.calledOnce;
+            });
+        });
+
+        it('calls onExitBounds when the popup leaves the viewport from bottom', async () => {
+            let anchorDiv: HTMLDivElement;
+            let scrollDiv: HTMLDivElement;
+            const onExitBounds = sinon.spy();
+            const {waitForDom} = clientRenderer.render(
+                <div
+                    ref={(elem: HTMLDivElement) => scrollDiv = elem}
+                    style={{height: '1000px', overflow: 'auto', WebkitOverflowScrolling: 'touch'}}
+                >
+                    <div style={{height: '3000px'}}/>
+                    <div ref={(elem: HTMLDivElement) => anchorDiv = elem} style={{height: '50px'}}>Anchor</div>
+                    <div style={{height: '100px'}}/>
+                </div>
+            );
+            scrollDiv!.scrollTop = 3100;
+            await waitForDom(() => expect(anchorDiv).to.be.present());
+
+            const {driver: popup} = clientRenderer.render(
+                <Popup
+                    anchor={anchorDiv!}
+                    open
+                    onExitBounds={onExitBounds}
+                >
+                    <div style={{height: '50px'}}>Body</div>
+                </Popup>).withDriver(PopupTestDriver);
+
+            await waitForDom(() => expect(popup.root).to.be.present());
+            expect(onExitBounds).to.not.have.been.called;
+            scrollDiv!.scrollTop = 2000;
+            return waitFor(() => {
+                expect(onExitBounds).to.have.been.calledOnce;
+            });
+        });
+
+        it('calls onExitBounds when the popup leaves the viewport from left', async () => {
+            let anchorDiv: HTMLDivElement;
+            let scrollDiv: HTMLDivElement;
+            const onExitBounds = sinon.spy();
+            const {waitForDom} = clientRenderer.render(
+                <div
+                    ref={(elem: HTMLDivElement) => scrollDiv = elem}
+                    style={{width: '100%', overflow: 'auto', WebkitOverflowScrolling: 'touch'}}
+                >
+                    <div ref={(elem: HTMLDivElement) => anchorDiv = elem} style={{width: '50px'}}>Anchor</div>
+                    <div style={{width: '5000px', height: '1px'}}/>
+                </div>
+            );
+
+            await waitForDom(() => expect(anchorDiv).to.be.present());
+
+            const {driver: popup} = clientRenderer.render(
+                <Popup
+                    anchor={anchorDiv!}
+                    open
+                    onExitBounds={onExitBounds}
+                >
+                    <div style={{width: '50px'}}>Body</div>
+                </Popup>).withDriver(PopupTestDriver);
+
+            await waitForDom(() => expect(popup.root).to.be.present());
+            expect(onExitBounds).to.not.have.been.called;
+            scrollDiv!.scrollLeft = 1;
+
+            return waitFor(() => {
+                expect(onExitBounds).to.have.been.calledOnce;
+            });
+        });
+
+        it('calls onExitBounds when the popup leaves the viewport from right', async () => {
+            let anchorDiv: HTMLDivElement;
+            let scrollDiv: HTMLDivElement;
+            const onExitBounds = sinon.spy();
+            const {waitForDom} = clientRenderer.render(
+                <div
+                    ref={(elem: HTMLDivElement) => scrollDiv = elem}
+                    style={{width: '100%', overflow: 'auto', WebkitOverflowScrolling: 'touch'}}
+                >
+                    <div ref={(elem: HTMLDivElement) => anchorDiv = elem} style={{width: '200%'}}>Anchor</div>
+                </div>
+            );
+
+            await waitForDom(() => expect(anchorDiv).to.be.present());
+            scrollDiv!.scrollLeft = 50;
+            const {driver: popup} = clientRenderer.render(
+                <Popup
+                    anchor={anchorDiv!}
+                    anchorPosition={{vertical: 'bottom', horizontal: 'center'}}
+                    open
+                    onExitBounds={onExitBounds}
+                >
+                    <div style={{width: '50px'}}>Body</div>
+                </Popup>).withDriver(PopupTestDriver);
+
+            await waitForDom(() => expect(popup.root).to.be.present());
+            expect(onExitBounds).to.not.have.been.called;
+            scrollDiv!.scrollLeft = 0;
+
+            return waitFor(() => {
+                expect(onExitBounds).to.have.been.calledOnce;
             });
         });
     });

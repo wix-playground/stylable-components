@@ -2,6 +2,7 @@ import * as React from 'react';
 import {properties} from 'wix-react-tools';
 import {Point} from '../../types';
 import {StylableProps} from '../../types/props';
+import {noop} from '../../utils';
 import {Portal} from '../portal';
 
 export type PopupVerticalPosition =  'top' | 'center' | 'bottom';
@@ -17,6 +18,7 @@ export interface PopupProps extends StylableProps {
     anchorPosition?: PopupPositionPoint;
     popupPosition?: PopupPositionPoint;
     syncWidth?: boolean;
+    onExitBounds?: () => void;
     children?: React.ReactNode;
 }
 
@@ -30,10 +32,13 @@ export class Popup extends React.Component<PopupCompProps> {
         open: false,
         anchorPosition: {vertical: 'bottom', horizontal: 'left'},
         popupPosition: {vertical: 'top', horizontal: 'left'},
-        syncWidth: true
+        syncWidth: true,
+        onExitBounds: noop
     };
 
     private portal: Portal | null;
+    private isExitingBounds = false;
+    private portalRect: ClientRect | null = null;
 
     public render() {
         if (this.props.anchor && this.props.open) {
@@ -41,6 +46,7 @@ export class Popup extends React.Component<PopupCompProps> {
                 <Portal
                     style={this.createStyle()}
                     ref={portal => this.portal = portal}
+                    onLayout={this.onPortalLayout}
                 >
                     {this.props.children}
                 </Portal>);
@@ -49,8 +55,30 @@ export class Popup extends React.Component<PopupCompProps> {
         return null;
     }
 
+    public componentDidMount() {
+        window.addEventListener('scroll', this.onScroll, true);
+    }
+
+    public componentWillUnmount() {
+        window.removeEventListener('scroll', this.onScroll);
+    }
+
+    public componentDidUpdate() {
+        if (this.isExitingBounds) {
+            this.props.onExitBounds!();
+        }
+        this.isExitingBounds = false;
+    }
+
     public getPortal(): Portal | null {
         return this.portal;
+    }
+
+    private onScroll = (e: Event) => {
+        if (this.props.anchor && this.props.open
+                && !isPoint(this.props.anchor) && (e.target as Node).contains(this.props.anchor)) {
+            this.forceUpdate();
+        }
     }
 
     private createStyle(): React.CSSProperties {
@@ -91,7 +119,15 @@ export class Popup extends React.Component<PopupCompProps> {
                 break;
         }
 
+        if (this.portalRect) {
+            this.isExitingBounds = isFullyContainedWithinWindow(newStyle.top,
+                newStyle.left, this.portalRect.height, this.portalRect.width);
+        }
         return newStyle;
+    }
+
+    private onPortalLayout = (rect: ClientRect | null) => {
+        this.portalRect = rect;
     }
 }
 
@@ -118,4 +154,11 @@ function addTransform(style: React.CSSProperties, transformation: string) {
 
 function isPoint(elem: Element | Point): elem is Point {
     return elem.hasOwnProperty('x') && elem.hasOwnProperty('y');
+}
+
+function isFullyContainedWithinWindow(top: number, left: number, height: number, width: number): boolean {
+    return top < window.pageYOffset ||
+        left < window.pageXOffset ||
+        top + height - window.pageYOffset > window.innerHeight ||
+        left + width - window.pageXOffset > window.innerWidth;
 }
