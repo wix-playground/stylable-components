@@ -198,8 +198,8 @@ describe('<Checkbox/>', () => {
             <CheckBox   value={true}/>
         ).withDriver(CheckBoxTestDriver);
 
+        checkbox.focus();
         await waitForDom(() => {
-            checkbox.focus();
             expect(checkbox.hasStylableState('focus')).to.equal(true);
         });
     });
@@ -313,6 +313,28 @@ describe('<Checkbox/>', () => {
             await waitForDom(() => {
                 expect(document.activeElement).to.equal(checkbox.nativeInput);
                 expect(checkbox.hasStylableState('focus'), 'checkbox should not look focused').to.equal(false);
+            });
+        });
+
+        it('remains in focused style state after click', async () => {
+            const {driver: checkbox, waitForDom} = clientRenderer.render(
+                <CheckBox />
+            ).withDriver(CheckBoxTestDriver);
+
+            await waitForDom(() => {expect(checkbox.root).to.be.present(); });
+
+
+            checkbox.focus();
+            await waitForDom(() => {
+                // expect(document.activeElement, 'expected focus on checkbox').to.equal(checkbox.nativeInput);
+                expect(checkbox.hasStylableState('focus'), 'checkbox should look focused').to.equal(true);
+            });
+
+            checkbox.click();
+
+            await waitForDom(() => {
+                // expect(document.activeElement, 'expected focus still on checkbox').to.equal(checkbox.nativeInput);
+                expect(checkbox.hasStylableState('focus'), 'checkbox should still look focused').to.equal(true);
             });
         });
     });

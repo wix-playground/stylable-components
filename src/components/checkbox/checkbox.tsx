@@ -58,6 +58,8 @@ export class CheckBox extends React.Component<CheckBoxProps, CheckBoxState> {
             <div
                 data-automation-id="CHECKBOX_ROOT"
                 onClick={this.handleClick}
+                onFocus={this.handleRootFocus}
+                onBlur={this.handleRootBlur}
                 style-state={styleState}
                 role="checkbox"
                 aria-checked={this.props.indeterminate ? 'mixed' : this.props.value}
@@ -68,6 +70,7 @@ export class CheckBox extends React.Component<CheckBoxProps, CheckBoxState> {
                     className="nativeCheckbox"
                     checked={this.props.value}
                     disabled={this.props.disabled}
+                    onClick={this.handleInputClick}
                     onChange={this.handleChange}
                     onFocus={this.handleInputFocus}
                     onBlur={this.handleInputBlur}
@@ -101,13 +104,11 @@ export class CheckBox extends React.Component<CheckBoxProps, CheckBoxState> {
     }
 
     private handleClick = (e: React.SyntheticEvent<HTMLDivElement>) => {
-        // this.handleChange(e);
-        const isFocused: boolean = this.state.isFocused;
-        this.nativeInput && this.nativeInput.click();
-        this.nativeInput && this.nativeInput.;
-        console.log('isFocused: ', isFocused );
-        // this.setState({isFocused});
-
+        if (this.nativeInput) {
+            this.handleChange(e);
+            this.nativeInput.focus();
+            this.setState({isFocused: false});
+        }
     }
 
     private handleChange = (e: React.SyntheticEvent<HTMLElement>) => {
@@ -118,11 +119,25 @@ export class CheckBox extends React.Component<CheckBoxProps, CheckBoxState> {
         }
     }
 
-    private handleInputFocus = () => {
+    private handleRootFocus = (e: React.FocusEvent<HTMLDivElement>) => {
+            // !this.state.isFocused && this.setState({isFocused: true});
+    }
+
+    private handleRootBlur = (e: React.FocusEvent<HTMLDivElement>) => {
+        // this.state.isFocused && this.setState({isFocused: false});
+    }
+
+    // handleInputClick will be called only on pressing "space" key when nativeInput has focus
+    private handleInputClick = (e: React.MouseEvent<HTMLInputElement>) => {
+        e.stopPropagation();
         this.setState({isFocused: true});
     }
 
     private handleInputBlur = () => {
-        this.setState({isFocused: false});
+        this.state.isFocused && this.setState({isFocused: false});
+    }
+
+    private handleInputFocus = () => {
+        !this.state.isFocused && this.setState({isFocused: true});
     }
 }
