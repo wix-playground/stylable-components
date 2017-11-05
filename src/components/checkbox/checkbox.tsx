@@ -58,8 +58,6 @@ export class CheckBox extends React.Component<CheckBoxProps, CheckBoxState> {
             <div
                 data-automation-id="CHECKBOX_ROOT"
                 onClick={this.handleClick}
-                onFocus={this.handleRootFocus}
-                onBlur={this.handleRootBlur}
                 style-state={styleState}
                 role="checkbox"
                 aria-checked={this.props.indeterminate ? 'mixed' : this.props.value}
@@ -117,14 +115,6 @@ export class CheckBox extends React.Component<CheckBoxProps, CheckBoxState> {
                 value: this.props.indeterminate ? true : !this.props.value
             });
         }
-    }
-
-    private handleRootFocus = (e: React.FocusEvent<HTMLDivElement>) => {
-            // !this.state.isFocused && this.setState({isFocused: true});
-    }
-
-    private handleRootBlur = (e: React.FocusEvent<HTMLDivElement>) => {
-        // this.state.isFocused && this.setState({isFocused: false});
     }
 
     // handleInputClick will be called only on pressing "space" key when nativeInput has focus
