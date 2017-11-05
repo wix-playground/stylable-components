@@ -24,9 +24,9 @@ A component which allows the user to take action by choosing an item from a list
 
 | Name | Type | Default | Required | Description |
 | -- | -- | -- | -- | -- |
-| value | string \| Array\<string> | null | no | id/s of the selected item/s |
+| value | string | null | no | id/s of the selected item/s |
 | onChange | (event: ChangeEvent) => void | NOP | no | Triggered when an item is selected in the list |
-| multiple | boolean | false | no | Whether the selection list supports a single or multiple selections. When true, adds the aria-multiselectable='true' on the root element.
+| multiple | boolean | false | no | Not Supported. Whether the selection list supports a single or multiple selections. When true, adds the aria-multiselectable='true' on the root element.
 | orientation | enum | Vertical | no | The orientation is used mostly for assistive technologies. Changing to Horizontal will change the behavior of keyboard navigation and add an aria-orientation attribute to the root with the 'horizontal' value |
 | typeAhead | boolean | true | no | Enables keyboard type-ahead |
 | children | any | null | no | Children to be rendered in the list |
@@ -45,13 +45,13 @@ A component which allows the user to take action by choosing an item from a list
 | -- | -- | -- | -- | -- |
 | dataSource | Array[DataSourceItem] | [] | no | The DataSourceItem is of type '*string \| object \| symbol*'. The dataSource receives an array and the component uses the renderItem function to render the items in the array in order.
 | dataMapper | (item) -> ({value, string, disabled}) | {} | no | Maps fields from the DataSourceItem to the field used by the renderItem function |
-| renderItem | (item : DataSourceItem) -> JSX.Element | default function | no | The renderItem function receives a DataSourceItem and then decides how to render it.
+| renderItem | See RenderItem contract | null | default function | no | The renderItem function receives a DataSourceItem and then decides how to render it.
 
 **Note** for the default SelectionList renderItem function that if both datasource and children are present then the children are rendered first and then the dataSource items.
 
 ## RenderItem Contract
 
-RenderItem is a function with the following props:
+RenderItem is a function with the following arguments:
 
 | Name | Type | Default value | Description |
 | -- | -- | -- | -- |
@@ -187,7 +187,7 @@ SelectionItem is a union type of the following
 Data mapper provides information regarding dadtaSource items and specifically their value and label. 
 
 | Name | Type | Default | Description |
-| -- | -- | -- | -- | -- |
+| ---| --- | --- | --- | --- |
 | value | Any | no | Field containing the item's value or its identifier.
 | label | string | "" | Field contating text ual represntation of the item.
 | disabled | boolean | false | Marks item as unselectable
