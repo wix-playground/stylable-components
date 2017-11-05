@@ -5,48 +5,50 @@ The **RadioGroup** component is used to group together children and provide them
 
 ## Elements
 
+![Image of radio group](./assets/radiogroup.png)
+
 ## API
 
-#### Component Props
+##### Component Props
 
 **RadioGroup**:
 
 | Name     | Type                         | Default | Required | Description                              |
 | -------- | ---------------------------- | ------- | -------- | ---------------------------------------- |
-| name     | string                       | null    | no       | The name of the group. sets the _name_ property on each child |
-| id       | string                       | null    | no       | Unique identifier                        |
-| tabIndex | number                       | 0       | no       | Tab order of the element, copied to the element in focus (not on the root) |
-| disabled | boolean                      | false   | no       | Whether all the radio buttons are disabled |
-| readonly | boolean                      | false   | no       | Whether the group value cannot be changed |
-| value    | string                       | null    | no       | The value of the selected element        |
-| onChange | (event: ChangeEvent) => void | NOOP    | no       | Triggered by changing a radio button state to selected |
+| name     | string                       | null    | no       | The name of the group. sets the name property on each child. |
+| id       | string                       | null    | no       | Unique component instance identifier.                        |
+| tabIndex | number                       | 0       | no       | Tab order of the element, copied to the element in focus (not on the root). |
+| disabled | boolean                      | false   | no       | If `true`, all of the radio buttons and children are disabled. |
+| readonly | boolean                      | false   | no       | If `true`, the group value cannot be changed. |
+| value    | string                       | null    | no       | The value of the selected element.        |
+| onChange |function | noop    | no       | Triggered by changing a radio button state to selected. <br> `(event: ChangeEvent) => void`  |
 | children | React.ReactNode              | null    | no       | children                                 |
 
-The following props are part of the DataInterface (name to be decided):
+The following props are part of the **DataInterface** (name to be decided):
 
 | Name | Type | Default | Required | Description |
-| -- | -- | -- | -- | -- |
-| dataSource | Array[DataSourceItem] | [] | no | The DataSourceItem is of type '*string \| object \| symbol*'. The dataSource receives an array and the component uses the renderItem function to render the items in the array in order.
-| dataSchema | {[index: string]: string} | {} | no | Maps fields from the DataSourceItem to the field used by the renderItem function |
-| renderItem | (item : DataSourceItem) -> JSX.Element \| default function | no | The renderItem function receives a DataSourceItem and then decides how to render it.
+| --- | --- | --- | --- | --- |
+| dataSource | Array[DataSourceItem] | [] | no | The **DataSourceItem** is of type '*string \| object \| symbol*'. <br> The dataSource receives an array and the component uses the **renderItem** function to render the items in the array in order.
+| dataSchema | {[index: string]: string} | {} | no | Maps fields from the **DataSourceItem** to the field used by the **renderItem** function |
+| renderItem | function | default function | no | The renderItem function receives a DataSourceItem and determines how to render it. <br> (item : DataSourceItem) -> JSX.Element
 
 **RadioButton**:
 
 | Name     | Type                         | Default                          | Required                    | Description                              |
 | -------- | ---------------------------- | -------------------------------- | --------------------------- | ---------------------------------------- |
-| checked  | boolean                      | false                            | no                          | Whether the button appears checked       |
+| checked  | boolean                      | false                            | no                          | If `true`, the button appears checked.       |
 | id       | string                       | null                             | no                          | Unique identifier                        |
-| tabIndex | number                       | -1 \| tabIndex set by RadioGroup | Tab of order of the element |                                          |
-| name     | string                       | null                             | no                          | The name of the group that this button is part of |
-| disabled | boolean                      | false                            | no                          | Whether this button appears as disabled  |
-| readonly | boolean                      | false                            | no                          | Whether this button's value can be changed |
-| value    | string                       | no                               | Yes                         | The value of the radio button            |
-| onChange | (event: ChangeEvent) => void | NOOP                             | no                          | Triggered by changing the button's state |
+| tabIndex | number                       | -1 \| set by RadioGroup | no | Tab of order of the element. |                                          |
+| name     | string                       | null                             | no                          | The name of the group that this button is part of. |
+| disabled | boolean                      | false                            | no                          | If `true`, the button is disabled.  |
+| readonly | boolean                      | false                            | no                          | If `true`, the button's value is readonly and cannot be changed. |
+| value    | string                       | no                               | Yes                         | The value of the radio button.            |
+| onChange | function | noop                             | no                          | Triggered by changing the button's state. <br> `(event: ChangeEvent) => void` |
 | children | React.ReactNode              | null                             | no                          | children                                 |
 
 ### React Code Examples
 
-**Example 1:**
+##### Example 1
 
 ```jsx
 import * as React from 'react';
@@ -74,8 +76,7 @@ export class Example1 extends React.Component<{}, {}>{
 }
 ```
 
-
-**Example 2:**
+##### Example 2
 
 ```jsx
 import * as React from 'react';
@@ -110,35 +111,31 @@ export class Example2 extends React.Component<{}, {}>{
 
 ## Style API
 
-#### **RadioGroup** Subcomponents (pseudo-elements)
+### RadioGroup Subcomponents (pseudo-elements)
 
 | selector | description                              |
 | -------- | ---------------------------------------- |
-| ::option | Allows styling the children under the *RadioGroup*. This subcomponent is a RadioButton. See its style API below |
+| ::option | Allows styling the children contained in the **RadioGroup**. This subcomponent is a **RadioButton**. See its style API below. |
 
-
-
-#### **RadioButton** Subcomponents (pseudo-elements)
+### RadioButton Subcomponents (pseudo-elements)
 
 | selector           | description                              |
 | ------------------ | ---------------------------------------- |
-| ::contentContainer | Style the div containing the button and the children passed to the component |
-| ::button           | Style the actual button graphics for the RadioButton (use the `:checked` state to style the icon) |
+| ::contentContainer | Style the `<div>` containing the button and the children passed to the component. |
+| ::button           | Style the actual button graphics for the **RadioButton**. <br> Use the `:checked` state to style the icon. |
 
-#### 
-
-#### **RadioButton** Custom CSS States (pseudo-classes)
+### RadioButton Custom CSS States (pseudo-classes)
 
 | state     | description                              |
 | --------- | ---------------------------------------- |
-| :disabled | Style the button when it is disabled     |
-| :focused  | Style the component when it gets document focus |
-| :checked  | Style the button when it is checked      |
+| :disabled | Style the button when it is disabled.     |
+| :focused  | Style the component when it gets document focus. |
+| :checked  | Style the button when it is checked.      |
 
 ### Style Code Example
 
 ```css
-@namespace "MyAwsomeComp";
+@namespace "MyAwesomeComp";
 
 :import {
     -st-from: "stylable-components/dist/src/components/radio-group/radio-group.st.css";
@@ -165,3 +162,4 @@ export class Example2 extends React.Component<{}, {}>{
     width: 20px;
     height: 20px;
 }
+```

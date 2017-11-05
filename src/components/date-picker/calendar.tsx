@@ -3,12 +3,15 @@ import {observer} from 'mobx-react';
 import * as React from 'react';
 import {stylable} from 'wix-react-tools';
 import {
+    changeDayInMonth,
     getDayNames,
     getDaysInMonth,
     getMonthFromOffset,
     getMonthNames,
     getNumOfFollowingDays,
-    getNumOfPreviousDays
+    getNumOfPreviousDays,
+    isWeekend,
+    noop
 } from '../../utils';
 import styles from './date-picker.st.css';
 import {Day} from './day';
@@ -20,15 +23,22 @@ export interface CalendarProps {
     startingDay?: number;
     highlightSelectedDate?: boolean;
     highlightFocusedDate?: boolean;
+    disableWeekends?: boolean;
     onChange(date: Date): void;
     updateDropdownDate(date: Date): void;
+}
+
+export interface CalendarState {
+    showMonthView: boolean;
 }
 
 const monthNames = getMonthNames();
 
 @stylable(styles)
 @observer
-export class Calendar extends React.Component<CalendarProps, {}> {
+export class Calendar extends React.Component<CalendarProps, CalendarState> {
+    public state: CalendarState = {showMonthView: false};
+
     public render() {
         return (
             <div data-automation-id="DATE_PICKER_CALENDAR">
@@ -42,12 +52,12 @@ export class Calendar extends React.Component<CalendarProps, {}> {
                         >
                             <i className="headerArrow headerArrowPrev" />
                         </span>
-                        <span className="headerDate">
-                            <span data-automation-id="MONTH_NAME">
-                                {this.monthName}
-                            </span>
-                            &nbsp;
-                            <span data-automation-id="YEAR">{this.year}</span>
+                        <span
+                            data-automation-id="CALENDAR_HEADER"
+                            className="headerDate"
+                            onMouseDown={this.headerClicked}
+                        >
+                            {this.getHeader()}
                         </span>
                         <span
                             className="arrowWrapper arrowWrapperNext"
@@ -57,47 +67,66 @@ export class Calendar extends React.Component<CalendarProps, {}> {
                             <i className="headerArrow headerArrowNext" />
                         </span>
                     </div>
-                    <div className="calendar" data-automation-id="DAY_GRID">
-                        {this.dayNames}
-                        {this.previousDays}
-                        {this.days}
-                        {this.followingDays}
-                    </div>
+                    {this.state.showMonthView ?
+                        <div className="month-view" data-automation-id="MONTH_VIEW">
+                            {this.monthArray}
+                        </div>
+                        :
+                        <div className="calendar" data-automation-id="DAY_GRID">
+                            {this.dayNames}
+                            {this.previousDays}
+                            {this.days}
+                            {this.followingDays}
+                        </div>
+                    }
                 </div>
             </div>
         );
     }
 
-    private selectDay = (day: number) => {
-        const date = new Date(this.props.value.getFullYear(), this.props.value.getMonth(), day);
-        this.props.onChange(date);
+    private getHeader = () => {
+        if (this.state.showMonthView) {
+            return (
+                <span data-automation-id="HEADER_DATE">
+                    {this.year}
+                </span>);
+        } else {
+            return (
+                <span data-automation-id="HEADER_DATE">
+                    {this.monthName} {this.year}
+                </span>);
+        }
     }
 
     @computed
-    get monthName(): string {
+    private get monthName(): string {
         return monthNames[this.props.value.getMonth()];
     }
 
     @computed
-    get year(): number {
+    private get year(): number {
         return this.props.value.getFullYear();
     }
 
     @computed
-    get days(): JSX.Element[] {
+    private get days(): JSX.Element[] {
         const dayArray: JSX.Element[] = [];
         const daysInMonth = getDaysInMonth(this.props.value);
 
         for (let day = 1; day <= daysInMonth; day++) {
+            const date = changeDayInMonth(this.props.value, day);
+            const shouldDisable = this.props.disableWeekends ? isWeekend(date) : false;
+
             dayArray.push(
                 <Day
-                    day={day}
+                    day={date}
                     focused={this.isFocused(day)}
                     selected={this.isSelected(day)}
                     currentDay={this.isCurrentDay(day)}
-                    onSelect={this.selectDay}
+                    onSelect={!shouldDisable ? this.props.onChange : noop}
                     data-automation-id={'DAY_' + day}
                     key={'DAY_' + day}
+                    disabled={shouldDisable}
                 />
             );
         }
@@ -106,7 +135,7 @@ export class Calendar extends React.Component<CalendarProps, {}> {
     }
 
     @computed
-    get dayNames(): JSX.Element[] {
+    private get dayNames(): JSX.Element[] {
         return getDayNames(this.props.startingDay).map((name: string, index: number) => {
             return (
                 <span
@@ -121,16 +150,19 @@ export class Calendar extends React.Component<CalendarProps, {}> {
     }
 
     @computed
-    get previousDays(): JSX.Element[] {
+    private get previousDays(): JSX.Element[] {
         const previousDays: JSX.Element[] = [];
-        const lastDayOfPrevMonth: number = getDaysInMonth(getMonthFromOffset(this.props.value, -1));
+        const lastMonth = getMonthFromOffset(this.props.value, -1);
+        const lastDayOfPrevMonth: number = getDaysInMonth(lastMonth);
         const numberOfDaysToDisplay: number = lastDayOfPrevMonth -
             getNumOfPreviousDays(this.props.value, this.props.startingDay);
 
         for (let day = numberOfDaysToDisplay + 1; day <= lastDayOfPrevMonth; day++) {
+            const lastMonthCopy = changeDayInMonth(lastMonth, day);
+
             previousDays.push((
                 <Day
-                    day={day}
+                    day={lastMonthCopy}
                     data-automation-id={'PREV_DAY_' + day}
                     key={'PREV_DAY_' + day}
                     partOfPrevMonth={true}
@@ -142,22 +174,44 @@ export class Calendar extends React.Component<CalendarProps, {}> {
     }
 
     @computed
-    get followingDays(): JSX.Element[] {
+    private get followingDays(): JSX.Element[] {
         const followingDays: JSX.Element[] = [];
         const numberOfDaysToDisplay: number = getNumOfFollowingDays(this.props.value, this.props.startingDay);
 
-        for (let i = 1; i <= numberOfDaysToDisplay; i++) {
+        for (let day = 1; day <= numberOfDaysToDisplay; day++) {
+            const nextMonth = changeDayInMonth(getMonthFromOffset(this.props.value, 1), day);
+
             followingDays.push(
                 <Day
-                    day={i}
-                    data-automation-id={'NEXT_DAY_' + i}
-                    key={'NEXT_DAY_' + i}
+                    day={nextMonth}
+                    data-automation-id={'NEXT_DAY_' + day}
+                    key={'NEXT_DAY_' + day}
                     partOfNextMonth={true}
                 />
             );
         }
 
         return followingDays;
+    }
+
+    @computed
+    private get monthArray(): JSX.Element[] {
+        const monthArray: JSX.Element[] = [];
+
+        monthNames.forEach(month => {
+            monthArray.push(
+                <span
+                    className="calendarItem monthName"
+                    onMouseDown={this.onSelectMonth}
+                    key={`MONTH_${month.toUpperCase()}`}
+                    data-automation-id={`MONTH_${month.toUpperCase()}`}
+                >
+                    {month}
+                </span>
+                );
+        });
+
+        return monthArray;
     }
 
     private isCurrentDay(day: number): boolean {
@@ -186,17 +240,41 @@ export class Calendar extends React.Component<CalendarProps, {}> {
         }
     }
 
+    private toggleMonthView = () => {
+        this.setState({showMonthView: !this.state.showMonthView});
+    }
+
+    private onSelectMonth: React.EventHandler<React.SyntheticEvent<Element>> = event => {
+        event.preventDefault();
+        this.toggleMonthView();
+
+        const date = new Date(this.props.value.getFullYear(),
+            monthNames.indexOf((event.target as HTMLSpanElement).textContent!),
+            this.props.value.getDate());
+
+        this.props.updateDropdownDate(date);
+    }
+
     private goToNextMonth: React.EventHandler<React.SyntheticEvent<Element>> = event => {
         event.preventDefault();
-        const nextMonth: Date =
-            getMonthFromOffset(new Date(this.props.value.getFullYear(), this.props.value.getMonth(), 1), 1);
-        this.props.updateDropdownDate(nextMonth);
+        const nextDate: Date = this.state.showMonthView
+            ? new Date(this.props.value.getFullYear() + 1, this.props.value.getMonth(), 1)
+            : getMonthFromOffset(new Date(this.props.value.getFullYear(), this.props.value.getMonth(), 1), 1);
+
+        this.props.updateDropdownDate(nextDate);
     }
 
     private goToPrevMonth: React.EventHandler<React.SyntheticEvent<Element>> = event => {
         event.preventDefault();
-        const previousMonth: Date =
-            getMonthFromOffset(new Date(this.props.value.getFullYear(), this.props.value.getMonth(), 1), -1);
-        this.props.updateDropdownDate(previousMonth);
+        const nextDate: Date = this.state.showMonthView
+            ? new Date(this.props.value.getFullYear() - 1, this.props.value.getMonth(), 1)
+            : getMonthFromOffset(new Date(this.props.value.getFullYear(), this.props.value.getMonth(), 1), -1);
+
+        this.props.updateDropdownDate(nextDate);
+    }
+
+    private headerClicked: React.EventHandler<React.SyntheticEvent<Element>> = event => {
+        event.preventDefault();
+        this.toggleMonthView();
     }
 }
