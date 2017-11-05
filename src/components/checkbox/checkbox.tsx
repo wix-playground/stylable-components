@@ -102,11 +102,9 @@ export class CheckBox extends React.Component<CheckBoxProps, CheckBoxState> {
     }
 
     private handleClick = (e: React.SyntheticEvent<HTMLDivElement>) => {
-        if (this.nativeInput) {
             this.handleChange(e);
-            this.nativeInput.focus();
+            this.nativeInput && this.nativeInput.focus();
             this.setState({isFocused: false});
-        }
     }
 
     private handleChange = (e: React.SyntheticEvent<HTMLElement>) => {
