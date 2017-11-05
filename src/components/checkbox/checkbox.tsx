@@ -41,6 +41,8 @@ export class CheckBox extends React.Component<CheckBoxProps, CheckBoxState> {
 
     public state: CheckBoxState = {isFocused: false};
 
+    private nativeInput: HTMLInputElement;
+
     public render() {
 
         const styleState = {
@@ -55,7 +57,7 @@ export class CheckBox extends React.Component<CheckBoxProps, CheckBoxState> {
         return (
             <div
                 data-automation-id="CHECKBOX_ROOT"
-                onClick={this.handleChange}
+                onClick={this.handleClick}
                 style-state={styleState}
                 role="checkbox"
                 aria-checked={this.props.indeterminate ? 'mixed' : this.props.value}
@@ -74,6 +76,7 @@ export class CheckBox extends React.Component<CheckBoxProps, CheckBoxState> {
                     autoFocus={this.props.autoFocus}
                     name={this.props.name}
                     aria-controls={this.props['aria-controls']}
+                    ref={ref => this.nativeInput = ref!}
                 />
 
                 <span
@@ -95,6 +98,16 @@ export class CheckBox extends React.Component<CheckBoxProps, CheckBoxState> {
                 }
             </div>
         );
+    }
+
+    private handleClick = (e: React.SyntheticEvent<HTMLDivElement>) => {
+        // this.handleChange(e);
+        const isFocused: boolean = this.state.isFocused;
+        this.nativeInput && this.nativeInput.click();
+        this.nativeInput && this.nativeInput.;
+        console.log('isFocused: ', isFocused );
+        // this.setState({isFocused});
+
     }
 
     private handleChange = (e: React.SyntheticEvent<HTMLElement>) => {

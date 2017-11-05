@@ -1,5 +1,6 @@
+import keycode = require('keycode');
 import * as React from 'react';
-import {ClientRenderer, DriverBase, expect, sinon, waitFor} from 'test-drive-react';
+import {ClientRenderer, DriverBase, expect, simulate, sinon, trigger, waitFor} from 'test-drive-react';
 import {CheckBoxDemo, demoCheckBoxText} from '../../demo/components/checkbox-demo';
 import {CheckBox} from '../../src';
 import {CheckBoxTestDriver} from '../../test-kit/components/checkbox-driver';
@@ -74,7 +75,7 @@ describe('<Checkbox/>', () => {
 
             checkbox.click();
 
-            await waitFor(() => {
+            await waitForDom(() => {
                 expect(checkbox.isChecked(), 'expected checkbox to be checked').to.equal(true);
                 expect(checkbox.tickMark).to.be.insideOf(checkbox.box);
                 expect(button, 'submit button was expected to be enabled').to.not.have.attribute('disabled');
@@ -199,7 +200,7 @@ describe('<Checkbox/>', () => {
 
         await waitForDom(() => {
             checkbox.focus();
-            expect(checkbox.elementHasStylableState('focus')).to.equal(true);
+            expect(checkbox.hasStylableState('focus')).to.equal(true);
         });
     });
 
@@ -222,7 +223,7 @@ describe('<Checkbox/>', () => {
 
             await waitForDom(() => {
                 expect(document.activeElement).to.equal(checkbox.nativeInput);
-                expect(checkbox.elementHasStylableState('focus')).to.equal(true);
+                expect(checkbox.hasStylableState('focus')).to.equal(true);
             });
 
         } else {
@@ -299,6 +300,21 @@ describe('<Checkbox/>', () => {
                 expect(checkbox.nativeInput).to.have.attribute('aria-controls', '123,345');
             });
         });
+
+        it('gets focus after click (should not be in focused style state)', async () => {
+            const {driver: checkbox, waitForDom} = clientRenderer.render(
+                <CheckBox />
+            ).withDriver(CheckBoxTestDriver);
+
+            await waitForDom(() => {expect(checkbox.root).to.be.present(); });
+
+            checkbox.click();
+
+            await waitForDom(() => {
+                expect(document.activeElement).to.equal(checkbox.nativeInput);
+                expect(checkbox.hasStylableState('focus'), 'checkbox should not look focused').to.equal(false);
+            });
+        });
     });
 
     describe('When disabled', () => {
@@ -333,7 +349,7 @@ describe('<Checkbox/>', () => {
             ).withDriver(CheckBoxTestDriver);
 
             await waitForDom(() => {
-                expect(checkbox.elementHasStylableState('disabled')).to.equal(true);
+                expect(checkbox.hasStylableState('disabled')).to.equal(true);
             });
         });
 
@@ -380,7 +396,7 @@ describe('<Checkbox/>', () => {
             ).withDriver(CheckBoxTestDriver);
 
             await waitForDom(() => {
-                expect(checkbox.elementHasStylableState('readonly')).to.equal(true);
+                expect(checkbox.hasStylableState('readonly')).to.equal(true);
             });
         });
     });
@@ -392,7 +408,7 @@ describe('<Checkbox/>', () => {
             ).withDriver(CheckBoxTestDriver);
 
             await waitForDom(() => {
-                expect(checkbox.elementHasStylableState('error')).to.equal(true);
+                expect(checkbox.hasStylableState('error')).to.equal(true);
             });
         });
     });
@@ -478,7 +494,7 @@ describe('<Checkbox/>', () => {
             ).withDriver(CheckBoxTestDriver);
 
             await waitForDom(() => {
-                expect(checkbox.elementHasStylableState('indeterminate')).to.equal(true);
+                expect(checkbox.hasStylableState('indeterminate')).to.equal(true);
             });
         });
     });
