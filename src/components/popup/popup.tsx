@@ -38,6 +38,7 @@ export class Popup extends React.Component<PopupCompProps> {
 
     private portal: Portal | null;
     private isExitingBounds = false;
+    private portalRect: ClientRect | null = null;
 
     public render() {
         if (this.props.anchor && this.props.open) {
@@ -45,6 +46,7 @@ export class Popup extends React.Component<PopupCompProps> {
                 <Portal
                     style={this.createStyle()}
                     ref={portal => this.portal = portal}
+                    onLayout={this.onPortalLayout}
                 >
                     {this.props.children}
                 </Portal>);
@@ -117,15 +119,15 @@ export class Popup extends React.Component<PopupCompProps> {
                 break;
         }
 
-        const rect = this.getContentRect();
-        if (rect) {
-            this.isExitingBounds = isFullyContainedWithinWindow(newStyle.top, newStyle.left, rect.height, rect.width);
+        if (this.portalRect) {
+            this.isExitingBounds = isFullyContainedWithinWindow(newStyle.top,
+                newStyle.left, this.portalRect.height, this.portalRect.width);
         }
         return newStyle;
     }
 
-    private getContentRect(): ClientRect | null {
-        return this.portal && this.portal.getPortal() && this.portal.getPortal()!.getBoundingClientRect();
+    private onPortalLayout = (rect: ClientRect | null) => {
+        this.portalRect = rect;
     }
 }
 
