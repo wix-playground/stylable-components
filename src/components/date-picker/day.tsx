@@ -5,25 +5,27 @@ import {StylableProps} from '../../types/props';
 import styles from './date-picker.st.css';
 
 export interface DayProps extends StylableProps {
-    day: number;
+    day: Date;
     selected?: boolean;
     currentDay?: boolean;
     focused?: boolean;
     partOfPrevMonth?: boolean;
     partOfNextMonth?: boolean;
-    onSelect?(day: number): void;
+    disabled?: boolean;
+    onSelect?(day: Date): void;
 }
 
-@observer
 @stylable(styles)
 @properties
+@observer
 export class Day extends React.Component<DayProps> {
     public render() {
         const styleState = {
             focused: this.props.focused!,
             selected: this.props.selected!,
             current: this.props.currentDay!,
-            inactive: this.props.partOfNextMonth! || this.props.partOfPrevMonth!
+            inactive: this.props.partOfNextMonth! || this.props.partOfPrevMonth!,
+            disabled: this.props.disabled
         };
 
         return (
@@ -32,7 +34,7 @@ export class Day extends React.Component<DayProps> {
                 onMouseDown={this.onMouseDown}
                 style-state={styleState}
             >
-                {this.props.day}
+                {this.props.day.getDate()}
             </span>
         );
     }

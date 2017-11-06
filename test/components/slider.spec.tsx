@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {ClientRenderer, expect, simulate, sinon, waitFor} from 'test-drive-react';
+import {SliderDemo} from '../../demo/components/slider-demo';
 import {ContextProvider} from '../../src';
 import {
     AXES,
@@ -860,7 +861,7 @@ function keyboard(
     });
 }
 
-describe.only('<Slider />', () => {
+describe('<Slider />', () => {
     const clientRenderer = new ClientRenderer();
 
     beforeEach(() => {
@@ -1432,7 +1433,7 @@ describe.only('<Slider />', () => {
     });
 });
 
-describe.only('Slider/properties', () => {
+describe('Slider/properties', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
 
@@ -1750,7 +1751,7 @@ describe.only('Slider/properties', () => {
 
 });
 
-describe.only('Slider/calculations', () => {
+describe('Slider/calculations', () => {
     function testMethod(fn: (prop: any) => any, results: {[key: string]: any}) {
         Object.keys(results).forEach(key => {
             it(`${key} => ${results[key]}`, () => {
@@ -1976,7 +1977,7 @@ describe.only('Slider/calculations', () => {
 
 });
 
-describe.only('<Slider /> type Range', () => {
+describe('<Slider /> type Range', () => {
     const clientRenderer = new ClientRenderer();
 
     beforeEach(() => {
@@ -1994,4 +1995,82 @@ describe.only('<Slider /> type Range', () => {
     rangeWithDisabledCross(clientRenderer, AXES.xReverse);
     rangeWithDisabledCross(clientRenderer, AXES.yReverse);
 
+});
+function checkDemoSlider(clientRenderer: ClientRenderer, id: string, numberOfHandles: number = 1) {
+    describe(`Slider Demo. ${id}`, () => {
+        let select: <T extends Element>(...selectors: string[]) => T | null;
+        let waitForDom: (expectation: () => void) => Promise<void>;
+
+        beforeEach(() => {
+            const render = clientRenderer.render(<SliderDemo/>);
+            select = render.select;
+            waitForDom = render.waitForDom;
+        });
+
+        it('should render itself', async () => {
+            await waitForDom(() => {
+                expect(select(id)).to.be.present();
+            });
+        });
+        if (numberOfHandles === 1) {
+            it('should render handle', async () => {
+                await waitForDom(() => {
+                    expect(select(id, 'SLIDER-HANDLE-0')).to.be.present();
+                });
+            });
+        } else {
+            for (let i = 0; i < numberOfHandles; i++) {
+                it(`should render handle ${i}`, async () => {
+                    await waitForDom(() => {
+                        expect(select(id, `SLIDER-HANDLE-${i}`)).to.be.present();
+                    });
+                });
+            }
+        }
+        it('should render progress', async () => {
+            await waitForDom(() => {
+                expect(select(id, 'SLIDER-PROGRESS')).to.be.present();
+            });
+        });
+    });
+}
+describe('<SliderDemo />', () => {
+    const clientRenderer = new ClientRenderer();
+    let render;
+
+    beforeEach(() => {
+        render = clientRenderer.render(<SliderDemo/>);
+    });
+
+    afterEach(() => {
+        clientRenderer.cleanup();
+    });
+
+    checkDemoSlider(clientRenderer, 'SLIDER_DEFAULT');
+    checkDemoSlider(clientRenderer, 'SLIDER_DISABLED');
+    checkDemoSlider(clientRenderer, 'SLIDER_WITH_STEP');
+
+    checkDemoSlider(clientRenderer, 'SLIDER_ERROR');
+    checkDemoSlider(clientRenderer, 'SLIDER_WITH_LABEL');
+    checkDemoSlider(clientRenderer, 'SLIDER_WITH_TOOLTIP');
+
+    checkDemoSlider(clientRenderer, 'SLIDER_Y');
+    checkDemoSlider(clientRenderer, 'SLIDER_X_REVERSE');
+    checkDemoSlider(clientRenderer, 'SLIDER_Y_REVERSE');
+
+    checkDemoSlider(clientRenderer, 'SLIDER_WITH_MARKS');
+    checkDemoSlider(clientRenderer, 'SLIDER_WITH_MARKS_VERTICAL');
+    checkDemoSlider(clientRenderer, 'SLIDER_WITH_MARKS_REVERSE');
+
+    checkDemoSlider(clientRenderer, 'SLIDER_RTL');
+    checkDemoSlider(clientRenderer, 'SLIDER_RTL_REVERSE');
+    checkDemoSlider(clientRenderer, 'SLIDER_RTL_MARKS');
+
+    checkDemoSlider(clientRenderer, 'RANGE_SLIDER', 2);
+    checkDemoSlider(clientRenderer, 'RANGE_SLIDER_DISABLED', 2);
+    checkDemoSlider(clientRenderer, 'RANGE_SLIDER_STEP_MARKS', 2);
+
+    checkDemoSlider(clientRenderer, 'RANGE_SLIDER_DISABLE_CROSS', 2);
+    checkDemoSlider(clientRenderer, 'RANGE_SLIDER_TOOLTIP', 2);
+    checkDemoSlider(clientRenderer, 'RANGE_SLIDER_RTL', 2);
 });

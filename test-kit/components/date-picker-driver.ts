@@ -1,6 +1,8 @@
 import {DriverBase, selectDom, simulate, trigger} from 'test-drive-react';
 import {DatePicker} from '../../src';
+import baseStyle from '../../src/components/date-picker/date-picker.st.css';
 import {getDayNames} from '../../src/utils';
+import {elementHasStylableState} from '../utils';
 
 const bodySelect = selectDom(document.body);
 const datePickerDropdown = 'DATE_PICKER_DROPDOWN';
@@ -109,12 +111,16 @@ export class DatePickerTestDriver extends DriverBase {
         return bodySelect(datePickerDropdown, `DAY_NAME_${dayNames[dayName].toUpperCase()}`);
     }
 
-    public get yearLabel(): HTMLSpanElement | null {
-        return bodySelect(datePickerDropdown, 'YEAR');
+    public get headerDate(): HTMLSpanElement | null {
+        return bodySelect(datePickerDropdown, 'HEADER_DATE');
     }
 
-    public get monthLabel(): HTMLSpanElement | null {
-        return bodySelect(datePickerDropdown, 'MONTH_NAME');
+    public getMonth(month: string): HTMLSpanElement | null {
+        return bodySelect(datePickerDropdown, `MONTH_${month.toUpperCase()}`);
+    }
+
+    public elementHasStylableState(element: Element, stateName: string): boolean {
+        return elementHasStylableState(element, baseStyle, stateName);
     }
 
     public getMonth(month: string): HTMLSpanElement | null {

@@ -3,6 +3,10 @@
     -st-named: color_Keyboard_Focused, color_Active;
 }
 
+.root.example {
+    padding: 20px;
+}
+
 .custom-tree-node {
     -st-states: selected, focused;
     cursor: pointer;

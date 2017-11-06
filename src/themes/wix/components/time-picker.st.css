@@ -14,7 +14,7 @@
           inputPadding,
           inputPaddingHorizontal,
 
-          fontStyle,
+          inputFontStyle,
           textColor,
           textColorDisabled,
           placeholderColor,
@@ -56,7 +56,7 @@ TimePicker::input {
 
 
 TimePicker::placeholder {
-  font: value(fontStyle);
+  font: value(inputFontStyle);
   color: value(placeholderColor);
 }
 

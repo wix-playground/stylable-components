@@ -4,12 +4,14 @@ import {ClientRenderer, DriverBase, expect, sinon, waitFor} from 'test-drive-rea
 import {DatePickerDemo} from '../../demo/components/date-picker-demo';
 import {DatePicker} from '../../src';
 import {
+    changeDayInMonth,
     getDayNames,
     getDaysInMonth,
     getMonthFromOffset,
     getMonthNames,
     getNumOfFollowingDays,
-    getNumOfPreviousDays
+    getNumOfPreviousDays,
+    isWeekend
 } from '../../src/utils';
 import {DatePickerTestDriver} from '../../test-kit';
 import {sleep} from '../utils';
@@ -63,6 +65,29 @@ describe('The DatePicker Component', () => {
                 expect(datePickerDemo.date).to.have.text('Wed Jan 04 2017');
             });
         });
+
+        it('clicks on the month/year header, selects a month from the list,'
+        + ' and then chooses a date from the calendar', async () => {
+            const monthToClick = 'March';
+            const {driver: datePickerDemo, waitForDom} = clientRenderer.render(
+                <DatePickerDemo value={JANUARY_FIRST} />).withDriver(DatePickerDemoDriver);
+
+            datePickerDemo.datePicker.openCalender();
+            datePickerDemo.datePicker.clickOnHeader();
+
+            await waitForDom(() => {
+                expect(datePickerDemo.datePicker.monthView).to.be.present();
+                expect(datePickerDemo.datePicker.headerDate).to.have.text('2017');
+            });
+
+            datePickerDemo.datePicker.clickOnMonth(monthToClick);
+
+            await waitForDom(() => {
+                expect(datePickerDemo.datePicker.monthView).to.be.absent();
+                expect(datePickerDemo.datePicker.isOpen()).to.equal(true);
+                expect(datePickerDemo.datePicker.headerDate).to.have.text(`${monthToClick} 2017`);
+            });
+        });
     });
 
     it('should only call onChange once', async () => {
@@ -80,16 +105,6 @@ describe('The DatePicker Component', () => {
             .withDriver(DatePickerTestDriver);
 
         await waitForDom(() => expect(datePicker.selectedDate).to.equal(JANUARY_FIRST.toDateString()));
-    });
-
-    it('should not call onChange with an invalid date', async () => {
-        const onChange = sinon.spy();
-        const {driver: datePicker} = clientRenderer.render(<DatePicker onChange={onChange} />)
-            .withDriver(DatePickerTestDriver);
-
-        datePicker.changeDate('2sgsdfsdfw223');
-        await sleep(20);
-        expect(onChange).to.have.not.been.called;
     });
 
     it('should call onChange with the current input value when blurred', async () => {
@@ -199,6 +214,43 @@ describe('The DatePicker Component', () => {
         await waitFor(() => expect(document.activeElement).to.equal(datePicker.input));
     });
 
+    describe('On invalid input', () => {
+        it('should not call onChange', async () => {
+            const onChange = sinon.spy();
+            const {driver: datePicker} = clientRenderer.render(<DatePicker onChange={onChange} />)
+                .withDriver(DatePickerTestDriver);
+
+            datePicker.changeDate('2sgsdfsdfw223');
+            await sleep(20);
+            expect(onChange).to.have.not.been.called;
+        });
+
+        it('should expose an error state', async () => {
+            const {driver: datePicker, waitForDom} = clientRenderer.render(<DatePicker />)
+                .withDriver(DatePickerTestDriver);
+
+            datePicker.changeDate('2sgsdfsdfw223');
+
+            await waitForDom(() => expect(datePicker.elementHasStylableState(datePicker.root, 'error')).to.equal(true));
+        });
+
+        it('should remove error state when a date is chosen from the calendar', async () => {
+            const {driver: datePicker, waitForDom} = clientRenderer.render(<DatePicker />)
+                .withDriver(DatePickerTestDriver);
+
+            datePicker.changeDate('2sgsdfsdfw223');
+
+            await waitForDom(() => expect(datePicker.elementHasStylableState(datePicker.root, 'error')).to.equal(true));
+
+            datePicker.openCalender();
+
+            await waitForDom(() => datePicker.clickOnDay(2));
+
+            await waitForDom(() => expect(datePicker.elementHasStylableState(datePicker.root, 'error'))
+                .to.equal(false));
+        });
+    });
+
     describe('When Disabled', () => {
         it('should not show the dropdown when the icon is clicked', async () => {
             const {driver: datePicker, waitForDom} = clientRenderer.render(<DatePicker disabled />)
@@ -244,6 +296,14 @@ describe('The DatePicker Component', () => {
 
             await sleep(20);
             expect(onChange).to.have.not.been.called;
+        });
+
+        it('should expose an disabled state', async () => {
+            const {driver: datePicker, waitForDom} = clientRenderer.render(<DatePicker disabled />)
+                .withDriver(DatePickerTestDriver);
+
+            await waitForDom(() => expect(datePicker.elementHasStylableState(datePicker.root, 'disabled'))
+                .to.equal(true));
         });
     });
 
@@ -293,6 +353,14 @@ describe('The DatePicker Component', () => {
             await sleep(20);
             expect(onChange).to.have.not.been.called;
         });
+
+        it('should expose a readOnly state', async () => {
+            const {driver: datePicker, waitForDom} = clientRenderer.render(<DatePicker readOnly />)
+                .withDriver(DatePickerTestDriver);
+
+            await waitForDom(() => expect(datePicker.elementHasStylableState(datePicker.root, 'readOnly'))
+                .to.equal(true));
+        });
     });
 
     describe('The Dropdown', () => {
@@ -325,8 +393,7 @@ describe('The DatePicker Component', () => {
             await waitForDom(() => {
                 const headerContents = [
                     datePicker.prevMonthLabel,
-                    datePicker.monthLabel,
-                    datePicker.yearLabel,
+                    datePicker.headerDate,
                     datePicker.nextMonthLabel
                 ];
                 expect(headerContents).to.be.verticallyAligned('center', 1);
@@ -402,7 +469,7 @@ describe('The DatePicker Component', () => {
                 <DatePicker showDropdownOnInit value={JANUARY_FIRST}/>
             ).withDriver(DatePickerTestDriver);
 
-            await waitForDom(() => expect(datePicker.yearLabel).to.have.text('2017'));
+            await waitForDom(() => expect(datePicker.headerDate).to.contain.text('2017'));
         });
 
         it('displays the name of the month', async () => {
@@ -413,7 +480,7 @@ describe('The DatePicker Component', () => {
                 />
             ).withDriver(DatePickerTestDriver);
 
-            await waitForDom(() => expect(datePicker.monthLabel).to.have.text('January'));
+            await waitForDom(() => expect(datePicker.headerDate).to.contain.text('January'));
         });
 
         it('has a button which steps forward a month', async () => {
@@ -421,13 +488,11 @@ describe('The DatePicker Component', () => {
                 <DatePicker showDropdownOnInit value={DECEMBER_FIRST}/>
             ).withDriver(DatePickerTestDriver);
 
-            expect(datePicker.yearLabel).to.have.text('2017');
-            expect(datePicker.monthLabel).to.have.text('December');
+            expect(datePicker.headerDate).to.have.text('December 2017');
             datePicker.clickOnNextMonth();
 
             await waitForDom(() => {
-                expect(datePicker.yearLabel).to.have.text('2018');
-                expect(datePicker.monthLabel).to.have.text('January');
+                expect(datePicker.headerDate).to.have.text('January 2018');
             });
         });
 
@@ -436,13 +501,11 @@ describe('The DatePicker Component', () => {
                 <DatePicker showDropdownOnInit value={JANUARY_FIRST}/>
             ).withDriver(DatePickerTestDriver);
 
-            expect(datePicker.yearLabel).to.have.text('2017');
-            expect(datePicker.monthLabel).to.have.text('January');
+            expect(datePicker.headerDate).to.have.text('January 2017');
             datePicker.clickOnPrevMonth();
 
             await waitForDom(() => {
-                expect(datePicker.yearLabel).to.have.text('2016');
-                expect(datePicker.monthLabel).to.have.text('December');
+                expect(datePicker.headerDate).to.have.text('December 2016');
             });
         });
 
@@ -494,7 +557,7 @@ describe('The DatePicker Component', () => {
 
             await waitForDom(() => {
                 expect(datePicker.monthView).to.be.present();
-                expect(datePicker.monthLabel).to.be.absent();
+                expect(datePicker.headerDate).to.have.text('2017');
                 monthNames.forEach(month => expect(datePicker.getMonth(month)).to.be.present());
             });
         });
@@ -510,16 +573,43 @@ describe('The DatePicker Component', () => {
 
             await waitForDom(() => {
                 expect(datePicker.monthView).to.be.present();
-                expect(datePicker.monthLabel).to.be.absent();
+                expect(datePicker.headerDate).to.have.text('2017');
             });
 
             datePicker.clickOnMonth(monthToClick);
 
             await waitForDom(() => {
                 expect(datePicker.monthView).to.be.absent();
-                expect(datePicker.monthLabel).to.be.present();
                 expect(datePicker.isOpen()).to.equal(true);
-                expect(datePicker.monthLabel).to.have.text(monthToClick);
+                expect(datePicker.headerDate).to.have.text(`${monthToClick} 2017`);
+            });
+        });
+
+        it('when in the month-view, clicking on the arrows should change the year', async () => {
+            const {driver: datePicker, waitForDom} = clientRenderer.render(
+                <DatePicker showDropdownOnInit value={JANUARY_FIRST}/>
+            ).withDriver(DatePickerTestDriver);
+
+            datePicker.clickOnHeader();
+
+            await waitForDom(() => {
+                expect(datePicker.monthView).to.be.present();
+                expect(datePicker.headerDate).to.have.text('2017');
+            });
+
+            datePicker.clickOnNextMonth();
+
+            await waitForDom(() => {
+                expect(datePicker.monthView).to.be.present();
+                expect(datePicker.headerDate).to.have.text('2018');
+            });
+
+            datePicker.clickOnPrevMonth();
+            datePicker.clickOnPrevMonth();
+
+            await waitForDom(() => {
+                expect(datePicker.monthView).to.be.present();
+                expect(datePicker.headerDate).to.have.text('2016');
             });
         });
 
@@ -543,6 +633,25 @@ describe('The DatePicker Component', () => {
                 expect(datePicker.monthLabel).to.be.absent();
                 expect(datePicker.yearLabel).to.be.absent();
             });
+        });
+
+        it('should allow disabling weekends', async () => {
+            const {driver: datePicker, waitForDom} = clientRenderer.render(
+                <DatePicker
+                    disableWeekends
+                    showDropdownOnInit={true}
+                    value={FEBRUARY_FIRST}
+                />
+            ).withDriver(DatePickerTestDriver);
+
+            await waitForDom(() => {
+                // Check a weekend to ensure the days are disabled
+                expect(datePicker.elementHasStylableState(datePicker.getDay(4) as Element, 'disabled')).to.be.true;
+            });
+
+            datePicker.clickOnDay(4);
+
+            await waitForDom(() => expect(datePicker.selectedDate).to.equal(FEBRUARY_FIRST.toDateString()));
         });
     });
 
@@ -667,6 +776,22 @@ describe('The DatePicker Component', () => {
             expect(getNumOfFollowingDays(fourthDateToTest, 4), 'Wrong number of days for Thursday').to.equal(4);
             expect(getNumOfFollowingDays(fourthDateToTest, 5), 'Wrong number of days for Friday').to.equal(5);
             expect(getNumOfFollowingDays(fourthDateToTest, 6), 'Wrong number of days for Saturday').to.equal(6);
+        });
+
+        it('changeDay should return a Date object with the same year and month, but a different day', () => {
+            const dateToTest = new Date('July 5 2017');
+
+            expect(changeDayInMonth(dateToTest, 15).toDateString()).to.equal('Sat Jul 15 2017');
+        });
+
+        it('isWeekend should return true if the date is on a weekend and false if not', () => {
+            const saturday = new Date('Saturday July 15, 2017');
+            const sunday = new Date('Sunday July 16, 2017');
+            const weekday = new Date('Wednesday July 12, 2017');
+
+            expect(isWeekend(saturday)).to.equal(true);
+            expect(isWeekend(sunday)).to.equal(true);
+            expect(isWeekend(weekday)).to.equal(false);
         });
     });
 });

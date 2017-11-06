@@ -20,20 +20,29 @@ export class SelectionListTestDriver extends DriverBase {
         return Array.from(this.root.children);
     }
 
-    public keyDown(keyCode: number): void {
-        simulate.keyDown(this.root, {keyCode});
+    public get focusedIndex() {
+        const id = this.root.getAttribute('aria-activedescendant');
+        return id ? this.items.findIndex(element => element.id === id) : -1;
+    }
+
+    public keyDown(eventData: object): void {
+        simulate.keyDown(this.root, eventData);
+    }
+
+    public mouseDown(element: Element): void {
+        simulate.mouseDown(element, {button: 0});
     }
 
     public click(element: Element): void {
-        simulate.click(element);
+        simulate.click(element, {button: 0});
     }
 
     public isDivider(element: Element): boolean {
         return elementHasStylableClassName(element, dividerBaseStyle, 'root');
     }
 
-    public optionHasStylableState(element: Element, stateName: string): boolean {
-        return elementHasStylableState(element, optionBaseStyle, stateName);
+    public itemHasStylableState(index: number, stateName: string): boolean {
+        return elementHasStylableState(this.items[index], optionBaseStyle, stateName);
     }
 
     public hasStylableState(stateName: string): boolean {

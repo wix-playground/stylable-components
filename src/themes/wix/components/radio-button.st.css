@@ -5,7 +5,7 @@
 
 :import {
     -st-from: '../variables.st.css';
-    -st-named:  labelFontStyle,
+    -st-named:  fontStyle,
                 checkBorder,
                 checkedColor,
                 inputBackgroundColor,
@@ -15,7 +15,7 @@
 }
 
 RadioButton {
-    font: 300 value(labelFontStyle);
+    font: 300 value(fontStyle);
     display: inline-block;
     position: relative;
     cursor: pointer;

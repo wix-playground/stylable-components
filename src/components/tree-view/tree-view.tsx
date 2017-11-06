@@ -76,9 +76,9 @@ export class TreeViewStateMap {
     }
 }
 
-@observer
 @stylable(style)
 @properties
+@observer
 export class TreeView extends React.Component<TreeViewProps> {
     public static defaultProps: Partial<TreeViewProps> = {
         itemRenderer: TreeItemWrapper,
@@ -224,24 +224,24 @@ export class TreeView extends React.Component<TreeViewProps> {
 
     @action
     private onKeyDown = (e: any) => {
-        if (!this.props.focusedItem) { return; }
+        const focusedItem: TreeItemData = this.props.focusedItem || this.props.dataSource[0] as TreeItemData;
 
         switch (e.keyCode) {
             case TreeKeyCodes.RIGHT:
-                e.preventDefault(); this.expandItem(this.props.focusedItem); break;
+                e.preventDefault(); this.expandItem(focusedItem); break;
             case TreeKeyCodes.LEFT:
-                e.preventDefault(); this.collapseItem(this.props.focusedItem); break;
+                e.preventDefault(); this.collapseItem(focusedItem); break;
             case TreeKeyCodes.UP:
-                e.preventDefault(); this.focusPrev(this.props.focusedItem); break;
+                e.preventDefault(); this.focusPrev(focusedItem); break;
             case TreeKeyCodes.DOWN:
-                e.preventDefault(); this.focusNext(this.props.focusedItem); break;
+                e.preventDefault(); this.focusNext(focusedItem); break;
             case TreeKeyCodes.ENTER:
-                e.preventDefault(); this.selectItem(this.props.focusedItem); break;
+                e.preventDefault(); this.selectItem(focusedItem); break;
             case TreeKeyCodes.HOME:
-                this.stateMap.getItemState(this.props.focusedItem).isFocused = false;
+                this.stateMap.getItemState(focusedItem).isFocused = false;
                 e.preventDefault(); this.focusFirst(); break;
             case TreeKeyCodes.END:
-                this.stateMap.getItemState(this.props.focusedItem).isFocused = false;
+                this.stateMap.getItemState(focusedItem).isFocused = false;
                 e.preventDefault(); this.focusLast(); break;
         }
     }
