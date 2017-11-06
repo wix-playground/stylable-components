@@ -216,18 +216,18 @@ describe('<Tooltip/>', () => {
         });
 
         it('should not be visible by default', () => {
-            expect(driver.tooltip.content.offsetParent).to.be.null;
+            expect(driver.tooltip.isOpen).to.be.false;
         });
 
         it('should be visible after click', () => {
             driver.dispatchOnAnchor('click');
-            expect(driver.tooltip.content.offsetParent).to.not.null;
+            expect(driver.tooltip.isOpen).to.be.true;
         });
 
         it('should be hidden after click and click', () => {
             driver.dispatchOnAnchor('click');
             driver.dispatchOnAnchor('click');
-            expect(driver.tooltip.content.offsetParent).to.be.null;
+            expect(driver.tooltip.isOpen).to.be.false;
         });
     });
 
@@ -239,20 +239,20 @@ describe('<Tooltip/>', () => {
 
         it('should not be visible right after trigger', () => {
             driver.dispatchOnAnchor('mouseenter');
-            expect(driver.tooltip.content.offsetParent).to.be.null;
+            expect(driver.tooltip.isOpen).to.be.false;
         });
 
         it('should be visible after delay', async () => {
             driver.dispatchOnAnchor('mouseenter');
             await sleep(120);
-            expect(driver.tooltip.content.offsetParent).to.not.null;
+            expect(driver.tooltip.isOpen).to.be.true;
         });
 
         it('should be visible right after hide trigger', async () => {
             driver.dispatchOnAnchor('mouseenter');
             await sleep(120);
             driver.dispatchOnAnchor('mouseleave');
-            expect(driver.tooltip.content.offsetParent).to.not.null;
+            expect(driver.tooltip.isOpen).to.be.true;
         });
 
         it('should not be visible after hide trigger and delay', async () => {
@@ -260,14 +260,14 @@ describe('<Tooltip/>', () => {
             await sleep(120);
             driver.dispatchOnAnchor('mouseleave');
             await sleep(220);
-            expect(driver.tooltip.content.offsetParent).to.be.null;
+            expect(driver.tooltip.isOpen).to.be.false;
         });
 
         it('should not be visible after rapid triggers', async () => {
             driver.dispatchOnAnchor('mouseenter');
             driver.dispatchOnAnchor('mouseleave');
             await sleep(220);
-            expect(driver.tooltip.content.offsetParent).to.be.null;
+            expect(driver.tooltip.isOpen).to.be.false;
         });
     });
 
