@@ -93,17 +93,15 @@ See [keyboard](https://github.com/wix/stylable-components/blob/master/docs/time-
 
 ##### Focus
 
-When focus moves into the tab components it goes to the tab list and places focus on the active `tab` element . When the tab list is in focus and "tab" button is pressed again, focus moves to the next element in the page tab sequence outside the tablist (typically it is either the first focusable element inside the tab panel or the tab panel itself).
+When focus moves into the tab components it goes to the tab list and places focus on the active `tab` element . When the tab list is in focus and "tab" button is pressed again, focus moves to the next element in the page tab sequence outside the tablist (typically it is either the *first focusable element inside the tab panel* or the tab panel itself).
 
 When focus is on a tab element:
 
-- "Left Arrow Key" moves focus to the previous tab. If focus is on the first tab, moves focus to the last tab. 
-- "Right Arrow Key" moves focus to the next tab. If focus is on the last tab element, moves focus to the first tab.
+- "Left Arrow Key" moves focus to the previous tab & makes it acrive. If focus is on the first tab, focus/active state moves to the last tab. 
+- "Right Arrow Key" moves focus to the next tab & makes it acrive. If focus is on the last tab element, focus/active state moves to the first tab.
 
-
-- "Space" or "Enter" activates the tab if it was not activated automatically on focus **(TBD)**
-- "Home" moves focus to the first tab
-- "End" moves focus to the last tab
+- "shift + left arrow key" moves focus to the first tab
+- "shift + righ arrow key" moves focus to the last tab
 
 See [ARIA docs](https://www.w3.org/TR/wai-aria-practices/#tabpanel) for reference.
 
@@ -132,7 +130,7 @@ https://www.w3.org/TR/wai-aria-practices/#tabpanel
 
 ### Behavior
 
-When user places focus over TAB component, focus is set to active tab OR if there are no active tabs to the first tab from the tab list. 
+When user places focus over TAB component, focus/active state is set to active tab OR if there are no active tabs to the first tab from the tab list. 
 
 User can switch between tabs with mouse or arrow buttons. 
 
@@ -199,9 +197,7 @@ We do not have anything here for now.
 
 
 ## RTL
-
 TBD
-
 
 
 ## Design
