@@ -133,7 +133,6 @@ export class TabsView extends React.Component<TabsViewProps, TabsViewState> {
 
     private focusNext() {
         const isRTL = isRTLContext(this.context);
-        const {orientation} = this.props;
         const {tabList} = this.state;
 
         return this.isVertical ?
@@ -145,7 +144,6 @@ export class TabsView extends React.Component<TabsViewProps, TabsViewState> {
 
     private focusPrevious() {
         const isRTL = isRTLContext(this.context);
-        const {orientation} = this.props;
         const {tabList} = this.state;
 
         return this.isVertical ?
@@ -157,7 +155,6 @@ export class TabsView extends React.Component<TabsViewProps, TabsViewState> {
 
     private focusFirst() {
         const isRTL = isRTLContext(this.context);
-        const {orientation} = this.props;
         const {tabList} = this.state;
 
         return this.isVertical ?
@@ -167,7 +164,6 @@ export class TabsView extends React.Component<TabsViewProps, TabsViewState> {
 
     private focusLast() {
         const isRTL = isRTLContext(this.context);
-        const {orientation} = this.props;
         const {tabList} = this.state;
 
         return this.isVertical ?
@@ -194,44 +190,31 @@ export class TabsView extends React.Component<TabsViewProps, TabsViewState> {
     }
 
     private handleTabListKeyDown: React.KeyboardEventHandler<HTMLElement> = event => {
-        const context = this.context;
         const {tabList} = this.state;
         switch (event.keyCode) {
             case KeyCode.up:
-                if (event.shiftKey ?
-                    this.focusFirst() :
-                    this.focusPrevious()
-                ) {
+                if (event.shiftKey ? this.focusFirst() : this.focusPrevious()) {
                     event.preventDefault();
                     this.triggerChange(tabList.focusedIndex);
                     this.setState({tabList});
                 }
                 break;
             case KeyCode.down:
-                if (event.shiftKey ?
-                    this.focusLast() :
-                    this.focusNext()
-                ) {
+                if (event.shiftKey ? this.focusLast() : this.focusNext()) {
                     event.preventDefault();
                     this.triggerChange(tabList.focusedIndex);
                     this.setState({tabList});
                 }
                 break;
             case KeyCode.left:
-                if (event.shiftKey ?
-                    this.focusFirst() :
-                    this.focusPrevious()
-                ) {
+                if (event.shiftKey ? this.focusFirst() : this.focusPrevious()) {
                     event.preventDefault();
                     this.triggerChange(tabList.focusedIndex);
                     this.setState({tabList});
                 }
                 break;
             case KeyCode.right:
-                if (event.shiftKey ?
-                    this.focusLast() :
-                    this.focusNext()
-                ) {
+                if (event.shiftKey ? this.focusLast() : this.focusNext()) {
                     event.preventDefault();
                     this.triggerChange(tabList.focusedIndex);
                     this.setState({tabList});
@@ -244,7 +227,7 @@ export class TabsView extends React.Component<TabsViewProps, TabsViewState> {
 const getSelectionListModel = (
     children: TabsViewProps['children']
 ): SelectionListModel => new SelectionListModel(
-        selectionListItemsFromChildren(
-            renderTabItems(children)
-        )
-    );
+    selectionListItemsFromChildren(
+        renderTabItems(children)
+    )
+);
