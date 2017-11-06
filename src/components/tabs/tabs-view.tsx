@@ -181,13 +181,16 @@ export class TabsView extends React.Component<TabsViewProps, TabsViewState> {
         this.setState({focused: false});
     }
 
-    private handleTabListFocus: React.FocusEventHandler<HTMLElement> = event => {
-        const {tabList} = this.state;
-        if (tabList.focusedIndex === -1) {
-            tabList.focusSelected();
-        }
-        this.setState({focused: true});
-    }
+    private handleTabListFocus: React.FocusEventHandler<HTMLElement> = event =>
+        this.setState({focused: true}, () => {
+            const {tabList} = this.state;
+            if (tabList.selectedIndex === -1) {
+                this.focusFirst();
+                this.triggerChange(tabList.focusedIndex);
+            } else if (tabList.focusedIndex === -1) {
+                tabList.focusSelected();
+            }
+        })
 
     private handleTabListKeyDown: React.KeyboardEventHandler<HTMLElement> = event => {
         const {tabList} = this.state;

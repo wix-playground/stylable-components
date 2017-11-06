@@ -726,4 +726,26 @@ describe('<Tabs />', () => {
             expect(driver.selectTabContent('SECOND_TAB')).to.be.present();
         });
     });
+
+    describe('focus', () => {
+        it('should select the first selectable tab when no tabs are selected', () => {
+            const onChange = sinon.spy();
+            const {driver} = render(
+                <Tabs orientation="horizontal-top" value="" onChange={onChange}>
+                    <Tab label="Tab One" value="0">
+                        <span data-automation-id="FIRST_TAB">Tab One Content</span>
+                    </Tab>
+                    <Tab label="Tab Two" value="1">
+                        <span data-automation-id="SECOND_TAB">Tab Two Content</span>
+                    </Tab>
+                    <Tab label="Tab Three" value="2">
+                        <span data-automation-id="SECOND_TAB">Tab Three Content</span>
+                    </Tab>
+                </Tabs>
+            );
+
+            driver.tabListFocus();
+            assertOnChange(onChange, '0');
+        });
+    });
 });
