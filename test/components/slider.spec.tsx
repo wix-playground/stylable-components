@@ -861,7 +861,7 @@ function keyboard(
     });
 }
 
-xdescribe('<Slider />', () => {
+describe('<Slider />', () => {
     const clientRenderer = new ClientRenderer();
 
     beforeEach(() => {
