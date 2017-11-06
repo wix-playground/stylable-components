@@ -1,0 +1,59 @@
+:import {
+	-st-from: "../../../components/input/input.st.css";
+	-st-default: Input;
+}
+
+:import {
+    -st-from: "../../../project.st.css";
+    -st-named: defaultFont,
+               lineHeight,
+               color_MainText,
+               color_MainPlaceholder,
+               color_MainText_Background,
+               borderRadius,
+               color_Disabled,
+               borderDefault,
+               borderHover,
+               borderFocus,
+               inputHeight,
+               inputWidth,
+               borderDisabled,
+               borderError;
+}
+
+Input {
+    box-sizing: inherit;
+    border: value(borderDefault);
+    border-radius: value(borderRadius);
+    background-color: value(color_MainText_Background);
+    color: value(color_MainText);
+    font: value(defaultFont);
+    line-height: value(lineHeight);
+    margin: 0;
+    padding: 6px 12px;
+    height: value(inputHeight);
+    width: value(inputWidth);
+    outline: 0;
+}
+
+Input::placeholder {
+    color: value(color_MainPlaceholder);
+}
+
+Input:hover {
+    border: value(borderHover);
+}
+
+Input:focus {
+    border: value(borderFocus);
+}
+
+Input:disabled {
+    background-color: value(color_Disabled);
+    color: value(color_MainPlaceholder);
+    border: value(borderDisabled);
+}
+
+Input:error {
+    border: value(borderError);
+}

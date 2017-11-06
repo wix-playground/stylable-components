@@ -1,0 +1,12 @@
+.root {
+    width: 100%;
+}
+.visibilityButton {
+    margin-left: 20px;
+}
+td {
+    padding:  20px;
+    text-align: center;
+    vertical-align: top;
+    width: 1%;
+}

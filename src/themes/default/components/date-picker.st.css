@@ -1,0 +1,37 @@
+:import {
+	-st-from: "../../../components/date-picker/date-picker.st.css";
+	-st-default: DatePicker;
+}
+
+:import {
+    -st-from: "../../../project.st.css";
+    -st-named:  inputWidth,
+                borderDefault,
+                color_Border,
+                color_Selected;
+}
+
+:import {
+    -st-from: "../variables.st.css";
+    -st-named:  defaultFont,
+                color_Error;
+}
+
+DatePicker::input {
+    width: value(inputWidth);
+}
+
+DatePicker:error::input {
+    border-color: value(color_Error);
+}
+
+DatePicker::icon {
+    fill: value(color_Border);
+    border-left: value(borderDefault);
+}
+
+DatePicker::icon:hover {
+    background-color: value(color_Selected);
+    outline: value(borderDefault);
+    outline-offset: -1px;
+}

@@ -1,6 +1,8 @@
 import {DriverBase, selectDom, simulate, trigger} from 'test-drive-react';
 import {DatePicker} from '../../src';
+import baseStyle from '../../src/components/date-picker/date-picker.st.css';
 import {getDayNames} from '../../src/utils';
+import {elementHasStylableState} from '../utils';
 
 const bodySelect = selectDom(document.body);
 const datePickerDropdown = 'DATE_PICKER_DROPDOWN';
@@ -41,6 +43,14 @@ export class DatePickerTestDriver extends DriverBase {
         simulate.mouseDown(this.prevMonthLabel);
     }
 
+    public clickOnHeader(): void {
+        simulate.mouseDown(this.calendarHeader);
+    }
+
+    public clickOnMonth(month: string): void {
+        simulate.mouseDown(this.getMonth(month));
+    }
+
     public openCalender(): void {
         simulate.click(this.select('CALENDAR_ICON'));
     }
@@ -53,6 +63,10 @@ export class DatePickerTestDriver extends DriverBase {
         simulate.keyDown(this.input, {keyCode});
     }
 
+    public simulateInput(): void {
+        simulate.input(this.input);
+    }
+
     public get nextMonthLabel(): HTMLSpanElement | null {
         return bodySelect('NEXT_MONTH_BUTTON');
     }
@@ -63,6 +77,14 @@ export class DatePickerTestDriver extends DriverBase {
 
     public get dropDown(): HTMLDivElement | null {
         return bodySelect(datePickerDropdown);
+    }
+
+    public get calendarHeader(): HTMLSpanElement | null {
+        return bodySelect('CALENDAR_HEADER');
+    }
+
+    public get monthView(): HTMLDivElement | null {
+        return bodySelect('MONTH_VIEW');
     }
 
     public getDay(day: number | string): HTMLSpanElement | null {
@@ -85,11 +107,15 @@ export class DatePickerTestDriver extends DriverBase {
         return bodySelect(datePickerDropdown, `DAY_NAME_${dayNames[dayName].toUpperCase()}`);
     }
 
-    public get yearLabel(): HTMLSpanElement | null {
-        return bodySelect(datePickerDropdown, 'YEAR');
+    public get headerDate(): HTMLSpanElement | null {
+        return bodySelect(datePickerDropdown, 'HEADER_DATE');
     }
 
-    public get monthLabel(): HTMLSpanElement | null {
-        return bodySelect(datePickerDropdown, 'MONTH_NAME');
+    public getMonth(month: string): HTMLSpanElement | null {
+        return bodySelect(datePickerDropdown, `MONTH_${month.toUpperCase()}`);
+    }
+
+    public elementHasStylableState(element: Element, stateName: string): boolean {
+        return elementHasStylableState(element, baseStyle, stateName);
     }
 }

@@ -1,7 +1,7 @@
 @namespace "DatePicker";
 
 :import {
-    -st-from: "../../style/project.st.css";
+    -st-from: "../../project.st.css";
     -st-named:  color_Default,
                 color_MainText_Background,
                 color_MainText,
@@ -12,8 +12,12 @@
                 fontFamily,
                 inputHeight,
                 inputWidth,
-                borderDefault,
                 borderHover;
+}
+
+:import {
+    -st-from: "../input/input.st.css";
+    -st-default: Input;
 }
 
 :vars {
@@ -25,28 +29,34 @@
     iconWidth: 36px;
 }
 
-/* The DatePicker Input */
+/* root */
+.root {
+    -st-states: disabled, readonly, error;
+    display: inline-block;
+    height: value(inputHeight);
+}
+
+.flex-wrapper {
+    display: flex;
+}
+
 .input {
-    width: value(inputWidth);
+    -st-extends: Input;
 }
 
 .icon {
-    position: relative;
-    left: calc(value(inputWidth) - value(iconWidth));
-    top: -value(iconWidth);
+    margin-left: -value(iconWidth);
     padding: 10px;
     cursor: pointer;
     width: value(iconWidth);
     height: value(inputHeight);
-    fill: #3899EC;
-    border-left: value(borderDefault);
 }
 
-.icon:hover {
-    background-color: rgb(240, 240, 240);
-    outline: value(borderDefault);
-    outline-offset: -1px;
-}
+/*
+    Styling dropdown is here (not at the theme)
+    because it is rendered in <Portal/>
+    which isn't able to get theme yet.
+*/
 
 /* The dropdown arrow extends from the input and into the calendar view */
 .dropdownArrowWrapper {
@@ -85,6 +95,7 @@
 /* Contains current month and year */
 .headerDate {
     display: inline;
+    cursor: pointer;
     width: 150px;
     height: 24px;
     font-family: value(fontFamily);
@@ -92,6 +103,10 @@
     line-height: 1.5;
     text-align: center;
     color: value(color_MainText_Background);
+}
+
+.headerDate:hover {
+    background-color: rgba(255, 255, 255, 0.18);
 }
 
 /* General styling for the month buttons */
@@ -146,6 +161,10 @@
     flex: 0 0 14.2857%;
 }
 
+.month-view {
+    -st-extends: calendar;
+}
+
 /* Styling for the days of the week */
 .dayName {
     font-family: value(fontFamily);
@@ -159,9 +178,27 @@
     cursor: default;
 }
 
+.monthName {
+    /* 100/3 = 33.3333... show 3 months per row */
+    flex: 0 0 33.3333%;
+    line-height: 54px;
+    font-family: value(fontFamily);
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    color: value(color_MainText);
+    cursor: pointer;
+}
+
+/* Hover styles for month selection */
+.monthName:hover {
+    color: value(color_MainText);
+    background-color: value(color_Keyboard_Focused);
+}
+
 /* Styling for the days of the month */
 .day {
-    -st-states: focused, selected, current, inactive;
+    -st-states: focused, selected, current, inactive, disabled;
     font-family: value(fontFamily);
     font-size: 14px;
     text-align: center;
@@ -196,6 +233,14 @@
     cursor: default;
 }
 
+/* Styles for disabled day */
+.day:disabled {
+    color: #d8d8d8;
+    width: 36px;
+    line-height: 36px;
+    cursor: default;
+}
+
 /* Special case for when a user selected a date and then navigates to it using the keyboard */
 .day:focused:selected {
     color: value(color_MainText_Background);
@@ -214,7 +259,8 @@
     background-color: value(color_MainText_Background);
 }
 
-/* root */
-.root {
-    display: inline-block;
+/* Hover styles for disabled days */
+.day:disabled:hover {
+    color: #d8d8d8;
+    background-color: value(color_MainText_Background);
 }

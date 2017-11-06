@@ -1,0 +1,78 @@
+:import {
+    -st-from: "../../project.st.css";
+    -st-named: PR2;
+}
+:vars {
+    size: 100px;
+    trackWidth: 5px;
+    circleRotateTime: 2.5s;
+    innerRotateTime: 1.6s;
+    trackRotateTime: 2.1s;
+
+    /* full rotate [-135deg; 45deg] */
+    rotateFrom: -130deg;
+    rotateTo: 40deg;
+}
+
+@keyframes circle-animation {
+    0% {transform: rotate(0)}
+    100% {transform: rotate(360deg)}
+}
+@keyframes track-animation {
+    0% {transform: rotate(value(rotateFrom))}
+    50% {transform: rotate(value(rotateTo))}
+    100% {transform: rotate(value(rotateFrom))}
+}
+
+.root {
+    display: inline-block;
+}
+
+.circle {
+    width: value(size);
+    height: value(size);
+    position: relative;
+    animation: circle-animation value(circleRotateTime) infinite;
+}
+.inner {
+    width: 100%;
+    height: 100%;
+    animation: circle-animation value(innerRotateTime) infinite linear;
+}
+
+.left, .right {
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.inner:after {
+    content: '';
+    position: absolute;
+    top: 0px;
+    left: 50%;
+    width: 10%;
+    border-top: 5px solid value(PR2);
+    border-radius: 50px;
+    box-sizing: content-box;
+    transform: translate(-50%);
+    height: 100%;
+}
+
+.right {
+    transform-origin: 100% 50%;
+    transform: scaleX(-1);
+}
+
+.track {
+    width: value(size);
+    height: value(size);
+    box-sizing: border-box;
+    border: 5px solid;
+    border-color: value(PR2) value(PR2) transparent transparent;
+    border-radius: 50%;
+    transform: rotate(value(rotateFrom));
+    animation: track-animation value(trackRotateTime) infinite linear;
+}

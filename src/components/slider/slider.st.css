@@ -1,7 +1,7 @@
 @namespace "Slider";
 
 :import {
-    -st-from: "../../style/project.st.css";
+    -st-from: "../../project.st.css";
     -st-named:
         color_Border,
         M0,
@@ -54,9 +54,6 @@
 
     minVerticalSliderHeight: 44px;
     clickableAreaRadius: 15px;
-
-    tooltipOffset: 23px;
-    tooltipColor: value(BK1);
 }
 
 .nativeInput {
@@ -103,63 +100,64 @@
     padding: 0 value(clickableAreaRadius);
 }
 
-.track {
+.bar {
     position: relative;
     border-radius: value(trackRadius);
     background-color: value(colorTrack);
 }
 
-.root:x .track{
+.root:x .bar{
     height: value(trackSize);
     width: 100%;
 }
 
-.root:xReverse .track{
+.root:xReverse .bar{
     height: value(trackSize);
     width: 100%;
 }
 
-.root:y .track{
+.root:y .bar{
     text-align: left;
     width: value(trackSize);
     height: 100%;
     min-height: value(minVerticalSliderHeight);
 }
 
-.root:yReverse .track{
+.root:yReverse .bar{
     text-align: left;
     width: value(trackSize);
     height: 100%;
     min-height: value(minVerticalSliderHeight);
 }
 
-.progress {
+.rangeBar {
     position: absolute;
     background-color: value(colorProgress);
     border-radius: value(trackRadius);
 }
 
-.root:x .progress{
+.root:x .rangeBar{
     left: 0;
     height: inherit;
 }
 
-.root:xReverse .progress{
+.root:xReverse .rangeBar{
     right: 0;
     height: inherit;
 }
 
-.root:y .progress{
+.root:y .rangeBar{
     bottom: 0;
     width: inherit;
 }
 
-.root:yReverse .progress{
+.root:yReverse .rangeBar{
     top: 0;
     width: inherit;
 }
 
 .handle {
+    -st-states: active;
     position: absolute;
     width: value(handleWidth);
     height: value(handleHeight);
@@ -168,7 +166,20 @@
     border: solid 1px;
     border-color: value(handleBorder);
     box-sizing: border-box;
+}
+.handle:hover {
+    box-shadow: none;
+    background-color: value(colorHandle_Active);
+    border-color: value(colorHandle_Active);
+}
+.handle:active {
     z-index: 1;
+}
+.handle:active .tooltip {
+    display: block;
+}
+.handle:hover .tooltip {
+    display: block;
 }
 
 .root:x .handle{
@@ -187,113 +198,52 @@
     margin: value(middleOfHandle) 0px 0px value(middleOfBar);
 }
 
-.markProgress,
-.markTrack
+.rangeMark,
+.mark
 {
     width: value(markSize);
     height: value(markSize);
     position: absolute;
     border-radius: value(markRadius);
 }
-.markProgress{
+.rangeMark{
     background-color: value(colorProgress);
 }
-.markTrack{
+.mark{
     background-color: value(colorTrack);
 }
 
 
-.root:x .markProgress,
-.root:x .markTrack
+.root:x .rangeMark,
+.root:x .mark
 {
     margin: value(markMiddleOfBar) 0 0 value(markMiddleOfDot);
 }
 
-.root:xReverse .markProgress,
-.root:xReverse .markTrack
+.root:xReverse .rangeMark,
+.root:xReverse .mark
 {
     margin: value(markMiddleOfBar) value(markMiddleOfDot) 0 0;
 }
 
-.root:y .markProgress,
-.root:y .markTrack
+.root:y .rangeMark,
+.root:y .mark
 {
     margin: 0 0 value(markMiddleOfDot) value(markMiddleOfBar);
 }
 
-.root:yReverse .markProgress,
-.root:yReverse .markTrack
+.root:yReverse .rangeMark,
+.root:yReverse .mark
 {
     margin: value(markMiddleOfDot) 0 0 value(markMiddleOfBar);
 }
 
-.tooltip {
-    position: absolute;
-    text-align: center;
-    background: value(tooltipColor);
-    padding: 12px 25px;
-    color: white;
-    font-size: 14px;
-    font-family: arial;
-}
-
-
-.tooltip-tail {
-    position: absolute;
-}
-
-.tooltip.top {
-    bottom: value(tooltipOffset);
-    transform: translateX(-50%);
-    margin-left: 50%;
-}
-.tooltip.top .tooltip-tail {
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-.tooltip.bottom {
-    top: value(tooltipOffset);
-    transform: translateX(-50%);
-    margin-left: 50%;
-}
-.tooltip.bottom .tooltip-tail {
-    bottom: 100%;
-    left: 50%;
-    transform: translateX(-50%) rotate(180deg);
-}
-
-.tooltip.left {
-    right: value(tooltipOffset);
-    transform: translateY(-50%);
-    margin-top: 50%;
-}
-.tooltip.left .tooltip-tail {
-    left: 100%;
-    top: 50%;
-    transform: translateY(100%) rotate(-90deg);
-    transform-origin: 0 0;
-}
-
-.tooltip.right {
-    left: value(tooltipOffset);
-    transform: translateY(-50%);
-    margin-top: 50%;
-}
-.tooltip.right .tooltip-tail {
-    right: 100%;
-    top: 50%;
-    transform: translateY(100%) rotate(90deg);
-    transform-origin: 100% 0;
-}
-
 /* Hover state */
-.root:hover .track {
+.root:hover .bar {
     background-color: value(colorTrack_Hover);
 }
 
-.root:hover .markTrack {
+.root:hover .mark {
     background-color: value(colorTrack_Hover);
 }
 
@@ -309,26 +259,19 @@
 }
 
 /* Active state */
-.root:active .handle,
-.root:active:hover .handle {
-    box-shadow: none;
-    background-color: value(colorHandle_Active);
-    border-color: value(colorHandle_Active);
-}
-
-.root:active .track {
+.root:active .bar {
     background-color: value(colorTrack);
 }
 
-.root:active:hover .track {
+.root:active:hover .bar {
     background-color: value(colorTrack);
 }
 
-.root:active .markTrack {
+.root:active .mark {
     background-color: value(colorTrack);
 }
 
-.root:active .progress {
+.root:active .rangeBar {
     background-color: value(colorProgress);
 }
 
@@ -343,21 +286,21 @@
     background-color: value(colorHandle_Disabled);
 }
 
-.root:disabled .track {
+.root:disabled .bar {
     background-color: value(color_Disabled);
 }
 
-.root:disabled .markTrack {
+.root:disabled .mark {
     background-color: value(color_Disabled);
 }
 
-.root:disabled .progress {
+.root:disabled .rangeBar {
     background-color: transparent;
 }
 
 /* Error state */
-.root:error .markProgress,
-.root:error .progress
+.root:error .rangeMark,
+.root:error .rangeBar
 {
     background-color: value(color_Error);
 }

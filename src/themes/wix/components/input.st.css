@@ -1,0 +1,37 @@
+:import {
+	-st-from: "../../../components/input/input.st.css";
+	-st-default: Input;
+}
+
+:import {
+  -st-from: "../variables.st.css";
+  -st-named:
+    /* import list is long because -st-mixin currently requires 
+     importing all the variables that the mixed in class uses */
+          inputStyle,
+          inputWidth,
+          inputHeight,
+          inputPadding,
+
+          inputFontStyle,
+          textColor,
+          textColorDisabled,
+          placeholderColor,
+
+          inputBackgroundColor,
+          inputBackgroundColorHover,
+          inputBackgroundColorDisabled,
+
+          borderStyle,
+          borderRadius,
+          borderColorHover,
+          borderColorFocus,
+          borderColorDisabled,
+          borderColorError;
+}
+
+
+Input {
+  -st-mixin: inputStyle;
+  padding: value(inputPadding);
+}

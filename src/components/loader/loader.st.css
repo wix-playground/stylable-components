@@ -1,0 +1,16 @@
+:import {
+    -st-from: "../../project.st.css";
+    -st-named: BK2, fontFamily;
+}
+.root {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+}
+.text {
+    font-family: value(fontFamily);
+    display: block;
+    color: value(BK2);
+    margin-top: 1.5em;
+    text-align: center;
+}

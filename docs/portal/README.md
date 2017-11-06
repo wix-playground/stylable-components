@@ -1,14 +1,16 @@
 # Portal
 
-The *Portal* component renders children into container appended to the document.body.
+The **Portal** component renders children into a container embedded in the **document.body**.
 
 ## API
 
-| name | type | default | required | description |
-| -- | -- | -- | -- | -- |
-| children | React.ReactNode | null | no | The elements to be rendered in the portal |
+### Props
 
-## React Code Examples
+| name | type | default | required | description |
+| --- | --- | --- | --- | --- |
+| children | node | null | no | The elements to be rendered in the portal. |
+
+### React Code Examples
 
 ```jsx
 
@@ -17,7 +19,7 @@ export class PortalDemo extends React.Component<{}, {}> {
 
     render() {
         <Portal>
-            I am a in a portal!
+            I am in a portal!
         </Portal>
     }
 

@@ -1,0 +1,66 @@
+:import {
+	-st-from: "../../../components/radio-group/radio-button.st.css";
+	-st-default: RadioButton;
+}
+
+:import {
+    -st-from: '../variables.st.css';
+    -st-named:  fontStyle,
+                checkBorder,
+                checkedColor,
+                inputBackgroundColor,
+                checkDisabledColor,
+                checkHoverColor,
+                buttonColorDisabled;
+}
+
+RadioButton {
+    font: 300 value(fontStyle);
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+}
+
+RadioButton:disabled {
+    cursor: default;
+}
+
+RadioButton::button {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    box-sizing: border-box;
+    border: value(checkBorder);
+    background: value(inputBackgroundColor);
+}
+
+RadioButton::button::after {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+}
+
+RadioButton:checked:not(:disabled)::button {
+    border-color: value(checkedColor);
+}
+
+RadioButton:checked:not(:disabled)::button::after {
+    background-color: value(checkedColor);
+}
+
+RadioButton:hover:not(:disabled)::button {
+    background-color: value(checkHoverColor)
+}
+
+RadioButton:disabled::button {
+    border-color: value(buttonColorDisabled);
+    background-color: value(checkDisabledColor);
+}
+
+RadioButton:disabled::button::after {
+    background-color: value(checkDisabledColor);
+}
+
+RadioButton:disabled:checked::button::after {
+    background-color: value(buttonColorDisabled);
+}

@@ -5,6 +5,11 @@
     -st-default: List;
 }
 
+:import {
+    -st-from: '../../src/components/selection-list/option.st.css';
+    -st-default: Option;
+}
+
 .emoji-list {
     -st-extends: List;
     display: flex;
@@ -16,7 +21,7 @@
     border-radius: 30px;
 }
 
-.emoji-list::item {
+.emoji-list Option {
     width: 30px;
     height: 30px;
     border-radius: 50%;
@@ -24,18 +29,17 @@
     transition: all 300ms;
     cursor: pointer;
     text-align: center;
-
     min-height: unset;
     padding: unset;
     line-height: unset;
 }
 
-.emoji-list::item:focused {
+.emoji-list Option:focused {
     border: unset;
     background-color: #edf7ff;
 }
 
-.emoji-list::item:selected {
+.emoji-list Option:selected {
     width: 56px;
     height: 56px;
     font-size: 45px;
@@ -43,33 +47,38 @@
     background-color: unset;
 }
 
-.emoji-list::item:focused,
-.emoji-list::item:hover,
-.emoji-list::item:selected:hover,
-.emoji-list::item:selected:focused {
+.emoji-list Option:focused,
+.emoji-list Option:hover,
+.emoji-list Option:selected:hover,
+.emoji-list Option:selected:focused {
     background-color: #edf7ff;
-} 
+}
 
 .text-style-list {
     -st-extends: List;
 }
 
-.text-style-list::item {
+.text-style-list Option {
     padding: 10px 20px;
     color: #000000;
-    border-top: 1px solid #DDDDDD;
     cursor: pointer;
+    line-height: 1em;
 }
 
-.text-style-list::item:first-child {
-    border-top: none;
+.text-style-list Option:not(:focused):not(:first-child) {
+    border-top: 1px solid #ddd;
 }
 
-.text-style-list::item:disabled {
+.text-style-list Option span {
+    vertical-align: middle;
+    line-height: 1em;
+}
+
+.text-style-list Option:disabled {
     cursor: default;
 }
 
-.text-style-list::item:disabled > * {
+.text-style-list Option:disabled > * {
     filter: grayscale(100%);
     opacity: 0.2;
 }

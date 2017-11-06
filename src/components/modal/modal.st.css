@@ -1,5 +1,12 @@
 @namespace "Modal";
 
+
+/*
+    Styling colors are here (not at the theme)
+    because it is rendered in <Portal/>
+    which isn't able to get theme yet.
+*/
+
 .backdrop {
     width: 100vw;
     height: 100vh;
@@ -9,7 +16,7 @@
     background: rgba(0, 0, 0, 0.05);
 }
 
-.children {
+.dialog {
     position: absolute;
     left: 50%;
     top: 50%;

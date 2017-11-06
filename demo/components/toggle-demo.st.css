@@ -1,5 +1,1 @@
 @namespace "toggleDemo";
-:import {
-  -st-theme: true;
-  -st-from: "../../src/themes/wix-theme/theme.st.css";
-}

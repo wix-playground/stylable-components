@@ -1,0 +1,11 @@
+@namespace "SelectionListOption";
+
+.root {
+    -st-states: selected, focused, disabled;
+    cursor: pointer;
+    user-select: none;
+}
+
+.root:disabled {
+    cursor: default;
+}

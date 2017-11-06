@@ -107,7 +107,6 @@ export class TimePicker extends React.Component<TimePickerProps, TimePickerState
         const {focus, hh, mm, ampm, format, notification} = this.state;
         const {label, placeholder, disabled, error, required, name} = this.props;
         const isValueSet = hh !== undefined || mm !== undefined;
-        const timeSegments: TimeSegment[] = ['hh', 'mm'];
 
         return (
             <div
@@ -126,31 +125,9 @@ export class TimePicker extends React.Component<TimePickerProps, TimePickerState
                     <ScreenReaderNotification>{notification}</ScreenReaderNotification>
                 }
                 <div className="time">
-                    {timeSegments.map(segment =>
-                        <input
-                            key={segment}
-                            data-automation-id={'TIME_PICKER_INPUT_' + segment.toUpperCase()}
-                            className="input"
-                            type="text"
-                            autoComplete="off"
-                            tabIndex={isTouchTimeInputSupported ? -1 : 0}
-                            ref={elem => this.segments[segment] = elem}
-                            value={this.state[segment] || ''}
-                            placeholder={this.state[segment] ? '' : '00'}
-                            disabled={disabled}
-                            name={segment}
-
-                            role="spinbutton"
-                            aria-label={LABELS[segment]}
-                            aria-valuetext={this.state[segment]}
-
-                            onMouseDown={this.onInputMouseDown}
-                            onChange={this.onInputChange}
-                            onFocus={this.onInputFocus}
-                            onBlur={this.onBlur}
-                            onKeyDown={this.onKeyDown}
-                        />
-                    )}
+                    {this.getInput('hh')}
+                    <span className="colon">:</span>
+                    {this.getInput('mm')}
                 </div>
                 {format === 'ampm' &&
                     <div
@@ -206,6 +183,34 @@ export class TimePicker extends React.Component<TimePickerProps, TimePickerState
         );
     }
 
+    private getInput(segment: TimeSegment): JSX.Element {
+        const {disabled} = this.props;
+        return (
+            <input
+                key={segment}
+                data-automation-id={'TIME_PICKER_INPUT_' + segment.toUpperCase()}
+                className="input"
+                type="text"
+                tabIndex={isTouchTimeInputSupported ? -1 : 0}
+                ref={elem => this.segments[segment] = elem}
+                value={this.state[segment] || ''}
+                placeholder={this.state[segment] ? '' : '00'}
+                disabled={disabled}
+                name={segment}
+
+                role="spinbutton"
+                aria-label={LABELS[segment]}
+                aria-valuetext={this.state[segment]}
+
+                onMouseDown={this.onInputMouseDown}
+                onChange={this.onInputChange}
+                onFocus={this.onInputFocus}
+                onBlur={this.onBlur}
+                onKeyDown={this.onKeyDown}
+            />
+        );
+    }
+
     private getValue(): string {
         const {hh = 0, mm = 0, ampm} = this.state;
         const hhString = formatTimeChunk(to24(Number(hh), ampm));
@@ -232,6 +237,7 @@ export class TimePicker extends React.Component<TimePickerProps, TimePickerState
             this.select(nextSegment);
             return true;
         }
+        this.select(this.state.currentSegment!);
         return false;
     }
 

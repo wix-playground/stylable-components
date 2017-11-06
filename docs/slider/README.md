@@ -37,7 +37,7 @@ Sliders are great for adjusting settings that reflect intensity levels (volume, 
 | displayStopMarks | boolean                        | false        | no         | Controls the visibility of the marks.    |
 | displayTooltip   | boolean                        | false        | no         | Controls the visibility of the tooltip.  |
 | tooltipPosition  | enum:<br>'top'<br>'bottom'<br>'left'<br>'right'                                   | 'top'          | no         | Controls the position of the tooltip. |
-| onChange         | function  |        | yes        | Callback function that is fired when the slider's value changed.<br>`(event: {value: number}): void`<br>**event** change event for the slider<br>**value** the new value of the slider |
+| onChange         | function  |        | yes        | Callback function that is fired when the slider's value changed.<br>`(event: {value: number}): void`<br>**event** change event for the component instance.<br>**value** the new value of the slider |
 | onDragStart      | function  |              | no         | Callback function that is fired when the handle has begun to move.<br>`(event: PointerEvent): void`<br>**event**: mouse click down or touch start |
 | onDragStop       | function  |              | no         | Callback function that is fired when the handle has stopped moving.<br>`(event: PointerEvent): void`<br>**event**: mouse click up or touch end |
 | onDrag           | function  |              | no         | Callback function that is fired when the handle is moving.<br>`(event: PointerEvent): void`<br>**event**: mouse move or touch move |
@@ -110,9 +110,9 @@ export class ComponentsDemo extends React.Component<{}, State>{
 | ::handle        | Allows you to style the handle of the slider. |                                          |
 | ::bar           | Allows you to style the bar of the slider. |                                          |
 | ::progressBar   | Allows you to style the progress bar of the slider. |                                          |
-| ::marks         | Allows to style marks that are shown on the ::bar section of the slider. | By default ::marks use the same background color as ::bar. |
-| ::progressMarks | Allows to style marks that are shown on the ::progressBar section of the slider. | By default, ::progressMark elements use the same background color as ::progressBar. |
-| ::tooltip       | Allows to style the tooltip.             |                                          |
+| ::marks         | Allows you to style marks that are shown on the ::bar section of the slider. | By default ::marks use the same background color as ::bar. |
+| ::progressMarks | Allows you to style marks that are shown on the ::progressBar section of the slider. | By default, ::progressMark elements use the same background color as ::progressBar. |
+| ::tooltip       | Allows you to style the tooltip.             |                                          |
 
 ### Custom CSS States (pseudo-classes)
 

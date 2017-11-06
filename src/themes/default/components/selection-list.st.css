@@ -1,0 +1,84 @@
+:import {
+	-st-from: "../../../components/selection-list/selection-list.st.css";
+	-st-default: SelectionList;
+}
+
+:import {
+    -st-from: "../../../components/selection-list/option.st.css";
+    -st-default: Option;
+}
+
+:import {
+    -st-from: "../../../components/selection-list/divider.st.css";
+    -st-default: Divider;
+}
+
+:import {
+    -st-from: "../variables.st.css";
+    -st-named:  defaultFont,
+                borderDefault,
+                color_Focus,
+                color_Divider,
+                color_Hover2,
+                color_Selected,
+                color_Disabled,
+                color_MainDisabled,
+                color_MainText_Background,
+                color_Active,
+                color_Hover;
+}
+
+SelectionList {
+    border: value(borderDefault);
+    overflow-y: auto;
+}
+
+SelectionList:focused {
+    border-color: value(color_Focus);
+}
+
+SelectionList Divider {
+    height: 1px;
+    background-color: value(color_Divider);
+}
+
+SelectionList Option {
+    border: 1px solid transparent;
+    box-sizing: border-box;
+    font: value(defaultFont);
+    line-height: 24px;
+    min-height: 36px;
+    overflow: hidden;
+    padding: 5px 23px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+SelectionList Option:disabled {
+    color: value(color_MainDisabled);
+}
+
+SelectionList Option:focused {
+    border-color: value(color_Active);
+}
+
+SelectionList Option:selected {
+    background-color: value(color_Selected);
+}
+
+SelectionList Option:hover:not(:disabled) {
+    /* we're adding :not(:disabled) because our disabled state in this component is
+     not a native state, and unlike the native :disabled it has less weight than native :hover
+     If we used native :disabled state, we wouldn't have to add this; */
+    background-color: value(color_Hover2);
+}
+
+SelectionList:focused Option:selected:not(:disabled) {
+    background-color: value(color_Active);
+    color: value(color_MainText_Background);
+}
+
+SelectionList:focused Option:selected:hover:not(:disabled) {
+    background-color: value(color_Hover);
+    color: value(color_MainText_Background);
+}

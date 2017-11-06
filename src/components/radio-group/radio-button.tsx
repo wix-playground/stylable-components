@@ -1,16 +1,12 @@
 import * as React from 'react';
 import {properties, stylable} from 'wix-react-tools';
 import {FormInputProps} from '../../types/forms';
+import {StylableProps} from '../../types/props';
 import {noop} from '../../utils';
 import style from './radio-button.st.css';
 
-export interface RadioButtonProps extends FormInputProps<string> {
+export interface RadioButtonProps extends FormInputProps<string>, StylableProps {
     checked?: boolean;
-    name?: string;
-    disabled?: boolean;
-    readOnly?: boolean;
-    tabIndex?: number;
-    className?: string;
 }
 
 export interface RadioButtonState {
@@ -56,14 +52,10 @@ export class RadioButton extends React.Component<RadioButtonProps, RadioButtonSt
                     disabled={this.props.disabled}
                     readOnly={this.props.readOnly}
                     name={this.props.name}
+                    autoFocus={this.props.autoFocus}
                 />
                 <div className="contentContainer" data-automation-id="CONTENT_CONTAINER">
-                    <div
-                        data-automation-id="INPUT_CONTAINER"
-                        className="iconContainer"
-                    >
-                        {this.props.checked ? checkedRadioSvg() : emptyRadioSvg()}
-                    </div>
+                    <span className="button" data-automation-id="ICON" />
                     {this.props.children}
                 </div>
             </div>
@@ -83,39 +75,4 @@ export class RadioButton extends React.Component<RadioButtonProps, RadioButtonSt
     private onInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
         this.setState({isFocused: false});
     }
-}
-
-function emptyRadioSvg() {
-    return (
-        <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className={style.radioSVG}
-            viewBox="0 0 16 16"
-            data-automation-id="UNCHECKED_RADIO_ICON"
-            focusable="false"
-        >
-            <circle cx="8" cy="8" r="7.5"/>
-        </svg>
-    );
-}
-
-function checkedRadioSvg() {
-    return (
-        <svg
-            xmlns="http://www.w3.org/2000/svg"
-            xmlnsXlink="http://www.w3.org/1999/xlink"
-            className={style.radioSVG}
-            viewBox="0 0 16 16"
-            data-automation-id="CHECKED_RADIO_ICON"
-            focusable="false"
-        >
-            <defs>
-                <circle id="a" cx="8" cy="8" r="8"/>
-            </defs>
-            <g>
-                <circle cx="8" cy="8" r="6.75" stroke="#FFF" strokeWidth="2.5" className="checkMark"/>
-                <circle cx="8" cy="8" r="7.5"/>
-            </g>
-        </svg>
-    );
 }
