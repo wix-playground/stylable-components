@@ -18,7 +18,7 @@ export class TabsDemo extends React.Component {
                             onChange={this.handleChange}
                         />
                     </label>
-                    <table style={{ width: '100%' }}><tbody>
+                    <table style={{width: '100%'}}><tbody>
                         <tr>
                             <th>Configuration</th>
                             <th>Default</th>
@@ -197,21 +197,43 @@ export class TabsDemo extends React.Component {
                             </td>
                         </tr>
                     </tbody></table>
-                    <label>Uncontrolled</label>
-                    <Tabs defaultValue="2">
-                        <Tab label="Tab One" value="0">
-                            <p>Tab One Content</p>
-                        </Tab>
-                        <Tab label="Tab Two" value="1">
-                            <p>Tab Two Content</p>
-                        </Tab>
-                        <Tab label="Tab Three" value="2">
-                            <p>Tab Three Content</p>
-                        </Tab>
-                        <Tab label="Tab Four" value="3" disabled>
-                            <p>Tab Four Content</p>
-                        </Tab>
-                    </Tabs>
+                    <div>
+                        <h4>Uncontrolled</h4>
+                        <Tabs defaultValue="2">
+                            <Tab label="Tab One" value="0">
+                                <p>Tab One Content</p>
+                            </Tab>
+                            <Tab label="Tab Two" value="1">
+                                <p>Tab Two Content</p>
+                            </Tab>
+                            <Tab label="Tab Three" value="2">
+                                <p>Tab Three Content</p>
+                            </Tab>
+                            <Tab label="Tab Four" value="3" disabled>
+                                <p>Tab Four Content</p>
+                            </Tab>
+                        </Tabs>
+                    </div>
+                    <div>
+                        <h4>unmountInactiveTabs false</h4>
+                        <Tabs defaultValue="0" unmountInactiveTabs={false}>
+                            <Tab label="Tab One">
+                                <input
+                                    type="text"
+                                    placeholder="this will not get lost"
+                                />
+                            </Tab>
+                            <Tab label="Tab Two">
+                                <p>Tab Two Content</p>
+                            </Tab>
+                            <Tab label="Tab Three">
+                                <p>Tab Three Content</p>
+                            </Tab>
+                            <Tab label="Tab Four" disabled>
+                                <p>Tab Four Content</p>
+                            </Tab>
+                        </Tabs>
+                    </div>
                 </div>
             </div>
         );
