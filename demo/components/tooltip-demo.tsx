@@ -63,7 +63,12 @@ const samples = [
 
 @stylable(styles)
 export class TooltipDemo extends React.Component {
+    public state = {
+        x: 0,
+        y: 0
+    }
     public render() {
+        const {x, y} = this.state;
         return (
             <div>
                 {samples.map((sample, i) =>
@@ -79,7 +84,7 @@ export class TooltipDemo extends React.Component {
                 )}
                 <div>
                     <h4>Auto position</h4>
-                    <div className="anchorWrap">
+                    <div className="anchorWrap" style={transform: `transition(${x}, ${y})`}>
                         <div className="anchor" data-tooltip-for="free" children="drag me"/>
                         <Tooltip id="free" children="I am anchor"/>
                     </div>
