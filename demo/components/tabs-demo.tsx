@@ -5,7 +5,7 @@ import {Tab, Tabs} from '../../src/components/tabs';
 import {ChangeEvent} from '../../src/types/events';
 
 export class TabsDemo extends React.Component {
-    public state = {value: '2'};
+    public state = {value: '1'};
     public render() {
         const {value} = this.state;
         return (
@@ -18,7 +18,7 @@ export class TabsDemo extends React.Component {
                             onChange={this.handleChange}
                         />
                     </label>
-                    <table style={{width: '100%'}}><tbody>
+                    <table style={{ width: '100%' }}><tbody>
                         <tr>
                             <th>Configuration</th>
                             <th>Default</th>
@@ -28,28 +28,34 @@ export class TabsDemo extends React.Component {
                             <td>Horizontal Top (Default)</td>
                             <td>
                                 <Tabs value={value} onChange={this.handleChange}>
-                                    <Tab value="1" label="Tab One">
-                                        <p>This is tab one</p>
+                                    <Tab label="Tab One" value="0">
+                                        <p>Tab One Content</p>
                                     </Tab>
-                                    <Tab value="2" label="Tab Two">
-                                        <p>This is tab two</p>
+                                    <Tab label="Tab Two" value="1">
+                                        <p>Tab Two Content</p>
                                     </Tab>
-                                    <Tab value="3" label="Tab Three" disabled={true}>
-                                        <p>This is disabled and cannot be selected</p>
+                                    <Tab label="Tab Three" value="2">
+                                        <p>Tab Three Content</p>
+                                    </Tab>
+                                    <Tab label="Tab Four" value="3" disabled>
+                                        <p>Tab Four Content</p>
                                     </Tab>
                                 </Tabs>
                             </td>
                             <td>
                                 <ContextProvider dir="rtl">
                                     <Tabs value={value} onChange={this.handleChange}>
-                                        <Tab value="1" label="Tab One">
-                                            <p>This is tab one</p>
+                                        <Tab label="Tab One" value="0">
+                                            <p>Tab One Content</p>
                                         </Tab>
-                                        <Tab value="2" label="Tab Two">
-                                            <p>This is tab two</p>
+                                        <Tab label="Tab Two" value="1">
+                                            <p>Tab Two Content</p>
                                         </Tab>
-                                        <Tab value="3" label="Tab Three" disabled={true}>
-                                            <p>This is disabled and cannot be selected</p>
+                                        <Tab label="Tab Three" value="2">
+                                            <p>Tab Three Content</p>
+                                        </Tab>
+                                        <Tab label="Tab Four" value="3" disabled>
+                                            <p>Tab Four Content</p>
                                         </Tab>
                                     </Tabs>
                                 </ContextProvider>
@@ -63,14 +69,17 @@ export class TabsDemo extends React.Component {
                                     value={value}
                                     onChange={this.handleChange}
                                 >
-                                    <Tab value="1" label="Tab One">
-                                        <p>This is tab one</p>
+                                    <Tab label="Tab One" value="0">
+                                        <p>Tab One Content</p>
                                     </Tab>
-                                    <Tab value="2" label="Tab Two">
-                                        <p>This is tab two</p>
+                                    <Tab label="Tab Two" value="1">
+                                        <p>Tab Two Content</p>
                                     </Tab>
-                                    <Tab value="3" label="Tab Three" disabled={true}>
-                                        <p>This is disabled and cannot be selected</p>
+                                    <Tab label="Tab Three" value="2">
+                                        <p>Tab Three Content</p>
+                                    </Tab>
+                                    <Tab label="Tab Four" value="3" disabled>
+                                        <p>Tab Four Content</p>
                                     </Tab>
                                 </Tabs>
                             </td>
@@ -81,14 +90,17 @@ export class TabsDemo extends React.Component {
                                         value={value}
                                         onChange={this.handleChange}
                                     >
-                                        <Tab value="1" label="Tab One">
-                                            <p>This is tab one</p>
+                                        <Tab label="Tab One" value="0">
+                                            <p>Tab One Content</p>
                                         </Tab>
-                                        <Tab value="2" label="Tab Two">
-                                            <p>This is tab two</p>
+                                        <Tab label="Tab Two" value="1">
+                                            <p>Tab Two Content</p>
                                         </Tab>
-                                        <Tab value="3" label="Tab Three" disabled={true}>
-                                            <p>This is disabled and cannot be selected</p>
+                                        <Tab label="Tab Three" value="2">
+                                            <p>Tab Three Content</p>
+                                        </Tab>
+                                        <Tab label="Tab Four" value="3" disabled>
+                                            <p>Tab Four Content</p>
                                         </Tab>
                                     </Tabs>
                                 </ContextProvider>
@@ -102,14 +114,17 @@ export class TabsDemo extends React.Component {
                                     value={value}
                                     onChange={this.handleChange}
                                 >
-                                    <Tab value="1" label="Tab One">
-                                        <p>This is tab one</p>
+                                    <Tab label="Tab One" value="0">
+                                        <p>Tab One Content</p>
                                     </Tab>
-                                    <Tab value="2" label="Tab Two">
-                                        <p>This is tab two</p>
+                                    <Tab label="Tab Two" value="1">
+                                        <p>Tab Two Content</p>
                                     </Tab>
-                                    <Tab value="3" label="Tab Three" disabled={true}>
-                                        <p>This is disabled and cannot be selected</p>
+                                    <Tab label="Tab Three" value="2">
+                                        <p>Tab Three Content</p>
+                                    </Tab>
+                                    <Tab label="Tab Four" value="3" disabled>
+                                        <p>Tab Four Content</p>
                                     </Tab>
                                 </Tabs>
                             </td>
@@ -120,14 +135,17 @@ export class TabsDemo extends React.Component {
                                         value={value}
                                         onChange={this.handleChange}
                                     >
-                                        <Tab value="1" label="Tab One">
-                                            <p>This is tab one</p>
+                                        <Tab label="Tab One" value="0">
+                                            <p>Tab One Content</p>
                                         </Tab>
-                                        <Tab value="2" label="Tab Two">
-                                            <p>This is tab two</p>
+                                        <Tab label="Tab Two" value="1">
+                                            <p>Tab Two Content</p>
                                         </Tab>
-                                        <Tab value="3" label="Tab Three" disabled={true}>
-                                            <p>This is disabled and cannot be selected</p>
+                                        <Tab label="Tab Three" value="2">
+                                            <p>Tab Three Content</p>
+                                        </Tab>
+                                        <Tab label="Tab Four" value="3" disabled>
+                                            <p>Tab Four Content</p>
                                         </Tab>
                                     </Tabs>
                                 </ContextProvider>
@@ -141,14 +159,17 @@ export class TabsDemo extends React.Component {
                                     value={value}
                                     onChange={this.handleChange}
                                 >
-                                    <Tab value="1" label="Tab One">
-                                        <p>This is tab one</p>
+                                    <Tab label="Tab One" value="0">
+                                        <p>Tab One Content</p>
                                     </Tab>
-                                    <Tab value="2" label="Tab Two">
-                                        <p>This is tab two</p>
+                                    <Tab label="Tab Two" value="1">
+                                        <p>Tab Two Content</p>
                                     </Tab>
-                                    <Tab value="3" label="Tab Three" disabled={true}>
-                                        <p>This is disabled and cannot be selected</p>
+                                    <Tab label="Tab Three" value="2">
+                                        <p>Tab Three Content</p>
+                                    </Tab>
+                                    <Tab label="Tab Four" value="3" disabled>
+                                        <p>Tab Four Content</p>
                                     </Tab>
                                 </Tabs>
                             </td>
@@ -159,14 +180,17 @@ export class TabsDemo extends React.Component {
                                         value={value}
                                         onChange={this.handleChange}
                                     >
-                                        <Tab value="1" label="Tab One">
-                                            <p>This is tab one</p>
+                                        <Tab label="Tab One" value="0">
+                                            <p>Tab One Content</p>
                                         </Tab>
-                                        <Tab value="2" label="Tab Two">
-                                            <p>This is tab two</p>
+                                        <Tab label="Tab Two" value="1">
+                                            <p>Tab Two Content</p>
                                         </Tab>
-                                        <Tab value="3" label="Tab Three" disabled={true}>
-                                            <p>This is disabled and cannot be selected</p>
+                                        <Tab label="Tab Three" value="2">
+                                            <p>Tab Three Content</p>
+                                        </Tab>
+                                        <Tab label="Tab Four" value="3" disabled>
+                                            <p>Tab Four Content</p>
                                         </Tab>
                                     </Tabs>
                                 </ContextProvider>
@@ -175,17 +199,20 @@ export class TabsDemo extends React.Component {
                     </tbody></table>
                     <label>Uncontrolled</label>
                     <Tabs defaultValue="2">
-                        <Tab value="1" label="Tab One">
-                            <p>This is tab one</p>
+                        <Tab label="Tab One" value="0">
+                            <p>Tab One Content</p>
                         </Tab>
-                        <Tab value="2" label="Tab Two">
-                            <p>This is tab two</p>
+                        <Tab label="Tab Two" value="1">
+                            <p>Tab Two Content</p>
                         </Tab>
-                        <Tab value="3" label="Tab Three" disabled={true}>
-                            <p>This is disabled and cannot be selected</p>
+                        <Tab label="Tab Three" value="2">
+                            <p>Tab Three Content</p>
+                        </Tab>
+                        <Tab label="Tab Four" value="3" disabled>
+                            <p>Tab Four Content</p>
                         </Tab>
                     </Tabs>
-                    </div>
+                </div>
             </div>
         );
     }
