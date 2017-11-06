@@ -702,7 +702,7 @@ describe('<RadioGroup />', () => {
                 });
             });
 
-            it('gets html focus after click (style state should not show focus)', async () => {
+            it('gets native focus after click (style state should not show focus)', async () => {
                 const {driver: radio, waitForDom} = clientRenderer.render(
                     <RadioButton/>
                 ).withDriver(RadioButtonDriver);

@@ -66,14 +66,14 @@ export class RadioButton extends React.Component<RadioButtonProps, RadioButtonSt
         );
     }
 
-    private handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    private handleClick: React.MouseEventHandler<HTMLDivElement> = e => {
         this.onChange(e);
         this.nativeInput && this.nativeInput.focus();
         this.setState({isFocused: false});
     }
 
     // handleInputClick will be called only when navigating to the radio using the keyboard
-    private handleInputClick = (e: React.MouseEvent<HTMLInputElement>) => {
+    private handleInputClick: React.MouseEventHandler<HTMLInputElement> = e => {
         e.stopPropagation();
         this.setState({isFocused: true});
     }
@@ -84,11 +84,11 @@ export class RadioButton extends React.Component<RadioButtonProps, RadioButtonSt
         }
     }
 
-    private onInputFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    private onInputFocus: React.FocusEventHandler<HTMLInputElement> = e => {
         this.setState({isFocused: true});
     }
 
-    private onInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    private onInputBlur: React.FocusEventHandler<HTMLInputElement> = e => {
         this.setState({isFocused: false});
     }
 }
