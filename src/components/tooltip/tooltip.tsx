@@ -20,6 +20,7 @@ export interface TooltipProps {
     showDelay?: number;
     hideDelay?: number;
     disableAutoPosition?: boolean;
+    disableGlobalEvents?: boolean;
 }
 
 export interface TooltipState {
@@ -33,10 +34,10 @@ function hasPosition(position: Position, ...candidates: string[]): boolean {
 }
 
 const positions: Position[] = [
-    'topRight', 'top', 'topLeft',
-    'rightBottom', 'right', 'rightTop',
-    'bottomLeft', 'bottom', 'bottomRight',
-    'leftTop', 'left', 'leftBottom'
+    'top', 'topLeft', 'topRight',
+    'right', 'rightTop', 'rightBottom',
+    'bottom', 'bottomRight', 'bottomLeft',
+    'left', 'leftBottom', 'leftTop'
 ];
 
 @stylable(styles)
@@ -48,7 +49,8 @@ class StyledTooltip extends React.Component<TooltipProps, TooltipState> {
         hideTrigger: 'mouseleave',
         showDelay: 0,
         hideDelay: 0,
-        disableAutoPosition: false
+        disableAutoPosition: false,
+        disableGlobalEvents: false
     };
 
     private target: HTMLElement | null = null;
@@ -71,8 +73,15 @@ class StyledTooltip extends React.Component<TooltipProps, TooltipState> {
     }
 
     public render() {
-        const {children} = this.props;
+        const {children, disableGlobalEvents} = this.props;
         const {style, open, position} = this.state;
+        const globalEvents: any = {
+            resize: this.onWindowResize,
+            scroll: this.onWindowResize
+        };
+        if (!disableGlobalEvents) {
+            globalEvents.mousedown = globalEvents.touchstart = this.hide;
+        }
 
         return (
             <div
@@ -81,12 +90,7 @@ class StyledTooltip extends React.Component<TooltipProps, TooltipState> {
                 style={style}
                 style-state={{open, unplaced: !style}}
             >
-                <GlobalEvent
-                    resize={this.onWindowResize}
-                    scroll={this.onWindowResize}
-                    mousedown={this.hide}
-                    touchstart={this.hide}
-                />
+                <GlobalEvent {...globalEvents}/>
                 <div
                     className="tooltip"
                     ref={elem => this.tooltip = elem}

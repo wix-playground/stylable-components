@@ -8,3 +8,11 @@
     color: white;
     background: #3899ec;
 }
+
+.activeArea {
+    width: 100%;
+    height: 500px;
+    background: #ddd;
+    border: 2px dashed #c1c1c1;
+    margin-top: 20px;
+}

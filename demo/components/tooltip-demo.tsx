@@ -64,9 +64,11 @@ const samples = [
 @stylable(styles)
 export class TooltipDemo extends React.Component {
     public state = {
+        moving: false,
         x: 0,
         y: 0
-    }
+    };
+    private dragableElem: HTMLDivElement | null;
     public render() {
         const {x, y} = this.state;
         return (
@@ -84,12 +86,45 @@ export class TooltipDemo extends React.Component {
                 )}
                 <div>
                     <h4>Auto position</h4>
-                    <div className="anchorWrap" style={transform: `transition(${x}, ${y})`}>
-                        <div className="anchor" data-tooltip-for="free" children="drag me"/>
-                        <Tooltip id="free" children="I am anchor"/>
+                    <div
+                        className="activeArea"
+                        onMouseMove={this.onMouseMove}
+                        onMouseUp={this.onMouseUp}
+                    >
+                        <div
+                            ref={elem => this.dragableElem = elem}
+                            className="anchorWrap"
+                            style={{transform: `translate(${x}px, ${y}px)`}}
+                            onMouseDown={this.onMouseDown}
+                        >
+                            <div className="anchor" data-tooltip-for="free" children="drag me"/>
+                            <Tooltip
+                                id="free"
+                                children="I am a tooltip!"
+                                hideTrigger=""
+                                open
+                                disableGlobalEvents
+                            />
+                        </div>
                     </div>
                 </div>
             </div>
         );
+    }
+
+    private onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+        this.setState({moving: true});
+    }
+    private onMouseUp = (e: React.MouseEvent<HTMLDivElement>) => {
+        this.setState({moving: false});
+    }
+
+    private onMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+        if (!this.state.moving) {
+            return;
+        }
+        const x = e.pageX - e.currentTarget.offsetLeft - this.dragableElem!.offsetWidth / 2;
+        const y = e.pageY - e.currentTarget.offsetTop - this.dragableElem!.offsetHeight / 2;
+        this.setState({x, y});
     }
 }
