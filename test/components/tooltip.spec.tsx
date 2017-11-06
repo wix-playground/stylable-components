@@ -19,12 +19,13 @@ function getRect(elem: Element) {
     };
 }
 
-type SampleProps = Partial<TooltipProps>;
+type SampleProps = Partial<TooltipProps> & {style?: React.CSSProperties};
 class Sample extends React.Component<SampleProps> {
     public render() {
         const id = 'id' + Math.random().toString().slice(2);
+        const {style, ...props} = this.props;
         return (
-            <div>
+            <div style={style}>
                 <div
                     data-automation-id="TEST_ANCHOR"
                     data-tooltip-for={id}
@@ -35,7 +36,7 @@ class Sample extends React.Component<SampleProps> {
                     id={id}
                     children="I am a tooltip!"
                     open
-                    {...this.props}
+                    {...props}
                 />
             </div>
         );
@@ -165,6 +166,23 @@ function testPosition(position: Position, expectations: any) {
     });
 }
 
+function testAutoPosition(style: React.CSSProperties, positionName: string, expectedPosition: Position) {
+    describe.only(`render in ${positionName}`, () => {
+        let driver: any;
+
+        const clientRenderer = new ClientRenderer();
+        afterEach(() => clientRenderer.cleanup());
+
+        beforeEach(() => {
+            driver = renderWithProps(clientRenderer, {style});
+        });
+
+        it(`should have "${expectedPosition}" position`, () => {
+            expect(driver.tooltip.position).to.equal(expectedPosition);
+        });
+    });
+}
+
 describe('<Tooltip/>', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
@@ -181,6 +199,15 @@ describe('<Tooltip/>', () => {
     testPosition('leftBottom', {positionLeft: true, aligmnentBottom: true});
     testPosition('rightTop', {positionRight: true, aligmnentTop: true});
     testPosition('rightBottom', {positionRight: true, aligmnentBottom: true});
+
+    testAutoPosition({position: 'fixed', top: 0, left: 0}, 'top left corner', 'rightTop');
+    testAutoPosition({position: 'fixed', top: 0, right: 0}, 'top right corner', 'bottomRight');
+    testAutoPosition({position: 'fixed', bottom: 0, right: 0}, 'bottom right corner', 'topRight');
+    testAutoPosition({position: 'fixed', bottom: 0, left: 0}, 'bottom left corner', 'topLeft');
+    testAutoPosition({position: 'fixed', top: 0, left: '50%'}, 'top center', 'rightTop');
+    testAutoPosition({position: 'fixed', top: '50%', right: 0}, 'right center', 'topRight');
+    testAutoPosition({position: 'fixed', bottom: 0, left: '50%'}, 'bottom center', 'top');
+    testAutoPosition({position: 'fixed', top: '50%', left: 0}, 'left center', 'topLeft');
 
     describe('render with showTrigger and hideTrigger (click)', () => {
         let driver: any;
@@ -243,4 +270,5 @@ describe('<Tooltip/>', () => {
             expect(driver.tooltip.content.offsetParent).to.be.null;
         });
     });
+
 });

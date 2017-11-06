@@ -107,6 +107,9 @@ class StyledTooltip extends React.Component<TooltipProps, TooltipState> {
     public componentDidMount() {
         this.setTarget();
         this.bindEvents();
+        if (this.state.open) {
+            this.setStyles();
+        }
     }
     public componentWillUnmount() {
         window.clearTimeout(this.timeout!);
