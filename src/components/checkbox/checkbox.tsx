@@ -101,7 +101,7 @@ export class CheckBox extends React.Component<CheckBoxProps, CheckBoxState> {
         );
     }
 
-    private handleClick = (e: React.SyntheticEvent<HTMLDivElement>) => {
+    private handleClick: React.MouseEventHandler<HTMLDivElement> = e => {
             this.handleChange(e);
             this.nativeInput && this.nativeInput.focus();
             this.setState({isFocused: false});
@@ -116,16 +116,16 @@ export class CheckBox extends React.Component<CheckBoxProps, CheckBoxState> {
     }
 
     // handleInputClick will be called only on pressing "space" key when nativeInput has focus
-    private handleInputClick = (e: React.MouseEvent<HTMLInputElement>) => {
+    private handleInputClick: React.MouseEventHandler<HTMLInputElement> = e => {
         e.stopPropagation();
         this.setState({isFocused: true});
     }
 
-    private handleInputBlur = () => {
+    private handleInputBlur: React.FocusEventHandler<HTMLInputElement> = () => {
         this.state.isFocused && this.setState({isFocused: false});
     }
 
-    private handleInputFocus = () => {
+    private handleInputFocus: React.FocusEventHandler<HTMLInputElement> = () => {
         !this.state.isFocused && this.setState({isFocused: true});
     }
 }
