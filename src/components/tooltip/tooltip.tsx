@@ -57,7 +57,7 @@ class StyledTooltip extends React.Component<TooltipProps, TooltipState> {
     private tooltip: HTMLElement | null = null;
     private events: string[] = [];
     private timeout?: number;
-    private onWindowResize = debounce(() => {
+    private setStylesDebounce = debounce(() => {
         if (this.state.open) {
             this.setStyles();
         }
@@ -76,8 +76,8 @@ class StyledTooltip extends React.Component<TooltipProps, TooltipState> {
         const {children, disableGlobalEvents} = this.props;
         const {style, open, position} = this.state;
         const globalEvents: any = {
-            resize: this.onWindowResize,
-            scroll: this.onWindowResize
+            resize: this.setStylesDebounce,
+            scroll: this.setStylesDebounce
         };
         if (!disableGlobalEvents) {
             globalEvents.mousedown = globalEvents.touchstart = this.hide;
@@ -107,12 +107,11 @@ class StyledTooltip extends React.Component<TooltipProps, TooltipState> {
     public componentDidMount() {
         this.setTarget();
         this.bindEvents();
-        this.setStyles();
     }
     public componentWillUnmount() {
         window.clearTimeout(this.timeout!);
         this.unbindEvents();
-        this.onWindowResize.clear();
+        this.setStylesDebounce.clear();
     }
     public componentWillReceiveProps(props: TooltipProps) {
         if (props.id !== this.props.id) {
@@ -120,9 +119,7 @@ class StyledTooltip extends React.Component<TooltipProps, TooltipState> {
             this.setTarget();
             this.bindEvents();
         }
-        if (props.id !== this.props.id || props.position !== this.props.position) {
-            this.setStyles();
-        }
+        this.setStyles();
     }
 
     private setTarget() {
@@ -215,7 +212,7 @@ class StyledTooltip extends React.Component<TooltipProps, TooltipState> {
                 (open && hideTrigger!.indexOf(type) !== -1) ||
                 (!open && showTrigger!.indexOf(type) !== -1)
             ) {
-                this.setState({open: !open});
+                this.setState({open: !open}, this.setStyles);
             }
         };
 
