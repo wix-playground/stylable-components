@@ -36,7 +36,7 @@ interface Suit {
     ]];
 }
 
-describe('<TimePicker/>', () => {
+xdescribe('<TimePicker/>', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
 
