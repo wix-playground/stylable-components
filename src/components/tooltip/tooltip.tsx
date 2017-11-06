@@ -61,7 +61,7 @@ class StyledTooltip extends React.Component<TooltipProps, TooltipState> {
         if (this.state.open) {
             this.setStyles();
         }
-    }, 500);
+    }, 200);
 
     public constructor(props: TooltipProps) {
         super();

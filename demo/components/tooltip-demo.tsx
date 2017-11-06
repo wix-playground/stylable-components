@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {stylable} from 'wix-react-tools';
-import {Position, Tooltip} from '../../src';
+import {GlobalEvent, Position, Tooltip} from '../../src';
 
 import styles from './tooltip-demo.st.css';
 
@@ -62,19 +62,68 @@ const samples = [
 ];
 
 @stylable(styles)
-export class TooltipDemo extends React.Component {
+class DraggableTip extends React.Component<any, any> {
     public state = {
         moving: false,
         x: 0,
         y: 0
     };
-    private dragableElem: HTMLDivElement | null;
+    private elem: HTMLDivElement | null;
     public render() {
         const {x, y} = this.state;
+        const {position} = this.props;
+        const id = 'free-' + position;
+        const style = (x || y) ? {left: x, top: y, position: 'fixed'} : {};
+        return (
+            <div>
+                <div
+                    className="anchor"
+                    data-tooltip-for={id}
+                    children={`drag me (${position})`}
+                    ref={elem => this.elem = elem}
+                    style={style}
+                    onMouseDown={this.onMouseDown}
+                />
+                <GlobalEvent
+                    mousemove={this.onMouseMove}
+                    mouseup={this.onMouseUp}
+                />
+                <Tooltip
+                    id={id}
+                    position={position}
+                    children="I am a tooltip!"
+                    hideTrigger=""
+                    disableGlobalEvents
+                />
+            </div>
+        );
+    }
+
+    private onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+        this.setState({moving: true});
+    }
+    private onMouseUp = (e: MouseEvent) => {
+        this.setState({moving: false});
+    }
+
+    private onMouseMove = (e: MouseEvent) => {
+        if (!this.state.moving) {
+            return;
+        }
+        this.setState({
+            x: e.pageX - window.scrollX,
+            y: e.pageY - window.scrollY
+        });
+    }
+}
+
+@stylable(styles)
+export class TooltipDemo extends React.Component {
+    public render() {
         return (
             <div>
                 {samples.map((sample, i) =>
-                    <div key={i}>
+                    <div key={i} className="sample">
                         <h4>{sample.title}</h4>
                         {sample.positions.map((position: Position, j) =>
                             <div className="anchorWrap" key={j}>
@@ -86,45 +135,13 @@ export class TooltipDemo extends React.Component {
                 )}
                 <div>
                     <h4>Auto position</h4>
-                    <div
-                        className="activeArea"
-                        onMouseMove={this.onMouseMove}
-                        onMouseUp={this.onMouseUp}
-                    >
-                        <div
-                            ref={elem => this.dragableElem = elem}
-                            className="anchorWrap"
-                            style={{transform: `translate(${x}px, ${y}px)`}}
-                            onMouseDown={this.onMouseDown}
-                        >
-                            <div className="anchor" data-tooltip-for="free" children="drag me"/>
-                            <Tooltip
-                                id="free"
-                                children="I am a tooltip!"
-                                hideTrigger=""
-                                open
-                                disableGlobalEvents
-                            />
+                    {['top', 'bottom', 'left', 'right'].map(position =>
+                        <div key={position} className="anchorWrap">
+                            <DraggableTip position={position}/>
                         </div>
-                    </div>
+                    )}
                 </div>
             </div>
         );
-    }
-
-    private onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
-        this.setState({moving: true});
-    }
-    private onMouseUp = (e: React.MouseEvent<HTMLDivElement>) => {
-        this.setState({moving: false});
-    }
-
-    private onMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-        if (!this.state.moving) {
-            return;
-        }
-        const x = e.pageX - e.currentTarget.offsetLeft - this.dragableElem!.offsetWidth / 2;
-        const y = e.pageY - e.currentTarget.offsetTop - this.dragableElem!.offsetHeight / 2;
-        this.setState({x, y});
     }
 }
