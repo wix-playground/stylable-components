@@ -32,7 +32,7 @@ All dropdowns use the following interfaces:
 
 | Name | Type | Default | Required | Description |
 | -- | -- | -- | -- | -- |
-| value | Array<String> | empty | no | list of selected ids |
+| value | `Array<String>` | empty | no | list of selected values |
 | maxSelected | number | 0 (unlimited) | no | number of selections allowed |
 
 ## Styles

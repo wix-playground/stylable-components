@@ -18,7 +18,7 @@
 | orientation | enum:<br>'Vertical'<br>'Horizontal' | 'Vertical' | no | The orientation is used mostly for assistive technologies. Changing to 'Horizontal' will change the behavior of keyboard navigation and add an aria-orientation attribute to the root with the 'Horizontal' value. |
 | typeAhead | boolean | true | no | Enables keyboard type-ahead. |
 | children | any | null | no | Children to be rendered in the list. |
-| dataSource | Array[DataSourceItem] | [] | no | The DataSourceItem is of type `string | object | symbol`. The dataSource receives an array and the component uses the renderItem function to render the items in the array in order.
+| dataSource | Array[DataSourceItem] | [] | no | The DataSourceItem is of type `string \| object \| symbol`. The dataSource receives an array and the component uses the renderItem function to render the items in the array in order.
 | dataSchema | {[index: string]: string} | {} | no | Maps fields from the DataSourceItem to the field used by the renderItem function |
 | renderItem | function | default function | no | The renderItem function receives a DataSourceItem and then decides how to render it.<br>`(item : DataSourceItem) -> JSX.Element` |
 

@@ -2,6 +2,7 @@ import {action, observable} from 'mobx';
 import React = require('react');
 import {SelectionListDivider, SelectionListDividerSymbol} from './divider';
 import {SelectionListOption} from './option';
+import {TypeAhead} from './type-ahead';
 
 export type SelectionListItemValue = any;
 
@@ -38,6 +39,10 @@ export interface OptionList {
 export type DataSourceItemDefaultFormat = string | symbol | DataSourceItemResolved;
 
 function defaultResolveItem(item: DataSourceItem): DataSourceItemResolved {
+    if (typeof item === 'number') {
+        return {value: item, label: item.toString()};
+    }
+
     if (typeof item === 'string') {
         return {value: item, label: item};
     }
@@ -181,6 +186,12 @@ export class SelectionListModel {
     @observable public focusedIndex: number = -1;
     @observable public selectedIndex: number = -1;
 
+    private typeAhead = new TypeAhead(
+        () => this.items.length,
+        () => this.focusedIndex,
+        i => this.items[i].selectable ? this.items[i].label : ''
+    );
+
     constructor(items: SelectionListItem[]) {
         this.items = items;
     }
@@ -199,8 +210,9 @@ export class SelectionListModel {
         }
     }
 
-    public typeAhead(character: string): void {
-        // not implemented
+    @action public focusUsingTypeAhead(event: React.KeyboardEvent<Element>): boolean {
+        const index = this.typeAhead.handleEvent(event);
+        return index > -1 && this.focusIndex(index);
     }
 
     public focusFirst(): boolean {

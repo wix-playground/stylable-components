@@ -1,7 +1,6 @@
 # Radio Group and Radio Button
 
-The **RadioGroup** component is used to group together children and provide them with similar properties. Most common use case is to render **RadioButton** components under the group.
-
+The **RadioGroup** component is used to group together children and provide them with similar properties. The most common use case is to render **RadioButton** components under the group.
 
 ## Elements
 
@@ -9,42 +8,41 @@ The **RadioGroup** component is used to group together children and provide them
 
 ## API
 
-##### Component Props
+### RadioGroup Props
 
-**RadioGroup**:
-
-| Name     | Type                         | Default | Required | Description                              |
-| -------- | ---------------------------- | ------- | -------- | ---------------------------------------- |
-| name     | string                       | null    | no       | The name of the group. sets the name property on each child. |
-| id       | string                       | null    | no       | Unique component instance identifier.                        |
-| tabIndex | number                       | 0       | no       | Tab order of the element, copied to the element in focus (not on the root). |
-| disabled | boolean                      | false   | no       | If `true`, all of the radio buttons and children are disabled. |
-| readonly | boolean                      | false   | no       | If `true`, the group value cannot be changed. |
-| value    | string                       | null    | no       | The value of the selected element.        |
-| onChange |function | noop    | no       | Triggered by changing a radio button state to selected. <br> `(event: ChangeEvent) => void`  |
-| children | React.ReactNode              | null    | no       | children                                 |
+| Name     | Type     | Default | Required | Description                              |
+| -------- | -------- | ------- | -------- | ---------------------------------------- |
+| name     | string   | null    | no       | The name of the group. Sets the name property on each child. |
+| id       | string   | null    | no       | Unique component instance identifier.                        |
+| tabIndex | number   | 0       | no       | Tab order of the element, copied to the element in focus (not on the root). |
+| disabled | boolean  | false   | no       | If `true`, all of the radio buttons and children are disabled. |
+| readonly | boolean  | false   | no       | If `true`, the group value cannot be changed. |
+| value    | string   | null    | no       | The value of the selected element.        |
+| dataSource | DataInterface | null | no.  | Collection of data items. |
+| onChange |function  | noop    | no       | Triggered by changing a radio button state to selected. <br> `(event: ChangeEvent) => void`  |
+| children | React.ReactNode | null  | no  | Children components and elements.                                |
 
 The following props are part of the **DataInterface** (name to be decided):
 
 | Name | Type | Default | Required | Description |
 | --- | --- | --- | --- | --- |
-| dataSource | Array[DataSourceItem] | [] | no | The **DataSourceItem** is of type '*string \| object \| symbol*'. <br> The dataSource receives an array and the component uses the **renderItem** function to render the items in the array in order.
+| dataSource | Array[DataSourceItem] | [] | no | The **DataSourceItem** is of type `string \| object \| symbol`. <br> Receives an array and the component uses the **renderItem** function to render the items in the array in order.
 | dataSchema | {[index: string]: string} | {} | no | Maps fields from the **DataSourceItem** to the field used by the **renderItem** function |
-| renderItem | function | default function | no | The renderItem function receives a DataSourceItem and determines how to render it. <br> (item : DataSourceItem) -> JSX.Element
+| renderItem | function | default function | no | This function receives a **DataSourceItem** and determines how to render it. <br> `(item : DataSourceItem) -> JSX.Element`
 
-**RadioButton**:
+### RadioButton Props
 
-| Name     | Type                         | Default                          | Required                    | Description                              |
-| -------- | ---------------------------- | -------------------------------- | --------------------------- | ---------------------------------------- |
-| checked  | boolean                      | false                            | no                          | If `true`, the button appears checked.       |
-| id       | string                       | null                             | no                          | Unique identifier                        |
-| tabIndex | number                       | -1 \| set by RadioGroup | no | Tab of order of the element. |                                          |
-| name     | string                       | null                             | no                          | The name of the group that this button is part of. |
-| disabled | boolean                      | false                            | no                          | If `true`, the button is disabled.  |
-| readonly | boolean                      | false                            | no                          | If `true`, the button's value is readonly and cannot be changed. |
-| value    | string                       | no                               | Yes                         | The value of the radio button.            |
-| onChange | function | noop                             | no                          | Triggered by changing the button's state. <br> `(event: ChangeEvent) => void` |
-| children | React.ReactNode              | null                             | no                          | children                                 |
+| Name     | Type        | Default   | Required   | Description                                    |
+| -------- | ----------- | --------- | ---------- | ---------------------------------------------- |
+| checked  | boolean     | false     | no         | If `true`, the button is checked.              |
+| id       | string      | null      | no         | Unique identifier for the component instance.  |
+| tabIndex | number      | -1 \| set by the containing **RadioGroup** | no | Tab order of the element. |
+| name     | string      | null      | no         | The name of the group that this button is part of. |
+| disabled | boolean     | false     | no         | If `true`, the button is disabled.  |
+| readonly | boolean     | false     | no         | If `true`, the button's value is readonly and cannot be changed. |
+| value    | string      | no        | Yes        | The value of the radio button.            |
+| onChange | function    | noop      | no         | Triggered by changing the button's state. <br> `(event: ChangeEvent) => void` |
+| children | React.ReactNode | null  | no         | children       |
 
 ### React Code Examples
 
