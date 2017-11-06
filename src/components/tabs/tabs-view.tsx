@@ -125,30 +125,54 @@ export class TabsView extends React.Component<TabsViewProps, TabsViewState> {
         }
     }
 
-    private focusNextVertical() {
-        const {tabList} = this.state;
-        return tabList.focusNext() || tabList.focusFirst();
+    private get isVertical() {
+        const {orientation} = this.props;
+
+        return orientation === 'vertical-after' || orientation === 'vertical-before';
     }
 
-    private focusNextHorizontal() {
+    private focusNext() {
         const isRTL = isRTLContext(this.context);
+        const {orientation} = this.props;
         const {tabList} = this.state;
-        return isRTL ?
-            tabList.focusPrevious() || tabList.focusLast() :
-            tabList.focusNext() || tabList.focusFirst();
-    }
 
-    private focusPreviousVertical() {
-        const {tabList} = this.state;
-        return tabList.focusPrevious() || tabList.focusLast();
-    }
-
-    private focusPreviousHorizontal() {
-        const isRTL = isRTLContext(this.context);
-        const {tabList} = this.state;
-        return isRTL ?
+        return this.isVertical ?
             tabList.focusNext() || tabList.focusFirst() :
-            tabList.focusPrevious() || tabList.focusLast();
+            isRTL ?
+                tabList.focusPrevious() || tabList.focusLast() :
+                tabList.focusNext() || tabList.focusFirst();
+    }
+
+    private focusPrevious() {
+        const isRTL = isRTLContext(this.context);
+        const {orientation} = this.props;
+        const {tabList} = this.state;
+
+        return this.isVertical ?
+            tabList.focusPrevious() || tabList.focusLast() :
+            isRTL ?
+                tabList.focusNext() || tabList.focusFirst() :
+                tabList.focusPrevious() || tabList.focusLast();
+    }
+
+    private focusFirst() {
+        const isRTL = isRTLContext(this.context);
+        const {orientation} = this.props;
+        const {tabList} = this.state;
+
+        return this.isVertical ?
+            tabList.focusFirst() :
+            isRTL ? tabList.focusLast() : tabList.focusFirst();
+    }
+
+    private focusLast() {
+        const isRTL = isRTLContext(this.context);
+        const {orientation} = this.props;
+        const {tabList} = this.state;
+
+        return this.isVertical ?
+            tabList.focusLast() :
+            isRTL ? tabList.focusFirst() : tabList.focusLast();
     }
 
     private handleTabListClick = (event: React.MouseEvent<HTMLElement>, itemIndex: number) => {
@@ -174,28 +198,40 @@ export class TabsView extends React.Component<TabsViewProps, TabsViewState> {
         const {tabList} = this.state;
         switch (event.keyCode) {
             case KeyCode.up:
-                if (this.focusPreviousVertical()) {
+                if (event.shiftKey ?
+                    this.focusFirst() :
+                    this.focusPrevious()
+                ) {
                     event.preventDefault();
                     this.triggerChange(tabList.focusedIndex);
                     this.setState({tabList});
                 }
                 break;
             case KeyCode.down:
-                if (this.focusNextVertical()) {
+                if (event.shiftKey ?
+                    this.focusLast() :
+                    this.focusNext()
+                ) {
                     event.preventDefault();
                     this.triggerChange(tabList.focusedIndex);
                     this.setState({tabList});
                 }
                 break;
             case KeyCode.left:
-                if (this.focusPreviousHorizontal()) {
+                if (event.shiftKey ?
+                    this.focusFirst() :
+                    this.focusPrevious()
+                ) {
                     event.preventDefault();
                     this.triggerChange(tabList.focusedIndex);
                     this.setState({tabList});
                 }
                 break;
             case KeyCode.right:
-                if (this.focusNextHorizontal()) {
+                if (event.shiftKey ?
+                    this.focusLast() :
+                    this.focusNext()
+                ) {
                     event.preventDefault();
                     this.triggerChange(tabList.focusedIndex);
                     this.setState({tabList});

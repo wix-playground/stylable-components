@@ -17,9 +17,13 @@ function assertOnChange(
 describe('<Tabs />', () => {
     const clientRenderer = new ClientRenderer();
     const render = (component: React.ReactElement<any>) =>
-        clientRenderer.render(component).withDriver(TabsDriver);
+        clientRenderer
+            .render(component)
+            .withDriver(TabsDriver);
     const renderRTL = (component: React.ReactElement<any>) =>
-        clientRenderer.render(component).withDriver(RTLTabsDriver);
+        clientRenderer
+            .render(<ContextProvider dir="rtl">{component}</ContextProvider>)
+            .withDriver(RTLTabsDriver);
     afterEach(() => clientRenderer.cleanup());
 
     it('should render a tabList and a tabPanel', () => {
@@ -75,7 +79,7 @@ describe('<Tabs />', () => {
                             <span data-automation-id="THIRD_TAB">Tab Three Content</span>
                         </Tab>
                         <Tab label="Tab Four" value="3" disabled>
-                            <span data-automation-id="FURTH_TAB">Tab Four Content</span>
+                            <span data-automation-id="FOURTH_TAB">Tab Four Content</span>
                         </Tab>
                     </Tabs>
                 );
@@ -84,6 +88,55 @@ describe('<Tabs />', () => {
                 driver.tabListKeyDown(KeyCodes.up);
 
                 assertOnChange(onChange, '2');
+            });
+
+            describe('shift modifier', () => {
+                it('should select the first selectable tab', () => {
+                    const onChange = sinon.spy();
+                    const {driver} = render(
+                        <Tabs orientation="vertical-before" value="3" onChange={onChange}>
+                            <Tab label="Tab One" value="0" disabled>
+                                <span data-automation-id="FIRST_TAB">Tab One Content</span>
+                            </Tab>
+                            <Tab label="Tab Two" value="1">
+                                <span data-automation-id="SECOND_TAB">Tab Two Content</span>
+                            </Tab>
+                            <Tab label="Tab Three" value="2">
+                                <span data-automation-id="SECOND_TAB">Tab Three Content</span>
+                            </Tab>
+                            <Tab label="Tab Four" value="3">
+                                <span data-automation-id="FOURTH_TAB">Tab Four Content</span>
+                            </Tab>
+                        </Tabs>
+                    );
+
+                    driver.tabListFocus();
+                    driver.tabListKeyDown(KeyCodes.up, {shiftKey: true});
+
+                    assertOnChange(onChange, '1');
+                });
+
+                it('should not select when already on the first tab', () => {
+                    const onChange = sinon.spy();
+                    const {driver} = render(
+                        <Tabs orientation="vertical-before" value="0" onChange={onChange}>
+                            <Tab label="Tab One" value="0">
+                                <span data-automation-id="FIRST_TAB">Tab One Content</span>
+                            </Tab>
+                            <Tab label="Tab Two" value="1">
+                                <span data-automation-id="SECOND_TAB">Tab Two Content</span>
+                            </Tab>
+                            <Tab label="Tab Three" value="2">
+                                <span data-automation-id="SECOND_TAB">Tab Three Content</span>
+                            </Tab>
+                        </Tabs>
+                    );
+
+                    driver.tabListFocus();
+                    driver.tabListKeyDown(KeyCodes.up, {shiftKey: true});
+
+                    expect(onChange).not.to.have.been.called;
+                });
             });
         });
 
@@ -121,7 +174,7 @@ describe('<Tabs />', () => {
                             <span data-automation-id="THIRD_TAB">Tab Three Content</span>
                         </Tab>
                         <Tab label="Tab Four" value="3">
-                            <span data-automation-id="FURTH_TAB">Tab Four Content</span>
+                            <span data-automation-id="FOURTH_TAB">Tab Four Content</span>
                         </Tab>
                     </Tabs>
                 );
@@ -131,6 +184,56 @@ describe('<Tabs />', () => {
 
                 assertOnChange(onChange, '1');
             });
+
+            describe('shift modifier', () => {
+                it('should select the last selectable tab', () => {
+                    const onChange = sinon.spy();
+                    const {driver} = render(
+                        <Tabs orientation="vertical-before" value="0" onChange={onChange}>
+                            <Tab label="Tab One" value="0">
+                                <span data-automation-id="FIRST_TAB">Tab One Content</span>
+                            </Tab>
+                            <Tab label="Tab Two" value="1">
+                                <span data-automation-id="SECOND_TAB">Tab Two Content</span>
+                            </Tab>
+                            <Tab label="Tab Three" value="2">
+                                <span data-automation-id="SECOND_TAB">Tab Three Content</span>
+                            </Tab>
+                            <Tab label="Tab Four" value="3" disabled>
+                                <span data-automation-id="FOURTH_TAB">Tab Four Content</span>
+                            </Tab>
+                        </Tabs>
+                    );
+
+                    driver.tabListFocus();
+                    driver.tabListKeyDown(KeyCodes.down, {shiftKey: true});
+
+                    assertOnChange(onChange, '2');
+                });
+
+                it('should not select when already on the last tab', () => {
+                    const onChange = sinon.spy();
+                    const {driver} = render(
+                        <Tabs orientation="vertical-before" value="2" onChange={onChange}>
+                            <Tab label="Tab One" value="0">
+                                <span data-automation-id="FIRST_TAB">Tab One Content</span>
+                            </Tab>
+                            <Tab label="Tab Two" value="1">
+                                <span data-automation-id="SECOND_TAB">Tab Two Content</span>
+                            </Tab>
+                            <Tab label="Tab Three" value="2">
+                                <span data-automation-id="SECOND_TAB">Tab Three Content</span>
+                            </Tab>
+                        </Tabs>
+                    );
+
+                    driver.tabListFocus();
+                    driver.tabListKeyDown(KeyCodes.down, {shiftKey: true});
+
+                    expect(onChange).not.to.have.been.called;
+                });
+            });
+
         });
     });
 
@@ -158,7 +261,7 @@ describe('<Tabs />', () => {
             it('should select the last selectable tab if the first tab is selected', () => {
                 const onChange = sinon.spy();
                 const {driver} = render(
-                    <Tabs orientation="vertical-before" value="0" onChange={onChange}>
+                    <Tabs orientation="horizontal-top" value="0" onChange={onChange}>
                         <Tab label="Tab One" value="0">
                             <span data-automation-id="FIRST_TAB">Tab One Content</span>
                         </Tab>
@@ -169,7 +272,7 @@ describe('<Tabs />', () => {
                             <span data-automation-id="THIRD_TAB">Tab Three Content</span>
                         </Tab>
                         <Tab label="Tab Four" value="3" disabled>
-                            <span data-automation-id="FURTH_TAB">Tab Four Content</span>
+                            <span data-automation-id="FOURTH_TAB">Tab Four Content</span>
                         </Tab>
                     </Tabs>
                 );
@@ -178,6 +281,55 @@ describe('<Tabs />', () => {
                 driver.tabListKeyDown(KeyCodes.left);
 
                 assertOnChange(onChange, '2');
+            });
+
+            describe('shift modifier', () => {
+                it('should select the first selectable tab', () => {
+                    const onChange = sinon.spy();
+                    const {driver} = render(
+                        <Tabs orientation="horizontal-top" value="3" onChange={onChange}>
+                            <Tab label="Tab One" value="0" disabled>
+                                <span data-automation-id="FIRST_TAB">Tab One Content</span>
+                            </Tab>
+                            <Tab label="Tab Two" value="1">
+                                <span data-automation-id="SECOND_TAB">Tab Two Content</span>
+                            </Tab>
+                            <Tab label="Tab Three" value="2">
+                                <span data-automation-id="THIRD_TAB">Tab Three Content</span>
+                            </Tab>
+                            <Tab label="Tab Four" value="3">
+                                <span data-automation-id="FOURTH_TAB">Tab Four Content</span>
+                            </Tab>
+                        </Tabs>
+                    );
+
+                    driver.tabListFocus();
+                    driver.tabListKeyDown(KeyCodes.left, {shiftKey: true});
+
+                    assertOnChange(onChange, '1');
+                });
+
+                it('should not select when already on the first tab', () => {
+                    const onChange = sinon.spy();
+                    const {driver} = render(
+                        <Tabs orientation="horizontal-top" value="0" onChange={onChange}>
+                            <Tab label="Tab One" value="0">
+                                <span data-automation-id="FIRST_TAB">Tab One Content</span>
+                            </Tab>
+                            <Tab label="Tab Two" value="1">
+                                <span data-automation-id="SECOND_TAB">Tab Two Content</span>
+                            </Tab>
+                            <Tab label="Tab Three" value="2">
+                                <span data-automation-id="SECOND_TAB">Tab Three Content</span>
+                            </Tab>
+                        </Tabs>
+                    );
+
+                    driver.tabListFocus();
+                    driver.tabListKeyDown(KeyCodes.left, {shiftKey: true});
+
+                    expect(onChange).not.to.have.been.called;
+                });
             });
         });
 
@@ -204,7 +356,7 @@ describe('<Tabs />', () => {
             it('should select the first selectable tab if the last tab is selected', () => {
                 const onChange = sinon.spy();
                 const {driver} = render(
-                    <Tabs orientation="vertical-before" value="3" onChange={onChange}>
+                    <Tabs orientation="horizontal-top" value="3" onChange={onChange}>
                         <Tab label="Tab One" value="0" disabled>
                             <span data-automation-id="FIRST_TAB">Tab One Content</span>
                         </Tab>
@@ -215,7 +367,7 @@ describe('<Tabs />', () => {
                             <span data-automation-id="THIRD_TAB">Tab Three Content</span>
                         </Tab>
                         <Tab label="Tab Four" value="3">
-                            <span data-automation-id="FURTH_TAB">Tab Four Content</span>
+                            <span data-automation-id="FOURTH_TAB">Tab Four Content</span>
                         </Tab>
                     </Tabs>
                 );
@@ -224,6 +376,55 @@ describe('<Tabs />', () => {
                 driver.tabListKeyDown(KeyCodes.right);
 
                 assertOnChange(onChange, '1');
+            });
+
+            describe('shift modifier', () => {
+                it('should select the last selectable tab', () => {
+                    const onChange = sinon.spy();
+                    const {driver} = render(
+                        <Tabs orientation="horizontal-top" value="0" onChange={onChange}>
+                            <Tab label="Tab One" value="0">
+                                <span data-automation-id="FIRST_TAB">Tab One Content</span>
+                            </Tab>
+                            <Tab label="Tab Two" value="1">
+                                <span data-automation-id="SECOND_TAB">Tab Two Content</span>
+                            </Tab>
+                            <Tab label="Tab Three" value="2">
+                                <span data-automation-id="THIRD_TAB">Tab Three Content</span>
+                            </Tab>
+                            <Tab label="Tab Four" value="3" disabled>
+                                <span data-automation-id="FOURTH_TAB">Tab Four Content</span>
+                            </Tab>
+                        </Tabs>
+                    );
+
+                    driver.tabListFocus();
+                    driver.tabListKeyDown(KeyCodes.right, {shiftKey: true});
+
+                    assertOnChange(onChange, '2');
+                });
+
+                it('should not select when already on the last tab', () => {
+                    const onChange = sinon.spy();
+                    const {driver} = render(
+                        <Tabs orientation="horizontal-top" value="2" onChange={onChange}>
+                            <Tab label="Tab One" value="0">
+                                <span data-automation-id="FIRST_TAB">Tab One Content</span>
+                            </Tab>
+                            <Tab label="Tab Two" value="1">
+                                <span data-automation-id="SECOND_TAB">Tab Two Content</span>
+                            </Tab>
+                            <Tab label="Tab Three" value="2">
+                                <span data-automation-id="SECOND_TAB">Tab Three Content</span>
+                            </Tab>
+                        </Tabs>
+                    );
+
+                    driver.tabListFocus();
+                    driver.tabListKeyDown(KeyCodes.right, {shiftKey: true});
+
+                    expect(onChange).not.to.have.been.called;
+                });
             });
         });
 
@@ -234,16 +435,14 @@ describe('<Tabs />', () => {
             it('should select next tab', () => {
                 const onChange = sinon.spy();
                 const {driver} = renderRTL(
-                    <ContextProvider dir="rtl">
-                        <Tabs orientation="horizontal-top" value="0" onChange={onChange}>
-                            <Tab label="Tab One" value="0">
-                                <span data-automation-id="FIRST_TAB">Tab One Content</span>
-                            </Tab>
-                            <Tab label="Tab Two" value="1">
-                                <span data-automation-id="SECOND_TAB">Tab Two Content</span>
-                            </Tab>
-                        </Tabs>
-                    </ContextProvider>
+                    <Tabs orientation="horizontal-top" value="0" onChange={onChange}>
+                        <Tab label="Tab One" value="0">
+                            <span data-automation-id="FIRST_TAB">Tab One Content</span>
+                        </Tab>
+                        <Tab label="Tab Two" value="1">
+                            <span data-automation-id="SECOND_TAB">Tab Two Content</span>
+                        </Tab>
+                    </Tabs>
                 );
 
                 driver.tabListFocus();
@@ -255,9 +454,34 @@ describe('<Tabs />', () => {
             it('should select the first selectable tab if the last tab is selected', () => {
                 const onChange = sinon.spy();
                 const {driver} = renderRTL(
-                    <ContextProvider dir="rtl">
-                        <Tabs orientation="vertical-before" value="3" onChange={onChange}>
-                            <Tab label="Tab One" value="0" disabled>
+                    <Tabs orientation="horizontal-top" value="3" onChange={onChange}>
+                        <Tab label="Tab One" value="0" disabled>
+                            <span data-automation-id="FIRST_TAB">Tab One Content</span>
+                        </Tab>
+                        <Tab label="Tab Two" value="1">
+                            <span data-automation-id="SECOND_TAB">Tab Two Content</span>
+                        </Tab>
+                        <Tab label="Tab Three" value="2">
+                            <span data-automation-id="THIRD_TAB">Tab Three Content</span>
+                        </Tab>
+                        <Tab label="Tab Four" value="3">
+                            <span data-automation-id="FOURTH_TAB">Tab Four Content</span>
+                        </Tab>
+                    </Tabs>
+                );
+
+                driver.tabListFocus();
+                driver.tabListKeyDown(KeyCodes.left);
+
+                assertOnChange(onChange, '1');
+            });
+
+            describe('shift modifier', () => {
+                it('should select the last selectable tab', () => {
+                    const onChange = sinon.spy();
+                    const {driver} = renderRTL(
+                        <Tabs orientation="horizontal-top" value="0" onChange={onChange}>
+                            <Tab label="Tab One" value="0">
                                 <span data-automation-id="FIRST_TAB">Tab One Content</span>
                             </Tab>
                             <Tab label="Tab Two" value="1">
@@ -266,17 +490,39 @@ describe('<Tabs />', () => {
                             <Tab label="Tab Three" value="2">
                                 <span data-automation-id="THIRD_TAB">Tab Three Content</span>
                             </Tab>
-                            <Tab label="Tab Four" value="3">
-                                <span data-automation-id="FURTH_TAB">Tab Four Content</span>
+                            <Tab label="Tab Four" value="3" disabled>
+                                <span data-automation-id="FOURTH_TAB">Tab Four Content</span>
                             </Tab>
                         </Tabs>
-                    </ContextProvider>
-                );
+                    );
 
-                driver.tabListFocus();
-                driver.tabListKeyDown(KeyCodes.left);
+                    driver.tabListFocus();
+                    driver.tabListKeyDown(KeyCodes.left, {shiftKey: true});
 
-                assertOnChange(onChange, '1');
+                    assertOnChange(onChange, '2');
+                });
+
+                it('should not select when already on the last tab', () => {
+                    const onChange = sinon.spy();
+                    const {driver} = renderRTL(
+                        <Tabs orientation="horizontal-top" value="2" onChange={onChange}>
+                            <Tab label="Tab One" value="0">
+                                <span data-automation-id="FIRST_TAB">Tab One Content</span>
+                            </Tab>
+                            <Tab label="Tab Two" value="1">
+                                <span data-automation-id="SECOND_TAB">Tab Two Content</span>
+                            </Tab>
+                            <Tab label="Tab Three" value="2">
+                                <span data-automation-id="SECOND_TAB">Tab Three Content</span>
+                            </Tab>
+                        </Tabs>
+                    );
+
+                    driver.tabListFocus();
+                    driver.tabListKeyDown(KeyCodes.left, {shiftKey: true});
+
+                    expect(onChange).not.to.have.been.called;
+                });
             });
         });
 
@@ -284,16 +530,14 @@ describe('<Tabs />', () => {
             it('should select previous tab', () => {
                 const onChange = sinon.spy();
                 const {driver} = renderRTL(
-                    <ContextProvider dir="rtl">
-                        <Tabs orientation="horizontal-top" value="1" onChange={onChange}>
-                            <Tab label="Tab One" value="0">
-                                <span data-automation-id="FIRST_TAB">Tab One Content</span>
-                            </Tab>
-                            <Tab label="Tab Two" value="1">
-                                <span data-automation-id="SECOND_TAB">Tab Two Content</span>
-                            </Tab>
-                        </Tabs>
-                    </ContextProvider>
+                    <Tabs orientation="horizontal-top" value="1" onChange={onChange}>
+                        <Tab label="Tab One" value="0">
+                            <span data-automation-id="FIRST_TAB">Tab One Content</span>
+                        </Tab>
+                        <Tab label="Tab Two" value="1">
+                            <span data-automation-id="SECOND_TAB">Tab Two Content</span>
+                        </Tab>
+                    </Tabs>
                 );
 
                 driver.tabListFocus();
@@ -305,9 +549,34 @@ describe('<Tabs />', () => {
             it('should select the last selectable tab if the first tab is selected', () => {
                 const onChange = sinon.spy();
                 const {driver} = renderRTL(
-                    <ContextProvider dir="rtl">
-                        <Tabs orientation="vertical-before" value="0" onChange={onChange}>
-                            <Tab label="Tab One" value="0">
+                    <Tabs orientation="horizontal-top" value="0" onChange={onChange}>
+                        <Tab label="Tab One" value="0">
+                            <span data-automation-id="FIRST_TAB">Tab One Content</span>
+                        </Tab>
+                        <Tab label="Tab Two" value="1">
+                            <span data-automation-id="SECOND_TAB">Tab Two Content</span>
+                        </Tab>
+                        <Tab label="Tab Three" value="2">
+                            <span data-automation-id="THIRD_TAB">Tab Three Content</span>
+                        </Tab>
+                        <Tab label="Tab Four" value="3" disabled>
+                            <span data-automation-id="FOURTH_TAB">Tab Four Content</span>
+                        </Tab>
+                    </Tabs>
+                );
+
+                driver.tabListFocus();
+                driver.tabListKeyDown(KeyCodes.right);
+
+                assertOnChange(onChange, '2');
+            });
+
+            describe('shift modifier', () => {
+                it('should select the first selectable tab', () => {
+                    const onChange = sinon.spy();
+                    const {driver} = renderRTL(
+                        <Tabs orientation="horizontal-top" value="3" onChange={onChange}>
+                            <Tab label="Tab One" value="0" disabled>
                                 <span data-automation-id="FIRST_TAB">Tab One Content</span>
                             </Tab>
                             <Tab label="Tab Two" value="1">
@@ -316,17 +585,39 @@ describe('<Tabs />', () => {
                             <Tab label="Tab Three" value="2">
                                 <span data-automation-id="THIRD_TAB">Tab Three Content</span>
                             </Tab>
-                            <Tab label="Tab Four" value="3" disabled>
-                                <span data-automation-id="FURTH_TAB">Tab Four Content</span>
+                            <Tab label="Tab Four" value="3">
+                                <span data-automation-id="FOURTH_TAB">Tab Four Content</span>
                             </Tab>
                         </Tabs>
-                    </ContextProvider>
-                );
+                    );
 
-                driver.tabListFocus();
-                driver.tabListKeyDown(KeyCodes.right);
+                    driver.tabListFocus();
+                    driver.tabListKeyDown(KeyCodes.right, {shiftKey: true});
 
-                assertOnChange(onChange, '2');
+                    assertOnChange(onChange, '1');
+                });
+
+                it('should not select when the first tab is selected', () => {
+                    const onChange = sinon.spy();
+                    const {driver} = renderRTL(
+                        <Tabs orientation="horizontal-top" value="0" onChange={onChange}>
+                            <Tab label="Tab One" value="0">
+                                <span data-automation-id="FIRST_TAB">Tab One Content</span>
+                            </Tab>
+                            <Tab label="Tab Two" value="1">
+                                <span data-automation-id="SECOND_TAB">Tab Two Content</span>
+                            </Tab>
+                            <Tab label="Tab Three" value="2">
+                                <span data-automation-id="SECOND_TAB">Tab Three Content</span>
+                            </Tab>
+                        </Tabs>
+                    );
+
+                    driver.tabListFocus();
+                    driver.tabListKeyDown(KeyCodes.right, {shiftKey: true});
+
+                    expect(onChange).not.to.have.been.called;
+                });
             });
         });
 
