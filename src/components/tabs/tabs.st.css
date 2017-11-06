@@ -7,6 +7,7 @@
 
 .root {
     -st-states: rtl, horizontal-top, horizontal-bottom, vertical-before, vertical-after;
+    display: inline-block;
 }
 
 .tabList {
