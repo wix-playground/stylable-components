@@ -701,6 +701,38 @@ describe('<RadioGroup />', () => {
                     expect(radio.root).to.have.attribute('role', 'radio');
                 });
             });
+
+            it('gets native focus after click (style state should not show focus)', async () => {
+                const {driver: radio, waitForDom} = clientRenderer.render(
+                    <RadioButton/>
+                ).withDriver(RadioButtonDriver);
+
+                await waitForDom(() => expect(radio.root).to.not.be.null);
+
+                radio.click();
+                await waitForDom(() => {
+                    expect(document.activeElement).to.equal(radio.nativeElement);
+                    expect(radio.hasStylableState('focused'), 'expected radio to not look focused').to.equal(false);
+                });
+            });
+
+            it('should lose focused style state after click', async () => {
+                const {driver: radio, waitForDom} = clientRenderer.render(
+                    <RadioButton/>
+                ).withDriver(RadioButtonDriver);
+
+                await waitForDom(() => expect(radio.root).to.not.be.null);
+
+                radio.focus();
+                await waitFor(() =>
+                    expect(radio.hasStylableState('focused'), 'expected radio to look focused').to.equal(true)
+                );
+
+                radio.click();
+                await waitForDom(() =>
+                    expect(radio.hasStylableState('focused'), 'expected radio to not look focused').to.equal(false)
+                );
+            });
         });
     });
 
