@@ -305,10 +305,9 @@ describe('<Checkbox/>', () => {
                 <CheckBox />
             ).withDriver(CheckBoxTestDriver);
 
-            await waitForDom(() => {expect(checkbox.root).to.be.present(); });
+            await waitForDom(() => expect(checkbox.root).to.be.present());
 
             checkbox.click();
-
             await waitForDom(() => {
                 expect(document.activeElement).to.equal(checkbox.nativeInput);
                 expect(checkbox.hasStylableState('focus'), 'checkbox should not look focused').to.equal(false);
@@ -320,17 +319,17 @@ describe('<Checkbox/>', () => {
                 <CheckBox />
             ).withDriver(CheckBoxTestDriver);
 
-            await waitForDom(() => {expect(checkbox.root).to.be.present(); });
+            await waitForDom(() => expect(checkbox.root).to.be.present());
 
             checkbox.focus();
-            await waitForDom(() => {
-                expect(checkbox.hasStylableState('focus'), 'checkbox should look focused').to.equal(true);
-            });
+            await waitForDom(() =>
+                expect(checkbox.hasStylableState('focus'), 'checkbox should look focused').to.equal(true)
+            );
 
             checkbox.click();
-            await waitForDom(() => {
-                expect(checkbox.hasStylableState('focus'), 'checkbox should not look focused').to.equal(false);
-            });
+            await waitForDom(() =>
+                expect(checkbox.hasStylableState('focus'), 'checkbox should not look focused').to.equal(false)
+            );
         });
     });
 
