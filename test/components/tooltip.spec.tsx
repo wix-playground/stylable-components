@@ -167,7 +167,7 @@ function testPosition(position: Position, expectations: any) {
 }
 
 function testAutoPosition(style: React.CSSProperties, positionName: string, expectedPosition: Position) {
-    describe.only(`render in ${positionName}`, () => {
+    describe(`render in ${positionName}`, () => {
         let driver: any;
 
         const clientRenderer = new ClientRenderer();
@@ -204,10 +204,10 @@ describe('<Tooltip/>', () => {
     testAutoPosition({position: 'fixed', top: 0, right: 0}, 'top right corner', 'bottomRight');
     testAutoPosition({position: 'fixed', bottom: 0, right: 0}, 'bottom right corner', 'topRight');
     testAutoPosition({position: 'fixed', bottom: 0, left: 0}, 'bottom left corner', 'topLeft');
-    testAutoPosition({position: 'fixed', top: 0, left: '50%', marginLeft: -50}, 'top center', 'rightTop');
-    testAutoPosition({position: 'fixed', top: '50%', right: 0, marginTop: -50}, 'right center', 'topRight');
-    testAutoPosition({position: 'fixed', bottom: 0, left: '50%', marginLeft: -50}, 'bottom center', 'top');
-    testAutoPosition({position: 'fixed', top: '50%', left: 0, marginTop: -50}, 'left center', 'topLeft');
+    testAutoPosition({position: 'fixed', top: 0, left: '20%'}, 'top center', 'rightTop');
+    testAutoPosition({position: 'fixed', top: '50%', right: 0}, 'right center', 'topRight');
+    testAutoPosition({position: 'fixed', bottom: 0, left: '20%'}, 'bottom center', 'top');
+    testAutoPosition({position: 'fixed', top: '50%', left: 0}, 'left center', 'topLeft');
 
     describe('render with showTrigger and hideTrigger (click)', () => {
         let driver: any;
