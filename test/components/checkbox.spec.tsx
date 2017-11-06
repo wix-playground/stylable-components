@@ -51,7 +51,7 @@ class CheckBoxDemoDriver extends DriverBase {
     };
 }
 
-describe('<Checkbox/>', () => {
+xdescribe('<Checkbox/>', () => {
     const clientRenderer = new ClientRenderer();
 
     afterEach(() => {

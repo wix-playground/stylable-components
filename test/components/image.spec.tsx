@@ -6,7 +6,7 @@ import {ImageDriver} from '../../test-kit';
 import {brokenSrc, brokenSrc2, onePixelBlack, onePixelBlue} from '../fixtures/sample-images';
 import {sleep} from '../utils';
 
-describe('<Image />', () => {
+xdescribe('<Image />', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
 

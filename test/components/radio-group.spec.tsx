@@ -15,7 +15,7 @@ class RadioGroupDemoTestDriver extends DriverBase {
     }
 }
 
-describe('<RadioGroup />', () => {
+xdescribe('<RadioGroup />', () => {
     const clientRenderer = new ClientRenderer();
 
     afterEach(() => {
