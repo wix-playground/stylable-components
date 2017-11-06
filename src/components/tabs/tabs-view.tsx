@@ -125,6 +125,32 @@ export class TabsView extends React.Component<TabsViewProps, TabsViewState> {
         }
     }
 
+    private focusNextVertical() {
+        const {tabList} = this.state;
+        return tabList.focusNext() || tabList.focusFirst();
+    }
+
+    private focusNextHorizontal() {
+        const isRTL = isRTLContext(this.context);
+        const {tabList} = this.state;
+        return isRTL ?
+            tabList.focusPrevious() || tabList.focusLast() :
+            tabList.focusNext() || tabList.focusFirst();
+    }
+
+    private focusPreviousVertical() {
+        const {tabList} = this.state;
+        return tabList.focusPrevious() || tabList.focusLast();
+    }
+
+    private focusPreviousHorizontal() {
+        const isRTL = isRTLContext(this.context);
+        const {tabList} = this.state;
+        return isRTL ?
+            tabList.focusNext() || tabList.focusFirst() :
+            tabList.focusPrevious() || tabList.focusLast();
+    }
+
     private handleTabListClick = (event: React.MouseEvent<HTMLElement>, itemIndex: number) => {
         this.triggerChange(itemIndex);
     }
@@ -144,40 +170,32 @@ export class TabsView extends React.Component<TabsViewProps, TabsViewState> {
     }
 
     private handleTabListKeyDown: React.KeyboardEventHandler<HTMLElement> = event => {
-        const {tabList} = this.state;
         const context = this.context;
+        const {tabList} = this.state;
         switch (event.keyCode) {
             case KeyCode.up:
-                if (tabList.focusPrevious()) {
+                if (this.focusPreviousVertical()) {
                     event.preventDefault();
                     this.triggerChange(tabList.focusedIndex);
                     this.setState({tabList});
                 }
                 break;
             case KeyCode.down:
-                if (tabList.focusNext()) {
+                if (this.focusNextVertical()) {
                     event.preventDefault();
                     this.triggerChange(tabList.focusedIndex);
                     this.setState({tabList});
                 }
                 break;
             case KeyCode.left:
-                if (
-                    isRTLContext(context) ?
-                    tabList.focusNext() :
-                    tabList.focusPrevious()
-                ) {
+                if (this.focusPreviousHorizontal()) {
                     event.preventDefault();
                     this.triggerChange(tabList.focusedIndex);
                     this.setState({tabList});
                 }
                 break;
             case KeyCode.right:
-                if (
-                    isRTLContext(context) ?
-                        tabList.focusPrevious() :
-                        tabList.focusNext()
-                ) {
+                if (this.focusNextHorizontal()) {
                     event.preventDefault();
                     this.triggerChange(tabList.focusedIndex);
                     this.setState({tabList});

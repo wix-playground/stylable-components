@@ -60,6 +60,31 @@ describe('<Tabs />', () => {
 
                 assertOnChange(onChange, '0');
             });
+
+            it('should select the last selectable tab if the first tab is selected', () => {
+                const onChange = sinon.spy();
+                const {driver} = render(
+                    <Tabs orientation="vertical-before" value="0" onChange={onChange}>
+                        <Tab label="Tab One" value="0">
+                            <span data-automation-id="FIRST_TAB">Tab One Content</span>
+                        </Tab>
+                        <Tab label="Tab Two" value="1">
+                            <span data-automation-id="SECOND_TAB">Tab Two Content</span>
+                        </Tab>
+                        <Tab label="Tab Three" value="2">
+                            <span data-automation-id="THIRD_TAB">Tab Three Content</span>
+                        </Tab>
+                        <Tab label="Tab Four" value="3" disabled>
+                            <span data-automation-id="FURTH_TAB">Tab Four Content</span>
+                        </Tab>
+                    </Tabs>
+                );
+
+                driver.tabListFocus();
+                driver.tabListKeyDown(KeyCodes.up);
+
+                assertOnChange(onChange, '2');
+            });
         });
 
         describe('down key', () => {
@@ -72,6 +97,31 @@ describe('<Tabs />', () => {
                         </Tab>
                         <Tab label="Tab Two" value="1">
                             <span data-automation-id="SECOND_TAB">Tab Two Content</span>
+                        </Tab>
+                    </Tabs>
+                );
+
+                driver.tabListFocus();
+                driver.tabListKeyDown(KeyCodes.down);
+
+                assertOnChange(onChange, '1');
+            });
+
+            it('should select the first selectable tab if the last tab is selected', () => {
+                const onChange = sinon.spy();
+                const {driver} = render(
+                    <Tabs orientation="vertical-before" value="3" onChange={onChange}>
+                        <Tab label="Tab One" value="0" disabled>
+                            <span data-automation-id="FIRST_TAB">Tab One Content</span>
+                        </Tab>
+                        <Tab label="Tab Two" value="1">
+                            <span data-automation-id="SECOND_TAB">Tab Two Content</span>
+                        </Tab>
+                        <Tab label="Tab Three" value="2">
+                            <span data-automation-id="THIRD_TAB">Tab Three Content</span>
+                        </Tab>
+                        <Tab label="Tab Four" value="3">
+                            <span data-automation-id="FURTH_TAB">Tab Four Content</span>
                         </Tab>
                     </Tabs>
                 );
@@ -104,6 +154,31 @@ describe('<Tabs />', () => {
 
                 assertOnChange(onChange, '0');
             });
+
+            it('should select the last selectable tab if the first tab is selected', () => {
+                const onChange = sinon.spy();
+                const {driver} = render(
+                    <Tabs orientation="vertical-before" value="0" onChange={onChange}>
+                        <Tab label="Tab One" value="0">
+                            <span data-automation-id="FIRST_TAB">Tab One Content</span>
+                        </Tab>
+                        <Tab label="Tab Two" value="1">
+                            <span data-automation-id="SECOND_TAB">Tab Two Content</span>
+                        </Tab>
+                        <Tab label="Tab Three" value="2">
+                            <span data-automation-id="THIRD_TAB">Tab Three Content</span>
+                        </Tab>
+                        <Tab label="Tab Four" value="3" disabled>
+                            <span data-automation-id="FURTH_TAB">Tab Four Content</span>
+                        </Tab>
+                    </Tabs>
+                );
+
+                driver.tabListFocus();
+                driver.tabListKeyDown(KeyCodes.left);
+
+                assertOnChange(onChange, '2');
+            });
         });
 
         describe('right key', () => {
@@ -116,6 +191,31 @@ describe('<Tabs />', () => {
                         </Tab>
                         <Tab label="Tab Two" value="1">
                             <span data-automation-id="SECOND_TAB">Tab Two Content</span>
+                        </Tab>
+                    </Tabs>
+                );
+
+                driver.tabListFocus();
+                driver.tabListKeyDown(KeyCodes.right);
+
+                assertOnChange(onChange, '1');
+            });
+
+            it('should select the first selectable tab if the last tab is selected', () => {
+                const onChange = sinon.spy();
+                const {driver} = render(
+                    <Tabs orientation="vertical-before" value="3" onChange={onChange}>
+                        <Tab label="Tab One" value="0" disabled>
+                            <span data-automation-id="FIRST_TAB">Tab One Content</span>
+                        </Tab>
+                        <Tab label="Tab Two" value="1">
+                            <span data-automation-id="SECOND_TAB">Tab Two Content</span>
+                        </Tab>
+                        <Tab label="Tab Three" value="2">
+                            <span data-automation-id="THIRD_TAB">Tab Three Content</span>
+                        </Tab>
+                        <Tab label="Tab Four" value="3">
+                            <span data-automation-id="FURTH_TAB">Tab Four Content</span>
                         </Tab>
                     </Tabs>
                 );
@@ -151,6 +251,33 @@ describe('<Tabs />', () => {
 
                 assertOnChange(onChange, '1');
             });
+
+            it('should select the first selectable tab if the last tab is selected', () => {
+                const onChange = sinon.spy();
+                const {driver} = renderRTL(
+                    <ContextProvider dir="rtl">
+                        <Tabs orientation="vertical-before" value="3" onChange={onChange}>
+                            <Tab label="Tab One" value="0" disabled>
+                                <span data-automation-id="FIRST_TAB">Tab One Content</span>
+                            </Tab>
+                            <Tab label="Tab Two" value="1">
+                                <span data-automation-id="SECOND_TAB">Tab Two Content</span>
+                            </Tab>
+                            <Tab label="Tab Three" value="2">
+                                <span data-automation-id="THIRD_TAB">Tab Three Content</span>
+                            </Tab>
+                            <Tab label="Tab Four" value="3">
+                                <span data-automation-id="FURTH_TAB">Tab Four Content</span>
+                            </Tab>
+                        </Tabs>
+                    </ContextProvider>
+                );
+
+                driver.tabListFocus();
+                driver.tabListKeyDown(KeyCodes.left);
+
+                assertOnChange(onChange, '1');
+            });
         });
 
         describe('right key', () => {
@@ -173,6 +300,33 @@ describe('<Tabs />', () => {
                 driver.tabListKeyDown(KeyCodes.right);
 
                 assertOnChange(onChange, '0');
+            });
+
+            it('should select the last selectable tab if the first tab is selected', () => {
+                const onChange = sinon.spy();
+                const {driver} = renderRTL(
+                    <ContextProvider dir="rtl">
+                        <Tabs orientation="vertical-before" value="0" onChange={onChange}>
+                            <Tab label="Tab One" value="0">
+                                <span data-automation-id="FIRST_TAB">Tab One Content</span>
+                            </Tab>
+                            <Tab label="Tab Two" value="1">
+                                <span data-automation-id="SECOND_TAB">Tab Two Content</span>
+                            </Tab>
+                            <Tab label="Tab Three" value="2">
+                                <span data-automation-id="THIRD_TAB">Tab Three Content</span>
+                            </Tab>
+                            <Tab label="Tab Four" value="3" disabled>
+                                <span data-automation-id="FURTH_TAB">Tab Four Content</span>
+                            </Tab>
+                        </Tabs>
+                    </ContextProvider>
+                );
+
+                driver.tabListFocus();
+                driver.tabListKeyDown(KeyCodes.right);
+
+                assertOnChange(onChange, '2');
             });
         });
 
