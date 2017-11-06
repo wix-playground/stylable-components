@@ -111,22 +111,22 @@ class TextStyleList extends React.Component {
                     value={this.state.value}
                     onChange={this.handleChange}
                 >
-                    <Option value="title">
+                    <Option value="title" label="Title">
                         <span className="text-style-title">Title</span>
                     </Option>
-                    <Option value="heading">
+                    <Option value="heading" label="Heading">
                         <span className="text-style-heading">Heading</span>
                     </Option>
-                    <Option value="heading-red">
+                    <Option value="heading-red" label="Heading Red">
                         <span className="text-style-heading-red">Heading Red</span>
                     </Option>
-                    <Option value="body">
+                    <Option value="body" label="Body">
                         <span className="text-style-body">Body</span>
                     </Option>
-                    <Option value="caption" disabled>
+                    <Option value="caption" label="Caption" disabled>
                         <span className="text-style-caption">Caption</span>
                     </Option>
-                    <Option value="label">
+                    <Option value="label" label="Label">
                         <span className="text-style-label">Label</span>
                     </Option>
                 </SelectionList>
