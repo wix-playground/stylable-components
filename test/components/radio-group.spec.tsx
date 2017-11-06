@@ -707,9 +707,7 @@ describe('<RadioGroup />', () => {
                     <RadioButton/>
                 ).withDriver(RadioButtonDriver);
 
-                await waitForDom(() => {
-                    expect(radio.root).to.not.be.null;
-                });
+                await waitForDom(() => expect(radio.root).to.not.be.null);
 
                 radio.click();
                 await waitForDom(() => {
@@ -723,19 +721,17 @@ describe('<RadioGroup />', () => {
                     <RadioButton/>
                 ).withDriver(RadioButtonDriver);
 
-                await waitForDom(() => {
-                    expect(radio.root).to.not.be.null;
-                });
+                await waitForDom(() => expect(radio.root).to.not.be.null);
 
                 radio.focus();
-                await waitFor(() => {
-                    expect(radio.hasStylableState('focused'), 'expected radio to look focused').to.equal(true);
-                });
+                await waitFor(() =>
+                    expect(radio.hasStylableState('focused'), 'expected radio to look focused').to.equal(true)
+                );
 
                 radio.click();
-                await waitForDom(() => {
-                    expect(radio.hasStylableState('focused'), 'expected radio to not look focused').to.equal(false);
-                });
+                await waitForDom(() =>
+                    expect(radio.hasStylableState('focused'), 'expected radio to not look focused').to.equal(false)
+                );
             });
         });
     });
