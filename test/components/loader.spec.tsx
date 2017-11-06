@@ -14,7 +14,7 @@ const loaders: any = {
     DotsLoader: [DotsLoader, DotsLoaderDriver]
 };
 
-describe('<Loader/>', () => {
+xdescribe('<Loader/>', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
 
