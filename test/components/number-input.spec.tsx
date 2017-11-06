@@ -17,7 +17,7 @@ function assertCommit(
     expect(input).to.have.value(String(expectedValue));
 }
 
-describe('<NumberInput />', () => {
+xdescribe('<NumberInput />', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
 

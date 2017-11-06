@@ -3,7 +3,7 @@ import {ClientRenderer, expect, sinon} from 'test-drive-react';
 import {GlobalEvent, GlobalEventProps} from '../../src';
 import {WindowStub} from '../../test-kit';
 
-xdescribe('<GlobalEvent />', () => {
+describe('<GlobalEvent />', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
 

@@ -4,7 +4,7 @@ import {ModalDemo} from '../../demo/components/modal-demo';
 import {Modal} from '../../src';
 import {ModalTestDriver} from '../../test-kit/components';
 
-xdescribe('<Modal />', () => {
+describe('<Modal />', () => {
     const clientRenderer = new ClientRenderer();
     const bodySelect = selectDom(document.body);
 

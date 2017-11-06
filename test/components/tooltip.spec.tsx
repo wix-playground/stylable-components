@@ -164,7 +164,7 @@ function testPosition(position: Position, expectations: any) {
     });
 }
 
-describe('<Tooltip/>', () => {
+xdescribe('<Tooltip/>', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
 

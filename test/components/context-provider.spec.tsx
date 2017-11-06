@@ -5,7 +5,7 @@ import {ContextProvider} from '../../src';
 
 const automationId = 'CONTEXT_PROVIDER';
 
-xdescribe('<ContextProvider/>', () => {
+describe('<ContextProvider/>', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
 

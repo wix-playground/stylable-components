@@ -64,7 +64,7 @@ function isElementSelected(element: Element, style: {$stylesheet: Stylesheet}) {
     return elementHasStylableState(element, style, 'selected');
 }
 
-describe('<TreeView />', () => {
+xdescribe('<TreeView />', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
 

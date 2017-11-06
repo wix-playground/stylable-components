@@ -7,7 +7,7 @@ import styles from '../../src/components/toggle/toggle.st.css';
 import {ToggleDriver} from '../../test-kit';
 import {hasCssState} from '../utils';
 
-describe('<Toggle/>', () => {
+xdescribe('<Toggle/>', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
 

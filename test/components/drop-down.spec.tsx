@@ -16,7 +16,7 @@ class DropDownDemoDriver extends DriverBase {
     }
 }
 
-xdescribe('<DropDown />', () => {
+describe('<DropDown />', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
 
