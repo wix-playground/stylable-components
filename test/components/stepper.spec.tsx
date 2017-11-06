@@ -4,7 +4,7 @@ import {ClientRenderer, expect, simulate, sinon} from 'test-drive-react';
 import {Stepper} from '../../src/components/stepper';
 import {WindowStub} from '../../test-kit';
 
-xdescribe('<Stepper />', () => {
+describe('<Stepper />', () => {
     const clientRenderer = new ClientRenderer();
     let windowStub: WindowStub;
     let onUp: SinonSpy;
