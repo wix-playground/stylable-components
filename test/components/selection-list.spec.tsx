@@ -29,7 +29,7 @@ export class SelectionListDemoDriver extends DriverBase {
     };
 }
 
-xdescribe('<SelectionList />', () => {
+describe('<SelectionList />', () => {
     const clientRenderer = new ClientRenderer();
     let ThemedContainer;
     let themedContainer: HTMLDivElement;

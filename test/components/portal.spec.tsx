@@ -4,7 +4,7 @@ import {ClientRenderer, expect, waitFor} from 'test-drive-react';
 import {Portal} from '../../src';
 import {PortalTestDriver} from '../../test-kit';
 
-xdescribe('<Portal />', () => {
+describe('<Portal />', () => {
     const clientRenderer = new ClientRenderer();
 
     afterEach(() => {clientRenderer.cleanup(); });
