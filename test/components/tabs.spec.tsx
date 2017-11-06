@@ -41,7 +41,7 @@ describe('<Tabs />', () => {
     });
 
     describe('vertical', () => {
-        describe('up key and enter', () => {
+        describe('up key', () => {
             it('should select previous tab', () => {
                 const onChange = sinon.spy();
                 const {driver} = render(
@@ -57,13 +57,12 @@ describe('<Tabs />', () => {
 
                 driver.tabListFocus();
                 driver.tabListKeyDown(KeyCodes.up);
-                driver.tabListPressEnter();
 
                 assertOnChange(onChange, '0');
             });
         });
 
-        describe('down key and enter', () => {
+        describe('down key', () => {
             it('should select previous tab', () => {
                 const onChange = sinon.spy();
                 const {driver} = render(
@@ -79,7 +78,6 @@ describe('<Tabs />', () => {
 
                 driver.tabListFocus();
                 driver.tabListKeyDown(KeyCodes.down);
-                driver.tabListPressEnter();
 
                 assertOnChange(onChange, '1');
             });
@@ -87,7 +85,7 @@ describe('<Tabs />', () => {
     });
 
     describe('horizontal', () => {
-        describe('left key and enter', () => {
+        describe('left key', () => {
             it('should select previous tab', () => {
                 const onChange = sinon.spy();
                 const {driver} = render(
@@ -103,13 +101,12 @@ describe('<Tabs />', () => {
 
                 driver.tabListFocus();
                 driver.tabListKeyDown(KeyCodes.left);
-                driver.tabListPressEnter();
 
                 assertOnChange(onChange, '0');
             });
         });
 
-        describe('right key and enter', () => {
+        describe('right key', () => {
             it('should select next tab', () => {
                 const onChange = sinon.spy();
                 const {driver} = render(
@@ -125,7 +122,6 @@ describe('<Tabs />', () => {
 
                 driver.tabListFocus();
                 driver.tabListKeyDown(KeyCodes.right);
-                driver.tabListPressEnter();
 
                 assertOnChange(onChange, '1');
             });
@@ -134,7 +130,7 @@ describe('<Tabs />', () => {
     });
 
     describe('horizontal RTL', () => {
-        describe('left key and enter', () => {
+        describe('left key', () => {
             it('should select next tab', () => {
                 const onChange = sinon.spy();
                 const {driver} = renderRTL(
@@ -152,13 +148,12 @@ describe('<Tabs />', () => {
 
                 driver.tabListFocus();
                 driver.tabListKeyDown(KeyCodes.left);
-                driver.tabListPressEnter();
 
                 assertOnChange(onChange, '1');
             });
         });
 
-        describe('right key and enter', () => {
+        describe('right key', () => {
             it('should select previous tab', () => {
                 const onChange = sinon.spy();
                 const {driver} = renderRTL(
@@ -176,7 +171,6 @@ describe('<Tabs />', () => {
 
                 driver.tabListFocus();
                 driver.tabListKeyDown(KeyCodes.right);
-                driver.tabListPressEnter();
 
                 assertOnChange(onChange, '0');
             });

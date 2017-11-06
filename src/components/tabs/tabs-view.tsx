@@ -147,19 +147,17 @@ export class TabsView extends React.Component<TabsViewProps, TabsViewState> {
         const {tabList} = this.state;
         const context = this.context;
         switch (event.keyCode) {
-            case KeyCode.enter:
-                event.preventDefault();
-                this.triggerChange(tabList.focusedIndex);
-                break;
             case KeyCode.up:
                 if (tabList.focusPrevious()) {
                     event.preventDefault();
+                    this.triggerChange(tabList.focusedIndex);
                     this.setState({tabList});
                 }
                 break;
             case KeyCode.down:
                 if (tabList.focusNext()) {
                     event.preventDefault();
+                    this.triggerChange(tabList.focusedIndex);
                     this.setState({tabList});
                 }
                 break;
@@ -170,6 +168,7 @@ export class TabsView extends React.Component<TabsViewProps, TabsViewState> {
                     tabList.focusPrevious()
                 ) {
                     event.preventDefault();
+                    this.triggerChange(tabList.focusedIndex);
                     this.setState({tabList});
                 }
                 break;
@@ -180,6 +179,7 @@ export class TabsView extends React.Component<TabsViewProps, TabsViewState> {
                         tabList.focusNext()
                 ) {
                     event.preventDefault();
+                    this.triggerChange(tabList.focusedIndex);
                     this.setState({tabList});
                 }
                 break;
