@@ -2,6 +2,7 @@ import * as debounce from 'debounce';
 import * as React from 'react';
 import {stylable} from 'wix-react-tools';
 
+import {warnOnce} from '../../utils';
 import {GlobalEvent} from '../global-event';
 import {Portal} from '../portal';
 import styles from './tooltip.st.css';
@@ -19,12 +20,17 @@ export interface TooltipProps {
     hideTrigger?: string;
     showDelay?: number;
     hideDelay?: number;
+    active?: boolean;
+    disableGlobalEvents?: boolean;
+    onTop?: boolean;
 }
 
 export interface TooltipState {
     style?: React.CSSProperties;
     open: boolean;
 }
+
+const DATA_FOR_ATTRIBUTE = 'data-tooltip-for';
 
 function hasPosition(position: Position, ...candidates: string[]): boolean {
     return candidates.some(item => item === position);
@@ -38,7 +44,8 @@ class StyledTooltip extends React.Component<TooltipProps, TooltipState> {
         showTrigger: 'mouseenter',
         hideTrigger: 'mouseleave',
         showDelay: 0,
-        hideDelay: 0
+        hideDelay: 0,
+        onTop: false
     };
 
     private target: HTMLElement | null = null;
@@ -59,11 +66,17 @@ class StyledTooltip extends React.Component<TooltipProps, TooltipState> {
     }
 
     public render() {
-        const {children, position} = this.props;
+        const {children, position, disableGlobalEvents, onTop} = this.props;
         const {style, open} = this.state;
 
         if (!style) {
             return null;
+        }
+        const globalEvents: any = {
+            resize: this.onWindowResize
+        };
+        if (!disableGlobalEvents) {
+            globalEvents.mousedown = globalEvents.touchstart = this.hide;
         }
 
         return (
@@ -71,13 +84,9 @@ class StyledTooltip extends React.Component<TooltipProps, TooltipState> {
                 data-automation-id="TOOLTIP"
                 className={`root ${position}`}
                 style={style}
-                style-state={{open}}
+                style-state={{open, onTop}}
             >
-                <GlobalEvent
-                    resize={this.onWindowResize}
-                    mousedown={this.hide}
-                    touchstart={this.hide}
-                />
+                <GlobalEvent {...globalEvents}/>
                 <div className="tooltip">
                     {children}
                     <svg className="tail" height="5" width="10" data-automation-id="TOOLTIP_TAIL">
@@ -104,13 +113,16 @@ class StyledTooltip extends React.Component<TooltipProps, TooltipState> {
             this.setTarget();
             this.bindEvents();
         }
-        if (props.id !== this.props.id || props.position !== this.props.position) {
+        if (this.state.open) {
             this.setStyles();
         }
     }
 
     private setTarget() {
-        this.target = document.querySelector(`[data-tooltip-for=${this.props.id}]`) as HTMLElement;
+        this.target = document.querySelector(`[${DATA_FOR_ATTRIBUTE}=${this.props.id}]`) as HTMLElement;
+        if (!this.target) {
+            warnOnce(`There is no anchor with "${DATA_FOR_ATTRIBUTE}=%s"`, this.props.id);
+        }
     }
 
     private bindEvents() {

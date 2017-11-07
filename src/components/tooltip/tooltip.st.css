@@ -14,7 +14,7 @@
 }
 
 .root {
-    -st-states: open;
+    -st-states: open, onTop;
     position: absolute;
     display: none;
     z-index: 9;
@@ -22,6 +22,9 @@
 
 .root:open {
     display: block;
+}
+.root:onTop {
+    z-index: 10;
 }
 
 .tooltip  {
