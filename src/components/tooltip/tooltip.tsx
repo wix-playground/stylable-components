@@ -3,7 +3,7 @@ import * as React from 'react';
 import {stylable} from 'wix-react-tools';
 
 import {warnOnce} from '../../utils';
-import {GlobalEvent} from '../global-event';
+import {GlobalEvent, GlobalEventProps} from '../global-event';
 import {Portal} from '../portal';
 import styles from './tooltip.st.css';
 
@@ -71,7 +71,7 @@ class StyledTooltip extends React.Component<TooltipProps, TooltipState> {
         if (!style) {
             return null;
         }
-        const globalEvents: any = {
+        const globalEvents: GlobalEventProps = {
             resize: this.onWindowResize
         };
         if (!disableGlobalEvents) {
