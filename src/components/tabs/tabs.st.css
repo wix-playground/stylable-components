@@ -7,11 +7,33 @@
 
 .root {
     -st-states: rtl, horizontalTop, horizontalBottom, verticalBefore, verticalAfter;
-    display: inline-block;
+    display: inline-flex;
+    flex-direction: column;
+}
+
+.root:horizontalBottom {
+    flex-direction: column-reverse;
+}
+
+.root:verticalBefore {
+    flex-direction: row;
+}
+
+.root:verticalAfter {
+    flex-direction: row-reverse;
 }
 
 .tabList {
     -st-extends: SelectionList;
+    display: flex;
+    flex-grow: 1;
+
+    overflow-x: auto;
+}
+
+.root:verticalBefore .tabList,
+.root:verticalAfter .tabList {
+    flex-direction: column;
 }
 
 .tabPanel {}

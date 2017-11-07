@@ -14,30 +14,12 @@
 }
 
 :import {
-	-st-from: "../../../components/selection-list/selection-list.st.css";
-	-st-default: SelectionList;
-}
-
-:import {
     -st-from: "../../../components/selection-list/option.st.css";
     -st-default: Option;
 }
 
-Tabs {
-    display: inline-flex;
-    flex-direction: column;
-}
-
 Tabs::tabList,
 Tabs::tabList:focused {
-    display: flex;
-    flex-grow: 0;
-
-    overflow-x: auto;
-    overflow-y: hidden;
-
-    width: 100%;
-
     border: none;
     border-bottom: value(borderDefault);
 
@@ -45,8 +27,6 @@ Tabs::tabList:focused {
 }
 
 Tabs::tabList Option {
-    width: auto;
-    flex-shrink: 0;
     padding: 18px;
     border: none;
     background: transparent;
@@ -96,14 +76,6 @@ Tabs::tabPanel {
     background: value(color_MainText_Background)
 }
 
-Tabs::tabContent:inactive {
-    display: none;
-}
-
-Tabs:horizontalBottom {
-    flex-direction: column-reverse;
-}
-
 Tabs:horizontalBottom::tabList,
 Tabs:horizontalBottom::tabList:focused {
     border: none;
@@ -120,15 +92,8 @@ Tabs:horizontalBottom::tabList:focused Option:selected {
     padding-top: 16px;
 }
 
-Tabs:verticalBefore {
-    flex-direction: row;
-}
-
 Tabs:verticalBefore::tabList,
 Tabs:verticalBefore::tabList:focused {
-    flex-direction: column;
-    width: auto;
-
     border: none;
     border-right: value(borderDefault);
 }
@@ -139,8 +104,8 @@ Tabs:rtl:verticalBefore::tabList:focused {
     border-left: value(borderDefault);
 }
 
-Tabs:verticalBefore::tabList Option:selected
-Tabs:verticalBefore::tabList:focused Option:selected
+Tabs:verticalBefore::tabList Option:selected,
+Tabs:verticalBefore::tabList:focused Option:selected,
 Tabs:verticalBefore::tabList Option:selected:hover,
 Tabs:verticalBefore::tabList:focused Option:selected:hover {
     border: none;
@@ -159,15 +124,8 @@ Tabs:rtl:verticalBefore::tabList:focused Option:selected:hover {
     padding-left: 16px;
 }
 
-Tabs:verticalAfter {
-    flex-direction: row-reverse;
-}
-
 Tabs:verticalAfter::tabList,
 Tabs:verticalAfter::tabList:focused {
-    flex-direction: column;
-    width: auto;
-
     border: none;
     border-left: value(borderDefault);
 }
