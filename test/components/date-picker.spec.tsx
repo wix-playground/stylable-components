@@ -83,7 +83,7 @@ describe('The DatePicker Component', () => {
             datePickerDemo.datePicker.clickOnMonth(monthToClick);
 
             await waitForDom(() => {
-                expect(datePickerDemo.datePicker.monthView).to.be.absent();
+                expect(datePickerDemo.datePicker.monthView, 'expected month view to be absent').to.be.absent();
                 expect(datePickerDemo.datePicker.isOpen()).to.equal(true);
                 expect(datePickerDemo.datePicker.headerDate).to.have.text(`${monthToClick} 2017`);
             });
@@ -231,7 +231,7 @@ describe('The DatePicker Component', () => {
 
             datePicker.changeDate('2sgsdfsdfw223');
 
-            await waitForDom(() => expect(datePicker.elementHasStylableState(datePicker.root, 'error')).to.equal(true));
+            await waitForDom(() => expect(datePicker.hasStylableState(datePicker.root, 'error')).to.equal(true));
         });
 
         it('should remove error state when a date is chosen from the calendar', async () => {
@@ -240,13 +240,13 @@ describe('The DatePicker Component', () => {
 
             datePicker.changeDate('2sgsdfsdfw223');
 
-            await waitForDom(() => expect(datePicker.elementHasStylableState(datePicker.root, 'error')).to.equal(true));
+            await waitForDom(() => expect(datePicker.hasStylableState(datePicker.root, 'error')).to.equal(true));
 
             datePicker.openCalender();
 
             await waitForDom(() => datePicker.clickOnDay(2));
 
-            await waitForDom(() => expect(datePicker.elementHasStylableState(datePicker.root, 'error'))
+            await waitForDom(() => expect(datePicker.hasStylableState(datePicker.root, 'error'))
                 .to.equal(false));
         });
     });
@@ -302,7 +302,7 @@ describe('The DatePicker Component', () => {
             const {driver: datePicker, waitForDom} = clientRenderer.render(<DatePicker disabled />)
                 .withDriver(DatePickerTestDriver);
 
-            await waitForDom(() => expect(datePicker.elementHasStylableState(datePicker.root, 'disabled'))
+            await waitForDom(() => expect(datePicker.hasStylableState(datePicker.root, 'disabled'))
                 .to.equal(true));
         });
     });
@@ -358,7 +358,7 @@ describe('The DatePicker Component', () => {
             const {driver: datePicker, waitForDom} = clientRenderer.render(<DatePicker readOnly />)
                 .withDriver(DatePickerTestDriver);
 
-            await waitForDom(() => expect(datePicker.elementHasStylableState(datePicker.root, 'readOnly'))
+            await waitForDom(() => expect(datePicker.hasStylableState(datePicker.root, 'readOnly'))
                 .to.equal(true));
         });
     });
@@ -613,7 +613,8 @@ describe('The DatePicker Component', () => {
             });
         });
 
-        it('when in the month-view, clicking on the year should bring up the year-view', async () => {
+        it('when in the month-view, clicking on the year should bring up the year-view'
+            + ' and the header date should show a decade', async () => {
             const {driver: datePicker, waitForDom} = clientRenderer.render(
                 <DatePicker showDropdownOnInit value={JANUARY_FIRST}/>
             ).withDriver(DatePickerTestDriver);
@@ -622,7 +623,7 @@ describe('The DatePicker Component', () => {
 
             await waitForDom(() => {
                 expect(datePicker.monthView).to.be.present();
-                expect(datePicker.monthLabel).to.be.absent();
+                expect(datePicker.headerDate).to.have.text('2017');
             });
 
             datePicker.clickOnHeader();
@@ -630,10 +631,103 @@ describe('The DatePicker Component', () => {
             await waitForDom(() => {
                 expect(datePicker.monthView).to.be.absent();
                 expect(datePicker.yearView).to.be.present();
-                expect(datePicker.monthLabel).to.be.absent();
-                expect(datePicker.yearLabel).to.be.absent();
+                expect(datePicker.headerDate).to.have.text('2012-2022');
             });
         });
+
+        it('when in the month-view, clicking on the arrows should not change the actual date', async () => {
+            const {driver: datePicker, waitForDom} = clientRenderer.render(
+                <DatePicker showDropdownOnInit value={JANUARY_FIRST}/>
+            ).withDriver(DatePickerTestDriver);
+
+            datePicker.clickOnHeader();
+
+            await waitForDom(() => {
+                expect(datePicker.monthView).to.be.present();
+                expect(datePicker.headerDate).to.have.text('2017');
+            });
+
+            datePicker.clickOnPrevMonth();
+            datePicker.clickOnPrevMonth();
+            datePicker.clickOnHeader();
+            datePicker.clickOnHeader();
+
+            await waitForDom(() => {
+                expect(datePicker.monthView).to.be.absent();
+                expect(datePicker.yearView).to.be.absent();
+                expect(datePicker.headerDate).to.have.text('January 2017');
+            });
+        });
+
+        it('when in the year-view, clicking on the arrows should change the decade', async () => {
+            const {driver: datePicker, waitForDom} = clientRenderer.render(
+                <DatePicker showDropdownOnInit value={JANUARY_FIRST}/>
+            ).withDriver(DatePickerTestDriver);
+
+            datePicker.clickOnHeader();
+            datePicker.clickOnHeader();
+
+            await waitForDom(() => {
+                expect(datePicker.yearView).to.be.present();
+                expect(datePicker.headerDate).to.have.text('2012-2022');
+            });
+
+            datePicker.clickOnNextMonth();
+
+            await waitForDom(() => {
+                expect(datePicker.yearView).to.be.present();
+                expect(datePicker.headerDate).to.have.text('2022-2032');
+            });
+
+            datePicker.clickOnPrevMonth();
+            datePicker.clickOnPrevMonth();
+
+            await waitForDom(() => {
+                expect(datePicker.yearView).to.be.present();
+                expect(datePicker.headerDate).to.have.text('2002-2012');
+            });
+        });
+
+        it('when in the year-view, clicking on a year should change the current year'
+            + ' to the selected year, and then hide the year-view, showing the month-view', async () => {
+            const yearToClick = '2019';
+            const {driver: datePicker, waitForDom} = clientRenderer.render(
+                <DatePicker showDropdownOnInit value={JANUARY_FIRST}/>
+            ).withDriver(DatePickerTestDriver);
+
+            datePicker.clickOnHeader();
+            datePicker.clickOnHeader();
+
+            await waitForDom(() => {
+                expect(datePicker.yearView).to.be.present();
+                expect(datePicker.headerDate).to.have.text('2012-2022');
+            });
+
+            datePicker.clickOnYear(yearToClick);
+
+            await waitForDom(() => {
+                expect(datePicker.yearView).to.be.absent();
+                expect(datePicker.monthView).to.be.present();
+                expect(datePicker.isOpen()).to.equal(true);
+                expect(datePicker.headerDate).to.have.text(`${yearToClick}`);
+            });
+        });
+
+        it('when in the year-view, it should not show the current year', async () => {
+            const currentYear = '2017';
+            const {driver: datePicker, waitForDom} = clientRenderer.render(
+                <DatePicker showDropdownOnInit value={JANUARY_FIRST}/>
+            ).withDriver(DatePickerTestDriver);
+
+            datePicker.clickOnHeader();
+            datePicker.clickOnHeader();
+
+            await waitForDom(() => {
+                expect(datePicker.getYear(currentYear)).to.be.absent();
+            });
+        });
+
+
 
         it('should allow disabling weekends', async () => {
             const {driver: datePicker, waitForDom} = clientRenderer.render(
@@ -646,7 +740,7 @@ describe('The DatePicker Component', () => {
 
             await waitForDom(() => {
                 // Check a weekend to ensure the days are disabled
-                expect(datePicker.elementHasStylableState(datePicker.getDay(4) as Element, 'disabled')).to.be.true;
+                expect(datePicker.hasStylableState(datePicker.getDay(4) as Element, 'disabled')).to.be.true;
             });
 
             datePicker.clickOnDay(4);

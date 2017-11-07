@@ -51,6 +51,10 @@ export class DatePickerTestDriver extends DriverBase {
         simulate.mouseDown(this.getMonth(month));
     }
 
+    public clickOnYear(year: string): void {
+        simulate.mouseDown(this.getYear(year));
+    }
+
     public openCalender(): void {
         simulate.click(this.select('CALENDAR_ICON'));
     }
@@ -119,11 +123,11 @@ export class DatePickerTestDriver extends DriverBase {
         return bodySelect(datePickerDropdown, `MONTH_${month.toUpperCase()}`);
     }
 
-    public elementHasStylableState(element: Element, stateName: string): boolean {
-        return elementHasStylableState(element, baseStyle, stateName);
+    public getYear(year: string): HTMLSpanElement | null {
+        return bodySelect(datePickerDropdown, `YEAR_${year}`);
     }
 
-    public getMonth(month: string): HTMLSpanElement | null {
-        return bodySelect(datePickerDropdown, `MONTH_${month.toUpperCase()}`);
+    public hasStylableState(element: Element, stateName: string): boolean {
+        return elementHasStylableState(element, baseStyle, stateName);
     }
 }
