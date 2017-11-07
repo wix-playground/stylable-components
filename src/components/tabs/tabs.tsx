@@ -14,7 +14,7 @@ export interface TabsState {
 @properties
 export class Tabs extends React.Component<TabsProps, TabsState> {
     public static defaultProps: Partial<TabsProps> = {
-        orientation: 'horizontal-top'
+        orientation: 'horizontalTop'
     };
 
     constructor({value, defaultValue, children}: TabsProps) {

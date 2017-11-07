@@ -65,7 +65,7 @@ export class TabsDemo extends React.Component {
                             <td>Horizontal Bottom</td>
                             <td>
                                 <Tabs
-                                    orientation="horizontal-bottom"
+                                    orientation="horizontalBottom"
                                     value={value}
                                     onChange={this.handleChange}
                                 >
@@ -86,7 +86,7 @@ export class TabsDemo extends React.Component {
                             <td>
                                 <ContextProvider dir="rtl">
                                     <Tabs
-                                        orientation="horizontal-bottom"
+                                        orientation="horizontalBottom"
                                         value={value}
                                         onChange={this.handleChange}
                                     >
@@ -110,7 +110,7 @@ export class TabsDemo extends React.Component {
                             <td>Vertical Before</td>
                             <td>
                                 <Tabs
-                                    orientation="vertical-before"
+                                    orientation="verticalBefore"
                                     value={value}
                                     onChange={this.handleChange}
                                 >
@@ -131,7 +131,7 @@ export class TabsDemo extends React.Component {
                             <td>
                                 <ContextProvider dir="rtl">
                                     <Tabs
-                                        orientation="vertical-before"
+                                        orientation="verticalBefore"
                                         value={value}
                                         onChange={this.handleChange}
                                     >
@@ -155,7 +155,7 @@ export class TabsDemo extends React.Component {
                             <td>Vertical After</td>
                             <td>
                                 <Tabs
-                                    orientation="vertical-after"
+                                    orientation="verticalAfter"
                                     value={value}
                                     onChange={this.handleChange}
                                 >
@@ -176,7 +176,7 @@ export class TabsDemo extends React.Component {
                             <td>
                                 <ContextProvider dir="rtl">
                                     <Tabs
-                                        orientation="vertical-after"
+                                        orientation="verticalAfter"
                                         value={value}
                                         onChange={this.handleChange}
                                     >

@@ -20,10 +20,10 @@ import {
 import styles from './tabs.st.css';
 
 export type TabsOrientation
-    = 'horizontal-top'
-    | 'horizontal-bottom'
-    | 'vertical-before'
-    | 'vertical-after';
+    = 'horizontalTop'
+    | 'horizontalBottom'
+    | 'verticalBefore'
+    | 'verticalAfter';
 
 export interface TabsViewProps {
     value: string | undefined;
@@ -86,11 +86,11 @@ export class TabsView extends React.Component<TabsViewProps, TabsViewState> {
         return (
             <div
                 style-state={{
-                    'horizontal-top': orientation === 'horizontal-top',
-                    'horizontal-bottom': orientation === 'horizontal-bottom',
-                    'vertical-before': orientation === 'vertical-before',
-                    'vertical-after': orientation === 'vertical-after',
-                    'rtl': isRTLContext(context)
+                    horizontalTop: orientation === 'horizontalTop',
+                    horizontalBottom: orientation === 'horizontalBottom',
+                    verticalBefore: orientation === 'verticalBefore',
+                    verticalAfter: orientation === 'verticalAfter',
+                    rtl: isRTLContext(context)
                 }}
                 {...props}
             >
@@ -128,7 +128,7 @@ export class TabsView extends React.Component<TabsViewProps, TabsViewState> {
     private get isVertical() {
         const {orientation} = this.props;
 
-        return orientation === 'vertical-after' || orientation === 'vertical-before';
+        return orientation === 'verticalAfter' || orientation === 'verticalBefore';
     }
 
     private focusNext() {

@@ -6,7 +6,7 @@
 }
 
 .root {
-    -st-states: rtl, horizontal-top, horizontal-bottom, vertical-before, vertical-after;
+    -st-states: rtl, horizontalTop, horizontalBottom, verticalBefore, verticalAfter;
     display: inline-block;
 }
 

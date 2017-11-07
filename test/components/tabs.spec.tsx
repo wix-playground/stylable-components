@@ -49,7 +49,7 @@ describe('<Tabs />', () => {
             it('should select previous tab', () => {
                 const onChange = sinon.spy();
                 const {driver} = render(
-                    <Tabs orientation="vertical-before" value="1" onChange={onChange}>
+                    <Tabs orientation="verticalBefore" value="1" onChange={onChange}>
                         <Tab label="Tab One" value="0">
                             <span data-automation-id="FIRST_TAB">Tab One Content</span>
                         </Tab>
@@ -68,7 +68,7 @@ describe('<Tabs />', () => {
             it('should select the last selectable tab if the first tab is selected', () => {
                 const onChange = sinon.spy();
                 const {driver} = render(
-                    <Tabs orientation="vertical-before" value="0" onChange={onChange}>
+                    <Tabs orientation="verticalBefore" value="0" onChange={onChange}>
                         <Tab label="Tab One" value="0">
                             <span data-automation-id="FIRST_TAB">Tab One Content</span>
                         </Tab>
@@ -94,7 +94,7 @@ describe('<Tabs />', () => {
                 it('should select the first selectable tab', () => {
                     const onChange = sinon.spy();
                     const {driver} = render(
-                        <Tabs orientation="vertical-before" value="3" onChange={onChange}>
+                        <Tabs orientation="verticalBefore" value="3" onChange={onChange}>
                             <Tab label="Tab One" value="0" disabled>
                                 <span data-automation-id="FIRST_TAB">Tab One Content</span>
                             </Tab>
@@ -119,7 +119,7 @@ describe('<Tabs />', () => {
                 it('should not select when already on the first tab', () => {
                     const onChange = sinon.spy();
                     const {driver} = render(
-                        <Tabs orientation="vertical-before" value="0" onChange={onChange}>
+                        <Tabs orientation="verticalBefore" value="0" onChange={onChange}>
                             <Tab label="Tab One" value="0">
                                 <span data-automation-id="FIRST_TAB">Tab One Content</span>
                             </Tab>
@@ -144,7 +144,7 @@ describe('<Tabs />', () => {
             it('should select previous tab', () => {
                 const onChange = sinon.spy();
                 const {driver} = render(
-                    <Tabs orientation="vertical-before" value="0" onChange={onChange}>
+                    <Tabs orientation="verticalBefore" value="0" onChange={onChange}>
                         <Tab label="Tab One" value="0">
                             <span data-automation-id="FIRST_TAB">Tab One Content</span>
                         </Tab>
@@ -163,7 +163,7 @@ describe('<Tabs />', () => {
             it('should select the first selectable tab if the last tab is selected', () => {
                 const onChange = sinon.spy();
                 const {driver} = render(
-                    <Tabs orientation="vertical-before" value="3" onChange={onChange}>
+                    <Tabs orientation="verticalBefore" value="3" onChange={onChange}>
                         <Tab label="Tab One" value="0" disabled>
                             <span data-automation-id="FIRST_TAB">Tab One Content</span>
                         </Tab>
@@ -189,7 +189,7 @@ describe('<Tabs />', () => {
                 it('should select the last selectable tab', () => {
                     const onChange = sinon.spy();
                     const {driver} = render(
-                        <Tabs orientation="vertical-before" value="0" onChange={onChange}>
+                        <Tabs orientation="verticalBefore" value="0" onChange={onChange}>
                             <Tab label="Tab One" value="0">
                                 <span data-automation-id="FIRST_TAB">Tab One Content</span>
                             </Tab>
@@ -214,7 +214,7 @@ describe('<Tabs />', () => {
                 it('should not select when already on the last tab', () => {
                     const onChange = sinon.spy();
                     const {driver} = render(
-                        <Tabs orientation="vertical-before" value="2" onChange={onChange}>
+                        <Tabs orientation="verticalBefore" value="2" onChange={onChange}>
                             <Tab label="Tab One" value="0">
                                 <span data-automation-id="FIRST_TAB">Tab One Content</span>
                             </Tab>
@@ -242,7 +242,7 @@ describe('<Tabs />', () => {
             it('should select previous tab', () => {
                 const onChange = sinon.spy();
                 const {driver} = render(
-                    <Tabs orientation="horizontal-top" value="1" onChange={onChange}>
+                    <Tabs orientation="horizontalTop" value="1" onChange={onChange}>
                         <Tab label="Tab One" value="0">
                             <span data-automation-id="FIRST_TAB">Tab One Content</span>
                         </Tab>
@@ -261,7 +261,7 @@ describe('<Tabs />', () => {
             it('should select the last selectable tab if the first tab is selected', () => {
                 const onChange = sinon.spy();
                 const {driver} = render(
-                    <Tabs orientation="horizontal-top" value="0" onChange={onChange}>
+                    <Tabs orientation="horizontalTop" value="0" onChange={onChange}>
                         <Tab label="Tab One" value="0">
                             <span data-automation-id="FIRST_TAB">Tab One Content</span>
                         </Tab>
@@ -287,7 +287,7 @@ describe('<Tabs />', () => {
                 it('should select the first selectable tab', () => {
                     const onChange = sinon.spy();
                     const {driver} = render(
-                        <Tabs orientation="horizontal-top" value="3" onChange={onChange}>
+                        <Tabs orientation="horizontalTop" value="3" onChange={onChange}>
                             <Tab label="Tab One" value="0" disabled>
                                 <span data-automation-id="FIRST_TAB">Tab One Content</span>
                             </Tab>
@@ -312,7 +312,7 @@ describe('<Tabs />', () => {
                 it('should not select when already on the first tab', () => {
                     const onChange = sinon.spy();
                     const {driver} = render(
-                        <Tabs orientation="horizontal-top" value="0" onChange={onChange}>
+                        <Tabs orientation="horizontalTop" value="0" onChange={onChange}>
                             <Tab label="Tab One" value="0">
                                 <span data-automation-id="FIRST_TAB">Tab One Content</span>
                             </Tab>
@@ -337,7 +337,7 @@ describe('<Tabs />', () => {
             it('should select next tab', () => {
                 const onChange = sinon.spy();
                 const {driver} = render(
-                    <Tabs orientation="horizontal-top" value="0" onChange={onChange}>
+                    <Tabs orientation="horizontalTop" value="0" onChange={onChange}>
                         <Tab label="Tab One" value="0">
                             <span data-automation-id="FIRST_TAB">Tab One Content</span>
                         </Tab>
@@ -356,7 +356,7 @@ describe('<Tabs />', () => {
             it('should select the first selectable tab if the last tab is selected', () => {
                 const onChange = sinon.spy();
                 const {driver} = render(
-                    <Tabs orientation="horizontal-top" value="3" onChange={onChange}>
+                    <Tabs orientation="horizontalTop" value="3" onChange={onChange}>
                         <Tab label="Tab One" value="0" disabled>
                             <span data-automation-id="FIRST_TAB">Tab One Content</span>
                         </Tab>
@@ -382,7 +382,7 @@ describe('<Tabs />', () => {
                 it('should select the last selectable tab', () => {
                     const onChange = sinon.spy();
                     const {driver} = render(
-                        <Tabs orientation="horizontal-top" value="0" onChange={onChange}>
+                        <Tabs orientation="horizontalTop" value="0" onChange={onChange}>
                             <Tab label="Tab One" value="0">
                                 <span data-automation-id="FIRST_TAB">Tab One Content</span>
                             </Tab>
@@ -407,7 +407,7 @@ describe('<Tabs />', () => {
                 it('should not select when already on the last tab', () => {
                     const onChange = sinon.spy();
                     const {driver} = render(
-                        <Tabs orientation="horizontal-top" value="2" onChange={onChange}>
+                        <Tabs orientation="horizontalTop" value="2" onChange={onChange}>
                             <Tab label="Tab One" value="0">
                                 <span data-automation-id="FIRST_TAB">Tab One Content</span>
                             </Tab>
@@ -435,7 +435,7 @@ describe('<Tabs />', () => {
             it('should select next tab', () => {
                 const onChange = sinon.spy();
                 const {driver} = renderRTL(
-                    <Tabs orientation="horizontal-top" value="0" onChange={onChange}>
+                    <Tabs orientation="horizontalTop" value="0" onChange={onChange}>
                         <Tab label="Tab One" value="0">
                             <span data-automation-id="FIRST_TAB">Tab One Content</span>
                         </Tab>
@@ -454,7 +454,7 @@ describe('<Tabs />', () => {
             it('should select the first selectable tab if the last tab is selected', () => {
                 const onChange = sinon.spy();
                 const {driver} = renderRTL(
-                    <Tabs orientation="horizontal-top" value="3" onChange={onChange}>
+                    <Tabs orientation="horizontalTop" value="3" onChange={onChange}>
                         <Tab label="Tab One" value="0" disabled>
                             <span data-automation-id="FIRST_TAB">Tab One Content</span>
                         </Tab>
@@ -480,7 +480,7 @@ describe('<Tabs />', () => {
                 it('should select the last selectable tab', () => {
                     const onChange = sinon.spy();
                     const {driver} = renderRTL(
-                        <Tabs orientation="horizontal-top" value="0" onChange={onChange}>
+                        <Tabs orientation="horizontalTop" value="0" onChange={onChange}>
                             <Tab label="Tab One" value="0">
                                 <span data-automation-id="FIRST_TAB">Tab One Content</span>
                             </Tab>
@@ -505,7 +505,7 @@ describe('<Tabs />', () => {
                 it('should not select when already on the last tab', () => {
                     const onChange = sinon.spy();
                     const {driver} = renderRTL(
-                        <Tabs orientation="horizontal-top" value="2" onChange={onChange}>
+                        <Tabs orientation="horizontalTop" value="2" onChange={onChange}>
                             <Tab label="Tab One" value="0">
                                 <span data-automation-id="FIRST_TAB">Tab One Content</span>
                             </Tab>
@@ -530,7 +530,7 @@ describe('<Tabs />', () => {
             it('should select previous tab', () => {
                 const onChange = sinon.spy();
                 const {driver} = renderRTL(
-                    <Tabs orientation="horizontal-top" value="1" onChange={onChange}>
+                    <Tabs orientation="horizontalTop" value="1" onChange={onChange}>
                         <Tab label="Tab One" value="0">
                             <span data-automation-id="FIRST_TAB">Tab One Content</span>
                         </Tab>
@@ -549,7 +549,7 @@ describe('<Tabs />', () => {
             it('should select the last selectable tab if the first tab is selected', () => {
                 const onChange = sinon.spy();
                 const {driver} = renderRTL(
-                    <Tabs orientation="horizontal-top" value="0" onChange={onChange}>
+                    <Tabs orientation="horizontalTop" value="0" onChange={onChange}>
                         <Tab label="Tab One" value="0">
                             <span data-automation-id="FIRST_TAB">Tab One Content</span>
                         </Tab>
@@ -575,7 +575,7 @@ describe('<Tabs />', () => {
                 it('should select the first selectable tab', () => {
                     const onChange = sinon.spy();
                     const {driver} = renderRTL(
-                        <Tabs orientation="horizontal-top" value="3" onChange={onChange}>
+                        <Tabs orientation="horizontalTop" value="3" onChange={onChange}>
                             <Tab label="Tab One" value="0" disabled>
                                 <span data-automation-id="FIRST_TAB">Tab One Content</span>
                             </Tab>
@@ -600,7 +600,7 @@ describe('<Tabs />', () => {
                 it('should not select when the first tab is selected', () => {
                     const onChange = sinon.spy();
                     const {driver} = renderRTL(
-                        <Tabs orientation="horizontal-top" value="0" onChange={onChange}>
+                        <Tabs orientation="horizontalTop" value="0" onChange={onChange}>
                             <Tab label="Tab One" value="0">
                                 <span data-automation-id="FIRST_TAB">Tab One Content</span>
                             </Tab>
@@ -731,7 +731,7 @@ describe('<Tabs />', () => {
         it('should select the first selectable tab when no tabs are selected', () => {
             const onChange = sinon.spy();
             const {driver} = render(
-                <Tabs orientation="horizontal-top" value="" onChange={onChange}>
+                <Tabs orientation="horizontalTop" value="" onChange={onChange}>
                     <Tab label="Tab One" value="0">
                         <span data-automation-id="FIRST_TAB">Tab One Content</span>
                     </Tab>
