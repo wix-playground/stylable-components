@@ -139,16 +139,20 @@ Tabs:rtl:verticalBefore::tabList:focused {
     border-left: value(borderDefault);
 }
 
-Tabs:not(:rtl):verticalBefore::tabList Option:selected:hover,
-Tabs:not(:rtl):verticalBefore::tabList Option:selected {
+Tabs:verticalBefore::tabList Option:selected
+Tabs:verticalBefore::tabList:focused Option:selected
+Tabs:verticalBefore::tabList Option:selected:hover,
+Tabs:verticalBefore::tabList:focused Option:selected:hover {
     border: none;
     border-right: value(borderStyle) 2px value(color_Focus);
     padding: 18px;
     padding-right: 16px;
 }
 
+Tabs:rtl:verticalBefore::tabList Option:selected,
+Tabs:rtl:verticalBefore::tabList:focused Option:selected,
 Tabs:rtl:verticalBefore::tabList Option:selected:hover,
-Tabs:rtl:verticalBefore::tabList Option:selected {
+Tabs:rtl:verticalBefore::tabList:focused Option:selected:hover {
     border: none;
     border-left: value(borderStyle) 2px value(color_Focus);
     padding: 18px;
@@ -174,16 +178,20 @@ Tabs:rtl:verticalAfter::tabList:focused {
     border-right: value(borderDefault);
 }
 
-Tabs:not(:rtl):verticalAfter::tabList Option:selected:hover,
-Tabs:not(:rtl):verticalAfter::tabList Option:selected {
+Tabs:verticalAfter::tabList Option:selected,
+Tabs:verticalAfter::tabList:focused Option:selected,
+Tabs:verticalAfter::tabList Option:selected:hover,
+Tabs:verticalAfter::tabList:focused Option:selected:hover {
     border: none;
     border-left: value(borderStyle) 2px value(color_Focus);
     padding: 18px;
     padding-left: 16px;
 }
 
+Tabs:rtl:verticalAfter::tabList Option:selected,
+Tabs:rtl:verticalAfter::tabList:focused Option:selected,
 Tabs:rtl:verticalAfter::tabList Option:selected:hover,
-Tabs:rtl:verticalAfter::tabList Option:selected {
+Tabs:rtl:verticalAfter::tabList:focused Option:selected:hover {
     border: none;
     border-right: value(borderStyle) 2px value(color_Focus);
     padding: 18px;
