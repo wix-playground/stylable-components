@@ -192,7 +192,6 @@ export class SliderView extends React.Component<SliderViewProps, {}> {
                         disableGlobalEvents
                         position={this.props.tooltipPosition}
                         onTop={index === this.props.currentHoverIndex}
-                        data-automation-id={'SLIDER-TOOLTIP-' + index}
                         children={this.props.relativeValue[index]}
                     />
                 }
