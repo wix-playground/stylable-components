@@ -81,7 +81,7 @@ export class Calendar extends React.Component<CalendarProps> {
 
     private getHeader = () => {
         if (this.state.showYearView) {
-            const decade = `${this.state.viewDate.getFullYear() - 5}-${this.state.viewDate.getFullYear() + 5}`
+            const decade = `${this.state.viewDate.getFullYear() - 5}-${this.state.viewDate.getFullYear() + 5}`;
             return (
                 <span data-automation-id="HEADER_DATE">
                     {decade}
@@ -257,7 +257,7 @@ export class Calendar extends React.Component<CalendarProps> {
                     {year}
                 </span>
             );
-        };
+        }
 
         return yearArray;
     }
@@ -333,7 +333,7 @@ export class Calendar extends React.Component<CalendarProps> {
     private onSelectYear: React.EventHandler<React.SyntheticEvent<Element>> = event => {
         event.preventDefault();
 
-        const date = new Date(parseInt((event.target as HTMLSpanElement).textContent!),
+        const date = new Date(parseInt((event.target as HTMLSpanElement).textContent!, 10),
             this.state.viewDate.getMonth(),
             this.state.viewDate.getDate());
 
@@ -350,7 +350,8 @@ export class Calendar extends React.Component<CalendarProps> {
                 ? new Date(this.state.viewDate.getFullYear() + 10, this.state.viewDate.getMonth(), 1)
                 : new Date(this.state.viewDate.getFullYear() + 1, this.state.viewDate.getMonth(), 1);
         } else {
-            const nextDate: Date = getMonthFromOffset(new Date(this.props.value.getFullYear(), this.props.value.getMonth(), 1), 1);
+            const nextDate: Date = getMonthFromOffset(
+                new Date(this.props.value.getFullYear(), this.props.value.getMonth(), 1), 1);
             this.props.updateDropdownDate(nextDate);
         }
     }
@@ -363,7 +364,8 @@ export class Calendar extends React.Component<CalendarProps> {
                 ? new Date(this.state.viewDate.getFullYear() - 10, this.state.viewDate.getMonth(), 1)
                 : new Date(this.state.viewDate.getFullYear() - 1, this.state.viewDate.getMonth(), 1);
         } else {
-            const nextDate: Date = getMonthFromOffset(new Date(this.props.value.getFullYear(), this.props.value.getMonth(), 1), -1);
+            const nextDate: Date = getMonthFromOffset(
+                new Date(this.props.value.getFullYear(), this.props.value.getMonth(), 1), -1);
             this.props.updateDropdownDate(nextDate);
         }
     }
