@@ -2,7 +2,7 @@ import * as React from 'react';
 import {ClientRenderer, expect, selectDom, simulate, sinon, trigger, waitForDom as gWaitForDom} from 'test-drive-react';
 import {AutoCompleteDemo} from '../../demo/components/auto-complete.demo';
 import {AutoComplete} from '../../src';
-import {WithTheme} from '../utils';
+import {sleep} from '../utils';
 
 const autoComp = 'AUTO_COMPLETE';
 const autoCompDemo = autoComp + '_DEMO';
@@ -111,23 +111,20 @@ describe('<AutoComplete />', () => {
     });
 
     it('places the caret inside the input and centers it', async () => {
-        const ThemedAutoComplete = WithTheme(<AutoComplete />);
-        const {select, waitForDom} = clientRenderer.render(<ThemedAutoComplete/>);
+        const {select, waitForDom} = clientRenderer.render(<AutoComplete/>);
 
         await waitForDom(() => {
-            const autocomplete = select(autoComp)!;
             const input = select(autoComp, autoCompInput)!;
             const caret = select(autoComp, autoComp + '_CARET')!;
 
-            expect(caret).to.be.insideOf(autocomplete);
+            expect(caret).to.be.insideOf(input);
             expect([input, caret]).to.be.verticallyAligned('center');
         });
     });
 
     it('calls the onOpenStateChange event when clicking on the caret', async () => {
         const onOpenStateChange = sinon.spy();
-        const ThemedAutoComplete = WithTheme(<AutoComplete onOpenStateChange={onOpenStateChange} />);
-        const {select, waitForDom} = clientRenderer.render(<ThemedAutoComplete />);
+        const {select, waitForDom} = clientRenderer.render(<AutoComplete onOpenStateChange={onOpenStateChange}/>);
 
         await waitForDom(() => expect(select(autoComp, autoComp + '_CARET')).to.be.present());
         simulate.click(select(autoComp, autoComp + '_CARET'));
@@ -160,6 +157,67 @@ describe('<AutoComplete />', () => {
         await bodyWaitForDom(() => {
             expect(onOpenStateChange).to.have.been.calledOnce;
             expect(onOpenStateChange).to.have.been.calledWithMatch({value: true});
+        });
+    });
+
+    it('does not show suggestions if the number of characters is smaller than minCharacters', async () => {
+        const prefix = 'P';
+        const {waitForDom} = clientRenderer.render(
+            <AutoComplete open dataSource={items} minCharacters={2} value={prefix} />
+        );
+
+        await waitForDom(() => expect(bodySelect('LIST')).to.be.absent());
+    });
+
+    it('shows suggestions if the number of characters is larger than minCharacters', async () => {
+        const prefix = 'Pa';
+        clientRenderer.render(
+            <AutoComplete open dataSource={items} minCharacters={2} value={prefix} />
+        );
+
+        await bodyWaitForDom(() => expect(bodySelect('LIST')).to.be.present());
+    });
+
+    it('shows the correct amount of results according to maxShownSuggestions', async () => {
+        clientRenderer.render(
+            <AutoComplete open dataSource={items} maxShownSuggestions={2} />
+        );
+
+        await bodyWaitForDom(() => expect(bodySelect('LIST')!.children.length).to.equal(2));
+    });
+
+    it('disables the autocomplete if the prop is passed', async () => {
+        const {select, waitForDom} = clientRenderer.render(<AutoComplete disabled />);
+
+        await waitForDom(() => expect(select(autoCompInput)).to.have.attribute('disabled'));
+    });
+
+    describe('Accessibility', () => {
+        it('gives the correct roles to the components', async () => {
+            const {select, waitForDom} = clientRenderer.render(<AutoComplete />);
+
+            await waitForDom(() => {
+                expect(select(autoCompInput)).to.have.attribute('role', 'textbox');
+                expect(select(autoComp)).to.have.attribute('role', 'combobox');
+            });
+        });
+
+        it('gives the correct aria attribues', async () => {
+            const {select, waitForDom} = clientRenderer.render(<AutoComplete />);
+
+            await waitForDom(() => {
+                expect(select(autoCompInput)).to.have.attribute('aria-autocomplete', 'list');
+                expect(select(autoComp)).to.have.attribute('aria-haspopup', 'true');
+                expect(select(autoComp)).to.have.attribute('aria-expanded', 'false');
+            });
+        });
+
+        it('sets the aria-expanded to true when open', async () => {
+            const {select, waitForDom} = clientRenderer.render(<AutoComplete open/>);
+
+            await waitForDom(() => {
+                expect(select(autoComp)).to.have.attribute('aria-expanded', 'true');
+            });
         });
     });
 });
