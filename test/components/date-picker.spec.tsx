@@ -727,8 +727,6 @@ describe('The DatePicker Component', () => {
             });
         });
 
-
-
         it('should allow disabling weekends', async () => {
             const {driver: datePicker, waitForDom} = clientRenderer.render(
                 <DatePicker
