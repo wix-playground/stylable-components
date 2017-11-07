@@ -35,7 +35,7 @@ export class TabsDemo extends React.Component {
                                         <p>Tab Two Content</p>
                                     </Tab>
                                     <Tab label="Tab Three" value="2">
-                                        <p>Tab Three Content</p>
+                                        <ALotOfText />
                                     </Tab>
                                     <Tab label="Tab Four" value="3" disabled>
                                         <p>Tab Four Content</p>
@@ -52,7 +52,7 @@ export class TabsDemo extends React.Component {
                                             <p>Tab Two Content</p>
                                         </Tab>
                                         <Tab label="Tab Three" value="2">
-                                            <p>Tab Three Content</p>
+                                            <ALotOfText />
                                         </Tab>
                                         <Tab label="Tab Four" value="3" disabled>
                                             <p>Tab Four Content</p>
@@ -76,7 +76,7 @@ export class TabsDemo extends React.Component {
                                         <p>Tab Two Content</p>
                                     </Tab>
                                     <Tab label="Tab Three" value="2">
-                                        <p>Tab Three Content</p>
+                                        <ALotOfText />
                                     </Tab>
                                     <Tab label="Tab Four" value="3" disabled>
                                         <p>Tab Four Content</p>
@@ -97,7 +97,7 @@ export class TabsDemo extends React.Component {
                                             <p>Tab Two Content</p>
                                         </Tab>
                                         <Tab label="Tab Three" value="2">
-                                            <p>Tab Three Content</p>
+                                            <ALotOfText />
                                         </Tab>
                                         <Tab label="Tab Four" value="3" disabled>
                                             <p>Tab Four Content</p>
@@ -121,7 +121,7 @@ export class TabsDemo extends React.Component {
                                         <p>Tab Two Content</p>
                                     </Tab>
                                     <Tab label="Tab Three" value="2">
-                                        <p>Tab Three Content</p>
+                                        <ALotOfText />
                                     </Tab>
                                     <Tab label="Tab Four" value="3" disabled>
                                         <p>Tab Four Content</p>
@@ -142,7 +142,7 @@ export class TabsDemo extends React.Component {
                                             <p>Tab Two Content</p>
                                         </Tab>
                                         <Tab label="Tab Three" value="2">
-                                            <p>Tab Three Content</p>
+                                            <ALotOfText />
                                         </Tab>
                                         <Tab label="Tab Four" value="3" disabled>
                                             <p>Tab Four Content</p>
@@ -166,7 +166,7 @@ export class TabsDemo extends React.Component {
                                         <p>Tab Two Content</p>
                                     </Tab>
                                     <Tab label="Tab Three" value="2">
-                                        <p>Tab Three Content</p>
+                                        <ALotOfText />
                                     </Tab>
                                     <Tab label="Tab Four" value="3" disabled>
                                         <p>Tab Four Content</p>
@@ -187,7 +187,7 @@ export class TabsDemo extends React.Component {
                                             <p>Tab Two Content</p>
                                         </Tab>
                                         <Tab label="Tab Three" value="2">
-                                            <p>Tab Three Content</p>
+                                            <ALotOfText />
                                         </Tab>
                                         <Tab label="Tab Four" value="3" disabled>
                                             <p>Tab Four Content</p>
@@ -207,7 +207,7 @@ export class TabsDemo extends React.Component {
                                 <p>Tab Two Content</p>
                             </Tab>
                             <Tab label="Tab Three" value="2">
-                                <p>Tab Three Content</p>
+                                <ALotOfText />
                             </Tab>
                             <Tab label="Tab Four" value="3" disabled>
                                 <p>Tab Four Content</p>
@@ -227,7 +227,7 @@ export class TabsDemo extends React.Component {
                                 <p>Tab Two Content</p>
                             </Tab>
                             <Tab label="Tab Three">
-                                <p>Tab Three Content</p>
+                                <ALotOfText />
                             </Tab>
                             <Tab label="Tab Four" disabled>
                                 <p>Tab Four Content</p>
@@ -242,3 +242,26 @@ export class TabsDemo extends React.Component {
     private handleChange = ({value}: ChangeEvent<string | number | undefined>) =>
         this.setState({value: String(value)})
 }
+
+const ALotOfText = () => (
+    <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+        sed do eiusmod tempor incididunt ut labore et
+        dolore magna aliqua. Tristique risus nec feugiat in.
+        Neque volutpat ac tincidunt vitae semper quis. Morbi
+        blandit cursus risus at ultrices mi tempus imperdiet nulla.
+        Ultrices eros in cursus turpis massa. Posuere urna nec tincidunt
+        praesent semper feugiat nibh sed. Nunc sed blandit libero volutpat
+        sed cras ornare arcu dui. Imperdiet nulla malesuada pellentesque
+        elit eget gravida cum. Viverra adipiscing at in tellus integer
+        feugiat scelerisque varius. Diam sollicitudin tempor id eu nisl.
+        Eu sem integer vitae justo eget magna fermentum iaculis.
+        Elit at imperdiet dui accumsan sit amet nulla facilisi.
+        Aliquam sem et tortor consequat id porta nibh venenatis cras.
+        Gravida quis blandit turpis cursus in hac habitasse platea dictumst.
+        Nunc id cursus metus aliquam eleifend mi in nulla posuere.
+        In fermentum et sollicitudin ac orci phasellus. Vitae turpis
+        massa sed elementum tempus egestas sed. Rhoncus mattis rhoncus urna
+        neque viverra. Sodales ut eu sem integer vitae justo eget magna fermentum.
+    </p>
+);
