@@ -20,7 +20,6 @@ export interface TooltipProps {
     hideTrigger?: string;
     showDelay?: number;
     hideDelay?: number;
-    active?: boolean;
     disableGlobalEvents?: boolean;
     onTop?: boolean;
 }
