@@ -640,7 +640,7 @@ describe('<Tabs />', () => {
                 expect(driver.selectTabContent('SECOND_TAB')).to.be.present();
             });
 
-            it('should render the first tab as active when undefined', async () => {
+            it('should render the first tab as active when undefined', () => {
                 const {driver} = render(
                     <Tabs>
                         <Tab label="Tab One">
