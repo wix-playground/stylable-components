@@ -43,7 +43,7 @@ export class CheckBoxTestDriver extends DriverBase {
         return this.select('NATIVE_CHECKBOX');
     }
 
-    public elementHasStylableState(stateName: string): boolean {
+    public hasStylableState(stateName: string): boolean {
         return elementHasStylableState(this.root, baseStyle, stateName);
     }
 }
