@@ -16,17 +16,19 @@ export interface TooltipProps {
     position?: Position;
     id: string;
     open?: boolean;
-    showTrigger?: string;
-    hideTrigger?: string;
+    showTrigger?: string | string[];
+    hideTrigger?: string | string[];
     showDelay?: number;
     hideDelay?: number;
-    disableGlobalEvents?: boolean;
     onTop?: boolean;
+    disableGlobalEvents?: boolean;
+    disableAutoPosition?: boolean;
 }
 
 export interface TooltipState {
     style?: React.CSSProperties;
     open: boolean;
+    position: Position;
 }
 
 const DATA_FOR_ATTRIBUTE = 'data-tooltip-for';
@@ -34,6 +36,13 @@ const DATA_FOR_ATTRIBUTE = 'data-tooltip-for';
 function hasPosition(position: Position, ...candidates: string[]): boolean {
     return candidates.some(item => item === position);
 }
+
+const positions: Position[] = [
+    'top', 'topLeft', 'topRight',
+    'right', 'rightTop', 'rightBottom',
+    'bottom', 'bottomRight', 'bottomLeft',
+    'left', 'leftBottom', 'leftTop'
+];
 
 @stylable(styles)
 class StyledTooltip extends React.Component<TooltipProps, TooltipState> {
@@ -44,35 +53,36 @@ class StyledTooltip extends React.Component<TooltipProps, TooltipState> {
         hideTrigger: 'mouseleave',
         showDelay: 0,
         hideDelay: 0,
-        onTop: false
+        onTop: false,
+        disableAutoPosition: false,
+        disableGlobalEvents: false
     };
 
     private target: HTMLElement | null = null;
+    private tooltip: HTMLElement | null = null;
     private events: string[] = [];
     private timeout?: number;
-    private onWindowResize = debounce(() => {
+    private setStylesDebounce = debounce(() => {
         if (this.state.open) {
             this.setStyles();
         }
-    }, 500);
+    }, 200);
 
     public constructor(props: TooltipProps) {
         super();
         this.state = {
             style: undefined,
-            open: props.open!
+            open: props.open!,
+            position: props.position!
         };
     }
 
     public render() {
-        const {children, position, disableGlobalEvents, onTop} = this.props;
-        const {style, open} = this.state;
-
-        if (!style) {
-            return null;
-        }
+        const {children, disableGlobalEvents, onTop} = this.props;
+        const {style, open, position} = this.state;
         const globalEvents: GlobalEventProps = {
-            resize: this.onWindowResize
+            resize: this.setStylesDebounce,
+            scroll: this.setStylesDebounce
         };
         if (!disableGlobalEvents) {
             globalEvents.mousedown = globalEvents.touchstart = this.hide;
@@ -83,10 +93,13 @@ class StyledTooltip extends React.Component<TooltipProps, TooltipState> {
                 data-automation-id="TOOLTIP"
                 className={`root ${position}`}
                 style={style}
-                style-state={{open, onTop}}
+                style-state={{open, onTop, unplaced: !style}}
             >
                 <GlobalEvent {...globalEvents}/>
-                <div className="tooltip">
+                <div
+                    className="tooltip"
+                    ref={elem => this.tooltip = elem}
+                >
                     {children}
                     <svg className="tail" height="5" width="10" data-automation-id="TOOLTIP_TAIL">
                         <polygon points="0,0 10,0 5,5"/>
@@ -99,15 +112,21 @@ class StyledTooltip extends React.Component<TooltipProps, TooltipState> {
     public componentDidMount() {
         this.setTarget();
         this.bindEvents();
-        this.setStyles();
+        if (this.state.open) {
+            this.setStyles();
+        }
     }
     public componentWillUnmount() {
         window.clearTimeout(this.timeout!);
         this.unbindEvents();
-        this.onWindowResize.clear();
+        this.setStylesDebounce.clear();
     }
     public componentWillReceiveProps(props: TooltipProps) {
-        if (props.id !== this.props.id) {
+        if (
+            props.id !== this.props.id ||
+            props.showTrigger !== this.props.showTrigger ||
+            props.hideTrigger !== this.props.hideTrigger
+        ) {
             this.unbindEvents();
             this.setTarget();
             this.bindEvents();
@@ -129,8 +148,8 @@ class StyledTooltip extends React.Component<TooltipProps, TooltipState> {
             return;
         }
         const {showTrigger, hideTrigger} = this.props;
-        this.events = showTrigger!.split(',')
-            .concat(hideTrigger!.split(','))
+        this.events = ([] as string[])
+            .concat(showTrigger!, hideTrigger!)
             .filter((val, index, arr) => arr.indexOf(val) === index);
         this.events.forEach(event => {
             this.target!.addEventListener(event, this.toggle);
@@ -148,24 +167,55 @@ class StyledTooltip extends React.Component<TooltipProps, TooltipState> {
         if (!this.target) {
             return;
         }
-        const {position} = this.props;
         const rect = this.target!.getBoundingClientRect();
-        let top = rect.top + (window.pageYOffset || document.documentElement.scrollTop);
-        let left = rect.left + (window.pageXOffset || document.documentElement.scrollLeft);
-        if (hasPosition(position!, 'bottom', 'bottomLeft', 'bottomRight', 'leftBottom', 'rightBottom')) {
-            top += rect.height;
+        const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+        const scrollX = window.pageXOffset || document.documentElement.scrollLeft;
+        const rectTop = rect.top + scrollY;
+        const rectLeft = rect.left + scrollX;
+        const tipWidth = this.tooltip!.offsetWidth;
+        const tipHeight = this.tooltip!.offsetHeight;
+        const winWidth = window.innerWidth;
+        const winHeight = window.innerHeight;
+        const index = positions.indexOf(this.props.position!);
+        const orderedPositions = this.props.disableAutoPosition ?
+            [this.props.position!] :
+            positions.slice(index).concat(positions.slice(0, index), this.state.position);
+
+        let top: number = 0;
+        let left: number = 0;
+        let position: Position;
+        for (position of orderedPositions) {
+            top = rectTop;
+            left = rectLeft;
+            if (hasPosition(position, 'bottom', 'bottomLeft', 'bottomRight', 'leftBottom', 'rightBottom')) {
+                top += rect.height;
+            }
+            if (hasPosition(position, 'left', 'right')) {
+                top += rect.height / 2 - tipHeight / 2;
+            }
+            if (hasPosition(position, 'right', 'topRight', 'bottomRight', 'rightTop', 'rightBottom')) {
+                left += rect.width;
+            }
+            if (hasPosition(position, 'top', 'bottom')) {
+                left += rect.width / 2 - tipWidth / 2;
+            }
+            if (hasPosition(position, 'top', 'topLeft', 'topRight', 'leftBottom', 'rightBottom')) {
+                top -= tipHeight;
+            }
+            if (hasPosition(position, 'left', 'topRight', 'bottomRight', 'leftTop', 'leftBottom')) {
+                left -= tipWidth;
+            }
+            if (
+                (left >= scrollX) && (top >= scrollY) &&
+                (left + tipWidth <= scrollX + winWidth) &&
+                (top + tipHeight <= scrollY + winHeight)
+            ) {
+                break;
+            }
         }
-        if (hasPosition(position!, 'left', 'right')) {
-            top += rect.height / 2;
-        }
-        if (hasPosition(position!, 'right', 'topRight', 'bottomRight', 'rightTop', 'rightBottom')) {
-            left += rect.width;
-        }
-        if (hasPosition(position!, 'top', 'bottom')) {
-            left += rect.width / 2;
-        }
+
         const style = {top, left};
-        this.setState({style});
+        this.setState({style, position: position!});
     }
 
     private toggle = (e: Event) => {
@@ -179,7 +229,7 @@ class StyledTooltip extends React.Component<TooltipProps, TooltipState> {
                 (open && hideTrigger!.indexOf(type) !== -1) ||
                 (!open && showTrigger!.indexOf(type) !== -1)
             ) {
-                this.setState({open: !open});
+                this.setState({open: !open}, this.setStyles);
             }
         };
 

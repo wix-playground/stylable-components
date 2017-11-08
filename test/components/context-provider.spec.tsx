@@ -1,185 +1,101 @@
-import * as PropTypes from 'prop-types';
 import * as React from 'react';
-import {findDOMNode} from 'react-dom';
 import {ClientRenderer, expect} from 'test-drive-react';
+
 import {ContextProvider} from '../../src';
+
+const automationId = 'CONTEXT_PROVIDER';
 
 describe('<ContextProvider/>', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
 
-    describe('render with no properties', () => {
-        let root: any;
-        beforeEach(() => {
-            const renderer = clientRenderer.render(<ContextProvider/>);
-            root = findDOMNode(renderer.result as React.ReactInstance);
-        });
-        it('should render div', () => {
-            expect(root).instanceof(HTMLDivElement);
-        });
+    it('renders as a div by default', () => {
+        const {select} = clientRenderer.render(<ContextProvider data-automation-id={automationId} />);
+
+        expect(select(automationId)).to.be.instanceof(HTMLDivElement);
     });
 
-    describe('render with tagName="p" ', () => {
-        let root: any;
-        beforeEach(() => {
-            const renderer = clientRenderer.render(<ContextProvider tagName="p"/>);
-            root = findDOMNode(renderer.result as React.ReactInstance);
-        });
-        it('should render paragraph', () => {
-            expect(root).instanceof(HTMLParagraphElement);
-        });
+    it('allows specifying the root tag element type', () => {
+        const {select} = clientRenderer.render(<ContextProvider tagName="p" data-automation-id={automationId} />);
+
+        expect(select(automationId)).to.be.instanceof(HTMLParagraphElement);
     });
 
-    describe('render with children ', () => {
-        let renderer: any;
-        let root: any;
-        beforeEach(() => {
-            renderer = clientRenderer.render(
-                <ContextProvider>
-                    <div data-automation-id="TEST_DIV">Hello</div>
-                </ContextProvider>
-            );
-            root = findDOMNode(renderer.result as React.ReactInstance);
-        });
-        it('should render child', () => {
-            expect(renderer.select('TEST_DIV')).to.not.null;
-        });
+    it('renders provided children', () => {
+        const {select} = clientRenderer.render(
+            <ContextProvider>
+                <div data-automation-id="CHILD">Hello</div>
+            </ContextProvider>
+        );
+
+        expect(select('CHILD')).to.be.present();
+        expect(select('CHILD')).to.contain.text('Hello');
     });
 
-    describe('render with "style" and "className" ', () => {
-        let renderer: any;
-        let root: any;
-        beforeEach(() => {
-            renderer = clientRenderer.render(
-                <ContextProvider
-                    className="context-div"
-                    style={{width: 10}}
-                />
-            );
-            root = findDOMNode(renderer.result as React.ReactInstance);
-        });
-        it('should have "className"', () => {
-            expect(root).to.have.class('context-div');
-        });
-        it('should have inline styles', () => {
-            expect(root).attr('style', 'width: 10px;');
-        });
+    it('accepts className, style, and dir attributes for the root element', () => {
+        const {select} = clientRenderer.render(
+            <ContextProvider className="context-div" style={{width: 10}} dir="rtl" data-automation-id={automationId} />
+        );
+
+        expect(select(automationId)).to.have.class('context-div');
+        expect(select(automationId)).to.have.attribute('style', 'width: 10px;');
+        expect(select(automationId)).to.have.attribute('dir', 'rtl');
     });
 
-    describe('render with dir="rtl" ', () => {
+    it('passes provided dir via context', () => {
         class Inner extends React.Component {
-            public static contextTypes = {
-                contextProvider: PropTypes.shape({
-                    dir: PropTypes.string
-                })
-            };
+            public static contextTypes = {contextProvider: () => null};
             public render() {
-                return <div data-automation-id="TEST_DIV" dir={this.context.contextProvider.dir}/>;
+                return <div data-automation-id="INNER_DIV" data-dir={this.context.contextProvider.dir} />;
             }
         }
-        let renderer: any;
-        let root: any;
-        beforeEach(() => {
-            renderer = clientRenderer.render(
-                <ContextProvider dir="rtl">
-                    <Inner/>
-                </ContextProvider>
-            );
-            root = findDOMNode(renderer.result as React.ReactInstance);
-        });
-        it('should render component with div="rtl"', () => {
-            expect(root).attr('dir', 'rtl');
-        });
-        it('should pass "dir" as "contextProvider.dir" context property', () => {
-            expect(renderer.select('TEST_DIV')).attr('dir', 'rtl');
-        });
+
+        const {select} = clientRenderer.render(
+            <ContextProvider dir="rtl">
+                <Inner />
+            </ContextProvider>
+        );
+
+        expect(select('INNER_DIV')).to.have.attribute('data-dir', 'rtl');
     });
 
-    // this could not be done since react does not allow to pass Symbol properties
-    // @see https://github.com/facebook/react/issues/7552
-    describe.skip('render with Symbol property', () => {
-        const prop = Symbol();
+    it('passes any additional props via context', () => {
+        const TestComp: React.SFC = ({}, context) => {
+            const {x, y} = context.contextProvider;
+            return <div data-automation-id="TEST_COMP" data-x={x} data-y={y} />;
+        };
+        TestComp.contextTypes = {contextProvider: () => null};
 
-        class Inner extends React.Component {
-            public static contextTypes = {
-                contextProvider: PropTypes.shape({
-                    [prop]: PropTypes.any
-                })
-            };
-            public render() {
-                return <div data-automation-id="TEST_DIV">{this.context.contextProvider[prop]}</div>;
-            }
-        }
+        const {select} = clientRenderer.render(
+            <ContextProvider x={3} y={'test'}>
+                <TestComp />
+            </ContextProvider>
+        );
 
-        let renderer: any;
-        let root: any;
-
-        beforeEach(() => {
-            const props = {
-                [prop]: 'baz',
-                qwe: 123
-            };
-            renderer = clientRenderer.render(
-                <ContextProvider {...props}>
-                    <Inner/>
-                </ContextProvider>
-            );
-            root = findDOMNode(renderer.result as React.ReactInstance);
-        });
-
-        it('should pass the contenxt {contextProvider: {[Symbol]: "baz"}}', () => {
-            expect(renderer.select('TEST_DIV')).text('baz');
-        });
-
+        expect(select('TEST_COMP')).to.have.attribute('data-x', '3');
+        expect(select('TEST_COMP')).to.have.attribute('data-y', 'test');
     });
 
-    describe('nested contextProvider', () => {
-        class Inner extends React.Component<{id: string}> {
-            public static contextTypes = {
-                contextProvider: PropTypes.shape({
-                    dir: PropTypes.string,
-                    x: PropTypes.number
-                })
-            };
-            public render() {
-                return (
-                    <div
-                        data-automation-id={this.props.id}
-                        dir={this.context.contextProvider.dir}
-                        children={this.context.contextProvider.x}
-                    />
-                );
-            }
-        }
+    it('forwards provided context while overwriting with its own values', () => {
+        const TestComp: React.SFC<{id: string}> = ({id}, context) => {
+            const {x, y} = context.contextProvider;
+            return <div data-automation-id={id} data-x={x} data-y={y} />;
+        };
+        TestComp.contextTypes = {contextProvider: () => null};
 
-        let inner1: any;
-        let inner2: any;
-
-        beforeEach(() => {
-            const renderer = clientRenderer.render((
-                <ContextProvider dir="ltr" x={10}>
-                    <Inner id="TEST_DIV_1"/>
-                    <ContextProvider dir="rtl" x={20}>
-                        <Inner id="TEST_DIV_2"/>
-                    </ContextProvider>
+        const {select} = clientRenderer.render(
+            <ContextProvider x={1} y={2}>
+                <TestComp id="TEST_COMP_1" />
+                <ContextProvider x={5}>
+                    <TestComp id="TEST_COMP_2" />
                 </ContextProvider>
-            ));
-            inner1 = renderer.select('TEST_DIV_1');
-            inner2 = renderer.select('TEST_DIV_2');
-        });
+            </ContextProvider>
+        );
 
-        it('first Inner component should have dir="ltr', () => {
-            expect(inner1).attr('dir', 'ltr');
-        });
-        it('first Inner component should have content "10"', () => {
-            expect(inner1).text('10');
-        });
-        it('second Inner component should have dir="rtl', () => {
-            expect(inner2).attr('dir', 'rtl');
-        });
-        it('second Inner component should have content "20"', () => {
-            expect(inner2).text('20');
-        });
+        expect(select('TEST_COMP_1')).to.have.attribute('data-x', '1');
+        expect(select('TEST_COMP_1')).to.have.attribute('data-y', '2');
 
+        expect(select('TEST_COMP_2')).to.have.attribute('data-x', '5');
+        expect(select('TEST_COMP_2')).to.have.attribute('data-y', '2');
     });
 });

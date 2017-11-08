@@ -15,9 +15,9 @@ export interface DayProps extends StylableProps {
     onSelect?(day: Date): void;
 }
 
-@observer
 @stylable(styles)
 @properties
+@observer
 export class Day extends React.Component<DayProps> {
     public render() {
         const styleState = {

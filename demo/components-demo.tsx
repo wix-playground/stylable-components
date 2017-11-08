@@ -12,6 +12,7 @@ import {PopupDemo} from './components/popup-demo';
 import {RadioGroupDemo} from './components/radio-group-demo';
 import {SelectionListDemo} from './components/selection-list-demo';
 import {SliderDemo} from './components/slider-demo';
+import {TabsDemo} from './components/tabs-demo';
 import {TimePickerDemo} from './components/time-picker-demo';
 import {ToggleDemo} from './components/toggle-demo';
 import {TooltipDemo} from './components/tooltip-demo';
@@ -402,6 +403,10 @@ export class ComponentsDemo extends React.Component<DemoProps> {
                 <div>
                     <h2>Modal</h2>
                     <ModalDemo />
+                </div>
+                <div>
+                    <h2>Tabs</h2>
+                    <TabsDemo />
                 </div>
             </div>
         );
