@@ -1,8 +1,9 @@
 import * as React from 'react';
-import {properties, stylable} from 'wix-react-tools';
+import {globalId, properties, stylable} from 'wix-react-tools';
 import {FormInputProps} from '../../types/forms';
 import {last, noop} from '../../utils';
 import {GlobalEvent} from '../global-event';
+import {Tooltip} from '../tooltip';
 import {
     getPositionProperty,
     getSizeProperty
@@ -20,7 +21,6 @@ import {
     TooltipPosition
 } from './slider-types';
 import style from './slider.st.css';
-import {Tooltip} from './tooltip';
 
 export interface SliderViewProps extends FormInputProps<number[], string>, properties.Props {
     relativeValue: number[];
@@ -154,6 +154,7 @@ export class SliderView extends React.Component<SliderViewProps, {}> {
     }
 
     private getHandles(): JSX.Element[] {
+        const idPrefix = `slider-tip-${globalId.getRootId(this)}-`;
         return this.props.relativeValue!.map((value, index) => (
             <a
                 ref={el => this.focusableElements[index] = el as HTMLElement}
@@ -179,15 +180,18 @@ export class SliderView extends React.Component<SliderViewProps, {}> {
                 aria-valuemax={`${this.props.max}`}
                 aria-valuenow={`${this.props.value}`}
                 tabIndex={this.props.disabled ? -1 : 0}
+                data-tooltip-for={idPrefix + index}
 
                 key={index}
             >
                 {this.props.displayTooltip &&
                     <Tooltip
-                        open={this.props.currentHoverIndex === index || this.props.currentHandleIndex === index}
+                        id={idPrefix + index}
+                        showTrigger={['focus', 'mouseenter']}
+                        hideTrigger={index === this.props.currentHandleIndex ? 'blur' : ['blur', 'mouseleave']}
+                        disableGlobalEvents
                         position={this.props.tooltipPosition}
-                        active={index === this.props.currentHoverIndex}
-                        data-automation-id={'SLIDER-TOOLTIP-' + index}
+                        onTop={index === this.props.currentHoverIndex}
                         children={this.props.relativeValue[index]}
                     />
                 }

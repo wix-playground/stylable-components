@@ -2,7 +2,8 @@ import * as debounce from 'debounce';
 import * as React from 'react';
 import {stylable} from 'wix-react-tools';
 
-import {GlobalEvent} from '../global-event';
+import {warnOnce} from '../../utils';
+import {GlobalEvent, GlobalEventProps} from '../global-event';
 import {Portal} from '../portal';
 import styles from './tooltip.st.css';
 
@@ -19,8 +20,9 @@ export interface TooltipProps {
     hideTrigger?: string | string[];
     showDelay?: number;
     hideDelay?: number;
-    disableAutoPosition?: boolean;
+    onTop?: boolean;
     disableGlobalEvents?: boolean;
+    disableAutoPosition?: boolean;
 }
 
 export interface TooltipState {
@@ -28,6 +30,8 @@ export interface TooltipState {
     open: boolean;
     position: Position;
 }
+
+const DATA_FOR_ATTRIBUTE = 'data-tooltip-for';
 
 function hasPosition(position: Position, ...candidates: string[]): boolean {
     return candidates.some(item => item === position);
@@ -49,6 +53,7 @@ class StyledTooltip extends React.Component<TooltipProps, TooltipState> {
         hideTrigger: 'mouseleave',
         showDelay: 0,
         hideDelay: 0,
+        onTop: false,
         disableAutoPosition: false,
         disableGlobalEvents: false
     };
@@ -73,9 +78,9 @@ class StyledTooltip extends React.Component<TooltipProps, TooltipState> {
     }
 
     public render() {
-        const {children, disableGlobalEvents} = this.props;
+        const {children, disableGlobalEvents, onTop} = this.props;
         const {style, open, position} = this.state;
-        const globalEvents: any = {
+        const globalEvents: GlobalEventProps = {
             resize: this.setStylesDebounce,
             scroll: this.setStylesDebounce
         };
@@ -88,7 +93,7 @@ class StyledTooltip extends React.Component<TooltipProps, TooltipState> {
                 data-automation-id="TOOLTIP"
                 className={`root ${position}`}
                 style={style}
-                style-state={{open, unplaced: !style}}
+                style-state={{open, onTop, unplaced: !style}}
             >
                 <GlobalEvent {...globalEvents}/>
                 <div
@@ -126,11 +131,16 @@ class StyledTooltip extends React.Component<TooltipProps, TooltipState> {
             this.setTarget();
             this.bindEvents();
         }
-        this.setStyles();
+        if (this.state.open) {
+            this.setStyles();
+        }
     }
 
     private setTarget() {
-        this.target = document.querySelector(`[data-tooltip-for=${this.props.id}]`) as HTMLElement;
+        this.target = document.querySelector(`[${DATA_FOR_ATTRIBUTE}=${this.props.id}]`) as HTMLElement;
+        if (!this.target) {
+            warnOnce(`There is no anchor with "${DATA_FOR_ATTRIBUTE}=%s"`, this.props.id);
+        }
     }
 
     private bindEvents() {
