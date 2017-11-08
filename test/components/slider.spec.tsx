@@ -23,7 +23,7 @@ import {
 import styles from '../../src/components/slider/slider.st.css';
 import {ChangeEvent} from '../../src/types/events';
 import {SliderContextProvierDriver, SliderDriver, SliderEventCoordinates, WindowStub} from '../../test-kit';
-import {skipItIfTouch} from '../utils';
+import {skipItIfTouch, WithTheme, WithThemeDAID} from '../utils';
 
 let environment: WindowStub;
 
@@ -104,7 +104,15 @@ function getRenderedSlider(
             />
         );
     const driver = context ? SliderContextProvierDriver : SliderDriver;
-    return clientRenderer.render(slider).withDriver(driver);
+    const ThemedContainer = WithTheme();
+    const {select} = clientRenderer.render(<ThemedContainer />);
+    const themedContainer = select(WithThemeDAID) as HTMLDivElement;
+    return clientRenderer
+        .render(
+            slider,
+            themedContainer
+        )
+        .withDriver(driver);
 }
 
 function withValueMinMax(
@@ -863,7 +871,6 @@ function keyboard(
 
 describe('<Slider />', () => {
     const clientRenderer = new ClientRenderer();
-
     beforeEach(() => {
         environment = new WindowStub();
     });
@@ -880,7 +887,11 @@ describe('<Slider />', () => {
         let driver: any;
 
         beforeEach(() => {
-            const rendered = clientRenderer.render(<Slider />).withDriver(SliderDriver);
+            const rendered = getRenderedSlider(
+                clientRenderer,
+                {},
+                context
+            );
             waitForDom = rendered.waitForDom;
             driver = rendered.driver;
         });
@@ -915,12 +926,14 @@ describe('<Slider />', () => {
         let driver: any;
 
         beforeEach(() => {
-            const rendered = clientRenderer.render(
-                <Slider
-                    min={min}
-                    max={max}
-                />
-            ).withDriver(SliderDriver);
+            const rendered = getRenderedSlider(
+                clientRenderer,
+                {
+                    min,
+                    max
+                },
+                context
+            );
             waitForDom = rendered.waitForDom;
             driver = rendered.driver;
         });
@@ -956,13 +969,15 @@ describe('<Slider />', () => {
         const max = 10;
 
         it('should normalize value that less than min to min', async () => {
-            const rendered = clientRenderer.render(
-                <Slider
-                    value={valueLessThenMin}
-                    min={min}
-                    max={max}
-                />
-            ).withDriver(SliderDriver);
+            const rendered = getRenderedSlider(
+                clientRenderer,
+                {
+                    value: valueLessThenMin,
+                    min,
+                    max
+                },
+                context
+            );
 
             const waitForDom = rendered.waitForDom;
             const driver = rendered.driver;
@@ -974,13 +989,15 @@ describe('<Slider />', () => {
         });
 
         it('should normalize value that greater than max to max', async () => {
-            const rendered = clientRenderer.render(
-                <Slider
-                    value={valueGreaterThenMax}
-                    min={min}
-                    max={max}
-                />
-            ).withDriver(SliderDriver);
+            const rendered = getRenderedSlider(
+                clientRenderer,
+                {
+                    value: valueGreaterThenMax,
+                    min,
+                    max
+                },
+                context
+            );
 
             const waitForDom = rendered.waitForDom;
             const driver = rendered.driver;
@@ -1006,16 +1023,18 @@ describe('<Slider />', () => {
             onChange = sinon.spy();
             onInput = sinon.spy();
 
-            const rendered = clientRenderer.render(
-                <Slider
-                    value={valueOutOfStep}
-                    min={min}
-                    max={max}
-                    step={step}
-                    onChange={onChange}
-                    onInput={onInput}
-                />
-            ).withDriver(SliderDriver);
+            const rendered = getRenderedSlider(
+                clientRenderer,
+                {
+                    value: valueOutOfStep,
+                    min,
+                    max,
+                    step,
+                    onChange,
+                    onInput
+                },
+                context
+            );
 
             waitForDom = rendered.waitForDom;
             driver = rendered.driver;
@@ -1100,15 +1119,16 @@ describe('<Slider />', () => {
             const min = 0;
             const max = 10;
             const step = 5;
-            const rendered = clientRenderer.render(
-                <Slider
-                    value={value}
-                    min={min}
-                    max={max}
-                    step={step}
-                    displayStopMarks={true}
-                />
-            ).withDriver(SliderDriver);
+            const rendered = getRenderedSlider(
+                clientRenderer,
+                {
+                    value,
+                    min,
+                    max,
+                    step,
+                    displayStopMarks: true
+                }
+            );
             const waitForDom: (expectation: () => void) => Promise<void> = rendered.waitForDom;
             const driver = rendered.driver;
 
@@ -1125,15 +1145,16 @@ describe('<Slider />', () => {
             const min = 0;
             const max = 10;
             const step = 2;
-            const rendered = clientRenderer.render(
-                <Slider
-                    value={value}
-                    min={min}
-                    max={max}
-                    step={step}
-                    displayStopMarks={true}
-                />
-            ).withDriver(SliderDriver);
+            const rendered = getRenderedSlider(
+                clientRenderer,
+                {
+                    value,
+                    min,
+                    max,
+                    step,
+                    displayStopMarks: true
+                }
+            );
             const waitForDom: (expectation: () => void) => Promise<void> = rendered.waitForDom;
             const driver = rendered.driver;
 
@@ -1158,13 +1179,14 @@ describe('<Slider />', () => {
         let driver: any;
         beforeEach(() => {
             onChange = sinon.spy();
-            const rendered = clientRenderer.render(
-                <Slider
-                    value={50}
-                    step={0}
-                    onChange={onChange}
-                />
-            ).withDriver(SliderDriver);
+            const rendered = getRenderedSlider(
+                clientRenderer,
+                {
+                    value: 50,
+                    step: 0,
+                    onChange
+                }
+            );
             driver = rendered.driver;
         });
 
@@ -1197,15 +1219,16 @@ describe('<Slider />', () => {
 
         beforeEach(() => {
             onChange = sinon.spy();
-            const rendered = clientRenderer.render(
-                <Slider
-                    value={value}
-                    min={min}
-                    max={max}
-                    onChange={onChange}
-                    disabled={true}
-                />
-            ).withDriver(SliderDriver);
+            const rendered = getRenderedSlider(
+                clientRenderer,
+                {
+                    value,
+                    min,
+                    max,
+                    onChange,
+                    disabled: true
+                }
+            );
             waitForDom = rendered.waitForDom;
             driver = rendered.driver;
         });
@@ -1234,14 +1257,15 @@ describe('<Slider />', () => {
         const label = 'Simple Slider';
 
         it('slider should has title and aria-label equal to passed label value', async () => {
-            const rendered = clientRenderer.render(
-                <Slider
-                    value={value}
-                    min={min}
-                    max={max}
-                    label={label}
-                />
-            ).withDriver(SliderDriver);
+            const rendered = getRenderedSlider(
+                clientRenderer,
+                {
+                    value,
+                    min,
+                    max,
+                    label
+                }
+            );
             const waitForDom: (expectation: () => void) => Promise<void> = rendered.waitForDom;
             const driver = rendered.driver;
 
@@ -1259,14 +1283,15 @@ describe('<Slider />', () => {
         const name = 'Simple Slider';
 
         it('native input should has name equal to passed name value', async () => {
-            const rendered = clientRenderer.render(
-                <Slider
-                    value={value}
-                    min={min}
-                    max={max}
-                    name={name}
-                />
-            ).withDriver(SliderDriver);
+            const rendered = getRenderedSlider(
+                clientRenderer,
+                {
+                    value,
+                    min,
+                    max,
+                    name
+                }
+            );
             const waitForDom: (expectation: () => void) => Promise<void> = rendered.waitForDom;
             const driver = rendered.driver;
 
@@ -1282,14 +1307,15 @@ describe('<Slider />', () => {
         const max = 10;
 
         it('native input should has required attribute equal to true', async () => {
-            const rendered = clientRenderer.render(
-                <Slider
-                    value={value}
-                    min={min}
-                    max={max}
-                    required={true}
-                />
-            ).withDriver(SliderDriver);
+            const rendered = getRenderedSlider(
+                clientRenderer,
+                {
+                    value,
+                    min,
+                    max,
+                    required: true
+                }
+            );
             const waitForDom: (expectation: () => void) => Promise<void> = rendered.waitForDom;
             const driver = rendered.driver;
 
@@ -1996,13 +2022,23 @@ describe('<Slider /> type Range', () => {
     rangeWithDisabledCross(clientRenderer, AXES.yReverse);
 
 });
-function checkDemoSlider(clientRenderer: ClientRenderer, id: string, numberOfHandles: number = 1) {
+
+function checkDemoSlider(
+    clientRenderer: ClientRenderer,
+    id: string, numberOfHandles: number = 1
+) {
     describe(`Slider Demo. ${id}`, () => {
         let select: <T extends Element>(...selectors: string[]) => T | null;
         let waitForDom: (expectation: () => void) => Promise<void>;
+        const ThemedContainer = WithTheme();
+        const themedContainerSelect = clientRenderer.render(<ThemedContainer />);
+        const themedContainer = themedContainerSelect.select(WithThemeDAID) as HTMLDivElement;
 
-        beforeEach(() => {
-            const render = clientRenderer.render(<SliderDemo/>);
+        before(() => {
+            const render = clientRenderer.render(
+                <SliderDemo/>,
+                themedContainer
+            );
             select = render.select;
             waitForDom = render.waitForDom;
         });
@@ -2034,21 +2070,13 @@ function checkDemoSlider(clientRenderer: ClientRenderer, id: string, numberOfHan
         });
     });
 }
+
 describe('<SliderDemo />', () => {
     const clientRenderer = new ClientRenderer();
-    let render;
 
-    beforeEach(() => {
-        render = clientRenderer.render(<SliderDemo/>);
-    });
-
-    afterEach(() => {
+    after(() => {
         clientRenderer.cleanup();
     });
-
-    checkDemoSlider(clientRenderer, 'SLIDER_DEFAULT');
-    checkDemoSlider(clientRenderer, 'SLIDER_DISABLED');
-    checkDemoSlider(clientRenderer, 'SLIDER_WITH_STEP');
 
     checkDemoSlider(clientRenderer, 'SLIDER_ERROR');
     checkDemoSlider(clientRenderer, 'SLIDER_WITH_LABEL');
@@ -2065,10 +2093,6 @@ describe('<SliderDemo />', () => {
     checkDemoSlider(clientRenderer, 'SLIDER_RTL');
     checkDemoSlider(clientRenderer, 'SLIDER_RTL_REVERSE');
     checkDemoSlider(clientRenderer, 'SLIDER_RTL_MARKS');
-
-    checkDemoSlider(clientRenderer, 'RANGE_SLIDER', 2);
-    checkDemoSlider(clientRenderer, 'RANGE_SLIDER_DISABLED', 2);
-    checkDemoSlider(clientRenderer, 'RANGE_SLIDER_STEP_MARKS', 2);
 
     checkDemoSlider(clientRenderer, 'RANGE_SLIDER_DISABLE_CROSS', 2);
     checkDemoSlider(clientRenderer, 'RANGE_SLIDER_TOOLTIP', 2);
