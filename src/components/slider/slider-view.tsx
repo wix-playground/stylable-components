@@ -187,8 +187,8 @@ export class SliderView extends React.Component<SliderViewProps, {}> {
                 {this.props.displayTooltip &&
                     <Tooltip
                         id={idPrefix + index}
-                        showTrigger="focus,mouseenter"
-                        hideTrigger={index === this.props.currentHandleIndex ? 'blur' : 'blur,mouseleave'}
+                        showTrigger={['focus', 'mouseenter']}
+                        hideTrigger={index === this.props.currentHandleIndex ? 'blur' : ['blur', 'mouseleave']}
                         disableGlobalEvents
                         position={this.props.tooltipPosition}
                         onTop={index === this.props.currentHoverIndex}
