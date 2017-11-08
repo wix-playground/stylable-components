@@ -2078,10 +2078,6 @@ describe('<SliderDemo />', () => {
         clientRenderer.cleanup();
     });
 
-    checkDemoSlider(clientRenderer, 'SLIDER_DEFAULT');
-    checkDemoSlider(clientRenderer, 'SLIDER_DISABLED');
-    checkDemoSlider(clientRenderer, 'SLIDER_WITH_STEP');
-
     checkDemoSlider(clientRenderer, 'SLIDER_ERROR');
     checkDemoSlider(clientRenderer, 'SLIDER_WITH_LABEL');
     checkDemoSlider(clientRenderer, 'SLIDER_WITH_TOOLTIP');
@@ -2097,10 +2093,6 @@ describe('<SliderDemo />', () => {
     checkDemoSlider(clientRenderer, 'SLIDER_RTL');
     checkDemoSlider(clientRenderer, 'SLIDER_RTL_REVERSE');
     checkDemoSlider(clientRenderer, 'SLIDER_RTL_MARKS');
-
-    checkDemoSlider(clientRenderer, 'RANGE_SLIDER', 2);
-    checkDemoSlider(clientRenderer, 'RANGE_SLIDER_DISABLED', 2);
-    checkDemoSlider(clientRenderer, 'RANGE_SLIDER_STEP_MARKS', 2);
 
     checkDemoSlider(clientRenderer, 'RANGE_SLIDER_DISABLE_CROSS', 2);
     checkDemoSlider(clientRenderer, 'RANGE_SLIDER_TOOLTIP', 2);
