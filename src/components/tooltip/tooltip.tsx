@@ -15,8 +15,8 @@ export interface TooltipProps {
     position?: Position;
     id: string;
     open?: boolean;
-    showTrigger?: string;
-    hideTrigger?: string;
+    showTrigger?: string | string[];
+    hideTrigger?: string | string[];
     showDelay?: number;
     hideDelay?: number;
     disableAutoPosition?: boolean;
@@ -117,7 +117,11 @@ class StyledTooltip extends React.Component<TooltipProps, TooltipState> {
         this.setStylesDebounce.clear();
     }
     public componentWillReceiveProps(props: TooltipProps) {
-        if (props.id !== this.props.id) {
+        if (
+            props.id !== this.props.id ||
+            props.showTrigger !== this.props.showTrigger ||
+            props.hideTrigger !== this.props.hideTrigger
+        ) {
             this.unbindEvents();
             this.setTarget();
             this.bindEvents();
@@ -134,8 +138,8 @@ class StyledTooltip extends React.Component<TooltipProps, TooltipState> {
             return;
         }
         const {showTrigger, hideTrigger} = this.props;
-        this.events = showTrigger!.split(',')
-            .concat(hideTrigger!.split(','))
+        this.events = ([] as string[])
+            .concat(showTrigger!, hideTrigger!)
             .filter((val, index, arr) => arr.indexOf(val) === index);
         this.events.forEach(event => {
             this.target!.addEventListener(event, this.toggle);
