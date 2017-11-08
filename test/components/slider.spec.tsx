@@ -869,51 +869,6 @@ function keyboard(
     });
 }
 
-function checkDemoSlider(clientRenderer: ClientRenderer, id: string, numberOfHandles: number = 1) {
-    describe(`Slider Demo. ${id}`, () => {
-        let select: <T extends Element>(...selectors: string[]) => T | null;
-        let waitForDom: (expectation: () => void) => Promise<void>;
-
-        beforeEach(() => {
-            const ThemedContainer = WithTheme();
-            const themedContainerSelect = clientRenderer.render(<ThemedContainer />);
-            const themedContainer = themedContainerSelect.select(WithThemeDAID) as HTMLDivElement;
-            const render = clientRenderer.render(
-                <SliderDemo/>,
-                themedContainer
-            );
-            select = render.select;
-            waitForDom = render.waitForDom;
-        });
-
-        it('should render itself', async () => {
-            await waitForDom(() => {
-                expect(select(id)).to.be.present();
-            });
-        });
-        if (numberOfHandles === 1) {
-            it('should render handle', async () => {
-                await waitForDom(() => {
-                    expect(select(id, 'SLIDER-HANDLE-0')).to.be.present();
-                });
-            });
-        } else {
-            for (let i = 0; i < numberOfHandles; i++) {
-                it(`should render handle ${i}`, async () => {
-                    await waitForDom(() => {
-                        expect(select(id, `SLIDER-HANDLE-${i}`)).to.be.present();
-                    });
-                });
-            }
-        }
-        it('should render progress', async () => {
-            await waitForDom(() => {
-                expect(select(id, 'SLIDER-PROGRESS')).to.be.present();
-            });
-        });
-    });
-}
-
 describe('<Slider />', () => {
     const clientRenderer = new ClientRenderer();
     beforeEach(() => {
@@ -2068,15 +2023,58 @@ describe('<Slider /> type Range', () => {
 
 });
 
+function checkDemoSlider(
+    clientRenderer: ClientRenderer,
+    id: string, numberOfHandles: number = 1
+) {
+    describe(`Slider Demo. ${id}`, () => {
+        let select: <T extends Element>(...selectors: string[]) => T | null;
+        let waitForDom: (expectation: () => void) => Promise<void>;
+        const ThemedContainer = WithTheme();
+        const themedContainerSelect = clientRenderer.render(<ThemedContainer />);
+        const themedContainer = themedContainerSelect.select(WithThemeDAID) as HTMLDivElement;
+
+        before(() => {
+            const render = clientRenderer.render(
+                <SliderDemo/>,
+                themedContainer
+            );
+            select = render.select;
+            waitForDom = render.waitForDom;
+        });
+
+        it('should render itself', async () => {
+            await waitForDom(() => {
+                expect(select(id)).to.be.present();
+            });
+        });
+        if (numberOfHandles === 1) {
+            it('should render handle', async () => {
+                await waitForDom(() => {
+                    expect(select(id, 'SLIDER-HANDLE-0')).to.be.present();
+                });
+            });
+        } else {
+            for (let i = 0; i < numberOfHandles; i++) {
+                it(`should render handle ${i}`, async () => {
+                    await waitForDom(() => {
+                        expect(select(id, `SLIDER-HANDLE-${i}`)).to.be.present();
+                    });
+                });
+            }
+        }
+        it('should render progress', async () => {
+            await waitForDom(() => {
+                expect(select(id, 'SLIDER-PROGRESS')).to.be.present();
+            });
+        });
+    });
+}
+
 describe('<SliderDemo />', () => {
     const clientRenderer = new ClientRenderer();
-    let render;
 
-    beforeEach(() => {
-        render = clientRenderer.render(<SliderDemo/>);
-    });
-
-    afterEach(() => {
+    after(() => {
         clientRenderer.cleanup();
     });
 
