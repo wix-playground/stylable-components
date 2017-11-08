@@ -154,7 +154,7 @@ export class SliderView extends React.Component<SliderViewProps, {}> {
     }
 
     private getHandles(): JSX.Element[] {
-        const idPrefix = 'slider-tip-' + globalId.getRootId(this) + '-';
+        const idPrefix = `slider-tip-${globalId.getRootId(this)}-`;
         return this.props.relativeValue!.map((value, index) => (
             <a
                 ref={el => this.focusableElements[index] = el as HTMLElement}
