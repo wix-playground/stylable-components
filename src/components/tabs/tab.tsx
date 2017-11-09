@@ -37,19 +37,25 @@ export const renderTabItem =
 export const renderTabItems = (children: React.ReactNode) =>
     tabElements(children).map(renderTabItem);
 
-export const renderTabContent =
-    (mountInactiveTabs: boolean, selected?: string) =>
-        ({props: {value, children}}: TabElement, index: number) =>
-        selected !== undefined && selected === ensureValue(index, value) ?
-            <div className="tabContent">{children}</div> :
-            mountInactiveTabs ? (
-                <div
-                    className="tabContent"
-                    style-state={{inactive: true}}
-                >
-                    {children}
-                </div>
-            ) : null;
+export const renderTabContent = (
+    mountInactiveTabs: boolean,
+    selected?: string
+) => (
+    {props: {value, children}}: TabElement,
+    index: number
+) => (
+    selected !== undefined && selected === ensureValue(index, value) ?
+        <div key={index} className="tabContent">{children}</div> :
+        mountInactiveTabs ? (
+            <div
+                key={index}
+                className="tabContent"
+                style-state={{inactive: true}}
+            >
+                {children}
+            </div>
+        ) : null
+);
 
 const ensureValue = (index: number, value?: string) =>
     value === undefined ? String(index) : value;
