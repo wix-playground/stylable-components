@@ -3,7 +3,6 @@ import {action, computed, observable, reaction} from 'mobx';
 import {observer} from 'mobx-react';
 import React = require('react');
 import {properties, stylable} from 'wix-react-tools';
-import {Popup} from '../../';
 import {ChangeEvent} from '../../types/events';
 import {FormInputProps} from '../../types/forms';
 import {noop} from '../../utils';
@@ -146,7 +145,7 @@ export class AutoComplete extends React.Component<AutoCompleteProps> {
                     autoComplete="off"
                     autoFocus={this.props.autoFocus}
                     className="input"
-                    data-automation-id="AUTOCOMPLETE_INPUT"
+                    data-automation-id="INPUT"
                     disabled={this.props.disabled}
                     onBlur={this.handleBlur}
                     onChange={this.isEditable ? this.handleInputChange : noop}

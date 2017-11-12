@@ -8,7 +8,7 @@ export class AutoCompleteTestDriver extends DriverBase {
     public static ComponentClass = AutoComplete;
 
     public get input(): HTMLInputElement {
-        return this.select('input');
+        return this.select('INPUT');
     }
 
     public get list(): SelectionListTestDriver {

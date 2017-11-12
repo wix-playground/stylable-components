@@ -2,11 +2,7 @@ import * as React from 'react';
 import {ClientRenderer, expect, selectDom, simulate, sinon, trigger, waitForDom as gWaitForDom} from 'test-drive-react';
 import {AutoCompleteDemo} from '../../demo/components/auto-complete.demo';
 import {AutoComplete} from '../../src';
-import {sleep} from '../utils';
-
-const autoComp = 'AUTO_COMPLETE';
-const autoCompDemo = autoComp + '_DEMO';
-const autoCompInput = autoComp + '_INPUT';
+import {AutoCompleteTestDriver} from '../../test-kit';
 
 const items = ['Muffins', 'Pancakes', 'Cupcakes', 'Souffles', 'Pasta', 'Soup', 'Caramel', 'Avazim', 'Moses'];
 const bodySelect = selectDom(document.body);
@@ -16,208 +12,211 @@ describe('<AutoComplete />', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
 
-    describe('The autocomplete user', () => {
-        it('types in the input and selects a value', async () => {
-            const {select, waitForDom} = clientRenderer.render(<AutoCompleteDemo />);
-            const prefix = 'P';
-            const filteredItems = items.filter(item => item.startsWith(prefix)).join('');
+    // describe('The autocomplete user', () => {
+    //     it('types in the input and selects a value', async () => {
+    //         const {select, waitForDom} = clientRenderer.render(<AutoCompleteDemo />);
+    //         const prefix = 'P';
+    //         const filteredItems = items.filter(item => item.startsWith(prefix)).join('');
 
-            simulate.click(select(autoComp + '_CARET'));
+    //         simulate.click(select(autoComp + '_CARET'));
 
-            const itemList = bodySelect('LIST')!;
-            await bodyWaitForDom(() => {
-                expect(itemList).to.be.present();
-                expect(itemList.textContent).to.equal(items.join(''));
-            });
+    //         const itemList = bodySelect('LIST')!;
+    //         await bodyWaitForDom(() => {
+    //             expect(itemList).to.be.present();
+    //             expect(itemList.textContent).to.equal(items.join(''));
+    //         });
 
-            trigger.change(bodySelect(autoCompInput), prefix);
-            await bodyWaitForDom(() => expect(itemList.textContent).to.equal(filteredItems));
+    //         trigger.change(bodySelect(autoCompInput), prefix);
+    //         await bodyWaitForDom(() => expect(itemList.textContent).to.equal(filteredItems));
 
-            simulate.click(bodySelect('LIST')!.children[0]);
-            await waitForDom(() => {
-                expect(select(autoCompDemo + '_TEXT')).to.have.text('You picked: Pancakes');
-            });
-        });
-    });
+    //         simulate.click(bodySelect('LIST')!.children[0]);
+    //         await waitForDom(() => {
+    //             expect(select(autoCompDemo + '_TEXT')).to.have.text('You picked: Pancakes');
+    //         });
+    //     });
+    // });
 
-    it('renders to the screen', () => {
-        const {select, waitForDom} = clientRenderer.render(<AutoComplete />);
+    it('Renders to the screen', () => {
+        const {driver: autocomplete, waitForDom} = clientRenderer.render(
+            <AutoComplete value="Muffins" />
+        ).withDriver(AutoCompleteTestDriver);
 
         return waitForDom(() => {
-            expect(select(autoComp)).to.be.present();
-            expect(bodySelect('LIST')).to.be.absent();
+            expect(autocomplete.root).to.be.present();
+            expect(autocomplete.input).to.have.value('Muffins');
+            expect(autocomplete.list).to.be.absent();
         });
     });
 
-    it('invokes the onChange when text is entered to label', () => {
-        const onChange = sinon.spy();
-        const {select} = clientRenderer.render(<AutoComplete onChange={onChange}/>);
+    // it('invokes the onChange when text is entered to label', () => {
+    //     const onChange = sinon.spy();
+    //     const {select} = clientRenderer.render(<AutoComplete onChange={onChange}/>);
 
-        select<HTMLInputElement>(autoComp, autoCompInput)!.value = 'abc';
-        simulate.change(select(autoComp, autoCompInput));
+    //     select<HTMLInputElement>(autoComp, autoCompInput)!.value = 'abc';
+    //     simulate.change(select(autoComp, autoCompInput));
 
-        return bodyWaitForDom(() => {
-            expect(onChange).to.have.been.calledOnce;
-            expect(onChange).to.have.been.calledWithMatch({value: 'abc'});
-        });
-    });
+    //     return bodyWaitForDom(() => {
+    //         expect(onChange).to.have.been.calledOnce;
+    //         expect(onChange).to.have.been.calledWithMatch({value: 'abc'});
+    //     });
+    // });
 
-    it('renders the item list if open is given', async () => {
-        clientRenderer.render(<AutoComplete dataSource={items} open/>);
+    // it('renders the item list if open is given', async () => {
+    //     clientRenderer.render(<AutoComplete dataSource={items} open/>);
 
-        await bodyWaitForDom(() => expect(bodySelect('LIST')).to.be.present());
-    });
+    //     await bodyWaitForDom(() => expect(bodySelect('LIST')).to.be.present());
+    // });
 
-    it('renders the items if given', async () => {
-        clientRenderer.render(<AutoComplete open dataSource={items}/>);
+    // it('renders the items if given', async () => {
+    //     clientRenderer.render(<AutoComplete open dataSource={items}/>);
 
-        await bodyWaitForDom(() => expect(bodySelect('LIST')!.children[0]).to.have.text('Muffins'));
-    });
+    //     await bodyWaitForDom(() => expect(bodySelect('LIST')!.children[0]).to.have.text('Muffins'));
+    // });
 
-    it('invokes the onChange when an option is clicked', async () => {
-        const onChange = sinon.spy();
-        clientRenderer.render(
-            <AutoComplete open dataSource={['Cat', 'Dog']} onChange={onChange}/>
-        );
+    // it('invokes the onChange when an option is clicked', async () => {
+    //     const onChange = sinon.spy();
+    //     clientRenderer.render(
+    //         <AutoComplete open dataSource={['Cat', 'Dog']} onChange={onChange}/>
+    //     );
 
-        simulate.click(bodySelect('LIST')!.children[0]);
+    //     simulate.click(bodySelect('LIST')!.children[0]);
 
-        await bodyWaitForDom(() => {
-            expect(onChange).to.have.been.calledOnce;
-            expect(onChange).to.have.been.calledWithMatch({value: 'Cat'});
-        });
-    });
+    //     await bodyWaitForDom(() => {
+    //         expect(onChange).to.have.been.calledOnce;
+    //         expect(onChange).to.have.been.calledWithMatch({value: 'Cat'});
+    //     });
+    // });
 
-    it('displays filtered results according to given value', async () => {
-        const prefix = 'P';
-        const filteredItems = ['Pancakes', 'Pasta'];
-        clientRenderer.render(<AutoComplete open dataSource={items} value={prefix}/>);
-        const itemList = bodySelect('LIST');
+    // it('displays filtered results according to given value', async () => {
+    //     const prefix = 'P';
+    //     const filteredItems = ['Pancakes', 'Pasta'];
+    //     clientRenderer.render(<AutoComplete open dataSource={items} value={prefix}/>);
+    //     const itemList = bodySelect('LIST');
 
-        await bodyWaitForDom(() => {
-            expect(itemList!.textContent).to.equal(filteredItems.join(''));
-        });
-    });
+    //     await bodyWaitForDom(() => {
+    //         expect(itemList!.textContent).to.equal(filteredItems.join(''));
+    //     });
+    // });
 
-    it('ignores case when filtering according to the default filter', async () => {
-        const prefix = 'm';
-        const filteredItems = ['Muffins', 'Moses'];
-        clientRenderer.render(<AutoComplete open dataSource={items} value={prefix}/>);
-        const itemList = bodySelect('LIST');
+    // it('ignores case when filtering according to the default filter', async () => {
+    //     const prefix = 'm';
+    //     const filteredItems = ['Muffins', 'Moses'];
+    //     clientRenderer.render(<AutoComplete open dataSource={items} value={prefix}/>);
+    //     const itemList = bodySelect('LIST');
 
-        await bodyWaitForDom(() => {
-            expect(itemList!.textContent).to.equal(filteredItems.join(''));
-        });
-    });
+    //     await bodyWaitForDom(() => {
+    //         expect(itemList!.textContent).to.equal(filteredItems.join(''));
+    //     });
+    // });
 
-    it('places the caret inside the input and centers it', async () => {
-        const {select, waitForDom} = clientRenderer.render(<AutoComplete/>);
+    // it('places the caret inside the input and centers it', async () => {
+    //     const {select, waitForDom} = clientRenderer.render(<AutoComplete/>);
 
-        await waitForDom(() => {
-            const input = select(autoComp, autoCompInput)!;
-            const caret = select(autoComp, autoComp + '_CARET')!;
+    //     await waitForDom(() => {
+    //         const input = select(autoComp, autoCompInput)!;
+    //         const caret = select(autoComp, autoComp + '_CARET')!;
 
-            expect(caret).to.be.insideOf(input);
-            expect([input, caret]).to.be.verticallyAligned('center');
-        });
-    });
+    //         expect(caret).to.be.insideOf(input);
+    //         expect([input, caret]).to.be.verticallyAligned('center');
+    //     });
+    // });
 
-    it('calls the onOpenStateChange event when clicking on the caret', async () => {
-        const onOpenStateChange = sinon.spy();
-        const {select, waitForDom} = clientRenderer.render(<AutoComplete onOpenStateChange={onOpenStateChange}/>);
+    // it('calls the onOpenStateChange event when clicking on the caret', async () => {
+    //     const onOpenStateChange = sinon.spy();
+    //     const {select, waitForDom} = clientRenderer.render(<AutoComplete onOpenStateChange={onOpenStateChange}/>);
 
-        await waitForDom(() => expect(select(autoComp, autoComp + '_CARET')).to.be.present());
-        simulate.click(select(autoComp, autoComp + '_CARET'));
-        await bodyWaitForDom(() => {
-            expect(onOpenStateChange).to.have.been.calledOnce;
-            expect(onOpenStateChange).to.have.been.calledWithMatch({value: true});
-        });
-    });
+    //     await waitForDom(() => expect(select(autoComp, autoComp + '_CARET')).to.be.present());
+    //     simulate.click(select(autoComp, autoComp + '_CARET'));
+    //     await bodyWaitForDom(() => {
+    //         expect(onOpenStateChange).to.have.been.calledOnce;
+    //         expect(onOpenStateChange).to.have.been.calledWithMatch({value: true});
+    //     });
+    // });
 
-    it('calls the onOpenStateChange event when selecting an item', async () => {
-        const onOpenStateChange = sinon.spy();
-        const {select, waitForDom} = clientRenderer.render(
-            <AutoComplete dataSource={items} open onOpenStateChange={onOpenStateChange}/>
-        );
+    // it('calls the onOpenStateChange event when selecting an item', async () => {
+    //     const onOpenStateChange = sinon.spy();
+    //     const {select, waitForDom} = clientRenderer.render(
+    //         <AutoComplete dataSource={items} open onOpenStateChange={onOpenStateChange}/>
+    //     );
 
-        await waitForDom(() => expect(select(autoComp)).to.be.present());
-        simulate.click(bodySelect('LIST')!.children[0]);
-        await bodyWaitForDom(() => {
-            expect(onOpenStateChange).to.have.been.calledOnce;
-            expect(onOpenStateChange).to.have.been.calledWithMatch({value: false});
-        });
-    });
+    //     await waitForDom(() => expect(select(autoComp)).to.be.present());
+    //     simulate.click(bodySelect('LIST')!.children[0]);
+    //     await bodyWaitForDom(() => {
+    //         expect(onOpenStateChange).to.have.been.calledOnce;
+    //         expect(onOpenStateChange).to.have.been.calledWithMatch({value: false});
+    //     });
+    // });
 
-    it('calls the onOpenStateChange event when first entering a value', async () => {
-        const onOpenStateChange = sinon.spy();
-        const {select, waitForDom} = clientRenderer.render(<AutoComplete onOpenStateChange={onOpenStateChange}/>);
+    // it('calls the onOpenStateChange event when first entering a value', async () => {
+    //     const onOpenStateChange = sinon.spy();
+    //     const {select, waitForDom} = clientRenderer.render(<AutoComplete onOpenStateChange={onOpenStateChange}/>);
 
-        await waitForDom(() => expect(select(autoComp)).to.be.present());
-        trigger.change(bodySelect(autoCompInput), 'M');
-        await bodyWaitForDom(() => {
-            expect(onOpenStateChange).to.have.been.calledOnce;
-            expect(onOpenStateChange).to.have.been.calledWithMatch({value: true});
-        });
-    });
+    //     await waitForDom(() => expect(select(autoComp)).to.be.present());
+    //     trigger.change(bodySelect(autoCompInput), 'M');
+    //     await bodyWaitForDom(() => {
+    //         expect(onOpenStateChange).to.have.been.calledOnce;
+    //         expect(onOpenStateChange).to.have.been.calledWithMatch({value: true});
+    //     });
+    // });
 
-    it('does not show suggestions if the number of characters is smaller than minCharacters', async () => {
-        const prefix = 'P';
-        const {waitForDom} = clientRenderer.render(
-            <AutoComplete open dataSource={items} minCharacters={2} value={prefix} />
-        );
+    // it('does not show suggestions if the number of characters is smaller than minCharacters', async () => {
+    //     const prefix = 'P';
+    //     const {waitForDom} = clientRenderer.render(
+    //         <AutoComplete open dataSource={items} minCharacters={2} value={prefix} />
+    //     );
 
-        await waitForDom(() => expect(bodySelect('LIST')).to.be.absent());
-    });
+    //     await waitForDom(() => expect(bodySelect('LIST')).to.be.absent());
+    // });
 
-    it('shows suggestions if the number of characters is larger than minCharacters', async () => {
-        const prefix = 'Pa';
-        clientRenderer.render(
-            <AutoComplete open dataSource={items} minCharacters={2} value={prefix} />
-        );
+    // it('shows suggestions if the number of characters is larger than minCharacters', async () => {
+    //     const prefix = 'Pa';
+    //     clientRenderer.render(
+    //         <AutoComplete open dataSource={items} minCharacters={2} value={prefix} />
+    //     );
 
-        await bodyWaitForDom(() => expect(bodySelect('LIST')).to.be.present());
-    });
+    //     await bodyWaitForDom(() => expect(bodySelect('LIST')).to.be.present());
+    // });
 
-    it('shows the correct amount of results according to maxShownSuggestions', async () => {
-        clientRenderer.render(
-            <AutoComplete open dataSource={items} maxShownSuggestions={2} />
-        );
+    // it('shows the correct amount of results according to maxShownSuggestions', async () => {
+    //     clientRenderer.render(
+    //         <AutoComplete open dataSource={items} maxShownSuggestions={2} />
+    //     );
 
-        await bodyWaitForDom(() => expect(bodySelect('LIST')!.children.length).to.equal(2));
-    });
+    //     await bodyWaitForDom(() => expect(bodySelect('LIST')!.children.length).to.equal(2));
+    // });
 
-    it('disables the autocomplete if the prop is passed', async () => {
-        const {select, waitForDom} = clientRenderer.render(<AutoComplete disabled />);
+    // it('disables the autocomplete if the prop is passed', async () => {
+    //     const {select, waitForDom} = clientRenderer.render(<AutoComplete disabled />);
 
-        await waitForDom(() => expect(select(autoCompInput)).to.have.attribute('disabled'));
-    });
+    //     await waitForDom(() => expect(select(autoCompInput)).to.have.attribute('disabled'));
+    // });
 
-    describe('Accessibility', () => {
-        it('gives the correct roles to the components', async () => {
-            const {select, waitForDom} = clientRenderer.render(<AutoComplete />);
+    // describe('Accessibility', () => {
+    //     it('gives the correct roles to the components', async () => {
+    //         const {select, waitForDom} = clientRenderer.render(<AutoComplete />);
 
-            await waitForDom(() => {
-                expect(select(autoCompInput)).to.have.attribute('role', 'textbox');
-                expect(select(autoComp)).to.have.attribute('role', 'combobox');
-            });
-        });
+    //         await waitForDom(() => {
+    //             expect(select(autoCompInput)).to.have.attribute('role', 'textbox');
+    //             expect(select(autoComp)).to.have.attribute('role', 'combobox');
+    //         });
+    //     });
 
-        it('gives the correct aria attribues', async () => {
-            const {select, waitForDom} = clientRenderer.render(<AutoComplete />);
+    //     it('gives the correct aria attribues', async () => {
+    //         const {select, waitForDom} = clientRenderer.render(<AutoComplete />);
 
-            await waitForDom(() => {
-                expect(select(autoCompInput)).to.have.attribute('aria-autocomplete', 'list');
-                expect(select(autoComp)).to.have.attribute('aria-haspopup', 'true');
-                expect(select(autoComp)).to.have.attribute('aria-expanded', 'false');
-            });
-        });
+    //         await waitForDom(() => {
+    //             expect(select(autoCompInput)).to.have.attribute('aria-autocomplete', 'list');
+    //             expect(select(autoComp)).to.have.attribute('aria-haspopup', 'true');
+    //             expect(select(autoComp)).to.have.attribute('aria-expanded', 'false');
+    //         });
+    //     });
 
-        it('sets the aria-expanded to true when open', async () => {
-            const {select, waitForDom} = clientRenderer.render(<AutoComplete open/>);
+    //     it('sets the aria-expanded to true when open', async () => {
+    //         const {select, waitForDom} = clientRenderer.render(<AutoComplete open/>);
 
-            await waitForDom(() => {
-                expect(select(autoComp)).to.have.attribute('aria-expanded', 'true');
-            });
-        });
-    });
+    //         await waitForDom(() => {
+    //             expect(select(autoComp)).to.have.attribute('aria-expanded', 'true');
+    //         });
+    //     });
+    // });
 });

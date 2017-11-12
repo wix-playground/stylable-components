@@ -1,3 +1,4 @@
+export * from './auto-complete-driver';
 export * from './checkbox-driver';
 export * from './tree-view-driver';
 export * from './drop-down-driver';
