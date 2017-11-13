@@ -25,8 +25,8 @@ Tooltip identifies element when it is activated. Often used to display brief tex
 | distance    | number (pixels) **(check if it can be replaced w margins)** | -            | -          | Specifies the distance between an anchor & tooltip. |
 | showDelay   | number<br>(milliseconds)                 | -            | -          | Specifies a delay in milliseconds for tooltip to appear. |
 | hideDelay   | number<br>(milliseconds)                 | -            | -          | Specifies a delay in milliseconds for tooltip to disappear. |
-| showTrigger | string                                   | `mouseenter` | -          | Specifies the triggers (multiple triggers separated by comma) that shows tooltip.<br>NOTE: supports multiple triggers.<br>[List of triggers](#list_or_triggers). |
-| hideTrigger | string                                   | `mouseleave` | -          | Specifies the triggers (multiple triggers separated be comma) that hides tooltip.<br>NOTE: supports multiple triggers.<br>[List of triggers](#list_of_triggers). |
+| showTrigger | string | string[]                        | `mouseenter` | -          | Specifies the triggers that shows tooltip.<br>NOTE: supports multiple triggers.<br>[List of triggers](#list_or_triggers). |
+| hideTrigger | string | string[]                        | `mouseleave` | -          | Specifies the triggers that hides tooltip.<br>NOTE: supports multiple triggers.<br>[List of triggers](#list_of_triggers). |
 
 
 

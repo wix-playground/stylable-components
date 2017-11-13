@@ -19,11 +19,13 @@ function getRect(elem: Element) {
     };
 }
 
-class Sample extends React.Component {
+type SampleProps = Partial<TooltipProps> & {style?: React.CSSProperties};
+class Sample extends React.Component<SampleProps> {
     public render() {
         const id = 'id' + Math.random().toString().slice(2);
+        const {style, ...props} = this.props;
         return (
-            <div>
+            <div style={style}>
                 <div
                     data-automation-id="TEST_ANCHOR"
                     data-tooltip-for={id}
@@ -34,7 +36,7 @@ class Sample extends React.Component {
                     id={id}
                     children="I am a tooltip!"
                     open
-                    {...this.props}
+                    {...props}
                 />
             </div>
         );
@@ -65,7 +67,7 @@ class SampleDriver extends DriverBase {
     }
 }
 
-function renderWithProps(clientRenderer: ClientRenderer, props?: Partial<TooltipProps>) {
+function renderWithProps(clientRenderer: ClientRenderer, props?: SampleProps) {
     const {driver} = clientRenderer.render(<Sample {...props}/>).withDriver(SampleDriver);
     return driver;
 }
@@ -84,7 +86,7 @@ function testPosition(position: Position, expectations: any) {
         let anchorBounds: any;
         let tailBounds: any;
         beforeEach(() => {
-            driver = renderWithProps(clientRenderer, {position});
+            driver = renderWithProps(clientRenderer, {position, disableAutoPosition: true});
             tooltipBounds = driver.tooltipBounds;
             anchorBounds = driver.anchorBounds;
             tailBounds = driver.tailBounds;
@@ -164,6 +166,23 @@ function testPosition(position: Position, expectations: any) {
     });
 }
 
+function testAutoPosition(style: React.CSSProperties, positionName: string, expectedPosition: Position) {
+    describe(`render in ${positionName}`, () => {
+        let driver: any;
+
+        const clientRenderer = new ClientRenderer();
+        afterEach(() => clientRenderer.cleanup());
+
+        beforeEach(() => {
+            driver = renderWithProps(clientRenderer, {style});
+        });
+
+        it(`should have "${expectedPosition}" position`, () => {
+            expect(driver.tooltip.position).to.equal(expectedPosition);
+        });
+    });
+}
+
 describe('<Tooltip/>', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
@@ -181,6 +200,15 @@ describe('<Tooltip/>', () => {
     testPosition('rightTop', {positionRight: true, aligmnentTop: true});
     testPosition('rightBottom', {positionRight: true, aligmnentBottom: true});
 
+    testAutoPosition({position: 'fixed', top: 0, left: 0}, 'top left corner', 'rightTop');
+    testAutoPosition({position: 'fixed', top: 0, right: 0}, 'top right corner', 'bottomRight');
+    testAutoPosition({position: 'fixed', bottom: 0, right: 0}, 'bottom right corner', 'topRight');
+    testAutoPosition({position: 'fixed', bottom: 0, left: 0}, 'bottom left corner', 'topLeft');
+    testAutoPosition({position: 'fixed', top: 0, left: '20%'}, 'top center', 'rightTop');
+    testAutoPosition({position: 'fixed', top: '50%', right: 0}, 'right center', 'topRight');
+    testAutoPosition({position: 'fixed', bottom: 0, left: '20%'}, 'bottom center', 'top');
+    testAutoPosition({position: 'fixed', top: '50%', left: 0}, 'left center', 'topLeft');
+
     describe('render with showTrigger and hideTrigger (click)', () => {
         let driver: any;
         beforeEach(() => {
@@ -188,18 +216,18 @@ describe('<Tooltip/>', () => {
         });
 
         it('should not be visible by default', () => {
-            expect(driver.tooltip.content.offsetParent).to.be.null;
+            expect(driver.tooltip.isOpen).to.be.false;
         });
 
         it('should be visible after click', () => {
             driver.dispatchOnAnchor('click');
-            expect(driver.tooltip.content.offsetParent).to.not.null;
+            expect(driver.tooltip.isOpen).to.be.true;
         });
 
         it('should be hidden after click and click', () => {
             driver.dispatchOnAnchor('click');
             driver.dispatchOnAnchor('click');
-            expect(driver.tooltip.content.offsetParent).to.be.null;
+            expect(driver.tooltip.isOpen).to.be.false;
         });
     });
 
@@ -211,20 +239,20 @@ describe('<Tooltip/>', () => {
 
         it('should not be visible right after trigger', () => {
             driver.dispatchOnAnchor('mouseenter');
-            expect(driver.tooltip.content.offsetParent).to.be.null;
+            expect(driver.tooltip.isOpen).to.be.false;
         });
 
         it('should be visible after delay', async () => {
             driver.dispatchOnAnchor('mouseenter');
             await sleep(120);
-            expect(driver.tooltip.content.offsetParent).to.not.null;
+            expect(driver.tooltip.isOpen).to.be.true;
         });
 
         it('should be visible right after hide trigger', async () => {
             driver.dispatchOnAnchor('mouseenter');
             await sleep(120);
             driver.dispatchOnAnchor('mouseleave');
-            expect(driver.tooltip.content.offsetParent).to.not.null;
+            expect(driver.tooltip.isOpen).to.be.true;
         });
 
         it('should not be visible after hide trigger and delay', async () => {
@@ -232,14 +260,15 @@ describe('<Tooltip/>', () => {
             await sleep(120);
             driver.dispatchOnAnchor('mouseleave');
             await sleep(220);
-            expect(driver.tooltip.content.offsetParent).to.be.null;
+            expect(driver.tooltip.isOpen).to.be.false;
         });
 
         it('should not be visible after rapid triggers', async () => {
             driver.dispatchOnAnchor('mouseenter');
             driver.dispatchOnAnchor('mouseleave');
             await sleep(220);
-            expect(driver.tooltip.content.offsetParent).to.be.null;
+            expect(driver.tooltip.isOpen).to.be.false;
         });
     });
+
 });

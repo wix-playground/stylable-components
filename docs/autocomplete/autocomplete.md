@@ -14,7 +14,7 @@ Part of the selectionList family. This is a dropdown menu which incorporates fre
 
 ## Elements
 
-![Image of dropdown elements](./assets/autocomplete/DropdownElements.png)
+![Image of dropdown elements](./assets/autocomplete/AutoComplete.png)
 
 
 ## Properties
@@ -44,7 +44,7 @@ See [SelectionList](../selectionlist/selectionlist.md) for further styles. The f
 | Name | Description |
 | -- | -- |
 | input | The dropdown input container |
-| toggle | The toggle used in the input container |
+| list | The list of possible results |
 
 ### States
 
@@ -112,7 +112,6 @@ The following behaviors are implemented in the SelectionList (relevant when a po
 * Click outside:
   * When popup is closed, focus is lost
   * When popup is opened, focus is lost and popup is closed
-* Click on toggle opens the popup
 * Click on an option (SelectionList) - option is selected and popup is closed
 
 ### Touch Handling
