@@ -245,6 +245,7 @@ export class Calendar extends React.Component<CalendarProps> {
         const yearArray: JSX.Element[] = [];
 
         for (let year = this.state.viewDate.getFullYear() - 5; year <= this.state.viewDate.getFullYear() + 5; year ++) {
+            // Don't show the current year as an option to select from
             if (year === this.props.value.getFullYear()) { continue; }
 
             yearArray.push(
