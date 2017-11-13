@@ -31,16 +31,16 @@ Sliders are great for adjusting settings that reflect intensity levels (volume, 
 | max              | number                                   | 1            | no         | The absolute maximum of the slider's range. |
 | step             | number OR string "any"                   | 1            | no         | Set the slider's step method. If step is set to a number, it causes the **handle** to move in discrete increments. If step is set to the string "any", the **handle** moves along a subjective range. |
 | required         | boolean                                  | false        | no         | Whether or not the slider is required in a form. |
-| disabled         | boolean                        | false        | no         | If true, the slider will not be interactive. |
-| label            | string                         |              | no         | Text to display in accessibility mode.   |
-| name             | string                         |              | no         | The name of the slider. Behaves like the name attribute of an input element. |
-| displayStopMarks | boolean                        | false        | no         | Controls the visibility of the marks.    |
-| displayTooltip   | boolean                        | false        | no         | Controls the visibility of the tooltip.  |
-| tooltipPosition  | enum:<br>'top'<br>'bottom'<br>'left'<br>'right'                                   | 'top'          | no         | Controls the position of the tooltip. |
-| onChange         | function  |        | yes        | Callback function that is fired when the slider's value changed.<br>`(event: {value: number}): void`<br>**event** change event for the component instance.<br>**value** the new value of the slider |
-| onDragStart      | function  |              | no         | Callback function that is fired when the handle has begun to move.<br>`(event: PointerEvent): void`<br>**event**: mouse click down or touch start |
-| onDragStop       | function  |              | no         | Callback function that is fired when the handle has stopped moving.<br>`(event: PointerEvent): void`<br>**event**: mouse click up or touch end |
-| onDrag           | function  |              | no         | Callback function that is fired when the handle is moving.<br>`(event: PointerEvent): void`<br>**event**: mouse move or touch move |
+| disabled         | boolean                                  | false        | no         | If true, the slider will not be interactive. |
+| label            | string                                   |              | no         | Text to display in accessibility mode.   |
+| name             | string                                   |              | no         | The name of the slider. Behaves like the name attribute of an input element. |
+| displayStopMarks | boolean                                  | false        | no         | Controls the visibility of the marks.    |
+| displayTooltip   | boolean                                  | false        | no         | Controls the visibility of the tooltip.  |
+| tooltipPosition  | enum:<br>'top'<br>'bottom'<br>'left'<br>'right' | 'top'        | no         | Controls the position of the tooltip.    |
+| onChange         | function                                 |              | yes        | Callback function that is fired when the slider's value changed.<br>`(event: {value: number}): void`<br>**event** change event for the component instance.<br>**value** the new value of the slider |
+| onDragStart      | function                                 |              | no         | Callback function that is fired when the handle has begun to move.<br>`(event: PointerEvent): void`<br>**event**: mouse click down or touch start |
+| onDragStop       | function                                 |              | no         | Callback function that is fired when the handle has stopped moving.<br>`(event: PointerEvent): void`<br>**event**: mouse click up or touch end |
+| onDrag           | function                                 |              | no         | Callback function that is fired when the handle is moving.<br>`(event: PointerEvent): void`<br>**event**: mouse move or touch move |
 
 ### Code Examples
 
@@ -105,20 +105,23 @@ export class ComponentsDemo extends React.Component<{}, State>{
 
 ### Subcomponents (pseudo elements)
 
-| selector        | description                              | note                                     |
-| --------------- | ---------------------------------------- | ---------------------------------------- |
-| ::handle        | Allows you to style the handle of the slider. |                                          |
-| ::bar           | Allows you to style the bar of the slider. |                                          |
-| ::progressBar   | Allows you to style the progress bar of the slider. |                                          |
-| ::marks         | Allows you to style marks that are shown on the ::bar section of the slider. | By default ::marks use the same background color as ::bar. |
-| ::progressMarks | Allows you to style marks that are shown on the ::progressBar section of the slider. | By default, ::progressMark elements use the same background color as ::progressBar. |
-| ::tooltip       | Allows you to style the tooltip.             |                                          |
+| selector    | description                              | note                                     |
+| ----------- | ---------------------------------------- | ---------------------------------------- |
+| ::handle    | Allows you to style the handle of the slider. |                                          |
+| ::bar       | Allows you to style the bar of the slider. |                                          |
+| ::rangeBar  | Allows you to style the progress bar of the slider. |                                          |
+| ::mark      | Allows you to style marks that are shown on the ::bar section of the slider. | By default ::marks use the same background color as ::bar. |
+| ::rangeMark | Allows you to style marks that are shown on the ::progressBar section of the slider. | By default, ::progressMark elements use the same background color as ::progressBar. |
 
 ### Custom CSS States (pseudo-classes)
 
 | state                          | description                              |
 | ------------------------------ | ---------------------------------------- |
 | :error                         | Style the component on error, i.e. when the `error` prop is true. |
+| :x                             | Horizontal component orientation         |
+| :xReverse                      | Horizontal reversed component orientation (as in RTL, for example) |
+| :y                             | Vertical component orientation           |
+| :yReverse                      | Vertical reversed component orientation  |
 | :hover, :focus, :disabled, etc | Standard CSS pseudo states.              |
 
 ### Style Code Examples

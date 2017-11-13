@@ -1,4 +1,14 @@
-.positionButton {
-    display: inline-block;
+.sample {
+    padding: 0 50px;
+}
+.anchorWrap {
     margin-right: 20px;
+    display: inline-block;
+}
+.anchor {
+    font: 14px arial;
+    padding: 10px;
+    color: white;
+    display: inline-block;
+    background: #3899ec;
 }

@@ -24,6 +24,8 @@ export class RadioButton extends React.Component<RadioButtonProps, RadioButtonSt
 
     public state: RadioButtonState = {isFocused: false};
 
+    private nativeInput: HTMLInputElement;
+
     public render() {
         const styleState = {
             checked: this.props.checked,
@@ -34,7 +36,7 @@ export class RadioButton extends React.Component<RadioButtonProps, RadioButtonSt
         return (
             <div
                 data-automation-id="RADIO_BUTTON_ROOT"
-                onClick={this.onChange}
+                onClick={this.handleClick}
                 style-state={styleState}
                 role="radio"
                 aria-checked={this.props.checked}
@@ -43,6 +45,7 @@ export class RadioButton extends React.Component<RadioButtonProps, RadioButtonSt
                     type="radio"
                     className="hiddenInput"
                     data-automation-id="NATIVE_INPUT"
+                    onClick={this.handleInputClick}
                     onChange={this.onChange}
                     onFocus={this.onInputFocus}
                     onBlur={this.onInputBlur}
@@ -53,6 +56,7 @@ export class RadioButton extends React.Component<RadioButtonProps, RadioButtonSt
                     readOnly={this.props.readOnly}
                     name={this.props.name}
                     autoFocus={this.props.autoFocus}
+                    ref={ref => this.nativeInput = ref!}
                 />
                 <div className="contentContainer" data-automation-id="CONTENT_CONTAINER">
                     <span className="button" data-automation-id="ICON" />
@@ -62,17 +66,29 @@ export class RadioButton extends React.Component<RadioButtonProps, RadioButtonSt
         );
     }
 
+    private handleClick: React.MouseEventHandler<HTMLDivElement> = e => {
+        this.onChange(e);
+        this.nativeInput && this.nativeInput.focus();
+        this.setState({isFocused: false});
+    }
+
+    // handleInputClick will be called only when navigating to the radio using the keyboard
+    private handleInputClick: React.MouseEventHandler<HTMLInputElement> = e => {
+        e.stopPropagation();
+        this.setState({isFocused: true});
+    }
+
     private onChange = (e: React.SyntheticEvent<HTMLElement>) => {
         if (!this.props.disabled && !this.props.readOnly) {
             this.props.onChange!({value: this.props.value!});
         }
     }
 
-    private onInputFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    private onInputFocus: React.FocusEventHandler<HTMLInputElement> = e => {
         this.setState({isFocused: true});
     }
 
-    private onInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    private onInputBlur: React.FocusEventHandler<HTMLInputElement> = e => {
         this.setState({isFocused: false});
     }
 }

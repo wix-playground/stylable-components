@@ -68,6 +68,11 @@
 
 :import {
     -st-theme: true;
+    -st-from: "./components/tabs.st.css";
+}
+
+:import {
+    -st-theme: true;
     -st-from: "./components/time-picker.st.css";
 }
 

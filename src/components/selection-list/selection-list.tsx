@@ -1,5 +1,5 @@
 import keycode = require('keycode');
-import {autorun, computed, observable} from 'mobx';
+import {autorun, computed, observable, untracked} from 'mobx';
 import {observer} from 'mobx-react';
 import React = require('react');
 import {Disposers, properties} from 'wix-react-tools';
@@ -21,8 +21,8 @@ export interface SelectionListProps extends OptionList, FormInputProps<Selection
     value?: SelectionListItemValue;
 }
 
-@observer
 @properties
+@observer
 export class SelectionList extends React.Component<SelectionListProps> {
     public static defaultProps: SelectionListProps = {
         onChange: noop,
@@ -53,7 +53,14 @@ export class SelectionList extends React.Component<SelectionListProps> {
     }
 
     public componentWillMount() {
-        this.disposers.set(autorun(() => this.list.selectValue(this.value)));
+        this.disposers.set(autorun(() => {
+            this.list.selectValue(this.value);
+            untracked(() => {
+                if (this.focused) {
+                    this.list.focusSelected();
+                }
+            });
+        }));
 
         // Autorun will not run during SSR
         this.list.selectValue(this.value);
@@ -92,13 +99,16 @@ export class SelectionList extends React.Component<SelectionListProps> {
     }
 
     private handleMouseDown = (event: React.MouseEvent<HTMLElement>, itemIndex: number) => {
-        if (itemIndex > -1) {
-            this.list.focusIndex(itemIndex);
+        if (!event.defaultPrevented) {
+            if (event.button === 0 && itemIndex > -1) {
+                this.list.focusIndex(itemIndex);
+            }
+            this.focused = true;
         }
     }
 
     private handleClick = (event: React.MouseEvent<HTMLElement>, itemIndex: number) => {
-        if (itemIndex > -1) {
+        if (event.button === 0 && itemIndex > -1) {
             this.triggerChange(itemIndex);
         }
     }
@@ -147,6 +157,9 @@ export class SelectionList extends React.Component<SelectionListProps> {
                 event.preventDefault();
                 this.list.focusLast();
                 break;
+
+            default:
+                this.list.focusUsingTypeAhead(event);
         }
     }
 }

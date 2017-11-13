@@ -1,13 +1,13 @@
 import React = require('react');
 import {findDOMNode} from 'react-dom';
 import {ClientRenderer, expect, RenderingContext} from 'test-drive-react';
-import {isDecorated, properties} from 'wix-react-tools';
+import {properties, reactDecor} from 'wix-react-tools';
 import * as WixReactComponents from '../../src';
 import {isReactComponent} from '../utils/is-react-component';
 
 const allComponents = Object.keys(WixReactComponents);
 const failingComponents = [
-    'Portal', 'Popup', 'Modal', 'ContextProvider', 'GlobalEvent', 'Tooltip'
+    'Portal', 'Popup', 'Modal', 'ContextProvider', 'GlobalEvent', 'Tab', 'Tooltip'
 ];
 
 describe('Root Element contract', () => {
@@ -43,7 +43,7 @@ export function assertRootElementContract(Component: React.ComponentType<any>): 
     });
 
     it('detects the "properties" feature decorator', () => {
-        expect(isDecorated(Component, properties)).to.equal(true);
+        expect(reactDecor.isDecorated(Component, properties)).to.equal(true);
     });
 
     it('has display values of \'inline-block\' or \'inline-flex\'', () => {

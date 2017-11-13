@@ -30,7 +30,7 @@ export class BaseSliderDriver extends DriverBase {
         return this.select(`NATIVE-INPUT-${index}`);
     }
     public getTooltip(index: number): HTMLElement {
-        const portal = this.select(`SLIDER-HANDLE-${index}`, 'SLIDER-TOOLTIP', 'PORTAL_REF');
+        const portal = this.select(`SLIDER-HANDLE-${index}`, 'PORTAL_REF');
         if (!portal) {
             return portal;
         }

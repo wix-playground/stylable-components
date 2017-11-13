@@ -9,7 +9,9 @@ export interface OptionProps {
     focused?: boolean;
     id?: string;
     selected?: boolean;
-    // The value is not used by the option component, it only exists to expose the option's value to the list model.
+
+    // Label and value are not used by the Option component, but SelectionList reads them for its own needs.
+    label?: string;
     value?: SelectionListItemValue;
 }
 
