@@ -2,6 +2,7 @@ import * as React from 'react';
 import {properties} from 'wix-react-tools';
 import {Point} from '../../types';
 import {StylableProps} from '../../types/props';
+import {objectsShallowEqual} from '../../utils';
 import {Portal} from '../portal';
 
 export type PopupVerticalPosition =  'top' | 'center' | 'bottom';
@@ -116,12 +117,6 @@ export class Popup extends React.Component<PopupCompProps, PopupState> {
 
         return newStyle;
     }
-}
-
-function objectsShallowEqual(a: {[index: string]: any}, b: {[index: string]: any}) {
-    const aKeys = Object.keys(a);
-    const bKeys = Object.keys(b);
-    return (aKeys.length === bKeys.length) ? aKeys.every(k => a[k] === b[k]) : false;
 }
 
 function getVerticalReference(rect: ClientRect, anchorPosition: PopupVerticalPosition): number {

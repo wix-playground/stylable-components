@@ -5,6 +5,7 @@ export * from './last';
 export * from './nearest';
 export * from './transparent-image';
 export * from './date-helpers';
+export * from './objects-shallow-equal';
 export * from './stop-scrolling';
 export * from './is-touch';
 export * from './is-touch-event';
