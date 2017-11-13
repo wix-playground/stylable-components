@@ -1,6 +1,6 @@
 import React = require('react');
 import ReactDOM = require('react-dom');
-import {ClientRenderer, DriverBase, expect, waitFor} from 'test-drive-react';
+import {ClientRenderer, DriverBase, expect, selectDom, waitFor} from 'test-drive-react';
 import {PopupDemo} from '../../demo/components/popup-demo';
 import {Popup, PopupPositionPoint} from '../../src/components/';
 import {PopupTestDriver} from '../../test-kit/components/popup-driver';
@@ -115,6 +115,31 @@ describe('<Popup />', () => {
             expect(popup.root.getBoundingClientRect().width)
                 .to.equal(anchor.getBoundingClientRect().width);
         });
+    });
+
+    it('syncs the popup position when rendered before the anchor and the anchor size changes', async () => {
+        class Dummy extends React.PureComponent {
+            public state = {anchor: null};
+
+            public render() {
+                return (
+                    <div>
+                        <Popup anchor={this.state.anchor} open syncWidth>
+                            <div data-automation-id="POPUP">Popup body</div>
+                        </Popup>
+                        <div data-automation-id="ANCHOR" ref={node => this.setState({anchor: node})}>
+                            {this.props.children}
+                        </div>
+                    </div>
+                );
+            }
+        }
+
+        const select = selectDom(document.body);
+        const {container, waitForDom} = clientRenderer.render(<Dummy>*</Dummy>);
+        await waitForDom(() => expect([select('ANCHOR'), select('POPUP')]).to.be.inVerticalSequence());
+        clientRenderer.render(<Dummy>*<br />*</Dummy>, container);
+        await waitForDom(() => expect([select('ANCHOR'), select('POPUP')]).to.be.inVerticalSequence());
     });
 
     describe('Scrolling tests', () => {
