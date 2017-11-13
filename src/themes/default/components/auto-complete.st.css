@@ -53,6 +53,17 @@ AutoComplete:disabled input {
     border: value(borderDisabled);
 }
 
+AutoComplete::noSuggestionsNotice {
+    background-color: value(color_MainText_Background);
+    border-radius: value(borderRadius);
+    border: value(borderDefault);
+    border-top: 0;
+    color: value(color_MainPlaceholder);
+    font: value(defaultFont);
+    padding: value(inputSpacing);
+    text-align: center;
+}
+
 AutoComplete::list {
     background-color: value(color_MainText_Background);
     border-top: 0;
@@ -64,6 +75,12 @@ AutoComplete {
     position: relative;
 }
 AutoComplete::list {
+    z-index: 1;
+    position: absolute;
+    top: 100%;
+    width: 100%;
+}
+AutoComplete::noSuggestionsNotice {
     z-index: 1;
     position: absolute;
     top: 100%;

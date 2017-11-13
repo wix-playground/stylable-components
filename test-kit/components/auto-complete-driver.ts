@@ -11,12 +11,16 @@ export class AutoCompleteTestDriver extends DriverBase {
         return this.select('INPUT');
     }
 
+    public get noSuggestionsNotice(): HTMLElement {
+        return this.select('NO_SUGGESTIONS_NOTICE');
+    }
+
     public get list(): SelectionListTestDriver {
         return new SelectionListTestDriver(() => this.select('LIST'));
     }
 
     public get isOpen(): boolean {
-        return false;
+        return Boolean(this.list || this.noSuggestionsNotice);
     }
 
     public focus(): void {
@@ -28,7 +32,7 @@ export class AutoCompleteTestDriver extends DriverBase {
     }
 
     public keyDown(eventData: object): void {
-        simulate.keyDown(this.root, eventData);
+        simulate.keyDown(this.input, eventData);
     }
 
     public typeText(text: string) {

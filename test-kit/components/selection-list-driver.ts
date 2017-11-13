@@ -37,6 +37,10 @@ export class SelectionListTestDriver extends DriverBase {
         simulate.click(element, {button: 0});
     }
 
+    public selectItem(index: number) {
+        simulate.click(this.items[index], {button: 0});
+    }
+
     public isDivider(element: Element): boolean {
         return elementHasStylableClassName(element, dividerBaseStyle, 'root');
     }

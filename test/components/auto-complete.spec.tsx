@@ -1,222 +1,416 @@
+import keycode = require('keycode');
 import * as React from 'react';
-import {ClientRenderer, expect, selectDom, simulate, sinon, trigger, waitForDom as gWaitForDom} from 'test-drive-react';
+import {ClientRenderer, DriverBase, expect, sinon} from 'test-drive-react';
 import {AutoCompleteDemo} from '../../demo/components/auto-complete.demo';
 import {AutoComplete} from '../../src';
 import {AutoCompleteTestDriver} from '../../test-kit';
+import {sleep} from '../utils';
 
-const items = ['Muffins', 'Pancakes', 'Cupcakes', 'Souffles', 'Pasta', 'Soup', 'Caramel', 'Avazim', 'Moses'];
-const bodySelect = selectDom(document.body);
-const bodyWaitForDom = gWaitForDom.bind(null, document.body);
+export class AutoCompleteDemoDriver extends DriverBase {
+    public static ComponentClass = AutoCompleteDemo;
+
+    public get autocomplete() {
+        return new AutoCompleteTestDriver(() => this.select('AUTOCOMPLETE'));
+    }
+
+    public get result() {
+        return this.select('AUTO_COMPLETE_DEMO_TEXT');
+    }
+}
 
 describe('<AutoComplete />', () => {
     const clientRenderer = new ClientRenderer();
     afterEach(() => clientRenderer.cleanup());
 
-    // describe('The autocomplete user', () => {
-    //     it('types in the input and selects a value', async () => {
-    //         const {select, waitForDom} = clientRenderer.render(<AutoCompleteDemo />);
-    //         const prefix = 'P';
-    //         const filteredItems = items.filter(item => item.startsWith(prefix)).join('');
+    it('Works on the happy path', async () => {
+        const {driver: demo, waitForDom} = clientRenderer.render(
+            <AutoCompleteDemo />
+        ).withDriver(AutoCompleteDemoDriver);
 
-    //         simulate.click(select(autoComp + '_CARET'));
+        await waitForDom(() => expect(demo.autocomplete.root).to.be.present());
 
-    //         const itemList = bodySelect('LIST')!;
-    //         await bodyWaitForDom(() => {
-    //             expect(itemList).to.be.present();
-    //             expect(itemList.textContent).to.equal(items.join(''));
-    //         });
+        demo.autocomplete.focus();
+        demo.autocomplete.typeText('p');
+        demo.autocomplete.keyDown({keyCode: keycode('down')});
+        demo.autocomplete.keyDown({keyCode: keycode('down')});
+        demo.autocomplete.keyDown({keyCode: keycode('enter')});
 
-    //         trigger.change(bodySelect(autoCompInput), prefix);
-    //         await bodyWaitForDom(() => expect(itemList.textContent).to.equal(filteredItems));
+        await waitForDom(() => expect(demo.result).to.contain.text('Pasta'));
+    });
 
-    //         simulate.click(bodySelect('LIST')!.children[0]);
-    //         await waitForDom(() => {
-    //             expect(select(autoCompDemo + '_TEXT')).to.have.text('You picked: Pancakes');
-    //         });
-    //     });
-    // });
+    it('Renders to the screen', async () => {
+        const {driver: autocomplete, waitForDom} = clientRenderer.render(
+            <AutoComplete />
+        ).withDriver(AutoCompleteTestDriver);
 
-    it('Renders to the screen', () => {
+        await waitForDom(() => {
+            expect(autocomplete.root).to.be.present();
+            expect(autocomplete.input).to.be.present();
+            expect(autocomplete.list.root).to.be.absent();
+            expect(autocomplete.noSuggestionsNotice).to.be.absent();
+        });
+    });
+
+    it('Renders the value inside of the input', async () => {
         const {driver: autocomplete, waitForDom} = clientRenderer.render(
             <AutoComplete value="Muffins" />
         ).withDriver(AutoCompleteTestDriver);
 
-        return waitForDom(() => {
-            expect(autocomplete.root).to.be.present();
-            expect(autocomplete.input).to.have.value('Muffins');
-            expect(autocomplete.list).to.be.absent();
+        await waitForDom(() => {
+            expect(autocomplete.input.value).to.be.equal('Muffins');
         });
     });
 
-    // it('invokes the onChange when text is entered to label', () => {
-    //     const onChange = sinon.spy();
-    //     const {select} = clientRenderer.render(<AutoComplete onChange={onChange}/>);
+    it('Renders the list when open is given', async () => {
+        const {driver: autocomplete, waitForDom} = clientRenderer.render(
+            <AutoComplete dataSource={['Muffins']} open />
+        ).withDriver(AutoCompleteTestDriver);
 
-    //     select<HTMLInputElement>(autoComp, autoCompInput)!.value = 'abc';
-    //     simulate.change(select(autoComp, autoCompInput));
+        await waitForDom(() => {
+            expect(autocomplete.list.root).to.be.present();
+            expect(autocomplete.root).to.be.present();
+        });
+    });
 
-    //     return bodyWaitForDom(() => {
-    //         expect(onChange).to.have.been.calledOnce;
-    //         expect(onChange).to.have.been.calledWithMatch({value: 'abc'});
-    //     });
-    // });
+    it('Renders noSuggestionsNotice if given', async () => {
+        const {driver: autocomplete, waitForDom} = clientRenderer.render(
+            <AutoComplete open noSuggestionsNotice="No results" />
+        ).withDriver(AutoCompleteTestDriver);
 
-    // it('renders the item list if open is given', async () => {
-    //     clientRenderer.render(<AutoComplete dataSource={items} open/>);
+        await waitForDom(() => {
+            expect(autocomplete.noSuggestionsNotice).to.be.present();
+            expect(autocomplete.noSuggestionsNotice).to.contain.text('No results');
+        });
+    });
 
-    //     await bodyWaitForDom(() => expect(bodySelect('LIST')).to.be.present());
-    // });
+    it(`Doesn't render the list when open is given but there are no items matching the filter`, async () => {
+        const {driver: autocomplete, waitForDom} = clientRenderer.render(
+            <AutoComplete dataSource={['Muffins']} open value="X" />
+        ).withDriver(AutoCompleteTestDriver);
 
-    // it('renders the items if given', async () => {
-    //     clientRenderer.render(<AutoComplete open dataSource={items}/>);
+        await waitForDom(() => {
+            expect(autocomplete.root).to.be.present();
+            expect(autocomplete.list.root).to.be.absent();
+        });
+    });
 
-    //     await bodyWaitForDom(() => expect(bodySelect('LIST')!.children[0]).to.have.text('Muffins'));
-    // });
+    it(`Allows to navigate the list using Up and Down keys`, async () => {
+        const {driver: autocomplete, waitForDom} = clientRenderer.render(
+            <AutoComplete dataSource={['Muffins', 'Pancakes']} open />
+        ).withDriver(AutoCompleteTestDriver);
 
-    // it('invokes the onChange when an option is clicked', async () => {
-    //     const onChange = sinon.spy();
-    //     clientRenderer.render(
-    //         <AutoComplete open dataSource={['Cat', 'Dog']} onChange={onChange}/>
-    //     );
+        await waitForDom(() => expect(autocomplete.root).to.be.present());
 
-    //     simulate.click(bodySelect('LIST')!.children[0]);
+        autocomplete.keyDown({keyCode: keycode('down')});
+        expect(autocomplete.list.focusedIndex).to.be.equal(0);
+        autocomplete.keyDown({keyCode: keycode('down')});
+        expect(autocomplete.list.focusedIndex).to.be.equal(1);
+        autocomplete.keyDown({keyCode: keycode('up')});
+        expect(autocomplete.list.focusedIndex).to.be.equal(0);
+    });
 
-    //     await bodyWaitForDom(() => {
-    //         expect(onChange).to.have.been.calledOnce;
-    //         expect(onChange).to.have.been.calledWithMatch({value: 'Cat'});
-    //     });
-    // });
+    it(`Removes focus from the focused list item on typing`, async () => {
+        const {container, driver: autocomplete, waitForDom} = clientRenderer.render(
+            <AutoComplete value="p" dataSource={['Muffins', 'Pancakes', 'Pasta']} open />
+        ).withDriver(AutoCompleteTestDriver);
 
-    // it('displays filtered results according to given value', async () => {
-    //     const prefix = 'P';
-    //     const filteredItems = ['Pancakes', 'Pasta'];
-    //     clientRenderer.render(<AutoComplete open dataSource={items} value={prefix}/>);
-    //     const itemList = bodySelect('LIST');
+        await waitForDom(() => expect(autocomplete.root).to.be.present());
 
-    //     await bodyWaitForDom(() => {
-    //         expect(itemList!.textContent).to.equal(filteredItems.join(''));
-    //     });
-    // });
+        autocomplete.keyDown({keyCode: keycode('down')});
+        autocomplete.keyDown({keyCode: keycode('down')});
 
-    // it('ignores case when filtering according to the default filter', async () => {
-    //     const prefix = 'm';
-    //     const filteredItems = ['Muffins', 'Moses'];
-    //     clientRenderer.render(<AutoComplete open dataSource={items} value={prefix}/>);
-    //     const itemList = bodySelect('LIST');
+        await waitForDom(() => expect(autocomplete.list.focusedIndex).to.be.equal(1));
 
-    //     await bodyWaitForDom(() => {
-    //         expect(itemList!.textContent).to.equal(filteredItems.join(''));
-    //     });
-    // });
+        clientRenderer.render(
+            <AutoComplete value="pa" dataSource={['Muffins', 'Pancakes', 'Pasta']} open />,
+            container
+        ).withDriver(AutoCompleteTestDriver);
 
-    // it('places the caret inside the input and centers it', async () => {
-    //     const {select, waitForDom} = clientRenderer.render(<AutoComplete/>);
+        await waitForDom(() => expect(autocomplete.list.focusedIndex).to.be.equal(-1));
+    });
 
-    //     await waitForDom(() => {
-    //         const input = select(autoComp, autoCompInput)!;
-    //         const caret = select(autoComp, autoComp + '_CARET')!;
+    it(`Works with a custom filter`, async () => {
+        const filter = (itemLabel: string, prefix: string) => itemLabel !== prefix;
+        const {driver: autocomplete, waitForDom} = clientRenderer.render(
+            <AutoComplete value="Pancakes" dataSource={['Muffins', 'Pancakes', 'Pasta']} open filter={filter} />
+        ).withDriver(AutoCompleteTestDriver);
 
-    //         expect(caret).to.be.insideOf(input);
-    //         expect([input, caret]).to.be.verticallyAligned('center');
-    //     });
-    // });
+        await waitForDom(() => {
+            expect(autocomplete.root).to.be.present();
+            expect(autocomplete.list.items.length).to.be.equal(2);
+            expect(autocomplete.list.items[0]).to.contain.text('Muffins');
+            expect(autocomplete.list.items[1]).to.contain.text('Pasta');
+        });
+    });
 
-    // it('calls the onOpenStateChange event when clicking on the caret', async () => {
-    //     const onOpenStateChange = sinon.spy();
-    //     const {select, waitForDom} = clientRenderer.render(<AutoComplete onOpenStateChange={onOpenStateChange}/>);
+    it(`Respects maxShownSuggestions`, async () => {
+        const {driver: autocomplete, waitForDom} = clientRenderer.render(
+            <AutoComplete dataSource={['Muffins', 'Pancakes', 'Pasta']} maxShownSuggestions={2} open />
+        ).withDriver(AutoCompleteTestDriver);
 
-    //     await waitForDom(() => expect(select(autoComp, autoComp + '_CARET')).to.be.present());
-    //     simulate.click(select(autoComp, autoComp + '_CARET'));
-    //     await bodyWaitForDom(() => {
-    //         expect(onOpenStateChange).to.have.been.calledOnce;
-    //         expect(onOpenStateChange).to.have.been.calledWithMatch({value: true});
-    //     });
-    // });
+        await waitForDom(() => {
+            expect(autocomplete.root).to.be.present();
+            expect(autocomplete.list.items.length).to.be.equal(2);
+            expect(autocomplete.list.items[0]).to.contain.text('Muffins');
+            expect(autocomplete.list.items[1]).to.contain.text('Pancakes');
+        });
+    });
 
-    // it('calls the onOpenStateChange event when selecting an item', async () => {
-    //     const onOpenStateChange = sinon.spy();
-    //     const {select, waitForDom} = clientRenderer.render(
-    //         <AutoComplete dataSource={items} open onOpenStateChange={onOpenStateChange}/>
-    //     );
+    describe('Events', () => {
+        it('Invokes onChange when text is entered', async () => {
+            const onChange = sinon.spy();
+            const {driver: autocomplete, waitForDom} = clientRenderer.render(
+                <AutoComplete onChange={onChange} />
+            ).withDriver(AutoCompleteTestDriver);
 
-    //     await waitForDom(() => expect(select(autoComp)).to.be.present());
-    //     simulate.click(bodySelect('LIST')!.children[0]);
-    //     await bodyWaitForDom(() => {
-    //         expect(onOpenStateChange).to.have.been.calledOnce;
-    //         expect(onOpenStateChange).to.have.been.calledWithMatch({value: false});
-    //     });
-    // });
+            await waitForDom(() => expect(autocomplete.root).to.be.present());
 
-    // it('calls the onOpenStateChange event when first entering a value', async () => {
-    //     const onOpenStateChange = sinon.spy();
-    //     const {select, waitForDom} = clientRenderer.render(<AutoComplete onOpenStateChange={onOpenStateChange}/>);
+            autocomplete.focus();
+            autocomplete.typeText('muffins');
 
-    //     await waitForDom(() => expect(select(autoComp)).to.be.present());
-    //     trigger.change(bodySelect(autoCompInput), 'M');
-    //     await bodyWaitForDom(() => {
-    //         expect(onOpenStateChange).to.have.been.calledOnce;
-    //         expect(onOpenStateChange).to.have.been.calledWithMatch({value: true});
-    //     });
-    // });
+            await waitForDom(() => expect(onChange).to.have.been.calledWithMatch({value: 'muffins'}));
+        });
 
-    // it('does not show suggestions if the number of characters is smaller than minCharacters', async () => {
-    //     const prefix = 'P';
-    //     const {waitForDom} = clientRenderer.render(
-    //         <AutoComplete open dataSource={items} minCharacters={2} value={prefix} />
-    //     );
+        it('Invokes onOpenStateChange on focus when openOnFocus is given', async () => {
+            const onOpenStateChange = sinon.spy();
+            const {driver: autocomplete, waitForDom} = clientRenderer.render(
+                <AutoComplete dataSource={[0, 1, 2]} onOpenStateChange={onOpenStateChange} openOnFocus />
+            ).withDriver(AutoCompleteTestDriver);
 
-    //     await waitForDom(() => expect(bodySelect('LIST')).to.be.absent());
-    // });
+            await waitForDom(() => expect(autocomplete.root).to.be.present());
 
-    // it('shows suggestions if the number of characters is larger than minCharacters', async () => {
-    //     const prefix = 'Pa';
-    //     clientRenderer.render(
-    //         <AutoComplete open dataSource={items} minCharacters={2} value={prefix} />
-    //     );
+            autocomplete.focus();
 
-    //     await bodyWaitForDom(() => expect(bodySelect('LIST')).to.be.present());
-    // });
+            await waitForDom(() => expect(onOpenStateChange).to.be.calledWith({value: true}));
+        });
 
-    // it('shows the correct amount of results according to maxShownSuggestions', async () => {
-    //     clientRenderer.render(
-    //         <AutoComplete open dataSource={items} maxShownSuggestions={2} />
-    //     );
+        it(`Doesn't invoke onOpenStateChange on focus when openOnFocus is not given`, async () => {
+            const onOpenStateChange = sinon.spy();
+            const {driver: autocomplete, waitForDom} = clientRenderer.render(
+                <AutoComplete dataSource={[0, 1, 2]} onOpenStateChange={onOpenStateChange} />
+            ).withDriver(AutoCompleteTestDriver);
 
-    //     await bodyWaitForDom(() => expect(bodySelect('LIST')!.children.length).to.equal(2));
-    // });
+            await waitForDom(() => expect(autocomplete.root).to.be.present());
 
-    // it('disables the autocomplete if the prop is passed', async () => {
-    //     const {select, waitForDom} = clientRenderer.render(<AutoComplete disabled />);
+            autocomplete.focus();
 
-    //     await waitForDom(() => expect(select(autoCompInput)).to.have.attribute('disabled'));
-    // });
+            await sleep(16);
+            expect(onOpenStateChange).to.have.not.been.called;
+        });
 
-    // describe('Accessibility', () => {
-    //     it('gives the correct roles to the components', async () => {
-    //         const {select, waitForDom} = clientRenderer.render(<AutoComplete />);
+        it(`Invokes onOpenStateChange on blur`, async () => {
+            const onOpenStateChange = sinon.spy();
+            const {driver: autocomplete, waitForDom} = clientRenderer.render(
+                <AutoComplete dataSource={[0, 1, 2]} open onOpenStateChange={onOpenStateChange} />
+            ).withDriver(AutoCompleteTestDriver);
 
-    //         await waitForDom(() => {
-    //             expect(select(autoCompInput)).to.have.attribute('role', 'textbox');
-    //             expect(select(autoComp)).to.have.attribute('role', 'combobox');
-    //         });
-    //     });
+            await waitForDom(() => expect(autocomplete.root).to.be.present());
 
-    //     it('gives the correct aria attribues', async () => {
-    //         const {select, waitForDom} = clientRenderer.render(<AutoComplete />);
+            autocomplete.focus();
+            autocomplete.blur();
 
-    //         await waitForDom(() => {
-    //             expect(select(autoCompInput)).to.have.attribute('aria-autocomplete', 'list');
-    //             expect(select(autoComp)).to.have.attribute('aria-haspopup', 'true');
-    //             expect(select(autoComp)).to.have.attribute('aria-expanded', 'false');
-    //         });
-    //     });
+            await waitForDom(() => {
+                expect(onOpenStateChange).to.be.calledOnce;
+                expect(onOpenStateChange).to.be.calledWith({value: false});
+            });
+        });
 
-    //     it('sets the aria-expanded to true when open', async () => {
-    //         const {select, waitForDom} = clientRenderer.render(<AutoComplete open/>);
+        it(`Invokes onOpenStateChange on Escape press`, async () => {
+            const onOpenStateChange = sinon.spy();
+            const {driver: autocomplete, waitForDom} = clientRenderer.render(
+                <AutoComplete dataSource={[0, 1, 2]} open onOpenStateChange={onOpenStateChange} />
+            ).withDriver(AutoCompleteTestDriver);
 
-    //         await waitForDom(() => {
-    //             expect(select(autoComp)).to.have.attribute('aria-expanded', 'true');
-    //         });
-    //     });
-    // });
+            await waitForDom(() => expect(autocomplete.root).to.be.present());
+
+            autocomplete.focus();
+            autocomplete.keyDown({keyCode: keycode('escape')});
+
+            await waitForDom(() => {
+                expect(onOpenStateChange).to.be.calledOnce;
+                expect(onOpenStateChange).to.be.calledWith({value: false});
+            });
+        });
+
+        it(`Invokes onOpenStateChange when minCharacters is entered`, async () => {
+            const onOpenStateChange = sinon.spy();
+            const {driver: autocomplete, waitForDom} = clientRenderer.render(
+                <AutoComplete
+                    value="muf"
+                    dataSource={['muffins']}
+                    minCharacters={3}
+                    onOpenStateChange={onOpenStateChange}
+                />
+            ).withDriver(AutoCompleteTestDriver);
+
+            await waitForDom(() => expect(autocomplete.root).to.be.present());
+
+            autocomplete.focus();
+            autocomplete.typeText('');
+
+            await waitForDom(() => {
+                expect(onOpenStateChange).to.be.calledOnce;
+                expect(onOpenStateChange).to.be.calledWith({value: true});
+            });
+        });
+
+        it(`Doesn't invoke onOpenStateChange when less than minCharacters is entered`, async () => {
+            const onOpenStateChange = sinon.spy();
+            const {driver: autocomplete, waitForDom} = clientRenderer.render(
+                <AutoComplete
+                    value="mu"
+                    dataSource={['muffins']}
+                    minCharacters={3}
+                    onOpenStateChange={onOpenStateChange}
+                />
+            ).withDriver(AutoCompleteTestDriver);
+
+            await waitForDom(() => expect(autocomplete.root).to.be.present());
+
+            autocomplete.focus();
+            autocomplete.typeText('');
+
+            await sleep(16);
+            expect(onOpenStateChange).to.have.not.been.called;
+        });
+
+        it(`Invokes onOpenStateChange and onChange when an item is selected from the list using Enter`, async () => {
+            const onOpenStateChange = sinon.spy();
+            const onChange = sinon.spy();
+            const {driver: autocomplete, waitForDom} = clientRenderer.render(
+                <AutoComplete
+                    dataSource={['Muffins']}
+                    open
+                    onOpenStateChange={onOpenStateChange}
+                    onChange={onChange}
+                />
+            ).withDriver(AutoCompleteTestDriver);
+
+            await waitForDom(() => expect(autocomplete.root).to.be.present());
+
+            autocomplete.focus();
+            autocomplete.keyDown({keyCode: keycode('down')});
+            autocomplete.keyDown({keyCode: keycode('enter')});
+
+            await sleep(16);
+            expect(onOpenStateChange).to.be.calledOnce;
+            expect(onOpenStateChange).to.be.calledWith({value: false});
+            expect(onChange).to.be.calledOnce;
+            expect(onChange).to.be.calledWith({value: 'Muffins'});
+        });
+
+        it(`Invokes onOpenStateChange and onChange when an item is selected from the list using mouse`, async () => {
+            const onOpenStateChange = sinon.spy();
+            const onChange = sinon.spy();
+            const {driver: autocomplete, waitForDom} = clientRenderer.render(
+                <AutoComplete
+                    dataSource={['Muffins']}
+                    open
+                    onOpenStateChange={onOpenStateChange}
+                    onChange={onChange}
+                />
+            ).withDriver(AutoCompleteTestDriver);
+
+            await waitForDom(() => expect(autocomplete.root).to.be.present());
+
+            autocomplete.focus();
+            autocomplete.list.click(autocomplete.list.items[0]);
+
+            await sleep(16);
+            expect(onOpenStateChange).to.be.calledOnce;
+            expect(onOpenStateChange).to.be.calledWith({value: false});
+            expect(onChange).to.be.calledOnce;
+            expect(onChange).to.be.calledWith({value: 'Muffins'});
+        });
+
+        it(`Doesn't invoke onOpenStateChange or onChange on item mouseDown`, async () => {
+            const onOpenStateChange = sinon.spy();
+            const onChange = sinon.spy();
+            const {driver: autocomplete, waitForDom} = clientRenderer.render(
+                <AutoComplete
+                    dataSource={['muffins']}
+                    open
+                    onOpenStateChange={onOpenStateChange}
+                    onChange={onChange}
+                />
+            ).withDriver(AutoCompleteTestDriver);
+
+            await waitForDom(() => expect(autocomplete.root).to.be.present());
+
+            autocomplete.focus();
+            autocomplete.list.mouseDown(autocomplete.list.items[0]);
+
+            await sleep(16);
+            expect(onOpenStateChange).to.have.not.been.called;
+            expect(onChange).to.have.not.been.called;
+        });
+    });
+
+    describe('Styling', () => {
+        it(`Supports focused state`, async () => {
+            const {driver: autocomplete, waitForDom} = clientRenderer.render(
+                <AutoComplete />
+            ).withDriver(AutoCompleteTestDriver);
+
+            await waitForDom(() => {
+                expect(autocomplete.root).to.be.present();
+                expect(autocomplete.hasStylableState('focused')).to.be.equal(false);
+            });
+
+            autocomplete.focus();
+
+            await waitForDom(() => {
+                expect(autocomplete.hasStylableState('focused')).to.be.equal(true);
+            });
+        });
+
+        it(`Supports disabled state`, async () => {
+            const {driver: autocomplete, waitForDom} = clientRenderer.render(
+                <AutoComplete disabled />
+            ).withDriver(AutoCompleteTestDriver);
+
+            await waitForDom(() => {
+                expect(autocomplete.root).to.be.present();
+                expect(autocomplete.hasStylableState('disabled')).to.be.equal(true);
+                expect(autocomplete.input.disabled).to.be.equal(true);
+            });
+        });
+
+        it(`Supports readOnly state`, async () => {
+            const {driver: autocomplete, waitForDom} = clientRenderer.render(
+                <AutoComplete readOnly />
+            ).withDriver(AutoCompleteTestDriver);
+
+            await waitForDom(() => {
+                expect(autocomplete.root).to.be.present();
+                expect(autocomplete.hasStylableState('readOnly')).to.be.equal(true);
+                expect(autocomplete.input.readOnly).to.be.equal(true);
+            });
+        });
+    });
+
+    describe('Accessibility', () => {
+        it('Gives the correct role and aria attributes to the input', async () => {
+            const {driver: autocomplete, waitForDom} = clientRenderer.render(
+                <AutoComplete />
+            ).withDriver(AutoCompleteTestDriver);
+
+            await waitForDom(() => {
+                expect(autocomplete.input).to.have.attribute('role', 'textbox');
+                expect(autocomplete.input).to.have.attribute('aria-autocomplete', 'list');
+                expect(autocomplete.input).to.have.attribute('aria-expanded', 'false');
+                expect(autocomplete.input).to.have.attribute('aria-haspopup', 'true');
+            });
+        });
+
+        it('Toggles aria-expanded on when open', async () => {
+            const {driver: autocomplete, waitForDom} = clientRenderer.render(
+                <AutoComplete dataSource={[1, 2, 3]} open />
+            ).withDriver(AutoCompleteTestDriver);
+
+            await waitForDom(() => {
+                expect(autocomplete.input).to.have.attribute('aria-expanded', 'true');
+            });
+        });
+    });
 });

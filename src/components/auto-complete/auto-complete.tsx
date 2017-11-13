@@ -2,7 +2,7 @@ import keycode = require('keycode');
 import {action, computed, observable, reaction} from 'mobx';
 import {observer} from 'mobx-react';
 import React = require('react');
-import {properties, stylable} from 'wix-react-tools';
+import {Disposers, properties, stylable} from 'wix-react-tools';
 import {ChangeEvent} from '../../types/events';
 import {FormInputProps} from '../../types/forms';
 import {noop} from '../../utils';
@@ -75,23 +75,21 @@ export class AutoComplete extends React.Component<AutoCompleteProps> {
         return !this.props.disabled && !this.props.readOnly;
     }
 
-    @computed private get items() {
-        return selectionListItemsFromProps({
+    @computed private get filteredItems() {
+        const items = selectionListItemsFromProps({
             dataSource: this.dataSource,
             dataMapper: this.dataMapper,
             renderItem: this.renderItem,
             children: this.children
         });
-    }
 
-    @computed private get filteredItems() {
-        const items = this.value ?
-            this.items.filter(item => this.filter(item.label, this.value)) :
-            this.items;
+        const filteredItems = this.value ?
+            items.filter(item => this.filter(item.label, this.value)) :
+            items;
 
-        return items.length <= this.maxShownSuggestions ?
-            items :
-            items.slice(0, this.maxShownSuggestions);
+        return filteredItems.length <= this.maxShownSuggestions ?
+            filteredItems :
+            filteredItems.slice(0, this.maxShownSuggestions);
     }
 
     @computed private get list() {
@@ -118,13 +116,24 @@ export class AutoComplete extends React.Component<AutoCompleteProps> {
 
     @observable private input: HTMLInputElement | null = null;
     @observable private focused: boolean = false;
-    @observable private popupTriggered: boolean = false;
+    @observable private popupTriggered: boolean = this.open;
+
+    private disposers = new Disposers();
 
     public componentWillMount() {
-        reaction(
+        this.disposers.set(reaction(
             () => this.wantToShowPopup,
-            (open: boolean) => this.props.onOpenStateChange!({value: open})
-        );
+            (wantToShowPopup: boolean) => {
+                if (wantToShowPopup !== this.open) {
+                    this.props.onOpenStateChange!({value: wantToShowPopup});
+                }
+            }
+        ));
+
+        this.disposers.set(reaction(
+            () => this.open,
+            (open: boolean) => this.popupTriggered = open
+        ));
     }
 
     public render() {
@@ -162,6 +171,10 @@ export class AutoComplete extends React.Component<AutoCompleteProps> {
         );
     }
 
+    public componentWillUnmount() {
+        this.disposers.disposeAll();
+    }
+
     public focus(): void {
         this.input!.focus();
     }
@@ -181,14 +194,24 @@ export class AutoComplete extends React.Component<AutoCompleteProps> {
                     onMouseDown={this.handleListMouseDown}
                 />
             ) :
-            this.noSuggestionsNotice;
+            (
+                <div
+                    data-automation-id="NO_SUGGESTIONS_NOTICE"
+                    className="noSuggestionsNotice"
+                    onMouseDown={this.handleNoSuggestionsNoticeMouseDown}
+                >
+                    {this.noSuggestionsNotice}
+                </div>
+            );
 
         return popupContents;
     }
 
     @action protected handleFocus = (): void => {
         this.focused = true;
-        this.popupTriggered = this.openOnFocus && this.isEditable;
+        if (this.openOnFocus && this.isEditable) {
+            this.popupTriggered = true;
+        }
     }
 
     @action protected handleBlur = (): void => {
@@ -234,6 +257,11 @@ export class AutoComplete extends React.Component<AutoCompleteProps> {
                 }
                 break;
         }
+    }
+
+    protected handleNoSuggestionsNoticeMouseDown: React.MouseEventHandler<HTMLElement> = event => {
+        // Don't steal focus from the input
+        event.preventDefault();
     }
 
     @action protected handleListMouseDown = (event: React.MouseEvent<HTMLElement>, itemIndex: number) => {
