@@ -631,7 +631,7 @@ describe('The DatePicker Component', () => {
             await waitForDom(() => {
                 expect(datePicker.monthView).to.be.absent();
                 expect(datePicker.yearView).to.be.present();
-                expect(datePicker.headerDate).to.have.text('2012-2022');
+                expect(datePicker.headerDate).to.have.text('2012-2021');
             });
         });
 
@@ -669,14 +669,14 @@ describe('The DatePicker Component', () => {
 
             await waitForDom(() => {
                 expect(datePicker.yearView).to.be.present();
-                expect(datePicker.headerDate).to.have.text('2012-2022');
+                expect(datePicker.headerDate).to.have.text('2012-2021');
             });
 
             datePicker.clickOnNextMonth();
 
             await waitForDom(() => {
                 expect(datePicker.yearView).to.be.present();
-                expect(datePicker.headerDate).to.have.text('2022-2032');
+                expect(datePicker.headerDate).to.have.text('2022-2031');
             });
 
             datePicker.clickOnPrevMonth();
@@ -684,7 +684,7 @@ describe('The DatePicker Component', () => {
 
             await waitForDom(() => {
                 expect(datePicker.yearView).to.be.present();
-                expect(datePicker.headerDate).to.have.text('2002-2012');
+                expect(datePicker.headerDate).to.have.text('2002-2011');
             });
         });
 
@@ -700,7 +700,7 @@ describe('The DatePicker Component', () => {
 
             await waitForDom(() => {
                 expect(datePicker.yearView).to.be.present();
-                expect(datePicker.headerDate).to.have.text('2012-2022');
+                expect(datePicker.headerDate).to.have.text('2012-2021');
             });
 
             datePicker.clickOnYear(yearToClick);
@@ -710,20 +710,6 @@ describe('The DatePicker Component', () => {
                 expect(datePicker.monthView).to.be.present();
                 expect(datePicker.isOpen()).to.equal(true);
                 expect(datePicker.headerDate).to.have.text(`${yearToClick}`);
-            });
-        });
-
-        it('when in the year-view, it should not show the current year', async () => {
-            const currentYear = '2017';
-            const {driver: datePicker, waitForDom} = clientRenderer.render(
-                <DatePicker showDropdownOnInit value={JANUARY_FIRST}/>
-            ).withDriver(DatePickerTestDriver);
-
-            datePicker.clickOnHeader();
-            datePicker.clickOnHeader();
-
-            await waitForDom(() => {
-                expect(datePicker.getYear(currentYear)).to.be.absent();
             });
         });
 

@@ -81,7 +81,7 @@ export class Calendar extends React.Component<CalendarProps> {
 
     private getHeader = () => {
         if (this.state.showYearView) {
-            const decade = `${this.state.viewDate.getFullYear() - 5}-${this.state.viewDate.getFullYear() + 5}`;
+            const decade = `${this.state.viewDate.getFullYear() - 5}-${this.state.viewDate.getFullYear() + 4}`;
             return (
                 <span data-automation-id="HEADER_DATE">
                     {decade}
@@ -244,10 +244,7 @@ export class Calendar extends React.Component<CalendarProps> {
     private get yearArray(): JSX.Element[] {
         const yearArray: JSX.Element[] = [];
 
-        for (let year = this.state.viewDate.getFullYear() - 5; year <= this.state.viewDate.getFullYear() + 5; year ++) {
-            // Don't show the current year as an option to select from
-            if (year === this.props.value.getFullYear()) { continue; }
-
+        for (let year = this.state.viewDate.getFullYear() - 5; year <= this.state.viewDate.getFullYear() + 4; year ++) {
             yearArray.push(
                 <span
                     className="year"
