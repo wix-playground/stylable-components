@@ -34,7 +34,7 @@ describe('<Image />', () => {
 
     it('does not send an onLoad event when falling back to showing one transparent pixel', async () => {
         const onLoad = sinon.spy();
-        clientRenderer.render(<Image onLoad={onLoad}/>).withDriver(ImageDriver);
+        clientRenderer.render(<Image onLoad={onLoad} />).withDriver(ImageDriver);
 
         await sleep(10);
 
@@ -57,7 +57,7 @@ describe('<Image />', () => {
     it('shows src if provided together with defaultImage', async () => {
         const onLoad = sinon.spy();
         const {driver: image} = clientRenderer.render(
-            <Image src={onePixelBlack} defaultImage={onePixelBlue} onLoad={onLoad}/>
+            <Image src={onePixelBlack} defaultImage={onePixelBlue} onLoad={onLoad} />
         ).withDriver(ImageDriver);
 
         await waitFor(() => {
@@ -71,7 +71,7 @@ describe('<Image />', () => {
     it('shows defaultImage if provided without src', async () => {
         const onLoad = sinon.spy();
         const {driver: image} = clientRenderer.render(
-            <Image defaultImage={onePixelBlack} onLoad={onLoad}/>
+            <Image defaultImage={onePixelBlack} onLoad={onLoad} />
         ).withDriver(ImageDriver);
 
         await waitFor(() => {
@@ -84,7 +84,7 @@ describe('<Image />', () => {
     it('shows defaultImage if provided src is an empty string', async () => {
         const onLoad = sinon.spy();
         const {driver: image} = clientRenderer.render(
-            <Image defaultImage={onePixelBlack} src="" onLoad={onLoad}/>
+            <Image defaultImage={onePixelBlack} src="" onLoad={onLoad} />
         ).withDriver(ImageDriver);
 
         await waitFor(() => {
@@ -121,7 +121,7 @@ describe('<Image />', () => {
     it('shows errorImage if provided with invalid defaultImage', async () => {
         const onError = sinon.spy();
         const {driver: image} = clientRenderer.render(
-            <Image defaultImage={brokenSrc} errorImage={onePixelBlack} onError={onError}/>
+            <Image defaultImage={brokenSrc} errorImage={onePixelBlack} onError={onError} />
         ).withDriver(ImageDriver);
 
         await waitFor(() => {
@@ -134,7 +134,7 @@ describe('<Image />', () => {
     it('shows a transparent pixel gif if provided with invalid src', async () => {
         const onError = sinon.spy();
         const {driver: image} = clientRenderer.render(
-            <Image src={brokenSrc} onError={onError}/>
+            <Image src={brokenSrc} onError={onError} />
         ).withDriver(ImageDriver);
 
         await waitFor(() => {
@@ -147,7 +147,7 @@ describe('<Image />', () => {
     it('shows a transparent pixel gif if provided with invalid defaultImage', async () => {
         const onError = sinon.spy();
         const {driver: image} = clientRenderer.render(
-            <Image defaultImage={brokenSrc} onError={onError}/>
+            <Image defaultImage={brokenSrc} onError={onError} />
         ).withDriver(ImageDriver);
 
         await waitFor(() => {
@@ -160,7 +160,7 @@ describe('<Image />', () => {
     it('shows a transparent pixel gif if provided with invalid src and invalid errorImage', async () => {
         const onError = sinon.spy();
         const {driver: image} = clientRenderer.render(
-            <Image src={brokenSrc} errorImage={brokenSrc2} onError={onError}/>
+            <Image src={brokenSrc} errorImage={brokenSrc2} onError={onError} />
         ).withDriver(ImageDriver);
 
         await waitFor(() => {
@@ -175,7 +175,7 @@ describe('<Image />', () => {
     it('shows a transparent pixel gif if provided with invalid defaultImage and invalid errorImage', async () => {
         const onError = sinon.spy();
         const {driver: image} = clientRenderer.render(
-            <Image defaultImage={brokenSrc} errorImage={brokenSrc2} onError={onError}/>
+            <Image defaultImage={brokenSrc} errorImage={brokenSrc2} onError={onError} />
         ).withDriver(ImageDriver);
 
         await waitFor(() => {
@@ -217,7 +217,7 @@ describe('<Image />', () => {
 
     it('gets to "loading" state before "loaded" state', async () => {
         const {driver: image, waitForDom} = clientRenderer.render(
-            <Image src={onePixelBlue}/>
+            <Image src={onePixelBlue} />
         ).withDriver(ImageDriver);
 
         await waitForDom(() => {
@@ -252,36 +252,27 @@ describe('<Image />', () => {
     describe('resize mode', () => {
         it('sets image as background with size: contain, when resizeMode="contain"', async () => {
             const {driver: image, waitForDom} = clientRenderer.render(
-                <Image resizeMode="contain" src={onePixelBlack} style={{height: '20px'}}/>
+                <Image resizeMode="contain" src={onePixelBlack} style={{height: '20px'}} />
             ).withDriver(ImageDriver);
 
             await waitForDom(() => {
                 expect(image.root).to.be.present();
                 expect(image.source, 'incorrect image source').to.equal(onePixelBlack);
-                expect(getComputedStyle(image.nativeElement)).to.have.property('visibility', 'hidden');
-                expect(getComputedStyle(image.nativeElement)).to.have.property('display', 'block');
-                expect(getComputedStyle(image.nativeElement)).to.have.property('height', '20px');
+                expect(image.nativeElement).to.have.style('visibility', 'hidden');
+                expect(image.nativeElement).to.have.style('display', 'block');
+                expect(image.nativeElement).to.have.style('height', '20px');
 
                 expect(image.root, 'verify image is wrapped for sizing').to.not.equal(image.nativeElement);
-                expect(getComputedStyle(image.root).getPropertyValue('background-size')).to.equal('contain');
-                expect(getComputedStyle(image.root).getPropertyValue('background-repeat')).to.equal('no-repeat');
-
-                // IE / Edge return max-width '300px' while chrome return '100%'
-                // expect(getComputedStyle(image.nativeElement)).to.have.property('max-width', '100%');
-
-                // chrome normalizes to url("http://domain/file"), while safari normalizes to url(http://domain/file)
-                // expect(getComputedStyle(image.root).getPropertyValue('background-image'))
-                // .to.equal(`url("${onePixelBlack}")`);
-
-                // ie11 normalizes to 'center', while chrome 60 normalizes to 'center center'
-                // expect(getComputedStyle(image.root).getPropertyValue('background-position'))
-                // .to.equal('center');
+                expect(image.root).to.have.style('background-size', 'contain');
+                expect(image.root).to.have.style('background-repeat', 'no-repeat');
+                expect(image.root).to.have.style('background-image', `url("${onePixelBlack}")`);
+                expect(image.root).to.have.style('background-position', 'center');
             });
         });
 
         it('sets image as background with size: cover, when resizeMode="cover"', async () => {
             const {driver: image, waitForDom} = clientRenderer.render(
-                <Image resizeMode="cover" src={onePixelBlack} style={{height: '20px'}}/>
+                <Image resizeMode="cover" src={onePixelBlack} style={{height: '20px'}} />
             ).withDriver(ImageDriver);
 
             await waitForDom(() => {
@@ -292,19 +283,10 @@ describe('<Image />', () => {
                 expect(getComputedStyle(image.nativeElement)).to.have.property('height', '20px');
 
                 expect(image.root, 'verify image is wrapped for sizing').to.not.equal(image.nativeElement);
-                expect(getComputedStyle(image.root).getPropertyValue('background-size')).to.equal('cover');
-                expect(getComputedStyle(image.root).getPropertyValue('background-repeat')).to.equal('no-repeat');
-
-                // IE / Edge return max-width '300px' while chrome return '100%'
-                // expect(getComputedStyle(image.nativeElement)).to.have.property('max-width', '100%');
-
-                // chrome normalizes to url("http://domain/file"), while safari normalizes to url(http://domain/file)
-                // expect(getComputedStyle(image.root).getPropertyValue('background-image'))
-                // .to.equal(`url("${onePixelBlack}")`);
-
-                // ie11 normalizes to 'center', while chrome 60 normalizes to 'center center'
-                // expect(getComputedStyle(image.root).getPropertyValue('background-position'))
-                // .to.equal('center');
+                expect(image.root).to.have.style('background-size', 'cover');
+                expect(image.root).to.have.style('background-repeat', 'no-repeat');
+                expect(image.root).to.have.style('background-image', `url("${onePixelBlack}")`);
+                expect(image.root).to.have.style('background-position', 'center');
             });
         });
 
@@ -317,7 +299,7 @@ describe('<Image />', () => {
                 expect(image.nativeElement).to.be.present();
                 expect(image.root, 'verify that native image is the root').to.equal(image.nativeElement);
                 expect(image.source, 'incorrect image source').to.equal(onePixelBlack);
-                expect(getComputedStyle(image.nativeElement)).to.not.have.property('visibility', 'hidden');
+                expect(image.nativeElement).to.not.have.style('visibility', 'hidden');
                 expect(image.nativeElement.parentElement, 'verify image is not wrapped').to.equal(container);
             });
         });
