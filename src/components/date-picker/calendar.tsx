@@ -29,8 +29,7 @@ export interface CalendarProps {
 }
 
 export interface CalendarState {
-    showMonthView: boolean;
-    showYearView: boolean;
+    view: 'year' | 'month' | 'default';
     viewDate: Date;
 }
 
@@ -39,9 +38,8 @@ const monthNames = getMonthNames();
 @stylable(styles)
 @observer
 export class Calendar extends React.Component<CalendarProps> {
-    @observable public state: CalendarState = {
-        showMonthView: false,
-        showYearView: false,
+    @observable public calendarState: CalendarState = {
+        view: 'default',
         viewDate: this.props.value
     };
 
@@ -80,16 +78,17 @@ export class Calendar extends React.Component<CalendarProps> {
     }
 
     private getHeader = () => {
-        if (this.state.showYearView) {
-            const decade = `${this.state.viewDate.getFullYear() - 5}-${this.state.viewDate.getFullYear() + 4}`;
+        if (this.calendarState.view === 'year') {
+            const decade = `${this.calendarState.viewDate.getFullYear() - 5}
+                -${this.calendarState.viewDate.getFullYear() + 4}`;
             return (
                 <span data-automation-id="HEADER_DATE">
                     {decade}
                 </span>);
-        } else if (this.state.showMonthView) {
+        } else if (this.calendarState.view === 'month') {
             return (
                 <span data-automation-id="HEADER_DATE">
-                    {this.state.viewDate.getFullYear()}
+                    {this.calendarState.viewDate.getFullYear()}
                 </span>);
         } else {
             return (
@@ -100,15 +99,15 @@ export class Calendar extends React.Component<CalendarProps> {
     }
 
     private getCalendarView = () => {
-        if (this.state.showYearView) {
+        if (this.calendarState.view === 'year') {
             return (
-                <div className="year-view" data-automation-id="YEAR_VIEW">
+                <div className="yearView" data-automation-id="YEAR_VIEW">
                     {this.yearArray}
                 </div>
             );
-        } else if (this.state.showMonthView) {
+        } else if (this.calendarState.view === 'month') {
             return (
-                <div className="month-view" data-automation-id="MONTH_VIEW">
+                <div className="monthView" data-automation-id="MONTH_VIEW">
                     {this.monthArray}
                 </div>
             );
@@ -244,7 +243,8 @@ export class Calendar extends React.Component<CalendarProps> {
     private get yearArray(): JSX.Element[] {
         const yearArray: JSX.Element[] = [];
 
-        for (let year = this.state.viewDate.getFullYear() - 5; year <= this.state.viewDate.getFullYear() + 4; year ++) {
+        for (let year = this.calendarState.viewDate.getFullYear() - 5;
+            year <= this.calendarState.viewDate.getFullYear() + 4; year ++) {
             yearArray.push(
                 <span
                     className="year"
@@ -287,66 +287,55 @@ export class Calendar extends React.Component<CalendarProps> {
     }
 
     private toggleDateSelectView = () => {
-        if (this.state.showYearView && this.state.showMonthView) {
-            this.state.showYearView = false;
-            this.state.showMonthView = false;
+        if (this.calendarState.view === 'year') {
+            this.calendarState.view = 'default';
             this.resetViewDate();
-        } else if (this.state.showYearView) {
-            this.state.showYearView = false;
-            this.state.showMonthView = true;
-        } else if (this.state.showMonthView) {
-            this.state.showYearView = true;
-            this.state.showMonthView = true;
-        } else {
-            this.state.showMonthView = true;
+        } else if (this.calendarState.view === 'default') {
+            this.calendarState.view = 'month';
+        } else if (this.calendarState.view === 'month') {
+            this.calendarState.view = 'year';
         }
     }
 
     private closeDateSelectView = () => {
-        if (this.state.showYearView) {
-            this.state.showYearView = false;
-            this.state.showMonthView = true;
-        } else if (this.state.showMonthView) {
-            this.state.showYearView = false;
-            this.state.showMonthView = false;
+        if (this.calendarState.view === 'year') {
+            this.calendarState.view = 'month';
+        } else if (this.calendarState.view === 'month') {
+            this.calendarState.view = 'default';
         }
     }
 
     private resetViewDate = () => {
-        this.state.viewDate = this.props.value;
+        this.calendarState.viewDate = this.props.value;
     }
 
     private onSelectMonth: React.EventHandler<React.SyntheticEvent<Element>> = event => {
-        event.preventDefault();
-
-        const date = new Date(this.state.viewDate.getFullYear(),
+        const date = new Date(this.calendarState.viewDate.getFullYear(),
             monthNames.indexOf((event.target as HTMLSpanElement).textContent!),
-            this.state.viewDate.getDate());
+            this.calendarState.viewDate.getDate());
 
         this.props.updateDropdownDate(date);
-        this.state.viewDate = date;
+        this.calendarState.viewDate = date;
         this.closeDateSelectView();
     }
 
     private onSelectYear: React.EventHandler<React.SyntheticEvent<Element>> = event => {
-        event.preventDefault();
-
         const date = new Date(parseInt((event.target as HTMLSpanElement).textContent!, 10),
-            this.state.viewDate.getMonth(),
-            this.state.viewDate.getDate());
+            this.calendarState.viewDate.getMonth(),
+            this.calendarState.viewDate.getDate());
 
         this.props.updateDropdownDate(date);
-        this.state.viewDate = date;
+        this.calendarState.viewDate = date;
         this.closeDateSelectView();
     }
 
     private goToNextMonth: React.EventHandler<React.SyntheticEvent<Element>> = event => {
         event.preventDefault();
 
-        if (this.state.showMonthView || this.state.showYearView) {
-             this.state.viewDate = this.state.showYearView
-                ? new Date(this.state.viewDate.getFullYear() + 10, this.state.viewDate.getMonth(), 1)
-                : new Date(this.state.viewDate.getFullYear() + 1, this.state.viewDate.getMonth(), 1);
+        if (this.calendarState.view !== 'default') {
+             this.calendarState.viewDate = this.calendarState.view === 'year'
+                ? new Date(this.calendarState.viewDate.getFullYear() + 10, this.calendarState.viewDate.getMonth(), 1)
+                : new Date(this.calendarState.viewDate.getFullYear() + 1, this.calendarState.viewDate.getMonth(), 1);
         } else {
             const nextDate: Date = getMonthFromOffset(
                 new Date(this.props.value.getFullYear(), this.props.value.getMonth(), 1), 1);
@@ -357,10 +346,10 @@ export class Calendar extends React.Component<CalendarProps> {
     private goToPrevMonth: React.EventHandler<React.SyntheticEvent<Element>> = event => {
         event.preventDefault();
 
-        if (this.state.showMonthView || this.state.showYearView) {
-            this.state.viewDate = this.state.showYearView
-                ? new Date(this.state.viewDate.getFullYear() - 10, this.state.viewDate.getMonth(), 1)
-                : new Date(this.state.viewDate.getFullYear() - 1, this.state.viewDate.getMonth(), 1);
+        if (this.calendarState.view !== 'default') {
+            this.calendarState.viewDate = this.calendarState.view === 'year'
+                ? new Date(this.calendarState.viewDate.getFullYear() - 10, this.calendarState.viewDate.getMonth(), 1)
+                : new Date(this.calendarState.viewDate.getFullYear() - 1, this.calendarState.viewDate.getMonth(), 1);
         } else {
             const nextDate: Date = getMonthFromOffset(
                 new Date(this.props.value.getFullYear(), this.props.value.getMonth(), 1), -1);
