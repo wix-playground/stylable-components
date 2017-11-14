@@ -7,10 +7,13 @@
     -st-from: "../variables.st.css";
     -st-named:  color_MainText_Background,
                 color_MainText,
+                color_MainPlaceholder,
+                color_Disabled,
                 borderDefault,
                 borderRadius,
                 borderHover,
                 borderFocus,
+                borderDisabled,
                 inputWidth,
                 inputHeight,
                 inputSpacing,
@@ -19,38 +22,67 @@
 }
 
 AutoComplete {
-    font: value(defaultFont);
-    border: value(borderDefault);
-    border-radius: value(borderRadius);
-    background-color: value(color_MainText_Background);
-    color: value(color_MainText);
-
     height: value(inputHeight);
     min-width: value(inputWidth);
-
 }
 
 AutoComplete::input {
+    background-color: value(color_MainText_Background);
+    border-radius: value(borderRadius);
+    border: value(borderDefault);
+    color: value(color_MainText);
+    font: value(defaultFont);
+    height: 100%;
+    margin: 0;
+    outline: none;
     padding: value(inputSpacing);
+    width: 100%;
 }
 
-
-AutoComplete:hover {
+AutoComplete:hover input {
     border: value(borderHover);
 }
 
-AutoComplete:focus {
+AutoComplete:focused input {
     border: value(borderFocus);
 }
 
-AutoComplete::caret {
-    width: 30px;
-    background-size: 16px 16px;
+AutoComplete:disabled input {
+    background-color: value(color_Disabled);
+    color: value(color_MainPlaceholder);
+    border: value(borderDisabled);
+}
+
+AutoComplete::noSuggestionsNotice {
+    background-color: value(color_MainText_Background);
+    border-radius: value(borderRadius);
+    border: value(borderDefault);
+    border-top: 0;
+    color: value(color_MainPlaceholder);
+    font: value(defaultFont);
+    padding: value(inputSpacing);
+    text-align: center;
 }
 
 AutoComplete::list {
-    border-top: 0;
     background-color: value(color_MainText_Background);
+    border-top: 0;
+    max-height: 300px; /* FIXME: needs to be determined by the popup so it doesn't extend beyond the viewport */
 }
 
-
+/* FIXME: styling inside of portal is broken. Remove these rules when it's fixed. */
+AutoComplete {
+    position: relative;
+}
+AutoComplete::list {
+    z-index: 1;
+    position: absolute;
+    top: 100%;
+    width: 100%;
+}
+AutoComplete::noSuggestionsNotice {
+    z-index: 1;
+    position: absolute;
+    top: 100%;
+    width: 100%;
+}
