@@ -8,6 +8,14 @@ function assertError(fn: sinon.SinonSpy, err: Error) {
     expect(fn.firstCall.args[0]).property('message', err.message);
 }
 
+// tslint:disable
+console.profile('cause of reload');
+
+window.addEventListener('beforeunload', function() {
+    console.profileEnd();
+    debugger;
+});
+// tslint:enable
 type Method = 'warn' | 'error';
 const methods: Method[] = ['warn', 'error'];
 
