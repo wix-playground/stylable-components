@@ -1,0 +1,217 @@
+
+:import {
+    -st-from: "../variables.st.css";
+    -st-named: borderDefault,
+               borderStyle,
+               color_Focus,
+               color_Disabled,
+               color_MainText_Background;
+}
+
+:import {
+	-st-from: "../../../components/tabs/tabs.st.css";
+	-st-default: Tabs;
+}
+
+:import {
+    -st-from: "../../../components/selection-list/option.st.css";
+    -st-default: Option;
+}
+
+Tabs::tabList,
+Tabs::tabList:focused {
+    border: none;
+    background: value(color_MainText_Background);
+}
+
+Tabs::tabList::after,
+Tabs::tabList:focused::after {
+    content: "";
+
+    flex-grow: 1;
+
+    border: none;
+    border-bottom: value(borderDefault);
+}
+
+Tabs::tabList Option {
+    border: none;
+    border-bottom: value(borderDefault);
+
+    padding: 18px;
+    padding-bottom: 17px;
+
+    background: transparent;
+}
+
+/* since SelectionList Option is styled with :not(:disabled)
+ * state, this state has to be added here so that the
+ * selector specificity is correct
+ */
+Tabs::tabList Option:selected:hover:not(:disabled),
+Tabs::tabList:focused Option:selected:hover:not(:disabled),
+Tabs::tabList Option:selected:not(:disabled),
+Tabs::tabList:focused Option:selected:not(:disabled) {
+    color: value(color_Focus);
+
+    border: none;
+    border-bottom: value(borderStyle) 2px value(color_Focus);
+    padding-bottom: 16px;
+
+    background: transparent;
+}
+
+Tabs::tabList Option:selected:hover:disabled,
+Tabs::tabList:focused Option:selected:hover:disabled,
+Tabs::tabList Option:selected:disabled,
+Tabs::tabList:focused Option:selected:disabled {
+    color: value(color_Disabled);
+
+    border: none;
+    border-bottom: value(borderStyle) 2px value(color_Focus);
+    padding-bottom: 16px;
+
+    background: transparent;
+}
+
+Tabs::tabList Option:hover:not(:disabled),
+Tabs::tabList Option:focused:not(:disabled) {
+    color: value(color_Focus);
+    background: transparent;
+}
+
+Tabs::tabList Option:disabled {
+    color: value(color_Disabled);
+    cursor: not-allowed;
+}
+
+Tabs::tabPanel {
+    padding: 18px;
+    background: value(color_MainText_Background)
+}
+
+Tabs:horizontalBottom::tabList::after,
+Tabs:horizontalBottom::tabList:focused::after {
+    border: none;
+    border-top: value(borderDefault);
+}
+
+Tabs:horizontalBottom::tabList Option,
+Tabs:horizontalBottom::tabList:focused Option {
+    border: none;
+    border-top: value(borderDefault);
+
+    padding: 18px;
+    padding-top: 17px;
+}
+
+Tabs:horizontalBottom::tabList Option:selected:hover,
+Tabs:horizontalBottom::tabList:focused Option:selected:hover,
+Tabs:horizontalBottom::tabList Option:selected,
+Tabs:horizontalBottom::tabList:focused Option:selected {
+    border: none;
+    border-top: value(borderStyle) 2px value(color_Focus);
+
+    padding: 18px;
+    padding-top: 16px;
+}
+
+Tabs:verticalBefore::tabList Option,
+Tabs:verticalBefore::tabList:focused Option {
+    border: none;
+    border-right: value(borderDefault);
+
+    padding: 18px;
+    padding-right: 17px;
+}
+
+Tabs:rtl:verticalBefore::tabList Option,
+Tabs:rtl:verticalBefore::tabList:focused Option {
+    border: none;
+    border-left: value(borderDefault);
+
+    padding: 18px;
+    padding-left: 17px;
+}
+
+Tabs:verticalBefore::tabList::after,
+Tabs:verticalBefore::tabList:focused::after {
+    border: none;
+    border-right: value(borderDefault);
+}
+
+Tabs:rtl:verticalBefore::tabList::after,
+Tabs:rtl:verticalBefore::tabList:focused::after {
+    border: none;
+    border-left: value(borderDefault);
+}
+
+Tabs:verticalBefore::tabList Option:selected,
+Tabs:verticalBefore::tabList:focused Option:selected,
+Tabs:verticalBefore::tabList Option:selected:hover,
+Tabs:verticalBefore::tabList:focused Option:selected:hover {
+    border: none;
+    border-right: value(borderStyle) 2px value(color_Focus);
+    padding: 18px;
+    padding-right: 16px;
+}
+
+Tabs:rtl:verticalBefore::tabList Option:selected,
+Tabs:rtl:verticalBefore::tabList:focused Option:selected,
+Tabs:rtl:verticalBefore::tabList Option:selected:hover,
+Tabs:rtl:verticalBefore::tabList:focused Option:selected:hover {
+    border: none;
+    border-left: value(borderStyle) 2px value(color_Focus);
+    padding: 18px;
+    padding-left: 16px;
+}
+
+Tabs:verticalAfter::tabList Option,
+Tabs:verticalAfter::tabList:focused Option {
+    border: none;
+    border-left: value(borderDefault);
+
+    padding: 18px;
+    padding-left: 17px;
+}
+
+Tabs:rtl:verticalAfter::tabList Option,
+Tabs:rtl:verticalAfter::tabList:focused Option {
+    border: none;
+    border-right: value(borderDefault);
+
+    padding: 18px;
+    padding-right: 17px;
+}
+
+Tabs:verticalAfter::tabList::after,
+Tabs:verticalAfter::tabList:focused::after {
+    border: none;
+    border-left: value(borderDefault);
+}
+
+Tabs:rtl:verticalAfter::tabList::after,
+Tabs:rtl:verticalAfter::tabList:focused::after {
+    border: none;
+    border-right: value(borderDefault);
+}
+
+Tabs:verticalAfter::tabList Option:selected,
+Tabs:verticalAfter::tabList:focused Option:selected,
+Tabs:verticalAfter::tabList Option:selected:hover,
+Tabs:verticalAfter::tabList:focused Option:selected:hover {
+    border: none;
+    border-left: value(borderStyle) 2px value(color_Focus);
+    padding: 18px;
+    padding-left: 16px;
+}
+
+Tabs:rtl:verticalAfter::tabList Option:selected,
+Tabs:rtl:verticalAfter::tabList:focused Option:selected,
+Tabs:rtl:verticalAfter::tabList Option:selected:hover,
+Tabs:rtl:verticalAfter::tabList:focused Option:selected:hover {
+    border: none;
+    border-right: value(borderStyle) 2px value(color_Focus);
+    padding: 18px;
+    padding-right: 16px;
+}

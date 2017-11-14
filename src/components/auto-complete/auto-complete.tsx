@@ -1,131 +1,283 @@
-import {computed} from 'mobx';
-import * as React from 'react';
-import {properties, stylable} from 'wix-react-tools';
-import {Popup} from '../../';
+import keycode = require('keycode');
+import {action, computed, observable, reaction} from 'mobx';
+import {observer} from 'mobx-react';
+import React = require('react');
+import {Disposers, properties, stylable} from 'wix-react-tools';
 import {ChangeEvent} from '../../types/events';
 import {FormInputProps} from '../../types/forms';
-import {StylableProps} from '../../types/props';
 import {noop} from '../../utils';
 import {
     OptionList,
     selectionListItemsFromProps,
-    SelectionListModel
-} from '../selection-list/selection-list-model';
-import {SelectionListView} from '../selection-list/selection-list-view';
+    SelectionListModel,
+    SelectionListView
+} from '../selection-list';
 import style from './auto-complete.st.css';
 
-export type FilterPredicate = (item: string, filterString: string) => boolean;
+export type AutocompleteFilterPredicate = (itemLabel: string, filterString: string) => boolean;
 
-export interface AutoCompleteProps extends OptionList, FormInputProps<string>, StylableProps {
-    open?: boolean;
-    filter?: FilterPredicate;
+export interface AutoCompleteProps extends OptionList, FormInputProps<string>, properties.Props {
+    // Standard props
+    autoFocus?: boolean;
+    disabled?: boolean;
+    onChange?: (event: ChangeEvent<string>) => void;
+    readOnly?: boolean;
+    tabIndex?: number;
+    value?: string;
+
+    // Component-specific props
+    filter?: AutocompleteFilterPredicate;
+    maxShownSuggestions?: number;
+    minCharacters?: number;
+    noSuggestionsNotice?: React.ReactChild;
     onOpenStateChange?: (e: ChangeEvent<boolean>) => void;
+    open?: boolean;
+    openOnFocus?: boolean;
 }
 
-export interface AutoCompleteState {
-    self: HTMLDivElement | null;
-}
-
-const prefixFilter: FilterPredicate = (item: string, prefix: string) => {
-    return item.toLowerCase().startsWith(prefix.toLowerCase());
+const prefixFilter: AutocompleteFilterPredicate = (itemLabel: string, filterString: string) => {
+    return itemLabel.toLowerCase().startsWith(filterString.toLowerCase());
 };
 
 @stylable(style)
 @properties
-export class AutoComplete extends React.Component<AutoCompleteProps, AutoCompleteState> {
+@observer
+export class AutoComplete extends React.Component<AutoCompleteProps> {
     public static defaultProps: AutoCompleteProps = {
-        open: false,
-        dataSource: [],
-        value: '',
-        filter: prefixFilter,
+        autoFocus: false,
+        disabled: false,
         onChange: noop,
-        onOpenStateChange: noop
+        readOnly: false,
+
+        filter: prefixFilter,
+        maxShownSuggestions: Infinity,
+        minCharacters: 0,
+        onOpenStateChange: noop,
+        open: false,
+        openOnFocus: false,
+        value: ''
     };
-    public state = {self: null, isOpen: this.props.open!};
 
     // Wrapping props with @computed allows to observe them independently from other props.
-    @computed private get children()    { return this.props.children; }
-    @computed private get dataSource()  { return this.props.dataSource; }
-    @computed private get dataMapper() { return this.props.dataMapper; }
-    @computed private get renderItem()  { return this.props.renderItem; }
-    @computed private get value()       { return this.props.value; }
-    @computed private get filter()      { return this.props.filter; }
+    @computed private get children()            { return this.props.children; }
+    @computed private get dataMapper()          { return this.props.dataMapper; }
+    @computed private get dataSource()          { return this.props.dataSource; }
+    @computed private get filter()              { return this.props.filter!; }
+    @computed private get maxShownSuggestions() { return this.props.maxShownSuggestions!; }
+    @computed private get minCharacters()       { return this.props.minCharacters!; }
+    @computed private get noSuggestionsNotice() { return this.props.noSuggestionsNotice; }
+    @computed private get open()                { return this.props.open!; }
+    @computed private get openOnFocus()         { return this.props.openOnFocus!; }
+    @computed private get renderItem()          { return this.props.renderItem; }
+    @computed private get value()               { return this.props.value!; }
 
-    @computed private get items() {
+    @computed private get isEditable(): boolean {
+        return !this.props.disabled && !this.props.readOnly;
+    }
+
+    @computed private get filteredItems() {
         const items = selectionListItemsFromProps({
             dataSource: this.dataSource,
             dataMapper: this.dataMapper,
             renderItem: this.renderItem,
             children: this.children
         });
-        return this.value ? items.filter(item => this.filter!(item.label, this.value!)) : items;
+
+        const filteredItems = this.value ?
+            items.filter(item => this.filter(item.label, this.value)) :
+            items;
+
+        return filteredItems.length <= this.maxShownSuggestions ?
+            filteredItems :
+            filteredItems.slice(0, this.maxShownSuggestions);
     }
 
     @computed private get list() {
-        return new SelectionListModel(this.items);
+        return new SelectionListModel(this.filteredItems);
+    }
+
+    @computed private get isPopupOpen(): boolean {
+        return this.open && this.possibleToShowPopup;
+    }
+
+    @computed private get wantToShowPopup() {
+        return (
+            this.focused &&
+            this.popupTriggered &&
+            this.isEditable &&
+            this.value.length >= this.minCharacters &&
+            this.possibleToShowPopup
+        );
+    }
+
+    @computed private get possibleToShowPopup() {
+        return this.filteredItems.length > 0 || this.noSuggestionsNotice !== undefined;
+    }
+
+    @observable private input: HTMLInputElement | null = null;
+    @observable private focused: boolean = false;
+    @observable private popupTriggered: boolean = this.open;
+
+    private disposers = new Disposers();
+
+    public componentWillMount() {
+        this.disposers.set(reaction(
+            () => this.wantToShowPopup,
+            (wantToShowPopup: boolean) => {
+                if (wantToShowPopup !== this.open) {
+                    this.props.onOpenStateChange!({value: wantToShowPopup});
+                }
+            }
+        ));
+
+        this.disposers.set(reaction(
+            () => this.open,
+            (open: boolean) => this.popupTriggered = open
+        ));
     }
 
     public render() {
         return (
             <div
-                data-automation-id="AUTO_COMPLETE"
-                ref={this.refCallback}
+                data-automation-id="AUTOCOMPLETE"
+                style-state={{
+                    focused: this.focused,
+                    disabled: this.props.disabled,
+                    readOnly: this.props.readOnly
+                }}
             >
                 <input
+                    ref={input => this.input || (this.input = input)}
+                    aria-autocomplete="list"
+                    aria-expanded={this.isPopupOpen}
+                    aria-haspopup="true"
+                    autoComplete="off"
+                    autoFocus={this.props.autoFocus}
                     className="input"
-                    data-automation-id="AUTO_COMPLETE_INPUT"
+                    data-automation-id="INPUT"
+                    disabled={this.props.disabled}
+                    onBlur={this.handleBlur}
+                    onChange={this.isEditable ? this.handleInputChange : noop}
+                    onFocus={this.handleFocus}
+                    onKeyDown={this.isEditable ? this.handleInputKeydown : noop}
+                    readOnly={this.props.readOnly}
+                    role="textbox"
+                    tabIndex={this.props.tabIndex}
                     type="text"
-                    onChange={this.onChange}
                     value={this.props.value}
-
                 />
-                <button
-                    onClick={this.onCaretClick}
-                    className="caret"
-                    data-automation-id="AUTO_COMPLETE_CARET"
-                />
-                <Popup
-                    className="root"
-                    anchor={this.state.self}
-                    open={this.props.open && this.items.length > 0}
-                >
-                    <SelectionListView
-                        className="list"
-                        list={this.list}
-                        onClick={this.onClick}
-                    />
-                </Popup>
+                {this.isPopupOpen && this.renderPopup()}
             </div>
         );
     }
 
-    private refCallback = (ref: HTMLDivElement) => {
-        this.setState({self: ref});
+    public componentWillUnmount() {
+        this.disposers.disposeAll();
     }
 
-    private onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        this.props.onChange!({value: e.target.value || ''});
-        if (!this.props.value) {
-            this.openPopup();
+    public focus(): void {
+        this.input!.focus();
+    }
+
+    public blur(): void {
+        this.input!.blur();
+    }
+
+    protected renderPopup() {
+        const popupContents = this.filteredItems.length ?
+            (
+                <SelectionListView
+                    className="list"
+                    focused
+                    list={this.list}
+                    onClick={this.handleListClick}
+                    onMouseDown={this.handleListMouseDown}
+                />
+            ) :
+            (
+                <div
+                    data-automation-id="NO_SUGGESTIONS_NOTICE"
+                    className="noSuggestionsNotice"
+                    onMouseDown={this.handleNoSuggestionsNoticeMouseDown}
+                >
+                    {this.noSuggestionsNotice}
+                </div>
+            );
+
+        return popupContents;
+    }
+
+    @action protected handleFocus = (): void => {
+        this.focused = true;
+        if (this.openOnFocus && this.isEditable) {
+            this.popupTriggered = true;
         }
     }
 
-    private onClick = (e: React.MouseEvent<HTMLElement>, itemIndex: number) => {
-        if (itemIndex > -1) {
-            this.props.onChange!({value: this.list.items[itemIndex].value});
+    @action protected handleBlur = (): void => {
+        this.focused = false;
+        this.popupTriggered = false;
+    }
+
+    @action protected handleInputChange: React.ChangeEventHandler<HTMLInputElement> = event => {
+        this.popupTriggered = true;
+        this.props.onChange!({value: this.input!.value});
+    }
+
+    @action protected handleInputKeydown: React.KeyboardEventHandler<HTMLInputElement> = event => {
+        const isPopupOpen = this.isPopupOpen;
+
+        switch (event.keyCode) {
+            case keycode('escape'):
+                this.popupTriggered = false;
+                this.list.focusIndex(-1);
+                break;
+
+            case keycode('enter'):
+                if (isPopupOpen && this.list.focusedIndex > -1) {
+                    event.preventDefault();
+                    this.popupTriggered = false;
+                    const itemIndex = this.list.focusedIndex;
+                    this.list.focusIndex(-1);
+                    this.props.onChange!({value: this.list.items[itemIndex].label});
+                }
+                break;
+
+            case keycode('down'):
+                if (isPopupOpen) {
+                    event.preventDefault();
+                    this.list.focusNext();
+                }
+                break;
+
+            case keycode('up'):
+                if (isPopupOpen) {
+                    event.preventDefault();
+                    this.list.focusPrevious();
+                }
+                break;
         }
-        this.togglePopup();
     }
 
-    private onCaretClick = () => {
-        this.togglePopup();
+    protected handleNoSuggestionsNoticeMouseDown: React.MouseEventHandler<HTMLElement> = event => {
+        // Don't steal focus from the input
+        event.preventDefault();
     }
 
-    private openPopup() {
-        this.props.onOpenStateChange!({value: true});
+    @action protected handleListMouseDown = (event: React.MouseEvent<HTMLElement>, itemIndex: number) => {
+        // Don't steal focus from the input.
+        event.preventDefault();
+
+        if (event.button === 0 && itemIndex > -1) {
+            this.list.focusIndex(itemIndex);
+        }
     }
 
-    private togglePopup() {
-        this.props.onOpenStateChange!({value: !this.props.open});
+    @action protected handleListClick = (event: React.MouseEvent<HTMLElement>, itemIndex: number) => {
+        if (event.button === 0 && itemIndex > -1) {
+            this.popupTriggered = false;
+            this.list.focusIndex(-1);
+            this.props.onChange!({value: this.list.items[itemIndex].label});
+        }
     }
 }

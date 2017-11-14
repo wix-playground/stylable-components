@@ -14,13 +14,20 @@
 }
 
 .root {
-    -st-states: open;
+    -st-states: open, onTop, unplaced;
     position: absolute;
     display: none;
     z-index: 9;
 }
 
 .root:open {
+    display: block;
+}
+.root:onTop {
+    z-index: 10;
+}
+.root:unplaced {
+    opacity: 0;
     display: block;
 }
 
@@ -31,7 +38,6 @@
     color: value(color_MainText_Background);
     font: value(fontSize) value(fontFamily);
     z-index: 1;
-    max-width: 300px;
 }
 
 .tail {
@@ -40,8 +46,6 @@
 
 /* TOP */
 .root.top {
-    -webkit-transform: translate(-50%, -100%);
-    transform: translate(-50%, -100%);
     margin-top: -value(tooltipOffset);
 }
 .root.top .tail {
@@ -53,8 +57,6 @@
 
 /* BOTTOM */
 .root.bottom {
-    -webkit-transform: translate(-50%, 0);
-    transform: translate(-50%, 0);
     margin-top: value(tooltipOffset);
 }
 .root.bottom .tail {
@@ -66,8 +68,6 @@
 
 /* LEFT */
 .root.left {
-    -webkit-transform: translate(-100%, -50%);
-    transform: translate(-100%, -50%);
     margin-left: -value(tooltipOffset);
 }
 .root.left .tail {
@@ -81,8 +81,6 @@
 
 /* RIGHT */
 .root.right {
-    -webkit-transform: translate(0, -50%);
-    transform: translate(0, -50%);
     margin-left: value(tooltipOffset);
 }
 .root.right .tail {
@@ -96,8 +94,6 @@
 
 /* TOP-LEFT */
 .root.topLeft {
-    -webkit-transform: translate(0, -100%);
-    transform: translate(0, -100%);
     margin-top: -value(tooltipOffset);
 }
 .root.topLeft .tail {
@@ -105,10 +101,8 @@
     left: value(diagonalTailOffset);
 }
 
-/* TOP-LEFT */
+/* TOP-RIGHT */
 .root.topRight {
-    -webkit-transform: translate(-100%, -100%);
-    transform: translate(-100%, -100%);
     margin-top: -value(tooltipOffset);
 }
 .root.topRight .tail {
@@ -127,10 +121,8 @@
     transform: rotate(180deg);
 }
 
-/* BOTTOM-LEFT */
+/* BOTTOM-RIGHT */
 .root.bottomRight {
-    -webkit-transform: translate(-100%, 0);
-    transform: translate(-100%, 0);
     margin-top: value(tooltipOffset);
 }
 .root.bottomRight .tail {
@@ -142,8 +134,6 @@
 
 /* LEFT-TOP */
 .root.leftTop {
-    -webkit-transform: translate(-100%, 0);
-    transform: translate(-100%, 0);
     margin-left: -value(tooltipOffset);
 }
 .root.leftTop .tail {
@@ -157,8 +147,6 @@
 
 /* LEFT-BOTTOM */
 .root.leftBottom {
-    -webkit-transform: translate(-100%, -100%);
-    transform: translate(-100%, -100%);
     margin-left: -value(tooltipOffset);
 }
 .root.leftBottom .tail {
@@ -186,8 +174,6 @@
 /* RIGHT-BOTTOM */
 .root.rightBottom {
     margin-left: value(tooltipOffset);
-    -webkit-transform: translate(0, -100%);
-    transform: translate(0, -100%);
 }
 .root.rightBottom .tail {
     right: 100%;

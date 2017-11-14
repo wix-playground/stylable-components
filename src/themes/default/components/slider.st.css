@@ -1,66 +1,214 @@
-/* Slider */
+:import {
+	-st-from: "../../../components/slider/slider.st.css";
+	-st-default: Slider;
+}
+
+:import {
+    -st-from: "../variables.st.css";
+    -st-named:
+        PR2,
+        PR4,
+        BK2,
+        BK3,
+        DS1,
+        DS2,
+        ER1,
+        PR2,
+        WT1;
+}
+
+:vars {
+    colorTrack: value(BK3);
+    colorTrack_Hover: value(BK2);
+    colorProgress: value(PR2);
+    colorHandle: value(WT1);
+    colorHandle_Hover: value(PR4);
+    colorHandle_Active: value(PR2);
+    colorHandle_Focus: rgba(92, 180, 255, 0.5);
+    colorHandleBorder: value(BK2);
+    colorHandle_Disabled: value(DS2);
+    color_Error: value(ER1);
+    color_Disabled: value(DS1);
+
+    focusSize: 4px;
+    minVerticalSliderHeight: 44px;
+    barBorderRadius: 0px;
+    barThickness:4px;
+}
+
 Slider {
-    width:288px;
+
 }
 
-Slider:x::bar {
-    height: 6px;
-    background: #DAEFFE;
-    border-radius: 3px;
+Slider:x,
+Slider:xReverse {
+    width: 288px;
+    height: 30px;
 }
 
-Slider:x::rangeBar {
-    height: 6px;
-    background: #3899EC;
-    border-radius: 3px;
+Slider:y,
+Slider:yReverse {
+    width: 30px;
+    min-height: value(minVerticalSliderHeight);
+}
+
+Slider::bar {
+    border-radius: value(barBorderRadius);
+    background-color: value(colorTrack);
+}
+
+Slider:x::bar,
+Slider:xReverse::bar {
+    height: value(barThickness);
+    width: 100%;
+}
+
+Slider:y::bar,
+Slider:yReverse::bar {
+    height: 100%;
+    width: value(barThickness);
+}
+
+Slider::rangeBar {
+    background-color: value(colorProgress);
+    border-radius: value(barBorderRadius);
 }
 
 Slider::handle {
-    height: 16px;
     width: 16px;
-    background: #FFFFFF;
-    border:none;
-    box-shadow: 0 0 3px 0 rgba(22,45,61,0.12), 0 1px 2px 0 rgba(22,45,61,0.24);
-    background-image: url(data:image/svg+xml;base64,DQo8c3ZnIHdpZHRoPSI4cHgiIGhlaWdodD0iOHB4IiB2aWV3Qm94PSIwIDAgOCA4IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPg0KICAgIDwhLS0gR2VuZXJhdG9yOiBTa2V0Y2ggNDYuMiAoNDQ0OTYpIC0gaHR0cDovL3d3dy5ib2hlbWlhbmNvZGluZy5jb20vc2tldGNoIC0tPg0KICAgIDxkZXNjPkNyZWF0ZWQgd2l0aCBTa2V0Y2guPC9kZXNjPg0KICAgIDxkZWZzPjwvZGVmcz4NCiAgICA8ZyBpZD0iU3ltYm9scyIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCIgb3BhY2l0eT0iMC42OTk5OTk5ODgiPg0KICAgICAgICA8ZyBpZD0iMDQtU2VsZWN0aW9ucy0vLVByaW1pdGl2ZXMtLy1TbGlkZXItLy1Lbm9iIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtNC4wMDAwMDAsIC00LjAwMDAwMCkiIGZpbGw9IiMyQjgxQ0IiPg0KICAgICAgICAgICAgPGcgaWQ9Iktub2IiPg0KICAgICAgICAgICAgICAgIDxjaXJjbGUgaWQ9Ik92YWwtMiIgY3g9IjgiIGN5PSI4IiByPSI0Ij48L2NpcmNsZT4NCiAgICAgICAgICAgIDwvZz4NCiAgICAgICAgPC9nPg0KICAgIDwvZz4NCjwvc3ZnPg==);
-    background-repeat: no-repeat;
-    background-position: center;
+    height: 16px;
+    border-radius: 50%;
+    background-color: value(colorHandle);
+    border: solid 1px value(colorHandleBorder);
 }
 
-Slider::handle:active {
-    background-size: 75% 75%;
+/* Centering handle and tick marks */
+Slider:x::handle,
+Slider:xReverse::handle,
+Slider:x::mark,
+Slider:xReverse::mark,
+Slider:x::rangeMark,
+Slider:xReverse::rangeMark {
+    top: 0;
+    bottom: 0;
+    margin: auto;
 }
-Slider::handle:focus {
-    box-shadow: 0 0 0 4px rgba(92, 190, 255, 0.35);
-    outline: none;
-    transition: box-shadow 0.3s ease-in-out;
+
+Slider:x::handle,
+Slider:x::mark,
+Slider:x::rangeMark {
+    transform: translateX(-50%);
+}
+
+Slider:xReverse::handle,
+Slider:xReverse::mark,
+Slider:xReverse::rangeMark {
+    transform: translateX(50%);
+}
+
+Slider:y::handle,
+Slider:yReverse::handle,
+Slider:y::mark,
+Slider:yReverse::mark,
+Slider:y::rangeMark,
+Slider:yReverse::rangeMark {
+    left: 50%;
+}
+
+Slider:y::handle,
+Slider:y::mark,
+Slider:y::rangeMark {
+    transform: translateY(50%) translateX(-50%);
+}
+
+Slider:yReverse::handle,
+Slider:yReverse::mark,
+Slider:yReverse::rangeMark {
+    transform: translateY(-50%) translateX(-50%);
 }
 
 Slider::handle:hover,
-Slider:hover::handle,
-Slider:active::handle {
-    box-shadow: 0 1px 2px 2px rgba(138,209,250,0.58);
+Slider:hover::handle:hover,
+Slider::handle:active,
+Slider:active::handle:active {
+    background-color: value(colorHandle_Active);
+    border-color: value(colorHandle_Active);
 }
-Slider:hover::handle:active {
-    box-shadow: 0 0 3px 0 rgba(22,45,61,0.12), 0 1px 2px 0 rgba(22,45,61,0.24);
+
+Slider::mark,
+Slider::rangeMark {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+Slider::mark {
+    background-color: value(colorTrack);
+}
+
+Slider::rangeMark {
+    background-color: value(colorProgress);
 }
 
 Slider:hover::bar {
-    background: #DAEFFE;
+    background-color: value(colorTrack_Hover);
+}
+
+Slider:hover::mark {
+    background-color: value(colorTrack_Hover);
+}
+
+Slider:hover::handle {
+    background-color: value(colorHandle_Hover);
+    border-color: value(colorHandle_Active);
+}
+
+Slider::handle:focus {
+    box-shadow: 0 0 0 value(focusSize) value(colorHandle_Focus);
+    outline: none;
 }
 
 Slider:active::bar {
-    background: #DAEFFE;
+    background-color: value(colorTrack);
 }
 
-Slider:disabled::rangeBar {
-    background: #CBD3DC;
+Slider:active:hover::bar {
+    background-color: value(colorTrack);
+}
+
+Slider:active::mark {
+    background-color: value(colorTrack);
+}
+
+Slider:active::rangeBar {
+    background-color: value(colorProgress);
+}
+
+
+Slider:disabled::handle {
+    border-color: value(color_Disabled);
+    background-color: value(colorHandle_Disabled);
 }
 
 Slider:disabled::bar {
-    background: #DFE5EB;
+    background-color: value(color_Disabled);
 }
 
-Slider:disabled::handle {
-    box-shadow: 0 0 3px 0 rgba(22,45,61,0.12), 0 1px 2px 0 rgba(22,45,61,0.24);
-    background-image: url(data:image/svg+xml;base64,DQo8c3ZnIHdpZHRoPSI4cHgiIGhlaWdodD0iOHB4IiB2aWV3Qm94PSIwIDAgOCA4IiB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPg0KICAgIDwhLS0gR2VuZXJhdG9yOiBTa2V0Y2ggNDYuMiAoNDQ0OTYpIC0gaHR0cDovL3d3dy5ib2hlbWlhbmNvZGluZy5jb20vc2tldGNoIC0tPg0KICAgIDxkZXNjPkNyZWF0ZWQgd2l0aCBTa2V0Y2guPC9kZXNjPg0KICAgIDxkZWZzPjwvZGVmcz4NCiAgICA8ZyBpZD0iNC4tU2VsZWN0aW9ucyIgc3Ryb2tlPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCIgb3BhY2l0eT0iMC42OTk5OTk5ODgiPg0KICAgICAgICA8ZyBpZD0iNC43LVNsaWRlciIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTQ4OS4wMDAwMDAsIC03MjUuMDAwMDAwKSIgZmlsbD0iI0NCRDNEQyI+DQogICAgICAgICAgICA8ZyBpZD0iU2xpZGVyIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgzMDYuMDAwMDAwLCA3MjEuMDAwMDAwKSI+DQogICAgICAgICAgICAgICAgPGcgaWQ9Iktub2IiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDE3OS4wMDAwMDAsIDAuMDAwMDAwKSI+DQogICAgICAgICAgICAgICAgICAgIDxjaXJjbGUgaWQ9Ik92YWwtMiIgY3g9IjgiIGN5PSI4IiByPSI0Ij48L2NpcmNsZT4NCiAgICAgICAgICAgICAgICA8L2c+DQogICAgICAgICAgICA8L2c+DQogICAgICAgIDwvZz4NCiAgICA8L2c+DQo8L3N2Zz4=);
+Slider:disabled::mark {
+    background-color: value(color_Disabled);
+}
+
+Slider:disabled::rangeBar {
+    background-color: transparent;
+}
+
+Slider:error::rangeMark,
+Slider:error::rangeBar {
+    background-color: value(color_Error);
+}
+
+Slider:active:error::handle,
+Slider:active:error:hover::handle {
+    background-color: value(color_Error);
+    border-color: value(color_Error);
 }

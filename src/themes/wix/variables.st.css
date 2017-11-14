@@ -1,6 +1,6 @@
 :vars {
 	/* From Wix Styleguide */
-	B00: #2b81cb;
+    B00: #2b81cb;
 	B05: #308ddd;
 	B10: #3899ec;
 	B20: #4eb7f5;
@@ -104,6 +104,12 @@
     checkDisabledBorderColor: value(GR20);
     checkErrorColor: value(R10);
     checkedColor: value(B10);
+
+    /* Slider */
+    sliderBackgroundColor: value(B40);
+    sliderRangeBackgroundColor: value(B10);
+    sliderHandleColor: #6AA6DA; /* equivalent to B00 color with A=0.7 over white BG */
+    sliderColorDisabledLighter: value(D60);
 
     /* Icons */
     /* color: B10 */

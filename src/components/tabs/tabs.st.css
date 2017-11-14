@@ -1,0 +1,49 @@
+@namespace "Tabs";
+
+:import {
+    -st-from: "../selection-list/selection-list.st.css";
+    -st-default: SelectionList;
+}
+
+.root {
+    -st-states: rtl, horizontalTop, horizontalBottom, verticalBefore, verticalAfter;
+    display: inline-flex;
+    flex-direction: column;
+}
+
+.root:horizontalBottom {
+    flex-direction: column-reverse;
+}
+
+.root:verticalBefore {
+    flex-direction: row;
+}
+
+.root:verticalAfter {
+    flex-direction: row-reverse;
+}
+
+.tabList {
+    -st-extends: SelectionList;
+    display: flex;
+
+    flex-grow: 1;
+    flex-shrink: 0;
+
+    overflow-x: auto;
+}
+
+.root:verticalBefore .tabList,
+.root:verticalAfter .tabList {
+    flex-direction: column;
+}
+
+.tabPanel {}
+
+.tabContent {
+    -st-states: inactive;
+}
+
+.tabContent:inactive {
+    display: none;
+}

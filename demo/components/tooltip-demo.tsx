@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {stylable} from 'wix-react-tools';
-import {Position, Tooltip} from '../../src';
+import {GlobalEvent, Position, Tooltip} from '../../src';
 
 import styles from './tooltip-demo.st.css';
 
@@ -19,6 +19,7 @@ const longText = `
     [5] Spin-off films include the animated Star Wars: The Clone Wars (2008) and Rogue One (2016),
     the latter of which is the first in a planned series of anthology films.
 `;
+const longTextContainer = <p style={{width: 400}} children={longText}/>;
 
 const samples = [
     {
@@ -45,7 +46,7 @@ const samples = [
         props: {
             showTrigger: 'click',
             hideTrigger: 'click',
-            children: longText
+            children: longTextContainer
         },
         positions: ['top', 'left', 'right', 'bottom']
     },
@@ -54,11 +55,67 @@ const samples = [
         props: {
             showDelay: 200,
             hideDelay: 300,
-            children: longText
+            children: longTextContainer
         },
         positions: ['top', 'left', 'right', 'bottom']
     }
 ];
+
+@stylable(styles)
+class DraggableTip extends React.Component<any, any> {
+    public state = {
+        moving: false,
+        x: 0,
+        y: 0
+    };
+    private elem: HTMLDivElement | null;
+    public render() {
+        const {x, y} = this.state;
+        const {position} = this.props;
+        const id = 'free-' + position;
+        const style = (x || y) ? {left: x, top: y, position: 'fixed'} : {};
+        return (
+            <div>
+                <div
+                    className="anchor"
+                    data-tooltip-for={id}
+                    children={`drag me (${position})`}
+                    ref={elem => this.elem = elem}
+                    style={style}
+                    onMouseDown={this.onMouseDown}
+                />
+                <GlobalEvent
+                    mousemove={this.onMouseMove}
+                    mouseup={this.onMouseUp}
+                />
+                <Tooltip
+                    id={id}
+                    position={position}
+                    children="I am a tooltip!"
+                    hideTrigger=""
+                    disableGlobalEvents
+                />
+            </div>
+        );
+    }
+
+    private onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+        this.setState({moving: true});
+    }
+    private onMouseUp = (e: MouseEvent) => {
+        this.setState({moving: false});
+    }
+
+    private onMouseMove = (e: MouseEvent) => {
+        if (!this.state.moving) {
+            return;
+        }
+        this.setState({
+            x: e.pageX - window.scrollX,
+            y: e.pageY - window.scrollY
+        });
+    }
+}
 
 @stylable(styles)
 export class TooltipDemo extends React.Component {
@@ -66,7 +123,7 @@ export class TooltipDemo extends React.Component {
         return (
             <div>
                 {samples.map((sample, i) =>
-                    <div key={i}>
+                    <div key={i} className="sample">
                         <h4>{sample.title}</h4>
                         {sample.positions.map((position: Position, j) =>
                             <div className="anchorWrap" key={j}>
@@ -76,6 +133,14 @@ export class TooltipDemo extends React.Component {
                         )}
                     </div>
                 )}
+                <div>
+                    <h4>Auto position</h4>
+                    {['top', 'bottom', 'left', 'right'].map(position =>
+                        <div key={position} className="anchorWrap">
+                            <DraggableTip position={position}/>
+                        </div>
+                    )}
+                </div>
             </div>
         );
     }
