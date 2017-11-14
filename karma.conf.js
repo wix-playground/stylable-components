@@ -35,7 +35,7 @@ const sauceLabsLaunchers = { // Check out https://saucelabs.com/platforms for al
         base: 'SauceLabs',
         platform: 'macOS 10.12',
         browserName: 'safari',
-        version: '10.0'
+        version: '10.1'
     },
     slSafari9: {
         base: 'SauceLabs',
