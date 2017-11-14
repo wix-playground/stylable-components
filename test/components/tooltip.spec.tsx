@@ -73,7 +73,7 @@ function renderWithProps(clientRenderer: ClientRenderer, props?: SampleProps) {
 }
 
 function equal(a: number, b: number) {
-    return expect(Math.abs(a - b)).to.below(0.5);
+    return expect(Math.abs(a - b)).to.lte(0.5);
 }
 
 function testPosition(position: Position, expectations: any) {

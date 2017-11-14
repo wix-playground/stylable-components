@@ -1,3 +1,4 @@
+const path = require('path');
 const StylablePlugin = require('stylable-integration/webpack-plugin');
 const stylableOptions = { injectBundleCss: true, nsDelimiter:'--' };
 
@@ -16,6 +17,19 @@ module.exports = {
                     compilerOptions: {
                         "declaration": false
                     }
+                }
+            },
+            {
+                test: /\.js$/,
+                include: [
+                    path.resolve(__dirname, 'node_modules/chai-as-promised'),
+                    path.resolve(__dirname, 'node_modules/chai-style')
+                ],
+                loader: 'ts-loader',
+                options: {
+                    // needed so it has a separate transpilation instance
+                    instance: 'lib-compat',
+                    transpileOnly: true
                 }
             },
             {
