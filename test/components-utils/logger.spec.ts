@@ -9,12 +9,12 @@ function assertError(fn: sinon.SinonSpy, err: Error) {
 }
 
 // tslint:disable
-console.profile('cause of reload');
+//console.profile('cause of reload');
 
-window.addEventListener('beforeunload', function() {
-    console.profileEnd();
-    debugger;
-});
+//window.addEventListener('beforeunload', function() {
+//    console.profileEnd();
+//    debugger;
+//});
 // tslint:enable
 type Method = 'warn' | 'error';
 const methods: Method[] = ['warn', 'error'];
