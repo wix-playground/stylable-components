@@ -169,7 +169,7 @@ describe('<Image />', () => {
             expect(onError).to.have.been.calledTwice;
             expect(onError).to.have.been.calledWithMatch({src: brokenSrc});
             expect(onError).to.have.been.calledWithMatch({src: brokenSrc2});
-        });
+        }, 1500);
     });
 
     it('shows a transparent pixel gif if provided with invalid defaultImage and invalid errorImage', async () => {
@@ -184,7 +184,7 @@ describe('<Image />', () => {
             expect(onError).to.have.been.calledTwice;
             expect(onError).to.have.been.calledWithMatch({src: brokenSrc});
             expect(onError).to.have.been.calledWithMatch({src: brokenSrc2});
-        });
+        }, 1500);
     });
 
     it('sets the provided alt attribute', async () => {
