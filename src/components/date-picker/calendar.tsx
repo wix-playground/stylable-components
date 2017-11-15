@@ -38,7 +38,7 @@ const monthNames = getMonthNames();
 @stylable(styles)
 @observer
 export class Calendar extends React.Component<CalendarProps> {
-    @observable public calendarState: CalendarState = {
+    @observable private calendarState: CalendarState = {
         view: 'default',
         viewDate: this.props.value
     };
@@ -79,8 +79,8 @@ export class Calendar extends React.Component<CalendarProps> {
 
     private getHeader = () => {
         if (this.calendarState.view === 'year') {
-            const decade = `${this.calendarState.viewDate.getFullYear() - 5}
-                -${this.calendarState.viewDate.getFullYear() + 4}`;
+            const decade = `${this.calendarState.viewDate.getFullYear() - 5}`
+               + `-${this.calendarState.viewDate.getFullYear() + 4}`;
             return (
                 <span data-automation-id="HEADER_DATE">
                     {decade}
@@ -332,28 +332,28 @@ export class Calendar extends React.Component<CalendarProps> {
     private goToNextMonth: React.EventHandler<React.SyntheticEvent<Element>> = event => {
         event.preventDefault();
 
-        if (this.calendarState.view !== 'default') {
-             this.calendarState.viewDate = this.calendarState.view === 'year'
-                ? new Date(this.calendarState.viewDate.getFullYear() + 10, this.calendarState.viewDate.getMonth(), 1)
-                : new Date(this.calendarState.viewDate.getFullYear() + 1, this.calendarState.viewDate.getMonth(), 1);
-        } else {
+        if (this.calendarState.view === 'default') {
             const nextDate: Date = getMonthFromOffset(
                 new Date(this.props.value.getFullYear(), this.props.value.getMonth(), 1), 1);
             this.props.updateDropdownDate(nextDate);
+        } else {
+            this.calendarState.viewDate = this.calendarState.view === 'year'
+                ? new Date(this.calendarState.viewDate.getFullYear() + 10, this.calendarState.viewDate.getMonth(), 1)
+                : new Date(this.calendarState.viewDate.getFullYear() + 1, this.calendarState.viewDate.getMonth(), 1);
         }
     }
 
     private goToPrevMonth: React.EventHandler<React.SyntheticEvent<Element>> = event => {
         event.preventDefault();
 
-        if (this.calendarState.view !== 'default') {
-            this.calendarState.viewDate = this.calendarState.view === 'year'
-                ? new Date(this.calendarState.viewDate.getFullYear() - 10, this.calendarState.viewDate.getMonth(), 1)
-                : new Date(this.calendarState.viewDate.getFullYear() - 1, this.calendarState.viewDate.getMonth(), 1);
-        } else {
+        if (this.calendarState.view === 'default') {
             const nextDate: Date = getMonthFromOffset(
                 new Date(this.props.value.getFullYear(), this.props.value.getMonth(), 1), -1);
             this.props.updateDropdownDate(nextDate);
+        } else {
+            this.calendarState.viewDate = this.calendarState.view === 'year'
+                ? new Date(this.calendarState.viewDate.getFullYear() - 10, this.calendarState.viewDate.getMonth(), 1)
+                : new Date(this.calendarState.viewDate.getFullYear() - 1, this.calendarState.viewDate.getMonth(), 1);
         }
     }
 
