@@ -28,11 +28,15 @@
     "wix-react-tools": "^4.0.0"
   },
   "devDependencies": {
+    "@types/chai": "^4.0.5",
+    "@types/chai-dom": "^0.0.5",
     "@types/mocha": "^2.2.44",
     "@types/node": "8",
     "@types/prop-types": "^15.5.2",
     "@types/react": "15",
     "@types/react-dom": "15",
+    "@types/sinon": "^4.0.0",
+    "@types/sinon-chai": "^2.7.29",
     "@types/webpack-env": "^1.13.2",
     "karma": "^1.7.1",
     "karma-chrome-launcher": "^2.2.0",
