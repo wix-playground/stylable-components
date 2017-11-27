@@ -1,0 +1,18 @@
+@namespace "Outer";
+
+:import {
+  -st-from: "./176-inner.st.css";
+  -st-default: Inner;
+}
+
+.root {
+    border: 1px solid orange
+}
+
+.inner {
+  -st-extends: Inner;
+}
+
+.inner::part {
+  background: red;
+}

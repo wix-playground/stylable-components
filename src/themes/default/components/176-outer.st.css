@@ -1,0 +1,12 @@
+:import {
+    -st-from: "../../../../demo/components/176-outer.st.css";
+    -st-default: Outer;
+}
+
+Outer {
+    border: 5px solid orange;
+}
+
+Outer::inner::part {
+    background: blue;
+}

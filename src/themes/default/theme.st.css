@@ -85,3 +85,8 @@
     -st-theme: true;
     -st-from: "./components/tree-view.st.css";
 }
+
+:import {
+    -st-theme: true;
+    -st-from: "./components/176-outer.st.css";
+}

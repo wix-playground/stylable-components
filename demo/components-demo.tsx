@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import {Outer} from './components/176-outer';
 import {AutoCompleteDemo} from './components/auto-complete.demo';
 import {CheckBoxDemo} from './components/checkbox-demo';
 import {DatePickerDemo} from './components/date-picker-demo';
@@ -407,6 +408,10 @@ export class ComponentsDemo extends React.Component<DemoProps> {
                 <div>
                     <h2>Tabs</h2>
                     <TabsDemo />
+                </div>
+                <div>
+                    <h2>Issue 176 Demo</h2>
+                    <Outer />
                 </div>
             </div>
         );
