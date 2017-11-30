@@ -71,7 +71,8 @@ export class Portal extends React.PureComponent<PortalProps> {
             this,
             this.renderRoot(
                 {
-                    visibility: 'visible'
+                    visibility: 'visible',
+                    pointerEvents: 'all'
                 },
                 true,
                 {'data-automation-id': this.uniqueId}

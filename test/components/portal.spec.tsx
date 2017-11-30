@@ -22,6 +22,9 @@ describe('<Portal />', () => {
         await waitFor(() => {
             expect(driver.portal).to.be.present();
             expect(driver.content[0]).to.be.present();
+
+            expect(driver.portal,'portal should be clickable').to.have.nested.property('style.pointerEvents', 'all');
+            expect(driver.portal,'portal should be visible').to.have.nested.property('style.visibility', 'visible');
         });
     });
 
