@@ -7,6 +7,7 @@
     -st-from: "../variables.st.css";
     -st-named:  color_MainText_Background,
                 color_MainText,
+                color_Hover,
                 borderDefault,
                 borderRadius,
                 borderHover,
@@ -46,10 +47,11 @@ DropDown::caret {
 }
 
 DropDown::input:hover {
-    color_Hover);
+    /* value(color_Hover); */
 }
 
 DropDown::list {
+    width: 100%;
     background-color: value(color_MainText_Background);
 }
 
