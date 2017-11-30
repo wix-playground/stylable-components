@@ -1,8 +1,9 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import {ClientRenderer, expect, waitFor} from 'test-drive-react';
+import {ClientRenderer, expect, waitFor,selectDom} from 'test-drive-react';
 import {Portal} from '../../src';
 import {PortalTestDriver} from '../../test-kit';
+import {OverlayManager} from "html-overlays";
 
 describe('<Portal />', () => {
     const clientRenderer = new ClientRenderer();
@@ -11,7 +12,7 @@ describe('<Portal />', () => {
 
     it('displays the portal and renders its children', async () => {
         const {driver} = clientRenderer.render(
-            <Portal>
+            <Portal style={{width:'100px',height:'100px'}}>
                 <span>Portal Body</span>
             </Portal>).withDriver(PortalTestDriver);
 
@@ -64,7 +65,7 @@ describe('<Portal />', () => {
     it('removes the component when unmounting', async () => {
         const container = document.body.appendChild(document.createElement('div'));
         const {driver} = clientRenderer.render(
-            <Portal>
+            <Portal style={{width:'100px',height:'100px'}}>
                 <span>Popup Body</span>
             </Portal>, container).withDriver(PortalTestDriver);
 
@@ -122,5 +123,37 @@ describe('<Portal />', () => {
         ).withDriver(PortalTestDriver);
 
         await waitFor(() => expect(driver.portal as Element).to.have.attribute('class', 'test-class'));
+    });
+
+    describe('overlay manager',()=>{
+        it('creates one overlayManager for multiple portals, if no overlayManager was supplied',async ()=>{
+            const {container, driver} = clientRenderer.render(
+                <Portal style={{position: 'absolute'}}>
+                    <span>Portal Body 1</span>
+                </Portal>
+            ).withDriver(PortalTestDriver);
+
+            const {container:container2, driver:driver2} = clientRenderer.render(
+                <Portal style={{position: 'absolute'}}>
+                    <span>Portal Body 2</span>
+                </Portal>
+            ).withDriver(PortalTestDriver);
+
+            await waitFor(() => {
+                let selectBody = selectDom(document.body);
+                expect(selectBody('portal-root')).to.not.be.equal(null);
+            });
+        });
+
+        it('uses given overlayManager if supplied with one',async ()=>{
+            const overlayManager = new OverlayManager(document.body);
+            const {container, driver} = clientRenderer.render(
+                <Portal style={{position: 'absolute'}} overlayManager={overlayManager}>
+                    <span>Portal Body 1</span>
+                </Portal>
+            ).withDriver(PortalTestDriver);
+
+            expect(overlayManager.getContentLayer()).not.to.be.equal(null);
+        });
     });
 });

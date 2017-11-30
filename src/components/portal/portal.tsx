@@ -9,6 +9,8 @@ export interface PortalProps extends React.HTMLAttributes<HTMLDivElement> {
     overlayManager?:OverlayManager;
 }
 
+let globalOverlayManager:OverlayManager;
+
 export class Portal extends React.PureComponent<PortalProps> {
     public static defaultProps: Partial<PortalProps> = {
         tagName: 'div'
@@ -32,8 +34,11 @@ export class Portal extends React.PureComponent<PortalProps> {
     }
 
     public componentDidMount() {
-        if (this.overlayManager===undefined){   //TODO test dis
-            this.overlayManager = this.props.overlayManager || new OverlayManager(document.body);
+        if (this.overlayManager===undefined){
+            this.overlayManager = this.props.overlayManager || globalOverlayManager || new OverlayManager(document.body);
+            if (!globalOverlayManager){
+                globalOverlayManager = this.overlayManager; //save as global
+            }
         }
         const root:HTMLElement = ReactDOM.findDOMNode(this);
         // create layer
