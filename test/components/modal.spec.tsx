@@ -3,12 +3,17 @@ import {ClientRenderer, expect, selectDom, simulate, sinon, waitFor} from 'test-
 import {ModalDemo} from '../../demo/components/modal-demo';
 import {Modal} from '../../src';
 import {ModalTestDriver} from '../../test-kit/components';
+import {clearOverlayManager} from "../../src/components/portal";
 
 describe('<Modal />', () => {
     const clientRenderer = new ClientRenderer();
     const bodySelect = selectDom(document.body);
 
-    afterEach(() => clientRenderer.cleanup());
+    afterEach(() => {
+            clearOverlayManager();
+            clientRenderer.cleanup();
+        }
+    );
 
     describe('A typical use case for the modal:', () => {
         it('is hidden at first, a user clicks on a button, the modal appears,' +

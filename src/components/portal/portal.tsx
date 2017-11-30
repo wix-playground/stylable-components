@@ -9,7 +9,14 @@ export interface PortalProps extends React.HTMLAttributes<HTMLDivElement> {
     overlayManager?:OverlayManager;
 }
 
-let globalOverlayManager:OverlayManager;
+let globalOverlayManager:OverlayManager | undefined;
+
+export function clearOverlayManager(){
+    if (globalOverlayManager){
+        globalOverlayManager.removeSelf();
+        globalOverlayManager = undefined;
+    }
+}
 
 export class Portal extends React.PureComponent<PortalProps> {
     public static defaultProps: Partial<PortalProps> = {
@@ -17,7 +24,7 @@ export class Portal extends React.PureComponent<PortalProps> {
     };
     destroy:()=>void;
     parentTarget:Element;
-    overlayManager:OverlayManager;
+    overlayManager:OverlayManager|undefined;
     uniqueId:string;
 
     // private container: HTMLDivElement | null;

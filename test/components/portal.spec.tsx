@@ -1,14 +1,17 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {ClientRenderer, expect, waitFor,selectDom} from 'test-drive-react';
-import {Portal} from '../../src';
+import {Portal, clearOverlayManager} from '../../src';
 import {PortalTestDriver} from '../../test-kit';
 import {OverlayManager} from "html-overlays";
 
 describe('<Portal />', () => {
     const clientRenderer = new ClientRenderer();
 
-    afterEach(() => {clientRenderer.cleanup(); });
+    afterEach(() => {
+        clientRenderer.cleanup();
+        clearOverlayManager();
+    });
 
     it('displays the portal and renders its children', async () => {
         const {driver} = clientRenderer.render(
