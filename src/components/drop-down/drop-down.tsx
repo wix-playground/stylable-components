@@ -65,7 +65,6 @@ export class DropDown extends React.PureComponent<DropDownProps, DropDownState> 
                 </div>
                 <button onClick={this.toggleDropdown} className="caret" data-automation-id="AUTO_COMPLETE_CARET"/>
                 <Popup
-                    className="root"
                     open={this.props.open && !this.props.disabled}
                     anchor={this.state.dropdown}
                 >
