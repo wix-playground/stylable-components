@@ -57,7 +57,7 @@ export class Portal extends React.PureComponent<PortalProps> {
         this.destroy && this.destroy();
     }
 
-    public renderRoot(portalStyle: React.CSSProperties, renderChildren: boolean, extraProps?: any) {
+    private renderRoot(portalStyle: React.CSSProperties, renderChildren: boolean, extraProps?: any) {
         const {tagName: TagName, style, children, ...rest} = this.props;
         return React.createElement(
             TagName!,
