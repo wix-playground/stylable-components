@@ -29,7 +29,7 @@ class Sample extends React.Component<SampleProps> {
                 <div
                     data-automation-id="TEST_ANCHOR"
                     data-tooltip-for={id}
-                    children="I am a anchor!"
+                    children="I am an anchor!"
                     style={{width: 100}}
                 />
                 <Tooltip
