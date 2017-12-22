@@ -86,8 +86,3 @@
     -st-theme: true;
     -st-from: "./components/tree-view.st.css";
 }
-
-/* General */
-.root {
-    background: value(D70);
-}
