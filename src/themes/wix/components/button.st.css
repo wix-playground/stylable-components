@@ -121,14 +121,14 @@ Button:disabled,
 .btnWhite:hover, 
 .btnWhiteSecondary:hover {
     background-color: value(buttonColorWhiteHover);
-    border: transparent;
+    border-color: transparent;
     color: value(buttonColorMain);
 }
 
 .btnWhite:active, 
 .btnWhiteSecondary:active {
     background-color: value(buttonColorWhiteActive);
-    border: transparent;
+    border-color: transparent;
     color: value(buttonColorMain);
 }
 
@@ -149,14 +149,14 @@ Button:disabled,
 .btnError:hover, 
 .btnErrorSecondary:hover {
     background-color: value(buttonColorErrorHover);
-    border: transparent;
+    border-color: transparent;
     color: white;
 }
 
 .btnError:active, 
 .btnErrorSecondary:active {
     background-color: value(buttonColorErrorActive);
-    border: transparent;
+    border-color: transparent;
     color: white;
 }
 
@@ -177,14 +177,14 @@ Button:disabled,
 .btnPremium:hover, 
 .btnPremiumSecondary:hover {
     background-color: value(buttonColorPremiumHover);
-    border: transparent;
+    border-color: transparent;
     color: white;
 }
 
 .btnPremium:active, 
 .btnPremiumSecondary:active {
     background-color: value(buttonColorPremiumActive);
-    border: transparent;
+    border-color: transparent;
     color: white;
 }
 
@@ -204,12 +204,12 @@ Button:disabled,
 
 .btnTransparent:hover {
     background-color: value(buttonColorTransparentHover);
-    border: transparent;
+    border-color: transparent;
     color: white;
 }
 
 .btnTransparent:active {
     background-color: value(buttonColorTransparentActive);
-    border: transparent;
+    border-color: transparent;
     color: white;
 }
