@@ -7,7 +7,8 @@
               btnWhite, btnWhiteSecondary,
               btnError, btnErrorSecondary,
               btnPremium, btnPremiumSecondary,
-              btnTransparent;
+              btnTransparent,
+              D70;
 }
 
 :global(html) {
@@ -46,3 +47,7 @@
 .btnTransparent {
 
 }
+
+.root {
+    background: value(D70);
+ }
