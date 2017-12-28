@@ -151,7 +151,7 @@ describe('<Popup />', () => {
 
         after(() => {
             document.body.removeChild(bigScrollArea);
-            window.scrollTo(0,0);
+            window.scrollTo(0, 0);
         });
 
         it('renders the popup in the right location when it is out of view', async () => {
@@ -159,21 +159,23 @@ describe('<Popup />', () => {
             const {waitForDom} = clientRenderer.render(
                 <div>
                     <div style={{height: '500px'}}>Filler</div>
-                    <div ref={(elem: HTMLDivElement) => div = elem} style={{display:'block',position:'relative'}}>Anchor</div>
+                    <div ref={(elem: HTMLDivElement) => div = elem} style={{display: 'block', position: 'relative'}}>
+                        Anchor
+                    </div>
                 </div>
             );
 
             await waitForDom(() => {
                 expect(div).to.be.present();
             });
-            window.scrollTo(100,150);
+            window.scrollTo(100, 150);
             const {driver: popup} = clientRenderer.render(
                 <Popup
                     anchor={div!}
                     open
                 >
                     <span data-automation-id="SPAN">Popup Body</span>
-                </Popup>,bigScrollArea).withDriver(PopupTestDriver);
+                </Popup>, bigScrollArea).withDriver(PopupTestDriver);
 
             return waitForDom(() => {
                 expect([div, popup.root]).to.be.inVerticalSequence();
