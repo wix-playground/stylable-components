@@ -2003,9 +2003,9 @@ html-entities@^1.2.0:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/html-entities/-/html-entities-1.2.1.tgz#0df29351f0721163515dfb9e5543e5f6eed5162f"
 
-html-overlays@^0.0.19:
-  version "0.0.19"
-  resolved "https://registry.yarnpkg.com/html-overlays/-/html-overlays-0.0.19.tgz#6337861576e1c1aac3c892ccadb75096d67541ea"
+html-overlays@^0.0.20:
+  version "0.0.20"
+  resolved "https://registry.yarnpkg.com/html-overlays/-/html-overlays-0.0.20.tgz#d130bbfeac4b3ebb02e0b28aa23e7cd2e54fab57"
 
 http-deceiver@^1.2.7:
   version "1.2.7"
