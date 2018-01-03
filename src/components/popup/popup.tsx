@@ -29,6 +29,7 @@ export interface PopupState {
     style: React.CSSProperties;
 }
 
+
 @properties
 export class Popup extends React.Component<PopupCompProps, PopupState> {
     public static defaultProps: Partial<PopupCompProps> = {
