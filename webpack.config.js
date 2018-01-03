@@ -22,9 +22,8 @@ module.exports = {
             {
                 test: /\.js$/,
                 include: [
-                    path.dirname(require.resolve('chai-as-promised')),
-                    path.dirname(require.resolve('chai-style')),
-                    path.join(__dirname, 'node_modules', 'webpack-dev-server', 'client')
+                    path.resolve(__dirname, 'node_modules/chai-as-promised'),
+                    path.resolve(__dirname, 'node_modules/chai-style')
                 ],
                 loader: 'ts-loader',
                 options: {
