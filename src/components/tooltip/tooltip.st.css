@@ -13,20 +13,20 @@
     diagonalTailOffset: 10px;
 }
 
-.innerPortal {
+.root {
     -st-states: open, onTop, unplaced;
     position: absolute;
     display: none;
     z-index: 9;
 }
 
-.innerPortal:open {
+.root:open {
     display: block;
 }
-.innerPortal:onTop {
+.root:onTop {
     z-index: 10;
 }
-.innerPortal:unplaced {
+.root:unplaced {
     opacity: 0;
     display: block;
 }
@@ -45,10 +45,10 @@
 }
 
 /* TOP */
-.innerPortal.top {
+.root.top {
     margin-top: -value(tooltipOffset);
 }
-.innerPortal.top .tail {
+.root.top .tail {
     top: 100%;
     left: 50%;
     -webkit-transform: translateX(-50%);
@@ -56,10 +56,10 @@
 }
 
 /* BOTTOM */
-.innerPortal.bottom {
+.root.bottom {
     margin-top: value(tooltipOffset);
 }
-.innerPortal.bottom .tail {
+.root.bottom .tail {
     bottom: 100%;
     left: 50%;
     -webkit-transform: translateX(-50%) rotate(180deg);
@@ -67,10 +67,10 @@
 }
 
 /* LEFT */
-.innerPortal.left {
+.root.left {
     margin-left: -value(tooltipOffset);
 }
-.innerPortal.left .tail {
+.root.left .tail {
     left: 100%;
     top: 50%;
     -webkit-transform: translateY(100%) rotate(-90deg);
@@ -80,10 +80,10 @@
 }
 
 /* RIGHT */
-.innerPortal.right {
+.root.right {
     margin-left: value(tooltipOffset);
 }
-.innerPortal.right .tail {
+.root.right .tail {
     right: 100%;
     top: 50%;
     -webkit-transform: translateY(100%) rotate(90deg);
@@ -93,28 +93,28 @@
 }
 
 /* TOP-LEFT */
-.innerPortal.topLeft {
+.root.topLeft {
     margin-top: -value(tooltipOffset);
 }
-.innerPortal.topLeft .tail {
+.root.topLeft .tail {
     top: 100%;
     left: value(diagonalTailOffset);
 }
 
 /* TOP-RIGHT */
-.innerPortal.topRight {
+.root.topRight {
     margin-top: -value(tooltipOffset);
 }
-.innerPortal.topRight .tail {
+.root.topRight .tail {
     top: 100%;
     right: value(diagonalTailOffset);
 }
 
 /* BOTTOM-LEFT */
-.innerPortal.bottomLeft {
+.root.bottomLeft {
     margin-top: value(tooltipOffset);
 }
-.innerPortal.bottomLeft .tail {
+.root.bottomLeft .tail {
     bottom: 100%;
     left: value(diagonalTailOffset);
     -webkit-transform: rotate(180deg);
@@ -122,10 +122,10 @@
 }
 
 /* BOTTOM-RIGHT */
-.innerPortal.bottomRight {
+.root.bottomRight {
     margin-top: value(tooltipOffset);
 }
-.innerPortal.bottomRight .tail {
+.root.bottomRight .tail {
     bottom: 100%;
     right: value(diagonalTailOffset);
     -webkit-transform: rotate(180deg);
@@ -133,10 +133,10 @@
 }
 
 /* LEFT-TOP */
-.innerPortal.leftTop {
+.root.leftTop {
     margin-left: -value(tooltipOffset);
 }
-.innerPortal.leftTop .tail {
+.root.leftTop .tail {
     top: value(diagonalTailOffset);
     left: 100%;
     -webkit-transform: rotate(-90deg) translateX(-100%);
@@ -146,10 +146,10 @@
 }
 
 /* LEFT-BOTTOM */
-.innerPortal.leftBottom {
+.root.leftBottom {
     margin-left: -value(tooltipOffset);
 }
-.innerPortal.leftBottom .tail {
+.root.leftBottom .tail {
     bottom: value(diagonalTailOffset);
     left: 100%;
     -webkit-transform: translateY(100%) rotate(-90deg);
@@ -159,10 +159,10 @@
 }
 
 /* RIGHT-TOP */
-.innerPortal.rightTop {
+.root.rightTop {
     margin-left: value(tooltipOffset);
 }
-.innerPortal.rightTop .tail {
+.root.rightTop .tail {
     top: value(diagonalTailOffset);
     right: 100%;
     -webkit-transform: rotate(90deg) translateX(100%);
@@ -172,10 +172,10 @@
 }
 
 /* RIGHT-BOTTOM */
-.innerPortal.rightBottom {
+.root.rightBottom {
     margin-left: value(tooltipOffset);
 }
-.innerPortal.rightBottom .tail {
+.root.rightBottom .tail {
     right: 100%;
     bottom: value(diagonalTailOffset);
     -webkit-transform: translateY(100%) rotate(90deg);

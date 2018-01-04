@@ -2,31 +2,18 @@ import * as React from 'react';
 import {ClientRenderer, expect, selectDom, simulate, sinon, waitFor} from 'test-drive-react';
 import {ModalDemo} from '../../demo/components/modal-demo';
 import {Modal} from '../../src';
-import {clearOverlayManager} from '../../src/components/portal';
 import {ModalTestDriver} from '../../test-kit/components';
-import {WithTheme, WithThemeDAID} from '../utils';
 
 describe('<Modal />', () => {
     const clientRenderer = new ClientRenderer();
     const bodySelect = selectDom(document.body);
 
-    const ThemedContainer = WithTheme();
-    let themeContainer: HTMLDivElement;
-
-    beforeEach(() => {
-        const {select} = clientRenderer.render(<ThemedContainer />);
-        themeContainer = select(WithThemeDAID) as HTMLDivElement;
-    });
-    afterEach(() => {
-            clearOverlayManager();
-            clientRenderer.cleanup();
-        }
-    );
+    afterEach(() => clientRenderer.cleanup());
 
     describe('A typical use case for the modal:', () => {
         it('is hidden at first, a user clicks on a button, the modal appears,' +
             'and then the user clicks on the background and the model closes', async () => {
-            clientRenderer.render(<ModalDemo />, themeContainer);
+            clientRenderer.render(<ModalDemo />);
 
             await waitFor(() => expect(bodySelect('MODAL')).to.be.absent());
 
@@ -41,7 +28,7 @@ describe('<Modal />', () => {
     });
 
     it('renders to the screen', async () => {
-        const {driver: modal} = clientRenderer.render(<Modal isOpen />, themeContainer).withDriver(ModalTestDriver);
+        const {driver: modal} = clientRenderer.render(<Modal isOpen />).withDriver(ModalTestDriver);
 
         await waitFor(() => expect(modal.content).to.be.present());
     });
@@ -51,7 +38,7 @@ describe('<Modal />', () => {
             <Modal isOpen={true}>
                 <p>child 1</p>
                 <p>child 2</p>
-            </Modal>, themeContainer
+            </Modal>
         ).withDriver(ModalTestDriver);
 
         await waitFor(() => {
@@ -63,9 +50,7 @@ describe('<Modal />', () => {
     });
 
     it('takes the full width and height of the viewport and is centered in the viewport', async () => {
-        const {driver: modal} =
-            clientRenderer.render(<Modal isOpen={true} />, themeContainer)
-            .withDriver(ModalTestDriver);
+        const {driver: modal} = clientRenderer.render(<Modal isOpen={true} />).withDriver(ModalTestDriver);
 
         function checkIfAlignedToScreen(element: Element) {
             const rects = element.getBoundingClientRect();
@@ -83,7 +68,7 @@ describe('<Modal />', () => {
         const {driver: modal} = clientRenderer.render(
             <Modal isOpen={true}>
                 <p style={{width: '50px', height: '50px'}}>child 1</p>
-            </Modal>, themeContainer
+            </Modal>
         ).withDriver(ModalTestDriver);
 
         await waitFor(() => {
@@ -97,7 +82,7 @@ describe('<Modal />', () => {
             <Modal isOpen={true}>
                 <p style={{width: '50px', height: '50px'}}>child 1</p>
                 <p style={{width: '50px', height: '50px'}}>child 2</p>
-            </Modal>, themeContainer
+            </Modal>
         ).withDriver(ModalTestDriver);
 
         await waitFor(() =>
@@ -126,7 +111,7 @@ describe('<Modal />', () => {
         document.body.appendChild(scroll);
         window.scrollTo(0, 2 * window.innerHeight);
         const {driver: modal} =
-            clientRenderer.render(<Modal isOpen={true} />, themeContainer).withDriver(ModalTestDriver);
+            clientRenderer.render(<Modal isOpen={true} />).withDriver(ModalTestDriver);
 
         await waitFor(() => {
             expect(modal.content.getBoundingClientRect().top).to.equal(0);

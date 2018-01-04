@@ -36,6 +36,6 @@ export class TooltipDriver extends DriverBase {
         return null;
     }
     public get isOpen(): boolean {
-        return !!this.content && Boolean(this.content.getAttribute('data-' + styles.$stylesheet.namespace + '-open'));
+        return Boolean(this.content.getAttribute('data-' + styles.$stylesheet.namespace + '-open'));
     }
 }

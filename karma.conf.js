@@ -47,12 +47,12 @@ const sauceLabsLaunchers = { // Check out https://saucelabs.com/platforms for al
         base: 'SauceLabs',
         browserName: 'Android',
         version: '5.1'
+    },
+    slAndroid4: {
+        base: 'SauceLabs',
+        browserName: 'Android',
+        version: '4.4'
     }
-    // slAndroid4: {
-    //     base: 'SauceLabs',
-    //     browserName: 'Android',
-    //     version: '4.4'
-    // }
     // sliOS: {
     //     base: 'SauceLabs',
     //     deviceName: 'iPhone 7 Plus Simulator',
