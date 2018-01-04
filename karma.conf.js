@@ -25,6 +25,12 @@ const sauceLabsLaunchers = { // Check out https://saucelabs.com/platforms for al
         browserName: 'internet explorer',
         version: '11.0'
     },
+    // slIE10: {
+    //     base: 'SauceLabs',
+    //     platform: 'Windows 7',
+    //     browserName: 'internet explorer',
+    //     version: '10.0'
+    // },
     slSafari10: {
         base: 'SauceLabs',
         platform: 'macOS 10.12',
@@ -42,6 +48,18 @@ const sauceLabsLaunchers = { // Check out https://saucelabs.com/platforms for al
         browserName: 'Android',
         version: '5.1'
     }
+    // slAndroid4: {
+    //     base: 'SauceLabs',
+    //     browserName: 'Android',
+    //     version: '4.4'
+    // }
+    // sliOS: {
+    //     base: 'SauceLabs',
+    //     deviceName: 'iPhone 7 Plus Simulator',
+    //     platform: 'iOS',
+    //     platformVersion: '10.3',
+    //     browserName: 'Safari'
+    // }
 };
 
 module.exports = function (config) {
