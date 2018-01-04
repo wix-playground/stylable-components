@@ -217,6 +217,7 @@ describe('<Tooltip/>', () => {
 
         it('should not be visible by default', () => {
             expect(driver.tooltip.isOpen).to.be.false;
+            expect(driver.tooltip.content).to.be.equal(null); // make sure tooltip is not rendered by default.
         });
 
         it('should be visible after click', () => {
