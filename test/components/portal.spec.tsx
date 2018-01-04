@@ -144,15 +144,17 @@ describe('<Portal />', () => {
             ).withDriver(PortalTestDriver);
 
             await waitFor(() => {
-                expect(document.body.querySelectorAll('.portal-root').length,'portal-root should exist').to.be.equal(1);
+                expect(document.body.querySelectorAll('.portal-root').length,
+                    'portal-root should exist').to.be.equal(1);
 
                 clientRenderer.render(
                     <Portal style={{position: 'absolute'}}>
                         <span>Portal Body 2</span>
                     </Portal>
                 ).withDriver(PortalTestDriver);
-            }).then(()=>{
-                expect(document.body.querySelectorAll('.portal-root').length,'only one portal-root should exist').to.be.equal(1);
+            }).then(() => {
+                expect(document.body.querySelectorAll('.portal-root').length,
+                    'only one portal-root should exist').to.be.equal(1);
             });
         });
 
