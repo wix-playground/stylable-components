@@ -133,21 +133,26 @@ describe('<Portal />', () => {
 
     describe('overlay manager', () => {
         it('creates one overlayManager for multiple portals, if no overlayManager was supplied', async () => {
+            const selectBody = selectDom(document.body);
+
+            expect(selectBody('portal-root')).to.be.equal(null);
+
             clientRenderer.render(
                 <Portal style={{position: 'absolute'}}>
                     <span>Portal Body 1</span>
                 </Portal>
             ).withDriver(PortalTestDriver);
 
-            clientRenderer.render(
-                <Portal style={{position: 'absolute'}}>
-                    <span>Portal Body 2</span>
-                </Portal>
-            ).withDriver(PortalTestDriver);
-
             await waitFor(() => {
-                const selectBody = selectDom(document.body);
-                expect(selectBody('portal-root')).to.not.be.equal(null);
+                expect(document.body.querySelectorAll('.portal-root').length,'portal-root should exist').to.be.equal(1);
+
+                clientRenderer.render(
+                    <Portal style={{position: 'absolute'}}>
+                        <span>Portal Body 2</span>
+                    </Portal>
+                ).withDriver(PortalTestDriver);
+            }).then(()=>{
+                expect(document.body.querySelectorAll('.portal-root').length,'only one portal-root should exist').to.be.equal(1);
             });
         });
 
