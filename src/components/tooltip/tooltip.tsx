@@ -45,7 +45,7 @@ const positions: Position[] = [
 ];
 
 @stylable(styles)
-class StyledTooltip extends React.Component<TooltipProps, TooltipState> {
+export class Tooltip extends React.Component<TooltipProps, TooltipState> {
     public static defaultProps = {
         open: false,
         position: 'top',
@@ -88,25 +88,31 @@ class StyledTooltip extends React.Component<TooltipProps, TooltipState> {
             globalEvents.mousedown = globalEvents.touchstart = this.hide;
         }
 
-        return (
-            <div
-                data-automation-id="TOOLTIP"
-                className={`root ${position}`}
-                style={style}
-                style-state={{open, onTop, unplaced: !style}}
-            >
-                <GlobalEvent {...globalEvents}/>
-                <div
-                    className="tooltip"
-                    ref={elem => this.tooltip = elem}
-                >
-                    {children}
-                    <svg className="tail" height="5" width="10" data-automation-id="TOOLTIP_TAIL">
-                        <polygon points="0,0 10,0 5,5"/>
-                    </svg>
-                </div>
-            </div>
-        );
+        if (open) {
+            return (
+                <Portal>
+                    <div
+                        data-automation-id="TOOLTIP"
+                        className={`innerPortal ${position}`}
+                        style={style}
+                        style-state={{open, onTop, unplaced: !style}}
+                    >
+                        <GlobalEvent {...globalEvents}/>
+                        <div
+                            className="tooltip"
+                            ref={elem => this.tooltip = elem}
+                        >
+                            {children}
+                            <svg className="tail" height="5" width="10" data-automation-id="TOOLTIP_TAIL">
+                                <polygon points="0,0 10,0 5,5"/>
+                            </svg>
+                        </div>
+                    </div>
+                </Portal>
+            );
+        } else {
+            return null;
+        }
     }
 
     public componentDidMount() {
@@ -243,21 +249,4 @@ class StyledTooltip extends React.Component<TooltipProps, TooltipState> {
 
     private hide = () => this.setState({open: false});
 
-}
-
-export class Tooltip extends React.Component<TooltipProps> {
-    private tooltip: React.ReactNode;
-    public getTooltip() {
-        return this.tooltip;
-    }
-    public render() {
-        return (
-            <Portal>
-                <StyledTooltip
-                    ref={tooltip => this.tooltip = tooltip}
-                    {...this.props}
-                />
-            </Portal>
-        );
-    }
 }

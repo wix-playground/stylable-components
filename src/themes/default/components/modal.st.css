@@ -3,3 +3,19 @@
 	-st-default: Modal;
 }
 
+Modal::backdrop{
+	width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.05);
+}
+
+Modal::dialog{
+	position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translateY(-50%) translateX(-50%);
+    -webkit-transform: translateY(-50%) translateX(-50%);
+}

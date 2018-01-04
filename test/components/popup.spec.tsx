@@ -143,39 +143,39 @@ describe('<Popup />', () => {
     });
 
     describe('Scrolling tests', () => {
-        const scroll = document.createElement('div');
-        scroll.style.height = '5000px';
-        scroll.style.width = '5000px';
+        const bigScrollArea = document.createElement('div');
+        bigScrollArea.style.height = '5000px';
+        bigScrollArea.style.width = '5000px';
 
-        before(() => {document.body.appendChild(scroll); });
+        before(() => {document.body.appendChild(bigScrollArea); });
 
         after(() => {
-            document.body.removeChild(scroll);
-            document.body.scrollTop = 0;
-            document.body.scrollLeft = 0;
+            document.body.removeChild(bigScrollArea);
+            window.scrollTo(0, 0);
         });
 
         it('renders the popup in the right location when it is out of view', async () => {
             let div: HTMLDivElement;
             const {waitForDom} = clientRenderer.render(
                 <div>
-                    <div style={{height: '1000px'}}>Filler</div>
-                    <div ref={(elem: HTMLDivElement) => div = elem}>Anchor</div>
+                    <div style={{height: '500px'}}>Filler</div>
+                    <div ref={(elem: HTMLDivElement) => div = elem} style={{display: 'block', position: 'relative'}}>
+                        Anchor
+                    </div>
                 </div>
             );
 
             await waitForDom(() => {
                 expect(div).to.be.present();
             });
-            document.body.scrollTop = 500;
-            document.body.scrollLeft = 500;
+            window.scrollTo(100, 150);
             const {driver: popup} = clientRenderer.render(
                 <Popup
                     anchor={div!}
                     open
                 >
                     <span data-automation-id="SPAN">Popup Body</span>
-                </Popup>).withDriver(PopupTestDriver);
+                </Popup>, bigScrollArea).withDriver(PopupTestDriver);
 
             return waitForDom(() => {
                 expect([div, popup.root]).to.be.inVerticalSequence();
