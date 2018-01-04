@@ -110,7 +110,7 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
                     </div>
                 </Portal>
             );
-        }else{
+        } else {
             return null;
         }
     }
@@ -250,4 +250,3 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
     private hide = () => this.setState({open: false});
 
 }
-
