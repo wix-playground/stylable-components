@@ -43,7 +43,7 @@ describe('<DropDown />', () => {
     });
 
     it('renders to the screen', async () => {
-        const {driver: dropdown, waitForDom, container} = clientRenderer.render(
+        const {driver: dropdown, waitForDom} = clientRenderer.render(
             <DropDown />
         ).withDriver(DropDownDriver);
 

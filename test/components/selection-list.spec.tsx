@@ -68,7 +68,7 @@ describe('<SelectionList />', () => {
     });
 
     it('Renders items under each other using the default renderer', async () => {
-        const {driver: list, waitForDom, container} = clientRenderer.render(
+        const {driver: list, waitForDom} = clientRenderer.render(
             <SelectionList dataSource={['0', '1', divider]} />
         ).withDriver(SelectionListTestDriver);
 
@@ -131,7 +131,7 @@ describe('<SelectionList />', () => {
     );
 
     it('Renders blank items at the same height as normal items', async () => {
-        const {driver: list, waitForDom, container} = clientRenderer.render(
+        const {driver: list, waitForDom} = clientRenderer.render(
             <SelectionList dataSource={['', '1']} />
         ).withDriver(SelectionListTestDriver);
 
@@ -628,7 +628,7 @@ describe('<SelectionList />', () => {
     describe('Scrolling', () => {
         it(`Scrolls to the selected item when mounted`, async () => {
             const dataSource = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'];
-            const {driver: list, waitForDom, container} = clientRenderer.render(
+            const {driver: list, waitForDom} = clientRenderer.render(
                 <SelectionList dataSource={dataSource} value="F" style={{height: '100px'}} />
             ).withDriver(SelectionListTestDriver);
 
@@ -641,7 +641,7 @@ describe('<SelectionList />', () => {
 
         it(`Scrolls to the focused item on focus change`, async () => {
             const dataSource = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'];
-            const {driver: list, waitForDom, container} = clientRenderer.render(
+            const {driver: list, waitForDom} = clientRenderer.render(
                 <SelectionList dataSource={dataSource} value="0" style={{height: '100px'}} />
             ).withDriver(SelectionListTestDriver);
 
