@@ -23,7 +23,7 @@ import {
 import styles from '../../src/components/slider/slider.st.css';
 import {ChangeEvent} from '../../src/types/events';
 import {SliderContextProvierDriver, SliderDriver, SliderEventCoordinates, WindowStub} from '../../test-kit';
-import {skipItIfTouch, WithTheme, WithThemeDAID} from '../utils';
+import {skipItIfTouch} from '../utils';
 
 let environment: WindowStub;
 
@@ -104,15 +104,7 @@ function getRenderedSlider(
             />
         );
     const driver = context ? SliderContextProvierDriver : SliderDriver;
-    const ThemedContainer = WithTheme();
-    const {select} = clientRenderer.render(<ThemedContainer />);
-    const themedContainer = select(WithThemeDAID) as HTMLDivElement;
-    return clientRenderer
-        .render(
-            slider,
-            themedContainer
-        )
-        .withDriver(driver);
+    return clientRenderer.render(slider).withDriver(driver);
 }
 
 function withValueMinMax(
@@ -2030,14 +2022,9 @@ function checkDemoSlider(
     describe(`Slider Demo. ${id}`, () => {
         let select: <T extends Element>(...selectors: string[]) => T | null;
         let waitForDom: (expectation: () => void) => Promise<void>;
-        const ThemedContainer = WithTheme();
-        const themedContainerSelect = clientRenderer.render(<ThemedContainer />);
-        const themedContainer = themedContainerSelect.select(WithThemeDAID) as HTMLDivElement;
-
         before(() => {
             const render = clientRenderer.render(
-                <SliderDemo/>,
-                themedContainer
+                <SliderDemo />
             );
             select = render.select;
             waitForDom = render.waitForDom;
