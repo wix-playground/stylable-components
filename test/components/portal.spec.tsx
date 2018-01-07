@@ -162,7 +162,7 @@ describe('<Portal />', () => {
                 <Portal style={{position: 'absolute'}}>
                     <span>Portal Body 1</span>
                 </Portal>
-            ).withDriver(PortalTestDriver);
+            );
 
             await waitFor(() => {
                 expect(document.body.querySelectorAll('.portal-root').length,
@@ -172,16 +172,15 @@ describe('<Portal />', () => {
 
         it('reuses global overlayManager, if no overlayManager was supplied and one is available', async () => {
             clientRenderer.render(
-                <Portal style={{position: 'absolute'}}>
-                    <span>Portal Body 1</span>
-                </Portal>
-            ).withDriver(PortalTestDriver);
-
-            clientRenderer.render(
-                <Portal style={{position: 'absolute'}}>
-                    <span>Portal Body 2</span>
-                </Portal>
-            ).withDriver(PortalTestDriver);
+                <div>
+                            <Portal style={{position: 'absolute'}}>
+                                <span>Portal Body 1</span>
+                            </Portal>
+                            <Portal style={{position: 'absolute'}}>
+                                <span>Portal Body 2</span>
+                            </Portal>
+                        </div>
+            );
 
             await waitFor(() => {
                 expect(document.body.querySelectorAll('.portal-root').length,
@@ -195,9 +194,11 @@ describe('<Portal />', () => {
                 <Portal style={{position: 'absolute'}} overlayManager={overlayManager}>
                     <span>Portal Body 1</span>
                 </Portal>
-            ).withDriver(PortalTestDriver);
+            );
 
             expect(overlayManager.getContentLayer()).not.to.be.equal(null);
+
+            overlayManager.removeSelf(); // We've added an additional OverlayManager to body. remove it
         });
     });
 });
