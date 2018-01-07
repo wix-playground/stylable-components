@@ -10,7 +10,6 @@ describe('<Portal />', () => {
 
     afterEach(() => {
         clientRenderer.cleanup();
-        clearOverlayManager();
     });
 
     it('displays the portal and renders its children', async () => {
@@ -105,6 +104,9 @@ describe('<Portal />', () => {
     });
 
     it('renders the portal in the bottom of the DOM', async () => {
+        // make sure overlayManager doesn't already exist. When a new one is created - it should be after the content:
+        clearOverlayManager();
+
         const {container, driver} = clientRenderer.render(
             <Portal>
                 <span>Portal Body</span>
@@ -132,6 +134,10 @@ describe('<Portal />', () => {
     });
 
     describe('overlay manager', () => {
+        beforeEach(() => {
+            clearOverlayManager();
+        });
+
         it('creates one overlayManager for multiple portals, if no overlayManager was supplied', async () => {
             const selectBody = selectDom(document.body);
 
