@@ -8,7 +8,7 @@ import {
     SelectionListOption as Option
 } from '../../src';
 import {SelectionListTestDriver} from '../../test-kit';
-import {sleep, WithTheme, WithThemeDAID} from '../utils';
+import {sleep} from '../utils';
 
 export class SelectionListDemoDriver extends DriverBase {
     public static ComponentClass = SelectionListDemo;
@@ -31,18 +31,7 @@ export class SelectionListDemoDriver extends DriverBase {
 
 describe('<SelectionList />', () => {
     const clientRenderer = new ClientRenderer();
-    let ThemedContainer;
-    let themedContainer: HTMLDivElement;
-
-    beforeEach(() => {
-        ThemedContainer = WithTheme();
-        const {select} = clientRenderer.render(<ThemedContainer />);
-        themedContainer = select(WithThemeDAID) as HTMLDivElement;
-    });
-
-    afterEach(() => {
-        clientRenderer.cleanup();
-    });
+    afterEach(() => clientRenderer.cleanup());
 
     it('Takes a list of options and allows to select one', async () => {
         const {driver: demo, waitForDom} = clientRenderer.render(
@@ -80,8 +69,7 @@ describe('<SelectionList />', () => {
 
     it('Renders items under each other using the default renderer', async () => {
         const {driver: list, waitForDom} = clientRenderer.render(
-            <SelectionList dataSource={['0', '1', divider]} />,
-            themedContainer
+            <SelectionList dataSource={['0', '1', divider]} />
         ).withDriver(SelectionListTestDriver);
 
         await waitForDom(() => expect(list.root).to.be.present());
@@ -144,8 +132,7 @@ describe('<SelectionList />', () => {
 
     it('Renders blank items at the same height as normal items', async () => {
         const {driver: list, waitForDom} = clientRenderer.render(
-            <SelectionList dataSource={['', '1']} />,
-            themedContainer
+            <SelectionList dataSource={['', '1']} />
         ).withDriver(SelectionListTestDriver);
 
         await waitForDom(() => expect(list.root).to.be.present());
@@ -198,7 +185,7 @@ describe('<SelectionList />', () => {
     describe('Keyboard navigation', async () => {
         it(`Moves down on 'Down' press`, async () => {
             const {driver: list, waitForDom} = clientRenderer.render(
-                <SelectionList  dataSource={[0, 1, 2, 3, 4]} value={2} />
+                <SelectionList dataSource={[0, 1, 2, 3, 4]} value={2} />
             ).withDriver(SelectionListTestDriver);
 
             await waitForDom(() => expect(list.root).to.be.present());
@@ -209,7 +196,7 @@ describe('<SelectionList />', () => {
 
         it(`Moves up on 'Up' press`, async () => {
             const {driver: list, waitForDom} = clientRenderer.render(
-                <SelectionList  dataSource={[0, 1, 2, 3, 4]} value={2} />
+                <SelectionList dataSource={[0, 1, 2, 3, 4]} value={2} />
             ).withDriver(SelectionListTestDriver);
 
             await waitForDom(() => expect(list.root).to.be.present());
@@ -220,7 +207,7 @@ describe('<SelectionList />', () => {
 
         it(`Moves to the beginning on 'Home' press`, async () => {
             const {driver: list, waitForDom} = clientRenderer.render(
-                <SelectionList  dataSource={[0, 1, 2, 3, 4]} value={2} />
+                <SelectionList dataSource={[0, 1, 2, 3, 4]} value={2} />
             ).withDriver(SelectionListTestDriver);
 
             await waitForDom(() => expect(list.root).to.be.present());
@@ -231,7 +218,7 @@ describe('<SelectionList />', () => {
 
         it(`Moves to the end on 'End' press`, async () => {
             const {driver: list, waitForDom} = clientRenderer.render(
-                <SelectionList  dataSource={[0, 1, 2, 3, 4]} value={2} />
+                <SelectionList dataSource={[0, 1, 2, 3, 4]} value={2} />
             ).withDriver(SelectionListTestDriver);
 
             await waitForDom(() => expect(list.root).to.be.present());
@@ -242,7 +229,7 @@ describe('<SelectionList />', () => {
 
         it(`Moves to the beginning on 'Down' press if no item is selected`, async () => {
             const {driver: list, waitForDom} = clientRenderer.render(
-                <SelectionList  dataSource={[0, 1, 2, 3, 4]} />
+                <SelectionList dataSource={[0, 1, 2, 3, 4]} />
             ).withDriver(SelectionListTestDriver);
 
             await waitForDom(() => expect(list.root).to.be.present());
@@ -253,7 +240,7 @@ describe('<SelectionList />', () => {
 
         it(`Moves to the end on 'Up' press if no item is selected`, async () => {
             const {driver: list, waitForDom} = clientRenderer.render(
-                <SelectionList  dataSource={[0, 1, 2, 3, 4]} />
+                <SelectionList dataSource={[0, 1, 2, 3, 4]} />
             ).withDriver(SelectionListTestDriver);
 
             await waitForDom(() => expect(list.root).to.be.present());
@@ -265,7 +252,7 @@ describe('<SelectionList />', () => {
         it(`Selects item on 'Enter' press`, async () => {
             const onChange = sinon.spy();
             const {driver: list, waitForDom} = clientRenderer.render(
-                <SelectionList  dataSource={[0, 1, 2, 3, 4]} value={2} onChange={onChange} />
+                <SelectionList dataSource={[0, 1, 2, 3, 4]} value={2} onChange={onChange} />
             ).withDriver(SelectionListTestDriver);
 
             await waitForDom(() => expect(list.root).to.be.present());
@@ -278,7 +265,7 @@ describe('<SelectionList />', () => {
         it(`Selects item on 'Space' press`, async () => {
             const onChange = sinon.spy();
             const {driver: list, waitForDom} = clientRenderer.render(
-                <SelectionList  dataSource={[0, 1, 2, 3, 4]} value={2} onChange={onChange} />
+                <SelectionList dataSource={[0, 1, 2, 3, 4]} value={2} onChange={onChange} />
             ).withDriver(SelectionListTestDriver);
 
             await waitForDom(() => expect(list.root).to.be.present());
@@ -642,8 +629,7 @@ describe('<SelectionList />', () => {
         it(`Scrolls to the selected item when mounted`, async () => {
             const dataSource = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'];
             const {driver: list, waitForDom} = clientRenderer.render(
-                <SelectionList dataSource={dataSource} value="F" style={{height: '100px'}} />,
-                themedContainer
+                <SelectionList dataSource={dataSource} value="F" style={{height: '100px'}} />
             ).withDriver(SelectionListTestDriver);
 
             await waitForDom(() => {
@@ -656,8 +642,7 @@ describe('<SelectionList />', () => {
         it(`Scrolls to the focused item on focus change`, async () => {
             const dataSource = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'];
             const {driver: list, waitForDom} = clientRenderer.render(
-                <SelectionList dataSource={dataSource} value="0" style={{height: '100px'}} />,
-                themedContainer
+                <SelectionList dataSource={dataSource} value="0" style={{height: '100px'}} />
             ).withDriver(SelectionListTestDriver);
 
             await waitForDom(() => expect(list.root).to.be.not.null);

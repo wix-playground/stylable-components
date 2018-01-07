@@ -4,7 +4,6 @@ import {ClientRenderer, DriverBase, expect, sinon, waitFor} from 'test-drive-rea
 import {DropDownDemo} from '../../demo/components/drop-down.demo';
 import {DropDown} from '../../src';
 import {DropDownDriver} from '../../test-kit';
-import {WithTheme, WithThemeDAID} from '../utils';
 
 class DropDownDemoDriver extends DriverBase {
     public static ComponentClass = DropDownDemo;
@@ -44,12 +43,8 @@ describe('<DropDown />', () => {
     });
 
     it('renders to the screen', async () => {
-        const ThemedContainer = WithTheme();
-        const {select} = clientRenderer.render(<ThemedContainer />);
-        const container = select(WithThemeDAID) as HTMLDivElement;
         const {driver: dropdown, waitForDom} = clientRenderer.render(
-            <DropDown />,
-            container
+            <DropDown />
         ).withDriver(DropDownDriver);
 
         await waitForDom(() => {
@@ -85,7 +80,7 @@ describe('<DropDown />', () => {
     it('opens the dropdown when focused and openOnFocus is true', async () => {
         const onOpenStateChange = sinon.spy();
         const {driver: dropdown, waitForDom} = clientRenderer.render(
-            <DropDown openOnFocus onOpenStateChange={onOpenStateChange}/>
+            <DropDown openOnFocus onOpenStateChange={onOpenStateChange} />
         ).withDriver(DropDownDriver);
 
         await waitForDom(() => expect(dropdown.isOpen(), 'expected list to be closed').to.equal(false));
@@ -117,7 +112,7 @@ describe('<DropDown />', () => {
     it('invokes onClick handler when an item is clicked', async () => {
         const onClick = sinon.spy();
         const {driver: dropdown} = clientRenderer.render(
-            <DropDown open dataSource={items} onChange={onClick}/>
+            <DropDown open dataSource={items} onChange={onClick} />
         ).withDriver(DropDownDriver);
 
         dropdown.clickOnItem(0);
@@ -128,7 +123,7 @@ describe('<DropDown />', () => {
     it('invokes onOpenStateChange event when the open state changes (closed -> opened)', async () => {
         const onOpenStateChange = sinon.spy();
         const {driver: dropdown, waitForDom} =
-            clientRenderer.render(<DropDown onOpenStateChange={onOpenStateChange}/>).withDriver(DropDownDriver);
+            clientRenderer.render(<DropDown onOpenStateChange={onOpenStateChange} />).withDriver(DropDownDriver);
 
         await waitForDom(() => expect(dropdown.isOpen()).to.equal(false));
 
@@ -140,7 +135,7 @@ describe('<DropDown />', () => {
     it('invokes onOpenStateChange event when the open state changes (opened -> closed)', async () => {
         const onOpenStateChange = sinon.spy();
         const {driver: dropdown, waitForDom} =
-            clientRenderer.render(<DropDown open onOpenStateChange={onOpenStateChange}/>).withDriver(DropDownDriver);
+            clientRenderer.render(<DropDown open onOpenStateChange={onOpenStateChange} />).withDriver(DropDownDriver);
 
         await waitForDom(() => expect(dropdown.isOpen()).to.equal(true));
 
@@ -153,7 +148,7 @@ describe('<DropDown />', () => {
         it('toggles visibility of selection list when SPACE is clicked (closed -> opened)', async () => {
             const onOpenStateChange = sinon.spy();
             const {driver: dropdown, waitForDom} =
-                clientRenderer.render(<DropDown onOpenStateChange={onOpenStateChange}/>).withDriver(DropDownDriver);
+                clientRenderer.render(<DropDown onOpenStateChange={onOpenStateChange} />).withDriver(DropDownDriver);
 
             await waitForDom(() => expect(dropdown.isOpen(), 'expected list to be closed').to.equal(false));
 
@@ -167,7 +162,7 @@ describe('<DropDown />', () => {
             const onOpenStateChange = sinon.spy();
             const {driver: dropdown, waitForDom} =
                 clientRenderer
-                    .render(<DropDown open onOpenStateChange={onOpenStateChange}/>)
+                    .render(<DropDown open onOpenStateChange={onOpenStateChange} />)
                     .withDriver(DropDownDriver);
 
             await waitForDom(() => expect(dropdown.isOpen(), 'expected list to be open').to.equal(true));
@@ -182,7 +177,7 @@ describe('<DropDown />', () => {
             const onOpenStateChange = sinon.spy();
             const {driver: dropdown, waitForDom} =
                 clientRenderer
-                    .render(<DropDown open onOpenStateChange={onOpenStateChange}/>)
+                    .render(<DropDown open onOpenStateChange={onOpenStateChange} />)
                     .withDriver(DropDownDriver);
 
             await waitForDom(() => expect(dropdown.isOpen(), 'expected list to be open').to.equal(true));
@@ -196,7 +191,7 @@ describe('<DropDown />', () => {
             const onOpenStateChange = sinon.spy();
             const {driver: dropdown, waitForDom} =
                 clientRenderer
-                    .render(<DropDown onOpenStateChange={onOpenStateChange}/>)
+                    .render(<DropDown onOpenStateChange={onOpenStateChange} />)
                     .withDriver(DropDownDriver);
 
             await waitForDom(() => expect(dropdown.isOpen(), 'expected list to be closed').to.equal(false));
