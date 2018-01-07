@@ -33,13 +33,18 @@ export class Portal extends React.PureComponent<PortalProps> {
     }
 
     public componentDidMount() {
-        if (this.overlayManager === undefined) {
-            this.overlayManager =
-                this.props.overlayManager || globalOverlayManager || new OverlayManager(document.body);
-            if (!globalOverlayManager) {
-                globalOverlayManager = this.overlayManager; // save as global
+        if (this.props.overlayManager) {
+            this.overlayManager = this.props.overlayManager;
+        } else if (globalOverlayManager) {
+            this.overlayManager = globalOverlayManager;
+            const portalRoot = globalOverlayManager.getPortalRoot();
+            if (portalRoot.parentElement!.lastChild !== portalRoot) {
+                portalRoot.parentElement!.appendChild(portalRoot);
             }
+        } else {
+            globalOverlayManager = this.overlayManager = new OverlayManager(document.body);
         }
+
         const root: HTMLElement = ReactDOM.findDOMNode(this);
         // create layer
         const {parentTarget, destroy} = this.overlayManager.createOverlay(root);

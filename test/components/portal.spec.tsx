@@ -105,7 +105,25 @@ describe('<Portal />', () => {
 
     it('renders the portal in the bottom of the DOM', async () => {
         // make sure overlayManager doesn't already exist. When a new one is created - it should be after the content:
-        clearOverlayManager();
+
+        const {container, driver} = clientRenderer.render(
+            <Portal>
+                <span>Portal Body</span>
+            </Portal>
+        ).withDriver(PortalTestDriver);
+
+        await waitFor(() => {
+            /* tslint:disable:no-bitwise */
+            expect(driver.portal!.compareDocumentPosition(driver.content[0]) & Node.DOCUMENT_POSITION_CONTAINED_BY,
+                'children contained in portal').to.equal(Node.DOCUMENT_POSITION_CONTAINED_BY);
+            expect(container.compareDocumentPosition(driver.portal!) & Node.DOCUMENT_POSITION_FOLLOWING,
+                'portal is following the app container').to.equal(Node.DOCUMENT_POSITION_FOLLOWING);
+            /* tslint:enable:no-bitwise */
+        });
+    });
+
+    it('renders the portal in the bottom of the DOM', async () => {
+        // make sure overlayManager doesn't already exist. When a new one is created - it should be after the content:
 
         const {container, driver} = clientRenderer.render(
             <Portal>
@@ -134,13 +152,10 @@ describe('<Portal />', () => {
     });
 
     describe('overlay manager', () => {
-        beforeEach(() => {
-            clearOverlayManager();
-        });
-
-        it('creates one overlayManager for multiple portals, if no overlayManager was supplied', async () => {
+        it('creates overlayManager, if no overlayManager was supplied', async () => {
             const selectBody = selectDom(document.body);
 
+            clearOverlayManager();  // Make sure we don't have an existing overlay manager
             expect(selectBody('portal-root')).to.be.equal(null);
 
             clientRenderer.render(
@@ -152,13 +167,23 @@ describe('<Portal />', () => {
             await waitFor(() => {
                 expect(document.body.querySelectorAll('.portal-root').length,
                     'portal-root should exist').to.be.equal(1);
+            });
+        });
 
-                clientRenderer.render(
-                    <Portal style={{position: 'absolute'}}>
-                        <span>Portal Body 2</span>
-                    </Portal>
-                ).withDriver(PortalTestDriver);
-            }).then(() => {
+        it('reuses global overlayManager, if no overlayManager was supplied and one is available', async () => {
+            clientRenderer.render(
+                <Portal style={{position: 'absolute'}}>
+                    <span>Portal Body 1</span>
+                </Portal>
+            ).withDriver(PortalTestDriver);
+
+            clientRenderer.render(
+                <Portal style={{position: 'absolute'}}>
+                    <span>Portal Body 2</span>
+                </Portal>
+            ).withDriver(PortalTestDriver);
+
+            await waitFor(() => {
                 expect(document.body.querySelectorAll('.portal-root').length,
                     'only one portal-root should exist').to.be.equal(1);
             });
