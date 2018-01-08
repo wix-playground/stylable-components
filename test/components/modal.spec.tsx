@@ -7,8 +7,10 @@ import {ModalTestDriver} from '../../test-kit/components';
 describe('<Modal />', () => {
     const clientRenderer = new ClientRenderer();
     const bodySelect = selectDom(document.body);
-
-    afterEach(() => clientRenderer.cleanup());
+    afterEach(() => {
+            clientRenderer.cleanup();
+        }
+    );
 
     describe('A typical use case for the modal:', () => {
         it('is hidden at first, a user clicks on a button, the modal appears,' +
@@ -50,7 +52,9 @@ describe('<Modal />', () => {
     });
 
     it('takes the full width and height of the viewport and is centered in the viewport', async () => {
-        const {driver: modal} = clientRenderer.render(<Modal isOpen={true} />).withDriver(ModalTestDriver);
+        const {driver: modal} =
+            clientRenderer.render(<Modal isOpen={true} />)
+            .withDriver(ModalTestDriver);
 
         function checkIfAlignedToScreen(element: Element) {
             const rects = element.getBoundingClientRect();
@@ -145,24 +149,5 @@ describe('<Modal />', () => {
         simulate.click(modal.children[0]);
 
         await waitFor(() => expect(onRequestClose.getCall(0)).to.have.been.calledWithMatch({source: 'child'}));
-    });
-
-    it('renders the modal to the bottom of the DOM', async () => {
-        const {container, driver: modal} = clientRenderer.render(
-            <Modal isOpen={true}>
-                <p>child 1</p>
-            </Modal>
-        ).withDriver(ModalTestDriver);
-
-        await waitFor(() => {
-            const children = modal.children[0];
-
-            /* tslint:disable:no-bitwise */
-            expect(modal.content.compareDocumentPosition(children) & Node.DOCUMENT_POSITION_CONTAINED_BY,
-                'children contained in modal').to.equal(Node.DOCUMENT_POSITION_CONTAINED_BY);
-            expect(container.compareDocumentPosition(modal.content) & Node.DOCUMENT_POSITION_FOLLOWING,
-                'modal is following the app container').to.equal(Node.DOCUMENT_POSITION_FOLLOWING);
-            /* tslint:enable:no-bitwise */
-        });
     });
 });

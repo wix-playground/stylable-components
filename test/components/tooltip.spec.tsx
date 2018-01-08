@@ -29,7 +29,7 @@ class Sample extends React.Component<SampleProps> {
                 <div
                     data-automation-id="TEST_ANCHOR"
                     data-tooltip-for={id}
-                    children="I am a anchor!"
+                    children="I am an anchor!"
                     style={{width: 100}}
                 />
                 <Tooltip
@@ -109,19 +109,19 @@ function testPosition(position: Position, expectations: any) {
         }
 
         if (expectations.centeredHorizontaly) {
-            it('should be centerd horizontaly', () => {
+            it('should be centered horizontally', () => {
                 equal(anchorBounds.left + anchorBounds.width / 2, tooltipBounds.left + tooltipBounds.width / 2);
             });
-            it('tail should be centerd horizontaly', () => {
+            it('tail should be centered horizontally', () => {
                 equal(anchorBounds.left + anchorBounds.width / 2, tailBounds.left + tailBounds.width / 2);
             });
         }
 
         if (expectations.centeredVerticaly) {
-            it('should be centerd verticaly', () => {
+            it('should be centered vertically', () => {
                 equal(anchorBounds.top + anchorBounds.height / 2, tooltipBounds.top + tooltipBounds.height / 2);
             });
-            it('tail should be centerd verticaly', () => {
+            it('tail should be centered vertically', () => {
                 equal(anchorBounds.top + anchorBounds.height / 2, tailBounds.top + tailBounds.height / 2);
             });
         }
@@ -132,34 +132,34 @@ function testPosition(position: Position, expectations: any) {
             });
         }
         if (expectations.aligmnentLeft) {
-            it('should be alignet to left', () => {
+            it('should be aligned to left', () => {
                 equal(anchorBounds.left, tooltipBounds.left);
             });
-            it('tail should be alignet to left', () => {
+            it('tail should be aligned to left', () => {
                 equal(anchorBounds.left, tailBounds.left - TAIL_OFFSET);
             });
         }
         if (expectations.aligmnentRight) {
-            it('should be alignet to right', () => {
+            it('should be aligned to right', () => {
                 equal(anchorBounds.left + anchorBounds.width, tooltipBounds.left + tooltipBounds.width);
             });
-            it('tail should be alignet to right', () => {
+            it('tail should be aligned to right', () => {
                 equal(anchorBounds.left + anchorBounds.width, tailBounds.left + tailBounds.width + TAIL_OFFSET);
             });
         }
         if (expectations.aligmnentTop) {
-            it('should be alignet to top', () => {
+            it('should be aligned to top', () => {
                 equal(anchorBounds.top, tooltipBounds.top);
             });
-            it('tail should be alignet to top', () => {
+            it('tail should be aligned to top', () => {
                 equal(anchorBounds.top, tailBounds.top - TAIL_OFFSET);
             });
         }
         if (expectations.aligmnentBottom) {
-            it('should be alignet to bottom', () => {
+            it('should be aligned to bottom', () => {
                 equal(anchorBounds.top + anchorBounds.height, tooltipBounds.top + tooltipBounds.height);
             });
-            it('tail should be alignet to bottom', () => {
+            it('tail should be aligned to bottom', () => {
                 equal(anchorBounds.top + anchorBounds.height, tailBounds.top + tailBounds.height + TAIL_OFFSET);
             });
         }
@@ -217,6 +217,7 @@ describe('<Tooltip/>', () => {
 
         it('should not be visible by default', () => {
             expect(driver.tooltip.isOpen).to.be.false;
+            expect(driver.tooltip.content).to.be.equal(null); // make sure tooltip is not rendered by default.
         });
 
         it('should be visible after click', () => {

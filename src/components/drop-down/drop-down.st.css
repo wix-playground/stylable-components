@@ -31,13 +31,13 @@
 }
 
 .list {
-    width: 100%;
+    /*width: 100%;*/
     /*
         Styling list is here (not at the theme)
         because it is rendered in <Portal/>
         which isn't able to get theme yet.
     */
-    background-color: white;
+    /*background-color: white;*/
 }
 
 .input { /* This element is not actually an input */
