@@ -1,6 +1,6 @@
 :import {
-	-st-from: "../../../components/selection-list/selection-list.st.css";
-	-st-default: SelectionList;
+    -st-from: "../../../components/selection-list/selection-list.st.css";
+    -st-default: SelectionList;
 }
 
 :import {
@@ -52,11 +52,6 @@ SelectionList Option:focused {
     outline: 1px solid value(optionBackgroundColorSelected);
 }
 
-SelectionList Option:selected {
-    background-color: value(optionBackgroundColorSelected);
-    color: value(optionTextColorSelected);
-}
-
 SelectionList Option:hover:not(:disabled) {
     /* we're adding :not(:disabled) because our disabled state in this component is
      not a native state, and unlike the native :disabled it has less weight than native :hover
@@ -64,12 +59,13 @@ SelectionList Option:hover:not(:disabled) {
     background-color: value(optionBackgroundColorHover);
 }
 
+SelectionList Option:selected:not(:disabled) {
+    background-color: value(optionBackgroundColorSelected);
+    color: value(optionTextColorSelected);
+}
+
+
 SelectionList:focused Option:selected:not(:disabled) {
     /* Don't have styles for focus in the styleguide, temporary rule added */
     outline: 1px solid value(optionBackgroundColorSelected);
-}
-
-SelectionList:focused Option:selected:hover:not(:disabled) {
-    background-color: value(optionBackgroundColorSelected);
-    color: value(optionTextColorSelected);
 }
