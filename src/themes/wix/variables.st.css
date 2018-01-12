@@ -1,35 +1,35 @@
 :vars {
 	/* From Wix Styleguide */
     B00: #2b81cb;
-	B05: #308ddd;
-	B10: #3899ec;
-	B20: #4eb7f5;
-	B25: #A1D7FB;
-	B27: #b3e0fb;
-	B30: #c1e4fe; /* main border color */
-	B40: #daeffe;
-	B50: #eaf7ff;
-	B60: #f4fafe;
-	D10: #162d3d;
-	D10A24: rgba(22, 45, 60, 0.24);
-	D10A30: rgba(22, 45, 60, 0.3);
-	D10A36: rgba(22, 45, 60, 0.36);
-	D20: #32536A;
-	D30: #577083;
-	D40: #7a92a5; /* placeholder color */
-	D50: #b6c1cd;
-	D55: #cbd3dc;
-	D60: #dfe5eb;
-	D70: #f0f4f7;
-	D80: #ffffff;
-	R00: #d6453d;
-	R05: #d8504c;
-	R10: #ee5951;
-	R20: #ff6666;
-	R30: #ffd7d7;
-	P00: #cd68ed;
-	P10: #aa4cd8;
-	P20: #cd68ed;
+    B05: #308ddd;
+    B10: #3899ec;
+    B20: #4eb7f5;
+    B25: #A1D7FB;
+    B27: #b3e0fb;
+    B30: #c1e4fe; /* main border color */
+    B40: #daeffe;
+    B50: #eaf7ff;
+    B60: #f4fafe;
+    D10: #162d3d;
+    D10A24: rgba(22, 45, 60, 0.24);
+    D10A30: rgba(22, 45, 60, 0.3);
+    D10A36: rgba(22, 45, 60, 0.36);
+    D20: #32536A;
+    D30: #577083;
+    D40: #7a92a5; /* placeholder color */
+    D50: #b6c1cd;
+    D55: #cbd3dc;
+    D60: #dfe5eb;
+    D70: #f0f4f7;
+    D80: #ffffff;
+    R00: #d6453d;
+    R05: #d8504c;
+    R10: #ee5951;
+    R20: #ff6666;
+    R30: #ffd7d7;
+    P00: #cd68ed;
+    P10: #aa4cd8;
+    P20: #cd68ed;
     GR20: #dadada;
 
     /* Typography */
@@ -39,7 +39,7 @@
     textColor: value(D10);
     textColorLighter: value(D20);
     textColorDisabled: value(D50);
-    
+
     /* Inputs */
     inputFontStyle: 16px "HelveticaNeueW01-55Roman", sans-serif;
     placeholderColor: value(D40);
@@ -61,6 +61,7 @@
     borderColorError: value(R00);
     borderStyle: 1px solid value(borderColorDefault);
     borderRadius: 6px;
+    dropdownShadow: 0 6px 6px 0 rgba(22, 45, 61, 0.06), 0 0 18px 0 rgba(22, 45, 61, 0.12);
 
     /* Selection List */
 
