@@ -86,3 +86,8 @@
     -st-theme: true;
     -st-from: "./components/tree-view.st.css";
 }
+
+:import {
+    -st-theme: true;
+    -st-from: "./components/modal.st.css";
+}
