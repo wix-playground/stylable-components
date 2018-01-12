@@ -13,7 +13,6 @@
     TODO: Component needs to handle focus (pass it to the root element) in code
 */
 .root {
-    -st-states: open;
     box-sizing: inherit;
     position: relative;
     display: inline-flex;
@@ -52,26 +51,19 @@
     align-items: center;
 }
 
-.caret-wrap {
+.caret {
+
     margin: 0;
     padding: 0;
     border: 0;
-    height: auto;
-    cursor: pointer;
 
     outline: none;
-    background: transparent;
-}
 
-.caret {
-    width: 28px;
-    height: 28px;
-    display: inline-block;
-    background-repeat: no-repeat;
-    background-origin: content-box;
-    background-position: center;
+    background: center no-repeat transparent;
+    background-origin:content-box;
+    cursor: pointer;
+    height: auto;
     background-image: value(iconChevronDownBK3);
-    transition: transform 200ms ease-out;
 }
 
 .caret:hover,
@@ -83,7 +75,3 @@
     background-image: value(iconChevronDownDS1);
 }
 
-
-.root:open .caret {
-    transform: rotate(180deg);
-}
