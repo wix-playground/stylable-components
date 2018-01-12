@@ -52,20 +52,24 @@ export class DropDown extends React.PureComponent<DropDownProps, DropDownState> 
     }
 
     public render() {
+        const open = this.props.open && !this.props.disabled;
         return (
             <div
                 data-automation-id="DROP_DOWN"
                 onKeyDown={this.onKeyDown}
                 onFocus={this.onFocus}
+                style-state={{open}}
                 tabIndex={this.props.tabIndex}
                 ref={dropdown => this.setState({dropdown})}
             >
                 <div data-automation-id="DROP_DOWN_INPUT" onClick={this.toggleDropdown} className="input">
                     <span className="label">{this.props.value!}</span>
                 </div>
-                <button onClick={this.toggleDropdown} className="caret" data-automation-id="AUTO_COMPLETE_CARET"/>
+                <button onClick={this.toggleDropdown} className="caret-wrap" data-automation-id="AUTO_COMPLETE_CARET">
+                    <i className="caret"/>
+                </button>
                 <Popup
-                    open={this.props.open && !this.props.disabled}
+                    open={open}
                     anchor={this.state.dropdown}
                 >
                     <SelectionList

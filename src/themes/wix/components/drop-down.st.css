@@ -1,17 +1,19 @@
 :import {
-	-st-from: "../../../components/drop-down/drop-down.st.css";
-	-st-default: DropDown;
+    -st-from: "../../../components/drop-down/drop-down.st.css";
+    -st-default: DropDown;
 }
 
 :import {
-  -st-from: "../variables.st.css";
-  -st-named:
+    -st-from: "../variables.st.css";
+    -st-named:
     /* import list is long because -st-mixin currently requires 
      importing all the variables that the mixed in class uses */
           inputStyle,
           inputWidth,
           inputHeight,
           inputPadding,
+
+          dropdownShadow,
 
           inputFontStyle,
           textColor,
@@ -39,6 +41,12 @@ DropDown {
     -st-mixin: inputStyle;
 }
 
+DropDown::list {
+    width: 100%;
+    border-radius: 6px;
+    box-shadow: value(dropdownShadow);
+}
+
 DropDown::input {
     padding: value(inputPadding);
     padding-right: 0;
@@ -54,6 +62,5 @@ DropDown::caret {
 }
 
 DropDown::input:disabled::placeholder {
-  color: value(textColorDisabled);
+    color: value(textColorDisabled);
 }
-
