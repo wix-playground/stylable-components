@@ -31,9 +31,21 @@
 
 /* root */
 .root {
-    -st-states: disabled, readonly, error;
+    -st-states: disabled, readonly, error, inverted;
     display: inline-block;
     height: value(inputHeight);
+}
+
+.calendarWrap {
+    height: auto;
+}
+
+.root:inverted .calendarWrap {
+    display: flex;
+    flex-direction: column-reverse;
+}
+.root:inverted .dropdownArrow {
+    transform: rotate(180deg);
 }
 
 .flex-wrapper {

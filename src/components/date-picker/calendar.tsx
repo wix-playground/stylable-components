@@ -41,7 +41,7 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
 
     public render() {
         return (
-            <div data-automation-id="DATE_PICKER_CALENDAR">
+            <div className="calendarWrap" data-automation-id="DATE_PICKER_CALENDAR">
                 <div className="dropdownArrowWrapper"><div className="dropdownArrow" /></div>
                 <div className="dropdown" data-automation-id="DATE_PICKER_DROPDOWN">
                     <div className="header">
