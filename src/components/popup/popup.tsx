@@ -53,8 +53,8 @@ export class Popup extends React.Component<PopupCompProps, PopupState> {
         this.setStyle(nextProps);
     }
 
-    public componentDidUpdate(props) {
-        this.setStyle(props);
+    public componentDidUpdate() {
+        this.setStyle(this.props);
     }
 
     public render() {
@@ -86,7 +86,7 @@ export class Popup extends React.Component<PopupCompProps, PopupState> {
     }
 
     private createStyleWithAutoPosition(props: PopupCompProps): React.CSSProperties {
-        if (!this.props.autoPosition) {
+        if (!props.autoPosition) {
             return this.createStyle(props);
         }
         const positions: Array<{
@@ -139,30 +139,31 @@ export class Popup extends React.Component<PopupCompProps, PopupState> {
         if (isPoint(props.anchor)) {
             newStyle.top = props.anchor.y;
             newStyle.left = props.anchor.x;
+            newStyle.width = offsetWidth;
 
         } else {
             const anchorRect = props.anchor!.getBoundingClientRect();
-            if (props.syncWidth) {
-                newStyle.width = anchorRect.width;
-            }
+            newStyle.width = props.syncWidth ?
+                anchorRect.width :
+                offsetWidth;
 
             newStyle.top = getVerticalReference(anchorRect, props.anchorPosition!.vertical);
             newStyle.left = getHorizontalReference(anchorRect, props.anchorPosition!.horizontal);
         }
         switch (props.popupPosition!.vertical) {
             case 'center':
-                newStyle.top -= offsetHeight / 2;
+                newStyle.top -= newStyle.height / 2;
                 break;
             case 'bottom':
-                newStyle.top -= offsetHeight;
+                newStyle.top -= newStyle.height;
                 break;
         }
         switch (props.popupPosition!.horizontal) {
             case 'center':
-                newStyle.left -= offsetWidth / 2;
+                newStyle.left -= newStyle.width / 2;
                 break;
             case 'right':
-                newStyle.left -= offsetWidth;
+                newStyle.left -= newStyle.width;
                 break;
         }
 

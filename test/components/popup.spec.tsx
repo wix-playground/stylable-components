@@ -60,8 +60,8 @@ describe.only('<Popup />', () => {
         ).withDriver(PopupTestDriver);
 
         return waitFor(() => {
-            expect(popup.root).to.be.present();
-            expect(popup.content[0]).to.be.present();
+            expect(popup.root).to.not.null;
+            expect(popup.content[0]).to.not.null;
         });
     });
 
@@ -73,7 +73,7 @@ describe.only('<Popup />', () => {
         ).withDriver(PopupTestDriver);
         await sleep(100);
 
-        await waitFor(() => expect(popup.root).to.be.absent());
+        await waitFor(() => expect(popup.root).to.be.null);
     });
 
     it('does not render the popup if the open prop is false', async () => {
@@ -84,7 +84,7 @@ describe.only('<Popup />', () => {
         ).withDriver(PopupTestDriver);
         await sleep(100);
 
-        await waitFor(() => expect(popup.root).to.be.absent());
+        await waitFor(() => expect(popup.root).to.be.null);
     });
 
     it('removes the component when unmounting', async () => {
@@ -96,9 +96,9 @@ describe.only('<Popup />', () => {
                 <span data-automation-id="SPAN">Popup Body</span>
             </Popup>).withDriver(PopupTestDriver);
 
-        await waitFor(() => {expect(popup.root).to.be.present(); });
+        await waitFor(() => {expect(popup.root).not.be.null; });
         ReactDOM.unmountComponentAtNode(popup.root!.parentElement!);
-        return waitFor(() => {expect(popup.root).to.be.absent(); });
+        return waitFor(() => {expect(popup.root).to.be.null; });
     });
 
     it('syncs the popup width', () => {
