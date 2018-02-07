@@ -1,10 +1,12 @@
 import * as React from 'react';
 import {findDOMNode} from 'react-dom';
-import {properties} from 'wix-react-tools';
+import {stylable, properties} from 'wix-react-tools';
 import {Point} from '../../types';
 import {StylableProps} from '../../types/props';
 import {objectsShallowEqual} from '../../utils';
 import {Portal} from '../portal';
+
+import styles from './popup.st.css';
 
 export type PopupVerticalPosition =  'top' | 'center' | 'bottom';
 export type PopupHorizontalPosition = 'left' | 'center' | 'right';
@@ -29,8 +31,10 @@ export interface PopupCompProps extends PopupProps {
 
 export interface PopupState {
     style: React.CSSProperties;
+    className: string;
 }
 
+@stylable(styles)
 @properties
 export class Popup extends React.Component<PopupCompProps, PopupState> {
     public static defaultProps: Partial<PopupCompProps> = {
@@ -42,7 +46,8 @@ export class Popup extends React.Component<PopupCompProps, PopupState> {
     };
 
     public state: PopupState = {
-        style: {}
+        style: {},
+        className: ''
     };
 
     public componentWillMount() {
@@ -62,6 +67,7 @@ export class Popup extends React.Component<PopupCompProps, PopupState> {
             return (
                 <Portal
                     style={this.state.style}
+                    className={this.state.className}
                     ref="portal"
                 >
                     {React.cloneElement(this.props.children as React.ReactElement<any>, {
@@ -75,9 +81,9 @@ export class Popup extends React.Component<PopupCompProps, PopupState> {
     }
 
     private setStyle(props: PopupCompProps) {
-        const style = this.createStyleWithAutoPosition(props);
-        if (!objectsShallowEqual(style, this.state.style)) {
-            this.setState({style});
+        const state = this.createStyleWithAutoPosition(props);
+        if (!objectsShallowEqual(state.style, this.state.style)) {
+            this.setState(state);
         }
     }
 
@@ -85,44 +91,68 @@ export class Popup extends React.Component<PopupCompProps, PopupState> {
         return this.refs.portal as Portal;
     }
 
-    private createStyleWithAutoPosition(props: PopupCompProps): React.CSSProperties {
+    private createStyleWithAutoPosition(props: PopupCompProps): PopupState {
         if (!props.autoPosition) {
-            return this.createStyle(props);
+            return {
+                style: this.createStyle(props),
+                className: ''
+            };
         }
         const positions: Array<{
             anchorPosition: PopupPositionPoint,
-            popupPosition: PopupPositionPoint
+            popupPosition: PopupPositionPoint,
+            className: string
         }> = [
-            // open bellow the anchor
+            // open bellow the anchor, left sides matches
             {
                 anchorPosition: {vertical: 'bottom', horizontal: 'left'},
-                popupPosition: {vertical: 'top', horizontal: 'left'}
+                popupPosition: {vertical: 'top', horizontal: 'left'},
+                className: 'bottomLeft'
             },
-            // open above the anchor
+            // open bellow the anchor, right sides matches
+            {
+                anchorPosition: {vertical: 'bottom', horizontal: 'right'},
+                popupPosition: {vertical: 'top', horizontal: 'right'},
+                className: 'bottomRight'
+            },
+            // open above the anchor, left sides matches
             {
                 anchorPosition: {vertical: 'top', horizontal: 'left'},
-                popupPosition: {vertical: 'bottom', horizontal: 'left'}
+                popupPosition: {vertical: 'bottom', horizontal: 'left'},
+                className: 'topLeft'
+            },
+            // open above the anchor, right sides matches
+            {
+                anchorPosition: {vertical: 'top', horizontal: 'right'},
+                popupPosition: {vertical: 'bottom', horizontal: 'right'},
+                className: 'topRight'
             }
         ];
 
-        const scrollY = window.pageYOffset || document.documentElement.scrollTop;
         const scrollX = window.pageXOffset || document.documentElement.scrollLeft;
+        const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+        const winWidth = window.innerWidth;
         const winHeight = window.innerHeight;
 
         let style: React.CSSProperties = {};
+        let className: string = '';
         for (const position of positions) {
+            className = position.className;
             style = this.createStyle({
                 ...props,
-                ...position
+                anchorPosition: position.anchorPosition,
+                popupPosition: position.popupPosition
             });
             if (
                 (style.top >= scrollY) &&
-                (style.top + style.height <= scrollY + winHeight)
+                (style.top + style.height <= scrollY + winHeight) &&
+                (style.left >= scrollX) &&
+                (style.left + style.width <= scrollX + winWidth)
             ) {
                 break;
             }
         }
-        return style;
+        return {style, className};
     }
 
     private createStyle(props: PopupCompProps): React.CSSProperties {

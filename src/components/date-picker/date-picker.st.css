@@ -20,6 +20,11 @@
     -st-default: Input;
 }
 
+:import {
+    -st-from: "../popup/popup.st.css";
+    -st-default: Popup;
+}
+
 :vars {
     arrowThickness: 0.09em;
     headerHeight: 60px;
@@ -31,21 +36,13 @@
 
 /* root */
 .root {
-    -st-states: disabled, readonly, error, inverted;
+    -st-states: disabled, readonly, error;
     display: inline-block;
     height: value(inputHeight);
 }
 
 .calendarWrap {
     height: auto;
-}
-
-.root:inverted .calendarWrap {
-    display: flex;
-    flex-direction: column-reverse;
-}
-.root:inverted .dropdownArrow {
-    transform: rotate(180deg);
 }
 
 .flex-wrapper {
@@ -70,22 +67,40 @@
     which isn't able to get theme yet.
 */
 
-/* The dropdown arrow extends from the input and into the calendar view */
 .dropdownArrowWrapper {
-    /* Switch width to the calendar width to center with regards to the calendar */
-    width: value(inputWidth);
+    position: relative;
+    height: value(dropdownArrowHeight);
 }
 
 .dropdownArrow {
     width: 0;
     height: 0;
-    position: relative;
+    position: absolute;
     /* Center arrow with regards to the input */
-    left: calc(50% - value(dropdownArrowWidth));
+    left: calc(value(inputWidth) / 2 - value(dropdownArrowWidth));
     border-left: value(dropdownArrowWidth) solid transparent;
     border-right: value(dropdownArrowWidth) solid transparent;
     border-bottom: value(dropdownArrowHeight) solid value(color_Default);
 }
+
+Popup.topRight .calendarWrap,
+Popup.topLeft .calendarWrap
+{
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+Popup.topLeft .dropdownArrow,
+Popup.topRight .dropdownArrow
+{
+    transform: rotate(180deg);
+}
+Popup.topRight .dropdownArrow,
+Popup.bottomRight .dropdownArrow {
+    left: auto;
+    right: calc(value(inputWidth) / 2 - value(dropdownArrowWidth));
+}
+
 
 /* The dropdown contains everything but the input */
 .dropdown {

@@ -87,6 +87,7 @@ export class DatePicker extends React.PureComponent<DatePickerProps, DatePickerS
                     <Popup
                         open={this.state.isDropdownVisible}
                         anchor={this.state.dropdownRef}
+                        syncWidth={false}
                         autoPosition
                     >
                         <Calendar
