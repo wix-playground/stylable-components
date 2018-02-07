@@ -205,6 +205,29 @@ describe('<Popup />', () => {
             }
         }
     });
+
+    describe('autoPosition test', () => {
+        const fixture = getAutoPositionFixture();
+
+        for (const item of fixture) {
+            it(`${item.name} position`, () => {
+                Object.keys(item.anchorStyle).forEach(key => {
+                    (anchor.style as any)[key] = (item as any).anchorStyle[key];
+                });
+                const {driver: popup} = clientRenderer.render(
+                    <Popup anchor={anchor} open autoPosition>
+                        <div style={{background: 'green', color: 'white'}}>
+                                <span data-automation-id="SPAN">
+                                    Popup Body
+                                </span>
+                            <div>some more stuff</div>
+                        </div>
+                    </Popup>).withDriver(PopupTestDriver);
+
+                return waitFor(() => runTest(popup.root, anchor, item.popupPosition, item.anchorPosition));
+            });
+        }
+    });
 });
 
 function getLayoutTest(axis: 'vertical' | 'horizontal') {
@@ -272,6 +295,56 @@ function getFixture(): PopupPositionPoint[] {
         {vertical: 'bottom', horizontal: 'left'},
         {vertical: 'bottom', horizontal: 'center'},
         {vertical: 'bottom', horizontal: 'right'}];
+}
+
+function getAutoPositionFixture(): Array<{
+    anchorPosition: PopupPositionPoint,
+    popupPosition: PopupPositionPoint,
+    anchorStyle: Partial<CSSStyleDeclaration>,
+    name: string
+}> {
+    return [
+        {
+            anchorStyle: {
+                left: '0',
+                top: '0'
+            },
+            anchorPosition: {vertical: 'bottom', horizontal: 'left'},
+            popupPosition: {vertical: 'top', horizontal: 'left'},
+            name: 'bottomLeft'
+        },
+        {
+            anchorStyle: {
+                left: 'auto',
+                top: '0',
+                right: '0'
+            },
+            anchorPosition: {vertical: 'bottom', horizontal: 'right'},
+            popupPosition: {vertical: 'top', horizontal: 'right'},
+            name: 'bottomRight'
+        },
+        {
+            anchorStyle: {
+                left: '0',
+                top: 'auto',
+                bottom: '0'
+            },
+            anchorPosition: {vertical: 'top', horizontal: 'left'},
+            popupPosition: {vertical: 'bottom', horizontal: 'left'},
+            name: 'topLeft'
+        },
+        {
+            anchorStyle: {
+                left: 'auto',
+                top: 'auto',
+                right: '0',
+                bottom: '0'
+            },
+            anchorPosition: {vertical: 'top', horizontal: 'right'},
+            popupPosition: {vertical: 'bottom', horizontal: 'right'},
+            name: 'topRight'
+        }
+    ];
 }
 
 function createExpect(pValue: number, aValue: number) {

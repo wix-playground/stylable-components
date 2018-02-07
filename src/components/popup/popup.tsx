@@ -52,7 +52,7 @@ export class Popup extends React.Component<PopupCompProps, PopupState> {
 
     private portal: Portal | null;
 
-    public componentWillMount() {
+    public componentDidMount() {
         this.setStyle(this.props);
     }
 
@@ -82,18 +82,18 @@ export class Popup extends React.Component<PopupCompProps, PopupState> {
         return null;
     }
 
+    public getPortal(): Portal | null {
+        return this.portal;
+    }
+
     private setStyle(props: PopupCompProps) {
-        const state = this.createStyleWithAutoPosition(props);
+        const state = this.createStyleAndClassName(props);
         if (!objectsShallowEqual(state.style, this.state.style)) {
             this.setState(state);
         }
     }
 
-    public getPortal(): Portal | null {
-        return this.portal;
-    }
-
-    private createStyleWithAutoPosition(props: PopupCompProps): PopupState {
+    private createStyleAndClassName(props: PopupCompProps): PopupState {
         if (!props.autoPosition) {
             return {
                 style: this.createStyle(props),
