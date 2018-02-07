@@ -1,6 +1,5 @@
 import * as keycode from 'keycode';
 import * as React from 'react';
-import {findDOMNode} from 'react-dom';
 import {properties, stylable} from 'wix-react-tools';
 import {FormInputProps} from '../../types/forms';
 import {StylableProps} from '../../types/props';
@@ -30,7 +29,6 @@ export interface DatePickerState {
     highlightSelectedDate: boolean;
     highlightFocusedDate: boolean;
     error: boolean;
-    inverted: boolean;
 }
 
 @stylable(styles)
@@ -47,8 +45,7 @@ export class DatePicker extends React.PureComponent<DatePickerProps, DatePickerS
         this.setState({
             inputValue: this.props.value ? this.props.value.toDateString() : '',
             isDropdownVisible: this.props.showDropdownOnInit || false,
-            dropdownDate: this.props.value || new Date(),
-            inverted: false
+            dropdownDate: this.props.value || new Date()
         });
     }
 
@@ -58,8 +55,7 @@ export class DatePicker extends React.PureComponent<DatePickerProps, DatePickerS
         const styleState = {
             disabled: this.props.disabled!,
             readonly: this.props.readOnly!,
-            error: this.state.error,
-            inverted: this.state.inverted
+            error: this.state.error
         };
 
         return (
@@ -91,17 +87,9 @@ export class DatePicker extends React.PureComponent<DatePickerProps, DatePickerS
                     <Popup
                         open={this.state.isDropdownVisible}
                         anchor={this.state.dropdownRef}
-                        popupPosition={{
-                            vertical: this.state.inverted ? 'bottom' : 'top',
-                            horizontal: 'left'
-                        }}
-                        anchorPosition={{
-                            vertical: this.state.inverted ? 'top' : 'bottom',
-                            horizontal: 'left'
-                        }}
+                        autoPosition
                     >
                         <Calendar
-                            ref={this.onRefCalendar}
                             onChange={this.onCalendarInput}
                             updateDropdownDate={this.updateDropdownDate}
                             value={this.state.dropdownDate}
@@ -115,19 +103,6 @@ export class DatePicker extends React.PureComponent<DatePickerProps, DatePickerS
                 </div>
             </div>
         );
-    }
-
-    private onRefCalendar = (calendar: Calendar) => {
-        const elem = findDOMNode(calendar) as HTMLElement;
-        const top = elem.getBoundingClientRect().top;
-        const {inverted} = this.state;
-
-        if (
-            (inverted && top < 0) ||
-            (!inverted && (top + elem.offsetHeight > window.innerHeight))
-        ) {
-            this.setState({inverted: !inverted});
-        }
     }
 
     // Called with possibly invalid string from the input

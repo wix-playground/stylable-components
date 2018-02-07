@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {findDOMNode} from 'react-dom';
 import {properties} from 'wix-react-tools';
 import {Point} from '../../types';
 import {StylableProps} from '../../types/props';
@@ -19,6 +20,7 @@ export interface PopupProps extends StylableProps {
     popupPosition?: PopupPositionPoint;
     syncWidth?: boolean;
     children?: React.ReactNode;
+    autoPosition?: boolean;
 }
 
 export interface PopupCompProps extends PopupProps {
@@ -35,21 +37,24 @@ export class Popup extends React.Component<PopupCompProps, PopupState> {
         open: false,
         anchorPosition: {vertical: 'bottom', horizontal: 'left'},
         popupPosition: {vertical: 'top', horizontal: 'left'},
-        syncWidth: true
+        syncWidth: true,
+        autoPosition: false
     };
 
     public state: PopupState = {
         style: {}
     };
 
-    private portal: Portal | null;
-
     public componentWillMount() {
-        this.setState({style: this.createStyle(this.props)});
+        this.setStyle(this.props);
     }
 
     public componentWillReceiveProps(nextProps: PopupCompProps) {
-        this.setState({style: this.createStyle(nextProps)});
+        this.setStyle(nextProps);
+    }
+
+    public componentDidUpdate(props) {
+        this.setStyle(props);
     }
 
     public render() {
@@ -57,34 +62,80 @@ export class Popup extends React.Component<PopupCompProps, PopupState> {
             return (
                 <Portal
                     style={this.state.style}
-                    ref={portal => this.portal = portal}
+                    ref="portal"
                 >
-                    {this.props.children}
-                </Portal>);
+                    {React.cloneElement(this.props.children as React.ReactElement<any>, {
+                        ref: 'content'
+                    })}
+                </Portal>
+            );
         }
 
         return null;
     }
 
-    public componentDidUpdate() {
-        const style = this.createStyle(this.props);
+    private setStyle(props: PopupCompProps) {
+        const style = this.createStyleWithAutoPosition(props);
         if (!objectsShallowEqual(style, this.state.style)) {
             this.setState({style});
         }
     }
 
     public getPortal(): Portal | null {
-        return this.portal;
+        return this.refs.portal as Portal;
+    }
+
+    private createStyleWithAutoPosition(props: PopupCompProps): React.CSSProperties {
+        if (!this.props.autoPosition) {
+            return this.createStyle(props);
+        }
+        const positions: Array<{
+            anchorPosition: PopupPositionPoint,
+            popupPosition: PopupPositionPoint
+        }> = [
+            // open bellow the anchor
+            {
+                anchorPosition: {vertical: 'bottom', horizontal: 'left'},
+                popupPosition: {vertical: 'top', horizontal: 'left'}
+            },
+            // open above the anchor
+            {
+                anchorPosition: {vertical: 'top', horizontal: 'left'},
+                popupPosition: {vertical: 'bottom', horizontal: 'left'}
+            }
+        ];
+
+        const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+        const scrollX = window.pageXOffset || document.documentElement.scrollLeft;
+        const winHeight = window.innerHeight;
+
+        let style: React.CSSProperties = {};
+        for (const position of positions) {
+            style = this.createStyle({
+                ...props,
+                ...position
+            });
+            if (
+                (style.top >= scrollY) &&
+                (style.top + style.height <= scrollY + winHeight)
+            ) {
+                break;
+            }
+        }
+        return style;
     }
 
     private createStyle(props: PopupCompProps): React.CSSProperties {
         if (!props.anchor || !props.open) {
             return {};
         }
-        const newStyle: React.CSSProperties = {position: 'absolute'};
+        const content = findDOMNode(this.refs.content) as HTMLElement;
+        const {offsetWidth = 0, offsetHeight = 0} = content || {};
+        const newStyle: React.CSSProperties = {
+            position: 'absolute',
+            height: offsetHeight,
+        };
 
-        newStyle.transform = '';
-        newStyle.WebkitTransform = '';
         if (isPoint(props.anchor)) {
             newStyle.top = props.anchor.y;
             newStyle.left = props.anchor.x;
@@ -100,23 +151,24 @@ export class Popup extends React.Component<PopupCompProps, PopupState> {
         }
         switch (props.popupPosition!.vertical) {
             case 'center':
-                addTransform(newStyle, 'translateY(-50%)');
+                newStyle.top -= offsetHeight / 2;
                 break;
             case 'bottom':
-                addTransform(newStyle, 'translateY(-100%)');
+                newStyle.top -= offsetHeight;
                 break;
         }
         switch (props.popupPosition!.horizontal) {
             case 'center':
-                addTransform(newStyle, 'translateX(-50%)');
+                newStyle.left -= offsetWidth / 2;
                 break;
             case 'right':
-                addTransform(newStyle, 'translateX(-100%)');
+                newStyle.left -= offsetWidth;
                 break;
         }
 
         return newStyle;
     }
+
 }
 
 function getVerticalReference(rect: ClientRect, anchorPosition: PopupVerticalPosition): number {
@@ -133,11 +185,6 @@ function getHorizontalReference(rect: ClientRect, anchorPosition: PopupHorizonta
     } else {
         return window.pageXOffset + rect[anchorPosition as 'left' | 'right'];
     }
-}
-
-function addTransform(style: React.CSSProperties, transformation: string) {
-    style.transform += transformation;
-    style.WebkitTransform += transformation;
 }
 
 function isPoint(elem: Element | Point): elem is Point {

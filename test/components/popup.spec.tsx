@@ -17,7 +17,7 @@ export class PopupDemoTestDriver extends DriverBase {
     }
 }
 
-describe('<Popup />', () => {
+describe.only('<Popup />', () => {
     const clientRenderer = new ClientRenderer();
     let anchor: HTMLElement;
 
