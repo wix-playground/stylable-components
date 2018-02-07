@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {findDOMNode} from 'react-dom';
-import {stylable, properties} from 'wix-react-tools';
+import {properties, stylable} from 'wix-react-tools';
 import {Point} from '../../types';
 import {StylableProps} from '../../types/props';
 import {objectsShallowEqual} from '../../utils';
@@ -50,6 +50,8 @@ export class Popup extends React.Component<PopupCompProps, PopupState> {
         className: ''
     };
 
+    private portal: Portal | null;
+
     public componentWillMount() {
         this.setStyle(this.props);
     }
@@ -68,7 +70,7 @@ export class Popup extends React.Component<PopupCompProps, PopupState> {
                 <Portal
                     style={this.state.style}
                     className={this.state.className}
-                    ref="portal"
+                    ref={portal => this.portal = portal}
                 >
                     {React.cloneElement(this.props.children as React.ReactElement<any>, {
                         ref: 'content'
@@ -88,7 +90,7 @@ export class Popup extends React.Component<PopupCompProps, PopupState> {
     }
 
     public getPortal(): Portal | null {
-        return this.refs.portal as Portal;
+        return this.portal;
     }
 
     private createStyleWithAutoPosition(props: PopupCompProps): PopupState {
@@ -163,7 +165,7 @@ export class Popup extends React.Component<PopupCompProps, PopupState> {
         const {offsetWidth = 0, offsetHeight = 0} = content || {};
         const newStyle: React.CSSProperties = {
             position: 'absolute',
-            height: offsetHeight,
+            height: offsetHeight
         };
 
         if (isPoint(props.anchor)) {
