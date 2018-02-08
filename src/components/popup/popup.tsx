@@ -1,9 +1,11 @@
+import * as debounce from 'debounce';
 import * as React from 'react';
 import {findDOMNode} from 'react-dom';
 import {properties, stylable} from 'wix-react-tools';
 import {Point} from '../../types';
 import {StylableProps} from '../../types/props';
 import {objectsShallowEqual} from '../../utils';
+import {GlobalEvent} from '../global-event';
 import {Portal} from '../portal';
 
 import styles from './popup.st.css';
@@ -52,6 +54,10 @@ export class Popup extends React.Component<PopupCompProps, PopupState> {
 
     private portal: Portal | null;
 
+    private setStyleDebounce = debounce(() => {
+        this.setStyle(this.props);
+    }, 300);
+
     public componentDidMount() {
         this.setStyle(this.props);
     }
@@ -65,16 +71,23 @@ export class Popup extends React.Component<PopupCompProps, PopupState> {
     }
 
     public render() {
-        if (this.props.anchor && this.props.open) {
+        const {anchor, open, autoPosition, children} = this.props;
+        if (anchor && open) {
             return (
                 <Portal
                     style={this.state.style}
                     className={this.state.className}
                     ref={portal => this.portal = portal}
                 >
-                    {React.cloneElement(this.props.children as React.ReactElement<any>, {
+                    {React.cloneElement(children as React.ReactElement<any>, {
                         ref: 'content'
                     })}
+                    {autoPosition && open &&
+                        <GlobalEvent
+                            scroll={this.setStyleDebounce}
+                            resize={this.setStyleDebounce}
+                        />
+                    }
                 </Portal>
             );
         }
