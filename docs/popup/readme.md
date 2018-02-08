@@ -14,6 +14,7 @@
 | popupPosition | PositionPoint | { vertical: 'top', horizontal: 'left'} | no | The point from which the popupPosition will pivot |
 | collision | ICollision| {'vertical: 'none', horizontal: 'none'} | No | Specify the collision behavior of the component |
 | syncWidth	| boolean |	true | no | If true, the width of the popup will be set to the width of the anchor. If false, it will be set to the width of the children.* Not relevant for a point anchor type.|
+| autoPosition	| boolean |	false | no | If true, the Popup will automaticaly set it placement based on anchor position and content size.|
 
 ### Code Example
 
