@@ -96,7 +96,7 @@ describe('<Popup />', () => {
                 <span data-automation-id="SPAN">Popup Body</span>
             </Popup>).withDriver(PopupTestDriver);
 
-        await waitFor(() => {expect(popup.root).not.be.absent(); });
+        await waitFor(() => {expect(popup.root).to.be.present(); });
         ReactDOM.unmountComponentAtNode(popup.root!.parentElement!);
         return waitFor(() => {expect(popup.root).to.be.absent(); });
     });
