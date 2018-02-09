@@ -53,6 +53,7 @@ export class Popup extends React.Component<PopupCompProps, PopupState> {
     };
 
     private portal: Portal | null;
+    private timer: number;
 
     private setStyleDebounce = debounce(() => {
         this.setStyle(this.props);
@@ -62,12 +63,11 @@ export class Popup extends React.Component<PopupCompProps, PopupState> {
         this.setStyle(this.props);
     }
 
-    public componentWillReceiveProps(nextProps: PopupCompProps) {
-        this.setStyle(nextProps);
-    }
-
     public componentDidUpdate() {
         this.setStyle(this.props);
+    }
+    public componentWillUnmount() {
+        clearTimeout(this.timer);
     }
 
     public render() {
@@ -100,10 +100,18 @@ export class Popup extends React.Component<PopupCompProps, PopupState> {
     }
 
     private setStyle(props: PopupCompProps) {
-        const state = this.createStyleAndClassName(props);
-        if (!objectsShallowEqual(state.style, this.state.style)) {
-            this.setState(state);
+        if (!props.anchor || !props.open) {
+            return;
         }
+
+        // for some reason react 16 does not garantee that ref will set at this point.
+        // so we skip this tick and apply calculations in next tick
+        this.timer = setTimeout(() => {
+            const state = this.createStyleAndClassName(props);
+            if (!objectsShallowEqual(state.style, this.state.style)) {
+                this.setState(state);
+            }
+        });
     }
 
     private createStyleAndClassName(props: PopupCompProps): PopupState {
@@ -171,7 +179,7 @@ export class Popup extends React.Component<PopupCompProps, PopupState> {
     }
 
     private createStyle(props: PopupCompProps): React.CSSProperties {
-        if (!props.anchor || !props.open) {
+        if (!props.anchor) {
             return {};
         }
         const content = findDOMNode(this.refs.content) as HTMLElement;
