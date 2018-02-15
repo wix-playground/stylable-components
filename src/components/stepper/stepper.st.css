@@ -35,13 +35,6 @@
     cursor: default;
 }
 
-.down:active {
-    padding-top: 2px;
-}
-.up:active {
-    padding-bottom: 1px;
-}
-
 .up {
     top: 0;
 }
