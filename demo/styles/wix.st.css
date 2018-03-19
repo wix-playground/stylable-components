@@ -8,6 +8,7 @@
               btnError, btnErrorSecondary,
               btnPremium, btnPremiumSecondary,
               btnTransparent,
+              tooltipWhite,
               D70;
 }
 
@@ -44,7 +45,7 @@
 .btnSmall, .btnSecondary, .btnLarge, .btnTiny,
 .btnWhite, .btnWhiteSecondary, .btnError,
 .btnErrorSecondary, .btnPremium, .btnPremiumSecondary,
-.btnTransparent {
+.btnTransparent, .tooltipWhite {
 
 }
 

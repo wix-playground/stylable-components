@@ -58,6 +58,16 @@ const samples = [
             children: longTextContainer
         },
         positions: ['top', 'left', 'right', 'bottom']
+    },
+    {
+        title: 'White tooltip',
+        props: {
+            children: 'I am tooltip',
+            className: 'tooltipWhite',
+            showTrigger: 'click',
+            hideTrigger: 'click',
+        },
+        positions: ['top', 'left', 'right', 'bottom']
     }
 ];
 

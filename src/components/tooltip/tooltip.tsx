@@ -12,6 +12,7 @@ export type Position = 'top' | 'left' | 'right' | 'bottom' |
     'leftTop' | 'leftBottom' | 'rightTop' | 'rightBottom';
 
 export interface TooltipProps {
+    className?: string;
     children?: React.ReactNode;
     position?: Position;
     id: string;
@@ -78,7 +79,7 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
     }
 
     public render() {
-        const {children, disableGlobalEvents, onTop} = this.props;
+        const {children, disableGlobalEvents, onTop, className} = this.props;
         const {style, open, position} = this.state;
         const globalEvents: GlobalEventProps = {
             resize: this.setStylesDebounce,
@@ -90,7 +91,7 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
 
         if (open) {
             return (
-                <Portal>
+                <Portal className={className}>
                     <div
                         data-automation-id="TOOLTIP"
                         className={`innerPortal ${position}`}

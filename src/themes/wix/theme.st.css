@@ -1,8 +1,8 @@
 @namespace "wixTheme";
 
 :import {
-	-st-from: "./typography.st.css";
-	-st-theme: true;
+    -st-from: "./typography.st.css";
+    -st-theme: true;
 }
 
 :import {
@@ -11,8 +11,8 @@
 }
 
 :import {
-	-st-from: "./components/number-input.st.css";
-	-st-theme: true;
+    -st-from: "./components/number-input.st.css";
+    -st-theme: true;
 }
 
 :import {
@@ -90,4 +90,11 @@
 :import {
     -st-theme: true;
     -st-from: "./components/modal.st.css";
+}
+
+:import {
+    -st-theme: true;
+    -st-from: "./components/tooltip.st.css";
+    -st-named:
+        tooltipWhite;
 }
