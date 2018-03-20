@@ -91,10 +91,10 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
 
         if (open) {
             return (
-                <Portal className={className}>
+                <Portal>
                     <div
                         data-automation-id="TOOLTIP"
-                        className={`innerPortal ${position}`}
+                        className={`innerPortal ${position} ${className}`}
                         style={style}
                         style-state={{open, onTop, unplaced: !style}}
                     >
@@ -139,7 +139,7 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
             this.bindEvents();
         }
         if (this.state.open) {
-            this.setStyles();
+            this.setStylesDebounce();
         }
     }
 

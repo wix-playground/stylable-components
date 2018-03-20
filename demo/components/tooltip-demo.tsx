@@ -63,9 +63,7 @@ const samples = [
         title: 'White tooltip',
         props: {
             children: 'I am tooltip',
-            className: 'tooltipWhite',
-            showTrigger: 'click',
-            hideTrigger: 'click',
+            className: 'tooltipWhite'
         },
         positions: ['top', 'left', 'right', 'bottom']
     }
