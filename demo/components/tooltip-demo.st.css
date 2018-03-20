@@ -1,3 +1,9 @@
+:import {
+  -st-theme: true;
+  -st-from: "../../src/themes/wix/theme.st.css";
+  -st-named:  tooltipWhite;
+}
+
 .sample {
     padding: 0 50px;
 }
@@ -12,3 +18,5 @@
     display: inline-block;
     background: #3899ec;
 }
+
+.tooltipWhite {}

@@ -12,6 +12,7 @@ export type Position = 'top' | 'left' | 'right' | 'bottom' |
     'leftTop' | 'leftBottom' | 'rightTop' | 'rightBottom';
 
 export interface TooltipProps {
+    className?: string;
     children?: React.ReactNode;
     position?: Position;
     id: string;
@@ -78,7 +79,7 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
     }
 
     public render() {
-        const {children, disableGlobalEvents, onTop} = this.props;
+        const {children, disableGlobalEvents, onTop, className} = this.props;
         const {style, open, position} = this.state;
         const globalEvents: GlobalEventProps = {
             resize: this.setStylesDebounce,
@@ -93,7 +94,7 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
                 <Portal>
                     <div
                         data-automation-id="TOOLTIP"
-                        className={`innerPortal ${position}`}
+                        className={`innerPortal ${position} ${className}`}
                         style={style}
                         style-state={{open, onTop, unplaced: !style}}
                     >
@@ -138,7 +139,7 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
             this.bindEvents();
         }
         if (this.state.open) {
-            this.setStyles();
+            this.setStylesDebounce();
         }
     }
 
@@ -170,7 +171,7 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
         });
     }
     private setStyles() {
-        if (!this.target) {
+        if (!this.target || !this.tooltip) {
             return;
         }
         const rect = this.target!.getBoundingClientRect();
@@ -235,7 +236,7 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
                 (open && hideTrigger!.indexOf(type) !== -1) ||
                 (!open && showTrigger!.indexOf(type) !== -1)
             ) {
-                this.setState({open: !open}, this.setStyles);
+                this.setState({open: !open}, this.setStylesDebounce);
             }
         };
 
