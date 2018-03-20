@@ -12,6 +12,7 @@
 
 Tooltip::tooltip {
     border-radius: 8px;
+    box-shadow: 0 6px 6px 0 rgba(22, 45, 61, 0.06), 0 0 18px 0 rgba(22, 45, 61, 0.12);
 }
 
 .tooltipWhite {
@@ -19,7 +20,6 @@ Tooltip::tooltip {
 }
 
 .tooltipWhite::tooltip {
-    box-shadow: 0 6px 6px 0 rgba(22, 45, 61, 0.06), 0 0 18px 0 rgba(22, 45, 61, 0.12);
     background: value(D80);
     color: value(D10);
 }

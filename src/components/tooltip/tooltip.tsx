@@ -171,7 +171,7 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
         });
     }
     private setStyles() {
-        if (!this.target) {
+        if (!this.target || !this.tooltip) {
             return;
         }
         const rect = this.target!.getBoundingClientRect();
@@ -236,7 +236,7 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
                 (open && hideTrigger!.indexOf(type) !== -1) ||
                 (!open && showTrigger!.indexOf(type) !== -1)
             ) {
-                this.setState({open: !open}, this.setStyles);
+                this.setState({open: !open}, this.setStylesDebounce);
             }
         };
 
