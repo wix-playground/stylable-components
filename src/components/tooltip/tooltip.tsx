@@ -97,6 +97,7 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
                         className={`innerPortal ${position} ${className}`}
                         style={style}
                         style-state={{open, onTop, unplaced: !style}}
+                        onMouseDown={this.stopEvent}
                     >
                         <GlobalEvent {...globalEvents}/>
                         <div
@@ -161,6 +162,7 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
         this.events.forEach(event => {
             this.target!.addEventListener(event, this.toggle);
         });
+        this.target!.addEventListener('mousedown', this.stopEvent);
     }
     private unbindEvents() {
         if (!this.target) {
@@ -169,6 +171,7 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
         this.events.forEach(event => {
             this.target!.removeEventListener(event, this.toggle);
         });
+        this.target!.removeEventListener('mousedown', this.stopEvent);
     }
     private setStyles() {
         if (!this.target || !this.tooltip) {
@@ -249,5 +252,11 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
     }
 
     private hide = () => this.setState({open: false});
+
+    private stopEvent = (e: React.SyntheticEvent<HTMLElement> | Event) => {
+        if (!this.props.disableGlobalEvents) {
+            e.stopPropagation();
+        }
+    }
 
 }

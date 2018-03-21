@@ -43,6 +43,12 @@ class Sample extends React.Component<SampleProps> {
     }
 }
 
+function createEvent(type: string): Event {
+    const event = document.createEvent('CustomEvent');
+    event.initCustomEvent(type, true, false, null);
+    return event;
+}
+
 class SampleDriver extends DriverBase {
     public static ComponentClass = Sample;
     public get tooltip() {
@@ -61,9 +67,13 @@ class SampleDriver extends DriverBase {
         return getRect(this.tooltip.tail);
     }
     public dispatchOnAnchor(type: string) {
-        const event = document.createEvent('CustomEvent');
-        event.initCustomEvent(type, false, false, null);
-        this.anchor.dispatchEvent(event);
+        this.anchor.dispatchEvent(createEvent(type));
+    }
+    public dispatchOutside(type: string) {
+        window.dispatchEvent(createEvent(type));
+    }
+    public dispatchOnTooltip(type: string) {
+        this.tooltip.content.dispatchEvent(createEvent(type));
     }
 }
 
@@ -229,6 +239,24 @@ describe('<Tooltip/>', () => {
             driver.dispatchOnAnchor('click');
             driver.dispatchOnAnchor('click');
             expect(driver.tooltip.isOpen).to.be.false;
+        });
+
+        it('should be hidden after click and then mousedown outside', () => {
+            driver.dispatchOnAnchor('click');
+            driver.dispatchOutside('mousedown');
+            expect(driver.tooltip.isOpen).to.be.false;
+        });
+
+        it('should be visible after click and then mousedown on tooltip', () => {
+            driver.dispatchOnAnchor('click');
+            driver.dispatchOnTooltip('mousedown');
+            expect(driver.tooltip.isOpen).to.be.true;
+        });
+
+        it('should be visible after click and then mousedown on anchor', () => {
+            driver.dispatchOnAnchor('click');
+            driver.dispatchOnAnchor('mousedown');
+            expect(driver.tooltip.isOpen).to.be.true;
         });
     });
 
