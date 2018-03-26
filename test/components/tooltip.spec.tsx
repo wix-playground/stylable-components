@@ -1,5 +1,4 @@
-import * as React from 'react';
-import {ClientRenderer, DriverBase, expect} from 'test-drive-react';
+import * as React from 'react'; import {ClientRenderer, DriverBase, expect} from 'test-drive-react';
 import {Position, Tooltip, TooltipProps} from '../../src';
 import {TooltipDriver} from '../../test-kit';
 import {sleep} from '../utils';
@@ -257,6 +256,60 @@ describe('<Tooltip/>', () => {
             driver.dispatchOnAnchor('click');
             driver.dispatchOnAnchor('mousedown');
             expect(driver.tooltip.isOpen).to.be.true;
+        });
+    });
+
+    describe('render two tooltips', () => {
+        let tooltip1: TooltipDriver;
+        let tooltip2: TooltipDriver;
+        let anchor1: HTMLElement | null;
+        let anchor2: HTMLElement | null;
+        beforeEach(() => {
+            const {select} = clientRenderer.render((
+                <div>
+                    <div data-automation-id="PAIR_1">
+                        <div
+                            data-automation-id="ANCHOR_1"
+                            data-tooltip-for="double-tooltip-1"
+                            children="I am an anchor!"
+                            style={{width: 100}}
+                        />
+                        <Tooltip
+                            id="double-tooltip-1"
+                            data-automation-id="TOOLTIP_1"
+                            children="I am a tooltip!"
+                            showTrigger="click"
+                            hideTrigger="click"
+                        />
+                    </div>
+                    <div data-automation-id="PAIR_2">
+                        <div
+                            data-automation-id="ANCHOR_2"
+                            data-tooltip-for="double-tooltip-2"
+                            children="I am an anchor!"
+                            style={{width: 100}}
+                        />
+                        <Tooltip
+                            id="double-tooltip-2"
+                            data-automation-id="TOOLTIP_2"
+                            children="I am a tooltip!"
+                            showTrigger="mousedown"
+                            hideTrigger="click"
+                        />
+                    </div>
+                </div>
+            ));
+            tooltip1 = new TooltipDriver(() => select('PAIR_1', 'PORTAL_REF') as HTMLElement);
+            tooltip2 = new TooltipDriver(() => select('PAIR_2', 'PORTAL_REF') as HTMLElement);
+            anchor1 = select('ANCHOR_1');
+            anchor2 = select('ANCHOR_2');
+        });
+
+        it('mousedown on any anchor should close any open tooltip except own', () => {
+            anchor1!.dispatchEvent(createEvent('click'));
+            expect(tooltip1.isOpen).to.be.true;
+            anchor2!.dispatchEvent(createEvent('mousedown'));
+            expect(tooltip1.isOpen).to.be.false;
         });
     });
 
