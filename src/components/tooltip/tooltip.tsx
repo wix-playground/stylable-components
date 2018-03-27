@@ -61,6 +61,7 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
 
     private target: HTMLElement | null = null;
     private tooltip: HTMLElement | null = null;
+    private preventHide: boolean;
     private events: string[] = [];
     private timeout?: number;
     private setStylesDebounce = debounce(() => {
@@ -139,7 +140,9 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
             this.setTarget();
             this.bindEvents();
         }
-        if (this.state.open) {
+        if ('open' in props && this.props.open !== props.open) {
+            this.setState({open: props.open!}, this.setStylesDebounce);
+        } else {
             this.setStylesDebounce();
         }
     }
@@ -251,11 +254,16 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
         }
     }
 
-    private hide = () => this.setState({open: false});
+    private hide = () => {
+        if (!this.preventHide) {
+            this.setState({open: false});
+        }
+        this.preventHide = false;
+    }
 
     private stopEvent = (e: React.SyntheticEvent<HTMLElement> | Event) => {
         if (!this.props.disableGlobalEvents) {
-            e.stopPropagation();
+            this.preventHide = this.state.open;
         }
     }
 
