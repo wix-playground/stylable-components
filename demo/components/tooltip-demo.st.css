@@ -1,7 +1,7 @@
 :import {
   -st-theme: true;
   -st-from: "../../src/themes/wix/theme.st.css";
-  -st-named:  tooltipWhite;
+  -st-named:  tooltipWhite, tooltipSmall, tooltipLeft;
 }
 
 .sample {
@@ -19,4 +19,4 @@
     background: #3899ec;
 }
 
-.tooltipWhite {}
+.tooltipWhite, .tooltipSmall, .tooltipLeft {}

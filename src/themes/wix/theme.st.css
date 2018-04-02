@@ -96,5 +96,5 @@
     -st-theme: true;
     -st-from: "./components/tooltip.st.css";
     -st-named:
-        tooltipWhite;
+        tooltipWhite, tooltipSmall, tooltipLeft;
 }
