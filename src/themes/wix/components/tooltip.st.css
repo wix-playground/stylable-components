@@ -20,7 +20,7 @@ Tooltip::tooltip {
     max-width: 204px;
 }
 
-.tooltipLeft {
+.tooltipLeft .tooltip {
     text-align: left;
 }
 
