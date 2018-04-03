@@ -12,12 +12,23 @@
 }
 
 Tooltip::tooltip {
-    padding: 12px 24px;
+    padding: 12px 18px;
     border-radius: 8px;
     box-shadow: 0 6px 6px 0 rgba(22, 45, 61, 0.06), 0 0 18px 0 rgba(22, 45, 61, 0.12);
+    color: value(D80);
+    min-width: 96px;
+    max-width: 204px;
+}
+
+.tooltipLeft {
+    text-align: left;
 }
 
 .tooltipWhite {
+    -st-extends: innerPortal;
+}
+
+.tooltipSmall {
     -st-extends: innerPortal;
 }
 
@@ -30,3 +41,7 @@ Tooltip::tooltip {
     fill: value(D80);
 }
 
+
+.tooltipSmall {
+    font-size: 14px;
+}

@@ -95,7 +95,7 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
                 <Portal>
                     <div
                         data-automation-id="TOOLTIP"
-                        className={`innerPortal ${position} ${className}`}
+                        className={`innerPortal ${position} ${className || ''}`}
                         style={style}
                         style-state={{open, onTop, unplaced: !style}}
                         onMouseDown={this.stopEvent}
