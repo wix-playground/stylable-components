@@ -147,6 +147,15 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
         }
     }
 
+    public show = () => this.setState({open: true}, this.setStylesDebounce);
+
+    public hide = () => {
+        if (!this.preventHide) {
+            this.setState({open: false});
+        }
+        this.preventHide = false;
+    }
+
     private setTarget() {
         this.target = document.querySelector(`[${DATA_FOR_ATTRIBUTE}=${this.props.id}]`) as HTMLElement;
         if (!this.target) {
@@ -252,13 +261,6 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
         } else {
             next();
         }
-    }
-
-    private hide = () => {
-        if (!this.preventHide) {
-            this.setState({open: false});
-        }
-        this.preventHide = false;
     }
 
     private stopEvent = (e: React.SyntheticEvent<HTMLElement> | Event) => {
