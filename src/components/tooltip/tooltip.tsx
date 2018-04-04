@@ -22,6 +22,7 @@ export interface TooltipProps {
     showDelay?: number;
     hideDelay?: number;
     onTop?: boolean;
+    enableUpdateOnScroll?: boolean;
     disableGlobalEvents?: boolean;
     disableAutoPosition?: boolean;
 }
@@ -56,7 +57,8 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
         hideDelay: 0,
         onTop: false,
         disableAutoPosition: false,
-        disableGlobalEvents: false
+        disableGlobalEvents: false,
+        enableUpdateOnScroll: false
     };
 
     private target: HTMLElement | null = null;
@@ -80,14 +82,14 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
     }
 
     public render() {
-        const {children, disableGlobalEvents, onTop, className} = this.props;
+        const {children, disableGlobalEvents, enableUpdateOnScroll, onTop, className} = this.props;
         const {style, open, position} = this.state;
-        const globalEvents: GlobalEventProps = {
-            resize: this.setStylesDebounce,
-            scroll: this.setStylesDebounce
-        };
+        const globalEvents: GlobalEventProps = {};
         if (!disableGlobalEvents) {
             globalEvents.mousedown = globalEvents.touchstart = this.hide;
+        }
+        if (enableUpdateOnScroll) {
+            globalEvents.resize = globalEvents.scroll = this.setStylesDebounce;
         }
 
         if (open) {
@@ -145,6 +147,15 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
         } else {
             this.setStylesDebounce();
         }
+    }
+
+    public show = () => this.setState({open: true}, this.setStylesDebounce);
+
+    public hide = () => {
+        if (!this.preventHide) {
+            this.setState({open: false});
+        }
+        this.preventHide = false;
     }
 
     private setTarget() {
@@ -252,13 +263,6 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
         } else {
             next();
         }
-    }
-
-    private hide = () => {
-        if (!this.preventHide) {
-            this.setState({open: false});
-        }
-        this.preventHide = false;
     }
 
     private stopEvent = (e: React.SyntheticEvent<HTMLElement> | Event) => {

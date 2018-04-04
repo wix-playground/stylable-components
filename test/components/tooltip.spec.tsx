@@ -1,4 +1,5 @@
-import * as React from 'react'; import {ClientRenderer, DriverBase, expect} from 'test-drive-react';
+import * as React from 'react';
+import {ClientRenderer, DriverBase, expect, simulate} from 'test-drive-react';
 import {Position, Tooltip, TooltipProps} from '../../src';
 import {TooltipDriver} from '../../test-kit';
 import {sleep} from '../utils';
@@ -350,6 +351,59 @@ describe('<Tooltip/>', () => {
             driver.dispatchOnAnchor('mouseleave');
             await sleep(220);
             expect(driver.tooltip.isOpen).to.be.false;
+        });
+    });
+
+    describe('showing and hiding tooltip manualy', () => {
+        let driver: TooltipDriver;
+        let buttonShow: HTMLElement;
+        let buttonHide: HTMLElement;
+        class Example extends React.Component {
+            private tooltip: Tooltip | null;
+            public render() {
+                return (
+                    <div>
+                        <Tooltip
+                            id="manual-tooltip"
+                            ref={tooltip => this.tooltip = tooltip}
+                            children="i am tooltip"
+                        />
+                        <span
+                            data-tooltip-for="manual-tooltip"
+                            children="anchor"
+                        />
+                        <button
+                            data-automation-id="EXAMPLE_SHOW"
+                            onClick={this.show}
+                            children="show"
+                        />
+                        <button
+                            data-automation-id="EXAMPLE_HIDE"
+                            onClick={this.hide}
+                            children="hide"
+                        />
+                    </div>
+                );
+            }
+            private show = () => this.tooltip!.show();
+            private hide = () => this.tooltip!.hide();
+        }
+        beforeEach(() => {
+            const {select} = clientRenderer.render(<Example/>);
+            driver = new TooltipDriver(() => select('PORTAL_REF') as HTMLElement);
+            buttonShow = select('EXAMPLE_SHOW') as HTMLElement;
+            buttonHide = select('EXAMPLE_HIDE') as HTMLElement;
+        });
+
+        it('clicking on manual show() should open tooltip', () => {
+            simulate.click(buttonShow);
+            expect(driver.isOpen).to.be.true;
+        });
+
+        it('clicking on manual hide() should hide tooltip', () => {
+            simulate.click(buttonShow);
+            simulate.click(buttonHide);
+            expect(driver.isOpen).to.be.false;
         });
     });
 
