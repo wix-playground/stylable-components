@@ -153,7 +153,7 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
 
     public hide = () => {
         if (!this.preventHide) {
-            this.setState({open: false});
+            this.setState({open: false, style: undefined});
         }
         this.preventHide = false;
     }
