@@ -214,10 +214,10 @@ describe('<Tooltip/>', () => {
     testAutoPosition({position: 'fixed', top: 0, right: 0}, 'top right corner', 'bottomRight');
     testAutoPosition({position: 'fixed', bottom: 0, right: 0}, 'bottom right corner', 'topRight');
     testAutoPosition({position: 'fixed', bottom: 0, left: 0}, 'bottom left corner', 'topLeft');
-    testAutoPosition({position: 'fixed', top: 0, left: '20%'}, 'top center', 'rightTop');
-    testAutoPosition({position: 'fixed', top: '50%', right: 0}, 'right center', 'topRight');
+    testAutoPosition({position: 'fixed', top: 0, left: '20%'}, 'top center', 'bottom');
+    testAutoPosition({position: 'fixed', top: '50%', right: 0}, 'right center', 'left');
     testAutoPosition({position: 'fixed', bottom: 0, left: '20%'}, 'bottom center', 'top');
-    testAutoPosition({position: 'fixed', top: '50%', left: 0}, 'left center', 'topLeft');
+    testAutoPosition({position: 'fixed', top: '50%', left: 0}, 'left center', 'right');
 
     describe('render with showTrigger and hideTrigger (click)', () => {
         let driver: any;

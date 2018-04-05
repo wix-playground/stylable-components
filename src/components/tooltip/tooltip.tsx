@@ -40,10 +40,11 @@ function hasPosition(position: Position, ...candidates: string[]): boolean {
 }
 
 const positions: Position[] = [
-    'top', 'topLeft', 'topRight',
-    'right', 'rightTop', 'rightBottom',
-    'bottom', 'bottomRight', 'bottomLeft',
-    'left', 'leftBottom', 'leftTop'
+    'top', 'bottom', 'left', 'right',
+    'topLeft', 'topRight',
+    'rightTop', 'rightBottom',
+    'bottomRight', 'bottomLeft',
+    'leftBottom', 'leftTop'
 ];
 
 @stylable(styles)
@@ -153,7 +154,7 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
 
     public hide = () => {
         if (!this.preventHide) {
-            this.setState({open: false});
+            this.setState({open: false, style: undefined});
         }
         this.preventHide = false;
     }
