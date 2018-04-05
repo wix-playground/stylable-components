@@ -39,6 +39,8 @@
 
 DropDown {
     -st-mixin: inputStyle;
+    width: 276px;
+    min-width: 276px;
 }
 
 DropDown::list {
