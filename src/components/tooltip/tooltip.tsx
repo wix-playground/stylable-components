@@ -2,7 +2,7 @@ import * as debounce from 'debounce';
 import * as React from 'react';
 import {stylable} from 'wix-react-tools';
 
-import {warnOnce} from '../../utils';
+import {getScroll, warnOnce} from '../../utils';
 import {GlobalEvent, GlobalEventProps} from '../global-event';
 import {Portal} from '../portal';
 import styles from './tooltip.st.css';
@@ -193,8 +193,7 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
             return;
         }
         const rect = this.target!.getBoundingClientRect();
-        const scrollY = window.pageYOffset || document.documentElement.scrollTop;
-        const scrollX = window.pageXOffset || document.documentElement.scrollLeft;
+        const {scrollX, scrollY} = getScroll();
         const rectTop = rect.top + scrollY;
         const rectLeft = rect.left + scrollX;
         const tipWidth = this.tooltip!.offsetWidth;

@@ -4,7 +4,7 @@ import {findDOMNode} from 'react-dom';
 import {properties, stylable} from 'wix-react-tools';
 import {Point} from '../../types';
 import {StylableProps} from '../../types/props';
-import {objectsShallowEqual} from '../../utils';
+import {getScroll, objectsShallowEqual} from '../../utils';
 import {GlobalEvent} from '../global-event';
 import {Portal} from '../portal';
 
@@ -152,8 +152,7 @@ export class Popup extends React.Component<PopupCompProps, PopupState> {
             }
         ];
 
-        const scrollX = window.pageXOffset || document.documentElement.scrollLeft;
-        const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+        const {scrollX, scrollY} = getScroll();
         const winWidth = window.innerWidth;
         const winHeight = window.innerHeight;
 
@@ -199,9 +198,23 @@ export class Popup extends React.Component<PopupCompProps, PopupState> {
             newStyle.width = props.syncWidth ?
                 anchorRect.width :
                 offsetWidth;
+            const {scrollX, scrollY} = getScroll();
+            const {vertical, horizontal} = props.anchorPosition!;
+            newStyle.left = scrollX;
+            newStyle.top = scrollY;
 
-            newStyle.top = getVerticalReference(anchorRect, props.anchorPosition!.vertical);
-            newStyle.left = getHorizontalReference(anchorRect, props.anchorPosition!.horizontal);
+            if (vertical === 'center') {
+                newStyle.top += anchorRect.top + (anchorRect.height / 2);
+            } else {
+                newStyle.top += anchorRect[vertical];
+            }
+
+            if (horizontal === 'center') {
+                newStyle.left += anchorRect.left + (anchorRect.width / 2);
+            } else {
+                newStyle.left += anchorRect[horizontal];
+            }
+
         }
         switch (props.popupPosition!.vertical) {
             case 'center':
@@ -223,22 +236,6 @@ export class Popup extends React.Component<PopupCompProps, PopupState> {
         return newStyle;
     }
 
-}
-
-function getVerticalReference(rect: ClientRect, anchorPosition: PopupVerticalPosition): number {
-    if (anchorPosition === 'center') {
-        return window.pageYOffset + rect.top + (rect.height / 2);
-    } else {
-        return window.pageYOffset + rect[anchorPosition as 'top' | 'bottom'];
-    }
-}
-
-function getHorizontalReference(rect: ClientRect, anchorPosition: PopupHorizontalPosition): number {
-    if (anchorPosition === 'center') {
-        return window.pageXOffset + rect.left + (rect.width / 2);
-    } else {
-        return window.pageXOffset + rect[anchorPosition as 'left' | 'right'];
-    }
 }
 
 function isPoint(elem: Element | Point): elem is Point {

@@ -12,3 +12,4 @@ export * from './is-touch-event';
 export * from './logger';
 export * from './omit';
 export * from './is-rtl-context';
+export * from './get-scroll';
