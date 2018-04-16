@@ -4,7 +4,9 @@ export type GlobalEventProps = {
     [EventName in keyof WindowEventMap]?: (event: WindowEventMap[EventName]) => void;
 };
 
-export class GlobalEvent extends Component<GlobalEventProps> {
+export class GlobalEventBase extends Component<GlobalEventProps> {
+
+    protected useCapture: boolean;
 
     public shouldComponentUpdate() {
         return false;
@@ -39,10 +41,18 @@ export class GlobalEvent extends Component<GlobalEventProps> {
     }
 
     private subscribe(event: string, listener: EventListener) {
-        window && window.addEventListener(event, listener);
+        window && window.addEventListener(event, listener, this.useCapture);
     }
 
     private unsubscribe(event: string, listener: EventListener) {
-        window && window.removeEventListener(event, listener);
+        window && window.removeEventListener(event, listener, this.useCapture);
     }
+}
+
+export class GlobalEvent extends GlobalEventBase {
+    protected useCapture = false;
+}
+
+export class GlobalEventCapture extends GlobalEventBase {
+    protected useCapture = true;
 }

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {stylable} from 'wix-react-tools';
-import {GlobalEvent, Position, Tooltip} from '../../src';
+import {Button, GlobalEvent, Modal, Position, Tooltip} from '../../src';
 
 import styles from './tooltip-demo.st.css';
 
@@ -144,6 +144,23 @@ class DraggableTip extends React.Component<any, any> {
     }
 }
 
+class ModalWrap extends React.Component {
+    public state = {
+        isOpen: false
+    };
+    public render() {
+        return (
+            <div>
+                <Button onClick={this.toggle}>Open</Button>
+                <Modal isOpen={this.state.isOpen}>
+                    {this.props.children}
+                </Modal>
+            </div>
+        );
+    }
+    private toggle = () => this.setState({isOpen: !this.state.isOpen});
+}
+
 @stylable(styles)
 export class TooltipDemo extends React.Component {
     public render() {
@@ -167,6 +184,20 @@ export class TooltipDemo extends React.Component {
                             <DraggableTip position={position}/>
                         </div>
                     )}
+                </div>
+                <div>
+                    <h4>Tooltip in Modal</h4>
+                    <ModalWrap>
+                        <div className="modalContent">
+                            <Button data-tooltip-for="tooltip-in-modal">Show tip</Button>
+                            <Tooltip
+                                id="tooltip-in-modal"
+                                showTrigger="click"
+                                hideTrigger="click"
+                                children="tooltip"
+                            />
+                        </div>
+                    </ModalWrap>
                 </div>
             </div>
         );

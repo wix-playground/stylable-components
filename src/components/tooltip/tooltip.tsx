@@ -3,7 +3,7 @@ import * as React from 'react';
 import {stylable} from 'wix-react-tools';
 
 import {getScroll, warnOnce} from '../../utils';
-import {GlobalEvent, GlobalEventProps} from '../global-event';
+import {GlobalEvent, GlobalEventCapture, GlobalEventProps} from '../global-event';
 import {Portal} from '../portal';
 import styles from './tooltip.st.css';
 
@@ -22,7 +22,7 @@ export interface TooltipProps {
     showDelay?: number;
     hideDelay?: number;
     onTop?: boolean;
-    enableUpdateOnScroll?: boolean;
+    hideOnScroll?: boolean;
     disableGlobalEvents?: boolean;
     disableAutoPosition?: boolean;
 }
@@ -37,6 +37,11 @@ const DATA_FOR_ATTRIBUTE = 'data-tooltip-for';
 
 function hasPosition(position: Position, ...candidates: string[]): boolean {
     return candidates.some(item => item === position);
+}
+
+function findFixedParent(node: HTMLElement): HTMLElement {
+    return (node === document.body || window.getComputedStyle(node).position === 'fixed') ?
+        node : findFixedParent(node.parentElement!);
 }
 
 const positions: Position[] = [
@@ -59,10 +64,11 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
         onTop: false,
         disableAutoPosition: false,
         disableGlobalEvents: false,
-        enableUpdateOnScroll: false
+        hideOnScroll: true
     };
 
     private target: HTMLElement | null = null;
+    private fixedRoot: HTMLElement | null = null;
     private tooltip: HTMLElement | null = null;
     private preventHide: boolean;
     private events: string[] = [];
@@ -83,14 +89,15 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
     }
 
     public render() {
-        const {children, disableGlobalEvents, enableUpdateOnScroll, onTop, className} = this.props;
+        const {children, disableGlobalEvents, hideOnScroll, onTop, className} = this.props;
         const {style, open, position} = this.state;
         const globalEvents: GlobalEventProps = {};
+        const globalEventsCapture: GlobalEventProps = {};
         if (!disableGlobalEvents) {
             globalEvents.mousedown = globalEvents.touchstart = this.hide;
         }
-        if (enableUpdateOnScroll) {
-            globalEvents.resize = globalEvents.scroll = this.setStylesDebounce;
+        if (hideOnScroll) {
+            globalEvents.resize = globalEventsCapture.scroll = this.hide;
         }
 
         if (open) {
@@ -104,6 +111,7 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
                         onMouseDown={this.stopEvent}
                     >
                         <GlobalEvent {...globalEvents}/>
+                        <GlobalEventCapture {...globalEventsCapture} />
                         <div
                             className="tooltip"
                             ref={elem => this.tooltip = elem}
@@ -161,7 +169,10 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
 
     private setTarget() {
         this.target = document.querySelector(`[${DATA_FOR_ATTRIBUTE}=${this.props.id}]`) as HTMLElement;
-        if (!this.target) {
+        if (this.target) {
+            this.fixedRoot = findFixedParent(this.target!);
+        } else {
+            this.fixedRoot = null;
             warnOnce(`There is no anchor with "${DATA_FOR_ATTRIBUTE}=%s"`, this.props.id);
         }
     }
@@ -193,7 +204,7 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
             return;
         }
         const rect = this.target!.getBoundingClientRect();
-        const {scrollX, scrollY} = getScroll();
+        const {scrollX, scrollY} = getScroll(this.fixedRoot!);
         const rectTop = rect.top + scrollY;
         const rectLeft = rect.left + scrollX;
         const tipWidth = this.tooltip!.offsetWidth;
