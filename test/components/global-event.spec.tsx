@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {ClientRenderer, expect, sinon} from 'test-drive-react';
-import {GlobalEvent, GlobalEventProps} from '../../src';
+import {GlobalEvent, GlobalEventCapture, GlobalEventProps} from '../../src';
 import {WindowStub} from '../../test-kit';
 
 describe('<GlobalEvent />', () => {
@@ -102,6 +102,33 @@ describe('<GlobalEvent />', () => {
 
             expect(onMouseDown).to.have.been.calledBefore(onMouseMove);
             expect(onMouseMove).to.have.been.calledBefore(onMouseUp);
+        });
+    });
+
+    describe('<GlobalEventCapture/>', () => {
+        it('should listen to capture phase', () => {
+            const onMouseUp = sinon.spy();
+
+            clientRenderer.render(
+                <GlobalEventCapture
+                    mouseup={onMouseUp}
+                />
+            );
+
+            windowStub.simulateCapture('mouseup');
+            expect(onMouseUp).to.have.been.called;
+        });
+        it('should not listen to bubbling phase', () => {
+            const onMouseUp = sinon.spy();
+
+            clientRenderer.render(
+                <GlobalEventCapture
+                    mouseup={onMouseUp}
+                />
+            );
+
+            windowStub.simulate('mouseup');
+            expect(onMouseUp).to.not.been.called;
         });
     });
 
