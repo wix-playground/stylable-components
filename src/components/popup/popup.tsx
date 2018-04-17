@@ -138,6 +138,12 @@ export class Popup extends React.Component<PopupCompProps, PopupState> {
                 anchorPosition: {vertical: 'top', horizontal: 'right'},
                 popupPosition: {vertical: 'bottom', horizontal: 'right'},
                 className: 'topRight'
+            },
+            // open bellow the anchor, left sides matches
+            {
+                anchorPosition: {vertical: 'bottom', horizontal: 'left'},
+                popupPosition: {vertical: 'top', horizontal: 'left'},
+                className: 'bottomLeft'
             }
         ];
 

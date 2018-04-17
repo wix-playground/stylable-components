@@ -86,7 +86,7 @@ export class DatePicker extends React.PureComponent<DatePickerProps, DatePickerS
                         onChange={this.onInputChange}
                         onInput={this.props.onInput}
                     />
-                    <div className="icon" data-automation-id="CALENDAR_ICON" onClick={this.toggleDropdown}>
+                    <div className="icon" data-automation-id="CALENDAR_ICON" onMouseDown={this.onMouseDown}>
                         <Icon />
                     </div>
                     {this.state.isDropdownVisible &&
@@ -172,10 +172,7 @@ export class DatePicker extends React.PureComponent<DatePickerProps, DatePickerS
         }
     }
 
-    private close = () => {
-        console.log('close');
-        this.setState({isDropdownVisible: false});
-    }
+    private close = () => this.setState({isDropdownVisible: false});
 
     private onInputChange: React.EventHandler<React.SyntheticEvent<HTMLInputElement>> = (event): void => {
         const eventTarget = event.target as HTMLInputElement;
@@ -188,7 +185,8 @@ export class DatePicker extends React.PureComponent<DatePickerProps, DatePickerS
         }
     }
 
-    private onMouseDown: React.EventHandler<React.SyntheticEvent<HTMLInputElement>> = (): void => {
+    private onMouseDown: React.EventHandler<React.SyntheticEvent<HTMLElement>> = (event): void => {
+        event.stopPropagation();
         this.toggleDropdown();
     }
 
