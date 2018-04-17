@@ -5,7 +5,6 @@ import {properties, stylable} from 'wix-react-tools';
 import {Point} from '../../types';
 import {StylableProps} from '../../types/props';
 import {getScroll, objectsShallowEqual} from '../../utils';
-import {GlobalEvent} from '../global-event';
 import {Portal} from '../portal';
 
 import styles from './popup.st.css';
@@ -55,10 +54,6 @@ export class Popup extends React.Component<PopupCompProps, PopupState> {
     private portal: Portal | null;
     private timer: number;
 
-    private setStyleDebounce = debounce(() => {
-        this.setStyle(this.props);
-    }, 300);
-
     public componentDidMount() {
         this.setStyle(this.props);
     }
@@ -82,12 +77,6 @@ export class Popup extends React.Component<PopupCompProps, PopupState> {
                     {React.cloneElement(children as React.ReactElement<any>, {
                         ref: 'content'
                     })}
-                    {autoPosition && open &&
-                        <GlobalEvent
-                            scroll={this.setStyleDebounce}
-                            resize={this.setStyleDebounce}
-                        />
-                    }
                 </Portal>
             );
         }

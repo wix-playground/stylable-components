@@ -6,6 +6,7 @@ import {StylableProps} from '../../types/props';
 import {noop} from '../../utils';
 import {Input} from '../input';
 import {Popup} from '../popup';
+import {GlobalEventCapture, GlobalEvent} from '../global-event';
 import {Calendar} from './calendar';
 import {CalendarIcon} from './date-picker-icons';
 import styles from './date-picker.st.css';
@@ -29,6 +30,10 @@ export interface DatePickerState {
     highlightSelectedDate: boolean;
     highlightFocusedDate: boolean;
     error: boolean;
+}
+
+function stopEvent(e: React.SyntheticEvent<HTMLElement>) {
+    e.stopPropagation();
 }
 
 @stylable(styles)
@@ -84,22 +89,37 @@ export class DatePicker extends React.PureComponent<DatePickerProps, DatePickerS
                     <div className="icon" data-automation-id="CALENDAR_ICON" onClick={this.toggleDropdown}>
                         <Icon />
                     </div>
+                    {this.state.isDropdownVisible &&
+                        <GlobalEvent
+                            mousedown={this.close}
+                            touchstart={this.close}
+                            resize={this.close}
+                        />
+                    }
+                    {this.state.isDropdownVisible &&
+                        <GlobalEventCapture scroll={this.close}/>
+                    }
                     <Popup
                         open={this.state.isDropdownVisible}
                         anchor={this.state.dropdownRef}
                         syncWidth={false}
                         autoPosition
                     >
-                        <Calendar
-                            onChange={this.onCalendarInput}
-                            updateDropdownDate={this.updateDropdownDate}
-                            value={this.state.dropdownDate}
-                            selectedDate={this.props.value}
-                            startingDay={this.props.startingDay}
-                            highlightSelectedDate={this.state.highlightSelectedDate}
-                            highlightFocusedDate={this.state.highlightFocusedDate}
-                            disableWeekends={this.props.disableWeekends}
-                        />
+                        <div
+                            onMouseDown={stopEvent}
+                            onTouchStart={stopEvent}
+                        >
+                            <Calendar
+                                onChange={this.onCalendarInput}
+                                updateDropdownDate={this.updateDropdownDate}
+                                value={this.state.dropdownDate}
+                                selectedDate={this.props.value}
+                                startingDay={this.props.startingDay}
+                                highlightSelectedDate={this.state.highlightSelectedDate}
+                                highlightFocusedDate={this.state.highlightFocusedDate}
+                                disableWeekends={this.props.disableWeekends}
+                            />
+                        </div>
                     </Popup>
                 </div>
             </div>
@@ -150,6 +170,11 @@ export class DatePicker extends React.PureComponent<DatePickerProps, DatePickerS
         if (!this.props.disabled && !this.props.readOnly) {
             this.setState({isDropdownVisible: !this.state.isDropdownVisible});
         }
+    }
+
+    private close = () => {
+        console.log('close');
+        this.setState({isDropdownVisible: false});
     }
 
     private onInputChange: React.EventHandler<React.SyntheticEvent<HTMLInputElement>> = (event): void => {
