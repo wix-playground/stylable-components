@@ -39,11 +39,6 @@ function hasPosition(position: Position, ...candidates: string[]): boolean {
     return candidates.some(item => item === position);
 }
 
-function findFixedParent(node: HTMLElement): HTMLElement {
-    return (node === document.body || window.getComputedStyle(node).position === 'fixed') ?
-        node : findFixedParent(node.parentElement!);
-}
-
 const positions: Position[] = [
     'top', 'bottom', 'left', 'right',
     'topLeft', 'topRight',
@@ -68,7 +63,6 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
     };
 
     private target: HTMLElement | null = null;
-    private fixedRoot: HTMLElement | null = null;
     private tooltip: HTMLElement | null = null;
     private preventHide: boolean;
     private events: string[] = [];
@@ -169,10 +163,7 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
 
     private setTarget() {
         this.target = document.querySelector(`[${DATA_FOR_ATTRIBUTE}=${this.props.id}]`) as HTMLElement;
-        if (this.target) {
-            this.fixedRoot = findFixedParent(this.target!);
-        } else {
-            this.fixedRoot = null;
+        if (!this.target) {
             warnOnce(`There is no anchor with "${DATA_FOR_ATTRIBUTE}=%s"`, this.props.id);
         }
     }
@@ -204,7 +195,7 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
             return;
         }
         const rect = this.target!.getBoundingClientRect();
-        const {scrollX, scrollY} = getScroll(this.fixedRoot!);
+        const {scrollX, scrollY} = getScroll(this.target);
         const rectTop = rect.top + scrollY;
         const rectLeft = rect.left + scrollX;
         const tipWidth = this.tooltip!.offsetWidth;

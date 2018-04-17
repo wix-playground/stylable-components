@@ -152,7 +152,8 @@ export class Popup extends React.Component<PopupCompProps, PopupState> {
             }
         ];
 
-        const {scrollX, scrollY} = getScroll();
+        const node = props.anchor && !isPoint(props.anchor) ? (props.anchor as HTMLElement) : undefined;
+        const {scrollX, scrollY} = getScroll(node);
         const winWidth = window.innerWidth;
         const winHeight = window.innerHeight;
 
@@ -198,7 +199,7 @@ export class Popup extends React.Component<PopupCompProps, PopupState> {
             newStyle.width = props.syncWidth ?
                 anchorRect.width :
                 offsetWidth;
-            const {scrollX, scrollY} = getScroll();
+            const {scrollX, scrollY} = getScroll(props.anchor as HTMLElement);
             const {vertical, horizontal} = props.anchorPosition!;
             newStyle.left = scrollX;
             newStyle.top = scrollY;
