@@ -41,7 +41,6 @@ Tooltip::tooltip {
     fill: value(D80);
 }
 
-
 .tooltipSmall .tooltip {
     font-size: 14px;
     line-height: 1.29;

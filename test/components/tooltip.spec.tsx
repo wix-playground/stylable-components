@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {ClientRenderer, DriverBase, expect, simulate} from 'test-drive-react';
 import {Position, Tooltip, TooltipProps} from '../../src';
-import {TooltipDriver} from '../../test-kit';
+import {TooltipDriver, WindowStub} from '../../test-kit';
 import {sleep} from '../utils';
 
 const TAIL_OFFSET = 10;
@@ -358,6 +358,7 @@ describe('<Tooltip/>', () => {
         let driver: TooltipDriver;
         let buttonShow: HTMLElement;
         let buttonHide: HTMLElement;
+        let windowStub: WindowStub;
         class Example extends React.Component {
             private tooltip: Tooltip | null;
             public render() {
@@ -389,11 +390,13 @@ describe('<Tooltip/>', () => {
             private hide = () => this.tooltip!.hide();
         }
         beforeEach(() => {
+            windowStub = new WindowStub();
             const {select} = clientRenderer.render(<Example/>);
             driver = new TooltipDriver(() => select('PORTAL_REF') as HTMLElement);
             buttonShow = select('EXAMPLE_SHOW') as HTMLElement;
             buttonHide = select('EXAMPLE_HIDE') as HTMLElement;
         });
+        afterEach(() => windowStub.sandbox.restore());
 
         it('clicking on manual show() should open tooltip', () => {
             simulate.click(buttonShow);
@@ -403,6 +406,12 @@ describe('<Tooltip/>', () => {
         it('clicking on manual hide() should hide tooltip', () => {
             simulate.click(buttonShow);
             simulate.click(buttonHide);
+            expect(driver.isOpen).to.be.false;
+        });
+
+        it('scroll should hide tooltip', () => {
+            simulate.click(buttonShow);
+            windowStub.simulateCapture('scroll');
             expect(driver.isOpen).to.be.false;
         });
     });

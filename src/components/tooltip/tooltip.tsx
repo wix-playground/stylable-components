@@ -281,5 +281,4 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
             this.preventHide = this.state.open;
         }
     }
-
 }
