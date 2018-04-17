@@ -1,4 +1,3 @@
-import * as debounce from 'debounce';
 import * as React from 'react';
 import {findDOMNode} from 'react-dom';
 import {properties, stylable} from 'wix-react-tools';
@@ -66,7 +65,7 @@ export class Popup extends React.Component<PopupCompProps, PopupState> {
     }
 
     public render() {
-        const {anchor, open, autoPosition, children} = this.props;
+        const {anchor, open, children} = this.props;
         if (anchor && open) {
             return (
                 <Portal
