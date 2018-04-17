@@ -94,8 +94,14 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
             globalEvents.resize = globalEventsCapture.scroll = this.hide;
         }
 
-        if (open) {
-            return (
+        if (!open) {
+            return null;
+        }
+
+        return (
+            <div>
+                <GlobalEvent {...globalEvents}/>
+                <GlobalEventCapture {...globalEventsCapture} />
                 <Portal>
                     <div
                         data-automation-id="TOOLTIP"
@@ -104,8 +110,6 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
                         style-state={{open, onTop, unplaced: !style}}
                         onMouseDown={this.stopEvent}
                     >
-                        <GlobalEvent {...globalEvents}/>
-                        <GlobalEventCapture {...globalEventsCapture} />
                         <div
                             className="tooltip"
                             ref={elem => this.tooltip = elem}
@@ -117,10 +121,8 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
                         </div>
                     </div>
                 </Portal>
-            );
-        } else {
-            return null;
-        }
+            </div>
+        );
     }
 
     public componentDidMount() {

@@ -17,6 +17,7 @@ export class GlobalEventBase extends Component<GlobalEventProps> {
     }
 
     public componentWillUnmount() {
+        console.log('unmount');
         this.forEachEvent((name, listener) => this.unsubscribe(name, listener));
     }
 
