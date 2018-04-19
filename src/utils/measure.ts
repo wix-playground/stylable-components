@@ -11,8 +11,10 @@ export  function findScrollParent(node: HTMLElement | null): HTMLElement {
         return document.body;
     }
     const style = window.getComputedStyle(node);
-    return (node === document.body || style.overflow === 'auto' || style.overflow === 'scroll') ?
-        node : findScrollParent(node.parentElement);
+    return (
+            node === document.body || style.overflow === 'auto' ||
+            style.overflow === 'scroll' || style.position === 'fixed'
+        ) ? node : findScrollParent(node.parentElement);
 }
 
 export interface Measurements {

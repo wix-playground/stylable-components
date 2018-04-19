@@ -134,6 +134,9 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
         window.clearTimeout(this.timeout!);
         this.unbindEvents();
         this.setStylesDebounce.clear();
+        if (this.overlayManager) {
+            this.overlayManager.removeSelf();
+        }
     }
     public componentWillReceiveProps(props: TooltipProps) {
         if (
@@ -165,11 +168,13 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
         const target = document.querySelector(`[${DATA_FOR_ATTRIBUTE}=${this.props.id}]`) as HTMLElement;
         if (target && target !== this.target) {
             this.target = target!;
+            if (this.overlayManager) {
+                this.overlayManager.removeSelf();
+            }
             this.overlayManager = new OverlayManager(findScrollParent(this.target));
         }
         if (!target) {
             this.target = null;
-            delete this.overlayManager;
             warnOnce(`There is no anchor with "${DATA_FOR_ATTRIBUTE}=%s"`, this.props.id);
         }
     }

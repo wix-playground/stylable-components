@@ -66,6 +66,9 @@ export class Popup extends React.Component<PopupCompProps, PopupState> {
     }
     public componentWillUnmount() {
         clearTimeout(this.timer);
+        if (this.overlayManager) {
+            this.overlayManager.removeSelf();
+        }
     }
 
     public render() {
@@ -93,9 +96,9 @@ export class Popup extends React.Component<PopupCompProps, PopupState> {
     }
 
     private setOverlay() {
-        this.overlayManager = this.props.anchor && !isPoint(this.props.anchor) ?
-            new OverlayManager(findScrollParent(this.props.anchor as HTMLElement)) :
-            undefined;
+        if (!this.overlayManager && this.props.anchor && !isPoint(this.props.anchor)) {
+            this.overlayManager = new OverlayManager(findScrollParent(this.props.anchor as HTMLElement));
+        }
     }
 
     private setStyle(props: PopupCompProps) {
