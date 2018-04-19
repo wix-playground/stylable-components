@@ -47,7 +47,10 @@ export class Portal extends React.PureComponent<PortalProps> {
 
         const root: HTMLElement = ReactDOM.findDOMNode(this);
         // create layer
-        const {parentTarget, destroy} = this.overlayManager.createOverlay(root);
+        const {parentTarget, destroy, layer, target} = this.overlayManager.createOverlay(root);
+        //console.log('root', (this.overlayManager as any).root);
+        //console.log('layer', layer);
+        //console.log('target', target);
         this.destroy = destroy;
         this.parentTarget = parentTarget;
         // render target into parentTarget

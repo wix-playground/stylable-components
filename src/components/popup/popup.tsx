@@ -3,7 +3,7 @@ import {findDOMNode} from 'react-dom';
 import {properties, stylable} from 'wix-react-tools';
 import {Point} from '../../types';
 import {StylableProps} from '../../types/props';
-import {getScroll, objectsShallowEqual} from '../../utils';
+import {measure, objectsShallowEqual} from '../../utils';
 import {Portal} from '../portal';
 
 import styles from './popup.st.css';
@@ -147,7 +147,7 @@ export class Popup extends React.Component<PopupCompProps, PopupState> {
         ];
 
         const node = props.anchor && !isPoint(props.anchor) ? (props.anchor as HTMLElement) : undefined;
-        const {scrollX, scrollY} = getScroll(node);
+        const {scrollX, scrollY} = measure(node);
         const winWidth = window.innerWidth;
         const winHeight = window.innerHeight;
 
@@ -193,7 +193,7 @@ export class Popup extends React.Component<PopupCompProps, PopupState> {
             newStyle.width = props.syncWidth ?
                 anchorRect.width :
                 offsetWidth;
-            const {scrollX, scrollY} = getScroll(props.anchor as HTMLElement);
+            const {scrollX, scrollY} = measure(props.anchor as HTMLElement);
             const {vertical, horizontal} = props.anchorPosition!;
             newStyle.left = scrollX;
             newStyle.top = scrollY;

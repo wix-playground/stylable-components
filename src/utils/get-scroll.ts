@@ -1,16 +1,21 @@
-function findFixedParent(node: HTMLElement): HTMLElement {
-    return (node === document.body || window.getComputedStyle(node).position === 'fixed') ?
-        node : findFixedParent(node.parentElement!);
-}
-
-export function getScroll(node?: HTMLElement): {scrollX: number, scrollY: number} {
-    const fixedNode = node && findFixedParent(node);
-    return fixedNode && fixedNode !== document.body ?
+export function measure(node?: HTMLElement): {
+    scrollX: number,
+    scrollY: number,
+    width: number,
+    height: number
+} {
+    return node && node !== document.body ?
         {
-            scrollX: fixedNode.offsetLeft,
-            scrollY: fixedNode.offsetTop
+            //scrollX: node.offsetLeft,
+            //scrollY: node.offsetTop,
+            scrollX: node.scrollLeft,
+            scrollY: node.scrollTop,
+            width: node.offsetWidth,
+            height: node.offsetHeight
         } : {
             scrollX: window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft,
-            scrollY: window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+            scrollY: window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop,
+            width: window.innerWidth,
+            height: window.innerHeight
         };
 }
