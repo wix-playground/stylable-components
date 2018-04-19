@@ -4,6 +4,7 @@ import {properties, stylable} from 'wix-react-tools';
 import {FormInputProps} from '../../types/forms';
 import {StylableProps} from '../../types/props';
 import {noop} from '../../utils';
+import {GlobalEvent} from '../global-event';
 import {Input} from '../input';
 import {Popup} from '../popup';
 import {Calendar} from './calendar';
@@ -40,6 +41,7 @@ export class DatePicker extends React.PureComponent<DatePickerProps, DatePickerS
         onInput: noop,
         calendarIcon: CalendarIcon
     };
+    private preventClose: boolean = false;
 
     public componentWillMount() {
         this.setState({
@@ -84,22 +86,25 @@ export class DatePicker extends React.PureComponent<DatePickerProps, DatePickerS
                     <div className="icon" data-automation-id="CALENDAR_ICON" onMouseDown={this.onMouseDown}>
                         <Icon />
                     </div>
+                    <GlobalEvent mousedown={this.onGlobalMouseDown}/>
                     <Popup
                         open={this.state.isDropdownVisible}
                         anchor={this.state.dropdownRef}
                         syncWidth={false}
                         autoPosition
                     >
-                        <Calendar
-                            onChange={this.onCalendarInput}
-                            updateDropdownDate={this.updateDropdownDate}
-                            value={this.state.dropdownDate}
-                            selectedDate={this.props.value}
-                            startingDay={this.props.startingDay}
-                            highlightSelectedDate={this.state.highlightSelectedDate}
-                            highlightFocusedDate={this.state.highlightFocusedDate}
-                            disableWeekends={this.props.disableWeekends}
-                        />
+                        <div onMouseDown={this.stopEvent}>
+                            <Calendar
+                                onChange={this.onCalendarInput}
+                                updateDropdownDate={this.updateDropdownDate}
+                                value={this.state.dropdownDate}
+                                selectedDate={this.props.value}
+                                startingDay={this.props.startingDay}
+                                highlightSelectedDate={this.state.highlightSelectedDate}
+                                highlightFocusedDate={this.state.highlightFocusedDate}
+                                disableWeekends={this.props.disableWeekends}
+                            />
+                        </div>
                     </Popup>
                 </div>
             </div>
@@ -152,6 +157,13 @@ export class DatePicker extends React.PureComponent<DatePickerProps, DatePickerS
         }
     }
 
+    private onGlobalMouseDown = () => {
+        if (!this.preventClose) {
+            this.setState({isDropdownVisible: false});
+        }
+        this.preventClose = false;
+    }
+
     private onInputChange: React.EventHandler<React.SyntheticEvent<HTMLInputElement>> = (event): void => {
         const eventTarget = event.target as HTMLInputElement;
         this.setState({inputValue: eventTarget.value});
@@ -164,8 +176,12 @@ export class DatePicker extends React.PureComponent<DatePickerProps, DatePickerS
     }
 
     private onMouseDown: React.EventHandler<React.SyntheticEvent<HTMLElement>> = (event): void => {
-        event.stopPropagation();
+        this.preventClose = true;
         this.toggleDropdown();
+    }
+
+    private stopEvent: React.EventHandler<React.SyntheticEvent<HTMLElement>> = (event): void => {
+        this.preventClose = true;
     }
 
     private onBlur: React.EventHandler<React.SyntheticEvent<HTMLInputElement>> = (event): void => {

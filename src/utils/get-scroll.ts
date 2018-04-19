@@ -1,12 +1,18 @@
-export function findFixedParent(node: HTMLElement): HTMLElement {
+export function findFixedParent(node: HTMLElement | null): HTMLElement {
+    if (!node) {
+        return document.body;
+    }
     return (node === document.body || window.getComputedStyle(node).position === 'fixed') ?
-        node : findFixedParent(node.parentElement!);
+        node : findFixedParent(node.parentElement);
 }
 
-export  function findScrollParent(node: HTMLElement): HTMLElement {
+export  function findScrollParent(node: HTMLElement | null): HTMLElement {
+    if (!node) {
+        return document.body;
+    }
     const style = window.getComputedStyle(node);
     return (node === document.body || style.overflow === 'auto' || style.overflow === 'scroll') ?
-        node : findScrollParent(node.parentElement!);
+        node : findScrollParent(node.parentElement);
 }
 
 export interface Measurements {
