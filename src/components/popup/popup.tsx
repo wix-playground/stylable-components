@@ -147,7 +147,7 @@ export class Popup extends React.Component<PopupCompProps, PopupState> {
         ];
 
         const node = props.anchor && !isPoint(props.anchor) ? (props.anchor as HTMLElement) : undefined;
-        const {scrollX, scrollY} = measure(node);
+        const {scrollX, scrollY} = measure(node!);
         const winWidth = window.innerWidth;
         const winHeight = window.innerHeight;
 

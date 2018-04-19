@@ -3,7 +3,7 @@ import * as React from 'react';
 import {stylable} from 'wix-react-tools';
 import {OverlayManager} from 'html-overlays';
 
-import {measure, warnOnce} from '../../utils';
+import {measure, findScrollParent, warnOnce} from '../../utils';
 import {GlobalEvent, GlobalEventCapture, GlobalEventProps} from '../global-event';
 import {Portal} from '../portal';
 import styles from './tooltip.st.css';
@@ -23,7 +23,6 @@ export interface TooltipProps {
     showDelay?: number;
     hideDelay?: number;
     onTop?: boolean;
-    hideOnScroll?: boolean;
     disableGlobalEvents?: boolean;
     disableAutoPosition?: boolean;
 }
@@ -38,17 +37,6 @@ const DATA_FOR_ATTRIBUTE = 'data-tooltip-for';
 
 function hasPosition(position: Position, ...candidates: string[]): boolean {
     return candidates.some(item => item === position);
-}
-
-function findFixedParent(node: HTMLElement): HTMLElement {
-    return (node === document.body || window.getComputedStyle(node).position === 'fixed') ?
-        node : findFixedParent(node.parentElement!);
-}
-
-function findScrollParent(node: HTMLElement): HTMLElement {
-    const style = window.getComputedStyle(node);
-    return (node === document.body || style.overflow === 'auto' || style.overflow === 'scroll') ?
-        node : findScrollParent(node.parentElement!);
 }
 
 const positions: Position[] = [
@@ -70,13 +58,10 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
         hideDelay: 0,
         onTop: false,
         disableAutoPosition: false,
-        disableGlobalEvents: false,
-        hideOnScroll: true
+        disableGlobalEvents: false
     };
 
     private target: HTMLElement | null = null;
-    private fixedParent: HTMLElement | null = null;
-    private scrollParent: HTMLElement | null = null;
     private overlayManager: OverlayManager;
     private tooltip: HTMLElement | null = null;
     private preventHide: boolean;
@@ -98,15 +83,14 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
     }
 
     public render() {
-        const {children, disableGlobalEvents, hideOnScroll, onTop, className} = this.props;
+        const {children, disableGlobalEvents, onTop, className} = this.props;
         const {style, open, position} = this.state;
-        const globalEvents: GlobalEventProps = {};
-        const globalEventsCapture: GlobalEventProps = {};
+        const globalEvents: GlobalEventProps = {
+            resize: this.setStylesDebounce
+        };
+
         if (!disableGlobalEvents) {
             globalEvents.mousedown = globalEvents.touchstart = this.hide;
-        }
-        if (hideOnScroll) {
-            //globalEvents.resize = globalEventsCapture.scroll = this.hide;
         }
 
         if (!open) {
@@ -116,7 +100,6 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
         return (
             <div>
                 <GlobalEvent {...globalEvents}/>
-                <GlobalEventCapture {...globalEventsCapture} />
                 <Portal overlayManager={this.overlayManager}>
                     <div
                         data-automation-id="TOOLTIP"
@@ -181,15 +164,14 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
     private setTarget() {
         const target = document.querySelector(`[${DATA_FOR_ATTRIBUTE}=${this.props.id}]`) as HTMLElement;
         if (target && target !== this.target) {
-            console.log('create overlayManager');
             this.target = target!;
-            this.scrollParent = findScrollParent(this.target);
-            this.fixedParent = findFixedParent(this.target);
-            this.overlayManager = new OverlayManager(this.scrollParent);
+            //this.scrollParent = findScrollParent(this.target);
+            //this.fixedParent = findFixedParent(this.target);
+            this.overlayManager = new OverlayManager(findScrollParent(this.target));
         }
         if (!target) {
             this.target = null;
-            this.fixedParent = null;
+            //this.fixedParent = null;
             delete this.overlayManager;
             warnOnce(`There is no anchor with "${DATA_FOR_ATTRIBUTE}=%s"`, this.props.id);
         }
@@ -221,10 +203,7 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
         if (!this.target || !this.tooltip) {
             return;
         }
-        const rect = this.target!.getBoundingClientRect();
-        const {scrollX, scrollY, width, height} = measure(this.scrollParent!);
-        const rectTop = rect.top + this.fixedParent!.offsetTop - this.scrollParent!.offsetTop + scrollY;
-        const rectLeft = rect.left + this.fixedParent!.offsetLeft - this.scrollParent!.offsetLeft + scrollX;
+        const measurements = measure(this.target);
         const tipWidth = this.tooltip!.offsetWidth;
         const tipHeight = this.tooltip!.offsetHeight;
         const index = positions.indexOf(this.props.position!);
@@ -236,19 +215,19 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
         let left: number = 0;
         let position: Position;
         for (position of orderedPositions) {
-            top = rectTop;
-            left = rectLeft;
+            top = measurements.top;
+            left = measurements.left;
             if (hasPosition(position, 'bottom', 'bottomLeft', 'bottomRight', 'leftBottom', 'rightBottom')) {
-                top += rect.height;
+                top += measurements.height;
             }
             if (hasPosition(position, 'left', 'right')) {
-                top += rect.height / 2 - tipHeight / 2;
+                top += measurements.height / 2 - tipHeight / 2;
             }
             if (hasPosition(position, 'right', 'topRight', 'bottomRight', 'rightTop', 'rightBottom')) {
-                left += rect.width;
+                left += measurements.width;
             }
             if (hasPosition(position, 'top', 'bottom')) {
-                left += rect.width / 2 - tipWidth / 2;
+                left += measurements.width / 2 - tipWidth / 2;
             }
             if (hasPosition(position, 'top', 'topLeft', 'topRight', 'leftBottom', 'rightBottom')) {
                 top -= tipHeight;
@@ -257,9 +236,9 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
                 left -= tipWidth;
             }
             if (
-                (left >= scrollX) && (top >= scrollY) &&
-                (left + tipWidth <= scrollX + width) &&
-                (top + tipHeight <= scrollY + height)
+                (left >= measurements.scrollX) && (top >= measurements.scrollY) &&
+                (left + tipWidth <= measurements.scrollX + measurements.rootWidth) &&
+                (top + tipHeight <= measurements.scrollY + measurements.rootHeight)
             ) {
                 break;
             }
