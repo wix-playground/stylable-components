@@ -1,9 +1,10 @@
 import * as React from 'react';
 import {findDOMNode} from 'react-dom';
+import {OverlayManager} from 'html-overlays';
 import {properties, stylable} from 'wix-react-tools';
 import {Point} from '../../types';
 import {StylableProps} from '../../types/props';
-import {measure, objectsShallowEqual} from '../../utils';
+import {measure, Measurements, findScrollParent, objectsShallowEqual} from '../../utils';
 import {Portal} from '../portal';
 
 import styles from './popup.st.css';
@@ -44,6 +45,7 @@ export class Popup extends React.Component<PopupCompProps, PopupState> {
         syncWidth: true,
         autoPosition: false
     };
+    private overlayManager?: OverlayManager;
 
     public state: PopupState = {
         style: {},
@@ -55,10 +57,12 @@ export class Popup extends React.Component<PopupCompProps, PopupState> {
 
     public componentDidMount() {
         this.setStyle(this.props);
+        this.setOverlay();
     }
 
     public componentDidUpdate() {
         this.setStyle(this.props);
+        this.setOverlay();
     }
     public componentWillUnmount() {
         clearTimeout(this.timer);
@@ -69,6 +73,7 @@ export class Popup extends React.Component<PopupCompProps, PopupState> {
         if (anchor && open) {
             return (
                 <Portal
+                    overlayManager={this.overlayManager}
                     style={this.state.style}
                     className={this.state.className}
                     ref={portal => this.portal = portal}
@@ -87,6 +92,12 @@ export class Popup extends React.Component<PopupCompProps, PopupState> {
         return this.portal;
     }
 
+    private setOverlay() {
+        this.overlayManager = this.props.anchor && !isPoint(this.props.anchor) ?
+            new OverlayManager(findScrollParent(this.props.anchor as HTMLElement)) :
+            undefined;
+    }
+
     private setStyle(props: PopupCompProps) {
         if (!props.anchor || !props.open) {
             return;
@@ -103,9 +114,12 @@ export class Popup extends React.Component<PopupCompProps, PopupState> {
     }
 
     private createStyleAndClassName(props: PopupCompProps): PopupState {
+        const node = props.anchor && !isPoint(props.anchor) ? (props.anchor as HTMLElement) : undefined;
+        const measurements = measure(node!);
+
         if (!props.autoPosition) {
             return {
-                style: this.createStyle(props),
+                style: this.createStyle(props, measurements),
                 className: ''
             };
         }
@@ -146,11 +160,6 @@ export class Popup extends React.Component<PopupCompProps, PopupState> {
             }
         ];
 
-        const node = props.anchor && !isPoint(props.anchor) ? (props.anchor as HTMLElement) : undefined;
-        const {scrollX, scrollY} = measure(node!);
-        const winWidth = window.innerWidth;
-        const winHeight = window.innerHeight;
-
         let style: React.CSSProperties = {};
         let className: string = '';
         for (const position of positions) {
@@ -159,12 +168,12 @@ export class Popup extends React.Component<PopupCompProps, PopupState> {
                 ...props,
                 anchorPosition: position.anchorPosition,
                 popupPosition: position.popupPosition
-            });
+            }, measurements);
             if (
-                (style.top >= scrollY) &&
-                (style.top + style.height <= scrollY + winHeight) &&
-                (style.left >= scrollX) &&
-                (style.left + style.width <= scrollX + winWidth)
+                (style.top >= measurements.scrollY) &&
+                (style.top + style.height <= measurements.scrollY + measurements.rootHeight) &&
+                (style.left >= measurements.scrollX) &&
+                (style.left + style.width <= measurements.scrollX + measurements.rootWidth)
             ) {
                 break;
             }
@@ -172,7 +181,7 @@ export class Popup extends React.Component<PopupCompProps, PopupState> {
         return {style, className};
     }
 
-    private createStyle(props: PopupCompProps): React.CSSProperties {
+    private createStyle(props: PopupCompProps, measurements: Measurements): React.CSSProperties {
         if (!props.anchor) {
             return {};
         }
@@ -189,27 +198,24 @@ export class Popup extends React.Component<PopupCompProps, PopupState> {
             newStyle.width = offsetWidth;
 
         } else {
-            const anchorRect = props.anchor!.getBoundingClientRect();
-            newStyle.width = props.syncWidth ?
-                anchorRect.width :
-                offsetWidth;
-            const {scrollX, scrollY} = measure(props.anchor as HTMLElement);
             const {vertical, horizontal} = props.anchorPosition!;
-            newStyle.left = scrollX;
-            newStyle.top = scrollY;
+            newStyle.top = measurements.top;
+            newStyle.left = measurements.left;
+            newStyle.width = props.syncWidth ?
+                measurements.width :
+                offsetWidth;
 
             if (vertical === 'center') {
-                newStyle.top += anchorRect.top + (anchorRect.height / 2);
-            } else {
-                newStyle.top += anchorRect[vertical];
+                newStyle.top += measurements.height / 2;
+            } else if (vertical === 'bottom') {
+                newStyle.top += measurements.height;
             }
 
             if (horizontal === 'center') {
-                newStyle.left += anchorRect.left + (anchorRect.width / 2);
-            } else {
-                newStyle.left += anchorRect[horizontal];
+                newStyle.left += measurements.width / 2;
+            } else if (horizontal === 'right') {
+                newStyle.left += measurements.width;
             }
-
         }
         switch (props.popupPosition!.vertical) {
             case 'center':
@@ -227,7 +233,6 @@ export class Popup extends React.Component<PopupCompProps, PopupState> {
                 newStyle.left -= newStyle.width;
                 break;
         }
-
         return newStyle;
     }
 

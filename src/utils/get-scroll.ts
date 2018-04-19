@@ -9,7 +9,7 @@ export  function findScrollParent(node: HTMLElement): HTMLElement {
         node : findScrollParent(node.parentElement!);
 }
 
-export interface Measure {
+export interface Measurements {
     top: number;
     left: number;
     width: number;
@@ -22,7 +22,7 @@ export interface Measure {
     fixedParent: HTMLElement;
 }
 
-export function measure(node: HTMLElement): Measure {
+export function measure(node: HTMLElement): Measurements {
     const {top, left, width, height} = node.getBoundingClientRect();
     const fixedParent = findFixedParent(node);
     const scrollParent = findScrollParent(node);
