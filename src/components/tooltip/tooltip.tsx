@@ -222,20 +222,11 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
             return;
         }
         const rect = this.target!.getBoundingClientRect();
-        //const {scrollX, scrollY} = getScroll(this.scrollParent!);
-        //const rectTop = rect.top + scrollY;
-        //const rectLeft = rect.left + scrollX;
-        //const scrollX = this.fixedParent!.offsetLeft - this.scrollParent!.offsetLeft + this.scrollParent!.scrollLeft;
-        //const scrollY = this.fixedParent!.offsetTop - this.scrollParent!.offsetTop + this.scrollParent!.scrollTop;
         const {scrollX, scrollY, width, height} = measure(this.scrollParent!);
         const rectTop = rect.top + this.fixedParent!.offsetTop - this.scrollParent!.offsetTop + scrollY;
         const rectLeft = rect.left + this.fixedParent!.offsetLeft - this.scrollParent!.offsetLeft + scrollX;
         const tipWidth = this.tooltip!.offsetWidth;
         const tipHeight = this.tooltip!.offsetHeight;
-        //const winWidth = window.innerWidth;
-        //const winHeight = window.innerHeight;
-        //const winWidth = this.scrollParent!.offsetWidth;
-        //const winHeight = this.scrollParent!.offsetHeight;
         const index = positions.indexOf(this.props.position!);
         const orderedPositions = this.props.disableAutoPosition ?
             [this.props.position!] :
@@ -265,13 +256,11 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
             if (hasPosition(position, 'left', 'topRight', 'bottomRight', 'leftTop', 'leftBottom')) {
                 left -= tipWidth;
             }
-            console.log('test', position, left, top, scrollX, scrollY, width, height);
             if (
                 (left >= scrollX) && (top >= scrollY) &&
                 (left + tipWidth <= scrollX + width) &&
                 (top + tipHeight <= scrollY + height)
             ) {
-                console.log('ok', position);
                 break;
             }
         }

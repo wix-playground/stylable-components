@@ -6,8 +6,6 @@ export function measure(node?: HTMLElement): {
 } {
     return node && node !== document.body ?
         {
-            //scrollX: node.offsetLeft,
-            //scrollY: node.offsetTop,
             scrollX: node.scrollLeft,
             scrollY: node.scrollTop,
             width: node.offsetWidth,
