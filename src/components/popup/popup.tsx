@@ -1,10 +1,10 @@
+import {OverlayManager} from 'html-overlays';
 import * as React from 'react';
 import {findDOMNode} from 'react-dom';
-import {OverlayManager} from 'html-overlays';
 import {properties, stylable} from 'wix-react-tools';
 import {Point} from '../../types';
 import {StylableProps} from '../../types/props';
-import {measure, Measurements, findScrollParent, objectsShallowEqual} from '../../utils';
+import {findScrollParent, measure, Measurements, objectsShallowEqual} from '../../utils';
 import {Portal} from '../portal';
 
 import styles from './popup.st.css';
@@ -45,13 +45,13 @@ export class Popup extends React.Component<PopupCompProps, PopupState> {
         syncWidth: true,
         autoPosition: false
     };
-    private overlayManager?: OverlayManager;
 
     public state: PopupState = {
         style: {},
         className: ''
     };
 
+    private overlayManager?: OverlayManager;
     private portal: Portal | null;
     private timer: number;
 

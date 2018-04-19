@@ -1,10 +1,10 @@
 import * as debounce from 'debounce';
+import {OverlayManager} from 'html-overlays';
 import * as React from 'react';
 import {stylable} from 'wix-react-tools';
-import {OverlayManager} from 'html-overlays';
 
-import {measure, findScrollParent, warnOnce} from '../../utils';
-import {GlobalEvent, GlobalEventCapture, GlobalEventProps} from '../global-event';
+import {findScrollParent, measure, warnOnce} from '../../utils';
+import {GlobalEvent, GlobalEventProps} from '../global-event';
 import {Portal} from '../portal';
 import styles from './tooltip.st.css';
 
@@ -165,13 +165,10 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
         const target = document.querySelector(`[${DATA_FOR_ATTRIBUTE}=${this.props.id}]`) as HTMLElement;
         if (target && target !== this.target) {
             this.target = target!;
-            //this.scrollParent = findScrollParent(this.target);
-            //this.fixedParent = findFixedParent(this.target);
             this.overlayManager = new OverlayManager(findScrollParent(this.target));
         }
         if (!target) {
             this.target = null;
-            //this.fixedParent = null;
             delete this.overlayManager;
             warnOnce(`There is no anchor with "${DATA_FOR_ATTRIBUTE}=%s"`, this.props.id);
         }
