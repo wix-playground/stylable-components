@@ -49,12 +49,6 @@ TimePicker:empty {
     color: value(placeholderColor);
 }
 
-TimePicker::input {
-  padding-left: value(inputPaddingHorizontal);
-  padding-right: 0;
-}
-
-
 TimePicker::placeholder {
   font: value(inputFontStyle);
   color: value(placeholderColor);
@@ -67,18 +61,23 @@ TimePicker::input:disabled::placeholder {
 
 
 /* TODO replace with mixin */
+TimePicker::input:global(::placeholder) {
+    color: value(placeholderColor);
+    -webkit-text-fill-color: currentColor;
+    opacity: 1;
+}
 TimePicker::input::-webkit-input-placeholder {
-    /*color: value(placeholderColor);*/
+    color: value(placeholderColor);
     -webkit-text-fill-color: currentColor;
     opacity: 1;
 }
 TimePicker::input:-ms-input-placeholder {
-    /*color: value(placeholderColor);*/
+     /*color: value(placeholderColor);*/
     -webkit-text-fill-color: currentColor;
     opacity: 1;
 }
 TimePicker::input::-moz-placeholder {
-    /*color: value(placeholderColor);*/
+    color: value(placeholderColor);
     -webkit-text-fill-color: currentColor;
     opacity: 1;
 }

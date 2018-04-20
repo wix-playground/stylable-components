@@ -1,8 +1,9 @@
 import * as debounce from 'debounce';
+import {OverlayManager} from 'html-overlays';
 import * as React from 'react';
 import {stylable} from 'wix-react-tools';
 
-import {getScroll, warnOnce} from '../../utils';
+import {findScrollParent, measure, warnOnce} from '../../utils';
 import {GlobalEvent, GlobalEventProps} from '../global-event';
 import {Portal} from '../portal';
 import styles from './tooltip.st.css';
@@ -22,7 +23,6 @@ export interface TooltipProps {
     showDelay?: number;
     hideDelay?: number;
     onTop?: boolean;
-    enableUpdateOnScroll?: boolean;
     disableGlobalEvents?: boolean;
     disableAutoPosition?: boolean;
 }
@@ -58,11 +58,11 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
         hideDelay: 0,
         onTop: false,
         disableAutoPosition: false,
-        disableGlobalEvents: false,
-        enableUpdateOnScroll: false
+        disableGlobalEvents: false
     };
 
     private target: HTMLElement | null = null;
+    private overlayManager: OverlayManager;
     private tooltip: HTMLElement | null = null;
     private preventHide: boolean;
     private events: string[] = [];
@@ -83,19 +83,24 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
     }
 
     public render() {
-        const {children, disableGlobalEvents, enableUpdateOnScroll, onTop, className} = this.props;
+        const {children, disableGlobalEvents, onTop, className} = this.props;
         const {style, open, position} = this.state;
-        const globalEvents: GlobalEventProps = {};
+        const globalEvents: GlobalEventProps = {
+            resize: this.setStylesDebounce
+        };
+
         if (!disableGlobalEvents) {
             globalEvents.mousedown = globalEvents.touchstart = this.hide;
         }
-        if (enableUpdateOnScroll) {
-            globalEvents.resize = globalEvents.scroll = this.setStylesDebounce;
+
+        if (!open) {
+            return null;
         }
 
-        if (open) {
-            return (
-                <Portal>
+        return (
+            <div>
+                <GlobalEvent {...globalEvents}/>
+                <Portal overlayManager={this.overlayManager}>
                     <div
                         data-automation-id="TOOLTIP"
                         className={`innerPortal ${position} ${className || ''}`}
@@ -103,7 +108,6 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
                         style-state={{open, onTop, unplaced: !style}}
                         onMouseDown={this.stopEvent}
                     >
-                        <GlobalEvent {...globalEvents}/>
                         <div
                             className="tooltip"
                             ref={elem => this.tooltip = elem}
@@ -115,10 +119,8 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
                         </div>
                     </div>
                 </Portal>
-            );
-        } else {
-            return null;
-        }
+            </div>
+        );
     }
 
     public componentDidMount() {
@@ -132,6 +134,9 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
         window.clearTimeout(this.timeout!);
         this.unbindEvents();
         this.setStylesDebounce.clear();
+        if (this.overlayManager) {
+            this.overlayManager.removeSelf();
+        }
     }
     public componentWillReceiveProps(props: TooltipProps) {
         if (
@@ -160,8 +165,16 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
     }
 
     private setTarget() {
-        this.target = document.querySelector(`[${DATA_FOR_ATTRIBUTE}=${this.props.id}]`) as HTMLElement;
-        if (!this.target) {
+        const target = document.querySelector(`[${DATA_FOR_ATTRIBUTE}=${this.props.id}]`) as HTMLElement;
+        if (target && target !== this.target) {
+            this.target = target!;
+            if (this.overlayManager) {
+                this.overlayManager.removeSelf();
+            }
+            this.overlayManager = new OverlayManager(findScrollParent(this.target));
+        }
+        if (!target) {
+            this.target = null;
             warnOnce(`There is no anchor with "${DATA_FOR_ATTRIBUTE}=%s"`, this.props.id);
         }
     }
@@ -192,14 +205,9 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
         if (!this.target || !this.tooltip) {
             return;
         }
-        const rect = this.target!.getBoundingClientRect();
-        const {scrollX, scrollY} = getScroll();
-        const rectTop = rect.top + scrollY;
-        const rectLeft = rect.left + scrollX;
+        const measurements = measure(this.target);
         const tipWidth = this.tooltip!.offsetWidth;
         const tipHeight = this.tooltip!.offsetHeight;
-        const winWidth = window.innerWidth;
-        const winHeight = window.innerHeight;
         const index = positions.indexOf(this.props.position!);
         const orderedPositions = this.props.disableAutoPosition ?
             [this.props.position!] :
@@ -209,19 +217,19 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
         let left: number = 0;
         let position: Position;
         for (position of orderedPositions) {
-            top = rectTop;
-            left = rectLeft;
+            top = measurements.top;
+            left = measurements.left;
             if (hasPosition(position, 'bottom', 'bottomLeft', 'bottomRight', 'leftBottom', 'rightBottom')) {
-                top += rect.height;
+                top += measurements.height;
             }
             if (hasPosition(position, 'left', 'right')) {
-                top += rect.height / 2 - tipHeight / 2;
+                top += measurements.height / 2 - tipHeight / 2;
             }
             if (hasPosition(position, 'right', 'topRight', 'bottomRight', 'rightTop', 'rightBottom')) {
-                left += rect.width;
+                left += measurements.width;
             }
             if (hasPosition(position, 'top', 'bottom')) {
-                left += rect.width / 2 - tipWidth / 2;
+                left += measurements.width / 2 - tipWidth / 2;
             }
             if (hasPosition(position, 'top', 'topLeft', 'topRight', 'leftBottom', 'rightBottom')) {
                 top -= tipHeight;
@@ -230,9 +238,9 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
                 left -= tipWidth;
             }
             if (
-                (left >= scrollX) && (top >= scrollY) &&
-                (left + tipWidth <= scrollX + winWidth) &&
-                (top + tipHeight <= scrollY + winHeight)
+                (left >= measurements.scrollX) && (top >= measurements.scrollY) &&
+                (left + tipWidth <= measurements.scrollX + measurements.rootWidth) &&
+                (top + tipHeight <= measurements.scrollY + measurements.rootHeight)
             ) {
                 break;
             }
@@ -270,5 +278,4 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
             this.preventHide = this.state.open;
         }
     }
-
 }

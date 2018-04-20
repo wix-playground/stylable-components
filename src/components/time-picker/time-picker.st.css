@@ -68,6 +68,7 @@
     font: inherit;
     background: none;
     color: inherit;
+    text-align: center;
     -webkit-text-fill-color: inherit;
 }
 
@@ -126,4 +127,3 @@
     margin-left: initial;
     margin-right: auto;
 }
-

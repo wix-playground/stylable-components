@@ -19,8 +19,8 @@ export class WindowStub {
 
     public addEventListener = stubWindowMethod(
         this.sandbox, 'addEventListener',
-        (type: string, listener: WindowEventListener) => {
-            const events = this.events;
+        (type: string, listener: WindowEventListener, useCapture?: boolean) => {
+            const events = useCapture ? this.eventsCapture : this.events;
             if (events.has(type)) {
                 const listeners = events.get(type);
                 (listeners as WindowEventListener[]).push(listener);
@@ -33,8 +33,8 @@ export class WindowStub {
 
     public removeEventListener = stubWindowMethod(
         this.sandbox, 'removeEventListener',
-        (type: string, listener?: WindowEventListener) => {
-            const events = this.events;
+        (type: string, listener?: WindowEventListener, useCapture?: boolean) => {
+            const events = useCapture ? this.eventsCapture : this.events;
 
             if (events.has(type)) {
                 const listeners = events.get(type);
@@ -57,9 +57,18 @@ export class WindowStub {
     );
 
     private events = new Map<string, WindowEventListener[]>();
+    private eventsCapture = new Map<string, WindowEventListener[]>();
 
     public simulate(type: string, event?: Partial<WindowEvent>) {
         const events = this.events;
+
+        if (events.has(type)) {
+            const listeners = events.get(type);
+            listeners!.forEach(listener => listener(event));
+        }
+    }
+    public simulateCapture(type: string, event?: Partial<WindowEvent>) {
+        const events = this.eventsCapture;
 
         if (events.has(type)) {
             const listeners = events.get(type);

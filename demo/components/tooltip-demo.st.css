@@ -19,4 +19,9 @@
     background: #3899ec;
 }
 
+.modalContent {
+  background: white;
+  padding: 30px 60px;
+}
+
 .tooltipWhite, .tooltipSmall, .tooltipLeft {}
