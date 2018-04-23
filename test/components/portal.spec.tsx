@@ -233,6 +233,22 @@ describe('<Portal />', () => {
             overlays.remove(component1, elem);
             expect(overlays.getAll()).to.have.length(1);
         });
+        it('mouning should create new overlayManager', () => {
+            const elem = document.createElement('div');
+            document.body.appendChild(elem);
+            clientRenderer.render(<Portal overlayRoot={elem} children="portal"/>);
+            expect(overlays.getAll()).to.have.length(1);
+            expect(elem.children).to.have.length(1);
+        });
+        it('unmouning should remove overlayManager', () => {
+            const elem = document.createElement('div');
+            document.body.appendChild(elem);
+            clientRenderer.render(<Portal overlayRoot={elem} children="portal"/>);
+            clientRenderer.cleanup();
+            expect(overlays.getAll()).to.have.length(0);
+            expect(elem.children).to.have.length(0);
+        });
     });
 
 });
+
