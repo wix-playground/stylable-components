@@ -46,7 +46,9 @@ export class Portal extends React.PureComponent<PortalProps> {
 
     public componentWillUnmount() {
         this.destroy && this.destroy();
-        overlays.clear(this, this.props.overlayRoot || document.body);
+        if (!this.props.overlayManager) {
+            overlays.clear(this, this.props.overlayRoot || document.body);
+        }
     }
 
     private renderRoot(portalStyle: React.CSSProperties, renderChildren: boolean, extraProps?: any) {
