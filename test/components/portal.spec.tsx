@@ -2,7 +2,7 @@ import {OverlayManager} from 'html-overlays';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {ClientRenderer, expect, selectDom, waitFor} from 'test-drive-react';
-import {clearOverlayManager, Portal} from '../../src';
+import {overlays, Portal} from '../../src';
 import {PortalTestDriver} from '../../test-kit';
 
 describe('<Portal />', () => {
@@ -155,7 +155,7 @@ describe('<Portal />', () => {
         it('creates overlayManager, if no overlayManager was supplied', async () => {
             const selectBody = selectDom(document.body);
 
-            clearOverlayManager();  // Make sure we don't have an existing overlay manager
+            overlays.clearAll();  // Make sure we don't have an existing overlay manager
             expect(selectBody('portal-root')).to.be.equal(null);
 
             clientRenderer.render(

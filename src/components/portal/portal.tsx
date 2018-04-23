@@ -4,29 +4,13 @@ import * as ReactDOM from 'react-dom';
 import {globalId} from 'wix-react-tools';
 
 import {omit} from '../../utils';
+import {overlays} from './overlays';
 
 export interface PortalProps extends React.HTMLAttributes<HTMLDivElement> {
     children: React.ReactNode;
     tagName?: string;
     overlayManager?: OverlayManager;
     overlayRoot?: HTMLElement | null;
-}
-
-let globalOverlayManager: OverlayManager | undefined;
-const overlayManagers = new Map();
-
-export function clearOverlayManager() {
-    if (globalOverlayManager) {
-        globalOverlayManager.removeSelf();
-        globalOverlayManager = undefined;
-    }
-}
-
-function createOverlayManager(node: HTMLElement): OverlayManager {
-    if (!overlayManagers.has(node)) {
-        overlayManagers.set(node, new OverlayManager(node));
-    }
-    return overlayManagers.get(node);
 }
 
 export class Portal extends React.PureComponent<PortalProps> {
@@ -44,19 +28,8 @@ export class Portal extends React.PureComponent<PortalProps> {
     }
 
     public componentDidMount() {
-        if (this.props.overlayManager) {
-            this.overlayManager = this.props.overlayManager;
-        } else if (this.props.overlayRoot) {
-            this.overlayManager = createOverlayManager(this.props.overlayRoot);
-        } else if (globalOverlayManager) {
-            this.overlayManager = globalOverlayManager;
-            const portalRoot = globalOverlayManager.getPortalRoot();
-            if (portalRoot.parentElement!.lastChild !== portalRoot) {
-                portalRoot.parentElement!.appendChild(portalRoot);
-            }
-        } else {
-            globalOverlayManager = this.overlayManager = new OverlayManager(document.body);
-        }
+        this.overlayManager = this.props.overlayManager ||
+            overlays.create(this, this.props.overlayRoot || document.body);
 
         const root: HTMLElement = ReactDOM.findDOMNode(this);
         // create layer
@@ -73,6 +46,7 @@ export class Portal extends React.PureComponent<PortalProps> {
 
     public componentWillUnmount() {
         this.destroy && this.destroy();
+        overlays.clear(this, this.props.overlayRoot || document.body);
     }
 
     private renderRoot(portalStyle: React.CSSProperties, renderChildren: boolean, extraProps?: any) {
