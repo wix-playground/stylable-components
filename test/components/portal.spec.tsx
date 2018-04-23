@@ -2,13 +2,14 @@ import {OverlayManager} from 'html-overlays';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {ClientRenderer, expect, selectDom, waitFor} from 'test-drive-react';
-import {clearOverlayManager, Portal} from '../../src';
+import {overlays, Portal} from '../../src';
 import {PortalTestDriver} from '../../test-kit';
 
 describe('<Portal />', () => {
     const clientRenderer = new ClientRenderer();
 
     afterEach(() => {
+        overlays.removeAll();  // Make sure we don't have an existing overlay manager
         clientRenderer.cleanup();
     });
 
@@ -155,7 +156,7 @@ describe('<Portal />', () => {
         it('creates overlayManager, if no overlayManager was supplied', async () => {
             const selectBody = selectDom(document.body);
 
-            clearOverlayManager();  // Make sure we don't have an existing overlay manager
+            overlays.removeAll();  // Make sure we don't have an existing overlay manager
             expect(selectBody('portal-root')).to.be.equal(null);
 
             clientRenderer.render(
@@ -173,13 +174,13 @@ describe('<Portal />', () => {
         it('reuses global overlayManager, if no overlayManager was supplied and one is available', async () => {
             clientRenderer.render(
                 <div>
-                            <Portal style={{position: 'absolute'}}>
-                                <span>Portal Body 1</span>
-                            </Portal>
-                            <Portal style={{position: 'absolute'}}>
-                                <span>Portal Body 2</span>
-                            </Portal>
-                        </div>
+                    <Portal style={{position: 'absolute'}}>
+                        <span>Portal Body 1</span>
+                    </Portal>
+                    <Portal style={{position: 'absolute'}}>
+                        <span>Portal Body 2</span>
+                    </Portal>
+                </div>
             );
 
             await waitFor(() => {
@@ -201,4 +202,52 @@ describe('<Portal />', () => {
             overlayManager.removeSelf(); // We've added an additional OverlayManager to body. remove it
         });
     });
+
+    describe('overlays', () => {
+        it('should create overlay for node', () => {
+            const elem = document.createElement('div');
+            document.body.appendChild(elem);
+            const overlayManager = overlays.create(new React.Component(), elem);
+            expect(overlayManager).to.be.instanceof(OverlayManager);
+        });
+        it('should not create second overlay for same node', () => {
+            const elem = document.createElement('div');
+            const component = new React.Component();
+            const overlayManager1 = overlays.create(component, elem);
+            const overlayManager2 = overlays.create(component, elem);
+            expect(overlayManager1).to.equal(overlayManager2);
+        });
+        it('removing react instance from listeners should remove the overlayManager', () => {
+            const elem = document.createElement('div');
+            const component = new React.Component();
+            overlays.create(component, elem);
+            overlays.remove(component, elem);
+            expect(overlays.getAll()).to.deep.equal([]);
+        });
+        it('removing one of two react instance from listeners should not remove the overlayManager', () => {
+            const elem = document.createElement('div');
+            const component1 = new React.Component();
+            const component2 = new React.Component();
+            overlays.create(component1, elem);
+            overlays.create(component2, elem);
+            overlays.remove(component1, elem);
+            expect(overlays.getAll()).to.have.length(1);
+        });
+        it('mouning should create new overlayManager', () => {
+            const elem = document.createElement('div');
+            document.body.appendChild(elem);
+            clientRenderer.render(<Portal overlayRoot={elem} children="portal"/>);
+            expect(overlays.getAll()).to.have.length(1);
+            expect(elem.children).to.have.length(1);
+        });
+        it('unmouning should remove overlayManager', () => {
+            const elem = document.createElement('div');
+            document.body.appendChild(elem);
+            clientRenderer.render(<Portal overlayRoot={elem} children="portal"/>);
+            clientRenderer.cleanup();
+            expect(overlays.getAll()).to.have.length(0);
+            expect(elem.children).to.have.length(0);
+        });
+    });
+
 });

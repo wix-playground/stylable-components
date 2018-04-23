@@ -3,19 +3,14 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {globalId} from 'wix-react-tools';
 
+import {omit} from '../../utils';
+import {overlays} from './overlays';
+
 export interface PortalProps extends React.HTMLAttributes<HTMLDivElement> {
     children: React.ReactNode;
     tagName?: string;
     overlayManager?: OverlayManager;
-}
-
-let globalOverlayManager: OverlayManager | undefined;
-
-export function clearOverlayManager() {
-    if (globalOverlayManager) {
-        globalOverlayManager.removeSelf();
-        globalOverlayManager = undefined;
-    }
+    overlayRoot?: HTMLElement | null;
 }
 
 export class Portal extends React.PureComponent<PortalProps> {
@@ -33,17 +28,8 @@ export class Portal extends React.PureComponent<PortalProps> {
     }
 
     public componentDidMount() {
-        if (this.props.overlayManager) {
-            this.overlayManager = this.props.overlayManager;
-        } else if (globalOverlayManager) {
-            this.overlayManager = globalOverlayManager;
-            const portalRoot = globalOverlayManager.getPortalRoot();
-            if (portalRoot.parentElement!.lastChild !== portalRoot) {
-                portalRoot.parentElement!.appendChild(portalRoot);
-            }
-        } else {
-            globalOverlayManager = this.overlayManager = new OverlayManager(document.body);
-        }
+        this.overlayManager = this.props.overlayManager ||
+            overlays.create(this, this.props.overlayRoot || document.body);
 
         const root: HTMLElement = ReactDOM.findDOMNode(this);
         // create layer
@@ -60,12 +46,15 @@ export class Portal extends React.PureComponent<PortalProps> {
 
     public componentWillUnmount() {
         this.destroy && this.destroy();
+        if (!this.props.overlayManager) {
+            overlays.remove(this, this.props.overlayRoot || document.body);
+        }
     }
 
     private renderRoot(portalStyle: React.CSSProperties, renderChildren: boolean, extraProps?: any) {
-        const {tagName: TagName, style, children, overlayManager, ...rest} = this.props;
+        const {tagName, style, children, ...rest} = omit(this.props, 'overlayManager', 'overlayRoot');
         return React.createElement(
-            TagName!,
+            tagName!,
             {'style': {...style, ...portalStyle}, 'data-id': this.uniqueId, ...rest, ...extraProps},
             renderChildren ? children : null
         );
