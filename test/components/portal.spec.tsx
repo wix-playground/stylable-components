@@ -9,6 +9,7 @@ describe('<Portal />', () => {
     const clientRenderer = new ClientRenderer();
 
     afterEach(() => {
+        overlays.clearAll();  // Make sure we don't have an existing overlay manager
         clientRenderer.cleanup();
     });
 
