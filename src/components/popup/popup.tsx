@@ -1,4 +1,3 @@
-import {OverlayManager} from 'html-overlays';
 import * as React from 'react';
 import {findDOMNode} from 'react-dom';
 import {properties, stylable} from 'wix-react-tools';
@@ -51,7 +50,7 @@ export class Popup extends React.Component<PopupCompProps, PopupState> {
         className: ''
     };
 
-    private overlayManager?: OverlayManager;
+    private overlayRoot: HTMLElement | null = null;
     private portal: Portal | null;
     private timer: number;
 
@@ -66,9 +65,6 @@ export class Popup extends React.Component<PopupCompProps, PopupState> {
     }
     public componentWillUnmount() {
         clearTimeout(this.timer);
-        if (this.overlayManager) {
-            this.overlayManager.removeSelf();
-        }
     }
 
     public render() {
@@ -76,7 +72,7 @@ export class Popup extends React.Component<PopupCompProps, PopupState> {
         if (anchor && open) {
             return (
                 <Portal
-                    overlayManager={this.overlayManager}
+                    overlayRoot={this.overlayRoot}
                     style={this.state.style}
                     className={this.state.className}
                     ref={portal => this.portal = portal}
@@ -96,9 +92,9 @@ export class Popup extends React.Component<PopupCompProps, PopupState> {
     }
 
     private setOverlay() {
-        if (!this.overlayManager && this.props.anchor && !isPoint(this.props.anchor)) {
-            this.overlayManager = new OverlayManager(findScrollParent(this.props.anchor as HTMLElement));
-        }
+        this.overlayRoot = this.props.anchor && !isPoint(this.props.anchor) ?
+            findScrollParent(this.props.anchor as HTMLElement) :
+            null;
     }
 
     private setStyle(props: PopupCompProps) {

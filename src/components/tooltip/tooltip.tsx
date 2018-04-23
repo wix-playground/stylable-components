@@ -1,5 +1,4 @@
 import * as debounce from 'debounce';
-import {OverlayManager} from 'html-overlays';
 import * as React from 'react';
 import {stylable} from 'wix-react-tools';
 
@@ -62,7 +61,7 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
     };
 
     private target: HTMLElement | null = null;
-    private overlayManager: OverlayManager;
+    private overlayRoot: HTMLElement | null = null;
     private tooltip: HTMLElement | null = null;
     private preventHide: boolean;
     private events: string[] = [];
@@ -100,7 +99,7 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
         return (
             <div>
                 <GlobalEvent {...globalEvents}/>
-                <Portal overlayManager={this.overlayManager}>
+                <Portal overlayRoot={this.overlayRoot}>
                     <div
                         data-automation-id="TOOLTIP"
                         className={`innerPortal ${position} ${className || ''}`}
@@ -134,9 +133,6 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
         window.clearTimeout(this.timeout!);
         this.unbindEvents();
         this.setStylesDebounce.clear();
-        if (this.overlayManager) {
-            this.overlayManager.removeSelf();
-        }
     }
     public componentWillReceiveProps(props: TooltipProps) {
         if (
@@ -168,13 +164,11 @@ export class Tooltip extends React.Component<TooltipProps, TooltipState> {
         const target = document.querySelector(`[${DATA_FOR_ATTRIBUTE}=${this.props.id}]`) as HTMLElement;
         if (target && target !== this.target) {
             this.target = target!;
-            if (this.overlayManager) {
-                this.overlayManager.removeSelf();
-            }
-            this.overlayManager = new OverlayManager(findScrollParent(this.target));
+            this.overlayRoot = findScrollParent(this.target);
         }
         if (!target) {
             this.target = null;
+            this.overlayRoot = null;
             warnOnce(`There is no anchor with "${DATA_FOR_ATTRIBUTE}=%s"`, this.props.id);
         }
     }

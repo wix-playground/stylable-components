@@ -3,19 +3,30 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {globalId} from 'wix-react-tools';
 
+import {omit} from '../../utils';
+
 export interface PortalProps extends React.HTMLAttributes<HTMLDivElement> {
     children: React.ReactNode;
     tagName?: string;
     overlayManager?: OverlayManager;
+    overlayRoot?: HTMLElement | null;
 }
 
 let globalOverlayManager: OverlayManager | undefined;
+const overlayManagers = new Map();
 
 export function clearOverlayManager() {
     if (globalOverlayManager) {
         globalOverlayManager.removeSelf();
         globalOverlayManager = undefined;
     }
+}
+
+function createOverlayManager(node: HTMLElement): OverlayManager {
+    if (!overlayManagers.has(node)) {
+        overlayManagers.set(node, new OverlayManager(node));
+    }
+    return overlayManagers.get(node);
 }
 
 export class Portal extends React.PureComponent<PortalProps> {
@@ -35,6 +46,8 @@ export class Portal extends React.PureComponent<PortalProps> {
     public componentDidMount() {
         if (this.props.overlayManager) {
             this.overlayManager = this.props.overlayManager;
+        } else if (this.props.overlayRoot) {
+            this.overlayManager = createOverlayManager(this.props.overlayRoot);
         } else if (globalOverlayManager) {
             this.overlayManager = globalOverlayManager;
             const portalRoot = globalOverlayManager.getPortalRoot();
@@ -63,9 +76,9 @@ export class Portal extends React.PureComponent<PortalProps> {
     }
 
     private renderRoot(portalStyle: React.CSSProperties, renderChildren: boolean, extraProps?: any) {
-        const {tagName: TagName, style, children, overlayManager, ...rest} = this.props;
+        const {tagName, style, children, ...rest} = omit(this.props, 'overlayManager', 'overlayRoot');
         return React.createElement(
-            TagName!,
+            tagName!,
             {'style': {...style, ...portalStyle}, 'data-id': this.uniqueId, ...rest, ...extraProps},
             renderChildren ? children : null
         );
