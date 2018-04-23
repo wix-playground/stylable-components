@@ -20,7 +20,7 @@ export class Overlays {
         return overlayManager;
     }
 
-    public clear(component: React.Component<any>, node: HTMLElement) {
+    public remove(component: React.Component<any>, node: HTMLElement) {
         if (!this.map.has(node)) {
             return;
         }
@@ -32,12 +32,16 @@ export class Overlays {
         }
     }
 
-    public clearAll() {
+    public removeAll() {
         this.map.forEach(({listeners, overlayManager}) => {
             listeners.clear();
             overlayManager.removeSelf();
         });
         this.map.clear();
+    }
+
+    public getAll() {
+        return Array.from(this.map.values());
     }
 }
 
