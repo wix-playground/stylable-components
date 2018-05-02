@@ -13,6 +13,10 @@
     diagonalTailOffset: 10px;
 }
 
+.root {
+    position: absolute;
+}
+
 .innerPortal {
     -st-states: open, onTop, unplaced;
     position: absolute;
