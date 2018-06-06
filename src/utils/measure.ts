@@ -34,6 +34,8 @@ export function measure(node: HTMLElement): Measurements {
     const {top, left, width, height} = node.getBoundingClientRect();
     const fixedParent = findFixedParent(node);
     const scrollParent = findScrollParent(node);
+    const fixedParentRect = fixedParent.getBoundingClientRect();
+    const scrollParentRect = scrollParent.getBoundingClientRect();
 
     const root = scrollParent === document.body ?
         {
@@ -44,13 +46,13 @@ export function measure(node: HTMLElement): Measurements {
         } : {
             scrollX: scrollParent.scrollLeft,
             scrollY: scrollParent.scrollTop,
-            rootWidth: scrollParent.offsetWidth,
-            rootHeight: scrollParent.offsetHeight
+            rootWidth: scrollParentRect.width,
+            rootHeight: scrollParentRect.height
         };
 
     return {
-        top: top + fixedParent.offsetTop - scrollParent.offsetTop + root.scrollY,
-        left: left + fixedParent.offsetLeft - scrollParent.offsetLeft + root.scrollX,
+        top: top + fixedParentRect.top - scrollParentRect.top + root.scrollY,
+        left: left + fixedParentRect.left - scrollParentRect.left + root.scrollX,
         width, height,
         fixedParent,
         scrollParent,
