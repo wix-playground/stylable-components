@@ -1,6 +1,6 @@
 {
   "name": "stylable-components",
-  "version": "0.6.3",
+  "version": "0.6.4",
   "description": "Fully-tested & strictly-typed component library based on React, using optional Wix styling.",
   "main": "./dist/src/index.js",
   "types": "./dist/src/index.d.ts",
