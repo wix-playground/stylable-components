@@ -5,6 +5,7 @@ import {StylableProps} from '../../types/props';
 import {noop} from '../../utils';
 import styles from './checkbox.st.css';
 
+
 export interface CheckBoxProps extends FormInputProps<boolean>, StylableProps {
     tickIcon?: React.ReactNode;
     indeterminateIcon?: React.ReactNode;
